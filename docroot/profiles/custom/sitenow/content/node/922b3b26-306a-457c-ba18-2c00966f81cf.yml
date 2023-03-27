@@ -64,7 +64,7 @@ default:
           label: 'Moderation control'
           context_mapping: {  }
           layout_builder_styles_style:
-            section_margin_remove_default_margins: section_margin_remove_default_margins
+            - section_margin_remove_default_margins
         components:
           051b1326-800c-40ca-b518-98ce13ca4e6f:
             uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
@@ -214,8 +214,8 @@ default:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            1: section_margin_edge_to_edge
-            remove_default_top_padding: remove_default_top_padding
+            - section_margin_edge_to_edge
+            - remove_default_top_padding
           context_mapping: {  }
         components:
           90c7772b-da00-4e4f-a019-eca776f35885:
@@ -271,7 +271,7 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                block_margin_top: block_margin_top
+                - block_margin_top
               target_uuid: b8aba3a5-10de-42ad-8cb1-dee195b4d540
             third_party_settings: {  }
         third_party_settings: {  }
@@ -342,11 +342,11 @@ default:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            0: section_background_style_gold
-            1: section_margin_edge_to_edge
-            remove_default_top_padding: remove_default_top_padding
-            remove_default_bottom_padding: remove_default_bottom_padding
-            section_layout_grid_3x2_stacked: section_layout_grid_3x2_stacked
+            - section_background_style_gold
+            - section_margin_edge_to_edge
+            - remove_default_top_padding
+            - remove_default_bottom_padding
+            - section_layout_grid_3x2_stacked
           context_mapping: {  }
         components:
           7fd9eef5-762c-497c-9e14-8d4f7b90a465:
@@ -386,8 +386,8 @@ default:
             weight: 1
             additional:
               layout_builder_styles_style:
-                block_alignment_flex_row_center: block_alignment_flex_row_center
-                stat_remove_hover_effect: stat_remove_hover_effect
+                - block_alignment_flex_row_center
+                - stat_remove_hover_effect
               target_uuid: 30a2799f-c1bf-4ce5-a8f3-0bd71141a580
             third_party_settings: {  }
           344de943-dca0-43ac-8578-d06ef61bfd9e:
@@ -427,8 +427,8 @@ default:
             weight: 3
             additional:
               layout_builder_styles_style:
-                block_alignment_flex_row_center: block_alignment_flex_row_center
-                stat_remove_hover_effect: stat_remove_hover_effect
+                - block_alignment_flex_row_center
+                - stat_remove_hover_effect
               target_uuid: 5fd3432c-7324-4dc5-bfa1-54d07b43da77
             third_party_settings: {  }
           3b175957-0d78-4b00-8423-06c45df3a26f:
@@ -468,8 +468,8 @@ default:
             weight: 5
             additional:
               layout_builder_styles_style:
-                block_alignment_flex_row_center: block_alignment_flex_row_center
-                stat_remove_hover_effect: stat_remove_hover_effect
+                - block_alignment_flex_row_center
+                - stat_remove_hover_effect
               target_uuid: c45277c6-60d5-44fb-9d00-689687a550ec
             third_party_settings: {  }
         third_party_settings: {  }
@@ -480,8 +480,8 @@ default:
           label: ''
           column_widths: 50-25-25
           layout_builder_styles_style:
-            0: section_background_style_gray
-            1: section_margin_fixed_width_container
+            - section_background_style_gray
+            - section_margin_fixed_width_container
             section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
           context_mapping: {  }
@@ -502,8 +502,7 @@ default:
               uuid: 3d24809e-7064-4859-934c-6d07cbb33ed9
             weight: 0
             additional:
-              layout_builder_styles_style:
-                - ''
+              layout_builder_styles_style: {  }
               target_uuid: 3d24809e-7064-4859-934c-6d07cbb33ed9
             third_party_settings: {  }
           e53b02cd-f4ab-497a-9203-3f401e8ec5ca:
@@ -527,7 +526,6 @@ default:
                 - media_format_widescreen
                 - card_media_position_stacked
                 - media_size_large
-                - block_card_style_border
                 - card_style_button_position
               target_uuid: e8a1a5d7-a7c6-4b59-a13d-ee498ec7232c
             third_party_settings: {  }
@@ -552,7 +550,6 @@ default:
                 - media_format_widescreen
                 - card_media_position_stacked
                 - media_size_large
-                - block_card_style_border
                 - card_style_button_position
               target_uuid: 41c43a1b-0473-45b1-b799-2b235c3904fb
             third_party_settings: {  }
@@ -666,9 +663,9 @@ default:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            0: section_background_style_gold
-            1: section_margin_fixed_width_container
-            section_margin_remove_default_margins: section_margin_remove_default_margins
+            - section_background_style_gold
+            - section_margin_fixed_width_container
+            - section_margin_remove_default_margins
           context_mapping: {  }
         components:
           04b9c1dd-e12a-4a34-b9e6-ae9abfa3b82b:
