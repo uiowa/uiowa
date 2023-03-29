@@ -352,7 +352,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Otherwise, if the empty option should be the default, add
             // the text there.
             elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
-              $form[$key]['#empty_option'] = t($form[$key]['#empty_option']->getUntranslatedString() . ' (default)', $form[$key]['#empty_option']->getArguments());
+              $form[$key]['#empty_option'] = t('@empty_option (default)', [
+                '@empty_option' => $form[$key]['#empty_option']->getUntranslatedString(),
+              ], $form[$key]['#empty_option']->getArguments());
             }
           }
 
@@ -1022,8 +1024,8 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
     // If this is a views block...
     if ($variables['base_plugin_id'] === 'views_block') {
-      // Get a list of formatting styles that will be displayed on the view instead of the
-      // block and remove them.
+      // Get a list of formatting styles that will be displayed
+      // on the view instead of the block and remove them.
       $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
         'grid',
         'list-container',
