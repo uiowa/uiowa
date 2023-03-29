@@ -93,10 +93,13 @@ function uids_base_preprocess_html(&$variables) {
       }
       // Check if there are any enabled links in the menu.
       $has_enabled_links = ($enabled_links > 0);
-      // Add the 'has_enabled_links' variable to the variables array, to be used in templates.
+      // Add the 'has_enabled_links' variable to the variables array,
+      // to be used in templates.
       $variables['has_enabled_links'] = $has_enabled_links;
-      // Add the 'has_top_links' variable to the variables array, to be used in templates.
-      // If there are enabled links, set the variable to 'has-top-links', otherwise set it to 'no-top-links'.
+      // Add the 'has_top_links' variable to the variables array,
+      // to be used in templates.
+      // If there are enabled links, set the variable to 'has-top-links',
+      // otherwise set it to 'no-top-links'.
       $variables['has_top_links'] = $has_enabled_links ? 'has-top-links' : 'no-top-links';
     }
   }
