@@ -107,7 +107,9 @@ function housing_core_preprocess_field(&$variables, $hook) {
       uiowa_core_set_field_icon($variables, 'fa-compass fas');
       uiowa_core_set_attributes($variables, 'badge badge--secondary');
       if (isset($variables['items'][0]['content']['#markup'])) {
-        $variables['items'][0]['content']['#markup'] .= t(' neighborhood');
+        $variables['items'][0]['content']['#markup'] = t('@value neighborhood', [
+          '@value' => $variables['items'][0]['content']['#markup'],
+        ]);
       }
 
       break;
@@ -116,7 +118,9 @@ function housing_core_preprocess_field(&$variables, $hook) {
       uiowa_core_set_field_icon($variables, 'fa-user fas');
       uiowa_core_set_attributes($variables, 'badge badge--secondary');
       if (isset($variables['items'][0]['content']['#markup'])) {
-        $variables['items'][0]['content']['#markup'] .= t(' students live here');
+        $variables['items'][0]['content']['#markup'] = t('@value students live here', [
+          '@value' => $variables['items'][0]['content']['#markup'],
+        ]);
       }
 
       break;
@@ -125,7 +129,9 @@ function housing_core_preprocess_field(&$variables, $hook) {
       uiowa_core_set_field_icon($variables, 'fa-calendar far');
       uiowa_core_set_attributes($variables, 'badge badge--secondary');
       if (isset($variables['items'][0]['content']['#context']['value'])) {
-        $variables['items'][0]['content']['#context']['value'] = t('Opened in ') . $variables['items'][0]['content']['#context']['value'];
+        $variables['items'][0]['content']['#context']['value'] = t('Opened in @value', [
+          '@value' => $variables['items'][0]['content']['#context']['value'],
+        ]);
       }
 
       break;

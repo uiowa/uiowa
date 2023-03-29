@@ -134,4 +134,8 @@ function grad_core_preprocess_node(&$variables) {
     }
   }
 
+  if ($node->getType() === 'mentor') {
+    $variables['#attached']['library'][] = 'uids_base/person';
+  }
+
 }
