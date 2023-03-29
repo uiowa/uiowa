@@ -729,6 +729,8 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         $row_build['content']['#hide_fields'] = [];
       }
 
+      $row_build['content']['#hide_fields'][] = 'field_room_type';
+
       // Get the node object.
       $node = $row_build['content']['#node'];
 
@@ -736,41 +738,21 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       $building_id = $node->get('field_room_building_id')->target_id;
       $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
       $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-      $row_build['content']['#meta'][] = [
+      $row_build['content']['#meta']['building_link'] = [
         '#theme' => 'building_link_teaser',
         '#building_link' => $url,
         '#building_name' => $building->label(),
       ];
-
-      // Remove all terms except ones with "Seats" in field_room_features.
-      $taxonomy = $node->get('field_room_features')->referencedEntities();
-      $seats = [];
-
-      foreach ($taxonomy as $term) {
-        if (str_starts_with($term->getName(), 'Seats')) {
-          $name = str_replace('Seats - ', '', $term->getName());
-          $term->setName($name);
-          $seats[] = $term;
-        }
-      }
-
-      // Update the field value with the new list of seats.
-      $node->set('field_room_features', $seats);
-
-      if (isset($row_build['content']['#node'])) {
-        $row_build['content']['#hide_fields'][] = 'field_room_type';
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_features?->view('teaser');
-      }
-
     }
   }
-  if ($view->current_display === 'block_rooms') {
+  elseif ($view->current_display === 'block_rooms') {
     foreach ($variables['rows'] as &$row_build) {
       if (!isset($row_build['content']['#hide_fields'])) {
         $row_build['content']['#hide_fields'] = [];
       }
       if (isset($row_build['content']['#node'])) {
         $row_build['content']['#hide_fields'][] = 'field_room_responsible_unit';
+        $row_build['content']['#hide_fields'][] = 'field_room_features';
       }
     }
   }
