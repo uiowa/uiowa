@@ -705,6 +705,22 @@ function uids_base_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
+  // Loop through the classes in the attributes array.
+  foreach ($variables['attributes']['class'] as $key => $class) {
+    // Check if the class starts with "media".
+    if (str_starts_with($class, 'media')) {
+      // Add the class to region_attributes.card_media.
+      // and remove it from attributes.
+      $variables['region_attributes']['card_media'] = $variables['region_attributes']['card_media']->addClass($class);
+      unset($variables['attributes']['class'][$key]);
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
