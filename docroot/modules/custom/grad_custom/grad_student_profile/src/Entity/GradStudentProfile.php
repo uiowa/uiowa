@@ -18,24 +18,31 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#meta' => [
-        'field_person_distinction',
-      ],
+      '#meta' => 'field_person_distinction',
       '#content' => 'field_person_bio_headline',
     ]);
+
+    $build['#link_indicator'] = TRUE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $even = $this->getDelta() % 2 !== 0;
+    $dependent_styles = [];
+    if (!is_null($this->_referringItem)) {
+      $even = $this->getDelta() % 2 !== 0;
+      $dependent_styles = [
+        'card_media_position' => $even ? 'card--layout-right' : 'card--layout-left',
+        'bg' => $even ? 'bg--white' : 'bg--gray',
+      ];
+    }
     return [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => $even ? 'card--layout-right' : 'card--layout-left',
+      ...$dependent_styles,
+      'card_media_position' => 'card--layout-left',
       'border' => 'borderless',
       'headline_class' => 'headline--serif headline--uppercase h1',
-      'bg' => $even ? 'bg--white' : 'bg--gray',
       'media_size' => 'media--large',
     ];
   }
