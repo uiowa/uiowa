@@ -1,17 +1,26 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
 @import "uids/components/grid/grid.scss";
 
 // List container spacing.
 // @todo we would need to add list-container wrapper class to all views, articles list, and taxonomy lists.
-.list-container:not([class*="grid"]) {
+.list-container {
   .list-container__inner {
     > div + div {
       margin-top: 1.6rem;
     }
   }
-}
 
+  &[class*="grid"] {
+    .list-container__inner {
+      > div + div {
+        @include breakpoint(sm) {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
 
 .list-container__inner {
   [class*="grid--"].view & {
