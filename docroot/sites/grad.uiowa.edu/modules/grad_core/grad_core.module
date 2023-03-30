@@ -64,6 +64,12 @@ function grad_core_preprocess_block(&$variables) {
       ]);
       break;
 
+    case 'field_block:node:mentor:field_person_position':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__default--removed',
+      ]);
+      break;
+
     case 'field_block:node:mentor:field_person_phone':
     case 'field_block:node:mentor:field_person_education':
     case 'field_block:node:mentor:field_person_website':

@@ -73,20 +73,9 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_twocol_card_sidebar
-        layout_settings:
-          label: Content
-          context_mapping: {  }
-          layout_builder_styles_style:
-            0: section_margin_fixed_width_container
-            1: section_card_media_format_circle
-            section_alignment_start: section_alignment_start
-        components:
           -
             uuid: 706e8d8e-380c-43af-8cdb-44e40d8055ea
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:mentor:field_person_position'
               label_display: '0'
@@ -98,9 +87,20 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 0
+            weight: 3
             additional: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_card_sidebar
+        layout_settings:
+          label: Content
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_margin_fixed_width_container
+            1: section_card_media_format_circle
+            section_alignment_start: section_alignment_start
+        components:
           -
             uuid: b0048174-792d-4298-a8af-a3343e0b7fb4
             region: main
