@@ -354,8 +354,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // the text there.
             elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
               $form[$key]['#empty_option'] = t('@empty_option (default)', [
-                '@empty_option' => $form[$key]['#empty_option']->getUntranslatedString(),
-              ], $form[$key]['#empty_option']->getArguments());
+                '@empty_option' => $form[$key]['#empty_option']->render(),
+              ], $form[$key]['#empty_option']->getOptions());
             }
           }
 
