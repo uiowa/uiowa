@@ -4,20 +4,10 @@
 
 // List container spacing.
 // @todo we would need to add list-container wrapper class to all views, articles list, and taxonomy lists.
-.list-container {
+.list-container:not([class*="grid"]) {
   .list-container__inner {
     > div + div {
       margin-top: 1.6rem;
-    }
-  }
-
-  &[class*="grid"] {
-    .list-container__inner {
-      > div + div {
-        @include breakpoint(md) {
-          margin-top: 0;
-        }
-      }
     }
   }
 }
@@ -41,6 +31,13 @@
     :first-child {
       grid-column: 1 / -1;
     }
+  }
+}
+
+.grid--threecol--33-34-33,
+.grid--twocol--50-50 {
+  .list-container__inner {
+    display: grid;
   }
 }
 
