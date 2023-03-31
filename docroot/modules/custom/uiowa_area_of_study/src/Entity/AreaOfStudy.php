@@ -35,6 +35,18 @@ class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
+    $build['#title_heading_size'] = 'h3';
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultCardStyles(): array {
+    return [
+      ...parent::getDefaultCardStyles(),
+      'card_headline_style' => '',
+    ];
   }
 
 }
