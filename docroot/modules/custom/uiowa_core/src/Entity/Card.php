@@ -44,7 +44,7 @@ class Card extends BlockContent implements RendersAsCardInterface {
     }
 
     // Pull the button display value from the entity.
-    $link_indicator = (bool) $this->field_uiowa_card_button_display
+    $link_indicator = $this->field_uiowa_card_button_display
       ?->value;
 
     // Check if it is site default.
