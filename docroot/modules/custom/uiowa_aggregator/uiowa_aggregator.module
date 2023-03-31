@@ -66,11 +66,17 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
 
   $build['#title'] = $entity->label();
 
-  $build['#meta']['author'] = [
-    ...$build['author'],
-    '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
-  ];
+  // Always returns. Check to see if is not empty.
+  if (!$build['#aggregator_item']->get('author')->isEmpty()) {
+    $build['#meta']['author'] = [
+      ...$build['author'],
+      '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
+    ];
+  }
+
+  // Since it always returns, unset it.
   unset($build['author']);
+
   $build['#content'] = $build['description'];
   unset($build['description']);
   // To be a valid render array, this needs to have '#markup' set.
