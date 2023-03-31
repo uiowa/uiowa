@@ -81,6 +81,7 @@ class RoomSchedule extends BlockBase {
               '#subtitle' => $item->startTime . ' - ' . $item->endTime,
               '#meta' => $item->activity,
               '#title' => $item->title,
+              '#title_heading_size' => 'h3',
             ];
           }
         }
