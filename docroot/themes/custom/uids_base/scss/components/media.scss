@@ -4,7 +4,13 @@
 
 .media--border img {
   [class*="bg--black"] & {
-    border-color: rgba(255,255,255,.425);
+    background: #f3f3f3;
+    box-shadow: inset 0 0 0 8px $secondary;
+  }
+  [class*="bg--gold"] & {
+    background: #f3f3f3;
+    border: 1px solid rgba(255,255,255,.125);
+    box-shadow: inset 0 0 0 8px $primary;
   }
 }
 
