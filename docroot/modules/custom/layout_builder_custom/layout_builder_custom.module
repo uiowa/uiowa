@@ -176,6 +176,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
 
               // No border is the default.
+              case 'inline_block:uiowa_aggregator':
               case 'views_block:article_list_block-list_article':
                 $lb_styles_extra_settings['border']['default'] = 'no_border';
                 break;
