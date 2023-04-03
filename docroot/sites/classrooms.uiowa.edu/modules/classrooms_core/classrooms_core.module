@@ -341,8 +341,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 function classrooms_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
   if ($node instanceof NodeInterface && $node->getType() === 'room') {
     switch ($layout->id()) {
       case 'layout_header':
