@@ -5140,3 +5140,9 @@ $sites['sitesmicrobiomecore.uiowa.ddev.site'] = 'microbiomecore.sites.uiowa.edu'
 $sites['sitesmicrobiomecore.dev.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
 $sites['sitesmicrobiomecore.stage.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
 $sites['sitesmicrobiomecore.prod.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
+
+// Directory aliases for muacc2023.conference.uiowa.edu.
+$sites['conferencemuacc2023.uiowa.ddev.site'] = 'muacc2023.conference.uiowa.edu';
+$sites['conferencemuacc2023.dev.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
+$sites['conferencemuacc2023.stage.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
+$sites['conferencemuacc2023.prod.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
