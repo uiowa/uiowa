@@ -50,7 +50,7 @@
         {% if content.card_media is not empty %}
           {% block media %}
             {{ attach_library('uids_base/media') }}
-            <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media', 'media--medium') }}>
+            <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
               <div class="media__inner">
                 {{ content.card_media }}
               </div>
