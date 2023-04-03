@@ -89,7 +89,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     if ($block instanceof FieldBlock) {
       $content = NULL;
       switch ($block->getDerivativeId()) {
-        case 'node:page:title':
+        case 'node:person:title':
           $contexts = $event->getContexts();
           if (isset($contexts['layout_builder.entity'])) {
             /** @var \Drupal\node\Entity\Node $node */
