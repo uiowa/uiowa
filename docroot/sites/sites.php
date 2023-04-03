@@ -5146,3 +5146,9 @@ $sites['conferencemuacc2023.uiowa.ddev.site'] = 'muacc2023.conference.uiowa.edu'
 $sites['conferencemuacc2023.dev.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
 $sites['conferencemuacc2023.stage.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
 $sites['conferencemuacc2023.prod.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
+
+// Directory aliases for cdd.center.uiowa.edu.
+$sites['centercdd.uiowa.ddev.site'] = 'cdd.center.uiowa.edu';
+$sites['centercdd.dev.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
+$sites['centercdd.stage.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
+$sites['centercdd.prod.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
