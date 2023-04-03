@@ -5152,3 +5152,9 @@ $sites['centercdd.uiowa.ddev.site'] = 'cdd.center.uiowa.edu';
 $sites['centercdd.dev.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
 $sites['centercdd.stage.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
 $sites['centercdd.prod.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
+
+// Directory aliases for spark.sites.uiowa.edu.
+$sites['sitesspark.uiowa.ddev.site'] = 'spark.sites.uiowa.edu';
+$sites['sitesspark.dev.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
+$sites['sitesspark.stage.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
+$sites['sitesspark.prod.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
