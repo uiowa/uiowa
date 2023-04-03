@@ -361,7 +361,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       display: grid;
 
       .layout__region--first,
-      .layout__region--sidebar {
+      .layout__region--sidebar,
+      .layout__region--main {
         order: 2;
         @include breakpoint(md) {
           order: inherit;
@@ -369,11 +370,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
 
       .layout__region--second,
-      .layout__region--content {
+      .layout__region--content,
+      .layout__region-container {
         order: 1;
         @include breakpoint(md) {
           order: inherit;
         }
+      }
+      .layout__region-container {
+        margin-bottom: $mobile-height-gutter;
       }
     }
   }
