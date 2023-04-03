@@ -792,6 +792,12 @@ function uiowa_core_preprocess_block(&$variables) {
   if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
     if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
       $variables['content']['#block_content']->buildCard($variables['content']);
+
+      // Prevent contextual links from displaying.
+      if (isset($variables['content']['#contextual_links'])) {
+        unset($variables['content']['#contextual_links']);
+      }
+
     }
   }
   switch ($variables['plugin_id']) {
