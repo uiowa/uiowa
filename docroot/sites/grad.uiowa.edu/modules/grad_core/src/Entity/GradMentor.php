@@ -2,6 +2,7 @@
 
 namespace Drupal\grad_core\Entity;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
@@ -9,6 +10,8 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
  * Provides an interface for admissions.uiowa.edu mentor entries.
  */
 class GradMentor extends NodeBundleBase implements RendersAsCardInterface {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -37,6 +40,17 @@ class GradMentor extends NodeBundleBase implements RendersAsCardInterface {
       ],
       '#content' => 'field_scholar_bio_headline',
     ]);
+
+    // Append person credentials to the card title similar to Person.
+    if (!is_null($creds = $this->get('field_person_credential')?->getString())) {
+      if (!empty($creds)) {
+        $title = $this->getTitle();
+        $build['#title'] = $this->t('@title, @creds', [
+          '@title' => $title,
+          '@creds' => $creds,
+        ]);
+      }
+    }
   }
 
   /**
