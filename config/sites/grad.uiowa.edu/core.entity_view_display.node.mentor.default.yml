@@ -39,7 +39,9 @@ third_party_settings:
         layout_settings:
           label: Header
           context_mapping: {  }
-          layout_builder_styles_style: {  }
+          layout_builder_styles_style:
+            0: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -
             uuid: a6770436-4cb6-49dc-be6a-77c1fb2407e9
@@ -90,7 +92,13 @@ third_party_settings:
             weight: 3
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
