@@ -4,7 +4,6 @@ namespace Drupal\classrooms_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -44,7 +43,7 @@ class Room extends BaseNodeSource {
     $building = \Drupal::entityTypeManager()
       ->getStorage('building')
       ->load($building_id);
-    if ($building === null) {
+    if ($building === NULL) {
       $this->logger->notice($this->t('From original building @building @room, @building not present at destination.', [
         '@building' => $building_id,
         '@room' => $row->getSourceProperty('field_room_number')[0]['value'],
