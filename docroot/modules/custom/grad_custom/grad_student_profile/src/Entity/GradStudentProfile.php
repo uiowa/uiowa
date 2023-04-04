@@ -40,7 +40,6 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
     return [
       ...parent::getDefaultCardStyles(),
       ...$dependent_styles,
-      'card_media_position' => 'card--layout-left',
       'border' => 'borderless',
       'headline_class' => 'headline--serif headline--uppercase h1',
       'media_size' => 'media--large',
