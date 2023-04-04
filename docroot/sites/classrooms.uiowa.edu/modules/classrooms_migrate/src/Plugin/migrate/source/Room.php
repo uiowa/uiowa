@@ -19,6 +19,17 @@ class Room extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    // Limit the migration to only those rooms
+    // which are published on the source.
+    $query->condition('n.status', '1', '=');
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
@@ -36,7 +47,7 @@ class Room extends BaseNodeSource {
     if ($building === null) {
       $this->logger->notice($this->t('From original building @building @room, @building not present at destination.', [
         '@building' => $building_id,
-        '@room' => $row->getSourceProperty('field_room_number'),
+        '@room' => $row->getSourceProperty('field_room_number')[0]['value'],
       ]));
       return FALSE;
     }
