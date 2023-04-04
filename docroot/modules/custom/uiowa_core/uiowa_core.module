@@ -265,7 +265,6 @@ function template_preprocess_card(&$variables) {
       'headline_class' => $headline_classes,
     ];
 
-    // @todo Set headline_url based on link being set.
     // Set 'click-target' class on headline URL if title is the linked element.
     if ($element['#linked_element'] === 'title') {
       $element['#headline']['headline_url'] = $element['#url'];
