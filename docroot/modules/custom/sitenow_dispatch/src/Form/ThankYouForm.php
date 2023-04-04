@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_dispatch\Form;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
@@ -10,7 +11,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Provides a Dispatch-enabled Thank You form.
@@ -90,6 +90,13 @@ class ThankYouForm extends FormBase {
       '#title' => $this->t("Nominator's Email Address"),
       '#required' => TRUE,
     ];
+
+    if ($this->config('sitenow_dispatch.settings')->get('thanks.approval')) {
+      $form['approval'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("<div><em>Please feel free to include this thank-you in staff recognition events or materials.</em></div>"),
+      ];
+    }
 
     if ($this->config('sitenow_dispatch.settings')->get('thanks.supervisor')) {
       $form['placeholder']['message']['#description'] = $this->t("<div><em>A copy of this message will be sent to the employee's supervisor(s).</em></div>");
@@ -175,6 +182,12 @@ class ThankYouForm extends FormBase {
       ],
       'includeBatchResponse' => FALSE,
     ];
+
+    // Appending a statement to the footer if approved to be included in
+    // promotional materials.
+    if ($config->get('thanks.approval') && $form_state->getValue('approval') == 1) {
+      $data['members'][0]['footer_statement'] .= ' This message has been approved to be included in staff recognition events or materials.';
+    }
 
     // Add the placeholders to the recipient (first) member.
     foreach ($placeholders as $key => $value) {

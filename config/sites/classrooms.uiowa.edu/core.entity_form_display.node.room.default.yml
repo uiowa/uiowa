@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.room.field_room_classroom_furniture
     - field.field.node.room.field_room_design_details
     - field.field.node.room.field_room_features
+    - field.field.node.room.field_room_guide
     - field.field.node.room.field_room_instruction_category
     - field.field.node.room.field_room_map
     - field.field.node.room.field_room_max_occupancy
@@ -30,6 +31,7 @@ dependencies:
     - content_moderation
     - field_group
     - file
+    - link
     - media_library
     - metatag
     - path
@@ -49,7 +51,7 @@ third_party_settings:
       label: Imported
       region: content
       parent_name: ''
-      weight: 21
+      weight: 22
       format_type: details
       format_settings:
         classes: ''
@@ -141,6 +143,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_room_guide:
+    type: link_default
+    weight: 18
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_room_instruction_category:
     type: options_select
     weight: 23
@@ -149,7 +159,7 @@ content:
     third_party_settings: {  }
   field_room_map:
     type: media_library_widget
-    weight: 20
+    weight: 21
     region: content
     settings:
       media_types: {  }
@@ -199,7 +209,7 @@ content:
     third_party_settings: {  }
   field_room_seating_chart:
     type: file_generic
-    weight: 18
+    weight: 19
     region: content
     settings:
       progress_indicator: throbber
@@ -234,7 +244,7 @@ content:
     third_party_settings: {  }
   field_room_video:
     type: media_library_widget
-    weight: 19
+    weight: 20
     region: content
     settings:
       media_types: {  }

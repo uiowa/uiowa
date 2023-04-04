@@ -10,7 +10,7 @@ use Drupal\Core\Render\Element\FormElement;
  * This implementation is incomplete and not in use. It is
  * provided as a jumping off point for future work.
  *
- * @see \Drupal\Core\Render\Element\Render\FormElement
+ * @see \Drupal\Core\Render\Element\FormElement
  *
  * @FormElement("headline")
  *

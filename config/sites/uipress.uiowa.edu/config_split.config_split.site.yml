@@ -14,6 +14,7 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.node.person.default
   - core.entity_view_display.node.person.default
   - core.entity_view_mode.paragraph.teaser
   - field.storage.node.field_pages_art_trim
@@ -45,8 +46,8 @@ complete_list:
   - 'field.storage.paragraph.field_book_*'
   - 'core.entity_view_display.paragraph.book_type.*'
 partial_list:
-  - core.entity_form_display.node.person.default
-  - core.entity_view_display.node.page.default
   - workflows.workflow.editorial
   - 'user.role.*'
   - 'sitenow_people.person_type.*'
+  - 'core.entity_form_display.node.*'
+  - 'core.entity_view_display.node.*'

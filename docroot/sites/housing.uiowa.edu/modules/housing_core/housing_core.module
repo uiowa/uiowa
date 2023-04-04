@@ -5,9 +5,9 @@
  * Primary module hooks for Housing Core module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_form_alter().
@@ -87,13 +87,35 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_neighborhd':
-    case 'field_residence_hall_population':
-    case 'field_residence_hall_year_built':
-    case 'field_residence_hall_building':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = '';
+      uiowa_core_set_field_icon($variables, 'fa-compass fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] .= t(' neighborhood');
       }
-      $variables['attributes']['class'] .= 'badge badge--secondary';
+
+      break;
+
+    case 'field_residence_hall_population':
+      uiowa_core_set_field_icon($variables, 'fa-user fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] .= t(' students live here');
+      }
+
+      break;
+
+    case 'field_residence_hall_year_built':
+      uiowa_core_set_field_icon($variables, 'fa-calendar far');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#context']['value'])) {
+        $variables['items'][0]['content']['#context']['value'] = t('Opened in ') . $variables['items'][0]['content']['#context']['value'];
+      }
+
+      break;
+
+    case 'field_residence_hall_building':
+      uiowa_core_set_field_icon($variables, 'fa-building fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
 
       break;
 
@@ -242,10 +264,6 @@ function housing_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-residence-hall-accordions--residence-hall--default',
       'base hook' => 'field',
     ],
-    'field__node__field_residence_hall_neighborhd__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-neighborhd--residence-hall--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_residence_hall_amenities__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-accordions--residence-hall--default',
       'base hook' => 'field',
@@ -260,22 +278,6 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_emerg_link__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-emerg-link--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_population__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-population--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_year_built__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-year-built--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_building__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-building--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__title__residence_hall__default' => [
-      'template' => 'field--node--title--residence-hall--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_images__residence_hall__default' => [

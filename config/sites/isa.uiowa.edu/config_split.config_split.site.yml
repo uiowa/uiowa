@@ -13,6 +13,7 @@ module: {  }
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.person.default
   - field.field.node.person.field_mentor
   - field.field.node.person.field_program_year
   - field.storage.node.field_mentor
@@ -22,6 +23,6 @@ complete_list:
   - sitenow_people.person_type.director
   - sitenow_people.person_type.executive_committee_member
   - sitenow_people.person_type.mentor
-  - 'core.entity_view_display.node.person.*'
 partial_list:
   - 'core.entity_form_display.node.person.*'
+  - 'core.entity_view_display.node.person.*'
