@@ -34,7 +34,7 @@ class GradScholar extends NodeBundleBase implements RendersAsCardInterface {
       '#content' => [
         'field_scholar_participation_year',
         'field_scholar_mentor',
-        'field_scholar_bio_headline',
+        'field_scholar_bio',
       ],
     ]);
   }
