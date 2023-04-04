@@ -60,6 +60,12 @@ function housing_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'grid--fivecol--20 photoswipe-gallery';
       break;
 
+    // Unset default block margin.
+    case 'field_block:node:residence_hall:field_residence_hall_amenities':
+    case 'field_block:node:residence_hall:field_residence_hall_rates':
+      uiowa_core_set_attributes($variables, ['block-margin__default--removed']);
+      break;
+
     // Display residence hall cta links in a three column grid.
     case 'field_block:node:residence_hall:field_residence_hall_who_lives':
     case 'field_block:node:residence_hall:field_residence_hall_floor_plans':

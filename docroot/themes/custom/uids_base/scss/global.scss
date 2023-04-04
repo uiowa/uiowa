@@ -446,7 +446,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Add margins for all stacked layout regions for mobile.
-
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol,
@@ -470,6 +469,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region:first-child {
       margin-bottom: 0;
     }
+  }
+}
+
+// Unset margin for regions within card layout.
+.layout--twocol {
+  .layout__region.layout__region--card-media {
+    margin-bottom: 0;
   }
 }
 
