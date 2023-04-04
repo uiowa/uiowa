@@ -111,14 +111,21 @@ class LayoutBuilderStylesHelper {
       'media--widescreen' => 'widescreen',
     ];
 
-    if (isset($media_formats[$format])) {
-      $view_mode = "{$size}__$media_formats[$format]";
-      // Change the view mode to match the format.
-      $build['#view_mode'] = $view_mode;
-      // Important: Delete the cache keys to prevent this from being
-      // applied to all the instances of the same image.
-      if (isset($build['#cache']['keys'])) {
-        unset($build['#cache']['keys']);
+    // Loop through map of class to shape to see if we have a match. If so,
+    // change the view mode and unset the cache keys to avoid sharing the change
+    // with all other instances of the same image.
+    foreach ($media_formats as $class => $shape) {
+      if (str_starts_with($format, $class)) {
+        $view_mode = "{$size}__$shape";
+        // Change the view mode to match the format.
+        $build['#view_mode'] = $view_mode;
+        // Important: Delete the cache keys to prevent this from being
+        // applied to all the instances of the same image.
+        if (isset($build['#cache']['keys'])) {
+          unset($build['#cache']['keys']);
+        }
+        // Break on the first match.
+        break;
       }
     }
   }
