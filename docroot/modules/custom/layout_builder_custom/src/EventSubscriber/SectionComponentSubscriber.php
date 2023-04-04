@@ -183,23 +183,14 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'inline_block:uiowa_image':
+          // @phpstan-ignore-next-line
+          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
+          // Convert the style list into a map that can be used for overriding
+          // style defaults later.
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Map the layout builder styles to the view mode to be used.
-          if (isset($build['#attributes']['class'])) {
-            $formats = [
-              'media--circle' => 'square',
-              'media--square' => 'square',
-              'media--ultrawide' => 'ultrawide',
-              'media--widescreen' => 'widescreen',
-            ];
-
-            $shape = 'widescreen';
-
-            foreach ($build['#attributes']['class'] as $class) {
-              if (isset($formats[$class])) {
-                $shape = $formats[$class];
-              }
-            }
-            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'][0], 'full', $shape);
+          if (isset($style_map['media_format'])) {
+            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'][0], 'full', $style_map['media_format']);
           }
 
           break;
