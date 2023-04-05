@@ -5164,3 +5164,9 @@ $sites['lablutgendorf.uiowa.ddev.site'] = 'lutgendorf.lab.uiowa.edu';
 $sites['lablutgendorf.dev.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
 $sites['lablutgendorf.stage.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
 $sites['lablutgendorf.prod.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
+
+// Directory aliases for epicsupport.sites.uiowa.edu.
+$sites['sitesepicsupport.uiowa.ddev.site'] = 'epicsupport.sites.uiowa.edu';
+$sites['sitesepicsupport.dev.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
+$sites['sitesepicsupport.stage.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
+$sites['sitesepicsupport.prod.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';

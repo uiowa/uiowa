@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesepicsupport.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesepicsupport
+  human_name: epicsupport.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesepicsupport.prod
+drupal:
+  db:
+    database: epicsupport_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesepicsupport.prod.drupal.uiowa.edu'
+  requester: sleeman
+  site-name: 'Epic Education'
