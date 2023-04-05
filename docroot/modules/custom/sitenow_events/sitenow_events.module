@@ -367,7 +367,7 @@ function sitenow_events_build_card(array $event): array {
   if ($event['virtual'] === TRUE) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
+      '#markup' => '<span role="presentation" class="fa-li fas fa-laptop"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
@@ -377,13 +377,17 @@ function sitenow_events_build_card(array $event): array {
   elseif (!is_null($event["location_name"])) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
+      '#markup' => '<span role="presentation" class="fa-li fas fa-map-marker-alt"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
       '#markup' => $event['location_name'],
     ];
   }
+
+  // Add a wrapper div with class "fa-ul".
+  $card['#meta']['#prefix'] = '<div class="fa-ul">';
+  $card['#meta']['#suffix'] = '</div>';
 
   // Limit what html is allowed.
   $allowed_tags = ['a', 'strong', 'em'];
