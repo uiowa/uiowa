@@ -47,6 +47,14 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     $source_link = !in_array('field_article_source_link', $hide_fields) ? $this->get('field_article_source_link')->uri : NULL;
     // If the source org is hidden or not set, its value is NULL.
     $source_org = !in_array('field_article_source_org', $hide_fields) ? $this->get('field_article_source_org')->value : NULL;
+    // If the source author is hidden or not set, its value is NULL.
+    $source_author = in_array('field_article_author', $hide_fields) ? NULL : !$this->get('field_article_author')->isEmpty();
+
+    // Add a wrapper div with class "fa-ul" if author field is not empty or if it's hidden in hide_fields.
+    if ((!$this->get('field_article_author')->isEmpty() && $source_author)) {
+      $build['#meta']['#prefix'] = '<div class="fa-ul">';
+      $build['#meta']['#suffix'] = '</div>';
+    }
 
     // The link text should be the org, if set, or the source link, if set. It
     // will be NULL otherwise.
