@@ -5158,3 +5158,9 @@ $sites['sitesspark.uiowa.ddev.site'] = 'spark.sites.uiowa.edu';
 $sites['sitesspark.dev.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
 $sites['sitesspark.stage.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
 $sites['sitesspark.prod.drupal.uiowa.edu'] = 'spark.sites.uiowa.edu';
+
+// Directory aliases for lutgendorf.lab.uiowa.edu.
+$sites['lablutgendorf.uiowa.ddev.site'] = 'lutgendorf.lab.uiowa.edu';
+$sites['lablutgendorf.dev.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
+$sites['lablutgendorf.stage.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
+$sites['lablutgendorf.prod.drupal.uiowa.edu'] = 'lutgendorf.lab.uiowa.edu';
