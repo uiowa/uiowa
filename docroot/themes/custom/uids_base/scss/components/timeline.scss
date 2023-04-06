@@ -37,7 +37,7 @@
     width: 60px;
     height: 60px;
     top: -79px;
-    right: -32.5px;
+    right: -29px;
     [class*=bg--gray] & {
       background: $grey-light;
     }
@@ -129,7 +129,7 @@
     }
     .card__icon {
       @include breakpoint(md) {
-        right: 25px;
+        right: 28px;
       }
     }
     .field--name-field-timeline-date {
@@ -178,10 +178,11 @@
   &:nth-child(even) {
     @include breakpoint(md) {
       margin-right: auto;
+      padding-right: 5px;
     }
     .card__icon {
       @include breakpoint(md) {
-        right: -90px;
+        right: -90.5px;
       }
     }
     .field--name-field-timeline-date {
@@ -234,7 +235,7 @@ li:first-child .timeline--card.js-scroll {
 
 .timeline-line {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 3px);
   height: 100%;
 }
 
