@@ -217,10 +217,12 @@
 
     .media {
       width: 100%;
-      max-width: 100%;
       .media__inner {
         margin: 0;
       }
+    }
+    .media:not(.media--circle) {
+      max-width: 100%;
     }
     .card__body {
       padding: 2rem;
@@ -255,10 +257,12 @@
 
       .media {
         width: 100%;
-        max-width: 100%;
         .media__inner {
           margin: 0;
         }
+      }
+      .media:not(.media--circle) {
+        max-width: 100%;
       }
       .media--circle {
         margin-top: 2rem;
