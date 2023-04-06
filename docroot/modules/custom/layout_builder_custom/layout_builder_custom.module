@@ -1187,14 +1187,6 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
       // If fields can be hidden, build the list.
       $hide_fields = [];
 
-      if ($restricted_fields = $view?->display_handler?->getOption('restrict_fields')) {
-        foreach ($restricted_fields as $field_name => $hide_field) {
-          if ($hide_field !== 0) {
-            $hide_fields[] = $field_name;
-          }
-        }
-      }
-
       // Filter the style map to just classes related to the card.
       $style_map = Card::filterCardStyles($style_map);
 
