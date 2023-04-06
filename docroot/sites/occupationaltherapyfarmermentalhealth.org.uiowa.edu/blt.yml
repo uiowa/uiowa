@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgoccupationaltherapyfarmermentalhealth.uiowa.ddev.site
+    protocol: https
+  machine_name: orgoccupationaltherapyfarmermentalhealth
+  human_name: occupationaltherapyfarmermentalhealth.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgoccupationaltherapyfarmermentalhealth.prod
+drupal:
+  db:
+    database: occupationaltherapyfarmermentalhealth_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgoccupationaltherapyfarmermentalhealth.prod.drupal.uiowa.edu'
+  requester: drohlman
+  site-name: 'https://occupationaltherapyfarmermentalhealth.publichealth.org.uiowa.edu'

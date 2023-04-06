@@ -5170,3 +5170,9 @@ $sites['conferencemuacc.uiowa.ddev.site'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.dev.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.stage.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.prod.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+
+// Directory aliases for occupationaltherapyfarmermentalhealth.org.uiowa.edu.
+$sites['orgoccupationaltherapyfarmermentalhealth.uiowa.ddev.site'] = 'occupationaltherapyfarmermentalhealth.org.uiowa.edu';
+$sites['orgoccupationaltherapyfarmermentalhealth.dev.drupal.uiowa.edu'] = 'occupationaltherapyfarmermentalhealth.org.uiowa.edu';
+$sites['orgoccupationaltherapyfarmermentalhealth.stage.drupal.uiowa.edu'] = 'occupationaltherapyfarmermentalhealth.org.uiowa.edu';
+$sites['orgoccupationaltherapyfarmermentalhealth.prod.drupal.uiowa.edu'] = 'occupationaltherapyfarmermentalhealth.org.uiowa.edu';
