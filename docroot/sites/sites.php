@@ -5164,3 +5164,9 @@ $sites['sitesepicsupport.uiowa.ddev.site'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.dev.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.stage.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.prod.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
+
+// Directory aliases for muacc.conference.uiowa.edu.
+$sites['conferencemuacc.uiowa.ddev.site'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.dev.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.stage.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.prod.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
