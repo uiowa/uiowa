@@ -4,6 +4,8 @@
 // Timeline block
 .block-inline-blockuiowa-timeline {
   position: relative;
+  // prevent line from going into another section.
+  overflow: hidden;
 }
 
 .timeline {
@@ -223,16 +225,9 @@ li:first-child .timeline--card.js-scroll {
 }
 
 .timeline-line {
-  top: 0;
   position: absolute;
   left: 50%;
   height: 100%;
-}
-
-
-.headline + .timeline-line .timeline-line__mask {
-  height: 95%;
-  top: 5%;
 }
 
 .timeline-line__mask {
