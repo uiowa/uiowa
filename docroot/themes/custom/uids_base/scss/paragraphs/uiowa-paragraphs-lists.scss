@@ -83,6 +83,12 @@
   .card {
     @include card-enclosed;
     margin: 0;
+
+    .card__meta .fa-ul {
+      display: inline-block;
+      margin-left: 0;
+    }
+
     .card__body {
       padding: 0;
     }
@@ -110,6 +116,11 @@
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
+    .card__meta .fa-ul {
+      display: inline-block;
+      margin-left: 0;
+    }
+
     .card__body {
       padding: 0;
     }
