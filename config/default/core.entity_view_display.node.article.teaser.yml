@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.article.field_teaser
     - node.type.article
   module:
+    - field_delimiter
     - link
     - user
 id: node.article.teaser
@@ -39,7 +40,9 @@ content:
     label: inline
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 1
     region: content
   field_article_source_link:
