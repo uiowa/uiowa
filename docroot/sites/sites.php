@@ -5141,12 +5141,6 @@ $sites['sitesmicrobiomecore.dev.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa
 $sites['sitesmicrobiomecore.stage.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
 $sites['sitesmicrobiomecore.prod.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
 
-// Directory aliases for muacc2023.conference.uiowa.edu.
-$sites['conferencemuacc2023.uiowa.ddev.site'] = 'muacc2023.conference.uiowa.edu';
-$sites['conferencemuacc2023.dev.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
-$sites['conferencemuacc2023.stage.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
-$sites['conferencemuacc2023.prod.drupal.uiowa.edu'] = 'muacc2023.conference.uiowa.edu';
-
 // Directory aliases for cdd.center.uiowa.edu.
 $sites['centercdd.uiowa.ddev.site'] = 'cdd.center.uiowa.edu';
 $sites['centercdd.dev.drupal.uiowa.edu'] = 'cdd.center.uiowa.edu';
@@ -5170,3 +5164,9 @@ $sites['sitesepicsupport.uiowa.ddev.site'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.dev.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.stage.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
 $sites['sitesepicsupport.prod.drupal.uiowa.edu'] = 'epicsupport.sites.uiowa.edu';
+
+// Directory aliases for muacc.conference.uiowa.edu.
+$sites['conferencemuacc.uiowa.ddev.site'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.dev.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.stage.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+$sites['conferencemuacc.prod.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
