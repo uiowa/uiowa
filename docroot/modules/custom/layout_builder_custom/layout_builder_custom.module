@@ -1029,9 +1029,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
     // If this is a views block...
     if ($variables['base_plugin_id'] === 'views_block') {
 
-      // Move hide fields to content where we can access them later.
-      $variables["elements"]["content"]["#view"]->display_handler->setOption('fields', $variables["configuration"]["fields"]);
-
       // Filter out any card styles.
       $card_styles = Card::filterCardStyles($variables['attributes']['class']);
       $variables['attributes']['class'] = array_diff($variables['attributes']['class'], $card_styles);
@@ -1190,7 +1187,7 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
       // If fields can be hidden, build the list.
       $hide_fields = [];
 
-      if (!is_null($fields = $view?->display_handler?->getOption('fields'))) {
+      if (!is_null($fields = $view?->display_handler?->getOption('view_fields'))) {
         foreach ($fields as $field_name => $hide_field) {
           if ((int) $hide_field['hide'] === 1) {
             $hide_fields[] = $field_name;

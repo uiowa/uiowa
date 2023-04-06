@@ -570,6 +570,9 @@ class ListBlock extends CoreBlock {
           $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
         }
       }
+      if (!empty($config['fields'])) {
+        $this->view->display_handler->setOption('view_fields', $config['fields']);
+      }
     }
 
     // Change sorts based on block configuration.
