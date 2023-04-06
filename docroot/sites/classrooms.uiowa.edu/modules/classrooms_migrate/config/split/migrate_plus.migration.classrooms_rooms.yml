@@ -1,0 +1,33 @@
+id: classrooms_room
+label: Rooms
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - classrooms
+migration_group: sitenow_migrate
+source:
+  plugin: classrooms_room
+  node_type: classroom
+destination:
+  plugin: 'entity:node'
+  default_bundle: room
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  field_room_room_id: field_room_number
+  field_room_building_id: field_room_building
+migration_dependencies: null
