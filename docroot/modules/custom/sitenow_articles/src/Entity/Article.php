@@ -83,10 +83,12 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
       ];
     }
 
-    // Add the published date.
-    $created = $this->get('created')->value;
-    $date = \Drupal::service('date.formatter')->format($created, 'medium');
-    $build['#subtitle'] = $date;
+    // Add the published date if it has not been hidden.
+    if (!in_array('created', $hide_fields)) {
+      $created = $this->get('created')->value;
+      $date = \Drupal::service('date.formatter')->format($created, 'medium');
+      $build['#subtitle'] = $date;
+    }
   }
 
 }
