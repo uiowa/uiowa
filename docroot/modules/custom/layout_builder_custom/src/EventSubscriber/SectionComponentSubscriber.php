@@ -205,45 +205,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           }
           break;
 
-        case 'views_block:article_list_block-list_article':
-        case 'views_block:events_list_block-card_list':
-        case 'views_block:people_list_block-list_card':
-          // If fields can be hidden, build the list.
-          $hide_fields = [];
-
-          if (isset($block->getConfiguration()['fields'])) {
-            foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
-              if ((int) $hide_field['hide'] === 1) {
-                $hide_fields[] = $field_name;
-              }
-            }
-          }
-
-          // Get LB styles from the component.
-          // @phpstan-ignore-next-line
-          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
-          // Convert the style list into a map that can be used for overriding
-          // style defaults later.
-          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
-          // Filter the style map to just classes related to the card.
-          $style_map = Card::filterCardStyles($style_map);
-
-          // Check if there are view rows to act upon.
-          if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
-
-            LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
-
-            // Loop through view rows and set styles to override and hidden
-            // fields.
-            foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
-
-              $row_build['#override_styles'] = $style_map;
-              $row_build['#hide_fields'] = $hide_fields;
-            }
-          }
-
-          break;
-
         case 'inline_block:uiowa_events':
         case 'inline_block:uiowa_aggregator':
           // Get LB styles from the component.
