@@ -6,6 +6,7 @@
   position: relative;
   // prevent line from going into another section.
   overflow: hidden;
+  padding-top: 10px;
 }
 
 .timeline {
@@ -35,14 +36,19 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    top: -90px;
-    right: -31px;
+    top: -79px;
+    right: -32.5px;
     [class*=bg--gray] & {
       background: $grey-light;
     }
     @include breakpoint(md) {
       top: -30px;
       right: inherit;
+    }
+    .svg-inline--fa {
+      font-size: inherit;
+      margin-right: -1px;
+      margin-left: 0;
     }
   }
   .card__icon-wrapper {
@@ -59,8 +65,8 @@
   @include breakpoint(md) {
     width: 50%;
   }
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   &:first-child {
     @include breakpoint(md) {
       margin-top: $desktop-width-gutter;
@@ -70,9 +76,11 @@
     margin-bottom: $desktop-width-gutter;
   }
   .timeline--card {
+    height: 100%;
     margin-top: $desktop-width-gutter;
     @include breakpoint(md) {
       margin-top: inherit;
+      height: auto;
     }
     &:after {
       bottom: 100%;
