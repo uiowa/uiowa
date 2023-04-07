@@ -39,7 +39,9 @@
     width: 60px;
     height: 60px;
     top: -79px;
-    right: -29px;
+    right: calc(50% - 30px);
+    line-height: 0;
+
     [class*=bg--gray] & {
       background: $grey-light;
     }
@@ -49,10 +51,13 @@
       right: inherit;
     }
 
+    .field--name-field-timeline-icon {
+      width: 100%;
+      text-align: center;
+    }
+
     .svg-inline--fa {
       font-size: inherit;
-      margin-right: -1px;
-      margin-left: 0;
     }
   }
 
@@ -134,7 +139,7 @@
     }
     .card__icon {
       @include breakpoint(md) {
-        right: 28px;
+        right: 27px;
       }
     }
     .field--name-field-timeline-date {
@@ -187,7 +192,7 @@
     }
     .card__icon {
       @include breakpoint(md) {
-        right: -90.5px;
+        right: -1px;
       }
     }
     .field--name-field-timeline-date {
