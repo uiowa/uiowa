@@ -1129,9 +1129,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
           // If view is attached to parent entity.
           if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
-            // If block_layout_builder_styles were attached to the view.
-            if ($view->display_handler->getOption('block_layout_builder_styles')) {
-              $block_layout_builder_styles = $view->display_handler->getOption('block_layout_builder_styles');
+            // If block_config is attached to the view display and layout_builder_styles exist in that.
+            if (!is_null($block_config = $view->display_handler->getOption('block_config')) && isset($block_config['layout_builder_styles'])) {
               $media_formats = [
                 'media_format_widescreen' => 'large__widescreen',
                 'media_format_square' => 'large__square',
@@ -1139,7 +1138,7 @@ function layout_builder_custom_preprocess_media(&$variables) {
               ];
               // Change view_mode based on lb_styles.
               foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $block_layout_builder_styles)) {
+                if (in_array($style, $block_config['layout_builder_styles'])) {
                   $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
                   // Prevents sticky cached images.
                   $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
@@ -1166,38 +1165,38 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
 
-  if (!is_null($block_layout_builder_styles = $view
-    ?->display_handler
-    ?->getOption('block_layout_builder_styles'))) {
-    // Initialize the class list, if it doesn't exist.
-    if (!isset($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = [];
-    }
+  if ($view->display_handler instanceof ListBlock) {
 
-    // Convert the style list into a map that can be used for overriding
-    // style defaults later.
-    $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($block_layout_builder_styles);
+    if (!is_null($block_config = $view
+      ?->display_handler
+      ?->getOption('block_config'))) {
 
-    $list_blocks = [
-      'article_list_block',
-      'events_list_block',
-      'people_list_block',
-    ];
+      // Initialize the class list, if it doesn't exist.
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [];
+      }
 
-    if (in_array($view->id(), $list_blocks)) {
-      // If fields can be hidden, build the list.
+      // Initialize some empty arrays that might be processed.
       $hide_fields = [];
+      $override_styles = [];
 
-      if (!is_null($fields = $view?->display_handler?->getOption('view_fields'))) {
-        foreach ($fields as $field_name => $hide_field) {
+      if (isset($block_config['layout_builder_styles'])) {
+
+        // Convert the style list into a map that can be used for overriding
+        // style defaults later.
+        $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($block_config['layout_builder_styles']);
+
+        // Filter the style map to just classes related to the card.
+        $override_styles = Card::filterCardStyles($style_map);
+      }
+
+      if (isset($block_config['fields'])) {
+        foreach ($block_config['fields'] as $field_name => $hide_field) {
           if ((int) $hide_field['hide'] === 1) {
             $hide_fields[] = $field_name;
           }
         }
       }
-
-      // Filter the style map to just classes related to the card.
-      $style_map = Card::filterCardStyles($style_map);
 
       // Check if there are view rows to act upon.
       if (isset($variables['rows'][0]['#rows'])) {
@@ -1206,28 +1205,28 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
         // fields.
         foreach ($variables['rows'][0]['#rows'] as &$row_build) {
 
-          $row_build['#override_styles'] = $style_map;
+          $row_build['#override_styles'] = $override_styles;
           $row_build['#hide_fields'] = $hide_fields;
         }
       }
+
+      // A list of styles to pull from the block to display on the view.
+      $filter_prefixes = ['list'];
+
+      // If this is meant to display as a grid, add that prefix.
+      if (!in_array('list-container', $override_styles)) {
+        $filter_prefixes[] = 'grid';
+      }
+
+      // Get the filtered list of styles.
+      $filtered_styles = LayoutBuilderStylesHelper::filterStyles($style_map, $filter_prefixes);
+
+      // Construct the new array of classes to display.
+      $variables['attributes']['class'] = [
+        ...$variables['attributes']['class'],
+        ...array_values($filtered_styles),
+      ];
     }
-
-    // A list of styles to pull from the block to display on the view.
-    $filter_prefixes = ['list'];
-
-    // If this is meant to display as a grid, add that prefix.
-    if (!in_array('list-container', $style_map)) {
-      $filter_prefixes[] = 'grid';
-    }
-
-    // Get the filtered list of styles.
-    $filtered_styles = LayoutBuilderStylesHelper::filterStyles($style_map, $filter_prefixes);
-
-    // Construct the new array of classes to display.
-    $variables['attributes']['class'] = [
-      ...$variables['attributes']['class'],
-      ...array_values($filtered_styles),
-    ];
   }
 }
 

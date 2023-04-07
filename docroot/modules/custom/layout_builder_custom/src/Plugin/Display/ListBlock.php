@@ -529,11 +529,8 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
-
-    // Add Layout Builder styles from the block, if they have been set.
-    if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('block_layout_builder_styles', $config['layout_builder_styles']);
-    }
+    // Add the block config in case we need to reference it later.
+    $this->setOption('block_config', $config);
 
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
@@ -555,7 +552,7 @@ class ListBlock extends CoreBlock {
         $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
       }
 
-      $this->view->display_handler->setOption('heading_size', $child_heading_size);
+      $this->setOption('heading_size', $child_heading_size);
     }
 
     // Change fields output based on block configuration.
@@ -569,9 +566,6 @@ class ListBlock extends CoreBlock {
         if (empty($config['fields'][$field_name]['hide'])) {
           $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
         }
-      }
-      if (!empty($config['fields'])) {
-        $this->view->display_handler->setOption('view_fields', $config['fields']);
       }
     }
 
@@ -601,19 +595,19 @@ class ListBlock extends CoreBlock {
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
-        $this->view->display_handler->setOption('use_more', TRUE);
-        $this->view->display_handler->setOption('use_more_always', TRUE);
-        $this->view->display_handler->setOption('link_display', 'custom_url');
+        $this->setOption('use_more', TRUE);
+        $this->setOption('use_more_always', TRUE);
+        $this->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
-          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+          $this->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
         }
         if (!empty($config['use_more_text'])) {
-          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
+          $this->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {
         // Don't display the more link.
-        $this->view->display_handler->setOption('use_more', FALSE);
+        $this->setOption('use_more', FALSE);
       }
     }
   }

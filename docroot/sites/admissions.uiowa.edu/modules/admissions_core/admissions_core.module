@@ -1063,8 +1063,9 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
     'block_student_card',
     'student_profile_page',
   ])) {
-    $lb_styles = $view?->display_handler
-      ?->getOption('block_layout_builder_styles');
+    $block_config = $view?->display_handler
+      ?->getOption('block_config');
+    $lb_styles = $block_config['layout_builder_styles'] ?? [];
 
     foreach ($variables['rows'] as &$row_build) {
       if ($view->current_display === 'block_student_card') {
