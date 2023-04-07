@@ -1038,7 +1038,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
       // on the view instead of the block and remove them.
       $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
         'grid',
-        'list-container',
       ]);
       LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
     }
@@ -1179,7 +1178,9 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
       // Initialize some empty arrays that might be processed.
       $hide_fields = [];
       $override_styles = [];
+      $view_styles = [];
 
+      // Check if we have Layout Builder Styles to process.
       if (isset($block_config['layout_builder_styles'])) {
 
         // Convert the style list into a map that can be used for overriding
@@ -1188,8 +1189,26 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
 
         // Filter the style map to just classes related to the card.
         $override_styles = Card::filterCardStyles($style_map);
+
+        // A list of styles to pull from the block to display on the view.
+        $filter_prefixes = [];
+
+        // If this is meant to display as a grid, add that prefix.
+        if (!in_array('list-container', $style_map)) {
+          $filter_prefixes[] = 'grid';
+        }
+
+        // Get the filtered list of styles.
+        $view_styles = LayoutBuilderStylesHelper::filterStyles($style_map, $filter_prefixes);
       }
 
+      // Construct the new array of classes to display.
+      $variables['attributes']['class'] = [
+        ...$variables['attributes']['class'],
+        ...array_values($view_styles),
+      ];
+
+      // Build the list of fields to hide.
       if (isset($block_config['fields'])) {
         foreach ($block_config['fields'] as $field_name => $hide_field) {
           if ((int) $hide_field['hide'] === 1) {
@@ -1209,23 +1228,6 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
           $row_build['#hide_fields'] = $hide_fields;
         }
       }
-
-      // A list of styles to pull from the block to display on the view.
-      $filter_prefixes = ['list'];
-
-      // If this is meant to display as a grid, add that prefix.
-      if (!in_array('list-container', $override_styles)) {
-        $filter_prefixes[] = 'grid';
-      }
-
-      // Get the filtered list of styles.
-      $filtered_styles = LayoutBuilderStylesHelper::filterStyles($style_map, $filter_prefixes);
-
-      // Construct the new array of classes to display.
-      $variables['attributes']['class'] = [
-        ...$variables['attributes']['class'],
-        ...array_values($filtered_styles),
-      ];
     }
   }
 }
