@@ -21,11 +21,13 @@
 .timeline--wrapper {
   position: relative;
   list-style: none;
+
   .card__details {
     @include breakpoint(md) {
       margin: 0;
     }
   }
+
   .card__icon {
     position: absolute;
     font-size: 25px;
@@ -41,16 +43,19 @@
     [class*=bg--gray] & {
       background: $grey-light;
     }
+
     @include breakpoint(md) {
       top: -30px;
       right: inherit;
     }
+
     .svg-inline--fa {
       font-size: inherit;
       margin-right: -1px;
       margin-left: 0;
     }
   }
+
   .card__icon-wrapper {
     position: absolute;
     top: 0;
@@ -241,7 +246,7 @@ li:first-child .timeline--card.js-scroll {
 
 .timeline-line__mask {
   position: absolute;
-  width: 5px;
+  width: 6px;
   height: 100%;
   background-color: #fafafa;
   clip: rect(0, auto, auto, 0);
@@ -251,7 +256,7 @@ li:first-child .timeline--card.js-scroll {
 .timeline-line__fill {
   background-color: $primary;
   height: 53%;
-  width: 5px;
+  width: 100%;
   position: fixed;
   top: 0;
   [class*=bg--gold] & {
