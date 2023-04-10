@@ -79,7 +79,7 @@ class Room extends BaseNodeSource {
     $design_items = $row->getSourceProperty('field_room_design_details');
     $row->setSourceProperty(
       'field_room_tile_details',
-      $this->processFieldCollection($tile_items, 'design')
+      $this->processFieldCollection($design_items, 'design')
     );
 
     return TRUE;
@@ -104,6 +104,7 @@ class Room extends BaseNodeSource {
    * Helper function to snag field collection data and concatenate it.
    *
    * @return array
+   *   Array of concatenated field collection details.
    */
   private function processFieldCollection($items, $db_label): array {
     $concat_items = [];
