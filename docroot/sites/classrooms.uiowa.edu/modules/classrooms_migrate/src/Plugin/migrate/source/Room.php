@@ -16,6 +16,15 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 class Room extends BaseNodeSource {
 
   /**
+   * Fields with multiple values that need to be fetched.
+   *
+   * @var array
+   */
+  protected $multiValueFields = [
+    'field_room_images' => 'field_room_images_fid',
+  ];
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -50,8 +59,29 @@ class Room extends BaseNodeSource {
       ]));
       return FALSE;
     }
-
     $row->setSourceProperty('field_room_building', $building_id);
+
+    // Process the furniture details.
+    $furniture_items = $row->getSourceProperty('field_room_classroom_furniture');
+    $row->setSourceProperty(
+      'field_room_classroom_furniture',
+      $this->processFieldCollection($furniture_items, 'furniture')
+    );
+
+    // Process the tile details.
+    $tile_items = $row->getSourceProperty('field_room_tile_details');
+    $row->setSourceProperty(
+      'field_room_tile_details',
+      $this->processFieldCollection($tile_items, 'tile_details')
+    );
+
+    // Process the design details.
+    $design_items = $row->getSourceProperty('field_room_design_details');
+    $row->setSourceProperty(
+      'field_room_tile_details',
+      $this->processFieldCollection($tile_items, 'design')
+    );
+
     return TRUE;
 
   }
@@ -68,6 +98,27 @@ class Room extends BaseNodeSource {
       ->condition('t.tid', $building_tid[0], '=')
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Helper function to snag field collection data and concatenate it.
+   *
+   * @return array
+   */
+  private function processFieldCollection($items, $db_label): array {
+    $concat_items = [];
+    foreach ($items as $item) {
+      $query = $this->select("field_data_field_{$db_label}_type", 't');
+      $query->join("field_data_field_{$db_label}_details", 'd', 't.revision_id = d.revision_id');
+      $results = $query->condition('t.revision_id', $item['revision_id'], '=')
+        ->fields('t', ["field_{$db_label}_type_value"])
+        ->fields('d', ["field_{$db_label}_details_value"])
+        ->execute()
+        ->fetchAll();
+      $concat_items[] = implode(' - ', array_values($results[0]));
+    }
+
+    return $concat_items;
   }
 
 }
