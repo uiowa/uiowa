@@ -9,6 +9,9 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
  * Helper class for doing common processing related to Layout Builder styles.
  */
 class LayoutBuilderStylesHelper {
+  public const LIST_PREFIX = 'list-container';
+
+  public const GRID_PREFIX = 'grid';
 
   /**
    * Helper method to provide a key-value map of styles for list blocks.
@@ -137,9 +140,9 @@ class LayoutBuilderStylesHelper {
    *   The attributes array to be processed.
    */
   public static function processGridClasses(array &$attributes) {
-    if (in_array('list-container', $attributes['class'])) {
+    if (in_array(static::LIST_PREFIX, $attributes['class'])) {
       foreach ($attributes['class'] as $key => $style) {
-        if (str_starts_with($style, 'grid')) {
+        if (str_starts_with($style, static::GRID_PREFIX)) {
           unset($attributes['class'][$key]);
         }
       }

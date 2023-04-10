@@ -1037,7 +1037,8 @@ function layout_builder_custom_preprocess_block(&$variables) {
       // Get a list of formatting styles that will be displayed
       // on the view instead of the block and remove them.
       $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
-        'grid',
+        LayoutBuilderStylesHelper::LIST_PREFIX,
+        LayoutBuilderStylesHelper::GRID_PREFIX,
       ]);
       LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
     }
@@ -1052,7 +1053,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
-  $variables['attributes']['class'][] = 'list-container';
+  $variables['attributes']['class'][] = LayoutBuilderStylesHelper::LIST_PREFIX;
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
   $variables['content']['referenced_items'] = [];
@@ -1191,11 +1192,11 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
         $override_styles = Card::filterCardStyles($style_map);
 
         // A list of styles to pull from the block to display on the view.
-        $filter_prefixes = [];
+        $filter_prefixes = [LayoutBuilderStylesHelper::LIST_PREFIX];
 
         // If this is meant to display as a grid, add that prefix.
-        if (!in_array('list-container', $style_map)) {
-          $filter_prefixes[] = 'grid';
+        if (!in_array('list-container--list', $style_map)) {
+          $filter_prefixes[] = LayoutBuilderStylesHelper::GRID_PREFIX;
         }
 
         // Get the filtered list of styles.
