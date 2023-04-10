@@ -5170,3 +5170,9 @@ $sites['conferencemuacc.uiowa.ddev.site'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.dev.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.stage.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
 $sites['conferencemuacc.prod.drupal.uiowa.edu'] = 'muacc.conference.uiowa.edu';
+
+// Directory aliases for iowabrainbank.lab.uiowa.edu.
+$sites['labiowabrainbank.uiowa.ddev.site'] = 'iowabrainbank.lab.uiowa.edu';
+$sites['labiowabrainbank.dev.drupal.uiowa.edu'] = 'iowabrainbank.lab.uiowa.edu';
+$sites['labiowabrainbank.stage.drupal.uiowa.edu'] = 'iowabrainbank.lab.uiowa.edu';
+$sites['labiowabrainbank.prod.drupal.uiowa.edu'] = 'iowabrainbank.lab.uiowa.edu';
