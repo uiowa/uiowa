@@ -2171,7 +2171,6 @@ function sitenow_update_9058(&$sandbox) {
       $all_cards = TRUE;
 
       // Loop through the components in the section.
-      /** @var \Drupal\layout_builder\SectionComponent $component */
       foreach ($section->getComponents() as &$component) {
 
         // Limit this to only the initial list of block plugins.
@@ -2237,6 +2236,7 @@ function sitenow_update_9058(&$sandbox) {
       foreach ($section_storage->getSections() as &$section) {
 
         $all_cards = TRUE;
+
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 

@@ -112,11 +112,11 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
     $mid = $feed->field_aggregator_feed_image
       ?->target_id;
 
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
     // A local feed image should take precedence.
     if (!is_null($mid) && !is_null($media = Media::load($mid))) {
-
-      // Establish default view mode if layout_builder_styles don't exist.
-      $image_view_mode = 'large__square';
 
       // Map the layout builder styles to the view mode that should be used.
       $media_formats = [
