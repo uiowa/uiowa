@@ -42,15 +42,20 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
 
     // Check if the timeline card should be linked.
     $source_link = 'field_timeline_link';
-    $link = $this->get($source_link)->uri;
+    $field_timeline_link = $this->get($source_link);
 
-    if (isset($link) && !empty($link)) {
-      $build['#url'] = $this->get('field_timeline_link')?->get(0)?->getUrl()?->toString();
-      if (!empty($this->get('field_timeline_link')->title)) {
-        $build['#link_text'] = $this->get('field_timeline_link')->title;
+    if ($field_timeline_link && !$field_timeline_link->isEmpty()) {
+      $url = $field_timeline_link->get(0)->getUrl();
+      $build['#url'] = $url ? $url->toString() : '';
+
+      if (!empty($field_timeline_link->title)) {
+        $build['#link_text'] = $field_timeline_link->title;
         $build['#link_indicator'] = TRUE;
       }
-      elseif (!empty($build['#title'])) {
+      elseif (empty($build['#title'])) {
+        $build['#link_indicator'] = TRUE;
+      }
+      else {
         $build['#link_indicator'] = TRUE;
       }
     }
