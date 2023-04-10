@@ -2065,7 +2065,19 @@ function sitenow_update_9057() {
     'views_block:people_list_block-list_card',
     'views_block:events_list_block-card_list',
   ], function (&$component, $block) {
+    /** @var SectionComponent $component */
+    // @phpstan-ignore-next-line
     $styles = $component->get('layout_builder_styles_style');
+
+    // We were setting layout builder styles on views block configuration to be
+    // to access it more easily. We are now setting it in the
+    // SectionComposerSubscriber and don't need it stored here anymore.
+    // @phpstan-ignore-next-line
+    $configuration = $component->get('configuration');
+    if (isset($configuration['layout_builder_styles'])) {
+      unset($configuration['layout_builder_styles']);
+      $component->setConfiguration($configuration);
+    }
 
     // If styles aren't set, then initialize them.
     if (empty($styles)) {
