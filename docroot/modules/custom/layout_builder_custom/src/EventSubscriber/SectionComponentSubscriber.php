@@ -12,6 +12,7 @@ use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
 use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
 use Drupal\uiowa_core\Element\Card;
+use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -137,6 +138,13 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           'content' => $content,
         ];
       }
+    }
+
+    if ($block instanceof ViewsBlock) {
+      // @phpstan-ignore-next-line
+      $block->getViewExecutable()
+        ->display_handler
+        ->setOption('layout_builder_styles', $event->getComponent()->get('layout_builder_styles_style'));
     }
 
     // For cards or other blocks, we are going to programmatically set the
