@@ -104,10 +104,10 @@ trait CreateMediaTrait {
           }
           else {
             // If we didn't have a title, check if we had
-            // a human readable filename to use for the description
-            // (that doesn't match the true filename, which
+            // a human-readable filename to use for the description
+            // that doesn't match the true filename, which
             // would be used in displays with an empty description.
-            if (!str_ends_with($meta['file_uri'], $meta['filename'])) {
+            if (isset($meta['file_uri']) && !str_ends_with($meta['file_uri'], $meta['filename'])) {
               $media_entity['field_media_file']['description'] = $meta['filename'];
             }
           }
