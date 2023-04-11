@@ -379,6 +379,8 @@ class NewsFeature extends BaseNodeSource {
     }
 
     // Remove all leading and trailing 'br' tags.
+    // @todo Remove extra, empty paragraph tags, like in
+    //   https://now.dev.drupal.uiowa.edu/news/2023/03/campus-safety-services-be-realigned-organization.
     $match[2] = preg_replace("%^(<br>|<br \/>|<br\/>\s)*%is", '', $match[2], 1);
     $match[2] = preg_replace("%(<br>|<br \/>|<br\/>$|\s)*%is", '', $match[2], 1);
 
