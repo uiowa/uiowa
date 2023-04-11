@@ -62,7 +62,9 @@ class IghnPerson extends NodeBundleBase implements RendersAsCardInterface {
       ...parent::getDefaultCardStyles(),
       'media_format' => 'media',
       'media_size' => 'media',
-      'styles' => '',
+      'card_media_position' => 'card--stacked',
+      'styles' => 'bg--white',
+      'border' => '',
     ];
   }
 
