@@ -460,6 +460,9 @@ trait ProcessMediaTrait {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
     $subdir = implode('/', $filename_w_subdir) . '/';
+    // Replace whitespace characters, if present
+    // e.g. "Media browser" to "Media%20browser".
+    $subdir = str_replace(' ', '%20', $subdir);
     $filename_w_subdir = NULL;
 
     // Get a connection for the destination database

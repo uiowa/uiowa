@@ -4,6 +4,7 @@ namespace Drupal\classrooms_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Migrate Source plugin.
@@ -14,15 +15,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
  * )
  */
 class Room extends BaseNodeSource {
-
-  /**
-   * Fields with multiple values that need to be fetched.
-   *
-   * @var array
-   */
-  protected $multiValueFields = [
-    'field_room_images' => 'field_room_images_fid',
-  ];
+  use ProcessMediaTrait;
 
   /**
    * {@inheritdoc}
@@ -102,6 +95,20 @@ class Room extends BaseNodeSource {
         ]
       )
     );
+
+    // Process the gallery.
+    $gallery_images = $row->getSourceProperty('field_room_images');
+    if (!empty($gallery_images)) {
+      $new_images = [];
+      foreach ($gallery_images as $gallery_image) {
+        $new_images[] = $this->processImageField(
+          $gallery_image['fid'],
+          $gallery_image['alt'],
+          $gallery_image['title'],
+        );
+      }
+      $row->setSourceProperty('field_room_images', $new_images);
+    }
 
     return TRUE;
 
