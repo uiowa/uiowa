@@ -270,11 +270,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
  */
 function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  if ($view->id() === 'student_card') {
-    if ($view->current_display === 'block_student_grid') {
-      $form['#attributes']['class'][] = 'hidden';
-    }
-  }
   if ($view->id() === 'counselors') {
     if ($view->current_display === 'block_counselors') {
       $form["territory"]["#options"]["All"] = t("- All -");
@@ -545,7 +540,11 @@ function admissions_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'views_block:student_card-block_student_grid':
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
-      uiowa_core_set_attributes($variables, ['grid--threecol--33-34-33']);
+      uiowa_core_set_attributes($variables, [
+        'grid--threecol--33-34-33',
+        'bg--gray',
+        'block-padding--all',
+      ]);
       break;
 
     case 'admissions_core_event_series_events':
