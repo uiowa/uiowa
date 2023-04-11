@@ -20,6 +20,7 @@ dependencies:
     - node.type.event
   module:
     - address
+    - field_delimiter
     - link
     - smart_date
     - text
@@ -50,7 +51,9 @@ content:
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 9
     region: content
   field_event_series_link:
