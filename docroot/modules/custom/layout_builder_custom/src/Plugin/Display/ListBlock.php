@@ -5,7 +5,6 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
-use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
@@ -508,17 +507,6 @@ class ListBlock extends CoreBlock {
       'override',
       'exposed_filters',
     ]));
-
-    // Needed for AJAX requests that don't run
-    // through SectionComponentSubscriber.php
-    if ($form_state instanceof SubformStateInterface) {
-      $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
-    }
-    else {
-      $styles = $this->getLayoutBuilderStyles($form, $form_state);
-    }
-
-    $block->setConfigurationValue('layout_builder_styles', $styles);
   }
 
   /**
@@ -661,32 +649,6 @@ class ListBlock extends CoreBlock {
       return parent::displaysExposed();
     }
     return FALSE;
-  }
-
-  /**
-   * Get Layout Builder Styles from the form state.
-   *
-   * @see _layout_builder_styles_prepare_styles_for_saving()
-   *
-   * @return array
-   *   Returns layout builder styles for this block form.
-   */
-  protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state): array {
-    $styles = [];
-    foreach ($form as $id => $el) {
-      if (strpos($id, 'layout_builder_style_') === 0) {
-        $value = $form_state->getValue($id);
-        if ($value) {
-          if (is_array($value)) {
-            $styles += $value;
-          }
-          else {
-            $styles[] = $value;
-          }
-        }
-      }
-    }
-    return $styles;
   }
 
 }
