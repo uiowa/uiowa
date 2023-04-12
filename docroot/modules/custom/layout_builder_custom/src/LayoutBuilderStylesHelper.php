@@ -140,7 +140,7 @@ class LayoutBuilderStylesHelper {
    *   The attributes array to be processed.
    */
   public static function processGridClasses(array &$attributes) {
-    if (in_array(static::LIST_PREFIX, $attributes['class'])) {
+    if (in_array('list-container--list', $attributes['class'])) {
       foreach ($attributes['class'] as $key => $style) {
         if (str_starts_with($style, static::GRID_PREFIX)) {
           unset($attributes['class'][$key]);
