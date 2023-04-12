@@ -145,7 +145,6 @@ class CreateMediaFromFile extends FileCopy {
       // Create a file entity.
       $file = File::create([
         'uri' => $final_destination,
-//        'uid' => $uid,
       ]);
       $file->setPermanent();
       $file->save();
