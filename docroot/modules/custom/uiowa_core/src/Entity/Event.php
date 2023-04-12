@@ -51,6 +51,7 @@ class Event extends BlockContent implements RendersAsCardInterface {
       'card_media_position' => 'card--layout-left',
       'media_format' => 'media--circle media--border',
       'media_size' => 'media--small',
+      'border' => 'borderless',
     ];
   }
 

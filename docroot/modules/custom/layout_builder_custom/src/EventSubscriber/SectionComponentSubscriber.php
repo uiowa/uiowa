@@ -177,17 +177,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'inline_block:uiowa_event':
           unset($build['content']['#theme']);
 
-          // @phpstan-ignore-next-line
-          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
-          // Convert the style list into a map that can be used for overriding
-          // style defaults later.
-          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
-          // Filter the style map to just classes related to the card.
-          $style_map = Card::filterCardStyles($style_map);
-
-          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
-
-          $build['content']['#override_styles'] = $style_map;
           break;
 
         case 'inline_block:uiowa_image':
