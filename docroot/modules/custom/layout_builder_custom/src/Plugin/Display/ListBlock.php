@@ -5,7 +5,6 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
-use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
