@@ -335,7 +335,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         '#type' => 'link',
         '#url' => Url::fromUri($more_link),
         '#attributes' => [
-          'class' => ['bttn', 'bttn--primary'],
+          'class' => ['bttn', 'bttn--primary', 'more-link'],
         ],
       ];
     }
