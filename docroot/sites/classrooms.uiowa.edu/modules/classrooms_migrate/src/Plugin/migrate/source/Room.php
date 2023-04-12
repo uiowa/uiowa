@@ -110,6 +110,14 @@ class Room extends BaseNodeSource {
       $row->setSourceProperty('field_room_images', $new_images);
     }
 
+    // Process the file id part of the seating chart field.
+    $seating_chart = $row->getSourceProperty('field_room_seating_chart');
+    if (!empty($seating_chart)) {
+      $seating_chart[0]['target_id'] = $this->processFileField($seating_chart[0]['fid'], return_fid: TRUE);
+      unset($seating_chart[0]['fid']);
+      $row->setSourceProperty('field_room_seating_chart', $seating_chart);
+    }
+
     return TRUE;
 
   }
