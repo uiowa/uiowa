@@ -117,9 +117,6 @@ class Achievement extends BaseNodeSource {
         'calloutReplace',
       ], $body[0]['value']);
 
-      // Remove empty <p> tags as well.
-      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
-
       $row->setSourceProperty('body', $body);
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));

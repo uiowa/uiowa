@@ -171,9 +171,6 @@ class NewsFeature extends BaseNodeSource {
         'calloutReplace',
       ], $body[0]['value']);
 
-      // Remove empty <p> tags as well.
-      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
-
       $row->setSourceProperty('body', $body);
 
       // Extract the summary.
@@ -382,8 +379,6 @@ class NewsFeature extends BaseNodeSource {
     }
 
     // Remove all leading and trailing 'br' tags.
-    // @todo Remove extra, empty paragraph tags, like in
-    //   https://now.dev.drupal.uiowa.edu/news/2023/03/campus-safety-services-be-realigned-organization.
     $match[2] = preg_replace("%^(<br>|<br \/>|<br\/>\s)*%is", '', $match[2], 1);
     $match[2] = preg_replace("%(<br>|<br \/>|<br\/>$|\s)*%is", '', $match[2], 1);
 
