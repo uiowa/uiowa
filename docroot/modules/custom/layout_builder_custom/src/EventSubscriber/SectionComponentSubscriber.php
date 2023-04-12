@@ -140,6 +140,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
+    // Doesn't support AJAX paging as SectionComponentSubscriber doesn't run.
     if ($block instanceof ViewsBlock) {
       // @phpstan-ignore-next-line
       $block->getViewExecutable()

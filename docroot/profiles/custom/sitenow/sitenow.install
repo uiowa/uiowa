@@ -2069,16 +2069,6 @@ function sitenow_update_9057() {
     // @phpstan-ignore-next-line
     $styles = $component->get('layout_builder_styles_style');
 
-    // We were setting layout builder styles on views block configuration to be
-    // to access it more easily. We are now setting it in the
-    // SectionComposerSubscriber and don't need it stored here anymore.
-    // @phpstan-ignore-next-line
-    $configuration = $component->get('configuration');
-    if (isset($configuration['layout_builder_styles'])) {
-      unset($configuration['layout_builder_styles']);
-      $component->setConfiguration($configuration);
-    }
-
     // If styles aren't set, then initialize them.
     if (empty($styles)) {
       $styles = [];
@@ -2131,6 +2121,11 @@ function sitenow_update_9057() {
         unset($styles[$remove_style_index]);
       }
     }
+
+    // Still need to maintain this other set of styles for AJAX view pagers.
+    $configuration = $component->get('configuration');
+    $configuration['layout_builder_styles'] = array_filter($styles);
+    $component->setConfiguration($configuration);
 
     // Save updated styles.
     $component->set('layout_builder_styles_style', array_filter($styles));

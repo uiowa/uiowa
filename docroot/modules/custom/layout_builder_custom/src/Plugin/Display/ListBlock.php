@@ -5,6 +5,7 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
@@ -507,6 +508,16 @@ class ListBlock extends CoreBlock {
       'override',
       'exposed_filters',
     ]));
+
+    // Needed to support AJAX paging.
+    if ($form_state instanceof SubformStateInterface) {
+      $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
+    }
+    else {
+      $styles = $this->getLayoutBuilderStyles($form, $form_state);
+    }
+
+    $block->setConfigurationValue('layout_builder_styles', $styles);
   }
 
   /**
@@ -519,6 +530,11 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
+    // Add Layout Builder styles from the block, if they have been set.
+    // Supports AJAX pagers.
+    if (!empty($config['layout_builder_styles'])) {
+      $this->view->display_handler->setOption('layout_builder_styles', $config['layout_builder_styles']);
+    }
     // Add the block config in case we need to reference it later.
     $this->setOption('block_config', $config);
 
@@ -649,6 +665,32 @@ class ListBlock extends CoreBlock {
       return parent::displaysExposed();
     }
     return FALSE;
+  }
+
+  /**
+   * Get Layout Builder Styles from the form state.
+   *
+   * @see _layout_builder_styles_prepare_styles_for_saving()
+   *
+   * @return array
+   *   Returns layout builder styles for this block form.
+   */
+  protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state): array {
+    $styles = [];
+    foreach ($form as $id => $el) {
+      if (strpos($id, 'layout_builder_style_') === 0) {
+        $value = $form_state->getValue($id);
+        if ($value) {
+          if (is_array($value)) {
+            $styles += $value;
+          }
+          else {
+            $styles[] = $value;
+          }
+        }
+      }
+    }
+    return $styles;
   }
 
 }
