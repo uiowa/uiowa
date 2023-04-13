@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
@@ -190,6 +191,26 @@ function classrooms_core_preprocess_block(&$variables) {
  */
 function classrooms_core_preprocess_file_link(&$variables) {
   unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function classrooms_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'room') {
+    $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
+    if (!empty($seating_chart)) {
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($seating_chart);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
+      $file->setFilename('Seating Chart');
+      $file->save();
+    }
+  }
 }
 
 /**
