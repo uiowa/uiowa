@@ -170,7 +170,7 @@ function classrooms_core_preprocess_block(&$variables) {
     case 'field_block:node:room:field_room_type':
     case 'field_block:node:room:field_room_seating_chart':
     case 'field_block:node:room:field_room_max_occupancy':
-      uiowa_core_set_attributes($variables, 'element--inline block-margin__top');
+      uiowa_core_set_attributes($variables, 'element--inline-breakpoint block-margin__top');
       break;
 
     // Add inline class for blocks to appear inline.
@@ -284,7 +284,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_media(&$variables) {
-  $variables['attributes']['class'] = ['field__item'];
+  $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
 }
 
 /**
