@@ -245,7 +245,6 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 
     case 'field_room_seating_chart':
       uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
-      $variables['#attached']['library'][] = 'classrooms_core/classrooms_core';
       break;
 
     case 'field_room_type':
