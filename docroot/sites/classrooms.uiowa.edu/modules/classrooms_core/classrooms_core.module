@@ -284,7 +284,12 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_media(&$variables) {
-  $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
+  // Extra classes for the Seating Chart field. Limit it
+  // to 'file' media so we don't potentially add extra stuff
+  // to other media types like images.
+  if ($variables['media']->getSource()?->getPluginId() === 'file') {
+    $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
+  }
 }
 
 /**
