@@ -31,6 +31,9 @@
     {# Nothing else to use, so wrap the whole card. #}
     {% set link_element = 'card' %}
   {% endif %}
+  {% if card_title is empty %}
+    {% set link_element = 'button' %}
+  {% endif %}
 {% endif %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
