@@ -785,6 +785,12 @@ function uids_base_preprocess_block(&$variables) {
         $variables['attributes']['class'][] = 'menu--quick-links';
         break;
 
+      case 'main':
+        $block_title = $variables['elements']['content']['#title']['#markup'];
+        $block_name = $variables['elements']['#configuration']['id'];
+        $variables['#attached']['drupalSettings']['block_title'][$block_name] = $block_title;
+        break;
+
     }
   }
 
