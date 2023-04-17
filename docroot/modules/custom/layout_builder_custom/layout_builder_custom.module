@@ -367,8 +367,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['#title'] = t('Visibility options');
             // Move the advanced settings to be the first section.
             $form['settings']['advanced']['#weight'] = -5;
-            // Hide the options to set the block title and link.
-            $form['settings']['advanced']['label_type']['#access'] = FALSE;
+            // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
             // visibility level should be set to 1 if used.
