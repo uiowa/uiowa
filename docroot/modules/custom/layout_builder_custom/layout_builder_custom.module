@@ -367,6 +367,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['#title'] = t('Visibility options');
             // Move the advanced settings to be the first section.
             $form['settings']['advanced']['#weight'] = -5;
+            // Unset the menu option in the label.
+            unset($form['settings']['advanced']['label_type']['#options']['menu']);
+            // Adjust the default text.
+            $form['settings']['advanced']['label_type']['#options']['block'] = t('Block title (default)');
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial

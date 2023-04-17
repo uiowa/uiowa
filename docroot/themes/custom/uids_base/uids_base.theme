@@ -786,6 +786,9 @@ function uids_base_preprocess_block(&$variables) {
         break;
 
       case 'main':
+        // Append 'Menu' to the end of the block label.
+        $variables['configuration']['label'] .= ' Menu';
+        // Make the block title available to pass to accessible-menu.init.js.
         if (isset($variables['elements']['content']['#title'])) {
           $block_title = $variables['elements']['content']['#title']['#markup'];
           $block_name = $variables['elements']['#configuration']['id'];
