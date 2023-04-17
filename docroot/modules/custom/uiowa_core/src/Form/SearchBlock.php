@@ -56,16 +56,30 @@ class SearchBlock extends FormBase {
     $query = $values['search'];
     $prepend = $values['search_config']['query_prepend'];
 
+    if (!empty($prepend)) {
+      $query = $prepend . $query;
+    }
+    $params = [
+      $values['search_config']['query_parameter'] => $query,
+    ];
+
+    // Including additional query items as url parameters.
+    if (!empty($values['search_config']['additional_parameters'])) {
+      $additional_parameters = UrlHelper::parseQueryString($values['search_config']['additional_parameters']);
+      // Remove malformed array items.
+      if (array_key_exists('', $additional_parameters)) {
+        unset($additional_parameters['']);
+      }
+      $params = array_merge($params, $additional_parameters);
+    }
+
     // Support root-relative URLs.
     if (str_starts_with($uri, '/')) {
       $uri = 'base:' . substr($uri, 1);
     }
 
     $url = Url::fromUri($uri, [
-      'query' =>
-      [$values['search_config']['query_parameter'] =>
-        $prepend, $query, [$values['search_config']['additional_query']],
-      ],
+      'query' => $params,
     ]);
 
     if (UrlHelper::isExternal($uri)) {
