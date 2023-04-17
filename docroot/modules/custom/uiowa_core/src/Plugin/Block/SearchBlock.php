@@ -99,7 +99,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     ];
     $form['advanced'] = [
       '#type' => 'details',
-      '#title' => t('Advanced'),
+      '#title' => $this->t('Advanced'),
       '#description' => $this->t('Additional query parameters for advanced users.'),
     ];
     $form['advanced']['query_prepend'] = [
