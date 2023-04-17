@@ -371,6 +371,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             unset($form['settings']['advanced']['label_type']['#options']['menu']);
             // Adjust the default text.
             $form['settings']['advanced']['label_type']['#options']['block'] = t('Block title (default)');
+            // Update the description on the label_type.
+            $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
