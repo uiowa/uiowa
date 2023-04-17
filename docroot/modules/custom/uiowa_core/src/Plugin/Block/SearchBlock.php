@@ -100,13 +100,11 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['query_prepend'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Query Prepend'),
-      '#default_value' => $config['query_prepend'],
     ];
     $form['additional_query'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Additional Query Parameters'),
       '#description' => $this->t('Additional queries for the search string'),
-      '#default_value' => $config['additional_query'],
     ];
     $form['search_label'] = [
       '#type' => 'textfield',
