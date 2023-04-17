@@ -61,8 +61,11 @@ class SearchBlock extends FormBase {
       $uri = 'base:' . substr($uri, 1);
     }
 
-    $url = Url::fromUri($uri, ['query' =>
-      [$values['search_config']['query_parameter'] => $prepend, $query, [$values['search_config']['additional_query']]]
+    $url = Url::fromUri($uri, [
+      'query' =>
+      [$values['search_config']['query_parameter'] =>
+        $prepend, $query, [$values['search_config']['additional_query']],
+      ],
     ]);
 
     if (UrlHelper::isExternal($uri)) {
