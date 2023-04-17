@@ -18,7 +18,7 @@
         toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
         let block_name = 'menu_block:main';
         let block_title = drupalSettings.block_title[block_name];
-        toggleBtn.innerHTML = block_title;
+        toggleBtn.innerHTML = block_title + ' Menu';
         menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
 
 
