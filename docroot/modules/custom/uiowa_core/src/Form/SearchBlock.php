@@ -54,13 +54,16 @@ class SearchBlock extends FormBase {
     $values = $form_state->getValues();
     $uri = $values['search_config']['endpoint'];
     $query = $values['search'];
+    $prepend = $values['search_config']['query_prepend'];
 
     // Support root-relative URLs.
     if (str_starts_with($uri, '/')) {
       $uri = 'base:' . substr($uri, 1);
     }
 
-    $url = Url::fromUri($uri, ['query' => [$values['search_config']['query_parameter'] => $query]]);
+    $url = Url::fromUri($uri, ['query' =>
+      [$values['search_config']['query_parameter'] => $prepend, $query, [$values['search_config']['additional_query']]]
+    ]);
 
     if (UrlHelper::isExternal($uri)) {
       $response = new TrustedRedirectResponse($url->toString());

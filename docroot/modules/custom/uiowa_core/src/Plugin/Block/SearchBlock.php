@@ -58,6 +58,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       [
         'endpoint' => $config['endpoint'],
         'query_parameter' => $config['query_parameter'],
+        'query_prepend' => $config['query_prepend'],
         'additional_query' => $config['additional_query'],
         'button_text' => $config['button_text'],
         'search_label' => $config['search_label'],
@@ -96,8 +97,13 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#description' => $this->t('<em>title</em> is common for content filtering, <em>terms</em> is used for search on this site'),
       '#default_value' => $config['query_parameter'] ?? 'terms',
     ];
-    $form['additional_query'] = [
+    $form['query_prepend'] = [
       '#type' => 'textfield',
+      '#title' => $this->t('Query Prepend'),
+      '#default_value' => $config['query_prepend'],
+    ];
+    $form['additional_query'] = [
+      '#type' => 'textarea',
       '#title' => $this->t('Additional Query Parameters'),
       '#description' => $this->t('Additional queries for the search string'),
       '#default_value' => $config['additional_query'],
@@ -127,6 +133,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $values = $form_state->getValues();
     $this->configuration['endpoint'] = $values['endpoint'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
+    $this->configuration['query_prepend'] = $values['query_prepend'];
     $this->configuration['additional_query'] = $values['additional_query'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['search_label'] = $values['search_label'];
