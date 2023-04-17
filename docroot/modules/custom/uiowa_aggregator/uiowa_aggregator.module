@@ -74,6 +74,8 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
     ];
   }
 
+  $build['#url'] = $entity->link?->value;
+
   // Since it always returns, unset it.
   unset($build['author']);
 
