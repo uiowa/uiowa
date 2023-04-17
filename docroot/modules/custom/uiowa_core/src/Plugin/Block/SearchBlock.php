@@ -97,13 +97,18 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#description' => $this->t('<em>title</em> is common for content filtering, <em>terms</em> is used for search on this site'),
       '#default_value' => $config['query_parameter'] ?? 'terms',
     ];
-    $form['query_prepend'] = [
+    $form['advanced'] = [
+      '#type' => 'details',
+      '#title' => t('Advanced'),
+      '#description' => $this->t('Additional query parameters for advanced users.'),
+    ];
+    $form['advanced']['query_prepend'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Query Prepend'),
       '#description' => $this->t('A string to prepend to all search queries.'),
       '#default_value' => $config['query_prepend'] ?? '',
     ];
-    $form['additional_parameters'] = [
+    $form['advanced']['additional_parameters'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Additional Query Parameters'),
       '#description' => $this->t('Append additional URL parameters to the search. <em>(UTM tracking codes, search filtering, etc.)</em>'),
@@ -134,8 +139,8 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $values = $form_state->getValues();
     $this->configuration['endpoint'] = $values['endpoint'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
-    $this->configuration['query_prepend'] = $values['query_prepend'];
-    $this->configuration['additional_parameters'] = $values['additional_parameters'];
+    $this->configuration['query_prepend'] = $values['advanced']['query_prepend'];
+    $this->configuration['additional_parameters'] = $values['advanced']['additional_parameters'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['search_label'] = $values['search_label'];
   }
