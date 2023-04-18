@@ -140,14 +140,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
-    // Doesn't support AJAX paging as SectionComponentSubscriber doesn't run.
-    if ($block instanceof ViewsBlock) {
-      // @phpstan-ignore-next-line
-      $block->getViewExecutable()
-        ->display_handler
-        ->setOption('layout_builder_styles', $event->getComponent()->get('layout_builder_styles_style'));
-    }
-
     // For cards or other blocks, we are going to programmatically set the
     // view mode for the image field. This is necessary to allow selection
     // of different image formats.
