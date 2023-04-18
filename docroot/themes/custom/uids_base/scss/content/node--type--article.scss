@@ -2,12 +2,8 @@
 @import "uids3/assets/scss/_utilities.scss";
 @import "uids3/components/card/_card-mixins.scss";
 
+// Style the article page.
 .node--type-article {
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin: 0.5rem 0 0;
-  }
-
   .field--name-body {
     margin: $gutter 0;
   }
@@ -16,6 +12,7 @@
     display: block;
     @include card-subtitle;
   }
+
   // Remove colon being added by field.css.
   .field--label-above .field--label-inline:after {
     content: "";
@@ -60,37 +57,19 @@
       margin-top: $gutter;
     }
   }
+
   // @todo Move this to UIDS in https://github.com/uiowa/uids/issues/721
   .banner__content {
     display: flex;
     flex-direction: column;
   }
-}
 
-.node--type-article.node--view-mode-full {
   .field--name-field-image-caption {
     margin: 1rem 0 3rem;
     color: #666;
   }
 }
 
-.node--type-article.node--view-mode-teaser {
-  .content-image img {
-    height: auto;
-  }
-
-  .field--name-title {
-    display: block;
-  }
-}
-
-.field--name-field-article-author+.field--name-field-article-source-link {
-  &:before {
-    content: '- ';
-    color: $grey;
-    margin: 0 $xsm;
-  }
-}
 
 .article--meta {
   display: inline-block;
@@ -125,19 +104,6 @@
   }
 }
 
-.grid.paragraph--type--articles,
-.masonry.paragraph--type--articles {
-  .node--type-article.node--view-mode-teaser {
-    .content-image {
-      margin-left: 0;
-    }
-
-    .content-image img {
-      margin-left: 0 !important;
-      max-width: 100%;
-    }
-  }
-}
 // Hero
 .page-node-type-article .hero {
   margin-left: calc(50% - 50vw);
@@ -146,6 +112,7 @@
   -webkit-transform: translateX(calc(50vw - 50%));
   transform: translateX(calc(50vw - 50%));
 }
+
 // Arrow button spacing for article teasers
 .card.node--type-article {
   &.card--media-left,
@@ -196,3 +163,74 @@
     }
   }
 }
+
+// Styles for article lists.
+.field--name-field-article-author {
+  .field__label {
+    display: inline;
+    margin-right: $xsm;
+  }
+
+  &.field--label-above {
+    margin-bottom: 0;
+    margin-top: 0.125rem;
+  }
+
+  .field__items {
+    padding-right: 0;
+    display: inline-block;
+  }
+  display: inline-block;
+}
+
+.field--name-field-article-source-link {
+  .link-item {
+    display: inline-block;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:after {
+    display: inline-block;
+  }
+}
+
+.field--name-field-article-author + .field--name-field-article-source-link,
+.field--name-field-article-author + .field--article-byline,
+.block-field-blocknodearticlefield-article-author + .block-field-blocknodearticlefield-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}
+
+// V2 Styles.
+.paragraph--type--articles.list {
+  .field--name-field-teaser {
+    @include card-paragraph;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.grid.paragraph--type--articles,
+.masonry.paragraph--type--articles {
+  .node--type-article.node--view-mode-teaser {
+    .content-image {
+      margin-left: 0;
+    }
+
+    .content-image img {
+      margin-left: 0 !important;
+      max-width: 100%;
+    }
+  }
+}
+

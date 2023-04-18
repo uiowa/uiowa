@@ -165,10 +165,10 @@ class HoursFilterForm extends FormBase {
     $start = $result['query']['start'];
     $end = $result['query']['end'];
 
-    $card_classes = [
+    $attributes = [];
+    $attributes['class'] = [
       'uiowa-hours',
-      'card--enclosed',
-      'card--media-left',
+      'headline--serif',
     ];
 
     $render = [
@@ -190,20 +190,18 @@ class HoursFilterForm extends FormBase {
     }
     elseif (empty($data)) {
       $render['closed'] = [
-        '#theme' => 'hours_card',
-        '#attributes' => [
-          'class' => $card_classes,
-        ],
-        '#data' => [
-          'child_heading_size' => $block_config['child_heading_size'],
-          'date' => $this->t('@start@end', [
-            '@start' => date('F j, Y', $start),
-            '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
-          ]),
+        '#type' => 'card',
+        '#attributes' => $attributes,
+        '#title' => $this->t('@start@end', [
+          '@start' => date('F j, Y', $start),
+          '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+        ]),
+        '#content' => [
           'times' => [
             '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
           ],
         ],
+        '#headline_level' => $block_config['child_heading_size'],
       ];
     }
     else {
@@ -220,13 +218,10 @@ class HoursFilterForm extends FormBase {
         });
 
         $render['hours'][$key] = [
-          '#theme' => 'hours_card',
-          '#attributes' => [
-            'class' => $card_classes,
-          ],
-          '#data' => [
-            'child_heading_size' => $block_config['child_heading_size'],
-            'date' => date('F j, Y', strtotime($key)),
+          '#type' => 'card',
+          '#attributes' => $attributes,
+          '#title' => date('F j, Y', strtotime($key)),
+          '#content' => [
             'times' => [
               '#theme' => 'item_list',
               '#items' => [],
@@ -235,6 +230,7 @@ class HoursFilterForm extends FormBase {
               ],
             ],
           ],
+          '#headline_level' => $block_config['child_heading_size'],
         ];
 
         foreach ($date as $time) {
@@ -248,7 +244,7 @@ class HoursFilterForm extends FormBase {
             $markup .= ' - ' . $time['summary'];
           }
 
-          $render['hours'][$key]['#data']['times']['#items'][] = [
+          $render['hours'][$key]['#content']['times']['#items'][] = [
             '#markup' => $markup,
           ];
         }

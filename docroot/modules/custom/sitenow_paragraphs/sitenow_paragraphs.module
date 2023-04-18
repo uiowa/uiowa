@@ -170,6 +170,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         $result = array_intersect($display_options, $classes);
         if (!$result) {
           $classes[] = 'list';
+          $classes[] = 'list-container';
         }
       }
       $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
@@ -177,6 +178,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
     else {
       if ($paragraph->bundle() === 'featured_content') {
         $variables['attributes']['class'][] = 'list';
+        $variables['attributes']['class'][] = 'list-container';
       }
     }
     switch ($paragraph->bundle()) {
@@ -233,6 +235,10 @@ function sitenow_paragraphs_preprocess_field(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {
+      case 'field_featured_content':
+        uiowa_core_set_attributes($variables, 'list-container__inner');
+        break;
+
       case 'field_section_content_block':
         $paragraph = $variables["element"]["#object"];
         $variables['section_attributes'] = new Attribute();

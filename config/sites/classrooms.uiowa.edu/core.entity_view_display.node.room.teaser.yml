@@ -41,14 +41,24 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   field_room_building_id:
     type: entity_reference_entity_id
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 5
+    region: content
+  field_room_features:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
+    weight: 7
     region: content
   field_room_max_occupancy:
     type: number_integer
@@ -57,7 +67,7 @@ content:
       thousand_separator: ''
       prefix_suffix: false
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_room_name:
     type: string
@@ -65,7 +75,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   field_room_responsible_unit:
     type: entity_reference_label
@@ -73,7 +83,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
   field_room_room_id:
     type: string
@@ -81,7 +91,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   field_room_type:
     type: entity_reference_label
@@ -103,7 +113,6 @@ hidden:
   field_room_building_link: true
   field_room_classroom_furniture: true
   field_room_design_details: true
-  field_room_features: true
   field_room_guide: true
   field_room_instruction_category: true
   field_room_map: true
