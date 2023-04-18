@@ -2137,7 +2137,7 @@ function sitenow_update_9057() {
     // If the block is serialized, we need to recreate it.
     if (isset($configuration['block_serialized']) && isset($class_map[$block->bundle()])) {
       // Recreate the block using the appropriate entity class.
-      $block = call_user_func_array($class_map[$block->bundle()].'::create', [$block->toArray()]);
+      $block = call_user_func_array($class_map[$block->bundle()] . '::create', [$block->toArray()]);
       // Re-serialize the block so that it gets hydrated using the right class.
       $configuration['block_serialized'] = serialize($block);
     }
