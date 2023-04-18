@@ -533,7 +533,7 @@ class ListBlock extends CoreBlock {
     // Add Layout Builder styles from the block, if they have been set.
     // Supports AJAX pagers.
     if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('layout_builder_styles', $config['layout_builder_styles']);
+      $this->setOption('layout_builder_styles', $config['layout_builder_styles']);
     }
     // Add the block config in case we need to reference it later.
     $this->setOption('block_config', $config);

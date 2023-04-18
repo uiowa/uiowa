@@ -18,6 +18,8 @@ use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Event;
 
 /**
  * Helper function to update all blocks of a type.
@@ -2125,6 +2127,21 @@ function sitenow_update_9057() {
     // Still need to maintain this other set of styles for AJAX view pagers.
     $configuration = $component->get('configuration');
     $configuration['layout_builder_styles'] = array_filter($styles);
+
+    // Map block bundle to entity bundle class.
+    $class_map = [
+      'uiowa_card' => Card::class,
+      'uiowa_event' => Event::class,
+    ];
+
+    // If the block is serialized, we need to recreate it.
+    if (isset($configuration['block_serialized']) && isset($class_map[$block->bundle()])) {
+      // Recreate the block using the appropriate entity class.
+      $block = call_user_func_array($class_map[$block->bundle()].'::create', [$block->toArray()]);
+      // Re-serialize the block so that it gets hydrated using the right class.
+      $configuration['block_serialized'] = serialize($block);
+    }
+
     $component->setConfiguration($configuration);
 
     // Save updated styles.
