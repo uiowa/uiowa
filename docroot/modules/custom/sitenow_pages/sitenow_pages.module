@@ -2,50 +2,16 @@
 
 /**
  * @file
- * Functions to support theming in the uids_base theme.
+ * Page functionality for the SiteNow platform.
  */
+
+use Drupal\sitenow_pages\Entity\Page;
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_entity_bundle_info_alter().
  */
-function sitenow_pages_preprocess_block(&$variables) {
-  if ($variables['derivative_plugin_id'] === 'uiowa_card') {
-    /** @var \Drupal\Block\Entity\Block $block */
-    $block = $variables['elements']['content']['#block_content'];
-    if ($block->hasField('field_uiowa_card_button_display')) {
-
-      // Set boolean variable for future use.
-      $display_button = TRUE;
-      $button_display_field_value = $block->get('field_uiowa_card_button_display')->value;
-
-      // Check if it is site default.
-      // Covering default_content with `Use site default` check.
-      // @todo https://github.com/uiowa/uiowa/issues/5416
-      // Consider removing additional check if default_content field null is
-      // captured or the field is refactored to not repurpose null as option.
-      if ($button_display_field_value === NULL || $button_display_field_value === 'Use site default') {
-
-        // If it is, get the site default value.
-        $site_default = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
-        // Set boolean to site default value.
-        $display_button = $site_default;
-      }
-      // Else if it's Show...
-      elseif ($button_display_field_value === 'Show') {
-
-        // Set to true.
-        $display_button = TRUE;
-      }
-      // Else if it's Hide...
-      elseif ($button_display_field_value === 'Hide') {
-
-        // Set to false.
-        $display_button = FALSE;
-      }
-
-      // Set the variable for the card to display the button
-      // equal to what we calculate earlier.
-      $variables['field_uiowa_card_button_display'] = $display_button;
-    }
+function sitenow_pages_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['page'])) {
+    $bundles['node']['page']['class'] = Page::class;
   }
 }

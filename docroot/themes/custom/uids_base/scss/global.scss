@@ -27,7 +27,6 @@ $imgpath: '../../uids/assets/images';
 .element--inline {
   @include breakpoint(sm) {
     display: inline-flex;
-    margin-inline-end: $sm;
   }
 }
 
@@ -72,6 +71,9 @@ $imgpath: '../../uids/assets/images';
   .stat {
     flex-basis: 100%;
     min-width: 0;
+  }
+  .card {
+    height: 100%;
   }
 }
 
@@ -359,7 +361,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       display: grid;
 
       .layout__region--first,
-      .layout__region--sidebar {
+      .layout__region--sidebar,
+      .layout__region--main {
         order: 2;
         @include breakpoint(md) {
           order: inherit;
@@ -367,11 +370,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
 
       .layout__region--second,
-      .layout__region--content {
+      .layout__region--content,
+      .layout__region-container {
         order: 1;
         @include breakpoint(md) {
           order: inherit;
         }
+      }
+      .layout__region-container {
+        margin-bottom: $mobile-height-gutter;
       }
     }
   }
@@ -439,7 +446,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Add margins for all stacked layout regions for mobile.
-
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol,
@@ -463,6 +469,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region:first-child {
       margin-bottom: 0;
     }
+  }
+}
+
+// Unset margin for regions within card layout.
+.layout--twocol {
+  .layout__region.layout__region--card-media {
+    margin-bottom: 0;
   }
 }
 
@@ -569,24 +582,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .block + .block.block-margin__default--removed {
         margin-top: 0;
       }
-      // Override card margins.
-      .block.card--media-right,
-      .block.card--media-left,
-      .block +.block.card--media-right,
-      .block +.block.card--media-left {
-        margin-bottom: 0;
-      }
-    }
-  }
-}
-
-// Override card margins for layouts where
-// section padding has been removed and card margin was assumed.
-.layout__container[class*="section-padding__removed"] {
-  .layout__region {
-    .block.card--media-right:first-child:last-child,
-    .block.card--media-left:first-child:last-child {
-      margin-bottom: 1.6rem;
     }
   }
 }
@@ -595,7 +590,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout__container {
   .layout__region {
     .block.block-system-breadcrumb-block + .block[class*="block-field-"],
-    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"],
+    .block.block-field-blocknodepersontitle + .block[class*="block-field-"] {
       margin-top: 0;
     }
   }
@@ -840,4 +836,3 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .screen-reader-text {
   @include element-invisible;
 }
-

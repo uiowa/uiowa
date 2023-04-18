@@ -14,7 +14,6 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\fragments\Entity\FragmentInterface;
-use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -94,10 +93,13 @@ function uids_base_preprocess_html(&$variables) {
       }
       // Check if there are any enabled links in the menu.
       $has_enabled_links = ($enabled_links > 0);
-      // Add the 'has_enabled_links' variable to the variables array, to be used in templates.
+      // Add the 'has_enabled_links' variable to the variables array,
+      // to be used in templates.
       $variables['has_enabled_links'] = $has_enabled_links;
-      // Add the 'has_top_links' variable to the variables array, to be used in templates.
-      // If there are enabled links, set the variable to 'has-top-links', otherwise set it to 'no-top-links'.
+      // Add the 'has_top_links' variable to the variables array,
+      // to be used in templates.
+      // If there are enabled links, set the variable to 'has-top-links',
+      // otherwise set it to 'no-top-links'.
       $variables['has_top_links'] = $has_enabled_links ? 'has-top-links' : 'no-top-links';
     }
   }
@@ -346,15 +348,6 @@ function uids_base_preprocess_node(&$variables) {
   $node = $variables['node'];
 
   if ($variables['view_mode'] === 'teaser') {
-    // Append person credentials to the node label in the teaser view mode.
-    if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
-      $title = $node->getTitle();
-      $variables['label'] = t('@title, @creds', [
-        '@title' => $title,
-        '@creds' => $creds,
-      ]);
-    }
-
     // Create heading_size variable for node teaser templates if a
     // corresponding render property was set.
     if (isset($variables['elements']['#heading_size'])) {
@@ -366,55 +359,15 @@ function uids_base_preprocess_node(&$variables) {
     //   See https://github.com/uiowa/uiowa/issues/4948
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
-    switch ($node->getType()) {
-      case 'article':
-        // Style stacked if from related_manually_referenced_content block grid,
-        // otherwise media right. Unset completely for SiteNow v2.
-        if (isset($node->view) && $node->view->id() === 'related_manually_referenced_content' && $node->view->current_display === 'block_grid') {
-          $card_classes = [
-            'card--stacked',
-            'card--enclosed',
-            'hide-descriptions',
-            'bg--white',
-          ];
-          foreach ($card_classes as $card_class) {
-            $variables['attributes']['class'][] = $card_class;
-          }
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--large',
-          ];
-        }
-        else {
-          $variables['attributes']['class'][] = 'card--media-right';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--small',
-          ];
-        }
-        if ($is_v2) {
-          unset($variables['attributes']['class']);
-          unset($variables['media_classes']);
-        }
-        break;
-
+    if ($node->getType() === 'page') {
       // Style stacked for SiteNow v2, otherwise media right.
-      case 'page':
-        if ($is_v2) {
-          $variables['attributes']['class'][] = 'card--stacked';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--large',
-          ];
-        }
-        else {
-          $variables['attributes']['class'][] = 'card--media-right';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--small',
-          ];
-        }
-        break;
+      if ($is_v2) {
+        $variables['attributes']['class'][] = 'card--stacked';
+        $variables['media_classes'] = [
+          'media--widescreen',
+          'card__media--large',
+        ];
+      }
 
     }
   }
@@ -537,9 +490,9 @@ function uids_base_preprocess_field(&$variables) {
       }
       $variables['caption'] = $caption;
       break;
+
   }
 
-  // @todo Is this code still necessary?
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
@@ -752,6 +705,22 @@ function uids_base_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
+  // Loop through the classes in the attributes array.
+  foreach ($variables['attributes']['class'] as $key => $class) {
+    // Check if the class starts with "media".
+    if (str_starts_with($class, 'media')) {
+      // Add the class to region_attributes.card_media.
+      // and remove it from attributes.
+      $variables['region_attributes']['card_media']->addClass($class);
+      unset($variables['attributes']['class'][$key]);
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
@@ -762,7 +731,7 @@ function uids_base_preprocess_block(&$variables) {
     'menu_block',
   ])) {
 
-    // Add the region to the a block's available attributes.
+    // Add the region to the block's available attributes.
     if (isset($variables['elements']['#id'])) {
       $region = Block::load($variables['elements']['#id'])->getRegion();
       if ($region === 'footer_second') {
@@ -785,20 +754,6 @@ function uids_base_preprocess_block(&$variables) {
         $variables['attributes']['class'][] = 'menu--quick-links';
         break;
 
-    }
-  }
-
-  // If inner list, remove any inner grid classes.
-  if (isset($variables['attributes']['class'])) {
-    if (is_string($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
-    }
-    if (in_array('inner--list', $variables['attributes']['class'])) {
-      foreach ($variables['attributes']['class'] as $key => $style) {
-        if (str_starts_with($style, 'inner--grid')) {
-          unset($variables['attributes']['class'][$key]);
-        }
-      }
     }
   }
 
@@ -958,21 +913,6 @@ function uids_base_preprocess_menu_local_task(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_paragraph__card(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    // @todo Remove this when it is no longer necessary.
-    //   See https://github.com/uiowa/uiowa/issues/5033
-    // If the sitenow card link js file has been added, remove it.
-    if ($key = array_search('sitenow_card/card-link-js', $variables['#attached']['library'])) {
-      unset($variables['#attached']['library'][$key]);
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
 function uids_base_preprocess_paragraph(&$variables) {
 
   $paragraph = $variables['paragraph'];
@@ -1082,107 +1022,6 @@ function uids_base_preprocess_views_view_field(&$variables) {
               ->advancedRender($variables['row']);
           }
         }
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uids_base_preprocess_aggregator_feed(&$variables) {
-  if (\Drupal::routeMatch()->getRouteName() === 'entity.aggregator_feed.canonical') {
-    $variables['#attached']['library'][] = 'uids_base/aggregator-feed';
-
-    /** @var Drupal\aggregator\Entity\Feed $feed */
-    $feed = $variables['elements']['#aggregator_feed'];
-    $image = $feed->get('field_aggregator_feed_image');
-
-    // The image field prints via the view mode if set. If not, we'll replace
-    // it with the feed image if that is set.
-    if ($image->isEmpty()) {
-      if ($image = $feed->getImage()) {
-        $variables['content']['field_aggregator_feed_image'] = [
-          '#theme' => 'imagecache_external_responsive',
-          '#uri' => $image,
-          '#responsive_image_style_id' => 'small__square',
-          '#attributes' => [
-            'data-lazy' => TRUE,
-            'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
-            'class' => [
-              'feed-image',
-            ],
-          ],
-        ];
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uids_base_preprocess_aggregator_item(&$variables) {
-  /** @var Drupal\aggregator\Entity\Item $item */
-  $item = $variables['elements']['#aggregator_item'];
-
-  $timestamp = $item->getPostedTime();
-  $variables['post_date'] = \Drupal::service('date.formatter')->format($timestamp, 'medium');
-
-  // Only add the feed image  and heading size to the aggregator item if we're
-  // not on the canonical feed page.
-  if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
-    // Set the heading level size for use in the template.
-    $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
-    if (isset($variables['elements']['#parent_lb_styles']) && !empty($variables['elements']['#parent_lb_styles'])) {
-      $variables['parent_lb_styles'] = $variables['elements']['#parent_lb_styles'];
-    }
-
-    /** @var Drupal\aggregator\Entity\Feed $feed */
-    $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
-    $mid = $feed->get('field_aggregator_feed_image')->getString();
-
-    // Establish default view mode if layout_builder_styles don't exist.
-    $image_view_mode = 'large__square';
-
-    // Map the layout builder styles to the view mode that should be used.
-    $media_formats = [
-      'media--widescreen' => 'large__widescreen',
-      'media--square' => 'large__square',
-      'media--circle' => 'large__square',
-    ];
-
-    // Loop through the map to check if any of them are being used and
-    // adjust the view mode accordingly. Last one wins out.
-    if (isset($variables['parent_lb_styles'])) {
-      foreach ($media_formats as $style => $view_mode) {
-        if (in_array($style, $variables['parent_lb_styles'])) {
-          $image_view_mode = $view_mode;
-        }
-      }
-    }
-
-    // A local feed image should take precedence.
-    if ($media = Media::load($mid)) {
-      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
-      if (!in_array($image_view_mode, $variables['feed_image']['#cache']['keys'])) {
-        unset($variables['feed_image']['#cache']['keys']);
-      }
-    }
-    else {
-      if ($image = $feed->getImage()) {
-        $variables['feed_image'] = [
-          '#theme' => 'imagecache_external_responsive',
-          '#uri' => $image,
-          '#responsive_image_style_id' => $image_view_mode,
-          '#attributes' => [
-            'data-lazy' => TRUE,
-            'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
-            'class' => [
-              'feed-image',
-            ],
-          ],
-        ];
       }
     }
   }
