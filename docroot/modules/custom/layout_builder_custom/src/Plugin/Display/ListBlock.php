@@ -509,7 +509,12 @@ class ListBlock extends CoreBlock {
       'exposed_filters',
     ]));
 
-    // Needed to support AJAX paging.
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the block configuration below is the only way we have found
+    // so far to be able to access them when we need them.
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
     }
@@ -530,13 +535,18 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
-    // Add Layout Builder styles from the block, if they have been set.
-    // Supports AJAX pagers.
+    // Add the block config in case we need to reference it later.
+    $this->setOption('block_config', $config);
+
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the display from the block configuration below is the only
+    // way we have found so far to be able to access them when we need them.
     if (!empty($config['layout_builder_styles'])) {
       $this->setOption('layout_builder_styles', $config['layout_builder_styles']);
     }
-    // Add the block config in case we need to reference it later.
-    $this->setOption('block_config', $config);
 
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
