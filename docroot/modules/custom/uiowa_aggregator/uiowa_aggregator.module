@@ -62,30 +62,34 @@ function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, En
  */
 function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   $build['#attached']['library'][] = 'uids_base/aggregator-feed';
+  // Add the card library.
   $build['#attached']['library'][] = 'uids_base/card';
 
+  // Set the title.
   $build['#title'] = $entity->label();
 
-  // Always returns. Check to see if is not empty.
-  if (!$build['#aggregator_item']->get('author')->isEmpty()) {
+  // Move author field to #meta and add an icon.
+  if (!$entity->get('author')->isEmpty()) {
     $build['#meta']['author'] = [
       ...$build['author'],
       '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
     ];
   }
-
-  $build['#url'] = $entity->link?->value;
-
-  // Since it always returns, unset it.
   unset($build['author']);
 
+  // Move description field to #content.
   $build['#content'] = $build['description'];
   unset($build['description']);
-  // To be a valid render array, this needs to have '#markup' set.
+
+  // Move timestamp to #subtitle. Since this is just a string, set it as
+  // #markup so that it is considered a valid render array.
   $build['#subtitle']['timestamp'] = [
     '#markup' => \Drupal::service('date.formatter')->format((int) $entity->getPostedTime(), 'medium'),
   ];
   unset($build['timestamp']);
+
+  // Set the URL.
+  $build['#url'] = $entity->link?->value;
 
   $override_styles = $build['#override_styles'] ?? [];
 
