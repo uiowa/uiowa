@@ -210,6 +210,28 @@ function now_core_node_presave($entity) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function now_core_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  // If it's the experts list, we need to add the
+  // research areas as well.
+  if ($view->id() === 'iowa_now_experts') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#content'])) {
+        $row_build['content']['#content'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#content'][] = $row_build['content']['#node']->field_person_research_areas?->view();
+      }
+    }
+  }
+
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
@@ -273,62 +295,4 @@ function now_core_article_type_tag_map(string $article_type = '') {
     return $map;
   }
   return $map[$article_type] ?? FALSE;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function now_core_preprocess_views_view_unformatted(&$variables) {
-
-  $view = $variables['view'];
-  $variables['row_item_classes'] = [];
-  if ($view->current_display === 'page_experts_list') {
-    $style = $view->style_plugin;
-    $rows = $variables['rows'];
-
-    $default_classes = [
-      'card--list',
-      'card--media-left',
-      'card--person-teaser',
-    ];
-
-    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
-    foreach ($rows as $id => $row) {
-      // Set remaining row_item_classes as attributes on each row.
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-      // Get node path to link card with.
-      $nid = $view->result[$id]->_entity->id();
-      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-      $meta_combined = $style->getField($id, 'field_person_phone') . " " . $style->getField($id, 'field_person_email');
-      $meta = ['#markup' => $meta_combined];
-
-      // Initialize card_options variable.
-      $variables['rows'][$id]['card_options'] = [
-        'attributes' => $variables['rows'][$id]['attributes'],
-        'media_styles' => ['media--circle', 'media--border'],
-        'media_sizes' => ['card__media--small'],
-        'card_image' => $style->getField($id, 'field_image'),
-        'card_title' => $style->getField($id, 'title'),
-        'card_link_url' => $link,
-        'card_subtitle' => $style->getField($id, 'field_person_position'),
-        'card_meta' => \Drupal::service('renderer')->render($meta),
-        'card_text' => $style->getField($id, 'field_person_research_areas'),
-      ];
-    }
-  }
-}
-
-/**
- * Implements hook_theme().
- */
-function now_core_theme($existing, $type, $theme, $path) {
-  return [
-    'views_view_unformatted__iowa_now_experts' => [
-      'template' => 'views-view-unformatted--iowa-now-experts',
-      'base hook' => 'view',
-    ],
-  ];
 }
