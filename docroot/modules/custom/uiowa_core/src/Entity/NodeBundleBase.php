@@ -37,7 +37,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    */
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
-    // @todo How to handle setting the headline size?
     // Add shared fields to card.
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_image',
