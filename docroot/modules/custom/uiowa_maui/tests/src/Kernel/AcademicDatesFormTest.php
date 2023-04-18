@@ -73,11 +73,27 @@ class AcademicDatesFormTest extends KernelTestBase {
       ->will($this->returnValue([
         (object) [
           'name' => 'foo',
-          'date' => '1/1/2021',
+          'beginDate' => '1/1/2021',
+          'endDate' => '1/1/2021',
+          'session' => (object) [
+            'shortDescription' => 'A short description',
+          ],
+          'dateLookup' => (object) [
+            'description' => 'A description',
+            'webDescription' => 'A description',
+          ],
         ],
         (object) [
           'name' => 'bar',
-          'date' => '1/2/2021',
+          'beginDate' => '1/2/2021',
+          'endDate' => '1/2/2021',
+          'session' => (object) [
+            'shortDescription' => 'A short description',
+          ],
+          'dateLookup' => (object) [
+            'description' => 'A description',
+            'webDescription' => 'A description',
+          ],
         ],
       ]));
 
@@ -146,7 +162,7 @@ class AcademicDatesFormTest extends KernelTestBase {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
     $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, $number, $limit);
-    $this->assertCount($expected_count, $form['dates-wrapper']['dates']['#data']);
+    $this->assertCount($expected_count, $form['dates-wrapper']['dates']);
   }
 
   /**

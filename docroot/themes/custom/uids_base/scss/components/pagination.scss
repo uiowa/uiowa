@@ -41,6 +41,11 @@
   background-color: $secondary;
   color: $white;
 
+  [class*=bg--gray] &,
+  [class*=bg--white] & {
+    color: $white;
+  }
+
   [class*=bg--black] & {
     background-color: $primary;
     color: $secondary;
