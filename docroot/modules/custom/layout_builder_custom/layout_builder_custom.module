@@ -276,6 +276,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['#title'] = t('Visibility options');
             // Move the advanced settings to be the first section.
             $form['settings']['advanced']['#weight'] = -5;
+            // Append 'Menu' to the end of the admin label for clarity.
+            $form['settings']['admin_label']['#plain_text'] .= ' Menu';
             // Unset the menu option in the label.
             unset($form['settings']['advanced']['label_type']['#options']['menu']);
             // Adjust the default text.
