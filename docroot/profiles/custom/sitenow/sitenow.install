@@ -2125,6 +2125,7 @@ function sitenow_update_9057() {
     }
 
     // Still need to maintain this other set of styles for AJAX view pagers.
+    // @phpstan-ignore-next-line
     $configuration = $component->get('configuration');
     $configuration['layout_builder_styles'] = array_filter($styles);
 
@@ -2145,6 +2146,7 @@ function sitenow_update_9057() {
     $component->setConfiguration($configuration);
 
     // Save updated styles.
+    // @phpstan-ignore-next-line
     $component->set('layout_builder_styles_style', array_filter($styles));
   });
 }
