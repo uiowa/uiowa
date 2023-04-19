@@ -4,6 +4,7 @@ namespace Drupal\classrooms_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Migrate Source plugin.
@@ -14,6 +15,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
  * )
  */
 class Room extends BaseNodeSource {
+  use ProcessMediaTrait;
 
   /**
    * {@inheritdoc}
@@ -50,8 +52,72 @@ class Room extends BaseNodeSource {
       ]));
       return FALSE;
     }
-
     $row->setSourceProperty('field_room_building', $building_id);
+
+    // Process the furniture details.
+    $furniture_items = $row->getSourceProperty('field_room_classroom_furniture');
+    $row->setSourceProperty(
+      'field_room_classroom_furniture',
+      $this->processFieldCollection(
+        $furniture_items,
+        'furniture',
+        [
+          'type',
+          'details',
+        ]
+      )
+    );
+
+    // Process the tile details.
+    $tile_items = $row->getSourceProperty('field_room_tile_details');
+    $row->setSourceProperty(
+      'field_room_tile_details',
+      $this->processFieldCollection(
+        $tile_items,
+        'tile_details',
+        [
+          'name',
+          'details',
+        ]
+      )
+    );
+
+    // Process the design details.
+    $design_items = $row->getSourceProperty('field_room_design_details');
+    $row->setSourceProperty(
+      'field_room_design_details',
+      $this->processFieldCollection(
+        $design_items,
+        'design_details',
+        [
+          'name',
+          'detail',
+        ]
+      )
+    );
+
+    // Process the gallery.
+    $gallery_images = $row->getSourceProperty('field_room_images');
+    if (!empty($gallery_images)) {
+      $new_images = [];
+      foreach ($gallery_images as $gallery_image) {
+        $new_images[] = $this->processImageField(
+          $gallery_image['fid'],
+          $gallery_image['alt'],
+          $gallery_image['title'],
+        );
+      }
+      $row->setSourceProperty('field_room_images', $new_images);
+    }
+
+    // Process the file id part of the seating chart field.
+    $seating_chart = $row->getSourceProperty('field_room_seating_chart');
+    if (!empty($seating_chart)) {
+      $seating_chart[0]['target_id'] = $this->processFileField($seating_chart[0]['fid']);
+      unset($seating_chart[0]['fid']);
+      $row->setSourceProperty('field_room_seating_chart', $seating_chart);
+    }
+
     return TRUE;
 
   }
@@ -68,6 +134,31 @@ class Room extends BaseNodeSource {
       ->condition('t.tid', $building_tid[0], '=')
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Helper function to snag field collection data and concatenate it.
+   *
+   * @return array
+   *   Array of concatenated field collection details.
+   */
+  private function processFieldCollection($items, $db_label, $collection_fields): array {
+    $concat_items = [];
+    $first_field = array_shift($collection_fields);
+    foreach ($items as $item) {
+      $query = $this->select("field_data_field_{$db_label}_{$first_field}", $first_field)
+        ->fields($first_field, ["field_{$db_label}_{$first_field}_value"]);
+      foreach ($collection_fields as $additional_field) {
+        $query->join("field_data_field_{$db_label}_{$additional_field}", $additional_field, "{$first_field}.revision_id = {$additional_field}.revision_id");
+        $query->fields($additional_field, ["field_{$db_label}_{$additional_field}_value"]);
+      }
+      $results = $query->condition("{$first_field}.revision_id", $item['revision_id'], '=')
+        ->execute()
+        ->fetchAll();
+      $concat_items[] = implode(' - ', array_values($results[0]));
+    }
+
+    return $concat_items;
   }
 
 }

@@ -186,7 +186,7 @@ function uids_base_preprocess_html(&$variables) {
     }
   }
 
-  if ($route_match->getRouteObject()->getOption('_layout_builder')) {
+  if ($route_match->getRouteObject()?->getOption('_layout_builder')) {
     // Add Layout Builder specific CSS settings.
     $variables['#attached']['library'][] = 'uids_base/layout-builder';
   }
