@@ -13,6 +13,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
@@ -197,6 +198,7 @@ function classrooms_core_preprocess_block(&$variables) {
         'block-margin__top',
         'block-margin__right',
       ]);
+      uiowa_core_set_attributes($variables, 'element--inline-breakpoint block-margin__top');
       break;
 
     // Add inline class for blocks to appear inline.
@@ -229,7 +231,13 @@ function classrooms_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'room') {
     $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
     if (!empty($seating_chart)) {
-      $file = reset($seating_chart);
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($seating_chart);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
       $file->setFilename('Seating Chart');
       $file->save();
     }
@@ -332,6 +340,18 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       uiowa_core_set_attributes($variables, 'fa-li');
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function classrooms_core_preprocess_media(&$variables) {
+  // Extra classes for the Seating Chart field. Limit it
+  // to 'file' media so we don't potentially add extra stuff
+  // to other media types like images.
+  if ($variables['media']->getSource()?->getPluginId() === 'file') {
+    $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
   }
 }
 
