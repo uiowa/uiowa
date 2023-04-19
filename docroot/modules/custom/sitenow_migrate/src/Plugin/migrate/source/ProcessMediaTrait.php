@@ -460,6 +460,9 @@ trait ProcessMediaTrait {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
     $subdir = implode('/', $filename_w_subdir) . '/';
+    // Replace whitespace characters, if present
+    // e.g. "Media browser" to "Media%20browser".
+    $subdir = str_replace(' ', '%20', $subdir);
     $filename_w_subdir = NULL;
 
     // Get a connection for the destination database
@@ -513,6 +516,8 @@ trait ProcessMediaTrait {
    *   The file ID.
    * @param array $meta
    *   Metadata for the file.
+   * @param bool $return_fid
+   *   Toggle returning the FID instead of the MID.
    *
    * @return int|null
    *   The media ID or null if unable to process.
@@ -520,7 +525,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\migrate\MigrateException
    */
-  protected function processFileField($fid, array $meta = []) {
+  protected function processFileField($fid, array $meta = [], $return_fid = FALSE) {
     $fileQuery = $this->fidQuery($fid);
 
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
@@ -560,6 +565,10 @@ trait ProcessMediaTrait {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
         $meta = NULL;
       }
+    }
+
+    if ($return_fid === TRUE) {
+      return $new_fid;
     }
 
     return $mid ?? NULL;
