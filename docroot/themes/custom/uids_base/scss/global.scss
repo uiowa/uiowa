@@ -24,10 +24,14 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Set an element to display inline.
-.element--inline {
+.element--inline-breakpoint {
   @include breakpoint(sm) {
     display: inline-flex;
   }
+}
+
+.element--inline {
+  display: inline-flex;
 }
 
 // Align items in a grid to the top.
@@ -516,6 +520,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // CSS logical property padding utility classes.
 .padding--block--sm {
   padding-block: 0.5rem;
+}
+
+.padding--inline-start--sm {
+  padding-inline-start: 0.5rem;
 }
 
 .padding--inline--md {
