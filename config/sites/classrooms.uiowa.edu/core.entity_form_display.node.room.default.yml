@@ -30,7 +30,6 @@ dependencies:
   module:
     - content_moderation
     - field_group
-    - file
     - link
     - media_library
     - metatag
@@ -208,11 +207,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_room_seating_chart:
-    type: file_generic
+    type: media_library_widget
     weight: 19
     region: content
     settings:
-      progress_indicator: throbber
+      media_types: {  }
     third_party_settings: {  }
   field_room_technology_features:
     type: entity_reference_autocomplete

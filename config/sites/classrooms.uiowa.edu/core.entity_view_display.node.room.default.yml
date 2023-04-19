@@ -28,7 +28,6 @@ dependencies:
     - node.type.room
   module:
     - classrooms_core
-    - file
     - layout_builder
     - layout_builder_restrictions
     - options
@@ -133,26 +132,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 3a5a0d67-1430-4be9-ad4d-95e760c0eb6c
-            region: content
-            configuration:
-              id: 'field_block:node:room:field_room_seating_chart'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: file_default
-                label: visually_hidden
-                settings:
-                  use_description_as_link_text: false
-                third_party_settings: {  }
-            weight: 9
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: c40799fa-83a4-444e-9b3a-ef70664861a3
             region: content
             configuration:
@@ -183,6 +162,26 @@ third_party_settings:
               provider: system
               context_mapping: {  }
             weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b7e104a5-3544-4b90-b9ae-56b3522aa25a
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_seating_chart'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 9
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -779,12 +778,13 @@ content:
     weight: 17
     region: content
   field_room_seating_chart:
-    type: file_default
+    type: entity_reference_entity_view
     label: above
     settings:
-      use_description_as_link_text: true
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 21
     region: content
   field_room_section_heading:
     settings: {  }
