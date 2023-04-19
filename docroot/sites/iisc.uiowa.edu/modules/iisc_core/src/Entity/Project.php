@@ -19,6 +19,10 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => ['body', 'field_project_partner'],
+      '#meta' => [
+        'project_created_date',
+        'field_academic_year',
+      ],
     ]);
 
     // Update to set the link indicator, otherwise
