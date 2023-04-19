@@ -44,6 +44,9 @@
 
 .field--label-inline {
   margin-bottom: $sm;
+  [class*="card__"] & {
+    margin-bottom: 0;
+  }
 
   .svg-inline--fa {
     margin-right: 0.3rem;
@@ -121,20 +124,6 @@
 .field--type-text-long.field--label-inline {
   p {
     display: inline;
-  }
-}
-
-.field--label-inline.field--type-entity-reference,
-.field--label-inline.field--type-link,
-.field--label-inline.field--type-string,
-.field--label-visually_hidden.field--type-entity-reference:not([class*="image"]),
-.field--label-visually_hidden.field--type-link {
-  .field__item + .field__item {
-    &:before {
-      content: ",";
-      padding-right: $xsm;
-      margin-left: -3px;
-    }
   }
 }
 

@@ -4,6 +4,7 @@ namespace Drupal\classrooms_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Template\Attribute;
 
 /**
  * A 'Room Schedule' block.
@@ -45,23 +46,44 @@ class RoomSchedule extends BlockBase {
 
         if (!empty($data)) {
           $items = [];
+
           // Iterate through the data and push the values to the $items array.
           foreach ($data as $item) {
             $items[] = $item;
           }
+
           $build = [
-            '#theme' => 'room_schedule_list',
-            '#items' => $items,
-            '#attached' => [
-              'library' => [
-                'classrooms_core/room_schedule_list',
+            'header' => [
+              '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2>',
+            ],
+            'container' => [
+              '#type' => 'container',
+              '#attributes' => ['class' => ['list-container__inner']],
+              '#cache' => [
+                'tags' => ['time:hourly'],
+                'max-age' => 60,
               ],
             ],
-            '#cache' => [
-              'tags' => ['time:hourly'],
-              'max-age' => 60,
-            ],
           ];
+
+          // Iterate through the $items array.
+          foreach ($items as $item) {
+            $attributes = new Attribute();
+            $card_classes = [
+              'card--layout-right',
+              'borderless',
+            ];
+            $attributes->addClass($card_classes);
+
+            $build['container']['schedule'][] = [
+              '#type' => 'card',
+              '#attributes' => $attributes,
+              '#subtitle' => $item->startTime . ' - ' . $item->endTime,
+              '#meta' => $item->activity,
+              '#title' => $item->title,
+              '#title_heading_size' => 'h3',
+            ];
+          }
         }
         else {
           $build = [
@@ -71,6 +93,7 @@ class RoomSchedule extends BlockBase {
           ];
         }
 
+        // Set the cache metadata.
         $cache = new CacheableMetadata();
         $cache->setCacheTags(['time:hourly']);
         $cache->applyTo($build);

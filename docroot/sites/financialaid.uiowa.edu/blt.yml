@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: financialaid.uiowa.ddev.site
+    protocol: https
+  machine_name: financialaid
+  human_name: financialaid.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: financialaid.prod
+drupal:
+  db:
+    database: financialaid_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://financialaid.prod.drupal.uiowa.edu'
+  requester: vwiest
+  site-name: 'Office of Student Financial Aid'

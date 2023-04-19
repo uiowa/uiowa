@@ -20,10 +20,20 @@ use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\sitenow_people\Entity\Person;
 use Drupal\sitenow_people\PersonTypeInterface;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_people_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['person'])) {
+    $bundles['node']['person']['class'] = Person::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -482,9 +492,26 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_people_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+
+    case 'field_block:node:person:field_person_phone':
+    case 'field_block:node:person:field_person_education':
+    case 'field_block:node:person:field_person_hometown':
+    case 'field_block:node:person:field_person_website':
+    case 'field_block:node:person:field_person_contact_information':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_people_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
-
     case 'field_person_contact_information':
       uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
@@ -516,32 +543,6 @@ function sitenow_people_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_page_title(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($route_name === 'entity.node.canonical') {
-      $node = \Drupal::routeMatch()->getParameter('node');
-    }
-    elseif ($route_name === 'entity.node.preview') {
-      $node = \Drupal::routeMatch()->getParameter('node_preview');
-    }
-    if (isset($node)) {
-      switch ($node->getType()) {
-        case 'person':
-          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
-            ->isEmpty()) {
-            $variables['subtitle'] = $node->field_person_credential->value;
-          }
-          break;
-      }
-    }
   }
 }
 
@@ -619,32 +620,6 @@ function sitenow_people_preprocess_views_view(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $node = $variables["node"];
-    switch ($node->getType()) {
-      case 'person':
-        switch ($variables['view_mode']) {
-          case 'teaser':
-            // Heading needs to change by placement. Defaults to h3 in twig.
-            $current_route = \Drupal::routeMatch();
-            $route_name = $current_route->getRouteName();
-            $variables['#cache']['contexts'][] = 'route.name';
-            if (strpos($route_name, 'view.people.') === 0) {
-              $variables['heading_size'] = 'h2';
-            }
-            break;
-        }
-        break;
-    }
-  }
-
-}
-
-/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
@@ -662,11 +637,12 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
  * Implements hook_views_pre_render().
  */
 function sitenow_people_views_pre_render(ViewExecutable $view) {
-  // Add <th> label for Draggable Views, otherwise it is flagged
-  // for accessibility.
   if ($view->id() === 'people' && $view->current_display === 'page_people_table') {
+    // Add <th> label for Draggable Views, otherwise it is flagged
+    // for accessibility.
     $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
+
   // Add replacement token for people page path.
   $view->build_info['substitutions']['{{ sitenow_people.path }}'] = _sitenow_people_path_token_value();
 }
@@ -851,32 +827,6 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
         ];
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_block(&$variables) {
-  switch ($variables['elements']['#plugin_id']) {
-    case 'views_block:people_list_block-list_card':
-      if (isset($variables['attributes']['class'])) {
-        // Unset classes meant for children.
-        foreach ($variables['attributes']['class'] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
-              unset($variables['attributes']['class'][$key]);
-            }
-          }
-        }
-      }
-
-      break;
   }
 }
 

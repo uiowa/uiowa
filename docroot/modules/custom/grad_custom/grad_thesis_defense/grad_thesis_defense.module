@@ -6,6 +6,16 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\grad_thesis_defense\Entity\ThesisDefense;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function grad_thesis_defense_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['thesis_defense'])) {
+    $bundles['node']['thesis_defense']['class'] = ThesisDefense::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -35,17 +45,13 @@ function grad_thesis_defense_preprocess_field(&$variables, $hook) {
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
 
       break;
-  }
-}
 
-/**
- * Implements hook_theme().
- */
-function grad_thesis_defense_theme($existing, $type, $theme, $path) {
-  return [
-    'node__thesis_defense__teaser' => [
-      'template' => 'node--thesis-defense--teaser',
-      'base hook' => 'node',
-    ],
-  ];
+    case 'field_thesis_defense_title':
+      if ($variables['element']['#view_mode'] == 'full') {
+        $variables['item_tag'] = 'h2';
+        uiowa_core_set_attributes($variables, 'element--light-intro');
+      }
+
+      break;
+  }
 }

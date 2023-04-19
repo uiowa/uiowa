@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\classrooms_core\Entity\ClassroomsRoom;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -12,9 +13,19 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function classrooms_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['room'])) {
+    $bundles['node']['room']['class'] = ClassroomsRoom::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -152,24 +163,42 @@ function classrooms_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:room:field_room_guide':
-      uiowa_core_set_attributes($variables, 'bg--gray block-padding__all');
-      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif headline--underline');
+      uiowa_core_set_attributes($variables, ['bg--gray', 'block-padding__all']);
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       break;
 
     case 'field_block:node:room:field_room_technology_features':
-      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif headline--underline');
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       break;
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      uiowa_core_set_attributes($variables, 'grid--threecol--33-34-33 photoswipe-gallery');
+      uiowa_core_set_attributes($variables, [
+        'grid--threecol--33-34-33',
+        'photoswipe-gallery',
+      ]);
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_type':
     case 'field_block:node:room:field_room_seating_chart':
     case 'field_block:node:room:field_room_max_occupancy':
-      uiowa_core_set_attributes($variables, 'element--inline block-margin__top');
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+        'block-margin__top',
+        'block-margin__right',
+      ]);
+      uiowa_core_set_attributes($variables, 'element--inline-breakpoint block-margin__top');
       break;
 
     // Add inline class for blocks to appear inline.
@@ -182,6 +211,9 @@ function classrooms_core_preprocess_block(&$variables) {
       uiowa_core_set_attributes($variables, 'align-center');
       break;
 
+    case 'roomschedule_block':
+      uiowa_core_set_attributes($variables, 'list-container');
+      break;
   }
 }
 
@@ -199,7 +231,13 @@ function classrooms_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'room') {
     $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
     if (!empty($seating_chart)) {
-      $file = reset($seating_chart);
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($seating_chart);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
       $file->setFilename('Seating Chart');
       $file->save();
     }
@@ -232,12 +270,20 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       else {
         uiowa_core_set_field_label_icon($variables, 'fa-user');
-        uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
+        uiowa_core_set_attributes($variables, [
+          'bg--gold',
+          'padding--block--sm',
+          'padding--inline--md',
+        ]);
       }
       break;
 
     case 'field_room_seating_chart':
-      uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
+      uiowa_core_set_attributes($variables, [
+        'bg--gold',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
       break;
 
     case 'field_room_type':
@@ -247,7 +293,11 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       else {
         uiowa_core_set_field_label_icon($variables, 'fa-building');
-        uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
+        uiowa_core_set_attributes($variables, [
+          'bg--gold',
+          'padding--block--sm',
+          'padding--inline--md',
+        ]);
       }
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
@@ -261,8 +311,29 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_design_details':
     case 'field_room_classroom_furniture':
     case 'field_room_accessibility':
+      uiowa_core_set_title_attributes($variables, [
+        'h6',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
+      break;
+
     case 'field_room_features':
-      uiowa_core_set_title_attributes($variables, 'h6 headline headline--serif headline--underline');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        // Modify the field label.
+        $variables['label'] = t('Seating type');
+        uiowa_core_set_field_label_icon($variables, 'fa-chair fa-li');
+        uiowa_core_set_attributes($variables, 'fa-ul');
+      }
+      else {
+        uiowa_core_set_title_attributes($variables, [
+          'h6',
+          'headline',
+          'headline--serif',
+          'headline--underline',
+        ]);
+      }
       break;
 
     case 'field_technology_features_icon':
@@ -275,11 +346,22 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function classrooms_core_preprocess_media(&$variables) {
+  // Extra classes for the Seating Chart field. Limit it
+  // to 'file' media so we don't potentially add extra stuff
+  // to other media types like images.
+  if ($variables['media']->getSource()?->getPluginId() === 'file') {
+    $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function classrooms_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
   if ($node instanceof NodeInterface && $node->getType() === 'room') {
     switch ($layout->id()) {
       case 'layout_header':
@@ -524,10 +606,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
     ],
-    'node__room__teaser' => [
-      'template' => 'node--room--teaser',
-      'base hook' => 'node',
-    ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
@@ -550,12 +628,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'variables' => ['room_url_map' => NULL],
       'template' => 'room-map-link',
     ],
-    'room_schedule_list' => [
-      'variables' => [
-        'items' => [],
-      ],
-      'template' => 'room-schedule-list',
-    ],
     'requestinfobutton_block' => [
       'template' => 'requestinfobutton-block',
       'variables' => [
@@ -563,10 +635,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
         'request_link' => NULL,
         'report_issue_link' => NULL,
       ],
-    ],
-    'views_view_unformatted__room_list' => [
-      'template' => 'views-view-unformatted--room-list',
-      'base hook' => 'view',
     ],
   ];
 }
@@ -667,169 +735,44 @@ function classrooms_core_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_views_view_unformatted(&$variables) {
-  // Get the view and its current display.
   $view = $variables['view'];
-  $display_block = $view->current_display;
-
-  // Initialize the row item classes and the view's style plugin.
   $variables['row_item_classes'] = [];
-  $style = $view->style_plugin;
-  $rows = $variables['rows'];
+  if ($view->current_display === 'block_programmed_rooms_list') {
+    foreach ($variables['rows'] as &$row_build) {
 
-  switch ($display_block) {
-    case 'block_rooms':
-    case 'block_programmed_rooms_list':
-
-      // Define the common attribute classes.
-      $attribute_classes = [
-        'card--left',
-        'card--stacked',
-        'card--alignment-left',
-        'card--enclosed',
-        'card--button-position',
-      ];
-      // Define the common headline classes.
-      $headline_classes = [
-        'h4',
-        'headline',
-        'block__headline',
-        'headline--serif',
-        'headline--underline',
-      ];
-
-      // Add the attribute classes to the row item classes.
-      $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
-      // Loop through the rows.
-      foreach ($rows as $id => $row) {
-        /** @var \Drupal\node\NodeInterface $node */
-        $node = $row['content']['#node'];
-        // Add the row item classes to the row attributes.
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-
-        // Get node path to link card with.
-        $nid = $view->result[$id]->_entity->id();
-        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-        // Combine the room ID and building ID fields to display.
-        $title_combined = $style->getField($id, 'field_room_room_id') . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
-        $title = ['#markup' => $title_combined];
-
-        // Define the card meta container.
-        $card_meta = [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-        ];
-
-        // Define the meta fields.
-        $meta_fields = [
-          'name' => 'field_room_name',
-          'type' => 'field_room_type',
-          'occupancy' => 'field_room_max_occupancy',
-          'unit' => 'field_room_responsible_unit',
-        ];
-
-        // Get the seat taxonomy terms from the features taxonomy.
-        $taxonomy = $node->get('field_room_features')->referencedEntities();
-
-        // Loop through the taxonomy and get items that start with "Seats".
-        $seats = [];
-        foreach ($taxonomy as $term) {
-          if (str_starts_with($term->getName(), 'Seats')) {
-            $seats[] = $term->getName();
-          }
-        }
-
-        // Add the seats to the $meta_fields array.
-        if (!empty($seats) && $display_block == 'block_programmed_rooms_list') {
-          // Add the seats to a separate variable.
-          $seating_type = [
-            '#type' => 'container',
-            '#attributes' => [
-              'class' => ['field--label-inline fa-ul'],
-            ],
-            'label' => [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating Type'),
-              '#attributes' => [
-                'class' => ['field__label'],
-              ],
-            ],
-            'value' => [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => str_replace('Seats - ', '', implode(', ', $seats)),
-              '#attributes' => [
-                'class' => ['value'],
-              ],
-            ],
-          ];
-        }
-
-        // Add the building link.
-        if ($display_block == 'block_programmed_rooms_list') {
-          $building_id = $node->get('field_room_building_id')->target_id;
-          $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-          $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-          $build['field_room_building_link'] = [
-            '#theme' => 'building_link_teaser',
-            '#building_link' => $url,
-            '#building_name' => $building->label(),
-          ];
-          $building_link = Drupal::service('renderer')->renderPlain($build['field_room_building_link']);
-        }
-
-        // Add meta fields, if they exist.
-        foreach ($meta_fields as $key => $field_name) {
-          if (
-            $style->getField($id, $field_name) &&
-            !$node->get($field_name)?->isEmpty()
-          ) {
-            $card_meta[$key] = $node?->{$field_name}?->view('teaser');
-          }
-        }
-
-        // Add building_link to card_meta.
-        if ($display_block == 'block_programmed_rooms_list') {
-          $card_meta['building_link'] = [
-            '#type' => 'markup',
-            '#markup' => $building_link,
-          ];
-        }
-
-        // Combine card_meta and seating_type so seating_type renders last.
-        $card_meta_combined = [[
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => [
-            'class' => ['card-meta-container'],
-          ],
-          '#value' => \Drupal::service('renderer')->render($card_meta),
-        ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => ['seating-type-container'],
-            ],
-            '#value' => \Drupal::service('renderer')->render($seating_type),
-          ],
-        ];
-
-        // Initialize card_options variable.
-        $variables['rows'][$id]['card_options'] = [
-          'attributes' => $variables['rows'][$id]['attributes'],
-          'media_sizes' => ['card__media--large'],
-          'card_image' => $style->getField($id, 'field_image'),
-          'card_title' => \Drupal::service('renderer')->render($title),
-          'card_link_url' => $link,
-          'headline_class' => $headline_classes,
-          'card_meta' => \Drupal::service('renderer')->render($card_meta_combined),
-          'visible_button' => TRUE,
-        ];
-
+      // Establish meta and hide_fields if they don't already exist.
+      if (!isset($row_build['content']['#meta'])) {
+        $row_build['content']['#meta'] = [];
       }
-      break;
+      if (!isset($row_build['content']['#hide_fields'])) {
+        $row_build['content']['#hide_fields'] = [];
+      }
 
+      $row_build['content']['#hide_fields'][] = 'field_room_type';
+
+      // Get the node object.
+      $node = $row_build['content']['#node'];
+
+      // Add the building link field value to the #meta array.
+      $building_id = $node->get('field_room_building_id')->target_id;
+      $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+      $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+      $row_build['content']['#meta']['building_link'] = [
+        '#theme' => 'building_link_teaser',
+        '#building_link' => $url,
+        '#building_name' => $building->label(),
+      ];
+    }
+  }
+  elseif ($view->current_display === 'block_rooms') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#hide_fields'])) {
+        $row_build['content']['#hide_fields'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#hide_fields'][] = 'field_room_responsible_unit';
+        $row_build['content']['#hide_fields'][] = 'field_room_features';
+      }
+    }
   }
 }
