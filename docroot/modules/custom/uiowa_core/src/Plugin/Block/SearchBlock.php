@@ -139,7 +139,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $additional_parameters = $form_state->getValue('advanced')['additional_parameters'];
     preg_match_all('@&([^&]+)=[^&]+@is', $additional_parameters, $matches);
     if (count($matches[0]) !== count(array_unique($matches[1]))) {
-      $form_state->setErrorByName('advanced][additional_parameters', $this->t('Duplicate parameters found'));
+      $form_state->setError($form['advanced']['additional_parameters'], $this->t('Duplicate parameters found'));
     }
   }
 
