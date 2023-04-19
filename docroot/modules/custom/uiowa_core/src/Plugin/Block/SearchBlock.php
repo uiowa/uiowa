@@ -134,6 +134,18 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
+  public function blockValidate($form, FormStateInterface $form_state) {
+    // Check for duplicates because it causes an error on render if not caught.
+    $additional_parameters = $form_state->getValue('advanced')['additional_parameters'];
+    preg_match_all('@&([^&]+)=[^&]+@is', $additional_parameters, $matches);
+    if (count($matches[0]) !== count(array_unique($matches[1]))) {
+      $form_state->setErrorByName('advanced][additional_parameters', $this->t('Duplicate parameters found'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
