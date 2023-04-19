@@ -163,7 +163,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Map the layout builder styles to the view mode to be used.
           if (count(Element::children($build['content']['field_uiowa_card_image'])) > 0 && isset($style_map['media_format'])) {
-            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build, 'large', $style_map['media_format']);
+            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_card_image'][0], 'large', $style_map['media_format']);
           }
           break;
 
@@ -179,8 +179,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           // style defaults later.
           $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Map the layout builder styles to the view mode to be used.
-          if (isset($style_map['media_format'])) {
-            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build, 'full', $style_map['media_format']);
+          if (count(Element::children($build['content']['field_uiowa_image_image'])) > 0 && isset($style_map['media_format'])) {
+            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'][0], 'full', $style_map['media_format']);
           }
 
           break;
