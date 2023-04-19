@@ -5182,3 +5182,9 @@ $sites['financialaid.uiowa.ddev.site'] = 'financialaid.uiowa.edu';
 $sites['financialaid.dev.drupal.uiowa.edu'] = 'financialaid.uiowa.edu';
 $sites['financialaid.stage.drupal.uiowa.edu'] = 'financialaid.uiowa.edu';
 $sites['financialaid.prod.drupal.uiowa.edu'] = 'financialaid.uiowa.edu';
+
+// Directory aliases for nicupediatricbiorepository.lab.uiowa.edu.
+$sites['labnicupediatricbiorepository.uiowa.ddev.site'] = 'nicupediatricbiorepository.lab.uiowa.edu';
+$sites['labnicupediatricbiorepository.dev.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
+$sites['labnicupediatricbiorepository.stage.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
+$sites['labnicupediatricbiorepository.prod.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
