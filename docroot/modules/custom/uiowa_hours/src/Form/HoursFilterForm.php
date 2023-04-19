@@ -234,7 +234,18 @@ class HoursFilterForm extends FormBase {
         ];
 
         foreach ($date as $time) {
-          $markup = $this->t('<span class="badge badge--green">Open</span> @start - @end', [
+          // Mark as closed if "Closure" category is present, else mark as open.
+          if (in_array('Closure', $time['categories'])) {
+            $badge = 'badge--orange';
+            $status = 'Closed';
+          }
+          else {
+            $badge = 'badge--green';
+            $status = 'Open';
+          }
+          $markup = $this->t('<span class="badge @badge">@status</span> @start - @end', [
+            '@badge' => $badge,
+            '@status' => $status,
             '@start' => date('g:ia', strtotime($time['startHour'])),
             '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
           ]);
