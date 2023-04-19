@@ -74,6 +74,20 @@ function iisc_core_node_view(array &$build, EntityInterface $entity, EntityViewD
 }
 
 /**
+ * Implements hook_preprocess_field().
+ */
+function iisc_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'body':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'padding--block--sm');
+      }
+      break;
+
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
