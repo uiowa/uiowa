@@ -20,9 +20,6 @@
   }
 
   .banner {
-    .field--label-visually_hidden .svg-inline--fa {
-      margin-right: 0;
-    }
 
     [class*="block-field-blocknoderesidence-hallfield-"] {
       display: inline-block;
@@ -47,7 +44,7 @@
     }
   }
 
-  .accordion .grid--twocol--50-50 .list-container {
+  .accordion .grid--twocol--50-50 .list-container__inner {
     column-gap: 1rem;
   }
 
@@ -81,6 +78,13 @@
 // Residence Hall search page.
 
 .view-residence-halls {
+  .views-exposed-form.uids-content:not(.uids-search) .form-item:not(:last-child) {
+    margin-right: 0;
+  }
+  .views-exposed-form details.form-wrapper {
+    width: 100%;
+  }
+
   @include breakpoint(sm) {
     display: flex;
     flex-wrap: wrap;
