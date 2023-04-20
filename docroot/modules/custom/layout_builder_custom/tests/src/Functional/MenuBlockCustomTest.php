@@ -177,8 +177,6 @@ class MenuBlockCustomTest extends BrowserTestBase {
     $page->clickLink('Add block');
     $page->clickLink('Main navigation');
     $assert_session->elementExists('xpath', '//input[contains(@id, "edit-settings-follow")]');
-    // Test label_type field is not rendered.
-    $assert_session->elementNotExists('xpath', '//select[contains(@id, "edit-settings-label-type")]');
     // Test label_link field is not rendered.
     $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-label-link")]');
     // Test follow description is not shown.

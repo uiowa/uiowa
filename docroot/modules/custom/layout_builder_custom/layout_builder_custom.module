@@ -276,8 +276,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['#title'] = t('Visibility options');
             // Move the advanced settings to be the first section.
             $form['settings']['advanced']['#weight'] = -5;
-            // Hide the options to set the block title and link.
-            $form['settings']['advanced']['label_type']['#access'] = FALSE;
+            // Append 'Menu' to the end of the admin label for clarity.
+            $form['settings']['admin_label']['#plain_text'] .= ' Menu';
+            // Unset the menu option in the label.
+            unset($form['settings']['advanced']['label_type']['#options']['menu']);
+            // Adjust the default text.
+            $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
+            // Update the description on the label_type.
+            $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. The title is displayed only for screen reader users. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
+            // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
             // visibility level should be set to 1 if used.
