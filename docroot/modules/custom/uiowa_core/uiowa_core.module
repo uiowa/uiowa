@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -856,6 +857,51 @@ function uiowa_core_preprocess_block(&$variables) {
       break;
 
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function uiowa_core_token_info(): array {
+  $info = [];
+  $info['types']['uiowa_core'] = [
+    'name' => t('UIowa Core'),
+    'description' => t('Tokens for UIowa Core.'),
+  ];
+  $info['tokens']['uiowa_core']['org_name'] = [
+    'name' => 'Organization Name',
+    'description' => 'A token to override the default University of Iowa organization name.',
+  ];
+  $info['tokens']['uiowa_core']['favicon_assets_path'] = [
+    'name' => 'Favicon assets path',
+    'description' => 'A token to override the default favicons path.',
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type === 'uiowa_core') {
+
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uiowa_core.settings');
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'org_name':
+          $replacements[$original] = $config->get('org_name') ?? 'The University of Iowa';
+          break;
+        case 'favicon_assets_path':
+          $replacements[$original] = $config->get('favicon_assets_path') ?? '/profiles/custom/sitenow/assets/';
+          break;
+      }
+    }
+  }
+  return $replacements;
 }
 
 /**
