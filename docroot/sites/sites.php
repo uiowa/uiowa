@@ -5188,3 +5188,9 @@ $sites['labnicupediatricbiorepository.uiowa.ddev.site'] = 'nicupediatricbiorepos
 $sites['labnicupediatricbiorepository.dev.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
 $sites['labnicupediatricbiorepository.stage.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
 $sites['labnicupediatricbiorepository.prod.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
+
+// Directory aliases for sebag.lab.uiowa.edu.
+$sites['labsebag.uiowa.ddev.site'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.dev.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.stage.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.prod.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
