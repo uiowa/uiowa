@@ -111,7 +111,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['advanced']['additional_parameters'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Additional Query Parameters'),
-      '#description' => $this->t('Append additional URL parameters to the search. <em>(UTM tracking codes, search filtering, etc.)</em>'),
+      '#description' => $this->t('Append additional URL parameters to the search. <em>(UTM tracking codes, search filtering, etc.)</em> Do <strong>not</strong> include sensitive information such as API keys, usernames, or passwords.'),
       '#default_value' => $config['additional_parameters'] ?? '',
     ];
     $form['search_label'] = [
