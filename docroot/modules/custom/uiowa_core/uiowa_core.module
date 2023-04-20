@@ -895,6 +895,7 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
         case 'org_name':
           $replacements[$original] = $config->get('org_name') ?? 'The University of Iowa';
           break;
+
         case 'favicon_assets_path':
           $replacements[$original] = $config->get('favicon_assets_path') ?? '/profiles/custom/sitenow/assets/';
           break;
