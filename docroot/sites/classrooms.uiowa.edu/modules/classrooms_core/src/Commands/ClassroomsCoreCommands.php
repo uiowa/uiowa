@@ -5,6 +5,7 @@ namespace Drupal\classrooms_core\Commands;
 use Drupal\classrooms_core\Entity\Building;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
@@ -53,6 +54,13 @@ class ClassroomsCoreCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
+   * The database service.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
    * The datetime.time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
@@ -70,14 +78,17 @@ class ClassroomsCoreCommands extends DrushCommands {
    *   The cache.uiowa_maui service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity_type.manager service.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime.time service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, Connection $connection, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
     $this->mauiApi = $mauiApi;
     $this->mauiCache = $mauiCache;
     $this->entityTypeManager = $entityTypeManager;
+    $this->connection = $connection;
     $this->time = $time;
   }
 
