@@ -230,7 +230,7 @@ class ClassroomsCoreCommands extends DrushCommands {
               'name' => $data[0]->roomType,
               'vid' => 'room_types',
             ]);
-          if (empty($term) || $node->get('field_room_type')->get(0)->getValue()['target_id'] !== array_key_first($term)) {
+          if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
             $this->nodeSaveHelper($node);
             $entities_updated++;
             continue;
@@ -247,7 +247,7 @@ class ClassroomsCoreCommands extends DrushCommands {
               'name' => $data[0]->acadOrgUnitName,
               'vid' => 'units',
             ]);
-          if (empty($term) || $node->get('field_room_responsible_unit')->get(0)->getValue()['target_id'] !== array_key_first($term)) {
+          if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
             $this->nodeSaveHelper($node);
             $entities_updated++;
             continue;
@@ -317,7 +317,7 @@ class ClassroomsCoreCommands extends DrushCommands {
             foreach ($terms as $term) {
               if ($api_mapping = $term->get('field_api_mapping')?->value) {
                 if (in_array($api_mapping, $data[0]->regionList)) {
-                  if ($node->get('field_room_scheduling_regions')->value !== $term->id()) {
+                  if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
                     $this->nodeSaveHelper($node);
                     $entities_updated++;
                   }
