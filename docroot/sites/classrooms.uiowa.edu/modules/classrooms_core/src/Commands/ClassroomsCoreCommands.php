@@ -158,7 +158,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           !$node->get('field_room_room_id')->isEmpty()
         ) {
           $existing_nodes[$nid] = [
-            'building_id' => $node->get('field_room_building_id')->value,
+            'building_id' => $node->get('field_room_building_id')?->get(0)?->getValue()['target_id'],
             'room_id' => $node->get('field_room_room_id')->value,
           ];
         }
@@ -230,7 +230,7 @@ class ClassroomsCoreCommands extends DrushCommands {
               'name' => $data[0]->roomType,
               'vid' => 'room_types',
             ]);
-          if (empty($term) || $node->get('field_room_type')->value[0] !== array_key_first($term)) {
+          if (empty($term) || $node->get('field_room_type')->get(0)->getValue()['target_id'] !== array_key_first($term)) {
             $this->nodeSaveHelper($node);
             $entities_updated++;
             continue;
@@ -247,7 +247,7 @@ class ClassroomsCoreCommands extends DrushCommands {
               'name' => $data[0]->acadOrgUnitName,
               'vid' => 'units',
             ]);
-          if (empty($term) || $node->get('field_room_responsible_unit')->value[0] !== array_key_first($term)) {
+          if (empty($term) || $node->get('field_room_responsible_unit')->get(0)->getValue()['target_id'] !== array_key_first($term)) {
             $this->nodeSaveHelper($node);
             $entities_updated++;
             continue;
