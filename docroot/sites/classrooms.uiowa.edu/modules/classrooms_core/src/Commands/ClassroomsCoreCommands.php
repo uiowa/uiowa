@@ -136,25 +136,177 @@ class ClassroomsCoreCommands extends DrushCommands {
       ->accessCheck(TRUE);
     $entities = $query->execute();
 
+    // If we don't have any entities, send a message
+    // and we're done.
+    if (empty($entities)) {
+      $this->getLogger('classrooms_core')->notice('No rooms available to update.');
+
+      // Switch user back.
+      $this->accountSwitcher->switchBack();
+      return;
+    }
+
     // Retrieve building and room number values from existing nodes.
-    if ($entities) {
-      $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
-      $nodes = $storage->loadMultiple($entities);
-      $existing_nodes = [];
-      foreach ($nodes as $nid => $node) {
-        if ($node instanceof FieldableEntityInterface) {
-          if ($node->hasField('field_room_building_id') &&
-            !$node->get('field_building_number')->isEmpty() &&
-            $node->hasField('field_room_room_id') &&
-            !$node->get('field_room_room_id')->isEmpty()
-          ) {
-            $existing_nodes[$nid] = [
-              $node->get('field_room_building_id')->value,
-              $node->get('field_room_room_id')->value,
-            ];
+    $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
+    $nodes = $storage->loadMultiple($entities);
+    $existing_nodes = [];
+    foreach ($nodes as $nid => $node) {
+      if ($node instanceof FieldableEntityInterface) {
+        if ($node->hasField('field_room_building_id') &&
+          !$node->get('field_building_number')->isEmpty() &&
+          $node->hasField('field_room_room_id') &&
+          !$node->get('field_room_room_id')->isEmpty()
+        ) {
+          $existing_nodes[$nid] = [
+            'building_id' => $node->get('field_room_building_id')->value,
+            'room_id' => $node->get('field_room_room_id')->value,
+          ];
+        }
+      }
+    }
+
+    foreach ($existing_nodes as $nid => $info) {
+      // Grab MAUI room data.
+      $maui_api = \Drupal::service('uiowa_maui.api');
+      $data = $maui_api->getRoomData($info['building_id'], $info['room_id']);
+
+      // If we weren't able to get data for this room,
+      // log a notice and move on to the next one.
+      if (!$data) {
+        $this->getLogger('classrooms_core')->notice('No data found for @building @room', [
+          '@building' => $info['building_id'],
+          '@room' => $info['room_id'],
+        ]);
+        continue;
+      }
+
+      // Mapping the Max Occupancy field to the maxOccupancy value from endpoint.
+      if ($entity->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
+        if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
+          $entity->set('field_room_max_occupancy', $data[0]->maxOccupancy);
+        }
+      }
+
+      // Mapping the Room Name field to the roomName value from endpoint.
+      if ($entity->hasField('field_room_name') && isset($data[0]->roomName)) {
+        if (strlen($data[0]->roomName) > 1) {
+          $entity->set('field_room_name', $data[0]->roomName);
+        }
+      }
+
+      // Mapping the Instructional Room Category field to the
+      // roomCategory value from endpoint.
+      if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
+        $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
+        $field_allowed_options = options_allowed_values($field_definition, $entity);
+        if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
+          $entity->set('field_room_instruction_category', $data[0]->roomCategory);
+        }
+      }
+
+      // Mapping the Room Type field to the roomType value from endpoint.
+      if ($entity->hasField('field_room_type') && isset($data[0]->roomType)) {
+        // Returns all terms matching name within vocabulary.
+        $term = \Drupal::entityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadByProperties(['name' => $data[0]->roomType, 'vid' => 'room_types']);
+        if (!empty($term)) {
+          // Set based on first (and hopefully only) result.
+          $entity->set('field_room_type', [array_key_first($term)]);
+        }
+        else {
+          // If term does not exist create it.
+          $new_term = Term::create([
+            'vid' => 'room_types',
+            'name' => $data[0]->roomType,
+          ]);
+          $new_term->save();
+          $entity->set('field_room_type', [$new_term->id()]);
+        }
+      }
+
+      // Mapping the Responsible Unit field to the
+      // acadOrgUnitName value from endpoint.
+      if ($entity->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
+        // Returns all terms matching name within vocabulary.
+        $term = \Drupal::entityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadByProperties([
+            'name' => $data[0]->acadOrgUnitName,
+            'vid' => 'units',
+          ]);
+        if (!empty($term)) {
+          // Set based on first (and hopefully only) result.
+          $entity->set('field_room_responsible_unit', [array_key_first($term)]);
+        }
+        else {
+          // If term does not exist create it.
+          $new_term = Term::create([
+            'vid' => 'units',
+            'name' => $data[0]->acadOrgUnitName,
+          ]);
+          $new_term->save();
+          $entity->set('field_room_responsible_unit', [$new_term->id()]);
+        }
+      }
+
+      // Mapping Room Features and Technology Features fields
+      // to the featureList value from endpoint.
+      if (isset($data[0]->featureList)) {
+        $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
+          ->condition('vid', 'room_features')
+          ->condition('vid', 'technology_features');
+
+        $tids = \Drupal::entityQuery('taxonomy_term')
+          ->condition($query)
+          ->execute();
+        if ($tids) {
+          $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+          $terms = $storage->loadMultiple($tids);
+          $room_features = [];
+          $tech_features = [];
+          foreach ($terms as $term) {
+            if ($api_mapping = $term->get('field_api_mapping')?->value) {
+              if (in_array($api_mapping, $data[0]->featureList)) {
+                if ($term->bundle() === 'room_features') {
+                  $room_features[] = $term->id();
+                }
+                else {
+                  $tech_features[] = $term->id();
+                }
+              }
+            }
+          }
+          if (!empty($room_features)) {
+            $entity->set('field_room_features', $room_features);
+          }
+          if (!empty($tech_features)) {
+            $entity->set('field_room_technology_features', $tech_features);
           }
         }
       }
+
+      // Mapping the Scheduling Regions field to the
+      // regionList value from endpoint.
+      if (isset($data[0]->regionList)) {
+        $query = \Drupal::entityQuery('taxonomy_term')
+          ->condition('vid', 'scheduling_regions')
+          ->execute();
+
+        if ($query) {
+          $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+          $terms = $storage->loadMultiple($query);
+          foreach ($terms as $term) {
+            if ($api_mapping = $term->get('field_api_mapping')?->value) {
+              if (in_array($api_mapping, $data[0]->regionList)) {
+                $entity->set('field_room_scheduling_regions', $term->id());
+                break;
+              }
+            }
+          }
+        }
+      }
+
     }
 
     // @todo Update this with classrooms-specific logic.
