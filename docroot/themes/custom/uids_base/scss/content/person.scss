@@ -19,9 +19,15 @@
 // For professional titles on multiple lines
 .view-people-list-block,
 .view-people-block,
-.view-people {
-  .field--label-visually_hidden .field__items {
-    display: grid;
+.view-people,
+.block-inline-blockfeatured-content,
+.paragraph--type--featured-content {
+  .field--name-field-person-position {
+    &.field--label-visually_hidden {
+      .field__items {
+        display: grid;
+      }
+    }
   }
 }
 
