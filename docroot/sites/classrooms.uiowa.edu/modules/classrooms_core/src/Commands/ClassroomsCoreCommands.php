@@ -282,14 +282,20 @@ class ClassroomsCoreCommands extends DrushCommands {
               }
             }
             if (!empty($room_features)) {
-              if ($node->get('field_room_features')->value !== $room_features) {
+              // Cheat it a bit by fetching a string and exploding it
+              // to end up with a basic array of target ids.
+              $node_features = $node->get('field_room_features')->getString();
+              $node_features = explode(', ', $node_features);
+              if ($node_features !== $room_features) {
                 $this->nodeSaveHelper($node);
                 $entities_updated++;
                 continue;
               }
             }
             if (!empty($tech_features)) {
-              if ($node->get('field_room_technology_features')->value !== $tech_features) {
+              $node_tech_features = $node->get('field_room_technology_features')->getString();
+              $node_tech_features = explode(', ', $node_tech_features);
+              if ($node_tech_features !== $tech_features) {
                 $this->nodeSaveHelper($node);
                 $entities_updated++;
                 continue;
