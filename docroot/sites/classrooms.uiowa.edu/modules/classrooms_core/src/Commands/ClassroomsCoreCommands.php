@@ -153,7 +153,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     foreach ($nodes as $nid => $node) {
       if ($node instanceof FieldableEntityInterface) {
         if ($node->hasField('field_room_building_id') &&
-          !$node->get('field_building_number')->isEmpty() &&
+          !$node->get('field_room_building_id')->isEmpty() &&
           $node->hasField('field_room_room_id') &&
           !$node->get('field_room_room_id')->isEmpty()
         ) {
