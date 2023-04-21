@@ -3,11 +3,15 @@
 namespace Drupal\classrooms_core\Commands;
 
 use Drupal\classrooms_core\Entity\Building;
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -28,13 +32,53 @@ class ClassroomsCoreCommands extends DrushCommands {
   protected $accountSwitcher;
 
   /**
+   * The uiowa_maui.api service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
+   */
+  protected $mauiApi;
+
+  /**
+   * The cache.uiowa_maui service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $mauiCache;
+
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The datetime.time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * Drush command constructor.
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
+   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
+   *   The uiowa_maui.api service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $mauiCache
+   *   The cache.uiowa_maui service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity_type.manager service.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The datetime.time service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
+    $this->mauiApi = $mauiApi;
+    $this->mauiCache = $mauiCache;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->time = $time;
   }
 
   /**
@@ -51,14 +95,13 @@ class ClassroomsCoreCommands extends DrushCommands {
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
     $cid = 'uiowa_maui:request:buildings_filtered';
-    if ($cached = \Drupal::cache('uiowa_maui')->get($cid)) {
+    if ($cached = $this->mauiCache->get($cid)) {
       $buildings = $cached->data;
     }
     else {
       // Request from MAUI API
       // and then filter based on Classroom's requirements.
-      $maui_api = \Drupal::service('uiowa_maui.api');
-      $data = $maui_api->getClassroomsData();
+      $data = $this->mauiApi->getClassroomsData();
       $buildings = [];
       $filters = [
         '1) University Classrooms - Level 1',
@@ -78,13 +121,15 @@ class ClassroomsCoreCommands extends DrushCommands {
         }
       }
       // Create a cache item set to 6 hours.
-      $request_time = \Drupal::time()->getRequestTime();
-      \Drupal::cache('uiowa_maui')->set($cid, $buildings, $request_time + 21600);
+      $request_time = $this->time->getRequestTime();
+      $this->mauiCache->set($cid, $buildings, $request_time + 21600);
     }
 
     if (!empty($buildings)) {
       // Check for existing building config entities before creating.
-      $query = \Drupal::entityQuery('building')
+      $query = $this->entityTypeManager
+        ->getStorage('building')
+        ->getQuery()
         ->accessCheck(TRUE);
       $entities = $query->execute();
 
@@ -131,7 +176,9 @@ class ClassroomsCoreCommands extends DrushCommands {
     $entities_updated = 0;
 
     // Get existing room nodes.
-    $query = \Drupal::entityQuery('node')
+    $query = $this->entityTypeManager
+      ->getStorage('node')
+      ->getQuery()
       ->condition('type', 'room')
       ->accessCheck(TRUE);
     $entities = $query->execute();
@@ -147,7 +194,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     }
 
     // Retrieve building and room number values from existing nodes.
-    $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
+    $storage = $this->entityTypeManager->getStorage('node');
     $nodes = $storage->loadMultiple($entities);
     $existing_nodes = [];
     foreach ($nodes as $nid => $node) {
@@ -167,8 +214,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     foreach ($existing_nodes as $nid => $info) {
       // Grab MAUI room data.
-      $maui_api = \Drupal::service('uiowa_maui.api');
-      $data = $maui_api->getRoomData($info['building_id'], $info['room_id']);
+      $data = $this->mauiApi->getRoomData($info['building_id'], $info['room_id']);
 
       // If we weren't able to get data for this room,
       // log a notice and move on to the next one.
@@ -224,7 +270,7 @@ class ClassroomsCoreCommands extends DrushCommands {
         // Mapping the Room Type field to the roomType value from endpoint.
         if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
           // Returns all terms matching name within vocabulary.
-          $term = \Drupal::entityTypeManager()
+          $term = $this->entityTypeManager
             ->getStorage('taxonomy_term')
             ->loadByProperties([
               'name' => $data[0]->roomType,
@@ -241,7 +287,7 @@ class ClassroomsCoreCommands extends DrushCommands {
         // acadOrgUnitName value from endpoint.
         if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
           // Returns all terms matching name within vocabulary.
-          $term = \Drupal::entityTypeManager()
+          $term = $this->entityTypeManager
             ->getStorage('taxonomy_term')
             ->loadByProperties([
               'name' => $data[0]->acadOrgUnitName,
@@ -257,15 +303,20 @@ class ClassroomsCoreCommands extends DrushCommands {
         // Mapping Room Features and Technology Features fields
         // to the featureList value from endpoint.
         if (isset($data[0]->featureList)) {
-          $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
+          $query = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
+            ->orConditionGroup()
             ->condition('vid', 'room_features')
             ->condition('vid', 'technology_features');
 
-          $tids = \Drupal::entityQuery('taxonomy_term')
+          $tids = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
             ->condition($query)
             ->execute();
           if ($tids) {
-            $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
             $terms = $storage->loadMultiple($tids);
             $room_features = [];
             $tech_features = [];
@@ -307,12 +358,14 @@ class ClassroomsCoreCommands extends DrushCommands {
         // Mapping the Scheduling Regions field to the
         // regionList value from endpoint.
         if (isset($data[0]->regionList)) {
-          $query = \Drupal::entityQuery('taxonomy_term')
+          $query = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
             ->condition('vid', 'scheduling_regions')
             ->execute();
 
           if ($query) {
-            $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
             $terms = $storage->loadMultiple($query);
             foreach ($terms as $term) {
               if ($api_mapping = $term->get('field_api_mapping')?->value) {
@@ -347,7 +400,7 @@ class ClassroomsCoreCommands extends DrushCommands {
   protected function nodeSaveHelper($node) {
     $node->setNewRevision(TRUE);
     $node->revision_log = 'Updated room from source';
-    $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $node->setRevisionCreationTime($this->time->getRequestTime());
     $node->setRevisionUserId(1);
     $node->save();
   }
