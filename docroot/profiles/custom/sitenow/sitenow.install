@@ -2332,3 +2332,17 @@ function sitenow_update_9059(&$sandbox) {
     $component->set('layout_builder_styles_style', array_filter($styles));
   });
 }
+
+/**
+ * Update search blocks to be aware of new fields.
+ */
+function sitenow_update_9060() {
+  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block) {
+
+    $config = $component->get('configuration');
+    $config['query_prepend'] = '';
+    $config['additional_parameters'] = '';
+    $component->setConfiguration($config);
+
+  });
+}
