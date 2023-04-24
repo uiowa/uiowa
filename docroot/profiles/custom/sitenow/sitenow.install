@@ -2293,3 +2293,56 @@ function sitenow_update_9058(&$sandbox) {
     }
   }
 }
+
+/**
+ * Set defaults for card headline styles.
+ */
+function sitenow_update_9059(&$sandbox) {
+  _update_all_blocks_by_plugin_id([
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-card_list',
+  ], function (&$component, $block) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+
+    if (empty($styles)) {
+      $styles = [];
+    }
+
+    if (in_array('card_media_position_stacked', $styles)) {
+      $styles[] = 'card_headline_style_sans_serif';
+    }
+    else {
+      $styles[] = 'card_headline_style_serif';
+    }
+
+    // Still need to maintain this other set of styles for AJAX view pagers.
+    // @phpstan-ignore-next-line
+    $configuration = $component->get('configuration');
+    $configuration['layout_builder_styles'] = array_filter($styles);
+
+    $component->setConfiguration($configuration);
+
+    // Save updated styles.
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', array_filter($styles));
+  });
+}
+
+/**
+ * Update search blocks to be aware of new fields.
+ */
+function sitenow_update_9060() {
+  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block) {
+
+    $config = $component->get('configuration');
+    $config['query_prepend'] = '';
+    $config['additional_parameters'] = '';
+    $component->setConfiguration($config);
+
+  });
+}

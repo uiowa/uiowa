@@ -147,7 +147,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['resource'] = [
       '#type' => 'select',
       '#title' => $this->t('Resource'),
-      '#description' => $this->t('The resource to display hours for.'),
+      '#description' => $this->t('The resource to display hours for. If <em>Closure</em> category is present, it will be marked as closed.'),
       '#required' => TRUE,
       '#default_value' => $config['resource'] ?? NULL,
       '#options' => array_combine($resources, $resources),
