@@ -368,25 +368,107 @@ class ClassroomsCoreCommands extends DrushCommands {
                 }
               }
             }
+            $updated = FALSE;
             if (!empty($room_features)) {
               // Cheat it a bit by fetching a string and exploding it
               // to end up with a basic array of target ids.
               $node_features = $node->get('field_room_features')->getString();
               $node_features = explode(', ', $node_features);
               if ($node_features !== $room_features) {
-                $this->nodeSaveHelper($node);
-                $entities_updated++;
-                continue;
+                $updated = TRUE;
+                // If the data from maui has fewer room features
+                // than are currently on the node, remove the excess.
+                if (count($room_features) < count($node_features)) {
+                  foreach (range(count($room_features), count($node_features)) as $delta) {
+                    $this->connection
+                      ->delete('node__field_room_features')
+                      ->condition('revision_id', $node->getRevisionId(), '=')
+                      ->condition('delta', $delta, '=')
+                      ->execute();
+                  }
+                }
+                foreach ($room_features as $delta => $target_id) {
+                  // As long as the old room features was equal to or
+                  // more than the number of new features, we can
+                  // re-use the table entries. Any additional room features
+                  // will need to be inserted.
+                  if ($delta < count($room_features)) {
+                    $this->connection
+                      ->update('node__field_room_features')
+                      ->fields([
+                        'field_room_features_target_id' => $target_id
+                      ])
+                      ->condition('revision_id', $node->getRevisionId(), '=')
+                      ->condition('delta', $delta, '=')
+                      ->execute();
+                  }
+                  else {
+                    $this->connection
+                      ->insert('node__field_room_features')
+                      ->fields([
+                        'bundle' => 'room',
+                        'deleted' => 0,
+                        'entity_id' => $node->id(),
+                        'revision_id' => $node->getRevisionId(),
+                        'langcode' => 'en',
+                        'delta' => $delta,
+                        'field_room_features_target_id' => $target_id
+                      ])
+                      ->execute();
+                  }
+                }
               }
             }
             if (!empty($tech_features)) {
               $node_tech_features = $node->get('field_room_technology_features')->getString();
               $node_tech_features = explode(', ', $node_tech_features);
               if ($node_tech_features !== $tech_features) {
-                $this->nodeSaveHelper($node);
-                $entities_updated++;
-                continue;
+                $updated = TRUE;
+                // If the data from maui has fewer room features
+                // than are currently on the node, remove the excess.
+                if (count($tech_features) < count($node_tech_features)) {
+                  foreach (range(count($tech_features), count($node_tech_features)) as $delta) {
+                    $this->connection
+                      ->delete('node__field_room_technology_features')
+                      ->condition('revision_id', $node->getRevisionId(), '=')
+                      ->condition('delta', $delta, '=')
+                      ->execute();
+                  }
+                }
+                foreach ($tech_features as $delta => $target_id) {
+                  // As long as the old room features was equal to or
+                  // more than the number of new features, we can
+                  // re-use the table entries. Any additional room features
+                  // will need to be inserted.
+                  if ($delta < count($room_features)) {
+                    $this->connection
+                      ->update('node__field_room_technology_features')
+                      ->fields([
+                        'field_room_technology_features_target_id' => $target_id
+                      ])
+                      ->condition('revision_id', $node->getRevisionId(), '=')
+                      ->condition('delta', $delta, '=')
+                      ->execute();
+                  }
+                  else {
+                    $this->connection
+                      ->insert('node__field_room_technology_features')
+                      ->fields([
+                        'bundle' => 'room',
+                        'deleted' => 0,
+                        'entity_id' => $node->id(),
+                        'revision_id' => $node->getRevisionId(),
+                        'langcode' => 'en',
+                        'delta' => $delta,
+                        'field_room_technology_features_target_id' => $target_id
+                      ])
+                      ->execute();
+                  }
+                }
               }
+            }
+            if ($updated === TRUE) {
+              $entities_updated++;
             }
           }
         }
@@ -407,7 +489,13 @@ class ClassroomsCoreCommands extends DrushCommands {
               if ($api_mapping = $term->get('field_api_mapping')?->value) {
                 if (in_array($api_mapping, $data[0]->regionList)) {
                   if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                    $this->nodeSaveHelper($node);
+                    $this->connection
+                      ->update('node__field_room_scheduling_regions')
+                      ->fields([
+                        'field_room_scheduling_regions_target_id' => $term->id(),
+                      ])
+                      ->condition('revision_id', $node->getRevisionId(), '=')
+                      ->execute();
                     $entities_updated++;
                   }
                 }
@@ -425,20 +513,6 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
-  }
-
-  /**
-   * Helper to set revisions and save a node.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node to be saved.
-   */
-  protected function nodeSaveHelper($node) {
-    $node->setNewRevision(TRUE);
-    $node->revision_log = 'Updated room from source';
-    $node->setRevisionCreationTime($this->time->getRequestTime());
-    $node->setRevisionUserId(1);
-    $node->save();
   }
 
 }
