@@ -398,7 +398,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                   // more than the number of new features, we can
                   // re-use the table entries. Any additional room features
                   // will need to be inserted.
-                  if ($delta < count($room_features)) {
+                  if ($delta < count($room_features) - 1) {
                     $this->connection
                       ->update('node__field_room_features')
                       ->fields([
@@ -446,7 +446,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                   // more than the number of new features, we can
                   // re-use the table entries. Any additional room features
                   // will need to be inserted.
-                  if ($delta < count($room_features)) {
+                  if ($delta < count($room_features) - 1) {
                     $this->connection
                       ->update('node__field_room_technology_features')
                       ->fields([
