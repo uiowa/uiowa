@@ -5200,3 +5200,9 @@ $sites['labhornbuckle.uiowa.ddev.site'] = 'hornbuckle.lab.uiowa.edu';
 $sites['labhornbuckle.dev.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
 $sites['labhornbuckle.stage.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
 $sites['labhornbuckle.prod.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
+
+// Directory aliases for iowamade.org.
+$sites['org-iowamade.uiowa.ddev.site'] = 'iowamade.org';
+$sites['org-iowamade.dev.drupal.uiowa.edu'] = 'iowamade.org';
+$sites['org-iowamade.stage.drupal.uiowa.edu'] = 'iowamade.org';
+$sites['org-iowamade.prod.drupal.uiowa.edu'] = 'iowamade.org';
