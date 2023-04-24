@@ -246,9 +246,14 @@ class ClassroomsCoreCommands extends DrushCommands {
         if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
           if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
             if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
-              $this->nodeSaveHelper($node);
+              $this->connection
+                ->update('node__field_room_max_occupancy')
+                ->fields([
+                  'field_room_max_occupancy_value' => $data[0]->maxOccupancy,
+                ])
+                ->condition('revision_id', $node->getRevisionId(), '=')
+                ->execute();
               $entities_updated++;
-              continue;
             }
           }
         }
@@ -257,9 +262,14 @@ class ClassroomsCoreCommands extends DrushCommands {
         if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
           if (strlen($data[0]->roomName) > 1) {
             if ($node->get('field_room_name')->value !== $data[0]->roomName) {
-              $this->nodeSaveHelper($node);
+              $this->connection
+                ->update('node__field_room_name')
+                ->fields([
+                  'field_room_name_value' => $data[0]->roomName,
+                ])
+                ->condition('revision_id', $node->getRevisionId(), '=')
+                ->execute();
               $entities_updated++;
-              continue;
             }
           }
         }
@@ -271,9 +281,14 @@ class ClassroomsCoreCommands extends DrushCommands {
           $field_allowed_options = options_allowed_values($field_definition, $node);
           if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
             if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
-              $this->nodeSaveHelper($node);
+              $this->connection
+                ->update('node__field_room_instruction_category')
+                ->fields([
+                  'field_room_name_value' => $data[0]->roomCategory,
+                ])
+                ->condition('revision_id', $node->getRevisionId(), '=')
+                ->execute();
               $entities_updated++;
-              continue;
             }
           }
         }
@@ -288,9 +303,14 @@ class ClassroomsCoreCommands extends DrushCommands {
               'vid' => 'room_types',
             ]);
           if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
-            $this->nodeSaveHelper($node);
+            $this->connection
+              ->update('node__field_room_type')
+              ->fields([
+                'field_room_type_target_id' => array_key_first($term),
+              ])
+              ->condition('revision_id', $node->getRevisionId(), '=')
+              ->execute();
             $entities_updated++;
-            continue;
           }
         }
 
@@ -305,9 +325,14 @@ class ClassroomsCoreCommands extends DrushCommands {
               'vid' => 'units',
             ]);
           if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-            $this->nodeSaveHelper($node);
+            $this->connection
+              ->update('node__field_room_responsible_unit')
+              ->fields([
+                'field_room_responsible_unit_target_id' => array_key_first($term),
+              ])
+              ->condition('revision_id', $node->getRevisionId(), '=')
+              ->execute();
             $entities_updated++;
-            continue;
           }
         }
 
