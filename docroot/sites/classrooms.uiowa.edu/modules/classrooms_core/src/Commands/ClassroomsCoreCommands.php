@@ -187,12 +187,12 @@ class ClassroomsCoreCommands extends DrushCommands {
     $entities_updated = 0;
 
     // Get existing room nodes.
-    $query = $this->entityTypeManager
+    $entities = $this->entityTypeManager
       ->getStorage('node')
       ->getQuery()
       ->condition('type', 'room')
-      ->accessCheck(TRUE);
-    $entities = $query->execute();
+      ->accessCheck(TRUE)
+      ->execute();
 
     // If we don't have any entities, send a message
     // and we're done.
@@ -216,7 +216,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           !$node->get('field_room_room_id')->isEmpty()
         ) {
           $existing_nodes[$nid] = [
-            'building_id' => $node->get('field_room_building_id')?->get(0)?->getValue()['target_id'],
+            'building_id' => $node->get('field_room_building_id')?->getString(),
             'room_id' => $node->get('field_room_room_id')->value,
           ];
         }
@@ -243,7 +243,7 @@ class ClassroomsCoreCommands extends DrushCommands {
       $node = $storage->load($nid);
       if ($node instanceof NodeInterface) {
 
-        // Mapping the Max Occupancy field
+        // Comparing the Max Occupancy field
         // to the maxOccupancy value from endpoint.
         if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
           if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
@@ -261,7 +261,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping the Room Name field to the roomName value from endpoint.
+        // Comparing the Room Name field to the roomName value from endpoint.
         if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
           if (strlen($data[0]->roomName) > 1) {
             if ($node->get('field_room_name')->value !== $data[0]->roomName) {
@@ -278,7 +278,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping the Instructional Room Category field to the
+        // Comparing the Instructional Room Category field to the
         // roomCategory value from endpoint.
         if ($node->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
           $field_definition = $node->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
@@ -289,7 +289,7 @@ class ClassroomsCoreCommands extends DrushCommands {
               $this->connection
                 ->update('node__field_room_instruction_category')
                 ->fields([
-                  'field_room_name_value' => $data[0]->roomCategory,
+                  'field_room_instruction_category_value' => $data[0]->roomCategory,
                 ])
                 ->condition('revision_id', $node->getRevisionId(), '=')
                 ->execute();
@@ -298,7 +298,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping the Room Type field to the roomType value from endpoint.
+        // Comparing the Room Type field to the roomType value from endpoint.
         if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
           // Returns all terms matching name within vocabulary.
           $term = $this->entityTypeManager
@@ -320,7 +320,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping the Responsible Unit field to the
+        // Comparing the Responsible Unit field to the
         // acadOrgUnitName value from endpoint.
         if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
           // Returns all terms matching name within vocabulary.
@@ -343,7 +343,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping Room Features and Technology Features fields
+        // Comparing Room Features and Technology Features fields
         // to the featureList value from endpoint.
         if (isset($data[0]->featureList)) {
           $query = $this->entityTypeManager
@@ -359,8 +359,9 @@ class ClassroomsCoreCommands extends DrushCommands {
             ->condition($query)
             ->execute();
           if ($tids) {
-            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
-            $terms = $storage->loadMultiple($tids);
+            $terms = $this->entityTypeManager
+              ->getStorage('taxonomy_term')
+              ->loadMultiple($tids);
             $room_features = [];
             $tech_features = [];
             foreach ($terms as $term) {
@@ -476,7 +477,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
 
-        // Mapping the Scheduling Regions field to the
+        // Comparing the Scheduling Regions field to the
         // regionList value from endpoint.
         if (isset($data[0]->regionList)) {
           $query = $this->entityTypeManager
@@ -486,8 +487,9 @@ class ClassroomsCoreCommands extends DrushCommands {
             ->execute();
 
           if ($query) {
-            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
-            $terms = $storage->loadMultiple($query);
+            $terms = $this->entityTypeManager
+              ->getStorage('taxonomy_term')
+              ->loadMultiple($query);
             foreach ($terms as $term) {
               if ($api_mapping = $term->get('field_api_mapping')?->value) {
                 if (in_array($api_mapping, $data[0]->regionList)) {
