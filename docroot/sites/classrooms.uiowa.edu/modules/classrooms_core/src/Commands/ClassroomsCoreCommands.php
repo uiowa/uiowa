@@ -396,7 +396,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                     $this->connection
                       ->update('node__field_room_features')
                       ->fields([
-                        'field_room_features_target_id' => $target_id
+                        'field_room_features_target_id' => $target_id,
                       ])
                       ->condition('revision_id', $node->getRevisionId(), '=')
                       ->condition('delta', $delta, '=')
@@ -412,7 +412,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                         'revision_id' => $node->getRevisionId(),
                         'langcode' => 'en',
                         'delta' => $delta,
-                        'field_room_features_target_id' => $target_id
+                        'field_room_features_target_id' => $target_id,
                       ])
                       ->execute();
                   }
@@ -444,7 +444,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                     $this->connection
                       ->update('node__field_room_technology_features')
                       ->fields([
-                        'field_room_technology_features_target_id' => $target_id
+                        'field_room_technology_features_target_id' => $target_id,
                       ])
                       ->condition('revision_id', $node->getRevisionId(), '=')
                       ->condition('delta', $delta, '=')
@@ -460,7 +460,7 @@ class ClassroomsCoreCommands extends DrushCommands {
                         'revision_id' => $node->getRevisionId(),
                         'langcode' => 'en',
                         'delta' => $delta,
-                        'field_room_technology_features_target_id' => $target_id
+                        'field_room_technology_features_target_id' => $target_id,
                       ])
                       ->execute();
                   }
