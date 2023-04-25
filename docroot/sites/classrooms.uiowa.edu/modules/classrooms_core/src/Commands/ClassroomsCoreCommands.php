@@ -7,11 +7,9 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drupal\node\NodeInterface;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
@@ -183,9 +181,6 @@ class ClassroomsCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    // Establish a count for message at the end.
-    $entities_updated = 0;
-
     // Get existing room nodes.
     $entities = $this->entityTypeManager
       ->getStorage('node')
@@ -234,7 +229,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     $batch = [
       'title' => t('Checking @num node(s) for updates.', [
         '@num' => $num_operations,
-        ]),
+      ]),
       'operations' => $operations,
       'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
     ];
