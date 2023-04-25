@@ -12,7 +12,6 @@ use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
 use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
 use Drupal\uiowa_core\Element\Card;
-use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
