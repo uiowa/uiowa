@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
@@ -22,6 +23,7 @@ use Drush\Commands\DrushCommands;
  */
 class ClassroomsCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -227,7 +229,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // 4. Create the batch.
     $batch = [
-      'title' => t('Checking @num node(s) for updates.', [
+      'title' => $this->t('Checking @num node(s) for updates.', [
         '@num' => $num_operations,
       ]),
       'operations' => $operations,
