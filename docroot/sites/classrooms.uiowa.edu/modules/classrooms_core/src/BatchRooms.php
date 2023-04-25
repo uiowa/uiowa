@@ -30,10 +30,6 @@ class BatchRooms {
         continue;
       }
 
-      if ($node->getRevisionId() == 9154) {
-        $foo = 'bar';
-      }
-
       if ($node->hasField('field_room_building_id') &&
         !$node->get('field_room_building_id')->isEmpty() &&
         $node->hasField('field_room_room_id') &&
@@ -262,7 +258,7 @@ class BatchRooms {
                 // more than the number of new features, we can
                 // re-use the table entries. Any additional room features
                 // will need to be inserted.
-                if ($delta < count($room_features) - 1) {
+                if ($delta < count($node_tech_features) - 1) {
                   \Drupal::database()
                     ->update('node__field_room_technology_features')
                     ->fields([
@@ -317,7 +313,6 @@ class BatchRooms {
                     ])
                     ->condition('revision_id', $node->getRevisionId(), '=')
                     ->execute();
-                  $updated = TRUE;
                 }
               }
             }
@@ -328,6 +323,8 @@ class BatchRooms {
       if ($updated === TRUE) {
         // Optional message displayed under the progressbar.
         $context['results'][] = $node->id();
+        // Invalidate the node's cache.
+        \Drupal::service('cache_tags.invalidator')->invalidateTags($node->getCacheTags());
       }
     }
   }
