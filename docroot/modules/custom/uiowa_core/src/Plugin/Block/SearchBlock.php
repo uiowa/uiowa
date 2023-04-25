@@ -52,17 +52,25 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function build() {
     $block = [];
     $config = $this->getConfiguration();
+    $params = [];
+
+    // Build a list of parameters, if they are set.
+    foreach ([
+      'endpoint',
+      'query_parameter',
+      'query_prepend',
+      'additional_parameters',
+      'button_text',
+      'search_label',
+    ] as $param) {
+      if (isset($config[$param])) {
+        $params[$param] = $config[$param];
+      }
+    }
 
     $block['form'] = $this->formBuilder->getForm(
       'Drupal\uiowa_core\Form\SearchBlock',
-      [
-        'endpoint' => $config['endpoint'],
-        'query_parameter' => $config['query_parameter'],
-        'query_prepend' => $config['query_prepend'],
-        'additional_parameters' => $config['additional_parameters'],
-        'button_text' => $config['button_text'],
-        'search_label' => $config['search_label'],
-      ],
+      $params,
     );
 
     return $block;
