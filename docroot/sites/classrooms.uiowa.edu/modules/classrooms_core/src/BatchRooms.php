@@ -1,10 +1,11 @@
 <?php
+
 namespace Drupal\classrooms_core;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 
 /**
- * Class BatchRooms.
+ * Batch processes for importing rooms data.
  */
 class BatchRooms {
 
@@ -13,12 +14,12 @@ class BatchRooms {
    *
    * @param int $batch_id
    *   Id of the batch.
-   * @param $nodes
+   * @param array $nodes
    *   Individual nodes to be processed.
    * @param object $context
    *   Context for operations.
    */
-  public static function processNode($batch_id, $nodes, &$context) {
+  public static function processNode(int $batch_id, array $nodes, object &$context) {
     // Optional message displayed under the progressbar.
     $context['message'] = t('Running Batch "@id"', [
       '@id' => $batch_id,
@@ -344,8 +345,9 @@ class BatchRooms {
 
     if ($success) {
       $messenger->addMessage(t('@count results updated. That is neat.', [
-        '@count' => count($results)
+        '@count' => count($results),
       ]));
     }
   }
+
 }
