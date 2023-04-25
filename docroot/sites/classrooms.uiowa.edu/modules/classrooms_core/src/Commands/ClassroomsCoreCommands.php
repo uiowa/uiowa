@@ -191,7 +191,6 @@ class ClassroomsCoreCommands extends DrushCommands {
       ->getStorage('node')
       ->getQuery()
       ->condition('type', 'room')
-      ->accessCheck(TRUE)
       ->execute();
 
     // If we don't have any entities, send a message
@@ -204,321 +203,48 @@ class ClassroomsCoreCommands extends DrushCommands {
       return;
     }
 
-    // Retrieve building and room number values from existing nodes.
     $storage = $this->entityTypeManager->getStorage('node');
-    $nodes = $storage->loadMultiple($entities);
-    $existing_nodes = [];
-    foreach ($nodes as $nid => $node) {
-      if ($node instanceof FieldableEntityInterface) {
-        if ($node->hasField('field_room_building_id') &&
-          !$node->get('field_room_building_id')->isEmpty() &&
-          $node->hasField('field_room_room_id') &&
-          !$node->get('field_room_room_id')->isEmpty()
-        ) {
-          $existing_nodes[$nid] = [
-            'building_id' => $node->get('field_room_building_id')?->getString(),
-            'room_id' => $node->get('field_room_room_id')->value,
-          ];
-        }
-      }
+
+    // Create the operations array for the batch.
+    $operations = [];
+    $num_operations = 0;
+    $batch_id = 1;
+    for ($i = 0; $i < count($entities);) {
+      $nids = $storage
+        ->getQuery()
+        ->condition('type', 'room')
+        ->range($i, 50)
+        ->execute();
+
+      $nodes = $storage->loadMultiple($nids);
+
+      $operations[] = [
+        '\Drupal\classrooms_core\BatchRooms::processNode',
+        [
+          $batch_id,
+          $nodes,
+        ],
+      ];
+      $batch_id++;
+      $num_operations++;
+      $i += 50;
     }
 
-    foreach ($existing_nodes as $nid => $info) {
-      $updated = FALSE;
+    // 4. Create the batch.
+    $batch = [
+      'title' => t('Checking @num node(s) for updates.', [
+        '@num' => $num_operations,
+        ]),
+      'operations' => $operations,
+      'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
+    ];
 
-      // Grab MAUI room data.
-      $data = $this->mauiApi->getRoomData($info['building_id'], $info['room_id']);
-
-      // If we weren't able to get data for this room,
-      // log a notice and move on to the next one.
-      if (!$data) {
-        $this->getLogger('classrooms_core')->notice('No data found for @building @room', [
-          '@building' => $info['building_id'],
-          '@room' => $info['room_id'],
-        ]);
-        continue;
-      }
-
-      // If existing, update values if different.
-      $node = $storage->load($nid);
-      if ($node instanceof NodeInterface) {
-
-        // Comparing the Max Occupancy field
-        // to the maxOccupancy value from endpoint.
-        if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
-          if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
-            if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
-              $updated = TRUE;
-              $this->connection
-                ->update('node__field_room_max_occupancy')
-                ->fields([
-                  'field_room_max_occupancy_value' => $data[0]->maxOccupancy,
-                ])
-                ->condition('revision_id', $node->getRevisionId(), '=')
-                ->execute();
-              $entities_updated++;
-            }
-          }
-        }
-
-        // Comparing the Room Name field to the roomName value from endpoint.
-        if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
-          if (strlen($data[0]->roomName) > 1) {
-            if ($node->get('field_room_name')->value !== $data[0]->roomName) {
-              $updated = TRUE;
-              $this->connection
-                ->update('node__field_room_name')
-                ->fields([
-                  'field_room_name_value' => $data[0]->roomName,
-                ])
-                ->condition('revision_id', $node->getRevisionId(), '=')
-                ->execute();
-              $entities_updated++;
-            }
-          }
-        }
-
-        // Comparing the Instructional Room Category field to the
-        // roomCategory value from endpoint.
-        if ($node->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
-          $field_definition = $node->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
-          $field_allowed_options = options_allowed_values($field_definition, $node);
-          if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
-            if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
-              $updated = TRUE;
-              $this->connection
-                ->update('node__field_room_instruction_category')
-                ->fields([
-                  'field_room_instruction_category_value' => $data[0]->roomCategory,
-                ])
-                ->condition('revision_id', $node->getRevisionId(), '=')
-                ->execute();
-              $entities_updated++;
-            }
-          }
-        }
-
-        // Comparing the Room Type field to the roomType value from endpoint.
-        if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
-          // Returns all terms matching name within vocabulary.
-          $term = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->loadByProperties([
-              'name' => $data[0]->roomType,
-              'vid' => 'room_types',
-            ]);
-          if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
-            $updated = TRUE;
-            $this->connection
-              ->update('node__field_room_type')
-              ->fields([
-                'field_room_type_target_id' => array_key_first($term),
-              ])
-              ->condition('revision_id', $node->getRevisionId(), '=')
-              ->execute();
-            $entities_updated++;
-          }
-        }
-
-        // Comparing the Responsible Unit field to the
-        // acadOrgUnitName value from endpoint.
-        if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
-          // Returns all terms matching name within vocabulary.
-          $term = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->loadByProperties([
-              'name' => $data[0]->acadOrgUnitName,
-              'vid' => 'units',
-            ]);
-          if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-            $updated = TRUE;
-            $this->connection
-              ->update('node__field_room_responsible_unit')
-              ->fields([
-                'field_room_responsible_unit_target_id' => array_key_first($term),
-              ])
-              ->condition('revision_id', $node->getRevisionId(), '=')
-              ->execute();
-            $entities_updated++;
-          }
-        }
-
-        // Comparing Room Features and Technology Features fields
-        // to the featureList value from endpoint.
-        if (isset($data[0]->featureList)) {
-          $query = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->orConditionGroup()
-            ->condition('vid', 'room_features')
-            ->condition('vid', 'technology_features');
-
-          $tids = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->condition($query)
-            ->execute();
-          if ($tids) {
-            $terms = $this->entityTypeManager
-              ->getStorage('taxonomy_term')
-              ->loadMultiple($tids);
-            $room_features = [];
-            $tech_features = [];
-            foreach ($terms as $term) {
-              if ($api_mapping = $term->get('field_api_mapping')?->value) {
-                if (in_array($api_mapping, $data[0]->featureList)) {
-                  if ($term->bundle() === 'room_features') {
-                    $room_features[] = $term->id();
-                  }
-                  else {
-                    $tech_features[] = $term->id();
-                  }
-                }
-              }
-            }
-            if (!empty($room_features)) {
-              // Cheat it a bit by fetching a string and exploding it
-              // to end up with a basic array of target ids.
-              $node_features = $node->get('field_room_features')->getString();
-              $node_features = explode(', ', $node_features);
-              if ($node_features !== $room_features) {
-                $updated = TRUE;
-                // If the data from maui has fewer room features
-                // than are currently on the node, remove the excess.
-                if (count($room_features) < count($node_features)) {
-                  foreach (range(count($room_features), count($node_features)) as $delta) {
-                    $this->connection
-                      ->delete('node__field_room_features')
-                      ->condition('revision_id', $node->getRevisionId(), '=')
-                      ->condition('delta', $delta, '=')
-                      ->execute();
-                  }
-                }
-                foreach ($room_features as $delta => $target_id) {
-                  // As long as the old room features was equal to or
-                  // more than the number of new features, we can
-                  // re-use the table entries. Any additional room features
-                  // will need to be inserted.
-                  if ($delta < count($room_features) - 1) {
-                    $this->connection
-                      ->update('node__field_room_features')
-                      ->fields([
-                        'field_room_features_target_id' => $target_id,
-                      ])
-                      ->condition('revision_id', $node->getRevisionId(), '=')
-                      ->condition('delta', $delta, '=')
-                      ->execute();
-                  }
-                  else {
-                    $this->connection
-                      ->insert('node__field_room_features')
-                      ->fields([
-                        'bundle' => 'room',
-                        'deleted' => 0,
-                        'entity_id' => $node->id(),
-                        'revision_id' => $node->getRevisionId(),
-                        'langcode' => 'en',
-                        'delta' => $delta,
-                        'field_room_features_target_id' => $target_id,
-                      ])
-                      ->execute();
-                  }
-                }
-              }
-            }
-            if (!empty($tech_features)) {
-              $node_tech_features = $node->get('field_room_technology_features')->getString();
-              $node_tech_features = explode(', ', $node_tech_features);
-              if ($node_tech_features !== $tech_features) {
-                $updated = TRUE;
-                // If the data from maui has fewer room features
-                // than are currently on the node, remove the excess.
-                if (count($tech_features) < count($node_tech_features)) {
-                  foreach (range(count($tech_features), count($node_tech_features)) as $delta) {
-                    $this->connection
-                      ->delete('node__field_room_technology_features')
-                      ->condition('revision_id', $node->getRevisionId(), '=')
-                      ->condition('delta', $delta, '=')
-                      ->execute();
-                  }
-                }
-                foreach ($tech_features as $delta => $target_id) {
-                  // As long as the old room features was equal to or
-                  // more than the number of new features, we can
-                  // re-use the table entries. Any additional room features
-                  // will need to be inserted.
-                  if ($delta < count($room_features) - 1) {
-                    $this->connection
-                      ->update('node__field_room_technology_features')
-                      ->fields([
-                        'field_room_technology_features_target_id' => $target_id,
-                      ])
-                      ->condition('revision_id', $node->getRevisionId(), '=')
-                      ->condition('delta', $delta, '=')
-                      ->execute();
-                  }
-                  else {
-                    $this->connection
-                      ->insert('node__field_room_technology_features')
-                      ->fields([
-                        'bundle' => 'room',
-                        'deleted' => 0,
-                        'entity_id' => $node->id(),
-                        'revision_id' => $node->getRevisionId(),
-                        'langcode' => 'en',
-                        'delta' => $delta,
-                        'field_room_technology_features_target_id' => $target_id,
-                      ])
-                      ->execute();
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // Comparing the Scheduling Regions field to the
-        // regionList value from endpoint.
-        if (isset($data[0]->regionList)) {
-          $query = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->condition('vid', 'scheduling_regions')
-            ->execute();
-
-          if ($query) {
-            $terms = $this->entityTypeManager
-              ->getStorage('taxonomy_term')
-              ->loadMultiple($query);
-            foreach ($terms as $term) {
-              if ($api_mapping = $term->get('field_api_mapping')?->value) {
-                if (in_array($api_mapping, $data[0]->regionList)) {
-                  if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                    $updated = TRUE;
-                    $this->connection
-                      ->update('node__field_room_scheduling_regions')
-                      ->fields([
-                        'field_room_scheduling_regions_target_id' => $term->id(),
-                      ])
-                      ->condition('revision_id', $node->getRevisionId(), '=')
-                      ->execute();
-                    $entities_updated++;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-      }
-      if ($updated === TRUE) {
-        $entities_updated++;
-      }
-    }
-
-    $this->getLogger('classrooms_core')->notice('@updated rooms updated. That is neat.', [
-      '@updated' => $entities_updated,
-    ]);
+    // 5. Add batch operations as new batch sets.
+    batch_set($batch);
+    // 6. Process the batch sets.
+    drush_backend_batch_process();
+    // 7. Log some information.
+    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
