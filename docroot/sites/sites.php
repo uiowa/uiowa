@@ -5188,3 +5188,21 @@ $sites['labnicupediatricbiorepository.uiowa.ddev.site'] = 'nicupediatricbiorepos
 $sites['labnicupediatricbiorepository.dev.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
 $sites['labnicupediatricbiorepository.stage.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
 $sites['labnicupediatricbiorepository.prod.drupal.uiowa.edu'] = 'nicupediatricbiorepository.lab.uiowa.edu';
+
+// Directory aliases for sebag.lab.uiowa.edu.
+$sites['labsebag.uiowa.ddev.site'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.dev.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.stage.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
+$sites['labsebag.prod.drupal.uiowa.edu'] = 'sebag.lab.uiowa.edu';
+
+// Directory aliases for hornbuckle.lab.uiowa.edu.
+$sites['labhornbuckle.uiowa.ddev.site'] = 'hornbuckle.lab.uiowa.edu';
+$sites['labhornbuckle.dev.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
+$sites['labhornbuckle.stage.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
+$sites['labhornbuckle.prod.drupal.uiowa.edu'] = 'hornbuckle.lab.uiowa.edu';
+
+// Directory aliases for iowamade.org.
+$sites['org-iowamade.uiowa.ddev.site'] = 'iowamade.org';
+$sites['org-iowamade.dev.drupal.uiowa.edu'] = 'iowamade.org';
+$sites['org-iowamade.stage.drupal.uiowa.edu'] = 'iowamade.org';
+$sites['org-iowamade.prod.drupal.uiowa.edu'] = 'iowamade.org';
