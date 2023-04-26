@@ -5,6 +5,9 @@
  * Install hooks for sitenow_events.
  */
 
+use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+
 /**
  * Implements hook_uninstall().
  */
@@ -39,4 +42,73 @@ function sitenow_events_update_8002() {
   $config->setData($new);
   $config->save();
 
+}
+
+/**
+ * Update sites using the event feature to introduce a new field we set value.
+ */
+function sitenow_events_update_9001(&$sandbox) {
+  $event_split = \Drupal::entityTypeManager()->getStorage('config_split')->load('event');
+
+  // Only run for sites with the event split enabled.
+  if ($event_split->get('status') == FALSE) {
+    return t('Event split is not active, so no update to run.');
+  }
+
+  $config_path = DRUPAL_ROOT . '/../config/features/event';
+  $source = new FileStorage($config_path);
+
+  // Create field storage for new event status field.
+  \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.node.field_event_status'))
+    ->save();
+
+  // Create field instance for 'field_event_status'.
+  \Drupal::entityTypeManager()->getStorage('field_config')
+    ->create($source->read('field.field.node.event.field_event_status'))
+    ->save();
+
+  // Process all the event nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set the field and save it with a new revision.
+    $node = Node::load($nid);
+    $node->set('field_event_status', 'EventScheduled');
+    // Set revision message and save.
+    $node->setRevisionLogMessage('Automated save.');
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
 }
