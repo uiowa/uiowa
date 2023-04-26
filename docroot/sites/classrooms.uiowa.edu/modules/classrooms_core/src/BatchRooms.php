@@ -236,7 +236,6 @@ class BatchRooms {
               \Drupal::database()
                 ->delete('node__field_room_technology_features')
                 ->condition('revision_id', $node->getRevisionId(), '=')
-                ->condition('delta', $delta, '=')
                 ->execute();
               // Insert our new room tech features.
               foreach ($tech_features as $delta => $target_id) {
