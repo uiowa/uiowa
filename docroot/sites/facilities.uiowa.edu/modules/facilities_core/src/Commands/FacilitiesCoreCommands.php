@@ -90,9 +90,6 @@ class FacilitiesCoreCommands extends DrushCommands {
     $entities_updated = 0;
     $entities_deleted = 0;
 
-    // Request from Facilities API to get buildings. Add/update/remove.
-    $facilities_api = \Drupal::service('uiowa_facilities.api');
-
     if (!$this->getData()) {
       // @todo Add a logging message that data was not able to be returned.
       return;
@@ -130,6 +127,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       'field_building_area' => 'grossArea',
       'field_building_year_built' => 'yearBuilt',
       'field_building_ownership' => 'owned',
+      'field_building_named_building' => 'namedBuilding',
     ];
 
     foreach ($this->getData() as $building) {
@@ -142,6 +140,13 @@ class FacilitiesCoreCommands extends DrushCommands {
       if ($building->buildingAbbreviation === '') {
         $building->buildingAbbreviation = NULL;
       }
+
+      // If the namedBuilding field is not NULL, it needs to be converted to a
+      // entity ID for an existing named building.
+      if (isset($building->namedBuilding)) {
+        $building->namedBuilding = $this->findNamedBuildingNid($building->namedBuilding);
+      }
+
       $existing_nid = $this->buildNumberNodeMap[$building->buildingNumber] ?? NULL;
       $changed = FALSE;
 
@@ -204,6 +209,31 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+  }
+
+  /**
+   * Find a named build node ID based on a first name and last name.
+   *
+   * @param $string
+   *
+   * @return int|null
+   */
+  protected function findNamedBuildingNid($string) {
+    $names = explode(', ', trim($string));
+    // If there are not two names, this won't work.
+    if (count($names) === 2) {
+      $nids = \Drupal::entityQuery('node')
+        ->condition('type', 'named_building')
+        ->condition('field_building_honoree_last_name', $names[0])
+        ->condition('field_building_honoree_name', $names[1])
+        ->execute();
+
+      foreach ($nids as $nid) {
+        return $nid;
+      }
+    }
+
+    return NULL;
   }
 
 }
