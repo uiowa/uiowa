@@ -100,10 +100,9 @@ class FacilitiesCoreCommands extends DrushCommands {
     $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
 
     // Get existing building nodes.
-    $query = \Drupal::entityQuery('node')
+    $entities = \Drupal::entityQuery('node')
       ->condition('type', 'building')
-      ->accessCheck(TRUE);
-    $entities = $query->execute();
+      ->execute();
 
     // Retrieve building number values from existing nodes.
     if ($entities) {
