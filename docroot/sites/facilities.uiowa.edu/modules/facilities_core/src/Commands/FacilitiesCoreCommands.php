@@ -32,14 +32,14 @@ class FacilitiesCoreCommands extends DrushCommands {
    *
    * @var array
    */
-  protected $buildNumberNodeMap = [];
+  protected array $buildNumberNodeMap = [];
 
   /**
    * An array of nodes that exist and have been loaded keyed by node ID.
    *
    * @var NodeInterface[]
    */
-  protected $existingNodes = [];
+  protected array $existingNodes = [];
 
   /**
    * @var array|null
@@ -104,11 +104,11 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Retrieve building number values from existing nodes.
     if ($entities) {
       $nodes = $storage->loadMultiple($entities);
-      $existing_nodes = [];
+      $this->existingNodes = [];
       foreach ($nodes as $nid => $node) {
         if ($node instanceof FieldableEntityInterface) {
           if ($node->hasField('field_building_number') && !$node->get('field_building_number')->isEmpty()) {
-            $existing_nodes[$nid] = $node;
+            $this->existingNodes[$nid] = $node;
             $this->buildNumberNodeMap[$node->get('field_building_number')->value] = $nid;
           }
         }
@@ -138,7 +138,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
         // If existing, update values if different.
-        $node = $existing_nodes[$existing_nid] ?? $storage->load($existing_nid);
+        $node = $this->existingNodes[$existing_nid] ?? $storage->load($existing_nid);
       }
       else {
         // If not, create new.
@@ -177,7 +177,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     if ($entities) {
       foreach ($this->buildNumberNodeMap as $name => $nid) {
         if (!in_array($name, $buildings)) {
-          $node = $existing_nodes[$nid] ?? $storage->load($nid);
+          $node = $this->existingNodes[$nid] ?? $storage->load($nid);
           $node->delete();
           $entities_deleted++;
         }
