@@ -457,6 +457,10 @@ function sitenow_events_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
+    case 'field_event_status':
+      uiowa_core_set_attributes($variables, 'badge badge--orange');
+      break;
+
     case 'field_event_virtual':
       uiowa_core_set_field_icon($variables, 'fas fa-desktop fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
@@ -814,6 +818,29 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
   }
 
   return $options;
+}
+
+/**
+ * Set dynamic allowed values event status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'EventScheduled' => 'Scheduled',
+    'EventCancelled' => 'Cancelled',
+    'EventRescheduled' => 'Rescheduled',
+  ];
 }
 
 /**

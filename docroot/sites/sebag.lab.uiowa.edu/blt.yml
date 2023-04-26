@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsebag.uiowa.ddev.site
+    protocol: https
+  machine_name: labsebag
+  human_name: sebag.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsebag.prod
+drupal:
+  db:
+    database: sebag_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsebag.prod.drupal.uiowa.edu'
+  requester: jsebag
+  site-name: 'Sebag Lab'

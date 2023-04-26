@@ -36,6 +36,7 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#meta' => [
         'field_event_when',
+        'field_event_status',
         'field_event_virtual',
         'field_event_performer',
       ],

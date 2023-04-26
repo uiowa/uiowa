@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.event.field_event_registration_link
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_status
     - field.field.node.event.field_event_type
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
@@ -169,7 +170,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -188,7 +189,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -212,7 +213,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -349,6 +350,25 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 69c3c375-1a1b-402c-b58e-47564680b4bc
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_status'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -460,6 +480,7 @@ hidden:
   field_event_hide: true
   field_event_registration_link: true
   field_event_series_link_direct: true
+  field_event_status: true
   field_event_type: true
   field_meta_tags: true
   field_tags: true
