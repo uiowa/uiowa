@@ -37,11 +37,13 @@ class FacilitiesCoreCommands extends DrushCommands {
   /**
    * An array of nodes that exist and have been loaded keyed by node ID.
    *
-   * @var NodeInterface[]
+   * @var \Drupal\node\NodeInterface[]
    */
   protected array $existingNodes = [];
 
   /**
+   * A nullable array of data returned by the API.
+   *
    * @var array|null
    */
   protected ?array $data;
@@ -56,7 +58,13 @@ class FacilitiesCoreCommands extends DrushCommands {
     $this->accountSwitcher = $accountSwitcher;
   }
 
-  protected function getData() {
+  /**
+   * Get API data, calling the API if necessary.
+   *
+   * @return array|null
+   *   The API data.
+   */
+  protected function getData(): ?array {
     if (!isset($this->data)) {
       // Request from Facilities API to get buildings. Add/update/remove.
       $facilities_api = \Drupal::service('uiowa_facilities.api');
@@ -84,7 +92,6 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     // Request from Facilities API to get buildings. Add/update/remove.
     $facilities_api = \Drupal::service('uiowa_facilities.api');
-    $data = $facilities_api->getBuildings();
 
     if (!$this->getData()) {
       // @todo Add a logging message that data was not able to be returned.
@@ -168,7 +175,8 @@ class FacilitiesCoreCommands extends DrushCommands {
             $node->save();
             $entities_updated++;
           }
-        } else {
+        }
+        else {
           $node->enforceIsNew();
           $node->save();
           $entities_created++;
