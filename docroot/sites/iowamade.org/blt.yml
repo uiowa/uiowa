@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-iowamade.uiowa.ddev.site
+    protocol: https
+  machine_name: org-iowamade
+  human_name: iowamade.org
+drush:
+  aliases:
+    local: self
+    remote: org-iowamade.prod
+drupal:
+  db:
+    database: iowamade_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-iowamade.prod.drupal.uiowa.edu'
+  requester: jjkaufmann
+  site-name: 'Iowa MADE'
