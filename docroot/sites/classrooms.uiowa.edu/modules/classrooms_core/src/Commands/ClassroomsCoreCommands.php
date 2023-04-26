@@ -5,12 +5,12 @@ namespace Drupal\classrooms_core\Commands;
 use Drupal\classrooms_core\Entity\Building;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
@@ -23,7 +23,6 @@ use Drush\Commands\DrushCommands;
  */
 class ClassroomsCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
-  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -54,13 +53,6 @@ class ClassroomsCoreCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
-   * The database service.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected $connection;
-
-  /**
    * The datetime.time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
@@ -78,17 +70,14 @@ class ClassroomsCoreCommands extends DrushCommands {
    *   The cache.uiowa_maui service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity_type.manager service.
-   * @param \Drupal\Core\Database\Connection $connection
-   *   The database service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime.time service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, Connection $connection, TimeInterface $time) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
     $this->mauiApi = $mauiApi;
     $this->mauiCache = $mauiCache;
     $this->entityTypeManager = $entityTypeManager;
-    $this->connection = $connection;
     $this->time = $time;
   }
 
@@ -183,12 +172,16 @@ class ClassroomsCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
+    // Establish a count for message at the end.
+    $entities_updated = 0;
+
     // Get existing room nodes.
-    $entities = $this->entityTypeManager
+    $query = $this->entityTypeManager
       ->getStorage('node')
       ->getQuery()
       ->condition('type', 'room')
-      ->execute();
+      ->accessCheck(TRUE);
+    $entities = $query->execute();
 
     // If we don't have any entities, send a message
     // and we're done.
@@ -200,51 +193,216 @@ class ClassroomsCoreCommands extends DrushCommands {
       return;
     }
 
+    // Retrieve building and room number values from existing nodes.
     $storage = $this->entityTypeManager->getStorage('node');
-
-    // Create the operations array for the batch.
-    $operations = [];
-    $num_operations = 0;
-    $batch_id = 1;
-    for ($i = 0; $i < count($entities);) {
-      $nids = $storage
-        ->getQuery()
-        ->condition('type', 'room')
-        ->range($i, 50)
-        ->execute();
-
-      $nodes = $storage->loadMultiple($nids);
-
-      $operations[] = [
-        '\Drupal\classrooms_core\BatchRooms::processNode',
-        [
-          $batch_id,
-          $nodes,
-        ],
-      ];
-      $batch_id++;
-      $num_operations++;
-      $i += 50;
+    $nodes = $storage->loadMultiple($entities);
+    $existing_nodes = [];
+    foreach ($nodes as $nid => $node) {
+      if ($node instanceof FieldableEntityInterface) {
+        if ($node->hasField('field_room_building_id') &&
+          !$node->get('field_room_building_id')->isEmpty() &&
+          $node->hasField('field_room_room_id') &&
+          !$node->get('field_room_room_id')->isEmpty()
+        ) {
+          $existing_nodes[$nid] = [
+            'building_id' => $node->get('field_room_building_id')?->get(0)?->getValue()['target_id'],
+            'room_id' => $node->get('field_room_room_id')->value,
+          ];
+        }
+      }
     }
 
-    // 4. Create the batch.
-    $batch = [
-      'title' => $this->t('Checking @num node(s) for updates.', [
-        '@num' => $num_operations,
-      ]),
-      'operations' => $operations,
-      'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
-    ];
+    foreach ($existing_nodes as $nid => $info) {
+      // Grab MAUI room data.
+      $data = $this->mauiApi->getRoomData($info['building_id'], $info['room_id']);
 
-    // 5. Add batch operations as new batch sets.
-    batch_set($batch);
-    // 6. Process the batch sets.
-    drush_backend_batch_process();
-    // 7. Log some information.
-    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
+      // If we weren't able to get data for this room,
+      // log a notice and move on to the next one.
+      if (!$data) {
+        $this->getLogger('classrooms_core')->notice('No data found for @building @room', [
+          '@building' => $info['building_id'],
+          '@room' => $info['room_id'],
+        ]);
+        continue;
+      }
+
+      // If existing, update values if different.
+      $node = $storage->load($nid);
+      if ($node instanceof NodeInterface) {
+
+        // Mapping the Max Occupancy field
+        // to the maxOccupancy value from endpoint.
+        if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
+          if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
+            if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
+              $this->nodeSaveHelper($node);
+              $entities_updated++;
+              continue;
+            }
+          }
+        }
+
+        // Mapping the Room Name field to the roomName value from endpoint.
+        if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
+          if (strlen($data[0]->roomName) > 1) {
+            if ($node->get('field_room_name')->value !== $data[0]->roomName) {
+              $this->nodeSaveHelper($node);
+              $entities_updated++;
+              continue;
+            }
+          }
+        }
+
+        // Mapping the Instructional Room Category field to the
+        // roomCategory value from endpoint.
+        if ($node->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
+          $field_definition = $node->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
+          $field_allowed_options = options_allowed_values($field_definition, $node);
+          if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
+            if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
+              $this->nodeSaveHelper($node);
+              $entities_updated++;
+              continue;
+            }
+          }
+        }
+
+        // Mapping the Room Type field to the roomType value from endpoint.
+        if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
+          // Returns all terms matching name within vocabulary.
+          $term = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->loadByProperties([
+              'name' => $data[0]->roomType,
+              'vid' => 'room_types',
+            ]);
+          if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
+            $this->nodeSaveHelper($node);
+            $entities_updated++;
+            continue;
+          }
+        }
+
+        // Mapping the Responsible Unit field to the
+        // acadOrgUnitName value from endpoint.
+        if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
+          // Returns all terms matching name within vocabulary.
+          $term = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->loadByProperties([
+              'name' => $data[0]->acadOrgUnitName,
+              'vid' => 'units',
+            ]);
+          if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
+            $this->nodeSaveHelper($node);
+            $entities_updated++;
+            continue;
+          }
+        }
+
+        // Mapping Room Features and Technology Features fields
+        // to the featureList value from endpoint.
+        if (isset($data[0]->featureList)) {
+          $query = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
+            ->orConditionGroup()
+            ->condition('vid', 'room_features')
+            ->condition('vid', 'technology_features');
+
+          $tids = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
+            ->condition($query)
+            ->execute();
+          if ($tids) {
+            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
+            $terms = $storage->loadMultiple($tids);
+            $room_features = [];
+            $tech_features = [];
+            foreach ($terms as $term) {
+              if ($api_mapping = $term->get('field_api_mapping')?->value) {
+                if (in_array($api_mapping, $data[0]->featureList)) {
+                  if ($term->bundle() === 'room_features') {
+                    $room_features[] = $term->id();
+                  }
+                  else {
+                    $tech_features[] = $term->id();
+                  }
+                }
+              }
+            }
+            if (!empty($room_features)) {
+              // Cheat it a bit by fetching a string and exploding it
+              // to end up with a basic array of target ids.
+              $node_features = $node->get('field_room_features')->getString();
+              $node_features = explode(', ', $node_features);
+              if ($node_features !== $room_features) {
+                $this->nodeSaveHelper($node);
+                $entities_updated++;
+                continue;
+              }
+            }
+            if (!empty($tech_features)) {
+              $node_tech_features = $node->get('field_room_technology_features')->getString();
+              $node_tech_features = explode(', ', $node_tech_features);
+              if ($node_tech_features !== $tech_features) {
+                $this->nodeSaveHelper($node);
+                $entities_updated++;
+                continue;
+              }
+            }
+          }
+        }
+
+        // Mapping the Scheduling Regions field to the
+        // regionList value from endpoint.
+        if (isset($data[0]->regionList)) {
+          $query = $this->entityTypeManager
+            ->getStorage('taxonomy_term')
+            ->getQuery()
+            ->condition('vid', 'scheduling_regions')
+            ->execute();
+
+          if ($query) {
+            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
+            $terms = $storage->loadMultiple($query);
+            foreach ($terms as $term) {
+              if ($api_mapping = $term->get('field_api_mapping')?->value) {
+                if (in_array($api_mapping, $data[0]->regionList)) {
+                  if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
+                    $this->nodeSaveHelper($node);
+                    $entities_updated++;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+    $this->getLogger('classrooms_core')->notice('@updated rooms updated. That is neat.', [
+      '@updated' => $entities_updated,
+    ]);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+  }
+
+  /**
+   * Helper to set revisions and save a node.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The node to be saved.
+   */
+  protected function nodeSaveHelper($node) {
+    $node->setNewRevision(TRUE);
+    $node->revision_log = 'Updated room from source';
+    $node->setRevisionCreationTime($this->time->getRequestTime());
+    $node->setRevisionUserId(1);
+    $node->save();
   }
 
 }
