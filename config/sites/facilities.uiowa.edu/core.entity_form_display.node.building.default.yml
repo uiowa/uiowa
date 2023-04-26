@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.building.field_building_abbreviation
+    - field.field.node.building.field_building_address
     - field.field.node.building.field_building_number
     - field.field.node.building.field_meta_tags
     - node.type.building
@@ -25,6 +26,14 @@ content:
   field_building_abbreviation:
     type: string_textfield
     weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_address:
+    type: string_textfield
+    weight: 27
     region: content
     settings:
       size: 60

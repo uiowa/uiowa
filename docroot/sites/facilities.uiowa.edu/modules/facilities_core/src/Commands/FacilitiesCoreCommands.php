@@ -28,6 +28,25 @@ class FacilitiesCoreCommands extends DrushCommands {
   protected $accountSwitcher;
 
   /**
+   * A map of building numbers to node IDs.
+   *
+   * @var array
+   */
+  protected $buildNumberNodeMap = [];
+
+  /**
+   * An array of nodes that exist and have been loaded keyed by node ID.
+   *
+   * @var NodeInterface[]
+   */
+  protected $existingNodes = [];
+
+  /**
+   * @var array|null
+   */
+  protected ?array $data;
+
+  /**
    * Drush command constructor.
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
@@ -35,6 +54,15 @@ class FacilitiesCoreCommands extends DrushCommands {
    */
   public function __construct(AccountSwitcherInterface $accountSwitcher) {
     $this->accountSwitcher = $accountSwitcher;
+  }
+
+  protected function getData() {
+    if (!isset($this->data)) {
+      // Request from Facilities API to get buildings. Add/update/remove.
+      $facilities_api = \Drupal::service('uiowa_facilities.api');
+      $this->data = $facilities_api->getBuildings();
+    }
+    return $this->data;
   }
 
   /**
@@ -58,6 +86,15 @@ class FacilitiesCoreCommands extends DrushCommands {
     $facilities_api = \Drupal::service('uiowa_facilities.api');
     $data = $facilities_api->getBuildings();
 
+    if (!$this->getData()) {
+      // @todo Add a logging message that data was not able to be returned.
+      return;
+    }
+
+    $buildings = [];
+
+    $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
+
     // Get existing building nodes.
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'building')
@@ -66,76 +103,83 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     // Retrieve building number values from existing nodes.
     if ($entities) {
-      $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
       $nodes = $storage->loadMultiple($entities);
       $existing_nodes = [];
       foreach ($nodes as $nid => $node) {
         if ($node instanceof FieldableEntityInterface) {
           if ($node->hasField('field_building_number') && !$node->get('field_building_number')->isEmpty()) {
-            $existing_nodes[$nid] = $node->get('field_building_number')->value;
+            $existing_nodes[$nid] = $node;
+            $this->buildNumberNodeMap[$node->get('field_building_number')->value] = $nid;
           }
         }
       }
     }
 
-    if ($data) {
-      $buildings = [];
-      foreach ($data as $building) {
-        $buildings[] = $building->buildingNumber;
-        // Get building number and check to see if existing node exists.
-        if (isset($existing_nodes) && $existing_nid = array_search($building->buildingNumber, $existing_nodes)) {
-          // If existing, update values if different.
-          $node = $storage->load($existing_nid);
-          if ($node instanceof NodeInterface) {
-            $changed = FALSE;
-            if ($node->get('title')->value !== $building->buildingCommonName) {
-              $node->set('title', $building->buildingCommonName);
-              $changed = TRUE;
-            }
-            // There is at least one building with a blank space instead of
-            // NULL for this value.
-            // @todo Remove if FM can clean up their source.
-            // https://github.com/uiowa/uiowa/issues/6084
-            if ($building->buildingAbbreviation === '') {
-              $building->buildingAbbreviation = NULL;
-            }
-            if ($node->get('field_building_abbreviation')->value !== $building->buildingAbbreviation) {
-              $node->set('field_building_abbreviation', $building->buildingAbbreviation);
-              $changed = TRUE;
-            }
+    $map = [
+      'title' => 'buildingCommonName',
+      'field_building_number' => 'buildingNumber',
+      'field_building_abbreviation' => 'buildingAbbreviation',
+      'field_building_address' => 'address',
+    ];
 
-            if ($changed) {
-              $node->setNewRevision(TRUE);
-              $node->revision_log = 'Updated building from source';
-              $node->setRevisionCreationTime(REQUEST_TIME);
-              $node->setRevisionUserId(1);
-              $node->save();
-              $entities_updated++;
-            }
+    foreach ($this->getData() as $building) {
+      $buildings[] = $building->buildingNumber;
+
+      // There is at least one building with a blank space instead of
+      // NULL for this value.
+      // @todo Remove if FM can clean up their source.
+      // https://github.com/uiowa/uiowa/issues/6084
+      if ($building->buildingAbbreviation === '') {
+        $building->buildingAbbreviation = NULL;
+      }
+      $existing_nid = $this->buildNumberNodeMap[$building->buildingNumber] ?? NULL;
+      $changed = FALSE;
+
+      // Get building number and check to see if existing node exists.
+      if (!is_null($existing_nid)) {
+        // If existing, update values if different.
+        $node = $existing_nodes[$existing_nid] ?? $storage->load($existing_nid);
+      }
+      else {
+        // If not, create new.
+        $node = Node::create([
+          'type' => 'building',
+        ]);
+      }
+
+      if ($node instanceof NodeInterface) {
+        foreach ($map as $to => $from) {
+          // @todo Add a message if a node doesn't have a field.
+          if ($node->hasField($to) && $node->get($to)->value !== $building->{$from}) {
+            $node->set($to, $building->{$from});
+            $changed = TRUE;
           }
         }
-        else {
-          // If not, create new.
-          $node = Node::create([
-            'type' => 'building',
-            'title' => $building->buildingCommonName,
-            'field_building_number' => $building->buildingNumber,
-            'field_building_abbreviation' => $building->buildingAbbreviation,
-          ]);
+
+        if (!is_null($existing_nid)) {
+          if ($changed) {
+            $node->setNewRevision();
+            $node->revision_log = 'Updated building from source';
+            $node->setRevisionCreationTime(REQUEST_TIME);
+            $node->setRevisionUserId(1);
+            $node->save();
+            $entities_updated++;
+          }
+        } else {
           $node->enforceIsNew();
           $node->save();
           $entities_created++;
         }
       }
+    }
 
-      // Loop through to remove nodes that no longer exist in API data.
-      if ($entities) {
-        foreach ($existing_nodes as $nid => $existing_node) {
-          if (!in_array($existing_node, $buildings)) {
-            $node = $storage->load($nid);
-            $node->delete();
-            $entities_deleted++;
-          }
+    // Loop through to remove nodes that no longer exist in API data.
+    if ($entities) {
+      foreach ($this->buildNumberNodeMap as $name => $nid) {
+        if (!in_array($name, $buildings)) {
+          $node = $existing_nodes[$nid] ?? $storage->load($nid);
+          $node->delete();
+          $entities_deleted++;
         }
       }
     }
