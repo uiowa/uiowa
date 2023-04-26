@@ -120,6 +120,9 @@ class FacilitiesCoreCommands extends DrushCommands {
       'field_building_number' => 'buildingNumber',
       'field_building_abbreviation' => 'buildingAbbreviation',
       'field_building_address' => 'address',
+      'field_building_area' => 'grossArea',
+      'field_building_year_built' => 'yearBuilt',
+      'field_building_ownership' => 'owned',
     ];
 
     foreach ($this->getData() as $building) {

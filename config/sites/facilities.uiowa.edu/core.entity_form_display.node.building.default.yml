@@ -5,7 +5,10 @@ dependencies:
   config:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_area
     - field.field.node.building.field_building_number
+    - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
   module:
@@ -39,9 +42,32 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_building_area:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_building_number:
     type: string_textfield
     weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_ownership:
+    type: string_textfield
+    weight: 30
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_year_built:
+    type: string_textfield
+    weight: 29
     region: content
     settings:
       size: 60

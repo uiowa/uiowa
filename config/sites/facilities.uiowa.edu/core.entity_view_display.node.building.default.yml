@@ -5,7 +5,10 @@ dependencies:
   config:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_area
     - field.field.node.building.field_building_number
+    - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
   module:
@@ -31,6 +34,17 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  field_building_area:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ','
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_building_number:
     type: string
     label: inline
@@ -38,6 +52,22 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_building_ownership:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_building_year_built:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
     region: content
 hidden:
   entity_print_view_epub: true
