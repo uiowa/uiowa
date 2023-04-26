@@ -193,96 +193,65 @@ class BatchRooms {
             // to end up with a basic array of target ids.
             $node_features = $node->get('field_room_features')->getString();
             $node_features = explode(', ', $node_features);
+            // Sort both before comparing.
+            sort($node_features);
+            sort($room_features);
             if ($node_features !== $room_features) {
               $updated = TRUE;
-              // If the data from maui has fewer room features
-              // than are currently on the node, remove the excess.
-              if (count($room_features) < count($node_features)) {
-                foreach (range(count($room_features), count($node_features)) as $delta) {
-                  \Drupal::database()
-                    ->delete('node__field_room_features')
-                    ->condition('revision_id', $node->getRevisionId(), '=')
-                    ->condition('delta', $delta, '=')
-                    ->execute();
-                }
-              }
+              // Remove all current features before adding new,
+              // to avoid possible constraint violations
+              // during database insertions later.
+              \Drupal::database()
+                ->delete('node__field_room_features')
+                ->condition('revision_id', $node->getRevisionId(), '=')
+                ->execute();
+              // Insert our new room features.
               foreach ($room_features as $delta => $target_id) {
-                // As long as the old room features was equal to or
-                // more than the number of new features, we can
-                // re-use the table entries. Any additional room features
-                // will need to be inserted.
-                if ($delta < count($node_features) - 1) {
-                  \Drupal::database()
-                    ->update('node__field_room_features')
-                    ->fields([
-                      'field_room_features_target_id' => $target_id,
-                    ])
-                    ->condition('revision_id', $node->getRevisionId(), '=')
-                    ->condition('delta', $delta, '=')
-                    ->execute();
-                }
-                else {
-                  \Drupal::database()
-                    ->insert('node__field_room_features')
-                    ->fields([
-                      'bundle' => 'room',
-                      'deleted' => 0,
-                      'entity_id' => $node->id(),
-                      'revision_id' => $node->getRevisionId(),
-                      'langcode' => 'en',
-                      'delta' => $delta,
-                      'field_room_features_target_id' => $target_id,
-                    ])
-                    ->execute();
-                }
+                \Drupal::database()
+                  ->insert('node__field_room_features')
+                  ->fields([
+                    'bundle' => 'room',
+                    'deleted' => 0,
+                    'entity_id' => $node->id(),
+                    'revision_id' => $node->getRevisionId(),
+                    'langcode' => 'en',
+                    'delta' => $delta,
+                    'field_room_features_target_id' => $target_id,
+                  ])
+                  ->execute();
               }
             }
           }
           if (!empty($tech_features)) {
             $node_tech_features = $node->get('field_room_technology_features')->getString();
             $node_tech_features = explode(', ', $node_tech_features);
+            // Sort both before comparing.
+            sort($node_tech_features);
+            sort($tech_features);
             if ($node_tech_features !== $tech_features) {
               $updated = TRUE;
-              // If the data from maui has fewer room features
-              // than are currently on the node, remove the excess.
-              if (count($tech_features) < count($node_tech_features)) {
-                foreach (range(count($tech_features), count($node_tech_features)) as $delta) {
-                  \Drupal::database()
-                    ->delete('node__field_room_technology_features')
-                    ->condition('revision_id', $node->getRevisionId(), '=')
-                    ->condition('delta', $delta, '=')
-                    ->execute();
-                }
-              }
+              // Remove all current features before adding new,
+              // to avoid possible constraint violations
+              // during database insertions later.
+              \Drupal::database()
+                ->delete('node__field_room_technology_features')
+                ->condition('revision_id', $node->getRevisionId(), '=')
+                ->condition('delta', $delta, '=')
+                ->execute();
+              // Insert our new room tech features.
               foreach ($tech_features as $delta => $target_id) {
-                // As long as the old room features was equal to or
-                // more than the number of new features, we can
-                // re-use the table entries. Any additional room features
-                // will need to be inserted.
-                if ($delta < count($node_tech_features) - 1) {
-                  \Drupal::database()
-                    ->update('node__field_room_technology_features')
-                    ->fields([
-                      'field_room_technology_features_target_id' => $target_id,
-                    ])
-                    ->condition('revision_id', $node->getRevisionId(), '=')
-                    ->condition('delta', $delta, '=')
-                    ->execute();
-                }
-                else {
-                  \Drupal::database()
-                    ->insert('node__field_room_technology_features')
-                    ->fields([
-                      'bundle' => 'room',
-                      'deleted' => 0,
-                      'entity_id' => $node->id(),
-                      'revision_id' => $node->getRevisionId(),
-                      'langcode' => 'en',
-                      'delta' => $delta,
-                      'field_room_technology_features_target_id' => $target_id,
-                    ])
-                    ->execute();
-                }
+                \Drupal::database()
+                  ->insert('node__field_room_technology_features')
+                  ->fields([
+                    'bundle' => 'room',
+                    'deleted' => 0,
+                    'entity_id' => $node->id(),
+                    'revision_id' => $node->getRevisionId(),
+                    'langcode' => 'en',
+                    'delta' => $delta,
+                    'field_room_technology_features_target_id' => $target_id,
+                  ])
+                  ->execute();
               }
             }
           }
