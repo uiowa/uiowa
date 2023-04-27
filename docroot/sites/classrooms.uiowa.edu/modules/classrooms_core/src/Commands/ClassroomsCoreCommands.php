@@ -213,6 +213,8 @@ class ClassroomsCoreCommands extends DrushCommands {
     }
 
     foreach ($existing_nodes as $nid => $info) {
+      $updated = FALSE;
+
       // Grab MAUI room data.
       $data = $this->mauiApi->getRoomData($info['building_id'], $info['room_id']);
 
@@ -235,9 +237,8 @@ class ClassroomsCoreCommands extends DrushCommands {
         if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
           if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
             if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
-              $this->nodeSaveHelper($node);
-              $entities_updated++;
-              continue;
+              $updated = TRUE;
+              $node->set('field_room_max_occupancy', $data[0]->maxOccupancy);
             }
           }
         }
@@ -246,9 +247,8 @@ class ClassroomsCoreCommands extends DrushCommands {
         if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
           if (strlen($data[0]->roomName) > 1) {
             if ($node->get('field_room_name')->value !== $data[0]->roomName) {
-              $this->nodeSaveHelper($node);
-              $entities_updated++;
-              continue;
+              $updated = TRUE;
+              $node->set('field_room_name', $data[0]->roomName);
             }
           }
         }
@@ -260,9 +260,8 @@ class ClassroomsCoreCommands extends DrushCommands {
           $field_allowed_options = options_allowed_values($field_definition, $node);
           if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
             if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
-              $this->nodeSaveHelper($node);
-              $entities_updated++;
-              continue;
+              $updated = TRUE;
+              $node->set('field_room_instruction_category', $data[0]->roomCategory);
             }
           }
         }
@@ -277,9 +276,8 @@ class ClassroomsCoreCommands extends DrushCommands {
               'vid' => 'room_types',
             ]);
           if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
-            $this->nodeSaveHelper($node);
-            $entities_updated++;
-            continue;
+            $updated = TRUE;
+            $node->set('field_room_type', array_key_first($term));
           }
         }
 
@@ -294,9 +292,8 @@ class ClassroomsCoreCommands extends DrushCommands {
               'vid' => 'units',
             ]);
           if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-            $this->nodeSaveHelper($node);
-            $entities_updated++;
-            continue;
+            $updated = TRUE;
+            $node->set('field_room_responsible_unit', array_key_first($term));
           }
         }
 
@@ -337,19 +334,23 @@ class ClassroomsCoreCommands extends DrushCommands {
               // to end up with a basic array of target ids.
               $node_features = $node->get('field_room_features')->getString();
               $node_features = explode(', ', $node_features);
+              // Sort lists before comparing.
+              sort($node_features);
+              sort($room_features);
               if ($node_features !== $room_features) {
-                $this->nodeSaveHelper($node);
-                $entities_updated++;
-                continue;
+                $updated = TRUE;
+                $node->set('field_room_features', $room_features);
               }
             }
             if (!empty($tech_features)) {
               $node_tech_features = $node->get('field_room_technology_features')->getString();
               $node_tech_features = explode(', ', $node_tech_features);
+              // Sort lists before comparing.
+              sort($node_tech_features);
+              sort($tech_features);
               if ($node_tech_features !== $tech_features) {
-                $this->nodeSaveHelper($node);
-                $entities_updated++;
-                continue;
+                $updated = TRUE;
+                $node->set('field_room_technology_features', $tech_features);
               }
             }
           }
@@ -371,15 +372,22 @@ class ClassroomsCoreCommands extends DrushCommands {
               if ($api_mapping = $term->get('field_api_mapping')?->value) {
                 if (in_array($api_mapping, $data[0]->regionList)) {
                   if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                    $this->nodeSaveHelper($node);
-                    $entities_updated++;
+                    $updated = TRUE;
+                    $node->set('field_room_scheduling_regions', $data[0]->regionList);
                   }
                 }
               }
             }
           }
         }
-
+        if ($updated === TRUE) {
+          $node->set('batch_process', TRUE);
+          $node->setNewRevision(TRUE);
+          $node->revision_log = 'Updated room from source';
+          $node->setRevisionCreationTime($this->time->getRequestTime());
+          $node->setRevisionUserId(1);
+          $node->save();
+        }
       }
     }
 
@@ -389,20 +397,6 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
-  }
-
-  /**
-   * Helper to set revisions and save a node.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node to be saved.
-   */
-  protected function nodeSaveHelper($node) {
-    $node->setNewRevision(TRUE);
-    $node->revision_log = 'Updated room from source';
-    $node->setRevisionCreationTime($this->time->getRequestTime());
-    $node->setRevisionUserId(1);
-    $node->save();
   }
 
 }

@@ -424,6 +424,12 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
   if (!$entity instanceof FieldableEntityInterface || $entity->bundle() !== 'room') {
     return;
   }
+  // If we're coming from a batch process,
+  // we want to skip the rest of this presave processing.
+  if ($entity->get('batch_process') === TRUE) {
+    $entity->set('batch_process', FALSE);
+    return;
+  }
 
   $building_id = $entity
     ->field_room_building_id
