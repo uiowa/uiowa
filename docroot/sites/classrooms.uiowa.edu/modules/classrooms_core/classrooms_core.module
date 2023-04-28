@@ -446,7 +446,8 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     $entity->set('title', $title);
   }
 
-  RoomProcessor::process($entity, NULL);
+  $record = RoomProcessor::getRecord($entity);
+  RoomProcessor::process($entity, $record);
 
 }
 
