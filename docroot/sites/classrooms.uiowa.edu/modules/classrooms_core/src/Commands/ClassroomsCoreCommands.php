@@ -381,7 +381,7 @@ class ClassroomsCoreCommands extends DrushCommands {
           }
         }
         if ($updated === TRUE) {
-          $node->set('batch_process', TRUE);
+          $node->setSyncing(TRUE);
           $node->setNewRevision(TRUE);
           $node->revision_log = 'Updated room from source';
           $node->setRevisionCreationTime($this->time->getRequestTime());
