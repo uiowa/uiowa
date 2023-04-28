@@ -46,6 +46,8 @@ class BatchRooms {
           $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
           $node->setRevisionUserId(1);
           $node->save();
+          // @todo Check if this is necessary, and strip it if not.
+          $node->setSyncing(FALSE);
         }
       }
     }

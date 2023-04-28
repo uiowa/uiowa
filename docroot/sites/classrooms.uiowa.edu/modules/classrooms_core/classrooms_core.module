@@ -427,7 +427,6 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
   // If we're coming from a batch process,
   // we want to skip the rest of this presave processing.
   if ($entity->isSyncing() === TRUE) {
-    $entity->setSyncing(FALSE);
     return;
   }
 
