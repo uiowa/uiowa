@@ -3,6 +3,7 @@
 namespace Drupal\classrooms_core;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Batch processes for importing rooms data.
@@ -16,10 +17,12 @@ class BatchRooms {
    *   Id of the batch.
    * @param array $nodes
    *   Individual nodes to be processed.
+   * @param object $room_processor
+   *   The room processing object.
    * @param object $context
    *   Context for operations.
    */
-  public static function processNode(int $batch_id, array $nodes, object &$context) {
+  public static function processNode(int $batch_id, array $nodes, object $room_processor, object &$context) {
     // Optional message displayed under the progressbar.
     $context['message'] = t('Running Batch "@id"', [
       '@id' => $batch_id,
@@ -30,270 +33,19 @@ class BatchRooms {
       if (!$node instanceof FieldableEntityInterface) {
         continue;
       }
+      if ($node instanceof NodeInterface) {
+        $updated = $room_processor->process($node);
 
-      if ($node->hasField('field_room_building_id') &&
-        !$node->get('field_room_building_id')->isEmpty() &&
-        $node->hasField('field_room_room_id') &&
-        !$node->get('field_room_room_id')->isEmpty()
-      ) {
-        $building_id = $node->get('field_room_building_id')?->getString();
-        $room_id = $node->get('field_room_room_id')->value;
-      }
-      else {
-        continue;
-      }
-
-      $updated = FALSE;
-
-      // Grab MAUI room data.
-      $data = \Drupal::service('uiowa_maui.api')
-        ->getRoomData($building_id, $room_id);
-
-      // If we weren't able to get data for this room,
-      // log a notice and move on to the next one.
-      if (!$data) {
-        $context['message'] = t('No data found for @building @room', [
-          '@building' => $building_id,
-          '@room' => $room_id,
-        ]);
-        continue;
-      }
-
-      // If existing, update values if different.
-      // Comparing the Max Occupancy field
-      // to the maxOccupancy value from endpoint.
-      if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
-        if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
-          if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
-            $updated = TRUE;
-            \Drupal::database()
-              ->update('node__field_room_max_occupancy')
-              ->fields([
-                'field_room_max_occupancy_value' => $data[0]->maxOccupancy,
-              ])
-              ->condition('revision_id', $node->getRevisionId(), '=')
-              ->execute();
-          }
+        if ($updated === TRUE) {
+          // Keep track of the updated.
+          $context['results'][] = $node->id();
+          $node->setSyncing(TRUE);
+          $node->setNewRevision(TRUE);
+          $node->revision_log = 'Updated room from source';
+          $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+          $node->setRevisionUserId(1);
+          $node->save();
         }
-      }
-
-      // Comparing the Room Name field to the roomName value from endpoint.
-      if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
-        if (strlen($data[0]->roomName) > 1) {
-          if ($node->get('field_room_name')->value !== $data[0]->roomName) {
-            $updated = TRUE;
-            \Drupal::database()
-              ->update('node__field_room_name')
-              ->fields([
-                'field_room_name_value' => $data[0]->roomName,
-              ])
-              ->condition('revision_id', $node->getRevisionId(), '=')
-              ->execute();
-          }
-        }
-      }
-
-      // Comparing the Instructional Room Category field to the
-      // roomCategory value from endpoint.
-      if ($node->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
-        $field_definition = $node->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
-        $field_allowed_options = options_allowed_values($field_definition, $node);
-        if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
-          if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
-            $updated = TRUE;
-            \Drupal::database()
-              ->update('node__field_room_instruction_category')
-              ->fields([
-                'field_room_instruction_category_value' => $data[0]->roomCategory,
-              ])
-              ->condition('revision_id', $node->getRevisionId(), '=')
-              ->execute();
-          }
-        }
-      }
-
-      // Comparing the Room Type field to the roomType value from endpoint.
-      if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
-        // Returns all terms matching name within vocabulary.
-        $term = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term')
-          ->loadByProperties([
-            'name' => $data[0]->roomType,
-            'vid' => 'room_types',
-          ]);
-        if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
-          $updated = TRUE;
-          \Drupal::database()
-            ->update('node__field_room_type')
-            ->fields([
-              'field_room_type_target_id' => array_key_first($term),
-            ])
-            ->condition('revision_id', $node->getRevisionId(), '=')
-            ->execute();
-        }
-      }
-
-      // Comparing the Responsible Unit field to the
-      // acadOrgUnitName value from endpoint.
-      if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
-        // Returns all terms matching name within vocabulary.
-        $term = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term')
-          ->loadByProperties([
-            'name' => $data[0]->acadOrgUnitName,
-            'vid' => 'units',
-          ]);
-        if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-          $updated = TRUE;
-          \Drupal::database()
-            ->update('node__field_room_responsible_unit')
-            ->fields([
-              'field_room_responsible_unit_target_id' => array_key_first($term),
-            ])
-            ->condition('revision_id', $node->getRevisionId(), '=')
-            ->execute();
-        }
-      }
-
-      // Comparing Room Features and Technology Features fields
-      // to the featureList value from endpoint.
-      if (isset($data[0]->featureList)) {
-        $query = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term')
-          ->getQuery()
-          ->orConditionGroup()
-          ->condition('vid', 'room_features')
-          ->condition('vid', 'technology_features');
-
-        $tids = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term')
-          ->getQuery()
-          ->condition($query)
-          ->execute();
-        if ($tids) {
-          $terms = \Drupal::service('entity_type.manager')
-            ->getStorage('taxonomy_term')
-            ->loadMultiple($tids);
-          $room_features = [];
-          $tech_features = [];
-          foreach ($terms as $term) {
-            if ($api_mapping = $term->get('field_api_mapping')?->value) {
-              if (in_array($api_mapping, $data[0]->featureList)) {
-                if ($term->bundle() === 'room_features') {
-                  $room_features[] = $term->id();
-                }
-                else {
-                  $tech_features[] = $term->id();
-                }
-              }
-            }
-          }
-          if (!empty($room_features)) {
-            // Cheat it a bit by fetching a string and exploding it
-            // to end up with a basic array of target ids.
-            $node_features = $node->get('field_room_features')->getString();
-            $node_features = explode(', ', $node_features);
-            // Sort both before comparing.
-            sort($node_features);
-            sort($room_features);
-            if ($node_features !== $room_features) {
-              $updated = TRUE;
-              // Remove all current features before adding new,
-              // to avoid possible constraint violations
-              // during database insertions later.
-              \Drupal::database()
-                ->delete('node__field_room_features')
-                ->condition('revision_id', $node->getRevisionId(), '=')
-                ->execute();
-              // Insert our new room features.
-              foreach ($room_features as $delta => $target_id) {
-                \Drupal::database()
-                  ->insert('node__field_room_features')
-                  ->fields([
-                    'bundle' => 'room',
-                    'deleted' => 0,
-                    'entity_id' => $node->id(),
-                    'revision_id' => $node->getRevisionId(),
-                    'langcode' => 'en',
-                    'delta' => $delta,
-                    'field_room_features_target_id' => $target_id,
-                  ])
-                  ->execute();
-              }
-            }
-          }
-          if (!empty($tech_features)) {
-            $node_tech_features = $node->get('field_room_technology_features')->getString();
-            $node_tech_features = explode(', ', $node_tech_features);
-            // Sort both before comparing.
-            sort($node_tech_features);
-            sort($tech_features);
-            if ($node_tech_features !== $tech_features) {
-              $updated = TRUE;
-              // Remove all current features before adding new,
-              // to avoid possible constraint violations
-              // during database insertions later.
-              \Drupal::database()
-                ->delete('node__field_room_technology_features')
-                ->condition('revision_id', $node->getRevisionId(), '=')
-                ->execute();
-              // Insert our new room tech features.
-              foreach ($tech_features as $delta => $target_id) {
-                \Drupal::database()
-                  ->insert('node__field_room_technology_features')
-                  ->fields([
-                    'bundle' => 'room',
-                    'deleted' => 0,
-                    'entity_id' => $node->id(),
-                    'revision_id' => $node->getRevisionId(),
-                    'langcode' => 'en',
-                    'delta' => $delta,
-                    'field_room_technology_features_target_id' => $target_id,
-                  ])
-                  ->execute();
-              }
-            }
-          }
-        }
-      }
-
-      // Comparing the Scheduling Regions field to the
-      // regionList value from endpoint.
-      if (isset($data[0]->regionList)) {
-        $query = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term')
-          ->getQuery()
-          ->condition('vid', 'scheduling_regions')
-          ->execute();
-
-        if ($query) {
-          $terms = \Drupal::service('entity_type.manager')
-            ->getStorage('taxonomy_term')
-            ->loadMultiple($query);
-          foreach ($terms as $term) {
-            if ($api_mapping = $term->get('field_api_mapping')?->value) {
-              if (in_array($api_mapping, $data[0]->regionList)) {
-                if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                  $updated = TRUE;
-                  \Drupal::database()
-                    ->update('node__field_room_scheduling_regions')
-                    ->fields([
-                      'field_room_scheduling_regions_target_id' => $term->id(),
-                    ])
-                    ->condition('revision_id', $node->getRevisionId(), '=')
-                    ->execute();
-                }
-              }
-            }
-          }
-        }
-      }
-
-      if ($updated === TRUE) {
-        // Optional message displayed under the progressbar.
-        $context['results'][] = $node->id();
-        // Invalidate the node's cache.
-        \Drupal::service('cache_tags.invalidator')->invalidateTags($node->getCacheTags());
       }
     }
   }

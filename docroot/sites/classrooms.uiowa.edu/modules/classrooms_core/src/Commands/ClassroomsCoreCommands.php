@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drupal\node\NodeInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
@@ -23,6 +23,7 @@ use Drush\Commands\DrushCommands;
  */
 class ClassroomsCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -161,19 +162,23 @@ class ClassroomsCoreCommands extends DrushCommands {
   }
 
   /**
-   * Triggers the classrooms rooms import.
+   * Triggers the classrooms rooms update.
+   *
+   * @param array $options
+   *   Additional options for the command.
    *
    * @command classrooms_core:rooms_import
+   *
+   * @option batch The batch size
    * @aliases classrooms-rooms
    * @usage classrooms_core:rooms_import
    *  Ideally this is done as a crontab that is only run once a day.
+   * @usage classrooms_core:rooms_import --batch=20
+   *  Process rooms with a specified batch size.
    */
-  public function importRooms() {
+  public function importRooms(array $options = ['batch' => 20]) {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-
-    // Establish a count for message at the end.
-    $entities_updated = 0;
 
     // Get existing room nodes.
     $query = $this->entityTypeManager
@@ -195,28 +200,47 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Retrieve building and room number values from existing nodes.
     $storage = $this->entityTypeManager->getStorage('node');
-    $nodes = $storage->loadMultiple($entities);
     $room_processor = new RoomProcessor();
 
-    foreach ($nodes as $node) {
-      if ($node instanceof NodeInterface) {
-        $updated = $room_processor->process($node);
+    // Batch them up.
+    // Create the operations array for the batch.
+    $operations = [];
+    $num_operations = 0;
+    $batch_id = 1;
+    for ($i = 0; $i < count($entities);) {
+      $nids = $storage
+        ->getQuery()
+        ->condition('type', 'room')
+        ->range($i, 50)
+        ->execute();
+      $nodes = $storage->loadMultiple($nids);
 
-        if ($updated === TRUE) {
-          $entities_updated++;
-          $node->setSyncing(TRUE);
-          $node->setNewRevision(TRUE);
-          $node->revision_log = 'Updated room from source';
-          $node->setRevisionCreationTime($this->time->getRequestTime());
-          $node->setRevisionUserId(1);
-          $node->save();
-        }
-      }
+      $operations[] = [
+        '\Drupal\classrooms_core\BatchRooms::processNode',
+        [
+          $batch_id,
+          $nodes,
+          $room_processor,
+        ],
+      ];
+      $batch_id++;
+      $num_operations++;
+      $i += $options['batch'];
     }
+    $batch = [
+      'title' => $this->t('Checking @num node(s) for updates.', [
+        '@num' => $num_operations,
+      ]),
+      'operations' => $operations,
+      'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
+    ];
 
-    $this->getLogger('classrooms_core')->notice('@updated rooms updated. That is neat.', [
-      '@updated' => $entities_updated,
-    ]);
+    // 5. Add batch operations as new batch sets.
+    batch_set($batch);
+    // 6. Process the batch sets.
+    drush_backend_batch_process();
+    // 7. Log some information.
+    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
