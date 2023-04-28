@@ -6,7 +6,7 @@
  */
 
 use Drupal\classrooms_core\Entity\ClassroomsRoom;
-use Drupal\classrooms_core\RoomSync;
+use Drupal\classrooms_core\RoomProcessor;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -448,7 +448,7 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
   }
 
 //  $rooms_sync = new RoomsSync();
-  RoomSync::importRoomInfo($entity);
+  RoomProcessor::process($entity);
 
 }
 
