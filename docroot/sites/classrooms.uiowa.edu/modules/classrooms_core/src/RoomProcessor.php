@@ -3,16 +3,31 @@
 namespace Drupal\classrooms_core;
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\uiowa_core\EntityProcessorBase;
 
 /**
  * Process rooms information.
  */
-class RoomProcessor {
+class RoomProcessor extends EntityProcessorBase {
 
   /**
-   * Import individual room information from maui.
+   * {@inheritdoc}
    */
-  public static function process($entity): bool {
+  protected static $fieldMap = [
+    'field_room_max_occupancy' => 'maxOccupancy',
+    'field_room_name' => 'roomName',
+    'field_room_instruction_category' => 'roomCategory',
+    'field_room_type' => 'roomType',
+    'field_room_responsible_unit' => 'acadOrgUnitName',
+    'field_room_features' => 'featureList',
+    'field_room_technology_features' => 'featureList',
+    'field_room_scheduling_regions' => 'regionList',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function process($entity, $record): bool {
     $updated = FALSE;
 
     $building_id = $entity
