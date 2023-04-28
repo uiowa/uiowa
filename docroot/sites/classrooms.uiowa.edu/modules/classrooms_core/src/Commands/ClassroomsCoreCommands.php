@@ -207,11 +207,14 @@ class ClassroomsCoreCommands extends DrushCommands {
     $operations = [];
     $num_operations = 0;
     $batch_id = 1;
+    // Quick manipulate to ensure we have a positve
+    // integer to use for the batch size.
+    $batch_size = max(1, abs((int) $options['batch']));
     for ($i = 0; $i < count($entities);) {
       $nids = $storage
         ->getQuery()
         ->condition('type', 'room')
-        ->range($i, 50)
+        ->range($i, $batch_size)
         ->execute();
       $nodes = $storage->loadMultiple($nids);
 
@@ -225,7 +228,7 @@ class ClassroomsCoreCommands extends DrushCommands {
       ];
       $batch_id++;
       $num_operations++;
-      $i += $options['batch'];
+      $i += $batch_size;
     }
     $batch = [
       'title' => $this->t('Checking @num node(s) for updates.', [
