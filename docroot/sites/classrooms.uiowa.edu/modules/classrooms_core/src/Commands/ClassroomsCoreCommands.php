@@ -3,6 +3,7 @@
 namespace Drupal\classrooms_core\Commands;
 
 use Drupal\classrooms_core\Entity\Building;
+use Drupal\classrooms_core\RoomProcessor;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -196,191 +197,14 @@ class ClassroomsCoreCommands extends DrushCommands {
     // Retrieve building and room number values from existing nodes.
     $storage = $this->entityTypeManager->getStorage('node');
     $nodes = $storage->loadMultiple($entities);
-    $existing_nodes = [];
-    foreach ($nodes as $nid => $node) {
-      if ($node instanceof FieldableEntityInterface) {
-        if ($node->hasField('field_room_building_id') &&
-          !$node->get('field_room_building_id')->isEmpty() &&
-          $node->hasField('field_room_room_id') &&
-          !$node->get('field_room_room_id')->isEmpty()
-        ) {
-          $existing_nodes[$nid] = [
-            'building_id' => $node->get('field_room_building_id')?->get(0)?->getValue()['target_id'],
-            'room_id' => $node->get('field_room_room_id')->value,
-          ];
-        }
-      }
-    }
+    $room_processor = new RoomProcessor();
 
-    foreach ($existing_nodes as $nid => $info) {
-      $updated = FALSE;
-
-      // Grab MAUI room data.
-      $data = $this->mauiApi->getRoomData($info['building_id'], $info['room_id']);
-
-      // If we weren't able to get data for this room,
-      // log a notice and move on to the next one.
-      if (!$data) {
-        $this->getLogger('classrooms_core')->notice('No data found for @building @room', [
-          '@building' => $info['building_id'],
-          '@room' => $info['room_id'],
-        ]);
-        continue;
-      }
-
-      // If existing, update values if different.
-      $node = $storage->load($nid);
+    foreach ($nodes as $node) {
       if ($node instanceof NodeInterface) {
+        $updated = $room_processor->process($node);
 
-        // Mapping the Max Occupancy field
-        // to the maxOccupancy value from endpoint.
-        if ($node->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
-          if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
-            if ($node->get('field_room_max_occupancy')->value !== $data[0]->maxOccupancy) {
-              $updated = TRUE;
-              $node->set('field_room_max_occupancy', $data[0]->maxOccupancy);
-            }
-          }
-        }
-
-        // Mapping the Room Name field to the roomName value from endpoint.
-        if ($node->hasField('field_room_name') && isset($data[0]->roomName)) {
-          if (strlen($data[0]->roomName) > 1) {
-            if ($node->get('field_room_name')->value !== $data[0]->roomName) {
-              $updated = TRUE;
-              $node->set('field_room_name', $data[0]->roomName);
-            }
-          }
-        }
-
-        // Mapping the Instructional Room Category field to the
-        // roomCategory value from endpoint.
-        if ($node->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
-          $field_definition = $node->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
-          $field_allowed_options = options_allowed_values($field_definition, $node);
-          if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
-            if ($node->get('field_room_instruction_category')->value !== $data[0]->roomCategory) {
-              $updated = TRUE;
-              $node->set('field_room_instruction_category', $data[0]->roomCategory);
-            }
-          }
-        }
-
-        // Mapping the Room Type field to the roomType value from endpoint.
-        if ($node->hasField('field_room_type') && isset($data[0]->roomType)) {
-          // Returns all terms matching name within vocabulary.
-          $term = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->loadByProperties([
-              'name' => $data[0]->roomType,
-              'vid' => 'room_types',
-            ]);
-          if (empty($term) || (int) $node->get('field_room_type')->getString() !== array_key_first($term)) {
-            $updated = TRUE;
-            $node->set('field_room_type', array_key_first($term));
-          }
-        }
-
-        // Mapping the Responsible Unit field to the
-        // acadOrgUnitName value from endpoint.
-        if ($node->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
-          // Returns all terms matching name within vocabulary.
-          $term = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->loadByProperties([
-              'name' => $data[0]->acadOrgUnitName,
-              'vid' => 'units',
-            ]);
-          if (empty($term) || (int) $node->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-            $updated = TRUE;
-            $node->set('field_room_responsible_unit', array_key_first($term));
-          }
-        }
-
-        // Mapping Room Features and Technology Features fields
-        // to the featureList value from endpoint.
-        if (isset($data[0]->featureList)) {
-          $query = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->orConditionGroup()
-            ->condition('vid', 'room_features')
-            ->condition('vid', 'technology_features');
-
-          $tids = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->condition($query)
-            ->execute();
-          if ($tids) {
-            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
-            $terms = $storage->loadMultiple($tids);
-            $room_features = [];
-            $tech_features = [];
-            foreach ($terms as $term) {
-              if ($api_mapping = $term->get('field_api_mapping')?->value) {
-                if (in_array($api_mapping, $data[0]->featureList)) {
-                  if ($term->bundle() === 'room_features') {
-                    $room_features[] = $term->id();
-                  }
-                  else {
-                    $tech_features[] = $term->id();
-                  }
-                }
-              }
-            }
-            if (!empty($room_features)) {
-              // Cheat it a bit by fetching a string and exploding it
-              // to end up with a basic array of target ids.
-              $node_features = $node->get('field_room_features')->getString();
-              $node_features = explode(', ', $node_features);
-              // Sort lists before comparing.
-              sort($node_features);
-              sort($room_features);
-              if ($node_features !== $room_features) {
-                $updated = TRUE;
-                $node->set('field_room_features', $room_features);
-              }
-            }
-            if (!empty($tech_features)) {
-              $node_tech_features = $node->get('field_room_technology_features')->getString();
-              $node_tech_features = explode(', ', $node_tech_features);
-              // Sort lists before comparing.
-              sort($node_tech_features);
-              sort($tech_features);
-              if ($node_tech_features !== $tech_features) {
-                $updated = TRUE;
-                $node->set('field_room_technology_features', $tech_features);
-              }
-            }
-          }
-        }
-
-        // Mapping the Scheduling Regions field to the
-        // regionList value from endpoint.
-        if (isset($data[0]->regionList)) {
-          $query = $this->entityTypeManager
-            ->getStorage('taxonomy_term')
-            ->getQuery()
-            ->condition('vid', 'scheduling_regions')
-            ->execute();
-
-          if ($query) {
-            $storage = $this->entityTypeManager->getStorage('taxonomy_term');
-            $terms = $storage->loadMultiple($query);
-            foreach ($terms as $term) {
-              if ($api_mapping = $term->get('field_api_mapping')?->value) {
-                if (in_array($api_mapping, $data[0]->regionList)) {
-                  if ($node->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                    $updated = TRUE;
-                    $node->set('field_room_scheduling_regions', $data[0]->regionList);
-                  }
-                }
-              }
-            }
-          }
-        }
         if ($updated === TRUE) {
+          $entities_updated++;
           $node->setSyncing(TRUE);
           $node->setNewRevision(TRUE);
           $node->revision_log = 'Updated room from source';
