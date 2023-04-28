@@ -68,12 +68,7 @@ class RoomProcessor {
               'name' => $data[0]->roomType,
               'vid' => 'room_types',
             ]);
-          if (!empty($term) && (int) $entity->get('field_room_type')->getString() !== array_key_first($term)) {
-            // Set based on first (and hopefully only) result.
-            $updated = TRUE;
-            $entity->set('field_room_type', [array_key_first($term)]);
-          }
-          else {
+          if (empty($term)) {
             // If term does not exist create it.
             $new_term = Term::create([
               'vid' => 'room_types',
@@ -82,6 +77,11 @@ class RoomProcessor {
             $new_term->save();
             $updated = TRUE;
             $entity->set('field_room_type', [$new_term->id()]);
+          }
+          elseif ((int) $entity->get('field_room_type')->getString() !== array_key_first($term)) {
+            // Set based on first (and hopefully only) result.
+            $updated = TRUE;
+            $entity->set('field_room_type', [array_key_first($term)]);
           }
         }
 
@@ -95,12 +95,7 @@ class RoomProcessor {
               'name' => $data[0]->acadOrgUnitName,
               'vid' => 'units',
             ]);
-          if (!empty($term) && (int) $entity->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-            $updated = TRUE;
-            // Set based on first (and hopefully only) result.
-            $entity->set('field_room_responsible_unit', [array_key_first($term)]);
-          }
-          else {
+          if (empty($term)) {
             // If term does not exist create it.
             $new_term = Term::create([
               'vid' => 'units',
@@ -109,6 +104,11 @@ class RoomProcessor {
             $new_term->save();
             $updated = TRUE;
             $entity->set('field_room_responsible_unit', [$new_term->id()]);
+          }
+          elseif ((int) $entity->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
+            $updated = TRUE;
+            // Set based on first (and hopefully only) result.
+            $entity->set('field_room_responsible_unit', [array_key_first($term)]);
           }
         }
 
