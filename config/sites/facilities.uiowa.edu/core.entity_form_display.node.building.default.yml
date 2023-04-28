@@ -6,9 +6,15 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_rr_multi_men
+    - field.field.node.building.field_building_rr_multi_women
+    - field.field.node.building.field_building_rr_single_men
+    - field.field.node.building.field_building_rr_single_neutral
+    - field.field.node.building.field_building_rr_single_women
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
@@ -50,6 +56,14 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_building_lactation_rooms:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_named_building:
     type: entity_reference_autocomplete
     weight: 31
@@ -71,6 +85,46 @@ content:
   field_building_ownership:
     type: string_textfield
     weight: 30
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_multi_men:
+    type: string_textfield
+    weight: 35
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_multi_women:
+    type: string_textfield
+    weight: 36
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_men:
+    type: string_textfield
+    weight: 33
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_neutral:
+    type: string_textfield
+    weight: 37
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_women:
+    type: string_textfield
+    weight: 34
     region: content
     settings:
       size: 60

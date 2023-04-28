@@ -29,7 +29,7 @@ class BuildingsSync extends EntitySyncAbstract {
    */
   protected function getData() {
     if (!isset($this->data)) {
-      // Request from Facilities API to get buildings. Add/update/remove.
+      // Request from Facilities API to get buildings.
       $facilities_api = \Drupal::service('uiowa_facilities.api');
       $this->data = $facilities_api->getBuildings();
     }
@@ -40,6 +40,15 @@ class BuildingsSync extends EntitySyncAbstract {
    * {@inheritdoc}
    */
   protected function processRecord(&$record) {
+    if (!is_null($building_number = $record?->{$this->apiRecordSyncKey})) {
+      // Request from Facilities API to get buildings.
+      $facilities_api = \Drupal::service('uiowa_facilities.api');
+      $result = $facilities_api->getBuilding($building_number);
+      foreach ((array) $result as $key => $value) {
+        $record->{$key} = $value;
+      }
+    }
+
     // There is at least one building with a blank space instead of
     // NULL for this value.
     // @todo Remove if FM can clean up their source.
@@ -51,7 +60,7 @@ class BuildingsSync extends EntitySyncAbstract {
     // If the namedBuilding field is not NULL, it needs to be converted to a
     // entity ID for an existing named building.
     if (isset($record->namedBuilding)) {
-      $record->namedBuilding = $this->findNamedBuildingNid($record->namedBuilding);
+      $record->namedBuilding = $this->findNamedBuildingNid($record->{$this->apiRecordSyncKey});
     }
   }
 
@@ -69,18 +78,13 @@ class BuildingsSync extends EntitySyncAbstract {
    *   The entity ID of the named building, if it exists.
    */
   protected function findNamedBuildingNid($string) {
-    $names = explode(', ', trim($string));
-    // If there are not two names, this won't work.
-    if (count($names) === 2) {
-      $nids = \Drupal::entityQuery('node')
-        ->condition('type', 'named_building')
-        ->condition('field_building_honoree_last_name', $names[0])
-        ->condition('field_building_honoree_name', $names[1])
-        ->execute();
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'named_building')
+      ->condition('field_building_building_id', $string)
+      ->execute();
 
-      foreach ($nids as $nid) {
-        return $nid;
-      }
+    foreach ($nids as $nid) {
+      return $nid;
     }
 
     return NULL;

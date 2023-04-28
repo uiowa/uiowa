@@ -6,9 +6,15 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_rr_multi_men
+    - field.field.node.building.field_building_rr_multi_women
+    - field.field.node.building.field_building_rr_single_men
+    - field.field.node.building.field_building_rr_single_neutral
+    - field.field.node.building.field_building_rr_single_women
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
@@ -46,6 +52,14 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
+  field_building_lactation_rooms:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
   field_building_named_building:
     type: entity_reference_label
     label: above
@@ -69,6 +83,46 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_building_rr_multi_men:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_building_rr_multi_women:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_building_rr_single_men:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_building_rr_single_neutral:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_building_rr_single_women:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_building_year_built:
     type: string
