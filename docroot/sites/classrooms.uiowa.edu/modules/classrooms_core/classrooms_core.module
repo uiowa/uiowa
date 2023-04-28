@@ -16,7 +16,6 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -447,7 +446,6 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     $entity->set('title', $title);
   }
 
-//  $rooms_sync = new RoomsSync();
   RoomProcessor::process($entity);
 
 }
