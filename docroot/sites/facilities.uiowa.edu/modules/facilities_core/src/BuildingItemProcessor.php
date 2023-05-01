@@ -2,12 +2,12 @@
 
 namespace Drupal\facilities_core;
 
-use Drupal\uiowa_core\EntityProcessorBase;
+use Drupal\uiowa_core\EntityItemProcessorBase;
 
 /**
  * A processor for syncing building nodes.
  */
-class BuildingProcessor extends EntityProcessorBase {
+class BuildingItemProcessor extends EntityItemProcessorBase {
 
   /**
    * {@inheritdoc}

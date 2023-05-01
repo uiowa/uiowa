@@ -5,7 +5,7 @@ namespace Drupal\facilities_core\Commands;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drupal\facilities_core\BuildingsSync;
+use Drupal\facilities_core\BuildingsProcessor;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -54,9 +54,9 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $sync_service = new BuildingsSync();
+    $sync_service = new BuildingsProcessor();
 
-    $sync_service->sync();
+    $sync_service->process();
 
     $arguments = [
       '@created' => $sync_service->getCreated(),

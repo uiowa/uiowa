@@ -4,12 +4,12 @@ namespace Drupal\classrooms_core;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\uiowa_core\EntityProcessorBase;
+use Drupal\uiowa_core\EntityItemProcessorBase;
 
 /**
  * Process rooms information.
  */
-class RoomProcessor extends EntityProcessorBase {
+class RoomItemProcessor extends EntityItemProcessorBase {
 
   /**
    * {@inheritdoc}

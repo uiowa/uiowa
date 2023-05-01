@@ -3,7 +3,7 @@
 namespace Drupal\classrooms_core\Commands;
 
 use Drupal\classrooms_core\Entity\Building;
-use Drupal\classrooms_core\RoomProcessor;
+use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -200,7 +200,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Retrieve building and room number values from existing nodes.
     $storage = $this->entityTypeManager->getStorage('node');
-    $room_processor = new RoomProcessor();
+    $room_processor = new RoomItemProcessor();
 
     // Batch them up.
     // Create the operations array for the batch.

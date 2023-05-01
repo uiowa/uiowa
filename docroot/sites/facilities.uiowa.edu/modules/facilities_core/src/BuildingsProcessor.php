@@ -3,12 +3,12 @@
 namespace Drupal\facilities_core;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\uiowa_core\EntitySyncAbstract;
+use Drupal\uiowa_core\EntityProcessorBase;
 
 /**
  * Sync building information.
  */
-class BuildingsSync extends EntitySyncAbstract {
+class BuildingsProcessor extends EntityProcessorBase {
 
   /**
    * {@inheritdoc}
@@ -69,7 +69,7 @@ class BuildingsSync extends EntitySyncAbstract {
    * {@inheritdoc}
    */
   protected function processEntity(ContentEntityInterface &$entity, array $record): bool {
-    return BuildingProcessor::process($entity, $record);
+    return BuildingItemProcessor::process($entity, $record);
   }
 
   /**

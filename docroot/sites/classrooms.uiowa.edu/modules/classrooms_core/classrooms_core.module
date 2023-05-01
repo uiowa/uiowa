@@ -6,7 +6,7 @@
  */
 
 use Drupal\classrooms_core\Entity\ClassroomsRoom;
-use Drupal\classrooms_core\RoomProcessor;
+use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -445,7 +445,7 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     $entity->set('title', $title);
   }
 
-  RoomProcessor::process($entity, RoomProcessor::getRecord($entity));
+  RoomItemProcessor::process($entity, RoomItemProcessor::getRecord($entity));
 }
 
 /**
