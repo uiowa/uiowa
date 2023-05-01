@@ -7,7 +7,13 @@ namespace Drupal\uiowa_core;
  */
 abstract class EntityProcessorBase {
 
+  /**
+   * The map of entity field names to source field names.
+   *
+   * @var array
+   */
   protected static $fieldMap = [];
+
   /**
    * Process an individual entity.
    */
@@ -23,4 +29,5 @@ abstract class EntityProcessorBase {
 
     return $updated;
   }
+
 }

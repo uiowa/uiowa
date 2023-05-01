@@ -218,15 +218,12 @@ abstract class EntitySyncAbstract implements EntitySyncInterface {
   /**
    * Perform processing of the entity.
    *
-   * @param $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
-   * @param $record
+   * @param array $record
    *   The source record.
-   *
-   * @return bool
-   *   Returns true if the record was updated.
    */
-  protected function processEntity(&$entity, $record): bool {}
+  protected function processEntity(ContentEntityInterface &$entity, array $record): bool {}
 
   /**
    * Get created entities count.

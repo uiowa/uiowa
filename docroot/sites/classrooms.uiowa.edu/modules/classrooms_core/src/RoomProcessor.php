@@ -2,6 +2,7 @@
 
 namespace Drupal\classrooms_core;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\uiowa_core\EntityProcessorBase;
 
@@ -200,7 +201,16 @@ class RoomProcessor extends EntityProcessorBase {
     return $updated;
   }
 
-  public static function getRecord($entity) {
+  /**
+   * Returns a single record for the entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to pull a record for.
+   *
+   * @return array|mixed
+   *   The record or an empty array.
+   */
+  public static function getRecord(ContentEntityInterface $entity): mixed {
     // Grab MAUI room data.
     $building_id = $entity
       ->field_room_building_id
@@ -208,7 +218,9 @@ class RoomProcessor extends EntityProcessorBase {
     $room_id = $entity
       ->field_room_room_id
       ?->value;
+    /** @var \Drupal\uiowa_maui\MauiApi $maui_api */
     $maui_api = \Drupal::service('uiowa_maui.api');
+    // @todo Need to handle $building_id or $room_id being NULL.
     $results = $maui_api->getRoomData($building_id, $room_id);
     // The record is returned inside the first entry of the $data array. Return
     // this if it exists, or an empty array.

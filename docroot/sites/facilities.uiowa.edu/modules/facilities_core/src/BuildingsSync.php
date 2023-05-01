@@ -2,6 +2,7 @@
 
 namespace Drupal\facilities_core;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\uiowa_core\EntitySyncAbstract;
 
 /**
@@ -67,7 +68,7 @@ class BuildingsSync extends EntitySyncAbstract {
   /**
    * {@inheritdoc}
    */
-  protected function processEntity(&$entity, $record): bool {
+  protected function processEntity(ContentEntityInterface &$entity, array $record): bool {
     return BuildingProcessor::process($entity, $record);
   }
 
