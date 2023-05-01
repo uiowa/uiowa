@@ -99,30 +99,6 @@ class RoomProcessor extends EntityProcessorBase {
         }
       }
     }
-
-    // Mapping the Scheduling Regions field to the
-    // regionList value from endpoint.
-    if (isset($record->regionList)) {
-      $query = \Drupal::entityQuery('taxonomy_term')
-        ->condition('vid', 'scheduling_regions')
-        ->execute();
-
-      if ($query) {
-        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-        $terms = $storage->loadMultiple($query);
-        foreach ($terms as $term) {
-          if ($api_mapping = $term->get('field_api_mapping')?->value) {
-            if (in_array($api_mapping, $record->regionList)) {
-              if ($entity->get('field_room_scheduling_regions')->getString() !== $term->id()) {
-                $updated = TRUE;
-                $entity->set('field_room_scheduling_regions', $term->id());
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
     return $updated;
   }
 
@@ -169,6 +145,23 @@ class RoomProcessor extends EntityProcessorBase {
     }
     if (isset($record->acadOrgUnitName)) {
       $record->acadOrgUnitName = $this->processRecordTerm($record->acadOrgUnitName, 'units', TRUE);
+    }
+    if (isset($record->regionList)) {
+      $query = \Drupal::entityQuery('taxonomy_term')
+        ->condition('vid', 'scheduling_regions')
+        ->execute();
+
+      if ($query) {
+        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+        $terms = $storage->loadMultiple($query);
+        foreach ($terms as $term) {
+          if ($api_mapping = $term->get('field_api_mapping')?->value) {
+            if (in_array($api_mapping, $record->regionList)) {
+              $record->regionList = $term->id();
+            }
+          }
+        }
+      }
     }
     return $record;
   }
