@@ -32,52 +32,52 @@ class RoomProcessor extends EntityProcessorBase {
 
     // Mapping the Max Occupancy field
     // to the maxOccupancy value from endpoint.
-    if ($entity->hasField('field_room_max_occupancy') && isset($record[0]->maxOccupancy)) {
-      if (filter_var($record[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
-        if ($entity->get('field_room_max_occupancy')->value !== $record[0]->maxOccupancy) {
+    if ($entity->hasField('field_room_max_occupancy') && isset($record->maxOccupancy)) {
+      if (filter_var($record->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
+        if ($entity->get('field_room_max_occupancy')->value !== $record->maxOccupancy) {
           $updated = TRUE;
-          $entity->set('field_room_max_occupancy', $record[0]->maxOccupancy);
+          $entity->set('field_room_max_occupancy', $record->maxOccupancy);
         }
       }
     }
 
     // Mapping the Room Name field to the roomName value from endpoint.
-    if ($entity->hasField('field_room_name') && isset($record[0]->roomName)) {
-      if (strlen($record[0]->roomName) > 1) {
-        if ($entity->get('field_room_name')->value !== $record[0]->roomName) {
+    if ($entity->hasField('field_room_name') && isset($record->roomName)) {
+      if (strlen($record->roomName) > 1) {
+        if ($entity->get('field_room_name')->value !== $record->roomName) {
           $updated = TRUE;
-          $entity->set('field_room_name', $record[0]->roomName);
+          $entity->set('field_room_name', $record->roomName);
         }
       }
     }
 
     // Mapping the Instructional Room Category field to the
     // roomCategory value from endpoint.
-    if ($entity->hasField('field_room_instruction_category') && isset($record[0]->roomCategory)) {
+    if ($entity->hasField('field_room_instruction_category') && isset($record->roomCategory)) {
       $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
       $field_allowed_options = options_allowed_values($field_definition, $entity);
-      if (array_key_exists($record[0]->roomCategory, $field_allowed_options)) {
-        if ($entity->get('field_room_instruction_category')->value !== $record[0]->roomCategory) {
+      if (array_key_exists($record->roomCategory, $field_allowed_options)) {
+        if ($entity->get('field_room_instruction_category')->value !== $record->roomCategory) {
           $updated = TRUE;
-          $entity->set('field_room_instruction_category', $record[0]->roomCategory);
+          $entity->set('field_room_instruction_category', $record->roomCategory);
         }
       }
     }
 
     // Mapping the Room Type field to the roomType value from endpoint.
-    if ($entity->hasField('field_room_type') && isset($record[0]->roomType)) {
+    if ($entity->hasField('field_room_type') && isset($record->roomType)) {
       // Returns all terms matching name within vocabulary.
       $term = \Drupal::entityTypeManager()
         ->getStorage('taxonomy_term')
         ->loadByProperties([
-          'name' => $record[0]->roomType,
+          'name' => $record->roomType,
           'vid' => 'room_types',
         ]);
       if (empty($term)) {
         // If term does not exist create it.
         $new_term = Term::create([
           'vid' => 'room_types',
-          'name' => $record[0]->roomType,
+          'name' => $record->roomType,
         ]);
         $new_term->save();
         $updated = TRUE;
@@ -92,19 +92,19 @@ class RoomProcessor extends EntityProcessorBase {
 
     // Mapping the Responsible Unit field to the
     // acadOrgUnitName value from endpoint.
-    if ($entity->hasField('field_room_responsible_unit') && isset($record[0]->acadOrgUnitName)) {
+    if ($entity->hasField('field_room_responsible_unit') && isset($record->acadOrgUnitName)) {
       // Returns all terms matching name within vocabulary.
       $term = \Drupal::entityTypeManager()
         ->getStorage('taxonomy_term')
         ->loadByProperties([
-          'name' => $record[0]->acadOrgUnitName,
+          'name' => $record->acadOrgUnitName,
           'vid' => 'units',
         ]);
       if (empty($term)) {
         // If term does not exist create it.
         $new_term = Term::create([
           'vid' => 'units',
-          'name' => $record[0]->acadOrgUnitName,
+          'name' => $record->acadOrgUnitName,
         ]);
         $new_term->save();
         $updated = TRUE;
@@ -119,7 +119,7 @@ class RoomProcessor extends EntityProcessorBase {
 
     // Mapping Room Features and Technology Features fields
     // to the featureList value from endpoint.
-    if (isset($record[0]->featureList)) {
+    if (isset($record->featureList)) {
       $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
         ->condition('vid', 'room_features')
         ->condition('vid', 'technology_features');
@@ -134,7 +134,7 @@ class RoomProcessor extends EntityProcessorBase {
         $tech_features = [];
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
-            if (in_array($api_mapping, $record[0]->featureList)) {
+            if (in_array($api_mapping, $record->featureList)) {
               if ($term->bundle() === 'room_features') {
                 $room_features[] = $term->id();
               }
@@ -176,7 +176,7 @@ class RoomProcessor extends EntityProcessorBase {
 
     // Mapping the Scheduling Regions field to the
     // regionList value from endpoint.
-    if (isset($record[0]->regionList)) {
+    if (isset($record->regionList)) {
       $query = \Drupal::entityQuery('taxonomy_term')
         ->condition('vid', 'scheduling_regions')
         ->execute();
@@ -186,7 +186,7 @@ class RoomProcessor extends EntityProcessorBase {
         $terms = $storage->loadMultiple($query);
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
-            if (in_array($api_mapping, $record[0]->regionList)) {
+            if (in_array($api_mapping, $record->regionList)) {
               if ($entity->get('field_room_scheduling_regions')->getString() !== $term->id()) {
                 $updated = TRUE;
                 $entity->set('field_room_scheduling_regions', $term->id());
@@ -209,7 +209,10 @@ class RoomProcessor extends EntityProcessorBase {
       ->field_room_room_id
       ?->value;
     $maui_api = \Drupal::service('uiowa_maui.api');
-    return $maui_api->getRoomData($building_id, $room_id);
+    $results = $maui_api->getRoomData($building_id, $room_id);
+    // The record is returned inside the first entry of the $data array. Return
+    // this if it exists, or an empty array.
+    return $results[0] ?? [];
   }
 
 }
