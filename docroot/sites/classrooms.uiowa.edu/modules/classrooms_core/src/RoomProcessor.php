@@ -26,7 +26,7 @@ class RoomProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   public static function process($entity, $record): bool {
-    $record = (new self)->processRecord($record);
+    (new self)->processRecord($record);
 
     $updated = parent::process($entity, $record);
 
@@ -131,7 +131,7 @@ class RoomProcessor extends EntityProcessorBase {
   /**
    * Process the record before comparison.
    */
-  public function processRecord($record) {
+  public function processRecord(&$record) {
     // Set to null if we don't have a proper int.
     if (isset($record->maxOccupancy) && filter_var($record->maxOccupancy, FILTER_VALIDATE_INT) === FALSE) {
       $record->maxOccupancy = NULL;
@@ -163,7 +163,6 @@ class RoomProcessor extends EntityProcessorBase {
         }
       }
     }
-    return $record;
   }
 
   /**
@@ -202,9 +201,11 @@ class RoomProcessor extends EntityProcessorBase {
         return [$new_term->id()];
       }
       else {
-        return NULL;
+        return [];
       }
     }
+    // In this particular instance, we're only
+    // keeping the first term.
     return [array_key_first($term)];
   }
 
