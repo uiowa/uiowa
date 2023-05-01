@@ -17,11 +17,8 @@ class RoomProcessor extends EntityProcessorBase {
   protected static $fieldMap = [
     'field_room_max_occupancy' => 'maxOccupancy',
     'field_room_name' => 'roomName',
-    'field_room_instruction_category' => 'roomCategory',
     'field_room_type' => 'roomType',
     'field_room_responsible_unit' => 'acadOrgUnitName',
-    'field_room_features' => 'featureList',
-    'field_room_technology_features' => 'featureList',
     'field_room_scheduling_regions' => 'regionList',
   ];
 
@@ -29,28 +26,9 @@ class RoomProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   public static function process($entity, $record): bool {
-    $updated = FALSE;
+    $record = (new self)->processRecord($record);
 
-    // Mapping the Max Occupancy field
-    // to the maxOccupancy value from endpoint.
-    if ($entity->hasField('field_room_max_occupancy') && isset($record->maxOccupancy)) {
-      if (filter_var($record->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
-        if ($entity->get('field_room_max_occupancy')->value !== $record->maxOccupancy) {
-          $updated = TRUE;
-          $entity->set('field_room_max_occupancy', $record->maxOccupancy);
-        }
-      }
-    }
-
-    // Mapping the Room Name field to the roomName value from endpoint.
-    if ($entity->hasField('field_room_name') && isset($record->roomName)) {
-      if (strlen($record->roomName) > 1) {
-        if ($entity->get('field_room_name')->value !== $record->roomName) {
-          $updated = TRUE;
-          $entity->set('field_room_name', $record->roomName);
-        }
-      }
-    }
+    $updated = parent::process($entity, $record);
 
     // Mapping the Instructional Room Category field to the
     // roomCategory value from endpoint.
@@ -62,59 +40,6 @@ class RoomProcessor extends EntityProcessorBase {
           $updated = TRUE;
           $entity->set('field_room_instruction_category', $record->roomCategory);
         }
-      }
-    }
-
-    // Mapping the Room Type field to the roomType value from endpoint.
-    if ($entity->hasField('field_room_type') && isset($record->roomType)) {
-      // Returns all terms matching name within vocabulary.
-      $term = \Drupal::entityTypeManager()
-        ->getStorage('taxonomy_term')
-        ->loadByProperties([
-          'name' => $record->roomType,
-          'vid' => 'room_types',
-        ]);
-      if (empty($term)) {
-        // If term does not exist create it.
-        $new_term = Term::create([
-          'vid' => 'room_types',
-          'name' => $record->roomType,
-        ]);
-        $new_term->save();
-        $updated = TRUE;
-        $entity->set('field_room_type', [$new_term->id()]);
-      }
-      elseif ((int) $entity->get('field_room_type')->getString() !== array_key_first($term)) {
-        // Set based on first (and hopefully only) result.
-        $updated = TRUE;
-        $entity->set('field_room_type', [array_key_first($term)]);
-      }
-    }
-
-    // Mapping the Responsible Unit field to the
-    // acadOrgUnitName value from endpoint.
-    if ($entity->hasField('field_room_responsible_unit') && isset($record->acadOrgUnitName)) {
-      // Returns all terms matching name within vocabulary.
-      $term = \Drupal::entityTypeManager()
-        ->getStorage('taxonomy_term')
-        ->loadByProperties([
-          'name' => $record->acadOrgUnitName,
-          'vid' => 'units',
-        ]);
-      if (empty($term)) {
-        // If term does not exist create it.
-        $new_term = Term::create([
-          'vid' => 'units',
-          'name' => $record->acadOrgUnitName,
-        ]);
-        $new_term->save();
-        $updated = TRUE;
-        $entity->set('field_room_responsible_unit', [$new_term->id()]);
-      }
-      elseif ((int) $entity->get('field_room_responsible_unit')->getString() !== array_key_first($term)) {
-        $updated = TRUE;
-        // Set based on first (and hopefully only) result.
-        $entity->set('field_room_responsible_unit', [array_key_first($term)]);
       }
     }
 
@@ -225,6 +150,69 @@ class RoomProcessor extends EntityProcessorBase {
     // The record is returned inside the first entry of the $data array. Return
     // this if it exists, or an empty array.
     return $results[0] ?? [];
+  }
+
+  /**
+   * Process the record before comparison.
+   */
+  public function processRecord($record) {
+    // Set to null if we don't have a proper int.
+    if (isset($record->maxOccupancy) && filter_var($record->maxOccupancy, FILTER_VALIDATE_INT) === FALSE) {
+      $record->maxOccupancy = NULL;
+    }
+    // Account for the room name that is only a single space.
+    if (isset($record->roomName) && strlen($record->roomName) <= 1) {
+      $record->roomName = NULL;
+    }
+    if (isset($record->roomType)) {
+      $record->roomType = $this->processRecordTerm($record->roomType, 'room_types', TRUE);
+    }
+    if (isset($record->acadOrgUnitName)) {
+      $record->acadOrgUnitName = $this->processRecordTerm($record->acadOrgUnitName, 'units', TRUE);
+    }
+    return $record;
+  }
+
+  /**
+   * Process a record's value that maps to a taxonomy term.
+   *
+   * @param string $term_name
+   *   The specific term name to match.
+   * @param string $vid
+   *   The taxonomy vid with which to search.
+   * @param bool $create_new
+   *   Whether a new term should be created if no match was found.
+   *
+   * @return array
+   *   An array with the matching term id.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected static function processRecordTerm(string $term_name, string $vid, bool $create_new = TRUE) {
+    // Returns all terms matching name within vocabulary.
+    $term = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadByProperties([
+        'name' => $term_name,
+        'vid' => $vid,
+      ]);
+    if (empty($term)) {
+      // If term does not exist create it.
+      if ($create_new === TRUE) {
+        $new_term = Term::create([
+          'vid' => $vid,
+          'name' => $term_name,
+        ]);
+        $new_term->save();
+        return [$new_term->id()];
+      }
+      else {
+        return NULL;
+      }
+    }
+    return [array_key_first($term)];
   }
 
 }
