@@ -2,11 +2,8 @@
 
 namespace Drupal\uiowa_core;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Abstract entity sync operation.
@@ -97,8 +94,7 @@ abstract class EntitySyncAbstract implements EntitySyncInterface {
   protected $existingEntities = [];
 
   /**
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
+   * Constructs an EntitySyncAbstract instance.
    */
   public function __construct() {
     $this->entityTypeManager = \Drupal::entityTypeManager();
@@ -109,6 +105,9 @@ abstract class EntitySyncAbstract implements EntitySyncInterface {
    *
    * @return array|null
    *   The list of IDs or NULL.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getEntityIds() {
     if (!isset($this->entityIds)) {
@@ -220,9 +219,12 @@ abstract class EntitySyncAbstract implements EntitySyncInterface {
    * Perform processing of the entity.
    *
    * @param $entity
+   *   The entity.
    * @param $record
+   *   The source record.
    *
    * @return bool
+   *   Returns true if the record was updated.
    */
   protected function processEntity(&$entity, $record): bool {}
 

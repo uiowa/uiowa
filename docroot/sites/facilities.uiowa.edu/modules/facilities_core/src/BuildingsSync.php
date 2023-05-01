@@ -64,6 +64,9 @@ class BuildingsSync extends EntitySyncAbstract {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function processEntity(&$entity, $record): bool {
     return BuildingProcessor::process($entity, $record);
   }

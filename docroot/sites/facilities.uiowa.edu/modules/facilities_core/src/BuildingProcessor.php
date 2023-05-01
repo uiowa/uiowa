@@ -4,6 +4,9 @@ namespace Drupal\facilities_core;
 
 use Drupal\uiowa_core\EntityProcessorBase;
 
+/**
+ * A processor for syncing building nodes.
+ */
 class BuildingProcessor extends EntityProcessorBase {
 
   /**
