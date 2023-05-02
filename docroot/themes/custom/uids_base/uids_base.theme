@@ -758,7 +758,7 @@ function uids_base_preprocess_block(&$variables) {
         // Make the block title available to pass to accessible-menu.init.js.
         if (isset($variables['elements']['content']['#title'])) {
           $block_title = $variables['elements']['content']['#title']['#markup'];
-          if ($variables["configuration"]["label_type"] == "block") {
+          if ($variables['configuration']['label_type'] == 'block') {
             $block_title = t('Section');
           }
           $block_name = $variables['elements']['#configuration']['id'];
