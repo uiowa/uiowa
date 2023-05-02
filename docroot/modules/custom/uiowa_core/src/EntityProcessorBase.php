@@ -61,6 +61,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * The number of skipped entities.
+   *
    * @var int
    */
   protected $skipped = 0;
