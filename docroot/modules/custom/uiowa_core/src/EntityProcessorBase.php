@@ -94,7 +94,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   protected $existingEntities = [];
 
   /**
-   * Constructs an EntitySyncAbstract instance.
+   * Constructs an EntityProcessorBase instance.
    */
   public function __construct() {
     $this->entityTypeManager = \Drupal::entityTypeManager();
