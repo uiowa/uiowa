@@ -60,6 +60,12 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   protected $updated = 0;
 
   /**
+   * The number of skipped entities.
+   * @var int
+   */
+  protected $skipped = 0;
+
+  /**
    * The entity field/property that is used to match records to entities.
    *
    * @var string
@@ -155,7 +161,6 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       $this->processRecord($record);
 
       $existing_nid = $this->keyMap[$recordSyncKey] ?? NULL;
-      $changed = FALSE;
 
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
@@ -182,11 +187,14 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
             $entity->save();
             $this->updated++;
           }
+          else {
+            $this->skipped++;
+          }
         }
         else {
           $entity->enforceIsNew();
           $entity->save();
-          $this->updated++;
+          $this->created++;
         }
       }
     }
@@ -254,6 +262,16 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    */
   public function getUpdated() {
     return $this->updated;
+  }
+
+  /**
+   * Get updated entities count.
+   *
+   * @return int
+   *   The updated entity count.
+   */
+  public function getSkipped() {
+    return $this->skipped;
   }
 
 }

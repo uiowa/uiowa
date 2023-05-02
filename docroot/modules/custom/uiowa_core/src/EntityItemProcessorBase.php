@@ -21,7 +21,7 @@ abstract class EntityItemProcessorBase {
     $updated = FALSE;
     foreach (static::$fieldMap as $to => $from) {
       // @todo Add a message if a node doesn't have a field.
-      if ($entity->hasField($to) && $entity->get($to)->value !== $record->{$from}) {
+      if ($entity->hasField($to) && $entity->get($to)->value != $record->{$from}) {
         $entity->set($to, $record->{$from});
         $updated = TRUE;
       }

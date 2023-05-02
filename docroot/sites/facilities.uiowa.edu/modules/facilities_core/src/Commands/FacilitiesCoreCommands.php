@@ -54,6 +54,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
+    $this->getLogger('facilities_core')->notice("Starting the facilities building content sync. This may take a little time if the information isn't cached.");
     $sync_service = new BuildingsProcessor();
 
     $sync_service->process();
@@ -62,8 +63,9 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@created' => $sync_service->getCreated(),
       '@updated' => $sync_service->getUpdated(),
       '@deleted' => $sync_service->getDeleted(),
+      '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->getLogger('facilities_core')->notice('@created buildings were created, @updated updated, @deleted deleted. That is neat.', $arguments);
+    $this->getLogger('facilities_core')->notice('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
