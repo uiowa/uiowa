@@ -9,6 +9,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
  * Abstract entity sync operation.
  */
 abstract class EntityProcessorBase implements EntityProcessorInterface {
+
   /**
    * The entity type.
    *
@@ -220,10 +221,10 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
-   * @param array $record
+   * @param mixed $record
    *   The source record.
    */
-  protected function processEntity(ContentEntityInterface &$entity, array $record): bool {}
+  protected function processEntity(ContentEntityInterface &$entity, $record): bool {}
 
   /**
    * Get created entities count.

@@ -68,7 +68,7 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  protected function processEntity(ContentEntityInterface &$entity, array $record): bool {
+  protected function processEntity(ContentEntityInterface &$entity, $record): bool {
     return BuildingItemProcessor::process($entity, $record);
   }
 
