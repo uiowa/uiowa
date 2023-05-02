@@ -5200,3 +5200,9 @@ $sites['org-iowamade.uiowa.ddev.site'] = 'iowamade.org';
 $sites['org-iowamade.dev.drupal.uiowa.edu'] = 'iowamade.org';
 $sites['org-iowamade.stage.drupal.uiowa.edu'] = 'iowamade.org';
 $sites['org-iowamade.prod.drupal.uiowa.edu'] = 'iowamade.org';
+
+// Directory aliases for bbip.psychology.uiowa.edu.
+$sites['psychologybbip.uiowa.ddev.site'] = 'bbip.psychology.uiowa.edu';
+$sites['psychologybbip.dev.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
+$sites['psychologybbip.stage.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
+$sites['psychologybbip.prod.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
