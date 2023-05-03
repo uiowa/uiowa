@@ -167,7 +167,6 @@ class RoomItemProcessor extends EntityItemProcessorBase {
           }
         }
         $record->regionList = $region;
-        }
       }
     }
   }
