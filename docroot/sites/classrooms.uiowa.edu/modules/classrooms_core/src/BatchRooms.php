@@ -34,7 +34,7 @@ class BatchRooms {
         continue;
       }
       if ($node instanceof NodeInterface) {
-        $updated = $room_processor->process($node, $room_processor->getRecord($node);
+        $updated = $room_processor->process($node, $room_processor->getRecord($node));
 
         if ($updated === TRUE) {
           // Keep track of the updated.
