@@ -121,7 +121,6 @@ class RoomItemProcessor extends EntityItemProcessorBase {
       ?->value;
     /** @var \Drupal\uiowa_maui\MauiApi $maui_api */
     $maui_api = \Drupal::service('uiowa_maui.api');
-    // @todo Need to handle $building_id or $room_id being NULL.
     $results = $maui_api->getRoomData($building_id, $room_id);
     // The record is returned inside the first entry of the $data array. Return
     // this if it exists, or an empty array.
