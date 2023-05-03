@@ -156,17 +156,16 @@ class RoomItemProcessor extends EntityItemProcessorBase {
         // If we weren't able to map it, we have scheduling regions
         // that we don't want to display, so we'll want to set the
         // regionList to null.
-        $region = NULL;
+        $record->regionList = NULL;
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->regionList)) {
               // If we found a mappable region, set it.
-              $region = $term->id();
+              $record->regionList = $term->id();
               break;
             }
           }
         }
-        $record->regionList = $region;
       }
     }
   }
