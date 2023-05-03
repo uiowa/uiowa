@@ -26,6 +26,13 @@ class RoomItemProcessor extends EntityItemProcessorBase {
    * {@inheritdoc}
    */
   public static function process($entity, $record): bool {
+    // If we didn't have a record, a message should
+    // already have been given, and we can skip processing.
+    // Return false so we don't try to update.
+    if (empty($record)) {
+      return FALSE;
+    }
+
     (new self)->processRecord($record);
 
     $updated = parent::process($entity, $record);
@@ -156,7 +163,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
         // If we weren't able to map it, we have scheduling regions
         // that we don't want to display, so we'll want to set the
         // regionList to null.
-        $record->regionList = NULL;
+        $region = NULL;
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->regionList)) {
@@ -166,6 +173,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
             }
           }
         }
+        $record->regionList = $region;
       }
     }
   }
