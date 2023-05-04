@@ -5,14 +5,14 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 // Set container queries for layouts.
-.fragment .layout__region,
-.node__content .layout__region {
+.column-container {
   container-type: inline-size;
   container-name: column;
 }
 
 // Unset container queries if a section contains the menu block.
-.node__content .has-menu-block .layout__region {
+.has-menu-block .column-container,
+.layout-builder .column-container {
   container-type: unset;
 }
 
