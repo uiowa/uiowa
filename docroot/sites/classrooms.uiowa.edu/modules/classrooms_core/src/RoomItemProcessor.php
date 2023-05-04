@@ -168,7 +168,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->regionList)) {
               // If we found a mappable region, set it.
-              $region = [$term->id()];
+              $region = $term->id();
               break;
             }
           }
@@ -188,8 +188,8 @@ class RoomItemProcessor extends EntityItemProcessorBase {
    * @param bool $create_new
    *   Whether a new term should be created if no match was found.
    *
-   * @return array
-   *   An array with the matching term id.
+   * @return string
+   *   The matching term id.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -211,15 +211,15 @@ class RoomItemProcessor extends EntityItemProcessorBase {
           'name' => $term_name,
         ]);
         $new_term->save();
-        return [$new_term->id()];
+        return $new_term->id();
       }
       else {
-        return [];
+        return '';
       }
     }
     // In this particular instance, we're only
     // keeping the first term.
-    return [array_key_first($term)];
+    return array_key_first($term);
   }
 
 }
