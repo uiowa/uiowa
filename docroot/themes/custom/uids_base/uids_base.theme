@@ -527,6 +527,30 @@ function uids_base_preprocess_layout(&$variables) {
     $layout = $variables['layout'];
 
     switch ($layout->id()) {
+      case 'layout_onecol':
+        $contains_menu = FALSE;
+
+        foreach (Element::children($variables['content']) as $region) {
+          // Loop through blocks in that region.
+          foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+            if ($region === 'content'
+              && isset($variables['content'][$region][$block_uuid])
+              && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+            ) {
+              // Check if this block plugin_id matches the pattern for a
+              // main_menu block.
+              $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+              $menu_block_name = 'menu_block:main';
+              if (str_starts_with($plugin_id, $menu_block_name)) {
+                // Add a menu-block class here.
+                $variables['attributes']['class'][] = 'has-menu-block';
+                break;
+              }
+            }
+          }
+        }
+        break;
+
       case 'layout_header':
         $contains_title = FALSE;
         $contains_background = FALSE;

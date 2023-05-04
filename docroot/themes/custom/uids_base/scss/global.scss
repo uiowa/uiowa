@@ -4,6 +4,18 @@ $imgpath: '../../uids/assets/images';
 @import "../uids3/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
+// Set container queries for layouts.
+.fragment .layout__region,
+.node__content .layout__region {
+  container-type: inline-size;
+  container-name: column;
+}
+
+// Unset container queries if a section contains the menu block.
+.node__content .has-menu-block .layout__region {
+  container-type: unset;
+}
+
 // Word break classes.
 .block--word-break,
 .block-inline-blockuiowa-text-area,
