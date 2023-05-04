@@ -119,19 +119,29 @@ class RoomItemProcessor extends EntityItemProcessorBase {
    *   The record or an empty array.
    */
   public static function getRecord(ContentEntityInterface $entity): mixed {
-    // Grab MAUI room data.
+    // Get building ID.
     $building_id = $entity
       ->field_room_building_id
       ?->target_id;
-    $room_id = $entity
-      ->field_room_room_id
-      ?->value;
-    /** @var \Drupal\uiowa_maui\MauiApi $maui_api */
-    $maui_api = \Drupal::service('uiowa_maui.api');
-    $results = $maui_api->getRoomData($building_id, $room_id);
-    // The record is returned inside the first entry of the $data array. Return
-    // this if it exists, or an empty array.
-    return $results[0] ?? [];
+
+    // Only fetch data if the $building_id is set. We may want to revisit this
+    // if we add handling for this in MauiApi::getRoomData().
+    if (!is_null($building_id)) {
+      // Get room ID.
+      $room_id = $entity
+        ->field_room_room_id
+        ?->value;
+
+      // Fetch MAUI data.
+      /** @var \Drupal\uiowa_maui\MauiApi $maui_api */
+      $maui_api = \Drupal::service('uiowa_maui.api');
+      $results = $maui_api->getRoomData($building_id, $room_id);
+      // The record is returned inside the first entry of the $data array. Return
+      // this if it exists, or an empty array.
+      return $results[0] ?? [];
+    }
+
+    return [];
   }
 
   /**
