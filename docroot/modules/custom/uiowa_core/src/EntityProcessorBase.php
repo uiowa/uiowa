@@ -4,11 +4,13 @@ namespace Drupal\uiowa_core;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 
 /**
  * Abstract entity sync operation.
  */
 abstract class EntityProcessorBase implements EntityProcessorInterface {
+  use LoggerChannelTrait;
 
   /**
    * The entity type.
@@ -135,7 +137,8 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    */
   public function process() {
     if (!$this->getData()) {
-      // @todo Add a logging message that data was not able to be returned.
+      // Log a message that data was not returned.
+      static::getLogger('uiowa_core')->notice('No data returned for EntityProcessorBase::getData().');
       return;
     }
 
