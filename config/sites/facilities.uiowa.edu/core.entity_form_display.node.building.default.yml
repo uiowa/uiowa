@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_image_url
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
@@ -20,6 +21,7 @@ dependencies:
     - node.type.building
   module:
     - content_moderation
+    - link
     - metatag
     - path
 id: node.building.default
@@ -55,6 +57,14 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_building_image_url:
+    type: link_default
+    weight: 38
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   field_building_lactation_rooms:
     type: string_textfield
