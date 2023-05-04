@@ -168,7 +168,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->regionList)) {
               // If we found a mappable region, set it.
-              $region = $term->id();
+              $region = [$term->id()];
               break;
             }
           }
