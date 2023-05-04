@@ -3,11 +3,13 @@
 namespace Drupal\uiowa_core;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 
 /**
  * A base for node processing classes.
  */
 abstract class EntityItemProcessorBase {
+  use LoggerChannelTrait;
 
   /**
    * The map of entity field names to source field names.
@@ -23,7 +25,11 @@ abstract class EntityItemProcessorBase {
     $updated = FALSE;
     foreach (static::$fieldMap as $to => $from) {
       if (!$entity->hasField($to)) {
-        // @todo Add a message if a node doesn't have a field.
+        // Add a log message that the field being mapped to doesn't exist.
+        static::getLogger('uiowa_core')->notice('While processing the @type, a field was mapped that does not exist: @field_name', [
+          '@type' => !is_null($entity->bundle()) ? "{$entity->bundle()} {$entity->getEntityType()}" : $entity->getEntityType(),
+          '@field_name' => $to,
+        ]);
         continue;
       }
       // If the value is different, update it.
