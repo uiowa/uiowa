@@ -5,7 +5,6 @@
  * Install hooks for sitenow_events.
  */
 
-use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 
 /**
@@ -46,6 +45,9 @@ function sitenow_events_update_8002() {
 
 /**
  * Update sites using the event feature to introduce a new field we set value.
+ *
+ * Updated to remove field config import as only ISWF hasn't run
+ * and already has the config in place.
  */
 function sitenow_events_update_9001(&$sandbox) {
   $event_split = \Drupal::entityTypeManager()->getStorage('config_split')->load('event');
@@ -54,20 +56,6 @@ function sitenow_events_update_9001(&$sandbox) {
   if ($event_split->get('status') == FALSE) {
     return t('Event split is not active, so no update to run.');
   }
-
-  $config_path = DRUPAL_ROOT . '/../config/features/event';
-  $source = new FileStorage($config_path);
-
-  // Create field storage for new event status field.
-  \Drupal::entityTypeManager()
-    ->getStorage('field_storage_config')
-    ->create($source->read('field.storage.node.field_event_status'))
-    ->save();
-
-  // Create field instance for 'field_event_status'.
-  \Drupal::entityTypeManager()->getStorage('field_config')
-    ->create($source->read('field.field.node.event.field_event_status'))
-    ->save();
 
   // Process all the event nodes.
   if (!isset($sandbox['total'])) {
