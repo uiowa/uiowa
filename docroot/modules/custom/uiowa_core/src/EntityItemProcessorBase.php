@@ -24,17 +24,14 @@ abstract class EntityItemProcessorBase {
         // @todo Add a message if a node doesn't have a field.
         continue;
       }
-      // Check if it's an entity reference field, and manipulate
-      // if necessary.
+      $value_prop = 'value';
+      // Check if it's an entity reference field, and set $value_prop
+      // accordingly.
       if ($entity->getFieldDefinition($to)->getType() === 'entity_reference') {
-        if (array_column($entity->get($to)->getValue(), 'target_id') != $record->{$from}) {
-          $entity->set($to, $record->{$from});
-          $updated = TRUE;
-        }
+        $value_prop = 'target_id';
       }
-      // It's not an entity reference field, so we can grab
-      // the value from it directly.
-      elseif ($entity->get($to)->value != $record->{$from}) {
+      // If the value is different, update it.
+      if ($entity->get($to)->{$value_prop} != $record->{$from}) {
         $entity->set($to, $record->{$from});
         $updated = TRUE;
       }
