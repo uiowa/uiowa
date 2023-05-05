@@ -177,7 +177,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Research Areas'),
       '#description' => $this->t('The title for research areas. Defaults to <em>Research Areas</em>.'),
-      '#default_value' => isset($default['display_options']['research_title']) ? $default['display_options']['research_title'] : 'Research Areas',
+      '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
       '#required' => TRUE,
     ];
 
@@ -573,6 +573,11 @@ class SettingsForm extends ConfigFormBase {
       ->set('related_display', $related_display)
       ->save();
     parent::submitForm($form, $form_state);
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('research_title', $research_title)
+      ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.

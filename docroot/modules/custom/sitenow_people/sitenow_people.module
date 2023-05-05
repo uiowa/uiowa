@@ -544,10 +544,10 @@ function sitenow_people_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
-    // Get the config value.
     case 'field_person_research_areas':
-      $custom_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('sitenow_people_title');
-      $variables["element"]["#title"] = 'Test';
+      $custom_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
+      $variables['element']['#title'] = $custom_research_title;
+      $variables['label'] = $custom_research_title;
       break;
   }
 }
