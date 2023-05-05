@@ -212,8 +212,8 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['global']['sitenow_people_filter']['filter_research'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Research Area'),
-      '#description' => $this->t('Allow filtering by research area'),
+      '#title' => \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title'),
+      '#description' => $this->t('Allow filtering by ') . \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title'),
       '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
       '#size' => 60,
     ];
