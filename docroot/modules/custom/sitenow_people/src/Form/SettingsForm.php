@@ -175,7 +175,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['sitenow_people_research_areas'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Research Areas'),
+      '#title' => $this->t('Areas of Focus'),
       '#description' => $this->t('The title for research areas. Defaults to <em>Research Areas</em>.'),
       '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
       '#required' => TRUE,
@@ -210,10 +210,11 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => isset($default["display_options"]["filters"]["field_person_types_target_id"]),
       '#size' => 60,
     ];
+
     $form['global']['sitenow_people_filter']['filter_research'] = [
       '#type' => 'checkbox',
-      '#title' => \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title'),
-      '#description' => $this->t('Allow filtering by ') . \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title'),
+      '#title' => $this->t('Areas of Focus'),
+      '#description' => $this->t('Allow filtering by Areas of Focus'),
       '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
       '#size' => 60,
     ];
@@ -349,7 +350,7 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
-
+    // Set research area lable default.
     $default['display_options']['research_title'] = $research_title;
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
