@@ -173,6 +173,14 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $form['global']['sitenow_people_research_areas'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Research Areas'),
+      '#description' => $this->t('The title for research areas. Defaults to <em>Research Areas</em>.'),
+      '#default_value' => isset($default['display_options']['research_title']) ? $default['display_options']['research_title'] : 'Research Areas',
+      '#required' => TRUE,
+    ];
+
     $form['global']['sitenow_people_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -310,6 +318,7 @@ class SettingsForm extends ConfigFormBase {
     $status = (int) $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
+    $research_title = $form_state->getValue('sitenow_people_research_areas');
     $header_content = $form_state->getValue('sitenow_people_header_content');
     $filters['combine'] = $form_state->getValue('filter_search');
     $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
@@ -340,6 +349,8 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
+
+    $default['display_options']['research_title'] = $research_title;
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
     if ($status === 1) {
