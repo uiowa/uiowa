@@ -177,7 +177,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Research Areas'),
       '#description' => $this->t('The title for research areas. Defaults to <em>Research Areas</em>.'),
-      '#default_value' => isset($default['display_options']['research_title']) ? $default['display_options']['research_title'] : 'Research Areas',
+      '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
       '#required' => TRUE,
     ];
 
