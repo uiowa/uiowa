@@ -350,7 +350,7 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
-    // Set research area lable default.
+    // Set research area label default.
     $default['display_options']['research_title'] = $research_title;
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
