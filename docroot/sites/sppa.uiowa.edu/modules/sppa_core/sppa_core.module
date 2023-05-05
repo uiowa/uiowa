@@ -6,7 +6,9 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_state_options_alter().
@@ -38,4 +40,39 @@ function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, Conten
     'MPA' => 'MPA',
   ];
   return $options;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function sppa_core_node_grants(AccountInterface $account, $op) {
+  $grants = [];
+
+  if (($op == 'view') && ($account->id() != 0) && $account->hasPermission('view own unpublished content')) {
+    // Grant to the author for own unpublished content.
+    $grants['private_author_unpublished'] = [$account->id()];
+  }
+
+  return $grants;
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function sppa_core_node_access_records(NodeInterface $node) {
+  $grants = [];
+
+  // Set a low priority to allow another modules to override.
+  if (!$node->isPublished() && ($node->getOwnerId() != 0)) {
+    $grants[] = [
+      'realm' => 'private_author_unpublished',
+      'gid' => $node->getOwnerId(),
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => -100,
+    ];
+  }
+
+  return $grants;
 }
