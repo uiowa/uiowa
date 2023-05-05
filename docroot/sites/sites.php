@@ -5206,3 +5206,9 @@ $sites['psychologybbip.uiowa.ddev.site'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.dev.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.stage.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.prod.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
+
+// Directory aliases for inrl.lab.uiowa.edu.
+$sites['labinrl.uiowa.ddev.site'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.dev.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.stage.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.prod.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
