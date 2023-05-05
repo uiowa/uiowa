@@ -1,0 +1,13 @@
+services:
+  uiowa_concept3d.api:
+    class: Drupal\uiowa_concept3d\Concept3DAPI
+    arguments: ['@logger.channel.uiowa_concept3d', '@cache.uiowa_concept3d', '@http_client']
+  logger.channel.uiowa_concept3d:
+    parent: logger.channel_base
+    arguments: [ 'uiowa_concept3d' ]
+  cache.uiowa_concept3d:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['uiowa_concept3d']
