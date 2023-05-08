@@ -5212,3 +5212,9 @@ $sites['labinrl.uiowa.ddev.site'] = 'inrl.lab.uiowa.edu';
 $sites['labinrl.dev.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
 $sites['labinrl.stage.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
 $sites['labinrl.prod.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+
+// Directory aliases for wellbeing.uiowa.edu.
+$sites['wellbeing.uiowa.ddev.site'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.dev.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.stage.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.prod.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
