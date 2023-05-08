@@ -200,9 +200,17 @@ function sitenow_people_update_9302() {
  * Make Research Areas label customizable.
  */
 function sitenow_people_update_9303() {
-  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
-  $default = ['display_options']['research_title']['label'];
-  $config->set('research_title', $default);
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+
+  // Load the entity field manager service.
+  $entityFieldManager = \Drupal::service('entity_field.manager');
+
+  // Load the field instance for the 'field_person_research_areas' field.
+  $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
+
+  // Set the default label to the label of the 'field_person_research_areas' field.
+  $default_label = $fieldInstance->getLabel();
+  $config->set('research_title', $default_label);
 
   $config->save();
 }
