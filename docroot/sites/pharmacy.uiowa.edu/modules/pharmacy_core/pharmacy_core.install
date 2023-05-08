@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Admissions Core module.
+ */
+
+/**
+ * Set Practice Areas default label.
+ */
+function pharmacy_core_update_9304() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $default = 'Practice Areas';
+  $config->set('research_title', $default);
+
+  $config->save();
+}
