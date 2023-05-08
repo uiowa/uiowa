@@ -11,6 +11,21 @@ use Drupal\node\Entity\Node;
 use Drupal\views\ViewExecutable;
 
 /**
+ * Implements hook_module_implements_alter().
+ */
+function pharmacy_core_module_implements_alter(&$implementations, $hook) {
+  $hooks_to_order = [
+    'form_alter',
+  ];
+
+  if (in_array($hook, $hooks_to_order)) {
+    $group = $implementations['pharmacy_core'];
+    unset($implementations['pharmacy_core']);
+    $implementations['pharmacy_core'] = $group;
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function pharmacy_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
