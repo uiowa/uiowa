@@ -195,3 +195,14 @@ function sitenow_people_update_9302() {
 
   $config->save();
 }
+
+/**
+ * Make Research Areas label customizable.
+ */
+function sitenow_people_update_9303() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
+  $default = ['display_options']['research_title']['label'];
+  $config->set('research_title', $default);
+
+  $config->save();
+}
