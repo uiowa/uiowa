@@ -615,47 +615,47 @@ function classrooms_core_preprocess_views_view(&$variables) {
 }
 
 /**
+ * Helper function to preprocess rooms list.
+ */
+function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) {
+  foreach ($variables['rows'] as &$row_build) {
+    if (!isset($row_build['content']['#hide_fields'])) {
+      $row_build['content']['#hide_fields'] = [];
+    }
+
+    foreach ($fields_to_hide as $field_to_hide) {
+      $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+
+    // Get the node object.
+    $node = $row_build['content']['#node'];
+
+    // Add the building link field value to the #meta array.
+    $building_id = $node->get('field_room_building_id')->target_id;
+    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+    $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+    $row_build['content']['#meta']['building_link'] = [
+      '#theme' => 'building_link_teaser',
+      '#building_link' => $url,
+      '#building_name' => $building->label(),
+    ];
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
-  if ($view->current_display === 'block_programmed_rooms_list') {
-    foreach ($variables['rows'] as &$row_build) {
 
-      // Establish meta and hide_fields if they don't already exist.
-      if (!isset($row_build['content']['#meta'])) {
-        $row_build['content']['#meta'] = [];
-      }
-      if (!isset($row_build['content']['#hide_fields'])) {
-        $row_build['content']['#hide_fields'] = [];
-      }
+  switch ($view->current_display) {
+    case 'block_programmed_rooms_list':
+      classrooms_core_preprocess_rooms_list($variables, 'field_room_type');
+      break;
 
-      $row_build['content']['#hide_fields'][] = 'field_room_type';
-
-      // Get the node object.
-      $node = $row_build['content']['#node'];
-
-      // Add the building link field value to the #meta array.
-      $building_id = $node->get('field_room_building_id')->target_id;
-      $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-      $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-      $row_build['content']['#meta']['building_link'] = [
-        '#theme' => 'building_link_teaser',
-        '#building_link' => $url,
-        '#building_name' => $building->label(),
-      ];
-    }
-  }
-  elseif ($view->current_display === 'block_rooms') {
-    foreach ($variables['rows'] as &$row_build) {
-      if (!isset($row_build['content']['#hide_fields'])) {
-        $row_build['content']['#hide_fields'] = [];
-      }
-      if (isset($row_build['content']['#node'])) {
-        $row_build['content']['#hide_fields'][] = 'field_room_responsible_unit';
-        $row_build['content']['#hide_fields'][] = 'field_room_features';
-      }
-    }
+    case 'block_rooms':
+      classrooms_core_preprocess_rooms_list($variables, 'field_room_responsible_unit', 'field_room_features');
+      break;
   }
 }

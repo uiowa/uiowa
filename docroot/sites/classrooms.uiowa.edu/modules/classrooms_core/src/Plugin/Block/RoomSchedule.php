@@ -4,7 +4,6 @@ namespace Drupal\classrooms_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Template\Attribute;
 
 /**
  * A 'Room Schedule' block.
