@@ -26,6 +26,10 @@ use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
+// Define a global variable to store the research title.
+global $_sitenow_people_research_title;
+$_sitenow_people_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
+
 /**
  * Implements hook_entity_bundle_info_alter().
  */
@@ -40,6 +44,14 @@ function sitenow_people_entity_bundle_info_alter(array &$bundles) {
  */
 function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'taxonomy_overview_vocabularies':
+      if (isset($form['vocabularies']['research_areas']['label'])) {
+        // Use the global research title variable.
+        global $_sitenow_people_research_title;
+        $form['vocabularies']['research_areas']['label']['#plain_text'] = $_sitenow_people_research_title;
+      }
+      break;
+
     case 'node_person_edit_form':
     case 'node_person_form':
       $form['#prefix'] = '<div id="form-ajax-wrapper">';
@@ -50,8 +62,10 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 
       if (isset($form['field_person_research_areas'])) {
         // Set field_person_hide to options group (promotion options).
-        $custom_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
-        $form["field_person_research_areas"]["widget"]["#title"] = $custom_research_title;
+        // Use the global research title variable.
+        global $_sitenow_people_research_title;
+
+        $form["field_person_research_areas"]["widget"]["#title"] = $_sitenow_people_research_title;
 
       }
 
@@ -552,9 +566,10 @@ function sitenow_people_preprocess_field(&$variables) {
       break;
 
     case 'field_person_research_areas':
-      $custom_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
-      $variables['element']['#title'] = $custom_research_title;
-      $variables['label'] = $custom_research_title;
+      // Use the global research title variable.
+      global $_sitenow_people_research_title;
+      $variables['element']['#title'] = $_sitenow_people_research_title;
+      $variables['label'] = $_sitenow_people_research_title;
       break;
   }
 }
@@ -614,6 +629,24 @@ the first website link.'));
           break;
       }
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function sitenow_people_preprocess_page_title(&$variables) {
+  // Get the current URL path and create a Url object.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $url = Url::fromUri('internal:' . $current_path);
+
+  // Check if we are on the taxonomy overview page for the "research_areas" vocabulary.
+  if ($url->toString() == '/admin/structure/taxonomy/manage/research_areas/overview') {
+    // Use the global research title variable.
+    global $_sitenow_people_research_title;
+
+    // Set a custom page title for the overview page.
+    $variables['title'] = $_sitenow_people_research_title;
   }
 }
 
