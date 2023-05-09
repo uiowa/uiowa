@@ -68,12 +68,12 @@ class RoomSchedule extends BlockBase {
 
           // Iterate through the $items array.
           foreach ($items as $item) {
-            $attributes = new Attribute();
-            $card_classes = [
+            $attributes = [];
+            $attributes['class'] = [
               'card--layout-right',
               'borderless',
+              'headline--serif',
             ];
-            $attributes->addClass($card_classes);
 
             $build['container']['schedule'][] = [
               '#type' => 'card',
