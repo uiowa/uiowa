@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labinrl.uiowa.ddev.site
+    protocol: https
+  machine_name: labinrl
+  human_name: inrl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labinrl.prod
+drupal:
+  db:
+    database: inrl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labinrl.prod.drupal.uiowa.edu'
+  requester: eastonw
+  site-name: 'Iowa Neuropathology Resource Laboratory'
