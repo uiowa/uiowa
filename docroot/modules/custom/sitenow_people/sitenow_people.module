@@ -640,7 +640,7 @@ function sitenow_people_preprocess_page_title(&$variables) {
   $current_path = \Drupal::service('path.current')->getPath();
   $url = Url::fromUri('internal:' . $current_path);
 
-  // Check if we are on the taxonomy overview page for the "research_areas" vocabulary.
+  // Check if we are on overview page for the "research_areas" vocabulary.
   if ($url->toString() == '/admin/structure/taxonomy/manage/research_areas/overview') {
     // Use the global research title variable.
     global $_sitenow_people_research_title;
@@ -848,6 +848,13 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 
   if ($view->id() === 'people') {
+    // Change the Areas of focus label.
+    if (isset($form["#info"]["filter-field_person_research_areas_target_id"]["label"]) && $form["#info"]["filter-field_person_research_areas_target_id"]["label"] !== '') {
+      // Use the global research title variable.
+      global $_sitenow_people_research_title;
+      $form["#info"]["filter-field_person_research_areas_target_id"]["label"] = $_sitenow_people_research_title;
+    }
+
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
       uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
