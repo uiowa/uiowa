@@ -48,6 +48,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_people_person_form_submit');
 
+      if (isset($form['field_person_research_areas'])) {
+        // Set field_person_hide to options group (promotion options).
+        $custom_research_title = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('research_title');
+        $form["field_person_research_areas"]["widget"]["#title"] = $custom_research_title;
+
+      }
+
       if (isset($form['field_person_hide'])) {
         // Set field_person_hide to options group (promotion options).
         $form['field_person_hide']['#group'] = 'options';
