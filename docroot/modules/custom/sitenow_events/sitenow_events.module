@@ -458,7 +458,17 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_status':
-      uiowa_core_set_attributes($variables, 'badge badge--orange');
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Cancelled') {
+          uiowa_core_set_attributes($variables, 'badge badge--orange');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Rescheduled') {
+          uiowa_core_set_attributes($variables, 'badge badge--green');
+        }
+      }
       break;
 
     case 'field_event_virtual':
