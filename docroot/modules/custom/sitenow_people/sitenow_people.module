@@ -31,7 +31,13 @@ use Drupal\views\Views;
  */
 function sitenow_people_get_research_title() {
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
-  return $config->get('research_title');
+  $research_title = $config->get('research_title');
+
+  if (empty($research_title)) {
+    $research_title = t('Research Areas');
+  }
+
+  return $research_title;
 }
 
 /**
@@ -50,8 +56,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
   switch ($form_id) {
     case 'taxonomy_overview_vocabularies':
       if (isset($form['vocabularies']['research_areas']['label'])) {
-        $sitenow_research_title = sitenow_people_get_research_title();
-        $form['vocabularies']['research_areas']['label']['#plain_text'] = $sitenow_research_title;
+        $form['vocabularies']['research_areas']['label']['#plain_text'] = sitenow_people_get_research_title();
       }
       break;
 
@@ -65,8 +70,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 
       if (isset($form['field_person_research_areas'])) {
         // Set field_person_hide to options group (promotion options).
-        $sitenow_research_title = sitenow_people_get_research_title();
-        $form["field_person_research_areas"]["widget"]["#title"] = $sitenow_research_title;
+        $form['field_person_research_areas']['widget']['#title'] = sitenow_people_get_research_title();
 
       }
 
@@ -192,8 +196,7 @@ on presave based on first website link and the link directly to website checkbox
         && isset($form['settings']['override']['exposed_filters'])
       ) {
         // Update Areas of focus filter label.
-        $sitenow_research_title = sitenow_people_get_research_title();
-        $form["settings"]["override"]["exposed_filters"]["people_research_areas"]["#title"] = $sitenow_research_title;
+        $form['settings']['override']['exposed_filters']['people_research_areas']['#title'] = sitenow_people_get_research_title();
         // Add custom validation for certain blocks/regions to validate.
         $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
@@ -570,9 +573,8 @@ function sitenow_people_preprocess_field(&$variables) {
       break;
 
     case 'field_person_research_areas':
-      $sitenow_research_title = sitenow_people_get_research_title();
-      $variables['element']['#title'] = $sitenow_research_title;
-      $variables['label'] = $sitenow_research_title;
+      $variables['element']['#title'] = sitenow_people_get_research_title();
+      $variables['label'] = sitenow_people_get_research_title();
       break;
   }
 }
@@ -645,10 +647,8 @@ function sitenow_people_preprocess_page_title(&$variables) {
 
   // Check if we are on overview page for the "research_areas" vocabulary.
   if ($url->toString() == '/admin/structure/taxonomy/manage/research_areas/overview') {
-    $sitenow_research_title = sitenow_people_get_research_title();
-
     // Set a custom page title for the overview page.
-    $variables['title'] = $sitenow_research_title;
+    $variables['title'] = sitenow_people_get_research_title();
   }
 }
 
@@ -851,9 +851,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
 
   if ($view->id() === 'people') {
     // Change the Areas of focus label.
-    if (isset($form["#info"]["filter-field_person_research_areas_target_id"]["label"]) && $form["#info"]["filter-field_person_research_areas_target_id"]["label"] !== '') {
-      $sitenow_research_title = sitenow_people_get_research_title();
-      $form["#info"]["filter-field_person_research_areas_target_id"]["label"] = $sitenow_research_title;
+    if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+      $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
     }
 
     $person_type_filter = 'type';
