@@ -190,6 +190,9 @@ on presave based on first website link and the link directly to website checkbox
         && isset($form['settings']['override'])
         && isset($form['settings']['override']['exposed_filters'])
       ) {
+        // Update Areas of focus filter label.
+        global $_sitenow_people_research_title;
+        $form["settings"]["override"]["exposed_filters"]["people_research_areas"]["#title"] = $_sitenow_people_research_title;
         // Add custom validation for certain blocks/regions to validate.
         $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
