@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_phone
     - field.field.taxonomy_term.units.field_unit_alternative_scheduler
     - field.field.taxonomy_term.units.field_unit_email
     - field.field.taxonomy_term.units.field_unit_link
@@ -24,7 +25,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   field_unit_alternative_email:
     type: basic_string
@@ -32,6 +33,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_unit_alternative_phone:
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
     region: content
   field_unit_alternative_scheduler:
     type: text_default
