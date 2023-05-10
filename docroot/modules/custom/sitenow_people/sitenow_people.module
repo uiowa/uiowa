@@ -34,7 +34,13 @@ function sitenow_people_get_research_title() {
   $research_title = $config->get('research_title');
 
   if (empty($research_title)) {
-    $research_title = t('Research Areas');
+    // Load the entity field manager service.
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    // Load the field instance for the 'field_person_research_areas' field.
+    $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
+
+    $research_title = $fieldInstance->getLabel();
   }
 
   return $research_title;

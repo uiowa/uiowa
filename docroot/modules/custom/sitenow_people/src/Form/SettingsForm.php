@@ -176,8 +176,8 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['sitenow_people_research_areas'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Override for Research Areas label'),
-      '#description' => $this->t('For users visiting the site, Research Areas labels will be overridden with this value. Defaults to <em>Research Areas</em>.'),
-      '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
+      '#description' => $this->t('For users visiting the site, Research Areas labels will be overridden with this value. Defaults to <em>Research areas</em>.'),
+      '#default_value' => sitenow_people_get_research_title(),
       '#required' => TRUE,
     ];
 
@@ -350,8 +350,6 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
-    // Set research areas label default.
-    $default['display_options']['research_title'] = $research_title;
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
     if ($status === 1) {
