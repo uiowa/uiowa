@@ -1,7 +1,10 @@
 /* UIowa event page */
-.field--name-field-event-category a:hover, .field--name-field-event-category a:focus {
-  text-decoration: underline;
+.field--name-field-event-category .field__item,
+.field--name-field-event-category.field--label-visually_hidden .field__item {
+  display: inline-block;
+  margin-bottom: 1rem;
 }
+
 .field--name-field-event-category a {
   font-size: 1.1rem;
   margin-bottom: 1rem;
@@ -12,4 +15,8 @@
   margin-right: 0.5rem;
   color: var(--brand-secondary);
   text-decoration: none;
+}
+
+.field--name-field-event-category a:hover, .field--name-field-event-category a:focus {
+  text-decoration: underline;
 }
