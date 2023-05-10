@@ -350,7 +350,7 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
-    // Set research area label default.
+    // Set research areas label default.
     $default['display_options']['research_title'] = $research_title;
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
@@ -576,7 +576,7 @@ class SettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
+      // Save the research areas label default.
       ->set('research_title', $research_title)
       ->save();
 

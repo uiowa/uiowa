@@ -820,7 +820,7 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 
   if ($view->id() === 'people') {
-    // Change the Areas of focus label.
+    // Change the research areas label.
     if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
       $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
     }
