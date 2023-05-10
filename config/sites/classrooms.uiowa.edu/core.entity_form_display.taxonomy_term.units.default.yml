@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_scheduler
     - field.field.taxonomy_term.units.field_unit_email
     - field.field.taxonomy_term.units.field_unit_link
     - field.field.taxonomy_term.units.field_unit_phone
@@ -24,6 +26,22 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_alternative_email:
+    type: email_default
+    weight: 11
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_unit_alternative_scheduler:
+    type: text_textfield
+    weight: 10
+    region: content
+    settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_unit_email:
