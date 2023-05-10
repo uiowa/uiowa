@@ -62,12 +62,6 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_people_person_form_submit');
 
-      if (isset($form['field_person_research_areas'])) {
-        // Set field_person_hide to options group (promotion options).
-        $form['field_person_research_areas']['widget']['#title'] = sitenow_people_get_research_title();
-
-      }
-
       if (isset($form['field_person_hide'])) {
         // Set field_person_hide to options group (promotion options).
         $form['field_person_hide']['#group'] = 'options';
@@ -189,8 +183,6 @@ on presave based on first website link and the link directly to website checkbox
         && isset($form['settings']['override'])
         && isset($form['settings']['override']['exposed_filters'])
       ) {
-        // Update Areas of focus filter label.
-        $form['settings']['override']['exposed_filters']['people_research_areas']['#title'] = sitenow_people_get_research_title();
         // Add custom validation for certain blocks/regions to validate.
         $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
@@ -567,7 +559,6 @@ function sitenow_people_preprocess_field(&$variables) {
       break;
 
     case 'field_person_research_areas':
-      $variables['element']['#title'] = sitenow_people_get_research_title();
       $variables['label'] = sitenow_people_get_research_title();
       break;
   }
@@ -628,21 +619,6 @@ the first website link.'));
           break;
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_page_title().
- */
-function sitenow_people_preprocess_page_title(&$variables) {
-  // Get the current URL path and create a Url object.
-  $current_path = \Drupal::service('path.current')->getPath();
-  $url = Url::fromUri('internal:' . $current_path);
-
-  // Check if we are on overview page for the "research_areas" vocabulary.
-  if ($url->toString() == '/admin/structure/taxonomy/manage/research_areas/overview') {
-    // Set a custom page title for the overview page.
-    $variables['title'] = sitenow_people_get_research_title();
   }
 }
 
