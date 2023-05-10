@@ -27,20 +27,6 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
- * Helper function to get the research title from the site config.
- */
-function sitenow_people_get_research_title() {
-  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
-  $research_title = $config->get('research_title');
-
-  if (empty($research_title)) {
-    $research_title = t('Research Areas');
-  }
-
-  return $research_title;
-}
-
-/**
  * Implements hook_entity_bundle_info_alter().
  */
 function sitenow_people_entity_bundle_info_alter(array &$bundles) {
@@ -54,12 +40,6 @@ function sitenow_people_entity_bundle_info_alter(array &$bundles) {
  */
 function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-    case 'taxonomy_overview_vocabularies':
-      if (isset($form['vocabularies']['research_areas']['label'])) {
-        $form['vocabularies']['research_areas']['label']['#plain_text'] = sitenow_people_get_research_title();
-      }
-      break;
-
     case 'node_person_edit_form':
     case 'node_person_form':
       $form['#prefix'] = '<div id="form-ajax-wrapper">';

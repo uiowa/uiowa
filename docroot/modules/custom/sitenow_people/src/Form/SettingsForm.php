@@ -176,7 +176,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['sitenow_people_research_areas'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Override for Research Areas label'),
-      '#description' => $this->t('Research Areas labels will be overridden with this value. Defaults to <em>Research Areas</em>.'),
+      '#description' => $this->t('For users visiting the site, Research Areas labels will be overridden with this value. Defaults to <em>Research Areas</em>.'),
       '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
       '#required' => TRUE,
     ];
