@@ -175,8 +175,8 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['sitenow_people_research_areas'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Areas of Focus'),
-      '#description' => $this->t('The title for research areas. Defaults to <em>Research Areas</em>.'),
+      '#title' => $this->t('Override for Research Areas lable'),
+      '#description' => $this->t('Research Areas labels will be overridden with this value. Defaults to <em>Research Areas</em>.'),
       '#default_value' => $default['display_options']['research_title'] ?? 'Research Areas',
       '#required' => TRUE,
     ];
@@ -213,8 +213,8 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['sitenow_people_filter']['filter_research'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Areas of Focus'),
-      '#description' => $this->t('Allow filtering by Areas of Focus'),
+      '#title' => $this->t('Research Areas'),
+      '#description' => $this->t('Allow filtering by Research Areas'),
       '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
       '#size' => 60,
     ];
