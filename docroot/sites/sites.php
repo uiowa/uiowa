@@ -5206,3 +5206,21 @@ $sites['psychologybbip.uiowa.ddev.site'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.dev.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.stage.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
 $sites['psychologybbip.prod.drupal.uiowa.edu'] = 'bbip.psychology.uiowa.edu';
+
+// Directory aliases for inrl.lab.uiowa.edu.
+$sites['labinrl.uiowa.ddev.site'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.dev.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.stage.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+$sites['labinrl.prod.drupal.uiowa.edu'] = 'inrl.lab.uiowa.edu';
+
+// Directory aliases for wellbeing.uiowa.edu.
+$sites['wellbeing.uiowa.ddev.site'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.dev.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.stage.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+$sites['wellbeing.prod.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+
+// Directory aliases for voice.lab.uiowa.edu.
+$sites['labvoice.uiowa.ddev.site'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.dev.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.stage.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.prod.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';

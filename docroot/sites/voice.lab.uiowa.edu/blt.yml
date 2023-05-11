@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labvoice.uiowa.ddev.site
+    protocol: https
+  machine_name: labvoice
+  human_name: voice.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labvoice.prod
+drupal:
+  db:
+    database: voice_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labvoice.prod.drupal.uiowa.edu'
+  requester: ekutlu
+  site-name: voice
