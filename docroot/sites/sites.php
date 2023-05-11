@@ -5218,3 +5218,9 @@ $sites['wellbeing.uiowa.ddev.site'] = 'wellbeing.uiowa.edu';
 $sites['wellbeing.dev.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
 $sites['wellbeing.stage.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
 $sites['wellbeing.prod.drupal.uiowa.edu'] = 'wellbeing.uiowa.edu';
+
+// Directory aliases for voice.lab.uiowa.edu.
+$sites['labvoice.uiowa.ddev.site'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.dev.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.stage.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';
+$sites['labvoice.prod.drupal.uiowa.edu'] = 'voice.lab.uiowa.edu';
