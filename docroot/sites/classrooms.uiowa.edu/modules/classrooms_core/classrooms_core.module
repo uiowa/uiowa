@@ -626,19 +626,6 @@ function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) 
     foreach ($fields_to_hide as $field_to_hide) {
       $row_build['content']['#hide_fields'][] = $field_to_hide;
     }
-
-    // Get the node object.
-    $node = $row_build['content']['#node'];
-
-    // Add the building link field value to the #meta array.
-    $building_id = $node->get('field_room_building_id')->target_id;
-    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-    $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-    $row_build['content']['#meta']['building_link'] = [
-      '#theme' => 'building_link_teaser',
-      '#building_link' => $url,
-      '#building_name' => $building->label(),
-    ];
   }
 }
 
@@ -656,11 +643,6 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
 
     case 'block_rooms':
       classrooms_core_preprocess_rooms_list($variables, 'field_room_responsible_unit', 'field_room_features');
-      break;
-
-    // Taxonomy term page for units.
-    case 'page_1':
-      classrooms_core_preprocess_rooms_list($variables);
       break;
   }
 }
