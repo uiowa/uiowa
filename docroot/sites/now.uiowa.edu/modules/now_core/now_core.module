@@ -23,6 +23,33 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           ],
         ],
       ];
+
+      $form['field_embargo_information']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+            'value' => 'featured',
+          ],
+        ],
+      ];
+
+      $form['field_original_publication_date']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+            ['value' => 'in-the-news'],
+            'or',
+            ['value' => 'ui-spotlight'],
+          ],
+        ],
+      ];
+
+      // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
+      //   is resolved.
+      // Smart_date deals with ranges, but we only need a single date,
+      // so unset the extra "to" in the form and hide the end date.
+      // JS will update the end date to match the start date
+      // without showing clutter to the end user.
+      unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
+      $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
       break;
 
     // Article contacts are taken care of in sitenow_articles.module,
@@ -52,34 +79,6 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         }
       }
 
-  }
-  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
-    $form['field_embargo_information']['#states'] = [
-      'visible' => [
-        ':input[name="field_article_type"]' => [
-          'value' => 'featured',
-        ],
-      ],
-    ];
-
-    $form['field_original_publication_date']['#states'] = [
-      'visible' => [
-        ':input[name="field_article_type"]' => [
-          ['value' => 'in-the-news'],
-          'or',
-          ['value' => 'ui-spotlight'],
-        ],
-      ],
-    ];
-
-    // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
-    //   is resolved.
-    // Smart_date deals with ranges, but we only need a single date,
-    // so unset the extra "to" in the form and hide the end date.
-    // JS will update the end date to match the start date
-    // without showing clutter to the end user.
-    unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
-    $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
   }
 }
 
