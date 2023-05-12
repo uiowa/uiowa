@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Iowa Summer Writing Festival Core module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_install().
+ */
+function admissions_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function admissions_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+function _event_type_map(): array {
+  return [
+    'Banquet' => 'Banquet',
+    'BoardMeeting' => 'Board Meeting',
+    'Colloquium' => 'Colloquium',
+    'Conference' => 'Conference',
+    'Convention' => 'Convention',
+    'Course' => 'Course',
+    'Exhibition' => 'Exhibition',
+    'Exposition' => 'Exposition',
+    'Fair' => 'Fair',
+    'Festival' => 'Festival',
+    'Fundraiser' => 'Fundraiser',
+    'Gala' => 'Gala',
+    'GeneralSession' => 'General Session',
+    'GreenMeeting' => 'Green Meeting',
+    'Lecture' => 'Lecture',
+    'Meetup' => 'Meetup',
+    'NetworkingEvent' => 'Networking Event',
+    'Panel' => 'Panel',
+    'Party' => 'Party',
+    'PressConference' => 'Press Conference',
+    'ProductLaunch' => 'Product Launch',
+    'Reading' => 'Reading',
+    'Reception' => 'Reception',
+    'Retreat' => 'Retreat',
+    'Round-Table' => 'Round-Table',
+    'Seminar' => 'Seminar',
+    'Session' => 'Session',
+    'SocialEvent' => 'Social Event',
+    'Symposium' => 'Symposium',
+    'TradeShow' => 'Trade Show',
+    'Workshop' => 'Workshop',
+  ];
+}
+
+/**
+ * Migrate from event type to Event categories.
+ */
+function iowasummerwritingfestival_core_update_9001() {
+
+  //  \Drupal::logger('iowasummerwritingfestival_core')->notice('BeeHaw');
+
+  // Load the relevant config.
+  $config_path = DRUPAL_ROOT . '/../config/features/event';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_to_load = [
+    'field.field.node.event.field_event_category',
+    'taxonomy.vocabulary.event_categories',
+    'field.storage.node.field_event_category',
+  ];
+
+  foreach ($config_to_load as $config_file) {
+    $config_storage->write($config_file, $source->read($config_file));
+  }
+
+  // Instantiate the typemap for later.
+  $type_map = _event_type_map();
+
+  foreach ($type_map as $key => $type) {
+    Term::create([
+      'name' => $type,
+      'vid' => 'event_categories',
+    ])->save();
+  }
+
+  //https://drupal.stackexchange.com/questions/202860/unable-to-loop-through-all-nodes-in-a-content-type-and-load-them-without-hitting
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'event')
+    ->execute();
+  $nids = array_keys($query);
+
+  foreach ($nids as $nid) {
+    $node = \Drupal\node\Entity\Node::load($nid);
+    // DO STUFF.
+    \Drupal::entityManager()->getStorage('node')->resetCache(array($nid));
+  }
+}
