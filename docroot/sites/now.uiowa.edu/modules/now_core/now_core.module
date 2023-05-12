@@ -131,7 +131,7 @@ function now_core_node_presave($entity) {
       // To account for articles created prior to requiring this field,
       // we also need to check if the field is empty. If it was,
       // we won't have a TID to remove.
-      $old_tid = (!empty($entity->original->field_article_type_value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+      $old_tid = (!empty($entity->original->field_article_type->value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
     }
     // If the old TID is the same as the new,
     // then we can treat it like the entity is new.
