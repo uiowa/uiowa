@@ -657,5 +657,10 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
     case 'block_rooms':
       classrooms_core_preprocess_rooms_list($variables, 'field_room_responsible_unit', 'field_room_features');
       break;
+
+    // Taxonomy term page for units.
+    case 'page_1':
+      classrooms_core_preprocess_rooms_list($variables);
+      break;
   }
 }
