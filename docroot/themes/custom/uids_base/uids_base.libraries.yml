@@ -1,7 +1,6 @@
 global-styling:
   js:
     assets/js/uids_base.js: {}
-    assets/js/click-a11y-init.js: { preprocess: false, weight: -800, attributes: { async: true, type: module} }
   css:
     base:
       assets/css/global.css: {}
@@ -131,7 +130,7 @@ banner:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { preprocess: false, weight: -800, attributes: { async: true, type: module} }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -190,7 +189,7 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { attributes: { async: true, type: module } }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 media:
   css:
     component:

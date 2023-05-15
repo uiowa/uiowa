@@ -6,9 +6,6 @@ import { applyClickA11y } from '../../uids/assets/js/click-a11y.js';
   Drupal.behaviors.clickA11y = {
     attach: function (context, settings) {
       applyClickA11y('.click-container:not([data-uids-no-link])');
-    },
-    once: function (context, settings) {
-      applyClickA11y('.click-container:not([data-uids-no-link])');
     }
   };
 })(jQuery, Drupal);
