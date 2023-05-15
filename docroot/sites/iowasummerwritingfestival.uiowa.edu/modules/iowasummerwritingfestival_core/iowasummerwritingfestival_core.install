@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -61,23 +62,35 @@ function _event_type_map(): array {
 /**
  * Migrate from event type to Event categories.
  */
-function iowasummerwritingfestival_core_update_9001() {
+function iowasummerwritingfestival_core_update_9001(&$sandbox) {
 
   //  \Drupal::logger('iowasummerwritingfestival_core')->notice('BeeHaw');
-
   // Load the relevant config.
   $config_path = DRUPAL_ROOT . '/../config/features/event';
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
-  $config_to_load = [
-    'field.field.node.event.field_event_category',
-    'taxonomy.vocabulary.event_categories',
-    'field.storage.node.field_event_category',
-  ];
-
-  foreach ($config_to_load as $config_file) {
-    $config_storage->write($config_file, $source->read($config_file));
+  $config_files = $source->listAll();
+  foreach ($config_files as $config) {
+    $config_storage->write($config, $source->read($config));
   }
+  // Enable the 'writinguniversity_migrate' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.event');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+
+  // Load the relevant config.
+  $config_path = DRUPAL_ROOT . '/../config/sites/iowasummerwritingfestival.uiowa.edu';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_files = $source->listAll();
+  foreach ($config_files as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.site');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
 
   // Instantiate the typemap for later.
   $type_map = _event_type_map();
@@ -89,15 +102,47 @@ function iowasummerwritingfestival_core_update_9001() {
     ])->save();
   }
 
-  //https://drupal.stackexchange.com/questions/202860/unable-to-loop-through-all-nodes-in-a-content-type-and-load-them-without-hitting
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', 'event')
-    ->execute();
-  $nids = array_keys($query);
+  // Process all the event nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->execute();
 
-  foreach ($nids as $nid) {
-    $node = \Drupal\node\Entity\Node::load($nid);
-    // DO STUFF.
-    \Drupal::entityManager()->getStorage('node')->resetCache(array($nid));
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
   }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set the field and save it with a new revision.
+    $node = Node::load($nid);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+  //https://drupal.stackexchange.com/questions/202860/unable-to-loop-through-all-nodes-in-a-content-type-and-load-them-without-hitting
+//    \Drupal::entityManager()->getStorage('node')->resetCache(array($nid));
 }
