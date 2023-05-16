@@ -3,6 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_phone
+    - field.field.taxonomy_term.units.field_unit_alternative_scheduler
     - field.field.taxonomy_term.units.field_unit_email
     - field.field.taxonomy_term.units.field_unit_link
     - field.field.taxonomy_term.units.field_unit_phone
@@ -19,10 +22,32 @@ mode: default
 content:
   description:
     type: text_default
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 7
+    region: content
+  field_unit_alternative_email:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_unit_alternative_phone:
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_unit_alternative_scheduler:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
     region: content
   field_unit_email:
     type: basic_string
@@ -41,7 +66,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 0
     region: content
   field_unit_phone:
     type: telephone_link
@@ -56,7 +81,7 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
