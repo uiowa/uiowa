@@ -94,6 +94,8 @@ function iowasummerwritingfestival_core_update_9001() {
 }
 
 function iowasummerwritingfestival_core_update_9002(&$sandbox) {
+  $logger = \Drupal::logger('iowasummerwritingfestival_core');
+
   // Process all the event nodes.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
@@ -120,8 +122,41 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox) {
   foreach ($batch as $nid) {
     // Load the node, set the field and save it with a new revision.
     $node = Node::load($nid);
-    $node->setRevisionLogMessage('Automated save.');
-    $node->save();
+
+    $event_category_term_id = NULL;
+
+    if (!isset($node->get('field_event_type')->getValue()[0])){
+      $logger->notice('No "event_type" on node ' . $nid . '.');
+    }
+    else {
+      $event_type = $node->get('field_event_type')->getValue()[0];
+      $taxonomy_term_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $event_category_term_array = $taxonomy_term_manager?->loadByProperties(['name'=>$event_type]);
+
+      // We found no term matches on the site, something is wrong.
+      if (count($event_category_term_array) === 0) {
+        $logger->error('No "event_categories" term matches the source "event_type" on node ' . $nid.toString() . '.');
+      }
+
+      // We found matches, so we check for the one that's in "event_categories", and then set it.
+      else {
+        foreach ($event_category_term_array as $key => $term) {
+          if ($term->bundle() === 'event_categories') {
+            $event_category_term_id = $key;
+          }
+        }
+      }
+    }
+
+    // If we have a relevant tid, update the 'node_event_category' field.
+    if ($event_category_term_id !== NULL) {
+      $node->set('field_event_category', ['target_id' => $event_category_term_id]);
+
+      // We only need to save if we edit the values.
+      $node->setRevisionLogMessage('Automated save.');
+      $node->save();
+    }
+
     $sandbox['current']++;
   }
 
