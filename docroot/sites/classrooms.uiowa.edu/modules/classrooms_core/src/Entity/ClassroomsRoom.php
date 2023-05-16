@@ -72,6 +72,7 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
     $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
     $build['#meta']['building_link'] = [
       '#theme' => 'building_link_teaser',
+      '#weight' => -1,
       '#building_link' => $url,
       '#building_name' => $building->label(),
     ];
