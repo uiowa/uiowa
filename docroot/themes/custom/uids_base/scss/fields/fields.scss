@@ -145,6 +145,12 @@
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
   margin-top: $sm;
+  .element--three-column &,
+  .element--two-column & {
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
 }
 
 .field--label-hidden + .field--label-above,
