@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.project.field_image
+    - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
@@ -23,14 +24,14 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 101
+    weight: 7
     region: content
   field_project_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 103
+    weight: 4
     region: content
   field_project_webcam:
     type: link
@@ -42,22 +43,23 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 4
     region: content
   field_project_whats_new:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 102
+    weight: 2
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_meta_tags: true
   search_api_excerpt: true
