@@ -169,11 +169,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
-    case 'node_event_form':
-    case 'node_event_edit_form':
-      $form['field_event_category']['#group'] = 'node_relations';
-      break;
-
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
