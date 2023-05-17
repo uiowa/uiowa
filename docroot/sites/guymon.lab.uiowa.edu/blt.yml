@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labguymon.uiowa.ddev.site
+    protocol: https
+  machine_name: labguymon
+  human_name: guymon.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labguymon.prod
+drupal:
+  db:
+    database: guymon_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labguymon.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Guymon Research Group'
