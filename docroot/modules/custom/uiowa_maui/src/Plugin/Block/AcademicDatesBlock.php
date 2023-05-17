@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_maui_academic_dates",
  *   admin_label = @Translation("Academic dates"),
- *   category = @Translation("MAUI")
+ *   category = @Translation("Site custom")
  * )
  */
 class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInterface {
