@@ -74,6 +74,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
           }
         }
       }
+
       if (isset($form['field_event_category'])) {
         $form['field_event_category']['#group'] = 'node_relations';
       }
