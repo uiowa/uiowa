@@ -93,12 +93,6 @@
     flex-wrap: wrap;
     align-items: center;
   }
-  .webform-options-display-side-by-side {
-    .form-type-checkbox,
-    .form-type-radio {
-      display: inline-flex;
-    }
-  }
   [type='checkbox']+label,
   [type='radio']+label {
     font-weight: $font-weight-normal;
@@ -119,6 +113,12 @@
     & .fieldset-wrapper {
       margin-left: 0;
       margin-inline-start: 0;
+    }
+  }
+  .webform-options-display-side-by-side {
+    .form-type-checkbox,
+    .form-type-radio {
+      display: inline-flex;
     }
   }
 
