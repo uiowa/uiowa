@@ -2351,13 +2351,12 @@ function sitenow_update_9060() {
  * Update new field values if Event split is active.
  */
 function sitenow_update_9061(&$sandbox) {
-  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-  $split = 'config_split:event';
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
 
   // If event split isn't registered or
   // isn't active, return early.
-  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+  if (!isset($config) || !$config->get('status')) {
     return t('event split is not active, so no update to run.');
   }
 
