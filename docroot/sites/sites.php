@@ -5230,3 +5230,9 @@ $sites['labguymon.uiowa.ddev.site'] = 'guymon.lab.uiowa.edu';
 $sites['labguymon.dev.drupal.uiowa.edu'] = 'guymon.lab.uiowa.edu';
 $sites['labguymon.stage.drupal.uiowa.edu'] = 'guymon.lab.uiowa.edu';
 $sites['labguymon.prod.drupal.uiowa.edu'] = 'guymon.lab.uiowa.edu';
+
+// Directory aliases for acl.lab.uiowa.edu.
+$sites['labacl.uiowa.ddev.site'] = 'acl.lab.uiowa.edu';
+$sites['labacl.dev.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
+$sites['labacl.stage.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
+$sites['labacl.prod.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
