@@ -5236,3 +5236,9 @@ $sites['labacl.uiowa.ddev.site'] = 'acl.lab.uiowa.edu';
 $sites['labacl.dev.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
 $sites['labacl.stage.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
 $sites['labacl.prod.drupal.uiowa.edu'] = 'acl.lab.uiowa.edu';
+
+// Directory aliases for cook.lab.uiowa.edu.
+$sites['labcook.uiowa.ddev.site'] = 'cook.lab.uiowa.edu';
+$sites['labcook.dev.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
+$sites['labcook.stage.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
+$sites['labcook.prod.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
