@@ -2346,3 +2346,95 @@ function sitenow_update_9060() {
 
   });
 }
+
+/**
+ * Update new field values if Event split is active.
+ */
+function sitenow_update_9061(&$sandbox) {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:event';
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('event split is not active, so no update to run.');
+  }
+
+  $config_path = DRUPAL_ROOT . '/../config/features/event';
+  $source = new FileStorage($config_path);
+
+  // Limit to only what we need for the following
+  // update hook and in the order we want it.
+  $config = [
+    'field_storage_config' => 'field.storage.node.field_event_attendance_mode',
+    'field_config' => 'field.field.node.event.field_event_attendance_mode',
+  ];
+
+  foreach ($config as $type => $config_file) {
+    \Drupal::entityTypeManager()
+      ->getStorage($type)
+      ->create($source->read($config_file))
+      ->save();
+  }
+
+  // Process all event nodes to update the value
+  // for our new field.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+    // See if we have a location and/or virtual filled out.
+    $location = !is_null($node->field_event_location->get(0));
+    $virtual = !is_null($node->field_event_virtual->get(0));
+    // Default to our in-person option.
+    $value = 'OfflineEventAttendanceMode';
+    if ($virtual) {
+      // If both fields are filled, we're hybrid.
+      if ($location) {
+        $value = 'MixedEventAttendanceMode';
+      }
+      // If only virtual was filled, we're online.
+      else {
+        $value = 'OnlineEventAttendanceMode';
+      }
+    }
+    // Unset any gremlins.
+    $node->set('field_event_attendance_mode', $value);
+    // Set revision message and save.
+    $node->setRevisionLogMessage('Automated save.');
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+}
