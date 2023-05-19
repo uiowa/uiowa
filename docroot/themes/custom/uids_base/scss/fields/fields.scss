@@ -44,6 +44,9 @@
 
 .field--label-inline {
   margin-bottom: $sm;
+  [class*="card__"] & {
+    margin-bottom: 0;
+  }
 
   .svg-inline--fa {
     margin-right: 0.3rem;
@@ -124,20 +127,6 @@
   }
 }
 
-.field--label-inline.field--type-entity-reference,
-.field--label-inline.field--type-link,
-.field--label-inline.field--type-string,
-.field--label-visually_hidden.field--type-entity-reference:not([class*="image"]),
-.field--label-visually_hidden.field--type-link {
-  .field__item + .field__item {
-    &:before {
-      content: ",";
-      padding-right: $xsm;
-      margin-left: -3px;
-    }
-  }
-}
-
 .field--label-inline.field--type-link {
   .link-title {
     margin-right: $xsm;
@@ -156,6 +145,12 @@
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
   margin-top: $sm;
+  .element--three-column &,
+  .element--two-column & {
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
 }
 
 .field--label-hidden + .field--label-above,

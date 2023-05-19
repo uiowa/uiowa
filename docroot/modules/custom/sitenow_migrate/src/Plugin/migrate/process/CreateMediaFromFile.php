@@ -94,7 +94,7 @@ class CreateMediaFromFile extends FileCopy {
     if ($fid = $this->getNewFileId($filename)) {
       // Pass in the value as 'meta' for use in the media creation
       // processes, so we can take advantage of properties like
-      // human readable filenames.
+      // human-readable filenames.
       return $this->createMediaEntity($fid, $value);
     }
 
@@ -145,14 +145,13 @@ class CreateMediaFromFile extends FileCopy {
       // Create a file entity.
       $file = File::create([
         'uri' => $final_destination,
-        'uid' => $uid,
       ]);
       $file->setPermanent();
       $file->save();
       $this->newFid = $file->id();
       // Pass in the value as 'meta' for use in the media creation
       // processes, so we can take advantage of properties like
-      // human readable filenames.
+      // human-readable filenames.
       $this->newMid = $this->createMediaEntity($this->newFid, $value);
 
       return $this->newMid;

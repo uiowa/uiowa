@@ -28,6 +28,39 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       Any buildings created or modified that are not in the source data will be overwritten.');
       break;
 
+    case 'node_project_form':
+    case 'node_project_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Set a placeholder text, and add a submit handler
+      // for if we have a webcam link but no title.
+      $form['field_project_webcam']['widget'][0]['title']['#placeholder'] = 'View webcam';
+      // Unshift to put our handler at the front of the list,
+      // to ensure the value will get set prior to save.
+      array_unshift($form['actions']['submit']['#submit'], 'facilities_core_project_submit');
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:projectss_import`.
+      \Drupal::messenger()->addWarning('This content type is managed through an automated process.
+      Any projects created or modified that are not in the source data will be overwritten.');
+      break;
+
+  }
+}
+
+/**
+ * Submit handler to set a default webcam link title if none is provided.
+ */
+function facilities_core_project_submit($form, FormStateInterface $form_state): void {
+  $webcam = $form_state->getValue([
+    'field_project_webcam',
+    '0',
+  ]);
+  if (!empty($webcam['uri']) && empty($webcam['title'])) {
+    $form_state->setValue([
+      'field_project_webcam',
+      '0',
+      'title',
+    ], 'View webcam');
   }
 }
 
@@ -72,8 +105,7 @@ function facilities_core_preprocess_layout(&$variables) {
 
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'named_building',

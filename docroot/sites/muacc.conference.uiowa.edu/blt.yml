@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencemuacc.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencemuacc
+  human_name: muacc.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemuacc.prod
+drupal:
+  db:
+    database: muacc_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencemuacc.prod.drupal.uiowa.edu'
+  requester: scottkshaw
+  site-name: 'MUACC 2023'

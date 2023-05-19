@@ -131,8 +131,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('style.style_selector'),
   ];
 
-  // Only allow access to this field for users with the 'administer site configuration'
-  // permission.
+  // Only allow access to this field for users
+  // with the 'administer site configuration' permission.
   if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
     $form['style']['#access'] = FALSE;
   }
