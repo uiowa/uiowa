@@ -52,6 +52,7 @@
   .field-suffix {
     font-size: 0.9rem;
     line-height: 1.4;
+    clear: both;
   }
   .description {
     margin: $xsm 0;
@@ -102,7 +103,7 @@
   .webform-type-radios,
   .webform-type-webform-radios-other {
     .form-type-checkbox,
-    .form-type-radio {
+    .form-type-radio:not(.form-item-radios-buttons) {
       display: flex;
       align-items: baseline;
       flex-wrap: wrap;
