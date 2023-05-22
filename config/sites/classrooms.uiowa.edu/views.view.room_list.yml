@@ -2208,8 +2208,36 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      sorts:
+        field_room_building_id_target_id:
+          id: field_room_building_id_target_id
+          table: node__field_room_building_id
+          field: field_room_building_id_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: Building
+            field_identifier: field_room_building_id_target_id
+          exposed: true
+        field_room_max_occupancy_value:
+          id: field_room_max_occupancy_value
+          table: node__field_room_max_occupancy
+          field: field_room_max_occupancy_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: 'Max Occupancy'
+            field_identifier: field_room_max_occupancy_value
+          exposed: true
       defaults:
         fields: false
+        sorts: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -2241,6 +2269,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - user
         - 'user.node_grants:view'
         - user.permissions
