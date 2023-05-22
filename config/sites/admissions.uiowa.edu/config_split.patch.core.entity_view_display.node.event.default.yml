@@ -1,0 +1,170 @@
+adding:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_settings:
+            layout_builder_styles_style:
+              - section_order_reversed
+          components:
+            config_split_sequence_3qhidpsnp2a996q5:
+              weight: 2
+            config_split_sequence_qvegmgm51mppsmnc:
+              weight: 3
+            config_split_sequence_up23tlgtoc7srca9:
+              weight: 3
+            config_split_sequence_21va3vrv7dlrnbq0:
+              weight: 4
+            config_split_sequence_asle1hi593u2nvkj:
+              region: first
+              configuration:
+                layout_builder_styles:
+                  - content_alignment_left
+                  - list_format_list
+                  - block_grid_threecol_33_34_33
+                  - media_format_circle
+                  - card_media_position_left
+                  - card_image_small
+              additional:
+                layout_builder_styles_style:
+                  - ''
+                  - content_alignment_left
+                  - list_format_list
+                  - block_grid_threecol_33_34_33
+                  - media_format_circle
+                  - card_media_position_left
+                  - card_image_small
+            config_split_sequence_j3ifqob5uakg2ob3:
+              uuid: f0758ae0-6f6a-4da2-a983-001db772f897
+              region: card_meta
+              configuration:
+                id: 'field_block:node:event:field_event_status'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: list_default
+                  label: visually_hidden
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_nfl63ec1vfj4e3j:
+              uuid: 06792bc3-55a2-47e1-91a9-8d73f1fc33f0
+              region: main
+              configuration:
+                id: 'field_block:node:event:field_event_category'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: visually_hidden
+                  settings:
+                    link: true
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ''
+              weight: 5
+              additional: {  }
+              third_party_settings: {  }
+  hidden:
+    field_event_status: true
+removing:
+  dependencies:
+    config:
+      - views.view.events
+    module:
+      - options
+      - views
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_settings:
+            context_mapping: {  }
+            layout_builder_styles_style:
+              0: ''
+              section_order_reversed: section_order_reversed
+          components:
+            config_split_sequence_3qhidpsnp2a996q5:
+              weight: 3
+            config_split_sequence_up23tlgtoc7srca9:
+              weight: 4
+            config_split_sequence_21va3vrv7dlrnbq0:
+              weight: 5
+            config_split_sequence_asle1hi593u2nvkj:
+              region: main
+            config_split_sequence_qvegmgm51mppsmnc:
+              weight: 2
+            config_split_sequence_p4hb5tt5adkq30ic:
+              uuid: 1e82cdcb-9f8f-4909-89d8-63c8243b1096
+              region: card_meta
+              configuration:
+                id: 'field_block:node:event:field_event_status'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: list_default
+                  label: visually_hidden
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
+          third_party_settings:
+            layout_builder_limit:
+              limit:
+                scope: disabled
+                scope_update: 'Update scope'
+        -
+          layout_id: layout_onecol
+          layout_settings:
+            label: ''
+            context_mapping: {  }
+            layout_builder_styles_style:
+              - ''
+              - section_margin_fixed_width_container
+          components:
+            -
+              uuid: c3e44388-2de9-4084-85e8-ddd134a86e56
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_category'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: visually_hidden
+                  settings:
+                    link: true
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ''
+              weight: 0
+              additional: {  }
+              third_party_settings: {  }
+          third_party_settings: {  }
+  content:
+    field_event_status:
+      type: list_default
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 103
+      region: content
