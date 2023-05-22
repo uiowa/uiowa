@@ -2360,21 +2360,32 @@ function sitenow_update_9061(&$sandbox) {
     return t('event split is not active, so no update to run.');
   }
 
-  $config_path = DRUPAL_ROOT . '/../config/features/event';
-  $source = new FileStorage($config_path);
+  /** @var Drupal\Core\Config\CachedStorage $config_storage */
+  $config_storage = \Drupal::service('config.storage');
 
-  // Limit to only what we need for the following
-  // update hook and in the order we want it.
-  $config = [
-    'field_storage_config' => 'field.storage.node.field_event_attendance_mode',
-    'field_config' => 'field.field.node.event.field_event_attendance_mode',
-  ];
+  // Since we're batching, it's possible this will run
+  // multiple times, so only create the field if we haven't
+  // already imported config in a previous iteration.
+  if (!$config_storage->read('field.storage.node.field_event_attendance_mode')) {
+    $config_path = DRUPAL_ROOT . '/../config/features/event';
+    $source = new FileStorage($config_path);
 
-  foreach ($config as $type => $config_file) {
-    \Drupal::entityTypeManager()
-      ->getStorage($type)
-      ->create($source->read($config_file))
+    $field_storage_link = $source->read('field.storage.node.field_event_attendance_mode');
+
+    // There's an extra layer of nesting in how the config is read,
+    // so do some quick tidying.
+    $allowed_values_link = [];
+    foreach ($field_storage_link['settings']['allowed_values'] as $value) {
+      $allowed_values_link[$value['value']] = $value['label'];
+    }
+    $field_storage_link['settings']['allowed_values'] = $allowed_values_link;
+
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($field_storage_link)
       ->save();
+
+    $field_type_link = $source->read('field.field.node.event.field_event_attendance_mode');
+    \Drupal::entityTypeManager()->getStorage('field_config')->create($field_type_link)->save();
   }
 
   // Process all event nodes to update the value
