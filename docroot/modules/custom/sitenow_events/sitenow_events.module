@@ -255,24 +255,7 @@ function sitenow_events_preprocess_block(&$variables) {
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = $heading_size ?? 'h3';
 
-          // Construct event link based on site-wide configuration.
-          $external_link = ($config->get('event_link') === 'event-link-external');
-          if ($external_link) {
-            $event['url'] = $event['events_site_url'];
-          }
-          else {
-            $single_event_path = $config->get('single_event_path');
-
-            // Add a parameter on the URL for event instances.
-            foreach ($event['event_instances'] as $instance_key => $instance) {
-              if ($event['instance_start'] === $instance['event_instance']['start']) {
-                $instance_id = $instance_key;
-              }
-            }
-
-            $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
-            $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
-          }
+          $event['sitenow_events_config'] = $config;
 
           // Pass off to helper function to build card render.
           $variables['content'][$key] = sitenow_events_build_card($event);
@@ -319,6 +302,26 @@ function sitenow_events_preprocess_block(&$variables) {
  * Helper function to build out card renders from event data.
  */
 function sitenow_events_build_card(array $event): array {
+
+  // Construct event link based on site-wide configuration.
+  $external_link = ($event['sitenow_events_config']->get('event_link') === 'event-link-external');
+  if ($external_link) {
+    $event['url'] = $event['events_site_url'];
+  }
+  else {
+    $single_event_path = $event['sitenow_events_config']->get('single_event_path');
+
+    // Add a parameter on the URL for event instances.
+    foreach ($event['event_instances'] as $instance_key => $instance) {
+      if ($event['instance_start'] === $instance['event_instance']['start']) {
+        $instance_id = $instance_key;
+      }
+    }
+
+    $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
+    $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
+  }
+
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
