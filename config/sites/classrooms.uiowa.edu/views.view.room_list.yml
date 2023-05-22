@@ -385,8 +385,8 @@ display:
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Ascending
+          sort_desc_label: Descending
           text_input_required: 'Select any filter and click on Search to see results'
           text_input_required_format: filtered_html
           bef:
@@ -400,6 +400,16 @@ display:
               secondary_label: Filters
               secondary_open: true
               reset_button_always_show: false
+            sort:
+              plugin_id: default
+              advanced:
+                combine: true
+                combine_rewrite: ''
+                reset: false
+                reset_label: ''
+                collapsible: true
+                collapsible_label: 'Sort options'
+                is_secondary: false
             filter:
               combine:
                 plugin_id: default
@@ -413,12 +423,12 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: true
-              field_room_features_target_id:
+              field_room_max_occupancy_value:
                 plugin_id: default
                 advanced:
-                  sort_options: false
+                  placeholder_text: ''
                   rewrite:
-                    filter_rewrite_values: '- Any -|Room features'
+                    filter_rewrite_values: '- Any -|Occupancy'
                   collapsible: false
                   is_secondary: true
               field_room_type_target_id:
@@ -429,14 +439,6 @@ display:
                     filter_rewrite_values: '- Any -|Type'
                   collapsible: false
                   is_secondary: true
-              field_room_scheduling_regions_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Region'
-                  collapsible: false
-                  is_secondary: true
               field_room_technology_features_target_id:
                 plugin_id: default
                 advanced:
@@ -445,12 +447,20 @@ display:
                     filter_rewrite_values: '- Any -|Technology'
                   collapsible: false
                   is_secondary: true
-              field_room_max_occupancy_value:
+              field_room_features_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: '- Any -|Occupancy'
+                    filter_rewrite_values: '- Any -|Room features'
+                  collapsible: false
+                  is_secondary: true
+              field_room_scheduling_regions_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Region'
                   collapsible: false
                   is_secondary: true
       access:
