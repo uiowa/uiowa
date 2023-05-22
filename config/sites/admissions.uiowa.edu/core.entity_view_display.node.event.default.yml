@@ -19,15 +19,18 @@ dependencies:
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
+    - views.view.events
   module:
     - address
     - layout_builder
     - layout_builder_restrictions
     - link
+    - options
     - smart_date
     - system
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -80,12 +83,13 @@ third_party_settings:
         layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
+          context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            0: section_order_reversed
+            section_order_reversed: section_order_reversed
             section_margin_fixed_width_container: section_margin_fixed_width_container
-            1: section_card_media_size_large
-            2: section_card_media_format_widescreen
+            section_card_media_size_large: section_card_media_size_large
+            section_card_media_format_widescreen: section_card_media_format_widescreen
             section_alignment_start: section_alignment_start
         components:
           -
@@ -104,28 +108,6 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2f4f6caf-bf44-479f-a188-7f7e0a8d06ba
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_performer'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
             weight: 3
             additional: {  }
             third_party_settings: {  }
@@ -190,7 +172,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -233,12 +215,12 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
             uuid: ecb379fa-76c3-4fbd-a8a5-217f52a97d55
-            region: first
+            region: main
             configuration:
               id: 'views_block:events-card_list'
               label: null
@@ -256,23 +238,31 @@ third_party_settings:
                 headline_alignment: default
                 child_heading_size: h3
               exposed_filter_values: null
-              layout_builder_styles:
-                - content_alignment_left
-                - list_format_list
-                - block_grid_threecol_33_34_33
-                - media_format_circle
-                - card_media_position_left
-                - card_image_small
+              layout_builder_styles: {  }
             weight: 5
-            additional:
-              layout_builder_styles_style:
-                - ''
-                - content_alignment_left
-                - list_format_list
-                - block_grid_threecol_33_34_33
-                - media_format_circle
-                - card_media_position_left
-                - card_image_small
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2f4f6caf-bf44-479f-a188-7f7e0a8d06ba
+            region: main
+            configuration:
+              id: 'field_block:node:event:field_event_performer'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 2
+            additional: {  }
             third_party_settings: {  }
           -
             uuid: af06cabb-465a-4fbc-903a-be4ae2f2e0b9
@@ -299,7 +289,7 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: f0758ae0-6f6a-4da2-a983-001db772f897
+            uuid: 1e82cdcb-9f8f-4909-89d8-63c8243b1096
             region: card_meta
             configuration:
               id: 'field_block:node:event:field_event_status'
@@ -317,9 +307,25 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
           -
-            uuid: 06792bc3-55a2-47e1-91a9-8d73f1fc33f0
-            region: main
+            uuid: c3e44388-2de9-4084-85e8-ddd134a86e56
+            region: content
             configuration:
               id: 'field_block:node:event:field_event_category'
               label: null
@@ -336,12 +342,10 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 5
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
+        third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
