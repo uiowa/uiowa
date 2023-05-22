@@ -28,8 +28,12 @@ adding:
       settings:
         format: default_long_date
   hidden:
+    field_event_attendance_mode: true
     field_event_type: true
 removing:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_attendance_mode
   content:
     field_event_when:
       settings:
