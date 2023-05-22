@@ -5248,3 +5248,9 @@ $sites['orglearningspaces.uiowa.ddev.site'] = 'learningspaces.org.uiowa.edu';
 $sites['orglearningspaces.dev.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
 $sites['orglearningspaces.stage.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
 $sites['orglearningspaces.prod.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
+
+// Directory aliases for hank-virtual-environments.lab.uiowa.edu.
+$sites['labhank-virtual-environments.uiowa.ddev.site'] = 'hank-virtual-environments.lab.uiowa.edu';
+$sites['labhank-virtual-environments.dev.drupal.uiowa.edu'] = 'hank-virtual-environments.lab.uiowa.edu';
+$sites['labhank-virtual-environments.stage.drupal.uiowa.edu'] = 'hank-virtual-environments.lab.uiowa.edu';
+$sites['labhank-virtual-environments.prod.drupal.uiowa.edu'] = 'hank-virtual-environments.lab.uiowa.edu';
