@@ -5242,3 +5242,9 @@ $sites['labcook.uiowa.ddev.site'] = 'cook.lab.uiowa.edu';
 $sites['labcook.dev.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
 $sites['labcook.stage.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
 $sites['labcook.prod.drupal.uiowa.edu'] = 'cook.lab.uiowa.edu';
+
+// Directory aliases for learningspaces.org.uiowa.edu.
+$sites['orglearningspaces.uiowa.ddev.site'] = 'learningspaces.org.uiowa.edu';
+$sites['orglearningspaces.dev.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
+$sites['orglearningspaces.stage.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
+$sites['orglearningspaces.prod.drupal.uiowa.edu'] = 'learningspaces.org.uiowa.edu';
