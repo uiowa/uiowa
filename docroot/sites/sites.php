@@ -5266,3 +5266,9 @@ $sites['labdemir-lira.uiowa.ddev.site'] = 'demir-lira.lab.uiowa.edu';
 $sites['labdemir-lira.dev.drupal.uiowa.edu'] = 'demir-lira.lab.uiowa.edu';
 $sites['labdemir-lira.stage.drupal.uiowa.edu'] = 'demir-lira.lab.uiowa.edu';
 $sites['labdemir-lira.prod.drupal.uiowa.edu'] = 'demir-lira.lab.uiowa.edu';
+
+// Directory aliases for intranet.biology.uiowa.edu.
+$sites['biologyintranet.uiowa.ddev.site'] = 'intranet.biology.uiowa.edu';
+$sites['biologyintranet.dev.drupal.uiowa.edu'] = 'intranet.biology.uiowa.edu';
+$sites['biologyintranet.stage.drupal.uiowa.edu'] = 'intranet.biology.uiowa.edu';
+$sites['biologyintranet.prod.drupal.uiowa.edu'] = 'intranet.biology.uiowa.edu';
