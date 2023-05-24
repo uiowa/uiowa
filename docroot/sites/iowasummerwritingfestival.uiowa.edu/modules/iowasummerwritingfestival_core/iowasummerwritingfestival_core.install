@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, update and uninstall functions for the Iowa Summer Writing Festival Core module.
+ * Install, update and uninstall functions for iowasummerwritingfestival_core.
  */
 
 use Drupal\Core\Config\FileStorage;
@@ -23,6 +23,12 @@ function admissions_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
+/**
+ * Provide an array map of event_type values.
+ *
+ * @return array
+ *   An array of key => value pairs for event types.
+ */
 function _event_type_map(): array {
   return [
     'Banquet' => 'Banquet',
@@ -60,7 +66,7 @@ function _event_type_map(): array {
 }
 
 /**
- * Migrate from event type to Event categories.
+ * Migrate options from event_type to Event categories taxonomy.
  */
 function iowasummerwritingfestival_core_update_9001() {
 
@@ -85,7 +91,7 @@ function iowasummerwritingfestival_core_update_9001() {
   // Instantiate the typemap for later.
   $type_map = _event_type_map();
 
-  foreach ($type_map as $key => $type) {
+  foreach ($type_map as $type) {
     Term::create([
       'name' => $type,
       'vid' => 'event_categories',
@@ -93,6 +99,9 @@ function iowasummerwritingfestival_core_update_9001() {
   }
 }
 
+/**
+ * Migrate event_type field values on Events to event_category reference field.
+ */
 function iowasummerwritingfestival_core_update_9002(&$sandbox) {
   $logger = \Drupal::logger('iowasummerwritingfestival_core');
 
@@ -125,23 +134,25 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox) {
 
     $event_category_term_id = NULL;
 
-    if (!isset($node->get('field_event_type')->getValue()[0])){
+    if (!isset($node->get('field_event_type')->getValue()[0])) {
       $logger->notice('No "event_type" on node ' . $nid . '.');
     }
     else {
       $event_type = $node->get('field_event_type')->getValue()[0];
       $taxonomy_term_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-      $event_category_term_array = $taxonomy_term_manager?->loadByProperties(['name'=>$event_type]);
+      $event_category_term_array = $taxonomy_term_manager?->loadByProperties(['name' => $event_type]);
 
       // We found no term matches on the site, something is wrong.
       if (count($event_category_term_array) === 0) {
-        $logger->error('No "event_categories" term matches the source "event_type" on node ' . $nid.toString() . '.');
+        $logger->error('No "event_categories" term matches the source "event_type" on node ' . $nid . toString() . '.');
       }
 
-      // We found matches, so we check for the one that's in "event_categories", and then set it.
+      // Matches found, so we check for the one that's in "event_categories":
       else {
         foreach ($event_category_term_array as $key => $term) {
           if ($term->bundle() === 'event_categories') {
+
+            // And set it.
             $event_category_term_id = $key;
           }
         }
