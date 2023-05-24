@@ -164,6 +164,7 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox) {
       $node->set('field_event_category', ['target_id' => $event_category_term_id]);
 
       // We only need to save if we edit the values.
+      $node->setRevisionUserId(1);
       $node->setRevisionLogMessage('Automated save.');
       $node->save();
     }
