@@ -519,45 +519,35 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
       $form[$building_filter]['#empty_option'] = t('Building');
 
       // Hack to further treat this field as a select as it relates to BEF.
-      // Use the `field_room_type_target_id` if it is present
-      // on the form, assuming it is a select.
-      if (isset($form['field_room_type_target_id'])) {
-        $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
-        $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
-      }
-      // If the `field_room_type_target_id` field isn't there,
-      // build it from scratch, but this is dependent on BEF
-      // select fields not changing in structure.
-      else {
-        $form[$building_filter]['#process'] = [
-          [
-            'Drupal\Core\Render\Element\Select',
-            'processSelect',
-          ],
-          [
-            'Drupal\Core\Render\Element\Select',
-            'processAjaxForm',
-          ],
-          [
-            'Drupal\inline_form_errors\RenderElementHelper',
-            'processElement',
-          ],
-          [
-            '\Drupal\Core\Render\Element\RenderElement',
-            'processGroup',
-          ],
-        ];
-        $form[$building_filter]['#pre_render'] = [
-          [
-            'Drupal\Core\Render\Element\Select',
-            'preRenderSelect',
-          ],
-          [
-            '\Drupal\Core\Render\Element\RenderElement',
-            'preRenderGroup',
-          ],
-        ];
-      }
+      // This is dependent on BEF select fields not changing in structure.
+      $form[$building_filter]['#process'] = [
+        [
+          'Drupal\Core\Render\Element\Select',
+          'processSelect',
+        ],
+        [
+          'Drupal\Core\Render\Element\Select',
+          'processAjaxForm',
+        ],
+        [
+          'Drupal\inline_form_errors\RenderElementHelper',
+          'processElement',
+        ],
+        [
+          '\Drupal\Core\Render\Element\RenderElement',
+          'processGroup',
+        ],
+      ];
+      $form[$building_filter]['#pre_render'] = [
+        [
+          'Drupal\Core\Render\Element\Select',
+          'preRenderSelect',
+        ],
+        [
+          '\Drupal\Core\Render\Element\RenderElement',
+          'preRenderGroup',
+        ],
+      ];
     }
   }
 }
