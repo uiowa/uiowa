@@ -551,7 +551,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
     }
   }
 
-  // Assuming BEF and auto-submit in enabled,
+  // Assuming BEF and auto-submit is enabled,
   // turn off auto-submit just for these fields.
   $form['field_room_type_target_id']['#attributes'] = ['data-bef-auto-submit-exclude' => ''];
   $form['field_room_technology_features_target_id']['#attributes'] = ['data-bef-auto-submit-exclude' => ''];
