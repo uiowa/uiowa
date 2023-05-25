@@ -5284,3 +5284,9 @@ $sites['studentlifepolicy.uiowa.ddev.site'] = 'policy.studentlife.uiowa.edu';
 $sites['studentlifepolicy.dev.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
 $sites['studentlifepolicy.stage.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
 $sites['studentlifepolicy.prod.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
+
+// Directory aliases for howard.lab.uiowa.edu.
+$sites['labhoward.uiowa.ddev.site'] = 'howard.lab.uiowa.edu';
+$sites['labhoward.dev.drupal.uiowa.edu'] = 'howard.lab.uiowa.edu';
+$sites['labhoward.stage.drupal.uiowa.edu'] = 'howard.lab.uiowa.edu';
+$sites['labhoward.prod.drupal.uiowa.edu'] = 'howard.lab.uiowa.edu';
