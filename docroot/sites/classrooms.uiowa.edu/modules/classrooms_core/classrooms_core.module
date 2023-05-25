@@ -465,28 +465,8 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-seating-chart--room--default',
       'base hook' => 'field',
     ],
-    'field__node__field_room_accessibility__room__default' => [
-      'template' => 'field--node--field-room-accessibility--room--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_features__room__default' => [
-      'template' => 'field--node--field-room-features--room--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_classroom_furniture' => [
-      'template' => 'field--node--field-room-classroom-furniture',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_tile_details' => [
-      'template' => 'field--node--field-room-tile-details',
-      'base hook' => 'field',
-    ],
     'field__node__field_room_guide__room__default' => [
       'template' => 'field--node--field-room-guide--room--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_design_details' => [
-      'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
     ],
     'taxonomy_term__technology_features' => [
@@ -539,45 +519,35 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
       $form[$building_filter]['#empty_option'] = t('Building');
 
       // Hack to further treat this field as a select as it relates to BEF.
-      // Use the `field_room_type_target_id` if it is present
-      // on the form, assuming it is a select.
-      if (isset($form['field_room_type_target_id'])) {
-        $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
-        $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
-      }
-      // If the `field_room_type_target_id` field isn't there,
-      // build it from scratch, but this is dependent on BEF
-      // select fields not changing in structure.
-      else {
-        $form[$building_filter]['#process'] = [
-          [
-            'Drupal\Core\Render\Element\Select',
-            'processSelect',
-          ],
-          [
-            'Drupal\Core\Render\Element\Select',
-            'processAjaxForm',
-          ],
-          [
-            'Drupal\inline_form_errors\RenderElementHelper',
-            'processElement',
-          ],
-          [
-            '\Drupal\Core\Render\Element\RenderElement',
-            'processGroup',
-          ],
-        ];
-        $form[$building_filter]['#pre_render'] = [
-          [
-            'Drupal\Core\Render\Element\Select',
-            'preRenderSelect',
-          ],
-          [
-            '\Drupal\Core\Render\Element\RenderElement',
-            'preRenderGroup',
-          ],
-        ];
-      }
+      // This is dependent on BEF select fields not changing in structure.
+      $form[$building_filter]['#process'] = [
+        [
+          'Drupal\Core\Render\Element\Select',
+          'processSelect',
+        ],
+        [
+          'Drupal\Core\Render\Element\Select',
+          'processAjaxForm',
+        ],
+        [
+          'Drupal\inline_form_errors\RenderElementHelper',
+          'processElement',
+        ],
+        [
+          '\Drupal\Core\Render\Element\RenderElement',
+          'processGroup',
+        ],
+      ];
+      $form[$building_filter]['#pre_render'] = [
+        [
+          'Drupal\Core\Render\Element\Select',
+          'preRenderSelect',
+        ],
+        [
+          '\Drupal\Core\Render\Element\RenderElement',
+          'preRenderGroup',
+        ],
+      ];
     }
   }
 }
@@ -597,20 +567,6 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
         $view->display_handler->setOption('css_class', 'grid--threecol--33-34-33');
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_views_view().
- */
-function classrooms_core_preprocess_views_view(&$variables) {
-  $view = $variables['view'];
-  $id = $view->storage->id();
-  switch ($id) {
-    case 'room_list':
-      $variables['views_filter_classes'][] = 'grid__column';
-      $variables['views_content_classes'][] = 'grid__column';
-      break;
   }
 }
 
