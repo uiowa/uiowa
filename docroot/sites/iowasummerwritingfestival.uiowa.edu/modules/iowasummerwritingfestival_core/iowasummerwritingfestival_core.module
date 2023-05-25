@@ -34,61 +34,6 @@ function iowasummerwritingfestival_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Set dynamic allowed values for the field_event_type field.
- *
- * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
- *   The field definition.
- * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
- *   The entity being created if applicable.
- * @param bool $cacheable
- *   Boolean indicating if the results are cacheable.
- *
- * @return array
- *   An array of possible key and value options.
- *
- * @see options_allowed_values()
- */
-function iowasummerwritingfestival_core_field_event_type_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable) : array {
-  $options = [];
-
-  // Set the allowed values for the field_event_type field to the following.
-  $options = [
-    'Banquet' => 'Banquet',
-    'BoardMeeting' => 'Board Meeting',
-    'Colloquium' => 'Colloquium',
-    'Conference' => 'Conference',
-    'Convention' => 'Convention',
-    'Course' => 'Course',
-    'Exhibition' => 'Exhibition',
-    'Exposition' => 'Exposition',
-    'Fair' => 'Fair',
-    'Festival' => 'Festival',
-    'Fundraiser' => 'Fundraiser',
-    'Gala' => 'Gala',
-    'GeneralSession' => 'General Session',
-    'GreenMeeting' => 'Green Meeting',
-    'Lecture' => 'Lecture',
-    'Meetup' => 'Meetup',
-    'NetworkingEvent' => 'Networking Event',
-    'Panel' => 'Panel',
-    'Party' => 'Party',
-    'PressConference' => 'Press Conference',
-    'ProductLaunch' => 'Product Launch',
-    'Reading' => 'Reading',
-    'Reception' => 'Reception',
-    'Retreat' => 'Retreat',
-    'Round-Table' => 'Round-Table',
-    'Seminar' => 'Seminar',
-    'Session' => 'Session',
-    'SocialEvent' => 'Social Event',
-    'Symposium' => 'Symposium',
-    'TradeShow' => 'Trade Show',
-    'Workshop' => 'Workshop',
-  ];
-  return $options;
-}
-
-/**
  * Set dynamic allowed values for the field_event_genre field.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -85,11 +86,10 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            0: ''
-            section_margin_fixed_width_container: section_margin_fixed_width_container
-            1: section_card_media_size_large
-            2: section_card_media_format_widescreen
             section_order_reversed: section_order_reversed
+            section_margin_fixed_width_container: section_margin_fixed_width_container
+            section_card_media_size_large: section_card_media_size_large
+            section_card_media_format_widescreen: section_card_media_format_widescreen
             section_alignment_start: section_alignment_start
         components:
           -
@@ -314,6 +314,38 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: c3e44388-2de9-4084-85e8-ddd134a86e56
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
@@ -374,13 +406,6 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
-  field_event_status:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 103
-    region: content
   field_event_virtual:
     type: link
     label: above
@@ -426,8 +451,10 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_event_attendance_mode: true
+  field_event_category: true
   field_event_hide: true
   field_event_series_link_direct: true
+  field_event_status: true
   field_meta_tags: true
   field_tags: true
   field_teaser: true
