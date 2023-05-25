@@ -75,6 +75,10 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         }
       }
 
+      if (isset($form['field_event_category'])) {
+        $form['field_event_category']['#group'] = 'node_relations';
+      }
+
       break;
 
   }
@@ -299,6 +303,13 @@ function sitenow_events_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_events_preprocess_node__event(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/tags';
+}
+
+/**
  * Helper function to build out card renders from event data.
  */
 function sitenow_events_build_card(array $event): array {
@@ -443,6 +454,14 @@ function sitenow_events_build_card(array $event): array {
  */
 function sitenow_events_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_event_category':
+      uiowa_core_set_attributes($variables, 'tags-list');
+
+      foreach ($variables["items"] as &$item) {
+        $item['attributes']['class'] = 'tags-list__tag';
+      }
+      break;
+
     case 'field_event_location':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
