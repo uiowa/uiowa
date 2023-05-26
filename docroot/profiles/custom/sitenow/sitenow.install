@@ -2433,6 +2433,7 @@ function sitenow_update_9061(&$sandbox) {
     $node->set('field_event_attendance_mode', $value);
     // Set revision message and save.
     $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
     $node->save();
     $sandbox['current']++;
   }
