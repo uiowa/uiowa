@@ -104,6 +104,39 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 }
 
 /**
+ * Implements hook_entity_presave().
+ */
+function sitenow_events_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'event':
+      // Check the selected attendance mode,
+      // and if it is either in-person or online (not hybrid),
+      // then remove the opposite location/virtual information.
+      $attendance_mode = $entity->field_event_attendance_mode->value;
+      switch ($attendance_mode) {
+        case 'OnlineEventAttendanceMode':
+          foreach ($entity->field_event_location as $delta => $location) {
+            // Set the country code to a blank string
+            // to unset the full address.
+            $entity->field_event_location->get($delta)?->set('country_code', '');
+          }
+          break;
+
+        case 'OfflineEventAttendanceMode':
+          foreach ($entity->field_event_virtual as $delta => $virtual) {
+            $entity->field_event_virtual->get($delta)?->setValue([
+              'title' => '',
+              'uri' => '',
+            ]);
+          }
+          break;
+
+      }
+      break;
+  }
+}
+
+/**
  * Custom submit handler for node event forms.
  */
 function _sitenow_events_form_submit(array &$form, FormStateInterface $form_state) {
