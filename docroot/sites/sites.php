@@ -4085,12 +4085,6 @@ $sites['labneurovascular.dev.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
 $sites['labneurovascular.stage.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
 $sites['labneurovascular.prod.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
 
-// Directory aliases for latham.uiowa.edu.
-$sites['latham.uiowa.ddev.site'] = 'latham.uiowa.edu';
-$sites['latham.dev.drupal.uiowa.edu'] = 'latham.uiowa.edu';
-$sites['latham.stage.drupal.uiowa.edu'] = 'latham.uiowa.edu';
-$sites['latham.prod.drupal.uiowa.edu'] = 'latham.uiowa.edu';
-
 // Directory aliases for heli.law.uiowa.edu.
 $sites['lawheli.uiowa.ddev.site'] = 'heli.law.uiowa.edu';
 $sites['lawheli.dev.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
