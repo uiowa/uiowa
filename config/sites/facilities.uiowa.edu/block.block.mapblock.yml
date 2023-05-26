@@ -1,0 +1,28 @@
+uuid: aca6d940-a48f-4fbe-a388-b08cf75c4c38
+langcode: en
+status: true
+dependencies:
+  module:
+    - facilities_core
+    - node
+  theme:
+    - uids_base
+id: mapblock
+theme: uids_base
+region: content
+weight: 0
+provider: null
+plugin: map_block
+settings:
+  id: map_block
+  label: 'Map Block'
+  label_display: visible
+  provider: facilities_core
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      building: building
