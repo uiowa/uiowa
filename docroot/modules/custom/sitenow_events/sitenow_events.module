@@ -112,7 +112,7 @@ function sitenow_events_entity_presave(EntityInterface $entity) {
       // Check the selected attendance mode,
       // and if it is either in-person or online (not hybrid),
       // then remove the opposite location/virtual information.
-      $attendance_mode = $entity->field_event_attendance_mode->value;
+      $attendance_mode = $entity->field_event_attendance_mode?->value;
       switch ($attendance_mode) {
         case 'OnlineEventAttendanceMode':
           foreach ($entity->field_event_location as $delta => $location) {
