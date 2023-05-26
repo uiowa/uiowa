@@ -2348,9 +2348,9 @@ function sitenow_update_9060() {
 }
 
 /**
- * Update new field values if Event split is active.
+ * Actively import the new field config if Event feature is active.
  */
-function sitenow_update_9061(&$sandbox) {
+function sitenow_update_9061() {
   /** @var Drupal\Core\Config\ImmutableConfig $config */
   $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
 
@@ -2363,9 +2363,6 @@ function sitenow_update_9061(&$sandbox) {
   /** @var Drupal\Core\Config\CachedStorage $config_storage */
   $config_storage = \Drupal::service('config.storage');
 
-  // Since we're batching, it's possible this will run
-  // multiple times, so only create the field if we haven't
-  // already imported config in a previous iteration.
   if (!$config_storage->read('field.storage.node.field_event_attendance_mode')) {
     $config_path = DRUPAL_ROOT . '/../config/features/event';
     $source = new FileStorage($config_path);
@@ -2386,6 +2383,20 @@ function sitenow_update_9061(&$sandbox) {
 
     $field_type_link = $source->read('field.field.node.event.field_event_attendance_mode');
     \Drupal::entityTypeManager()->getStorage('field_config')->create($field_type_link)->save();
+  }
+}
+
+/**
+ * Update new field values if Event split is active.
+ */
+function sitenow_update_9062(&$sandbox) {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($config) || !$config->get('status')) {
+    return t('event split is not active, so no update to run.');
   }
 
   // Process all event nodes to update the value
@@ -2429,9 +2440,8 @@ function sitenow_update_9061(&$sandbox) {
         $value = 'OnlineEventAttendanceMode';
       }
     }
-    // Unset any gremlins.
+    // Set the new value and revision message, and save.
     $node->set('field_event_attendance_mode', $value);
-    // Set revision message and save.
     $node->setRevisionLogMessage('Automated save.');
     $node->setRevisionUserId(1);
     $node->save();
