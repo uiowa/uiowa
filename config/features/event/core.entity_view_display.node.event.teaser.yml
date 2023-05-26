@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
@@ -41,6 +42,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 9
+    region: content
+  field_event_attendance:
+    type: boolean
+    label: visually_hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 11
     region: content
   field_event_location:
     type: address_default
@@ -139,7 +150,6 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_event_attendance: true
   field_event_category: true
   field_event_hide: true
   field_event_parent: true
