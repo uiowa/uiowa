@@ -493,6 +493,14 @@ function sitenow_events_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_event_attendance':
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'No') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
     case 'field_event_virtual':
       uiowa_core_set_field_icon($variables, 'fas fa-desktop fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
