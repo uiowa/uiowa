@@ -5290,3 +5290,9 @@ $sites['orgcavewritingmagazine.uiowa.ddev.site'] = 'cavewritingmagazine.org.uiow
 $sites['orgcavewritingmagazine.dev.drupal.uiowa.edu'] = 'cavewritingmagazine.org.uiowa.edu';
 $sites['orgcavewritingmagazine.stage.drupal.uiowa.edu'] = 'cavewritingmagazine.org.uiowa.edu';
 $sites['orgcavewritingmagazine.prod.drupal.uiowa.edu'] = 'cavewritingmagazine.org.uiowa.edu';
+
+// Directory aliases for kerns.lab.uiowa.edu.
+$sites['labkerns.uiowa.ddev.site'] = 'kerns.lab.uiowa.edu';
+$sites['labkerns.dev.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
+$sites['labkerns.stage.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
+$sites['labkerns.prod.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
