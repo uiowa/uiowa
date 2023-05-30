@@ -136,6 +136,22 @@ function sitenow_events_preprocess_block(&$variables) {
       ]);
       break;
 
+    case 'field_block:node:event:field_event_status':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        if ($variables['elements']['content'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
+    case 'field_block:node:event:field_event_attendance':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        if ($variables['elements']['content'][0]['#markup'] === 'No') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
     case 'inline_block:uiowa_events':
       $variables['attributes']['class'][] = 'list-container';
 
@@ -481,22 +497,11 @@ function sitenow_events_preprocess_field(&$variables) {
 
     case 'field_event_status':
       if (isset($variables['element'][0]['#markup'])) {
-        if ($variables['element'][0]['#markup'] === 'Scheduled') {
-          uiowa_core_set_attributes($variables, 'sr-only');
-        }
-        elseif ($variables['element'][0]['#markup'] === 'Cancelled') {
+        if ($variables['element'][0]['#markup'] === 'Cancelled') {
           uiowa_core_set_attributes($variables, 'badge badge--orange');
         }
         elseif ($variables['element'][0]['#markup'] === 'Rescheduled') {
           uiowa_core_set_attributes($variables, 'badge badge--green');
-        }
-      }
-      break;
-
-    case 'field_event_attendance':
-      if (isset($variables['element'][0]['#markup'])) {
-        if ($variables['element'][0]['#markup'] === 'No') {
-          uiowa_core_set_attributes($variables, 'sr-only');
         }
       }
       break;
