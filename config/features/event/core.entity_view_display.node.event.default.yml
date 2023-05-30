@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.event.body
     - field.field.node.event.field_event_attendance
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
@@ -320,7 +321,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: boolean
-                label: inline
+                label: hidden
                 settings:
                   format: default
                   format_custom_false: ''
