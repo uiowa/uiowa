@@ -21,6 +21,17 @@ class Achievement extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid');
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
@@ -105,6 +116,9 @@ class Achievement extends BaseNodeSource {
         $this,
         'calloutReplace',
       ], $body[0]['value']);
+
+      // Remove empty <p> tags as well.
+      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
 
       $row->setSourceProperty('body', $body);
       // Extract the summary.
@@ -203,11 +217,16 @@ class Achievement extends BaseNodeSource {
     // things off in the new callout component.
     $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
 
+    // Remove anything after the first '<br>',
+    // as it is not in the same '<strong>' group
+    // as the ones on the first line.
+    $headline_match_string = preg_replace('%(<br>|<br \/>|<br\/>|<ul>).*%is', '', $match[2]);
+
     // Look for a headline to use in the callout, which are bolded strings
     // at the start of the callout. Also look for any additional
     // line breaks. Like before, here they are unnecessary.
     $headline = '';
-    if (preg_match('|^<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
+    if (preg_match_all("|<strong>(.*?)<\/strong>(<br>)*|is", $headline_match_string, $headline_matches)) {
       // Build the headline if we found one.
       $headline_classes = implode(' ', [
         'headline',
@@ -216,19 +235,29 @@ class Achievement extends BaseNodeSource {
         'headline--underline',
         'headline--center',
       ]);
+
+      // If there are multiple <strong>'s, then we need to concatenate them.
+      $headline_text = '';
+      foreach ($headline_matches[1] as $value) {
+        $headline_text .= $value;
+        // If we're adding the headline separately,
+        // remove it from the rest of the text, so we don't duplicate.
+        $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
+      };
       $headline = '<h4 class="' . $headline_classes . '">';
       $headline .= '<span class="headline__heading">';
-      $headline .= $headline_matches[1];
+      $headline .= $headline_text;
       $headline .= '</span></h4>';
-      // If we're adding the headline separately,
-      // remove it from the rest of the text, so we don't duplicate.
-      $match[2] = str_replace($headline_matches[0], '', $match[2]);
     }
+
+    // Remove all leading and trailing 'br' tags.
+    $match[2] = preg_replace("%^(<br>|<br \/>|<br\/>\s)*%is", '', $match[2], 1);
+    $match[2] = preg_replace("%(<br>|<br \/>|<br\/>$|\s)*%is", '', $match[2], 1);
 
     // Build the callout wrapper and return.
     // We're defaulting to medium size, but taking the
     // alignment from the source.
-    $wrapper_classes = 'callout inline--size-small inline--align-' . $match[1];
+    $wrapper_classes = 'block--word-break callout bg--gray inline--size-small inline--align-' . $match[1];
     return '<div class="' . $wrapper_classes . '">' . $headline . $match[2] . '</div>';
   }
 

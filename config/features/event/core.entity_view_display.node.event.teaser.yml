@@ -5,12 +5,14 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
     - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_status
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -20,7 +22,9 @@ dependencies:
     - node.type.event
   module:
     - address
+    - field_delimiter
     - link
+    - options
     - smart_date
     - text
     - user
@@ -36,22 +40,24 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_event_location:
     type: address_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_event_performer:
     type: entity_reference_label
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
-    weight: 9
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
+    weight: 10
     region: content
   field_event_series_link:
     type: link
@@ -63,7 +69,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_event_series_link_direct:
     type: boolean
@@ -73,7 +79,14 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 5
+    region: content
+  field_event_status:
+    type: list_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_event_virtual:
     type: link
@@ -85,7 +98,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   field_event_when:
     type: smartdate_default
@@ -107,25 +120,27 @@ content:
       view_mode: large__square
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_teaser:
     type: basic_string
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance_mode: true
+  field_event_category: true
   field_event_hide: true
   field_event_parent: true
   field_meta_tags: true

@@ -1,0 +1,36 @@
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
+
+.field--name-field-person-territory {
+  .field__label {
+    [class*=card__] & {
+      font-size: $small-font-size;
+      margin-bottom: 0;
+      margin-top: $gutter;
+    }
+  }
+  .field__items, .field__item {
+    font-size: $small-font-size;
+    color: $text-muted;
+  }
+}
+
+// person layout
+.page-node-type-person.layout-builder-enabled {
+  .layout__region--first {
+    .field--name-field-person-territory {
+      .field__items, .field__item {
+        font-size: $small-font-size;
+        color: $text-muted;
+      }
+    }
+  }
+  .field__label {
+    margin-bottom: 0;
+  }
+  .field--name-field-uiowa-contact-label {
+    //font-size: 1rem;
+  }
+  .field--label-above {
+    margin-bottom: 1.5rem;
+  }
+}

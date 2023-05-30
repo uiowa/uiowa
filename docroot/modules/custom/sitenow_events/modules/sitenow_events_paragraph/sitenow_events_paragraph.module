@@ -44,6 +44,10 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
     case 'events':
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
+        $variables['#attached']['library'][] = 'uids_base/paragraphs-lists';
+        $variables['#attached']['library'][] = 'uids_base/event';
+        $variables['#attached']['library'][] = 'uids_base/media';
+        $variables['attributes']['class'][] = 'list-container';
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
@@ -104,28 +108,33 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           'items_per_page' => $paragraph->get('field_events_results')->getString(),
         ]);
 
+        // Get site-wide configuration for use with constructing event link.
+        $config = \Drupal::config('sitenow_events.settings');
+
         if (!empty($data['events'])) {
-          foreach ($data['events'] as $value) {
+          foreach ($data['events'] as $key => $value) {
             // The API nests each event as an array.
             $event = $value['event'];
 
-            // Provide default v2 style classes.
-            $v2_defaults = [
+            // Base styles.
+            $styles = [
               'card--list',
               'card__row',
-              'card--media-left',
+              'card--layout-left',
+              'borderless',
               'media--circle',
               'media--border',
-              'card__media--small',
-              'card--centered-left',
-              'card--alignment-left',
+              'media--small',
             ];
-            $event['parent_lb_styles'] = $v2_defaults;
 
-            $variables['list'][] = [
-              '#theme' => 'sitenow_events_teaser',
-              '#event' => $event,
-            ];
+            $event['sitenow_events_config'] = $config;
+
+            $event['attributes']['class'] = $styles;
+            $event['heading_size'] = 'h2';
+
+            // Pass off to helper function to build card render.
+            $variables['list'][$key] = sitenow_events_build_card($event);
+
           }
         }
         else {

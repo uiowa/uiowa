@@ -5,32 +5,31 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Event;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
+use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
-
-/**
- * Implements hook_config_schema_info_alter().
- */
-function uiowa_core_config_schema_info_alter(&$definitions) {
-  // Make sure that the order of filters in the config export file is always
-  // the same, to avoid false positive differences.
-  // @todo https://github.com/uiowa/uiowa/issues/5034
-  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
-}
 
 /**
  * Implements hook_cron().
@@ -56,6 +55,21 @@ function uiowa_core_cron() {
     }
 
     \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function uiowa_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['block_content']['uiowa_card'])) {
+    $bundles['block_content']['uiowa_card']['class'] = Card::class;
+  }
+  if (isset($bundles['block_content']['uiowa_event'])) {
+    $bundles['block_content']['uiowa_event']['class'] = Event::class;
+  }
+  if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
+    $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
   }
 }
 
@@ -101,10 +115,66 @@ function uiowa_core_mail_alter(&$message) {
 }
 
 /**
+ * Implements hook_entity_build_defaults_alter().
+ */
+function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Invalidate related and tag view caches on content types that
+ * support these views.
+ */
+function uiowa_core_node_presave(Node $node) {
+  $node_type = $node->getType();
+  $type_map = [
+    'article' => 'articles',
+    'page' => 'pages',
+    'person' => 'people',
+  ];
+
+  // Only proceed if this is a supported content type.
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    // We'll do this for tag list and related content.
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      // Only proceed if the option is turned on for this content type.
+      if ($config->get($setting) !== 'do_not_display') {
+        // Get the view and invalidate the cache.
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode) && !$entity instanceof BlockContent) {
+    // Build the card.
+    $entity->buildCard($build);
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
   return [
+    'card' => [
+      'render element' => 'element',
+    ],
     'uiowa_core_headline' => [
       'variables' => [
         'headline' => NULL,
@@ -132,6 +202,167 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 
   $variables['headline_style'] = $style;
 
+}
+
+/**
+ * Preprocess function for card.
+ */
+function template_preprocess_card(&$variables) {
+  $element = $variables['element'];
+
+  // Set up various attributes if not already set up.
+  foreach ([
+    'attributes',
+    'button_attributes',
+    'media_attributes',
+  ] as $attributes_type) {
+    if (!isset($element["#$attributes_type"])) {
+      $element["#$attributes_type"] = [];
+    }
+  }
+
+  // Create a set of title headline classes in case its needed.
+  $headline_classes = ['headline'];
+
+  // Loop through all classes, add any media and headline classes
+  // to the array and remove them from the card classes.
+  if (isset($element['#attributes']['class'])) {
+    foreach ($element['#attributes']['class'] as $key => $style) {
+      if (str_starts_with($style, 'media')) {
+        $element['#media_attributes']['class'][] = $style;
+        unset($element['#attributes']['class'][$key]);
+      }
+      if (str_starts_with($style, 'headline')) {
+        $headline_classes[] = $style;
+        unset($element['#attributes']['class'][$key]);
+      }
+    }
+  }
+
+  $linked_element = FALSE;
+
+  // If there is no URL, then it is not linked.
+  if (!empty($element['#url'])) {
+    if (!is_null($element['#title'])) {
+      $linked_element = 'title';
+    }
+    elseif (isset($element['#link_text'])) {
+      $linked_element = 'button';
+    }
+    elseif (!empty($element['#media'])) {
+      $linked_element = 'media';
+    }
+    else {
+      $linked_element = 'button';
+    }
+  }
+
+  $element['#linked_element'] = $linked_element;
+
+  if (!empty($element['#title'])) {
+    $element['#headline'] = [
+      'headline_text' => $element['#title'],
+      'headline_level' => $element['#title_heading_size'] ?: 'h2',
+      'headline_class' => $headline_classes,
+    ];
+
+    // Set 'click-target' class on headline URL if title is the linked element.
+    if ($element['#linked_element'] === 'title') {
+      $element['#headline']['headline_url'] = $element['#url'];
+      $element['#headline']['headline_url_class'] = 'click-target';
+    }
+  }
+
+  // Set 'aria-hidden' on the button if it is not linked.
+  if ($element['#linked_element'] !== 'button') {
+    $element['#button_attributes']['aria-hidden'] = TRUE;
+  }
+
+  // If title and link text are set, set a button id attribute for
+  // aria-describedby.
+  if (is_string($element['#title']) && !empty($element['#link_text'])) {
+    $aria_id = Html::getUniqueId($element['#title']);
+    $element['#headline']['headline_aria'] = $aria_id;
+    $element['#button_attributes']['id'] = $aria_id;
+  }
+
+  if (!empty($element['#url'])) {
+    // Add click-container class if there is a link.
+    $element['#attributes']['class'][] = 'click-container';
+  }
+  else {
+    // If there is no URL, set a data attribute so our click a11y script knows
+    // to ignore this card.
+    $element['#attributes']['data-uids-no-link'] = TRUE;
+  }
+
+  $element['#attributes']['class'][] = 'block--word-break';
+
+  // Initialize a list of button classes we need to use.
+  $button_classes = [
+    'bttn',
+    'bttn--primary',
+    'bttn--transparent',
+    'bttn--light-font',
+  ];
+
+  // Add the 'click-target' class to the button if it is linked.
+  if ($element['#linked_element'] === 'button') {
+    $button_classes[] = 'click-target';
+  }
+
+  // Set appropriate button classes if there is a URL, no link text, and link
+  // indicator should be shown.
+  if (isset($element['#url']) && !isset($element['#link_text']) && $element['#link_indicator']) {
+    $button_classes = [
+      ...$button_classes,
+      'bttn--circle',
+      'bttn--no-text',
+    ];
+  }
+
+  // Add button classes.
+  if (!isset($element['#button_attributes']['class'])) {
+    $element['#button_attributes']['class'] = [];
+  }
+
+  $element['#button_attributes']['class'] = [
+    ...$element['#button_attributes']['class'],
+    ...$button_classes,
+  ];
+
+  // Transfer properties and slots from the render element to variables for
+  // processing in the template.
+  foreach ([
+    'attributes',
+    'button_attributes',
+    'media',
+    'media_attributes',
+    'headline',
+    'subtitle',
+    'meta',
+    'content',
+    'url',
+    'link_text',
+    'link_indicator',
+    'linked_element',
+  ] as $prop) {
+    if (isset($element["#$prop"])) {
+      // If this is an attributes array, convert it to an Attribute first.
+      if (str_ends_with($prop, 'attributes') && !$element["#$prop"] instanceof Attribute) {
+        $element["#$prop"] = new Attribute($element["#$prop"]);
+      }
+      $variables[$prop] = $element["#$prop"];
+    }
+    else {
+      $variables[$prop] = NULL;
+    }
+  }
+
+  // If there is a media element, add the media library.
+  if (isset($element['#media'])) {
+    $variables['#attached']['library'][] = 'uids_base/media';
+  }
 }
 
 /**
@@ -165,30 +396,6 @@ function uiowa_core_preprocess_field(&$variables) {
         }
       }
       break;
-  }
-
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uiowa_core_preprocess_node(&$variables) {
-  if ($variables['view_mode'] === 'teaser') {
-    $show_teaser_link_indicator = FALSE;
-    $node_type = $variables['node']->bundle();
-    $type_map = [
-      'page' => 'pages',
-      'person' => 'people',
-      'article' => 'articles',
-    ];
-
-    if (isset($type_map[$node_type])) {
-      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-      $config = \Drupal::configFactory()->getEditable($config_name);
-
-      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
-    }
-    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
   }
 
 }
@@ -582,32 +789,43 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_block(&$variables) {
+  if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
+    if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
+      $variables['content']['#block_content']->buildCard($variables['content']);
+
+      // Prevent contextual links from displaying.
+      if (isset($variables['content']['#contextual_links'])) {
+        unset($variables['content']['#contextual_links']);
+      }
+
+    }
+  }
   switch ($variables['plugin_id']) {
     case 'views_block:tags_list-tags_list':
       $variables['#attached']['library'][] = 'uids_base/tags';
       $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'layout-container tags-list__container block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_manually_referenced_content-block_grid':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'system_main_block':
@@ -642,36 +860,49 @@ function uiowa_core_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * Invalidate related and tag view caches on content types that
- * support these views.
+ * Implements hook_token_info().
  */
-function uiowa_core_node_presave(Node $node) {
-  $node_type = $node->getType();
-  $type_map = [
-    'article' => 'articles',
-    'page' => 'pages',
-    'person' => 'people',
+function uiowa_core_token_info(): array {
+  $info = [];
+  $info['types']['uiowa_core'] = [
+    'name' => t('UIowa Core'),
+    'description' => t('Tokens for UIowa Core.'),
   ];
+  $info['tokens']['uiowa_core']['org_name'] = [
+    'name' => 'Organization Name',
+    'description' => 'A token to override the default University of Iowa organization name.',
+  ];
+  $info['tokens']['uiowa_core']['favicon_assets_path'] = [
+    'name' => 'Favicon assets path',
+    'description' => 'A token to override the default favicons path.',
+  ];
+  return $info;
+}
 
-  // Only proceed if this is a supported content type.
-  if (isset($type_map[$node_type])) {
-    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-    $config = \Drupal::configFactory()->getEditable($config_name);
-    // We'll do this for tag list and related content.
-    foreach ([
-      'tag_display' => 'tags_list',
-      'related_display' => 'related_content',
-    ] as $setting => $view_name) {
-      // Only proceed if the option is turned on for this content type.
-      if ($config->get($setting) !== 'do_not_display') {
-        // Get the view and invalidate the cache.
-        $view = Views::getView($view_name);
-        $view->storage->invalidateCaches();
+/**
+ * Implements hook_tokens().
+ */
+function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type === 'uiowa_core') {
+
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uiowa_core.settings');
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'org_name':
+          $replacements[$original] = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          break;
+
+        case 'favicon_assets_path':
+          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? '/profiles/custom/sitenow/assets/';
+          break;
       }
     }
   }
+  return $replacements;
 }
 
 /**
@@ -993,4 +1224,18 @@ function uiowa_core_set_title_attributes(array &$variables, array|string $title_
     $title_classes = [$title_classes];
   }
   $variables['title_attributes']['class'] = array_unique(array_merge($variables['title_attributes']['class'], $title_classes));
+}
+
+/**
+ * Helper function to clean up html tags.
+ */
+function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
+  return trim(strip_tags($string, $allowed_tags));
+}
+
+/**
+ * Helper function to determine if empty.
+ */
+function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): bool {
+  return uiowa_core_html_cleanup($string, $allowed_tags) === '';
 }

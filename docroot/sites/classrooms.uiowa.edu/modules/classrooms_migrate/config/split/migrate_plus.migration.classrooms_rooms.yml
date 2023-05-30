@@ -1,0 +1,44 @@
+id: classrooms_room
+label: Rooms
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - classrooms
+migration_group: sitenow_migrate
+source:
+  plugin: classrooms_room
+  node_type: classroom
+destination:
+  plugin: 'entity:node'
+  default_bundle: room
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  field_image: featured_image
+  field_room_room_id: field_room_number
+  field_room_building_id: field_room_building
+  field_gallery_images: field_room_images
+  field_room_tile_details: field_room_tile_details
+  field_room_design_details: field_room_design_details
+  field_room_classroom_furniture: field_room_classroom_furniture
+  field_room_guide/uri: field_room_link/0/url
+  field_room_guide/title:
+    plugin: default_value
+    default_value: 'Technology Guide'
+  field_room_seating_chart: field_room_seating_chart
+  field_room_video: field_room_video
+migration_dependencies: null

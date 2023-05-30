@@ -9,7 +9,6 @@ dependencies:
     - field.storage.node.field_image
     - field.storage.node.field_teaser
     - node.type.event
-    - system.menu.main
   module:
     - better_exposed_filters
     - node
@@ -81,10 +80,26 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: some
+        type: full
         options:
           offset: 0
           items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -271,6 +286,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -602,6 +618,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: true
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 10
       sorts:
         sticky:
           id: sticky
@@ -791,6 +812,7 @@ display:
       defaults:
         title: false
         css_class: false
+        pager: false
         group_by: false
         style: false
         row: false
@@ -827,7 +849,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      block_category: 'Site custom'
+      block_category: Restricted
       block_hide_empty: true
       allow:
         items_per_page: false
@@ -1349,7 +1371,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      block_category: 'Site custom'
+      block_category: Restricted
       block_hide_empty: true
       allow:
         items_per_page: false
@@ -1371,6 +1393,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1981,8 +2004,8 @@ display:
           tokenize: false
       path: events
       menu:
-        type: normal
-        title: Events
+        type: none
+        title: ''
         description: ''
         weight: 0
         expanded: false
@@ -2000,6 +2023,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:

@@ -109,10 +109,6 @@ toggle-nav:
       assets/css/components/menus/toggle-nav.css: { preprocess: false }
   js:
     uids3/components/menus/toggle-nav/toggle-nav.js: { preprocess: false  }
-articles:
-  css:
-    component:
-      assets/css/blocks/articles.css: { preprocess: false }
 accordion:
   css:
     component:
@@ -134,7 +130,7 @@ banner:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids3/assets/js/click-a11y.js: { preprocess: false }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -165,10 +161,6 @@ event:
   css:
     component:
       assets/css/components/event.css: { preprocess: false }
-events:
-  css:
-    component:
-      assets/css/blocks/events.css: { preprocess: false }
 aggregator-feed:
   css:
     component:
@@ -197,11 +189,11 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids3/assets/js/click-a11y.js: { preprocess: false }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 media:
   css:
     component:
-      assets/css/components/media.css: { preprocess: false }
+      assets/css/components/media.css: { preprocess: false, weight: 1 }
 image:
   css:
     component:
@@ -250,10 +242,6 @@ horizontal-menu:
   css:
     component:
       assets/css/components/menus/superfish/horizontal-menu.css: { preprocess: false }
-people:
-  css:
-    component:
-      assets/css/blocks/people.css: { preprocess: false }
 sitenow:
   css:
     component:
