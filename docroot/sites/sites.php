@@ -5296,3 +5296,9 @@ $sites['labkerns.uiowa.ddev.site'] = 'kerns.lab.uiowa.edu';
 $sites['labkerns.dev.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
 $sites['labkerns.stage.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
 $sites['labkerns.prod.drupal.uiowa.edu'] = 'kerns.lab.uiowa.edu';
+
+// Directory aliases for exchanges.uiowa.edu.
+$sites['exchanges.uiowa.ddev.site'] = 'exchanges.uiowa.edu';
+$sites['exchanges.dev.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
+$sites['exchanges.stage.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
+$sites['exchanges.prod.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
