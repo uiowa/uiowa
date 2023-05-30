@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_genre
     - field.field.node.event.field_event_hide
@@ -27,7 +29,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - options
     - smart_date
     - system
     - text
@@ -375,6 +376,28 @@ third_party_settings:
             weight: 6
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 1f52793e-b5de-4349-8db8-41fe799a891f
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_attendance'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: boolean
+                label: inline
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -518,6 +541,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance: true
   field_event_attendance_mode: true
   field_event_category: true
   field_event_genre: true
