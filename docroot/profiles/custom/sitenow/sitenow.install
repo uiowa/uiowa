@@ -2346,3 +2346,116 @@ function sitenow_update_9060() {
 
   });
 }
+
+/**
+ * Actively import the new field config if Event feature is active.
+ */
+function sitenow_update_9061() {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($config) || !$config->get('status')) {
+    return t('event split is not active, so no update to run.');
+  }
+
+  /** @var Drupal\Core\Config\CachedStorage $config_storage */
+  $config_storage = \Drupal::service('config.storage');
+
+  if (!$config_storage->read('field.storage.node.field_event_attendance_mode')) {
+    $config_path = DRUPAL_ROOT . '/../config/features/event';
+    $source = new FileStorage($config_path);
+
+    $field_storage_link = $source->read('field.storage.node.field_event_attendance_mode');
+
+    // There's an extra layer of nesting in how the config is read,
+    // so do some quick tidying.
+    $allowed_values_link = [];
+    foreach ($field_storage_link['settings']['allowed_values'] as $value) {
+      $allowed_values_link[$value['value']] = $value['label'];
+    }
+    $field_storage_link['settings']['allowed_values'] = $allowed_values_link;
+
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($field_storage_link)
+      ->save();
+
+    $field_type_link = $source->read('field.field.node.event.field_event_attendance_mode');
+    \Drupal::entityTypeManager()->getStorage('field_config')->create($field_type_link)->save();
+  }
+}
+
+/**
+ * Update new field values if Event split is active.
+ */
+function sitenow_update_9062(&$sandbox) {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($config) || !$config->get('status')) {
+    return t('event split is not active, so no update to run.');
+  }
+
+  // Process all event nodes to update the value
+  // for our new field.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+    // See if we have a location and/or virtual filled out.
+    $location = !is_null($node->field_event_location->get(0));
+    $virtual = !is_null($node->field_event_virtual->get(0));
+    // Default to our in-person option.
+    $value = 'OfflineEventAttendanceMode';
+    if ($virtual) {
+      // If both fields are filled, we're hybrid.
+      if ($location) {
+        $value = 'MixedEventAttendanceMode';
+      }
+      // If only virtual was filled, we're online.
+      else {
+        $value = 'OnlineEventAttendanceMode';
+      }
+    }
+    // Set the new value and revision message, and save.
+    $node->set('field_event_attendance_mode', $value);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+}
