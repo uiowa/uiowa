@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
@@ -53,6 +54,12 @@ content:
   created:
     type: datetime_timestamp
     weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_attendance_mode:
+    type: options_select
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
