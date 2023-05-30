@@ -1,4 +1,4 @@
-uuid: aca6d940-a48f-4fbe-a388-b08cf75c4c38
+uuid: b48f61c0-20d1-425a-8859-d05794656c05
 langcode: en
 status: true
 dependencies:
@@ -18,6 +18,8 @@ settings:
   label: 'Map Block'
   label_display: visible
   provider: facilities_core
+  context_mapping:
+    node: '@node.node_route_context:node'
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
