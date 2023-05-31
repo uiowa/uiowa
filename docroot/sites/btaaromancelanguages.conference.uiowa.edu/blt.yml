@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencebtaaromancelanguages.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencebtaaromancelanguages
+  human_name: btaaromancelanguages.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencebtaaromancelanguages.prod
+drupal:
+  db:
+    database: btaaromancelanguages_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencebtaaromancelanguages.prod.drupal.uiowa.edu'
+  requester: santodomingo
+  site-name: 'BTAA Romance Languages Meeting 2023'
