@@ -528,7 +528,7 @@ function sitenow_events_preprocess_field(&$variables) {
       $field_label = $variables['element']['#title'];
       uiowa_core_set_attributes($variables, 'element--inline');
       if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
-        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--primary">' . $field_label . '</span>';
+        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
       }
       break;
 
