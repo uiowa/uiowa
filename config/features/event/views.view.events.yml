@@ -94,7 +94,7 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 10
+          items_per_page: 20
           total_pages: null
           id: 0
           tags:
@@ -128,7 +128,23 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'There are currently no events to display.'
+          tokenize: false
       sorts:
         sticky:
           id: sticky
@@ -1428,8 +1444,8 @@ display:
         - 'config:field.storage.node.field_event_when'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_teaser'
-  page_1:
-    id: page_1
+  page_calendar:
+    id: page_calendar
     display_title: 'Page - Calendar'
     display_plugin: page
     position: 2
@@ -1517,18 +1533,36 @@ display:
           exclude: false
           alter:
             alter_text: false
+            text: ''
             make_link: false
+            path: ''
             absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
             word_boundary: false
             ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
             strip_tags: false
             trim: false
+            preserve_tags: ''
             html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1539,7 +1573,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1748,6 +1782,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: none
+        options:
+          offset: 0
       sorts: {  }
       filters:
         status:
@@ -1905,11 +1943,10 @@ display:
       style:
         type: fullcalendar_view_display
         options:
-          uses_fields: false
           default_date_source: now
           defaultDate: ''
-          start: title
-          end: ''
+          start: field_event_when
+          end: field_event_when
           title: field_event_series_link_direct
           left_buttons: 'prev,next today'
           right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
@@ -1929,13 +1966,13 @@ display:
           tax_field: ''
           vocabularies: ''
           color_bundle:
-            article: '#3a87ad'
-            event: '#3a87ad'
-            page: '#3a87ad'
-            person: '#3a87ad'
+            article: '#000000'
+            event: '#000000'
+            page: '#000000'
+            person: '#000000'
           rrule: ''
           duration: ''
-          bundle_type: ''
+          bundle_type: event
           classes: ''
       row:
         type: 'entity:node'
@@ -1943,6 +1980,7 @@ display:
           view_mode: teaser
       defaults:
         title: false
+        pager: false
         group_by: false
         style: false
         row: false
@@ -1972,7 +2010,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
         - user
         - 'user.node_grants:view'
         - user.permissions
