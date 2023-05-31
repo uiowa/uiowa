@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_genre
     - field.field.node.event.field_event_hide
@@ -27,7 +28,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - options
     - smart_date
     - system
     - text
@@ -372,6 +372,30 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: d1897371-552b-44ea-be21-cdfb5f646e0e
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_registration_link'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
             weight: 6
             additional: {  }
             third_party_settings: {  }
