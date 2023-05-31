@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studentlifepolicy.uiowa.ddev.site
+    protocol: https
+  machine_name: studentlifepolicy
+  human_name: policy.studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlifepolicy.prod
+drupal:
+  db:
+    database: policy_studentlife_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studentlifepolicy.prod.drupal.uiowa.edu'
+  requester: bdlewis
+  site-name: 'DSL Policies and Procedures'
