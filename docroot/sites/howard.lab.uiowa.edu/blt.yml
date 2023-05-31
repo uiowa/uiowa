@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhoward.uiowa.ddev.site
+    protocol: https
+  machine_name: labhoward
+  human_name: howard.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhoward.prod
+drupal:
+  db:
+    database: howard_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhoward.prod.drupal.uiowa.edu'
+  requester: sking7
+  site-name: 'Howard Lab'

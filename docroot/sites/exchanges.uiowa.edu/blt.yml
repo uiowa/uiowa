@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: exchanges.uiowa.ddev.site
+    protocol: https
+  machine_name: exchanges
+  human_name: exchanges.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: exchanges.prod
+drupal:
+  db:
+    database: exchanges_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://exchanges.prod.drupal.uiowa.edu'
+  requester: bdlewis
+  site-name: 'Exchanges Journal of Literary Translation'
