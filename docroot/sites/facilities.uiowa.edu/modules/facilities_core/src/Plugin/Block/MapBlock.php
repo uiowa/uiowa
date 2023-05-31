@@ -35,7 +35,7 @@ class MapBlock extends BlockBase {
           'library' => [
             'uids_base/remote-video',
           ],
-        ]
+        ],
       ];
     }
     return [];
