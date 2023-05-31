@@ -30,7 +30,7 @@ class MapBlock extends BlockBase {
     if ($longitude && $latitude) {
       return [
         '#type' => 'inline_template',
-        '#template' => '<iframe class="media--type-remote-video media--view-mode-large" title="UI Buildings New" src="//uiadmin.maps.arcgis.com/apps/Embed/index.html?webmap=b8916ce59fb74e17893822f62b0db58c&center= ' . $longitude . ',' . $latitude . '&level=9&previewImage=false&scale=true&searchextent=false&disable_scroll=true&theme=light"></iframe>',
+        '#template' => '<div class="block media--type-remote-video block-facilities-core block-map-block"><iframe title="UI Buildings New" src="//uiadmin.maps.arcgis.com/apps/Embed/index.html?webmap=b8916ce59fb74e17893822f62b0db58c&center= ' . $longitude . ',' . $latitude . '&level=9&previewImage=false&scale=true&searchextent=false&disable_scroll=true&theme=light"></iframe></div>',
         '#attached' => [
           'library' => [
             'uids_base/remote-video',
