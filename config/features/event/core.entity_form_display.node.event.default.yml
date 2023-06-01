@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.event.body
     - field.field.node.event.field_event_attendance_mode
+    - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
@@ -42,7 +43,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 4
     region: content
     settings:
       rows: 9
@@ -56,6 +57,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_event_attendance:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_event_attendance_mode:
     type: options_select
     weight: 5
@@ -64,7 +72,7 @@ content:
     third_party_settings: {  }
   field_event_category:
     type: entity_reference_autocomplete_tags
-    weight: 23
+    weight: 24
     region: content
     settings:
       match_operator: CONTAINS
@@ -87,7 +95,7 @@ content:
     third_party_settings: {  }
   field_event_parent:
     type: entity_reference_autocomplete_tags
-    weight: 4
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
