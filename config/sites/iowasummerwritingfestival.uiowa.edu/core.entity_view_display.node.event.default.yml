@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_genre
@@ -76,30 +77,6 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 4c8bddf8-1b13-4acc-bc1d-ddbfd81de71e
-            region: card_button
-            configuration:
-              id: 'field_block:node:event:field_event_registration_link'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: _blank
-                third_party_settings: {  }
-            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -265,6 +242,29 @@ third_party_settings:
             weight: 5
             additional: {  }
             third_party_settings: {  }
+          - uuid: 4c8bddf8-1b13-4acc-bc1d-ddbfd81de71e
+            region: card_button
+            configuration:
+              id: 'field_block:node:event:field_event_registration_link'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: _blank
+                third_party_settings: { }
+            weight: 0
+            additional: { }
+            third_party_settings: { }
           -
             uuid: ecb379fa-76c3-4fbd-a8a5-217f52a97d55
             region: main
@@ -351,7 +351,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -376,10 +376,10 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: d1897371-552b-44ea-be21-cdfb5f646e0e
+            uuid: 1f52793e-b5de-4349-8db8-41fe799a891f
             region: card_meta
             configuration:
-              id: 'field_block:node:event:field_event_registration_link'
+              id: 'field_block:node:event:field_event_attendance'
               label: null
               label_display: null
               provider: layout_builder
@@ -387,16 +387,14 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: link
-                label: above
+                type: boolean
+                label: hidden
                 settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -542,6 +540,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance: true
   field_event_attendance_mode: true
   field_event_category: true
   field_event_genre: true
