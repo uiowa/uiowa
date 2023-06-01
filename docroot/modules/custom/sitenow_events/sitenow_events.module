@@ -188,6 +188,24 @@ function sitenow_events_preprocess_block(&$variables) {
       ]);
       break;
 
+    case 'field_block:node:event:field_event_status':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
+    case 'field_block:node:event:field_event_attendance':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'No') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
     case 'inline_block:uiowa_events':
       $variables['attributes']['class'][] = 'list-container';
 
@@ -506,6 +524,14 @@ function sitenow_events_build_card(array $event): array {
  */
 function sitenow_events_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_event_attendance':
+      $field_label = $variables['element']['#title'];
+      uiowa_core_set_attributes($variables, 'element--inline');
+      if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
+        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
+      }
+      break;
+
     case 'field_event_category':
       uiowa_core_set_attributes($variables, 'tags-list');
 
@@ -537,10 +563,10 @@ function sitenow_events_preprocess_field(&$variables) {
           uiowa_core_set_attributes($variables, 'sr-only');
         }
         elseif ($variables['element'][0]['#markup'] === 'Cancelled') {
-          uiowa_core_set_attributes($variables, 'badge badge--orange');
+          uiowa_core_set_attributes($variables, 'badge badge--orange element--inline');
         }
         elseif ($variables['element'][0]['#markup'] === 'Rescheduled') {
-          uiowa_core_set_attributes($variables, 'badge badge--green');
+          uiowa_core_set_attributes($variables, 'badge badge--green element--inline');
         }
       }
       break;
