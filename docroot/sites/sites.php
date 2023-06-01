@@ -5314,3 +5314,9 @@ $sites['labspeak.uiowa.ddev.site'] = 'speak.lab.uiowa.edu';
 $sites['labspeak.dev.drupal.uiowa.edu'] = 'speak.lab.uiowa.edu';
 $sites['labspeak.stage.drupal.uiowa.edu'] = 'speak.lab.uiowa.edu';
 $sites['labspeak.prod.drupal.uiowa.edu'] = 'speak.lab.uiowa.edu';
+
+// Directory aliases for xryouthethics.org.uiowa.edu.
+$sites['orgxryouthethics.uiowa.ddev.site'] = 'xryouthethics.org.uiowa.edu';
+$sites['orgxryouthethics.dev.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
+$sites['orgxryouthethics.stage.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
+$sites['orgxryouthethics.prod.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
