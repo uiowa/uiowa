@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_image_url
     - field.field.node.building.field_building_lactation_rooms
+    - field.field.node.building.field_building_latitude
+    - field.field.node.building.field_building_longitude
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
@@ -69,6 +71,22 @@ content:
   field_building_lactation_rooms:
     type: string_textfield
     weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_latitude:
+    type: string_textfield
+    weight: 39
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_longitude:
+    type: string_textfield
+    weight: 40
     region: content
     settings:
       size: 60

@@ -28,6 +28,8 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_rr_single_women' => 'singleUserRestroomsWomen',
     'field_building_rr_single_neutral' => 'singleUserRestrooms',
     'field_building_lactation_rooms' => 'lactationRooms',
+    'field_building_latitude' => 'latitude',
+    'field_building_longitude' => 'longitude',
   ];
 
 }
