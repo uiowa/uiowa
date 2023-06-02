@@ -20,6 +20,15 @@ adding:
         exposed_form:
           options:
             reset_button: false
+        sorts:
+          sticky:
+            expose:
+              field_identifier: null
+    card_list:
+      display_options:
+        empty: {  }
+        defaults:
+          empty: false
     page_upcoming:
       display_options:
         sorts:
@@ -68,6 +77,8 @@ adding:
               label: ''
               description: ''
               identifier: ''
+              group_items:
+                - {  }
           field_event_category_target_id:
             id: field_event_category_target_id
             table: node__field_event_category
@@ -138,10 +149,6 @@ adding:
           - user
 removing:
   dependencies:
-    config:
-      - field.storage.node.field_event_performer
-      - field.storage.node.field_image
-      - field.storage.node.field_teaser
     module:
       - better_exposed_filters
   display:
@@ -236,7 +243,6 @@ removing:
             settings:
               link_to_entity: true
             group_column: value
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -296,9 +302,7 @@ removing:
             hide_alter_empty: true
             click_sort_column: value
             type: basic_string
-            settings: {  }
             group_column: value
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -361,7 +365,6 @@ removing:
             settings:
               view_mode: large__square
             group_column: target_id
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -419,10 +422,7 @@ removing:
                       filter_rewrite_values: ''
                     collapsible: false
                     is_secondary: true
-        arguments: {  }
         filters:
-          type:
-            group: 1
           field_event_parent_target_id:
             id: field_event_parent_target_id
             table: node__field_event_parent
@@ -674,7 +674,6 @@ removing:
         use_ajax: true
         display_extenders:
           metatag_display_extender:
-            metatags: {  }
             tokenize: false
         path: events
         menu:
