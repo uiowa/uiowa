@@ -5,14 +5,20 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_event_performer
+    - field.storage.node.field_event_series_link
+    - field.storage.node.field_event_series_link_direct
     - field.storage.node.field_event_when
     - field.storage.node.field_image
     - field.storage.node.field_teaser
     - node.type.event
+    - taxonomy.vocabulary.event_categories
   module:
     - better_exposed_filters
+    - fullcalendar_view
+    - link
     - node
     - smart_date
+    - taxonomy
     - user
 _core:
   default_config_hash: MpdI7MwVh_vkZ2S1hpubCByqty9K8tTetJOMul3ppFI
@@ -1412,6 +1418,28 @@ display:
         - 'config:field.storage.node.field_event_when'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_teaser'
+  page_2:
+    id: page_2
+    display_title: 'Page - Upcoming list'
+    display_plugin: page
+    position: 6
+    display_options:
+      enabled: false
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: events/list
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
   page_calendar:
     id: page_calendar
     display_title: 'Page - Calendar'
