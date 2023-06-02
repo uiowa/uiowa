@@ -1,0 +1,32 @@
+uuid: 90792b77-0ebd-4fc0-8b4a-b338650a9ad2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.location.field_location_address
+    - field.field.node.location.field_location_directions
+    - field.field.node.location.field_location_latitude
+    - field.field.node.location.field_location_longitude
+    - node.type.location
+  module:
+    - user
+id: node.location.teaser
+targetEntityType: node
+bundle: location
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_location_address: true
+  field_location_directions: true
+  field_location_latitude: true
+  field_location_longitude: true
+  search_api_excerpt: true
