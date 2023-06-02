@@ -100,6 +100,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_category']['#group'] = 'node_relations';
       }
 
+      // Customize address field labels.
       if (isset($form['field_event_location'])) {
         $form['field_event_location']['widget'][0]['address']['#after_build'][] = 'sitenow_events_customize_address';
       }
@@ -112,7 +113,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
           'speed' => 'fast',
           'progress' => [
             'type' => 'throbber',
-            'message' => t('Please wait...'),
+            'message' => t('Filling location information...'),
           ],
         ];
       }
