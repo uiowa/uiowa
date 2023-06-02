@@ -106,11 +106,15 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
       }
 
       if (isset($form['field_event_autofill_location'])) {
+        $form['field_event_autofill_location']['widget']['#options']['_none'] = "- Select autofill location -";
         $form['field_event_autofill_location']['widget']['#ajax'] = [
           'callback' => 'sitenow_events_location_autofill_callback',
           'event' => 'change',
           'wrapper' => 'form-ajax-wrapper',
           'speed' => 'fast',
+          '#attributes' => [
+            'data-disable-refocus' => 'true',
+          ],
           'progress' => [
             'type' => 'throbber',
             'message' => t('Filling location information...'),
@@ -142,6 +146,9 @@ function sitenow_events_location_autofill_callback(array &$form, FormStateInterf
     }
     $key = array_search($place_id, array_column($places, 'id'));
     $location = $places[$key];
+
+    // Reset field.
+    $form['field_event_autofill_location']['widget']['#value'] = '_none';
 
     if (isset($form['field_event_location'])) {
       $form['field_event_location']['widget'][0]['address']['organization']['#value'] = $location['name'];
