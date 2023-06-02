@@ -33,6 +33,8 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
   switch ($form_id) {
     case 'node_event_form':
     case 'node_event_edit_form':
+      $form['#prefix'] = '<div id="form-ajax-wrapper">';
+      $form['#suffix'] = '</div>';
       _sitenow_node_form_defaults($form, $form_state);
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_events_form_submit');
 
@@ -98,9 +100,66 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_category']['#group'] = 'node_relations';
       }
 
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['widget'][0]['address']['#after_build'][] = 'sitenow_events_customize_address';
+      }
+
+      if (isset($form['field_event_autofill_location'])) {
+        $form['field_event_autofill_location']['widget']['#ajax'] = [
+          'callback' => 'sitenow_events_location_autofill_callback',
+          'event' => 'change',
+          'wrapper' => 'form-ajax-wrapper',
+          'speed' => 'fast',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => t('Please wait...'),
+          ],
+        ];
+      }
+
       break;
 
   }
+}
+
+/**
+ * Custom callback for autofilling location information.
+ */
+function sitenow_events_location_autofill_callback(array &$form, FormStateInterface $form_state) {
+  $place_id = $form_state->getValue('field_event_autofill_location')[0]['value'];
+  $data = sitenow_events_load([
+    'display_id' => 'places',
+  ], [
+    'views',
+    'places_api.json',
+  ]);
+  if ($data) {
+    $places = [];
+    foreach ($data['places'] as $place) {
+      // API double-nests places for some reason.
+      $places[] = $place['place'];
+    }
+    $key = array_search($place_id, array_column($places, 'id'));
+    $location = $places[$key];
+
+    if (isset($form['field_event_location'])) {
+      $form['field_event_location']['widget'][0]['address']['organization']['#value'] = $location['name'];
+      $form['field_event_location']['widget'][0]['address']['address_line1']['#value'] = $location['geo']['street'];
+      $form['field_event_location']['widget'][0]['address']['locality']['#value'] = $location['geo']['city'];
+      $form['field_event_location']['widget'][0]['address']['administrative_area']['#value'] = $location['geo']['state'];
+      $form['field_event_location']['widget'][0]['address']['postal_code']['#value'] = $location['geo']['zip'];
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * Modify event addressfield company (organization) label.
+ */
+function sitenow_events_customize_address($element, $form_state) {
+  $element['organization']['#title'] = t('Location name');
+  return $element;
 }
 
 /**
@@ -847,6 +906,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterfac
 
     case 'field_events_place':
     case 'field_uiowa_events_place':
+    case 'field_event_autofill_location':
       $data = sitenow_events_load([
         'display_id' => 'places',
       ], [

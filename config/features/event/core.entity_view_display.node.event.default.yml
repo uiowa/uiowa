@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.event.body
     - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
+    - field.field.node.event.field_event_autofill_location
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
@@ -27,6 +28,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - options
     - smart_date
     - system
     - text
@@ -75,6 +77,22 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b0db3528-b7d6-43b2-9349-edabb24112da
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_autofill_location'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -403,6 +421,13 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     weight: 103
+    region: content
+  field_event_autofill_location:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
     region: content
   field_event_location:
     type: address_default
