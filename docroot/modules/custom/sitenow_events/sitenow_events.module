@@ -150,6 +150,12 @@ function sitenow_events_location_autofill_callback(array &$form, FormStateInterf
       $form['field_event_location']['widget'][0]['address']['administrative_area']['#value'] = $location['geo']['state'];
       $form['field_event_location']['widget'][0]['address']['postal_code']['#value'] = $location['geo']['zip'];
     }
+    if (isset($form['field_event_geolocation'])) {
+      if ($location['geo']['latitude'] && $location['geo']['longitude']) {
+        $form['field_event_geolocation']['widget'][0]['value']['lat']['#value'] = $location['geo']['latitude'];
+        $form['field_event_geolocation']['widget'][0]['value']['lon']['#value'] = $location['geo']['longitude'];
+      }
+    }
   }
 
   return $form;
