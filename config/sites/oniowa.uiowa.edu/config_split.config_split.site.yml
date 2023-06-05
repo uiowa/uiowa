@@ -6,16 +6,25 @@ id: site
 label: Site
 description: 'The oniowa.uiowa.edu site split.'
 weight: 70
-stackable: false
+stackable: true
 storage: folder
 folder: ../config/sites/oniowa.uiowa.edu
 module:
   geofield: 0
+  sitenow_events: 1
 theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_form_display.node.location.default
+  - core.entity_view_display.node.event.default
   - core.entity_view_display.node.location.default
   - core.entity_view_display.node.location.teaser
   - node.type.location
-partial_list: {  }
+  - 'field.storage.node.field_location_*'
+partial_list:
+  - core.entity_form_display.node.event.default
+  - core.entity_view_display.node.event.teaser
+  - core.entity_view_display.node.event.token
+  - field.field.node.event.field_event_locations
+  - field.storage.node.field_event_locations
+  - node.type.event
