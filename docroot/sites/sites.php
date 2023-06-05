@@ -5320,3 +5320,9 @@ $sites['orgxryouthethics.uiowa.ddev.site'] = 'xryouthethics.org.uiowa.edu';
 $sites['orgxryouthethics.dev.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
 $sites['orgxryouthethics.stage.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
 $sites['orgxryouthethics.prod.drupal.uiowa.edu'] = 'xryouthethics.org.uiowa.edu';
+
+// Directory aliases for xiao.lab.uiowa.edu.
+$sites['labxiao.uiowa.ddev.site'] = 'xiao.lab.uiowa.edu';
+$sites['labxiao.dev.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';
+$sites['labxiao.stage.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';
+$sites['labxiao.prod.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';

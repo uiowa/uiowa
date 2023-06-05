@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labxiao.uiowa.ddev.site
+    protocol: https
+  machine_name: labxiao
+  human_name: xiao.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labxiao.prod
+drupal:
+  db:
+    database: xiao_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labxiao.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Multiscale Computational Science and Engineering Laboratory'
