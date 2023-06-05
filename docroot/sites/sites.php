@@ -5326,3 +5326,9 @@ $sites['labxiao.uiowa.ddev.site'] = 'xiao.lab.uiowa.edu';
 $sites['labxiao.dev.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';
 $sites['labxiao.stage.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';
 $sites['labxiao.prod.drupal.uiowa.edu'] = 'xiao.lab.uiowa.edu';
+
+// Directory aliases for zander.lab.uiowa.edu.
+$sites['labzander.uiowa.ddev.site'] = 'zander.lab.uiowa.edu';
+$sites['labzander.dev.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
+$sites['labzander.stage.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
+$sites['labzander.prod.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
