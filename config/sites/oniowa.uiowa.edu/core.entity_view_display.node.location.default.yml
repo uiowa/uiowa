@@ -5,11 +5,11 @@ dependencies:
   config:
     - field.field.node.location.field_location_address
     - field.field.node.location.field_location_directions
-    - field.field.node.location.field_location_latitude
-    - field.field.node.location.field_location_longitude
+    - field.field.node.location.field_location_geolocation
     - node.type.location
   module:
     - address
+    - geofield
     - text
     - user
 id: node.location.default
@@ -22,35 +22,28 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 104
+    weight: 1
     region: content
   field_location_directions:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 105
+    weight: 3
     region: content
-  field_location_latitude:
-    type: string
+  field_location_geolocation:
+    type: geofield_default
     label: above
     settings:
-      link_to_entity: false
+      output_format: wkt
+      output_escape: true
     third_party_settings: {  }
-    weight: 102
-    region: content
-  field_location_longitude:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 103
+    weight: 2
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
