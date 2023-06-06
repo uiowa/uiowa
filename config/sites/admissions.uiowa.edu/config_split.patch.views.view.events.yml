@@ -17,6 +17,9 @@ adding:
               field_identifier: null
     page_upcoming:
       display_options:
+        fields:
+          title:
+            element_label_colon: true
         sorts:
           sticky:
             id: sticky
@@ -65,6 +68,9 @@ adding:
               identifier: ''
               group_items:
                 - {  }
+          combine:
+            expose:
+              label: 'Combine fields filter'
           field_event_category_target_id:
             id: field_event_category_target_id
             table: node__field_event_category
@@ -165,32 +171,13 @@ removing:
               label: ''
               field_identifier: ''
             exposed: false
-        style:
-          options:
-            row_class: ''
-            default_row_class: true
-            uses_fields: true
     page_upcoming:
       display_options:
         fields:
           title:
-            id: title
-            table: node_field_data
-            field: title
-            relationship: none
-            group_type: group
-            admin_label: ''
-            entity_type: node
-            entity_field: title
-            plugin_id: field
-            label: ''
-            exclude: false
             alter:
-              alter_text: false
               text: ''
-              make_link: false
               path: ''
-              absolute: false
               external: false
               replace_spaces: false
               path_case: none
@@ -203,100 +190,11 @@ removing:
               target: ''
               nl2br: false
               max_length: 0
-              word_boundary: false
-              ellipsis: false
               more_link: false
               more_link_text: ''
               more_link_path: ''
-              strip_tags: false
-              trim: false
               preserve_tags: ''
-              html: false
-            element_type: ''
-            element_class: ''
-            element_label_type: ''
-            element_label_class: ''
             element_label_colon: false
-            element_wrapper_type: ''
-            element_wrapper_class: ''
-            element_default_classes: true
-            empty: ''
-            hide_empty: false
-            empty_zero: false
-            hide_alter_empty: true
-            click_sort_column: value
-            type: string
-            settings:
-              link_to_entity: true
-            group_column: value
-            group_rows: true
-            delta_limit: 0
-            delta_offset: 0
-            delta_reversed: false
-            delta_first_last: false
-            multi_type: separator
-            separator: ', '
-            field_api_classes: false
-          field_teaser:
-            id: field_teaser
-            table: node__field_teaser
-            field: field_teaser
-            relationship: none
-            group_type: group
-            admin_label: ''
-            plugin_id: field
-            label: ''
-            exclude: false
-            alter:
-              alter_text: false
-              text: ''
-              make_link: false
-              path: ''
-              absolute: false
-              external: false
-              replace_spaces: false
-              path_case: none
-              trim_whitespace: false
-              alt: ''
-              rel: ''
-              link_class: ''
-              prefix: ''
-              suffix: ''
-              target: ''
-              nl2br: false
-              max_length: 0
-              word_boundary: true
-              ellipsis: true
-              more_link: false
-              more_link_text: ''
-              more_link_path: ''
-              strip_tags: false
-              trim: false
-              preserve_tags: ''
-              html: false
-            element_type: ''
-            element_class: ''
-            element_label_type: ''
-            element_label_class: ''
-            element_label_colon: false
-            element_wrapper_type: ''
-            element_wrapper_class: ''
-            element_default_classes: true
-            empty: ''
-            hide_empty: false
-            empty_zero: false
-            hide_alter_empty: true
-            click_sort_column: value
-            type: basic_string
-            group_column: value
-            group_rows: true
-            delta_limit: 0
-            delta_offset: 0
-            delta_reversed: false
-            delta_first_last: false
-            multi_type: separator
-            separator: ', '
-            field_api_classes: false
           field_image:
             id: field_image
             table: node__field_image
@@ -351,6 +249,7 @@ removing:
             settings:
               view_mode: large__square
             group_column: target_id
+            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -418,6 +317,7 @@ removing:
             admin_label: ''
             plugin_id: entity_reference
             operator: empty
+            value: {  }
             group: 1
             exposed: false
             expose:
@@ -426,6 +326,8 @@ removing:
               description: ''
               use_operator: false
               operator: ''
+              operator_limit_selection: false
+              operator_list: {  }
               identifier: ''
               required: false
               remember: false
@@ -443,6 +345,8 @@ removing:
               multiple: false
               remember: false
               default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
             reduce_duplicates: false
             handler: 'default:node'
             widget: autocomplete
@@ -455,49 +359,8 @@ removing:
               auto_create: false
               auto_create_bundle: ''
           combine:
-            id: combine
-            table: views
-            field: combine
-            relationship: none
-            group_type: group
-            admin_label: ''
-            plugin_id: combine
-            operator: contains
-            value: ''
-            group: 1
-            exposed: true
             expose:
-              operator_id: combine_op
               label: Search
-              description: ''
-              use_operator: false
-              operator: combine_op
-              identifier: combine
-              required: false
-              remember: false
-              multiple: false
-              remember_roles:
-                authenticated: authenticated
-                anonymous: '0'
-                viewer: '0'
-                editor: '0'
-                publisher: '0'
-                webmaster: '0'
-                administrator: '0'
-              placeholder: ''
-            is_grouped: false
-            group_info:
-              label: ''
-              description: ''
-              identifier: ''
-              optional: true
-              widget: select
-              multiple: false
-              remember: false
-              default_group: All
-            fields:
-              title: title
-              field_teaser: field_teaser
           field_event_when_end_value:
             operator: '>='
             value:
@@ -516,13 +379,9 @@ removing:
         defaults:
           use_ajax: false
           exposed_form: false
-          fields: false
           arguments: false
         css_class: bef-form
         use_ajax: true
-        display_extenders:
-          metatag_display_extender:
-            tokenize: false
         path: events
         menu:
           type: none
@@ -530,4 +389,3 @@ removing:
       cache_metadata:
         tags:
           - 'config:field.storage.node.field_image'
-          - 'config:field.storage.node.field_teaser'
