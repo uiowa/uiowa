@@ -68,9 +68,6 @@ adding:
               identifier: ''
               group_items:
                 - {  }
-          combine:
-            expose:
-              label: 'Combine fields filter'
           field_event_category_target_id:
             id: field_event_category_target_id
             table: node__field_event_category
@@ -129,6 +126,9 @@ adding:
             hierarchy_depth: 0
             required_depth: 0
             none_label: '- Please select -'
+          combine:
+            expose:
+              label: 'Combine fields filter'
         defaults:
           sorts: false
         css_class: block-margin__top--extra
@@ -249,7 +249,6 @@ removing:
             settings:
               view_mode: large__square
             group_column: target_id
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -317,7 +316,6 @@ removing:
             admin_label: ''
             plugin_id: entity_reference
             operator: empty
-            value: {  }
             group: 1
             exposed: false
             expose:
@@ -326,8 +324,6 @@ removing:
               description: ''
               use_operator: false
               operator: ''
-              operator_limit_selection: false
-              operator_list: {  }
               identifier: ''
               required: false
               remember: false
@@ -345,8 +341,6 @@ removing:
               multiple: false
               remember: false
               default_group: All
-              default_group_multiple: {  }
-              group_items: {  }
             reduce_duplicates: false
             handler: 'default:node'
             widget: autocomplete
