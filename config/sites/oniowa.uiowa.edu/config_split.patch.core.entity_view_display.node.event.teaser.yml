@@ -2,6 +2,51 @@ adding:
   dependencies:
     config:
       - field.field.node.event.field_event_locations
-  hidden:
-    field_event_locations: true
-removing: {  }
+  content:
+    body:
+      weight: 11
+    field_event_attendance:
+      weight: 10
+    field_event_locations:
+      type: entity_reference_entity_view
+      label: visually_hidden
+      settings:
+        view_mode: default
+        link: false
+      third_party_settings: {  }
+      weight: 3
+      region: content
+    field_event_performer:
+      weight: 12
+    field_event_series_link:
+      weight: 8
+    field_event_series_link_direct:
+      weight: 5
+    field_event_status:
+      weight: 9
+    field_event_virtual:
+      weight: 7
+    field_image:
+      weight: 6
+    links:
+      weight: 4
+removing:
+  content:
+    body:
+      weight: 10
+    field_event_attendance:
+      weight: 9
+    field_event_performer:
+      weight: 11
+    field_event_series_link:
+      weight: 7
+    field_event_series_link_direct:
+      weight: 4
+    field_event_status:
+      weight: 8
+    field_event_virtual:
+      weight: 6
+    field_image:
+      weight: 5
+    links:
+      weight: 3

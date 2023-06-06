@@ -3,9 +3,17 @@ adding:
     config:
       - field.field.node.event.field_event_locations
   content:
+    created:
+      weight: 17
+    field_event_category:
+      weight: 26
+    field_event_hide:
+      weight: 25
+    field_event_location:
+      weight: 7
     field_event_locations:
       type: entity_reference_autocomplete
-      weight: 26
+      weight: 8
       region: content
       settings:
         match_operator: CONTAINS
@@ -13,4 +21,77 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-removing: {  }
+    field_event_parent:
+      weight: 6
+    field_event_performer:
+      weight: 12
+    field_event_series_link:
+      weight: 10
+    field_event_series_link_direct:
+      weight: 11
+    field_event_virtual:
+      weight: 9
+    field_image:
+      weight: 14
+    field_meta_tags:
+      weight: 24
+    field_tags:
+      weight: 15
+    field_teaser:
+      weight: 13
+    moderation_state:
+      weight: 23
+    path:
+      weight: 20
+    promote:
+      weight: 18
+    status:
+      weight: 21
+    sticky:
+      weight: 19
+    uid:
+      weight: 16
+    url_redirects:
+      weight: 22
+removing:
+  content:
+    created:
+      weight: 15
+    field_event_category:
+      weight: 24
+    field_event_hide:
+      weight: 23
+    field_event_location:
+      weight: 6
+    field_event_parent:
+      weight: 5
+    field_event_performer:
+      weight: 10
+    field_event_series_link:
+      weight: 8
+    field_event_series_link_direct:
+      weight: 9
+    field_event_virtual:
+      weight: 7
+    field_image:
+      weight: 12
+    field_meta_tags:
+      weight: 22
+    field_tags:
+      weight: 13
+    field_teaser:
+      weight: 11
+    moderation_state:
+      weight: 21
+    path:
+      weight: 18
+    promote:
+      weight: 16
+    status:
+      weight: 19
+    sticky:
+      weight: 17
+    uid:
+      weight: 14
+    url_redirects:
+      weight: 20
