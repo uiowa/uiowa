@@ -126,12 +126,11 @@ adding:
             hierarchy_depth: 0
             required_depth: 0
             none_label: '- Please select -'
-          combine:
-            expose:
-              label: 'Combine fields filter'
           field_event_when_value:
+            operator: '>='
             value:
               value: now
+              type: offset
             exposed: false
           field_event_performer_target_id_1:
             operator: empty
@@ -252,9 +251,6 @@ removing:
                     collapsible: false
                     is_secondary: true
         filters:
-          combine:
-            expose:
-              label: Search
           field_event_when_end_value:
             operator: '>='
             value:
@@ -271,8 +267,10 @@ removing:
               description: null
               identifier: field_event_when_end_value
           field_event_when_value:
+            operator: '<='
             value:
               value: ''
+              type: date
             exposed: true
           field_event_performer_target_id_1:
             operator: or
