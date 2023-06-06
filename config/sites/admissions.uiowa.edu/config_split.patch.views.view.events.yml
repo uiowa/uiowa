@@ -129,6 +129,13 @@ adding:
           combine:
             expose:
               label: 'Combine fields filter'
+          field_event_when_value:
+            value:
+              value: now
+            exposed: false
+          field_event_performer_target_id_1:
+            operator: empty
+            exposed: false
         defaults:
           sorts: false
         css_class: block-margin__top--extra
@@ -263,6 +270,13 @@ removing:
               label: 'When - End'
               description: null
               identifier: field_event_when_end_value
+          field_event_when_value:
+            value:
+              value: ''
+            exposed: true
+          field_event_performer_target_id_1:
+            operator: or
+            exposed: true
         defaults:
           use_ajax: false
           exposed_form: false
