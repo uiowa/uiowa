@@ -86,6 +86,9 @@
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
+      .views-form--stacked & {
+        flex-wrap: wrap;
+      }
     }
   }
 
@@ -93,6 +96,9 @@
     flex: auto 1 1;
     @include breakpoint(sm) {
       flex: 1;
+      .views-form--stacked & {
+        flex: auto 1 1;
+      }
     }
   }
 
@@ -136,4 +142,24 @@
   line-height: 1.7;
   margin-top: 0;
   font-size: $content-font-size;
+}
+
+// Layout
+.grid--twocol--25-75 {
+  @include grid-base;
+  @include breakpoint(md) {
+    grid-template-columns: repeat(4,1fr);
+    .view-header {
+      grid-column: 1 / -1;
+    }
+    .view-filters {
+      grid-area: 2/1/6/2;
+      min-width: 0;
+    }
+
+    .view-content {
+      grid-area: 2/2/6/5;
+      min-width: 0;
+    }
+  }
 }
