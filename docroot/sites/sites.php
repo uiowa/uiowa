@@ -5332,3 +5332,9 @@ $sites['labzander.uiowa.ddev.site'] = 'zander.lab.uiowa.edu';
 $sites['labzander.dev.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
 $sites['labzander.stage.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
 $sites['labzander.prod.drupal.uiowa.edu'] = 'zander.lab.uiowa.edu';
+
+// Directory aliases for iihr.uiowa.edu.
+$sites['iihr.uiowa.ddev.site'] = 'iihr.uiowa.edu';
+$sites['iihr.dev.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
+$sites['iihr.stage.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
+$sites['iihr.prod.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
