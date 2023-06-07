@@ -29,20 +29,54 @@
   &.uids-content:not(.uids-search) {
     padding: 5px 19px;
 
+    .views-form--stacked & {
+      padding: 1.5rem;
+    }
+
     .form--inline {
       align-items: flex-start;
+    }
+
+    .form-item {
+      .views-form--stacked & {
+        margin: 0;
+      }
+      &.form-type-checkbox {
+        .views-form--stacked & {
+          margin-bottom: 1rem;
+        }
+      }
     }
 
     .form-item:not(:last-child),
     .form-actions:not(:last-child) {
       @include breakpoint(sm) {
         margin-right: 1em;
+        .views-form--stacked & {
+          margin-right: 0;
+        }
       }
     }
 
     .form-actions {
+      input[id^='edit-reset'] {
+        color: var(--brand-secondary);
+        background: var(--brand-primary);
+      }
+
       @include breakpoint(sm) {
         margin-top: 2.5em;
+      }
+      .views-form--stacked & {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
+      }
+      .button {
+        .views-form--stacked & {
+          flex: 1;
+        }
       }
     }
 
@@ -78,6 +112,24 @@
       border-bottom: 1px solid;
       border-color: #c4c4c4;
       margin-bottom: 1em;
+    }
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+
+  fieldset {
+    &.fieldgroup {
+      padding: 0;
+    }
+    .fieldset-legend {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.8;
     }
   }
 
@@ -157,7 +209,7 @@
       min-width: 0;
     }
 
-    .view-content {
+    .view-content, .view-empty {
       grid-area: 2/2/6/5;
       min-width: 0;
     }
