@@ -11,7 +11,6 @@ storage: folder
 folder: ../config/sites/oniowa.uiowa.edu
 module:
   geofield: 0
-  sitenow_events: 1
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -19,13 +18,10 @@ complete_list:
   - core.entity_view_display.node.event.default
   - core.entity_view_display.node.location.default
   - core.entity_view_display.node.location.teaser
+  - field.storage.node.field_event_locations
   - node.type.location
   - 'field.storage.node.field_location_*'
 partial_list:
   - core.entity_form_display.node.event.default
-  - core.entity_view_display.node.event.teaser
-  - core.entity_view_display.node.event.token
-  - field.field.node.event.field_event_locations
-  - field.storage.node.field_event_locations
-  - node.type.event
   - 'user.role.*'
+  - 'core.entity_view_display.node.event.*'
