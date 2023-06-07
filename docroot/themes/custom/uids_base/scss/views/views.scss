@@ -36,10 +36,16 @@
     .form--inline {
       align-items: flex-start;
     }
+    select {
+      .views-form--stacked & {
+        margin-bottom: 0;
+      }
+    }
 
     .form-item {
       .views-form--stacked & {
-        margin: 0;
+        margin-top: .5em;
+        margin-bottom: .5em;
       }
       &.form-type-checkbox {
         .views-form--stacked & {
@@ -69,7 +75,7 @@
       }
       .views-form--stacked & {
         width: 100%;
-        margin: 0;
+        margin-top: .5rem;
         display: flex;
         gap: 1.5rem;
       }
@@ -149,7 +155,7 @@
     @include breakpoint(sm) {
       flex: 1;
       .views-form--stacked & {
-        flex: auto 1 1;
+        flex: 0 1 100%;
       }
     }
   }
