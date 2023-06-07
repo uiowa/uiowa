@@ -1,0 +1,52 @@
+uuid: eb04fbd7-4d0c-4bae-895e-3bb447f7a330
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.location.field_location_address
+    - field.field.node.location.field_location_directions
+    - field.field.node.location.field_location_geolocation
+    - node.type.location
+  module:
+    - address
+    - geofield
+    - text
+    - user
+id: node.location.default
+targetEntityType: node
+bundle: location
+mode: default
+content:
+  field_location_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_location_directions:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_location_geolocation:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
