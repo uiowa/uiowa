@@ -15,7 +15,11 @@
                 } else {
                   offCanvasWidth = offCanvasCookie;
                 }
-                $($element).parent().attr('style', 'position: fixed; width: ' + offCanvasWidth + 'px; right: 0; left: auto;');
+                const container = $($element).parent()[0];
+                container.style.position = 'fixed';
+                container.style.width = offCanvasWidth + 'px';
+                container.style.right = '0';
+                container.style.left = 'auto';
 
                 let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
                 const $container = Drupal.offCanvas.getContainer($element);
@@ -55,5 +59,32 @@
     }
     origBeforeSubmit.call(formValues, element, options);
   };
+
+  // function mergeStyles(styles1, styles2){
+  //   const styles1array = styles1.split('; ');
+  //   let styles1map = {};
+  //   styles1array.forEach(function (value) {
+  //     const keyValue = value.split(': ');
+  //     styles1map[keyValue[0].replace(';', '')] = keyValue[1].replace(';', '');
+  //   })
+  //
+  //   const styles2array = styles2.split('; ');
+  //   let styles2map = {};
+  //   styles2array.forEach(function (value) {
+  //     const keyValue = value.split(': ');
+  //     styles2map[keyValue[0].replace('; ', '')] = keyValue[1].replace('; ', '');
+  //   })
+  //
+  //   const styles2mapKeys = Object.keys(styles2map);
+  //   styles2mapKeys.forEach(function (value) {
+  //     styles1map[value] = styles2map[value];
+  //   })
+  //
+  //   let stylestring = '';
+  //
+  //   styles2mapKeys.forEach(function (value) {
+  //     styles1map[value] = styles2map[value];
+  //   })
+  // }
 
 })(jQuery, Drupal);
