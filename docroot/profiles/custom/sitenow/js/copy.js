@@ -63,7 +63,3 @@
     }
   };
 })(jQuery, Drupal);
-
-// bttn--copy-clipboard
-
-
