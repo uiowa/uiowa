@@ -409,6 +409,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'fragment_region_item_after_content_layout_builder_form':
     case 'node_page_layout_builder_form':
       $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+      $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = '.uiowa.ddev.site';
       break;
   }
 }

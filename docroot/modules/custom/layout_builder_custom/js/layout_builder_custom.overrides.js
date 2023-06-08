@@ -1,7 +1,7 @@
 /**
  * @file
  */
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
     Drupal.behaviors.layoutBuilderCustomOverrides = {
         attach: function (context, settings) {
           $(window).once('off-canvas-overrides').on({
@@ -27,7 +27,7 @@
                   if (!justCreated) {
                     // Cookie that expires in 99 years.
                     const width = $container.outerWidth();
-                    $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: '.uiowa.edu'});
+                    $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: drupalSettings.layoutBuilderCustom.cookieDomain });
                   }
                   justCreated = false;
                 });
@@ -60,31 +60,4 @@
     origBeforeSubmit.call(formValues, element, options);
   };
 
-  // function mergeStyles(styles1, styles2){
-  //   const styles1array = styles1.split('; ');
-  //   let styles1map = {};
-  //   styles1array.forEach(function (value) {
-  //     const keyValue = value.split(': ');
-  //     styles1map[keyValue[0].replace(';', '')] = keyValue[1].replace(';', '');
-  //   })
-  //
-  //   const styles2array = styles2.split('; ');
-  //   let styles2map = {};
-  //   styles2array.forEach(function (value) {
-  //     const keyValue = value.split(': ');
-  //     styles2map[keyValue[0].replace('; ', '')] = keyValue[1].replace('; ', '');
-  //   })
-  //
-  //   const styles2mapKeys = Object.keys(styles2map);
-  //   styles2mapKeys.forEach(function (value) {
-  //     styles1map[value] = styles2map[value];
-  //   })
-  //
-  //   let stylestring = '';
-  //
-  //   styles2mapKeys.forEach(function (value) {
-  //     styles1map[value] = styles2map[value];
-  //   })
-  // }
-
-})(jQuery, Drupal);
+})(jQuery, Drupal, drupalSettings);
