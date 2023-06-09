@@ -16,10 +16,7 @@
                   offCanvasWidth = offCanvasCookie;
                 }
                 const container = $($element).parent()[0];
-                container.style.position = 'fixed';
                 container.style.width = offCanvasWidth + 'px';
-                container.style.right = '0';
-                container.style.left = 'auto';
 
                 let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
                 const $container = Drupal.offCanvas.getContainer($element);
