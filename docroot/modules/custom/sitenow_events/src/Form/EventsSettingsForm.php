@@ -108,7 +108,7 @@ class EventsSettingsForm extends ConfigFormBase {
 
     $config_split = \Drupal::service('config_split.manager')
       ->getSplitConfig('config_split.config_split.event');
-    if (isset($config_split) && $$config_split->get('status')) {
+    if (isset($config_split) && $config_split->get('status')) {
       $form['global']['sitenow_events_filter'] = [
         '#type' => 'fieldset',
         '#title' => 'Filter',
