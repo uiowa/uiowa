@@ -126,11 +126,11 @@ function sitenow_events_views_pre_build(ViewExecutable $view) {
     // it has not been selected to be displayed.
     $config = \Drupal::config('sitenow_events.settings');
     foreach ([
-     'date_range' => 'field_event_when',
-     'presenters' => 'field_event_performer_target_id_1',
-     'attendance_required' => 'field_event_attendance_value',
-     'attendance_mode' => 'field_event_attendance_mode_value',
-     'category' => 'field_event_category_target_id',
+      'date_range' => 'field_event_when',
+      'presenters' => 'field_event_performer_target_id_1',
+      'attendance_required' => 'field_event_attendance_value',
+      'attendance_mode' => 'field_event_attendance_mode_value',
+      'category' => 'field_event_category_target_id',
     ] as $filter_option => $field_label) {
       if ($config->get("filter_display.{$filter_option}") == FALSE) {
         if ($filter_option === 'date_range') {
