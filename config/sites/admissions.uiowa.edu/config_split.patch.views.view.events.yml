@@ -12,6 +12,9 @@ adding:
           sticky:
             expose:
               field_identifier: null
+    page_calendar:
+      display_options:
+        enabled: true
     page_upcoming:
       display_options:
         fields:
@@ -171,6 +174,9 @@ removing:
               label: ''
               field_identifier: ''
             exposed: false
+    page_calendar:
+      display_options:
+        enabled: false
     page_upcoming:
       display_options:
         fields:
@@ -209,7 +215,6 @@ removing:
             text_input_required_format: filtered_html
             bef:
               general:
-                autosubmit: false
                 autosubmit_exclude_textfield: false
                 autosubmit_textfield_delay: 500
                 autosubmit_hide: false
