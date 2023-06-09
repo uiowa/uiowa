@@ -211,6 +211,7 @@
 .grid--twocol--25-75 {
   @include grid-base;
   @include breakpoint(sm) {
+    display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: 1.5rem;
     .view-header {
@@ -218,7 +219,7 @@
     }
     .view-filters {
       grid-area: 2/1/6/2;
-      min-width: 0;
+      min-width: 200px;
     }
 
     .view-content, .view-empty {
