@@ -8,10 +8,6 @@ adding:
             tags:
               next: ››
               previous: ‹‹
-        sorts:
-          sticky:
-            expose:
-              field_identifier: null
     page_calendar:
       display_options:
         enabled: true
@@ -20,36 +16,6 @@ adding:
         fields:
           title:
             element_label_colon: true
-        sorts:
-          sticky:
-            id: sticky
-            table: node_field_data
-            field: sticky
-            relationship: none
-            group_type: group
-            admin_label: ''
-            entity_type: node
-            entity_field: sticky
-            plugin_id: standard
-            order: DESC
-            expose:
-              label: ''
-              field_identifier: sticky
-            exposed: false
-          field_event_when_value:
-            id: field_event_when_value
-            table: node__field_event_when
-            field: field_event_when_value
-            relationship: none
-            group_type: min
-            admin_label: ''
-            plugin_id: '1'
-            order: ASC
-            expose:
-              label: ''
-              field_identifier: field_event_when_value
-            exposed: false
-            granularity: second
         filters:
           field_event_when_end_value:
             operator: '>'
@@ -136,7 +102,7 @@ adding:
             operator: empty
             exposed: false
         defaults:
-          sorts: false
+          sorts: true
         css_class: 'views-form--stacked grid--twocol--25-75 '
         path: events/upcoming
         menu:
@@ -158,22 +124,6 @@ removing:
             tags:
               next: 'Next ›'
               previous: '‹ Previous'
-        sorts:
-          sticky:
-            id: sticky
-            table: node_field_data
-            field: sticky
-            relationship: none
-            group_type: group
-            admin_label: ''
-            entity_type: node
-            entity_field: sticky
-            plugin_id: standard
-            order: DESC
-            expose:
-              label: ''
-              field_identifier: ''
-            exposed: false
     page_calendar:
       display_options:
         enabled: false
