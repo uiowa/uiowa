@@ -1,7 +1,7 @@
 /**
  * @file
  */
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, cookies) {
     Drupal.behaviors.layoutBuilderCustomOverrides = {
         attach: function (context, settings) {
           $(window).once('off-canvas-overrides').on({
@@ -9,7 +9,7 @@
               let justCreated = true;
               if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
                 let offCanvasWidth;
-                const offCanvasCookie = $.cookie('ui_off_canvas_width');
+                const offCanvasCookie = cookies.get('ui_off_canvas_width');
                 if (offCanvasCookie === undefined) {
                   offCanvasWidth = 500;
                 } else {
@@ -27,7 +27,7 @@
                   if (!justCreated) {
                     // Cookie that expires in 99 years.
                     const width = $container.outerWidth();
-                    $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: drupalSettings.layoutBuilderCustom.cookieDomain });
+                    cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: drupalSettings.layoutBuilderCustom.cookieDomain });
                   }
                   justCreated = false;
                 });
@@ -60,4 +60,4 @@
     origBeforeSubmit.call(formValues, element, options);
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, window.Cookies);
