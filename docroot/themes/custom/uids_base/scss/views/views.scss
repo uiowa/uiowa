@@ -210,8 +210,9 @@
 // Layout
 .grid--twocol--25-75 {
   @include grid-base;
-  @include breakpoint(md) {
+  @include breakpoint(sm) {
     grid-template-columns: repeat(4,1fr);
+    gap: 1.5rem;
     .view-header {
       grid-column: 1 / -1;
     }
@@ -224,5 +225,8 @@
       grid-area: 2/2/6/5;
       min-width: 0;
     }
+  }
+  @include breakpoint(page-container) {
+    gap: 3rem;
   }
 }
