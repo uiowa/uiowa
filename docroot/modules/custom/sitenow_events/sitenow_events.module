@@ -15,6 +15,7 @@ use Drupal\Core\Url;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\ViewExecutable;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -100,6 +101,49 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
 
+    // @todo Remove this. It's just part of a proof of concept.
+    case "views_exposed_form":
+      $form['date_select'] = [
+        '#type' => 'select',
+        '#title' => t('Date'),
+        '#options' => [
+          0 => 'Tuesday',
+          1 => 'Wednesday',
+        ],
+      ];
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function sitenow_events_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
+    // Go through each of our filter display options
+    // and change the exposed option to false if
+    // it has not been selected to be displayed.
+    $config = \Drupal::config('sitenow_events.settings');
+    foreach ([
+     'date_range' => 'field_event_when',
+     'presenters' => 'field_event_performer_target_id_1',
+     'attendance_required' => 'field_event_attendance_value',
+     'attendance_mode' => 'field_event_attendance_mode_value',
+     'category' => 'field_event_category_target_id',
+    ] as $filter_option => $field_label) {
+      if ($config->get("filter_display.{$filter_option}") == FALSE) {
+        if ($filter_option === 'date_range') {
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_value");
+          $filter->options['exposed'] = FALSE;
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_end_value");
+          $filter->options['exposed'] = FALSE;
+          continue;
+        }
+        $filter = $view->display_handler->getHandler('filter', $field_label);
+        $filter->options['exposed'] = FALSE;
+      }
+    }
   }
 }
 
