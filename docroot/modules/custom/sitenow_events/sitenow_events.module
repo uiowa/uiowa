@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -103,32 +104,43 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
     // @todo Remove this. It's just part of a proof of concept.
     case "views_exposed_form":
-      $options = [];
-      $options[''] = t('Select a date');
-      $query = \Drupal::entityQuery('node');
-      $query->condition('type', 'event')
-        ->condition('status', 1)
-        ->sort('field_event_when', 'ASC');
-      $result = $query->execute();
-      if ($result) {
-        $nodes = \Drupal::entityTypeManager()
-          ->getStorage('node')
-          ->loadMultiple($result);
-        foreach ($nodes as $node) {
-          $date = $node->field_event_when->value;
-          if ($date) {
-            $day = date('l, F j', $date);
-            if (!isset($options[$date])) {
-              $options[$date] = $day;
+      $cid = 'sitenow_events:event:dates';
+      $data = \Drupal::cache()->get($cid);
+      if (!$data) {
+        $options = [];
+        $options[''] = t('Select a date');
+        $query = \Drupal::entityQuery('node');
+        $query->condition('type', 'event')
+          ->condition('status', 1)
+          ->sort('field_event_when', 'ASC');
+        $result = $query->execute();
+        if ($result) {
+          $nodes = \Drupal::entityTypeManager()
+            ->getStorage('node')
+            ->loadMultiple($result);
+          foreach ($nodes as $node) {
+            $date = $node->field_event_when->value;
+            if ($date) {
+              $day = date('l, F j', $date);
+              if (!isset($options[$date])) {
+                $options[$date] = $day;
+              }
             }
           }
         }
+        $cache_tags = ['event:field_event_when'];
+        \Drupal::cache()->set($cid, $options, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
+      }
+      else {
+        $options = $data->data;
       }
       $form['date_select'] = [
         '#type' => 'select',
         '#title' => t('Date'),
         '#options' => $options,
       ];
+      $form['field_event_when_value']['#access'] = FALSE;
+      $form['field_event_when_end_value']['#access'] = FALSE;
       array_unshift($form['#submit'], '_date_select_list');
       break;
 
