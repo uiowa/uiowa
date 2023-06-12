@@ -128,7 +128,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
             }
           }
         }
-        $cache_tags = ['event:field_event_when'];
+        $cache_tags = ['node_list:event'];
         \Drupal::cache()->set($cid, $options, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
       }
       else {
