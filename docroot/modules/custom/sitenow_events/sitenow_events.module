@@ -103,13 +103,31 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
     // @todo Remove this. It's just part of a proof of concept.
     case "views_exposed_form":
+      $options = [];
+      $options['all'] = t('- All -');
+      $query = \Drupal::entityQuery('node');
+      $query->condition('type', 'event')
+        ->condition('status', 1)
+        ->sort('field_event_when', 'ASC');
+      $result = $query->execute();
+      if ($result) {
+        $nodes = \Drupal::entityTypeManager()
+          ->getStorage('node')
+          ->loadMultiple($result);
+        foreach ($nodes as $node) {
+          $date = $node->field_event_when->value;
+          if ($date) {
+            $day = date('l, F j', $date);
+            if (!isset($options[$day])) {
+              $options[$day] = $day;
+            }
+          }
+        }
+      }
       $form['date_select'] = [
         '#type' => 'select',
         '#title' => t('Date'),
-        '#options' => [
-          0 => 'Tuesday',
-          1 => 'Wednesday',
-        ],
+        '#options' => $options,
       ];
       break;
 
