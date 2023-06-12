@@ -10,9 +10,18 @@ third_party_settings:
     available_menus: {  }
     parent: ''
   node_revision_delete:
-    minimum_revisions_to_keep: 10
-    minimum_age_to_delete: 0
-    when_to_delete: 0
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
 name: 'Major (2 Plus 2)'
 type: major
 description: 'Use <em>major (2 plus 2)</em> to provide information on community college majors for prospective transfer students. '
