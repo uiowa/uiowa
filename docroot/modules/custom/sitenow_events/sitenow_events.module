@@ -112,6 +112,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $query = \Drupal::entityQuery('node');
         $query->condition('type', 'event')
           ->condition('status', 1)
+          ->condition('field_event_when.end_value', time(), '>')
           ->sort('field_event_when', 'ASC');
         $result = $query->execute();
         if ($result) {
