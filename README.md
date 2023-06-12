@@ -106,7 +106,6 @@ The packages below are locked at specific SHAs and will not update using the met
 |-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
 | uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
-| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                                                            |
 | drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
 
 
