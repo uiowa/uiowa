@@ -22,7 +22,7 @@ function oniowa_core_uninstall() {
 /**
  * Set initial events filter configuration.
  */
-function oniowa_core_update_8002() {
+function oniowa_core_update_9001() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('sitenow_events.settings');
   $config->set('filter_display', [
