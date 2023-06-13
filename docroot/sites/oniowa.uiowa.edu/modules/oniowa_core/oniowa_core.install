@@ -10,6 +10,18 @@
  */
 function oniowa_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  if (is_null($config->get('filter_display'))) {
+    $config->set('filter_display', [
+      'date_range' => 1,
+      'presenters' => 0,
+      'attendance_required' => 1,
+      'attendance_mode' => 1,
+      'category' => 1,
+    ]);
+    $config->save();
+  }
 }
 
 /**
@@ -17,20 +29,4 @@ function oniowa_core_install() {
  */
 function oniowa_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
-}
-
-/**
- * Set initial events filter configuration.
- */
-function oniowa_core_update_9001() {
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('sitenow_events.settings');
-  $config->set('filter_display', [
-    'date_range' => 1,
-    'presenters' => 0,
-    'attendance_required' => 1,
-    'attendance_mode' => 1,
-    'category' => 1,
-  ]);
-  $config->save();
 }
