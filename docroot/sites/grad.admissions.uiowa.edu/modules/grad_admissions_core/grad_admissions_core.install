@@ -77,13 +77,16 @@ function grad_admissions_core_update_N(&$sandbox) {
     '52242-1396' => '52242',
   ];
 
+  // @todo Check if there are instances of 108 Calvin Hall that are used
+  //   for other departments.
+
   // Grab all our area of study nodes.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'area_of_study');
 
   $db = \Drupal::database();
 
-  // @todo Add condition to match for our $conversion_map keys.
+  // Add conditions to match for our $conversion_map keys.
   $or_conditions = $query->orConditionGroup();
 
   foreach (array_keys($conversion_map) as $match) {
