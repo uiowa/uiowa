@@ -107,6 +107,7 @@ class Room extends BaseNodeSource {
           $gallery_image['title'],
         );
       }
+      $row->setSourceProperty('featured_image', $new_images[0]);
       $row->setSourceProperty('field_room_images', $new_images);
     }
 

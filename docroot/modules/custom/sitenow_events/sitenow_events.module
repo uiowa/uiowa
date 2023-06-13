@@ -47,6 +47,25 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
 
+      // Show/hide the location and virtual info fields
+      // based on the attendance mode. Hybrid should display both.
+      $form['field_event_location']['#states'] = [
+        'visible' => [
+          ':input[name="field_event_attendance_mode"]' => [
+            ['value' => 'OfflineEventAttendanceMode'],
+            ['value' => 'MixedEventAttendanceMode'],
+          ],
+        ],
+      ];
+      $form['field_event_virtual']['#states'] = [
+        'visible' => [
+          ':input[name="field_event_attendance_mode"]' => [
+            ['value' => 'OnlineEventAttendanceMode'],
+            ['value' => 'MixedEventAttendanceMode'],
+          ],
+        ],
+      ];
+
       // Because person titles are constructed
       // in sitenow_people_entity_presave, there is no title for this
       // IEF widget to display. This changes the label using
@@ -75,8 +94,45 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         }
       }
 
+      if (isset($form['field_event_category'])) {
+        $form['field_event_category']['#group'] = 'node_relations';
+      }
+
       break;
 
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_events_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'event':
+      // Check the selected attendance mode,
+      // and if it is either in-person or online (not hybrid),
+      // then remove the opposite location/virtual information.
+      $attendance_mode = $entity->field_event_attendance_mode?->value;
+      switch ($attendance_mode) {
+        case 'OnlineEventAttendanceMode':
+          foreach ($entity->field_event_location as $delta => $location) {
+            // Set the country code to a blank string
+            // to unset the full address.
+            $entity->field_event_location->get($delta)?->set('country_code', '');
+          }
+          break;
+
+        case 'OfflineEventAttendanceMode':
+          foreach ($entity->field_event_virtual as $delta => $virtual) {
+            $entity->field_event_virtual->get($delta)?->setValue([
+              'title' => '',
+              'uri' => '',
+            ]);
+          }
+          break;
+
+      }
+      break;
   }
 }
 
@@ -130,6 +186,24 @@ function sitenow_events_preprocess_block(&$variables) {
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
+      break;
+
+    case 'field_block:node:event:field_event_status':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
+    case 'field_block:node:event:field_event_attendance':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'No') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
       break;
 
     case 'inline_block:uiowa_events':
@@ -255,24 +329,7 @@ function sitenow_events_preprocess_block(&$variables) {
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = $heading_size ?? 'h3';
 
-          // Construct event link based on site-wide configuration.
-          $external_link = ($config->get('event_link') === 'event-link-external');
-          if ($external_link) {
-            $event['url'] = $event['events_site_url'];
-          }
-          else {
-            $single_event_path = $config->get('single_event_path');
-
-            // Add a parameter on the URL for event instances.
-            foreach ($event['event_instances'] as $instance_key => $instance) {
-              if ($event['instance_start'] === $instance['event_instance']['start']) {
-                $instance_id = $instance_key;
-              }
-            }
-
-            $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
-            $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
-          }
+          $event['sitenow_events_config'] = $config;
 
           // Pass off to helper function to build card render.
           $variables['content'][$key] = sitenow_events_build_card($event);
@@ -316,9 +373,36 @@ function sitenow_events_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_events_preprocess_node__event(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/tags';
+}
+
+/**
  * Helper function to build out card renders from event data.
  */
 function sitenow_events_build_card(array $event): array {
+
+  // Construct event link based on site-wide configuration.
+  $external_link = ($event['sitenow_events_config']->get('event_link') === 'event-link-external');
+  if ($external_link) {
+    $event['url'] = $event['events_site_url'];
+  }
+  else {
+    $single_event_path = $event['sitenow_events_config']->get('single_event_path');
+
+    // Add a parameter on the URL for event instances.
+    foreach ($event['event_instances'] as $instance_key => $instance) {
+      if ($event['instance_start'] === $instance['event_instance']['start']) {
+        $instance_id = $instance_key;
+      }
+    }
+
+    $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
+    $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
+  }
+
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
@@ -440,6 +524,25 @@ function sitenow_events_build_card(array $event): array {
  */
 function sitenow_events_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_event_attendance':
+      $field_label = $variables['element']['#title'];
+      uiowa_core_set_attributes($variables, 'element--inline');
+      if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
+        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
+      }
+      else {
+        uiowa_core_set_attributes($variables, 'sr-only');
+      }
+      break;
+
+    case 'field_event_category':
+      uiowa_core_set_attributes($variables, 'tags-list');
+
+      foreach ($variables["items"] as &$item) {
+        $item['attributes']['class'] = 'tags-list__tag';
+      }
+      break;
+
     case 'field_event_location':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
@@ -458,7 +561,17 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_status':
-      uiowa_core_set_attributes($variables, 'badge badge--orange');
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Cancelled') {
+          uiowa_core_set_attributes($variables, 'badge badge--orange element--inline');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Rescheduled') {
+          uiowa_core_set_attributes($variables, 'badge badge--green element--inline');
+        }
+      }
       break;
 
     case 'field_event_virtual':

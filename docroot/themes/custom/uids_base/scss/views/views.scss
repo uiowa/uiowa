@@ -29,20 +29,65 @@
   &.uids-content:not(.uids-search) {
     padding: 5px 19px;
 
+    .views-form--stacked & {
+      padding: 1rem 1.5rem;
+    }
+
     .form--inline {
       align-items: flex-start;
+    }
+    select,
+    [type=text] {
+      .views-form--stacked & {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-item {
+      .views-form--stacked & {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        @include breakpoint(sm) {
+          margin-top: .5rem;
+          margin-bottom: .5rem;
+        }
+      }
+      &.form-type-checkbox {
+        .views-form--stacked & {
+          margin-bottom: 1rem;
+        }
+      }
     }
 
     .form-item:not(:last-child),
     .form-actions:not(:last-child) {
       @include breakpoint(sm) {
         margin-right: 1em;
+        .views-form--stacked & {
+          margin-right: 0;
+        }
       }
     }
 
     .form-actions {
+      input[id^='edit-reset'] {
+        color: var(--brand-secondary);
+        background: var(--brand-primary);
+      }
+
       @include breakpoint(sm) {
         margin-top: 2.5em;
+      }
+      .views-form--stacked & {
+        width: 100%;
+        margin-top: .5rem;
+        display: flex;
+        gap: 1.5rem;
+      }
+      .button {
+        .views-form--stacked & {
+          flex: 1;
+        }
       }
     }
 
@@ -81,11 +126,32 @@
     }
   }
 
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+
+  fieldset {
+    &.fieldgroup {
+      padding: 0;
+    }
+    .fieldset-legend {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.8;
+    }
+  }
+
   .form--inline {
     @include breakpoint(sm) {
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
+      .views-form--stacked & {
+        flex-wrap: wrap;
+      }
     }
   }
 
@@ -93,6 +159,9 @@
     flex: auto 1 1;
     @include breakpoint(sm) {
       flex: 1;
+      .views-form--stacked & {
+        flex: 0 1 100%;
+      }
     }
   }
 
@@ -136,4 +205,29 @@
   line-height: 1.7;
   margin-top: 0;
   font-size: $content-font-size;
+}
+
+// Layout
+.grid--twocol--25-75 {
+  @include grid-base;
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 1.5rem;
+    .view-header {
+      grid-column: 1 / -1;
+    }
+    .view-filters {
+      grid-area: 2/1/6/2;
+      min-width: 200px;
+    }
+
+    .view-content, .view-empty {
+      grid-area: 2/2/6/5;
+      min-width: 0;
+    }
+  }
+  @include breakpoint(page-container) {
+    gap: 3rem;
+  }
 }

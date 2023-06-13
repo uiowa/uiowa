@@ -169,11 +169,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
-    case 'node_event_form':
-    case 'node_event_edit_form':
-      $form['field_event_category']['#group'] = 'node_relations';
-      break;
-
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -876,10 +871,6 @@ function admissions_core_preprocess_views_view(&$variables) {
     case 'areas_of_study_kiosk':
       $variables['#attached']['library'][] = 'admissions_core/print_js';
       $variables['#attached']['library'][] = 'admissions_core/area_of_study_kiosk';
-      break;
-
-    case 'events':
-      $variables['#attached']['library'][] = 'admissions_core/events';
       break;
 
     case 'colleges_taxonomy_term':

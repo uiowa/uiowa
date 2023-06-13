@@ -77,6 +77,22 @@
         margin: 0;
       }
 
+      // Sort select.
+      .form-item:not(:last-child).form-item-sort-bef-combine {
+        background: #fff;
+        padding: 2rem 0.5rem 1rem 0;
+        grid-column: 1/-1;
+        margin: 1rem -2rem -3rem -1.5rem;
+        @include breakpoint(sm) {
+          padding: 2rem 2rem 1rem 0;
+        }
+        select {
+          @include breakpoint(sm) {
+            width: auto;
+          }
+        }
+      }
+
       .form-item {
         margin-right: 0;
         @include breakpoint(sm) {
@@ -265,4 +281,9 @@
       }
     }
   }
+}
+
+// Override module float.
+.bef-exposed-form .form--inline .form-item {
+  float: none;
 }

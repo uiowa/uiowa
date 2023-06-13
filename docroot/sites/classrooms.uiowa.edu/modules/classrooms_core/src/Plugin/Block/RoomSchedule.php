@@ -4,7 +4,6 @@ namespace Drupal\classrooms_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Template\Attribute;
 
 /**
  * A 'Room Schedule' block.
@@ -68,12 +67,12 @@ class RoomSchedule extends BlockBase {
 
           // Iterate through the $items array.
           foreach ($items as $item) {
-            $attributes = new Attribute();
-            $card_classes = [
+            $attributes = [];
+            $attributes['class'] = [
               'card--layout-right',
               'borderless',
+              'headline--serif',
             ];
-            $attributes->addClass($card_classes);
 
             $build['container']['schedule'][] = [
               '#type' => 'card',

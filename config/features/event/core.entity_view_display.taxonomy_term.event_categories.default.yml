@@ -1,0 +1,25 @@
+uuid: 2e023dae-0473-4c13-a46c-eb0936b68058
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.event_categories
+  module:
+    - text
+id: taxonomy_term.event_categories.default
+targetEntityType: taxonomy_term
+bundle: event_categories
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

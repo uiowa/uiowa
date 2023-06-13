@@ -27,6 +27,26 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
+ * Helper function to get the research title from the site config.
+ */
+function sitenow_people_get_research_title() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $research_title = $config->get('research_title');
+
+  if (empty($research_title)) {
+    // Load the entity field manager service.
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    // Load the field instance for the 'field_person_research_areas' field.
+    $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
+
+    $research_title = $fieldInstance->getLabel();
+  }
+
+  return $research_title;
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function sitenow_people_entity_bundle_info_alter(array &$bundles) {
@@ -543,6 +563,10 @@ function sitenow_people_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
+
+    case 'field_person_research_areas':
+      $variables['label'] = sitenow_people_get_research_title();
+      break;
   }
 }
 
@@ -802,6 +826,11 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 
   if ($view->id() === 'people') {
+    // Change the research areas label.
+    if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+      $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+    }
+
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
       uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
