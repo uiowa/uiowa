@@ -109,41 +109,41 @@ class EventsSettingsForm extends ConfigFormBase {
     $config_split = \Drupal::service('config_split.manager')
       ->getSplitConfig('config_split.config_split.event');
     if (isset($config_split) && $config_split->get('status')) {
-      $form['global']['sitenow_events_filter'] = [
+      $form['sitenow_events_filter'] = [
         '#type' => 'fieldset',
-        '#title' => 'Filter',
-        '#description' => $this->t('Allow visitors to filter events by one or more of the following options.'),
+        '#title' => 'Upcoming Events Filters',
+        '#description' => $this->t('These settings affect locally created events and their lists.'),
         '#collapsible' => FALSE,
       ];
-      $form['global']['sitenow_events_filter']['filter_date_range'] = [
+      $form['sitenow_events_filter']['filter_date_range'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Date Range'),
         '#description' => $this->t('Allow filtering by the date range'),
         '#default_value' => $config->get('filter_display.date_range'),
         '#size' => 60,
       ];
-      $form['global']['sitenow_events_filter']['filter_presenters'] = [
+      $form['sitenow_events_filter']['filter_presenters'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Presenters'),
         '#description' => $this->t('Allow filtering by presenter'),
         '#default_value' => $config->get('filter_display.presenters'),
         '#size' => 60,
       ];
-      $form['global']['sitenow_events_filter']['filter_attendance_required'] = [
+      $form['sitenow_events_filter']['filter_attendance_required'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Attendance Required'),
         '#description' => $this->t('Allow filtering by attendance requirement'),
         '#default_value' => $config->get('filter_display.attendance_required'),
         '#size' => 60,
       ];
-      $form['global']['sitenow_events_filter']['filter_attendance_mode'] = [
+      $form['sitenow_events_filter']['filter_attendance_mode'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Attendance type'),
         '#description' => $this->t('Allow filtering by attendance type'),
         '#default_value' => $config->get('filter_display.attendance_mode'),
         '#size' => 60,
       ];
-      $form['global']['sitenow_events_filter']['filter_category'] = [
+      $form['sitenow_events_filter']['filter_category'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Category'),
         '#description' => $this->t('Allow filtering by category'),
