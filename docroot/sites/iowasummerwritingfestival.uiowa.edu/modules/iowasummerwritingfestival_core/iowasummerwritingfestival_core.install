@@ -197,4 +197,16 @@ function iowasummerwritingfestival_core_update_9003() {
     'category' => 0,
   ]);
   $config->save();
+
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'event')
+    ->execute();
+  foreach ($nids as $nid) {
+    $node = Node::load($nid);
+    // Set the new value and revision message, and save.
+    $node->set('field_event_attendance', FALSE);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
+    $node->save();
+  }
 }
