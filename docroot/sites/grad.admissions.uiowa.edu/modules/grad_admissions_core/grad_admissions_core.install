@@ -66,3 +66,34 @@ function grad_admissions_core_update_9001() {
     '@updated' => implode(', ', $updated),
   ]);
 }
+
+/**
+ * Update contact info strings.
+ */
+function grad_admissions_core_update_N(&$sandbox) {
+  $conversion_map = [
+    'Office of Admissions' => 'Enrollment Management',
+    '108 Calvin Hall' => '2900 University Capitol Centre<br />201 S. Clinton St.',
+    '52242-1396' => '52242',
+  ];
+
+  // Grab all our area of study nodes.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'area_of_study');
+
+  $db = \Drupal::database();
+
+  // @todo Add condition to match for our $conversion_map keys.
+  $or_conditions = $query->orConditionGroup();
+
+  foreach (array_keys($conversion_map) as $match) {
+    $or_conditions->condition('field_area_of_study_contact', '%' .$db->escapeLike($match) . '%', 'LIKE');
+  }
+
+  $query->condition($or_conditions);
+
+  $results = $query->execute();
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadMultiple($results);
+}
