@@ -6,12 +6,17 @@
     @include element-invisible;
   }
 
-  .form-type-textfield {
-    grid-area: 1 / 1 / 2 / 3;
+  .form-type-textfield,
+  .form-type-select {
+    @include breakpoint(sm) {
+      grid-area: 1 / 1 / 2 / 3;
+    }
   }
 
   .bef--secondary {
-    grid-area: 2 / 1 / 3 / 3;
+    @include breakpoint(sm) {
+      grid-area: 2 / 1 / 3 / 3;
+    }
 
     .details-wrapper {
       @include breakpoint(sm) {
@@ -55,7 +60,14 @@
   }
 
   .form-actions {
-    grid-area: 1 / 3 / 3 / 4;
+    display: flex;
+    gap: 1rem;
+    @include breakpoint(md) {
+      gap: 0;
+    }
+    @include breakpoint(sm) {
+        grid-area: 1 / 3 / 3 / 4;
+    }
   }
 
   .uids-content {
@@ -96,7 +108,7 @@
       .form-item {
         margin-right: 0;
         @include breakpoint(sm) {
-          margin-right: 1em;
+          margin-right: 1rem;
           &:last-child {
             margin-right: 0;
           }
@@ -108,50 +120,41 @@
       }
 
       .button {
-        border: 1px solid $secondary;
-
-        &[data-drupal-selector*=edit-submit] {
-          right: 25px;
-          position: absolute;
-        }
+        flex: 1;
 
         &[data-drupal-selector*=edit-reset] {
-          position: absolute;
-          right: 1.6rem;
-          top: 92px;
-          padding: 0.5rem 1.4rem;
-          background: none;
-          color: black;
-          font-family: inherit;
-          font-size: 0.9rem;
-          font-weight: 400;
-          letter-spacing: 0.04rem;
-          border: none;
-          text-transform: none;
-          @include breakpoint(sm) {
-            top: 123px;
-          }
-
-          &:focus,
-          &:hover {
-            text-decoration: underline;
+          @include breakpoint(md) {
+            margin-left: .7rem;
           }
         }
       }
     }
 
     .form--inline {
-      display: grid !important;
-      grid-template-columns: minmax(50%, 1fr) 25%;
-      grid-column-gap: 0;
-      grid-row-gap: 0;
+      @include breakpoint(sm) {
+        display: grid !important;
+        grid-template-columns: minmax(50%, 1fr) 25%;
+        grid-column-gap: 0;
+        grid-row-gap: 0;
+      }
     }
 
     .select-wrapper {
       margin-right: 0;
     }
 
+    &[data-drupal-form-fields*="edit-reset--"] {
+      details.bef--secondary {
+        @include breakpoint(sm) {
+          width: calc(100% + 175px);
+        }
+      }
+    }
     details.bef--secondary {
+      @include breakpoint(sm) {
+        width: calc(100% + 84px);
+      }
+
       @include breakpoint(sm) {
         padding-top: #{3 * $xsm-sm};
         margin-top: $xsm-sm;
