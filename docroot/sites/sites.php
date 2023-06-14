@@ -5338,3 +5338,15 @@ $sites['iihr.uiowa.ddev.site'] = 'iihr.uiowa.edu';
 $sites['iihr.dev.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
 $sites['iihr.stage.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
 $sites['iihr.prod.drupal.uiowa.edu'] = 'iihr.uiowa.edu';
+
+// Directory aliases for our.research.uiowa.edu.
+$sites['researchour.uiowa.ddev.site'] = 'our.research.uiowa.edu';
+$sites['researchour.dev.drupal.uiowa.edu'] = 'our.research.uiowa.edu';
+$sites['researchour.stage.drupal.uiowa.edu'] = 'our.research.uiowa.edu';
+$sites['researchour.prod.drupal.uiowa.edu'] = 'our.research.uiowa.edu';
+
+// Directory aliases for wessel.lab.uiowa.edu.
+$sites['labwessel.uiowa.ddev.site'] = 'wessel.lab.uiowa.edu';
+$sites['labwessel.dev.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
+$sites['labwessel.stage.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
+$sites['labwessel.prod.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
