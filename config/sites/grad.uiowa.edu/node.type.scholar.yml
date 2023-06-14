@@ -11,9 +11,18 @@ third_party_settings:
       - main
     parent: 'main:'
   node_revision_delete:
-    minimum_revisions_to_keep: 10
-    minimum_age_to_delete: 0
-    when_to_delete: 0
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
 name: Scholar
 type: scholar
 description: 'Use the <em>scholar</em> content type to create pages for student participants in SROP or similar programs.'
