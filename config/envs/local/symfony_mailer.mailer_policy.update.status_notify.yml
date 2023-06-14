@@ -1,0 +1,28 @@
+uuid: d7082753-880a-41d2-afc7-611107243b24
+langcode: en
+status: true
+dependencies:
+  module:
+    - update
+_core:
+  default_config_hash: JOcNPf-ezI7vLCxZg4K9wpGqKYj6vMHlfsmhx_WGbTM
+id: update.status_notify
+configuration:
+  email_body:
+    content:
+      value: |-
+        <p>You need to take action to secure your server {{ site_name }}.</p>
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+
+        <p>See the <a href="{{ update_status }}">available updates</a> page for more information.
+        {% if update_manager %}
+          You can automatically install your updates using the <a href="{{ update_manager }}">Update manager</a>.
+        {% endif %}
+        You can <a href="{{ update_settings }}">change your settings</a> for what update notifications you receive.</p>
+      format: email_html
+  email_subject:
+    value: 'New release(s) available for {{ site_name }}'

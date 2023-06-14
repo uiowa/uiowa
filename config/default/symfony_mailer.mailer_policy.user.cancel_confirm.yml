@@ -1,0 +1,20 @@
+uuid: 6a227c6a-eb27-421c-9ad4-4d2dfd6cc7e2
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 4wEqs5CkKtLUdPsuIchodbNwXFyP0Jxpv9a3v0YoxmE
+id: user.cancel_confirm
+configuration:
+  email_subject:
+    value: 'Account cancellation request for [user:display-name] at [site:name]'
+  email_body:
+    content:
+      value: |-
+        <p>[user:display-name],</p>
+        <p>A request has been made to cancel your account at <a href="[site:url]">[site:name]</a>.
+        You may now use this link to <a href="[user:cancel-url]">cancel your account</a>.</p>
+        <p><b>Note</b>: The cancellation of your account is not reversible. This link expires in one day and nothing will happen if it is not used.</p>
+      format: email_html
