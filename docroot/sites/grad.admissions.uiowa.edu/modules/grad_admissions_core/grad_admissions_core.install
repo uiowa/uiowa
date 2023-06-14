@@ -75,12 +75,9 @@ function grad_admissions_core_update_9002(&$sandbox) {
   $updated = [];
   $conversion_map = [
     'Office of Admissions' => 'Enrollment Management',
-    '108 Calvin Hall' => '2900 University Capitol Centre<br />\n201 S. Clinton St.',
+    '108 Calvin Hall' => '2900 University Capitol Centre<br />201 S. Clinton St.',
     '52242-1396' => '52242',
   ];
-
-  // @todo Check if there are instances of 108 Calvin Hall that are used
-  //   for other departments.
 
   // Grab all our area of study nodes.
   $query = \Drupal::entityQuery('node')
