@@ -633,9 +633,9 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
       $type = $node->getType();
       $config = \Drupal::config("node.type.{$type}");
 
-      if ($nrd = $config->get('third_party_settings.node_revision_delete')) {
+      if ($nrd_limit = $config->get('third_party_settings.node_revision_delete.amount.settings.amount')) {
         \Drupal::messenger()->addWarning(t('There is a @limit revision limit for this content type. The oldest revisions in excess of @limit are deleted during system background processes.', [
-          '@limit' => $nrd['minimum_revisions_to_keep'],
+          '@limit' => $nrd_limit,
         ]));
       }
     }
