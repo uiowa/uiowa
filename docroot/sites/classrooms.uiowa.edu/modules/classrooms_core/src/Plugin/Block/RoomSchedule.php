@@ -42,8 +42,19 @@ class RoomSchedule extends BlockBase {
         // Grab MAUI room data.
         $maui_api = \Drupal::service('uiowa_maui.api');
         $data = $maui_api->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
+        static $element = 0;
 
         if (!empty($data)) {
+
+          $count = count($data);
+          $element++;
+          $length = 3;
+          /** @var \Drupal\Core\Pager\PagerManager $pager */
+          $pager = \Drupal::service('pager.manager');
+          $current = $pager->createPager($count, $length, $element)->getCurrentPage();
+          $offset = $current * $length;
+          $data = array_slice($data, $offset, $length);
+
           $items = [];
 
           // Iterate through the data and push the values to the $items array.
@@ -83,6 +94,11 @@ class RoomSchedule extends BlockBase {
               '#title_heading_size' => 'h3',
             ];
           }
+          $build['content']['pager'] = [
+            '#type' => 'pager',
+            '#element' => $element,
+            '#quantity' => 3,
+          ];
         }
         else {
           $build = [

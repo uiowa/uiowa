@@ -495,25 +495,29 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
           }
           else {
             // Restrict time range values.
-            $min = strtotime('01-01-1970');
-            $max = strtotime('31-12-2037');
-            $start = $form_state->getValue([
-              'settings',
-              'block_form',
-              'field_uiowa_events_date_range',
-            ])[0]['time_wrapper']['value']->format('U');
-            $end = $form_state->getValue([
-              'settings',
-              'block_form',
-              'field_uiowa_events_date_range',
-            ])[0]['time_wrapper']['end_value']->format('U');
-            if ($start < $min || $start > $max) {
-              $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
-                t('Invalid start date.'));
-            }
-            if ($end < $min || $end > $max) {
-              $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
-                t('Invalid end date.'));
+            $min = $form['settings']['block_form']['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#attributes']['min'];
+            $max = $form['settings']['block_form']['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#attributes']['max'];
+            if ($min && $max) {
+              $min = strtotime($min);
+              $max = strtotime($max);
+              $start = $form_state->getValue([
+                'settings',
+                'block_form',
+                'field_uiowa_events_date_range',
+              ])[0]['time_wrapper']['value']->format('U');
+              $end = $form_state->getValue([
+                'settings',
+                'block_form',
+                'field_uiowa_events_date_range',
+              ])[0]['time_wrapper']['end_value']->format('U');
+              if ($start < $min || $start > $max) {
+                $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+                  t('Invalid start date.'));
+              }
+              if ($end < $min || $end > $max) {
+                $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+                  t('Invalid end date.'));
+              }
             }
           }
         }
@@ -850,10 +854,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       case 'inline_block:uiowa_events':
         if (isset($element['field_uiowa_events_date_range'])) {
-          // Set a date picker limit to our UNIX min/max.
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#date_year_range'] = '1970:2037';
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['end_value']['#date_year_range'] = '1970:2037';
-
           // Show date range field when timeframe is set to date_range.
           $element['field_uiowa_events_date_range']['#states'] = [
             'visible' => [
