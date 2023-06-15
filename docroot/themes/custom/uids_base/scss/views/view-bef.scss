@@ -90,14 +90,23 @@
       }
 
       // Sort select.
+      &[data-drupal-form-fields*="edit-reset--"] {
+        .form-item:not(:last-child).form-item-sort-bef-combine {
+          @include breakpoint(sm) {
+            width: calc(100% + 236px);
+          }
+        }
+      }
+
       .form-item:not(:last-child).form-item-sort-bef-combine {
-        background: #fff;
-        padding: 2rem 0.5rem 1rem 0;
+        padding: 0 0 1rem 0;
         grid-column: 1/-1;
-        margin: 1rem -2rem -3rem -1.5rem;
         @include breakpoint(sm) {
-          padding: 2rem 2rem 1rem 0;
-          grid-area: auto;
+          background: #fff;
+          margin: 1rem -2rem -3rem -1.5rem;
+          padding: 2rem 0rem 1rem 0;
+          grid-area: 3/ 1/ 3 / 3;
+          width: calc(100% + 141px);
         }
         select {
           @include breakpoint(sm) {
