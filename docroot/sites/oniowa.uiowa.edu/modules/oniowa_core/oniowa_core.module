@@ -41,7 +41,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
           }
         }
         // Cache the options, but set them to be invalidated
-        // should any events be CUDed.
+        // should any events be Created/updated/deleted.
         $cache_tags = ['node_list:event'];
         \Drupal::cache()->set(
           $cid,
