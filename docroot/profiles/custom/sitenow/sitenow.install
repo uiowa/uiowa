@@ -2459,3 +2459,16 @@ function sitenow_update_9062(&$sandbox) {
   }
 
 }
+
+/**
+ * Allow event content type to be replicated if it exists.
+ */
+function sitenow_update_9063() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
+  $replicate_allowed[] = 'event';
+  $config
+    ->set('uiowa_core.replicate_allowed', $replicate_allowed)
+    ->save();
+}

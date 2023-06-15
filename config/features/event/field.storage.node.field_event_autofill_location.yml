@@ -1,0 +1,21 @@
+uuid: c0998fb5-c551-4ef3-9c75-ada4c4b7edd5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_event_autofill_location
+field_name: field_event_autofill_location
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: _sitenow_events_get_filter_field_options
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
