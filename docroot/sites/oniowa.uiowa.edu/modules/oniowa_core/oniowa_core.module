@@ -20,23 +20,18 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       if (!$data) {
         $options = [];
         $options[''] = t('Select a date');
-        $query = \Drupal::entityQuery('node');
-        $query->condition('type', 'event')
-          ->condition('status', 1)
-          ->condition('field_event_when.end_value', time(), '>')
-          ->sort('field_event_when', 'ASC');
-        $result = $query->execute();
-        if ($result) {
-          $nodes = \Drupal::entityTypeManager()
-            ->getStorage('node')
-            ->loadMultiple($result);
-          foreach ($nodes as $node) {
-            $date = $node->field_event_when->value;
-            if ($date) {
-              $day = date('l, F j', $date);
-              if (!isset($options[$date])) {
-                $options[$date] = $day;
-              }
+        $db = \Drupal::database();
+        if ($db->schema()->tableExists('node__field_event_when')) {
+          $data = $db->select('node__field_event_when', 'when')
+            ->fields('when', ['field_event_when_end_value'])
+            ->condition('field_event_when_end_value', time(), '>')
+            ->orderBy('field_event_when_end_value', 'ASC')
+            ->execute()
+            ->fetch();
+          foreach ($data as $date) {
+            $day = date('l, F j', $date);
+            if (!isset($options[$date])) {
+              $options[$date] = $day;
             }
           }
         }
