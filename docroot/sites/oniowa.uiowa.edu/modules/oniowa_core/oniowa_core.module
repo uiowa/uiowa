@@ -64,7 +64,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       // the final views query.
       $form['field_event_when_value']['#access'] = FALSE;
       $form['field_event_when_end_value']['#access'] = FALSE;
-      array_unshift($form['#submit'], '_oniowa_core_date_select_list');
+      array_unshift($form['#submit'], 'oniowa_core_date_select_list');
       break;
   }
 }
@@ -72,7 +72,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
 /**
  * Custom submit handler for upcoming events page.
  */
-function _oniowa_core_date_select_list($form, &$form_state) {
+function oniowa_core_date_select_list($form, &$form_state) {
   // Grab the selected date,
   // and set an appropriate date range.
   $timestamp = $form_state->getValue('date_select');
