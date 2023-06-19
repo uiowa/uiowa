@@ -136,6 +136,9 @@ class ClassroomsCoreCommands extends DrushCommands {
 
       foreach ($buildings as $building_id => $building_name) {
         if (!in_array($building_id, $entities)) {
+          // Modify the casing of "And" and "Of" in the building label.
+          $building_name = strtolower(preg_replace('/\b(And|Of)\b/i', '$1', $building_name));
+
           $building = Building::create([
             'id' => $building_id,
             'label' => $building_name,
