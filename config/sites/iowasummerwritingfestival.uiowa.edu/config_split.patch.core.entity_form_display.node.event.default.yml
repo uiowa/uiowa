@@ -1,32 +1,19 @@
 adding:
   dependencies:
     config:
-      - field.field.node.event.field_event_directions
       - field.field.node.event.field_event_genre
       - field.field.node.event.field_event_registration_link
   content:
     field_event_category:
       weight: 29
-    field_event_directions:
-      type: text_textarea
-      weight: 9
-      region: content
-      settings:
-        rows: 5
-        placeholder: ''
-      third_party_settings: {  }
     field_event_genre:
       type: options_buttons
       weight: 26
       region: content
       settings: {  }
       third_party_settings: {  }
-    field_event_geolocation:
-      weight: 8
     field_event_hide:
       weight: 28
-    field_event_location:
-      weight: 7
     field_event_registration_link:
       type: link_default
       weight: 23
@@ -35,9 +22,6 @@ adding:
         placeholder_url: ''
         placeholder_title: ''
       third_party_settings: {  }
-    field_event_when:
-      settings:
-        separator: to
     field_meta_tags:
       weight: 27
     moderation_state:
@@ -48,12 +32,8 @@ removing:
   content:
     field_event_category:
       weight: 27
-    field_event_geolocation:
-      weight: 9
     field_event_hide:
       weight: 26
-    field_event_location:
-      weight: 8
     field_meta_tags:
       weight: 25
     moderation_state:
