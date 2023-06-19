@@ -27,7 +27,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
             ->condition('field_event_when_end_value', time(), '>')
             ->orderBy('field_event_when_end_value', 'ASC')
             ->execute()
-            ->fetch();
+            ->fetchCol();
           foreach ($data as $date) {
             $day = date('l, F j', $date);
             if (!isset($options[$date])) {
