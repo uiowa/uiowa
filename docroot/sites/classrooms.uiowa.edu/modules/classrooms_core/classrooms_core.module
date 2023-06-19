@@ -626,9 +626,9 @@ function classrooms_core_views_pre_render(ViewExecutable $view) {
     // Render the "result" block content with a custom wrapper around it (as it
     // renders without a wrapper by default).
     $handler->options['content'] =
-      '<div class="results-header"><p>'
+      '<div class="results-header"><p><small>'
       . $handler->options['content']
-      . '<hr class="element--spacer-separator" /></p></div>';
+      . '<hr class="element--spacer-separator" /></small></p></div>';
     $render = $handler->render();
     $view->attachment_before[] = $render;
 
