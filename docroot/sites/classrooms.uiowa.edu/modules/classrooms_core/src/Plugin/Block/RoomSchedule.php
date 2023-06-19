@@ -97,7 +97,7 @@ class RoomSchedule extends BlockBase {
           $build['content']['pager'] = [
             '#type' => 'pager',
             '#element' => $element,
-            '#quantity' => 4,
+            '#quantity' => 3,
           ];
         }
         else {
