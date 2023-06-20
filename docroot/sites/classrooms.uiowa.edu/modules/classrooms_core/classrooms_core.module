@@ -558,6 +558,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
   // Grid display of Rooms on Units vocab.
   if ($view->id() === 'taxonomy_term') {
+
     if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
       $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
       $term = \Drupal::entityTypeManager()
@@ -565,6 +566,29 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
         ->load($page_term_id);
       if ($term->bundle() === 'units') {
         $view->display_handler->setOption('css_class', 'grid--threecol--33-34-33');
+
+        // Get the current sort configuration.
+        $sorts = $view->getDisplay()->getOption('sorts');
+
+        // Add the necessary sorting configuration for title in ascending order.
+        $sorts['title'] = [
+          'id' => 'title',
+          'table' => 'node_field_data',
+          'field' => 'title',
+          'order' => 'ASC',
+          'entity_type' => 'node',
+          'entity_field' => 'title',
+        ];
+
+        // Retrieve the title sort configuration.
+        $titleSort = $sorts['title'];
+        // Remove the title sort from the original position.
+        unset($sorts['title']);
+        // Insert the title sort configuration at the beginning of the array.
+        $sorts = ['title' => $titleSort] + $sorts;
+
+        // Update the sort configuration.
+        $view->getDisplay()->setOption('sorts', $sorts);
       }
     }
   }
@@ -582,6 +606,36 @@ function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) 
     foreach ($fields_to_hide as $field_to_hide) {
       $row_build['content']['#hide_fields'][] = $field_to_hide;
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Move the "results" block (with the "record N of N of NNN" verbiage) out of
+ * the header and into the space between the exposed filters and the query
+ * results.
+ */
+function classrooms_core_views_pre_render(ViewExecutable $view) {
+  if (
+  // Check if the view name is "room_list".
+    $view->id() === 'room_list'
+  // Check if the handler for the header display and result plugin exists.
+    && !!($handler = $view->display_handler->getHandler('header', 'result'))
+  ) {
+    // Render the "result" block content with a custom wrapper around it (as it
+    // renders without a wrapper by default).
+    $handler->options['content'] =
+      '<div class="results-header"><p><small>'
+      . $handler->options['content']
+      . '<hr class="element--spacer-separator" /></small></p></div>';
+    $render = $handler->render();
+    $view->attachment_before[] = $render;
+
+    // re-render the "result" block so that it will display nothing in the
+    // header area.
+    $handler->options['content'] = '';
+    $handler->render();
   }
 }
 

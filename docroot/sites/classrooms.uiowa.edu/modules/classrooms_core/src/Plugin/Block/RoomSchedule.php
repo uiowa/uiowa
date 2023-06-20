@@ -48,7 +48,7 @@ class RoomSchedule extends BlockBase {
 
           $count = count($data);
           $element++;
-          $length = 3;
+          $length = 4;
           /** @var \Drupal\Core\Pager\PagerManager $pager */
           $pager = \Drupal::service('pager.manager');
           $current = $pager->createPager($count, $length, $element)->getCurrentPage();
