@@ -49,11 +49,21 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
         $options = $data->data;
       }
       // Add an extra select list using the available date options.
+//      $form['date_select'] = $form['field_event_when_end_value'];
       $form['date_select'] = [
         '#type' => 'select',
         '#title' => t('Date'),
         '#options' => $options,
+        '#group' => 'secondary',
+        '#process' => [
+          ['\Drupal\Core\Render\Element\RenderElement', 'processGroup']
+        ],
+      '#pre_render' => [
+          ['Drupal\Core\Render\Element\Select', 'preRenderSelect'],
+          ['\Drupal\Core\Render\Element\RenderElement', 'preRenderGroup']
+        ]
       ];
+
       // Hide the date range fields, but leave them on the form.
       // We'll still use them to avoid needing to alter
       // the final views query.
