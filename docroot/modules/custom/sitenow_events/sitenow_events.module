@@ -99,6 +99,11 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_category']['#group'] = 'node_relations';
       }
 
+      // Customize address field labels.
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['widget'][0]['address']['#after_build'][] = 'sitenow_events_customize_address';
+      }
+
       break;
   }
 }
@@ -132,6 +137,14 @@ function sitenow_events_views_pre_build(ViewExecutable $view) {
       }
     }
   }
+}
+
+/**
+ * Modify event addressfield company (organization) label.
+ */
+function sitenow_events_customize_address($element, $form_state) {
+  $element['organization']['#title'] = t('Location name');
+  return $element;
 }
 
 /**
