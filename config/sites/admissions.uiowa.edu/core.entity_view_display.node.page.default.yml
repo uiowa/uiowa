@@ -190,6 +190,8 @@ third_party_settings:
           - 'views_block:counselors-block_counselors'
           - 'views_block:majors-block_majors'
           - 'views_block:slideshow-block_slideshow'
+          - 'views_block:student_card-block_student_grid'
+          - 'views_block:student_card-block_student_card'
           - 'views_block:transfer_tips_list-block_transfer_tips'
         Menus:
           - 'menu_block:main'
@@ -203,8 +205,7 @@ third_party_settings:
         Webform:
           - webform_block
         core: {  }
-      restricted_categories:
-        - 'Purge UI'
+      restricted_categories: { }
       allowed_blocks: {  }
     allowed_block_categories:
       - 'Chaos Tools'
@@ -218,7 +219,6 @@ third_party_settings:
       - Lists
       - 'Lists (Views)'
       - Menus
-      - 'Purge UI'
       - Restricted
       - 'Site custom'
       - 'SiteNow Dispatch'
@@ -236,7 +236,39 @@ third_party_settings:
         - layout_fourcol
         - layout_page
       allowlisted_blocks: {  }
-      denylisted_blocks: {  }
+      denylisted_blocks:
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_page:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_threecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
