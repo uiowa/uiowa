@@ -49,7 +49,6 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
         $options = $data->data;
       }
       // Add an extra select list using the available date options.
-//      $form['date_select'] = $form['field_event_when_end_value'];
       $form['date_select'] = [
         '#type' => 'select',
         '#title' => t('Date'),
