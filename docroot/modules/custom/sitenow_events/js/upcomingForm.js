@@ -19,6 +19,10 @@ function change_select_color_by_index(element, index) {
   // The parameters are reversed in the callback between jQuery `.each` method
   // and the native `.forEach` array method.
   function processingCallback(value, index) {
-    console.log(value);
+    value.onchange = function(){
+      change_select_color_by_index(value, value.selectedIndex);
+    };
+
+    change_select_color_by_index(value, value.selectedIndex);
   }
 }(Drupal, once));
