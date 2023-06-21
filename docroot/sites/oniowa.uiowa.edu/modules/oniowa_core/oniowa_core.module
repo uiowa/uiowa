@@ -67,7 +67,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       // Move all other secondary fields in to the 'secondary' array for
       // consistency with the date select field.
       foreach ($form as $key => $value) {
-        if(isset($value['#group']) && $value['#group'] === 'secondary') {
+        if (isset($value['#group']) && $value['#group'] === 'secondary') {
           $form['secondary'][$key] = $value;
           unset($form[$key]);
         }
