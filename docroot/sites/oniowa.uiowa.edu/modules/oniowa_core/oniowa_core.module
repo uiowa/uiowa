@@ -19,7 +19,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       $data = \Drupal::cache()->get($cid);
       if (!$data) {
         $options = [];
-        $options[''] = t('Select a date');
+        $options[''] = t('Any date');
         $db = \Drupal::database();
         if ($db->schema()->tableExists('node__field_event_when')) {
           $data = $db->select('node__field_event_when', 'when')
@@ -48,20 +48,6 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       else {
         $options = $data->data;
       }
-      // Add an extra select list using the available date options.
-      $form['date_select'] = [
-        '#type' => 'select',
-        '#title' => t('Date'),
-        '#options' => $options,
-        '#group' => 'secondary',
-        '#process' => [
-          ['\Drupal\Core\Render\Element\RenderElement', 'processGroup'],
-        ],
-        '#pre_render' => [
-          ['Drupal\Core\Render\Element\Select', 'preRenderSelect'],
-          ['\Drupal\Core\Render\Element\RenderElement', 'preRenderGroup'],
-        ],
-      ];
 
       // Hide the date range fields, but leave them on the form.
       // We'll still use them to avoid needing to alter
@@ -69,6 +55,24 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
       $form['field_event_when_value']['#access'] = FALSE;
       $form['field_event_when_end_value']['#access'] = FALSE;
       array_unshift($form['#submit'], 'oniowa_core_date_select_list');
+
+      // Add an extra select list using the available date options.
+      $form['secondary']['date_select'] = [
+        '#type' => 'select',
+        '#title' => t('Date'),
+        '#options' => $options,
+        '#group' => 'secondary',
+      ];
+
+      // Move all other secondary fields in to the 'secondary' array for
+      // consistency with the date select field.
+      foreach ($form as $key => $value) {
+        if(isset($value['#group']) && $value['#group'] === 'secondary') {
+          $form['secondary'][$key] = $value;
+          unset($form[$key]);
+        }
+      }
+
       break;
   }
 }
