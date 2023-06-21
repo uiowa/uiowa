@@ -203,6 +203,9 @@ class EventsSettingsForm extends ConfigFormBase {
     }
 
     parent::submitForm($form, $form_state);
+
+    // Clear cache.
+    drupal_flush_all_caches();
   }
 
 }
