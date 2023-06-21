@@ -5350,3 +5350,15 @@ $sites['labwessel.uiowa.ddev.site'] = 'wessel.lab.uiowa.edu';
 $sites['labwessel.dev.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
 $sites['labwessel.stage.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
 $sites['labwessel.prod.drupal.uiowa.edu'] = 'wessel.lab.uiowa.edu';
+
+// Directory aliases for ccs.lab.uiowa.edu.
+$sites['labccs.uiowa.ddev.site'] = 'ccs.lab.uiowa.edu';
+$sites['labccs.dev.drupal.uiowa.edu'] = 'ccs.lab.uiowa.edu';
+$sites['labccs.stage.drupal.uiowa.edu'] = 'ccs.lab.uiowa.edu';
+$sites['labccs.prod.drupal.uiowa.edu'] = 'ccs.lab.uiowa.edu';
+
+// Directory aliases for callboard.performingarts.uiowa.edu.
+$sites['performingartscallboard.uiowa.ddev.site'] = 'callboard.performingarts.uiowa.edu';
+$sites['performingartscallboard.dev.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';
+$sites['performingartscallboard.stage.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';
+$sites['performingartscallboard.prod.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';

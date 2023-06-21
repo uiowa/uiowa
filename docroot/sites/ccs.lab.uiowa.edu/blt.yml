@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labccs.uiowa.ddev.site
+    protocol: https
+  machine_name: labccs
+  human_name: ccs.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labccs.prod
+drupal:
+  db:
+    database: ccs_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labccs.prod.drupal.uiowa.edu'
+  requester: ttreat
+  site-name: 'Clinical Cognitive Science Lab'
