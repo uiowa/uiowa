@@ -2285,8 +2285,9 @@ display:
               field_event_category_target_id:
                 plugin_id: default
                 advanced:
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -| Category'
                   collapsible: false
                   is_secondary: true
               field_event_attendance_mode_value:
@@ -2674,7 +2675,7 @@ display:
           admin_label: ''
           plugin_id: taxonomy_index_tid
           operator: or
-          value: null
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -2712,7 +2713,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: event_categories
-          type: cshs
+          type: select
           hierarchy: false
           limit: true
           error_message: true
