@@ -55,12 +55,12 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
         '#options' => $options,
         '#group' => 'secondary',
         '#process' => [
-          ['\Drupal\Core\Render\Element\RenderElement', 'processGroup']
+          ['\Drupal\Core\Render\Element\RenderElement', 'processGroup'],
         ],
-      '#pre_render' => [
+        '#pre_render' => [
           ['Drupal\Core\Render\Element\Select', 'preRenderSelect'],
-          ['\Drupal\Core\Render\Element\RenderElement', 'preRenderGroup']
-        ]
+          ['\Drupal\Core\Render\Element\RenderElement', 'preRenderGroup'],
+        ],
       ];
 
       // Hide the date range fields, but leave them on the form.
