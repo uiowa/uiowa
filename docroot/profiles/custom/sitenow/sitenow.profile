@@ -778,6 +778,7 @@ function publish_options_allowed_values(FieldStorageDefinitionInterface $definit
   $options = [
     'title_hidden' => 'Visually hide title',
     'no_sidebars' => 'Remove sidebar regions',
+    'no_header_footer' => 'Remove header and footer',
   ];
 
   if (!is_null($entity)) {
@@ -807,6 +808,11 @@ function sitenow_preprocess_page(&$variables) {
           // Remove sidebar regions.
           $variables['page']['sidebar_first'] = [];
           $variables['page']['sidebar_second'] = [];
+        }
+        if (array_search('no_header_footer', array_column($publish_options, 'value')) !== FALSE) {
+          // Remove header, footer, nav.
+          $variables['page']['primary_menu'] = [];
+          $variables['no_header_footer'] = TRUE;
         }
         if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
           $variables['header_attributes']->addClass('title-hidden');

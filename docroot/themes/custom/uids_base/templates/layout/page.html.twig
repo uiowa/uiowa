@@ -61,7 +61,9 @@
   {% endif %}
 {% endif %}
 
-{% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
+{% if not no_header_footer %}
+  {% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
+{% endif %}
 
 {% if page.alert %}
   {{ page.alert }}
@@ -94,6 +96,9 @@
   </div>
 {% endif %}
 
-{% block footer %}
-  {% include '@uids_base/layout/footer.html.twig' %}
-{% endblock %}
+{% if not no_header_footer %}
+  {% block footer %}
+    {% include '@uids_base/layout/footer.html.twig' %}
+  {% endblock %}
+{% endif %}
+
