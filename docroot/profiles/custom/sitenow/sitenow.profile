@@ -780,8 +780,10 @@ function publish_options_allowed_values(FieldStorageDefinitionInterface $definit
     'no_sidebars' => 'Remove sidebar regions',
   ];
 
-  if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
-    $options['no_header_footer'] = 'Remove header and footer';
+  if (!is_null($entity) && $entity->getEntityTypeId() === 'node' && $entity->bundle() === 'page') {
+    if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
+      $options['no_header_footer'] = 'Remove header and footer';
+    }
   }
 
   if (!is_null($entity)) {
