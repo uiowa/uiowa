@@ -778,8 +778,11 @@ function publish_options_allowed_values(FieldStorageDefinitionInterface $definit
   $options = [
     'title_hidden' => 'Visually hide title',
     'no_sidebars' => 'Remove sidebar regions',
-    'no_header_footer' => 'Remove header and footer',
   ];
+
+  if (\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $options['no_header_footer'] = 'Remove header and footer';
+  }
 
   if (!is_null($entity)) {
     $bundle = $entity->getEntityTypeId();
