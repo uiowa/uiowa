@@ -10,6 +10,12 @@
  */
 function oniowa_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Set sitenow_events configuration.
+ */
+function oniowa_core_update_9001() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('sitenow_events.settings');
   if (is_null($config->get('filter_display'))) {
