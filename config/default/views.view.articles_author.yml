@@ -8,8 +8,8 @@ dependencies:
   module:
     - node
     - user
-id: author
-label: Author
+id: articles_author
+label: 'Articles Author'
 module: views
 description: ''
 tag: ''
@@ -22,7 +22,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Author
+      title: 'Articles Author'
       fields:
         title:
           id: title
@@ -247,9 +247,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  author_of_article:
-    id: author_of_article
-    display_title: 'Author of'
+  articles_author:
+    id: articles_author
+    display_title: 'Articles Author'
     display_plugin: block
     position: 1
     display_options:
@@ -258,7 +258,21 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      block_description: 'Author of'
+      block_description: 'Articles Author'
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        title: 0
     cache_metadata:
       max-age: -1
       contexts:

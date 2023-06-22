@@ -24,7 +24,7 @@ dependencies:
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
-    - views.view.author
+    - views.view.articles_author
   module:
     - entity_reference_revisions
     - layout_builder
@@ -315,16 +315,16 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 95320431-0616-435e-a0ba-59d9a947400a
+            uuid: d1f3a115-f06b-4cbf-aacb-0c374f7106b1
             region: main
             configuration:
-              id: 'views_block:author-author_of_article'
+              id: 'views_block:articles_author-articles_author'
               label: null
               label_display: null
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: '3'
+              items_per_page: none
               pager: some
               headline:
                 headline: ''
