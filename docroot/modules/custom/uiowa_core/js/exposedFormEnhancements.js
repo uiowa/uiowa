@@ -8,9 +8,9 @@ function change_select_color_by_index(element, index) {
 }
 
 (function (Drupal, once) {
-  Drupal.behaviors.upcomingForm = {
+  Drupal.behaviors.exposedFormEnhancements = {
     attach(context) {
-      const elements = once('upcomingForm', 'select', context);
+      const elements = once('exposedFormEnhancements', 'select', context);
       // `elements` is always an Array.
       elements.forEach(processingCallback);
     }
