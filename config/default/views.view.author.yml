@@ -221,7 +221,20 @@ display:
           admin_label: 'field_article_author: Content'
           plugin_id: standard
           required: true
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<h3>Author</h3>'
+            format: filtered_html
+          tokenize: false
       footer: {  }
       display_extenders: {  }
     cache_metadata:
