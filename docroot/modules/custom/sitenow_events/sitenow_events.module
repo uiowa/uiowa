@@ -130,10 +130,15 @@ function sitenow_events_views_pre_build(ViewExecutable $view) {
     ] as $filter_option => $field_label) {
       if ($config->get("filter_display.{$filter_option}") == FALSE) {
         if ($filter_option === 'date_range') {
+          $timestamp = strtotime('now');
           $filter = $view->display_handler->getHandler('filter', "{$field_label}_value");
           $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', strtotime('+10 year', $timestamp));
           $filter = $view->display_handler->getHandler('filter', "{$field_label}_end_value");
           $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', $timestamp);
           continue;
         }
         $filter = $view->display_handler->getHandler('filter', $field_label);
