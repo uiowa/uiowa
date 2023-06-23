@@ -73,7 +73,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
               if ($term->bundle() === 'room_features') {
                 $room_features[] = $term->id();
               }
-              if ($term->bundle() === 'accessibility_features') {
+              elseif ($term->bundle() === 'accessibility_features') {
                 $accessibility_features[] = $term->id();
               }
               else {
