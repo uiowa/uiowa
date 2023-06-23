@@ -93,6 +93,11 @@ function pharmacy_core_update_9001() {
   if (!is_null($rows)) {
     foreach ($rows as $row) {
       $row = (array) $row;
+      // Do a quick check for the international option,
+      // and skip if found.
+      if ($row['field_person_territory_value'] === 'intl') {
+        continue;
+      }
       $database
         ->insert($field_table)
         ->fields($row)
@@ -102,6 +107,11 @@ function pharmacy_core_update_9001() {
   if (!is_null($revision_rows)) {
     foreach ($revision_rows as $row) {
       $row = (array) $row;
+      // Do a quick check for the international option,
+      // and skip if found.
+      if ($row['field_person_territory_value'] === 'intl') {
+        continue;
+      }
       $database
         ->insert($field_revision_table)
         ->fields($row)
