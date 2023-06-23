@@ -26,6 +26,8 @@ function pharmacy_core_uninstall() {
  * Update person state options to use allowed values function.
  */
 function pharmacy_core_update_9001() {
+  // Grab all our initial field definitions
+  // and related database table names.
   $field_name = 'field_person_territory';
   $table_mapping = \Drupal::service('entity_type.manager')
     ->getStorage('node')
@@ -38,10 +40,14 @@ function pharmacy_core_update_9001() {
     $field_revision_table = $table_mapping->getDedicatedRevisionTableName($field_definition);
   }
 
+  // Do some initializations.
   $database = \Drupal::database();
   $field_storage = FieldStorageConfig::loadByName('node', $field_name);
   $rows = NULL;
   $revision_rows = NULL;
+
+  // Defensive checks for table existence, and grab
+  // any existing data including revisions.
   if ($database->schema()->tableExists($field_table)) {
     $rows = $database->select($field_table, 't')
       ->fields('t')
@@ -55,23 +61,29 @@ function pharmacy_core_update_9001() {
     }
   }
 
+  // Grab the existing config.
+  // The changes are at the storage level,
+  // so these will be re-used as is later.
   $field_config = FieldConfig::loadByName('node', 'person', $field_name);
 
   $weights = [];
-  // Get the view display weight so we can re-set them later.
+  // Get the view and form display weights
+  // so that we can re-set them later.
   $entity_view = 'node.person.default';
   $view_display = \Drupal::entityTypeManager()
     ->getStorage('entity_view_display')
     ->load($entity_view)
     ->getComponent($field_name);
   $weights['entity_view_display'] = $view_display['weight'];
-  // Get the form display weight so we can re-set them later.
   $form_display = \Drupal::entityTypeManager()
     ->getStorage('entity_form_display')
     ->load($entity_view)
     ->getComponent($field_name);
   $weights['entity_form_display'] = $form_display['weight'];
 
+  // Fetch the current field storage
+  // and update it to remove the allowed values
+  // and instead use an allowed values function.
   $new_field_storage = $field_storage->toArray();
   $new_field_storage['settings'] = [
     'allowed_values' => [],
@@ -88,7 +100,7 @@ function pharmacy_core_update_9001() {
   $new_field_storage = FieldStorageConfig::create($new_field_storage);
   $new_field_storage->save();
 
-  // Create our new field to match the field storages.
+  // Create our new field to match the field storage.
   $new_field_config = FieldConfig::create($field_config->toArray());
   $new_field_config->save();
 
@@ -111,6 +123,8 @@ function pharmacy_core_update_9001() {
         ->execute();
     }
   }
+
+  // And lastly, make sure our weights are set correctly.
   foreach ([
     'entity_view_display',
     'entity_form_display',
