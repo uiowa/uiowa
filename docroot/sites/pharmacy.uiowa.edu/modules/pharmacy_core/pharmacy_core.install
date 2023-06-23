@@ -66,21 +66,6 @@ function pharmacy_core_update_9001() {
   // so these will be re-used as is later.
   $field_config = FieldConfig::loadByName('node', 'person', $field_name);
 
-  $weights = [];
-  // Get the view and form display weights
-  // so that we can re-set them later.
-  $entity_view = 'node.person.default';
-  $view_display = \Drupal::entityTypeManager()
-    ->getStorage('entity_view_display')
-    ->load($entity_view)
-    ->getComponent($field_name);
-  $weights['entity_view_display'] = $view_display['weight'];
-  $form_display = \Drupal::entityTypeManager()
-    ->getStorage('entity_form_display')
-    ->load($entity_view)
-    ->getComponent($field_name);
-  $weights['entity_form_display'] = $form_display['weight'];
-
   // Fetch the current field storage
   // and update it to remove the allowed values
   // and instead use an allowed values function.
@@ -121,22 +106,6 @@ function pharmacy_core_update_9001() {
         ->insert($field_revision_table)
         ->fields($row)
         ->execute();
-    }
-  }
-
-  // And lastly, make sure our weights are set correctly.
-  foreach ([
-    'entity_view_display',
-    'entity_form_display',
-  ] as $display_mode) {
-    if (isset($weights[$display_mode])) {
-      \Drupal::entityTypeManager()
-        ->getStorage($display_mode)
-        ->load('node.person.default')
-        ->setComponent($field_name, [
-          'weight' => $weights[$display_mode],
-        ])
-        ->save();
     }
   }
 }
