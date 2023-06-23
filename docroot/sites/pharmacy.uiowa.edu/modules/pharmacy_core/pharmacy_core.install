@@ -114,7 +114,7 @@ function pharmacy_core_update_9001() {
   foreach ([
     'entity_view_display',
     'entity_form_display',
-   ] as $display_mode) {
+  ] as $display_mode) {
     if (isset($weights[$display_mode])) {
       \Drupal::entityTypeManager()
         ->getStorage($display_mode)
