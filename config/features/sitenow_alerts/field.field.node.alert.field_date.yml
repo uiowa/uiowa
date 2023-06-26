@@ -1,4 +1,4 @@
-uuid: 93a58f96-366c-471b-aec1-3f55fd13a50e
+uuid: c6e35a92-15a0-4298-b84b-7f4cc4cbba57
 langcode: en
 status: true
 dependencies:
@@ -6,16 +6,23 @@ dependencies:
     - field.storage.node.field_date
     - node.type.alert
   module:
-    - datetime
+    - smart_date
 id: node.alert.field_date
 field_name: field_date
 entity_type: node
 bundle: alert
 label: Date
-description: 'A relevant date for this content.'
+description: 'Add a date or date range.'
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    default_duration: 60
+    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
+    default_date_type: ''
+    default_date: ''
+    min: ''
+    max: ''
 default_value_callback: ''
 settings: {  }
-field_type: datetime
+field_type: smartdate
