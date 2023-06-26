@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Oniowa Core module.
+ */
+
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Use the form['#id'] over $form_id because it is more specific.
+  switch ($form['#id']) {
+    case 'views-exposed-form-events-page-upcoming':
+      $cid = 'sitenow_events:event:dates';
+      $data = \Drupal::cache()->get($cid);
+      if (!$data) {
+        $options = [];
+        $options[''] = t('Any date');
+        $db = \Drupal::database();
+        if ($db->schema()->tableExists('node__field_event_when')) {
+          $data = $db->select('node__field_event_when', 'when')
+            ->fields('when', ['field_event_when_end_value'])
+            ->condition('field_event_when_end_value', time(), '>')
+            ->orderBy('field_event_when_end_value', 'ASC')
+            ->execute()
+            ->fetchCol();
+          foreach ($data as $date) {
+            $day = date('l, F j', $date);
+            if (!isset($options[$date])) {
+              $options[$date] = $day;
+            }
+          }
+        }
+        // Cache the options, but set them to be invalidated
+        // should any events be Created/updated/deleted.
+        $cache_tags = ['node_list:event'];
+        \Drupal::cache()->set(
+          $cid,
+          $options,
+          CacheBackendInterface::CACHE_PERMANENT,
+          $cache_tags
+        );
+      }
+      else {
+        $options = $data->data;
+      }
+
+      // Hide the date range fields, but leave them on the form.
+      // We'll still use them to avoid needing to alter
+      // the final views query.
+      $form['field_event_when_value']['#access'] = FALSE;
+      $form['field_event_when_end_value']['#access'] = FALSE;
+      array_unshift($form['#submit'], 'oniowa_core_date_select_list');
+
+      // Add an extra select list using the available date options.
+      $form['secondary']['date_select'] = [
+        '#type' => 'select',
+        '#title' => t('Date'),
+        '#options' => $options,
+        '#group' => 'secondary',
+      ];
+
+      // Move all other secondary fields in to the 'secondary' array for
+      // consistency with the date select field.
+      foreach ($form as $key => $value) {
+        if (isset($value['#group']) && $value['#group'] === 'secondary') {
+          $form['secondary'][$key] = $value;
+          unset($form[$key]);
+        }
+      }
+
+      break;
+  }
+}
+
+/**
+ * Custom submit handler for upcoming events page.
+ */
+function oniowa_core_date_select_list($form, &$form_state) {
+  // Grab the selected date,
+  // and set an appropriate date range.
+  $timestamp = $form_state->getValue('date_select');
+  if ($timestamp) {
+    $form_state->setValue('field_event_when_value', date('m/d/Y', strtotime('+1 day', $timestamp)));
+    $form_state->setValue('field_event_when_end_value', date('m/d/Y', $timestamp));
+  }
+}
