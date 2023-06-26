@@ -1,17 +1,16 @@
-uuid: 8616aa55-6b86-436f-bc44-a2aae4976cb0
+uuid: 38eaed53-d82f-446e-be41-edd2ee342458
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_room_accessibility
-field_name: field_room_accessibility
+    - taxonomy
+id: node.field_room_accessibility_feature
+field_name: field_room_accessibility_feature
 entity_type: node
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
+  target_type: taxonomy_term
 module: core
 locked: false
 cardinality: -1
