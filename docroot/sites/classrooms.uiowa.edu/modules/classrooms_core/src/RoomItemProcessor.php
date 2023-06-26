@@ -55,6 +55,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     if (isset($record->featureList)) {
       $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
         ->condition('vid', 'room_features')
+        ->condition('vid', 'accessibility_features')
         ->condition('vid', 'technology_features');
 
       $tids = \Drupal::entityQuery('taxonomy_term')
@@ -63,6 +64,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
       if ($tids) {
         $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
         $terms = $storage->loadMultiple($tids);
+        $accessibility_features = [];
         $room_features = [];
         $tech_features = [];
         foreach ($terms as $term) {
@@ -70,6 +72,9 @@ class RoomItemProcessor extends EntityItemProcessorBase {
             if (in_array($api_mapping, $record->featureList)) {
               if ($term->bundle() === 'room_features') {
                 $room_features[] = $term->id();
+              }
+              elseif ($term->bundle() === 'accessibility_features') {
+                $accessibility_features[] = $term->id();
               }
               else {
                 $tech_features[] = $term->id();
@@ -88,6 +93,20 @@ class RoomItemProcessor extends EntityItemProcessorBase {
           if ($entity_features !== $room_features) {
             $updated = TRUE;
             $entity->set('field_room_features', $room_features);
+          }
+        }
+
+        if (!empty($accessibility_features)) {
+          // Cheat it a bit by fetching a string and exploding it
+          // to end up with a basic array of target ids.
+          $entity_features = $entity->get('field_room_accessibility_feature')->getString();
+          $entity_features = explode(', ', $entity_features);
+          // Sort lists before comparing.
+          sort($entity_features);
+          sort($accessibility_features);
+          if ($entity_features !== $accessibility_features) {
+            $updated = TRUE;
+            $entity->set('field_room_accessibility_feature', $accessibility_features);
           }
         }
 
