@@ -67,6 +67,7 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 
       // These are imported fields that editors should not interact with.
       $form['field_room_name']['#disabled'] = TRUE;
+      $form['field_room_accessibility_feature']['#disabled'] = TRUE;
       $form['field_room_features']['#disabled'] = TRUE;
       $form['field_room_technology_features']['#disabled'] = TRUE;
       $form['field_room_responsible_unit']['#disabled'] = TRUE;
@@ -308,7 +309,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_tile_details':
     case 'field_room_design_details':
     case 'field_room_classroom_furniture':
-    case 'field_room_accessibility':
+    case 'field_room_accessibility_feature':
       uiowa_core_set_title_attributes($variables, [
         'h6',
         'headline',
