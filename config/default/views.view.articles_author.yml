@@ -191,14 +191,11 @@ display:
             operator_limit_selection: false
             operator_list: {  }
       style:
-        type: html_list
+        type: default
         options:
           row_class: ''
-          default_row_class: true
+          default_row_class: false
           uses_fields: false
-          type: ul
-          wrapper_class: item-list
-          class: container
       row:
         type: 'entity:node'
         options:
@@ -232,7 +229,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h3>Author</h3>'
+            value: '<h2 class="h3 block__headline headline headline--serif headline--underline">Author</h2>'
             format: filtered_html
           tokenize: false
       footer: {  }
