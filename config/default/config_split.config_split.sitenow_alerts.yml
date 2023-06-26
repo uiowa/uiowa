@@ -1,0 +1,21 @@
+uuid: 61f44b79-7934-4d83-a93a-f6d962bffd99
+langcode: en
+status: true
+dependencies: {  }
+id: sitenow_alerts
+label: 'Sitenow alerts'
+description: 'Alert content type.'
+weight: 80
+stackable: false
+storage: folder
+folder: ../config/features/sitenow_alerts
+module: {  }
+theme: {  }
+complete_list:
+  - node.type.alert
+  - taxonomy.vocabulary.alert_categories
+  - 'core.entity_view_display.node.alert.*'
+  - 'core.entity_form_display.node.alert.*'
+  - 'field.field.node.alert.*'
+  - 'field.storage.node.field_alert*'
+partial_list: {  }
