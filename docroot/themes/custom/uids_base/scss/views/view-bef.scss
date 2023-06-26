@@ -1,17 +1,26 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
 
+// Use "bef-form" class for a full-width wide search box within a one column layout.
+// Use "bef-form bef-form--sidebar" if you want the same design within a sidebar column.
+
 .bef-form {
   label:not(.option) {
     @include element-invisible;
   }
 
-  .form-type-textfield {
-    grid-area: 1 / 1 / 2 / 3;
+  .form-type-textfield,
+  .form-type-select {
+    @include breakpoint(sm) {
+      grid-area: 1 / 1 / 2 / 3;
+    }
   }
 
+  // bef--secondary is a bef class for the secondary details option.
   .bef--secondary {
-    grid-area: 2 / 1 / 3 / 3;
+    @include breakpoint(sm) {
+      grid-area: 2 / 1 / 3 / 3;
+    }
 
     .details-wrapper {
       @include breakpoint(sm) {
@@ -22,18 +31,13 @@
 
   // Sidebar display.
   &.bef-form--sidebar {
-    .views-exposed-form.uids-content:not(.uids-search) .button[data-drupal-selector*=edit-reset] {
-      @include breakpoint(sm) {
-        top: 120px;
-      }
-    }
 
     .views-exposed-form {
       fieldset legend {
         text-align: center;
       }
       &.uids-content:not(.uids-search) {
-        .form-item {
+        details .form-item {
           margin-right: 0;
         }
         fieldset.form-wrapper {
@@ -45,6 +49,7 @@
         }
       }
     }
+
     .bef--secondary {
       .details-wrapper {
         @include breakpoint(sm) {
@@ -55,7 +60,14 @@
   }
 
   .form-actions {
-    grid-area: 1 / 3 / 3 / 4;
+    display: flex;
+    gap: 1rem;
+    @include breakpoint(md) {
+      gap: 0;
+    }
+    @include breakpoint(sm) {
+        grid-area: 1 / 3 / 3 / 4;
+    }
   }
 
   .uids-content {
@@ -78,13 +90,23 @@
       }
 
       // Sort select.
+      &[data-drupal-form-fields*="edit-reset--"] {
+        .form-item:not(:last-child).form-item-sort-bef-combine {
+          @include breakpoint(sm) {
+            width: calc(100% + 236px);
+          }
+        }
+      }
+
       .form-item:not(:last-child).form-item-sort-bef-combine {
-        background: #fff;
-        padding: 2rem 0.5rem 1rem 0;
+        padding: 0 0 1rem 0;
         grid-column: 1/-1;
-        margin: 1rem -2rem -3rem -1.5rem;
         @include breakpoint(sm) {
-          padding: 2rem 2rem 1rem 0;
+          background: #fff;
+          margin: 1rem -2rem -3rem -1.5rem;
+          padding: 2rem 0rem 1rem 0;
+          grid-area: 3/ 1/ 3 / 3;
+          width: calc(100% + 141px);
         }
         select {
           @include breakpoint(sm) {
@@ -96,7 +118,7 @@
       .form-item {
         margin-right: 0;
         @include breakpoint(sm) {
-          margin-right: 1em;
+          margin-right: 1rem;
           &:last-child {
             margin-right: 0;
           }
@@ -108,50 +130,41 @@
       }
 
       .button {
-        border: 1px solid $secondary;
-
-        &[data-drupal-selector*=edit-submit] {
-          right: 25px;
-          position: absolute;
-        }
+        flex: 1;
 
         &[data-drupal-selector*=edit-reset] {
-          position: absolute;
-          right: 1.6rem;
-          top: 92px;
-          padding: 0.5rem 1.4rem;
-          background: none;
-          color: black;
-          font-family: inherit;
-          font-size: 0.9rem;
-          font-weight: 400;
-          letter-spacing: 0.04rem;
-          border: none;
-          text-transform: none;
-          @include breakpoint(sm) {
-            top: 123px;
-          }
-
-          &:focus,
-          &:hover {
-            text-decoration: underline;
+          @include breakpoint(md) {
+            margin-left: .7rem;
           }
         }
       }
     }
 
     .form--inline {
-      display: grid !important;
-      grid-template-columns: minmax(50%, 1fr) 25%;
-      grid-column-gap: 0;
-      grid-row-gap: 0;
+      @include breakpoint(sm) {
+        display: grid !important;
+        grid-template-columns: minmax(50%, 1fr) 25%;
+        grid-column-gap: 0;
+        grid-row-gap: 0;
+      }
     }
 
     .select-wrapper {
       margin-right: 0;
     }
 
-    details.bef--secondary {
+    &[data-drupal-form-fields*="edit-reset--"] {
+      .bef--secondary {
+        @include breakpoint(sm) {
+          width: calc(100% + 175px);
+        }
+      }
+    }
+    .bef--secondary {
+      @include breakpoint(sm) {
+        width: calc(100% + 84px);
+      }
+
       @include breakpoint(sm) {
         padding-top: #{3 * $xsm-sm};
         margin-top: $xsm-sm;
@@ -177,6 +190,10 @@
         padding: 0;
         font-weight: 600;
         display: block;
+        margin-bottom: 1rem;
+        @include breakpoint(sm) {
+          margin-bottom: 0;
+        }
 
         &::marker,
         &::-webkit-details-marker {
