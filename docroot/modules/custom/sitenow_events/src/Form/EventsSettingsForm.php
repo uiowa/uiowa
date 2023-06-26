@@ -106,6 +106,52 @@ class EventsSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $config_split = \Drupal::service('config_split.manager')
+      ->getSplitConfig('config_split.config_split.event');
+    if (isset($config_split) && $config_split->get('status')) {
+      $form['sitenow_events_filter'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Upcoming Events Filters',
+        '#description' => $this->t('These settings affect locally created events and their lists.'),
+        '#collapsible' => FALSE,
+      ];
+      $form['sitenow_events_filter']['filter_date_range'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Date Range'),
+        '#description' => $this->t('Allow filtering by the date range'),
+        '#default_value' => $config->get('filter_display.date_range'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_presenters'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Presenters'),
+        '#description' => $this->t('Allow filtering by presenter'),
+        '#default_value' => $config->get('filter_display.presenters'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_attendance_required'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Attendance Required'),
+        '#description' => $this->t('Allow filtering by attendance requirement'),
+        '#default_value' => $config->get('filter_display.attendance_required'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_attendance_mode'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Attendance type'),
+        '#description' => $this->t('Allow filtering by attendance type'),
+        '#default_value' => $config->get('filter_display.attendance_mode'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_category'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Category'),
+        '#description' => $this->t('Allow filtering by category'),
+        '#default_value' => $config->get('filter_display.category'),
+        '#size' => 60,
+      ];
+    }
+
     return $form;
   }
 
@@ -137,7 +183,29 @@ class EventsSettingsForm extends ConfigFormBase {
       ->set('event_link', $form_state->getValue('sitenow_events_event_link'))
       ->set('single_event_path', $path)
       ->save();
+
+    $config_split = \Drupal::service('config_split.manager')
+      ->getSplitConfig('config_split.config_split.event');
+    if (isset($config_split) && $config_split->get('status')) {
+      $filters = [];
+      foreach ([
+        'date_range',
+        'presenters',
+        'attendance_required',
+        'attendance_mode',
+        'category',
+      ] as $filter_option) {
+        $filters[$filter_option] = $form_state->getValue("filter_{$filter_option}");
+      }
+      $this->config('sitenow_events.settings')
+        ->set('filter_display', $filters)
+        ->save();
+    }
+
     parent::submitForm($form, $form_state);
+
+    // Clear cache.
+    drupal_flush_all_caches();
   }
 
 }
