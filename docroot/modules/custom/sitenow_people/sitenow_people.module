@@ -27,6 +27,29 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param array $layout_parts
+ *   The layout parts to loop through.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function sitenow_people_unset_block(array &$variables, array $layout_parts, string $block_id) {
+  foreach ($layout_parts as $layout_part) {
+    if (isset($variables['content']['_layout_builder'][2][$layout_part])) {
+      foreach ($variables['content']['_layout_builder'][2][$layout_part] as $key => $block) {
+        if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+          unset($variables['content']['_layout_builder'][2][$layout_part][$key]);
+          break 2;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Helper function to get the research title from the site config.
  */
 function sitenow_people_get_research_title() {
@@ -624,6 +647,38 @@ the first website link.'));
           }
           break;
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables['node'];
+
+    switch ($node->getType()) {
+      case 'person':
+
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            $person_display_config = \Drupal::config('sitenow_people.settings')->get('articles_by_author_display');
+
+            if (!$person_display_config) {
+              $layout_parts = ['main'];
+
+              sitenow_people_unset_block($variables, $layout_parts, 'views_block:articles_author-articles_author');
+            }
+
+            break;
+
+        }
+        break;
+
     }
   }
 }
