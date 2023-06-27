@@ -5416,3 +5416,9 @@ $sites['labsimmering.uiowa.ddev.site'] = 'simmering.lab.uiowa.edu';
 $sites['labsimmering.dev.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
 $sites['labsimmering.stage.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
 $sites['labsimmering.prod.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
+
+// Directory aliases for cho.lab.uiowa.edu.
+$sites['labcho.uiowa.ddev.site'] = 'cho.lab.uiowa.edu';
+$sites['labcho.dev.drupal.uiowa.edu'] = 'cho.lab.uiowa.edu';
+$sites['labcho.stage.drupal.uiowa.edu'] = 'cho.lab.uiowa.edu';
+$sites['labcho.prod.drupal.uiowa.edu'] = 'cho.lab.uiowa.edu';
