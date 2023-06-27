@@ -10,13 +10,16 @@ use Drupal\block_content\BlockContentInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Entity\FieldConfig;
+use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Event;
 
 /**
  * Helper function to update all blocks of a type.
@@ -46,15 +49,15 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
       $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
     }
 
-    $query = $query
-      ->condition($or_group)
+    $query = $query->condition($or_group)
       ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Blocks of @types records found: @count', [
+      ->addMessage(t('Sections with blocks of @types records found in @table: @count', [
         '@types' => implode(', ', $block_plugin_ids),
+        '@table' => $table_name,
         '@count' => $count,
       ]));
 
@@ -64,7 +67,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
       /** @var \Drupal\layout_builder\Section $section */
-      $section = unserialize($record->layout_builder__layout_section, [
+      $section = unserialize($record->{$section_column}, [
         'allowed_classes' => TRUE,
       ]);
 
@@ -72,8 +75,8 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
       /** @var \Drupal\layout_builder\SectionComponent $component */
       foreach ($section->getComponents() as &$component) {
 
-        // Limit this to only the block component.
-        if ($component->getPluginId() !== $block_plugin_id) {
+        // Limit this to only the initial list of block plugins.
+        if (!in_array($component->getPluginId(), $block_plugin_ids)) {
           continue;
         }
 
@@ -115,16 +118,23 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     // And holds a serialized blob with the unsaved changes.
     // Might be a better method of accessing this through the Layout
     // Builder API and layoutTempstoreRepository, but have not found it yet.
-    $query = $db->select('key_value_expire', 'kve')
-      ->fields('kve')
-      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
-      ->condition('value', "%$block_plugin_id%", 'LIKE');
+    $query = $db->select('key_value_expire', 'kve');
+
+    // Match against any record that has a block matching our $block_plugin_id.
+    $or_group = $query->orConditionGroup();
+    foreach ($block_plugin_ids as $block_plugin_id) {
+      $or_group = $or_group->condition('value', "%$block_plugin_id%", 'LIKE');
+    }
+
+    $query = $query->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition($or_group)
+      ->fields('kve');
 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Tempstore records for blocks of @type records found: @count', [
-        '@type' => $block_plugin_id,
+      ->addMessage(t('Tempstore records for sections with blocks of @types records found: @count', [
+        '@types' => implode(', ', $block_plugin_ids),
         '@count' => $count,
       ]));
 
@@ -146,8 +156,8 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 
-          // Limit this to only the block component.
-          if ($component->getPluginId() !== $block_plugin_id) {
+          // Limit this to only the initial list of block plugins.
+          if (!in_array($component->getPluginId(), $block_plugin_ids)) {
             continue;
           }
 
@@ -1926,9 +1936,547 @@ function sitenow_update_9051() {
 }
 
 /**
- * Update views list blocks to new exposed filter format.
+ * Import updated config ignore before site specific config is removed.
  */
 function sitenow_update_9052() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Re-run of 9051 to fix recently provisioned sites.
+ */
+function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      if ($block->get('field_uiowa_card_excerpt')->format !== 'minimal_plus') {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
+    }
+  });
+}
+
+/**
+ * Import updated acquia_connector.settings around config_ignore.
+ */
+function sitenow_update_9054() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+}
+
+/**
+ * Set new style-selector theme setting.
+ */
+function sitenow_update_9055() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('style.style_selector', 'brand');
+  $config->save();
+}
+
+/**
+ * Convert layout_section fields' 'section' column to a long blob.
+ */
+function sitenow_update_9056() {
+  $schema = Database::getConnection()->schema();
+  $entity_type_manager = \Drupal::entityTypeManager();
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $field_map = $entity_field_manager->getFieldMapByFieldType('layout_section');
+  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  /** @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $last_installed_schema */
+  $last_installed_schema = \Drupal::service('entity.last_installed_schema.repository');
+
+  // The new schema to use for the section column.
+  $new_column_schema = [
+    'type' => 'blob',
+    'size' => 'big',
+    'serialize' => TRUE,
+  ];
+  foreach ($field_map as $entity_type_id => $layout_section_fields) {
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+
+    // Skip this entity type if it does not use SQL-based storage.
+    if (!$entity_storage instanceof SqlEntityStorageInterface) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    // Load all field storage definitions for the entity type.
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+
+    // Get the field storage definitions for all the layout_section fields.
+    $field_storage_definitions = array_intersect_key($field_storage_definitions, $layout_section_fields);
+
+    // Iterate over each layout_section field definition.
+    /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_storage_definition */
+    foreach ($field_storage_definitions as $field_storage_definition) {
+      $field_name = $field_storage_definition->getName();
+
+      // Determine which tables we need to update.
+      $tables = [
+        $table_mapping->getFieldTableName($field_name),
+      ];
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        $tables[] = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+      }
+
+      // Alter the database column for each of the tables.
+      $column_name = $table_mapping->getColumnNames($field_name)['section'];
+      foreach ($tables as $table) {
+        $schema->changeField($table, $column_name, $column_name, $new_column_schema);
+      }
+
+      // Update the tracked entity table schema.
+      $schema_key = "$entity_type_id.field_schema_data.$field_name";
+      $schema_data = $storage_schema->get($schema_key);
+      foreach ($schema_data as $table_name => $field_schema) {
+        $schema_data[$table_name]['fields'][$column_name]['size'] = 'big';
+      }
+      $storage_schema->set($schema_key, $schema_data);
+
+      // Update cached entity definitions for entity types with
+      // single-cardinality base fields.
+      if ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+        $last_installed_schema->setLastInstalledFieldStorageDefinition($field_storage_definition);
+      }
+    }
+  }
+}
+
+/**
+ * Update layout builder styles applied to cards.
+ */
+function sitenow_update_9057() {
+  // Apply updates to all blocks that are styled using card styles.
+  _update_all_blocks_by_plugin_id([
+    'inline_block:uiowa_card',
+    'inline_block:uiowa_event',
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-card_list',
+  ], function (&$component, $block) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+
+    // If styles aren't set, then initialize them.
+    if (empty($styles)) {
+      $styles = [];
+    }
+
+    // If card border style is set...
+    $border_index = array_search('block_card_style_border', $styles);
+    if ($border_index !== FALSE) {
+      // Unset it.
+      unset($styles[$border_index]);
+    }
+    else {
+      // Add style for no border option.
+      $styles[] = 'no_border';
+    }
+
+    if ($component->getPluginId() !== 'inline_block:uiowa_event') {
+      // Update card_image_* to media_size_*.
+      $media_size_set = FALSE;
+      foreach ([
+        'card_image_large',
+        'card_image_medium',
+        'card_image_small',
+      ] as $card_image_size) {
+        $card_image_size_index = array_search($card_image_size, $styles);
+        if ($card_image_size_index !== FALSE) {
+          $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+          $styles[$card_image_size_index] = "media_size_$size";
+          $media_size_set = TRUE;
+        }
+      }
+
+      // Set a default media size if not already set.
+      if (!$media_size_set) {
+        $styles[] = 'media_size_small';
+      }
+
+      // Set default headline styles for card blocks.
+      if ($component->getPluginId() === 'inline_block:uiowa_card') {
+        if (in_array('card_media_position_stacked', $styles)) {
+          $styles[] = 'card_headline_style_sans_serif';
+        }
+        else {
+          $styles[] = 'card_headline_style_serif';
+        }
+      }
+
+      // Remove content alignment style.
+      if (FALSE !== $remove_style_index = array_search('content_alignment_left', $styles)) {
+        unset($styles[$remove_style_index]);
+      }
+    }
+
+    // Still need to maintain this other set of styles for AJAX view pagers.
+    // @phpstan-ignore-next-line
+    $configuration = $component->get('configuration');
+    $configuration['layout_builder_styles'] = array_filter($styles);
+
+    // Map block bundle to entity bundle class.
+    $class_map = [
+      'uiowa_card' => Card::class,
+      'uiowa_event' => Event::class,
+    ];
+
+    // If the block is serialized, we need to recreate it.
+    if (isset($configuration['block_serialized']) && isset($class_map[$block->bundle()])) {
+      // Recreate the block using the appropriate entity class.
+      $block = call_user_func_array($class_map[$block->bundle()] . '::create', [$block->toArray()]);
+      // Re-serialize the block so that it gets hydrated using the right class.
+      $configuration['block_serialized'] = serialize($block);
+    }
+
+    $component->setConfiguration($configuration);
+
+    // Save updated styles.
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', array_filter($styles));
+  });
+}
+
+/**
+ * Update sections with only cards to remove "Remove bottom spacing" style.
+ */
+function sitenow_update_9058(&$sandbox) {
+
+  $block_plugin_id = 'inline_block:uiowa_card';
+
+  $db = \Drupal::database();
+
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  foreach ($tables as $table_name) {
+    // Select DB records for our $table_name.
+    $query = $db->select($table_name, 'n');
+
+    $query = $query
+      ->condition($section_column, "%$block_plugin_id%", 'LIKE')
+      ->condition($section_column, '%remove_default_bottom_padding%', 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Sections with blocks of @types records found in @table: @count', [
+        '@types' => $block_plugin_id,
+        '@table' => $table_name,
+        '@count' => $count,
+      ]));
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->{$section_column}, [
+        'allowed_classes' => TRUE,
+      ]);
+
+      $all_cards = TRUE;
+
+      // Loop through the components in the section.
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the initial list of block plugins.
+        if ($component->getPluginId() !== $block_plugin_id) {
+          $all_cards = FALSE;
+        }
+      }
+
+      if ($all_cards) {
+        $config = $section->getLayoutSettings();
+        if (isset($config['layout_builder_styles_style']) && !is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
+          unset($config['layout_builder_styles_style'][$key]);
+          $section->setLayoutSettings($config);
+        }
+      }
+      // Serialize section component and update section component db record.
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+  }
+
+  // Only continue with this section if we have a key_value_expire
+  // table to work with.
+  if ($db->schema()->tableExists('key_value_expire')) {
+    // Check if we have a tempstore of this node.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    // Might be a better method of accessing this through the Layout
+    // Builder API and layoutTempstoreRepository, but have not found it yet.
+    $query = $db->select('key_value_expire', 'kve')
+      ->fields('kve')
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', "%$block_plugin_id%", 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for sections with blocks of @types records found: @count', [
+        '@types' => $block_plugin_id,
+        '@count' => $count,
+      ]));
+
+    $results = $query
+      ->execute();
+
+    foreach ($results as $record) {
+
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => TRUE,
+      ]);
+
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Loop through sections in the storage.
+      foreach ($section_storage->getSections() as &$section) {
+
+        $all_cards = TRUE;
+
+        // Loop through the components in the section.
+        foreach ($section->getComponents() as &$component) {
+
+          // Limit this to only the initial list of block plugins.
+          if ($component->getPluginId() !== $block_plugin_id) {
+            $all_cards = FALSE;
+          }
+        }
+
+        if ($all_cards) {
+          $config = $section->getLayoutSettings();
+          if (isset($config['layout_builder_styles_style']) && !is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
+            unset($config['layout_builder_styles_style'][$key]);
+            $section->setLayoutSettings($config);
+          }
+        }
+      }
+      $stored_data->data['section_storage'] = $section_storage;
+
+      // Insert the updated tempstore.
+      $db->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Set defaults for card headline styles.
+ */
+function sitenow_update_9059(&$sandbox) {
+  _update_all_blocks_by_plugin_id([
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-card_list',
+  ], function (&$component, $block) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+
+    if (empty($styles)) {
+      $styles = [];
+    }
+
+    if (in_array('card_media_position_stacked', $styles)) {
+      $styles[] = 'card_headline_style_sans_serif';
+    }
+    else {
+      $styles[] = 'card_headline_style_serif';
+    }
+
+    // Still need to maintain this other set of styles for AJAX view pagers.
+    // @phpstan-ignore-next-line
+    $configuration = $component->get('configuration');
+    $configuration['layout_builder_styles'] = array_filter($styles);
+
+    $component->setConfiguration($configuration);
+
+    // Save updated styles.
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', array_filter($styles));
+  });
+}
+
+/**
+ * Update search blocks to be aware of new fields.
+ */
+function sitenow_update_9060() {
+  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block) {
+
+    $config = $component->get('configuration');
+    $config['query_prepend'] = '';
+    $config['additional_parameters'] = '';
+    $component->setConfiguration($config);
+
+  });
+}
+
+/**
+ * Actively import the new field config if Event feature is active.
+ */
+function sitenow_update_9061() {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($config) || !$config->get('status')) {
+    return t('event split is not active, so no update to run.');
+  }
+
+  /** @var Drupal\Core\Config\CachedStorage $config_storage */
+  $config_storage = \Drupal::service('config.storage');
+
+  if (!$config_storage->read('field.storage.node.field_event_attendance_mode')) {
+    $config_path = DRUPAL_ROOT . '/../config/features/event';
+    $source = new FileStorage($config_path);
+
+    $field_storage_link = $source->read('field.storage.node.field_event_attendance_mode');
+
+    // There's an extra layer of nesting in how the config is read,
+    // so do some quick tidying.
+    $allowed_values_link = [];
+    foreach ($field_storage_link['settings']['allowed_values'] as $value) {
+      $allowed_values_link[$value['value']] = $value['label'];
+    }
+    $field_storage_link['settings']['allowed_values'] = $allowed_values_link;
+
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($field_storage_link)
+      ->save();
+
+    $field_type_link = $source->read('field.field.node.event.field_event_attendance_mode');
+    \Drupal::entityTypeManager()->getStorage('field_config')->create($field_type_link)->save();
+  }
+}
+
+/**
+ * Update new field values if Event split is active.
+ */
+function sitenow_update_9062(&$sandbox) {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.event');
+
+  // If event split isn't registered or
+  // isn't active, return early.
+  if (!isset($config) || !$config->get('status')) {
+    return t('event split is not active, so no update to run.');
+  }
+
+  // Process all event nodes to update the value
+  // for our new field.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+    // See if we have a location and/or virtual filled out.
+    $location = !is_null($node->field_event_location->get(0));
+    $virtual = !is_null($node->field_event_virtual->get(0));
+    // Default to our in-person option.
+    $value = 'OfflineEventAttendanceMode';
+    if ($virtual) {
+      // If both fields are filled, we're hybrid.
+      if ($location) {
+        $value = 'MixedEventAttendanceMode';
+      }
+      // If only virtual was filled, we're online.
+      else {
+        $value = 'OnlineEventAttendanceMode';
+      }
+    }
+    // Set the new value and revision message, and save.
+    $node->set('field_event_attendance_mode', $value);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+}
+
+/**
+ * Allow event content type to be replicated if it exists.
+ */
+function sitenow_update_9063() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
+  $replicate_allowed[] = 'event';
+  $config
+    ->set('uiowa_core.replicate_allowed', $replicate_allowed)
+    ->save();
+}
+
+/**
+ * Update views list blocks to new exposed filter format.
+ */
+function sitenow_update_9064() {
   $filter_template = [
     'value' => '',
     'plugin_id' => 'string',

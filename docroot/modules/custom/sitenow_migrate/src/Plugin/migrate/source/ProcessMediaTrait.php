@@ -142,6 +142,11 @@ trait ProcessMediaTrait {
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
         $uri = $file_data['uri'];
+        // If it's an embedded video, divert
+        // to the oembed video creation process.
+        if (str_starts_with($uri, 'oembed')) {
+          return $this->createVideo($fid, $align);
+        }
         $filename_w_subdir = str_replace('public://', '', $uri);
 
         // Split apart the filename from the subdirectory path.
@@ -395,10 +400,15 @@ trait ProcessMediaTrait {
     }
 
     // Try to write the file, replacing any existing file with the same name.
-    $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
-      $dir,
-      $filename,
-    ]), FileSystemInterface::EXISTS_REPLACE);
+    try {
+      $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
+        $dir,
+        $filename,
+      ]), FileSystemInterface::EXISTS_REPLACE);
+    }
+    catch (\Throwable $e) {
+      return FALSE;
+    }
 
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
@@ -429,6 +439,8 @@ trait ProcessMediaTrait {
    *   The image alt text.
    * @param string $title
    *   The optional image title.
+   * @param string $global_caption
+   *   The optional image global caption.
    *
    * @return int|null
    *   The media ID or null if unable to process.
@@ -436,7 +448,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function processImageField($fid, $alt = NULL, $title = NULL) {
+  protected function processImageField($fid, $alt = NULL, $title = NULL, $global_caption = NULL) {
     $fileQuery = $this->fidQuery($fid);
     if (!str_starts_with($fileQuery['filemime'], 'image/')) {
       return NULL;
@@ -448,6 +460,9 @@ trait ProcessMediaTrait {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
     $subdir = implode('/', $filename_w_subdir) . '/';
+    // Replace whitespace characters, if present
+    // e.g. "Media browser" to "Media%20browser".
+    $subdir = str_replace(' ', '%20', $subdir);
     $filename_w_subdir = NULL;
 
     // Get a connection for the destination database
@@ -477,7 +492,7 @@ trait ProcessMediaTrait {
       $subdir = NULL;
 
       if ($new_fid) {
-        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        $mid = $this->createMediaEntity($new_fid, $meta, 1, $global_caption);
       }
     }
     else {
@@ -501,6 +516,8 @@ trait ProcessMediaTrait {
    *   The file ID.
    * @param array $meta
    *   Metadata for the file.
+   * @param bool $return_fid
+   *   Toggle returning the FID instead of the MID.
    *
    * @return int|null
    *   The media ID or null if unable to process.
@@ -508,7 +525,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\migrate\MigrateException
    */
-  protected function processFileField($fid, array $meta = []) {
+  protected function processFileField($fid, array $meta = [], $return_fid = FALSE) {
     $fileQuery = $this->fidQuery($fid);
 
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
@@ -548,6 +565,10 @@ trait ProcessMediaTrait {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
         $meta = NULL;
       }
+    }
+
+    if ($return_fid === TRUE) {
+      return $new_fid;
     }
 
     return $mid ?? NULL;

@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
@@ -21,6 +22,7 @@ dependencies:
     - field.field.node.article.field_teaser
     - node.type.article
   module:
+    - field_delimiter
     - link
     - user
 id: node.article.teaser
@@ -33,6 +35,16 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  field_article_author:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
+    weight: 1
+    region: content
   field_article_source_link:
     type: link
     label: hidden
@@ -43,7 +55,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_article_source_link_direct:
     type: boolean
@@ -53,7 +65,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_article_source_org:
     type: string
@@ -61,7 +73,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -70,14 +82,14 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_teaser:
     type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
 hidden:
   body: true
@@ -85,8 +97,8 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_article_author: true
   field_article_preserve_links: true
+  field_article_subhead: true
   field_contact_reference: true
   field_featured_image_display: true
   field_gallery_images: true

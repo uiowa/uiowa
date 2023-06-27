@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcook.uiowa.ddev.site
+    protocol: https
+  machine_name: labcook
+  human_name: cook.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcook.prod
+drupal:
+  db:
+    database: cook_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcook.prod.drupal.uiowa.edu'
+  requester: swcook
+  site-name: CoLLab

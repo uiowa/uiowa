@@ -2,9 +2,9 @@
 
 namespace Drupal\brand_core\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\File\FileSystemInterface;

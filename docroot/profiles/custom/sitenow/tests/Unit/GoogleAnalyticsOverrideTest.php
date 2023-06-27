@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\sitenow\Unit;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\sitenow\ConfigOverride\GoogleAnalyticsOverride;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests Google Analytics is not tracking on non-production environments.

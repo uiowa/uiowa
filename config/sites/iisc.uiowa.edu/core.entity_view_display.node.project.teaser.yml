@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.project.field_tags
     - node.type.project
   module:
+    - options
     - text
     - user
 id: node.project.teaser
@@ -29,12 +30,19 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 3
+    weight: 6
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 3
+    region: content
+  field_academic_year:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -43,7 +51,7 @@ content:
       view_mode: medium__widescreen
       link: false
     third_party_settings: {  }
-    weight: 2
+    weight: 5
     region: content
   field_project_partner:
     type: entity_reference_label
@@ -51,15 +59,22 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 2
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 4
+    region: content
+  project_created_date:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
-  field_academic_year: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_meta_tags: true
   field_project_college_department: true
   field_project_deliverables: true

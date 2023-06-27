@@ -7,6 +7,16 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\grad_student_profile\Entity\GradStudentProfile;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function grad_student_profile_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['student_profile'])) {
+    $bundles['node']['student_profile']['class'] = GradStudentProfile::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -19,6 +29,42 @@ function grad_student_profile_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_student_profile_preprocess_block__inline_block__content_list(&$variables) {
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  $variables['attributes']['class'][] = 'list-container';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_student_profile_preprocess_field__node__student_profile(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_grad_program_all_degree':
+      uiowa_core_set_field_label_icon($variables, 'fas fa-graduation-cap fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_hometown':
+      uiowa_core_set_field_label_icon($variables, 'fas fa-globe-americas fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_distinction':
+      uiowa_core_set_field_icon($variables, 'fas fa-award');
+      uiowa_core_set_attributes($variables, 'badge badge--primary');
+      break;
+
+    case 'field_person_bio_headline':
+      uiowa_core_set_attributes($variables, 'h3 headline headline--serif');
+      break;
   }
 }
 
@@ -69,33 +115,13 @@ function grad_student_profile_preprocess_node(&$variables) {
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_person_bio_headline__student_profile__default' => [
-      'template' => 'field--node--field-person-bio-headline--student-profile--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_person_distinction__student_profile__card' => [
-      'template' => 'field--node--field-person-distinction--student-profile--card',
-      'base hook' => 'field',
-    ],
-    'field__node__field_person_distinction__student_profile__default' => [
-      'template' => 'field--node--field-person-distinction--student-profile--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_person_distinction__student_profile__teaser' => [
-      'template' => 'field--node--field-person-distinction--student-profile--teaser',
-      'base hook' => 'field',
+    'block_content__content_list' => [
+      'template' => 'block-content--content-list',
+      'base hook' => 'block_content',
     ],
     'field__node__field_person_quote' => [
       'template' => 'field--node--field-person-quote',
       'base hook' => 'field',
-    ],
-    'node__student_profile__card' => [
-      'template' => 'node--student-profile--card',
-      'base hook' => 'field',
-    ],
-    'views_view_unformatted__student_profile_card' => [
-      'template' => 'views-view-unformatted--student-profile-card',
-      'base hook' => 'view',
     ],
   ];
 }

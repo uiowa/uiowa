@@ -2,9 +2,9 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldType;
 
-use Drupal\link\Plugin\Field\FieldType\LinkItem;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\link\Plugin\Field\FieldType\LinkItem;
 
 /**
  * Plugin implementation of the 'static_map_url' field type.

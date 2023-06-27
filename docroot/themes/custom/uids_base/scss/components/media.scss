@@ -1,23 +1,36 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/media/_media-mixins.scss";
-
-.media {
-  &--border {
-      img {
-          @include media-border;
-      }
-  }
-
-  &--circle {
-      img, .img--empty  {
-          @include media-circle;
-      }
-  }
-}
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/media/media.scss";
 
 .media--border img {
   [class*="bg--black"] & {
-    border-color: rgba(255,255,255,.425);
+    background: #f3f3f3;
+    box-shadow: inset 0 0 0 8px $secondary;
+  }
+  [class*="bg--black"] [class*="bg--gold"] & {
+    box-shadow: inset 0 0 0 8px $primary;
+  }
+  [class*="bg--black"] [class*="bg--white"] & {
+    box-shadow: inset 0 0 0 8px #fff;
+    background: $grey-light;
+  }
+  [class*="bg--black"] [class*="bg--gray"] & {
+    box-shadow: inset 0 0 0 8px $light;
+    background: $brand-cool-gray;
+  }
+}
+
+.media--circle .img--empty {
+  border-radius:50%;
+  margin-top:0;
+  height:auto;
+}
+
+.media--1-1,
+.media--4-3,
+.media--16-9,
+.media--21-9 {
+  iframe {
+    width: 100%;
   }
 }

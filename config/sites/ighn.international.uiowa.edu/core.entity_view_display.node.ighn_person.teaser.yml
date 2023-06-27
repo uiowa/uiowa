@@ -18,71 +18,9 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
-    - field_group
     - link
     - text
     - user
-third_party_settings:
-  field_group:
-    group_ighn_person_group:
-      children:
-        - group_ighn_main_info_g
-        - group_ighn_person_field_groups
-      label: 'IGHN Person Group'
-      parent_name: ''
-      region: content
-      weight: 1
-      format_type: html_element
-      format_settings:
-        classes: ' ighn-person-group'
-        id: ''
-        element: div
-        show_label: false
-        label_element: h3
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-    group_ighn_main_info_g:
-      children:
-        - field_ighn_person_position_title
-        - field_ighn_primary_college
-        - field_ighn_person_department
-      label: 'Main Info'
-      parent_name: group_ighn_person_group
-      region: content
-      weight: 5
-      format_type: html_element
-      format_settings:
-        classes: ighn-main-info
-        id: ''
-        element: div
-        show_label: false
-        label_element: h3
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-    group_ighn_person_field_groups:
-      children:
-        - field_ighn_person_focus_areas
-        - field_ighn_person_language
-        - field_ighn_person_global_regions
-      label: 'IGHN Person Field Groups'
-      parent_name: group_ighn_person_group
-      region: content
-      weight: 6
-      format_type: html_element
-      format_settings:
-        classes: ighn-person-field-groups
-        id: ''
-        element: div
-        show_label: false
-        label_element: h3
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
 id: node.ighn_person.teaser
 targetEntityType: node
 bundle: ighn_person
@@ -93,7 +31,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 8
     region: content
   field_ighn_person_credentials:
     type: string
@@ -101,7 +39,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_ighn_person_cv_link:
     type: link
@@ -113,7 +51,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 9
     region: content
   field_ighn_person_department:
     type: entity_reference_label
@@ -121,7 +59,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 9
+    weight: 4
     region: content
   field_ighn_person_focus_areas:
     type: entity_reference_label
@@ -129,7 +67,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
   field_ighn_person_global_regions:
     type: entity_reference_label
@@ -137,7 +75,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 7
     region: content
   field_ighn_person_image:
     type: entity_reference_entity_view
@@ -154,7 +92,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 4
+    weight: 6
     region: content
   field_ighn_person_position_title:
     type: string
@@ -162,7 +100,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 7
+    weight: 2
     region: content
   field_ighn_primary_college:
     type: entity_reference_label
@@ -170,9 +108,13 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 8
+    weight: 3
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_ighn_person_first_name: true
   field_ighn_person_last_name: true
   links: true
+  search_api_excerpt: true

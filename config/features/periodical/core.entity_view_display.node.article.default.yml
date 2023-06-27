@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
@@ -150,7 +151,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: -4
+            weight: -5
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -173,7 +174,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: -3
+            weight: -4
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -191,7 +192,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -1
+            weight: -2
             additional: {  }
             third_party_settings: {  }
           -
@@ -210,8 +211,10 @@ third_party_settings:
                 label: inline
                 settings:
                   link: true
-                third_party_settings: {  }
-            weight: -5
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: -6
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -231,6 +234,17 @@ third_party_settings:
                 block_margin_bottom: block_margin_bottom
             third_party_settings: {  }
           -
+            uuid: 026a4bb8-3434-4615-9211-93eb7a12ee2d
+            region: content
+            configuration:
+              id: 'extra_field_block:node:article:article_created_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: -7
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
             region: content
             configuration:
@@ -239,7 +253,7 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: -2
+            weight: -3
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -261,7 +275,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 10
+            weight: 1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -282,7 +296,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 17
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -307,6 +321,25 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ''
             weight: -1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6feb47dc-8a39-4cf4-9691-826a581b7bb7
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_subhead'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -9
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -481,6 +514,7 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_article_source_link_direct: true
+  field_article_subhead: true
   field_contact_reference: true
   field_meta_tags: true
   field_tags: true

@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
 
 .layout--onecol .layout__region {
   display: flex;
@@ -48,7 +48,11 @@
 .content__container .layout__container.layout--no-sidebar,
 .content__container .layout__container.layout--has-sidebar.sidebar-invisible {
   margin-bottom: 0;
+  .layout__spacing_container {
+    display: grid;
+  }
   .layout__region--content {
+    display: grid;
     @include breakpoint(md) {
       @include inner-grid(75);
     }

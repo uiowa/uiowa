@@ -22,6 +22,7 @@ dependencies:
     - node.type.student_profile
   module:
     - address
+    - field_delimiter
     - options
     - text
     - user
@@ -30,6 +31,11 @@ targetEntityType: node
 bundle: student_profile
 mode: teaser
 content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_person_hometown:
     type: string
     label: visually_hidden
@@ -40,7 +46,7 @@ content:
     region: content
   field_student_profile_blurb:
     type: text_default
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 5
@@ -56,7 +62,7 @@ content:
     type: entity_reference_entity_view
     label: visually_hidden
     settings:
-      view_mode: grid_gallery
+      view_mode: medium__square
       link: false
     third_party_settings: {  }
     weight: 0
@@ -66,7 +72,9 @@ content:
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 1
     region: content
   field_student_profile_state:

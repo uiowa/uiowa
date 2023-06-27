@@ -1,55 +1,48 @@
 <?xml version="1.0"?>
-<!--
-   To override this file, copy it to phpcs.xml and then modify.
-   @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml#the-annotated-sample-file
--->
+
 <ruleset name="blt">
-  <description>BLT PHP_CodeSniffer standards overrides.</description>
+    <description>BLT PHP_CodeSniffer standards overrides.</description>
 
-  <!-- By default, warnings and errors cause an exception. -->
-  <config name="ignore_warnings_on_exit" value="1" />
-  <config name="ignore_errors_on_exit" value="0" />
-  <config name="testVersion" value="8.1-"/>
-  <!-- Set ignore extensions. -->
-  <!-- @see https://www.drupal.org/node/2867601#comment-12075633 -->
-  <!-- This can probably be removed by setting a dependency on Coder 8.3.7 -->
-  <arg name="ignore" value="*.css,*.md,*.txt,*.png,*.gif,*.jpeg,*.jpg,*.svg"/>
+    <!-- By default, warnings and errors cause an exception. -->
+    <config name="ignore_warnings_on_exit" value="1" />
+    <config name="ignore_errors_on_exit" value="0" />
+    <config name="testVersion" value="8.1-"/>
+    <!-- Set ignore extensions. -->
+    <!-- @see https://www.drupal.org/node/2867601#comment-12075633 -->
+    <!-- This can probably be removed by setting a dependency on Coder 8.3.7 -->
+    <arg name="ignore" value="*.bundle.js,*.min.js,*.css,*.md,*.txt,*.png,*.gif,*.jpeg,*.jpg,*.svg,default.local.settings.php"/>
 
-  <!-- Set extensions to scan (taken from Coder 8.3.6). -->
-  <!-- @see https://git.drupalcode.org/project/coder/blob/8.3.6/coder_sniffer/Drupal/ruleset.xml#L8 -->
-  <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,yml"/>
+    <!-- Set extensions to scan (taken from Coder 8.3.6). -->
+    <!-- @see https://git.drupalcode.org/project/coder/blob/8.3.6/coder_sniffer/Drupal/ruleset.xml#L8 -->
+    <arg name="extensions" value="php,module,inc,install,test,profile,theme,info,yml"/>
 
-  <!-- Use colors in output. -->
-  <arg name="colors"/>
-  <!-- Show progress. -->
-  <arg value="p"/>
+    <!-- Use colors in output. -->
+    <arg name="colors"/>
+    <!-- Show progress. -->
+    <arg value="p"/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="parallel" value="10"/>
 
-  <!-- Include existing standards. -->
-  <rule ref="Drupal"/>
-  <rule ref="DrupalPractice">
-    <!-- Ignore specific sniffs. -->
-    <exclude name="DrupalPractice.InfoFiles.NamespacedDependency"/>
-  </rule>
-  <rule ref="PHPCompatibility"/>
+    <rule ref="AcquiaDrupalStrict"/>
 
-  <file>blt/src</file>
-  <file>docroot/modules/custom</file>
-  <file>docroot/themes/custom</file>
-  <file>docroot/profiles/custom</file>
-  <file>docroot/sites/</file>
-  <file>drush/Commands</file>
-  <file>tests/phpunit</file>
+    <file>blt/src</file>
+    <file>docroot/modules/custom</file>
+    <file>docroot/themes/custom</file>
+    <file>docroot/profiles/custom</file>
+    <file>docroot/sites/</file>
+    <file>drush/Commands</file>
+    <file>tests/phpunit</file>
 
-  <exclude-pattern>*/behat</exclude-pattern>
-  <exclude-pattern>*/node_modules</exclude-pattern>
-  <exclude-pattern>*/vendor</exclude-pattern>
-  <exclude-pattern>docroot/sites/simpletest</exclude-pattern>
-  <exclude-pattern>docroot/sites/settings</exclude-pattern>
-  <exclude-pattern>docroot/sites/*/settings</exclude-pattern>
-  <exclude-pattern>docroot/sites/*/default.settings.php</exclude-pattern>
-  <exclude-pattern>docroot/sites/*/default.local.settings.php</exclude-pattern>
-  <exclude-pattern>docroot/sites/*/files</exclude-pattern>
-  <exclude-pattern>docroot/sites/*/*.yml</exclude-pattern>
-  <exclude-pattern>drush/Commands/contrib</exclude-pattern>
+    <exclude-pattern>*/behat</exclude-pattern>
+    <exclude-pattern>*/node_modules</exclude-pattern>
+    <exclude-pattern>*/vendor</exclude-pattern>
+    <exclude-pattern>docroot/sites/simpletest</exclude-pattern>
+    <exclude-pattern>docroot/sites/settings</exclude-pattern>
+    <exclude-pattern>docroot/sites/*/settings</exclude-pattern>
+    <exclude-pattern>docroot/sites/*/default.settings.php</exclude-pattern>
+    <exclude-pattern>docroot/sites/*/default.local.settings.php</exclude-pattern>
+    <exclude-pattern>docroot/sites/*/files</exclude-pattern>
+    <exclude-pattern>docroot/sites/*/*.yml</exclude-pattern>
+    <exclude-pattern>drush/Commands/contrib</exclude-pattern>
 
 </ruleset>

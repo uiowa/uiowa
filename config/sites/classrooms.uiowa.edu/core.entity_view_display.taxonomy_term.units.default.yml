@@ -3,15 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.units.field_unit_description
+    - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_phone
+    - field.field.taxonomy_term.units.field_unit_alternative_scheduler
     - field.field.taxonomy_term.units.field_unit_email
     - field.field.taxonomy_term.units.field_unit_link
-    - field.field.taxonomy_term.units.field_unit_name
     - field.field.taxonomy_term.units.field_unit_phone
     - field.field.taxonomy_term.units.field_unit_scheduler
     - taxonomy.vocabulary.units
   module:
     - link
+    - telephone
     - text
 id: taxonomy_term.units.default
 targetEntityType: taxonomy_term
@@ -20,28 +22,43 @@ mode: default
 content:
   description:
     type: text_default
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 7
     region: content
-  field_unit_description:
-    type: text_default
-    label: above
+  field_unit_alternative_email:
+    type: basic_string
+    label: inline
     settings: {  }
     third_party_settings: {  }
     weight: 5
     region: content
+  field_unit_alternative_phone:
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_unit_alternative_scheduler:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_unit_email:
     type: basic_string
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
   field_unit_link:
     type: link
-    label: above
+    label: inline
     settings:
       trim_length: 80
       url_only: false
@@ -49,29 +66,22 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
-    region: content
-  field_unit_name:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   field_unit_phone:
-    type: basic_string
-    label: above
-    settings: {  }
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
     third_party_settings: {  }
     weight: 3
     region: content
   field_unit_scheduler:
     type: text_default
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true

@@ -36,3 +36,22 @@
   }
 }
 
+.header-sticky.scroll-down {
+  .iowa-bar__below {
+    .toggle-nav__bttn {
+      @include breakpoint(page-container) {
+        top: 50px;
+      }
+    }
+  }
+}
+
+.iowa-bar.iowa-bar--narrow {
+  .o-canvas--open {
+    .o-canvas__drawer {
+      @include breakpoint(md) {
+        top: 140px;
+      }
+    }
+  }
+}

@@ -14,9 +14,18 @@ third_party_settings:
       - main
     parent: 'main:'
   node_revision_delete:
-    minimum_revisions_to_keep: 10
-    minimum_age_to_delete: 0
-    when_to_delete: 0
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
 _core:
   default_config_hash: hs9nW8rf2ckLhmXkCgS7Yj5jIsdVZzTa2fLm7wfaL1M
 name: Page

@@ -2,10 +2,10 @@
 
 namespace Drupal\uiowa_graph\Plugin\Block;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Xss;
-use Drupal\Component\Utility\Html;
 
 /**
  * Provides the Graph block.

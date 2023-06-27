@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwessel.uiowa.ddev.site
+    protocol: https
+  machine_name: labwessel
+  human_name: wessel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwessel.prod
+drupal:
+  db:
+    database: wessel_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwessel.prod.drupal.uiowa.edu'
+  requester: jrwessel
+  site-name: 'Wessel Lab'
