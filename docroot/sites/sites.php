@@ -5368,3 +5368,9 @@ $sites['labhbc.uiowa.ddev.site'] = 'hbc.lab.uiowa.edu';
 $sites['labhbc.dev.drupal.uiowa.edu'] = 'hbc.lab.uiowa.edu';
 $sites['labhbc.stage.drupal.uiowa.edu'] = 'hbc.lab.uiowa.edu';
 $sites['labhbc.prod.drupal.uiowa.edu'] = 'hbc.lab.uiowa.edu';
+
+// Directory aliases for streeter.lab.uiowa.edu.
+$sites['labstreeter.uiowa.ddev.site'] = 'streeter.lab.uiowa.edu';
+$sites['labstreeter.dev.drupal.uiowa.edu'] = 'streeter.lab.uiowa.edu';
+$sites['labstreeter.stage.drupal.uiowa.edu'] = 'streeter.lab.uiowa.edu';
+$sites['labstreeter.prod.drupal.uiowa.edu'] = 'streeter.lab.uiowa.edu';
