@@ -2485,21 +2485,26 @@ function sitenow_update_9064() {
       'use_operator' => FALSE,
     ],
   ];
+  // @todo Add presets for all filters on all affected views.
   $filter_presets = [
     'field_tags_target_id' => [
       'type' => 'entity_autocomplete',
+      'value' => [],
       'plugin_id' => 'taxonomy_index_tid',
     ],
     'field_people_research_areas_target_id' => [
       'type' => 'entity_autocomplete',
+      'value' => [],
       'plugin_id' => 'taxonomy_index_tid',
     ],
     'field_person_type_status_value' => [
       'operator' => 'or',
+      'value' => [],
       'plugin_id' => 'list_field',
     ],
     'field_event_category_target_id' => [
       'type' => 'entity_autocomplete',
+      'value' => [],
       'plugin_id' => 'taxonomy_index_tid',
     ],
   ];
@@ -2512,7 +2517,6 @@ function sitenow_update_9064() {
     $new_filters = [];
 
     // Loop through 'exposed_filter_values' from block config.
-    // @todo Loop through all possible filters for each view.
     foreach ($config['exposed_filter_values'] as $old_filter_id => $value) {
       $new_filter = $filter_template;
       if (isset($filter_presets[$old_filter_id])) {
