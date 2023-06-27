@@ -5386,3 +5386,9 @@ $sites['labshort.uiowa.ddev.site'] = 'short.lab.uiowa.edu';
 $sites['labshort.dev.drupal.uiowa.edu'] = 'short.lab.uiowa.edu';
 $sites['labshort.stage.drupal.uiowa.edu'] = 'short.lab.uiowa.edu';
 $sites['labshort.prod.drupal.uiowa.edu'] = 'short.lab.uiowa.edu';
+
+// Directory aliases for flippo.lab.uiowa.edu.
+$sites['labflippo.uiowa.ddev.site'] = 'flippo.lab.uiowa.edu';
+$sites['labflippo.dev.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
+$sites['labflippo.stage.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
+$sites['labflippo.prod.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
