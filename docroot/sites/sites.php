@@ -5410,3 +5410,9 @@ $sites['labblount.uiowa.ddev.site'] = 'blount.lab.uiowa.edu';
 $sites['labblount.dev.drupal.uiowa.edu'] = 'blount.lab.uiowa.edu';
 $sites['labblount.stage.drupal.uiowa.edu'] = 'blount.lab.uiowa.edu';
 $sites['labblount.prod.drupal.uiowa.edu'] = 'blount.lab.uiowa.edu';
+
+// Directory aliases for simmering.lab.uiowa.edu.
+$sites['labsimmering.uiowa.ddev.site'] = 'simmering.lab.uiowa.edu';
+$sites['labsimmering.dev.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
+$sites['labsimmering.stage.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
+$sites['labsimmering.prod.drupal.uiowa.edu'] = 'simmering.lab.uiowa.edu';
