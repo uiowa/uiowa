@@ -5392,3 +5392,9 @@ $sites['labflippo.uiowa.ddev.site'] = 'flippo.lab.uiowa.edu';
 $sites['labflippo.dev.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
 $sites['labflippo.stage.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
 $sites['labflippo.prod.drupal.uiowa.edu'] = 'flippo.lab.uiowa.edu';
+
+// Directory aliases for cheng.lab.uiowa.edu.
+$sites['labcheng.uiowa.ddev.site'] = 'cheng.lab.uiowa.edu';
+$sites['labcheng.dev.drupal.uiowa.edu'] = 'cheng.lab.uiowa.edu';
+$sites['labcheng.stage.drupal.uiowa.edu'] = 'cheng.lab.uiowa.edu';
+$sites['labcheng.prod.drupal.uiowa.edu'] = 'cheng.lab.uiowa.edu';
