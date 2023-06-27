@@ -5434,3 +5434,9 @@ $sites['labhollingworth.uiowa.ddev.site'] = 'hollingworth.lab.uiowa.edu';
 $sites['labhollingworth.dev.drupal.uiowa.edu'] = 'hollingworth.lab.uiowa.edu';
 $sites['labhollingworth.stage.drupal.uiowa.edu'] = 'hollingworth.lab.uiowa.edu';
 $sites['labhollingworth.prod.drupal.uiowa.edu'] = 'hollingworth.lab.uiowa.edu';
+
+// Directory aliases for lei.lab.uiowa.edu.
+$sites['lablei.uiowa.ddev.site'] = 'lei.lab.uiowa.edu';
+$sites['lablei.dev.drupal.uiowa.edu'] = 'lei.lab.uiowa.edu';
+$sites['lablei.stage.drupal.uiowa.edu'] = 'lei.lab.uiowa.edu';
+$sites['lablei.prod.drupal.uiowa.edu'] = 'lei.lab.uiowa.edu';
