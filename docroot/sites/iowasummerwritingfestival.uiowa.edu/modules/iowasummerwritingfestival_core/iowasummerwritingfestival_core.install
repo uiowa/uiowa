@@ -182,3 +182,31 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Set initial events filter configuration.
+ */
+function iowasummerwritingfestival_core_update_9003() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  $config->set('filter_display', [
+    'date_range' => 1,
+    'presenters' => 1,
+    'attendance_required' => 0,
+    'attendance_mode' => 0,
+    'category' => 0,
+  ]);
+  $config->save();
+
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'event')
+    ->execute();
+  foreach ($nids as $nid) {
+    $node = Node::load($nid);
+    // Set the new value and revision message, and save.
+    $node->set('field_event_attendance', FALSE);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
+    $node->save();
+  }
+}

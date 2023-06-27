@@ -568,3 +568,19 @@ function admissions_core_update_9007() {
     }
   }
 }
+
+/**
+ * Set initial events filter configuration.
+ */
+function admissions_core_update_9008() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  $config->set('filter_display', [
+    'date_range' => 0,
+    'presenters' => 0,
+    'attendance_required' => 0,
+    'attendance_mode' => 0,
+    'category' => 1,
+  ]);
+  $config->save();
+}
