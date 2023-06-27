@@ -1,0 +1,56 @@
+uuid: 69c7fd27-411b-4fa1-adcd-90adba85e97b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.alert.body
+    - field.field.node.alert.field_alert_accessible_route
+    - field.field.node.alert.field_alert_affected_bus_routes
+    - field.field.node.alert.field_alert_alternate_route
+    - field.field.node.alert.field_alert_building
+    - field.field.node.alert.field_alert_category
+    - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_location
+    - field.field.node.alert.field_alert_publish_on
+    - field.field.node.alert.field_alert_reason_for_closure
+    - field.field.node.alert.field_alert_traffic_control
+    - field.field.node.alert.field_alert_traffic_control_plan
+    - node.type.alert
+  module:
+    - text
+    - user
+id: node.alert.teaser
+targetEntityType: node
+bundle: alert
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_alert_accessible_route: true
+  field_alert_affected_bus_routes: true
+  field_alert_alternate_route: true
+  field_alert_building: true
+  field_alert_category: true
+  field_alert_date: true
+  field_alert_location: true
+  field_alert_publish_on: true
+  field_alert_reason_for_closure: true
+  field_alert_traffic_control: true
+  field_alert_traffic_control_plan: true
+  search_api_excerpt: true
