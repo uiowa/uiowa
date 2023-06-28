@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstreeter.uiowa.ddev.site
+    protocol: https
+  machine_name: labstreeter
+  human_name: streeter.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstreeter.prod
+drupal:
+  db:
+    database: streeter_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstreeter.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Streeter Lab'
