@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labyihuang.uiowa.ddev.site
+    protocol: https
+  machine_name: labyihuang
+  human_name: yihuang.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labyihuang.prod
+drupal:
+  db:
+    database: yihuang_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labyihuang.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Yi Huang Lab'
