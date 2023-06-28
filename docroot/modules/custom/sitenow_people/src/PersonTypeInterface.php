@@ -8,7 +8,10 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  * Provides an interface defining a person type entity type.
  */
 interface PersonTypeInterface extends ConfigEntityInterface {
-  const STATUS_FILTER = 'field_person_type_status_value';
+  const TYPE_FILTER_NAME = 'field_person_type_target_id';
+
+  const TYPE_STATUS_FILTER_NAME = 'field_person_type_status_value';
+
   const TYPE_COMPONENT = 'component';
 
   /**

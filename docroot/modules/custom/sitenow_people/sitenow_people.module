@@ -91,7 +91,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           // Loop through allowed types looking for field name.
           foreach ($allowed_types as $key => $type) {
             $allowed_fields = $type->getAllowedFields();
-            // If match, create a visibility condition.
+            // If there is a match, create a visibility condition.
             if (in_array($field_name, $allowed_fields)) {
               $conditions[] = [
                 ':input[name="field_person_types[' . $key . ']"]' => [
@@ -120,25 +120,6 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             'message' => t('Please wait...'),
           ],
         ];
-
-        if (isset($form['field_person_website_link_direct'])) {
-          // Show 'Link directly to website' checkbox only if a site is added.
-          $form['field_person_website_link_direct']['#states'] = [
-            'visible' => [
-              ':input[name="field_person_website[0][uri]"]' => ['filled' => TRUE],
-            ],
-          ];
-          // Only visible to admins, but disable.
-          if (isset($form["rabbit_hole"])) {
-            $form["rabbit_hole"]['admin_notice'] = [
-              '#type' => 'markup',
-              '#markup' => t('<em>These rabbit hole settings are being set
-on presave based on first website link and the link directly to website checkbox.</em>'),
-              '#weight' => -99,
-            ];
-            $form["rabbit_hole"]['#disabled'] = TRUE;
-          }
-        }
 
         $type_selections = [];
 
@@ -172,6 +153,25 @@ on presave based on first website link and the link directly to website checkbox
             $form['field_person_type_status']['#access'] = FALSE;
           }
 
+        }
+      }
+
+      if (isset($form['field_person_website_link_direct'])) {
+        // Show 'Link directly to website' checkbox only if a site is added.
+        $form['field_person_website_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_person_website[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+        // Only visible to admins, but disable.
+        if (isset($form['rabbit_hole'])) {
+          $form['rabbit_hole']['admin_notice'] = [
+            '#type' => 'markup',
+            '#markup' => t('<em>These rabbit hole settings are being set
+  on presave based on first website link and the link directly to website checkbox.</em>'),
+            '#weight' => -99,
+          ];
+          $form['rabbit_hole']['#disabled'] = TRUE;
         }
       }
 
@@ -220,21 +220,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
 
-      // Check if values or defaults are set for exposed filters
-      // and leave the container open if so.
-//      foreach (Element::children($element) as $field_name) {
-//        $default = $element[$field_name]['#default_value'] ?: NULL;
-//        $filter = $form_state->getValue([
-//          'settings',
-//          'exposed',
-//          $field_name,
-//        ]);
-//        if ($filter || $default) {
-//          $element['#open'] = TRUE;
-//          break;
-//        }
-//      }
-
       // Only continue if person type filter exists.
       if (!isset($element['filter-field_person_types_target_id'])) {
         break;
@@ -246,12 +231,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       uiowa_core_config_entity_filter_select($person_type_element, 'person_type');
 
       // Only continue if person type status filter exists.
-      if (!isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
+      if (!isset($element['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME])) {
         break;
       }
 
-      $person_type_status_element_wrapper = &$element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'];
-      $person_type_status_element = &$person_type_status_element_wrapper[PersonTypeInterface::STATUS_FILTER . '_value'];
+      $person_type_status_element_wrapper = &$element['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_wrapper'];
+      $person_type_status_element = &$person_type_status_element_wrapper[PersonTypeInterface::TYPE_STATUS_FILTER_NAME];
 
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
@@ -261,7 +246,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
       // Only allow admins access to the person type status filter for now.
       if ($access->isForbidden()) {
-        $element['filter-' . PersonTypeInterface::STATUS_FILTER]['#access'] = FALSE;
+        $element['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME]['#access'] = FALSE;
         break;
       }
 
@@ -283,7 +268,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       foreach ($person_type_options as $key => $option) {
         if (isset($person_type_status_options[$key])) {
           $person_type_status_element_wrapper['#states']['visible'][] = [
-            ':input[name="settings[exposed][field_person_types_target_id]"]' => [
+            ':input[name="settings[exposed][filter-field_person_types_target_id][field_person_types_target_id]"]' => [
               'value' => $key,
             ],
           ];
@@ -376,12 +361,11 @@ function sitenow_people_person_types_callback(array &$form, FormStateInterface $
   }
   $type = $form_state->getValue([
     'settings',
-    'override',
-    'exposed_filters',
+    'exposed',
     'field_person_types_target_id',
   ]);
 
-  sitenow_people_person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+  sitenow_people_person_type_status_filter_options($form['settings']['exposed']['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_wrapper'][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_value'], $type);
 
   return $form;
 }
