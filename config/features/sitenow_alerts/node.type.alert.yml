@@ -7,14 +7,13 @@ dependencies:
     - node_revision_delete
 third_party_settings:
   menu_ui:
-    available_menus:
-      - main
-    parent: 'main:'
+    available_menus: {  }
+    parent: ''
   node_revision_delete:
     amount:
-      status: false
+      status: true
       settings:
-        amount: 0
+        amount: 10
     created:
       status: false
       settings:
@@ -29,4 +28,4 @@ description: 'Use <em>alert</em> for content which should be sent out to notify 
 help: ''
 new_revision: true
 preview_mode: 1
-display_submitted: true
+display_submitted: false
