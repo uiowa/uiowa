@@ -274,7 +274,7 @@ function sitenow_articles_preprocess_node(&$variables) {
               empty($node->get('field_gallery_images')->getValue())) {
               $layout_parts = ['content', 'second'];
               // If no gallery images, then hide the gallery jumplink.
-              sitenow_articles_unset_block($variables, $layout_parts, 'galleryjumplink_block');
+              sitenow_articles_unset_layout_builder_block($variables, 'galleryjumplink_block');
             }
 
             // Check if preserve links checkbox is checked.
@@ -282,9 +282,25 @@ function sitenow_articles_preprocess_node(&$variables) {
               $layout_parts = ['content', 'first'];
               if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
                 // If it isn't checked, hide the broken links message.
-                sitenow_articles_unset_block($variables, $layout_parts, 'preservedlinksmessage_block');
+                sitenow_articles_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
               }
             }
+            break;
+
+        }
+        break;
+
+      case 'person':
+
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            $person_display_config = \Drupal::config('sitenow_people.settings')->get('display_articles_by_author');
+
+            if (!$person_display_config) {
+              sitenow_articles_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
+            }
+
             break;
 
         }
@@ -304,13 +320,17 @@ function sitenow_articles_preprocess_node(&$variables) {
  * @param string $block_id
  *   The block ID to unset.
  */
-function sitenow_articles_unset_block(array &$variables, array $layout_parts, string $block_id) {
-  foreach ($layout_parts as $layout_part) {
-    if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
-      foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
-        if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
-          unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
-          break 2;
+function sitenow_articles_unset_layout_builder_block(array &$variables, string $block_id) {
+  if (isset($variables['content']['_layout_builder'])) {
+    foreach ($variables['content']['_layout_builder'] as &$layout) {
+      foreach ($layout as &$layout_part) {
+        if (is_array($layout_part)) {
+          foreach ($layout_part as $key => $block) {
+            if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+              unset($layout_part[$key]);
+              break 2;
+            }
+          }
         }
       }
     }

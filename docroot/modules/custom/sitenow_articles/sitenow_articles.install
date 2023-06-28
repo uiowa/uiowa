@@ -90,3 +90,12 @@ function sitenow_articles_update_9305() {
       ->save();
   }
 }
+
+/**
+ * Add articles authored by config setting to people.
+ */
+function sitenow_articles_update_9306() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  $config->set('display_articles_by_author', FALSE);
+  $config->save();
+}

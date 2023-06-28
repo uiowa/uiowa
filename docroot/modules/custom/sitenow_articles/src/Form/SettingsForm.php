@@ -219,6 +219,21 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
+    $form['article_author'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Author Settings',
+      '#collapsible' => FALSE,
+    ];
+
+    $display_articles_by_author = $config->get('display_articles_by_author');
+
+    $form['article_author']['display_articles_by_author'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display listing of article authored by a person on their person page'),
+      '#description' => $this->t('If checked, articles authored by a person are listed on their page.'),
+      '#default_value' => $display_articles_by_author ?: FALSE,
+    ];
+
     // Visual indicators aren't available on SiteNow v2.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     if (!$is_v2) {

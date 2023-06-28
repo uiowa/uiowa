@@ -181,15 +181,6 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    $articles_by_author_display = $config->get('articles_by_author_display');
-
-    $form['global']['articles_by_author_display'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display listing of article authored by a person on their person page'),
-      '#description' => $this->t('If checked, articles authored by a person are listed on their page.'),
-      '#default_value' => $articles_by_author_display ?: FALSE,
-    ];
-
     $form['global']['sitenow_people_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -337,7 +328,7 @@ class SettingsForm extends ConfigFormBase {
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
     $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
-    $articles_by_author_display = $form_state->getValue('articles_by_author_display');
+    $display_articles_by_author = $form_state->getValue('display_articles_by_author');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -595,7 +586,7 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the articles by author display default.
-      ->set('articles_by_author_display', $articles_by_author_display)
+      ->set('display_articles_by_author', $display_articles_by_author)
       ->save();
 
     // Clear cache.
