@@ -5362,3 +5362,9 @@ $sites['performingartscallboard.uiowa.ddev.site'] = 'callboard.performingarts.ui
 $sites['performingartscallboard.dev.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';
 $sites['performingartscallboard.stage.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';
 $sites['performingartscallboard.prod.drupal.uiowa.edu'] = 'callboard.performingarts.uiowa.edu';
+
+// Directory aliases for ahwa.lab.uiowa.edu.
+$sites['labahwa.uiowa.ddev.site'] = 'ahwa.lab.uiowa.edu';
+$sites['labahwa.dev.drupal.uiowa.edu'] = 'ahwa.lab.uiowa.edu';
+$sites['labahwa.stage.drupal.uiowa.edu'] = 'ahwa.lab.uiowa.edu';
+$sites['labahwa.prod.drupal.uiowa.edu'] = 'ahwa.lab.uiowa.edu';
