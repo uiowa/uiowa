@@ -1247,12 +1247,10 @@ function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): boo
  *
  * @param array &$variables
  *   The variables array.
- * @param array $layout_parts
- *   The layout parts to loop through.
  * @param string $block_id
  *   The block ID to unset.
  */
-function sitenow_core_unset_layout_builder_block(array &$variables, string $block_id) {
+function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id) {
   if (isset($variables['content']['_layout_builder'])) {
     foreach ($variables['content']['_layout_builder'] as &$layout) {
       foreach ($layout as &$layout_part) {
@@ -1272,7 +1270,7 @@ function sitenow_core_unset_layout_builder_block(array &$variables, string $bloc
 /**
  * Helper function to hide views row fields.
  */
-function sitenow_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
+function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
   foreach ($variables['rows'] as &$row_build) {
     if (!isset($row_build['content']['#hide_fields'])) {
       $row_build['content']['#hide_fields'] = [];

@@ -274,7 +274,7 @@ function sitenow_articles_preprocess_node(&$variables) {
               empty($node->get('field_gallery_images')->getValue())) {
               $layout_parts = ['content', 'second'];
               // If no gallery images, then hide the gallery jumplink.
-              sitenow_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
+              uiowa_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
             }
 
             // Check if preserve links checkbox is checked.
@@ -282,7 +282,7 @@ function sitenow_articles_preprocess_node(&$variables) {
               $layout_parts = ['content', 'first'];
               if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
                 // If it isn't checked, hide the broken links message.
-                sitenow_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
+                uiowa_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
               }
             }
             break;
@@ -298,7 +298,7 @@ function sitenow_articles_preprocess_node(&$variables) {
             $person_display_config = \Drupal::config('sitenow_articles.settings')->get('display_articles_by_author');
 
             if (!$person_display_config) {
-              sitenow_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
+              uiowa_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
             }
 
             break;
@@ -425,7 +425,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
 
   switch ($view->current_display) {
     case 'articles_author':
-      sitenow_core_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
+      uiowa_core_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
       break;
   }
 }
