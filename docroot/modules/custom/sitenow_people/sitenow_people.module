@@ -701,7 +701,7 @@ function sitenow_people_preprocess_views_view(&$variables) {
 /**
  * Helper function to preprocess rooms list.
  */
-function sitenow_people_preprocess_people_list(&$variables, ...$fields_to_hide) {
+function sitenow_people_views_row_hide_fields(&$variables, ...$fields_to_hide) {
   foreach ($variables['rows'] as &$row_build) {
     if (!isset($row_build['content']['#hide_fields'])) {
       $row_build['content']['#hide_fields'] = [];
