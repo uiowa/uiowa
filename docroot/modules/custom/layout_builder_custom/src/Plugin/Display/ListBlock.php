@@ -141,6 +141,7 @@ class ListBlock extends CoreBlock {
       $form['general_help_text'] = [
         '#type' => 'item',
         '#description' => $this->getOption('general_help_text'),
+        '#weight' => 0,
       ];
     }
 
@@ -153,13 +154,12 @@ class ListBlock extends CoreBlock {
       'headline_alignment' => $block_configuration['headline']['headline_alignment'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
     ], $has_children);
-    $form['headline']['#weight'] = 1;
+    $form['headline']['#weight'] = 0;
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
-      // @todo Remove once exposed filters patch is added.
-      // Seems to break at high numbers :grimacing: ..
       $form['override']['items_per_page']['#min'] = 1;
+      // Seems to break at high numbers :grimacing: ..
       $form['override']['items_per_page']['#max'] = 50;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
       $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.');
@@ -372,6 +372,7 @@ class ListBlock extends CoreBlock {
 
     // Set overrides to show up in the middle of the form.
     $form['override']['#weight'] = 5;
+    $form['exposed']['#weight'] = 5;
 
     return $form;
   }

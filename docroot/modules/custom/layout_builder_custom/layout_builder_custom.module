@@ -61,7 +61,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
+      // Hide "Block description" text.
       unset($form['settings']['admin_label']['#title']);
+      // Ensure that the block admin label to be the very first thing to
+      // display.
+      $form['settings']['admin_label']['#weight'] = -99;
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock. See
       //   https://github.com/uiowa/uiowa/issues/5035

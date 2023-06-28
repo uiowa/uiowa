@@ -326,26 +326,26 @@ function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterfa
   //   We take our filter operators out of their wrapper,
   //   and place them within their parent container to be
   //   passed to the view.
-  foreach ([
-    'field_person_type_status_value',
-    'field_person_type_status_value_op',
-  ] as $field) {
-    $form_state->setValue(
-      ['settings',
-        'override',
-        'exposed_filters',
-        $field,
-      ],
-      $form_state->getValue(
-        ['settings',
-          'override',
-          'exposed_filters',
-          'field_person_type_status_value_wrapper',
-          $field,
-        ]
-      )
-    );
-  }
+//  foreach ([
+//    'field_person_type_status_value',
+//    'field_person_type_status_value_op',
+//  ] as $field) {
+//    $form_state->setValue(
+//      ['settings',
+//        'override',
+//        'exposed_filters',
+//        $field,
+//      ],
+//      $form_state->getValue(
+//        ['settings',
+//          'override',
+//          'exposed_filters',
+//          'field_person_type_status_value_wrapper',
+//          $field,
+//        ]
+//      )
+//    );
+//  }
 }
 
 /**
@@ -362,10 +362,11 @@ function sitenow_people_person_types_callback(array &$form, FormStateInterface $
   $type = $form_state->getValue([
     'settings',
     'exposed',
-    'field_person_types_target_id',
+    'filter-' . PersonTypeInterface::TYPE_FILTER_NAME,
+    PersonTypeInterface::TYPE_FILTER_NAME,
   ]);
 
-  sitenow_people_person_type_status_filter_options($form['settings']['exposed']['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_wrapper'][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_value'], $type);
+  sitenow_people_person_type_status_filter_options($form['settings']['exposed']['filter-' . PersonTypeInterface::TYPE_STATUS_FILTER_NAME][PersonTypeInterface::TYPE_STATUS_FILTER_NAME . '_wrapper'][PersonTypeInterface::TYPE_STATUS_FILTER_NAME], $type);
 
   return $form;
 }
