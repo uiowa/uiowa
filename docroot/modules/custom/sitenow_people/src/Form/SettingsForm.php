@@ -185,7 +185,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['articles_by_author_display'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable articles authored by listing'),
+      '#title' => $this->t('Display listing of article authored by a person on their person page'),
       '#description' => $this->t('If checked, articles authored by a person are listed on their page.'),
       '#default_value' => $articles_by_author_display ?: FALSE,
     ];
