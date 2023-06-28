@@ -295,7 +295,7 @@ function sitenow_articles_preprocess_node(&$variables) {
         switch ($variables['view_mode']) {
           case 'full':
           case 'default':
-            $person_display_config = \Drupal::config('sitenow_people.settings')->get('display_articles_by_author');
+            $person_display_config = \Drupal::config('sitenow_articles.settings')->get('display_articles_by_author');
 
             if (!$person_display_config) {
               sitenow_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
