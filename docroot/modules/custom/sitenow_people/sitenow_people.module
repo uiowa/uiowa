@@ -722,7 +722,7 @@ function sitenow_people_preprocess_views_view_unformatted(&$variables) {
 
   switch ($view->current_display) {
     case 'articles_author':
-      sitenow_people_preprocess_people_list($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
+      sitenow_people_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
       break;
   }
 }
