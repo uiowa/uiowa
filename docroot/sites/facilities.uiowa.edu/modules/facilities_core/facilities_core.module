@@ -9,6 +9,29 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 
 /**
+ * Set dynamic allowed values event status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'cambus' => 'Cambus',
+    'coralville' => 'Coralville',
+    'iowaCity' => 'Iowa City',
+  ];
+}
+
+/**
  * Implements hook_form_alter().
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
