@@ -18,6 +18,7 @@ dependencies:
     - node.type.alert
   module:
     - datetime
+    - options
     - smart_date
     - text
     - user
@@ -41,12 +42,11 @@ content:
     weight: 111
     region: content
   field_alert_affected_bus_routes:
-    type: entity_reference_label
+    type: list_default
     label: above
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
-    weight: 110
+    weight: 114
     region: content
   field_alert_alternate_route:
     type: basic_string
