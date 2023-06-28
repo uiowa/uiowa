@@ -328,7 +328,6 @@ class SettingsForm extends ConfigFormBase {
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
     $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
-    $display_articles_by_author = $form_state->getValue('display_articles_by_author');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -582,11 +581,6 @@ class SettingsForm extends ConfigFormBase {
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
       ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the articles by author display default.
-      ->set('display_articles_by_author', $display_articles_by_author)
       ->save();
 
     // Clear cache.

@@ -340,38 +340,26 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
-    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
-    $tag_display = $form_state->getValue('tag_display');
-    $related_display = $form_state->getValue('related_display');
-    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
 
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
-      ->save();
+    $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the featured image display default.
-      ->set('featured_image_display_default', $featured_image_display_default)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('tag_display', $tag_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the related display default.
-      ->set('related_display', $related_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the message display default.
-      ->set('preserved_links_message_display', $form_state->getValue([
+    $config_updates = [
+      'show_teaser_link_indicator' => 'show_teaser_link_indicator',
+      'featured_image_display_default' => 'featured_image_display_default',
+      'tag_display' => 'tag_display',
+      'related_display' => 'related_display',
+      'preserved_links_message_display' => [
         'preserved_links_message_display',
         'value',
-      ]))
-      ->save();
+      ],
+      'display_articles_by_author' => 'display_articles_by_author',
+    ];
+
+    foreach ($config_updates as $config_name => $form_state_value) {
+      $config_settings->set($config_name, $form_state->getValue($form_state_value))
+        ->save();
+    }
+
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
