@@ -274,7 +274,7 @@ function sitenow_articles_preprocess_node(&$variables) {
               empty($node->get('field_gallery_images')->getValue())) {
               $layout_parts = ['content', 'second'];
               // If no gallery images, then hide the gallery jumplink.
-              sitenow_articles_unset_layout_builder_block($variables, 'galleryjumplink_block');
+              sitenow_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
             }
 
             // Check if preserve links checkbox is checked.
@@ -282,7 +282,7 @@ function sitenow_articles_preprocess_node(&$variables) {
               $layout_parts = ['content', 'first'];
               if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
                 // If it isn't checked, hide the broken links message.
-                sitenow_articles_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
+                sitenow_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
               }
             }
             break;
@@ -298,7 +298,7 @@ function sitenow_articles_preprocess_node(&$variables) {
             $person_display_config = \Drupal::config('sitenow_people.settings')->get('display_articles_by_author');
 
             if (!$person_display_config) {
-              sitenow_articles_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
+              sitenow_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
             }
 
             break;
@@ -306,33 +306,6 @@ function sitenow_articles_preprocess_node(&$variables) {
         }
         break;
 
-    }
-  }
-}
-
-/**
- * Unsets a block from the given layout builder parts.
- *
- * @param array &$variables
- *   The variables array.
- * @param array $layout_parts
- *   The layout parts to loop through.
- * @param string $block_id
- *   The block ID to unset.
- */
-function sitenow_articles_unset_layout_builder_block(array &$variables, string $block_id) {
-  if (isset($variables['content']['_layout_builder'])) {
-    foreach ($variables['content']['_layout_builder'] as &$layout) {
-      foreach ($layout as &$layout_part) {
-        if (is_array($layout_part)) {
-          foreach ($layout_part as $key => $block) {
-            if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
-              unset($layout_part[$key]);
-              break 2;
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -446,6 +419,14 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
     }
+  }
+
+  $variables['row_item_classes'] = [];
+
+  switch ($view->current_display) {
+    case 'articles_author':
+      sitenow_core_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
+      break;
   }
 }
 

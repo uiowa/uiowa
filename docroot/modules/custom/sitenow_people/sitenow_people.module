@@ -644,35 +644,6 @@ function sitenow_people_preprocess_views_view(&$variables) {
 }
 
 /**
- * Helper function to hide views row fields.
- */
-function sitenow_people_views_row_hide_fields(&$variables, ...$fields_to_hide) {
-  foreach ($variables['rows'] as &$row_build) {
-    if (!isset($row_build['content']['#hide_fields'])) {
-      $row_build['content']['#hide_fields'] = [];
-    }
-
-    foreach ($fields_to_hide as $field_to_hide) {
-      $row_build['content']['#hide_fields'][] = $field_to_hide;
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_views_view_unformatted(&$variables) {
-  $view = $variables['view'];
-  $variables['row_item_classes'] = [];
-
-  switch ($view->current_display) {
-    case 'articles_author':
-      sitenow_people_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
-      break;
-  }
-}
-
-/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
