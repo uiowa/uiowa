@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.alert.body
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
+    - metatag
     - smart_date
     - text
     - user
@@ -21,7 +23,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 5
     region: content
   field_alert_category:
     type: entity_reference_label
@@ -29,7 +31,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 103
+    weight: 102
     region: content
   field_alert_date:
     type: smartdate_default
@@ -44,6 +46,13 @@ content:
       localize: false
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 105
     region: content
   links:
     settings: {  }
