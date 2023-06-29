@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhollingworth.uiowa.ddev.site
+    protocol: https
+  machine_name: labhollingworth
+  human_name: hollingworth.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhollingworth.prod
+drupal:
+  db:
+    database: hollingworth_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhollingworth.prod.drupal.uiowa.edu'
+  requester: aholling
+  site-name: 'Hollingworth Lab'
