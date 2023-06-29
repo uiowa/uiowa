@@ -32,7 +32,49 @@
   // Sidebar display.
   &.bef-form--sidebar {
 
+    .form-actions {
+      grid-area: unset;
+    }
+
     .views-exposed-form {
+      .bef--secondary {
+        width: auto;
+      }
+
+      .form--inline {
+        display: block!important;
+      }
+
+      &[data-drupal-form-fields*=edit-reset--] .bef--secondary {
+        width: auto;
+      }
+
+        // Sort select.
+      &[data-drupal-form-fields*="edit-reset--"] {
+        .form-item:not(:last-child).form-item-sort-bef-combine {
+          @include breakpoint(sm) {
+            width: auto;
+          }
+        }
+      }
+
+      &.uids-content:not(.uids-search) {
+        .form-item:not(:last-child).form-item-sort-bef-combine {
+          padding: 0 0 1rem 0;
+          grid-column: 1/-1;
+          @include breakpoint(sm) {
+            background: #fff;
+            margin: 0;
+            padding:0;
+            grid-area: unset;
+            width: auto;
+          }
+
+        }
+      }
+
+
+
       fieldset legend {
         text-align: center;
       }
