@@ -165,9 +165,9 @@ nav.nav--horizontal {
     opacity: 1;
     text-align: center;
     text-shadow: 0 0 0.5em rgba($color,0.25);
-    //mix-blend-mode: lighten;
+    mix-blend-mode: lighten;
     span {
-      font-size: 10vmin;
+      //font-size: 10vmin;
     }
   }
   // Shutter
@@ -254,5 +254,16 @@ nav.nav--horizontal {
       }
       animation: openBottom $t*2 infinite;
     }
+  }
+}
+
+.banner__pre-title {
+  display: inline-grid;
+  div.field__item, p.field__item {
+    font-size: inherit;
+    display: inline;
+  }
+  .field__item + .field__item {
+    padding-left: 2rem;
   }
 }

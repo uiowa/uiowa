@@ -43,9 +43,10 @@ dependencies:
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
+    - field_delimiter
     - layout_builder
     - layout_builder_restrictions
-    - smart_trim
+    - text
     - user
 third_party_settings:
   layout_builder:
@@ -82,24 +83,20 @@ targetEntityType: node
 bundle: area_of_study
 mode: banner
 content:
-  body:
-    type: smart_trim
+  field_area_of_study_college:
+    type: entity_reference_label
     label: hidden
     settings:
-      trim_length: 250
-      trim_type: chars
-      trim_suffix: ''
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      more_aria_label: 'Read more about [node:title]'
-      summary_handler: full
-      trim_options:
-        text: false
-        trim_zero: false
-        replace_tokens: false
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 2
+    region: content
+  field_area_of_study_subtitle:
+    type: text_default
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
@@ -113,6 +110,7 @@ content:
     weight: 0
     region: content
 hidden:
+  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -120,7 +118,6 @@ hidden:
   field_area_of_study_academic_gp: true
   field_area_of_study_career: true
   field_area_of_study_certificates: true
-  field_area_of_study_college: true
   field_area_of_study_comp_txt: true
   field_area_of_study_competitive: true
   field_area_of_study_course_work: true
@@ -146,7 +143,6 @@ hidden:
   field_area_of_study_stories: true
   field_area_of_study_sub_type: true
   field_area_of_study_subprogram: true
-  field_area_of_study_subtitle: true
   field_area_of_study_teaching: true
   field_area_of_study_teaching_txt: true
   field_area_of_study_transfer: true
