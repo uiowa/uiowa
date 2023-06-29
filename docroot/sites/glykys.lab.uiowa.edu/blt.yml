@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labglykys.uiowa.ddev.site
+    protocol: https
+  machine_name: labglykys
+  human_name: glykys.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labglykys.prod
+drupal:
+  db:
+    database: glykys_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labglykys.prod.drupal.uiowa.edu'
+  requester: jglykys
+  site-name: 'Glykys Lab'
