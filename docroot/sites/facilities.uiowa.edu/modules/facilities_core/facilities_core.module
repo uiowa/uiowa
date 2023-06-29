@@ -11,6 +11,15 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_toolbar_alter().
+ */
+function facilities_core_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'facilities_core/toolbar-overrides';
+  return $items;
+}
+
+
+/**
  * Set dynamic allowed values event status.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
