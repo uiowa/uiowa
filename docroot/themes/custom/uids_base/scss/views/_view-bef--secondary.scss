@@ -1,0 +1,186 @@
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+
+
+.bef-form {
+  .bef--secondary {
+    @include breakpoint(sm) {
+      grid-area: 2 / 1 / 3 / 3;
+    }
+
+    .details-wrapper {
+      @include breakpoint(sm) {
+        display: flex;
+      }
+    }
+  }
+
+
+    .bef--secondary {
+      .js-form-item {
+        flex: 1;
+      }
+
+      @include breakpoint(sm) {
+        width: calc(100% + 84px);
+        padding-top: #{3 * $xsm-sm};
+        margin-top: $xsm-sm;
+      }
+
+      //&[data-drupal-form-fields*="edit-reset--"] {
+      //  .bef--secondary {
+      //    @include breakpoint(sm) {
+      //      width: calc(100% + 175px);
+      //    }
+      //  }
+      //}
+
+      //.bef--secondary {
+      //  @include breakpoint(sm) {
+      //    width: calc(100% + 84px);
+      //    padding-top: #{3 * $xsm-sm};
+      //    margin-top: $xsm-sm;
+      //  }
+      //
+      //  &.form-wrapper {
+      //    border: none;
+      //
+      //    @include breakpoint(sm) {
+      //      border-top: 1px solid $grey-light;
+      //    }
+      //
+      //    background: none;
+      //  }
+      //}
+
+
+
+      &.form-wrapper {
+        border: none;
+
+        @include breakpoint(sm) {
+          border-top: 1px solid $grey-light;
+        }
+
+        background: none;
+      }
+
+      &[open] > summary {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding: 0 0 #{2 * $xsm-sm};
+      }
+
+      > summary {
+        padding: 0;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 1rem;
+        @include breakpoint(sm) {
+          margin-bottom: 0;
+        }
+
+        &::marker,
+        &::-webkit-details-marker {
+          display: none;
+        }
+      }
+
+      summary::before {
+        padding: $xsm;
+        padding-right: 0.6rem;
+        content: "\f13a";
+        color: $brand-cool-gray;
+        @include fas();
+      }
+
+      &[open] > summary::before {
+        content: "\f139";
+      }
+
+      > .details-wrapper {
+        padding: 0;
+      }
+
+      details {
+        --elemHeight: 3.5rem;
+
+        flex: 1;
+        background: unset;
+        border: unset;
+        position: relative;
+
+        &[open] > summary::before {
+          content: "\f139";
+        }
+
+        summary {
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+          width: 100%;
+          height: var(--elemHeight);
+          padding: 0.5rem;
+          margin: 0 0 1rem;
+          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+          color: $grey;
+          //border: 1px solid $grey-light;
+          background-color: $white;
+          box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+          font-family: inherit;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+
+          &:before {
+            padding-left: 0;
+          }
+        }
+
+        .details-wrapper {
+          overflow: auto;
+          max-height: 346px;
+          z-index: 500;
+          display: flex;
+          flex-direction: column;
+          background: $white;
+          border: 1px solid $grey-light;
+          position: absolute;
+          padding: 0;
+          top: calc(var(--elemHeight) - 1px);
+          width: calc(100% - 2px);
+          box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+
+          .bef-toggle {
+            padding: #{2 * $xsm-sm} $xsm-sm;
+            display: block;
+            border: none;
+            border-bottom: 1px solid $grey-light;
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: $grey;
+
+            &:focus {
+              font-weight: bold;
+              text-decoration: underline;
+            }
+          }
+
+          .bef-checkboxes {
+            padding: 0.5rem 0;
+          }
+
+          .form-type-checkbox {
+            padding: 0 0.5rem;
+            margin-right: 0;
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+}
