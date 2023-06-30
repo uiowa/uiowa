@@ -1241,3 +1241,43 @@ function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
 function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): bool {
   return uiowa_core_html_cleanup($string, $allowed_tags) === '';
 }
+
+/**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id) {
+  if (isset($variables['content']['_layout_builder'])) {
+    foreach ($variables['content']['_layout_builder'] as &$layout) {
+      foreach ($layout as &$layout_part) {
+        if (is_array($layout_part)) {
+          foreach ($layout_part as $key => $block) {
+            if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+              unset($layout_part[$key]);
+              break 2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to hide views row fields.
+ */
+function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
+  foreach ($variables['rows'] as &$row_build) {
+    if (!isset($row_build['content']['#hide_fields'])) {
+      $row_build['content']['#hide_fields'] = [];
+    }
+
+    foreach ($fields_to_hide as $field_to_hide) {
+      $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+  }
+}
