@@ -2,11 +2,14 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
 
 $t: 2.5s;
-$e1: cubic-bezier(0.8, 0.00, 0.1, 1);
-$e2: cubic-bezier(0.600, 0.040, 0.980, 0.335);
-$er: linear;
-$color: #000;
-$slides: 27;
+$slides: 28;
+
+.view-content {
+  --time: 2.5;
+  --animation-fn-1: cubic-bezier(0.8, 0.00, 0.1, 1);
+  --animation-fn-2: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+  --slides: 28;
+}
 
 body,
 html {
@@ -26,59 +29,13 @@ nav.nav--horizontal {
   margin-top: 0!important;
 }
 
-.view-slideshow {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  @keyframes rotateHue {
-    0% {
-      filter: hue-rotate(0deg);
-    }
-
-    20% {
-      filter: hue-rotate(0deg);
-    }
-
-    25% {
-      filter: hue-rotate(90deg);
-    }
-
-    45% {
-      filter: hue-rotate(90deg);
-    }
-
-    50% {
-      filter: hue-rotate(180deg);
-    }
-
-    70% {
-      filter: hue-rotate(180deg);
-    }
-
-    75% {
-      filter: hue-rotate(270deg);
-    }
-
-    95% {
-      filter: hue-rotate(270deg);
-    }
-
-    100% {
-      filter: hue-rotate(360deg);
-      /*rotateHue*/
-    }
-  }
-  animation: infinite $t*$slides*2 linear;
-  animation-delay: $t/4;
-}
-
 .view-content.list-container__inner {
   position: absolute;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
-  background-color: $color;
+  background-color: var(--brand-secondary);
 }
 
 .banner {
@@ -86,26 +43,11 @@ nav.nav--horizontal {
   height: 100%;
   width: 100%;
   opacity: 0;
-  @keyframes showHideSlide {
-    0% {
-      opacity: 1;
-      pointer-events: auto;
-      z-index: 1;
-    }
+  transform: translate3d(-100%, 0, -10px);
 
-    #{100% / $slides} {
-      opacity: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    100% {
-      opacity: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-  }
+  will-change: opacity, transform;
   animation: showHideSlide infinite $t*$slides*2 steps(1);
+
   @for $i from 1 through $slides {
     &:nth-child(#{$i}) {
       animation-delay: $t * ($i - 1) * 2;
@@ -120,12 +62,15 @@ nav.nav--horizontal {
   &__pre-title {
     display: inline-grid;
     font-size: 3vmin!important;
+
     div.field__item, p.field__item {
       font-size: inherit;
       display: inline;
     }
+
     .field__item + .field__item {
       padding-left: .5rem;
+
       &::before {
         content: "|";
         padding-right: .8rem;
@@ -138,6 +83,7 @@ nav.nav--horizontal {
   &--list {
     height: 100vh!important;
   }
+
   // Image
   &__image {
     position: relative;
@@ -147,34 +93,15 @@ nav.nav--horizontal {
     left: 0;
     background-size: cover;
     background-position: center;
-    background-color: $color;
+    background-color: var(--brand-secondary);
     opacity: 1;
     z-index: -1;
-    @keyframes bgInOut {
-      0% {
-        transform: rotate(-45deg) scale(1.1);
-        animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-      }
+    transform: rotate(-45deg) scale(1.1);
 
-      33% {
-        transform: rotate(0deg);
-      }
-
-      50% {
-        transform: rotate(0deg);
-      }
-
-      66% {
-        transform: rotate(0deg);
-        animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-      }
-
-      100% {
-        transform: rotate(45deg) scale(0.9);
-      }
-    }
+    will-change: transform, animation-timing-function;
     animation: bgInOut $t*4 -$t*2 infinite;
   }
+
   // Container
   .banner__container {
     position: absolute;
@@ -187,31 +114,27 @@ nav.nav--horizontal {
     z-index: 2;
     opacity: 1;
     text-align: center;
-    text-shadow: 0 0 0.5em rgba($color,0.25);
+    text-shadow: 0 0 0.5em rgba(0,0,0,0.25);
     mix-blend-mode: lighten;
+
     h3 {
       font-size: 9vmin;
     }
   }
+
   // Shutter
   &__shutters {
     position: absolute;
-    height: 150vmax;
-    width: 150vmax;
-    left: calc(50% - 75vmax);
-    top: calc(50% - 75vmax);
+    height: 200vh;
+    width: 200vw;
+    left: calc(50% - 100vw);
+    top: calc(-50vh);
     pointer-events: none;
     z-index: 2;
-    @keyframes rotateFrame {
-      0% {
-        transform: rotate(0deg);
-      }
+    transform: rotate(0deg);
 
-      100% {
-        transform: rotate(180deg);
-      }
-    }
-    animation: rotateFrame $t*4 $er infinite;
+    will-change: transform;
+    animation: rotateFrame $t*4 linear infinite;
 
     &:after,
     &:before {
@@ -221,61 +144,120 @@ nav.nav--horizontal {
       width: 100%;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
-      background-color: $color;
+      animation-timing-function: var(--animation-fn-1);
+      background-color: var(--brand-secondary);
       //background-image: url(https://admissions.uiowa.edu/themes/custom/uids_base/uids/assets/images/brain-pattern-black.svg);
       pointer-events: auto;
+      will-change: transform, animation-timing-function;
     }
 
     &:before {
       bottom: 50%;
-      @keyframes openTop {
-        0% {
-          transform: translate3d(-50%, 0, 0);
-          animation-timing-function: $e1;
-        }
 
-        40% {
-          transform: translate3d(-50%, -65vmax, 0);
-          animation-timing-functon: $e2;
-        }
-
-        70% {
-          transform: translate3d(-50%, -65vmax, 0);
-          animation-timing-functon: $e2;
-        }
-
-        100% {
-          transform: translate3d(-50%, 0, 0);
-          animation-timing-function: $e2;
-        }
-      }
       animation: openTop $t*2 infinite;
     }
 
     &:after {
       top: 50%;
-      @keyframes openBottom {
-        0% {
-          transform: translate3d(-50%, 0, 0);
-          animation-timing-function: $e1;
-        }
 
-        40% {
-          transform: translate3d(-50%, 65vmax, 0);
-          animation-timing-functon: $e2;
-        }
-
-        70% {
-          transform: translate3d(-50%, 65vmax, 0);
-          animation-timing-functon: $e2;
-        }
-
-        100% {
-          transform: translate3d(-50%, 0, 0);
-          animation-timing-function: $e2;
-        }
-      }
       animation: openBottom $t*2 infinite;
+    }
+  }
+}
+
+.view-slideshow {
+  @keyframes showHideSlide {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 10px);
+    }
+
+    #{100% / $slides} {
+      opacity: 0;
+      transform: translate3d(-9999px, 0, -10px);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translate3d(-9999px, 0, -10px);
+    }
+  }
+
+  @keyframes bgInOut {
+    0% {
+      transform: rotate(-45deg) scale(1.1);
+      animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
+    }
+
+    33% {
+      transform: rotate(0deg);
+    }
+
+    50% {
+      transform: rotate(0deg);
+    }
+
+    66% {
+      transform: rotate(0deg);
+      animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
+    }
+
+    100% {
+      transform: rotate(45deg) scale(0.9);
+    }
+  }
+
+  @keyframes rotateFrame {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+
+  @keyframes openBottom {
+    0% {
+      transform: translate3d(-50%, 0, 0);
+      animation-timing-function: var(--animation-fn-1);
+    }
+
+    40% {
+      transform: translate3d(-50%, 65vmax, 0);
+      animation-timing-functon: var(--animation-fn-2);
+    }
+
+    70% {
+      transform: translate3d(-50%, 65vmax, 0);
+      animation-timing-functon: var(--animation-fn-2);
+    }
+
+    100% {
+      transform: translate3d(-50%, 0, 0);
+      animation-timing-function: var(--animation-fn-2);
+    }
+  }
+
+  @keyframes openTop {
+    0% {
+      transform: translate3d(-50%, 0, 0);
+      animation-timing-function: var(--animation-fn-1);
+    }
+
+    40% {
+      transform: translate3d(-50%, -65vmax, 0);
+      animation-timing-functon: var(--animation-fn-2);
+    }
+
+    70% {
+      transform: translate3d(-50%, -65vmax, 0);
+      animation-timing-functon: var(--animation-fn-2);
+    }
+
+    100% {
+      transform: translate3d(-50%, 0, 0);
+      animation-timing-function: var(--animation-fn-2);
     }
   }
 }
