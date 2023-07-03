@@ -1,7 +1,8 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
-// bef--secondary is the advanced details toggle on bef forms.
+// bef--secondary is for the advanced details toggle on bef forms.
 @import "_view-bef--secondary.scss";
+// bef--sidebar is for the styling the advanced details toggle within a sidebar column.
 @import "_view-bef--sidebar.scss";
 
 // Use "bef-form" class for a full-width wide search box within a one column layout.
@@ -9,12 +10,18 @@
 
 .bef-form {
 
+  // Modifier to hide labels.
+  &--label-hidden {
+    label:not(.option) {
+      @include element-invisible;
+    }
+  }
+
   details {
     &.form-wrapper {
       display: block;
-      border: 1px solid;
-      border-color: #c4c4c4;
-      //background: #fff;
+      border: 1px solid #c4c4c4;
+      background: #fff;
     }
 
     .details-wrapper {
@@ -32,11 +39,6 @@
       border-color: #c4c4c4;
       margin-bottom: 1em;
     }
-  }
-
-
-  label:not(.option) {
-    @include element-invisible;
   }
 
   .form-type-textfield,
@@ -59,8 +61,11 @@
 
   .uids-content {
     .form-item {
-     // margin-top: 0;
-     // margin-bottom: 0;
+      &.form-type-checkbox {
+        &:first-child {
+          margin-top: 0;
+        }
+      }
     }
 
     [type="submit"] {
@@ -157,3 +162,8 @@
 .bef-exposed-form .form--inline .form-item {
   float: none;
 }
+
+
+
+
+
