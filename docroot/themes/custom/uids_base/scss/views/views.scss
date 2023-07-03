@@ -4,7 +4,6 @@
 @import "view-bef.scss";
 
 // Use "views-form--stacked" class for exposed forms in a sidebar column.
-
 .views-exposed-form {
   min-height: 20px;
   padding: 19px;
@@ -57,7 +56,8 @@
       width: 100%;
       margin-top: 0.5rem;
       display: flex;
-      gap: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
   }
 
@@ -88,7 +88,19 @@
   }
 }
 
+
 .views-exposed-form:not([class*="bef"]) {
+  .form--inline {
+    @include breakpoint(sm) {
+      display: flex;
+      justify-content: flex-start;
+
+      .views-form--stacked & {
+        flex-wrap: wrap;
+      }
+    }
+  }
+
   .form-actions {
     @include breakpoint(sm) {
       margin-top: 2.5em;
@@ -102,98 +114,87 @@
         gap: 1.5rem;
       }
     }
+  }
 
-    &.uids-content:not(.uids-search) {
-      padding: 5px 19px;
+  &.uids-content:not(.uids-search) {
+    padding: 5px 19px;
 
+    .views-form--stacked & {
+      padding: 1rem 1.5rem;
+    }
+
+    [type=text],
+    select {
       .views-form--stacked & {
-        padding: 1rem 1.5rem;
+        margin-bottom: 0;
       }
+    }
 
-      [type=text],
-      select {
-        .views-form--stacked & {
-          margin-bottom: 0;
+    .form-item {
+      .views-form--stacked & {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        @include breakpoint(sm) {
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
         }
       }
 
-      .form-item {
+      &.form-type-checkbox {
         .views-form--stacked & {
-          margin-top: 1rem;
           margin-bottom: 1rem;
-          @include breakpoint(sm) {
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-          }
-        }
-
-        &.form-type-checkbox {
-          .views-form--stacked & {
-            margin-bottom: 1rem;
-          }
         }
       }
+    }
 
-      .form-actions:not(:last-child),
-      .form-item:not(:last-child) {
-        @include breakpoint(sm) {
-          margin-right: 1em;
+    .form-actions:not(:last-child),
+    .form-item:not(:last-child) {
+      @include breakpoint(sm) {
+        margin-right: 1em;
 
-          .views-form--stacked & {
-            margin-right: 0;
-          }
+        .views-form--stacked & {
+          margin-right: 0;
         }
       }
+    }
 
-      .form-actions {
-        @include breakpoint(sm) {
-          margin-top: 2.5em;
-        }
-
-        .button {
-          .views-form--stacked & {
-            flex: 1;
-          }
-        }
+    .form-actions {
+      @include breakpoint(sm) {
+        margin-top: 2.5em;
       }
 
       .button {
-        @include bttn--secondary;
-        border: 0;
-        padding-top: 13px;
-        padding-bottom: 13px;
-      }
-    }
-
-    .form--inline {
-      @include breakpoint(sm) {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-end;
-
         .views-form--stacked & {
-          flex-wrap: wrap;
+          flex-basis: 100%;
         }
       }
     }
+  }
 
-    .js-form-item {
-      flex: auto 1 1;
-      @include breakpoint(sm) {
-        flex: 1;
+  .button {
+    @include bttn--secondary;
+    border: 0;
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
 
-        .views-form--stacked & {
-          flex: 0 1 100%;
-        }
+  .js-form-item {
+    flex: auto 1 1;
+    @include breakpoint(sm) {
+      flex: 1;
+
+      .views-form--stacked & {
+        flex: 0 1 100%;
       }
     }
+  }
 
-    .form-group {
-      margin: 0 1rem 1rem;
-    }
+  .form-group {
+    margin: 0 1rem 1rem;
   }
 }
 
+// Background color overrides.
 .bg-black,
 .bg-dark {
   .pager__item.pager__item--ellipsis {
@@ -214,7 +215,6 @@
     color: white;
   }
 }
-
 // feed icons
 .feed-icons {
   .bttn {
