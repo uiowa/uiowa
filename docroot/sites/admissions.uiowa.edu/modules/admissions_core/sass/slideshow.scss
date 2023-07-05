@@ -1,14 +1,33 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
 
-$t: 2.5s;
 $slides: 28;
 
 .view-content {
-  --time: 2.5;
+  counter-reset: slide;
+  --time: 2.5s;
   --animation-fn-1: cubic-bezier(0.8, 0.00, 0.1, 1);
   --animation-fn-2: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+  --banner-animation: none;
+  --banner-animation-delay: none;
   --slides: 28;
+}
+
+.view-slideshow {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 10px);
+  }
+
+  #{100% / $slides} {
+    opacity: 0;
+    transform: translate3d(-9999px, 0, -10px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-9999px, 0, -10px);
+  }
 }
 
 body,
@@ -26,7 +45,7 @@ nav.nav--horizontal {
 }
 
 .list-container:not([class*=grid]) .list-container__inner > div+div {
-  margin-top: 0!important;
+  margin-top: 0 !important;
 }
 
 .view-content.list-container__inner {
@@ -39,20 +58,16 @@ nav.nav--horizontal {
 }
 
 .banner {
-  position: absolute!important;
+  counter-increment: slide;
+  position: absolute !important;
   height: 100%;
   width: 100%;
   opacity: 0;
   transform: translate3d(-100%, 0, -10px);
 
   will-change: opacity, transform;
-  animation: showHideSlide infinite $t*$slides*2 steps(1);
-
-  @for $i from 1 through $slides {
-    &:nth-child(#{$i}) {
-      animation-delay: $t * ($i - 1) * 2;
-    }
-  }
+  animation:var(--banner-animation);
+  animation-delay: var(--banner-animation-delay);
 
   &__text p {
     font-size: 3vmin;
@@ -61,7 +76,7 @@ nav.nav--horizontal {
   // Pre-title.
   &__pre-title {
     display: inline-grid;
-    font-size: 3vmin!important;
+    font-size: 3vmin !important;
 
     div.field__item, p.field__item {
       font-size: inherit;
@@ -81,7 +96,7 @@ nav.nav--horizontal {
 
   // List
   &--list {
-    height: 100vh!important;
+    height: 100vh !important;
   }
 
   // Image
@@ -99,13 +114,13 @@ nav.nav--horizontal {
     transform: rotate(-45deg) scale(1.1);
 
     will-change: transform, animation-timing-function;
-    animation: bgInOut $t*4 -$t*2 infinite;
+    animation: bgInOut calc(var(--time) * 4 - var(--time) * 2) infinite;
   }
 
   // Container
   .banner__container {
     position: absolute;
-    top: 50%!important;
+    top: 50% !important;
     left: 50%;
     transform: translate3d(-50%,-50%,0);
     color: white;
@@ -134,7 +149,7 @@ nav.nav--horizontal {
     transform: rotate(0deg);
 
     will-change: transform;
-    animation: rotateFrame $t*4 linear infinite;
+    animation: rotateFrame calc(var(--time) * 4) linear infinite;
 
     &:after,
     &:before {
@@ -154,13 +169,13 @@ nav.nav--horizontal {
     &:before {
       bottom: 50%;
 
-      animation: openTop $t*2 infinite;
+      animation: openTop calc(var(--time) * 2) infinite;
     }
 
     &:after {
       top: 50%;
 
-      animation: openBottom $t*2 infinite;
+      animation: openBottom calc(var(--time) * 2) infinite;
     }
   }
 }
