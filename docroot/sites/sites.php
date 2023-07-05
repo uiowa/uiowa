@@ -455,12 +455,6 @@ $sites['sitescelebrationofexcellence.dev.drupal.uiowa.edu'] = 'celebrationofexce
 $sites['sitescelebrationofexcellence.stage.drupal.uiowa.edu'] = 'celebrationofexcellence.sites.uiowa.edu';
 $sites['sitescelebrationofexcellence.prod.drupal.uiowa.edu'] = 'celebrationofexcellence.sites.uiowa.edu';
 
-// Directory aliases for equityimplemented.sites.uiowa.edu.
-$sites['sitesequityimplemented.uiowa.ddev.site'] = 'equityimplemented.sites.uiowa.edu';
-$sites['sitesequityimplemented.dev.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
-$sites['sitesequityimplemented.stage.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
-$sites['sitesequityimplemented.prod.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
-
 // Directory aliases for uiadvise.sites.uiowa.edu.
 $sites['sitesuiadvise.uiowa.ddev.site'] = 'uiadvise.sites.uiowa.edu';
 $sites['sitesuiadvise.dev.drupal.uiowa.edu'] = 'uiadvise.sites.uiowa.edu';
