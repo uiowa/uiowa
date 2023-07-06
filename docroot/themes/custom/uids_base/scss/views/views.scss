@@ -86,7 +86,6 @@
   }
 }
 
-
 .views-exposed-form:not([class*="bef"]) {
   .form--inline {
     @include breakpoint(sm) {
@@ -213,6 +212,7 @@
     color: white;
   }
 }
+
 // feed icons
 .feed-icons {
   .bttn {
@@ -247,6 +247,10 @@
     .view-filters {
       grid-area: 2/1/6/2;
       min-width: 200px;
+    }
+
+    .attachment.attachment-before {
+      grid-area: 7 / 2 / 8 / 5;
     }
 
     .view-content,

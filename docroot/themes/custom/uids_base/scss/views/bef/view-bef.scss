@@ -1,64 +1,13 @@
 @import "../../../uids3/assets/scss/variables";
 @import "../../../uids3/assets/scss/utilities";
-// bef--secondary is for the advanced details toggle on bef forms.
-@import "view-bef--secondary";
+
 // bef--sidebar is for the styling the advanced details toggle within a sidebar column.
 @import "view-bef--sidebar";
-
 // Use "bef-form" class for a full-width wide search box within a one column layout.
 // Use "bef-form bef-form--sidebar" if you want the same design within a sidebar column.
 
+// === BEF Form === //
 .bef-form {
-
-  // Modifier to hide labels.
-  &--label-hidden {
-    label:not(.option) {
-      @include element-invisible;
-    }
-  }
-
-  details {
-    &.form-wrapper {
-      display: block;
-      border: 1px solid #c4c4c4;
-      background: #fff;
-    }
-
-    .details-wrapper {
-      padding: 0 1rem 1rem;
-    }
-
-    summary {
-      position: relative;
-      padding: 1rem;
-      cursor: pointer;
-    }
-
-    &[open] > summary {
-      border-bottom: 1px solid;
-      border-color: #c4c4c4;
-      margin-bottom: 1em;
-    }
-  }
-
-  .form-type-textfield,
-  .form-type-select {
-    @include breakpoint(sm) {
-      grid-area: 1 / 1 / 2 / 3;
-    }
-  }
-
-  .form-actions {
-    display: flex;
-    gap: 1rem;
-    @include breakpoint(md) {
-      gap: .7rem;
-    }
-    @include breakpoint(sm) {
-      grid-area: 1 / 3 / 3 / 4;
-    }
-  }
-
   .uids-content {
     .form-item {
       &.form-type-checkbox {
@@ -67,76 +16,225 @@
         }
       }
     }
+  }
+  // Modifier to hide labels.
+  &--label-hidden {
+    label:not(.option) {
+      @include element-invisible;
+    }
+  }
 
+  .form-type-select,
+  .form-type-textfield {
+    @include breakpoint(sm) {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+  }
+}
+// === End BEF Form base styles === //
+
+// === BEF Summary & Details === //
+.bef-form {
+  .bef--secondary[open] {
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+  }
+
+  .bef--secondary[open] > summary {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding: 0 0 #{2 * $xsm-sm};
+  }
+
+  summary {
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display: none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm 0.6rem $xsm $xsm;
+    content: "\f13a";
+    color: $brand-cool-gray;
+    @include fas();
+  }
+
+  &[open] > summary::before {
+    content: "\f139";
+  }
+
+  > .details-wrapper {
+    padding: 0;
+  }
+
+  details {
+    --elemHeight: 3.5rem;
+    flex: 1;
+    background: unset;
+    border: unset;
+    position: relative;
+
+    &.form-wrapper {
+      border: none;
+      background: none;
+    }
+
+    &[open] > summary::before {
+      content: "\f139";
+    }
+
+    &.form-item {
+      > .details-wrapper {
+        background: $white;
+        overflow: auto;
+        max-height: 346px;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: var(--elemHeight);
+        padding: 0.5rem;
+        margin: 0;
+        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+        color: $grey;
+        border: 1px solid $grey-light;
+        background-color: $white;
+        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        &:before {
+          padding-left: 0;
+        }
+      }
+    }
+
+    .details-wrapper {
+      .bef-checkboxes {
+        padding: 0.5rem 0;
+
+        .form-item:first-child {
+          margin-top: 0.5rem;
+        }
+      }
+
+      .form-type-checkbox.form-item {
+        padding: 0 0.5rem;
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  &:not([class*="bef-form--sidebar"]) {
+    details {
+      .details-wrapper .details-wrapper {
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $grey-light;
+        position: absolute;
+        padding: 0;
+        top: calc(var(--elemHeight) - 1px);
+        width: calc(100% - 2px);
+      }
+    }
+  }
+}
+// === End Summary & Details === //
+
+// === "Select all" toggle  === //
+.bef-form {
+  .bef-toggle {
+    padding: #{2 * $xsm-sm} $xsm-sm;
+    display: block;
+    border: none;
+    border-bottom: 1px solid $grey-light;
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: $grey;
+
+    &:focus {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
+// === End "Select all" toggle  === //
+
+// === Form Actions === //
+.bef-form {
+  .form-actions {
     [type="submit"] {
       padding: 1rem 1.25rem;
+    }
+    display: flex;
+    gap: 1rem;
+    @include breakpoint(md) {
+      gap: 0.7rem;
+    }
+    @include breakpoint(sm) {
+      grid-area: 1 / 3 / 3 / 4;
     }
   }
 
   .bef-exposed-form {
+    padding: 1.5rem;
 
-
-    &.uids-content {
-      padding: 1.5rem;
-
-      .form-actions {
-        margin: 0;
-      }
-
-      // Sort select.
-      &[data-drupal-form-fields*="edit-reset--"] {
-        .form-item:not(:last-child).form-item-sort-bef-combine {
-          @include breakpoint(sm) {
-            width: calc(100% + 236px);
-          }
-        }
-      }
-
-      .form-item:not(:last-child).form-item-sort-bef-combine {
-        padding: 0 0 1rem 0;
-        grid-column: 1/-1;
+    &[data-drupal-form-fields*="edit-reset--"] {
+      .bef--secondary {
         @include breakpoint(sm) {
-          background: #fff;
-          margin: 1rem -2rem -3rem -1.5rem;
-          padding: 2rem 0rem 1rem 0;
-          grid-area: 3/ 1/ 3 / 3;
-          width: calc(100% + 141px);
-        }
-        select {
-          @include breakpoint(sm) {
-            width: auto;
-          }
+          width: calc(100% + 173px);
         }
       }
+    }
 
-      .form-item {
-          margin-top: 0;
-          margin-bottom: 0;
-        margin-right: 0;
-        @include breakpoint(sm) {
-          margin-right: 1rem;
-          &:last-child {
-            margin-right: 0;
-          }
-        }
+    .button {
+      flex: 1;
+    }
 
-        > &.form-type-textfield:first-of-type {
+    .form-actions {
+      margin: 0;
+    }
+
+    .form-item {
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-right: 0;
+      @include breakpoint(sm) {
+        margin-right: 1rem;
+
+        &:last-child {
           margin-right: 0;
         }
       }
 
-      .form-item .form-item {
-       // margin: 0;
-      }
-
-      .button {
-        flex: 1;
-
-        &[data-drupal-selector*="edit-reset"] {
-          @include breakpoint(md) {
-            //margin-left: 0.7rem;
-          }
-        }
+      > &.form-type-textfield:first-of-type {
+        margin-right: 0;
       }
     }
 
@@ -153,17 +251,46 @@
     .select-wrapper {
       margin-right: 0;
     }
-
-
   }
 }
+// === End Form Actions === //
+
+// === BEF Secondary === //
+// bef--secondary is for the advanced details toggle on bef forms. //
+
+.bef-form {
+  .bef--secondary {
+    @include breakpoint(sm) {
+      grid-area: 2 / 1 / 3 / 3;
+    }
+
+    .details-wrapper {
+      @include breakpoint(sm) {
+        display: flex;
+      }
+    }
+
+    .js-form-item {
+      flex: 1;
+    }
+    @include breakpoint(sm) {
+      width: calc(100% + 84px);
+      padding-top: #{3 * $xsm-sm};
+      margin-top: $xsm-sm;
+    }
+
+    &.form-wrapper {
+      border: none;
+      @include breakpoint(sm) {
+        border-top: 1px solid $grey-light;
+      }
+      background: none;
+    }
+  }
+}
+// === End BEF Secondary === //
 
 // Override module float.
 .bef-exposed-form .form--inline .form-item {
   float: none;
 }
-
-
-
-
-
