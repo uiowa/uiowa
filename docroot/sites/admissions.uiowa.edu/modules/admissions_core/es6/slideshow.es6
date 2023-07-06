@@ -6,33 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
     slide.style.setProperty(
       '--data-slide-index', index.toString()
     );
+
     slide.style.setProperty(
       '--banner-animation-delay',
       'calc(var(--time) * var(--data-slide-index) * 2)'
     );
   });
-
-  const keyframeString =
-    '@keyframes showHideSlide {\
-        0% {\
-          opacity: 1;\
-          transform: translate3d(0, 0, 10px);\
-        }\
-    \
-        ' + (100 / slides.length).toString() + ' {\
-          opacity: 0;\
-          transform: translate3d(-9999px, 0, -10px);\
-        }\
-    \
-        100% {\
-          opacity: 0;\
-          transform: translate3d(-9999px, 0, -10px);\
-        }\
-      }'
-  ;
-
-
-
 
   container.style.setProperty(
     '--slides',
@@ -45,4 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
     infinite calc(var(--time) * var(--slides) * 2) \
     steps(1)'
   );
+
+  container.classList.add('animate');
 });

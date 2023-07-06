@@ -11,23 +11,9 @@ $slides: 28;
   --banner-animation: none;
   --banner-animation-delay: none;
   --slides: 28;
-}
 
-.view-slideshow {
-  0% {
-    opacity: 1;
-    transform: translate3d(0, 0, 10px);
-  }
-
-  #{100% / $slides} {
-    opacity: 0;
-    transform: translate3d(-9999px, 0, -10px);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(-9999px, 0, -10px);
-  }
+  animation: none;
+  will-change: animation;
 }
 
 body,
@@ -64,10 +50,14 @@ nav.nav--horizontal {
   width: 100%;
   opacity: 0;
   transform: translate3d(-100%, 0, -10px);
+  animation: none;
+  animation-delay: 0s;
+  will-change: opacity, transform, animation, animation-delay;
 
-  will-change: opacity, transform;
-  animation:var(--banner-animation);
-  animation-delay: var(--banner-animation-delay);
+  .animate & {
+    animation: var(--banner-animation);
+    animation-delay: var(--banner-animation-delay);
+  }
 
   &__text p {
     font-size: 3vmin;
@@ -110,11 +100,6 @@ nav.nav--horizontal {
     background-position: center;
     background-color: var(--brand-secondary);
     opacity: 1;
-    z-index: -1;
-    transform: rotate(-45deg) scale(1.1);
-
-    will-change: transform, animation-timing-function;
-    animation: bgInOut calc(var(--time) * 4 - var(--time) * 2) infinite;
   }
 
   // Container
@@ -130,7 +115,6 @@ nav.nav--horizontal {
     opacity: 1;
     text-align: center;
     text-shadow: 0 0 0.5em rgba(0,0,0,0.25);
-    mix-blend-mode: lighten;
 
     h3 {
       font-size: 9vmin;
@@ -147,9 +131,25 @@ nav.nav--horizontal {
     pointer-events: none;
     z-index: 2;
     transform: rotate(0deg);
-
     will-change: transform;
-    animation: rotateFrame calc(var(--time) * 4) linear infinite;
+    animation: none;
+
+    .animate & {
+      animation: rotateFrame calc(var(--time) * 4) linear infinite;
+
+      &:after,
+      &:before {
+        animation-timing-function: var(--animation-fn-1);
+      }
+
+      &:before {
+        animation: openTop calc(var(--time) * 2) infinite;
+      }
+
+      &:after {
+        animation: openBottom calc(var(--time) * 2) infinite;
+      }
+    }
 
     &:after,
     &:before {
@@ -159,27 +159,24 @@ nav.nav--horizontal {
       width: 100%;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
-      animation-timing-function: var(--animation-fn-1);
+      animation-timing-function: unset;
       background-color: var(--brand-secondary);
       //background-image: url(https://admissions.uiowa.edu/themes/custom/uids_base/uids/assets/images/brain-pattern-black.svg);
       pointer-events: auto;
-      will-change: transform, animation-timing-function;
+      will-change: transform, animation-timing-function, animation;
     }
 
     &:before {
       bottom: 50%;
-
-      animation: openTop calc(var(--time) * 2) infinite;
     }
 
     &:after {
       top: 50%;
-
-      animation: openBottom calc(var(--time) * 2) infinite;
     }
   }
 }
 
+// @todo: find a way to not need a hardcoded $slides variable.
 .view-slideshow {
   @keyframes showHideSlide {
     0% {
@@ -187,6 +184,7 @@ nav.nav--horizontal {
       transform: translate3d(0, 0, 10px);
     }
 
+    //
     #{100% / $slides} {
       opacity: 0;
       transform: translate3d(-9999px, 0, -10px);
@@ -198,29 +196,6 @@ nav.nav--horizontal {
     }
   }
 
-  @keyframes bgInOut {
-    0% {
-      transform: rotate(-45deg) scale(1.1);
-      animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-    }
-
-    33% {
-      transform: rotate(0deg);
-    }
-
-    50% {
-      transform: rotate(0deg);
-    }
-
-    66% {
-      transform: rotate(0deg);
-      animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-    }
-
-    100% {
-      transform: rotate(45deg) scale(0.9);
-    }
-  }
 
   @keyframes rotateFrame {
     0% {
