@@ -1,0 +1,21 @@
+uuid: 79283185-3a93-4993-ab20-e64cbcc2b3f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_affected_bus_routes
+    - node.type.alert
+  module:
+    - options
+id: node.alert.field_alert_affected_bus_routes
+field_name: field_alert_affected_bus_routes
+entity_type: node
+bundle: alert
+label: 'Affected bus routes'
+description: 'Check the bus route(s) affected by this alert.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
