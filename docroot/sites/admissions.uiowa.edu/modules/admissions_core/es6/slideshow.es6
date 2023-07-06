@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", function() {
     slides.length.toString()
   );
 
+  const animationStyle = document.createElement('style');
+  animationStyle.innerHTML = styleString(slides.length);
+  container.parentElement.insertBefore(animationStyle, container);
+
   container.style.setProperty(
     '--banner-animation',
     'showHideSlide \
@@ -27,3 +31,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
   container.classList.add('animate');
 });
+
+
+function styleString(slideCount) {
+  let styleString =
+    '@keyframes showHideSlide {\
+        0% {\
+          opacity: 1;\
+          transform: translate3d(0, 0, 10px);\
+        }\
+        \
+        '+ (100 / slideCount).toString() + '% {\
+          opacity: 0;\
+          transform: translate3d(-9999px, 0, -10px);\
+        }\
+        \
+        100% {\
+          opacity: 0;\
+          transform: translate3d(-9999px, 0, - 10px);\
+        }\
+      }';
+  return styleString;
+}

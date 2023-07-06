@@ -1,8 +1,6 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
 
-$slides: 28;
-
 .view-content {
   counter-reset: slide;
   --time: 2.5s;
@@ -183,25 +181,6 @@ nav.nav--horizontal {
 
 // @todo: find a way to not need a hardcoded $slides variable.
 .view-slideshow {
-  @keyframes showHideSlide {
-    0% {
-      opacity: 1;
-      transform: translate3d(0, 0, 10px);
-    }
-
-    //
-    #{100% / $slides} {
-      opacity: 0;
-      transform: translate3d(-9999px, 0, -10px);
-    }
-
-    100% {
-      opacity: 0;
-      transform: translate3d(-9999px, 0, -10px);
-    }
-  }
-
-
   @keyframes rotateFrame {
     0% {
       transform: rotate(0deg);
