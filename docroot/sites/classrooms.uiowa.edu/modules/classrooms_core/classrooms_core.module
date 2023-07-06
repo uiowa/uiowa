@@ -611,36 +611,6 @@ function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) 
 }
 
 /**
- * Implements hook_views_pre_render().
- *
- * Move the "results" block (with the "record N of N of NNN" verbiage) out of
- * the header and into the space between the exposed filters and the query
- * results.
- */
-function classrooms_core_views_pre_render(ViewExecutable $view) {
-  if (
-  // Check if the view name is "room_list".
-    $view->id() === 'room_list'
-  // Check if the handler for the header display and result plugin exists.
-    && !!($handler = $view->display_handler->getHandler('header', 'result'))
-  ) {
-    // Render the "result" block content with a custom wrapper around it (as it
-    // renders without a wrapper by default).
-    $handler->options['content'] =
-      '<div class="results-header"><p><small>'
-      . $handler->options['content']
-      . '<hr class="element--spacer-separator" /></small></p></div>';
-    $render = $handler->render();
-    $view->attachment_before[] = $render;
-
-    // re-render the "result" block so that it will display nothing in the
-    // header area.
-    $handler->options['content'] = '';
-    $handler->render();
-  }
-}
-
-/**
  * Implements template_preprocess_views_view().
  */
 function classrooms_core_preprocess_views_view(&$variables) {
