@@ -70,6 +70,7 @@ nav.nav--horizontal {
 
     &.headline--uppercase {
       font-family: "Zilla Slab", serif;
+      text-transform: none;
     }
 
     div.field__item, p.field__item {
@@ -128,10 +129,10 @@ nav.nav--horizontal {
   // Shutter
   &__shutters {
     position: absolute;
-    height: 200vh;
-    width: 200vw;
-    left: calc(50% - 100vw);
-    top: calc(-50vh);
+    height: 200vmax;
+    width: 200vmax;
+    left: calc(50vw - 100vmax);
+    top: calc(50vh - 100vmax);
     pointer-events: none;
     z-index: 2;
     transform: rotate(0deg);
