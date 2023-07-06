@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for facilities_core.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function facilities_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function facilities_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Enable sitenow_alerts before importing config.
+ */
+function facilities_core_update_9001() {
+  // This site does not have the 'sitenow_alerts' split enabled.
+  $source = new FileStorage('../config/default');
+
+  // Create the split in active config and import config_ignore settings
+  // otherwise the status will be imported as false (and everything will be
+  // deleted on cim) since that is what exists in the default split config.
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write(
+    'config_split.config_split.sitenow_alerts',
+    $source->read('config_split.config_split.sitenow_alerts')
+  );
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+
+  // Enable the 'sitenow_alerts' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.sitenow_alerts');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
