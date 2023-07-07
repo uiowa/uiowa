@@ -33,8 +33,10 @@
         }
 
         .button {
-          flex-basis: 100%;
           margin: 0 0 1rem;
+          @include breakpoint(sm) {
+            flex-basis: 100%;
+          }
         }
       }
 
