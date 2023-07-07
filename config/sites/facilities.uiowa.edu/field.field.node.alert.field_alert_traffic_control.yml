@@ -1,0 +1,23 @@
+uuid: 4a8e658d-3700-493a-89d5-83489f072763
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_traffic_control
+    - node.type.alert
+id: node.alert.field_alert_traffic_control
+field_name: field_alert_traffic_control
+entity_type: node
+bundle: alert
+label: 'Traffic control'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
