@@ -2,13 +2,12 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
 
 .view-content {
-  counter-reset: slide;
   --time: 2.5s;
   --animation-fn-1: cubic-bezier(0.8, 0.00, 0.1, 1);
   --animation-fn-2: cubic-bezier(0.600, 0.040, 0.980, 0.335);
   --banner-animation: none;
   --banner-animation-delay: none;
-  --slides: 28;
+  --slides: 0;
 
   animation: none;
   will-change: animation;
@@ -42,7 +41,6 @@ nav.nav--horizontal {
 }
 
 .banner {
-  counter-increment: slide;
   position: absolute !important;
   height: 100%;
   width: 100%;
@@ -164,7 +162,6 @@ nav.nav--horizontal {
       transform: translate3d(-50%, 0, 0);
       animation-timing-function: unset;
       background-color: var(--brand-secondary);
-      //background-image: url(https://admissions.uiowa.edu/themes/custom/uids_base/uids/assets/images/brain-pattern-black.svg);
       pointer-events: auto;
       will-change: transform, animation-timing-function, animation;
     }
@@ -179,7 +176,6 @@ nav.nav--horizontal {
   }
 }
 
-// @todo: find a way to not need a hardcoded $slides variable.
 .view-slideshow {
   @keyframes rotateFrame {
     0% {
