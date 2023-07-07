@@ -5452,3 +5452,9 @@ $sites['labbeichel.uiowa.ddev.site'] = 'beichel.lab.uiowa.edu';
 $sites['labbeichel.dev.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
 $sites['labbeichel.stage.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
 $sites['labbeichel.prod.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
+
+// Directory aliases for kusiak.lab.uiowa.edu.
+$sites['labkusiak.uiowa.ddev.site'] = 'kusiak.lab.uiowa.edu';
+$sites['labkusiak.dev.drupal.uiowa.edu'] = 'kusiak.lab.uiowa.edu';
+$sites['labkusiak.stage.drupal.uiowa.edu'] = 'kusiak.lab.uiowa.edu';
+$sites['labkusiak.prod.drupal.uiowa.edu'] = 'kusiak.lab.uiowa.edu';
