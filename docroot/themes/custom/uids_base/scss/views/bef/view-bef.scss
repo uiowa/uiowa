@@ -189,9 +189,6 @@
 // === Form Actions === //
 .bef-form {
   .form-actions {
-    [type="submit"] {
-      padding: 1rem 1.25rem;
-    }
     display: flex;
     gap: 1rem;
     @include breakpoint(md) {
@@ -208,13 +205,19 @@
     &[data-drupal-form-fields*="edit-reset--"] {
       .bef--secondary {
         @include breakpoint(sm) {
-          width: calc(100% + 173px);
+          width: calc(100% + 163px);
+        }
+        @include breakpoint(md) {
+          width: calc(100% + 194px);
         }
       }
     }
 
     .button {
       flex: 1;
+      @include breakpoint(md) {
+        min-width: 5.75rem;
+      }
     }
 
     .form-actions {
@@ -225,9 +228,8 @@
       margin-top: 0;
       margin-bottom: 0;
       margin-right: 0;
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         margin-right: 1rem;
-
         &:last-child {
           margin-right: 0;
         }
@@ -235,6 +237,12 @@
 
       > &.form-type-textfield:first-of-type {
         margin-right: 0;
+      }
+    }
+
+    .form--inline > .form-item.form-type-textfield {
+      @include breakpoint(sm) {
+        margin-right: 1rem;
       }
     }
 
@@ -265,7 +273,7 @@
     }
 
     .details-wrapper {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         display: flex;
       }
     }
@@ -274,9 +282,12 @@
       flex: 1;
     }
     @include breakpoint(sm) {
-      width: calc(100% + 84px);
+      width: calc(100% + 74px);
       padding-top: #{3 * $xsm-sm};
       margin-top: $xsm-sm;
+    }
+    @include breakpoint(md) {
+      width: calc(100% + 91px);
     }
 
     &.form-wrapper {

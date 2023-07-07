@@ -62,8 +62,12 @@
   &.uids-content:not(.uids-search) {
     .button {
       @include bttn--secondary;
-      padding-top: 13px;
-      padding-bottom: 13px;
+      max-height: 3.45rem;
+      padding: 1rem 1.25rem;
+      font-size: clamp(0.9rem, calc(0.7887vw + 0.6042rem), 1.25rem);
+      @include breakpoint(md) {
+        padding: 0.9rem 1.25rem 1.1rem;
+      }
     }
 
     input[id^='edit-reset'] {
@@ -171,8 +175,6 @@
   .button {
     @include bttn--secondary;
     border: 0;
-    padding-top: 13px;
-    padding-bottom: 13px;
   }
 
   .js-form-item {
