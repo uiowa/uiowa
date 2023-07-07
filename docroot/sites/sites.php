@@ -5476,3 +5476,9 @@ $sites['labchristensen.uiowa.ddev.site'] = 'christensen.lab.uiowa.edu';
 $sites['labchristensen.dev.drupal.uiowa.edu'] = 'christensen.lab.uiowa.edu';
 $sites['labchristensen.stage.drupal.uiowa.edu'] = 'christensen.lab.uiowa.edu';
 $sites['labchristensen.prod.drupal.uiowa.edu'] = 'christensen.lab.uiowa.edu';
+
+// Directory aliases for pksaha.lab.uiowa.edu.
+$sites['labpksaha.uiowa.ddev.site'] = 'pksaha.lab.uiowa.edu';
+$sites['labpksaha.dev.drupal.uiowa.edu'] = 'pksaha.lab.uiowa.edu';
+$sites['labpksaha.stage.drupal.uiowa.edu'] = 'pksaha.lab.uiowa.edu';
+$sites['labpksaha.prod.drupal.uiowa.edu'] = 'pksaha.lab.uiowa.edu';
