@@ -265,7 +265,6 @@ function sitenow_events_node_view(array &$build, EntityInterface $node, EntityVi
       $googleMapsLink = 'https://www.google.com/maps?q=' . $latlong;
 
       // Add the constructed link as an extra field.
-      // Add the constructed link as an extra field.
       $build['google_maps_link'] = [
         '#type' => 'link',
         '#title' => 'View on Google Maps',
@@ -275,7 +274,6 @@ function sitenow_events_node_view(array &$build, EntityInterface $node, EntityVi
             'target' => '_blank',
           ],
         ],
-        // Adjust the weight to control the field's position.
         '#weight' => 10,
       ];
     }
