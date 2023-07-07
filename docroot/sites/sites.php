@@ -5446,3 +5446,9 @@ $sites['writersworkshopfictionawards.uiowa.ddev.site'] = 'fictionawards.writersw
 $sites['writersworkshopfictionawards.dev.drupal.uiowa.edu'] = 'fictionawards.writersworkshop.uiowa.edu';
 $sites['writersworkshopfictionawards.stage.drupal.uiowa.edu'] = 'fictionawards.writersworkshop.uiowa.edu';
 $sites['writersworkshopfictionawards.prod.drupal.uiowa.edu'] = 'fictionawards.writersworkshop.uiowa.edu';
+
+// Directory aliases for beichel.lab.uiowa.edu.
+$sites['labbeichel.uiowa.ddev.site'] = 'beichel.lab.uiowa.edu';
+$sites['labbeichel.dev.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
+$sites['labbeichel.stage.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
+$sites['labbeichel.prod.drupal.uiowa.edu'] = 'beichel.lab.uiowa.edu';
