@@ -2,7 +2,6 @@
 
 namespace Drupal\classrooms_core\Entity;
 
-use Drupal\Core\Url;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
