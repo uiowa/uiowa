@@ -289,7 +289,7 @@ third_party_settings:
                   add_classes: false
                   time_wrapper: true
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -350,6 +350,17 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4bfc541b-ac96-4f5d-b3f0-273a90243b28
+            region: card_meta
+            configuration:
+              id: 'extra_field_block:node:event:google_maps_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -503,6 +514,11 @@ content:
       link: false
     third_party_settings: {  }
     weight: 7
+    region: content
+  google_maps_link:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
     region: content
   links:
     settings: {  }
