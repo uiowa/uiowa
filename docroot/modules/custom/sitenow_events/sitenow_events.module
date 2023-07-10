@@ -616,6 +616,23 @@ function sitenow_events_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_event_directions':
+      // Wrap the field output in a <details> tag.
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open;
+      $variables['items'][0]['content']['#suffix'] = \Drupal::service('renderer')->render($summary) . $details_close;
+      break;
+
     case 'field_event_geolocation':
       uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
