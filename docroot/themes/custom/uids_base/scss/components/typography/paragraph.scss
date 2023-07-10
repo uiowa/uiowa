@@ -72,3 +72,33 @@ iframe {max-width: 100%;}
 .block-field-blocknodepersonfield-person-bio p:last-child {
   margin-bottom: 0;
 }
+
+// Details.
+.uids-content details {
+  summary {
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display: none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm 0.6rem $xsm $xsm;
+    content: "\f13a";
+    color: $brand-cool-gray;
+    @include fas();
+  }
+
+  &[open] > summary::before {
+    content: "\f139";
+  }
+}
