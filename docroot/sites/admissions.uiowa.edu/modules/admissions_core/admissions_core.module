@@ -877,6 +877,7 @@ function admissions_core_preprocess_views_view(&$variables) {
 
     case 'areas_of_study':
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+      $variables['#attached']['library'][] = 'uids_base/view-bef';
       break;
 
     case 'areas_of_study_kiosk':
