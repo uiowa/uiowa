@@ -112,6 +112,18 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 }
 
 /**
+ * Implements template_preprocess_views_view().
+ */
+function sitenow_events_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'events') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+    $variables['#attached']['library'][] = 'uids_base/view-calendar';
+  }
+}
+
+/**
  * Implements hook_views_pre_build().
  */
 function sitenow_events_views_pre_build(ViewExecutable $view) {
