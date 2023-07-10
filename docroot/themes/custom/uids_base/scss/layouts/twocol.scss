@@ -5,17 +5,15 @@
   .layout__region--main,
   .layout__region-container {
     display: grid;
-    // Remove bottom gap from layouts.
-    row-gap: 0;
   }
   .layout__spacing_container {
     @include grid-base;
-    row-gap: 0;
   }
   &.layout--twocol--33-67 {
     .layout__spacing_container {
       @include breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
+        row-gap: 0;
         .layout__region--first {
           grid-area: 1 / 1 / 6 / 2;
         }
@@ -30,6 +28,7 @@
     .layout__spacing_container {
       @include breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
+        row-gap: 0;
         .layout__region--first,
         .layout__region--main {
           grid-area: 1 / 1 / 6 / 3;
@@ -46,6 +45,7 @@
     .layout__spacing_container {
       @include breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
+        row-gap: 0;
         .layout__region--first {
           grid-area: 1 / 1 / 6 / 2;
         }
@@ -60,6 +60,7 @@
     .layout__spacing_container {
       @include breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
+        row-gap: 0;
         .layout__region--first {
           grid-area: 1 / 1 / 6 / 4;
           @include inner-grid(75);
