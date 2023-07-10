@@ -7,7 +7,6 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -244,38 +243,6 @@ function sitenow_events_preprocess_page(&$variables) {
         '@settings_link' => $settings_link,
       ]);
       \Drupal::messenger()->addStatus($message_text);
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function sitenow_events_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
-  if ($node->bundle() === 'event') {
-    // Retrieve the geolocation field values from the current node.
-    $geolocation = $node->get('field_event_geolocation')->first();
-
-    // Check if the field has a value.
-    if ($geolocation) {
-      // Extract the latitude and longitude values.
-      $latlong = $geolocation->latlon;
-
-      // Construct the Google Maps link.
-      $googleMapsLink = 'https://www.google.com/maps?q=' . $latlong;
-
-      // Add the constructed link as an extra field.
-      $build['google_maps_link'] = [
-        '#type' => 'link',
-        '#title' => 'View on Google Maps',
-        '#url' => Url::fromUri($googleMapsLink),
-        '#options' => [
-          'attributes' => [
-            'target' => '_blank',
-          ],
-        ],
-        '#weight' => 10,
-      ];
     }
   }
 }
@@ -626,23 +593,6 @@ function sitenow_events_build_card(array $event): array {
 }
 
 /**
- * Implements hook_entity_extra_field_info().
- */
-function sitenow_events_entity_extra_field_info() {
-  $extra_fields = [];
-
-  // Define the extra field for the Google Maps link.
-  $extra_fields['node']['event']['display']['google_maps_link'] = [
-    'label' => t('Google Maps Link'),
-    'description' => t('A link to view the location on Google Maps.'),
-    'weight' => 10,
-    'visible' => TRUE,
-  ];
-
-  return $extra_fields;
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_events_preprocess_field(&$variables) {
@@ -664,6 +614,48 @@ function sitenow_events_preprocess_field(&$variables) {
       foreach ($variables["items"] as &$item) {
         $item['attributes']['class'] = 'tags-list__tag';
       }
+      break;
+
+    case 'field_event_geolocation':
+      uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      // Modify the field label.
+      $variables['label'] = t('Map');
+
+      // Retrieve the first item of the field values.
+      $geolocation = $variables['element']['#items']->first();
+
+      // Check if the field has a value.
+      if ($geolocation) {
+        // Access the 'latlon' value;.
+        $latlonValue = $geolocation->get('latlon')->getValue();
+
+        // Check if the 'latlon' value is available.
+        if (!empty($latlonValue)) {
+
+          // Construct the Google Maps link.
+          $googleMapsLink = 'https://www.google.com/maps?q=' . $latlonValue;
+
+          // Create the link element.
+          $link = [
+            '#type' => 'link',
+            '#title' => 'View on Google Maps',
+            '#url' => Url::fromUri($googleMapsLink),
+            '#options' => [
+              'attributes' => [
+                'target' => '_blank',
+              ],
+            ],
+          ];
+
+          // Render the link.
+          $link_render_array = \Drupal::service('renderer')->render($link);
+
+          // Modify the field value to include the link.
+          $variables['items'][0]['content']['#markup'] = $link_render_array;
+        }
+      }
+
       break;
 
     case 'field_event_location':
