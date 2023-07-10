@@ -5,6 +5,8 @@
 .layout--threecol {
   .layout__spacing_container {
     @include grid-base;
+    // Remove bottom gap from some layouts.
+    row-gap: 0;
   }
   &.layout--threecol--50-25-25 {
     .layout__spacing_container {
