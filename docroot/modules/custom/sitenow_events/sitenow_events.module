@@ -641,8 +641,8 @@ function sitenow_events_preprocess_field(&$variables) {
       ];
 
       // Wrap the field output in <details> tags and append the summary.
-      $variables['items'][0]['content']['#prefix'] = $details_open;
-      $variables['items'][0]['content']['#suffix'] = \Drupal::service('renderer')->render($summary) . $details_close;
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
       break;
 
     case 'field_event_geolocation':
