@@ -285,6 +285,17 @@ function housing_core_preprocess_field__node__title(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_views_view().
+ */
+function housing_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'residence_halls') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function housing_core_theme($existing, $type, $theme, $path) {
