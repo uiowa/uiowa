@@ -98,7 +98,12 @@ iframe {max-width: 100%;}
     @include fas();
   }
 
-  &[open] > summary::before {
-    content: "\f139";
+  &[open] {
+    > summary::before {
+      content: "\f139";
+    }
+    > summary {
+      margin-bottom: 1rem;
+    }
   }
 }
