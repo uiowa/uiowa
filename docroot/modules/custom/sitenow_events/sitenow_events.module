@@ -670,11 +670,6 @@ function sitenow_events_preprocess_field(&$variables) {
             '#type' => 'link',
             '#title' => 'View on Google Maps',
             '#url' => Url::fromUri($googleMapsLink),
-            '#options' => [
-              'attributes' => [
-                'target' => '_blank',
-              ],
-            ],
           ];
 
           // Render the link.
