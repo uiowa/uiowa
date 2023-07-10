@@ -176,7 +176,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -219,7 +219,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -289,7 +289,7 @@ third_party_settings:
                   add_classes: false
                   time_wrapper: true
                 third_party_settings: {  }
-            weight: 2
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -308,7 +308,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -330,12 +330,12 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 4af637aa-7d06-479c-9f2d-5a3a55e6d91d
-            region: main
+            region: card_meta
             configuration:
               id: 'field_block:node:event:field_event_directions'
               label: null
@@ -346,21 +346,31 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 4bfc541b-ac96-4f5d-b3f0-273a90243b28
+            uuid: 967dfcb2-deab-40ad-9084-dbc3700f8b72
             region: card_meta
             configuration:
-              id: 'extra_field_block:node:event:google_maps_link'
-              label_display: '0'
+              id: 'field_block:node:event:field_event_geolocation'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
-            weight: 1
+                view_mode: view_mode
+              formatter:
+                type: geofield_default
+                label: visually_hidden
+                settings:
+                  output_format: wkt
+                  output_escape: true
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -514,11 +524,6 @@ content:
       link: false
     third_party_settings: {  }
     weight: 7
-    region: content
-  google_maps_link:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
     region: content
   links:
     settings: {  }
