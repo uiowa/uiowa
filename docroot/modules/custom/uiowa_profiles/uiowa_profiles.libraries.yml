@@ -4,18 +4,18 @@ styles:
       assets/css/styles.css: { }
 
 client.test:
-  remote: https://profiles-test.uiowa.edu
+  remote: https://profiles-demo.uiowa.edu
   version: VERSION
   license: MIT
   js:
     js/uiowa-profiles.js: { }
     https://cdn.jsdelivr.net/npm/vue/dist/vue.js: { type: external, minified: true }
-    https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
+    https://profiles-demo.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
   dependencies:
     - core/drupalSettings
   css:
     theme:
-      https://profiles-test.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
+      https://profiles-demo.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
 
 client.prod:
   remote: https://profiles.uiowa.edu
