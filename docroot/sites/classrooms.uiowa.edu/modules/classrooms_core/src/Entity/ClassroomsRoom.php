@@ -68,14 +68,16 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
 
     // Add the building link field value to the #meta array.
     $building = \Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-    $number = $building->get('number');
-    $url = "https://www.facilities.uiowa.edu/building/{$number}";
-    $build['#meta']['building_link'] = [
-      '#theme' => 'building_link_teaser',
-      '#weight' => -1,
-      '#building_link' => $url,
-      '#building_name' => $building->label(),
-    ];
+    if ($building) {
+      $number = $building->get('number');
+      $url = "https://www.facilities.uiowa.edu/building/{$number}";
+      $build['#meta']['building_link'] = [
+        '#theme' => 'building_link_teaser',
+        '#weight' => -1,
+        '#building_link' => $url,
+        '#building_name' => $building->label(),
+      ];
+    }
 
   }
 
