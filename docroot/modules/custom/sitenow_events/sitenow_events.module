@@ -123,16 +123,6 @@ function sitenow_events_preprocess_views_view(&$variables) {
 }
 
 /**
- * Implements template_preprocess_views_view_unformatted().
- */
-function sitenow_events_preprocess_views_view_unformatted(&$variables) {
-  // Check if the current view has a specific ID or display ID.
-  if ($variables['view']->id() == 'events') {
-    $variables['views_heading_classes'][] = 'headline headline--serif headline--underline block__headline';
-  }
-}
-
-/**
  * Implements hook_views_pre_build().
  */
 function sitenow_events_views_pre_build(ViewExecutable $view) {
