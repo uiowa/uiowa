@@ -5494,3 +5494,9 @@ $sites['labinfant-communication-development.uiowa.ddev.site'] = 'infant-communic
 $sites['labinfant-communication-development.dev.drupal.uiowa.edu'] = 'infant-communication-development.lab.uiowa.edu';
 $sites['labinfant-communication-development.stage.drupal.uiowa.edu'] = 'infant-communication-development.lab.uiowa.edu';
 $sites['labinfant-communication-development.prod.drupal.uiowa.edu'] = 'infant-communication-development.lab.uiowa.edu';
+
+// Directory aliases for adhd.lab.uiowa.edu.
+$sites['labadhd.uiowa.ddev.site'] = 'adhd.lab.uiowa.edu';
+$sites['labadhd.dev.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
+$sites['labadhd.stage.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
+$sites['labadhd.prod.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
