@@ -268,6 +268,8 @@ function sitenow_events_preprocess_block(&$variables) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_virtual':
     case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_geolocation':
+    case 'field_block:node:event:field_event_directions':
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
