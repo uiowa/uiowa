@@ -37,7 +37,6 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => [
         'field_event_when',
         'field_event_status',
-        'field_event_attendance',
         'field_event_virtual',
         'field_event_performer',
       ],

@@ -123,6 +123,16 @@ function sitenow_events_preprocess_views_view(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_views_view_unformatted().
+ */
+function sitenow_events_preprocess_views_view_unformatted(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'events') {
+    $variables['views_heading_classes'][] = 'headline headline--serif headline--underline block__headline';
+  }
+}
+
+/**
  * Implements hook_views_pre_build().
  */
 function sitenow_events_views_pre_build(ViewExecutable $view) {
@@ -613,7 +623,7 @@ function sitenow_events_preprocess_field(&$variables) {
       $field_label = $variables['element']['#title'];
       uiowa_core_set_attributes($variables, 'element--inline');
       if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
-        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
+        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--cool-gray">' . $field_label . '</span>';
       }
       else {
         uiowa_core_set_attributes($variables, 'sr-only');

@@ -16,7 +16,8 @@
  */
 #}
 {% if title %}
-  <h3>{{ title }}</h3>
+  {% set views_heading_attributes = views_heading_attributes ?: create_attribute() %}
+  <h3 {{ views_heading_attributes.addclass(views_heading_classes) }}>{{ title }}</h3>
 {% endif %}
 {% for row in rows %}
   {%
