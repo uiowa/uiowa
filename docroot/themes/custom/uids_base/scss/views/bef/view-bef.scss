@@ -48,6 +48,33 @@
     padding: 0 0 #{2 * $xsm-sm};
   }
 
+  summary {
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display: none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm 0.6rem $xsm $xsm;
+    content: "\f13a";
+    color: $brand-cool-gray;
+    @include fas();
+  }
+
+  &[open] > summary::before {
+    content: "\f139";
+  }
+
   > .details-wrapper {
     padding: 0;
   }
@@ -62,6 +89,10 @@
     &.form-wrapper {
       border: none;
       background: none;
+    }
+
+    &[open] > summary::before {
+      content: "\f139";
     }
 
     &.form-item {
