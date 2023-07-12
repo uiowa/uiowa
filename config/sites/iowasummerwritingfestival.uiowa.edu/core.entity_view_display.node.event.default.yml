@@ -198,7 +198,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -241,7 +241,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -354,7 +354,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -397,12 +397,12 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
             uuid: a98d3301-d3d8-4eca-b307-ccafb0fd4e9e
-            region: main
+            region: card_meta
             configuration:
               id: 'field_block:node:event:field_event_directions'
               label: null
@@ -413,10 +413,31 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
             weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ca17b643-1e4a-4ff0-849d-086f5a3fbe2a
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_geolocation'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: geofield_default
+                label: visually_hidden
+                settings:
+                  output_format: wkt
+                  output_escape: true
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
