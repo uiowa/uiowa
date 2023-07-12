@@ -325,8 +325,12 @@ class MauiApi {
    * @return mixed
    *   The API response data.
    */
-  public function getClassroomsData() {
-    return $this->request('GET', '/pub/registrar/courses/AstraBldgRmCompleteList/list');
+  public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM') {
+    return $this->request('GET',
+      '/pub/facilityBuildingRoom/list',
+      [
+        'roomCategory' => $room_category,
+      ]);
   }
 
 }

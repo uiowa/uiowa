@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labadhd.uiowa.ddev.site
+    protocol: https
+  machine_name: labadhd
+  human_name: adhd.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labadhd.prod
+drupal:
+  db:
+    database: adhd_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labadhd.prod.drupal.uiowa.edu'
+  requester: mnikolas
+  site-name: 'Iowa ADHD and Development Lab'
