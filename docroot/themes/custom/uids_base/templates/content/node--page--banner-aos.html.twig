@@ -73,37 +73,38 @@
 #}
 {%
   set headline_classes = [
-    'headline',
-    'headline--highlight',
-    'headline--uppercase',
-    'headline--small',
+  'headline',
+  'headline--highlight',
+  'headline--uppercase',
+  'headline--large',
 ]
 %}
 
 {%
   set classes = [
-    'banner--vertical-bottom',
-    'banner--horizontal-left',
-    'banner--gradient-bottom',
-    'banner--gradient-dark',
-    'banner--medium',
-    'banner--list',
-    'click-container',
+  'banner--vertical-bottom',
+  'banner--horizontal-left',
+  'banner--gradient-bottom',
+  'banner--gradient-dark',
+  'banner--medium',
+  'banner--list',
+  'click-container',
 ]
 %}
-
 {% set headline_level = heading_size ?: 'h3' %}
 
 {% set block_banner = {
   'attributes': attributes.addClass(classes),
   'banner_image': content.field_image|render,
-  'banner_summary': content.body|render,
+  'banner_summary': content.field_area_of_study_subtitle|render,
+  'banner_pre_title': content.field_area_of_study_college|render,
   'banner_title': node.label,
   'headline_level': headline_level,
   'headline_class' : headline_classes,
   'link_element' : 'title',
   'link': {
     'link_url': url,
+    'link_text': content.field_area_of_study_college|render,
   },
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
@@ -111,5 +112,3 @@
 
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 {% endembed %}
-
-
