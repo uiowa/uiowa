@@ -204,3 +204,35 @@
 .card .headline {
   line-height: inherit;
 }
+
+// Card Details.
+.card details {
+  summary {
+    cursor: pointer;
+    display: inline-block;
+    background: $light;
+    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+
+    &::-webkit-details-marker,
+    &::marker {
+      display:none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm .9rem $xsm .625rem;
+    content: "\f0da";
+    color: $secondary;
+    @include fas();
+  }
+
+  &[open] {
+    > summary::before {
+      content: "\f0d7";
+      padding-left: .325rem;
+    }
+    > summary {
+      margin-bottom: .5rem;
+    }
+  }
+}
