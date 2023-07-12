@@ -17,23 +17,6 @@ adding:
           title:
             element_label_colon: true
         filters:
-          field_event_when_end_value:
-            operator: '>'
-            value:
-              value: now
-              type: offset
-            exposed: false
-            expose:
-              operator_id: ''
-              label: ''
-              operator: ''
-              identifier: ''
-            group_info:
-              label: ''
-              description: ''
-              identifier: ''
-              group_items:
-                - {  }
           field_event_category_target_id:
             id: field_event_category_target_id
             table: node__field_event_category
@@ -92,12 +75,6 @@ adding:
             hierarchy_depth: 0
             required_depth: 0
             none_label: '- Please select -'
-          field_event_when_value:
-            operator: '>='
-            value:
-              value: now
-              type: offset
-            exposed: false
           field_event_performer_target_id_1:
             operator: empty
             exposed: false
@@ -179,18 +156,6 @@ removing:
                     placeholder_text: Search
                     collapsible: false
                     is_secondary: false
-                field_event_when_end_value:
-                  plugin_id: bef_datepicker
-                  advanced:
-                    placeholder_text: 'Starts on or after'
-                    collapsible: false
-                    is_secondary: true
-                field_event_when_value:
-                  plugin_id: bef_datepicker
-                  advanced:
-                    placeholder_text: 'Ends on or before'
-                    collapsible: false
-                    is_secondary: true
                 field_event_performer_target_id_1:
                   plugin_id: default
                   advanced:
@@ -199,31 +164,6 @@ removing:
                       filter_rewrite_values: ''
                     collapsible: false
                     is_secondary: true
-        filters:
-          field_event_when_end_value:
-            operator: '>='
-            value:
-              value: ''
-              type: date
-            exposed: true
-            expose:
-              operator_id: field_event_when_end_value_op
-              label: Ends
-              operator: field_event_when_end_value_op
-              identifier: field_event_when_end_value
-            group_info:
-              label: 'When - End'
-              description: null
-              identifier: field_event_when_end_value
-          field_event_when_value:
-            operator: '<='
-            value:
-              value: ''
-              type: date
-            exposed: true
-          field_event_performer_target_id_1:
-            operator: or
-            exposed: true
         defaults:
           use_ajax: false
           exposed_form: false
