@@ -96,6 +96,6 @@ function oniowa_core_date_select_list($form, &$form_state) {
 function oniowa_core_preprocess_views_view_unformatted(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'events') {
-    $variables['views_heading_classes'][] = 'headline headline--serif headline--underline block__headline';
+    $variables['views_heading_classes'][] = 'headline headline--uppercase headline--highlight block__headline';
   }
 }

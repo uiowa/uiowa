@@ -17,7 +17,7 @@
 #}
 {% if title %}
   {% set views_heading_attributes = views_heading_attributes ?: create_attribute() %}
-  <h3 {{ views_heading_attributes.addclass(views_heading_classes) }}>{{ title }}</h3>
+  <h3 {{ views_heading_attributes.addclass(views_heading_classes) }}><span>{{ title }}</span></h3>
 {% endif %}
 {% for row in rows %}
   {%
