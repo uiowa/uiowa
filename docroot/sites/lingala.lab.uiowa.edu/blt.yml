@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablingala.uiowa.ddev.site
+    protocol: https
+  machine_name: lablingala
+  human_name: lingala.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablingala.prod
+drupal:
+  db:
+    database: lingala_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablingala.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Laboratory of Quantitative and Dynamic Magnetic Resonance Imaging'
