@@ -91,6 +91,18 @@ function oniowa_core_date_select_list($form, &$form_state) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function oniowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if ($route_name === 'view.events.page_upcoming') {
+    unset($build['field_event_when'][0]['start']['#text']['date']['value']['#markup']);
+    unset($build['field_event_when'][0]['start']['#text']['join']);
+  }
+}
+
+/**
  * Implements template_preprocess_views_view_unformatted().
  */
 function oniowa_core_preprocess_views_view_unformatted(&$variables) {
