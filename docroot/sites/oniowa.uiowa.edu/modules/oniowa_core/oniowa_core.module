@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -93,7 +95,7 @@ function oniowa_core_date_select_list($form, &$form_state) {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function oniowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function oniowa_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
   if ($route_name === 'view.events.page_upcoming') {
