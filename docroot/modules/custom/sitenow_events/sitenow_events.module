@@ -268,6 +268,8 @@ function sitenow_events_preprocess_block(&$variables) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_virtual':
     case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_geolocation':
+    case 'field_block:node:event:field_event_directions':
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
@@ -626,6 +628,65 @@ function sitenow_events_preprocess_field(&$variables) {
       foreach ($variables["items"] as &$item) {
         $item['attributes']['class'] = 'tags-list__tag';
       }
+      break;
+
+    case 'field_event_directions':
+      // Wrap the field output in a <details> tag.
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
+      break;
+
+    case 'field_event_geolocation':
+      uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+
+      // Modify the field label.
+      $variables['label'] = t('Map');
+
+      // Check if the field exists.
+      if (isset($variables['element']['#items'])) {
+
+        // Retrieve the first item of the field values.
+        $geolocation = $variables['element']['#items']->first();
+
+        // Check if the field has a value.
+        if ($geolocation) {
+          // Access the 'latlon' value;.
+          $latlonValue = $geolocation->get('latlon')->getValue();
+
+          // Check if the 'latlon' value is available.
+          if (!empty($latlonValue)) {
+
+            // Construct the Google Maps link.
+            $googleMapsLink = 'https://www.google.com/maps?q=' . $latlonValue;
+
+            // Create the link element.
+            $link = [
+              '#type' => 'link',
+              '#title' => 'View on Google Maps',
+              '#url' => Url::fromUri($googleMapsLink),
+            ];
+
+            // Render the link.
+            $link_render_array = \Drupal::service('renderer')->render($link);
+
+            // Modify the field value to include the link.
+            $variables['items'][0]['content']['#markup'] = $link_render_array;
+          }
+        }
+      }
+
       break;
 
     case 'field_event_location':
