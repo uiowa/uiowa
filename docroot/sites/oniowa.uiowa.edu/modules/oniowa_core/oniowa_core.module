@@ -99,6 +99,8 @@ function oniowa_core_node_view(array &$build, EntityInterface $entity, EntityVie
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
   if ($route_name === 'view.events.page_upcoming') {
+    // Remove date and joining comma from event teaser for this view page.
+    // Since date is displayed above grouped events it's not needed again here.
     unset($build['field_event_when'][0]['start']['#text']['date']['value']['#markup']);
     unset($build['field_event_when'][0]['start']['#text']['join']);
   }
