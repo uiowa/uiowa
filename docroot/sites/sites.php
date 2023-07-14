@@ -5500,3 +5500,9 @@ $sites['labadhd.uiowa.ddev.site'] = 'adhd.lab.uiowa.edu';
 $sites['labadhd.dev.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
 $sites['labadhd.stage.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
 $sites['labadhd.prod.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
+
+// Directory aliases for uiowachoirauditions.org.uiowa.edu.
+$sites['orguiowachoirauditions.uiowa.ddev.site'] = 'uiowachoirauditions.org.uiowa.edu';
+$sites['orguiowachoirauditions.dev.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
+$sites['orguiowachoirauditions.stage.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
+$sites['orguiowachoirauditions.prod.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';

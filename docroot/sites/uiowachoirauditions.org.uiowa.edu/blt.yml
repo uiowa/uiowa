@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orguiowachoirauditions.uiowa.ddev.site
+    protocol: https
+  machine_name: orguiowachoirauditions
+  human_name: uiowachoirauditions.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orguiowachoirauditions.prod
+drupal:
+  db:
+    database: uiowachoirauditions_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orguiowachoirauditions.prod.drupal.uiowa.edu'
+  requester: tstalter
+  site-name: 'UIowa Choir Auditions Information Central'
