@@ -64,63 +64,9 @@ body.toolbar-vertical.toolbar-tray-open {
   width: 63%;
 }
 
-
-
-// admin toolbar style for sticky header
-.header-sticky.toolbar-horizontal,
-.header-sticky.toolbar-vertical {
-  @include breakpoint(md) {
-    padding-top: 120px !important;
-  }
-
-  &.below {
-    @include breakpoint(md) {
-      padding-top: 160px !important;
-    }
-  }
+// Disable sticky header while logged in to prevent admin toolbar clash.
+.user-logged-in.header-sticky .iowa-bar {
+  position: relative;
 }
 
-.header-sticky.scroll-down.toolbar-horizontal,
-.header-sticky.scroll-down.toolbar-vertical {
-  @include breakpoint(md) {
-    padding-top: 80px !important;
-  }
-}
 
-.header-sticky.toolbar-horizontal.toolbar-tray-open {
-  @include breakpoint(md) {
-    padding-top: 160px !important;
-  }
-
-  &.below {
-    @include breakpoint(md) {
-      padding-top: 210px !important;
-    }
-  }
-}
-
-.header-sticky.toolbar-vertical.toolbar-tray-open {
-  @include breakpoint(md) {
-    header {
-      padding-left: 15rem;
-    }
-  }
-}
-
-.header-sticky.toolbar-vertical {
-  header {
-    top: 40px;
-  }
-}
-
-.header-sticky.toolbar-horizontal {
-  header {
-    top: 40px;
-  }
-}
-
-.header-sticky.toolbar-horizontal.toolbar-tray-open {
-  header {
-    top: 80px;
-  }
-}
