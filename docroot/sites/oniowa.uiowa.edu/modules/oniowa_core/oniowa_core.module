@@ -21,6 +21,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
         $options = [];
         $options[''] = t('Any date');
         $db = \Drupal::database();
+        $time = time();
         if ($db->schema()->tableExists('node__field_event_when')) {
           $data = $db->select('node__field_event_when', 'when')
             ->fields('when', ['field_event_when_end_value'])
@@ -29,21 +30,28 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
             ->execute()
             ->fetchCol();
           foreach ($data as $date) {
-            $day = date('l, F j', $date);
+            $day = date('l, F j Y', $date);
             if (!isset($options[$date])) {
               $options[$date] = $day;
             }
           }
         }
+
+        // Expire the cache at 00:00:00 of the next day.
+        $expire = strtotime('tomorrow');
+
         // Cache the options, but set them to be invalidated
         // should any events be Created/updated/deleted.
         $cache_tags = ['node_list:event'];
         \Drupal::cache()->set(
           $cid,
           $options,
-          CacheBackendInterface::CACHE_PERMANENT,
+          $expire,
           $cache_tags
         );
+
+        // Set the form cache to expire at the same time as the date list.
+        $form['#cache']['max-age'] = $expire - time();
       }
       else {
         $options = $data->data;
@@ -108,5 +116,25 @@ function oniowa_core_preprocess_views_view_unformatted(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'events') {
     $variables['views_heading_classes'][] = 'h5 headline headline--uppercase headline--highlight block__headline';
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function oniowa_core_views_pre_build(\Drupal\views\ViewExecutable $view) {
+  if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
+    // Go through each of our filter display options
+    // and change the exposed option to false if
+    // it has not been selected to be displayed.
+    $config = \Drupal::config('sitenow_events.settings');
+
+    if ($config->get('filter_display.date_range') == TRUE) {
+      $timestamp = strtotime('now');
+      // Date end value filter.
+      $filter = $view->display_handler->getHandler('filter', 'field_event_when_end_value');
+      // Force to not include past events.
+      $filter->value['value'] = date('m/d/Y', $timestamp);
+    }
   }
 }
