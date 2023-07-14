@@ -5506,3 +5506,9 @@ $sites['orguiowachoirauditions.uiowa.ddev.site'] = 'uiowachoirauditions.org.uiow
 $sites['orguiowachoirauditions.dev.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
 $sites['orguiowachoirauditions.stage.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
 $sites['orguiowachoirauditions.prod.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
+
+// Directory aliases for stevens.lab.uiowa.edu.
+$sites['labstevens.uiowa.ddev.site'] = 'stevens.lab.uiowa.edu';
+$sites['labstevens.dev.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
+$sites['labstevens.stage.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
+$sites['labstevens.prod.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
