@@ -7,6 +7,7 @@
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_alter().
@@ -122,7 +123,7 @@ function oniowa_core_preprocess_views_view_unformatted(&$variables) {
 /**
  * Implements hook_views_pre_build().
  */
-function oniowa_core_views_pre_build(\Drupal\views\ViewExecutable $view) {
+function oniowa_core_views_pre_build(ViewExecutable $view) {
   if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
     // Go through each of our filter display options
     // and change the exposed option to false if
