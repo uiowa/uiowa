@@ -9,6 +9,7 @@
       {% endif %}
     {% endblock %}
     {% for item in items %}
+      {# If the same day, show time only, otherwise print as configured. #}
       {% if item.content['#end_value']|date('Y-m-d')|date != item.content['#value']|date('Y-m-d')|date %}
         <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
       {% else %}
