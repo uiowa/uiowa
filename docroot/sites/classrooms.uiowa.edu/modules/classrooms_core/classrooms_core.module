@@ -306,7 +306,21 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_room_scheduling_regions':
-      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+      foreach ($variables['items'] as &$item) {
+        // The Level 1 scheduling region shouldn't be linked.
+        // Grab the cache info and then create a plaintext
+        // field value to render.
+        if ($item['content']['#title'] === 'Level 1') {
+          $cache = $item['content']['#cache'];
+          unset($item['content']);
+          $item['content']['#plain_text'] = 'Level 1';
+          $item['content']['#cache'] = $cache;
+        }
+        // Otherwise, link to the overall scheduling region page.
+        else {
+          $item['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+        }
+      }
       break;
 
     case 'field_room_tile_details':
