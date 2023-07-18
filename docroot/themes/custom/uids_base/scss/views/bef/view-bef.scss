@@ -1,0 +1,313 @@
+@import "../../../uids3/assets/scss/variables";
+@import "../../../uids3/assets/scss/utilities";
+
+// bef--sidebar is for the styling the advanced details toggle within a sidebar column.
+@import "view-bef--sidebar";
+// Use "bef-form" class for a full-width wide search box within a one column layout.
+// Use "bef-form bef-form--sidebar" if you want the same design within a sidebar column.
+
+// === BEF Form === //
+.bef-form {
+  .uids-content {
+    .form-item {
+      &.form-type-checkbox {
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  // Modifier to hide labels.
+  &--label-hidden {
+    label:not(.option) {
+      @include element-invisible;
+    }
+  }
+
+  .form-type-select,
+  .form-type-textfield {
+    @include breakpoint(sm) {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+  }
+}
+// === End BEF Form base styles === //
+
+// === BEF Summary & Details === //
+.bef-form {
+  .bef--secondary[open] {
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+  }
+
+  .bef--secondary[open] > summary {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding: 0 0 #{2 * $xsm-sm};
+  }
+
+  summary {
+    cursor: pointer;
+    padding: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display: none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm 0.6rem $xsm $xsm;
+    content: "\f13a";
+    color: $brand-cool-gray;
+    @include fas();
+  }
+
+  &[open] > summary::before {
+    content: "\f139";
+  }
+
+  > .details-wrapper {
+    padding: 0;
+  }
+
+  details {
+    --elemHeight: 3.5rem;
+    flex: 1;
+    background: unset;
+    border: unset;
+    position: relative;
+
+    &.form-wrapper {
+      border: none;
+      background: none;
+    }
+
+    &[open] > summary::before {
+      content: "\f139";
+    }
+
+    &.form-item {
+      > .details-wrapper {
+        background: $white;
+        overflow: auto;
+        max-height: 346px;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: var(--elemHeight);
+        padding: 0.5rem;
+        margin: 0;
+        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+        color: $grey;
+        border: 1px solid $grey-light;
+        background-color: $white;
+        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        &:before {
+          padding-left: 0;
+        }
+      }
+    }
+
+    .details-wrapper {
+      .bef-checkboxes {
+        padding: 0.5rem 0;
+
+        .form-item:first-child {
+          margin-top: 0.5rem;
+        }
+      }
+
+      .form-type-checkbox.form-item {
+        padding: 0 0.5rem;
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  &:not([class*="bef-form--sidebar"]) {
+    details {
+      .details-wrapper .details-wrapper {
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $grey-light;
+        position: absolute;
+        padding: 0;
+        top: calc(var(--elemHeight) - 1px);
+        width: calc(100% - 2px);
+      }
+    }
+  }
+}
+// === End Summary & Details === //
+
+// === "Select all" toggle  === //
+.bef-form {
+  .bef-toggle {
+    padding: #{2 * $xsm-sm} $xsm-sm;
+    display: block;
+    border: none;
+    border-bottom: 1px solid $grey-light;
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: $grey;
+
+    &:focus {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}
+// === End "Select all" toggle  === //
+
+// === Form Actions === //
+.bef-form {
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    @include breakpoint(md) {
+      gap: 0.7rem;
+    }
+    @include breakpoint(sm) {
+      grid-area: 1 / 3 / 3 / 4;
+    }
+  }
+
+  .bef-exposed-form {
+    padding: 1.5rem;
+
+    &[data-drupal-form-fields*="edit-reset--"] {
+      .bef--secondary {
+        @include breakpoint(sm) {
+          width: calc(100% + 173px);
+        }
+        @include breakpoint(md) {
+          width: calc(100% + 183px);
+        }
+      }
+    }
+
+    .button {
+      flex: 1;
+      &[id*="edit-submit"] {
+        @include breakpoint(sm) {
+          min-width: 5rem;
+        }
+        @include breakpoint(md) {
+          min-width: 5.7rem;
+        }
+      }
+
+    }
+
+    .form-actions {
+      margin: 0;
+    }
+
+    .form-item {
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-right: 0;
+      @include breakpoint(md) {
+        margin-right: 1rem;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      > &.form-type-textfield:first-of-type {
+        margin-right: 0;
+      }
+    }
+
+    .form--inline > .form-item.form-type-textfield {
+      @include breakpoint(sm) {
+        margin-right: 1rem;
+      }
+    }
+
+    .form--inline {
+      @include breakpoint(sm) {
+        display: grid !important;
+        grid-template-columns: minmax(50%, 1fr) 25%;
+        grid-column-gap: 0;
+        grid-row-gap: 0;
+        align-items: flex-start;
+      }
+    }
+
+    .select-wrapper {
+      margin-right: 0;
+    }
+  }
+}
+// === End Form Actions === //
+
+// === BEF Secondary === //
+// bef--secondary is for the advanced details toggle on bef forms. //
+
+.bef-form {
+  .bef--secondary {
+    @include breakpoint(sm) {
+      grid-area: 2 / 1 / 3 / 3;
+    }
+
+    .details-wrapper {
+      @include breakpoint(md) {
+        display: flex;
+      }
+    }
+
+    .js-form-item {
+      flex: 1;
+    }
+    @include breakpoint(sm) {
+      width: calc(100% + 85px);
+      padding-top: #{3 * $xsm-sm};
+      margin-top: $xsm-sm;
+    }
+    @include breakpoint(md) {
+      width: calc(100% + 91px);
+    }
+
+    &.form-wrapper {
+      border: none;
+      @include breakpoint(sm) {
+        border-top: 1px solid $grey-light;
+      }
+      background: none;
+    }
+  }
+}
+// === End BEF Secondary === //
+
+// Override module float.
+.bef-exposed-form .form--inline .form-item {
+  float: none;
+}

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpcit.uiowa.ddev.site
+    protocol: https
+  machine_name: labpcit
+  human_name: pcit.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpcit.prod
+drupal:
+  db:
+    database: pcit_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpcit.prod.drupal.uiowa.edu'
+  requester: kzear
+  site-name: 'Parent-Child Interaction Therapy'
