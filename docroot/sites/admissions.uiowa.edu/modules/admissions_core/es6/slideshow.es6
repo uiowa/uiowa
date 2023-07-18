@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function() {
   shuffleArray(slideIndexArray);
 
   slides.forEach(function(slide, index) {
-    console.log(slideIndexArray[index].toString());
 
     // Give it an index to be used for later maths.
     slide.style.setProperty(
