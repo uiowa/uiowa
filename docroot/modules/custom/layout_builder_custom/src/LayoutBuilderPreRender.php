@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder_custom;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyle;
@@ -63,6 +64,16 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
                   // here because it doesn't get added where it should.
                   $lb[$section]['layout-builder__section'][$region][$uuid]['#attributes']['class'][] = 'layout-builder-block--placeholder';
                   break;
+              }
+            }
+            elseif ($uuid === 'layout_builder_add_block') {
+              // Set a width for add block links opening in the off-canvas tray.
+              if (isset($lb[$section]['layout-builder__section'][$region][$uuid]['list']['links']['#links'])) {
+                foreach ($lb[$section]['layout-builder__section'][$region][$uuid]['list']['links']['#links'] as &$link) {
+                  if (isset($link['attributes'])) {
+                    $link['attributes']['data-dialog-options'] = Json::encode(['width' => 500]);
+                  }
+                }
               }
             }
           }
