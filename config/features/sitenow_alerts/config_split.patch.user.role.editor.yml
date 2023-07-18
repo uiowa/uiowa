@@ -3,6 +3,8 @@ adding:
     config:
       - node.type.alert
       - taxonomy.vocabulary.alert_categories
+    module:
+      - scheduler
   permissions:
     - 'create alert content'
     - 'create terms in alert_categories'
@@ -10,5 +12,6 @@ adding:
     - 'edit any alert content'
     - 'edit own alert content'
     - 'edit terms in alert_categories'
+    - 'schedule publishing of nodes'
     - 'view alert revisions'
 removing: {  }
