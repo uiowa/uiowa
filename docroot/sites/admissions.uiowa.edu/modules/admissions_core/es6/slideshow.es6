@@ -80,8 +80,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-// https://stackoverflow.com/a/12646864
-/* Randomize array in-place using Durstenfeld shuffle algorithm */
+/**
+ * Randomize array in-place using Durstenfeld shuffle algorithm
+ * https://stackoverflow.com/a/12646864
+ *
+ * @param array
+ */
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
