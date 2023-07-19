@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcwang.uiowa.ddev.site
+    protocol: https
+  machine_name: labcwang
+  human_name: cwang.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcwang.prod
+drupal:
+  db:
+    database: cwang_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcwang.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Cong Wang Research Group'
