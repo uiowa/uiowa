@@ -7,11 +7,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const slides = container.querySelectorAll('.banner');
 
   // For each slide...
+  let slideIndexArray = Object.keys(slides);
+  shuffleArray(slideIndexArray);
+
   slides.forEach(function(slide, index) {
 
     // Give it an index to be used for later maths.
     slide.style.setProperty(
-      '--data-slide-index', index.toString()
+      '--data-slide-index', slideIndexArray[index].toString()
     );
 
     // Set the animation delay after we have the proper index.
@@ -76,3 +79,16 @@ document.addEventListener("DOMContentLoaded", function() {
     return styleString;
   }
 });
+
+/**
+ * Randomize array in-place using Durstenfeld shuffle algorithm
+ * https://stackoverflow.com/a/12646864
+ *
+ * @param array
+ */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
