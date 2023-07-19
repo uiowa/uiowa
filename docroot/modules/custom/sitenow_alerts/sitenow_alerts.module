@@ -8,8 +8,8 @@
 use Drupal\sitenow_alerts\Entity\Alert;
 
 /**
-* Implements hook_entity_bundle_info_alter().
-*/
+ * Implements hook_entity_bundle_info_alter().
+ */
 function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['alert'])) {
     $bundles['node']['alert']['class'] = Alert::class;
@@ -23,7 +23,7 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
 
     case 'field_alert_category':
-      uiowa_core_set_attributes($variables, 'badge badge--primary element--inline');
+      uiowa_core_set_attributes($variables, 'badge badge--primary');
       break;
 
   }
