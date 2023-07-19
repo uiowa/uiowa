@@ -27,42 +27,30 @@
   display: none;
 }
 
-@media (min-width: 84.375em) {
-  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
-    width: 60%;
+@media (min-width: 1200px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: auto;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name {
+    flex: 0 1 30%;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top {
+    right: calc(41% - 40vw);
+  }
+  body.toolbar-vertical.toolbar-tray-open .search-overlay[aria-hidden=false] {
+    width: 90%;
   }
 }
 
-@media (min-width: 855px) {
-  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
-    width: 60%;
+@media (min-width: 1350px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: calc(60% - 50vw);
   }
 }
 
-// admin styles for search toggle
-body.toolbar-vertical.toolbar-tray-open {
-  .search-button {
-    @include breakpoint(page-container) {
-      right: 294px;
-    }
-  }
 
-  .search-is-open .search-overlay .hds-search {
-    @include breakpoint(page-container) {
-      margin-right: 209px;
-    }
-  }
-}
-
-.js-off-canvas-dialog-open {
-  .search-button {
-    right: 310px;
-  }
-}
-
-.js-off-canvas-dialog-open.search-is-open .search-overlay .hds-search {
-  width: 63%;
-}
 
 // admin toolbar style for sticky header
 .header-sticky.toolbar-horizontal,
