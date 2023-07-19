@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
+    - field_delimiter
     - smart_date
     - text
     - user
@@ -30,8 +31,10 @@ content:
     type: entity_reference_label
     label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     weight: 2
     region: content
   field_alert_date:
