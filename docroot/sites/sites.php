@@ -5524,3 +5524,9 @@ $sites['sitesdpriester.uiowa.ddev.site'] = 'dpriester.sites.uiowa.edu';
 $sites['sitesdpriester.dev.drupal.uiowa.edu'] = 'dpriester.sites.uiowa.edu';
 $sites['sitesdpriester.stage.drupal.uiowa.edu'] = 'dpriester.sites.uiowa.edu';
 $sites['sitesdpriester.prod.drupal.uiowa.edu'] = 'dpriester.sites.uiowa.edu';
+
+// Directory aliases for cwang.lab.uiowa.edu.
+$sites['labcwang.uiowa.ddev.site'] = 'cwang.lab.uiowa.edu';
+$sites['labcwang.dev.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
+$sites['labcwang.stage.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
+$sites['labcwang.prod.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
