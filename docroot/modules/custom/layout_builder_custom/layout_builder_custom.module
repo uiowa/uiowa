@@ -5,6 +5,7 @@
  * Contains lb_enhancements.module.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
@@ -1119,6 +1120,18 @@ function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$var
   if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
     $id = $block->get('field_uiowa_banner_image')->target_id;
     Cache::invalidateTags(['media:' . $id]);
+  }
+}
+
+/**
+ * Implements hook_contextual_links_alter().
+ */
+function layout_builder_custom_contextual_links_alter(array &$links, $group, array $route_parameters) {
+  $foo = 'bar';
+  if ($group === 'layout_builder_block') {
+    foreach ($links as &$link) {
+      $link['localized_options']['attributes']['data-dialog-options'] = Json::encode(['width' => 500]);
+    }
   }
 }
 
