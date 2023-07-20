@@ -132,7 +132,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: 'badge badge--primary'
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -352,6 +352,20 @@ display:
             label: ''
             field_identifier: sticky
           exposed: false
+        field_alert_date_value:
+          id: field_alert_date_value
+          table: node__field_alert_date
+          field: field_alert_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
         created:
           id: created
           table: node_field_data
@@ -520,6 +534,7 @@ display:
       style:
         type: default
         options:
+          grouping: {  }
           row_class: ''
           default_row_class: true
           uses_fields: true
@@ -538,7 +553,7 @@ display:
           query_tags: {  }
       relationships: {  }
       use_ajax: true
-      use_more: true
+      use_more: false
       use_more_always: false
       use_more_text: 'View more'
       link_display: custom_url
@@ -558,8 +573,8 @@ display:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_alert_category'
         - 'config:field.storage.node.field_alert_date'
-  list_article:
-    id: list_article
+  list_alerts:
+    id: list_alerts
     display_title: 'Alert list'
     display_plugin: block
     position: 1
@@ -578,21 +593,16 @@ display:
         hide_fields: hide_fields
         sort_fields: '0'
         disable_filters: '0'
-        configure_sorts: configure_sorts
-        configure_filters: configure_filters
+        configure_sorts: '0'
         use_more: use_more
+        configure_filters: 0
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/sitenow/uiowa-articles" target="_blank" rel="noopener">articles path set within SiteNow Articles</a>, make sure the ‘Enable articles listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'
       restrict_fields:
         title: title
-        nid: nid
-        field_article_source_link_direct: field_article_source_link_direct
-        field_image: 0
-        created: 0
-        field_article_author: 0
-        field_article_source_org: 0
-        field_article_source_link: 0
-        field_teaser: 0
-      general_help_text: '<a href="/admin/content?title=&type=article&status=1" target="_blank" rel="noopener">Manage existing articles on this site</a> or <a href="/node/add/article" target="_blank" rel="noopener">add an article here</a>.'
+        field_alert_category: 0
+        body: 0
+        field_alert_date: 0
+      general_help_text: ''
     cache_metadata:
       max-age: -1
       contexts:
