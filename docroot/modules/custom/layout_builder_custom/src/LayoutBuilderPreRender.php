@@ -66,16 +66,6 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
                   break;
               }
             }
-            elseif ($uuid === 'layout_builder_add_block') {
-              // Set a width for add block links opening in the off-canvas tray.
-              if (isset($lb[$section]['layout-builder__section'][$region][$uuid]['list']['links']['#links'])) {
-                foreach ($lb[$section]['layout-builder__section'][$region][$uuid]['list']['links']['#links'] as &$link) {
-                  if (isset($link['attributes'])) {
-                    $link['attributes']['data-dialog-options'] = Json::encode(['width' => 500]);
-                  }
-                }
-              }
-            }
           }
         }
       }
