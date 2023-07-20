@@ -23,7 +23,9 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
 
     case 'field_alert_category':
-      uiowa_core_set_attributes($variables, 'badge badge--primary');
+      if ($variables['element']['#view_mode'] === 'teaser') {
+        uiowa_core_set_attributes($variables, 'badge badge--primary');
+      }
       break;
 
   }
