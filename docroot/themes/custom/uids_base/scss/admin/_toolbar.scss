@@ -27,32 +27,7 @@
   display: none;
 }
 
-@media (min-width: 1200px) {
-  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
-    margin-right: auto;
-  }
-
-  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name {
-    flex: 0 1 30%;
-  }
-
-  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top {
-    right: calc(41% - 40vw);
-  }
-  body.toolbar-vertical.toolbar-tray-open .search-overlay[aria-hidden=false] {
-    width: 90%;
-  }
-}
-
-@media (min-width: 1350px) {
-  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
-    margin-right: calc(60% - 50vw);
-  }
-}
-
-
-
-// admin toolbar style for sticky header
+// admin toolbar style for sticky header.
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
   @include breakpoint(md) {
@@ -93,20 +68,62 @@
   }
 }
 
-.header-sticky.toolbar-vertical {
-  header {
-    top: 40px;
-  }
-}
-
+.header-sticky.toolbar-vertical,
 .header-sticky.toolbar-horizontal {
   header {
-    top: 40px;
+    @include breakpoint(md) {
+      top: 39px;
+    }
   }
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
   header {
-    top: 80px;
+    @include breakpoint(md) {
+      top: 79px;
+    }
+  }
+}
+
+// Create more space in the header when the vertical toolbar is open.
+@media (min-width: 1200px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: auto;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name {
+    flex: 0 1 30%;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open .search-overlay[aria-hidden=false] {
+    width: 90%;
+  }
+}
+
+// Adjust search wrapper when vertical toolbar is open.
+@media (min-width: 1350px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: calc(60% - 50vw);
+  }
+}
+
+// Position top links if vertical toolbar is open.
+@media (min-width: 1550px) {
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top {
+    right: calc(41% - 40vw);
+  }
+}
+
+// Hide top links for edge case with vertical toolbar open.
+@media only screen and (min-width: 980px) and (max-width: 1100px) {
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top {
+    display: none;
+  }
+}
+
+// Position mobile menu to make room for vertical toolbar.
+@media only screen and (min-width: 0) and (max-width: 980px) {
+  body.toolbar-vertical.toolbar-tray-open .o-canvas--open .o-canvas__drawer {
+    width: calc(100% - 15rem);
   }
 }
