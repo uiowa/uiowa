@@ -19,8 +19,8 @@ class Alert extends NodeBundleBase implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => 'body',
-      '#meta' => 'field_alert_date',
-      '#subtitle' => 'field_alert_category',
+      '#subtitle' => 'field_alert_date',
+      '#meta' => 'field_alert_category',
     ]);
   }
 
