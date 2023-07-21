@@ -8,9 +8,11 @@ dependencies:
     - field.storage.node.field_alert_category
     - field.storage.node.field_alert_date
     - node.type.alert
+    - taxonomy.vocabulary.alert_categories
   module:
     - node
     - smart_date
+    - taxonomy
     - text
     - user
 id: alerts_list_block
@@ -531,6 +533,64 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_alert_category_target_id:
+          id: field_alert_category_target_id
+          table: node__field_alert_category
+          field: field_alert_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_alert_category_target_id_op
+            label: 'Alert categories'
+            description: ''
+            use_operator: false
+            operator: field_alert_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_alert_category_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: alert_categories
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
       style:
         type: default
         options:
@@ -566,7 +626,9 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -594,8 +656,8 @@ display:
         sort_fields: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: configure_filters
         use_more: use_more
-        configure_filters: 0
       more_link_help_text: 'Check to include a ''display more'' link. Defaults to the front page. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'
       restrict_fields:
         title: title
@@ -608,7 +670,9 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
