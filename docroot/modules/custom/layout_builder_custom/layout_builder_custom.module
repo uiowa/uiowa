@@ -5,6 +5,7 @@
  * Contains lb_enhancements.module.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
@@ -409,6 +410,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'fragment_region_item_after_content_layout_builder_form':
     case 'node_page_layout_builder_form':
       $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+      $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
+      $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
       break;
   }
 }
