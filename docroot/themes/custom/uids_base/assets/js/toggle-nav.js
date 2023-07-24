@@ -1,9 +1,10 @@
 class ToggleNavBehavior {
-  constructor() {
-    this.drawerContainer = document.querySelector(".o-canvas__wrapper");
-    this.toggleButtons = document.querySelectorAll("button.toggle-nav__bttn");
-    this.canvasDrawer = document.querySelector('.o-canvas__drawer');
-    this.iowaHeader = document.querySelector('[data-uids-header]');
+  constructor(context) {
+    this.context = context || document;
+    this.drawerContainer = this.context.querySelector('.o-canvas__wrapper');
+    this.toggleButtons = this.context.querySelectorAll('button.toggle-nav__bttn');
+    this.canvasDrawer = this.context.querySelector('.o-canvas__drawer');
+    this.iowaHeader = this.context.querySelector('[data-uids-header]');
 
     // Set positioning of canvasDrawer based on iowaBar height
     this.iowaBarHeight = this.iowaHeader.offsetHeight;
@@ -20,50 +21,50 @@ class ToggleNavBehavior {
 
   // Function to handle the toggleNav behavior
   handleButtonClick(e) {
-    if (!e.target.classList.contains("toggle-nav__bttn")) return;
+    if (!e.target.classList.contains('toggle-nav__bttn')) return;
     // Add the active/open class
-    e.target.classList.toggle("active");
-    e.target.parentNode.classList.toggle("o-canvas--open");
+    e.target.classList.toggle('active');
+    e.target.parentNode.classList.toggle('o-canvas--open');
 
-    const isActive = e.target.classList.contains("active");
-    e.target.setAttribute("aria-expanded", isActive ? "true" : "false");
-    e.target.classList.toggle("inactive", !isActive);
-    e.target.nextElementSibling.setAttribute("aria-hidden", !isActive);
+    const isActive = e.target.classList.contains('active');
+    e.target.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    e.target.classList.toggle('inactive', !isActive);
+    e.target.nextElementSibling.setAttribute('aria-hidden', !isActive);
 
     // go through each link
     this.toggleButtons.forEach((button) => {
       if (button !== e.target) {
-        button.classList.remove("active", "inactive");
-        button.setAttribute("aria-expanded", "false");
-        button.parentNode.classList.remove("o-canvas--open");
-        button.nextElementSibling.setAttribute("aria-hidden", "true");
+        button.classList.remove('active', 'inactive');
+        button.setAttribute('aria-expanded', 'false');
+        button.parentNode.classList.remove('o-canvas--open');
+        button.nextElementSibling.setAttribute('aria-hidden', 'true');
       }
     });
 
-    document.body.classList.toggle("o-canvas--complete", !isActive);
-    document.body.classList.toggle("o-canvas--lock", isActive);
+    this.context.body.classList.toggle('o-canvas--complete', !isActive);
+    this.context.body.classList.toggle('o-canvas--lock', isActive);
   }
 
   handleClickOutside(event) {
-    if (!event.target.closest(".o-canvas__group")) {
-      document.body.classList.remove("o-canvas--lock");
-      document.body.classList.add("o-canvas--complete");
-      this.drawerContainer.classList.remove("o-canvas--open");
+    if (!event.target.closest('.o-canvas__group')) {
+      this.context.body.classList.remove('o-canvas--lock');
+      this.context.body.classList.add('o-canvas--complete');
+      this.drawerContainer.classList.remove('o-canvas--open');
       this.toggleButtons.forEach((button) => {
-        button.classList.remove("active");
-        button.setAttribute("aria-expanded", "false");
-        button.nextElementSibling.setAttribute("aria-hidden", "true");
+        button.classList.remove('active');
+        button.setAttribute('aria-expanded', 'false');
+        button.nextElementSibling.setAttribute('aria-hidden', 'true');
       });
     }
   }
 
   handleEscapeKey(event) {
-    if (event.key === "Escape") {
-      document.body.classList.remove("o-canvas--lock");
-      document.body.classList.add("o-canvas--complete");
-      this.drawerContainer.classList.remove("o-canvas--open");
+    if (event.key === 'Escape') {
+      this.context.body.classList.remove('o-canvas--lock');
+      this.context.body.classList.add('o-canvas--complete');
+      this.drawerContainer.classList.remove('o-canvas--open');
       this.toggleButtons.forEach((button) => {
-        button.classList.remove("active");
+        button.classList.remove('active');
       });
     }
   }
@@ -80,11 +81,11 @@ class ToggleNavBehavior {
     this.updateCanvasDrawerPosition();
   }
 
-  // Setup event listeners
+// Setup event listeners
   setupEventListeners() {
-    document.addEventListener("click", this.handleButtonClick);
-    document.addEventListener("click", this.handleClickOutside);
-    window.addEventListener("keydown", this.handleEscapeKey);
+    this.context.addEventListener('click', this.handleButtonClick);
+    this.context.addEventListener('click', this.handleClickOutside);
+    window.addEventListener('keydown', this.handleEscapeKey);
     window.addEventListener('resize', this.handleResize);
 
     // Create a MutationObserver to detect changes in the header position
@@ -93,9 +94,16 @@ class ToggleNavBehavior {
     // Observe changes in the header's attributes or subtree
     observer.observe(this.iowaHeader, { attributes: true, subtree: true });
   }
+
 }
 
-// Instantiate the ToggleNavBehavior class to attach the behavior
-const toggleNavBehavior = new ToggleNavBehavior();
+(function ($, Drupal) {
+  'use strict';
 
-export default toggleNavBehavior;
+  Drupal.behaviors.toggleNav = {
+    attach: function (context, settings) {
+      // Instantiate the ToggleNavBehavior class to attach the behavior
+      new ToggleNavBehavior(context);
+    }
+  };
+})(jQuery, Drupal);
