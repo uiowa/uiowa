@@ -294,6 +294,10 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   border: none;
 }
 
+.search-overlay[aria-hidden=false] .uids-search [type="submit"] {
+  animation: fadeIn .5s;
+}
+
 .search-overlay .uids-search [type="submit"] span {
   //@include element-invisible;
   display: none;
@@ -381,7 +385,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   .search-is-open & {
     width: 100%;
-    display: flex;
     flex: 1;
     justify-content: space-between;
 
@@ -431,7 +434,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     top: 0;
     display: contents;
     visibility: visible;
-    width: 100%;
+    width: 95%;
     transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
     transition: opacity .3s;
     transition-timing-function: ease;
@@ -460,9 +463,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .search-overlay[aria-hidden=false] {
   .region-search {
     @include breakpoint(md) {
-      width: 90%;
-    }
-    @include breakpoint(xlg) {
       width: 100%;
     }
   }
@@ -527,4 +527,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   .search-is-open .search-overlay .uids-search {
     width: calc(100% - 111px);
   }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
