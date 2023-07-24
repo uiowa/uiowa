@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder_custom;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyle;
