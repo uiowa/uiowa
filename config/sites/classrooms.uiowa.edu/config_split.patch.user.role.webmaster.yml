@@ -2,6 +2,7 @@ adding:
   dependencies:
     config:
       - node.type.room
+      - taxonomy.vocabulary.accessibility_features
       - taxonomy.vocabulary.room_features
       - taxonomy.vocabulary.scheduling_regions
       - taxonomy.vocabulary.technology_features
@@ -10,6 +11,7 @@ adding:
       - rabbit_hole
   permissions:
     - 'create room content'
+    - 'create terms in accessibility_features'
     - 'create terms in room_features'
     - 'create terms in scheduling_regions'
     - 'create terms in technology_features'
@@ -17,12 +19,14 @@ adding:
     - 'delete any room content'
     - 'delete own room content'
     - 'delete room revisions'
+    - 'delete terms in accessibility_features'
     - 'delete terms in room_features'
     - 'delete terms in scheduling_regions'
     - 'delete terms in technology_features'
     - 'delete terms in units'
     - 'edit any room content'
     - 'edit own room content'
+    - 'edit terms in accessibility_features'
     - 'edit terms in room_features'
     - 'edit terms in scheduling_regions'
     - 'edit terms in technology_features'

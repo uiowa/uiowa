@@ -5,8 +5,11 @@ dependencies:
   config:
     - core.entity_view_mode.node.token
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -75,6 +78,7 @@ content:
       force_chronological: false
       add_classes: false
       time_wrapper: true
+      localize: false
     third_party_settings: {  }
     weight: 0
     region: content
@@ -112,8 +116,11 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance: true
   field_event_attendance_mode: true
   field_event_category: true
+  field_event_directions: true
+  field_event_geolocation: true
   field_event_hide: true
   field_event_parent: true
   field_event_performer: true

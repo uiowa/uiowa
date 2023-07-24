@@ -1,0 +1,29 @@
+uuid: 216b19bc-844f-4f62-ba4e-2df20dc92a0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.alert
+  module:
+    - content_moderation
+    - node
+    - override_node_options
+    - scheduler
+    - system
+    - toolbar
+id: collaborator
+label: Collaborator
+weight: -7
+is_admin: null
+permissions:
+  - 'access content overview'
+  - 'access toolbar'
+  - 'create alert content'
+  - 'delete own alert content'
+  - 'edit own alert content'
+  - 'enter alert revision log entry'
+  - 'override alert published option'
+  - 'schedule publishing of nodes'
+  - 'view latest version'
+  - 'view own unpublished content'
+  - 'view the administration theme'

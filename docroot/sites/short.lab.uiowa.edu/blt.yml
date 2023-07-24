@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labshort.uiowa.ddev.site
+    protocol: https
+  machine_name: labshort
+  human_name: short.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshort.prod
+drupal:
+  db:
+    database: short_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshort.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Short Lab'

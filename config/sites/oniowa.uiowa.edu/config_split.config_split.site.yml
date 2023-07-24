@@ -1,0 +1,25 @@
+uuid: 9cd4ffb3-01ad-4aea-8d2c-a11faac1d860
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The oniowa.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/oniowa.uiowa.edu
+module:
+  jsonapi: 0
+  jsonapi_extras: 0
+  jsonapi_include: 0
+  oniowa_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - jsonapi.settings
+  - jsonapi_extras.jsonapi_resource_config.node--event
+  - jsonapi_extras.settings
+  - views.view.events_overview
+partial_list:
+  - views.view.events
