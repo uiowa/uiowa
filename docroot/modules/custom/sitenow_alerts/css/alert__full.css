@@ -1,0 +1,17 @@
+.node--type-alert.node--view-mode-full .card {
+  border-top: none;
+}
+
+.node--type-alert.node--view-mode-full .card::before {
+  width: calc(100% + 2px);
+  height: 4px;
+  position: absolute;
+  top: 0;
+  left: -1px;
+  content: '';
+  border-top: 4px solid var(--brand-primary);
+}
+
+.node--type-alert.node--view-mode-full .badge {
+  border-color: transparent;
+}
