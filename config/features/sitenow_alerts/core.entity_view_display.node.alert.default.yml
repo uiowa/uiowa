@@ -7,12 +7,126 @@ dependencies:
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_meta_tags
+    - field.field.node.alert.layout_builder__layout
     - node.type.alert
   module:
+    - layout_builder
     - metatag
     - smart_date
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: b3e65666-a6fc-426c-a324-4d2aab8c575a
+            region: content
+            configuration:
+              id: 'field_block:node:alert:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_card_sidebar
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+            - section_card_media_size_large
+            - section_card_media_format_square
+        components:
+          -
+            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
+            region: main
+            configuration:
+              id: 'field_block:node:alert:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4cb09feb-1691-4d46-8b4d-c757d4e11c1a
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_date'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: false
+                  add_classes: false
+                  time_wrapper: true
+                  localize: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
 id: node.alert.default
 targetEntityType: node
 bundle: alert
@@ -63,4 +177,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  layout_builder__layout: true
   search_api_excerpt: true
