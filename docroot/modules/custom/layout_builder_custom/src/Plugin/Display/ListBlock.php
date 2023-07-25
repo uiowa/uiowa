@@ -7,10 +7,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
+use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 
 /**
  * Provides a List Block display plugin override.
@@ -40,6 +41,8 @@ class ListBlock extends CoreBlock {
       'configure_filters' => $this->t('Customize filters in block'),
       // Add use_more option summary.
       'use_more' => $this->t('Display more link'),
+      // Add general_help_text field.
+      'general_help_text' => $this->t('General help text'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
 
@@ -54,6 +57,15 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+
+    // Show a text area to add general help text to the list block.
+    $general_help_text = $this->getOption('general_help_text');
+    $form['general_help_text'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('General help text'),
+      '#description' => $this->t('Set help text to display below the block title.'),
+      '#default_value' => $general_help_text ?: '',
+    ];
     parent::buildOptionsForm($form, $form_state);
     if ($form_state->get('section') !== 'allow') {
       return;
@@ -71,7 +83,7 @@ class ListBlock extends CoreBlock {
 
     $form['allow']['#default_value'] = $defaults;
 
-    // Add restrict_fields option to prevent editors from toggling certain fields.
+    // Add restrict_fields option to prevent editors toggling certain fields.
     $field_keys = array_keys($this->view->getDisplay()->getOption('fields'));
     $fields = array_combine($field_keys, $field_keys);
     $restrict_fields = $this->getOption('restrict_fields');
@@ -108,6 +120,7 @@ class ListBlock extends CoreBlock {
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
+      $this->setOption('general_help_text', $form_state->getValue('general_help_text'));
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
       $this->setOption('restrict_fields', $form_state->getValue('restrict_fields'));
     }
@@ -123,7 +136,15 @@ class ListBlock extends CoreBlock {
     $block_configuration = $block->getConfiguration();
 
     // Hide headline child form elements for table displays.
-    $has_children = !($this->view->getStyle()->getPluginId() == 'table');
+    $has_children = !($this->view->getStyle()->getPluginId() === 'table');
+
+    // Add general help text (if available) below the block's title.
+    if (!empty($this->getOption('general_help_text'))) {
+      $form['general_help_text'] = [
+        '#type' => 'item',
+        '#description' => $this->getOption('general_help_text'),
+      ];
+    }
 
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
@@ -131,6 +152,7 @@ class ListBlock extends CoreBlock {
       'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
       'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
       'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
+      'headline_alignment' => $block_configuration['headline']['headline_alignment'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
     ], $has_children);
     $form['headline']['#weight'] = 1;
@@ -155,7 +177,7 @@ class ListBlock extends CoreBlock {
       $form['override']['pager'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Show pager'),
-        '#default_value' => ($block_configuration['pager'] == 'full'),
+        '#default_value' => ($block_configuration['pager'] === 'full'),
       ];
     }
 
@@ -178,7 +200,7 @@ class ListBlock extends CoreBlock {
             $fields_to_remove[$field] = $field;
           }
         }
-        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+        $form['override']['hide_fields']['order_fields'] = array_diff_key($form['override']['hide_fields']['order_fields'], $fields_to_remove);
       }
     }
 
@@ -212,7 +234,7 @@ class ListBlock extends CoreBlock {
           $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
           // The following is essentially using this patch:
           // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-          if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
+          if ($exposed_filters[$handler_id]['#type'] === 'entity_autocomplete') {
             $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
               $exposed_filters[$handler_id],
               $exposed_filter_values[$handler_id],
@@ -239,37 +261,8 @@ class ListBlock extends CoreBlock {
 
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['configure_sorts'])) {
-      $form['override']['sort'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Sort options'),
-        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).'),
-      ];
-      $options = [
-        'ASC' => $this->t('Ascending'),
-        'DESC' => $this->t('Descending'),
-      ];
 
       $sorts = $this->getHandlers('sort');
-      $header = [
-        'label' => $this->t('Label'),
-        'order' => $this->t('Order'),
-        'weight' => $this->t('Weight'),
-      ];
-      $form['override']['sort']['sort_list'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => [],
-      ];
-
-      $form['override']['sort']['sort_list']['#tabledrag'] = [
-        [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'sort-weight',
-        ],
-      ];
-      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
-
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
@@ -292,12 +285,54 @@ class ListBlock extends CoreBlock {
         $sorted_sorts = $sorts;
       }
 
+      if (count($sorted_sorts) > 1) {
+        $description = $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+      else {
+        $description = $this->t('For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+
+      $form['override']['sort'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Sort options'),
+        '#description' => $description,
+      ];
+      $options = [
+        'ASC' => $this->t('Ascending'),
+        'DESC' => $this->t('Descending'),
+      ];
+
+      $header = [
+        'label' => $this->t('Label'),
+        'order' => $this->t('Order'),
+        'weight' => $this->t('Weight'),
+      ];
+      $form['override']['sort']['sort_list'] = [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => [],
+      ];
+      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
+
+      if (count($sorted_sorts) > 1) {
+        $form['override']['sort']['sort_list']['#tabledrag'] = [
+          [
+            'action' => 'order',
+            'relationship' => 'sibling',
+            'group' => 'sort-weight',
+          ],
+        ];
+      }
+
       foreach ($sorted_sorts as $sort_name => $plugin) {
         $sort_label = $plugin->adminLabel();
         if (!empty($plugin->options['label'])) {
           $sort_label .= ' (' . $plugin->options['label'] . ')';
         }
-        $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        // Display drag handle if there is more than 1.
+        if (count($sorted_sorts) > 1) {
+          $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        }
 
         $form['override']['sort']['sort_list'][$sort_name]['label'] = [
           '#markup' => $sort_label,
@@ -349,7 +384,7 @@ class ListBlock extends CoreBlock {
             '%add-node' => '/node/add',
             '%url' => 'http://example.com',
           ]),
-        '#default_value' => isset($block_configuration['use_more_link_url']) ? static::getUriAsDisplayableString($block_configuration['use_more_link_url']) : NULL,
+        '#default_value' => isset($block_configuration['use_more_link_url']) ? LinkHelper::getUriAsDisplayableString($block_configuration['use_more_link_url']) : NULL,
         '#element_validate' => [
           [
             LinkWidget::class,
@@ -378,7 +413,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_text'] = [
         '#type' => 'textfield',
         '#title' => 'Custom text',
-        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
+        '#default_value' => $block_configuration['use_more_text'] ?? '',
         '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
@@ -474,6 +509,12 @@ class ListBlock extends CoreBlock {
       'exposed_filters',
     ]));
 
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the block configuration below is the only way we have found
+    // so far to be able to access them when we need them.
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
     }
@@ -494,9 +535,17 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
+    // Add the block config in case we need to reference it later.
+    $this->setOption('block_config', $config);
 
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the display from the block configuration below is the only
+    // way we have found so far to be able to access them when we need them.
     if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
+      $this->setOption('layout_builder_styles', $config['layout_builder_styles']);
     }
 
     // Attach the headline, if configured.
@@ -509,6 +558,7 @@ class ListBlock extends CoreBlock {
           '#hide_headline' => $headline['hide_headline'],
           '#heading_size' => $headline['heading_size'],
           '#headline_style' => $headline['headline_style'],
+          '#headline_alignment' => $headline['headline_alignment'] ?? 'default',
         ];
       }
       if (empty($headline['headline'])) {
@@ -518,7 +568,7 @@ class ListBlock extends CoreBlock {
         $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
       }
 
-      $this->view->display_handler->setOption('heading_size', $child_heading_size);
+      $this->setOption('heading_size', $child_heading_size);
     }
 
     // Change fields output based on block configuration.
@@ -561,19 +611,19 @@ class ListBlock extends CoreBlock {
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
-        $this->view->display_handler->setOption('use_more', TRUE);
-        $this->view->display_handler->setOption('use_more_always', TRUE);
-        $this->view->display_handler->setOption('link_display', 'custom_url');
+        $this->setOption('use_more', TRUE);
+        $this->setOption('use_more_always', TRUE);
+        $this->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
-          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+          $this->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
         }
         if (!empty($config['use_more_text'])) {
-          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
+          $this->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {
         // Don't display the more link.
-        $this->view->display_handler->setOption('use_more', FALSE);
+        $this->setOption('use_more', FALSE);
       }
     }
   }
@@ -651,58 +701,6 @@ class ListBlock extends CoreBlock {
       }
     }
     return $styles;
-  }
-
-  /**
-   * Gets the URI without the 'internal:' or 'entity:' scheme.
-   *
-   * This method is copied from
-   * Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
-   * since I can't figure out another way to use a protected
-   * method from that class.
-   *
-   * @param string $uri
-   *   The URI to get the displayable string for.
-   *
-   * @return string
-   *   The displayable string.
-   *
-   * @see Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
-   */
-  protected static function getUriAsDisplayableString($uri): string {
-    $scheme = parse_url($uri, PHP_URL_SCHEME);
-
-    // By default, the displayable string is the URI.
-    $displayable_string = $uri;
-
-    // A different displayable string may be chosen in case of the 'internal:'
-    // or 'entity:' built-in schemes.
-    if ($scheme === 'internal') {
-      $uri_reference = explode(':', $uri, 2)[1];
-
-      // @todo '<front>' is valid input for BC reasons, may be removed by
-      //   https://www.drupal.org/node/2421941
-      $path = parse_url($uri, PHP_URL_PATH);
-      if ($path === '/') {
-        $uri_reference = '<front>' . substr($uri_reference, 1);
-      }
-
-      $displayable_string = $uri_reference;
-    }
-    elseif ($scheme === 'entity') {
-      [$entity_type, $entity_id] = explode('/', substr($uri, 7), 2);
-      // Show the 'entity:' URI as the entity autocomplete would.
-      // @todo Support entity types other than 'node'. Will be fixed in
-      //   https://www.drupal.org/node/2423093.
-      if ($entity_type == 'node' && $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id)) {
-        $displayable_string = EntityAutocomplete::getEntityLabels([$entity]);
-      }
-    }
-    elseif ($scheme === 'route') {
-      $displayable_string = ltrim($displayable_string, 'route:');
-    }
-
-    return $displayable_string;
   }
 
 }

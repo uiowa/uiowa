@@ -1,0 +1,29 @@
+uuid: 29d25ad5-4a0d-46a2-b067-b02193fa5532
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_foreword_author
+    - node.type.book
+    - node.type.person
+id: node.book.field_book_foreword_author
+field_name: field_book_foreword_author
+entity_type: node
+bundle: book
+label: 'Foreword author(s)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

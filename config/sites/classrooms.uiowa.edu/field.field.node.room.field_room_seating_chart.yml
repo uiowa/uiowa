@@ -1,0 +1,29 @@
+uuid: a66bd5dd-ebc1-4adc-8e75-45176ff95408
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_seating_chart
+    - media.type.file
+    - node.type.room
+id: node.room.field_room_seating_chart
+field_name: field_room_seating_chart
+entity_type: node
+bundle: room
+label: 'Seating Chart'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

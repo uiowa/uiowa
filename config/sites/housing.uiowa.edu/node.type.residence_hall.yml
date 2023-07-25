@@ -1,0 +1,32 @@
+uuid: 34f44eed-5d06-4d26-8e4a-0a6127534be8
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
+name: 'Residence Hall'
+type: residence_hall
+description: 'Use <em>Residence Hall</em> for your residence hall pages. '
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

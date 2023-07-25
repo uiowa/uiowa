@@ -19,33 +19,20 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 ----
 # Local Environment
-Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/).
+[Ddev](https://ddev.readthedocs.io/en/stable/) is used for the local environment. Follow their [docs](https://ddev.readthedocs.io/en/stable/#installation) to get it installed. Once installed, read up on [basic CLI](https://ddev.readthedocs.io/en/stable/users/cli-usage/) usage to understand how to manage the containers.
 
-All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
+Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev blt dsa` or `ddev composer install`.
 
 ## Workspaces
-Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the VM with `yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
+Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the web container with `ddev yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
 
 Workspaces that need to leverage uiowa/uids assets should depend on uids_base and not uiowa/uids directly. This is to ensure the version of uiowa/uids is strictly managed and because uids_base runs a build script that copies necessary assets into the build artifact. For example, fonts are available in uids_base which would not be available in the excluded node_modules directory.
 
-Note that certain filesystem watch commands are either slow or broken over Vagrant synced folders. To get around this, you can run workspace build scripts manually or run watch commands on your host although you'll need Node, [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and [Yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable). Once installed, you can run the following from the application root:
-
-```
-nvm install
-nvm use
-```
-
-If you're watching SASS and compiling it, you'll need to rebuild node-sass bindings for your host OS.
-
-`npm rebuild node-sass`
-
-This should not result in any changes to yarn.lock. If you try to compile back on the VM, you may need to rebuild it there or run `blt frontend` again to match production. Note that you do not need to use NVM on the VM - it is not installed.
-
 ## Databases
-Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
+Ddev creates a database container that is accessible from the web container. You can access the database container [from your host](https://ddev.readthedocs.io/en/stable/users/topics/database_management/) as well using tools like [SequelPro](https://www.sequelpro.com/) or [TablePlus](https://tableplus.com/).
 
 ## Logging
-As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages, like watchdog, can be viewed by tailing the syslog: `sudo tail -f /var/log/syslog | grep drupal`. [PimpMyLog](http://docs.drupalvm.com/en/latest/extras/pimpmylog/) is also available at https://pimpmylog.local.drupal.uiowa.edu but requires more configuration to work with syslog.
+As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages can be viewed by running `ddev logs`.
 
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
@@ -66,29 +53,22 @@ multisites:
 ```
 
 ### Common Tasks
-The `drupal:sync:all-sites` command will generate settings files _only_ if they do not exist. If you want to re-generate all multisite local settings files, you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files for all multisites.
+
+Local configuration overrides can be set in a local.blt.yml file for each multisite as that file is not tracked in git. For example, to configure stage file proxy in the way it would normally be defined in local.settings.php (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) you would enter it in the local.blt.yml file like:
+
+```
+uiowa:
+  stage_file_proxy:
+    origin: https://sandbox.prod.drupal.uiowa.edu
+```
 
 The `blt frontend` command will install and compile frontend assets.
 
-Local configuration overrides can be set in the local.settings.php file for each multisite. For example, to configure stage file proxy:
-```
-$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-$config['stage_file_proxy.settings']['hotlink'] = TRUE;
-```
-
 ## Multisite Management
-### Creating Sites
-To add a new site to the project, run the following command:
-```
-blt umc example.uiowa.edu
-```
-Replace `example.uiowa.edu` with the URI of the site you are creating.
+There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
-The following options can also be passed in:
-* `--requester=hawkid` - Use the hawkid of the person who requested the site. Will be given webmaster access when installed.
-* `--no-db` - Do not create remote databases.
-* `--no-commit` - Do not create a new commit in git.
-* `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
+Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
 
 ### Overriding Configuration
 Please note this approach is not yet tested nor recommended.
@@ -114,7 +94,7 @@ Testing a uids change in uiowa:
 6. `yarn workspace uids_base gulp --development`
 
 ## Core
-Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
+Run `composer update "drupal/core-*" --with-all-dependencies`.
 
 ## Contrib
 You can run `composer update package/name` to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit for clarity and easier reverting.
@@ -122,14 +102,13 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                               | Reason                   |
-| ------------------------------------- | ------------------------ |
-| drupal/layout_builder_shortcuts       | No stable release.       |
-| drupal/lb_direct_add                  | No stable release.       |
-| drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
-| kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
-| uiowa/block_content_template          | Forked from a deprecated project. |
-| dompdf/dompdf                         | https://www.drupal.org/project/entity_print/issues/3169624 |
+| Package                       | Reason                                                                                                                         |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
+| uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
+| drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
+
+
 
 # Redirects
 Redirects can be added to the docroot/.htaccess file. The .htaccess file be will deployed to all applications, regardless of the domain. Therefore, creating per-site redirects using the Redirect module is preferred.

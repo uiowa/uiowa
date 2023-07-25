@@ -1,0 +1,23 @@
+uuid: 70b7b8d6-b395-46bb-ab9c-62dc19597032
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_type
+    - node.type.article
+  module:
+    - options
+id: node.article.field_article_type
+field_name: field_article_type
+entity_type: node
+bundle: article
+label: 'Article Type'
+description: 'A corresponding tag will be added/removed based on the article type selected. <em>Basic</em> article types can use any tags, and will not receive any auto tagging.'
+required: true
+translatable: false
+default_value:
+  -
+    value: featured
+default_value_callback: ''
+settings: {  }
+field_type: list_string

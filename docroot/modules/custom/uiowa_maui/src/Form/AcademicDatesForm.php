@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_maui\Form;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\uiowa_maui\MauiApi;
@@ -50,7 +51,7 @@ class AcademicDatesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL, $items_to_display = NULL, $limit_dates = FALSE) {
     $current = $form_state->getValue('session') ?? $session_prefilter ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
@@ -101,24 +102,70 @@ class AcademicDatesForm extends FormBase {
       ];
     }
 
-    // This ID needs to be different than the form ID.
+    // This ID needs to be different from the form ID.
     $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
         'id' => $wrapper,
         'aria-live' => 'polite',
+        'class' => 'list-container__inner',
       ],
-      'dates' => [],
     ];
 
     $data = $this->maui->searchSessionDates($current, $category);
 
     if (!empty($data)) {
-      $form['dates-wrapper']['dates'] = [
-        '#theme' => 'uiowa_maui_session_dates',
-        '#data' => $data,
-        '#child_heading_size' => $child_heading_size,
-      ];
+      $data = ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data;
+
+      foreach ($data as $date) {
+        $start = strtotime($date->beginDate);
+        $end = strtotime($date->endDate);
+        $key = $start . $end;
+
+        $attributes = [];
+        $attributes['class'] = [
+          'borderless',
+          'headline--serif',
+        ];
+
+        // Web description is not always set. The subsession takes priority if set.
+        $subsession = $date->subSession ?? FALSE;
+
+        $item = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => 'session',
+          ],
+        ];
+        $item['description'] = [
+          '#type' => 'markup',
+          '#markup' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
+        ];
+        $item['session_badge'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => Xss::filter($subsession ?: $date->session->shortDescription),
+          '#attributes' => [
+            'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session',
+          ],
+        ];
+
+        // Group items by date.
+        if (isset($form['dates-wrapper']['dates'][$key])) {
+          $form['dates-wrapper']['dates'][$key]['#subtitle'][] = $item;
+        }
+        else {
+          $form['dates-wrapper']['dates'][$key] = [
+            '#type' => 'card',
+            '#attributes' => $attributes,
+            '#title' => $this->t('@start@end', [
+              '@start' => date('F j, Y', $start),
+              '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
+            ]),
+            '#subtitle' => [$item],
+          ];
+        }
+      }
     }
     else {
       $form['dates-wrapper']['dates'] = [

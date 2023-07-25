@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labperceiving-acting-thinking.uiowa.ddev.site
+  paths:
+    files: sites/perceiving-acting-thinking.lab.uiowa.edu/files
+dev:
+  uri: labperceiving-acting-thinking.dev.drupal.uiowa.edu
+  host: uiowa05dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/perceiving-acting-thinking.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.dev/docroot
+  user: uiowa05.dev
+prod:
+  uri: perceiving-acting-thinking.lab.uiowa.edu
+  host: uiowa05.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/perceiving-acting-thinking.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.prod/docroot
+  user: uiowa05.prod
+test:
+  uri: labperceiving-acting-thinking.stage.drupal.uiowa.edu
+  host: uiowa05stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/perceiving-acting-thinking.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.test/docroot
+  user: uiowa05.test

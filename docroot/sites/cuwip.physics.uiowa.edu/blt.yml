@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: physicscuwip.uiowa.ddev.site
+    protocol: https
+  machine_name: physicscuwip
+  human_name: cuwip.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicscuwip.prod
+drupal:
+  db:
+    database: cuwip_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'

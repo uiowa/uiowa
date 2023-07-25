@@ -1,0 +1,12 @@
+{%
+  set classes = [
+  'element--light-intro',
+]
+%}
+<div {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    {{ item.content }}
+  {%- endfor -%}
+</div>
+<hr class="element--spacer-separator" />
+<hr class="element--spacer-thin">

@@ -1,7 +1,13 @@
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
+
 #pharmacy-palliative-grad-map {
   min-height: 400px;
   width: 100%;
   height: 100%;
+  @include breakpoint(sm) {
+    height: 700px;
+  }
 }
 #pharmacy-palliative-grad-map .info {
   padding: 1rem;

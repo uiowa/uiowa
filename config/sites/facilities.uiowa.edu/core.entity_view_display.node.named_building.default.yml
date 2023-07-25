@@ -1,0 +1,392 @@
+uuid: 2eb5676d-1ef0-4a7b-bd81-082d0051a606
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.named_building.body
+    - field.field.node.named_building.field_building_additional_info
+    - field.field.node.named_building.field_building_address
+    - field.field.node.named_building.field_building_aerial_view_link
+    - field.field.node.named_building.field_building_building_id
+    - field.field.node.named_building.field_building_honoree_achieve
+    - field.field.node.named_building.field_building_honoree_image
+    - field.field.node.named_building.field_building_honoree_last_name
+    - field.field.node.named_building.field_building_honoree_name
+    - field.field.node.named_building.field_building_honoree_years
+    - field.field.node.named_building.field_building_year_built
+    - field.field.node.named_building.field_image
+    - field.field.node.named_building.field_meta_tags
+    - node.type.named_building
+    - views.view.named_building_details
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - link
+    - metatag
+    - system
+    - text
+    - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          context_mapping: {  }
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+        components:
+          -
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              id: 'extra_field_block:node:named_building:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+        components:
+          -
+            uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
+            region: background
+            configuration:
+              id: 'field_block:node:named_building:field_image'
+              label: 'Featured Image'
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c7573ec7-09af-4378-a150-987c97bf9fd4
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c5c2026e-4c4a-4fa5-86cf-11fb192af5d4
+            region: content
+            configuration:
+              id: 'field_block:node:named_building:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          column_widths: 33-67
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_container_narrow
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 52304edf-a805-4003-8371-1c60e2a44b97
+            region: first
+            configuration:
+              id: 'field_block:node:named_building:field_building_honoree_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: medium__square
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 74ebb053-f220-48a8-bbc7-07b72d2e2a1e
+            region: second
+            configuration:
+              id: 'field_block:node:named_building:field_building_honoree_achieve'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 39c2ce84-7276-44fc-852c-d0049eef9117
+            region: first
+            configuration:
+              id: 'views_block:named_building_details-block_honoree'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping:
+                nid: layout_builder.entity
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_white_pattern_community
+            1: section_container_narrow
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 577f857f-8063-47e5-95c1-2dd12a4d3d64
+            region: content
+            configuration:
+              id: 'views_block:named_building_details-block_building'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping:
+                nid: layout_builder.entity
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: 'Building Information'
+                hide_headline: 0
+                heading_size: h3
+                headline_style: headline_bold_serif
+                headline_alignment: headline_alignment_center
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: node.named_building.default
+targetEntityType: node
+bundle: named_building
+mode: default
+content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_building_additional_info:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_building_address:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_building_aerial_view_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_building_building_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_building_honoree_achieve:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_building_honoree_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_building_honoree_last_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_building_honoree_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_building_honoree_years:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_building_year_built:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  layout_builder__layout: true
+  links: true
+  search_api_excerpt: true

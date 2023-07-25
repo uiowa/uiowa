@@ -20,12 +20,11 @@ global-styling:
       assets/css/components/pagination.css: {}
       assets/css/components/typography/paragraph.css: {}
       assets/css/components/tables.css: {}
-      assets/css/components/tabs.css: {}
       assets/css/components/form/search.css: {}
       assets/css/components/iowa-bar.css: {}
       assets/css/components/footer.css: {}
       assets/css/components/menus/group.css: {}
-      assets/css/components/menus/superfish.css: {}
+      assets/css/components/menus/superfish/superfish.css: {}
       assets/css/components/menus/main-menu.css: {}
       assets/css/components/menus/user-menu.css: {}
       assets/css/components/menus/top.css: {}
@@ -40,6 +39,43 @@ global-styling:
   dependencies:
     - core/jquery
     - core/jquery.once
+
+# Third-party libraries
+# Accessible Menu
+accessible-menu:
+  js:
+    /libraries/accessible-menu/dist/accessible-menu.js: {}
+    assets/js/accessible-menu.init.js: {}
+# Leaflet
+leaflet:
+  remote: http://leafletjs.com/
+  version: 1.7.1
+  license:
+    name: Leaflet-License
+    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
+    gpl-compatible: true
+  js:
+    /libraries/leaflet/dist/leaflet.js: {}
+  css:
+    component:
+      /libraries/leaflet/dist/leaflet.css: {}
+      assets/css/components/leaflet.css: { preprocess: false }
+# Slick
+slick:
+  css:
+    theme:
+      /libraries/slick-carousel/slick/slick.css: {}
+  js:
+    /libraries/slick-carousel/slick/slick.min.js: {}
+  dependencies:
+    - core/jquery
+# Pannellum
+virtual_tour:
+  css:
+    theme:
+      /libraries/pannellum/build/pannellum.css: {}
+  js:
+    /libraries/pannellum/build/pannellum.js: { preprocess: true }
 
 # UIDS.
 status-messages:
@@ -62,37 +98,39 @@ search-toggle:
     component:
       assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
   js:
-    uids/components/search-toggle/search-toggle.js: { preprocess: false  }
+    uids3/components/search-toggle/search-toggle.js: { preprocess: false  }
 search-results:
   css:
     component:
       assets/css/components/search-results.css: { preprocess: false }
-off-canvas:
+toggle-nav:
   css:
     component:
-      assets/css/components/menus/off-canvas.css: { preprocess: false }
+      assets/css/components/menus/toggle-nav.css: { preprocess: false }
   js:
-    uids/components/menus/off-canvas/off-canvas.js: { preprocess: false  }
-articles:
-  css:
-    component:
-      assets/css/blocks/articles.css: { preprocess: false }
+    uids3/components/menus/toggle-nav/toggle-nav.js: { preprocess: false  }
 accordion:
   css:
     component:
       assets/css/components/accordion.css: { preprocess: false }
       assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
   js:
-    uids/components/accordion/accordion.js: { preprocess: false  }
+    uids3/components/accordion/accordion.js: { preprocess: false  }
+tabs:
+  css:
+    component:
+      assets/css/components/tabs.css: { preprocess: false }
+  js:
+    uids3/components/tabs/tabs.js: { preprocess: false }
 header-sticky:
   js:
-    uids/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
+    uids3/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
 banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { preprocess: false }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -105,7 +143,7 @@ slider:
     component:
       assets/css/components/slider.css: { preprocess: false }
   js:
-    uids/components/slider/slider.js: { preprocess: false }
+    uids3/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
 remote-video:
@@ -114,7 +152,7 @@ remote-video:
       assets/css/components/video/video-utilities.css: { preprocess: false }
 video:
   js:
-    uids/components/video/video.js: { preprocess: false }
+    uids3/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -123,17 +161,13 @@ event:
   css:
     component:
       assets/css/components/event.css: { preprocess: false }
-events:
-  css:
-    component:
-      assets/css/blocks/events.css: { preprocess: false }
 aggregator-feed:
   css:
     component:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/video/video.js: { preprocess: false }
+    uids3/components/video/video.js: { preprocess: false }
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
@@ -144,7 +178,7 @@ vertical-video:
     component:
       assets/css/components/video/vertical.css: { preprocess: false }
   js:
-    uids/components/video/vertical/vertical.js: { preprocess: false }
+    uids3/components/video/vertical/vertical.js: { preprocess: false }
 highlight:
   css:
     component:
@@ -155,49 +189,23 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { preprocess: false }
+    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 media:
   css:
     component:
-      assets/css/components/media.css: { preprocess: false }
-text-area:
+      assets/css/components/media.css: { preprocess: false, weight: 1 }
+image:
   css:
     component:
-      assets/css/blocks/text-area.css: { preprocess: false }
-colorbox:
-  remote: http://github.com/jackmoore/colorbox
-  version: VERSION
-  license:
-    name: MIT
-    gpl-compatible: false
-  js:
-    /libraries/colorbox/jquery.colorbox-min.js: { minified: true }
-    assets/js/colorbox_overrides.behavior.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - colorbox/init
-leaflet:
-  remote: http://leafletjs.com/
-  version: 1.7.1
-  license:
-    name: Leaflet-License
-    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
-    gpl-compatible: true
-  js:
-    /libraries/leaflet/dist/leaflet.js: {}
+      assets/css/components/image.css: { preprocess: false }
+tags:
   css:
     component:
-      /libraries/leaflet/dist/leaflet.css: {}
-      assets/css/components/leaflet.css: { preprocess: false }
-slick:
+      assets/css/components/tags.css: { preprocess: false }
+related:
   css:
-    theme:
-      /libraries/slick-carousel/slick/slick.css: {}
-  js:
-    /libraries/slick-carousel/slick/slick.min.js: {}
-  dependencies:
-    - core/jquery
+    component:
+      assets/css/components/related.css: { preprocess: false }
 badge:
   css:
     component:
@@ -211,7 +219,7 @@ stat:
     component:
       assets/css/components/stat.css: { preprocess: false }
   js:
-    uids/components/stat/stat.js: { preprocess: false }
+    uids3/components/stat/stat.js: { preprocess: false }
 timeline:
   css:
     component:
@@ -229,15 +237,15 @@ main-menu:
 mega-menu:
   css:
     component:
-      assets/css/components/menus/mega-menu.css: { preprocess: false }
-people:
+      assets/css/components/menus/superfish/mega-menu.css: { preprocess: false }
+horizontal-menu:
   css:
     component:
-      assets/css/blocks/people.css: { preprocess: false }
-vertical:
+      assets/css/components/menus/superfish/horizontal-menu.css: { preprocess: false }
+local-tasks:
   css:
     component:
-      assets/css/components/menus/vertical.css: { preprocess: false }
+      assets/css/components/menus/local-tasks.css: { preprocess: false }
 sitenow:
   css:
     component:
@@ -282,6 +290,10 @@ view-articles-list:
   css:
     component:
       assets/css/views/view-articles--list.css: { preprocess: false }
+view-events-list:
+  css:
+    component:
+      assets/css/views/view-events--list.css: { preprocess: false }
 view-articles-archive:
   css:
     component:
@@ -298,6 +310,18 @@ view-taxonomy-term:
   css:
     component:
       assets/css/views/view-taxonomy-term.css: { preprocess: false }
+view-taxonomy-term-colleges:
+  css:
+    component:
+      assets/css/views/view-taxonomy-term-colleges.css: { preprocess: false }
+view-bef:
+  css:
+    component:
+      assets/css/views/bef/view-bef.css: { preprocess: false }
+view-calendar:
+  css:
+    component:
+      assets/css/views/view-calendar.css: { preprocess: false }
 views:
   css:
     component:
@@ -346,49 +370,30 @@ caption:
   css:
     component:
       assets/css/components/caption.css: { preprocess: false }
+callout:
+  css:
+    component:
+      assets/css/components/callout.css: { preprocess: false }
+      assets/css/components/inline.css: { preprocess: false }
 admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
-      assets/css/local-tasks.css: {}
       assets/css/components/badge.css: {}
+region_item:
+  css:
+    component:
+      assets/css/components/region_item.css: {}
+# Layout Builder UI
+layout-builder:
+  css:
+    component:
+      assets/css/layout-builder.css: { weight: -500, preprocess: false }
 sftouchscreen:
   js:
     assets/js/sftouchscreen.js: { }
   dependencies:
     - superfish/init
-
-# CSS libraries for Layout plugins.
-onecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol.css: {}
-onecol--background:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol--background.css: {}
-twocol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/twocol.css: {}
-threecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/threecol.css: {}
-fourcol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/fourcol.css: {}
-page--left-sidebar:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
 person:
   css:
     theme:
@@ -397,3 +402,52 @@ global-serif:
   css:
     component:
       assets/css/components/typography/global-serif.css: { preprocess: false }
+
+# CSS libraries for Layout plugins.
+# One column
+onecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol.css: {}
+# One column with background
+onecol--background:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol--background.css: {}
+# One column with region
+onecol--fixed:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol--fixed.css: {}
+# Two column
+twocol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/twocol.css: {}
+# Three column
+threecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/threecol.css: {}
+# Four column
+fourcol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/fourcol.css: {}
+# Left sidebar default page layout
+page--left-sidebar:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
+# Off-brand theme
+theme-overrides:
+  css:
+    component:
+      assets/css/theme-overrides.css: { preprocess: false }

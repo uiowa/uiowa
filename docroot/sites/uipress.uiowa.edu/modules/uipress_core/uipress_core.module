@@ -1,0 +1,302 @@
+<?php
+
+/**
+ * @file
+ * Contains uipress_core.module.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\uipress_core\Entity\Book;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function uipress_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['book'])) {
+    $bundles['node']['book']['class'] = Book::class;
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['#paragraph_type'] === 'book_type') {
+    if (isset($element['subform']['field_book_ebook_ownership'])) {
+      // Set the field_book_ebook_ownership field to only be visible when ebook
+      // the type of book selected.
+      $delta = $element['#delta'];
+
+      $element['subform']['field_book_ebook_ownership']['#states'] = [
+        'visible' => [
+          ':input[name="field_book_type[' . $delta . '][subform][field_book_type]"]' => [
+            'value' => 'eBook',
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+    // Display book interior images in a two column grid.
+    case 'field_block:node:book:field_book_interior_pages':
+      $variables['attributes']['class'][] = 'grid--twocol--50-50';
+      $variables['attributes']['class'][] = 'block-margin__top';
+      break;
+
+    case 'field_block:node:book:field_book_subtitle':
+      $variables['attributes']['class'][] = 'element--light-intro';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function uipress_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_book_related_reads':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline';
+
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = '';
+      }
+      $variables['attributes']['class'] .= 'grid--threecol--33-34-33';
+
+      $variables['field_container_classes'] = 'list-container__inner';
+      break;
+
+    case 'field_book_interior_pages':
+      $variables['field_container_classes'] = 'list-container__inner';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uipress_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uipress_core/global';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_paragraph__book_type(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    // Set unique identifiers for aria labels.
+    $variables['heading_id'] = 'heading' . $paragraph->id();
+    $variables['content_id'] = 'content' . $paragraph->id();
+
+    // Determine whether to show book sale price or not.
+    if ($paragraph->hasField('field_book_sale_price') && $paragraph->hasField('field_book_sale_start_date') && $paragraph->hasField('field_book_sale_expiry_date')) {
+      if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
+        // If start date exists make sure current date is after start date.
+        $in_range = TRUE;
+        // Create a variable for start of today based on the site's timezone
+        // which can be used to compare the start and end dates.
+        $timezone = date_default_timezone_get();
+        $datetime = new DrupalDateTime('now', $timezone);
+        $today = $datetime->format('Y-m-d 00:00:00');
+
+        // If the start date exists make sure that it is in the past or today.
+        $start = $paragraph->get('field_book_sale_start_date')->value;
+        if (isset($start)) {
+          $start = date('Y-m-d', strtotime($start));
+          $in_range = $today >= $start;
+        }
+
+        // If end date exists make sure it is after today.
+        $end = $paragraph->get('field_book_sale_expiry_date')->value;
+        if ($in_range && isset($end)) {
+          $end = date('Y-m-d', strtotime($end));
+          $in_range = $today < $end;
+        }
+        // If neither condition is true unset display of sale price.
+        if (!$in_range) {
+          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+        }
+      }
+    }
+
+    // Add an accordion label with the book type and e-book ownership terms, if
+    // applicable.
+    if ($paragraph->hasField('field_book_type')) {
+      $variables['accordion_label'] = $paragraph->field_book_type->value;
+      if ($paragraph->hasField('field_book_ebook_ownership') && $paragraph->field_book_ebook_ownership->value) {
+        $variables['accordion_label'] .= ', ' . $paragraph->field_book_ebook_ownership->value;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'book_publication_details') {
+    $rows = &$variables['rows'];
+
+    foreach ($rows as $id => &$row) {
+      // Initialize card_options variable.
+      $row['template_options'] = [
+        'attributes' => $row['attributes'],
+        'accordion_item_content' => $row['content'],
+        'accordion_item_expanded' => 'false',
+        'accordion_item_id' => "book-details-$id",
+        'accordion_item_label' => $view->getTitle(),
+        'accordion_multiselectable' => TRUE,
+        'accordion_parent_id' => 'book-publication-details-accordion',
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_views_view_fields(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'book_tabs') {
+    foreach ($variables['fields'] as $id => $field) {
+      // Remove debug info and extra spaces to see if
+      // there's actually content that needs rendering.
+      $contents = trim(preg_replace('|<!--(.*?)-->|', '', $field->content));
+      if (empty($contents)) {
+        unset($variables['fields'][$id]);
+      }
+    }
+    foreach (array_keys($variables['fields']) as $delta => $id) {
+      // Set deltas depending on what fields we have remaining.
+      $variables['fields'][$id]->delta = $delta;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uipress_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__paragraph__field_book_sale_code__book_type__default' => [
+      'template' => 'field--paragraph--field-book-sale-code--book-type--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_book_type' => [
+      'template' => 'field--node--field-book-type',
+      'base hook' => 'field',
+    ],
+    'paragraph__book_type__default' => [
+      'template' => 'paragraph--book-type--default',
+      'base hook' => 'paragraph',
+    ],
+    'views_view_unformatted__book_publication_details' => [
+      'template' => 'views-view-unformatted--book-publication-details',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__book_tabs' => [
+      'template' => 'views-view-unformatted--book-tabs',
+      'base hook' => 'view',
+    ],
+    'views_view_fields__book_tabs' => [
+      'template' => 'views-view-fields--book-tabs',
+      'base hook' => 'view',
+    ],
+    'block__cartbuttons_block' => [
+      'template' => 'block--cartbuttons-block',
+      'base hook' => 'block',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function uipress_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $id = $view->storage->id();
+
+  if ($id === 'taxonomy_term') {
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uipress_core_cron() {
+  // Check if we've run this yet today. Sales change
+  // at most daily, so once in the morning is enough.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('uipress_core_daily_last');
+
+  if (!$last_run || $request_date > $last_run) {
+    // Check if we should be concerned with
+    // purging as well, and if so, get it set up.
+    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [];
+    }
+
+    // Get our nodes of interest and invalidate some cache tags.
+    $nids = uipress_core_get_current_sales();
+    foreach ($nids as $nid) {
+      $tag = 'node:' . $nid;
+      Cache::invalidateTags([$tag]);
+      if ($include_purge) {
+        $invalidations[] = $purgeInvalidationFactory->get('tag', $tag);
+      }
+    }
+    if ($include_purge) {
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uipress_core_daily_last', $request_date);
+  }
+}
+
+/**
+ * Return an array of node ids for books with a current sale.
+ *
+ * @return array
+ *   The NIDs of interest.
+ */
+function uipress_core_get_current_sales() {
+  $today = date('Y-m-d');
+  $yesterday = date('Y-m-d', strtotime('yesterday'));
+  $pids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'book_type')
+    // If the sale starts today or started before today,
+    // we want to include it.
+    ->condition('field_book_sale_start_date', $today, '<=')
+    // We want to include sales that end in the future, or that
+    // just ended yesterday, so that we still wipe their cache
+    // and don't display a sale that has since ended.
+    ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->execute();
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'book')
+    ->condition('field_book_type', $pids, 'IN')
+    ->execute();
+  return array_values($nids);
+}

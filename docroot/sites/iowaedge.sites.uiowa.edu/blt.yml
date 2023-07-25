@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesiowaedge.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesiowaedge
+  human_name: iowaedge.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesiowaedge.prod
+drupal:
+  db:
+    database: iowaedge_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: lfaranda
+  site-name: 'Iowa Edge Peer Leaders'

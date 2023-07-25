@@ -124,7 +124,7 @@ function sitenow_people_update_9101() {
   $current_view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
   $current_default =& $current_view->getDisplay('default');
   $current_displays = $current_view->get('display');
-  if ($current_view->get('status') == TRUE) {
+  if ($current_view->get('status') === TRUE) {
     $current_status = 1;
   }
   else {
@@ -132,13 +132,13 @@ function sitenow_people_update_9101() {
   }
   foreach ($current_displays as $current_display) {
     // Override the default sort value. Assumes only one display is enabled...
-    if (isset($current_display["display_options"]["enabled"]) && $current_display["display_options"]["enabled"] == 1) {
+    if (isset($current_display['display_options']['enabled']) && $current_display['display_options']['enabled'] === 1) {
       $enabled_id = $current_display['id'];
       $current_path = $current_display['display_options']['path'];
     }
   }
   $current_title = $current_default['display_options']['title'];
-  $current_header = $current_default["display_options"]["header"]["area"]["content"]["value"];
+  $current_header = $current_default['display_options']['header']['area']['content']['value'];
 
   // Load the new config. Wiping everything else out.
   $config_path = Settings::get('config_sync_directory');
@@ -150,9 +150,9 @@ function sitenow_people_update_9101() {
   // Set the existing config again.
   $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
   $default =& $view->getDisplay('default');
-  $default["display_options"]["header"]["area"]["content"]["value"] = $current_header;
+  $default['display_options']['header']['area']['content']['value'] = $current_header;
   $default['display_options']['title'] = $current_title;
-  if ($current_status == 1) {
+  if ($current_status === 1) {
     $view->set('status', TRUE);
     $displays = $view->get('display');
     unset($displays['default']);
@@ -161,11 +161,11 @@ function sitenow_people_update_9101() {
       if (isset($current_path)) {
         $display[$display['id']]['display_options']['path'] = $current_path;
       }
-      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+      $display[$display['id']]['display_options']['enabled'] = FALSE;
     }
     if (isset($enabled_id)) {
       $enabled_display =& $view->getDisplay($enabled_id);
-      $enabled_display["display_options"]["enabled"] = TRUE;
+      $enabled_display['display_options']['enabled'] = TRUE;
     }
   }
   else {
@@ -174,4 +174,43 @@ function sitenow_people_update_9101() {
 
   $view->save();
 
+}
+
+/**
+ * Add tag and related display config setting to people.
+ */
+function sitenow_people_update_9301() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $config->set('tag_display', 'do_not_display');
+  $config->set('related_display', 'do_not_display');
+  $config->save();
+}
+
+/**
+ * Add link indicator on teasers config setting to people.
+ */
+function sitenow_people_update_9302() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $config->set('show_teaser_link_indicator', FALSE);
+
+  $config->save();
+}
+
+/**
+ * Make Research Areas label customizable.
+ */
+function sitenow_people_update_9303() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+
+  // Load the entity field manager service.
+  $entityFieldManager = \Drupal::service('entity_field.manager');
+
+  // Load the field instance for the 'field_person_research_areas' field.
+  $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
+
+  // Set the default label to the label of the 'field_person_research_areas' field.
+  $default_label = $fieldInstance->getLabel();
+  $config->set('research_title', $default_label);
+
+  $config->save();
 }

@@ -2,13 +2,13 @@
 
 namespace Drush\Commands;
 
-use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
-use Consolidation\SiteProcess\ProcessManagerAwareInterface;
-use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
+use Consolidation\SiteProcess\ProcessManagerAwareInterface;
+use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -20,7 +20,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use ProcessManagerAwareTrait;
 
   /**
-   * Configuration that should sanitized.
+   * Configuration that should be sanitized.
    *
    * @var array
    */
@@ -57,7 +57,6 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $defaults = $annotationData->getList('default-fields');
 
     // If no specific fields were requested, add ours to the defaults.
-    // @todo Is there a more-defined context for when to do this?
     if ($fields == $defaults) {
       $annotationData->append('field-labels', "\n application: Application");
       array_unshift($defaults, 'application');
@@ -171,7 +170,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $output = explode(PHP_EOL, $output);
     foreach ($output as $line) {
       if (!empty($line)) {
-        list($table, $table_size) = explode("\t", $line);
+        [$table, $table_size] = explode("\t", $line);
 
         $rows[] = [
           'table' => $table,
@@ -250,6 +249,48 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
         ]);
       }
     }
+  }
+
+  /**
+   * Prepare a site to run update hooks.
+   *
+   * @command uiowa:debug:update-hook
+   *
+   * @aliases udu
+   */
+  public function setupSiteForDebuggingUpdate() {
+    $selfRecord = $this->siteAliasManager()->getSelf();
+
+    // This doesn't actually make a difference at this point, but is good to
+    // have in case they eventually make it so that commands run inside another
+    // command can actually respond to interaction.
+    $options = [
+      'yes' => TRUE,
+    ];
+
+    // Clear drush cache.
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $this->processManager()->drush($selfRecord, 'cache-clear', ['drush'], $options);
+    $process->mustRun($process->showRealtime());
+
+    // Sync from prod.
+    $prod_alias = str_replace('.local', '.prod', $selfRecord->name());
+    $process = $this->processManager()->drush($selfRecord, 'sql-sync', [
+      $prod_alias,
+      '@self',
+    ], [
+      ...$options,
+      'create-db' => TRUE,
+    ]);
+    $process->mustRun($process->showRealtime());
+
+    // Rebuild cache.
+    $process = $this->processManager()->drush($selfRecord, 'cr', [], $options);
+    $process->mustRun($process->showRealtime());
+
+    // Sanitize SQL.
+    $process = $this->processManager()->drush($selfRecord, 'sql-sanitize', [], $options);
+    $process->mustRun($process->showRealtime());
   }
 
 }

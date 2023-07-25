@@ -68,8 +68,12 @@
 }
 
 @media screen and (min-width: 40em) {
-  div[id^='edit-field-person-types'].form-checkboxes {
+  div.multi--column .form-checkboxes {
     column-count: 2;
   }
 }
 
+/* Formatting overrides for diff revisions. */
+table.diff.diff-responsive-table td {
+  white-space: pre-wrap;
+}

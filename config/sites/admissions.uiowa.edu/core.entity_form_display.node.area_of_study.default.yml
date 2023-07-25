@@ -72,16 +72,16 @@ third_party_settings:
         - field_area_of_study_comp_txt
         - field_area_of_study_sub_type
         - field_area_of_study_subprogram
+      label: 'Program types'
+      region: content
       parent_name: ''
       weight: 4
       format_type: fieldset
-      region: content
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         description: ''
         required_fields: true
-      label: 'Program types'
 id: node.area_of_study.default
 targetEntityType: node
 bundle: area_of_study
@@ -90,13 +90,13 @@ content:
   body:
     type: text_textarea_with_summary
     weight: 8
+    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
       show_summary: false
     third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
     weight: 21
@@ -104,66 +104,67 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_area_of_study_academic_gp:
+    type: entity_reference_autocomplete
     weight: 3
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_area_of_study_career:
+    type: text_textarea
     weight: 15
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_certificates:
+    type: string_textfield
     weight: 32
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_college:
+    type: entity_reference_autocomplete
     weight: 5
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_area_of_study_comp_txt:
+    type: string_textfield
     weight: 43
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_competitive:
+    type: options_buttons
     weight: 42
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_course_work:
+    type: text_textarea
     weight: 19
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_first_year:
     type: paragraphs
     weight: 12
+    region: content
     settings:
       title: Requirement
       title_plural: Requirement
@@ -179,30 +180,30 @@ content:
         collapse_edit_all: '0'
         duplicate: '0'
     third_party_settings: {  }
-    region: content
   field_area_of_study_four_txt:
+    type: string_textfield
     weight: 39
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_four_year:
+    type: options_buttons
     weight: 38
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_honors:
+    type: options_buttons
     weight: 37
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_intl:
     type: paragraphs
     weight: 14
+    region: content
     settings:
       title: Requirement
       title_plural: Requirement
@@ -218,26 +219,26 @@ content:
         collapse_edit_all: '0'
         duplicate: '0'
     third_party_settings: {  }
-    region: content
   field_area_of_study_link:
+    type: link_default
     weight: 6
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_area_of_study_mail_code:
+    type: string_textfield
     weight: 7
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_majors:
     type: paragraphs
     weight: 30
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -253,83 +254,82 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: '0'
     third_party_settings: {  }
-    region: content
   field_area_of_study_minors:
+    type: string_textfield
     weight: 31
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_online:
+    type: string_textfield
     weight: 34
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_opportunity:
+    type: text_textarea
     weight: 16
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_preprof:
+    type: string_textfield
     weight: 33
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_pretty_title:
+    type: string_textfield
     weight: 1
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_program_type:
+    type: options_buttons
     weight: 29
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_requirement:
+    type: text_textarea
     weight: 11
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_scholarship:
+    type: text_textarea
     weight: 17
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_select_txt:
+    type: string_textfield
     weight: 41
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_selective:
+    type: options_buttons
     weight: 40
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_stat:
     type: entity_reference_autocomplete
     weight: 10
@@ -343,6 +343,7 @@ content:
   field_area_of_study_stories:
     type: paragraphs
     weight: 18
+    region: content
     settings:
       title: Story
       title_plural: Stories
@@ -358,46 +359,46 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   field_area_of_study_sub_type:
+    type: options_select
     weight: 44
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_area_of_study_subprogram:
+    type: string_textfield
     weight: 45
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_subtitle:
+    type: text_textarea
     weight: 2
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_area_of_study_teaching:
+    type: options_buttons
     weight: 35
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_area_of_study_teaching_txt:
+    type: string_textfield
     weight: 36
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_area_of_study_transfer:
     type: paragraphs
     weight: 13
+    region: content
     settings:
       title: Requirement
       title_plural: Requirement
@@ -413,34 +414,33 @@ content:
         collapse_edit_all: '0'
         duplicate: '0'
     third_party_settings: {  }
-    region: content
   field_area_of_study_why:
+    type: text_textarea
     weight: 9
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_image:
+    type: media_library_widget
     weight: 28
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    type: media_library_widget
-    region: content
   field_meta_tags:
+    type: metatag_firehose
     weight: 29
+    region: content
     settings:
       sidebar: true
     third_party_settings: {  }
-    type: metatag_firehose
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 26
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   path:
     type: path
@@ -450,24 +450,24 @@ content:
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 22
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 27
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 23
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -480,12 +480,12 @@ content:
   uid:
     type: entity_reference_autocomplete
     weight: 20
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   url_redirects:
     weight: 25

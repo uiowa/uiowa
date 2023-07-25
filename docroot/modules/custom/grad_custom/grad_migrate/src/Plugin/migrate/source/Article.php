@@ -3,8 +3,8 @@
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
-use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
+use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -321,8 +321,6 @@ class Article extends BaseNodeSource {
           // Create the <drupal-media> element.
           $media_embed = $document->createElement('drupal-media');
           $media_embed->setAttribute('data-entity-uuid', $uuid);
-          // @todo Determine how to correctly set the crop.
-          //   $media_embed->setAttribute('data-view-mode', 'full_no_crop');
           $media_embed->setAttribute('data-entity-type', 'media');
 
           // Set the alignment if we can determine it.

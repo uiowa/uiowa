@@ -18,7 +18,7 @@ function sitenow_card_preprocess_paragraph__card(&$variables) {
     // Create new card attributers.
     $variables['card_attributes'] = new Attribute();
     // Add css if applicable.
-    $variables['#attached']['library'][] = 'sitenow_card/default';
+    $variables['#attached']['library'][] = 'uids_base/card';
     // Add card link behavior for links.
     $link_field = $paragraph->get('field_card_link');
     if (!$link_field->isEmpty()) {
@@ -30,7 +30,6 @@ function sitenow_card_preprocess_paragraph__card(&$variables) {
       $variables['card_attributes']['aria-label'] = $link['title'];
       $variables['card_attributes']['name'] = $link['title'];
       $variables['card_attributes']['title'] = $link['title'];
-      $variables['#attached']['library'][] = 'sitenow_card/card-link-js';
     }
   }
 

@@ -6,7 +6,10 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
+use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkHelper;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_maui_academic_dates",
  *   admin_label = @Translation("Academic dates"),
- *   category = @Translation("MAUI")
+ *   category = @Translation("Site custom")
  * )
  */
 class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -85,18 +88,19 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
-    list(
+    [
       $current,
       $plus_one,
       $plus_two,
-      $plus_three
-    ) = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
+      $plus_three,
+    ] = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
       'hide_headline' => $config['hide_headline'] ?? 0,
       'heading_size' => $config['heading_size'] ?? 'h2',
       'headline_style' => $config['headline_style'] ?? 'default',
+      'headline_alignment' => $config['headline_alignment'] ?? 'default',
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
@@ -147,6 +151,86 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#options' => $this->maui->getDateCategories(),
     ];
 
+    $form['limit_dates'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Limit number of dates displayed'),
+      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates.'),
+      '#default_value' => $config['limit_dates'] ?? FALSE,
+      '#return_value' => TRUE,
+    ];
+
+    $form['items_to_display'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Dates to display'),
+      '#description' => $this->t('Select the number of dates to display. Minimum of 1 and maximum of 50.'),
+      '#default_value' => $config['items_to_display'] ?? 10,
+      '#min' => 1,
+      '#max' => 50,
+      '#process_default_value' => FALSE,
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='settings[limit_dates]']" => [
+              'checked' => TRUE,
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    $form['display_more_link'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display more link'),
+      '#description' => $this->t('Check to include a "display more" link. Default is https://registrar.uiowa.edu/academic-calendar. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'),
+      '#default_value' => $config['display_more_link'] ?? FALSE,
+      '#return_value' => TRUE,
+    ];
+
+    $form['more_link'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Path'),
+      '#description' => $this->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com. Enter %front to link to the front page.'),
+      '#default_value' => isset($config['more_link']) ? LinkHelper::getUriAsDisplayableString($config['more_link']) : 'https://registrar.uiowa.edu/academic-calendar',
+      '#element_validate' => [
+        [
+          LinkWidget::class,
+          'validateUriElement',
+        ],
+      ],
+      // @todo The user should be able to select an entity type. Will be fixed
+      // in https://www.drupal.org/node/2423093.
+      '#target_type' => 'node',
+      // Disable autocompletion when the first character is '/', '#' or '?'.
+      '#attributes' => [
+        'data-autocomplete-first-character-blacklist' => '/#?',
+      ],
+      '#process_default_value' => FALSE,
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='settings[display_more_link]']" => [
+              'checked' => TRUE,
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    $form['more_text'] = [
+      '#type' => 'textfield',
+      '#title' => 'Custom text',
+      '#default_value' => $config['more_text'] ?? 'View more',
+      '#process_default_value' => FALSE,
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='settings[display_more_link]']" => [
+              'checked' => TRUE,
+            ],
+          ],
+        ],
+      ],
+    ];
     return $form;
   }
 
@@ -174,12 +258,26 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $this->configuration[$name] = $value;
     }
 
-    // Convert select list values to what we're expecting in the form builder.
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
+    $items_to_display = $form_state->getValue('items_to_display');
+    $limit_dates = $form_state->getValue('limit_dates');
+    $display_more_link = $form_state->getValue('display_more_link');
+    $more_link = $form_state->getValue('more_link');
+    $more_text = $form_state->getValue('more_text');
 
+    // Convert select list values to what we're expecting in the form builder.
+    // Sessions and category need to be NULL'ed out if deselected.
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
+
+    // These can be saved as-is.
+    $this->configuration['items_to_display'] = $items_to_display;
+    $this->configuration['limit_dates'] = $limit_dates;
+    $this->configuration['display_more_link'] = $display_more_link;
+    $this->configuration['more_link'] = $more_link;
+    $this->configuration['more_text'] = $more_text;
+
     parent::blockSubmit($form, $form_state);
   }
 
@@ -208,6 +306,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#hide_headline' => $config['hide_headline'],
       '#heading_size' => $config['heading_size'],
       '#headline_style' => $config['headline_style'],
+      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
     ];
 
     if (empty($config['headline'])) {
@@ -221,8 +320,25 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['session'],
       $config['category'],
-      $child_heading_size
+      $child_heading_size,
+      $config['items_to_display'],
+      $config['limit_dates'],
     );
+
+    if ($config['display_more_link'] === TRUE) {
+      $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
+
+      $build['more_link'] = [
+        '#title' => $this->t('@more_text', [
+          '@more_text' => $config['more_text'] ?? 'View more',
+        ]),
+        '#type' => 'link',
+        '#url' => Url::fromUri($more_link),
+        '#attributes' => [
+          'class' => ['bttn', 'bttn--primary', 'more-link'],
+        ],
+      ];
+    }
 
     return $build;
   }

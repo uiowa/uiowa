@@ -13,11 +13,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
-   * The config factory service.
+   * The dispatch service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -36,9 +43,10 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch) {
+  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $entityTypeManager) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -47,7 +55,8 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch')
+      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('entity_type.manager'),
     );
   }
 
@@ -55,17 +64,52 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->configFactory()->get('sitenow_dispatch.settings');
+    $api_key = $config->get('api_key');
+
     $form['description_text'] = [
-      '#markup' => '<p><a href="https://its.uiowa.edu/dispatch">Dispatch</a> is a web service that allows users to create and manage campaigns to generate PDF content, email messages, SMS messages, or voice calls. You must have a Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/faq#q1">client and account</a> to use Dispatch functionality within your site.</p>',
+      '#markup' => '<p><a href="https://its.uiowa.edu/dispatch">Dispatch</a> is a web service that allows users to create and manage campaigns to generate PDF content, email messages, SMS messages, or voice calls. You must have a Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/faq#q1">client and account</a> to use certain Dispatch functionality within your site.</p>',
     ];
 
     $form['api_key'] = [
-      '#type' => 'textfield',
+      '#type' => 'password',
       '#title' => $this->t('API key'),
-      '#default_value' => $this->config('sitenow_dispatch.settings')->get('api_key'),
+      '#attributes' => [
+        'value' => $api_key,
+      ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
+      '#required' => TRUE,
     ];
+
+    if ($api_key && $client = $config->get('client')) {
+      $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
+        '@client' => $client,
+      ]);
+    }
+
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $api_key = trim($form_state->getValue('api_key'));
+
+    // Validate the api_key being submitted in the form rather than config.
+    $client = $this->dispatch->request('GET', 'client', [], [
+      'headers' => [
+        'x-dispatch-api-key' => $api_key,
+      ],
+    ]);
+
+    if ($client === FALSE) {
+      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+    }
+    else {
+      $form_state->setValue('api_key', $api_key);
+      $form_state->setValue('client', $client->name);
+    }
   }
 
   /**
@@ -74,23 +118,10 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('sitenow_dispatch.settings')
       ->set('api_key', $form_state->getValue('api_key'))
+      ->set('client', $form_state->getValue('client'))
       ->save();
+
     parent::submitForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    $response = $this->dispatch->getFromDispatch('https://apps.its.uiowa.edu/dispatch/api/v1/populations', $form_state->getValue('api_key'));
-
-    // If the response is empty, we have an invalid API key.
-    if ($response == []) {
-      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
-    }
-
-    parent::validateForm($form, $form_state);
   }
 
 }

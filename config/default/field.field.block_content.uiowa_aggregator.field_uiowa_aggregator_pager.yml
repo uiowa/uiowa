@@ -1,0 +1,23 @@
+uuid: ab9c8b53-0471-46cf-8f71-675cef717ef6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_aggregator
+    - field.storage.block_content.field_uiowa_aggregator_pager
+id: block_content.uiowa_aggregator.field_uiowa_aggregator_pager
+field_name: field_uiowa_aggregator_pager
+entity_type: block_content
+bundle: uiowa_aggregator
+label: 'Show pager'
+description: 'Check this to show all items paged by the <em>Number of items</em> value.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

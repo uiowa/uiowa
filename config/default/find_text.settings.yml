@@ -1,0 +1,52 @@
+field_types:
+  string:
+    allowed: true
+    value_columns: null
+  string_long:
+    allowed: true
+    value_columns: null
+  text_long:
+    allowed: true
+    value_columns: null
+  text_with_summary:
+    allowed: true
+    value_columns:
+      - _value
+      - _summary
+  link:
+    allowed: true
+    value_columns:
+      - _uri
+      - _title
+  heading:
+    allowed: true
+    value_columns:
+      - _text
+  uiowa_headline:
+    allowed: true
+    value_columns:
+      - _headline
+allow_all_entities: true
+entity_types:
+  node:
+    allowed: true
+    bundles:
+      - page
+      - article
+  menu:
+    allowed: true
+    bundles: null
+  taxonomy:
+    allowed: true
+    bundles: null
+  block_content:
+    allowed: true
+    bundles: null
+  paragraph:
+    allowed: true
+    bundles: null
+tables_to_skip:
+  - block_content_revision
+  - block_content_field_data
+  - node_revision
+  - paragraphs_item_field_data

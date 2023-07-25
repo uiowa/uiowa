@@ -3,12 +3,20 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.minimal
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
+    - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_status
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -20,12 +28,14 @@ dependencies:
   module:
     - address
     - content_moderation
+    - entity_browser_entity_form
+    - geofield
+    - inline_entity_form
     - link
     - media_library
     - metatag
     - path
     - smart_date
-    - smart_date_recur
     - text
 _core:
   default_config_hash: LlPkvF6k5LrVch4e5u2xzJCzsLHlHQaNBNC7lcWi9vs
@@ -36,74 +46,140 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 11
+    weight: 4
+    region: content
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
       show_summary: false
     third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_attendance:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_event_attendance_mode:
+    type: options_select
     weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_event_category:
-    weight: 16
+    type: entity_reference_autocomplete_tags
+    weight: 27
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
+  field_event_directions:
+    type: text_textarea
+    weight: 9
     region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_geolocation:
+    type: geofield_latlon
+    weight: 8
+    region: content
+    settings:
+      html5_geolocation: false
+    third_party_settings: {  }
   field_event_hide:
-    weight: 17
+    type: boolean_checkbox
+    weight: 26
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_event_location:
-    weight: 2
+    type: address_default
+    weight: 7
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: address_default
+  field_event_parent:
+    type: entity_reference_autocomplete_tags
+    weight: 6
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
+  field_event_performer:
+    type: inline_entity_form_complex
+    weight: 13
+    region: content
+    settings:
+      form_mode: minimal
+      override_labels: true
+      label_singular: Person
+      label_plural: People
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
   field_event_series_link:
-    weight: 27
+    type: link_default
+    weight: 11
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_event_series_link_direct:
-    weight: 29
+    type: boolean_checkbox
+    weight: 12
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
+  field_event_status:
+    type: options_select
+    weight: 2
     region: content
+    settings: {  }
+    third_party_settings: {  }
   field_event_virtual:
-    weight: 3
+    type: link_default
+    weight: 10
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_event_when:
+    type: smartdate_timezone
     weight: 1
+    region: content
     settings:
+      modal: false
       default_tz: ''
       custom_tz: America/Chicago
-      show_extra: false
       allowed_timezones: {  }
-      modal: false
       default_duration: 60
       default_duration_increments: |-
         30
@@ -111,82 +187,76 @@ content:
         90
         120|2 hours
         custom
-    third_party_settings:
-      smart_date_recur:
-        modal: true
-        allowed_recur_freq_values:
-          DAILY: DAILY
-          WEEKLY: WEEKLY
-          MONTHLY: MONTHLY
-          YEARLY: YEARLY
-          MINUTELY: '0'
-          HOURLY: '0'
-    type: smartdate_timezone
-    region: content
+      show_extra: false
+      hide_date: true
+      separator: to
+      add_abbreviations: ''
+    third_party_settings: {  }
   field_image:
-    weight: 26
+    type: media_library_widget
+    weight: 15
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    type: media_library_widget
-    region: content
   field_meta_tags:
-    weight: 14
+    type: metatag_firehose
+    weight: 25
+    region: content
     settings:
       sidebar: true
+      use_details: true
     third_party_settings: {  }
-    type: metatag_firehose
-    region: content
   field_tags:
-    weight: 15
+    type: entity_reference_autocomplete
+    weight: 16
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
+      size: 40
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_teaser:
-    weight: 10
+    type: string_textarea
+    weight: 14
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   moderation_state:
     type: moderation_state_default
-    weight: 13
-    settings: {  }
+    weight: 24
     region: content
+    settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 8
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
+    weight: 19
+    region: content
     settings:
       display_label: true
-    weight: 6
-    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
+    weight: 22
+    region: content
     settings:
       display_label: true
-    weight: 9
-    region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
+    weight: 20
+    region: content
     settings:
       display_label: true
-    weight: 7
-    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -198,16 +268,16 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 4
+    weight: 17
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 12
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }

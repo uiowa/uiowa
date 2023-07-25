@@ -36,12 +36,25 @@ class HeadlineHelper {
 
   /**
    * Get a list of valid heading styles as machine-name => class pairs.
+   *
+   * @todo Adjust how these classes are added.
+   * https://github.com/uiowa/uiowa/pull/4834#discussion_r818129246
    */
   public static function getStyles() {
     return [
       'default' => 'headline block__headline',
-      'headline_bold_serif' => 'headline bold-headline bold-headline--serif block__headline',
-      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline block__headline',
+      'headline_bold_serif' => 'headline headline--serif block__headline',
+      'headline_bold_serif_underline' => 'headline headline--serif headline--underline block__headline',
+    ];
+  }
+
+  /**
+   * Get a list of valid heading alignments.
+   */
+  public static function getHeadingAlignment() {
+    return [
+      'default' => 'headline--left',
+      'headline_alignment_center' => 'headline--center',
     ];
   }
 
@@ -120,6 +133,23 @@ class HeadlineHelper {
         'headline_bold_serif_underline' => t('Bold serif, underlined'),
       ],
       '#default_value' => $defaults['headline_style'],
+      '#states' => [
+        'visible' => [
+          ':input[id="uiowa-headline-field"]' => [
+            'filled' => TRUE,
+          ],
+        ],
+      ],
+    ];
+
+    $element['container']['headline_alignment'] = [
+      '#type' => 'select',
+      '#title' => t('Headline alignment'),
+      '#options' => [
+        'default' => t('Left (default)'),
+        'headline_alignment_center' => t('Center'),
+      ],
+      '#default_value' => $defaults['headline_alignment'],
       '#states' => [
         'visible' => [
           ':input[id="uiowa-headline-field"]' => [

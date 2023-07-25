@@ -1,0 +1,253 @@
+uuid: 47250603-4e06-40cd-94bd-9703708804c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.costs_estimate.field_costs_estimate_info
+    - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_type
+    - field.field.node.costs_estimate.field_costs_estimate_year
+    - field.field.node.costs_estimate.field_meta_tags
+    - node.type.costs_estimate
+    - system.menu.main
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - menu_block
+    - options
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_edge_to_edge
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: e0e746e6-23c4-4a36-b565-fd986ba15507
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:moderation_state'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: content_moderation_state
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:field_costs_estimate_title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            remove_default_top_padding: remove_default_top_padding
+        components:
+          -
+            uuid: da1f3ff0-07d8-4e3c-bfa7-07774c7a2685
+            region: content
+            configuration:
+              id: 'menu_block:main'
+              label: null
+              label_display: null
+              provider: menu_block
+              context_mapping: {  }
+              follow: true
+              follow_parent: active
+              label_link: false
+              label_type: block
+              level: 2
+              depth: 0
+              expand_all_items: false
+              parent: 'main:'
+              suggestion: main
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_menu_horizontal: block_menu_horizontal
+                0: null
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 60c3b524-d3c5-4ecd-8449-a6899ecca12d
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:field_costs_estimate_year'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 845d0e4f-a3f3-4f81-a4ce-def1a344f5fb
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:field_costs_estimate_info'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 27faaed8-13d2-487b-9ad7-3da5f873b1a4
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:field_costs_estimate_type'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components: {  }
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+      allowlisted_blocks: null
+      denylisted_blocks: null
+id: node.costs_estimate.default
+targetEntityType: node
+bundle: costs_estimate
+mode: default
+content:
+  field_costs_estimate_info:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_costs_estimate_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_costs_estimate_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_costs_estimate_year:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

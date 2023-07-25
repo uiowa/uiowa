@@ -43,7 +43,8 @@
     'paragraph',
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished'
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    'list-container'
   ]
 %}
 
@@ -56,7 +57,7 @@
       {% endif %}
       {% block content %}
           {{ content|without('field_uip_title') }}
-        <div class="uiowa-events">
+        <div class="uiowa-events list-container__inner">
           {{ list }}
         </div>
       {{ more }}

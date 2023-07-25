@@ -1,0 +1,11 @@
+
+<button role="tab"
+        aria-selected="{{ (tab_item_number == 0) ? 'true' : 'false' }}"
+        aria-controls="tabs--{{ tablist_id }}__panel--{{ tab_item_number }}"
+        id = "{{ names[tab_item_number] }}"
+  {{ (tab_item_number == 0) ? '': 'tabindex="-1"' }}
+>
+  {% block tab_label %}
+    {{ tab_item_label }}
+  {% endblock %}
+</button>

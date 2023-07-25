@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Grad Admissions Core module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function admissions_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function admissions_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Update text formats for migrated content from full_html to filtered_html.
+ */
+function grad_admissions_core_update_9001() {
+  // Manually curated list of formatted text fields.
+  $to_update = [
+    'field_area_of_study_requirements',
+    'field_area_of_study_deadlines',
+    'field_area_of_study_procedures',
+    'field_area_of_study_apply',
+    'field_area_of_study_contact',
+    'field_area_of_study_grad_intro',
+    'body',
+  ];
+  $updated = [];
+
+  // Grab all our area of study nodes.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'area_of_study');
+
+  $results = $query->execute();
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadMultiple($results);
+
+  foreach ($nodes as $node) {
+    $changed = FALSE;
+    foreach ($to_update as $field_name) {
+      // Check if we're set to full_html, and update if so.
+      if (isset($node->$field_name->format) && $node->$field_name->format === 'full_html') {
+        $node->$field_name->format = 'filtered_html';
+        $changed = TRUE;
+      }
+    }
+    // If we didn't make any changes, continue to the next node.
+    // Else, save it and add it to our updated list.
+    if ($changed === FALSE) {
+      continue;
+    }
+    if ($node->save()) {
+      $updated[] = $node->id();
+    }
+  }
+  return t("Updated one or more fields in: @updated", [
+    '@updated' => implode(', ', $updated),
+  ]);
+}
+
+/**
+ * Update contact info strings.
+ */
+function grad_admissions_core_update_9002(&$sandbox) {
+  $contact_field_name = 'field_area_of_study_contact';
+  $updated = [];
+  $conversion_map = [
+    'Office of Admissions' => 'Enrollment Management',
+    '108 Calvin Hall' => '2900 University Capitol Centre<br />201 S. Clinton St.',
+    '52242-1396' => '52242',
+  ];
+
+  // Grab all our area of study nodes.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'area_of_study');
+
+  $db = \Drupal::database();
+
+  // Add conditions to match for our $conversion_map keys.
+  $or_conditions = $query->orConditionGroup();
+
+  foreach (array_keys($conversion_map) as $match) {
+    $or_conditions->condition('field_area_of_study_contact', '%' . $db->escapeLike($match) . '%', 'LIKE');
+  }
+
+  $query->condition($or_conditions);
+
+  $results = $query->execute();
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadMultiple($results);
+
+  foreach ($nodes as $node) {
+    $contact_info = $node->{$contact_field_name}->value;
+    $contact_info = str_replace(array_keys($conversion_map), $conversion_map, $contact_info);
+    $node->{$contact_field_name}->value = $contact_info;
+    // Set revision message and save.
+    $node->setRevisionLogMessage('Automated save for grad_admissions_core_update_9002.');
+
+    if ($node->save()) {
+      $updated[] = $node->id();
+    }
+  }
+
+  return t('Updated contact info in these nodes: @updated', [
+    '@updated' => implode(', ', $updated),
+  ]);
+}

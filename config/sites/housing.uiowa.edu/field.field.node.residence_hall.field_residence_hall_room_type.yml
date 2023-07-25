@@ -1,0 +1,29 @@
+uuid: f2f56367-bc44-406c-9404-becf5bad5220
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_room_type
+    - node.type.residence_hall
+    - taxonomy.vocabulary.room_type
+id: node.residence_hall.field_residence_hall_room_type
+field_name: field_residence_hall_room_type
+entity_type: node
+bundle: residence_hall
+label: 'Room type'
+description: 'Add options on the taxonomy <a href="/admin/structure/taxonomy">page</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      room_type: room_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -10,9 +10,9 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Row;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -103,10 +103,10 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
-    // @todo Figure out why this event fires multiple times.
+    // @todo https://github.com/uiowa/uiowa/issues/3338
     $has_run = $this->state->get('admissions_migrate_post_import', FALSE);
 
-    if ($has_run == FALSE) {
+    if ($has_run === FALSE) {
       $migration = $event->getMigration();
       $map = $migration->getIdMap();
 
@@ -143,7 +143,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
       foreach ($entity_types as $entity_type => $bundles) {
         foreach ($bundles as $bundle => $fields) {
-          $condition = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+          $condition = ($entity_type === 'taxonomy_term') ? 'vid' : 'type';
           $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
 
           $ids = $query

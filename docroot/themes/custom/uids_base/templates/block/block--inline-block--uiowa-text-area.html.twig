@@ -27,31 +27,18 @@
 #}
 {%
   set classes = [
-    'block',
-    'block-' ~ configuration.provider|clean_class,
-    'block-' ~ plugin_id|clean_class,
-    'uids-content',
-  ]
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+  'uids-content',
+]
 %}
 
 {% set rendered_content = content|render %}
-{{ attach_library('uids_base/text-area') }}
 
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {{ title_suffix }}
-
-  {% block heading %}
-  {% if content.field_uiowa_text_area_title[0]['#text'] is not empty %}
-    <div class="cta__title">
-    {% include '@uids_base/uids/headline.html.twig' with {
-      "headline_level" : content.field_uiowa_text_area_title[0]['#size'],
-      "headline_class" : 'bold-headline bold-headline--caps',
-      "headline_text" : content.field_uiowa_text_area_title[0]['#text']
-    } %}
-    </div>
-  {% endif %}
-{% endblock %}
 
   {% block content %}
     {{ content }}

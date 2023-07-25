@@ -5,10 +5,10 @@
  * Contains hook implementations for UIowa Media WYSIWYG.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\FileInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
+use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
 
 /**
@@ -29,10 +29,13 @@ function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$elem
  * Implements hook_editor_js_settings_alter().
  */
 function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
     if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
       $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . drupal_get_path('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
+        base_path() . $path_resolver->getPath('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
     }
   }
 }
@@ -58,7 +61,7 @@ function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateI
     $uuid = $input['editor_object']['data-entity-uuid'];
     $entity = \Drupal::service('entity.repository')->loadEntityByUuid($entity_type, $uuid);
   }
-  if (isset($entity, $entity_type) && $entity_type == 'media') {
+  if (isset($entity, $entity_type) && $entity_type === 'media') {
     $bundle = $entity->bundle();
     switch ($bundle) {
       case 'image':
@@ -72,8 +75,8 @@ function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateI
  * Implements hook_inline_entity_form_entity_form_alter().
  */
 function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
-  if ($entity_form["#entity_type"] == 'media' && $entity_form["#bundle"] == 'file') {
-    if ($entity_form["#op"] == 'add') {
+  if ($entity_form["#entity_type"] === 'media' && $entity_form["#bundle"] === 'file') {
+    if ($entity_form["#op"] === 'add') {
       $entity_form["revision_log_message"]["#access"] = FALSE;
     }
   }
@@ -101,7 +104,7 @@ function sitenow_media_wysiwyg_form_media_library_add_form_alter(&$form, FormSta
 function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
   // should see very few TIFF orientation issues.
-  if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
+  if ($file->isNew() && $file->getMimeType() === 'image/jpeg') {
     /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
     $fmdm = \Drupal::service('file_metadata_manager');
 

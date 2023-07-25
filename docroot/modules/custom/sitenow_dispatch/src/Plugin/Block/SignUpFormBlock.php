@@ -39,7 +39,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The config factory service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 
@@ -78,11 +78,10 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    // The returned populations.
-    $populations = $this->dispatch->getFromDispatch("https://apps.its.uiowa.edu/dispatch/api/v1/populations");
+    $populations = $this->dispatch->request('GET', 'populations');
 
     // If the population is empty, we have an invalid API key.
-    if ($populations == []) {
+    if ($populations === FALSE) {
       $form['invalid_api_key'] = [
         '#prefix' => '<div>',
         '#suffix' => '</div>',
@@ -96,8 +95,9 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
     $populationOptions = [];
     foreach ($populations as $population) {
-      $response = $this->dispatch->getFromDispatch($population);
-      if ($response->dataSourceType == "SubscriptionList") {
+      $path = basename($population);
+      $response = $this->dispatch->request('GET', "populations/$path");
+      if ($response->dataSourceType === 'SubscriptionList') {
         $populationOptions[$response->id] = $response->name;
       }
     }
@@ -107,6 +107,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'hide_headline' => $this->configuration['hide_headline'] ?? 0,
       'heading_size' => $this->configuration['heading_size'] ?? 'h2',
       'headline_style' => $this->configuration['headline_style'] ?? 'default',
+      'headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
     ], FALSE);
 
     $form['population'] = [
@@ -137,15 +138,21 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function build() {
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $this->configuration['headline'],
-      '#hide_headline' => $this->configuration['hide_headline'],
-      '#heading_size' => $this->configuration['heading_size'],
-      '#headline_style' => $this->configuration['headline_style'],
-    ];
+    $build = [];
 
-    $build['form'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
+    if (!empty($this->configFactory->get('sitenow_dispatch.settings')->get('api_key'))) {
+      $build['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $this->configuration['headline'],
+        '#hide_headline' => $this->configuration['hide_headline'],
+        '#heading_size' => $this->configuration['heading_size'],
+        '#headline_style' => $this->configuration['headline_style'],
+        '#headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
+      ];
+
+      $build['form'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
+
+    }
     return $build;
   }
 

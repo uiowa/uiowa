@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjdsc.uiowa.ddev.site
+    protocol: https
+  machine_name: labjdsc
+  human_name: jdsc.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjdsc.prod
+drupal:
+  db:
+    database: jdsc_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjdsc.prod.drupal.uiowa.edu'
+  requester: paulwind
+  site-name: 'Judgment, Decision, and Social Comparison Lab'

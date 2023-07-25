@@ -2,13 +2,13 @@
 {{ attach_library('uids_base/search') }}
 
 <div class="search-wrapper">
-
     <div class="search-overlay" aria-expanded="false" aria-label="search tools for this site">
         {{ search_form }}
-        {% if page.under_search %}
-            {{ page.under_search }}
-        {% endif %}
+        {{ under_search }}
     </div>
 
+  {% if uiowa_search_form %}
     {% include '@uids_base/uids/search-toggle--bttn.twig' %}
+  {% endif %}
+
 </div>

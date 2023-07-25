@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: physicsgradmap.uiowa.ddev.site
+    protocol: https
+  machine_name: physicsgradmap
+  human_name: gradmap.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsgradmap.prod
+drupal:
+  db:
+    database: gradmap_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mbennett

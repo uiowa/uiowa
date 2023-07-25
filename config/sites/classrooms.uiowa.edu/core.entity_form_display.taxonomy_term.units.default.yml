@@ -1,0 +1,107 @@
+uuid: f09e9818-883b-428c-a4dd-cc205c028415
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_phone
+    - field.field.taxonomy_term.units.field_unit_alternative_scheduler
+    - field.field.taxonomy_term.units.field_unit_email
+    - field.field.taxonomy_term.units.field_unit_link
+    - field.field.taxonomy_term.units.field_unit_phone
+    - field.field.taxonomy_term.units.field_unit_scheduler
+    - taxonomy.vocabulary.units
+  module:
+    - link
+    - path
+    - telephone
+    - text
+id: taxonomy_term.units.default
+targetEntityType: taxonomy_term
+bundle: units
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 8
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_alternative_email:
+    type: email_default
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_unit_alternative_phone:
+    type: telephone_default
+    weight: 7
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_alternative_scheduler:
+    type: text_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_email:
+    type: email_default
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_unit_link:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_unit_phone:
+    type: telephone_default
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_unit_scheduler:
+    type: text_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 10
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,29 @@
+uuid: 545130ca-03f0-4f75-bfd6-d846ab4b7726
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contact_reference
+    - node.type.article
+    - node.type.person
+id: node.article.field_contact_reference
+field_name: field_contact_reference
+entity_type: node
+bundle: article
+label: 'Point(s) of contact'
+description: 'The <i>Point of contact</i> for this piece of content.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,5 +1,5 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 @import "_uiowa_paragraphs_background_overrides.scss";
 
 .paragraph--type--section.has-section-image {
@@ -279,7 +279,7 @@ div.example2 p.special {
    *   scss/layouts/onecol--background.scss?
    */
 
-// Removes container padding from paragraph pages like https://hawkeyemarchingband.local.drupal.uiowa.edu/auditions
+// Removes container padding from paragraph pages like https://hawkeyemarchingband.uiowa.ddev.site/auditions
 .layout__container {
   &.layout--onecol--no--background:not([class*="layout--title"]),
   &.layout--no-sidebar,
@@ -288,3 +288,10 @@ div.example2 p.special {
     padding-bottom: 0;
   }
 }
+
+// Override field.css sizing.
+div.field__item .paragraph--type--events .card__description,
+.paragraph--type--articles .uiowa-articles .card .field--name-field-teaser {
+  font-size: initial;
+}
+

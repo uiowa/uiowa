@@ -5,13 +5,13 @@ dependencies: {  }
 id: prod
 label: Prod
 description: ''
-weight: 1
-stackable: false
+weight: 90
+stackable: true
 storage: folder
 folder: ../config/envs/prod
 module:
   siteimprove: 0
-  acquia_purge: 0
 theme: {  }
 complete_list: {  }
-partial_list: {  }
+partial_list:
+  - 'user.role.*'

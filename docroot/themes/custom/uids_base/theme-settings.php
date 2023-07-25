@@ -77,6 +77,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];
+
   $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
@@ -90,6 +91,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+
   // Display scroll to top button functionality.
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
@@ -99,6 +101,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   ];
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
+
   // Get limit, otherwise limit to 2.
   $form['header']['top_links_limit'] = [
     '#type' => 'number',
@@ -106,6 +109,33 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#access' => FALSE,
     '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
+
+  // Change theme style.
+  $form['style'] = [
+    '#type' => 'details',
+    '#title' => t('Color Palette'),
+    '#description' => t('Configure the color palette for the uids_base theme.'),
+    '#weight' => -1000,
+    '#open' => TRUE,
+    '#tree' => TRUE,
+  ];
+
+  $form['style']['style_selector'] = [
+    '#type' => 'select',
+    '#title' => t('Style'),
+    '#description' => t('This option changes the primary gold theme color.'),
+    '#options' => [
+      'brand' => t('Iowa brand'),
+      'gray' => t('Gray'),
+    ],
+    '#default_value' => theme_get_setting('style.style_selector'),
+  ];
+
+  // Only allow access to this field for users
+  // with the 'administer site configuration' permission.
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['style']['#access'] = FALSE;
+  }
 
   // These fields are only available to writing university for now.
   $form['fonts'] = [
@@ -130,16 +160,34 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   // Only allow access to these sites.
   $form['fonts']['#access'] = FALSE;
-  $site_path = \Drupal::service('site.path');
+  $site_path = \Drupal::getContainer()->getParameter('site.path');
+
   if (
-    $site_path == 'sites/writinguniversity.org' ||
-    $site_path == 'sites/sandbox.uiowa.edu'
+    $site_path === 'sites/writinguniversity.org' ||
+    $site_path === 'sites/sandbox.uiowa.edu'
   ) {
     $form['fonts']['#access'] = TRUE;
   }
 
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
+
+  // A theme setting to make it easier to control display of the footer login
+  // link. This is only changeable programmatically and/or with Drush as it
+  // should be on almost all the time.
+  $form['footer'] = [
+    '#type' => 'details',
+    '#access' => FALSE,
+    '#tree' => TRUE,
+  ];
+
+  $form['footer']['login_link'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Footer login link'),
+    '#description' => t('Display a login link in the footer.'),
+    '#default_value' => theme_get_setting('footer.login_link') ?? TRUE,
+    '#access' => FALSE,
+  ];
 
   $form['#submit'][] = 'uids_base_form_system_theme_settings_submit';
 }

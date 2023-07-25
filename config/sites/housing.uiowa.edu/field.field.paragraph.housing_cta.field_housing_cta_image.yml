@@ -1,0 +1,29 @@
+uuid: fa952f21-1ac2-4461-abcf-84f7cc1612bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_housing_cta_image
+    - media.type.image
+    - paragraphs.paragraphs_type.housing_cta
+id: paragraph.housing_cta.field_housing_cta_image
+field_name: field_housing_cta_image
+entity_type: paragraph
+bundle: housing_cta
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

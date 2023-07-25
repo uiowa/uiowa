@@ -45,6 +45,11 @@ class UiowaHeadline extends FieldItemBase {
           'length' => 255,
           'not null' => FALSE,
         ],
+        'headline_alignment' => [
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ],
         'child_heading_size' => [
           'type' => 'varchar',
           'length' => 255,
@@ -84,6 +89,10 @@ class UiowaHeadline extends FieldItemBase {
     $properties['headline_style'] = DataDefinition::create('string')
       ->setLabel(t('Headline style'))
       ->setDescription(t('Set the headline style.'));
+
+    $properties['headline_alignment'] = DataDefinition::create('string')
+      ->setLabel(t('Headline alignment'))
+      ->setDescription(t('Set the headline alignment.'));
 
     $properties['child_heading_size'] = DataDefinition::create('string')
       ->setLabel(t('Child content headline size'))

@@ -1,0 +1,28 @@
+uuid: ae75647b-062c-4882-a3a5-ea4723d83521
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_cc_contact_info
+    - taxonomy.vocabulary.community_colleges
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: taxonomy_term.community_colleges.field_cc_contact_info
+field_name: field_cc_contact_info
+entity_type: taxonomy_term
+bundle: community_colleges
+label: 'Contact Information'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

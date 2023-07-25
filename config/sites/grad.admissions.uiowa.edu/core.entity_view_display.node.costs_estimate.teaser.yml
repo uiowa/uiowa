@@ -1,0 +1,71 @@
+uuid: 16d222da-3ab9-41fe-b58f-7644b39ffc56
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.costs_estimate.field_costs_estimate_info
+    - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_type
+    - field.field.node.costs_estimate.field_costs_estimate_year
+    - field.field.node.costs_estimate.field_meta_tags
+    - node.type.costs_estimate
+  module:
+    - layout_builder
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 8ef30ab4-62a1-46cc-9c44-d0c9fc47ec60
+            region: content
+            configuration:
+              id: 'field_block:node:costs_estimate:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+id: node.costs_estimate.teaser
+targetEntityType: node
+bundle: costs_estimate
+mode: teaser
+content:
+  field_costs_estimate_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_costs_estimate_info: true
+  field_costs_estimate_type: true
+  field_costs_estimate_year: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labhawchi.uiowa.ddev.site
+    protocol: https
+  machine_name: labhawchi
+  human_name: hawchi.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhawchi.prod
+drupal:
+  db:
+    database: hawchi_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hourcade

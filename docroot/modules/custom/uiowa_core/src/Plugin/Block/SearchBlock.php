@@ -2,10 +2,8 @@
 
 namespace Drupal\uiowa_core\Plugin\Block;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -52,16 +50,30 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
+    $block = [];
     $config = $this->getConfiguration();
-    $search_config = [
-      'endpoint' => $config['endpoint'],
-      'query_parameter' => $config['query_parameter'],
-      'button_text' => $config['button_text'],
-      'search_label' => $config['search_label'],
-    ];
-    $form_state = new FormState();
-    $form_state->addBuildInfo('search_config', $search_config);
-    return $this->formBuilder->buildForm('Drupal\uiowa_core\Form\SearchBlock', $form_state);
+    $params = [];
+
+    // Build a list of parameters, if they are set.
+    foreach ([
+      'endpoint',
+      'query_parameter',
+      'query_prepend',
+      'additional_parameters',
+      'button_text',
+      'search_label',
+    ] as $param) {
+      if (isset($config[$param])) {
+        $params[$param] = $config[$param];
+      }
+    }
+
+    $block['form'] = $this->formBuilder->getForm(
+      'Drupal\uiowa_core\Form\SearchBlock',
+      $params,
+    );
+
+    return $block;
   }
 
   /**
@@ -79,30 +91,47 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['endpoint'] = [
       '#type' => 'linkit',
       '#title' => $this->t('Endpoint Path'),
-      '#description' => $this->t('Start typing to see a list of results. Click to select. Relative paths are allowed. External links are not allowed.'),
+      '#description' => $this->t('Start typing to see a list of results. Click to select. Relative paths are allowed. External links are allowed.'),
       '#autocomplete_route_name' => 'linkit.autocomplete',
       '#autocomplete_route_parameters' => [
         'linkit_profile_id' => 'default',
       ],
-      '#default_value' => isset($config['endpoint']) ? $config['endpoint'] : '/search',
+      '#default_value' => $config['endpoint'] ?? '/search',
       '#required' => TRUE,
     ];
     $form['query_parameter'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Query Parameter'),
       '#description' => $this->t('<em>title</em> is common for content filtering, <em>terms</em> is used for search on this site'),
-      '#default_value' => isset($config['query_parameter']) ? $config['query_parameter'] : 'terms',
+      '#default_value' => $config['query_parameter'] ?? 'terms',
+    ];
+    $form['advanced'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Advanced'),
+      '#description' => $this->t('Additional query parameters for advanced users.'),
+    ];
+    $form['advanced']['query_prepend'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Query Prepend'),
+      '#description' => $this->t('A string to prepend to all search queries.'),
+      '#default_value' => $config['query_prepend'] ?? '',
+    ];
+    $form['advanced']['additional_parameters'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Additional Query Parameters'),
+      '#description' => $this->t('Append additional URL parameters to the search. <em>(UTM tracking codes, search filtering, etc.)</em> Do <strong>not</strong> include sensitive information such as API keys, usernames, or passwords.'),
+      '#default_value' => $config['additional_parameters'] ?? '',
     ];
     $form['search_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Label'),
-      '#default_value' => isset($config['search_label']) ? $config['search_label'] : 'Search',
+      '#default_value' => $config['search_label'] ?? 'Search',
       '#required' => TRUE,
     ];
     $form['button_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Button Text'),
-      '#default_value' => isset($config['button_text']) ? $config['button_text'] : 'Search',
+      '#default_value' => $config['button_text'] ?? 'Search',
       '#required' => TRUE,
     ];
 
@@ -114,10 +143,11 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function blockValidate($form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
-    $external = UrlHelper::isExternal($values['endpoint']);
-    if ($external) {
-      $form_state->setErrorByName('endpoint', $this->t('External links are not allowed.'));
+    // Check for duplicates because it causes an error on render if not caught.
+    $additional_parameters = $form_state->getValue('advanced')['additional_parameters'];
+    preg_match_all('@&([^&]+)=[^&]+@is', $additional_parameters, $matches);
+    if (count($matches[0]) !== count(array_unique($matches[1]))) {
+      $form_state->setError($form['advanced']['additional_parameters'], $this->t('Duplicate parameters found'));
     }
   }
 
@@ -129,6 +159,8 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $values = $form_state->getValues();
     $this->configuration['endpoint'] = $values['endpoint'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
+    $this->configuration['query_prepend'] = $values['advanced']['query_prepend'];
+    $this->configuration['additional_parameters'] = $values['advanced']['additional_parameters'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['search_label'] = $values['search_label'];
   }

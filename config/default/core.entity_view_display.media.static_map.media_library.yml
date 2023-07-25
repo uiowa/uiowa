@@ -1,0 +1,36 @@
+uuid: 6b6b024c-389b-439b-b1f8-21638004e058
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.static_map.field_media_static_map
+    - image.style.medium
+    - media.type.static_map
+  module:
+    - image
+id: media.static_map.media_library
+targetEntityType: media
+bundle: static_map
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_media_static_map: true
+  name: true
+  search_api_excerpt: true
+  uid: true

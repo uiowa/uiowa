@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: oneit.uiowa.ddev.site
+    protocol: https
+  machine_name: oneit
+  human_name: oneit.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: oneit.prod
+drupal:
+  db:
+    database: oneit_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jalhall
+  site-name: OneIT

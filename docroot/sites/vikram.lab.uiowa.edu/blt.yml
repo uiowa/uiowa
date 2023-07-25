@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labvikram.uiowa.ddev.site
+    protocol: https
+  machine_name: labvikram
+  human_name: vikram.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labvikram.prod
+drupal:
+  db:
+    database: vikram_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Ajit Vikram Laboratory'

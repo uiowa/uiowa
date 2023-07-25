@@ -1,6 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
-@import "components/headline/_headline-mixins.scss";
+@import "uids/components/headline/_headline-mixins.scss";
 
 .layout--onecol .layout__region {
   width: 100%;
@@ -18,7 +18,7 @@
       @include breakpoint(sm) {
         padding: 1.25rem;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding: 1.25rem 0;
       }
     }
@@ -35,18 +35,29 @@
   // When we have a background image - and we're not in the Layout
   // Builder screen - change the text color to white.
   &.layout--title--with-background {
-    .bold-headline {
-      @include headline-negative;
-      text-shadow: 0 1px 1px #000;
+    .bold-headline,
+    .page-title.headline {
+      @include breakpoint(sm) {
+        @include headline-negative;
+        text-shadow: 0 1px 1px #000;
+      }
     }
 
     .breadcrumb {
+      margin-top: 0;
+      @include breakpoint(sm) {
+        margin-top: 1.75rem;
+      }
       li {
-        color: white;
+        @include breakpoint(sm) {
+          color: white;
+        }
       }
 
       a {
-        color: white;
+        @include breakpoint(sm) {
+          color: white;
+        }
       }
     }
   }
@@ -60,7 +71,7 @@
     &--background.page__container--edge.layout--has-sidebar,
     &--no--background.page__container--edge.sidebar-invisible {
       .layout__spacing_container {
-        @extend %container;
+        @include container-width;
       }
     }
   }

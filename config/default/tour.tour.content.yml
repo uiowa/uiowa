@@ -17,75 +17,75 @@ tips:
     id: intro
     plugin: text
     label: 'Content Overview'
-    body: '<p>This page allows you to browse your content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
     weight: 0
+    body: '<p>This page allows you to browse your content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
   media:
     id: media
     plugin: text
     label: Media
-    body: '<p>This is will take you to the media (files/images) overview which is similar to this page.</p><p><a_href="/media/add?tour=1">Click here for our guided Media tour</a></p>'
     weight: 1
-    selector: .tabs--primary
     position: right-start
+    selector: .tabs--primary
+    body: '<p>This is will take you to the media (files/images) overview which is similar to this page.</p><p><a_href="/media/add?tour=1">Click here for our guided Media tour</a></p>'
   moderated-content-types:
     id: moderated-content-types
     plugin: text
     label: 'Moderated Content'
-    body: '<p>This tab will show all of the content that isn''t published to the public. For instance, it will show content in the "Draft" or "Review" state.</p>'
     weight: 2
-    selector: .tabs--secondary
     position: right-start
+    selector: .tabs--secondary
+    body: '<p>This tab will show all of the content that isn''t published to the public. For instance, it will show content in the "Draft" or "Review" state.</p>'
   add:
     id: add
     plugin: text
     label: 'Add Content'
-    body: '<p>When it is time to add new content to your site, this will guide you in doing so.</p>'
     weight: 3
-    selector: '#block-claro-local-actions'
     position: bottom-start
+    selector: '#block-claro-local-actions'
+    body: '<p>When it is time to add new content to your site, this will guide you in doing so.</p>'
   filters:
     id: filters
     plugin: text
     label: Filters
-    body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
     weight: 4
-    selector: '#views-exposed-form-content-page-1'
     position: bottom-start
+    selector: '#views-exposed-form-content-page-1'
+    body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
   actions:
     id: actions
     plugin: text
     label: Actions
-    body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
     weight: 5
-    selector: '#edit-node-bulk-form--2'
     position: top-start
+    selector: '#edit-node-bulk-form--2'
+    body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
   actions-checkbox:
     id: actions-checkbox
     plugin: text
     label: Actions
-    body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
     weight: 6
-    selector: '.views-table .select-all'
     position: right-start
+    selector: '.views-table .select-all'
+    body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
   sort:
     id: sort
     plugin: text
     label: Sorting
-    body: '<p>Click on the links in the header row to sort the list. Arrow next to the active sort link indicates the sort direction (ascending or descending).</p>'
     weight: 7
-    selector: '.views-table #view-changed-table-column'
     position: top-start
+    selector: '.views-table #view-changed-table-column'
+    body: '<p>Click on the links in the header row to sort the list. Arrow next to the active sort link indicates the sort direction (ascending or descending).</p>'
   operations:
     id: operations
     plugin: text
     label: 'Content operations'
-    body: '<p>Use content operations dropbutton to edit or delete a given content item.</p>'
     weight: 8
-    selector: '.views-table tr:nth-child(1) .views-field-operations'
     position: left-start
+    selector: '.views-table tr:nth-child(1) .views-field-operations'
+    body: '<p>Use content operations dropbutton to edit or delete a given content item.</p>'
   next_step:
     id: next_step
     plugin: text
     label: 'Where to next?'
-    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p><p><a href="/media/add?tour=1" class="button button--primary">Adding Media</a></p>'
     weight: 9
+    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p><p><a href="/media/add?tour=1" class="button button--primary">Adding Media</a></p>'

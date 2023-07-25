@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Sitenow Intranet module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Url;
+use Drupal\sitenow_intranet\IntranetHelper;
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function sitenow_intranet_preprocess_block(&$variables) {
+  $code = IntranetHelper::getStatusCode();
+
+  if (IntranetHelper::checkStatusCode($code)) {
+    switch ($variables['plugin_id']) {
+      case 'page_title_block':
+        $variables['attributes']['class'][] = 'block-padding__top';
+        break;
+
+      case 'system_breadcrumb_block':
+        unset($variables['content']);
+        break;
+
+      case 'system_main_block':
+        $config = \Drupal::config('sitenow_intranet.settings');
+        $status_code_map = IntranetHelper::getStatusCodeMap();
+
+        $variables['content'] = [
+          '#markup' => check_markup($config->get("{$status_code_map[$code]}.message"), 'minimal'),
+          '#prefix' => '<div class="text-align-center">',
+          '#suffix' => '</div>',
+        ];
+
+        // If the user is logged-in, show a logout link on the access denied
+        // page.
+        if ($code === 403 && \Drupal::currentUser()->isAuthenticated()) {
+          $variables['content']['logout_link'] = [
+            '#type' => 'link',
+            '#title' => t('Logout'),
+            '#url' => Url::fromRoute('user.logout') ,
+            '#prefix' => '<p class="text-align-center">',
+            '#suffix' => '</p>',
+            '#attributes' => [
+              'class' => [
+                'bttn',
+                'bttn--primary',
+                'bttn--caps',
+              ],
+            ],
+          ];
+        }
+        break;
+
+      case 'uiowa_alerts_block':
+        foreach ($variables['content']['wrapper'] as $wrapper => $content) {
+          // Check that it's a content element and not a block property,
+          // and skip if it's the hawk alert content,
+          // as we want that to always display.
+          if (str_starts_with($wrapper, '#') || $wrapper === 'hawk_alerts') {
+            continue;
+          }
+          unset($variables['content']['wrapper'][$wrapper]);
+        }
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function sitenow_intranet_preprocess_page(&$variables) {
+  $code = IntranetHelper::getStatusCode();
+
+  if (IntranetHelper::checkStatusCode($code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    \Drupal::service('renderer')->addCacheableDependency($variables, $config);
+    foreach ([
+      'action_menu',
+      'footer_first',
+      'footer_second',
+      'pre_footer',
+      'primary_menu',
+      'region_content',
+    ] as $region) {
+      if (isset($variables['page'][$region])) {
+        unset($variables['page'][$region]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function sitenow_intranet_preprocess_page_title(&$variables) {
+  $code = IntranetHelper::getStatusCode();
+
+  if (IntranetHelper::checkStatusCode($code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    $status_code_map = IntranetHelper::getStatusCodeMap();
+
+    // Override title and add class to center it.
+    $variables['title'] = $config->get("{$status_code_map[$code]}.title");
+    $variables['title_attributes']['class'][] = 'text-align-center';
+  }
+}

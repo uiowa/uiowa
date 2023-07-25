@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: block_content
+  uuid: e9b591a5-24cf-45a7-aeba-334f82fd6549
+  bundle: uiowa_banner
+  default_langcode: en
+  depends:
+    e40c44de-579d-4b50-9e5e-5b0c304564ff: media
+default:
+  status:
+    -
+      value: true
+  reusable:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  field_uiowa_banner_autoplay:
+    -
+      value: false
+  field_uiowa_banner_excerpt:
+    -
+      value: "<p>Use this space to introduce your site with some brief copy and provide button links to important pages.</p>\r\n"
+      format: minimal
+  field_uiowa_banner_image:
+    -
+      entity: e40c44de-579d-4b50-9e5e-5b0c304564ff
+  field_uiowa_banner_link:
+    -
+      uri: 'internal:#apply'
+      title: Apply
+      options: {  }
+    -
+      uri: 'internal:#info'
+      title: 'Request Information'
+      options: {  }
+    -
+      uri: 'internal:#services'
+      title: Services
+      options: {  }
+  field_uiowa_banner_title:
+    -
+      size: h2
+      text: 'Welcome to your SiteNow site!'

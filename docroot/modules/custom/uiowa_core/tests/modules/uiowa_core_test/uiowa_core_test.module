@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_core_test module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+/**
+ * Implements hook_mail().
+ */
+function uiowa_core_test_mail($key, &$message, $params) {
+  // Simulate a module that only sets a from address with no name.
+  // @see: MailTest::testFromNameSetToSiteNameIfEmptyAndNotUiowa.
+  $message['from'] = 'foo@bar.com';
+}

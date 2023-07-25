@@ -2,69 +2,78 @@
 @import "uids/assets/scss/_utilities.scss";
 
 .layout--twocol {
+  .layout__region--main,
+  .layout__region-container {
+    display: grid;
+  }
   .layout__spacing_container {
     @include grid-base;
-    row-gap: 0;
   }
   &.layout--twocol--33-67 {
     .layout__spacing_container {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
-      }
-      .layout__region--first {
-        grid-area: 1 / 1 / 6 / 2;
-      }
-      .layout__region--second {
-        grid-area: 1 / 2 / 6 / 4;
-        @include inner-grid(67);
+        row-gap: 0;
+        .layout__region--first {
+          grid-area: 1 / 1 / 6 / 2;
+        }
+        .layout__region--second {
+          grid-area: 1 / 2 / 6 / 4;
+          @include inner-grid(67);
+        }
       }
     }
   }
   &.layout--twocol--67-33 {
     .layout__spacing_container {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
-      }
-      .layout__region--first {
-        grid-area: 1 / 1 / 6 / 3;
-        @include inner-grid(67);
-      }
-      .layout__region--second {
-        grid-area: 1 / 3 / 6 / 4;
+        row-gap: 0;
+        .layout__region--first,
+        .layout__region--main {
+          grid-area: 1 / 1 / 6 / 3;
+          @include inner-grid(67);
+        }
+        .layout__region--second,
+        .layout__region-container {
+          grid-area: 1 / 3 / 6 / 4;
+        }
       }
     }
   }
   &.layout--twocol--25-75 {
     .layout__spacing_container {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
-      }
-      .layout__region--first {
-        grid-area: 1 / 1 / 6 / 2;
-      }
-      .layout__region--second {
-        grid-area: 1 / 2 / 6 / 5;
-        @include inner-grid(75);
+        row-gap: 0;
+        .layout__region--first {
+          grid-area: 1 / 1 / 6 / 2;
+        }
+        .layout__region--second {
+          grid-area: 1 / 2 / 6 / 5;
+          @include inner-grid(75);
+        }
       }
     }
   }
   &.layout--twocol--75-25 {
     .layout__spacing_container {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
-      }
-      .layout__region--first {
-        grid-area: 1 / 1 / 6 / 4;
-        @include inner-grid(75);
-      }
-      .layout__region--second {
-        grid-area: 1 / 4 / 6 / 5;
+        row-gap: 0;
+        .layout__region--first {
+          grid-area: 1 / 1 / 6 / 4;
+          @include inner-grid(75);
+        }
+        .layout__region--second {
+          grid-area: 1 / 4 / 6 / 5;
+        }
       }
     }
   }
   &.layout--twocol--50-50 {
     .layout__spacing_container {
-      @include breakpoint(sm) {
+      @include breakpoint(md) {
         @include twocol-grid;
       }
     }

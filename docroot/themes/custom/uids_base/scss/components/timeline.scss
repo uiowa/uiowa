@@ -1,7 +1,14 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 // Timeline block
+.block-inline-blockuiowa-timeline {
+  position: relative;
+  // prevent line from going into another section.
+  overflow: hidden;
+  padding-top: 10px;
+}
+
 .timeline {
   transition: all 0.4s ease;
   position: relative;
@@ -14,12 +21,23 @@
 .timeline--wrapper {
   position: relative;
   list-style: none;
+
+  .card {
+    .card__details + footer .bttn {
+      margin-top: 0;
+    }
+    header + .card__details + footer .bttn {
+      margin-top: 1.25rem;
+    }
+  }
+
   .card__details {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin: 0;
     }
   }
-  .card__icon {
+
+  .timeline__icon {
     position: absolute;
     font-size: 25px;
     background: $light;
@@ -29,34 +47,49 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    top: -90px;
-    right: -31px;
+    top: -79px;
+    right: calc(50% - 30px);
+    line-height: 0;
+
     [class*=bg--gray] & {
       background: $grey-light;
     }
-    @include breakpoint(menu) {
+
+    @include breakpoint(md) {
       top: -30px;
       right: inherit;
     }
+
+    .field--name-field-timeline-icon {
+      width: 100%;
+      text-align: center;
+    }
+
+    .svg-inline--fa {
+      font-size: inherit;
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
-  .card__icon-wrapper {
+
+  .timeline__icon-wrapper {
     position: absolute;
     top: 0;
     left: 50%;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       top: 50%;
     }
   }
 }
 
 .timeline--wrapper {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     width: 50%;
   }
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   &:first-child {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-top: $desktop-width-gutter;
     }
   }
@@ -64,9 +97,11 @@
     margin-bottom: $desktop-width-gutter;
   }
   .timeline--card {
+    height: 100%;
     margin-top: $desktop-width-gutter;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-top: inherit;
+      height: auto;
     }
     &:after {
       bottom: 100%;
@@ -80,8 +115,8 @@
       pointer-events: none;
       border-color: transparent;
       border-width: 15px;
-      //border-bottom-color: #63666a;
-      @include breakpoint(menu) {
+
+      @include breakpoint(md) {
         top: 50%;
         border-bottom-color: transparent;
         margin-top: -15px;
@@ -94,12 +129,12 @@
     opacity: 1;
   }
   .field--name-field-timeline-date {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       position: absolute;
       bottom: 48%;
       width: 90%;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       width: 100%;
     }
     [class*=bg--black] & {
@@ -110,51 +145,51 @@
     }
   }
   &:nth-child(odd) {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-left: auto;
     }
-    .card__icon {
-      @include breakpoint(menu) {
-        right: 25px;
+    .timeline__icon {
+      @include breakpoint(md) {
+        right: 27px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: -130%;
         text-align: right;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         margin-left: -125%;
       }
       .page__container--narrow & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -130%;
         }
       }
       .page__container--extended & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -122%;
         }
       }
       .page__container--full &,
       .page__container--edge &{
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -120%;
         }
       }
 
     }
-    .card__icon-wrapper {
-      @include breakpoint(menu) {
+    .timeline__icon-wrapper {
+      @include breakpoint(md) {
         left: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: 3.5rem;
       }
       &:after {
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           right: 100%;
           border-right-color: $brand-cool-gray;
         }
@@ -162,38 +197,39 @@
     }
   }
   &:nth-child(even) {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-right: auto;
+      padding-right: 5px;
     }
-    .card__icon {
-      @include breakpoint(menu) {
-        right: -90px;
+    .timeline__icon {
+      @include breakpoint(md) {
+        right: -91px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: 125%;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         margin-left: 113%;
       }
       .page__container--narrow & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: 118%;
         }
       }
     }
-    .card__icon-wrapper {
-      @include breakpoint(menu) {
+    .timeline__icon-wrapper {
+      @include breakpoint(md) {
         right: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-right: 3.5rem;
       }
       &:after {
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           left: 100%;
           border-left-color: $brand-cool-gray;
         }
@@ -207,7 +243,8 @@
   transition: opacity 500ms;
 }
 
-.timeline--card.js-scroll.scrolled {
+.timeline--card.js-scroll.scrolled,
+li:first-child .timeline--card.js-scroll {
   opacity: 1;
 }
 
@@ -219,13 +256,13 @@
 
 .timeline-line {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 3px);
   height: 100%;
 }
 
 .timeline-line__mask {
   position: absolute;
-  width: 5px;
+  width: 6px;
   height: 100%;
   background-color: #fafafa;
   clip: rect(0, auto, auto, 0);
@@ -235,7 +272,7 @@
 .timeline-line__fill {
   background-color: $primary;
   height: 53%;
-  width: 5px;
+  width: 100%;
   position: fixed;
   top: 0;
   [class*=bg--gold] & {

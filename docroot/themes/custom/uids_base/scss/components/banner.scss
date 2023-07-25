@@ -1,8 +1,9 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/banner/banner.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/banner/banner.scss";
 
-.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
+.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative,
+.banner.banner--gradient-left-reversed .headline.headline--highlight{
   text-shadow: none;
   color: $secondary;
 }
@@ -23,11 +24,11 @@
           width: 100%;
         }
 
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           width: 80%;
         }
 
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           width: 60%;
         }
       }
@@ -54,24 +55,21 @@
 .layout--twocol--67-33 .layout__region--second {
   .banner {
     // Set large heading size
-    .headline--large.headline--serif,
-    .headline--large {
+    .headline--large.headline--serif:not([class*="banner__pre-title"]),
+    .headline--large:not([class*="banner__pre-title"]) {
       font-size: 2.6rem;
-      font-size: containerClamp(2.6rem, 2.6rem);
     }
 
     // Set medium heading size
-    .headline--medium.headline--serif,
-    .headline--medium {
+    .headline--medium.headline--serif:not([class*="banner__pre-title"]),
+    .headline--medium:not([class*="banner__pre-title"]) {
       font-size: 2.2rem;
-      font-size: containerClamp(2.1rem, 2.1rem);
     }
 
     // Set small heading size
-    .headline--small.headline--serif,
-    .headline--small {
+    .headline--small.headline--serif:not([class*="banner__pre-title"]),
+    .headline--small:not([class*="banner__pre-title"]) {
       font-size: 1.8rem;
-      font-size: containerClamp(1.6rem, 1.6rem);
     }
   }
 
@@ -101,11 +99,11 @@
         width: 100%;
       }
 
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         width: 80%;
       }
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         width: 50%;
       }
     }
@@ -118,21 +116,21 @@
     .slider__slide {
       .banner.banner--vertical-bottom.banner--horizontal-left {
         .banner__content {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             padding: 3rem 1.5rem 4rem;
           }
         }
       }
     }
-    .banner.banner--vertical-bottom.banner--horizontal-left {
+    .banner.banner--video.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
         }
       }
     }
   }
-  .banner {
+  .banner.banner--video {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
         @include breakpoint(sm) {
@@ -143,25 +141,64 @@
   }
 }
 
+// Add more padding for play/pause button for banners with video.
+.banner.banner--video,
+.layout--onecol[class*=page__container--edge] .banner.banner--video {
+  .banner__content {
+    padding-bottom: 4rem;
+    padding-top: 4rem;
+    @include breakpoint(page-container) {
+      padding-bottom: 6rem;
+      padding-top: 6rem;
+    }
+  }
+  &.banner--stacked {
+    .banner__content {
+      padding: 1.25rem;
+      @include breakpoint(sm) {
+        padding-bottom: 4rem;
+        padding-top: 4rem;
+      }
+      @include breakpoint(page-container) {
+        padding-bottom: 6rem;
+        padding-top: 6rem;
+      }
+    }
+  }
+}
+
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
     .banner__content {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding: 3rem 0;
       }
     }
   }
 
-// Set large heading size for page titles in banner
-.layout--title.banner .bold-headline {
-  font-size: 4.7rem;
-  font-size: containerClamp(2.5rem, 4.7rem);
+// Set medium heading size for page titles in banner
+.layout--title.banner .bold-headline,
+.layout--title.banner .headline.page-title {
+  font-size: 3.7rem;
+  font-size: clamp(2.2rem,calc(3.3803vw + .9324rem),3.7rem);
 }
 
 .banner__image {
   .contextual-region {
     // Remove contextual position for logged in view of banner image
     position: unset;
+    &.media--video {
+      position: absolute;
+      @include breakpoint(sm) {
+        position: unset;
+      }
+      .banner--stacked & {
+        position: relative;
+        @include breakpoint(sm) {
+          position: unset;
+        }
+      }
+    }
   }
   .field--name-field-media-image img {
     // Override height:auto set in media--type-image.scss
@@ -184,15 +221,9 @@
   }
 }
 
-// Contrast fixes
-.bg-pattern--brain-reversed .banner.bg-pattern--brain-black .bttn--primary,
-.bg-pattern--brain-reversed  .banner[class*="bg--black"] .bttn--primary,
-[class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
-[class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
-  color: $primary;
-}
-
 // Default padding fixes
+// Removes left padding if banner is a background color
+// is placed within a section that has the same background color.
 .layout:not([class*="bg-"]) {
   .banner.bg--white {
     .banner__content {
@@ -249,7 +280,67 @@
   }
 }
 
-//Button hover fix for gold backgrounds
-.banner[class*="bg--gold"] .bttn--primary::after {
-  background-color: #fff;
+// @todo move back to UIDS
+.banner__pre-title {
+  font-weight: 500;
+}
+
+.slider__slide {
+  .banner__container {
+    position: relative;
+  }
+}
+
+.banner.banner--horizontal-center {
+  .banner__action .bttn {
+    margin: 1rem auto;
+    display: block;
+    width: fit-content;
+    @include breakpoint(sm) {
+      margin: 0 1rem 1rem 0;
+      display: inline-block;
+      width: auto;
+    }
+
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: 0 1rem 1rem 0;
+      }
+    }
+
+    &:last-child {
+      margin: 1rem auto;
+      @include breakpoint(sm) {
+        margin-top: 0;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// @todo revisit these styles once https://github.com/uiowa/uids/issues/722 is completed.
+.banner--list {
+  height: 100%;
+  .headline--small {
+    font-size: 1.5rem;
+  }
+  .banner__content {
+    .layout--onecol[class*="page"] & {
+      padding: 2rem;
+    }
+  }
+}
+
+// @todo incorporate this into https://github.com/uiowa/uids/issues/721.
+.banner--stacked {
+  &.layout--onecol--background.banner--small {
+    .banner__image {
+      max-height: 15rem;
+      overflow: hidden;
+      @include breakpoint(sm) {
+        max-height: auto;
+        overflow: visible;
+      }
+    }
+  }
 }

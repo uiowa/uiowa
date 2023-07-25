@@ -1,0 +1,291 @@
+uuid: 2bfaf054-baa0-4757-83f2-c91cb6a4f75c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.major.body
+    - field.field.node.major.field_image
+    - field.field.node.major.field_major_area_of_study
+    - field.field.node.major.field_major_cc_checkpoints
+    - field.field.node.major.field_major_community_college
+    - field.field.node.major.field_major_responsibilities
+    - field.field.node.major.field_major_uiowa_checkpoints
+    - field.field.node.major.field_meta_tags
+    - node.type.major
+  module:
+    - layout_builder
+    - metatag
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+        components:
+          -
+            uuid: 5e4ad3f1-8262-40ad-9007-94efa0999fb5
+            region: content
+            configuration:
+              id: 'field_block:node:major:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2ac323da-2920-41ae-bcea-2a5cc38ee877
+            region: background
+            configuration:
+              id: 'field_block:node:major:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full__widescreen
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b79c540b-fe30-421a-8519-981d38a2358c
+            region: content
+            configuration:
+              id: 'extra_field_block:node:major:pre_title'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            remove_default_top_padding: remove_default_top_padding
+        components:
+          -
+            uuid: 6693bc90-5eb1-4930-879c-e6615e7203cb
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 3251921e-7173-44e3-9a34-5b970367adae
+            region: content
+            configuration:
+              id: 'extra_field_block:node:major:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bd3fbfb6-682c-4cd3-8907-1be8df68726c
+            region: content
+            configuration:
+              id: 'field_block:node:major:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: eddaea7b-9355-422c-a31f-5ace6c69a36c
+            region: content
+            configuration:
+              id: 'field_block:node:major:field_major_area_of_study'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 22c5bfa7-c06a-4a84-979d-630fcabbda3f
+            region: content
+            configuration:
+              id: 'field_block:node:major:field_major_responsibilities'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: d171616f-9e83-4149-bd30-502ade1d104e
+            region: content
+            configuration:
+              id: 'field_block:node:major:field_major_cc_checkpoints'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 85121ed8-d850-4134-849f-c93f1c1aa15a
+            region: content
+            configuration:
+              id: 'field_block:node:major:field_major_uiowa_checkpoints'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4b554f28-c8ee-445c-9c04-eac1a5b5bbec
+            region: content
+            configuration:
+              id: 'field_block:node:major:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+id: node.major.default
+targetEntityType: node
+bundle: major
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_major_area_of_study:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_major_cc_checkpoints:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_major_responsibilities:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_major_uiowa_checkpoints:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  pre_title:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_image: true
+  field_major_community_college: true
+  links: true
+  search_api_excerpt: true

@@ -2,16 +2,13 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
+use Acquia\Blt\Annotations\Update;
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\YamlWriter;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
-// Needed for BLT annotation updates to work.
-// phpcs:disable
-use Acquia\Blt\Annotations\Update;
-// phpcs:enable
 
 /**
  * Define update commands.
@@ -36,7 +33,7 @@ class UpdateCommands extends BltTasks {
     $updates = [];
 
     foreach ($methods as $method) {
-      $annotation = $reader->getMethodAnnotation($method, 'Acquia\Blt\Annotations\Update');
+      $annotation = $reader->getMethodAnnotation($method, Update::class);
 
       if ($annotation && $annotation->version > $schema) {
         $updates[$method->name] = $annotation->description;
@@ -284,7 +281,7 @@ EOD;
       $file = "{$root}/docroot/sites/{$site}/blt.yml";
       $id = Multisite::getIdentifier("https://{$site}");
       $yaml = YamlMunge::parseFile($file);
-      $yaml['project']['local']['hostname'] = "{$id}.local.drupal.uiowa.edu";
+      $yaml['project']['local']['hostname'] = "{$id}.uiowa.ddev.site";
       file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
 
       $file = "{$root}/docroot/sites/{$site}/local.drush.yml";
@@ -575,6 +572,29 @@ EOD;
     }
 
     $this->setSchemaVersion(1015);
+  }
+
+  /**
+   * Update 1016.
+   *
+   * @Update(
+   *   version = "1016",
+   *   description = "Update local Drush alias root path."
+   * )
+   */
+  protected function update1016() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $host) {
+      $id = Multisite::getIdentifier("https://$host");
+      $path = "$root/drush/sites/$id.site.yml";
+      $yaml = YamlMunge::parseFile($path);
+      $yaml['local']['root'] = '/var/www/html/docroot';
+      YamlMunge::writeFile($path, $yaml);
+    }
+
+    $this->setSchemaVersion(1016);
   }
 
 }

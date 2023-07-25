@@ -15,15 +15,21 @@
   <div class="iowa-bar__below {{ header_nav }}">
     <div class="iowa-bar__container">
 
-      {{ attach_library('uids_base/site-name') }}
-      {% include '@uids_base/uids/site-name.html.twig' with {
-        'site_name': site_name,
-        'site_url': path('<front>'),
-      } %}
+      {% if logo_path and is_off_brand %}
+        <div class="site-name">
+          <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
+        </div>
+      {% else %}
+        {{ attach_library('uids_base/site-name') }}
+        {% include '@uids_base/uids/site-name.html.twig' with {
+          'site_name': site_name,
+          'site_url': path('<front>'),
+        } %}
+      {% endif %}
 
-      {% if uiowa_search_form %}
+      {% if page.search %}
         {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-          search_form: uiowa_search_form
+          'search_form': page.search,
         } %}
       {% endif %}
       {% if page.action_menu %}
@@ -31,7 +37,7 @@
       {% endif %}
       {% if page.primary_menu %}
         {% if header_nav == 'toggle' %}
-          {% include '@uids_base/navigation/off-canvas.html.twig' %}
+          {% include '@uids_base/navigation/toggle-nav.html.twig' %}
         {% endif %}
       {% endif %}
     </div>

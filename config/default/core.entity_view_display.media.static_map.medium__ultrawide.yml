@@ -1,0 +1,41 @@
+uuid: 67e64fb6-1fa2-4d2e-b50c-fd525493b715
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.medium__ultrawide
+    - field.field.media.static_map.field_media_static_map
+    - media.type.static_map
+  module:
+    - layout_builder
+    - sitenow_media_wysiwyg
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: media.static_map.medium__ultrawide
+targetEntityType: media
+bundle: static_map
+mode: medium__ultrawide
+content:
+  field_media_static_map:
+    type: static_map_url_formatter
+    label: visually_hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: 0
+      target: 0
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

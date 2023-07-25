@@ -1,0 +1,90 @@
+uuid: 911148a7-4f9b-47f6-bb8b-9b7c0f0f3701
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.units.field_unit_alternative_email
+    - field.field.taxonomy_term.units.field_unit_alternative_phone
+    - field.field.taxonomy_term.units.field_unit_alternative_scheduler
+    - field.field.taxonomy_term.units.field_unit_email
+    - field.field.taxonomy_term.units.field_unit_link
+    - field.field.taxonomy_term.units.field_unit_phone
+    - field.field.taxonomy_term.units.field_unit_scheduler
+    - taxonomy.vocabulary.units
+  module:
+    - link
+    - telephone
+    - text
+id: taxonomy_term.units.default
+targetEntityType: taxonomy_term
+bundle: units
+mode: default
+content:
+  description:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_unit_alternative_email:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_unit_alternative_phone:
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_unit_alternative_scheduler:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_unit_email:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_unit_link:
+    type: link
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unit_phone:
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_unit_scheduler:
+    type: text_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

@@ -1,0 +1,19 @@
+uuid: 812aaafc-6d37-441e-91bf-7f94f8cd0465
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.alert.body
+    - field.field.node.alert.field_alert_category
+    - node.type.alert
+id: node.alert
+target_entity_type_id: node
+target_bundle: alert
+schema_type: SpecialAnnouncement
+schema_properties:
+  field_alert_category: category
+  created: dateCreated
+  changed: dateModified
+  langcode: inLanguage
+  title: name
+  body: text

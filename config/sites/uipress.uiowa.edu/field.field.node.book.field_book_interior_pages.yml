@@ -1,0 +1,29 @@
+uuid: b28d18fd-3844-4311-a915-1c191712b3a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_interior_pages
+    - media.type.image
+    - node.type.book
+id: node.book.field_book_interior_pages
+field_name: field_book_interior_pages
+entity_type: node
+bundle: book
+label: 'Interior pages'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

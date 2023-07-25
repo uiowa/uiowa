@@ -1,0 +1,48 @@
+id: iisc_people
+label: People
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: iisc_people
+  node_type: person
+destination:
+  plugin: 'entity:node'
+  default_bundle: person
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: # Not working yet.
+    plugin: create_media_from_file_field
+    source: field_image
+  field_tags: tags
+  field_person_bio: body
+  field_teaser:
+    plugin: extract_summary
+    source: body
+  field_person_first_name: field_person_first_name
+  field_person_last_name: field_person_last_name
+  field_person_phone: field_person_telephone
+  field_person_email: field_person_email_email
+  field_person_position: field_person_title
+  field_person_types: person_types
+  field_person_website:
+    plugin: field_link
+    source: field_person_url

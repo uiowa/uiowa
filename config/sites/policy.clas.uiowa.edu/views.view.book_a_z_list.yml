@@ -18,71 +18,34 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: none
-        options:
-          items_per_page: null
-          offset: 0
-      style:
-        type: default
-      row:
-        type: fields
+      title: 'A-Z List'
       fields:
         title:
           id: title
           table: node_field_data
           field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: title
+          plugin_id: field
           label: ''
+          exclude: false
           alter:
             alter_text: false
             make_link: false
             absolute: false
-            trim: false
             word_boundary: false
             ellipsis: false
             strip_tags: false
+            trim: false
             html: false
-          hide_empty: false
-          empty_zero: false
-          settings:
-            link_to_entity: true
-          plugin_id: field
-          relationship: none
-          group_type: group
-          admin_label: ''
-          exclude: false
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -92,9 +55,13 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
           type: string
+          settings:
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -105,29 +72,110 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: none
+        options:
+          offset: 0
+          items_per_page: null
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+      arguments:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: string
+          default_action: ignore
+          exception:
+            value: ''
+            title_enable: true
+            title: 'A-Z List'
+          title_enable: true
+          title: 'A-Z List: {{ arguments.title|capitalize }}'
+          default_argument_type: fixed
+          default_argument_options:
+            argument: ''
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          glossary: true
+          limit: 1
+          case: none
+          path_case: lower
+          transform_dash: false
+          break_phrase: false
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -138,6 +186,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: '!='
           value:
             min: ''
@@ -159,9 +208,9 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -174,69 +223,21 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          order: ASC
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-          relationship: none
-          group_type: group
-          admin_label: ''
-          exposed: false
-          expose:
-            label: ''
-      title: 'A-Z List'
+      style:
+        type: default
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          default_action: ignore
-          exception:
-            value: ''
-            title_enable: true
-            title: 'A-Z List'
-          title_enable: true
-          title: 'A-Z List: {{ arguments.title|capitalize }}'
-          default_argument_type: fixed
-          default_argument_options:
-            argument: ''
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          glossary: true
-          limit: 1
-          case: none
-          path_case: lower
-          transform_dash: false
-          break_phrase: false
-          entity_type: node
-          entity_field: title
-          plugin_id: string
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -248,18 +249,12 @@ display:
         - user.permissions
       tags: {  }
   attachment_book_a_z_list:
-    display_plugin: attachment
     id: attachment_book_a_z_list
     display_title: Attachment
+    display_plugin: attachment
     position: 2
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
       title: ''
-      defaults:
-        title: false
-        arguments: false
-      inherit_arguments: false
       pager:
         type: none
         options:
@@ -272,6 +267,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: string
           default_action: summary
           exception:
             value: ''
@@ -285,11 +283,11 @@ display:
           default_argument_skip_url: false
           summary_options:
             base_path: ''
+            count: false
+            override: false
             items_per_page: 25
             inline: true
             separator: ''
-            count: false
-            override: false
           summary:
             sort_order: asc
             number_of_records: 0
@@ -305,11 +303,14 @@ display:
           path_case: lower
           transform_dash: false
           break_phrase: false
-          entity_type: node
-          entity_field: title
-          plugin_id: string
+      defaults:
+        title: false
+        arguments: false
+      display_extenders:
+        metatag_display_extender: {  }
       displays:
         page_book_a_z_list: page_book_a_z_list
+      inherit_arguments: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -320,11 +321,14 @@ display:
         - user.permissions
       tags: {  }
   page_book_a_z_list:
-    display_plugin: page
     id: page_book_a_z_list
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
+      defaults:
+        css_class: false
+      css_class: block-margin__top--extra
       display_extenders:
         metatag_display_extender: {  }
       path: a-z
@@ -332,14 +336,11 @@ display:
         type: normal
         title: 'A-Z List'
         description: ''
-        expanded: false
-        parent: ''
         weight: -48
-        context: '0'
+        expanded: false
         menu_name: main
-      css_class: block-margin__top--extra
-      defaults:
-        css_class: false
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
