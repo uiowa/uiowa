@@ -2478,7 +2478,9 @@ function sitenow_update_9063() {
  */
 function sitenow_update_9064() {
   _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
-    $block->set('field_uiowa_card_button_display', 'Use site default');
-    $block->save();
+    if ($block->get('field_uiowa_card_button_display')->value == NULL){
+      $block->set('field_uiowa_card_button_display', 'Use site default');
+      $block->save();
+    }
   });
 }
