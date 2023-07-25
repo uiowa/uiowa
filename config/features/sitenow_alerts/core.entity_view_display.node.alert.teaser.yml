@@ -11,7 +11,9 @@ dependencies:
     - field.field.node.alert.layout_builder__layout
     - node.type.alert
   module:
-    - text
+    - field_delimiter
+    - smart_date
+    - smart_trim
     - user
 id: node.alert.teaser
 targetEntityType: node
@@ -19,24 +21,59 @@ bundle: alert
 mode: teaser
 content:
   body:
-    type: text_summary_or_trimmed
+    type: smart_trim
     label: hidden
     settings:
-      trim_length: 600
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      more_aria_label: 'Read more about [node:title]'
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: false
+        replace_tokens: false
     third_party_settings: {  }
-    weight: 5
+    weight: 0
+    region: content
+  field_alert_category:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 2
+    region: content
+  field_alert_date:
+    type: smartdate_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      localize: false
+    third_party_settings: {  }
+    weight: 3
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_alert_category: true
-  field_alert_date: true
   field_meta_tags: true
   layout_builder__layout: true
   search_api_excerpt: true

@@ -46,7 +46,6 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
 
         // Make categories badges.
         foreach ($variables['items'] as &$item) {
-
           $field_label = $item['content']['#plain_text'];
           unset($item['content']['#plain_text']);
           $item['content']['#markup'] = '<span class="badge badge--cool-gray">' . $field_label . '</span>';
@@ -58,8 +57,8 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
           uiowa_core_set_attributes($variables, 'element--inline');
         }
       }
+      
       break;
-
   }
 }
 
