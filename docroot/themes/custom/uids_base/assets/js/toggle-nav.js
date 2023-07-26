@@ -53,7 +53,7 @@ class ToggleNavBehavior {
 
   handleClickOutside(event) {
     if (!event.target.closest('.o-canvas__group')) {
-      if (this.context.body) { // Check for this.context.body
+      if (this.context.body) {
         this.context.body.classList.remove('o-canvas--lock');
         this.context.body.classList.add('o-canvas--complete');
         this.drawerContainer.classList.remove('o-canvas--open');
