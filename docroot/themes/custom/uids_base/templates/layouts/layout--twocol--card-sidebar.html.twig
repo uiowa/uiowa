@@ -15,24 +15,24 @@
 
 {% set sidebar = content.sidebar|render %}
 
-{% set col_widths = settings.column_widths %}
 {%
   set classes = [
   'layout',
   'layout__container',
   'layout--twocol',
-  'layout--twocol--' ~ col_widths,
+  'layout--twocol--67-33',
   settings.extra_classes,
 ]
 %}
 {{ attach_library('uids_base/card') }}
+
 {% set attributes = attributes.addClass(classes) %}
 
 {# Exterior container is necessary so that background colors can go all the way to the edge. #}
 <div{{ attributes.addClass(classes) }}>
   {# Middle container is necessary for having a fixed width container inside a section with a visible background. #}
   <div class="layout__spacing_container">
-    {%  if content.main and col_widths == '67-33' %}
+    {%  if content.main %}
       <div {{ region_attributes.main.addClass('layout__region', 'layout__region--main') }}>
         {{ content.main }}
       </div>
@@ -98,12 +98,6 @@
           {% endblock %}
         {% endif %}
       {% endembed %}
-    {% endif %}
-
-    {%  if content.main and col_widths == '33-67' %}
-      <div {{ region_attributes.main.addClass('layout__region', 'layout__region--main') }}>
-        {{ content.main }}
-      </div>
     {% endif %}
   </div>
 </div>
