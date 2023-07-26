@@ -57,6 +57,7 @@ third_party_settings:
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 33-67
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
@@ -126,7 +127,13 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.alert.default
 targetEntityType: node
 bundle: alert
