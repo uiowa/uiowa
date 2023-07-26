@@ -105,13 +105,16 @@ class ToggleNavBehavior {
 
 }
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   'use strict';
 
   Drupal.behaviors.toggleNav = {
     attach: function (context, settings) {
-      // Instantiate the ToggleNavBehavior class to attach the behavior
-      new ToggleNavBehavior(context);
+      const [header] = once('uids_base_toggle_nav', context.querySelector('[data-uids-header]'));
+      if (header) {
+        // Instantiate the ToggleNavBehavior class to attach the behavior
+        new ToggleNavBehavior(context);
+      }
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);
