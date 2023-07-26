@@ -6,7 +6,6 @@ _meta:
   default_langcode: en
   depends:
     99436d77-db6b-43b8-8e04-ea2f0e62b590: media
-    922b3b26-306a-457c-ba18-2c00966f81cf: node
 default:
   revision_uid:
     -
@@ -40,6 +39,15 @@ default:
       alias: /people/herky-hawk
       langcode: en
       pathauto: 1
+  rh_action:
+    -
+      value: display_page
+  rh_redirect_response:
+    -
+      value: 301
+  rh_redirect_fallback_action:
+    -
+      value: bundle_default
   field_image:
     -
       entity: 99436d77-db6b-43b8-8e04-ea2f0e62b590
@@ -62,6 +70,9 @@ default:
   field_person_position:
     -
       value: 'University of Iowa Mascot'
+  field_person_website_link_direct:
+    -
+      value: false
   field_teaser:
     -
       value: 'Add a short biography for every person. It''s important for SEO and will be referenced on the /people page. To hide a specific person, go to the ''Promotion Options'' and select ''Hide on lists''.'
