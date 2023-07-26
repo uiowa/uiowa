@@ -14,10 +14,12 @@
       @include breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
         row-gap: 0;
-        .layout__region--first {
+        .layout__region--first,
+        .layout__region-container {
           grid-area: 1 / 1 / 6 / 2;
         }
-        .layout__region--second {
+        .layout__region--second,
+        .layout__region--main {
           grid-area: 1 / 2 / 6 / 4;
           @include inner-grid(67);
         }
