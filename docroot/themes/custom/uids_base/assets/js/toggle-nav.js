@@ -1,22 +1,26 @@
 class ToggleNavBehavior {
   constructor(context) {
     this.context = context || document;
-    this.drawerContainer = this.context.querySelector('.o-canvas__wrapper');
-    this.toggleButtons = this.context.querySelectorAll('button.toggle-nav__bttn');
-    this.canvasDrawer = this.context.querySelector('.o-canvas__drawer');
     this.iowaHeader = this.context.querySelector('[data-uids-header]');
 
-    // Set positioning of canvasDrawer based on iowaBar height
-    this.iowaBarHeight = this.iowaHeader.offsetHeight;
-    this.canvasDrawer.style.top = `${this.iowaBarHeight}px`;
+    // Only do something if we have a match for our element.
+    if (this.iowaHeader) {
+      this.drawerContainer = this.context.querySelector('.o-canvas__wrapper');
+      this.toggleButtons = this.context.querySelectorAll('button.toggle-nav__bttn');
+      this.canvasDrawer = this.context.querySelector('.o-canvas__drawer');
 
-    // Bind event handlers to the class instance
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.handleEscapeKey = this.handleEscapeKey.bind(this);
-    this.updateCanvasDrawerPosition = this.updateCanvasDrawerPosition.bind(this);
-    this.handleResize = this.handleResize.bind(this);
-    this.setupEventListeners();
+      // Set positioning of canvasDrawer based on iowaBar height
+      this.iowaBarHeight = this.iowaHeader.offsetHeight;
+      this.canvasDrawer.style.top = `${this.iowaBarHeight}px`;
+
+      // Bind event handlers to the class instance
+      this.handleButtonClick = this.handleButtonClick.bind(this);
+      this.handleClickOutside = this.handleClickOutside.bind(this);
+      this.handleEscapeKey = this.handleEscapeKey.bind(this);
+      this.updateCanvasDrawerPosition = this.updateCanvasDrawerPosition.bind(this);
+      this.handleResize = this.handleResize.bind(this);
+      this.setupEventListeners();
+    }
   }
 
   // Function to handle the toggleNav behavior
