@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb41d3daecb1e343914a56d525f9bad2",
+    "content-hash": "ccc13744da806c8ec9396669152d26ac",
     "packages": [
         {
             "name": "acquia/blt",
@@ -4871,30 +4871,30 @@
         },
         {
             "name": "drupal/default_content",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/default_content.git",
-                "reference": "2.0.0-alpha1"
+                "reference": "2.0.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/default_content-2.0.0-alpha1.zip",
-                "reference": "2.0.0-alpha1",
-                "shasum": "0d534ab8e44786a352e24c7cec3dc06bef155f66"
+                "url": "https://ftp.drupal.org/files/projects/default_content-2.0.0-alpha2.zip",
+                "reference": "2.0.0-alpha2",
+                "shasum": "5c365ea21b0be63dc00ec2db50179291d6fb3d89"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9",
-                "drupal/hal": "*"
+                "drupal/core": "^9.1 || ^10"
             },
             "require-dev": {
+                "drupal/hal": " ^9 || ^1 || ^2",
                 "drupal/paragraphs": "^1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0-alpha1",
-                    "datestamp": "1595072288",
+                    "version": "2.0.0-alpha2",
+                    "datestamp": "1659466706",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4902,7 +4902,7 @@
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10 || ^11"
                     }
                 }
             },
@@ -11072,6 +11072,14 @@
                     "name": "mehrpadin",
                     "homepage": "https://www.drupal.org/u/mehrpadin",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "mehrpadin",
+                    "homepage": "https://www.drupal.org/user/619294"
+                },
+                {
+                    "name": "NickDickinsonWilde",
+                    "homepage": "https://www.drupal.org/user/3094661"
                 }
             ],
             "description": "Adds jQuery Superfish plugin to menu blocks.",
@@ -22486,7 +22494,6 @@
         "acquia/blt-travis": 20,
         "drupal/better_normalizers": 10,
         "drupal/config_split": 5,
-        "drupal/default_content": 15,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 10,
         "drupal/find_text": 10,
