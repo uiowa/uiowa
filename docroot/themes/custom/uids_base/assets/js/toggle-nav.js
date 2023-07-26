@@ -45,20 +45,24 @@ class ToggleNavBehavior {
       }
     });
 
-    this.context.body.classList.toggle('o-canvas--complete', !isActive);
-    this.context.body.classList.toggle('o-canvas--lock', isActive);
+    if (this.context.body) {
+      this.context.body.classList.toggle('o-canvas--complete', !isActive);
+      this.context.body.classList.toggle('o-canvas--lock', isActive);
+    }
   }
 
   handleClickOutside(event) {
     if (!event.target.closest('.o-canvas__group')) {
-      this.context.body.classList.remove('o-canvas--lock');
-      this.context.body.classList.add('o-canvas--complete');
-      this.drawerContainer.classList.remove('o-canvas--open');
-      this.toggleButtons.forEach((button) => {
-        button.classList.remove('active');
-        button.setAttribute('aria-expanded', 'false');
-        button.nextElementSibling.setAttribute('aria-hidden', 'true');
-      });
+      if (this.context.body) { // Check for this.context.body
+        this.context.body.classList.remove('o-canvas--lock');
+        this.context.body.classList.add('o-canvas--complete');
+        this.drawerContainer.classList.remove('o-canvas--open');
+        this.toggleButtons.forEach((button) => {
+          button.classList.remove('active');
+          button.setAttribute('aria-expanded', 'false');
+          button.nextElementSibling.setAttribute('aria-hidden', 'true');
+        });
+      }
     }
   }
 

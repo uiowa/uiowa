@@ -18,18 +18,20 @@ class SearchOverlay {
 
     this.context.addEventListener('click', (event) => {
       if (!event.target.closest('.search-wrapper')) {
-        if (this.context.getElementById('search-button-label')) {
-          this.body.classList.remove('search-is-open');
-          this.context.getElementById('search-button-label').innerHTML = 'Search';
-          this.wrapper.setAttribute('aria-hidden', 'true');
-          this.button.setAttribute('aria-expanded', 'false');
+        if (this.context.body) {
+          if (this.context.getElementById('search-button-label')) {
+            this.body.classList.remove('search-is-open');
+            this.context.getElementById('search-button-label').innerHTML = 'Search';
+            this.wrapper.setAttribute('aria-hidden', 'true');
+            this.button.setAttribute('aria-expanded', 'false');
+          }
         }
       }
     });
   }
 
   searchToggle() {
-    if (this.context.getElementById('search-button-label')) {
+    if (document.getElementById('search-button-label') && this.body) {
       if (this.body.classList.contains('search-is-open')) {
         this.searchButton.setAttribute('aria-expanded', 'false');
         this.wrapper.setAttribute('aria-hidden', 'true');
