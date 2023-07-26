@@ -5530,3 +5530,9 @@ $sites['labcwang.uiowa.ddev.site'] = 'cwang.lab.uiowa.edu';
 $sites['labcwang.dev.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
 $sites['labcwang.stage.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
 $sites['labcwang.prod.drupal.uiowa.edu'] = 'cwang.lab.uiowa.edu';
+
+// Directory aliases for tanaka.lab.uiowa.edu.
+$sites['labtanaka.uiowa.ddev.site'] = 'tanaka.lab.uiowa.edu';
+$sites['labtanaka.dev.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
+$sites['labtanaka.stage.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
+$sites['labtanaka.prod.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
