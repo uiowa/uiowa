@@ -17,7 +17,7 @@ class ToggleNavBehavior {
       this.handleButtonClick = this.handleButtonClick.bind(this);
       this.handleClickOutside = this.handleClickOutside.bind(this);
       this.handleEscapeKey = this.handleEscapeKey.bind(this);
-      this.updateCanvasDrawerPosition = this.updateCanvasDrawerPosition.bind(this);
+      this.updateCanvasDrawerPosition = Drupal.debounce(this.updateCanvasDrawerPosition.bind(this), 100); // Debounce with 100ms delay
       this.handleResize = this.handleResize.bind(this);
       this.setupEventListeners();
     }
