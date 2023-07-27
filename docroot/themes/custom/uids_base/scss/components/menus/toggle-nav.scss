@@ -263,7 +263,6 @@ body {
   width: 100%;;
   height: 100%;
   padding: 20px 22px 40px;
-  transition: clip-path 1s, opacity .5s, transform .5s, visibility .5s;
   transform: scale(0.925);
   transform-origin: right top;
   opacity: 0;
@@ -277,7 +276,6 @@ body {
   .o-canvas--open & {
     visibility: visible;
     height: 100%;
-    transition: all .4s ease-in-out;
     transform: scale(1);
     opacity: 1;
     box-shadow: 0 8px 8px 0 rgba(63, 63, 70, .25);
@@ -290,7 +288,6 @@ body {
 
 .o-canvas__drawer[aria-hidden="false"]:not(:focus-within) {
   background-color: rgb(255, 255, 254);
-  transition: background-color 0.01s;
 }
 
 .o-canvas--lock .iowa-bar__below {
