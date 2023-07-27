@@ -21,6 +21,7 @@ dependencies:
     - layout_builder
     - options
     - smart_date
+    - system
     - text
     - user
   theme:
@@ -30,6 +31,48 @@ third_party_settings:
     enabled: true
     allow_custom: false
     sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: b3e65666-a6fc-426c-a324-4d2aab8c575a
+            region: content
+            configuration:
+              id: 'field_block:node:alert:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9b52552c-4b33-4e1c-af4e-eb4ccf06b521
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
