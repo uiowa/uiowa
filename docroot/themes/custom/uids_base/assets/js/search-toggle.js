@@ -51,7 +51,7 @@ class SearchOverlay {
   Drupal.behaviors.searchOverlay = {
     attach: function (context, settings) {
       // Instantiate the SearchOverlay class to attach the behavior
-      new SearchOverlay(context);
+      const [searchOverlay] = once('search_overlay', new SearchOverlay(context));
     }
   };
 })(jQuery, Drupal);
