@@ -86,77 +86,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 72819392-cb2d-4c5d-99bb-281d4ae3abb1
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_location'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: cdb7beb1-a143-4174-b0d4-534c292ea4d2
-            region: card_content
-            configuration:
-              id: 'field_block:node:alert:field_alert_traffic_control_plan'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9ff1737c-374c-4bc6-993b-df940026bfbd
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_alternate_route'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 10
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 6b14d313-9af4-4e1b-8a01-dc5570c41c7a
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_accessible_route'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 9
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 70921c30-e64e-4bef-975b-3dce9ae0e320
             region: main
             configuration:
@@ -176,72 +105,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: c71dd49f-ddf3-4685-90e8-58dff86c597d
-            region: card_content
-            configuration:
-              id: 'field_block:node:alert:field_alert_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: smartdate_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                  format: default
-                  force_chronological: false
-                  add_classes: false
-                  time_wrapper: true
-                  localize: false
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 646fc4c7-8bde-481d-a9ab-52a5e8b8f94c
-            region: card_content
-            configuration:
-              id: 'field_block:node:alert:field_alert_affected_bus_routes'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: list_default
-                label: above
-                settings: {  }
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: a5ea1760-e6bd-4129-afda-1e099a26a90a
-            region: card_content
-            configuration:
-              id: 'field_block:node:alert:field_alert_category'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 3b843159-1293-4659-bde1-fc53d21e5271
             region: main
             configuration:
@@ -254,24 +117,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 98cbf817-9960-4a76-b37b-8f6513811fc9
-            region: card_content
-            configuration:
-              id: 'field_block:node:alert:field_alert_building'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 1
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -287,13 +133,178 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: boolean
-                label: above
+                label: inline
                 settings:
                   format: default
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
             weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c71dd49f-ddf3-4685-90e8-58dff86c597d
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_date'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_default
+                label: visually_hidden
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: false
+                  add_classes: false
+                  time_wrapper: true
+                  localize: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: cdb7beb1-a143-4174-b0d4-534c292ea4d2
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_traffic_control_plan'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 72819392-cb2d-4c5d-99bb-281d4ae3abb1
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_location'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 98cbf817-9960-4a76-b37b-8f6513811fc9
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_building'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 646fc4c7-8bde-481d-a9ab-52a5e8b8f94c
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_affected_bus_routes'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: inline
+                settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a5ea1760-e6bd-4129-afda-1e099a26a90a
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6b14d313-9af4-4e1b-8a01-dc5570c41c7a
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_accessible_route'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9ff1737c-374c-4bc6-993b-df940026bfbd
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_alternate_route'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
