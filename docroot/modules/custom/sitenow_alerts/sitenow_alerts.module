@@ -41,20 +41,17 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_category':
       $view_mode = $variables['element']['#view_mode'];
-      if ($view_mode === '_custom') {
-        uiowa_core_set_field_label_icon($variables, 'fa-tag');
-        uiowa_core_set_title_attributes($variables, 'badge badge--light');
-      }
-      if ($view_mode === 'teaser') {
-        // Set the categories inline.
-        uiowa_core_set_attributes($variables, 'element--inline');
-
+      if ($view_mode === 'teaser' || $view_mode === '_custom') {
         // Make categories badges.
         foreach ($variables['items'] as &$item) {
           $field_label = $item['content']['#plain_text'];
           unset($item['content']['#plain_text']);
           $item['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
         }
+      }
+      if ($view_mode === 'teaser') {
+        // Set the categories inline.
+        uiowa_core_set_attributes($variables, 'element--inline');
       }
       break;
   }
