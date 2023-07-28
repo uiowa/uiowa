@@ -96,7 +96,12 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
   // Process all of the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
-    $layout = sitenow_p2lb_process_section($section_id, $layout, $node);
+    // It's possible for the section to fail to load,
+    // such as if the paragraph no longer exists.
+    // Only overwrite if we successfully process.
+    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout, $node)) {
+      $layout = $new_layout;
+    }
   }
 
   // Need to set with an array of sections, retrieved with getSections().
