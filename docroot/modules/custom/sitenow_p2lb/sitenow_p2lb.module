@@ -10,6 +10,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 
@@ -161,26 +162,28 @@ function sitenow_p2lb_fetch_child_ids($parent) {
 /**
  * Process paragraphs section.
  */
-function sitenow_p2lb_process_section($section_id, $layout, $node) {
+function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout_section_list, $node) {
   $para_storage = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph');
-  $section_object = $para_storage->load($section_id);
-  if (!$section_object) {
+  $paragraph_section_object = $para_storage->load($section_id);
+  if (!$paragraph_section_object) {
     return FALSE;
   }
 
+  $paragraph_section_unique_id = $paragraph_section_object->field_uip_id->value ?: NULL;
+
   // Grab section title and styles.
-  $section_title = ($section_object->field_section_title) ?
-    $section_object->field_section_title->value : '';
-  $section_styles = sitenow_p2lb_section_styles($section_object);
+  $section_title = ($paragraph_section_object->field_section_title) ?
+    $paragraph_section_object->field_section_title->value : '';
+  $section_styles = sitenow_p2lb_section_styles($paragraph_section_object);
 
   // Get all paragraphs attached to this section.
-  $pids = sitenow_p2lb_fetch_child_ids($section_object);
+  $pids = sitenow_p2lb_fetch_child_ids($paragraph_section_object);
   $paragraphs = $para_storage->loadMultiple($pids);
 
   // Check for a section image, and if so, handle it.
-  $section_image_fid = ($section_object->field_section_image[0]) ?
-    $section_object->field_section_image[0]->target_id : 0;
+  $section_image_fid = ($paragraph_section_object->field_section_image[0]) ?
+    $paragraph_section_object->field_section_image[0]->target_id : 0;
   $banner_text = NULL;
 
   if ($section_image_fid) {
@@ -193,10 +196,10 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
     $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text, $node);
     if (!empty($section_array)) {
       $section = Section::fromArray($section_array);
-      $layout->appendSection($section);
+      $layout_section_list->appendSection($section);
       // If that was the only paragraph, we're done with this p_section.
       if (empty($paragraphs)) {
-        return $layout;
+        return $layout_section_list;
       }
     }
   }
@@ -230,15 +233,13 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
   ];
 
   // Create and append sections to our $layout (section list).
-  foreach ($sections_infos as $section_info) {
+  foreach ($sections_infos as $delta => $section_info) {
     // Catch broken section infos and put into a 'blank slate' section.
     $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
 
     // Determine column layout and create the text string.
-    $formatter = (isset($w2d[$num_cols])) ? $w2d[$num_cols] : 'one';
-    $layout_id = 'layout_'
-      . $formatter
-      . 'col';
+    $formatter = $w2d[$num_cols] ?: 'one';
+    $layout_id = "layout_{$formatter}col";
 
     $col_width_str = sitenow_p2lb_multicol_settings($section_info['col_widths']);
     $layout_settings = [
@@ -246,6 +247,13 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       'column_widths' => $col_width_str,
       'layout_builder_styles_style' => $section_styles,
     ];
+
+    // If this is the first section and there is a unique ID, add it to the
+    // layout settings.
+    if ($delta === 0 && $paragraph_section_unique_id) {
+      $layout_settings['layout_builder_custom_unique_id'] = $paragraph_section_unique_id;
+    }
+
     $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
 
     // Iterate through the columns and attach the next paragraph in the list.
@@ -289,9 +297,10 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       }
     }
     $section = Section::fromArray($section_array);
-    $layout->appendSection($section);
+    $layout_section_list->appendSection($section);
   }
-  return $layout;
+
+  return $layout_section_list;
 }
 
 /**
