@@ -565,47 +565,46 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'card':
       $type = 'uiowa_card';
       // Image isn't required. Check for one, or set to null.
-      $image = ($paragraph->get('field_card_image')->getValue()) ?
-        $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
+      $image = $paragraph->field_card_image?->target_id ?: '';
 
       // Link isn't required. Check for one, or set to null.
-      $link = ($paragraph->get('field_card_link')->getValue()) ?
-        $paragraph->get('field_card_link')->getValue()[0] : '';
+      $link = $paragraph->field_card_link?->value[0] ?: NULL;
 
       // Label (title) isn't required. Check for one, or set to null.
-      $label = ($paragraph->get('field_card_title')->getValue()) ?
-        $paragraph->get('field_card_title')->getString() : '';
+      $label = $paragraph->field_card_title?->value ?: '';
       $display_label = ($label) ? 1 : 0;
 
       // Subtitle field isn't required. Check for one, or set to null.
-      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
-        $paragraph->get('field_card_subtitle')->getString() : '';
+      $subtitle = $paragraph->field_card_subtitle?->value ?: '';
 
-      // Card body isn't required. Check or or set to array with empty value.
-      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue()[0] : '';
+      // Card body isn't required. Check or set to array with empty value.
+      $excerpt = $paragraph->field_card_body?->getValue()[0] ?: NULL;
 
       if ($excerpt) {
         $excerpt['format'] = 'minimal';
       }
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => $paragraph->get('status')->getString(),
-        'info' => 'Card',
-        'reusable' => 0,
-        'default_langcode' => 1,
-        'field_uiowa_card_author' => $subtitle,
-        'field_uiowa_card_excerpt' => $excerpt,
-        'field_uiowa_card_image' => $image,
-        'field_uiowa_card_link' => $link,
-        'field_uiowa_card_title' => [
-          // Size not set in paragraphs. Defaulting to h2. Can change later.
-          'size' => 'h2',
-          'text' => $label,
-        ],
-      ];
+      // Handle the case where there is only an image and optionally a link.
+      if ($image && (!$label && !$subtitle && !$excerpt)) {
+        $fields = ['field_uiowa_image_image' => $image];
+        if ($link) {
+          $fields['field_uiowa_image_link'] = $link;
+        }
+        $block_definition = sitenow_p2lb_block_definition('uiowa_image', $fields);
+      }
+      else {
+        $block_definition = sitenow_p2lb_block_definition('uiowa_card', [
+          'field_uiowa_card_author' => $subtitle,
+          'field_uiowa_card_excerpt' => $excerpt,
+          'field_uiowa_card_image' => $image,
+          'field_uiowa_card_link' => $link,
+          'field_uiowa_card_title' => [
+            // Size not set in paragraphs. Defaulting to h2. Can change later.
+            'size' => 'h2',
+            'text' => $label,
+          ],
+        ]);
+      }
 
       break;
 
@@ -634,13 +633,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $fids[] = $carousel_image->get('field_carousel_image_image')->getString();
       }
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => 1,
-        'reusable' => 0,
-        'default_langcode' => 1,
-        'metatag' => [],
+      $block_definition = sitenow_p2lb_block_definition('uiowa_image_gallery', [
         'field_uiowa_gallery_image' => $fids,
         // Build a headline out of the title
         // and display title options.
@@ -650,7 +643,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'hide_headline' => $display_title,
           'headline_style' => 'default',
         ],
-      ];
+      ]);
 
       break;
 
@@ -1296,4 +1289,19 @@ function _sitenow_p2lb_get_page_lb_sections_config() {
   $config = $source->read('core.entity_view_display.node.page.default');
 
   return $config['third_party_settings']['layout_builder']['sections'];
+}
+
+/**
+ * Helper function to provide a consistent block definition.
+ */
+function sitenow_p2lb_block_definition($type, array $fields) {
+  $block_definition = [
+    'langcode' => 'en',
+    'reusable' => 0,
+    'default_langcode' => 1,
+    'status' => 1,
+  ];
+
+  $block_definition['type'] = $type;
+  return array_merge($block_definition, $fields);
 }
