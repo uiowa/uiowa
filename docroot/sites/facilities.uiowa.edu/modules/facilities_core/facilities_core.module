@@ -246,13 +246,13 @@ function facilities_core_preprocess_media(&$variables) {
  */
 function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
-    $seating_chart = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
-    if (!empty($seating_chart)) {
+    $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
+    if (!empty($traffic_plan)) {
       // Media will still display the file name when
       // displayed as a rendered entity, so set that on save.
       // The Media name will still be unique, and the filename
       // will remain the same.
-      $media = reset($seating_chart);
+      $media = reset($traffic_plan);
       $fid = $media->getSource()->getSourceFieldValue($media);
       $file = File::load($fid);
       $file->setFilename('Traffic Plan');
