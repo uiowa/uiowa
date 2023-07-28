@@ -233,11 +233,11 @@ function facilities_core_preprocess_file_link(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function facilities_core_preprocess_media(&$variables) {
-  // Extra classes for the Seating Chart field. Limit it
+  // Extra classes for the Traffic plan field. Limit it
   // to 'file' media so we don't potentially add extra stuff
   // to other media types like images.
   if ($variables['media']->getSource()?->getPluginId() === 'file') {
-    $variables['attributes']['class'] = ['element--inline padding--inline-start--sm'];
+    $variables['attributes']['class'] = ['padding--inline-start--sm'];
   }
 }
 
