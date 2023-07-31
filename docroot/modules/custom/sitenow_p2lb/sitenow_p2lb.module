@@ -13,6 +13,7 @@ use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
+use Drupal\sitenow_p2lb\P2LbHelper;
 
 /**
  * Implements hook_form_alter().
@@ -76,6 +77,8 @@ function sitenow_p2lb_paragraph_nodes() {
  *   Node being processed.
  * @param bool $remove
  *   Indicator whether old paragraphs should be removed following processing.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
   // Get sections from the page.
@@ -94,7 +97,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     $layout->appendSection(Section::fromArray($default_sections[$i]));
   }
 
-  // Process all of the individual sections and update the layout.
+  // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
     $layout = sitenow_p2lb_process_section($section_id, $layout, $node);
   }
@@ -124,8 +127,9 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     return TRUE;
   }
+
   // Should be good to go, but if there was anything weird,
-  // return False to indicate no processing was done.
+  // return FALSE to indicate no processing was done.
   return FALSE;
 }
 
@@ -579,26 +583,46 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $excerpt['format'] = 'minimal';
       }
 
-      // Handle the case where there is only an image and optionally a link.
-      if ($image && (!$label && !$subtitle && !$excerpt)) {
-        $fields = ['field_uiowa_image_image' => $image];
-        if ($link) {
-          $fields['field_uiowa_image_link'] = $link;
+      // If the card has no title
+      if (!$label) {
+        // Handle the case where there is only an image and optionally a link.
+        if ($image && (!$subtitle && !$excerpt)) {
+          $fields = ['field_uiowa_image_image' => $image];
+          if ($link) {
+            $fields['field_uiowa_image_link'] = $link;
+          }
+          $block_definition = sitenow_p2lb_block_definition('uiowa_image', $fields);
         }
-        $block_definition = sitenow_p2lb_block_definition('uiowa_image', $fields);
+        else {
+          // Converting to a card is not possible because the label is required
+          // in V3. Convert to a text area instead.
+          $block_definition = sitenow_p2lb_block_definition('uiowa_text_area', [
+            // @todo Figure out how this works.
+          ]);
+        }
       }
       else {
-        $block_definition = sitenow_p2lb_block_definition('uiowa_card', [
-          'field_uiowa_card_author' => $subtitle,
-          'field_uiowa_card_excerpt' => $excerpt,
-          'field_uiowa_card_image' => $image,
-          'field_uiowa_card_link' => $link,
-          'field_uiowa_card_title' => [
-            // Size not set in paragraphs. Defaulting to h2. Can change later.
-            'size' => 'h2',
-            'text' => $label,
-          ],
-        ]);
+        if (!P2LbHelper::formattedTextIsEquivalent($excerpt['value'], 'filtered_html', 'minimal_plus')) {
+          // Converting to a card would result in data loss. Convert to a text
+          // area instead.
+          $block_definition = sitenow_p2lb_block_definition('uiowa_text_area', [
+            // @todo Figure out how this works.
+          ]);
+        }
+        else {
+          // We're good to create a card.
+          $block_definition = sitenow_p2lb_block_definition('uiowa_card', [
+            'field_uiowa_card_author' => $subtitle,
+            'field_uiowa_card_excerpt' => $excerpt,
+            'field_uiowa_card_image' => $image,
+            'field_uiowa_card_link' => $link,
+            'field_uiowa_card_title' => [
+              // Size not set in paragraphs. Defaulting to h2. Can change later.
+              'size' => 'h2',
+              'text' => $label,
+            ],
+          ]);
+        }
       }
 
       break;

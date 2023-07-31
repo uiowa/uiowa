@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\sitenow_p2lb\P2LbHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -75,6 +76,12 @@ class P2LbSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+
+    $form['issues'] = [
+      '#type' => 'container',
+    ];
+
+    $this->buildIssueList($form['issues']);
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -181,6 +188,36 @@ class P2LbSettingsForm extends ConfigFormBase {
       sitenow_p2lb_node_p2lb($node, TRUE);
     }
     return $form_state;
+  }
+
+  protected function buildIssueList(&$form) {
+    $query = \Drupal::entityQuery('paragraph')
+      ->condition('type', 'card')
+      ->accessCheck(TRUE);
+
+    $pids = $query->execute();
+
+    foreach ($pids as $pid) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+      $paragraph = $this->entityTypeManager->getStorage('paragraph')->load($pid);
+      $body = $paragraph->field_card_body?->value;
+      if (is_null($body)) {
+        continue;
+      }
+
+      if (P2LbHelper::formattedTextIsEquivalent($body, 'filtered_html', 'minimal_plus')) {
+        continue;
+      }
+
+      $parent = $paragraph->getParentEntity();
+      $parent = $parent->getParentEntity();
+      if (!is_null($parent)) {
+        $form[$parent->id()] = [
+          '#type' => 'markup',
+          '#markup' => '<div><a href="/node/' . $parent->id() . '">' . $parent->id() . '</a> - V2 card body is incompatible with V3 card body.</div>',
+        ];
+      }
+    }
   }
 
 }
