@@ -1227,6 +1227,33 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   return $section_array;
 }
 
+function sitenow_p2lbnode_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  // Check/prevent front page from being deleted on single delete.
+  // Only need to alter the delete operation form.
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    if ($form_object->getOperation() !== 'delete') {
+      return;
+    }
+    /** @var Drupal\Core\Entity\EntityInterface $node */
+    $node = $form_object->getEntity();
+
+    // Get and dissect front page path.
+    $front = \Drupal::config('system.site')->get('page.front');
+    $url = Url::fromUri("internal:" . $front);
+
+    if ($url->isRouted()) {
+      $params = $url->getRouteParameters();
+
+      if (isset($params['node']) && $params['node'] === $node->id()) {
+        // Disable the 'Delete' button.
+        $form['actions']['submit']['#disabled'] = TRUE;
+        _sitenow_prevent_front_delete_message($node->label());
+      }
+    }
+  }
+}
+
 /**
  * Default block style settings.
  */
