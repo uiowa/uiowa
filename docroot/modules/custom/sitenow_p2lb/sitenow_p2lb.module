@@ -54,6 +54,27 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
+ * Implements hook_entity_view().
+ */
+function sitenow_p2lb_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity instanceof \Drupal\sitenow_pages\Entity\Page) {
+    $issues = P2LbHelper::analyzeNode($entity);
+
+    if (!empty($issues)) {
+      $build['issues'] = [
+        '#type' => 'container',
+        '#weight' => -10,
+      ];
+
+      $build['issues']['list'] = [
+        '#theme' => 'item_list',
+        '#items' => $issues,
+      ];
+    }
+  }
+}
+
+/**
  * Check for nodes which are using paragraphs.
  */
 function sitenow_p2lb_paragraph_nodes() {
