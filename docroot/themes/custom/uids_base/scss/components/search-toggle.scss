@@ -1,10 +1,453 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/search-toggle/search-toggle.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
 
 $search-mobile-img-path: '../../../uids/assets/images/search-white-01.svg';
 $search-img-path: '../../../uids/assets/images/search-01.svg';
 
+// previous uids 3.x component styles.
+
+.search-button {
+  position: relative;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  display: block;
+  width: auto;
+  height: 70px;
+  margin: 0;
+  padding: 7px 25px;
+  cursor: pointer;
+  transition: background .15s, border .15s, color .15s, transform .15s;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  font-weight: 700;
+
+  @include breakpoint(md) {
+    position: absolute;
+    right: 0;
+
+    .header--horizontal & {
+      right: 20px;
+    }
+  }
+
+  @include breakpoint(page-container) {
+    right: 167px;
+  }
+
+  @include breakpoint(md) {
+    top: 0;
+    height: 80px;
+    padding: 14px 25px 7px 18px;
+
+    .iowa-bar--narrow & {
+      padding: 9px 25px 7px 18px;
+    }
+  }
+
+  &:focus,
+  &:hover {
+
+    /* Some exciting button focus styles */
+    //outline:none;
+    span {
+      text-decoration: underline;
+    }
+  }
+
+  &:focus:not(:focus-visible) {
+    /* Undo all the above focused button styles
+     if the button has focus but the browser wouldn't normally
+     show default focus styles */
+  }
+
+  &:focus-visible {
+    /* Some even *more* exciting button focus styles */
+  }
+
+  .iowa-bar--full & {
+    height: 70px;
+
+    @include breakpoint(md) {
+      height: 80px;
+    }
+  }
+
+  .iowa-bar--narrow & {
+    height: 70px;
+    background: none;
+
+    @include breakpoint(md) {
+      top: 0px;
+      width: auto;
+      height: 90px;
+    }
+  }
+
+  span {
+    //@include element-invisible;
+    display: none;
+
+    @include breakpoint(md) {
+      //@include element-invisible-off;
+      display: inline;
+      overflow: unset;
+      position: unset !important;
+      display: inline-block;
+    }
+  }
+
+  .uiowa-bar--home & {
+    top: 0;
+
+    @include breakpoint(sm) {
+      top: 0;
+    }
+  }
+
+  &[aria-expanded="true"] {
+    background: $white;
+
+    @include breakpoint(md) {
+      background: none;
+    }
+
+    &:before {
+      padding: 7px;
+      content: "\f00d";
+      color: $secondary;
+
+      @include breakpoint(md) {
+        width: 35px;
+        margin-right: 5px;
+        color: $secondary;
+        border-radius: 50%;
+        background: #fff;
+        line-height: 1.2;
+        color: $secondary;
+      }
+
+      .iowa-bar--narrow & {
+        width: 35px;
+        height: 35px;
+        color: white;
+        border-radius: 50%;
+        background: $secondary;
+
+      }
+
+      .iowa-bar--full & {
+        @include breakpoint(md) {
+          color: $secondary;
+        }
+      }
+    }
+  }
+
+  &:before {
+    padding: $xsm;
+    padding-right: 7px;
+    content: "\f002";
+    color: #fff;
+    font-size: 1.5rem;
+    @include fas();
+
+    @include breakpoint(md) {
+      font-size: 1.2rem;
+      color: $secondary;
+    }
+  }
+}
+
+.iowa-bar.horizontal .search-button,
+.iowa-bar.mega .search-button {
+  right: 0;
+}
+
+.search-is-open .search-overlay .uids-search {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  width: 70%;
+  cursor: text;
+
+  @include breakpoint(md) {
+    width: 73%;
+    height: 50px;
+    border-bottom: 1px solid #6d5a0e;
+  }
+
+  @include breakpoint(page-container) {
+    width: 73%;
+    margin-right: 90px;
+  }
+
+}
+
+.search-is-open .iowa-bar--full .site-name {
+  @include breakpoint(md) {
+    display: none;
+  }
+}
+
+
+.search-is-open .iowa-bar--narrow .uids-search {
+  @include breakpoint(md) {
+    border-bottom: 1px solid #666;
+  }
+}
+
+
+.search-is-open .iowa-bar--full .menu--top {
+  display: none;
+}
+
+.search-overlay .uids-search {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 0px;
+  cursor: pointer;
+  transition: width .4s cubic-bezier(0.000, 0.795, 0.000, 1.000);
+  background: none;
+
+  button>* {
+    pointer-events: none;
+
+  }
+}
+
+.search-overlay .uids-search input[type="text"] {
+  padding-left: 0;
+  text-align: left;
+  color: #fff;
+  border: none;
+  border-bottom-width: medium;
+  border-bottom-style: none;
+  border-bottom-color: currentcolor;
+  background: none;
+  box-shadow: none !important;
+  font-size: 1.5rem;
+
+  @include breakpoint(md) {
+    color: $secondary;
+
+    .iowa-bar--narrow & {
+      border-bottom: none;
+    }
+  }
+
+  &::placeholder {
+    color: #fff;
+    font-size: 1rem;
+    padding-top: 10px;
+
+    @include breakpoint(md) {
+      padding-top: 0;
+      color: #000;
+      font-size: unset;
+    }
+  }
+}
+
+.search-overlay .uids-search {
+  margin-top: 7px;
+  margin-left: 21px;
+  padding: 0;
+  padding: 0px;
+
+  @include breakpoint(md) {
+    margin-top: 18px;
+    background: $primary;
+
+    .iowa-bar--narrow & {
+      background: transparent;
+    }
+  }
+
+  @include breakpoint(md) {
+    .iowa-bar--narrow & {
+      margin-top: 22px;
+      margin-left: 0;
+      padding: 0;
+    }
+  }
+
+  .iowa-bar--narrow &,
+  .iowa-bar--full & {
+    margin-top: 7px;
+
+    @include breakpoint(md) {
+      margin-top: 18px;
+    }
+  }
+}
+
+.search-overlay .uids-search [type="submit"] {
+  padding: 0 10px;
+  background: none;
+  border: none;
+}
+
+.search-overlay[aria-hidden=false] .uids-search [type="submit"] {
+  animation: fadeIn .5s;
+}
+
+.search-overlay .uids-search [type="submit"] span {
+  //@include element-invisible;
+  display: none;
+}
+
+.search-overlay .uids-search [type="submit"]::before {
+  padding: 20px;
+  content: ' ';
+  background: url(../images/search-white-01.svg);
+  background-repeat: repeat;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+
+  @include breakpoint(md) {
+    background-position: center;
+    background: url(../images/search-01.svg);
+  }
+
+  .iowa-bar--narrow & {
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+.search-overlay {
+  position: absolute;
+  visibility: hidden;
+
+  .search-is-open & {
+    @include breakpoint(md) {
+      width: 100%;
+    }
+  }
+
+  &[aria-hidden="false"] {
+    z-index: 1;
+    visibility: visible;
+    transition: opacity .3s;
+    transition-timing-function: ease;
+    transition-timing-function: ease-in-out;
+    text-align: left;
+  }
+}
+
+
+// color changes for active search - change to focus invisible?
+.search-is-open {
+  @include breakpoint(md) {
+    .uiowa-bar__title {
+      color: $primary;
+    }
+  }
+}
+
+.search-is-open .iowa-bar--narrow {
+  @include breakpoint(md) {
+    .uiowa-bar__title {
+      color: $white;
+    }
+  }
+}
+
+.search-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+
+  @include breakpoint(md) {
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  @include breakpoint(page-container) {
+    margin-right: calc(51% - 50vw);
+
+    .horizontal &,
+    .mega & {
+      margin-right: 0;
+    }
+  }
+
+  .search-is-open & {
+    width: 100%;
+    flex: 1;
+    justify-content: space-between;
+
+    @include breakpoint(md) {
+      position: relative;
+    }
+  }
+
+  .header--primary & {
+    align-items: flex-end;
+    flex-direction: column;
+
+    @include breakpoint(page-container) {
+      align-items: unset;
+    }
+  }
+
+  .iowa-bar--narrow & {
+    flex-wrap: wrap;
+  }
+}
+
+.search-is-open .iowa-bar--narrow .search-wrapper {
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.search-overlay {
+  position: absolute;
+  top: 0;
+  top: -80px;
+  left: 0;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  text-align: center;
+  background-color: $primary;
+  @include flexbox;
+
+  .iowa-bar--narrow & {
+    background-color: $white;
+  }
+
+  &[aria-hidden="false"] {
+    z-index: 1;
+    top: 0;
+    display: contents;
+    visibility: visible;
+    width: 95%;
+    transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    transition: opacity .3s;
+    transition-timing-function: ease;
+    transition-timing-function: ease-in-out;
+    text-align: left;
+
+    @include breakpoint(md) {
+      display: flex;
+    }
+  }
+}
+
+// uids_base overrides.
 
 .search-overlay .uids-search [type="submit"]::before {
   background-image: url($search-mobile-img-path);
@@ -19,7 +462,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 .search-overlay[aria-hidden=false] {
   .region-search {
-    width: 100%;
+    @include breakpoint(md) {
+      width: 100%;
+    }
   }
 }
 

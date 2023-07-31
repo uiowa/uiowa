@@ -97,7 +97,7 @@
       flex: 1;
     }
     @include breakpoint(page-container) {
-      right: calc(50% - 40vw);
+      right: calc(51% - 40vw);
       flex: 0 1 25%;
     }
   }
@@ -172,7 +172,6 @@
     }
 
     .iowa-bar__below {
-      //margin-top: 70px;
       border-bottom: none;
       width: 100%;
     }
@@ -187,6 +186,9 @@
   .nav.menu--top {
     @include breakpoint(md) {
       height: 90px;
+      .scroll-up & {
+        animation: fadeIn 1s;
+      }
     }
   }
 
@@ -198,3 +200,4 @@
     }
   }
 }
+
