@@ -3,9 +3,6 @@
   header_nav,
 ]) %}
 
-{{ attach_library('uids_base/iowa-bar') }}
-{{ attach_library('uids_base/header') }}
-
 {% if header_nav == 'toggle' %}
   {% if not logged_in %}
     {{ attach_library('uids_base/header-sticky') }}
