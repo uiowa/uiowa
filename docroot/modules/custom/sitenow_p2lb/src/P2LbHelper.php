@@ -24,7 +24,7 @@ class P2LbHelper {
    *
    * @return bool
    */
-  public static function formattedTextIsEquivalent(string $text, string $format_one, string $format_two): bool {
-    return check_markup($text, $format_one) === check_markup($text, $format_two);
+  public static function formattedTextIsSame(string $text, string $format_one, string $format_two): bool {
+    return check_markup($text, $format_one) == check_markup($text, $format_two);
   }
 }

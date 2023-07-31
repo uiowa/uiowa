@@ -592,7 +592,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      elseif (!P2LbHelper::formattedTextIsEquivalent($excerpt['value'], 'filtered_html', 'minimal_plus')) {
+      elseif (!P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
         // Converting to a card would result in data loss. Convert to a text
         // area instead.
         $type = 'uiowa_text_area';
@@ -602,7 +602,11 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       switch ($type) {
         case 'uiowa_card':
-          $fields['field_uiowa_card_title'] = _sitenow_p2lb_headline_config($label, $display_label);
+          $fields['field_uiowa_card_title'] = [
+            // Size not set in paragraphs. Defaulting to h2. Can change later.
+            'size' => 'h2',
+            'text' => $label,
+          ];
 
           // Add the image, if its set.
           if ($image) {
@@ -638,13 +642,21 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
         case 'uiowa_text_area':
           $output = '';
+          if ($image) {
+            /** @var \Drupal\media\MediaInterface[] $images */
+            $images = $paragraph->field_card_image->referencedEntities();
+            if (!empty($images)) {
+              foreach ($images as $image) {
+                $output .= '<drupal-media data-entity-type="media" data-entity-uuid="' . $image->uuid() . '" data-view-mode="large__widescreen"></drupal-media>';
+              }
+            }
+          }
           if ($subtitle) {
             $output .= $subtitle;
           }
           if ($excerpt) {
             $output .= $excerpt;
           }
-          // @todo How do we account for an image, if there is one?
           $fields = [
             'field_uiowa_text_area' => [
               'value' => $output,
