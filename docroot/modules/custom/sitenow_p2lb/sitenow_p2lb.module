@@ -114,6 +114,8 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     // Set the user id for the revision.
     $user_id = \Drupal::currentUser()->id();
     $node->setRevisionUserId($user_id);
+    $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $node->setChangedTime(\Drupal::time()->getRequestTime());
 
     $node->save();
 
