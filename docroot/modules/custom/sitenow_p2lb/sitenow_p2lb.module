@@ -18,39 +18,86 @@ use Drupal\layout_builder\Section;
  * Implements hook_form_alter().
  */
 function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, [
-    'node_page_form',
-    'node_page_edit_form',
-  ])) {
-    $entity = $form_state->getFormObject()->getEntity();
+  switch ($form_id) {
+    case 'node_page_form':
+    case 'node_page_edit_form':
+      $entity = $form_state->getFormObject()->getEntity();
 
-    if ($form_id === 'node_page_form') {
-      // Disable display of the Paragraph sections for new content.
-      $form['field_page_content_block']['#access'] = FALSE;
-    }
-    elseif ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set,
-      // and if the user hasn't yet interacted with the form
-      // (so that we don't duplicate our messages).
-      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
-        if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-          // If we have a revision id, the page has been converted.
-          // Disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
-          $form['field_page_content_block']['#access'] = FALSE;
-        }
-        else {
-          // If we didn't have a revision id, disable access to the body field
-          // and add a message directing to the converter.
-          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
-            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
-          ]));
-          $form['body']['#access'] = FALSE;
+      if ($form_id === 'node_page_form') {
+        // Disable display of the Paragraph sections for new content.
+        $form['field_page_content_block']['#access'] = FALSE;
+      }
+      elseif ($form_id === 'node_page_edit_form') {
+        // Check if field_v3_conversion_revision_id is set,
+        // and if the user hasn't yet interacted with the form
+        // (so that we don't duplicate our messages).
+        if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
+          if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
+            // If we have a revision id, the page has been converted.
+            // Disable field_page_content_block and set a warning message.
+            \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+            $form['field_page_content_block']['#access'] = FALSE;
+          }
+          else {
+            // If we didn't have a revision id, disable access to the body field
+            // and add a message directing to the converter.
+            \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+              '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+            ]));
+            $form['body']['#access'] = FALSE;
+          }
         }
       }
-    }
+
+      break;
+
+    case 'node_revision_delete_confirm':
+      $form_values = $form_state->getBuildInfo()['args'][0];
+
+      // Get node Id.
+      $nid = $form_values?->get('nid')?->getValue()[0]['value'];
+      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+      if(!$nid) {
+        break;
+      }
+
+      // Get the most recent revision.
+      $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
+      if(!$most_recent_revision_id) {
+        break;
+      }
+      $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
+      if(!$most_recent_revision) {
+        break;
+      }
+
+      // Get protected revision Id from that revision's values.
+      $protected_revision_id = $most_recent_revision?->get('field_v3_conversion_revision_id')?->getValue()[0]['value'] ?? null;
+      if(!$protected_revision_id) {
+        break;
+      }
+
+      // Get THIS revision Id.
+      $this_revision_id = $form_state->getBuildInfo()['args'][0]?->getLoadedRevisionId();
+      if(!$this_revision_id) {
+        break;
+      }
+
+      // check them against each other.
+      if ($this_revision_id === $protected_revision_id) {
+
+        // Disable delete button if they are the same, output error message.
+        $form['actions']['submit']['#disabled'] = TRUE;
+        $warning_text = t(
+          "This is the last revision before converting from v2 to v3. It is protected and can't be deleted."
+        );
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+
+      break;
   }
 }
+
 
 /**
  * Check for nodes which are using paragraphs.
@@ -1225,33 +1272,6 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
 
   }
   return $section_array;
-}
-
-function sitenow_p2lbnode_confirm_form_alter(&$form, FormStateInterface $form_state) {
-  // Check/prevent front page from being deleted on single delete.
-  // Only need to alter the delete operation form.
-  $form_object = $form_state->getFormObject();
-  if ($form_object instanceof EntityFormInterface) {
-    if ($form_object->getOperation() !== 'delete') {
-      return;
-    }
-    /** @var Drupal\Core\Entity\EntityInterface $node */
-    $node = $form_object->getEntity();
-
-    // Get and dissect front page path.
-    $front = \Drupal::config('system.site')->get('page.front');
-    $url = Url::fromUri("internal:" . $front);
-
-    if ($url->isRouted()) {
-      $params = $url->getRouteParameters();
-
-      if (isset($params['node']) && $params['node'] === $node->id()) {
-        // Disable the 'Delete' button.
-        $form['actions']['submit']['#disabled'] = TRUE;
-        _sitenow_prevent_front_delete_message($node->label());
-      }
-    }
-  }
 }
 
 /**
