@@ -17,8 +17,7 @@ use Drupal\layout_builder\Section;
 /**
  * Implements hook_form_alter().
  */
-function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id)
-{
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (in_array($form_id, [
     'node_page_form',
     'node_page_edit_form',
@@ -28,7 +27,8 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
     if ($form_id === 'node_page_form') {
       // Disable display of the Paragraph sections for new content.
       $form['field_page_content_block']['#access'] = FALSE;
-    } elseif ($form_id === 'node_page_edit_form') {
+    }
+    elseif ($form_id === 'node_page_edit_form') {
       // Check if field_v3_conversion_revision_id is set,
       // and if the user hasn't yet interacted with the form
       // (so that we don't duplicate our messages).
@@ -38,7 +38,8 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
           // Disable field_page_content_block and set a warning message.
           \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#access'] = FALSE;
-        } else {
+        }
+        else {
           // If we didn't have a revision id, disable access to the body field
           // and add a message directing to the converter.
           \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
