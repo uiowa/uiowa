@@ -54,27 +54,6 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_entity_view().
- */
-function sitenow_p2lb_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof \Drupal\sitenow_pages\Entity\Page) {
-    $issues = P2LbHelper::analyzeNode($entity);
-
-    if (!empty($issues)) {
-      $build['issues'] = [
-        '#type' => 'container',
-        '#weight' => -10,
-      ];
-
-      $build['issues']['list'] = [
-        '#theme' => 'item_list',
-        '#items' => $issues,
-      ];
-    }
-  }
-}
-
-/**
  * Check for nodes which are using paragraphs.
  */
 function sitenow_p2lb_paragraph_nodes() {
@@ -583,68 +562,103 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'card':
-      $type = 'uiowa_card';
       // Image isn't required. Check for one, or set to null.
       $image = $paragraph->field_card_image?->target_id ?: '';
 
       // Link isn't required. Check for one, or set to null.
-      $link = $paragraph->field_card_link?->value[0] ?: NULL;
+      $link = $paragraph->field_card_link?->value[0] ?? NULL;
 
       // Label (title) isn't required. Check for one, or set to null.
-      $label = $paragraph->field_card_title?->value ?: '';
+      $label = $paragraph->field_card_title?->value;
       $display_label = ($label) ? 1 : 0;
 
       // Subtitle field isn't required. Check for one, or set to null.
-      $subtitle = $paragraph->field_card_subtitle?->value ?: '';
+      $subtitle = $paragraph->field_card_subtitle?->value;
 
       // Card body isn't required. Check or set to array with empty value.
-      $excerpt = $paragraph->field_card_body?->getValue()[0] ?: NULL;
+      $excerpt = $paragraph->field_card_body?->value;
 
-      if ($excerpt) {
-        $excerpt['format'] = 'minimal';
-      }
+      $type = 'uiowa_card';
 
       // If the card has no title
       if (!$label) {
-        // Handle the case where there is only an image and optionally a link.
         if ($image && (!$subtitle && !$excerpt)) {
-          $fields = ['field_uiowa_image_image' => $image];
-          if ($link) {
-            $fields['field_uiowa_image_link'] = $link;
-          }
-          $block_definition = sitenow_p2lb_block_definition('uiowa_image', $fields);
+          // Image and optionally a link.
+          $type = 'uiowa_image';
         }
         else {
           // Converting to a card is not possible because the label is required
           // in V3. Convert to a text area instead.
-          $block_definition = sitenow_p2lb_block_definition('uiowa_text_area', [
-            // @todo Figure out how this works.
-          ]);
+          $type = 'uiowa_text_area';
         }
       }
-      else {
-        if (!P2LbHelper::formattedTextIsEquivalent($excerpt['value'], 'filtered_html', 'minimal_plus')) {
-          // Converting to a card would result in data loss. Convert to a text
-          // area instead.
-          $block_definition = sitenow_p2lb_block_definition('uiowa_text_area', [
-            // @todo Figure out how this works.
-          ]);
-        }
-        else {
-          // We're good to create a card.
-          $block_definition = sitenow_p2lb_block_definition('uiowa_card', [
-            'field_uiowa_card_author' => $subtitle,
-            'field_uiowa_card_excerpt' => $excerpt,
-            'field_uiowa_card_image' => $image,
-            'field_uiowa_card_link' => $link,
-            'field_uiowa_card_title' => [
-              // Size not set in paragraphs. Defaulting to h2. Can change later.
-              'size' => 'h2',
-              'text' => $label,
+      elseif (!P2LbHelper::formattedTextIsEquivalent($excerpt['value'], 'filtered_html', 'minimal_plus')) {
+        // Converting to a card would result in data loss. Convert to a text
+        // area instead.
+        $type = 'uiowa_text_area';
+      }
+
+      $fields = [];
+
+      switch ($type) {
+        case 'uiowa_card':
+          $fields['field_uiowa_card_title'] = _sitenow_p2lb_headline_config($label, $display_label);
+
+          // Add the image, if its set.
+          if ($image) {
+            $fields['field_uiowa_card_image'] = $image;
+          }
+
+          // Add the subtitle, if its set.
+          if ($subtitle) {
+            $fields['field_uiowa_card_author'] = $subtitle;
+          }
+
+          // Add the excerpt, if its set.
+          if ($excerpt) {
+            $fields['field_uiowa_card_excerpt'] = [
+              'value' => $excerpt,
+              'format' => 'minimal_plus',
+            ];
+          }
+
+          // Add the link, if its set.
+          if ($link) {
+            $fields['field_uiowa_card_link'] = $link;
+          }
+
+          break;
+
+        case 'uiowa_image':
+          $fields = ['field_uiowa_image_image' => $image];
+          if ($link) {
+            $fields['field_uiowa_image_link'] = $link;
+          }
+          break;
+
+        case 'uiowa_text_area':
+          $output = '';
+          if ($subtitle) {
+            $output .= $subtitle;
+          }
+          if ($excerpt) {
+            $output .= $excerpt;
+          }
+          // @todo How do we account for an image, if there is one?
+          $fields = [
+            'field_uiowa_text_area' => [
+              'value' => $output,
+              'format' => 'filtered_html',
             ],
-          ]);
-        }
+          ];
+          if ($label) {
+            $fields['field_uiowa_headline'] = _sitenow_p2lb_headline_config($label, $display_label);
+          }
+          break;
+
       }
+
+      $block_definition = sitenow_p2lb_block_definition($type, $fields);
 
       break;
 
