@@ -27,112 +27,7 @@
   display: none;
 }
 
-@media (min-width: 84.375em) {
-  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
-    width: 60%;
-  }
-}
-
-@media (min-width: 855px) {
-  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
-    width: 60%;
-  }
-}
-
-// admin styles for search toggle
-body.toolbar-vertical.toolbar-tray-open {
-  .search-button {
-    @include breakpoint(page-container) {
-      right: 294px;
-    }
-  }
-
-  .search-is-open .search-overlay .hds-search {
-    @include breakpoint(page-container) {
-      margin-right: 209px;
-    }
-  }
-}
-
-.js-off-canvas-dialog-open {
-  .search-button {
-    right: 310px;
-  }
-}
-
-.js-off-canvas-dialog-open.search-is-open .search-overlay .hds-search {
-  width: 63%;
-}
-
-// admin styles for off-canvas menu
-.o-canvas__drawer {
-  .o-canvas__wrapper & {
-    top: 179px;
-
-    @include breakpoint(md) {
-      top: 119px;
-
-      .toolbar-vertical & {
-        top: 119px;
-        height: calc(100% - 119px);
-      }
-
-      .iowa-bar--narrow & {
-        top: 179px;
-
-        .toolbar-horizontal & {
-          top: 179px !important;
-        }
-
-        .toolbar-vertical & {
-          top: 179px;
-        }
-      }
-    }
-  }
-
-  .o-canvas--open & {
-    top: 179px;
-    height: calc(100% - 179px);
-
-    @include breakpoint(md) {
-      top: 119px;
-      height: calc(100% - 119px);
-
-      .toolbar-tray-open & {
-        top: 159px;
-        height: calc(100% - 159px);
-      }
-
-      .toolbar-vertical.toolbar-tray-open & {
-        top: 119px;
-        height: calc(100% - 119px);
-      }
-
-      .iowa-bar--narrow & {
-        top: 179px;
-        height: calc(100% - 179px);
-
-        .toolbar-horizontal.toolbar-tray-open & {
-          top: 219px !important;
-          height: calc(100% - 219px);
-        }
-
-        .toolbar-vertical.toolbar-tray-open & {
-          top: 179px;
-          height: calc(100% - 179px);
-        }
-      }
-    }
-  }
-}
-
-.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
-  top: 239px;
-}
-
-
-// admin toolbar style for sticky header
+// admin toolbar style for sticky header.
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
   @include breakpoint(md) {
@@ -167,26 +62,68 @@ body.toolbar-vertical.toolbar-tray-open {
 
 .header-sticky.toolbar-vertical.toolbar-tray-open {
   @include breakpoint(md) {
-    header {
+    header.iowa-bar {
       padding-left: 15rem;
     }
   }
 }
 
-.header-sticky.toolbar-vertical {
-  header {
-    top: 40px;
-  }
-}
-
+.header-sticky.toolbar-vertical,
 .header-sticky.toolbar-horizontal {
-  header {
-    top: 40px;
+  header.iowa-bar {
+    @include breakpoint(md) {
+      top: 39px;
+    }
   }
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
-  header {
-    top: 80px;
+  header.iowa-bar {
+    @include breakpoint(md) {
+      top: 79px;
+    }
+  }
+}
+
+// Create more space in the header when the vertical toolbar is open.
+@media (min-width: 1200px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: auto;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name {
+    flex: 0 1 30%;
+  }
+
+  body.toolbar-vertical.toolbar-tray-open .search-overlay[aria-hidden=false] {
+    width: 90%;
+  }
+}
+
+// Adjust search wrapper when vertical toolbar is open.
+@media (min-width: 1350px) {
+  body.toolbar-vertical.toolbar-tray-open .search-wrapper {
+    margin-right: calc(60% - 50vw);
+  }
+}
+
+// Position top links if vertical toolbar is open.
+@media (min-width: 1550px) {
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top {
+    right: calc(41% - 40vw);
+  }
+}
+
+// Hide top links for edge case with vertical toolbar open.
+@media only screen and (min-width: 980px) and (max-width: 1200px) {
+  body.toolbar-vertical.toolbar-tray-open  .iowa-bar--full.toggle .site-name+.menu--top .menu {
+    display: none;
+  }
+}
+
+// Position mobile menu to make room for vertical toolbar.
+@media only screen and (min-width: 0) and (max-width: 980px) {
+  body.toolbar-vertical.toolbar-tray-open .o-canvas--open .o-canvas__drawer {
+    width: calc(100% - 15rem);
   }
 }
