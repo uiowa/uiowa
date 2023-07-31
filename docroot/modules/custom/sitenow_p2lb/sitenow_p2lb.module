@@ -17,84 +17,96 @@ use Drupal\layout_builder\Section;
 /**
  * Implements hook_form_alter().
  */
-function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'node_page_form':
-    case 'node_page_edit_form':
-      $entity = $form_state->getFormObject()->getEntity();
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id)
+{
+  if (in_array($form_id, [
+    'node_page_form',
+    'node_page_edit_form',
+  ])) {
+    $entity = $form_state->getFormObject()->getEntity();
 
-      if ($form_id === 'node_page_form') {
-        // Disable display of the Paragraph sections for new content.
-        $form['field_page_content_block']['#access'] = FALSE;
-      }
-      elseif ($form_id === 'node_page_edit_form') {
-        // Check if field_v3_conversion_revision_id is set,
-        // and if the user hasn't yet interacted with the form
-        // (so that we don't duplicate our messages).
-        if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
-          if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-            // If we have a revision id, the page has been converted.
-            // Disable field_page_content_block and set a warning message.
-            \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
-            $form['field_page_content_block']['#access'] = FALSE;
-          }
-          else {
-            // If we didn't have a revision id, disable access to the body field
-            // and add a message directing to the converter.
-            \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
-              '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
-            ]));
-            $form['body']['#access'] = FALSE;
-          }
+    if ($form_id === 'node_page_form') {
+      // Disable display of the Paragraph sections for new content.
+      $form['field_page_content_block']['#access'] = FALSE;
+    } elseif ($form_id === 'node_page_edit_form') {
+      // Check if field_v3_conversion_revision_id is set,
+      // and if the user hasn't yet interacted with the form
+      // (so that we don't duplicate our messages).
+      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
+        if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
+          // If we have a revision id, the page has been converted.
+          // Disable field_page_content_block and set a warning message.
+          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+          $form['field_page_content_block']['#access'] = FALSE;
+        } else {
+          // If we didn't have a revision id, disable access to the body field
+          // and add a message directing to the converter.
+          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+          ]));
+          $form['body']['#access'] = FALSE;
         }
       }
+    }
+  }
+}
 
-      break;
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form_values = $form_state->getBuildInfo()['args'][0];
 
-    case 'node_revision_delete_confirm':
-      $form_values = $form_state->getBuildInfo()['args'][0];
+  // Get node id.
+  $nid = $form_values?->get('nid')?->getValue()[0]['value'] ?? null;
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
-      // Get node Id.
-      $nid = $form_values?->get('nid')?->getValue()[0]['value'];
-      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-      if(!$nid) {
-        break;
-      }
+  // Guard against not finding a node id.
+  if(!$nid) {
+    return;
+  }
 
-      // Get the most recent revision.
-      $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
-      if(!$most_recent_revision_id) {
-        break;
-      }
-      $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
-      if(!$most_recent_revision) {
-        break;
-      }
+  // Get the most recent revision id.
+  $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
 
-      // Get protected revision Id from that revision's values.
-      $protected_revision_id = $most_recent_revision->field_v3_conversion_revision_id?->value;
-      if(!$protected_revision_id) {
-        break;
-      }
+  // Guard against not finding the most recent revision id.
+  if(!$most_recent_revision_id) {
+    return;
+  }
 
-      // Get THIS revision Id.
-      $this_revision_id = $form_state->getBuildInfo()['args'][0]?->getLoadedRevisionId();
-      if(!$this_revision_id) {
-        break;
-      }
+  // Get the most recent revision id.
+  $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
 
-      // check them against each other.
-      if ($this_revision_id === $protected_revision_id) {
+  // Guard against not finding the most recent revision.
+  if(!$most_recent_revision) {
+    return;
+  }
 
-        // Disable delete button if they are the same, output error message.
-        $form['actions']['submit']['#disabled'] = TRUE;
-        $warning_text = t(
-          "This is the last revision before converting from v2 to v3. It is protected and can't be deleted."
-        );
-        \Drupal::messenger()->addWarning($warning_text);
-      }
+  // Get protected revision id from that revision's values.
+  $protected_revision_id = $most_recent_revision->field_v3_conversion_revision_id?->value;
 
-      break;
+  // Guard against not finding the protected revision id.
+  if(!$protected_revision_id) {
+    return;
+  }
+
+  // Get this revision's id.
+  $this_revision_id = $form_state->getBuildInfo()['args'][0]?->getLoadedRevisionId();
+
+  // Guard against not finding this revision's id.
+  if(!$this_revision_id) {
+    return;
+  }
+
+  // Check them against each other.
+  if ($this_revision_id === $protected_revision_id) {
+
+    // Disable delete button if they are the same, output error message.
+    $form['actions']['submit']['#disabled'] = TRUE;
+    $warning_text = t(
+      "This is the last revision before converting from v2 to v3. It is protected and can't be deleted."
+    );
+    \Drupal::messenger()->addWarning($warning_text);
   }
 }
 
