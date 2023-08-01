@@ -572,7 +572,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Number of results that should be displayed.
       $results = $paragraph->field_uip_items->value;
       // Tags to be used in the filter.
-      $filter_tags = $paragraph->field_reference->getValue();
+      $filter_tags = $paragraph->field_reference?->getValue();
 
       $config = [
         'id' => 'views_block:article_list_block-list_article',
