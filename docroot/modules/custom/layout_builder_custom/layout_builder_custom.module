@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block;
+use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
@@ -776,6 +777,33 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         );
         break;
 
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_entity_view_display_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // This submission handler needs to run before the existing one.
+  array_unshift($form['actions']['submit']['#submit'], 'layout_builder_custom_form_entity_view_display_edit_form_submit');
+}
+
+/**
+ * Custom submit handler for entity view display edit form.
+ */
+function layout_builder_custom_form_entity_view_display_edit_form_submit(array &$form, FormStateInterface $form_state) {
+  if (!is_null($entity_view_display = $form_state->getFormObject()?->getEntity()) && $entity_view_display instanceof LayoutBuilderEntityViewDisplay) {
+    $set_enabled = (bool) $form_state->getValue(['layout', 'enabled'], FALSE);
+    if ($set_enabled) {
+      $content = $entity_view_display->get('content');
+      if (!empty($content)) {
+        // Collect data for 'regular' fields.
+        foreach ($entity_view_display->get('content') as $field_name => $field) {
+          $entity_view_display->removeComponent($field_name);
+        }
+        $entity_view_display->save();
+      }
     }
   }
 }
