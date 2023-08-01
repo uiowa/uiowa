@@ -9,6 +9,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
@@ -566,7 +567,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $image = $paragraph->field_card_image?->target_id ?: '';
 
       // Link isn't required. Check for one, or set to null.
-      $link = $paragraph->field_card_link?->value[0] ?? NULL;
+      $link = $paragraph->field_card_link?->first()?->getValue();
 
       // Label (title) isn't required. Check for one, or set to null.
       $label = $paragraph->field_card_title?->value;
@@ -578,6 +579,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Card body isn't required. Check or set to array with empty value.
       $excerpt = $paragraph->field_card_body?->value;
 
+      // By default, we're assuming this will become a V3 card.
       $type = 'uiowa_card';
 
       // If the card has no title
@@ -600,25 +602,28 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       $fields = [];
 
+      // Set fields based on the type of block we are creating.
       switch ($type) {
         case 'uiowa_card':
+          // The card title doesn't use the headline field type, so we can't use
+          // the helper function here.
           $fields['field_uiowa_card_title'] = [
-            // Size not set in paragraphs. Defaulting to h2. Can change later.
-            'size' => 'h2',
             'text' => $label,
+            // Size not set in paragraphs. Defaulting to h2.
+            'size' => 'h2',
           ];
 
-          // Add the image, if its set.
+          // Add the image, if set.
           if ($image) {
             $fields['field_uiowa_card_image'] = $image;
           }
 
-          // Add the subtitle, if its set.
+          // Add the subtitle, if set.
           if ($subtitle) {
             $fields['field_uiowa_card_author'] = $subtitle;
           }
 
-          // Add the excerpt, if its set.
+          // Add the excerpt, if set, and set the format to minimal_plus.
           if ($excerpt) {
             $fields['field_uiowa_card_excerpt'] = [
               'value' => $excerpt,
@@ -626,22 +631,27 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
             ];
           }
 
-          // Add the link, if its set.
+          // Add the link, if set.
           if ($link) {
             $fields['field_uiowa_card_link'] = $link;
           }
-
           break;
 
         case 'uiowa_image':
           $fields = ['field_uiowa_image_image' => $image];
+
+          // Add the link, if set.
           if ($link) {
             $fields['field_uiowa_image_link'] = $link;
           }
           break;
 
         case 'uiowa_text_area':
+          // Compile a string with the values of the fields that are present
+          // and set that to the text field of the V3 text area.
           $output = '';
+
+          // If an image is set, convert it to its <drupal-media> equivalent.
           if ($image) {
             /** @var \Drupal\media\MediaInterface[] $images */
             $images = $paragraph->field_card_image->referencedEntities();
@@ -651,25 +661,41 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
               }
             }
           }
+
+          // Add the subtitle, if set.
           if ($subtitle) {
             $output .= $subtitle;
           }
+
+          // Add the excerpt, if set.
           if ($excerpt) {
             $output .= $excerpt;
           }
+
+          // Convert the link to an HTML representation.
+          if (isset($link['uri']) && isset($link['title'])) {
+            $url = Url::fromUri($link['uri']);
+            $output .= Link::fromTextAndUrl($link['title'], $url)?->toString();
+          }
+
+          // Set the string as the field value and set the format to
+          // filtered_html.
           $fields = [
             'field_uiowa_text_area' => [
               'value' => $output,
               'format' => 'filtered_html',
             ],
           ];
+
+          // If there is a title, set it to the headline field.
           if ($label) {
-            $fields['field_uiowa_headline'] = _sitenow_p2lb_headline_config($label, $display_label);
+            $fields['field_uiowa_headline'] = _sitenow_p2lb_headline_config($label, !$display_label);
           }
           break;
 
       }
 
+      // Create the block definition based on what has been put together above.
       $block_definition = sitenow_p2lb_block_definition($type, $fields);
 
       break;
