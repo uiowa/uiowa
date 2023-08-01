@@ -693,7 +693,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'carousel':
-      $type = 'uiowa_image_gallery';
+      $type = 'uiowa_slider';
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -710,15 +710,56 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         ->getStorage('paragraph');
       $carousel_images = $para_storage->loadMultiple($carousel_image_ids);
 
-      $fids = [];
-
       /** @var \Drupal\paragraphs\Entity\Paragraph $carousel_image */
       foreach ($carousel_images as $carousel_image) {
-        $fids[] = $carousel_image->get('field_carousel_image_image')->getString();
+        $caption = $carousel_image->get('field_carousel_image_caption');
+
+        if (!$caption->isEmpty()) {
+          $caption = $caption->getValue()[0];
+
+          // Grab the first complete text piece.
+          if (preg_match('|\A<(.*?\d?)>(.*?)<\/.*?\d?>|', $caption['value'], $matches)) {
+            // If it was an <h#> tag, grab it to set the proper level.
+            if (substr($matches[1], 0, 1) === 'h') {
+              $block->set('field_collection_heading_size', $matches[1])
+                ->save();
+            }
+            // Grab the new headline, and pull it out of the content.
+            $headline = $matches[2];
+            $caption['value'] = str_replace(
+              $matches[0],
+              '',
+              $caption['value']
+            );
+            // Only continue if we were able to create a headline.
+            $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
+            $slide = $para_storage->create([
+              'type' => 'uiowa_slide',
+              'langcode' => 'en',
+              'status' => 1,
+              'parent_type' => 'block_content',
+              'parent_field_name' => 'field_uiowa_slider_slides',
+              'default_langcode' => 1,
+              'field_uiowa_slide_content' => $caption,
+              'field_collection_headline' => $headline,
+              'field_uiowa_slide_image' => $image_fid,
+            ]);
+            if ($slide->save()) {
+              $children[] = $slide;
+            };
+          }
+        }
       }
 
-      $block_definition = sitenow_p2lb_block_definition('uiowa_image_gallery', [
-        'field_uiowa_gallery_image' => $fids,
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => 1,
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'metatag' => [],
+        'field_collection_heading_size' => 'h2',
+        'field_uiowa_slider_slides' => $children,
         // Build a headline out of the title
         // and display title options.
         'field_uiowa_headline' => [
@@ -727,7 +768,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'hide_headline' => $display_title,
           'headline_style' => 'default',
         ],
-      ]);
+      ];
 
       break;
 
