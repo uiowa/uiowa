@@ -23,8 +23,10 @@ class P2LbHelper {
    *   The second format.
    *
    * @return bool
+   *   If the tests match.
    */
   public static function formattedTextIsSame(string $text, string $format_one, string $format_two): bool {
     return check_markup($text, $format_one) == check_markup($text, $format_two);
   }
+
 }
