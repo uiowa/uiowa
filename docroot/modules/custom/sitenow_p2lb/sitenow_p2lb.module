@@ -880,7 +880,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $sort = array_merge($sort, $last_name);
       }
       // Tags to be used in the filter.
-      $filter_tags = $paragraph->field_reference->getValue();
+      $filter_tags = $paragraph->field_reference?->getValue();
 
       // Build out the new view block configuration.
       $config = [
