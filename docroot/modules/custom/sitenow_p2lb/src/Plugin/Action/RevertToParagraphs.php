@@ -33,6 +33,7 @@ class RevertToParagraphs extends ActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
+    $foo = $entity;
   }
 
 }
