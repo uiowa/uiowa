@@ -75,7 +75,7 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateI
     return;
   }
 
-  // Get the most recent revision id.
+  // Get the most recent revision.
   $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
 
   // Guard against not finding the most recent revision.
