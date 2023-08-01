@@ -55,15 +55,15 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_values = $form_state->getBuildInfo()['args'][0];
 
   // Get node id.
-  $nid = $form_values?->get('nid')?->getValue()[0]['value'] ?? null;
+  $nid = $form_values?->get('nid')?->getValue()[0]['value'] ?? NULL;
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
   // Guard against not finding a node id.
-  if(!$nid) {
+  if (!$nid) {
     return;
   }
 
@@ -71,7 +71,7 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Co
   $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
 
   // Guard against not finding the most recent revision id.
-  if(!$most_recent_revision_id) {
+  if (!$most_recent_revision_id) {
     return;
   }
 
@@ -79,7 +79,7 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Co
   $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
 
   // Guard against not finding the most recent revision.
-  if(!$most_recent_revision) {
+  if (!$most_recent_revision) {
     return;
   }
 
@@ -87,7 +87,7 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Co
   $protected_revision_id = $most_recent_revision->field_v3_conversion_revision_id?->value;
 
   // Guard against not finding the protected revision id.
-  if(!$protected_revision_id) {
+  if (!$protected_revision_id) {
     return;
   }
 
@@ -95,7 +95,7 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Co
   $this_revision_id = $form_state->getBuildInfo()['args'][0]?->getLoadedRevisionId();
 
   // Guard against not finding this revision's id.
-  if(!$this_revision_id) {
+  if (!$this_revision_id) {
     return;
   }
 
@@ -110,7 +110,6 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, \Drupal\Co
     \Drupal::messenger()->addWarning($warning_text);
   }
 }
-
 
 /**
  * Check for nodes which are using paragraphs.
