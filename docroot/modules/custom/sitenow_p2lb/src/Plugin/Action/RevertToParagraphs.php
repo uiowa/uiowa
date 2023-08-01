@@ -5,8 +5,6 @@ namespace Drupal\sitenow_p2lb\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Action to revert page nodes back to Paragraphs.
@@ -62,20 +60,3 @@ class RevertToParagraphs extends ActionBase {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

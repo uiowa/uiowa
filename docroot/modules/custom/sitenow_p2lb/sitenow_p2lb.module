@@ -1338,7 +1338,7 @@ function sitenow_p2lb_get_protected_revision_id($nid) {
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
   if (!$nid) {
-    return null;
+    return NULL;
   }
 
   $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
@@ -1348,7 +1348,7 @@ function sitenow_p2lb_get_protected_revision_id($nid) {
 
   // Guard against not finding the most recent revision.
   if (!$most_recent_revision) {
-    return null;
+    return NULL;
   }
 
   // Get protected revision id from that revision's values.
@@ -1356,7 +1356,7 @@ function sitenow_p2lb_get_protected_revision_id($nid) {
 
   // Guard against not finding the protected revision id.
   if (!$protected_revision_id) {
-    return null;
+    return NULL;
   }
 
   return $protected_revision_id;
@@ -1365,7 +1365,7 @@ function sitenow_p2lb_get_protected_revision_id($nid) {
 /**
  * @param $protected_revision_id
  * @return \Drupal\Core\Entity\EntityInterface|null
- *     The Entity array for the protected revision or null if not found.
+ *   The Entity array for the protected revision or null if not found.
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
@@ -1377,7 +1377,7 @@ function sitenow_p2lb_get_protected_revision($protected_revision_id) {
 
   // Guard against not finding the most recent revision.
   if (!$protected_revision) {
-    return null;
+    return NULL;
   }
 
   return $protected_revision;
