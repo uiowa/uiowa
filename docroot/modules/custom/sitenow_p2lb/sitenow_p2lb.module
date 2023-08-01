@@ -1327,3 +1327,58 @@ function _sitenow_p2lb_get_page_lb_sections_config() {
 
   return $config['third_party_settings']['layout_builder']['sections'];
 }
+
+/**
+ * @param $nid
+ * @return string|null The protected revision id or null if none found.
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision_id($nid) {
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!$nid) {
+    return null;
+  }
+
+  $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
+
+  // Get the most recent revision.
+  $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
+
+  // Guard against not finding the most recent revision.
+  if (!$most_recent_revision) {
+    return null;
+  }
+
+  // Get protected revision id from that revision's values.
+  $protected_revision_id = $most_recent_revision->field_v3_conversion_revision_id?->value;
+
+  // Guard against not finding the protected revision id.
+  if (!$protected_revision_id) {
+    return null;
+  }
+
+  return $protected_revision_id;
+}
+
+/**
+ * @param $protected_revision_id
+ * @return \Drupal\Core\Entity\EntityInterface|null
+ *     The Entity array for the protected revision or null if not found.
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision($protected_revision_id) {
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  // Get the most recent revision.
+  $protected_revision = $node_storage?->loadRevision($protected_revision_id);
+
+  // Guard against not finding the most recent revision.
+  if (!$protected_revision) {
+    return null;
+  }
+
+  return $protected_revision;
+}
