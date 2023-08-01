@@ -1297,16 +1297,18 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       return [
         'block_background_style_light',
         'card_media_position_right',
+        'card_headline_style_serif',
         'media_format_widescreen',
-        'content_alignment_left',
-        'card_image_medium',
+        'media_size_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'uiowa_quote':
       return [
         'quote_left',
+        'quote_above',
       ];
 
     case 'uiowa_card':
@@ -1316,7 +1318,6 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
         'card_media_position_stacked',
         'content_alignment_left',
         'media_format_widescreen',
-        'block_card_style_border',
       ];
 
     case 'uiowa_slider':
@@ -1326,11 +1327,14 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       return [
         'block_background_style_light',
         'card_media_position_left',
+        'card_headline_style_serif',
         'media_format_circle',
+        'media_size_small',
         'content_alignment_left',
         'card_image_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'featured_content':
@@ -1342,12 +1346,14 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
     case 'views_block:people_list_block-list_card':
       return [
         'block_background_style_light',
-        'card_media_position_right',
+        'card_media_position_left',
+        'card_headline_style_serif',
         'media_format_circle',
+        'media_size_small',
         'content_alignment_left',
-        'card_image_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'uiowa_text_area':
