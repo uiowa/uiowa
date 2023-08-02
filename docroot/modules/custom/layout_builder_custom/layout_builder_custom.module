@@ -1454,11 +1454,11 @@ function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form
 
   // @todo Figure out a better way of doing this.
   if (isset($triggering_element['#field_parents'])) {
-    $delta = $triggering_element["#field_parents"][3];
+    $delta = $triggering_element['#field_parents'][3];
     // Same as $triggering_element['#array_parents'] + ['#value'].
-    $form["settings"]["block_form"]["field_uiowa_collection_items"]["widget"][$delta]["subform"]["field_unique_id"]["widget"][0]["value"]["#value"] = $unique_id;
+    $form['settings']['block_form']['field_uiowa_collection_items']['widget'][$delta]['subform']['field_unique_id']['widget'][0]['value']['#value'] = $unique_id;
     // Same as $triggering_element['#field_parents'].
-    return $form["settings"]["block_form"]["field_uiowa_collection_items"]["widget"][$delta]["subform"];
+    return $form['settings']['block_form']['field_uiowa_collection_items']['widget'][$delta]['subform'];
   }
   else {
     $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
