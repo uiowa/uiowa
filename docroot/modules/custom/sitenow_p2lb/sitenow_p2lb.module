@@ -165,7 +165,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     // Set value of field_v3_conversion_revision_id to current revision ID.
     $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
-    sitenow_p2lb_set_new_revision($node, 'Converted page to v3.');
+    sitenow_p2lb_set_new_revision($node, 'Converted page to v3.', FALSE);
 
     // Remove the attached paragraphs from the node.
     if ($remove) {
@@ -1446,14 +1446,16 @@ function sitenow_p2lb_get_protected_revision($protected_revision_id) {
  * @return void
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function sitenow_p2lb_set_new_revision(ContentEntityInterface $node, string $message, bool $published = FALSE) {
+function sitenow_p2lb_set_new_revision(ContentEntityInterface $node, string $message, bool $published = NULL) {
 
   // Save as a new draft.
   $node->setNewRevision();
   $node->revision_log = $message;
-  $node->moderation_state->value = $published ? 'draft' : 'published';
+  if ($published !== NULL) {
+    $node->moderation_state->value = $published ? 'published' : 'draft';
+  }
 
-// Set the user id for the revision.
+  // Set the user id for the revision.
   $user_id = \Drupal::currentUser()->id();
   $node->setRevisionUserId($user_id);
   $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());

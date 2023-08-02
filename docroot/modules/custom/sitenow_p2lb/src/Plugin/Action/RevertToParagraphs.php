@@ -59,6 +59,15 @@ class RevertToParagraphs extends ActionBase {
     }
 
     // https://git.drupalcode.org/project/drupal/-/blob/11.x/core/modules/node/src/Form/NodeRevisionRevertForm.php#L124-147
+    sitenow_p2lb_set_new_revision(
+      $protected_revision,
+      t(
+        'This revision is a copy of the V2 version of this page from %date.',
+        ['%date' => $original_revision_timestamp]
+      ),
+      TRUE
+    );
+
     $protected_revision->revision_log = $this->t(
       'This revision is a copy of the V2 version of this page from %date.',
       ['%date' => $original_revision_timestamp]
