@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Action to revert page nodes back to Paragraphs.
@@ -33,30 +34,35 @@ class RevertToParagraphs extends ActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
-    $nid = $entity->get('nid')?->getValue()[0]['value'] ?? NULL;
+    $nid = $entity->id() ?? NULL;
 
     // Load the protected revision from the protected version id in that revision's values.
     $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
+    // Guard against not finding the protected revision id.
+    if (!$protected_revision_id) {
+      return FALSE;
+    }
+
     $protected_revision = sitenow_p2lb_get_protected_revision($protected_revision_id);
 
-    $original_revision_timestamp = $protected_revision->getRevisionCreationTime();
+    // Guard against not finding the protected revision.
+    if (!$protected_revision) {
+      return FALSE;
+    }
 
-    $protected_revision->setNewRevision();
-    $protected_revision->isDefaultRevision(TRUE);
+    $original_revision_timestamp = date('d/m/Y', $protected_revision->getRevisionCreationTime());
+
+    // Guard against not finding the original revision timestamp.
+    if (!$original_revision_timestamp) {
+      return FALSE;
+    }
 
     // https://git.drupalcode.org/project/drupal/-/blob/11.x/core/modules/node/src/Form/NodeRevisionRevertForm.php#L124-147
-    $dateFormatter = \Drupal::service('date.formatter');
     $protected_revision->revision_log = $this->t(
       'This revision is a copy of the V2 version of this page from %date.',
-      ['%date' => $dateFormatter->format($original_revision_timestamp)]
+      ['%date' => $original_revision_timestamp]
     );
-
-    $time = \Drupal::service('datetime.time');
-    $request_time = $time->getRequestTime();
-    $protected_revision->setRevisionUserId(\Drupal::currentUser()->id());
-    $protected_revision->setRevisionCreationTime($request_time);
-    $protected_revision->setChangedTime($request_time);
-    $protected_revision->save();
   }
 
 }
