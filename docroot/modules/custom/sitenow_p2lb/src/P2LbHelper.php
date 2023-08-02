@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_p2lb;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
 
@@ -13,8 +14,14 @@ class P2LbHelper {
   }
 
   public static function analyzeNode(Page $page) {
-    // @todo Cache issues so they don't get generated every time this is run.
+    // Check the cache first.
+    $cid = "sitenow_p2lb_node_status:{$page->id()}";
+    if ($item = \Drupal::cache()->get($cid)) {
+      return $item->data;
+    }
     $issues = [];
+    // Add the node cache tags for invalidation.
+    $cache_tags = $page->getCacheTags();
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
     $section_field = $page->field_page_content_block;
     $sections = $section_field?->referencedEntities();
@@ -44,13 +51,32 @@ class P2LbHelper {
               if ($excerpt && !static::formattedTextIsEquivalent($excerpt, 'filtered_html', 'minimal')) {
                 $issues[] = t('Contains a card with a body that uses markup that is not allowed in V3.');
               }
+              // Add the paragraph cache tags for invalidation.
+              $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
               break;
             case 'carousel':
-              // @todo Add cases for carousel image ID and caption being set.
+              /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $carousel_items_field */
+              $carousel_items_field = $component->field_carousel_item;
+              $carousel_items = $carousel_items_field->referencedEntities();
+              foreach ($carousel_items as $carousel_item) {
+                // Cases for carousel image ID and caption being set.
+                $caption = $carousel_item->field_carousel_image_caption?->value;
+                if ($caption) {
+                  $issues[] = t('Contains a carousel item with a caption. The caption will not be converted.');
+                }
+                $html_id = $carousel_item->field_uip_id?->value;
+                if ($html_id) {
+                  $issues[] = t('Contains a carousel item with an ID. The ID will not be converted.');
+                }
+                // Add the paragraph cache tags for invalidation.
+                $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
+              }
           }
         }
       }
     }
+
+    \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $page->getCacheTags());
 
     return $issues;
   }
