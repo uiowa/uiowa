@@ -6,13 +6,39 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
 
+/**
+ * A helper class for P2LB.
+ */
 class P2LbHelper {
 
   use StringTranslationTrait;
-  public static function formattedTextIsEquivalent($text, $format_one, $format_two) {
-    return check_markup($text, $format_one) === check_markup($text, $format_two);
+
+  /**
+   * Compare a string of text using two different formats.
+   *
+   * @param string $text
+   *   The text being tested.
+   * @param string $format_one
+   *   The first format.
+   * @param string $format_two
+   *   The second format.
+   *
+   * @return bool
+   *   If the tests match.
+   */
+  public static function formattedTextIsSame(string $text, string $format_one, string $format_two): bool {
+    return check_markup($text, $format_one) == check_markup($text, $format_two);
   }
 
+  /**
+   * Analyze a node to identify conversion issues.
+   *
+   * @param \Drupal\sitenow_pages\Entity\Page $page
+   *   The page node being analyzed.
+   *
+   * @return array
+   *   The list of issues.
+   */
   public static function analyzeNode(Page $page) {
     // Check the cache first.
     $cid = "sitenow_p2lb_node_status:{$page->id()}";
@@ -48,12 +74,13 @@ class P2LbHelper {
               }
               // Card body isn't required. Check or set to array with empty value.
               $excerpt = $component->field_card_body?->value;
-              if ($excerpt && !static::formattedTextIsEquivalent($excerpt, 'filtered_html', 'minimal')) {
+              if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
                 $issues[] = t('Contains a card with a body that uses markup that is not allowed in V3.');
               }
               // Add the paragraph cache tags for invalidation.
               $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
               break;
+
             case 'carousel':
               /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $carousel_items_field */
               $carousel_items_field = $component->field_carousel_item;
@@ -71,6 +98,8 @@ class P2LbHelper {
                 // Add the paragraph cache tags for invalidation.
                 $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
               }
+              break;
+
           }
         }
       }
@@ -80,4 +109,5 @@ class P2LbHelper {
 
     return $issues;
   }
+
 }

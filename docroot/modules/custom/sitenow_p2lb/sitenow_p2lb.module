@@ -57,7 +57,7 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_p2lb_form_node_page_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $node = $form_state->getFormObject()?->getEntity();
   if ($node instanceof Page) {
     // Only do the processing and add a message if the form is first being
@@ -172,7 +172,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     $layout->appendSection(Section::fromArray($default_sections[$i]));
   }
 
-  // Process all of the individual sections and update the layout.
+  // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
     // It's possible for the section to fail to load,
     // such as if the paragraph no longer exists.
@@ -209,8 +209,9 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     return TRUE;
   }
+
   // Should be good to go, but if there was anything weird,
-  // return False to indicate no processing was done.
+  // return FALSE to indicate no processing was done.
   return FALSE;
 }
 
