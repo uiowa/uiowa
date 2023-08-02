@@ -54,7 +54,7 @@ class RevertToParagraphs extends ActionBase {
     }
 
     // Get a string representation of the original revision's timestamp.
-    $original_revision_timestamp = date('d/m/Y', $protected_revision->getRevisionCreationTime());
+    $original_revision_timestamp = date('m/d/Y - h:i A', $protected_revision->getRevisionCreationTime());
 
     // Guard against not finding the original revision timestamp.
     if (!$original_revision_timestamp) {
