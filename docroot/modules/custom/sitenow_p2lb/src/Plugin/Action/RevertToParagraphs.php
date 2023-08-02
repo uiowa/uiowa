@@ -5,7 +5,6 @@ namespace Drupal\sitenow_p2lb\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Action to revert page nodes back to Paragraphs.
@@ -34,6 +33,8 @@ class RevertToParagraphs extends ActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
+
+    // Get the node id.
     $nid = $entity->id() ?? NULL;
 
     // Load the protected revision from the protected version id in that revision's values.
@@ -44,6 +45,7 @@ class RevertToParagraphs extends ActionBase {
       return FALSE;
     }
 
+    // Get the protected revision.
     $protected_revision = sitenow_p2lb_get_protected_revision($protected_revision_id);
 
     // Guard against not finding the protected revision.
@@ -51,6 +53,7 @@ class RevertToParagraphs extends ActionBase {
       return FALSE;
     }
 
+    // Get a string representation of the original revision's timestamp.
     $original_revision_timestamp = date('d/m/Y', $protected_revision->getRevisionCreationTime());
 
     // Guard against not finding the original revision timestamp.
@@ -58,7 +61,7 @@ class RevertToParagraphs extends ActionBase {
       return FALSE;
     }
 
-    // https://git.drupalcode.org/project/drupal/-/blob/11.x/core/modules/node/src/Form/NodeRevisionRevertForm.php#L124-147
+    // Set a new revision for the node.
     sitenow_p2lb_set_new_revision(
       $protected_revision,
       t(
@@ -66,11 +69,6 @@ class RevertToParagraphs extends ActionBase {
         ['%date' => $original_revision_timestamp]
       ),
       TRUE
-    );
-
-    $protected_revision->revision_log = $this->t(
-      'This revision is a copy of the V2 version of this page from %date.',
-      ['%date' => $original_revision_timestamp]
     );
   }
 
