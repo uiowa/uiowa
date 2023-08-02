@@ -13,6 +13,7 @@ class P2LbHelper {
   }
 
   public static function analyzeNode(Page $page) {
+    // @todo Cache issues so they don't get generated every time this is run.
     $issues = [];
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
     $section_field = $page->field_page_content_block;
@@ -33,7 +34,7 @@ class P2LbHelper {
         foreach ($components as $component_delta => $component) {
           switch ($component->getType()) {
             case 'card':
-              // @todo Check if card has a title.
+              // Check if card has a title.
               $label = $component->field_card_title?->value;
               if (!$label) {
                 $issues[] = t('Contains a card with no label. Label is required for V3.');
@@ -44,6 +45,8 @@ class P2LbHelper {
                 $issues[] = t('Contains a card with a body that uses markup that is not allowed in V3.');
               }
               break;
+            case 'carousel':
+              // @todo Add cases for carousel image ID and caption being set.
           }
         }
       }

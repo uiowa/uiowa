@@ -56,6 +56,19 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function sitenow_p2lb_form_node_page_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()?->getEntity();
+  if ($node instanceof \Drupal\sitenow_pages\Entity\Page) {
+    $issues = P2LbHelper::analyzeNode($node);
+    if (!empty($issues)) {
+      \Drupal::messenger()->addWarning(t('Some of the components on this cannot be fully converted to V3.'));
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_values = $form_state->getBuildInfo()['args'][0];
 
@@ -109,27 +122,6 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateI
       "This is the last revision before converting from v2 to v3. It is protected and can't be deleted."
     );
     \Drupal::messenger()->addWarning($warning_text);
-  }
-}
-
-/**
- * Implements hook_entity_view().
- */
-function sitenow_p2lb_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof \Drupal\sitenow_pages\Entity\Page) {
-    $issues = P2LbHelper::analyzeNode($entity);
-
-    if (!empty($issues)) {
-      $build['issues'] = [
-        '#type' => 'container',
-        '#weight' => -10,
-      ];
-
-      $build['issues']['list'] = [
-        '#theme' => 'item_list',
-        '#items' => $issues,
-      ];
-    }
   }
 }
 
