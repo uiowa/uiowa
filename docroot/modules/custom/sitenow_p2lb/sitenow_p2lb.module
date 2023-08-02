@@ -9,10 +9,12 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
+use Drupal\sitenow_p2lb\P2LbHelper;
 
 /**
  * Implements hook_form_alter().
@@ -135,6 +137,8 @@ function sitenow_p2lb_paragraph_nodes() {
  *   Node being processed.
  * @param bool $remove
  *   Indicator whether old paragraphs should be removed following processing.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
   // Get sections from the page.
@@ -153,7 +157,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     $layout->appendSection(Section::fromArray($default_sections[$i]));
   }
 
-  // Process all of the individual sections and update the layout.
+  // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
     $layout = sitenow_p2lb_process_section($section_id, $layout, $node);
   }
@@ -185,8 +189,9 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     return TRUE;
   }
+
   // Should be good to go, but if there was anything weird,
-  // return False to indicate no processing was done.
+  // return FALSE to indicate no processing was done.
   return FALSE;
 }
 
@@ -624,49 +629,140 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'card':
-      $type = 'uiowa_card';
       // Image isn't required. Check for one, or set to null.
-      $image = ($paragraph->get('field_card_image')->getValue()) ?
-        $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
+      $image = $paragraph->field_card_image?->target_id ?: '';
 
       // Link isn't required. Check for one, or set to null.
-      $link = ($paragraph->get('field_card_link')->getValue()) ?
-        $paragraph->get('field_card_link')->getValue()[0] : '';
+      $link = $paragraph->field_card_link?->first()?->getValue();
 
       // Label (title) isn't required. Check for one, or set to null.
-      $label = ($paragraph->get('field_card_title')->getValue()) ?
-        $paragraph->get('field_card_title')->getString() : '';
+      $label = $paragraph->field_card_title?->value;
       $display_label = ($label) ? 1 : 0;
 
       // Subtitle field isn't required. Check for one, or set to null.
-      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
-        $paragraph->get('field_card_subtitle')->getString() : '';
+      $subtitle = $paragraph->field_card_subtitle?->value;
 
-      // Card body isn't required. Check or or set to array with empty value.
-      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue()[0] : '';
+      // Card body isn't required. Check or set to array with empty value.
+      $excerpt = $paragraph->field_card_body?->value;
 
-      if ($excerpt) {
-        $excerpt['format'] = 'minimal';
+      // By default, we're assuming this will become a V3 card.
+      $type = 'uiowa_card';
+
+      // If the card has no title...
+      if (!$label) {
+        if ($image && (!$subtitle && !$excerpt)) {
+          // Image and optionally a link.
+          $type = 'uiowa_image';
+        }
+        else {
+          // Converting to a card is not possible because the label is required
+          // in V3. Convert to a text area instead.
+          $type = 'uiowa_text_area';
+        }
+      }
+      elseif (!P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+        // Converting to a card would result in data loss. Convert to a text
+        // area instead.
+        $type = 'uiowa_text_area';
       }
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => $paragraph->get('status')->getString(),
-        'info' => 'Card',
-        'reusable' => 0,
-        'default_langcode' => 1,
-        'field_uiowa_card_author' => $subtitle,
-        'field_uiowa_card_excerpt' => $excerpt,
-        'field_uiowa_card_image' => $image,
-        'field_uiowa_card_link' => $link,
-        'field_uiowa_card_title' => [
-          // Size not set in paragraphs. Defaulting to h2. Can change later.
-          'size' => 'h2',
-          'text' => $label,
-        ],
-      ];
+      $fields = [];
+
+      // Set fields based on the type of block we are creating.
+      switch ($type) {
+        case 'uiowa_card':
+          // The card title doesn't use the headline field type, so we can't use
+          // the helper function here.
+          $fields['field_uiowa_card_title'] = [
+            'text' => $label,
+            // Size not set in paragraphs. Defaulting to h2.
+            'size' => 'h2',
+          ];
+
+          // Add the image, if set.
+          if ($image) {
+            $fields['field_uiowa_card_image'] = $image;
+          }
+
+          // Add the subtitle, if set.
+          if ($subtitle) {
+            $fields['field_uiowa_card_author'] = $subtitle;
+          }
+
+          // Add the excerpt, if set, and set the format to minimal_plus.
+          if ($excerpt) {
+            $fields['field_uiowa_card_excerpt'] = [
+              'value' => $excerpt,
+              'format' => 'minimal_plus',
+            ];
+          }
+
+          // Add the link, if set.
+          if ($link) {
+            $fields['field_uiowa_card_link'] = $link;
+          }
+          break;
+
+        case 'uiowa_image':
+          $fields = ['field_uiowa_image_image' => $image];
+
+          // Add the link, if set.
+          if ($link) {
+            $fields['field_uiowa_image_link'] = $link;
+          }
+          break;
+
+        case 'uiowa_text_area':
+          // Compile a string with the values of the fields that are present
+          // and set that to the text field of the V3 text area.
+          $output = '';
+
+          // If an image is set, convert it to its <drupal-media> equivalent.
+          if ($image) {
+            /** @var \Drupal\media\MediaInterface[] $images */
+            $images = $paragraph->field_card_image->referencedEntities();
+            if (!empty($images)) {
+              foreach ($images as $image) {
+                $output .= '<drupal-media data-entity-type="media" data-entity-uuid="' . $image->uuid() . '" data-view-mode="large__widescreen"></drupal-media>';
+              }
+            }
+          }
+
+          // Add the subtitle, if set.
+          if ($subtitle) {
+            $output .= $subtitle;
+          }
+
+          // Add the excerpt, if set.
+          if ($excerpt) {
+            $output .= $excerpt;
+          }
+
+          // Convert the link to an HTML representation.
+          if (isset($link['uri']) && isset($link['title'])) {
+            $url = Url::fromUri($link['uri']);
+            $output .= Link::fromTextAndUrl($link['title'], $url)?->toString();
+          }
+
+          // Set the string as the field value and set the format to
+          // filtered_html.
+          $fields = [
+            'field_uiowa_text_area' => [
+              'value' => $output,
+              'format' => 'filtered_html',
+            ],
+          ];
+
+          // If there is a title, set it to the headline field.
+          if ($label) {
+            $fields['field_uiowa_headline'] = _sitenow_p2lb_headline_config($label, !$display_label);
+          }
+          break;
+
+      }
+
+      // Create the block definition based on what has been put together above.
+      $block_definition = sitenow_p2lb_block_definition($type, $fields);
 
       break;
 
