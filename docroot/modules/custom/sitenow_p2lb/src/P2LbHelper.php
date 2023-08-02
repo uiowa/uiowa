@@ -70,12 +70,12 @@ class P2LbHelper {
               // Check if card has a title.
               $label = $component->field_card_title?->value;
               if (!$label) {
-                $issues[] = t('Contains a card with no label. Label is required for V3.');
+                static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas.');
               }
               // Card body isn't required. Check or set to array with empty value.
               $excerpt = $component->field_card_body?->value;
               if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
-                $issues[] = t('Contains a card with a body that uses markup that is not allowed in V3.');
+                static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
               }
               // Add the paragraph cache tags for invalidation.
               $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
@@ -89,11 +89,11 @@ class P2LbHelper {
                 // Cases for carousel image ID and caption being set.
                 $caption = $carousel_item->field_carousel_image_caption?->value;
                 if ($caption) {
-                  $issues[] = t('Contains a carousel item with a caption. The caption will not be converted.');
+                  static::addIssue($issues, 'Contains carousel items with a caption. The caption will not be converted.');
                 }
                 $html_id = $carousel_item->field_uip_id?->value;
                 if ($html_id) {
-                  $issues[] = t('Contains a carousel item with an ID. The ID will not be converted.');
+                  static::addIssue($issues, 'Contains a carousel items with an ID. The ID will not be converted.');
                 }
                 // Add the paragraph cache tags for invalidation.
                 $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
@@ -108,6 +108,21 @@ class P2LbHelper {
     \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $page->getCacheTags());
 
     return $issues;
+  }
+
+  /**
+   * Add an issue to the issues array.
+   *
+   * @param array $issues
+   *   The issues array.
+   * @param string $issue
+   *   The issue being added.
+   */
+  protected static function addIssue(array &$issues, string $issue) {
+    if (!isset($issues[$issue])) {
+      $issues[$issue] = 0;
+    }
+    $issues[$issue]++;
   }
 
 }

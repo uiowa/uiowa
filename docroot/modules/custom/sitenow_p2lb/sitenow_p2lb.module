@@ -66,7 +66,9 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
     if (empty($form_state->getUserInput())) {
       $issues = P2LbHelper::analyzeNode($node);
       if (!empty($issues)) {
-        \Drupal::messenger()->addWarning(t('Some of the components on this cannot be fully converted to V3.'));
+        \Drupal::messenger()->addWarning(t('Components on this page contain issues that prevent them from being fully converted to V3. See details in the @link.', [
+          '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString()
+        ]));
       }
     }
   }
