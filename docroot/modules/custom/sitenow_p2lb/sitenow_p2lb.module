@@ -595,6 +595,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $pager = ($paragraph->field_uip_pager->value) ? 'full' : 'some';
       // Number of results that should be displayed.
       $results = $paragraph->field_uip_items->value;
+      // Tags to be used in the filter.
+      $filter_tags = $paragraph->field_reference?->getValue();
+
+      $exposed_filter_values = [];
+
+      if ($filter_tags) {
+        $exposed_filter_values['field_tags_target_id'] = $filter_tags;
+      }
 
       $config = [
         'id' => 'views_block:article_list_block-list_article',
@@ -608,10 +616,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'items_per_page' => $results,
         'use_more' => $more,
         'use_more_link_url' => $more_path,
-        'exposed_filter_values' => [
-          // @todo Set these dynamically.
-          'field_tags_target_id' => [],
-        ],
+        'exposed_filter_values' => $exposed_filter_values,
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
         'context_mapping' => [],
       ];
@@ -902,6 +907,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         unset($sort['field_person_last_name_value']);
         $sort = array_merge($sort, $last_name);
       }
+      // Tags to be used in the filter.
+      $filter_tags = $paragraph->field_reference?->getValue();
+
+      $exposed_filter_values = [];
+
+      if ($filter_tags) {
+        $exposed_filter_values['field_tags_target_id'] = $filter_tags;
+      }
 
       // Build out the new view block configuration.
       $config = [
@@ -917,10 +930,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'sort' => $sort,
-        'exposed_filter_values' => [
-          // @todo Set these dynamically.
-          'field_tags_target_id' => [],
-        ],
+        'exposed_filter_values' => $exposed_filter_values,
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
         'context_mapping' => [],
       ];
