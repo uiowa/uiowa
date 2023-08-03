@@ -15,39 +15,57 @@ use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\sitenow_p2lb\P2LbHelper;
+use Drupal\sitenow_pages\Entity\Page;
 
 /**
  * Implements hook_form_alter().
  */
 function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, [
-    'node_page_form',
-    'node_page_edit_form',
-  ])) {
-    $entity = $form_state->getFormObject()->getEntity();
+  if ($form_id === 'views_form_content_v3_converter_moderated_content') {
+    // Give both submit buttons their proper label.
+    $form['header']['node_bulk_form']['actions']['submit']['#value'] = t('Magic button');
+    $form['actions']['submit']['#value'] = t('Magic button');
+  }
+}
 
-    if ($form_id === 'node_page_form') {
-      // Disable display of the Paragraph sections for new content.
-      $form['field_page_content_block']['#access'] = FALSE;
-    }
-    elseif ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set,
-      // and if the user hasn't yet interacted with the form
-      // (so that we don't duplicate our messages).
-      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
-        if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-          // If we have a revision id, the page has been converted.
-          // Disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
-          $form['field_page_content_block']['#access'] = FALSE;
-        }
-        else {
-          // If we didn't have a revision id, disable access to the body field
-          // and add a message directing to the converter.
-          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
-            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Disable display of the Paragraph sections for new content.
+  $form['field_page_content_block']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()?->getEntity();
+  if ($node instanceof Page && empty($form_state->getUserInput())) {
+    // Check if field_v3_conversion_revision_id is set,
+    // and if the user hasn't yet interacted with the form
+    // (so that we don't duplicate our messages).
+    if ($node->hasField('field_v3_conversion_revision_id')) {
+      if (is_numeric($node->field_v3_conversion_revision_id->value)) {
+        // If we have a revision id, the page has been converted.
+        // Disable field_page_content_block and set a warning message.
+        \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+        $form['field_page_content_block']['#access'] = FALSE;
+      }
+      else {
+        // If we didn't have a revision id, disable access to the body field
+        // and add a message directing to the converter.
+        \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+          '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+        ]));
+        $form['body']['#access'] = FALSE;
+
+        // Get issues and add a message.
+        $issues = P2LbHelper::analyzeNode($node);
+        if (!empty($issues)) {
+          \Drupal::messenger()->addWarning(t('Components on this page contain issues that prevent them from being fully converted to V3. See details in the @link.', [
+            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString()
           ]));
-          $form['body']['#access'] = FALSE;
         }
       }
     }
@@ -159,7 +177,12 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
   // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
-    $layout = sitenow_p2lb_process_section($section_id, $layout, $node);
+    // It's possible for the section to fail to load,
+    // such as if the paragraph no longer exists.
+    // Only overwrite if we successfully process.
+    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout, $node)) {
+      $layout = $new_layout;
+    }
   }
 
   // Need to set with an array of sections, retrieved with getSections().
@@ -662,7 +685,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      elseif (!P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+      elseif ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
         // Converting to a card would result in data loss. Convert to a text
         // area instead.
         $type = 'uiowa_text_area';
