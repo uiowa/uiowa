@@ -18,6 +18,17 @@ use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
 
 /**
+ * Implements hook_form_alter().
+ */
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'views_form_content_v3_converter_moderated_content') {
+    // Give both submit buttons their proper label.
+    $form['header']['node_bulk_form']['actions']['submit']['#value'] = t('Magic button');
+    $form['actions']['submit']['#value'] = t('Magic button');
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
