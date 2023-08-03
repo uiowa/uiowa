@@ -634,7 +634,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      elseif (!P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+      elseif ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
         // Converting to a card would result in data loss. Convert to a text
         // area instead.
         $type = 'uiowa_text_area';
