@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -1052,6 +1053,16 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
     switch ($element['#paragraph_type']) {
 
       case 'uiowa_collection_item':
+        if (isset($element['subform']['field_unique_id'])) {
+          $element['subform']['#prefix'] = '<div id="unique-id-wrapper-child">';
+          $element['subform']['#suffix'] = '</div>';
+          $element['subform']['field_unique_id']['widget'][0]['value']['#ajax'] = [
+            'callback' => '_layout_builder_custom_unique_id',
+            'event' => 'change',
+            'wrapper' => 'unique-id-wrapper-child',
+            'disable-refocus' => TRUE,
+          ];
+        }
       case 'uiowa_slide':
         // If it exists, pop the headline and place it in the label.
         if (!empty($element['top']['summary']['fields_info']['#summary']['content'])) {
@@ -1439,11 +1450,19 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
  *   The form element.
  */
 function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
-  $unique_id = Html::cleanCssIdentifier($form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ]));
+  $triggering_element = $form_state->getTriggeringElement();
+  $unique_id = Html::cleanCssIdentifier($triggering_element['#value']);
 
-  $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
-  return $form['unique_id_wrapper'];
+  // Check if the trigger element is a nested field.
+  if (isset($triggering_element['#field_parents']) && isset($triggering_element['#array_parents'])) {
+    // Access the part of the form we want to return.
+    $parent = NestedArray::getValue($form, array_slice($triggering_element['#array_parents'], 0, -4));
+    $parent['field_unique_id']['widget'][0]['value']['#value'] = $unique_id;
+    return $parent;
+  }
+  else {
+    $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
+    return $form['unique_id_wrapper'];
+  }
+
 }
