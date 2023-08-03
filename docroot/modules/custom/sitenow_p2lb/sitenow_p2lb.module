@@ -1548,7 +1548,7 @@ function sitenow_p2lb_set_new_revision(NodeInterface $node_revision, string $mes
   // Add the message to the revision log.
   $node_revision->revision_log = $message;
 
-  // Inherit moderation state if it isn't explicitly set in the function arguments.
+  // Inherit published state if it isn't explicitly set in the function arguments.
   if ($published !== NULL) {
     if($published) {
       $node_revision->setPublished();
