@@ -14,6 +14,7 @@ use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
+use Drupal\node\NodeInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 
 /**
@@ -1526,7 +1527,7 @@ function sitenow_p2lb_get_protected_revision(string $protected_revision_id) {
 /**
  * Set a new revision for an entity.
  *
- * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ * @param \Drupal\node\NodeInterface $node_revision
  *   The entity to set a new revision on. This could be a node, or a revision itself.
  * @param string $message
  *   A message to be used as the revision log message when the new revision is created.
@@ -1537,29 +1538,29 @@ function sitenow_p2lb_get_protected_revision(string $protected_revision_id) {
  *   FALSE for draft.
  *   NULL to inherit the moderation state of $entity.
  *
- * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function sitenow_p2lb_set_new_revision(ContentEntityInterface $entity, string $message, bool $published = NULL) {
+function sitenow_p2lb_set_new_revision(NodeInterface $node_revision, string $message, bool $published = NULL) {
 
   // Create a new revision.
-  $entity->setNewRevision();
+  $node_revision->setNewRevision();
+  $node_revision->isDefaultRevision(TRUE);
 
   // Add the message to the revision log.
-  $entity->revision_log = $message;
+  $node_revision->revision_log = $message;
 
   // Inherit moderation state if it isn't explicitly set in the function arguments.
   if ($published !== NULL) {
-    $entity->moderation_state->value = $published ? 'published' : 'draft';
+    $node_revision->moderation_state->value = $published ? 'published' : 'draft';
   }
 
   // Set the user id for the revision.
   $user_id = \Drupal::currentUser()->id();
-  $entity->setRevisionUserId($user_id);
+  $node_revision->setRevisionUserId($user_id);
 
   // Set the relevant revision timestamps.
-  $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-  $entity->setChangedTime(\Drupal::time()->getRequestTime());
+  $node_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+  $node_revision->setChangedTime(\Drupal::time()->getRequestTime());
 
   // Save the revision for the node.
-  $entity->save();
+  $node_revision->save();
 }
