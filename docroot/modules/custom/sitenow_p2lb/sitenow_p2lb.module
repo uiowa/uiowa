@@ -1538,6 +1538,7 @@ function sitenow_p2lb_get_protected_revision(string $protected_revision_id) {
  *   FALSE for draft.
  *   NULL to inherit the moderation state of $entity.
  *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function sitenow_p2lb_set_new_revision(NodeInterface $node_revision, string $message, bool $published = NULL) {
 
