@@ -879,6 +879,15 @@ function sitenow_preprocess_node(&$variables) {
  * @throws \Drupal\Core\TypedData\Exception\MissingDataException
  */
 function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+
+  // Use Linkit for menu links.
+  $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
+  $form['link']['widget'][0]['#type'] = 'linkit';
+  $form['link']['widget'][0]['#autocomplete_route_name'] = 'linkit.autocomplete';
+  $form['link']['widget'][0]['#autocomplete_route_parameters'] = [
+    'linkit_profile_id' => 'default',
+  ];
+
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof MenuLinkContentForm) {
     $menu_link = $form_object->getEntity();
