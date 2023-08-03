@@ -1550,7 +1550,12 @@ function sitenow_p2lb_set_new_revision(NodeInterface $node_revision, string $mes
 
   // Inherit moderation state if it isn't explicitly set in the function arguments.
   if ($published !== NULL) {
-    $node_revision->moderation_state->value = $published ? 'published' : 'draft';
+    if($published) {
+      $node_revision->setPublished();
+    }
+    else {
+      $node_revision->setUnpublished();
+    }
   }
 
   // Set the user id for the revision.
