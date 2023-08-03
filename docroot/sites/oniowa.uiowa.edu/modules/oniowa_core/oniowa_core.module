@@ -31,7 +31,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
             ->fetchCol();
           foreach ($data as $date) {
             $day = date('l, F j Y', $date);
-            if (!isset($options[$date])) {
+            if (!in_array($day, $options)) {
               $options[$date] = $day;
             }
           }
