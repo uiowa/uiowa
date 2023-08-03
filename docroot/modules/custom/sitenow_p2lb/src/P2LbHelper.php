@@ -4,6 +4,7 @@ namespace Drupal\sitenow_p2lb;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\sitenow_pages\Entity\Page;
 
 /**
  * A helper class for P2LB.
