@@ -29,12 +29,12 @@ class P2LbController extends ControllerBase {
     if ($node instanceof Page) {
       if (is_numeric($node->field_v3_conversion_revision_id->value)) {
         $build['done'] = [
-          '#markup' => $this->t('This page has been converted.'),
+          '#markup' => $this->t('<p>This page has been converted.</p>'),
         ];
       }
       else {
         $build['not_done'] = [
-          '#markup' => $this->t('This page has not been converted yet. You can convert it using the @link.', [
+          '#markup' => $this->t('<p>This page has not been converted yet. You can convert it using the @link.</p>', [
             '@link' => Link::fromTextAndUrl('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter'))->toString(),
           ]),
           '#weight' => 0,
@@ -64,14 +64,14 @@ class P2LbController extends ControllerBase {
         }
         else {
           $build['no_worries'] = [
-            '#markup' => $this->t('This content is ready to be converted and we do not expect any issues.'),
+            '#markup' => $this->t('<p>This content is ready to be converted and we do not expect any issues.</p>'),
           ];
         }
       }
     }
     else {
       $build['not_applicable'] = [
-        '#markup' => $this->t('The @type content type does not need to be converted to V3.', [
+        '#markup' => $this->t('<p>The @type content type does not need to be converted to V3.</p>', [
           '@type' => $node->getType(),
         ]),
       ];
