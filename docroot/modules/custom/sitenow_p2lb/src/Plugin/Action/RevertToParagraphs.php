@@ -58,9 +58,6 @@ class RevertToParagraphs extends ActionBase {
     // Create a new revision from node storage.
     $new_revision = $node_storage->createRevision($protected_revision);
 
-    // Set moderation state.
-    $protected_revision->set('moderation_state', 'published');
-
     // Add the message to the revision log.
     $new_revision->revision_log = $this->t(
       'This is a copy of last version of the page before it was first converted to V3 on %date.',
