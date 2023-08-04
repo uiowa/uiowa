@@ -185,11 +185,11 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, bool $remov
     $new_revision->revision_log = 'Converted page to v3.';
 
     // Set the user ID to the current user's ID for the revision.
-    $node->setRevisionUserId(\Drupal::currentUser()->id());
+    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
 
     // Set the relevant revision timestamps.
-    $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $node->setChangedTime(\Drupal::time()->getRequestTime());
+    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
 
     // Save the new revision.
     $new_revision->save();
