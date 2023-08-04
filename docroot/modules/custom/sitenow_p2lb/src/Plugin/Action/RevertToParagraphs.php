@@ -40,17 +40,9 @@ class RevertToParagraphs extends ActionBase {
     // Get the node id.
     $nid = $entity->id();
 
-    // Load the protected revision from the protected version id in that revision's values.
-    $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
-
-    // Guard against not finding the protected revision id.
-    if (!$protected_revision_id) {
-      return FALSE;
-    }
-
     // Get the protected revision.
     /** @var \Drupal\node\NodeInterface $protected_revision */
-    $protected_revision = sitenow_p2lb_get_protected_revision($protected_revision_id);
+    $protected_revision = sitenow_p2lb_get_protected_revision($nid);
 
     // Guard against not finding the protected revision.
     if (!$protected_revision) {

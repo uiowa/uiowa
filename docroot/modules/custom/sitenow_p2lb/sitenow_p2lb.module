@@ -1499,8 +1499,8 @@ function sitenow_p2lb_get_protected_revision_id(string $nid) {
 /**
  * Load a protected revision.
  *
- * @param string $revision_id
- *   The revision id of the protected revision of a node.
+ * @param string $nid
+ *   The id of the node that needs a protected revision fetched.
  *
  * @return \Drupal\Core\Entity\RevisionableInterface|null
  *   The Entity array for the protected revision or null if not found.
@@ -1508,12 +1508,14 @@ function sitenow_p2lb_get_protected_revision_id(string $nid) {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function sitenow_p2lb_get_protected_revision(string $revision_id): ?RevisionableInterface {
+function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterface {
+  // Get the protected revision id.
+  $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
   // Return the protected revision or NULL.
   /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
   $revision = \Drupal::entityTypeManager()
     ?->getStorage('node')
-    ?->loadRevision($revision_id);
+    ?->loadRevision($protected_revision_id);
 
   return $revision;
 }
