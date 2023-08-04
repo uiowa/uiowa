@@ -35,7 +35,7 @@ class RevertToParagraphs extends ActionBase {
   public function execute(ContentEntityInterface $entity = NULL) {
 
     // Get the node id.
-    $nid = $entity->id() ?? NULL;
+    $nid = $entity->id();
 
     // Load the protected revision from the protected version id in that revision's values.
     $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
