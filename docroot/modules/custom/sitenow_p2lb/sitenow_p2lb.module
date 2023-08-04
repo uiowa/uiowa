@@ -172,30 +172,31 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, bool $remov
 
   // Need to set with an array of sections, retrieved with getSections().
   if ($layout) {
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $node->set('layout_builder__layout', $layout->getSections());
 
     // Set value of field_v3_conversion_revision_id to current revision ID.
     $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
-    // Create a new revision.
-    $node->setNewRevision();
-    $node->isDefaultRevision(TRUE);
+    // Create a new revision from node storage.
+    $new_revision = $node_storage->createRevision($node);
 
-    // Add the message to the revision log.
-    $node->revision_log = 'Converted page to v3.';
+    // Set the new revision as a "Draft".
+    $new_revision->set('moderation_state', 'draft');
 
-    $node->set('moderation_state', 'draft');
+    // Add a message to the revision log.
+    $new_revision->revision_log = 'Converted page to v3.';
 
-    // Set the user id for the revision.
-    $user_id = \Drupal::currentUser()->id();
-    $node->setRevisionUserId($user_id);
+    // Set the user ID to the current user's ID for the revision.
+    $node->setRevisionUserId(\Drupal::currentUser()->id());
 
     // Set the relevant revision timestamps.
     $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
     $node->setChangedTime(\Drupal::time()->getRequestTime());
 
-    // Save the revision for the node.
-    $node->save();
+    // Save the new revision.
+    $new_revision->save();
 
     // Remove the attached paragraphs from the node.
     if ($remove) {

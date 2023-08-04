@@ -58,36 +58,32 @@ class RevertToParagraphs extends ActionBase {
     // Get a string representation of the original revision's timestamp.
     $original_revision_timestamp = date('m/d/Y - h:i A', $protected_revision->getRevisionCreationTime());
 
-    // Create a new revision.
-    $protected_revision->setNewRevision();
-    $protected_revision->isDefaultRevision(TRUE);
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+    // Create a new revision from node storage.
+    $new_revision = $node_storage->createRevision($protected_revision);
+
+    // Set moderation state.
+    $protected_revision->set('moderation_state', 'published');
 
     // Add the message to the revision log.
-    $protected_revision->revision_log = t(
-      'This revision is a copy of the V2 version of this page from %date.',
+    $new_revision->revision_log = t(
+      'This is a copy of last version of the page before it was first converted to V3 on %date.',
       [
         '%date' => $original_revision_timestamp
       ]
     );
 
-    // Set the user id for the revision.
-    $protected_revision->setRevisionUserId(\Drupal::currentUser()->id());
+    // Set the user ID to the current user's ID for the new revision.
+    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
 
     // Set the relevant revision timestamps.
-    $protected_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    // Update changed time.
-    $protected_revision->setChangedTime(\Drupal::time()->getRequestTime());
-    // Not sure why this is necessary, but this appears to be a critical step
-    // to ensure that the newly created revision registers as a revision in the
-    // revision history and to prevent the reverted node from showing up in the
-    // Converted list.
-    $protected_revision->setRevisionTranslationAffected(TRUE);
+    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
 
-    // Set moderation state.
-    $protected_revision->set('moderation_state', 'published');
-
-    // Save the revision for the node.
-    $protected_revision->save();
+    // Save the new revision.
+    $new_revision->save();
   }
 
 }
