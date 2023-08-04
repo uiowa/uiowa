@@ -58,48 +58,36 @@ class RevertToParagraphs extends ActionBase {
     // Get a string representation of the original revision's timestamp.
     $original_revision_timestamp = date('m/d/Y - h:i A', $protected_revision->getRevisionCreationTime());
 
-    // Guard against not finding the original revision timestamp.
-    if (!$original_revision_timestamp) {
-      return FALSE;
-    }
-
-    // Set a new revision for the node.
-//    sitenow_p2lb_set_new_revision(
-//      $protected_revision,
-//      t(
-//        'This revision is a copy of the V2 version of this page from %date.',
-//        ['%date' => $original_revision_timestamp]
-//      ),
-//      TRUE
-//    );
-
     // Create a new revision.
-    $node_revision->setNewRevision();
-    $node_revision->isDefaultRevision(TRUE);
+    $protected_revision->setNewRevision();
+    $protected_revision->isDefaultRevision(TRUE);
 
     // Add the message to the revision log.
-    $node_revision->revision_log = $message;
-
-    // Inherit published state if it isn't explicitly set in the function arguments.
-    if ($published !== NULL) {
-      if ($published) {
-        $node_revision->setPublished();
-      }
-      else {
-        $node_revision->setUnpublished();
-      }
-    }
+    $protected_revision->revision_log = t(
+      'This revision is a copy of the V2 version of this page from %date.',
+      [
+        '%date' => $original_revision_timestamp
+      ]
+    );
 
     // Set the user id for the revision.
-    $user_id = \Drupal::currentUser()->id();
-    $node_revision->setRevisionUserId($user_id);
+    $protected_revision->setRevisionUserId(\Drupal::currentUser()->id());
 
     // Set the relevant revision timestamps.
-    $node_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $node_revision->setChangedTime(\Drupal::time()->getRequestTime());
+    $protected_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    // Update changed time.
+    $protected_revision->setChangedTime(\Drupal::time()->getRequestTime());
+    // Not sure why this is necessary, but this appears to be a critical step
+    // to ensure that the newly created revision registers as a revision in the
+    // revision history and to prevent the reverted node from showing up in the
+    // Converted list.
+    $protected_revision->setRevisionTranslationAffected(TRUE);
+
+    // Set moderation state.
+    $protected_revision->set('moderation_state', 'published');
 
     // Save the revision for the node.
-    $node_revision->save();
+    $protected_revision->save();
   }
 
 }
