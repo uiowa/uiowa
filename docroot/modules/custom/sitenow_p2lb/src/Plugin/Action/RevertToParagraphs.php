@@ -3,8 +3,8 @@
 namespace Drupal\sitenow_p2lb\Plugin\Action;
 
 use Drupal\Core\Action\ActionBase;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
 
 /**
@@ -18,6 +18,8 @@ use Drupal\node\NodeInterface;
  * )
  */
 class RevertToParagraphs extends ActionBase {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -47,7 +49,7 @@ class RevertToParagraphs extends ActionBase {
     }
 
     // Get the protected revision.
-    /** @var NodeInterface $protected_revision */
+    /** @var \Drupal\node\NodeInterface $protected_revision */
     $protected_revision = sitenow_p2lb_get_protected_revision($protected_revision_id);
 
     // Guard against not finding the protected revision.
@@ -68,10 +70,10 @@ class RevertToParagraphs extends ActionBase {
     $protected_revision->set('moderation_state', 'published');
 
     // Add the message to the revision log.
-    $new_revision->revision_log = t(
+    $new_revision->revision_log = $this->t(
       'This is a copy of last version of the page before it was first converted to V3 on %date.',
       [
-        '%date' => $original_revision_timestamp
+        '%date' => $original_revision_timestamp,
       ]
     );
 

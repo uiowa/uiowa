@@ -15,7 +15,6 @@ use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
-use Drupal\node\NodeInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
 
@@ -66,7 +65,7 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
         $issues = P2LbHelper::analyzeNode($node);
         if (!empty($issues)) {
           \Drupal::messenger()->addWarning(t('Components on this page contain issues that prevent them from being fully converted to V3. See details in the @link.', [
-            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString()
+            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString(),
           ]));
         }
       }
@@ -139,9 +138,6 @@ function sitenow_p2lb_paragraph_nodes() {
  *   Node being processed.
  * @param bool $remove
  *   Indicator whether old paragraphs should be removed following processing.
- *
- * @return bool
- * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, bool $remove = FALSE) {
   // Get sections from the page.
