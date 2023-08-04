@@ -8,6 +8,7 @@
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -1486,14 +1487,13 @@ function sitenow_p2lb_block_definition($type, array $fields) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function sitenow_p2lb_get_protected_revision_id(string $nid) {
-
-  // Load the node storage.
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-
   // Guard against the node id being null.
   if (!$nid) {
     return NULL;
   }
+
+  // Load the node storage.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
   // Get the node's most recent revision id.
   $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
@@ -1521,7 +1521,7 @@ function sitenow_p2lb_get_protected_revision_id(string $nid) {
 /**
  * Load a protected revision.
  *
- * @param string $protected_revision_id
+ * @param string $revision_id
  *   The revision id of the protected revision of a node.
  *
  * @return \Drupal\Core\Entity\RevisionableInterface|null
@@ -1530,18 +1530,14 @@ function sitenow_p2lb_get_protected_revision_id(string $nid) {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function sitenow_p2lb_get_protected_revision(string $protected_revision_id): ?NodeInterface {
+function sitenow_p2lb_get_protected_revision(string $revision_id): ?RevisionableInterface {
+  // Return the protected revision or NULL.
+  /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
+  $revision = \Drupal::entityTypeManager()
+    ?->getStorage('node')
+    ?->loadRevision($revision_id);
 
-  // Load the node storage.
-  /** @var \Drupal\node\NodeStorageInterface $node_storage */
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-
-  // Get the protected revision.
-  /** @var \Drupal\Core\Entity\RevisionableInterface $protected_revision */
-  $protected_revision = $node_storage?->loadRevision($protected_revision_id);
-
-  // Return the protected revision.
-  return $protected_revision;
+  return $revision;
 }
 
 /**
