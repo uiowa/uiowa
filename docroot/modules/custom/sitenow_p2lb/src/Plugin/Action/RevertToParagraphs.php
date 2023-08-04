@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Action to revert page nodes back to Paragraphs.
@@ -32,7 +33,7 @@ class RevertToParagraphs extends ActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
+  public function execute(NodeInterface $entity = NULL) {
 
     // Get the node id.
     $nid = $entity->id();
@@ -46,6 +47,7 @@ class RevertToParagraphs extends ActionBase {
     }
 
     // Get the protected revision.
+    /** @var NodeInterface $protected_revision */
     $protected_revision = sitenow_p2lb_get_protected_revision($protected_revision_id);
 
     // Guard against not finding the protected revision.
@@ -62,14 +64,42 @@ class RevertToParagraphs extends ActionBase {
     }
 
     // Set a new revision for the node.
-    sitenow_p2lb_set_new_revision(
-      $protected_revision,
-      t(
-        'This revision is a copy of the V2 version of this page from %date.',
-        ['%date' => $original_revision_timestamp]
-      ),
-      TRUE
-    );
+//    sitenow_p2lb_set_new_revision(
+//      $protected_revision,
+//      t(
+//        'This revision is a copy of the V2 version of this page from %date.',
+//        ['%date' => $original_revision_timestamp]
+//      ),
+//      TRUE
+//    );
+
+    // Create a new revision.
+    $node_revision->setNewRevision();
+    $node_revision->isDefaultRevision(TRUE);
+
+    // Add the message to the revision log.
+    $node_revision->revision_log = $message;
+
+    // Inherit published state if it isn't explicitly set in the function arguments.
+    if ($published !== NULL) {
+      if ($published) {
+        $node_revision->setPublished();
+      }
+      else {
+        $node_revision->setUnpublished();
+      }
+    }
+
+    // Set the user id for the revision.
+    $user_id = \Drupal::currentUser()->id();
+    $node_revision->setRevisionUserId($user_id);
+
+    // Set the relevant revision timestamps.
+    $node_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $node_revision->setChangedTime(\Drupal::time()->getRequestTime());
+
+    // Save the revision for the node.
+    $node_revision->save();
   }
 
 }
