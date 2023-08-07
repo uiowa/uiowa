@@ -72,7 +72,8 @@ class P2LbHelper {
               if (!$label) {
                 static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas.');
               }
-              // Card body isn't required. Check or set to array with empty value.
+              // Card body isn't required.
+              // Check or set to array with empty value.
               $excerpt = $component->field_card_body?->value;
               if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
                 static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
