@@ -3,16 +3,70 @@
 namespace Drupal\sitenow_p2lb\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\node\NodeStorageInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Returns responses for P2LB routes.
  */
-class P2LbController extends ControllerBase {
+class P2LbController extends ControllerBase implements ContainerInjectionInterface {
+
+  /**
+   * The date formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The entity repository service.
+   *
+   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   */
+  protected $entityRepository;
+
+  /**
+   * Constructs a NodeController object.
+   *
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   *   The date formatter service.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
+   */
+  public function __construct(DateFormatterInterface $date_formatter, RendererInterface $renderer, EntityRepositoryInterface $entity_repository) {
+    $this->dateFormatter = $date_formatter;
+    $this->renderer = $renderer;
+    $this->entityRepository = $entity_repository;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('date.formatter'),
+      $container->get('renderer'),
+      $container->get('entity.repository')
+    );
+  }
 
   /**
    * Generates a status report for converting a node to V3.
@@ -27,7 +81,7 @@ class P2LbController extends ControllerBase {
     $build['#title'] = $this->t('V3 Conversion status for %title', ['%title' => $node->label()]);
 
     if ($node instanceof Page) {
-      if (is_numeric($node->field_v3_conversion_revision_id->value)) {
+      if (is_numeric($node->field_v3_conversion_revision_id?->value)) {
         $build['done'] = [
           '#markup' => $this->t('<p>This page has been converted.</p>'),
         ];
@@ -78,6 +132,28 @@ class P2LbController extends ControllerBase {
     }
 
     return $build;
+  }
+
+  /**
+   * Gets a list of node revision IDs for a specific node.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The node entity.
+   * @param \Drupal\node\NodeStorageInterface $node_storage
+   *   The node storage handler.
+   *
+   * @return int[]
+   *   Node revision IDs (in descending order).
+   */
+  protected function getRevisionIds(NodeInterface $node, NodeStorageInterface $node_storage) {
+    $result = $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->allRevisions()
+      ->condition($node->getEntityType()->getKey('id'), $node->id())
+      ->sort($node->getEntityType()->getKey('revision'), 'DESC')
+      ->pager(50)
+      ->execute();
+    return array_keys($result);
   }
 
 }

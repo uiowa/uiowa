@@ -8,6 +8,7 @@
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -64,7 +65,7 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
         $issues = P2LbHelper::analyzeNode($node);
         if (!empty($issues)) {
           \Drupal::messenger()->addWarning(t('Components on this page contain issues that prevent them from being fully converted to V3. See details in the @link.', [
-            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString()
+            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString(),
           ]));
         }
       }
@@ -80,31 +81,13 @@ function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateI
 
   // Get node id.
   $nid = $form_values?->get('nid')?->getValue()[0]['value'] ?? NULL;
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
   // Guard against not finding a node id.
   if (!$nid) {
     return;
   }
 
-  // Get the most recent revision id.
-  $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
-
-  // Guard against not finding the most recent revision id.
-  if (!$most_recent_revision_id) {
-    return;
-  }
-
-  // Get the most recent revision.
-  $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
-
-  // Guard against not finding the most recent revision.
-  if (!$most_recent_revision) {
-    return;
-  }
-
-  // Get protected revision id from that revision's values.
-  $protected_revision_id = $most_recent_revision->field_v3_conversion_revision_id?->value;
+  $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
 
   // Guard against not finding the protected revision id.
   if (!$protected_revision_id) {
@@ -151,20 +134,19 @@ function sitenow_p2lb_paragraph_nodes() {
 /**
  * Convert a node from paragraphs to layout builder.
  *
- * @param Drupal\Core\Entity\ContentEntityInterface $node
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $node
  *   Node being processed.
- * @param bool $remove
- *   Indicator whether old paragraphs should be removed following processing.
- *
- * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
+function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
   // Get sections from the page.
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
   // but just in case, $layout will just re-set itself.
-  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout */
-  $layout = $node->get('layout_builder__layout');
+  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout_section_list */
+  $layout_section_list = $node->get('layout_builder__layout');
+
+  // Clear the section list, in case it has been overridden for some reason.
+  $layout_section_list->setValue([]);
 
   // Get default page sections config.
   $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
@@ -172,7 +154,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
   // Append content moderation and header sections
   // from default config.
   foreach (['content_moderation', 'header'] as $i => $default_section) {
-    $layout->appendSection(Section::fromArray($default_sections[$i]));
+    $layout_section_list->appendSection(Section::fromArray($default_sections[$i]));
   }
 
   // Process all the individual sections and update the layout.
@@ -180,35 +162,43 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     // It's possible for the section to fail to load,
     // such as if the paragraph no longer exists.
     // Only overwrite if we successfully process.
-    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout, $node)) {
-      $layout = $new_layout;
+    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout_section_list, $node)) {
+      $layout_section_list = $new_layout;
     }
   }
 
   // Need to set with an array of sections, retrieved with getSections().
-  if ($layout) {
-    $node->set('layout_builder__layout', $layout->getSections());
+  if ($layout_section_list) {
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+    // Create a new revision from node storage.
+    $new_revision = $node_storage->createRevision($node);
+
+    // Set the layout section list field to the V3 version.
+    $new_revision->set('layout_builder__layout', $layout_section_list->getSections());
+
+    // Unset the paragraphs block.
+    $new_revision->set('field_page_content_block', NULL);
 
     // Set value of field_v3_conversion_revision_id to current revision ID.
-    $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
+    $new_revision->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
-    // Save as a new draft.
-    $node->setNewRevision(TRUE);
-    $node->revision_log = 'Converted page to v3.';
-    $node->moderation_state->value = 'draft';
+    // Set the new revision as a "Draft".
+    $new_revision->set('moderation_state', 'draft');
 
-    // Set the user id for the revision.
-    $user_id = \Drupal::currentUser()->id();
-    $node->setRevisionUserId($user_id);
-    $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $node->setChangedTime(\Drupal::time()->getRequestTime());
+    // Add a message to the revision log.
+    $new_revision->revision_log = 'Converted page to v3.';
 
-    $node->save();
+    // Set the user ID to the current user's ID for the revision.
+    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
 
-    // Remove the attached paragraphs from the node.
-    if ($remove) {
-      sitenow_p2lb_remove_attached_paragraphs($node);
-    }
+    // Set the relevant revision timestamps.
+    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
+
+    // Save the new revision.
+    $new_revision->save();
 
     return TRUE;
   }
@@ -1132,32 +1122,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 }
 
 /**
- * Removes all attached paragraphs from a node.
- */
-function sitenow_p2lb_remove_attached_paragraphs($node) {
-  $section_ids = sitenow_p2lb_fetch_child_ids($node);
-
-  // Grab paragraphs attached to each of the given sections.
-  $connection = Database::getConnection();
-  $query = $connection->select('paragraphs_item_field_data', 'pifd');
-  $query->fields('pifd', ['id'])
-    ->condition('parent_id', $section_ids, 'in')
-    ->condition('parent_field_name', 'field_section_content_block', '=');
-  $child_ids = $query->execute()->fetchCol();
-
-  // Gather all ids. Children first, then the parents (harsh!).
-  $ids = array_merge($child_ids, $section_ids);
-
-  // Load all paragraphs by id, and delete each.
-  $paragraphs = \Drupal::service('entity_type.manager')
-    ->getStorage('paragraph')
-    ->loadMultiple($ids);
-  foreach ($paragraphs as $paragraph) {
-    $paragraph->delete();
-  }
-}
-
-/**
  * Simple helper to create a section array.
  */
 function sitenow_p2lb_create_section_array($layout_id, $layout_settings) {
@@ -1498,4 +1462,60 @@ function sitenow_p2lb_block_definition($type, array $fields) {
 
   $block_definition['type'] = $type;
   return array_merge($block_definition, $fields);
+}
+
+/**
+ * Get the protected revision id generated by p2lb.
+ *
+ * @param string $nid
+ *   The node id to get the p2lb protected revision id from.
+ *
+ * @return string|null
+ *   The protected revision id or null if none found.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision_id(string $nid) {
+  // Guard against the node id being null.
+  if (!$nid) {
+    return NULL;
+  }
+
+  // Load the node storage.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  // Get the node's most recent revision id.
+  $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
+
+  // Load the most recent revision.
+  $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
+
+  // Get protected revision id from that revision's values.
+  // Return the protected revision id.
+  return $most_recent_revision?->field_v3_conversion_revision_id?->value;
+}
+
+/**
+ * Load a protected revision.
+ *
+ * @param string $nid
+ *   The id of the node that needs a protected revision fetched.
+ *
+ * @return \Drupal\Core\Entity\RevisionableInterface|null
+ *   The Entity array for the protected revision or null if not found.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterface {
+  // Get the protected revision id.
+  $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+  // Return the protected revision or NULL.
+  /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
+  $revision = \Drupal::entityTypeManager()
+    ?->getStorage('node')
+    ?->loadRevision($protected_revision_id);
+
+  return $revision;
 }
