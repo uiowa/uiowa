@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labferri.uiowa.ddev.site
+    protocol: https
+  machine_name: labferri
+  human_name: ferri.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labferri.prod
+drupal:
+  db:
+    database: ferri_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labferri.prod.drupal.uiowa.edu'
+  requester: sferri
+  site-name: 'BONDS Lab (brain circuits of neuroendocrinology, development & sociability)'
