@@ -1519,3 +1519,24 @@ function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterfac
 
   return $revision;
 }
+
+/**
+ * Helper function to clear a node's layout builder tempstore.
+ *
+ * @param string $nid
+ *   The id of the node that needs its tempstore cleared.
+ *
+ * @return bool
+ *   Whether there was a tempstore that needed clearing or not.
+ */
+function sitenow_p2lb_clear_tempstore(string $nid): bool {
+  /** @var @var Drupal\Core\KeyValueStore\DatabaseStorageExpirable $data_storage_expirable */
+  $data_storage_expirable = \Drupal::keyValueExpirable('tempstore.shared.layout_builder.section_storage.overrides');
+  $node_string = "node.{$nid}.default.en";
+  // if it exists, clear it out.
+  if ($data_storage_expirable->has($node_string)) {
+    $data_storage_expirable->delete($node_string);
+    return TRUE;
+  }
+  return FALSE;
+}
