@@ -77,7 +77,7 @@ class RevertToParagraphs extends ActionBase {
     $new_revision->save();
 
     // Finally, clear the tempstore.
-    sitenow_p2lb_clear_tempstore($entity);
+    sitenow_p2lb_clear_tempstore($new_revision);
   }
 
 }
