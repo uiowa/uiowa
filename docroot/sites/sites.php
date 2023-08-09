@@ -5542,3 +5542,9 @@ $sites['labferri.uiowa.ddev.site'] = 'ferri.lab.uiowa.edu';
 $sites['labferri.dev.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
 $sites['labferri.stage.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
 $sites['labferri.prod.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
+
+// Directory aliases for peng.lab.uiowa.edu.
+$sites['labpeng.uiowa.ddev.site'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.dev.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.stage.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.prod.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
