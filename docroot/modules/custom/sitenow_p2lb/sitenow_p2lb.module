@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
@@ -1530,12 +1531,14 @@ function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterfac
  *   Whether there was a tempstore that needed clearing or not.
  */
 function sitenow_p2lb_clear_tempstore(string $nid): bool {
-  /** @var @var Drupal\Core\KeyValueStore\DatabaseStorageExpirable $data_storage_expirable */
-  $data_storage_expirable = \Drupal::keyValueExpirable('tempstore.shared.layout_builder.section_storage.overrides');
-  $node_string = "node.{$nid}.default.en";
-  // if it exists, clear it out.
-  if ($data_storage_expirable->has($node_string)) {
-    $data_storage_expirable->delete($node_string);
+  $temp_store_repository = \Drupal::service('layout_builder.tempstore_repository');
+  $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+  $node_context = EntityContext::fromEntity($node);
+  $plugin = \Drupal::service('plugin.manager.layout_builder.section_storage')
+    ->load('overrides', ['entity' => $node_context]);
+  // If it exists, clear it out.
+  if ($temp_store_repository->has($plugin)) {
+    $temp_store_repository->delete($plugin);
     return TRUE;
   }
   return FALSE;
