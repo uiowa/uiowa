@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsinn.uiowa.ddev.site
+    protocol: https
+  machine_name: labsinn
+  human_name: sinn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsinn.prod
+drupal:
+  db:
+    database: sinn_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsinn.prod.drupal.uiowa.edu'
+  requester: geraghty
+  site-name: 'Sinn Lab'

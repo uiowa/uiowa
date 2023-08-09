@@ -5536,3 +5536,21 @@ $sites['labtanaka.uiowa.ddev.site'] = 'tanaka.lab.uiowa.edu';
 $sites['labtanaka.dev.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
 $sites['labtanaka.stage.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
 $sites['labtanaka.prod.drupal.uiowa.edu'] = 'tanaka.lab.uiowa.edu';
+
+// Directory aliases for ferri.lab.uiowa.edu.
+$sites['labferri.uiowa.ddev.site'] = 'ferri.lab.uiowa.edu';
+$sites['labferri.dev.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
+$sites['labferri.stage.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
+$sites['labferri.prod.drupal.uiowa.edu'] = 'ferri.lab.uiowa.edu';
+
+// Directory aliases for peng.lab.uiowa.edu.
+$sites['labpeng.uiowa.ddev.site'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.dev.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.stage.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+$sites['labpeng.prod.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+
+// Directory aliases for sinn.lab.uiowa.edu.
+$sites['labsinn.uiowa.ddev.site'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.dev.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.stage.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.prod.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
