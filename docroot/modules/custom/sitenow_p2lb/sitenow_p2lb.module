@@ -1478,6 +1478,7 @@ function sitenow_p2lb_block_definition($type, array $fields) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function sitenow_p2lb_get_protected_revision_id(string $nid) {
+
   // Guard against the node id being null.
   if (!$nid) {
     return NULL;
@@ -1510,8 +1511,10 @@ function sitenow_p2lb_get_protected_revision_id(string $nid) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterface {
+
   // Get the protected revision id.
   $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
   // Return the protected revision or NULL.
   /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
   $revision = \Drupal::entityTypeManager()
@@ -1524,22 +1527,29 @@ function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterfac
 /**
  * Helper function to clear a node's layout builder tempstore.
  *
- * @param string $nid
+ * @param ContentEntityInterface $entity
  *   The id of the node that needs its tempstore cleared.
  *
  * @return bool
  *   Whether there was a tempstore that needed clearing or not.
  */
-function sitenow_p2lb_clear_tempstore(string $nid): bool {
+function sitenow_p2lb_clear_tempstore(ContentEntityInterface $entity): bool {
+
+  // Got hints for how to do this from here.
+  // https://www.drupal.org/node/3012353
   $temp_store_repository = \Drupal::service('layout_builder.tempstore_repository');
-  $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-  $node_context = EntityContext::fromEntity($node);
+  $entity_context = EntityContext::fromEntity($entity);
+
+  // Our 'plugin' is 'overrides', or the 'unsaved changes' of a node.
   $overrides_section_storage = \Drupal::service('plugin.manager.layout_builder.section_storage')
-    ->load('overrides', ['entity' => $node_context]);
+    ->load('overrides', ['entity' => $entity_context]);
+
   // If it exists, clear it out.
   if ($temp_store_repository->has($overrides_section_storage)) {
     $temp_store_repository->delete($overrides_section_storage);
     return TRUE;
   }
+
+  // Else, return false, signifying no need to clear tempstore.
   return FALSE;
 }
