@@ -7,7 +7,7 @@ dependencies:
     - field.field.block_content.uiowa_image.field_uiowa_image_image
     - field.field.block_content.uiowa_image.field_uiowa_image_link
   module:
-    - link
+    - linkit
     - media_library
 id: block_content.uiowa_image.default
 targetEntityType: block_content
@@ -22,12 +22,14 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_uiowa_image_link:
-    type: link_default
+    type: linkit
     weight: 2
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: default
+      linkit_auto_link_text: false
     third_party_settings: {  }
   info:
     type: string_textfield
