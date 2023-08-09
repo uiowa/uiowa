@@ -5548,3 +5548,9 @@ $sites['labpeng.uiowa.ddev.site'] = 'peng.lab.uiowa.edu';
 $sites['labpeng.dev.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
 $sites['labpeng.stage.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
 $sites['labpeng.prod.drupal.uiowa.edu'] = 'peng.lab.uiowa.edu';
+
+// Directory aliases for sinn.lab.uiowa.edu.
+$sites['labsinn.uiowa.ddev.site'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.dev.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.stage.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
+$sites['labsinn.prod.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
