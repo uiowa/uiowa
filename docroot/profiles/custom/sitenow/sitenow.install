@@ -2689,10 +2689,12 @@ function sitenow_update_9066() {
  * Update hide fields options for list blocks.
  */
 function sitenow_update_9067() {
-  _update_all_blocks_by_plugin_id('views_block:article_list_block-list_article', function (&$component) {
-    $config = $component->getConfiguration();
-    $config['fields']['body'] = $config['fields']['field_teaser'];
-    unset($config['fields']['field_teaser']);
-    $component->setConfiguration($config);
-  });
+  foreach (['views_block:article_list_block-list_article', 'views_block:people_list_block-list_card'] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+      $config = $component->getConfiguration();
+      $config['fields']['body'] = $config['fields']['field_teaser'];
+      unset($config['fields']['field_teaser']);
+      $component->setConfiguration($config);
+    });
+  }
 }
