@@ -364,6 +364,7 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
  * Custom node content type form defaults.
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
+  // @todo Update this for the transition to using body summary.
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
