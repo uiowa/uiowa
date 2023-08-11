@@ -26,6 +26,7 @@ dependencies:
     - node.type.person
     - workflows.workflow.editorial
   module:
+    - allowed_formats
     - content_moderation
     - link
     - media_library
@@ -58,6 +59,7 @@ content:
     region: content
     settings:
       sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_person_bio:
     type: text_textarea_with_summary
@@ -68,7 +70,10 @@ content:
       summary_rows: 3
       placeholder: ''
       show_summary: false
-    third_party_settings: {  }
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
   field_person_contact_information:
     type: paragraphs
     weight: 25
