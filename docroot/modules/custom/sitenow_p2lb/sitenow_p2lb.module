@@ -681,7 +681,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Check if the excerpt contains media-related tags.
       if (
         strpos($excerpt, '<drupal-media') !== FALSE ||
-        strpos($excerpt, '<iframe') !== FALSE
+        strpos($excerpt, '<iframe') !== FALSE ||
+        strpos($excerpt, '<table') !== FALSE
       ) {
         $contains_media = TRUE;
       }
