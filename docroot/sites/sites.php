@@ -5548,3 +5548,9 @@ $sites['labsinn.uiowa.ddev.site'] = 'sinn.lab.uiowa.edu';
 $sites['labsinn.dev.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
 $sites['labsinn.stage.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
 $sites['labsinn.prod.drupal.uiowa.edu'] = 'sinn.lab.uiowa.edu';
+
+// Directory aliases for ophthalmologyinterestgroup.org.uiowa.edu.
+$sites['orgophthalmologyinterestgroup.uiowa.ddev.site'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
+$sites['orgophthalmologyinterestgroup.dev.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
+$sites['orgophthalmologyinterestgroup.stage.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
+$sites['orgophthalmologyinterestgroup.prod.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
