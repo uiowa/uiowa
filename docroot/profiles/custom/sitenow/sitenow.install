@@ -2689,8 +2689,10 @@ function sitenow_update_9066() {
  * Update hide fields options for list blocks.
  */
 function sitenow_update_9067() {
-  // @todo Update this to work with view list blocks.
-  _update_all_blocks_by_plugin_id('views_block:article_list_block-list_article', function (&$component, BlockContentInterface $block) {
-    $block->set('body', $block->get('field_teaser')?->value);
+  _update_all_blocks_by_plugin_id('views_block:article_list_block-list_article', function (&$component) {
+    $config = $component->getConfiguration();
+    $config['fields']['body'] = $config['fields']['field_teaser'];
+    unset($config['fields']['field_teaser']);
+    $component->setConfiguration($config);
   });
 }
