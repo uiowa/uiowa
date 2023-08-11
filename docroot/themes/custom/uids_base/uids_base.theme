@@ -796,6 +796,36 @@ function uids_base_preprocess_block(&$variables) {
   if ($variables['derivative_plugin_id'] === 'uiowa_banner') {
     $block = $variables['elements']['content']['#block_content'];
 
+    // Add banner--transparent class.
+    // Get the specified fields.
+    $fields_to_check = [
+      'field_uiowa_banner_excerpt',
+      'field_uiowa_banner_pre_title',
+    ];
+
+    // Check if all specified fields are empty.
+    $allSpecifiedFieldsEmpty = TRUE;
+    foreach ($fields_to_check as $fieldName) {
+      $fieldValue = $block->get($fieldName)->getValue();
+
+      if (
+        isset($fieldValue[0]['value']) &&
+        !empty($fieldValue[0]['value'])
+      ) {
+        $allSpecifiedFieldsEmpty = FALSE;
+        break;
+      }
+    }
+
+    $titleExists = isset($variables["elements"]["content"]["field_uiowa_banner_title"]);
+    $titleValue = $titleExists && isset($variables["elements"]["content"]["field_uiowa_banner_title"][0]["#text"])
+      ? $variables["elements"]["content"]["field_uiowa_banner_title"][0]["#text"]
+      : NULL;
+
+    if ($allSpecifiedFieldsEmpty && $titleExists && $titleValue === NULL) {
+      $variables['attributes']['class'][] = 'banner--transparent';
+    }
+
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return str_starts_with($v, 'headline');
