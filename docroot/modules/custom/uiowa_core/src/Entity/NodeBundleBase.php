@@ -41,7 +41,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_image',
       '#title' => 'title',
-      '#content' => 'field_teaser',
+      '#content' => 'body',
     ]);
 
     // Handle link directly to source functionality.
