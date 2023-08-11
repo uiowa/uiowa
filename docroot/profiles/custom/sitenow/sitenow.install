@@ -2661,54 +2661,25 @@ function sitenow_update_9066() {
 
   $database = \Drupal::database();
 
-  // Grab all field teasers.
-  $field_teasers = NULL;
-  $field_teaser_revisions = NULL;
-  $table = $field_types['field_teaser']['table'];
-  $revision_table = $field_types['field_teaser']['revision_table'];
-  if ($database->schema()->tableExists($table)) {
-    $field_teasers = $database
-      ->select($table, 't')
-      ->fields('t')
-      ->execute()
-      ->fetchAll();
-    if ($database->schema()->tableExists($revision_table)) {
-      $field_teaser_revisions = $database
-        ->select($revision_table, 'r')
-        ->fields('r')
-        ->execute()
-        ->fetchAll();
-    }
-  }
-  // Insert previously fetched field teasers
-  // into the appropriate field and field_revision tables.
+  $teaser_table = $field_types['field_teaser']['table'];
+  $teaser_revision_table = $field_types['field_teaser']['revision_table'];
   foreach (['body', 'field_person_bio'] as $field_name) {
-    // @todo Do a DB join across related tables prior to this,
-    //  and then we can truncate/insert all rows at once.
     $table = $field_types[$field_name]['table'];
     $revision_table = $field_types[$field_name]['revision_table'];
-    if ($database->schema()->tableExists($table)) {
-      foreach ($field_teasers as $field_teaser) {
-        if (empty($field_teaser->field_teaser_value)) {
-          continue;
-        }
-        $database
-          ->update($table)
-          ->fields(["{$field_name}_summary" => $field_teaser->field_teaser_value])
-          ->condition('entity_id', $field_teaser->entity_id, '=')
+    if ($database->schema()->tableExists($teaser_table) && $database->schema()->tableExists($table)) {
+      $database->query("
+        UPDATE {$teaser_table}, {$table}
+        SET {$table}.{$field_name}_summary = {$teaser_table}.field_teaser_value
+        WHERE {$table}.entity_id = {$teaser_table}.entity_id
+      ")
+        ->execute();
+      if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
+        $database->query("
+          UPDATE {$teaser_revision_table}, {$revision_table}
+          SET {$revision_table}.{$field_name}_summary = {$teaser_revision_table}.field_teaser_value
+          WHERE {$revision_table}.revision_id = {$teaser_revision_table}.revision_id
+        ")
           ->execute();
-      }
-      if ($database->schema()->tableExists($revision_table)) {
-        foreach ($field_teaser_revisions as $field_teaser_revision) {
-          if (empty($field_teaser_revision->field_teaser_value)) {
-            continue;
-          }
-          $database
-            ->update($revision_table)
-            ->fields(["{$field_name}_summary" => $field_teaser->field_teaser_value])
-            ->condition('revision_id', $field_teaser->revision_id, '=')
-            ->execute();
-        }
       }
     }
   }
