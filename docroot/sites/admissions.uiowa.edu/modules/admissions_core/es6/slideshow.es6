@@ -1,14 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  const time = 5;
+
   // Find the container for the slides.
   const container = document.querySelector('.view-slideshow .view-content');
 
   // Get all the slides in the container.
-  const slides = container.querySelectorAll('.banner');
+  let slides = container.querySelectorAll('.banner');
 
   // For each slide...
   let slideIndexArray = Object.keys(slides);
-  shuffleArray(slideIndexArray);
+  // shuffleArray(slideIndexArray);
 
   slides.forEach(function(slide, index) {
 
@@ -22,12 +24,24 @@ document.addEventListener("DOMContentLoaded", function() {
       '--banner-animation-delay',
       'calc(var(--time) * var(--data-slide-index) * 2)'
     );
+
+    if (index > 2) {
+      slide.remove();
+    }
   });
+
+  slides = container.querySelectorAll('.banner');
 
   // Set the slides variable to use in later maths.
   container.style.setProperty(
     '--slides',
     slides.length.toString()
+  );
+
+  // Set the time variable to use in later maths.
+  container.style.setProperty(
+    '--time',
+    time + 's'
   );
 
   // Create a style element with a dynamically generated keyframe animation.
@@ -51,6 +65,25 @@ document.addEventListener("DOMContentLoaded", function() {
   // so that we trigger all animations at the same time.
   container.classList.add('animate');
 
+  // const delayInMilliseconds = 1000; //1 second
+  const msTime = time * 1000;
+  const numSlides = slides.length + 0.25;
+
+  delayAction(function() {
+    console.log('Transition...');
+    container.classList.add('prep-close');
+
+    delayAction(function() {
+      console.log('Close...');
+      container.classList.add('close');
+
+      delayAction(function() {
+        console.log('Reload...');
+        location.reload();
+      }, 5000);
+    }, 100);
+  }, msTime * (numSlides - 0.6));
+
   /**
    * Returns a formatted string of a keyframe animation named `showHideSlide`.
    * This string is to be used as the inner html of a style variable.
@@ -59,22 +92,29 @@ document.addEventListener("DOMContentLoaded", function() {
    * @returns {string}
    */
   function styleString(slideCount) {
+    const timing = ((100 / slideCount).toFixed(2)).toString();
+
     let styleString =
-      '@keyframes showHideSlide {\
-          0% {\
-            opacity: 1;\
-            transform: translate3d(0, 0, 10px);\
-          }\
-          \
-          '+ (100 / slideCount).toString() + '% {\
-          opacity: 0;\
-          transform: translate3d(-9999px, 0, -10px);\
-        }\
-        \
-        100% {\
-          opacity: 0;\
-          transform: translate3d(-9999px, 0, - 10px);\
-        }\
+      '@keyframes showHideSlide {\n\
+        0% {\n\
+          opacity: 1;\n\
+          transform: translate3d(0, 0, 10px);\n\
+        }\n\
+        \n\
+        '+ timing + '% {\n\
+          opacity: 0;\n\
+          transform: translate3d(-9999px, 0, -10px);\n\
+        }\n\
+        \n\
+        99% {\n\
+          opacity: 0;\n\
+          transform: translate3d(-9999px, 0, - 10px);\n\
+        }\n\
+        \n\
+        100% {\n\
+          opacity: 1;\n\
+          transform: translate3d(0, 0, 10px);\n\
+        }\n\
       }';
     return styleString;
   }
@@ -91,4 +131,17 @@ function shuffleArray(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+}
+
+function delayAction(action, time) {
+  const delay = (delayInms) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+  }
+
+  const asyncDelayedAction = async () => {
+    let delayres = await delay(time);
+    action();
+  }
+
+  asyncDelayedAction();
 }
