@@ -676,13 +676,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      $contains_media = false;
+      $contains_media = FALSE;
       // Check if the excerpt contains media-related tags.
       if (
-        strpos($excerpt, '<drupal-media') !== false ||
-        strpos($excerpt, '<iframe') !== false
+        strpos($excerpt, '<drupal-media') !== FALSE ||
+        strpos($excerpt, '<iframe') !== FALSE
       ) {
-        $contains_media = true;
+        $contains_media = TRUE;
       }
 
       if ($excerpt && $contains_media) {
