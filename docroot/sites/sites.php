@@ -4679,12 +4679,6 @@ $sites['sloancenter.dev.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
 $sites['sloancenter.stage.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
 $sites['sloancenter.prod.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
 
-// Directory aliases for speakingcenter.uiowa.edu.
-$sites['speakingcenter.uiowa.ddev.site'] = 'speakingcenter.uiowa.edu';
-$sites['speakingcenter.dev.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
-$sites['speakingcenter.stage.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
-$sites['speakingcenter.prod.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
-
 // Directory aliases for stat.uiowa.edu.
 $sites['stat.uiowa.ddev.site'] = 'stat.uiowa.edu';
 $sites['stat.dev.drupal.uiowa.edu'] = 'stat.uiowa.edu';
