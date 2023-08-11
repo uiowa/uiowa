@@ -2683,6 +2683,8 @@ function sitenow_update_9066() {
   // Insert previously fetched field teasers
   // into the appropriate field and field_revision tables.
   foreach (['body', 'field_person_bio'] as $field_name) {
+    // @todo Do a DB join across related tables prior to this,
+    //  and then we can truncate/insert all rows at once.
     $table = $field_types[$field_name]['table'];
     $revision_table = $field_types[$field_name]['revision_table'];
     if ($database->schema()->tableExists($table)) {
