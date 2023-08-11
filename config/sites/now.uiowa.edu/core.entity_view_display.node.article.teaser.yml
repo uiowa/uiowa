@@ -27,6 +27,7 @@ dependencies:
   module:
     - field_delimiter
     - link
+    - smart_trim
     - user
 id: node.article.teaser
 targetEntityType: node
@@ -38,6 +39,31 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  body:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: false
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_article_author:
     type: entity_reference_label
     label: inline
@@ -46,7 +72,7 @@ content:
     third_party_settings:
       field_delimiter:
         delimiter: ','
-    weight: 6
+    weight: 7
     region: content
   field_article_source_link:
     type: link
@@ -68,7 +94,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_article_source_org:
     type: string
@@ -85,7 +111,7 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_teaser:
     type: basic_string
@@ -95,7 +121,6 @@ content:
     weight: 3
     region: content
 hidden:
-  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
