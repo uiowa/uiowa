@@ -676,9 +676,17 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      elseif ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
-        // Converting to a card would result in data loss. Convert to a text
-        // area instead.
+      $contains_media = false;
+      // Check if the excerpt contains media-related tags.
+      if (
+        strpos($excerpt, '<drupal-media') !== false ||
+        strpos($excerpt, '<iframe') !== false
+      ) {
+        $contains_media = true;
+      }
+
+      if ($excerpt && $contains_media) {
+        // Converting to a card would result in data loss. Convert to a text area instead.
         $type = 'uiowa_text_area';
       }
 
