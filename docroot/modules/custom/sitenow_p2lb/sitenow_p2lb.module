@@ -532,7 +532,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $accordion_items = $paragraph->get('field_accordion_item');
       foreach ($accordion_items as $accordion_item) {
         $accordion_paragraph = $paragraph->load($accordion_item->target_id);
-        $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
+        $accordionItemBody = $accordion_paragraph?->get('field_accordion_item_body')?->getValue();
+        $body = !empty($accordionItemBody) ? $accordionItemBody[0] : NULL;
         $child_title = $accordion_paragraph->get('field_accordion_item_title')->getString();
         $unique_id = $accordion_paragraph->get('field_uip_id')->getString();
         $child = $paragraph->create([
