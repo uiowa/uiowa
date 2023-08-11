@@ -2638,30 +2638,6 @@ function sitenow_update_9065() {
  * Update summary cols with field_teaser values.
  */
 function sitenow_update_9066() {
-  // Statically defining our fields to be updated. More can be added here.
-  $content_types = [
-    'page' => [
-      'summary' => 'body',
-      'teaser' => 'field_teaser',
-    ],
-    'article' => [
-      'summary' => 'body',
-      'teaser' => 'field_teaser',
-    ],
-    'person' => [
-      'summary' => 'field_person_bio',
-      'teaser' => 'field_teaser',
-    ],
-    'event' => [
-      'summary' => 'body',
-      'teaser' => 'field_teaser',
-    ],
-    'residence_hall' => [
-      'summary' => 'body',
-      'teaser' => 'field_teaser',
-    ],
-  ];
-
   $field_types = [
     'body',
     'field_teaser',
