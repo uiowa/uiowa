@@ -2730,17 +2730,17 @@ function sitenow_update_9066() {
   }
 
   // Remove the field_teaser field.
-  $entity_type = 'node';
-  $field_name = 'field_teaser';
-
-  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
-  if (is_null($field_storage)) {
-    return;
-  }
-
-  // Deleting at the field_storage level takes care of the bundles as well.
-  $field_storage->delete();
-
-  // Purge the field..
-  field_purge_batch(100);
+//  $entity_type = 'node';
+//  $field_name = 'field_teaser';
+//
+//  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+//  if (is_null($field_storage)) {
+//    return;
+//  }
+//
+//  // Deleting at the field_storage level takes care of the bundles as well.
+//  $field_storage->delete();
+//
+//  // Purge the field..
+//  field_purge_batch(100);
 }
