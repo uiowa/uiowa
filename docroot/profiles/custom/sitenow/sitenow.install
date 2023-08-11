@@ -2711,6 +2711,9 @@ function sitenow_update_9066() {
     $revision_table = $field_types[$field_name]['revision_table'];
     if ($database->schema()->tableExists($table)) {
       foreach ($field_teasers as $field_teaser) {
+        if (empty($field_teaser->field_teaser_value)) {
+          continue;
+        }
         $database
           ->update($table)
           ->fields(["{$field_name}_summary" => $field_teaser->field_teaser_value])
@@ -2719,6 +2722,9 @@ function sitenow_update_9066() {
       }
       if ($database->schema()->tableExists($revision_table)) {
         foreach ($field_teaser_revisions as $field_teaser_revision) {
+          if (empty($field_teaser_revision->field_teaser_value)) {
+            continue;
+          }
           $database
             ->update($revision_table)
             ->fields(["{$field_name}_summary" => $field_teaser->field_teaser_value])
