@@ -2558,13 +2558,17 @@ function sitenow_update_9065() {
         ->getStorage('entity_view_display')
         ->load($entity_view)
         ->getComponent($field_name);
-      $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      if (isset($view_display['weight'])) {
+        $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      }
       // Get the form display weights so we can re-set them later.
       $form_display = \Drupal::entityTypeManager()
         ->getStorage('entity_form_display')
         ->load($entity_type . '.' . $bundle . '.default')
         ->getComponent($field_name);
-      $weights['entity_form_display'][$entity_type . '.' . $bundle . '.default'] = $form_display['weight'];
+      if (isset($form_display['weight'])) {
+        $weights['entity_form_display']["{$entity_type}.{$bundle}.default"] = $form_display['weight'];
+      }
     }
 
     // Store the old field settings and update to text_long.
@@ -2628,4 +2632,73 @@ function sitenow_update_9065() {
       }
     }
   }
+}
+
+/**
+ * Update summary cols with field_teaser values.
+ */
+function sitenow_update_9066() {
+  // Statically defining our fields to be updated. More can be added here.
+  $content_types = [
+    'page' => [
+      'summary' => 'body',
+      'teaser' => 'field_teaser',
+    ],
+    'article' => [
+      'summary' => 'body',
+      'teaser' => 'field_teaser',
+    ],
+    'person' => [
+      'summary' => 'field_person_bio',
+      'teaser' => 'field_teaser',
+    ],
+    'event' => [
+      'summary' => 'body',
+      'teaser' => 'field_teaser',
+    ],
+    'residence_hall' => [
+      'summary' => 'body',
+      'teaser' => 'field_teaser',
+    ],
+  ];
+
+  $field_types = [
+    'body',
+    'field_teaser',
+    'field_person_bio',
+  ];
+
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  foreach ($field_types as $field_name) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field_types[$field_name]['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field_types[$field_name]['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  // @todo Move data from field_teaser to body_summary.
+
+  // Remove the field_teaser field.
+  $entity_type = 'node';
+  $field_name = 'field_teaser';
+
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  if (is_null($field_storage)) {
+    return;
+  }
+
+  // Deleting at the field_storage level takes care of the bundles as well.
+  $field_storage->delete();
+
+  // Purge the field..
+  field_purge_batch(100);
 }
