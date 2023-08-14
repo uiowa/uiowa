@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const container = document.querySelector('.view-slideshow .view-content');
 
   // Get all the slides in the container.
-  let slides = container.querySelectorAll('.banner');
+  const slides = container.querySelectorAll('.banner');
 
-  // For each slide...
-  let slideIndexArray = Object.keys(slides);
-  // shuffleArray(slideIndexArray);
+  // Shuffle the slides.
+  const slideIndexArray = Object.keys(slides);
+  shuffleArray(slideIndexArray);
 
   slides.forEach(function(slide, index) {
 
@@ -24,13 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '--banner-animation-delay',
       'calc(var(--time) * var(--data-slide-index) * 2)'
     );
-
-    if (index > 2) {
-      slide.remove();
-    }
   });
-
-  slides = container.querySelectorAll('.banner');
 
   // Set the slides variable to use in later maths.
   container.style.setProperty(
@@ -65,24 +59,49 @@ document.addEventListener("DOMContentLoaded", function() {
   // so that we trigger all animations at the same time.
   container.classList.add('animate');
 
-  // const delayInMilliseconds = 1000; //1 second
-  const msTime = time * 1000;
-  const numSlides = slides.length + 0.25;
+  // Set the delay in Ms and the number of slides.
+  // 1 second = 1000ms.
+  const msTime = time * 1000 * 2;
+  const numSlides = slides.length - 0.5;
 
-  delayAction(function() {
-    console.log('Transition...');
-    container.classList.add('prep-close');
 
-    delayAction(function() {
-      console.log('Close...');
-      container.classList.add('close');
+  // Chain delaying actions to close the slideshow and reload the page.
+  //    This allows us to ensure that our slideshow doesn't
+  //    index incorrect slides, break on older browsers, etc.
+  delayAction(
 
-      delayAction(function() {
-        console.log('Reload...');
-        location.reload();
-      }, 5000);
-    }, 100);
-  }, msTime * (numSlides - 0.6));
+    // Delay...
+    msTime * (numSlides),
+
+    // And then prep the slideshow for closing.
+    function() {
+      console.log('Transition...');
+      container.classList.add('prep-close');
+
+      // Chain another delay.
+      delayAction(
+
+        // Delay...
+        100,
+
+        // Then add the class to close the shutters.
+        function() {
+          console.log('Close...');
+          container.classList.add('close');
+
+          // Chain another delay...
+          delayAction(
+
+            // Delay...
+            3000,
+
+            // Then reload the page.
+            function() {
+              console.log('Reload...');
+              location.reload();
+          });
+      });
+  });
 
   /**
    * Returns a formatted string of a keyframe animation named `showHideSlide`.
@@ -124,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
  * Randomize array in-place using Durstenfeld shuffle algorithm
  * https://stackoverflow.com/a/12646864
  *
- * @param array
+ * @param {Array.<Node>} array
  */
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -133,15 +152,26 @@ function shuffleArray(array) {
   }
 }
 
-function delayAction(action, time) {
-  const delay = (delayInms) => {
-    return new Promise(resolve => setTimeout(resolve, delayInms));
+/**
+ * Delay an `action` for `time`
+ * and then run the `action` asynchronously to other JavaScript.
+ *
+ * @param {number} time
+ * @param {function} action
+ */
+function delayAction(time, action) {
+
+  // Create a promise that will delay.
+  const delay = (delayInMs) => {
+    return new Promise(resolve => setTimeout(resolve, delayInMs));
   }
 
+  // Make the promise, wait for it to complete, then run the `action`.
   const asyncDelayedAction = async () => {
-    let delayres = await delay(time);
+    let delayRes = await delay(time);
     action();
   }
 
+  // Finally, call the function that puts it all together.
   asyncDelayedAction();
 }
