@@ -5554,3 +5554,9 @@ $sites['orgophthalmologyinterestgroup.uiowa.ddev.site'] = 'ophthalmologyinterest
 $sites['orgophthalmologyinterestgroup.dev.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
 $sites['orgophthalmologyinterestgroup.stage.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
 $sites['orgophthalmologyinterestgroup.prod.drupal.uiowa.edu'] = 'ophthalmologyinterestgroup.org.uiowa.edu';
+
+// Directory aliases for mac.lab.uiowa.edu.
+$sites['labmac.uiowa.ddev.site'] = 'mac.lab.uiowa.edu';
+$sites['labmac.dev.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
+$sites['labmac.stage.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
+$sites['labmac.prod.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
