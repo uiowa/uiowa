@@ -8,9 +8,11 @@ dependencies:
     - field.field.node.alert.field_alert_affected_bus_routes
     - field.field.node.alert.field_alert_alternate_route
     - field.field.node.alert.field_alert_building
+    - field.field.node.alert.field_alert_buildings
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_location
+    - field.field.node.alert.field_alert_project_number
     - field.field.node.alert.field_alert_reason_for_closure
     - field.field.node.alert.field_alert_traffic_control
     - field.field.node.alert.field_alert_traffic_control_plan
@@ -86,25 +88,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 70921c30-e64e-4bef-975b-3dce9ae0e320
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_reason_for_closure'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 3b843159-1293-4659-bde1-fc53d21e5271
             region: main
             configuration:
@@ -117,7 +100,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -139,7 +122,7 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 9
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -245,7 +228,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 10
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -264,7 +247,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -283,7 +266,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -304,6 +287,57 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5d8ca542-2f29-4956-a17d-3f4c90c3f274
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_project_number'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 749d870c-5f6d-4af5-a90e-17151364415b
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_reason_for_closure'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 119cd809-b76c-4ebd-94ee-c06fa6abb148
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_buildings'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 4
             additional: {  }
             third_party_settings: {  }
@@ -355,6 +389,14 @@ content:
     third_party_settings: {  }
     weight: 106
     region: content
+  field_alert_buildings:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 117
+    region: content
   field_alert_category:
     type: entity_reference_label
     label: above
@@ -384,12 +426,21 @@ content:
     third_party_settings: {  }
     weight: 107
     region: content
-  field_alert_reason_for_closure:
-    type: basic_string
+  field_alert_project_number:
+    type: string
     label: above
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 113
+    weight: 116
+    region: content
+  field_alert_reason_for_closure:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 115
     region: content
   field_alert_traffic_control:
     type: boolean
