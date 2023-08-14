@@ -2484,3 +2484,19 @@ function sitenow_update_9064() {
     }
   });
 }
+
+/**
+ * Set list grid defaults for existing featured content blocks.
+ */
+function sitenow_update_9065() {
+  _update_all_blocks_by_plugin_id('inline_block:featured_content', function (&$component, $block) {
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+    $styles[] = 'list_format_list';
+    $styles[] = 'block_grid_threecol_33_34_33';
+
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', $styles);
+
+  });
+}
