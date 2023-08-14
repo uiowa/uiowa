@@ -5560,3 +5560,9 @@ $sites['labmac.uiowa.ddev.site'] = 'mac.lab.uiowa.edu';
 $sites['labmac.dev.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
 $sites['labmac.stage.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
 $sites['labmac.prod.drupal.uiowa.edu'] = 'mac.lab.uiowa.edu';
+
+// Directory aliases for hydrogeology.lab.uiowa.edu.
+$sites['labhydrogeology.uiowa.ddev.site'] = 'hydrogeology.lab.uiowa.edu';
+$sites['labhydrogeology.dev.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
+$sites['labhydrogeology.stage.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
+$sites['labhydrogeology.prod.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
