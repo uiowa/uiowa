@@ -885,6 +885,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'status' => $paragraph->get('status')->getValue(),
         'field_featured_content_item' => $content_items,
         'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
+        'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
       ];
 
       break;
@@ -1397,7 +1398,10 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       ];
 
     case 'featured_content':
-      return [];
+      return [
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
 
     case 'uiowa_image_gallery':
       return [];

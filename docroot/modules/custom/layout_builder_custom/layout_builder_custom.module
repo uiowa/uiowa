@@ -759,15 +759,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
         break;
 
-      case 'inline_block:featured_content':
-        // Move the view mode value back out of the block form.
-        $display_option = $form_state->getValue('layout_builder_style_list_format');
-        if (isset($display_option) && $display_option == 'list_format_list') {
-          $form_state->setValue('layout_builder_style_grid_columns', '');
-        }
-
-        break;
-
       case 'inline_block:uiowa_collection':
         // Move the view mode value back out of the block form.
         $view_mode = $form_state->getValue(
@@ -1175,8 +1166,9 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
+
+  LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
   $variables['attributes']['class'][] = 'list-container grid--first-item-full-width';
-  $variables['attributes']['class'][] = LayoutBuilderStylesHelper::LIST_PREFIX;
 
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
