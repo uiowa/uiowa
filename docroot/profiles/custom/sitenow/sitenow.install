@@ -2671,6 +2671,9 @@ function sitenow_update_9066() {
         UPDATE {$teaser_table}, {$table}
         SET {$table}.{$field_name}_summary = {$teaser_table}.field_teaser_value
         WHERE {$table}.entity_id = {$teaser_table}.entity_id
+        AND {$table}.bundle = {$teaser_table}.bundle
+        AND {$table}.revision_id = {$teaser_table}.revision_id
+        AND {$teaser_table}.field_teaser_value <> ''
       ")
         ->execute();
       if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
@@ -2678,6 +2681,9 @@ function sitenow_update_9066() {
           UPDATE {$teaser_revision_table}, {$revision_table}
           SET {$revision_table}.{$field_name}_summary = {$teaser_revision_table}.field_teaser_value
           WHERE {$revision_table}.revision_id = {$teaser_revision_table}.revision_id
+          AND {$revision_table}.bundle = {$teaser_revision_table}.bundle
+          AND {$revision_table}.entity_id = {$teaser_revision_table}.entity_id
+          AND {$teaser_revision_table}.field_teaser_value <> ''
         ")
           ->execute();
       }
