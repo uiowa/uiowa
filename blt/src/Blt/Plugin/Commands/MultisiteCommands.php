@@ -8,6 +8,7 @@ use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
+use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
@@ -1003,6 +1004,142 @@ EOD;
           ->run();
       }
     }
+  }
+
+  /**
+   * Collect compliance records for sites.
+   *
+   * @command uiowa:multisite:compliance
+   *
+   * @aliases umcomp
+   *
+   * @return void
+   */
+  public function complianceDetails() {
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = $this->getAcquiaCloudApiClient();
+
+    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+    $api_applications = new Applications($client);
+    $api_databases = new Databases($client);
+
+    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+    $api_environments = new Environments($client);
+
+    /** @var \AcquiaCloudApi\Response\ApplicationsResponse $apps */
+    $applications_data = $api_applications->getAll();
+
+    $applications = [];
+
+    $site_data = [];
+
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+    foreach ($applications_data as $application) {
+      if ($application->organization->name === 'University of Iowa Healthcare') {
+        continue;
+      }
+      if (str_starts_with($application->name, 'uiowa')) {
+        // @todo Trigger 'drush uiowa:compliance-details' for these sites and
+        //   assign their output to $site_data.
+        continue;
+      }
+      else {
+        $application_machine_name = str_replace('prod:', '', $application->hosting->id);
+
+        print($application->name);
+        print("\n");
+
+//        $databases_data = $api_databases->getAll($application->uuid);
+//        $databases = [];
+//        for ($i = 0; $i < 5; $i++) {
+//          print_r($databases_data[$i]);
+//        }
+
+        /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+        foreach ($api_environments->getAll($application->uuid) as $environment) {
+          // Only want to proceed if this is production.
+          if ($environment->name !== 'prod') {
+            continue;
+          }
+
+          $this->say("Checking $environment->name...");
+
+          $i = 0;
+          foreach ($environment->domains as $domain) {
+            // @todo Remove the iterator.
+            if ($i > 2) {
+              break;
+            }
+            $i++;
+
+            $site = [
+              'application' => $application_machine_name,
+              'domain' => $domain,
+              'status' => 'active',
+              'version' => 'V1, custom, or collegiate',
+              'ga_property_ids' => '',
+              'gtm_container_ids' => '',
+            ];
+
+            // Run 'drush status' to see if the site exists.
+            $result = $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->alias("$application_machine_name.prod")
+              ->ansi(FALSE)
+              ->drush('status')
+              ->option('uri', $domain)
+              ->run();
+
+            // If the site doesn't exist, skip to the next record.
+            if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')) {
+              $site['status'] = 'inactive';
+              continue;
+            }
+
+            $result = $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->alias("$application_machine_name.prod")
+              ->ansi(FALSE)
+              ->drush('variable:get')
+              ->args('googleanalytics_account')
+              ->option('uri', $domain)
+              ->run();
+
+            $output = $result->getMessage();
+            print("$output\n");
+            $ga_property_ids = NULL;
+
+            $result = $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->alias("$application_machine_name.prod")
+              ->ansi(FALSE)
+              ->drush('variable:get')
+              ->args('google_tag_container_id')
+              ->option('uri', $domain)
+              ->run();
+
+
+            // @todo Get GA property ID.
+            //   'drush vget googleanalytics_account'
+            // @todo Get GTM container ID.
+            //   'drush vget google_tag_container_id'
+
+            $site_data[] = $site;
+          }
+        }
+      }
+    }
+
+    // @todo Print out date or export it.
+  }
+
+  /**
+   * @param $app_dir
+   *
+   * @return string
+   */
+  protected function getRemoteDocrootPath($app_dir) {
+    return "/var/www/html/$app_dir/docroot";
   }
 
   /**

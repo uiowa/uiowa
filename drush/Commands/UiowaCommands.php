@@ -10,6 +10,7 @@ use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
+use Drush\Drush;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
@@ -291,6 +292,57 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     // Sanitize SQL.
     $process = $this->processManager()->drush($selfRecord, 'sql-sanitize', [], $options);
     $process->mustRun($process->showRealtime());
+  }
+
+  /**
+   * Query a site for information needed for compliance reporting.
+   *
+   * @command uiowa:compliance-details
+   *
+   * @aliases ucd
+   */
+  public function getComplianceDetails() {
+    $details = [];
+    $selfRecord = $this->siteAliasManager()->getSelf();
+
+    $manager = $this->processManager();
+
+    // Get V2 split status and use that to display a version.
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $manager->drush($selfRecord, 'cget', ['config_split.config_split.sitenow_v2', 'status']);
+    $process->run();
+
+    $output = $process->getOutput();
+    $details['version'] = str_contains(trim($output), ': false') ? 'V3' : 'V2';
+
+    // Bootstrap Drupal so that we can query entities.
+    if (!Drush::bootstrapManager()->doBootstrap(DRUSH_BOOTSTRAP_DRUPAL_FULL)) {
+      throw new \Exception(dt('Unable to bootstrap Drupal.'));
+    }
+
+    // Get a list of container ID's for GTM.
+    $container_ids = [];
+
+    $containers = \Drupal::entityTypeManager()
+      ?->getStorage('google_tag_container')
+      ?->loadMultiple();
+
+    foreach ($containers as $container) {
+      $container_ids[] = $container->container_id;
+    }
+
+    $details['gtm_containers'] = implode(', ', $container_ids);
+
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $manager->drush($selfRecord, 'cget', ['google_analytics.settings', 'account']);
+    $process->run();
+
+    $output = $process->getOutput();
+    $output = substr(trim($output), 0, -1);
+    $output = str_replace("'google_analytics.settings:account': '", '', $output);
+    $details['ga_properties'] = $output;
+
+    return $details;
   }
 
 }

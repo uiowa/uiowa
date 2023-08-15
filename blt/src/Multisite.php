@@ -25,6 +25,29 @@ class Multisite {
    *
    * @throws \Exception
    */
+  public static function getUriFromDatabaseName($name) {
+    if ($name == 'default') {
+      throw new \Exception('The default site is configured automatically by BLT.');
+    }
+    else {
+      $uri = str_replace('.', '_', $dir);
+      $db = str_replace('-', '_', $db);
+    }
+
+    return $db;
+  }
+
+  /**
+   * Given a site directory name, return the standardized database name.
+   *
+   * @param string $dir
+   *   The multisite directory, i.e. the URI without the scheme.
+   *
+   * @return string
+   *   The AC database name.
+   *
+   * @throws \Exception
+   */
   public static function getDatabaseName($dir) {
     if ($dir == 'default') {
       throw new \Exception('The default site is configured automatically by BLT.');

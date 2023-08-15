@@ -1,0 +1,24 @@
+local:
+  root: /var/www/html/docroot
+  uri: icgov.ddev.site
+dev:
+  uri: icgovdev.prod.acquia-sites.com
+  host: icgovdev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/icgov.dev/docroot
+  user: icgov.dev
+prod:
+  uri: icgov.prod.acquia-sites.com
+  host: icgov.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/icgov.prod/docroot
+  user: icgov.prod
+test:
+  uri: icgovstg.prod.acquia-sites.com
+  host: icgovstg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/icgov.test/docroot
+  user: icgov.test
