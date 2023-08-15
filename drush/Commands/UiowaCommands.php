@@ -297,24 +297,11 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   /**
    * Query a site for information needed for compliance reporting.
    *
-   * @command uiowa:compliance-details
+   * @command uiowa:get:gtm-containers
    *
-   * @aliases ucd
+   * @aliases ugetgtm
    */
-  public function getComplianceDetails() {
-    $details = [];
-    $selfRecord = $this->siteAliasManager()->getSelf();
-
-    $manager = $this->processManager();
-
-    // Get V2 split status and use that to display a version.
-    /** @var \Consolidation\SiteProcess\SiteProcess $process */
-    $process = $manager->drush($selfRecord, 'cget', ['config_split.config_split.sitenow_v2', 'status']);
-    $process->run();
-
-    $output = $process->getOutput();
-    $details['version'] = str_contains(trim($output), ': false') ? 'V3' : 'V2';
-
+  public function getGtmContainerIds() {
     // Bootstrap Drupal so that we can query entities.
     if (!Drush::bootstrapManager()->doBootstrap(DRUSH_BOOTSTRAP_DRUPAL_FULL)) {
       throw new \Exception(dt('Unable to bootstrap Drupal.'));
@@ -331,18 +318,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $container_ids[] = $container->container_id;
     }
 
-    $details['gtm_containers'] = implode(', ', $container_ids);
-
-    /** @var \Consolidation\SiteProcess\SiteProcess $process */
-    $process = $manager->drush($selfRecord, 'cget', ['google_analytics.settings', 'account']);
-    $process->run();
-
-    $output = $process->getOutput();
-    $output = substr(trim($output), 0, -1);
-    $output = str_replace("'google_analytics.settings:account': '", '', $output);
-    $details['ga_properties'] = $output;
-
-    return $details;
+    return implode(', ', $container_ids);
   }
 
 }

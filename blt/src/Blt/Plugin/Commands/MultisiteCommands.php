@@ -21,6 +21,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
@@ -1009,11 +1010,33 @@ EOD;
   /**
    * Collect compliance records for sites.
    *
+   * @command uiowa:multisite:compliance-test
+   *
+   * @aliases umcomptest
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  public function complianceDetailsTest() {
+    // Run 'drush status' to see if the site exists.
+    /** @var  $result */
+    $result = $this->taskDrush()
+      ->stopOnFail(FALSE)
+      ->alias('sandbox.local')
+      ->ansi(FALSE)
+      ->drush('uiowa:get:gtm-containers')
+      ->run();
+
+    print_r($result->getMessage(), FALSE);
+  }
+
+  /**
+   * Collect compliance records for sites.
+   *
    * @command uiowa:multisite:compliance
    *
    * @aliases umcomp
    *
-   * @return void
+   * @throws \Robo\Exception\TaskException
    */
   public function complianceDetails() {
     /** @var \AcquiaCloudApi\Connector\Client $client */
@@ -1021,7 +1044,6 @@ EOD;
 
     /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
     $api_applications = new Applications($client);
-    $api_databases = new Databases($client);
 
     /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
     $api_environments = new Environments($client);
@@ -1029,61 +1051,94 @@ EOD;
     /** @var \AcquiaCloudApi\Response\ApplicationsResponse $apps */
     $applications_data = $api_applications->getAll();
 
-    $applications = [];
-
     $site_data = [];
+
+    $old_output = $this->output;
+    $this->setOutput(new NullOutput());
 
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
     foreach ($applications_data as $application) {
+      // Skip UIHC applications.
       if ($application->organization->name === 'University of Iowa Healthcare') {
         continue;
       }
-      if (str_starts_with($application->name, 'uiowa')) {
-        // @todo Trigger 'drush uiowa:compliance-details' for these sites and
-        //   assign their output to $site_data.
-        continue;
-      }
-      else {
-        $application_machine_name = str_replace('prod:', '', $application->hosting->id);
 
-        $this->say("Checking $application->name...");
+      // Use the application machine name for reporting.
+      $application_machine_name = str_replace('prod:', '', $application->hosting->id);
 
-        /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-        foreach ($api_environments->getAll($application->uuid) as $environment) {
-          // Only want to proceed if this is production.
-          if ($environment->name !== 'prod') {
+      $this->say("Checking $application_machine_name...");
+
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+      foreach ($api_environments->getAll($application->uuid) as $environment) {
+        // Only want to proceed if this is production.
+        if ($environment->name !== 'prod') {
+          continue;
+        }
+
+        $i = 0;
+        foreach ($environment->domains as $domain) {
+          // Skip 'prod.drupal' and application site URLs.
+          if (str_contains($domain, 'prod.drupal') || str_contains($domain, "$application_machine_name.prod")) {
             continue;
           }
+          // @todo Remove the iterator.
+          if ($i > 2) {
+            break;
+          }
+          $i++;
 
-          $i = 0;
-          foreach ($environment->domains as $domain) {
-            // @todo Remove the iterator.
-            if ($i > 2) {
-              break;
-            }
-            $i++;
+          $site = [
+            'application' => $application_machine_name,
+            'domain' => $domain,
+            'version' => 'V1, custom, or collegiate',
+            'status' => 'active',
+            'ga_property_ids' => '',
+            'gtm_container_ids' => '',
+          ];
 
-            $site = [
-              'application' => $application_machine_name,
-              'domain' => $domain,
-              'version' => 'V1, custom, or collegiate',
-              'status' => 'active',
-              'ga_property_ids' => '',
-              'gtm_container_ids' => '',
-            ];
+          // Run 'drush status' to see if the site exists.
+          $result = $this->taskDrush()
+            ->verbose(FALSE)
+            ->stopOnFail(FALSE)
+            ->alias("$application_machine_name.prod")
+            ->ansi(FALSE)
+            ->drush('status')
+            ->option('uri', $domain)
+            ->run();
 
-            // Run 'drush status' to see if the site exists.
-            $result = $this->taskDrush()
-              ->stopOnFail(FALSE)
-              ->alias("$application_machine_name.prod")
-              ->ansi(FALSE)
-              ->drush('status')
-              ->option('uri', $domain)
-              ->run();
+          // If the site doesn't exist, skip to the next record.
+          if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')) {
+            $site['status'] = 'inactive';
+          }
+          else {
+            if (str_starts_with($application->name, 'uiowa')) {
+              // Run 'drush status' to see if the site exists.
+              $result = $this->taskDrush()
+                ->verbose(FALSE)
+                ->stopOnFail(FALSE)
+                ->alias("$application_machine_name.prod")
+                ->ansi(FALSE)
+                ->drush('config:get')
+                ->args(['config_split.config_split.sitenow_v2', 'status'])
+                ->option('uri', $domain)
+                ->run();
 
-            // If the site doesn't exist, skip to the next record.
-            if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')) {
-              $site['status'] = 'inactive';
+              $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
+
+              // Run 'drush status' to see if the site exists.
+              $result = $this->taskDrush()
+                ->verbose(FALSE)
+                ->stopOnFail(FALSE)
+                ->alias("$application_machine_name.prod")
+                ->ansi(FALSE)
+                ->drush('config:get')
+                ->args(['google_analytics.settings', 'account'])
+                ->option('uri', $domain)
+                ->run();
+
+              $site['ga_property_ids'] = str_replace("'google_analytics.settings:account': ", '', trim($result->getMessage()));
+
+              $site['gtm_container_ids'] = 'Not reporting yet.';
             }
             else {
               foreach([
@@ -1116,6 +1171,7 @@ EOD;
       }
     }
 
+    $this->setOutput($old_output);
 
     $table = new Table($this->output);
 
@@ -1128,7 +1184,7 @@ EOD;
       'GTM Container IDs',
     ]);
 
-    // @todo Print out data or export it.
+    // @todo Add option to export data.
 
     $table->setRows($site_data);
     $table->render();
