@@ -237,15 +237,30 @@ function facilities_core_preprocess_media(&$variables) {
   }
 }
 
-
-
 /**
  * Implements hook_entity_presave().
  */
 function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
-    // Setting the alert title with the buildings and closure reason values.
-    $output = $entity->get('field_alert_building')->value . ' - ' . $entity->get('field_alert_short_work_desc')->value;
+    // Load the referenced entity from the entity reference field.
+    $building_reference = $entity->get('field_alert_building')->entity;
+
+    if ($building_reference) {
+      $building_title = $building_reference->get('title')->value;
+      $building_locations = $entity->get('field_alert_buildings_locations')->value;
+      // Concatenate the entity reference value and the other field value.
+      $output = $building_title;
+
+      if (!empty($building_locations)) {
+        $output .= ' and ' . $building_locations;
+      }
+      $output .= ' - ' . $entity->get('field_alert_short_work_desc')->value;
+    }
+    else {
+      $output = $entity->get('field_alert_short_work_desc')->value;
+    }
+
+    // Set the combined output as the node title.
     $entity->setTitle($output);
 
     $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
