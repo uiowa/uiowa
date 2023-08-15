@@ -2692,6 +2692,7 @@ function sitenow_update_9067() {
   foreach ([
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
+    'views_block:events_list_block-list_card',
   ] as $block_plugin_id) {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
       $config = $component->getConfiguration();
