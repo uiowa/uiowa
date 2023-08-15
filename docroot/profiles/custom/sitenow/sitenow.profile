@@ -364,7 +364,8 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
  * Custom node content type form defaults.
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
-  // @todo Update this for the transition to using body summary.
+  // @todo Remove this after the transition to body summary
+  //   has been completed.
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
@@ -380,9 +381,11 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       '#weight' => -10,
       '#optional' => TRUE,
       '#open' => FALSE,
+      '#description' => '<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>',
     ];
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
+    $form['field_teaser']['#disabled'] = TRUE;
   }
 
   if (isset($form['field_image'])) {
