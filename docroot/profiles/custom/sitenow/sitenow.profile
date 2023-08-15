@@ -381,11 +381,16 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       '#weight' => -10,
       '#optional' => TRUE,
       '#open' => FALSE,
-      '#description' => '<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>',
     ];
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
-    $form['field_teaser']['#disabled'] = TRUE;
+
+    // If we're in v3 or a non-page content type in v2 (article, person),
+    // then disable the field_teaser and add help text.
+    if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
+      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
+      $form['field_teaser']['#disabled'] = TRUE;
+    }
   }
 
   if (isset($form['field_image'])) {
