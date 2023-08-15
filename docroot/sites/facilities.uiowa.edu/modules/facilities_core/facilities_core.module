@@ -244,19 +244,17 @@ function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
     // Load the referenced entity from the entity reference field.
     $building_reference = $entity->get('field_alert_building')->entity;
-
+    // Check if the referenced entity is valid.
     if ($building_reference) {
       $building_title = $building_reference->get('title')->value;
       $building_locations = $entity->get('field_alert_buildings_locations')->value;
-      // Concatenate the entity reference value and the other field value.
-      $output = $building_title;
-
       if (!empty($building_locations)) {
-        $output .= ' and ' . $building_locations;
+        $building_title = $building_locations;
       }
-      $output .= ' - ' . $entity->get('field_alert_short_work_desc')->value;
+      $output = $building_title . ' - ' . $entity->get('field_alert_short_work_desc')->value;
     }
     else {
+      // If the entity reference is missing, use only the other field value.
       $output = $entity->get('field_alert_short_work_desc')->value;
     }
 

@@ -295,16 +295,19 @@ third_party_settings:
             region: main
             configuration:
               id: 'field_block:node:alert:field_alert_project_number'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: string
-                label: above
+                label: inline
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 13
+            weight: 16
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
