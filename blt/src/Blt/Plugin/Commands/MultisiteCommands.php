@@ -1046,14 +1046,7 @@ EOD;
       else {
         $application_machine_name = str_replace('prod:', '', $application->hosting->id);
 
-        print($application->name);
-        print("\n");
-
-//        $databases_data = $api_databases->getAll($application->uuid);
-//        $databases = [];
-//        for ($i = 0; $i < 5; $i++) {
-//          print_r($databases_data[$i]);
-//        }
+        $this->say("Checking $application->name...");
 
         /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
         foreach ($api_environments->getAll($application->uuid) as $environment) {
@@ -1061,8 +1054,6 @@ EOD;
           if ($environment->name !== 'prod') {
             continue;
           }
-
-          $this->say("Checking $environment->name...");
 
           $i = 0;
           foreach ($environment->domains as $domain) {
@@ -1075,8 +1066,8 @@ EOD;
             $site = [
               'application' => $application_machine_name,
               'domain' => $domain,
-              'status' => 'active',
               'version' => 'V1, custom, or collegiate',
+              'status' => 'active',
               'ga_property_ids' => '',
               'gtm_container_ids' => '',
             ];
@@ -1093,36 +1084,31 @@ EOD;
             // If the site doesn't exist, skip to the next record.
             if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')) {
               $site['status'] = 'inactive';
-              continue;
             }
+            else {
+              foreach([
+                'ga_property_ids' => 'googleanalytics_account',
+                'gtm_container_ids' => 'google_tag_container_id',
+              ] as $key => $variable) {
+                // Run 'drush vget $variable'.
+                $result = $this->taskDrush()
+                  ->stopOnFail(FALSE)
+                  ->alias("$application_machine_name.prod")
+                  ->ansi(FALSE)
+                  ->drush('variable:get')
+                  ->args($variable)
+                  ->option('uri', $domain)
+                  ->run();
 
-            $result = $this->taskDrush()
-              ->stopOnFail(FALSE)
-              ->alias("$application_machine_name.prod")
-              ->ansi(FALSE)
-              ->drush('variable:get')
-              ->args('googleanalytics_account')
-              ->option('uri', $domain)
-              ->run();
-
-            $output = $result->getMessage();
-            print("$output\n");
-            $ga_property_ids = NULL;
-
-            $result = $this->taskDrush()
-              ->stopOnFail(FALSE)
-              ->alias("$application_machine_name.prod")
-              ->ansi(FALSE)
-              ->drush('variable:get')
-              ->args('google_tag_container_id')
-              ->option('uri', $domain)
-              ->run();
-
-
-            // @todo Get GA property ID.
-            //   'drush vget googleanalytics_account'
-            // @todo Get GTM container ID.
-            //   'drush vget google_tag_container_id'
+                // If the output contains the variable name then it found a
+                // result, and we store that in the appropriate key for later
+                // output.
+                $output = trim(trim($result->getMessage()), "'");
+                if (str_contains($output, "$variable: ")) {
+                  $site[$key] = str_replace("$variable: ", '', $output);
+                }
+              }
+            }
 
             $site_data[] = $site;
           }
@@ -1130,7 +1116,22 @@ EOD;
       }
     }
 
-    // @todo Print out date or export it.
+
+    $table = new Table($this->output);
+
+    $table->setHeaders([
+      'Application',
+      'URL',
+      'Version',
+      'Status',
+      'GA Property IDs',
+      'GTM Container IDs',
+    ]);
+
+    // @todo Print out data or export it.
+
+    $table->setRows($site_data);
+    $table->render();
   }
 
   /**
