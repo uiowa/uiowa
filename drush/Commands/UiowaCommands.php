@@ -9,6 +9,7 @@ use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
+use Drush\Boot\DrupalBootLevels;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Drush\Drush;
 use Symfony\Component\Console\Input\InputInterface;
@@ -300,10 +301,12 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @command uiowa:get:gtm-containers
    *
    * @aliases ugetgtm
+   *
+   * @throws \Exception
    */
   public function getGtmContainerIds() {
     // Bootstrap Drupal so that we can query entities.
-    if (!Drush::bootstrapManager()->doBootstrap(DRUSH_BOOTSTRAP_DRUPAL_FULL)) {
+    if (!Drush::bootstrapManager()->doBootstrap(DrupalBootLevels::FULL)) {
       throw new \Exception(dt('Unable to bootstrap Drupal.'));
     }
 
