@@ -28,6 +28,7 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
+    - smart_trim
     - user
 third_party_settings:
   layout_builder:
@@ -57,10 +58,28 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_teaser:
-    type: basic_string
-    label: hidden
-    settings: {  }
+  field_person_bio:
+    type: smart_trim
+    label: above
+    settings:
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+        replace_tokens: false
     third_party_settings: {  }
     weight: 1
     region: content
@@ -70,7 +89,6 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_meta_tags: true
-  field_person_bio: true
   field_person_contact_information: true
   field_person_credential: true
   field_person_education: true
@@ -87,5 +105,6 @@ hidden:
   field_person_website: true
   field_person_website_link_direct: true
   field_tags: true
+  field_teaser: true
   links: true
   search_api_excerpt: true
