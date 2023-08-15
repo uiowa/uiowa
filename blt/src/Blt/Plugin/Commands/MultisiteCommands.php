@@ -1010,28 +1010,6 @@ EOD;
   /**
    * Collect compliance records for sites.
    *
-   * @command uiowa:multisite:compliance-test
-   *
-   * @aliases umcomptest
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  public function complianceDetailsTest() {
-    // Run 'drush status' to see if the site exists.
-    /** @var  $result */
-    $result = $this->taskDrush()
-      ->stopOnFail(FALSE)
-      ->alias('sandbox.local')
-      ->ansi(FALSE)
-      ->drush('uiowa:get:gtm-containers')
-      ->run();
-
-    print_r($result->getMessage(), FALSE);
-  }
-
-  /**
-   * Collect compliance records for sites.
-   *
    * @command uiowa:multisite:compliance
    *
    * @aliases umcomp
@@ -1052,9 +1030,6 @@ EOD;
     $applications_data = $api_applications->getAll();
 
     $site_data = [];
-
-    $old_output = $this->output;
-    $this->setOutput(new NullOutput());
 
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
     foreach ($applications_data as $application) {
@@ -1141,7 +1116,7 @@ EOD;
               $site['gtm_container_ids'] = 'Not reporting yet.';
             }
             else {
-              foreach([
+              foreach ([
                 'ga_property_ids' => 'googleanalytics_account',
                 'gtm_container_ids' => 'google_tag_container_id',
               ] as $key => $variable) {
@@ -1171,8 +1146,7 @@ EOD;
       }
     }
 
-    $this->setOutput($old_output);
-
+    // @todo Add option to export data.
     $table = new Table($this->output);
 
     $table->setHeaders([
@@ -1183,20 +1157,8 @@ EOD;
       'GA Property IDs',
       'GTM Container IDs',
     ]);
-
-    // @todo Add option to export data.
-
     $table->setRows($site_data);
     $table->render();
-  }
-
-  /**
-   * @param $app_dir
-   *
-   * @return string
-   */
-  protected function getRemoteDocrootPath($app_dir) {
-    return "/var/www/html/$app_dir/docroot";
   }
 
   /**
