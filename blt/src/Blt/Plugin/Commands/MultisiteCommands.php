@@ -1016,7 +1016,7 @@ EOD;
    *
    * @throws \Robo\Exception\TaskException
    */
-  public function complianceDetails() {
+  public function complianceDetails($options = ['export' => FALSE]) {
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
 
@@ -1057,7 +1057,7 @@ EOD;
             continue;
           }
           // @todo Remove the iterator.
-          if ($i > 2) {
+          if ($i > 0) {
             break;
           }
           $i++;
@@ -1100,7 +1100,7 @@ EOD;
 
               $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
 
-              // Run 'drush status' to see if the site exists.
+              // Run 'drush config:get google_analytics.settings account'.
               $result = $this->taskDrush()
                 ->verbose(FALSE)
                 ->stopOnFail(FALSE)
@@ -1111,7 +1111,13 @@ EOD;
                 ->option('uri', $domain)
                 ->run();
 
-              $site['ga_property_ids'] = str_replace("'google_analytics.settings:account': ", '', trim($result->getMessage()));
+              // If the output contains the variable name then it found a
+              // result, and we store that in the appropriate key for later
+              // output.
+              if (str_contains($result->getMessage(), "'google_analytics.settings:account': ")) {
+                $output = str_replace("'google_analytics.settings:account': ", '', $result->getMessage());
+                $site['ga_property_ids'] = trim(trim($output), "'");
+              }
 
               $site['gtm_container_ids'] = 'Not reporting yet.';
             }
@@ -1133,9 +1139,9 @@ EOD;
                 // If the output contains the variable name then it found a
                 // result, and we store that in the appropriate key for later
                 // output.
-                $output = trim(trim($result->getMessage()), "'");
-                if (str_contains($output, "$variable: ")) {
-                  $site[$key] = str_replace("$variable: ", '', $output);
+                if (str_contains($result->getMessage(), "$variable: ")) {
+                  $output = str_replace("$variable: ", '', $result->getMessage());
+                  $site[$key] = trim(trim($output), "'");
                 }
               }
             }
@@ -1146,19 +1152,40 @@ EOD;
       }
     }
 
-    // @todo Add option to export data.
-    $table = new Table($this->output);
+    if ($options['export']) {
+      // @todo output to CSV file and copy to filesystem.
+      $this->say('Exporting to CSV.');
 
-    $table->setHeaders([
-      'Application',
-      'URL',
-      'Version',
-      'Status',
-      'GA Property IDs',
-      'GTM Container IDs',
-    ]);
-    $table->setRows($site_data);
-    $table->render();
+      $now = date('YmdHis');
+      $filename = "OSC-Web-SiteNow-Compliance-Report-$now.csv";
+      $root = $this->getConfigValue('repo.root');
+      $filepath = "$root/$filename";
+
+      if (file_exists($filepath)) {
+        unlink($filepath);
+      }
+      $fp = fopen($filepath, 'w+');
+      foreach ($site_data as $line) {
+        fputcsv($fp, $line);
+      }
+      fclose($fp);
+      $this->say("Done. Exported to $filepath");
+    }
+    else {
+      $this->say('Here are your results.');
+      $table = new Table($this->output);
+
+      $table->setHeaders([
+        'Application',
+        'URL',
+        'Version',
+        'Status',
+        'GA Property IDs',
+        'GTM Container IDs',
+      ]);
+      $table->setRows($site_data);
+      $table->render();
+    }
   }
 
   /**
