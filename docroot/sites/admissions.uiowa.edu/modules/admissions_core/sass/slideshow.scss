@@ -11,6 +11,28 @@
 
   animation: none;
   will-change: animation;
+
+  &.prep-close .banner__shutters {
+    &:after,
+    &:before {
+      animation: none;
+    }
+
+    &:after {
+      transform: translate3d(-50%, 65vmax, 0);
+    }
+
+    &:before {
+      transform: translate3d(-50%, -65vmax, 0);
+    }
+  }
+
+  &.close .banner__shutters {
+    &:after,
+    &:before {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
 }
 
 body,
@@ -45,7 +67,7 @@ nav.nav--horizontal {
   height: 100%;
   width: 100%;
   opacity: 0;
-  transform: translate3d(-100%, 0, -10px);
+  transform: translate3d(0, 0, -10px);
   animation: none;
   animation-delay: 0s;
   will-change: opacity, transform, animation, animation-delay;
@@ -141,6 +163,7 @@ nav.nav--horizontal {
       &:after,
       &:before {
         animation-timing-function: var(--animation-fn-1);
+        transition: transform 3s ease-in-out;
       }
 
       &:before {
@@ -159,6 +182,7 @@ nav.nav--horizontal {
       height: 100%;
       width: 100%;
       left: 50%;
+      animation: none;
       transform: translate3d(-50%, 0, 0);
       animation-timing-function: unset;
       background-color: var(--brand-secondary);
