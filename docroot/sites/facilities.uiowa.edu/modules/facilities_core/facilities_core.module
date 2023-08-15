@@ -237,11 +237,17 @@ function facilities_core_preprocess_media(&$variables) {
   }
 }
 
+
+
 /**
  * Implements hook_entity_presave().
  */
 function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
+    // Setting the alert title with the buildings and closure reason values.
+    $output = $entity->get('field_alert_building')->value . ' - ' . $entity->get('field_alert_short_work_desc')->value;
+    $entity->setTitle($output);
+
     $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
     if (!empty($traffic_plan)) {
       // Media will still display the file name when
