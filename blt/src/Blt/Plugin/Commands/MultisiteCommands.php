@@ -1152,8 +1152,17 @@ EOD;
       }
     }
 
+    $headers = [
+      'Application',
+      'URL',
+      'Version',
+      'Status',
+      'GA Property IDs',
+      'GTM Container IDs',
+    ];
+
     if ($options['export']) {
-      // @todo output to CSV file and copy to filesystem.
+      // Output to CSV file and copy to filesystem.
       $this->say('Exporting to CSV.');
 
       $now = date('YmdHis');
@@ -1165,6 +1174,7 @@ EOD;
         unlink($filepath);
       }
       $fp = fopen($filepath, 'w+');
+      fputcsv($fp, $headers);
       foreach ($site_data as $line) {
         fputcsv($fp, $line);
       }
@@ -1175,14 +1185,7 @@ EOD;
       $this->say('Here are your results.');
       $table = new Table($this->output);
 
-      $table->setHeaders([
-        'Application',
-        'URL',
-        'Version',
-        'Status',
-        'GA Property IDs',
-        'GTM Container IDs',
-      ]);
+      $table->setHeaders($headers);
       $table->setRows($site_data);
       $table->render();
     }
