@@ -68,6 +68,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
         'field_person_email',
         'field_person_phone',
       ],
+      '#content' => 'field_person_bio',
     ]);
 
     // Handle link directly to source functionality.
