@@ -5566,3 +5566,9 @@ $sites['labhydrogeology.uiowa.ddev.site'] = 'hydrogeology.lab.uiowa.edu';
 $sites['labhydrogeology.dev.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
 $sites['labhydrogeology.stage.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
 $sites['labhydrogeology.prod.drupal.uiowa.edu'] = 'hydrogeology.lab.uiowa.edu';
+
+// Directory aliases for catering.uiowa.edu.
+$sites['catering.uiowa.ddev.site'] = 'catering.uiowa.edu';
+$sites['catering.dev.drupal.uiowa.edu'] = 'catering.uiowa.edu';
+$sites['catering.stage.drupal.uiowa.edu'] = 'catering.uiowa.edu';
+$sites['catering.prod.drupal.uiowa.edu'] = 'catering.uiowa.edu';
