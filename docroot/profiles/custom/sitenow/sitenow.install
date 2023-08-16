@@ -2571,7 +2571,7 @@ function sitenow_update_9065() {
       }
     }
 
-    // Store the old field settings and update to text_long.
+    // Store the old field settings and update to text_with_summary.
     $new_field_storage = $field_storage->toArray();
     $new_field_storage['type'] = 'text_with_summary';
     $new_field_storage['settings'] = [];
@@ -2596,6 +2596,7 @@ function sitenow_update_9065() {
       foreach ($rows as $row) {
         $row = (array) $row;
         $row[$field['format_col']] = 'filtered_html';
+        // Set a blank summary. It'll be updated in the next update hook.
         $row[$field['summary_col']] = '';
         $database
           ->insert($table)
