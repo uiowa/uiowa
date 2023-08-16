@@ -5578,3 +5578,9 @@ $sites['conferencepgsrm2024.uiowa.ddev.site'] = 'pgsrm2024.conference.uiowa.edu'
 $sites['conferencepgsrm2024.dev.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
 $sites['conferencepgsrm2024.stage.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
 $sites['conferencepgsrm2024.prod.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
+
+// Directory aliases for epsm.lab.uiowa.edu.
+$sites['labepsm.uiowa.ddev.site'] = 'epsm.lab.uiowa.edu';
+$sites['labepsm.dev.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
+$sites['labepsm.stage.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
+$sites['labepsm.prod.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
