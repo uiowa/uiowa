@@ -6,29 +6,12 @@ adding:
       - field.field.node.alert.field_alert_alternate_route
       - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_buildings_locations
-      - field.field.node.alert.field_alert_date
       - field.field.node.alert.field_alert_override_building
       - field.field.node.alert.field_alert_project_number
       - field.field.node.alert.field_alert_reason_for_closure
       - field.field.node.alert.field_alert_short_work_desc
       - field.field.node.alert.field_alert_traffic_control
       - field.field.node.alert.field_alert_traffic_control_plan
-    module:
-      - smart_date
-  content:
-    field_alert_date:
-      type: smartdate_default
-      label: hidden
-      settings:
-        timezone_override: ''
-        format_type: medium
-        format: default
-        force_chronological: false
-        add_classes: false
-        time_wrapper: true
-        localize: false
-      weight: 3
-      region: content
   hidden:
     field_alert_accessible_route: true
     field_alert_affected_bus_routes: true
