@@ -1398,10 +1398,23 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       ];
 
     case 'featured_content':
-      return [
-        'list_format_list',
-        'block_grid_threecol_33_34_33',
-      ];
+      $classes = '';
+      if ($paragraph && $paragraph->hasField('field_uip_classes')) {
+        $classes = $paragraph->get('field_uip_classes')->value;
+      }
+
+      if ($classes === 'grid' || $classes === 'masonry') {
+        return [
+          'list_format_grid',
+          'block_grid_threecol_33_34_33',
+        ];
+      }
+      else {
+        return [
+          'list_format_list',
+          'block_grid_threecol_33_34_33',
+        ];
+      }
 
     case 'uiowa_image_gallery':
       return [];
