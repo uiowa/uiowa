@@ -5572,3 +5572,9 @@ $sites['catering.uiowa.ddev.site'] = 'catering.uiowa.edu';
 $sites['catering.dev.drupal.uiowa.edu'] = 'catering.uiowa.edu';
 $sites['catering.stage.drupal.uiowa.edu'] = 'catering.uiowa.edu';
 $sites['catering.prod.drupal.uiowa.edu'] = 'catering.uiowa.edu';
+
+// Directory aliases for pgsrm2024.conference.uiowa.edu.
+$sites['conferencepgsrm2024.uiowa.ddev.site'] = 'pgsrm2024.conference.uiowa.edu';
+$sites['conferencepgsrm2024.dev.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
+$sites['conferencepgsrm2024.stage.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
+$sites['conferencepgsrm2024.prod.drupal.uiowa.edu'] = 'pgsrm2024.conference.uiowa.edu';
