@@ -23,6 +23,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 
@@ -31,6 +32,7 @@ use Uiowa\Multisite;
  */
 class MultisiteCommands extends BltTasks {
 
+  use AcquiaCloudApiTrait;
   use InspectorTrait;
 
   /**
@@ -289,7 +291,7 @@ class MultisiteCommands extends BltTasks {
         }
 
         /** @var \AcquiaCloudApi\Connector\Client $client */
-        $client = $this->getAcquiaCloudApiClient();
+        $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
         foreach ($this->getConfigValue('uiowa.applications') as $name => $uuid) {
           /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
@@ -443,7 +445,7 @@ EOD
     $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = $this->getAcquiaCloudApiClient();
+    $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
@@ -743,7 +745,7 @@ EOD;
     $new = $this->askChoice("Site $site is currently on $old. Which cloud application should it be transferred to?", array_keys($choices));
 
     // Instantiate a new API client to use with requests.
-    $client = $this->getAcquiaCloudApiClient();
+    $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
     // Check that new application has SSL coverage.
     $client->addQuery('filter', "name=$mode");
@@ -1005,250 +1007,6 @@ EOD;
           ->run();
       }
     }
-  }
-
-  /**
-   * Collect compliance records for sites.
-   *
-   * @command uiowa:multisite:compliance
-   *
-   * @aliases umcomp
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  public function complianceDetails($options = ['export' => FALSE, 'debug' => FALSE]) {
-    /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = $this->getAcquiaCloudApiClient();
-
-    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-    $api_applications = new Applications($client);
-
-    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-    $api_environments = new Environments($client);
-
-    $site_data = [];
-
-    $headers = [
-      'Application',
-      'URL',
-      'Version',
-      'Status',
-      'GA Property IDs',
-      'GTM Container IDs',
-    ];
-
-    $d9_containers = [
-      'uiowa',
-      'uiowa01',
-      'uiowa02',
-      'uiowa03',
-      'uiowa04',
-      'uiowa05',
-    ];
-
-    $debug = $options['debug'];
-
-    $application_data = [];
-    // Compile the list of domains to check.
-    foreach ($api_applications->getAll() as $application) {
-      // Skip UIHC applications.
-      if ($application->organization->name === 'University of Iowa Healthcare') {
-        continue;
-      }
-
-      $app_name = str_replace('prod:', '', $application->hosting->id);
-
-      // Use the application machine name for reporting.
-      $this->say("Getting domains for $app_name...");
-
-      $application_data[$app_name] = [];
-
-      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($api_environments->getAll($application->uuid) as $environment) {
-        // Only want to proceed if this is production.
-        if ($environment->name !== 'prod') {
-          continue;
-        }
-
-        $application_data[$app_name]['domains'] = array_values(array_filter($environment->domains, function($domain) use ($app_name) {
-          return !(str_contains($domain, '.prod.drupal.') || str_starts_with($domain, "$app_name.prod"));
-        }));
-      }
-    }
-    $api_applications = NULL;
-    $api_environments = NULL;
-
-    if (!empty($application_data)) {
-      ksort($application_data);
-      // Create the file for exporting.
-      if ($options['export']) {
-        $now = date('Ymd-His');
-        $filename = "SiteNow-Compliance-Report-$now.csv";
-        $root = $this->getConfigValue('repo.root');
-        $filepath = "$root/$filename";
-
-        if (file_exists($filepath)) {
-          unlink($filepath);
-        }
-        $this->say("Created export file $filepath");
-        $fp = fopen($filepath, 'w+');
-        fputcsv($fp, $headers);
-        fclose($fp);
-      }
-
-      $this->say('Starting to check domains.');
-      foreach ($application_data as $machine_name => $data) {
-        $this->say("Processing domains for $machine_name...");
-        foreach ($data['domains'] as $domain) {
-          $this->say("Processing $domain");
-          $site = [
-            'application' => $machine_name,
-            'domain' => $domain,
-            'version' => 'V1, custom, or collegiate',
-            'status' => 'active',
-            'ga_property_ids' => '',
-            'gtm_container_ids' => '',
-          ];
-
-          // Run 'drush status' to see if the site exists.
-          $result = $this->getDrushTask($debug)
-            ->interactive(FALSE)
-            ->alias("$machine_name.prod")
-            ->ansi(FALSE)
-            ->drush('status')
-            ->option('uri', $domain)
-            ->run();
-
-          // If the site doesn't exist, skip to the next record.
-          if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')
-            || str_contains($result->getMessage(), 'Fatal error')) {
-            $site['status'] = 'inactive';
-          }
-          else {
-
-            // SiteNow V2/V3
-            if (in_array($machine_name, $d9_containers)) {
-              // Check if V2 split is enabled to determine version.
-              $result = $this->getDrushTask($debug)
-                ->interactive(FALSE)
-                ->alias("$machine_name.prod")
-                ->ansi(FALSE)
-                ->drush('config:get')
-                ->args(['config_split.config_split.sitenow_v2', 'status'])
-                ->option('uri', $domain)
-                ->run();
-
-              $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
-
-              // Run 'drush config:get google_analytics.settings account'.
-              $result = $this->getDrushTask($debug)
-                ->interactive(FALSE)
-                ->alias("$machine_name.prod")
-                ->ansi(FALSE)
-                ->drush('config:get')
-                ->args(['google_analytics.settings', 'account'])
-                ->option('uri', $domain)
-                ->run();
-
-              // If the output contains the variable name then it found a
-              // result, and we store that in the appropriate key for later
-              // output.
-              if (str_contains($result->getMessage(), "'google_analytics.settings:account': ")) {
-                $output = str_replace("'google_analytics.settings:account': ", '', $result->getMessage());
-                $site['ga_property_ids'] = trim(trim($output), "'");
-              }
-
-              $result = $this->getDrushTask($debug)
-                ->interactive(FALSE)
-                ->alias("$machine_name.prod")
-                ->ansi(FALSE)
-                ->drush('uiowa:get:gtm-containers')
-                ->option('uri', $domain)
-                ->run();
-
-              $site['gtm_container_ids'] = trim($result->getMessage());
-            }
-            // SiteNow V1, custom, and collegiate.
-            else {
-              foreach ([
-                'ga_property_ids' => 'googleanalytics_account',
-                'gtm_container_ids' => 'google_tag_container_id',
-              ] as $key => $variable) {
-                // Run 'drush vget $variable'.
-                $result = $this->getDrushTask($debug)
-                  ->interactive(FALSE)
-                  ->alias("$machine_name.prod")
-                  ->ansi(FALSE)
-                  ->drush('variable:get')
-                  ->args($variable)
-                  ->option('uri', $domain)
-                  ->run();
-
-                // If the output contains the variable name then it found a
-                // result, and we store that in the appropriate key for later
-                // output.
-                if (str_contains($result->getMessage(), "$variable: ")) {
-                  $output = str_replace("$variable: ", '', $result->getMessage());
-                  $site[$key] = trim(trim($output), "'");
-                }
-              }
-            }
-          }
-          if ($options['export']) {
-            // Output to CSV file and copy to filesystem.
-            $fp = fopen($filepath, 'a');
-            fputcsv($fp, $site);
-            fclose($fp);
-            $this->say("Updated $filepath");
-          }
-          else {
-            $site_data[] = $site;
-          }
-        }
-      }
-      $this->say('Done');
-
-      if (!$options['export']) {
-        $this->say('Here are your results.');
-        $table = new Table($this->output);
-
-        $table->setHeaders($headers);
-        $table->setRows($site_data);
-        $table->render();
-      }
-    }
-    else {
-      $this->say('No domains were found for the supplied application.');
-    }
-  }
-
-  protected function getDrushTask($debug = FALSE) {
-    $task = $this->taskDrush();
-
-    if (!$debug) {
-      $task->printOutput(FALSE)
-        ->printMetadata(FALSE);
-    }
-
-    return $task;
-  }
-
-  /**
-   * Return new Client for interacting with Acquia Cloud API.
-   *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   ConnectorInterface client.
-   */
-  protected function getAcquiaCloudApiClient() {
-    $connector = new Connector([
-      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
-      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
-    ]);
-
-    /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = Client::factory($connector);
-
-    return $client;
   }
 
   /**
