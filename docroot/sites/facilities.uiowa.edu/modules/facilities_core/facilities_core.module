@@ -40,6 +40,18 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_alert_form':
+    case 'node_alert_edit_form':
+
+      // Show or hide the field_alert_buildings_locations field based on the checkbox value.
+      $form['field_alert_buildings_locations']['#states'] = [
+        'visible' => [
+          ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      break;
+
     case 'node_named_building_form':
     case 'node_named_building_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
@@ -244,17 +256,26 @@ function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
     // Load the referenced entity from the entity reference field.
     $building_reference = $entity->get('field_alert_building')->entity;
+
     // Check if the referenced entity is valid.
     if ($building_reference) {
       $building_title = $building_reference->get('title')->value;
       $building_locations = $entity->get('field_alert_buildings_locations')->value;
+
       if (!empty($building_locations)) {
         $building_title = $building_locations;
       }
+
+      // Use the updated entity reference value and the other field value.
       $output = $building_title . ' - ' . $entity->get('field_alert_short_work_desc')->value;
     }
+    elseif (!empty($entity->get('field_alert_buildings_locations')->value)) {
+      // Use only the value of field_alert_buildings_locations if building is empty.
+      $output = $entity->get('field_alert_buildings_locations')->value;
+    }
     else {
-      // If the entity reference is missing, use only the other field value.
+      // If both entity reference and field_alert_buildings_locations
+      // are missing, use only the other field value.
       $output = $entity->get('field_alert_short_work_desc')->value;
     }
 
