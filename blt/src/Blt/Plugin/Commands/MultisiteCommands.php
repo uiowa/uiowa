@@ -1016,7 +1016,7 @@ EOD;
    *
    * @throws \Robo\Exception\TaskException
    */
-  public function complianceDetails($options = ['export' => FALSE]) {
+  public function complianceDetails($options = ['export' => FALSE, 'debug' => FALSE]) {
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
 
@@ -1026,22 +1026,42 @@ EOD;
     /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
     $api_environments = new Environments($client);
 
-    /** @var \AcquiaCloudApi\Response\ApplicationsResponse $apps */
-    $applications_data = $api_applications->getAll();
-
     $site_data = [];
 
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    foreach ($applications_data as $application) {
+    $headers = [
+      'Application',
+      'URL',
+      'Version',
+      'Status',
+      'GA Property IDs',
+      'GTM Container IDs',
+    ];
+
+    $d9_containers = [
+      'uiowa',
+      'uiowa01',
+      'uiowa02',
+      'uiowa03',
+      'uiowa04',
+      'uiowa05',
+    ];
+
+    $debug = $options['debug'];
+
+    $application_data = [];
+    // Compile the list of domains to check.
+    foreach ($api_applications->getAll() as $application) {
       // Skip UIHC applications.
       if ($application->organization->name === 'University of Iowa Healthcare') {
         continue;
       }
 
-      // Use the application machine name for reporting.
-      $application_machine_name = str_replace('prod:', '', $application->hosting->id);
+      $app_name = str_replace('prod:', '', $application->hosting->id);
 
-      $this->say("Checking $application_machine_name...");
+      // Use the application machine name for reporting.
+      $this->say("Getting domains for $app_name...");
+
+      $application_data[$app_name] = [];
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
       foreach ($api_environments->getAll($application->uuid) as $environment) {
@@ -1050,20 +1070,39 @@ EOD;
           continue;
         }
 
-        $i = 0;
-        foreach ($environment->domains as $domain) {
-          // Skip 'prod.drupal' and application site URLs.
-          if (str_contains($domain, 'prod.drupal') || str_contains($domain, "$application_machine_name.prod")) {
-            continue;
-          }
-          // @todo Remove the iterator.
-          if ($i > 0) {
-            break;
-          }
-          $i++;
+        $application_data[$app_name]['domains'] = array_values(array_filter($environment->domains, function($domain) use ($app_name) {
+          return !(str_contains($domain, '.prod.drupal.') || str_starts_with($domain, "$app_name.prod"));
+        }));
+      }
+    }
+    $api_applications = NULL;
+    $api_environments = NULL;
 
+    if (!empty($application_data)) {
+      ksort($application_data);
+      // Create the file for exporting.
+      if ($options['export']) {
+        $now = date('Ymd-His');
+        $filename = "SiteNow-Compliance-Report-$now.csv";
+        $root = $this->getConfigValue('repo.root');
+        $filepath = "$root/$filename";
+
+        if (file_exists($filepath)) {
+          unlink($filepath);
+        }
+        $this->say("Created export file $filepath");
+        $fp = fopen($filepath, 'w+');
+        fputcsv($fp, $headers);
+        fclose($fp);
+      }
+
+      $this->say('Starting to check domains.');
+      foreach ($application_data as $machine_name => $data) {
+        $this->say("Processing domains for $machine_name...");
+        foreach ($data['domains'] as $domain) {
+          $this->say("Processing $domain");
           $site = [
-            'application' => $application_machine_name,
+            'application' => $machine_name,
             'domain' => $domain,
             'version' => 'V1, custom, or collegiate',
             'status' => 'active',
@@ -1072,26 +1111,27 @@ EOD;
           ];
 
           // Run 'drush status' to see if the site exists.
-          $result = $this->taskDrush()
-            ->verbose(FALSE)
-            ->stopOnFail(FALSE)
-            ->alias("$application_machine_name.prod")
+          $result = $this->getDrushTask($debug)
+            ->interactive(FALSE)
+            ->alias("$machine_name.prod")
             ->ansi(FALSE)
             ->drush('status')
             ->option('uri', $domain)
             ->run();
 
           // If the site doesn't exist, skip to the next record.
-          if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')) {
+          if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')
+            || str_contains($result->getMessage(), 'Fatal error')) {
             $site['status'] = 'inactive';
           }
           else {
-            if (str_starts_with($application->name, 'uiowa')) {
-              // Run 'drush status' to see if the site exists.
-              $result = $this->taskDrush()
-                ->verbose(FALSE)
-                ->stopOnFail(FALSE)
-                ->alias("$application_machine_name.prod")
+
+            // SiteNow V2/V3
+            if (in_array($machine_name, $d9_containers)) {
+              // Check if V2 split is enabled to determine version.
+              $result = $this->getDrushTask($debug)
+                ->interactive(FALSE)
+                ->alias("$machine_name.prod")
                 ->ansi(FALSE)
                 ->drush('config:get')
                 ->args(['config_split.config_split.sitenow_v2', 'status'])
@@ -1101,10 +1141,9 @@ EOD;
               $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
 
               // Run 'drush config:get google_analytics.settings account'.
-              $result = $this->taskDrush()
-                ->verbose(FALSE)
-                ->stopOnFail(FALSE)
-                ->alias("$application_machine_name.prod")
+              $result = $this->getDrushTask($debug)
+                ->interactive(FALSE)
+                ->alias("$machine_name.prod")
                 ->ansi(FALSE)
                 ->drush('config:get')
                 ->args(['google_analytics.settings', 'account'])
@@ -1119,17 +1158,26 @@ EOD;
                 $site['ga_property_ids'] = trim(trim($output), "'");
               }
 
-              $site['gtm_container_ids'] = 'Not reporting yet.';
+              $result = $this->getDrushTask($debug)
+                ->interactive(FALSE)
+                ->alias("$machine_name.prod")
+                ->ansi(FALSE)
+                ->drush('uiowa:get:gtm-containers')
+                ->option('uri', $domain)
+                ->run();
+
+              $site['gtm_container_ids'] = trim($result->getMessage());
             }
+            // SiteNow V1, custom, and collegiate.
             else {
               foreach ([
                 'ga_property_ids' => 'googleanalytics_account',
                 'gtm_container_ids' => 'google_tag_container_id',
               ] as $key => $variable) {
                 // Run 'drush vget $variable'.
-                $result = $this->taskDrush()
-                  ->stopOnFail(FALSE)
-                  ->alias("$application_machine_name.prod")
+                $result = $this->getDrushTask($debug)
+                  ->interactive(FALSE)
+                  ->alias("$machine_name.prod")
                   ->ansi(FALSE)
                   ->drush('variable:get')
                   ->args($variable)
@@ -1145,50 +1193,44 @@ EOD;
                 }
               }
             }
-
+          }
+          if ($options['export']) {
+            // Output to CSV file and copy to filesystem.
+            $fp = fopen($filepath, 'a');
+            fputcsv($fp, $site);
+            fclose($fp);
+            $this->say("Updated $filepath");
+          }
+          else {
             $site_data[] = $site;
           }
         }
       }
-    }
+      $this->say('Done');
 
-    $headers = [
-      'Application',
-      'URL',
-      'Version',
-      'Status',
-      'GA Property IDs',
-      'GTM Container IDs',
-    ];
+      if (!$options['export']) {
+        $this->say('Here are your results.');
+        $table = new Table($this->output);
 
-    if ($options['export']) {
-      // Output to CSV file and copy to filesystem.
-      $this->say('Exporting to CSV.');
-
-      $now = date('YmdHis');
-      $filename = "OSC-Web-SiteNow-Compliance-Report-$now.csv";
-      $root = $this->getConfigValue('repo.root');
-      $filepath = "$root/$filename";
-
-      if (file_exists($filepath)) {
-        unlink($filepath);
+        $table->setHeaders($headers);
+        $table->setRows($site_data);
+        $table->render();
       }
-      $fp = fopen($filepath, 'w+');
-      fputcsv($fp, $headers);
-      foreach ($site_data as $line) {
-        fputcsv($fp, $line);
-      }
-      fclose($fp);
-      $this->say("Done. Exported to $filepath");
     }
     else {
-      $this->say('Here are your results.');
-      $table = new Table($this->output);
-
-      $table->setHeaders($headers);
-      $table->setRows($site_data);
-      $table->render();
+      $this->say('No domains were found for the supplied application.');
     }
+  }
+
+  protected function getDrushTask($debug = FALSE) {
+    $task = $this->taskDrush();
+
+    if (!$debug) {
+      $task->printOutput(FALSE)
+        ->printMetadata(FALSE);
+    }
+
+    return $task;
   }
 
   /**
