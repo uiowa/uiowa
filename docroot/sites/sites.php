@@ -5584,3 +5584,9 @@ $sites['labepsm.uiowa.ddev.site'] = 'epsm.lab.uiowa.edu';
 $sites['labepsm.dev.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
 $sites['labepsm.stage.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
 $sites['labepsm.prod.drupal.uiowa.edu'] = 'epsm.lab.uiowa.edu';
+
+// Directory aliases for dining.uiowa.edu.
+$sites['dining.uiowa.ddev.site'] = 'dining.uiowa.edu';
+$sites['dining.dev.drupal.uiowa.edu'] = 'dining.uiowa.edu';
+$sites['dining.stage.drupal.uiowa.edu'] = 'dining.uiowa.edu';
+$sites['dining.prod.drupal.uiowa.edu'] = 'dining.uiowa.edu';
