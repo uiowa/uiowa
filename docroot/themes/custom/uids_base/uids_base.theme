@@ -804,25 +804,25 @@ function uids_base_preprocess_block(&$variables) {
     ];
 
     // Check if all specified fields are empty.
-    $allSpecifiedFieldsEmpty = TRUE;
-    foreach ($fields_to_check as $fieldName) {
-      $fieldValue = $block->get($fieldName)->getValue();
+    $all_specified_fields_empty = TRUE;
+    foreach ($fields_to_check as $field_name) {
+      $field_value = $block->get($field_name)->getValue();
 
       if (
-        isset($fieldValue[0]['value']) &&
-        !empty($fieldValue[0]['value'])
+        isset($field_value[0]['value']) &&
+        !empty($field_value[0]['value'])
       ) {
-        $allSpecifiedFieldsEmpty = FALSE;
+        $all_specified_fields_empty = FALSE;
         break;
       }
     }
 
-    $titleExists = isset($variables["elements"]["content"]["field_uiowa_banner_title"]);
-    $titleValue = $titleExists && isset($variables["elements"]["content"]["field_uiowa_banner_title"][0]["#text"])
-      ? $variables["elements"]["content"]["field_uiowa_banner_title"][0]["#text"]
+    $title_exists = isset($variables['elements']['content']['field_uiowa_banner_title']);
+    $title_value = $title_exists && isset($variables['elements']['content']['field_uiowa_banner_title'][0]['#text'])
+      ? $variables['elements']['content']['field_uiowa_banner_title'][0]['#text']
       : NULL;
 
-    if ($allSpecifiedFieldsEmpty && $titleExists && $titleValue === NULL) {
+    if ($all_specified_fields_empty && $title_exists && $title_value === NULL) {
       $variables['attributes']['class'][] = 'banner--transparent';
     }
 
