@@ -38,13 +38,13 @@ class ReportCommands extends BltTasks {
   /**
    * Generates a report with compliance details for sites.
    *
-   * @command uiowa:report:compliance
+   * @command uiowa:report:analytics
    *
-   * @aliases urc
+   * @aliases ura
    *
    * @throws \Robo\Exception\TaskException
    */
-  public function complianceDetails($options = ['export' => FALSE, 'debug' => FALSE]) {
+  public function analytics($options = ['export' => FALSE, 'debug' => FALSE]) {
     $site_data = [];
 
     $headers = [
@@ -73,7 +73,7 @@ class ReportCommands extends BltTasks {
       // Create the file for exporting.
       if ($options['export']) {
         $now = date('Ymd-His');
-        $filename = "SiteNow-Compliance-Report-$now.csv";
+        $filename = "SiteNow-Website-Report-$now.csv";
         $root = $this->getConfigValue('repo.root');
         $filepath = "$root/$filename";
 
