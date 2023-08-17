@@ -1,0 +1,20 @@
+{% embed 'field.html.twig' with {
+  'items': items,
+  'field_icon': field_icon,
+} %}
+  {% block field_items %}
+    {% block field_icon %}
+      {% if field_icon %}
+        <span role="presentation" class="field__icon fas {{ field_icon }}"></span>
+      {% endif %}
+    {% endblock %}
+    {% for item in items %}
+      {# If the same day, show time only, otherwise print as configured. #}
+      {% if item.content['#end_value']|date('Y-m-d')|date != item.content['#value']|date('Y-m-d')|date %}
+        <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
+      {% else %}
+        <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content|smart_date_format('time_only') }}</{{ item_tag }}>
+      {% endif %}
+    {% endfor %}
+  {% endblock %}
+{% endembed %}

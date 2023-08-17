@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnicupediatricbiorepository.uiowa.ddev.site
+    protocol: https
+  machine_name: labnicupediatricbiorepository
+  human_name: nicupediatricbiorepository.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnicupediatricbiorepository.prod
+drupal:
+  db:
+    database: nicupediatricbiorepository_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnicupediatricbiorepository.prod.drupal.uiowa.edu'
+  requester: gelarson
+  site-name: 'NICU Pediatric Biorepository '

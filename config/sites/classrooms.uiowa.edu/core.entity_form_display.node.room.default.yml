@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.room.field_gallery_images
     - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
-    - field.field.node.room.field_room_accessibility
+    - field.field.node.room.field_room_accessibility_feature
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_classroom_furniture
     - field.field.node.room.field_room_design_details
@@ -30,7 +30,6 @@ dependencies:
   module:
     - content_moderation
     - field_group
-    - file
     - link
     - media_library
     - metatag
@@ -48,6 +47,7 @@ third_party_settings:
         - field_room_type
         - field_room_scheduling_regions
         - field_room_technology_features
+        - field_room_accessibility_feature
       label: Imported
       region: content
       parent_name: ''
@@ -103,11 +103,13 @@ content:
       sidebar: true
       use_details: true
     third_party_settings: {  }
-  field_room_accessibility:
-    type: string_textfield
-    weight: 4
+  field_room_accessibility_feature:
+    type: entity_reference_autocomplete
+    weight: 31
     region: content
     settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -208,11 +210,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_room_seating_chart:
-    type: file_generic
+    type: media_library_widget
     weight: 19
     region: content
     settings:
-      progress_indicator: throbber
+      media_types: {  }
     third_party_settings: {  }
   field_room_technology_features:
     type: entity_reference_autocomplete

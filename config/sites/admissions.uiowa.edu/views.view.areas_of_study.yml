@@ -818,7 +818,7 @@ display:
         filters: false
         filter_groups: false
         header: false
-      css_class: 'table-responsive block-margin__top--extra'
+      css_class: 'table-responsive block-margin__top--extra views-grid--twocol--25-75 views-form--stacked'
       display_description: 'Areas of Study page with table with exposed filters.'
       header:
         area:
@@ -829,14 +829,16 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: text
-          empty: false
+          empty: true
           content:
-            value: "<div class=\"layout layout--twocol layout--twocol--75-25 section-padding__removed-top layout__container\">\r\n  <div class=\"layout__spacing_container\">\r\n    <div class=\"layout__region layout__region--first\">\r\n      <div class=\"block block-layout-builder block-inline-blockuiowa-text-area uids-content\">\r\n        <p class=\"element--light-intro\">Iowa offers over 200 majors, minors, and certificates.</p>\r\n        <p>Students are encouraged to work across disciplines to find their passion. If you are unsure of what you&rsquo;d like to study at Iowa, look at an&nbsp;<a tabindex=\"-1\" href=\"https://admissions.uiowa.edu/academics/open-major\">open\r\n            major</a>, or take our&nbsp;<a tabindex=\"-1\" href=\"http://uiowa.mymajors.com/\">MyMajors assessment</a>&nbsp;to explore possible majors based on your interests and strengths.</p>\r\n        <p>Use our program search to explore all of our areas of study and find what is right for you.&nbsp;</p>\r\n      </div>\r\n    </div>\r\n    <div class=\"layout__region layout__region--second\">\r\n      <div class=\"element--flex-center stat stat__grid\">\r\n        <div>\r\n          <h2 class=\"stat__title\"> 200 + </h2>\r\n        </div>\r\n        <p class=\"stat__description\">Areas of Study</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+            value: "<div class=\"layout layout--twocol layout--twocol--75-25 section-padding__removed-top section-padding__removed-bottom layout__container\">\r\n  <div class=\"layout__spacing_container\">\r\n    <div class=\"layout__region layout__region--first\">\r\n      <div class=\"block block-layout-builder block-inline-blockuiowa-text-area uids-content\">\r\n        <p class=\"element--light-intro\">Iowa offers over 200 majors, minors, and certificates.</p>\r\n        <p>Students are encouraged to work across disciplines to find their passion. If you are unsure of what you&rsquo;d like to study at Iowa, look at an&nbsp;<a tabindex=\"-1\" href=\"https://admissions.uiowa.edu/academics/open-major\">open\r\n            major</a>, or take our&nbsp;<a tabindex=\"-1\" href=\"http://uiowa.mymajors.com/\">MyMajors assessment</a>&nbsp;to explore possible majors based on your interests and strengths.</p>\r\n        <p>Use our program search to explore all of our areas of study and find what is right for you.&nbsp;</p>\r\n      </div>\r\n    </div>\r\n    <div class=\"layout__region layout__region--second\">\r\n      <div class=\"element--flex-center stat stat__grid\">\r\n        <div>\r\n          <h2 class=\"stat__title\"> 200 + </h2>\r\n        </div>\r\n        <p class=\"stat__description\">Areas of Study</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
             format: filtered_html
           tokenize: false
       exposed_block: false
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: areas-of-study
     cache_metadata:
       max-age: -1
@@ -1097,7 +1099,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: "<hr class=\"element--spacer-separator\" />\r\n<h2>Tests</h2>\r\n<table>\r\n  <thead>\r\n    <tr>\r\n      <th scope=\"col\">Page Name</th>\r\n      <th scope=\"col\">Operations</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/461\" title=\"Cambridge International Exams (CIE)\">Cambridge International Exams (CIE)</a></td>\r\n      <td><a href=\"/node/461/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/451\" title=\"College Level Examination Program (CLEP)\">College Level Examination Program (CLEP)</a></td>\r\n      <td><a href=\"/node/451/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/456\" title=\"International Baccalaureate Program (IB)\">International Baccalaureate Program (IB)</a></td>\r\n      <td><a href=\"/node/456/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/446\">Advanced Placement Program (AP)</a></td>\r\n      <td><a href=\"/node/446/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/4211\">Global Assessment Certificate Program (GAC)</a></td>\r\n      <td><a href=\"/node/4211/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n  </tbody>\r\n</table>"
+            value: "<hr class=\"element--spacer-separator\" />\r\n<h2>Tests</h2>\r\n<table>\r\n  <thead>\r\n    <tr>\r\n      <th scope=\"col\">Page Name</th>\r\n      <th scope=\"col\">Operations</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/461\" title=\"General Certificate of Education (GCE)\">General Certificate of Education (GCE)</a></td>\r\n      <td><a href=\"/node/461/edit\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/451\" title=\"College Level Examination Program (CLEP)\">College Level Examination Program (CLEP)</a></td>\r\n      <td><a href=\"/node/451/edit\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/456\" title=\"International Baccalaureate Program (IB)\">International Baccalaureate Program (IB)</a></td>\r\n      <td><a href=\"/node/456/edit\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/446\">Advanced Placement Program (AP)</a></td>\r\n      <td><a href=\"/node/446/edit\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/4211\">Global Assessment Certificate Program (GAC)</a></td>\r\n      <td><a href=\"/node/4211/edit\">edit</a></td>\r\n    </tr>\r\n  </tbody>\r\n</table>"
             format: filtered_html
           tokenize: false
       display_extenders:

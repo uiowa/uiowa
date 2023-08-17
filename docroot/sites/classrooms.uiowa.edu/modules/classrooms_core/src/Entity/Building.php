@@ -2,8 +2,8 @@
 
 namespace Drupal\classrooms_core\Entity;
 
-use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\classrooms_core\BuildingInterface;
+use Drupal\Core\Config\Entity\ConfigEntityBase;
 
 /**
  * Defines the building entity type.
@@ -42,7 +42,8 @@ use Drupal\classrooms_core\BuildingInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description"
+ *     "description",
+ *     "number"
  *   }
  * )
  */
@@ -68,5 +69,12 @@ class Building extends ConfigEntityBase implements BuildingInterface {
    * @var string
    */
   protected $description;
+
+  /**
+   * The building number.
+   *
+   * @var string
+   */
+  protected $number;
 
 }

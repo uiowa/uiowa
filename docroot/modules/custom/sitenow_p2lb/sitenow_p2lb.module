@@ -8,46 +8,110 @@
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Plugin\Context\EntityContext;
+use Drupal\Core\Url;
+use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
-use Drupal\Core\Url;
+use Drupal\sitenow_p2lb\P2LbHelper;
+use Drupal\sitenow_pages\Entity\Page;
 
 /**
  * Implements hook_form_alter().
  */
 function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, [
-    'node_page_form',
-    'node_page_edit_form',
-  ])) {
-    $entity = $form_state->getFormObject()->getEntity();
+  if ($form_id === 'views_form_content_v3_converter_moderated_content') {
+    // Give both submit buttons their proper label.
+    $form['header']['node_bulk_form']['actions']['submit']['#value'] = t('Magic button');
+    $form['actions']['submit']['#value'] = t('Magic button');
+  }
+}
 
-    if ($form_id === 'node_page_form') {
-      // Disable display of the Paragraph sections for new content.
-      $form['field_page_content_block']['#access'] = FALSE;
-    }
-    elseif ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set,
-      // and if the user hasn't yet interacted with the form
-      // (so that we don't duplicate our messages).
-      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
-        if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-          // If we have a revision id, the page has been converted.
-          // Disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
-          $form['field_page_content_block']['#access'] = FALSE;
-        }
-        else {
-          // If we didn't have a revision id, disable access to the body field
-          // and add a message directing to the converter.
-          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
-            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Disable display of the Paragraph sections for new content.
+  $form['field_page_content_block']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()?->getEntity();
+  if ($node instanceof Page && empty($form_state->getUserInput())) {
+    // Check if field_v3_conversion_revision_id is set,
+    // and if the user hasn't yet interacted with the form
+    // (so that we don't duplicate our messages).
+    if ($node->hasField('field_v3_conversion_revision_id')) {
+      if (is_numeric($node->field_v3_conversion_revision_id->value)) {
+        // If we have a revision id, the page has been converted.
+        // Disable field_page_content_block and set a warning message.
+        \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+        $form['field_page_content_block']['#access'] = FALSE;
+      }
+      else {
+        // If we didn't have a revision id, disable access to the body field
+        // and add a message directing to the converter.
+        \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+          '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+        ]));
+        $form['body']['#access'] = FALSE;
+
+        // Get issues and add a message.
+        $issues = P2LbHelper::analyzeNode($node);
+        if (!empty($issues)) {
+          \Drupal::messenger()->addWarning(t('Components on this page contain issues that prevent them from being fully converted to V3. See details in the @link.', [
+            '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString(),
           ]));
-          $form['body']['#access'] = FALSE;
         }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_values = $form_state->getBuildInfo()['args'][0];
+
+  // Get node id.
+  $nid = $form_values?->get('nid')?->getValue()[0]['value'] ?? NULL;
+
+  // Guard against not finding a node id.
+  if (!$nid) {
+    return;
+  }
+
+  $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
+  // Guard against not finding the protected revision id.
+  if (!$protected_revision_id) {
+    return;
+  }
+
+  // Get this revision's id.
+  $this_revision_id = $form_state->getBuildInfo()['args'][0]?->getLoadedRevisionId();
+
+  // Guard against not finding this revision's id.
+  if (!$this_revision_id) {
+    return;
+  }
+
+  // Check them against each other.
+  if ($this_revision_id === $protected_revision_id) {
+
+    // Disable delete button if they are the same, output error message.
+    $form['actions']['submit']['#disabled'] = TRUE;
+    $warning_text = t(
+      "This is the last revision before converting from v2 to v3. It is protected and can't be deleted."
+    );
+    \Drupal::messenger()->addWarning($warning_text);
   }
 }
 
@@ -71,18 +135,19 @@ function sitenow_p2lb_paragraph_nodes() {
 /**
  * Convert a node from paragraphs to layout builder.
  *
- * @param Drupal\Core\Entity\ContentEntityInterface $node
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $node
  *   Node being processed.
- * @param bool $remove
- *   Indicator whether old paragraphs should be removed following processing.
  */
-function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
+function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
   // Get sections from the page.
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
   // but just in case, $layout will just re-set itself.
-  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout */
-  $layout = $node->get('layout_builder__layout');
+  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout_section_list */
+  $layout_section_list = $node->get('layout_builder__layout');
+
+  // Clear the section list, in case it has been overridden for some reason.
+  $layout_section_list->setValue([]);
 
   // Get default page sections config.
   $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
@@ -90,41 +155,57 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
   // Append content moderation and header sections
   // from default config.
   foreach (['content_moderation', 'header'] as $i => $default_section) {
-    $layout->appendSection(Section::fromArray($default_sections[$i]));
+    $layout_section_list->appendSection(Section::fromArray($default_sections[$i]));
   }
 
-  // Process all of the individual sections and update the layout.
+  // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
-    $layout = sitenow_p2lb_process_section($section_id, $layout, $node);
+    // It's possible for the section to fail to load,
+    // such as if the paragraph no longer exists.
+    // Only overwrite if we successfully process.
+    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout_section_list, $node)) {
+      $layout_section_list = $new_layout;
+    }
   }
 
   // Need to set with an array of sections, retrieved with getSections().
-  if ($layout) {
-    $node->set('layout_builder__layout', $layout->getSections());
+  if ($layout_section_list) {
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+    // Create a new revision from node storage.
+    $new_revision = $node_storage->createRevision($node);
+
+    // Set the layout section list field to the V3 version.
+    $new_revision->set('layout_builder__layout', $layout_section_list->getSections());
+
+    // Unset the paragraphs block.
+    $new_revision->set('field_page_content_block', NULL);
 
     // Set value of field_v3_conversion_revision_id to current revision ID.
-    $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
+    $new_revision->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
-    // Save as a new draft.
-    $node->setNewRevision(TRUE);
-    $node->revision_log = 'Converted page to v3.';
-    $node->moderation_state->value = 'draft';
+    // Set the new revision as a "Draft".
+    $new_revision->set('moderation_state', 'draft');
 
-    // Set the user id for the revision.
-    $user_id = \Drupal::currentUser()->id();
-    $node->setRevisionUserId($user_id);
+    // Add a message to the revision log.
+    $new_revision->revision_log = 'Converted page to v3.';
 
-    $node->save();
+    // Set the user ID to the current user's ID for the revision.
+    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
 
-    // Remove the attached paragraphs from the node.
-    if ($remove) {
-      sitenow_p2lb_remove_attached_paragraphs($node);
-    }
+    // Set the relevant revision timestamps.
+    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
+
+    // Save the new revision.
+    $new_revision->save();
 
     return TRUE;
   }
+
   // Should be good to go, but if there was anything weird,
-  // return False to indicate no processing was done.
+  // return FALSE to indicate no processing was done.
   return FALSE;
 }
 
@@ -161,26 +242,28 @@ function sitenow_p2lb_fetch_child_ids($parent) {
 /**
  * Process paragraphs section.
  */
-function sitenow_p2lb_process_section($section_id, $layout, $node) {
+function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout_section_list, $node) {
   $para_storage = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph');
-  $section_object = $para_storage->load($section_id);
-  if (!$section_object) {
+  $paragraph_section_object = $para_storage->load($section_id);
+  if (!$paragraph_section_object) {
     return FALSE;
   }
 
+  $paragraph_section_unique_id = $paragraph_section_object->field_uip_id->value ?: NULL;
+
   // Grab section title and styles.
-  $section_title = ($section_object->field_section_title) ?
-    $section_object->field_section_title->value : '';
-  $section_styles = sitenow_p2lb_section_styles($section_object);
+  $section_title = ($paragraph_section_object->field_section_title) ?
+    $paragraph_section_object->field_section_title->value : '';
+  $section_styles = sitenow_p2lb_section_styles($paragraph_section_object);
 
   // Get all paragraphs attached to this section.
-  $pids = sitenow_p2lb_fetch_child_ids($section_object);
+  $pids = sitenow_p2lb_fetch_child_ids($paragraph_section_object);
   $paragraphs = $para_storage->loadMultiple($pids);
 
   // Check for a section image, and if so, handle it.
-  $section_image_fid = ($section_object->field_section_image[0]) ?
-    $section_object->field_section_image[0]->target_id : 0;
+  $section_image_fid = ($paragraph_section_object->field_section_image[0]) ?
+    $paragraph_section_object->field_section_image[0]->target_id : 0;
   $banner_text = NULL;
 
   if ($section_image_fid) {
@@ -193,10 +276,10 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
     $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text, $node);
     if (!empty($section_array)) {
       $section = Section::fromArray($section_array);
-      $layout->appendSection($section);
+      $layout_section_list->appendSection($section);
       // If that was the only paragraph, we're done with this p_section.
       if (empty($paragraphs)) {
-        return $layout;
+        return $layout_section_list;
       }
     }
   }
@@ -230,15 +313,13 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
   ];
 
   // Create and append sections to our $layout (section list).
-  foreach ($sections_infos as $section_info) {
+  foreach ($sections_infos as $delta => $section_info) {
     // Catch broken section infos and put into a 'blank slate' section.
     $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
 
     // Determine column layout and create the text string.
-    $formatter = (isset($w2d[$num_cols])) ? $w2d[$num_cols] : 'one';
-    $layout_id = 'layout_'
-      . $formatter
-      . 'col';
+    $formatter = $w2d[$num_cols] ?: 'one';
+    $layout_id = "layout_{$formatter}col";
 
     $col_width_str = sitenow_p2lb_multicol_settings($section_info['col_widths']);
     $layout_settings = [
@@ -246,6 +327,13 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       'column_widths' => $col_width_str,
       'layout_builder_styles_style' => $section_styles,
     ];
+
+    // If this is the first section and there is a unique ID, add it to the
+    // layout settings.
+    if ($delta === 0 && $paragraph_section_unique_id) {
+      $layout_settings['layout_builder_custom_unique_id'] = $paragraph_section_unique_id;
+    }
+
     $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
 
     // Iterate through the columns and attach the next paragraph in the list.
@@ -289,9 +377,10 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       }
     }
     $section = Section::fromArray($section_array);
-    $layout->appendSection($section);
+    $layout_section_list->appendSection($section);
   }
-  return $layout;
+
+  return $layout_section_list;
 }
 
 /**
@@ -445,6 +534,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $accordion_paragraph = $paragraph->load($accordion_item->target_id);
         $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
         $child_title = $accordion_paragraph->get('field_accordion_item_title')->getString();
+        $unique_id = $accordion_paragraph->get('field_uip_id')->getString();
         $child = $paragraph->create([
           'langcode' => 'en',
           'type' => 'uiowa_collection_item',
@@ -453,6 +543,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'parent_field_name' => 'field_uiowa_collection_items',
           'field_collection_body' => $body,
           'field_collection_headline' => $child_title,
+          'field_unique_id' => $unique_id,
         ]);
         if ($child->save()) {
           $children[] = $child;
@@ -501,6 +592,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $pager = ($paragraph->field_uip_pager->value) ? 'full' : 'some';
       // Number of results that should be displayed.
       $results = $paragraph->field_uip_items->value;
+      // Tags to be used in the filter.
+      $filter_tags = $paragraph->field_reference?->getValue();
+
+      $exposed_filter_values = [];
+
+      if ($filter_tags) {
+        $exposed_filter_values['field_tags_target_id'] = $filter_tags;
+      }
 
       $config = [
         'id' => 'views_block:article_list_block-list_article',
@@ -514,10 +613,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'items_per_page' => $results,
         'use_more' => $more,
         'use_more_link_url' => $more_path,
-        'exposed_filter_values' => [
-          // @todo Set these dynamically.
-          'field_tags_target_id' => [],
-        ],
+        'exposed_filter_values' => $exposed_filter_values,
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
         'context_mapping' => [],
       ];
@@ -549,54 +645,145 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'card':
-      $type = 'uiowa_card';
       // Image isn't required. Check for one, or set to null.
-      $image = ($paragraph->get('field_card_image')->getValue()) ?
-        $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
+      $image = $paragraph->field_card_image?->target_id ?: '';
 
       // Link isn't required. Check for one, or set to null.
-      $link = ($paragraph->get('field_card_link')->getValue()) ?
-        $paragraph->get('field_card_link')->getValue()[0] : '';
+      $link = $paragraph->field_card_link?->first()?->getValue();
 
       // Label (title) isn't required. Check for one, or set to null.
-      $label = ($paragraph->get('field_card_title')->getValue()) ?
-        $paragraph->get('field_card_title')->getString() : '';
+      $label = $paragraph->field_card_title?->value;
       $display_label = ($label) ? 1 : 0;
 
       // Subtitle field isn't required. Check for one, or set to null.
-      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
-        $paragraph->get('field_card_subtitle')->getString() : '';
+      $subtitle = $paragraph->field_card_subtitle?->value;
 
-      // Card body isn't required. Check or or set to array with empty value.
-      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue()[0] : '';
+      // Card body isn't required. Check or set to array with empty value.
+      $excerpt = $paragraph->field_card_body?->value;
 
-      if ($excerpt) {
-        $excerpt['format'] = 'minimal';
+      // By default, we're assuming this will become a V3 card.
+      $type = 'uiowa_card';
+
+      // If the card has no title...
+      if (!$label) {
+        if ($image && (!$subtitle && !$excerpt)) {
+          // Image and optionally a link.
+          $type = 'uiowa_image';
+        }
+        else {
+          // Converting to a card is not possible because the label is required
+          // in V3. Convert to a text area instead.
+          $type = 'uiowa_text_area';
+        }
+      }
+      elseif ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+        // Converting to a card would result in data loss. Convert to a text
+        // area instead.
+        $type = 'uiowa_text_area';
       }
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => $paragraph->get('status')->getString(),
-        'info' => 'Card',
-        'reusable' => 0,
-        'default_langcode' => 1,
-        'field_uiowa_card_author' => $subtitle,
-        'field_uiowa_card_excerpt' => $excerpt,
-        'field_uiowa_card_image' => $image,
-        'field_uiowa_card_link' => $link,
-        'field_uiowa_card_title' => [
-          // Size not set in paragraphs. Defaulting to h2. Can change later.
-          'size' => 'h2',
-          'text' => $label,
-        ],
-      ];
+      $fields = [];
+
+      // Set fields based on the type of block we are creating.
+      switch ($type) {
+        case 'uiowa_card':
+          // The card title doesn't use the headline field type, so we can't use
+          // the helper function here.
+          $fields['field_uiowa_card_title'] = [
+            'text' => $label,
+            // Size not set in paragraphs. Defaulting to h2.
+            'size' => 'h2',
+          ];
+
+          // Add the image, if set.
+          if ($image) {
+            $fields['field_uiowa_card_image'] = $image;
+          }
+
+          // Add the subtitle, if set.
+          if ($subtitle) {
+            $fields['field_uiowa_card_author'] = $subtitle;
+          }
+
+          // Add the excerpt, if set, and set the format to minimal_plus.
+          if ($excerpt) {
+            $fields['field_uiowa_card_excerpt'] = [
+              'value' => $excerpt,
+              'format' => 'minimal_plus',
+            ];
+          }
+
+          // Add the link, if set.
+          if ($link) {
+            $fields['field_uiowa_card_link'] = $link;
+          }
+          break;
+
+        case 'uiowa_image':
+          $fields = ['field_uiowa_image_image' => $image];
+
+          // Add the link, if set.
+          if ($link) {
+            $fields['field_uiowa_image_link'] = $link;
+          }
+          break;
+
+        case 'uiowa_text_area':
+          // Compile a string with the values of the fields that are present
+          // and set that to the text field of the V3 text area.
+          $output = '';
+
+          // If an image is set, convert it to its <drupal-media> equivalent.
+          if ($image) {
+            /** @var \Drupal\media\MediaInterface[] $images */
+            $images = $paragraph->field_card_image->referencedEntities();
+            if (!empty($images)) {
+              foreach ($images as $image) {
+                $output .= '<drupal-media data-entity-type="media" data-entity-uuid="' . $image->uuid() . '" data-view-mode="large__widescreen"></drupal-media>';
+              }
+            }
+          }
+
+          // Add the subtitle, if set.
+          if ($subtitle) {
+            $output .= $subtitle;
+          }
+
+          // Add the excerpt, if set.
+          if ($excerpt) {
+            $output .= $excerpt;
+          }
+
+          // Convert the link to an HTML representation.
+          if (isset($link['uri']) && isset($link['title'])) {
+            $url = Url::fromUri($link['uri']);
+            $output .= Link::fromTextAndUrl($link['title'], $url)?->toString();
+          }
+
+          // Set the string as the field value and set the format to
+          // filtered_html.
+          $fields = [
+            'field_uiowa_text_area' => [
+              'value' => $output,
+              'format' => 'filtered_html',
+            ],
+          ];
+
+          // If there is a title, set it to the headline field.
+          if ($label) {
+            $fields['field_uiowa_headline'] = _sitenow_p2lb_headline_config($label, !$display_label);
+          }
+          break;
+
+      }
+
+      // Create the block definition based on what has been put together above.
+      $block_definition = sitenow_p2lb_block_definition($type, $fields);
 
       break;
 
     case 'carousel':
-      $type = 'uiowa_slider';
+      $type = 'uiowa_image_gallery';
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -613,56 +800,15 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         ->getStorage('paragraph');
       $carousel_images = $para_storage->loadMultiple($carousel_image_ids);
 
+      $fids = [];
+
       /** @var \Drupal\paragraphs\Entity\Paragraph $carousel_image */
       foreach ($carousel_images as $carousel_image) {
-        $caption = $carousel_image->get('field_carousel_image_caption');
-
-        if (!$caption->isEmpty()) {
-          $caption = $caption->getValue()[0];
-
-          // Grab the first complete text piece.
-          if (preg_match('|\A<(.*?\d?)>(.*?)<\/.*?\d?>|', $caption['value'], $matches)) {
-            // If it was an <h#> tag, grab it to set the proper level.
-            if (substr($matches[1], 0, 1) === 'h') {
-              $block->set('field_collection_heading_size', $matches[1])
-                ->save();
-            }
-            // Grab the new headline, and pull it out of the content.
-            $headline = $matches[2];
-            $caption['value'] = str_replace(
-              $matches[0],
-              '',
-              $caption['value']
-            );
-            // Only continue if we were able to create a headline.
-            $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
-            $slide = $para_storage->create([
-              'type' => 'uiowa_slide',
-              'langcode' => 'en',
-              'status' => 1,
-              'parent_type' => 'block_content',
-              'parent_field_name' => 'field_uiowa_slider_slides',
-              'default_langcode' => 1,
-              'field_uiowa_slide_content' => $caption,
-              'field_collection_headline' => $headline,
-              'field_uiowa_slide_image' => $image_fid,
-            ]);
-            if ($slide->save()) {
-              $children[] = $slide;
-            };
-          }
-        }
+        $fids[] = $carousel_image->get('field_carousel_image_image')->getString();
       }
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => 1,
-        'reusable' => 0,
-        'default_langcode' => 1,
-        'metatag' => [],
-        'field_collection_heading_size' => 'h2',
-        'field_uiowa_slider_slides' => $children,
+      $block_definition = sitenow_p2lb_block_definition('uiowa_image_gallery', [
+        'field_uiowa_gallery_image' => $fids,
         // Build a headline out of the title
         // and display title options.
         'field_uiowa_headline' => [
@@ -671,7 +817,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'hide_headline' => $display_title,
           'headline_style' => 'default',
         ],
-      ];
+      ]);
 
       break;
 
@@ -808,6 +954,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         unset($sort['field_person_last_name_value']);
         $sort = array_merge($sort, $last_name);
       }
+      // Tags to be used in the filter.
+      $filter_tags = $paragraph->field_reference?->getValue();
+
+      $exposed_filter_values = [];
+
+      if ($filter_tags) {
+        $exposed_filter_values['field_tags_target_id'] = $filter_tags;
+      }
 
       // Build out the new view block configuration.
       $config = [
@@ -823,10 +977,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'sort' => $sort,
-        'exposed_filter_values' => [
-          // @todo Set these dynamically.
-          'field_tags_target_id' => [],
-        ],
+        'exposed_filter_values' => $exposed_filter_values,
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
         'context_mapping' => [],
       ];
@@ -969,32 +1120,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
   // No block was successfully created.
   return [];
-}
-
-/**
- * Removes all attached paragraphs from a node.
- */
-function sitenow_p2lb_remove_attached_paragraphs($node) {
-  $section_ids = sitenow_p2lb_fetch_child_ids($node);
-
-  // Grab paragraphs attached to each of the given sections.
-  $connection = Database::getConnection();
-  $query = $connection->select('paragraphs_item_field_data', 'pifd');
-  $query->fields('pifd', ['id'])
-    ->condition('parent_id', $section_ids, 'in')
-    ->condition('parent_field_name', 'field_section_content_block', '=');
-  $child_ids = $query->execute()->fetchCol();
-
-  // Gather all ids. Children first, then the parents (harsh!).
-  $ids = array_merge($child_ids, $section_ids);
-
-  // Load all paragraphs by id, and delete each.
-  $paragraphs = \Drupal::service('entity_type.manager')
-    ->getStorage('paragraph')
-    ->loadMultiple($ids);
-  foreach ($paragraphs as $paragraph) {
-    $paragraph->delete();
-  }
 }
 
 /**
@@ -1230,16 +1355,18 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       return [
         'block_background_style_light',
         'card_media_position_right',
+        'card_headline_style_serif',
         'media_format_widescreen',
-        'content_alignment_left',
-        'card_image_medium',
+        'media_size_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'uiowa_quote':
       return [
         'quote_left',
+        'quote_above',
       ];
 
     case 'uiowa_card':
@@ -1249,7 +1376,6 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
         'card_media_position_stacked',
         'content_alignment_left',
         'media_format_widescreen',
-        'block_card_style_border',
       ];
 
     case 'uiowa_slider':
@@ -1259,11 +1385,14 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       return [
         'block_background_style_light',
         'card_media_position_left',
+        'card_headline_style_serif',
         'media_format_circle',
+        'media_size_small',
         'content_alignment_left',
         'card_image_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'featured_content':
@@ -1275,12 +1404,14 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
     case 'views_block:people_list_block-list_card':
       return [
         'block_background_style_light',
-        'card_media_position_right',
+        'card_media_position_left',
+        'card_headline_style_serif',
         'media_format_circle',
+        'media_size_small',
         'content_alignment_left',
-        'card_image_small',
         'list_format_list',
         'block_grid_threecol_33_34_33',
+        'no_border',
       ];
 
     case 'uiowa_text_area':
@@ -1317,4 +1448,108 @@ function _sitenow_p2lb_get_page_lb_sections_config() {
   $config = $source->read('core.entity_view_display.node.page.default');
 
   return $config['third_party_settings']['layout_builder']['sections'];
+}
+
+/**
+ * Helper function to provide a consistent block definition.
+ */
+function sitenow_p2lb_block_definition($type, array $fields) {
+  $block_definition = [
+    'langcode' => 'en',
+    'reusable' => 0,
+    'default_langcode' => 1,
+    'status' => 1,
+  ];
+
+  $block_definition['type'] = $type;
+  return array_merge($block_definition, $fields);
+}
+
+/**
+ * Get the protected revision id generated by p2lb.
+ *
+ * @param string $nid
+ *   The node id to get the p2lb protected revision id from.
+ *
+ * @return string|null
+ *   The protected revision id or null if none found.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision_id(string $nid) {
+
+  // Guard against the node id being null.
+  if (!$nid) {
+    return NULL;
+  }
+
+  // Load the node storage.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  // Get the node's most recent revision id.
+  $most_recent_revision_id = $node_storage?->getLatestRevisionId($nid);
+
+  // Load the most recent revision.
+  $most_recent_revision = $node_storage?->loadRevision($most_recent_revision_id);
+
+  // Get protected revision id from that revision's values.
+  // Return the protected revision id.
+  return $most_recent_revision?->field_v3_conversion_revision_id?->value;
+}
+
+/**
+ * Load a protected revision.
+ *
+ * @param string $nid
+ *   The id of the node that needs a protected revision fetched.
+ *
+ * @return \Drupal\Core\Entity\RevisionableInterface|null
+ *   The Entity array for the protected revision or null if not found.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterface {
+
+  // Get the protected revision id.
+  $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
+  // Return the protected revision or NULL.
+  /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
+  $revision = \Drupal::entityTypeManager()
+    ?->getStorage('node')
+    ?->loadRevision($protected_revision_id);
+
+  return $revision;
+}
+
+/**
+ * Helper function to clear a node's layout builder tempstore.
+ *
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   The id of the node that needs its tempstore cleared.
+ *
+ * @return bool
+ *   Whether there was a tempstore that needed clearing or not.
+ */
+function sitenow_p2lb_clear_tempstore(ContentEntityInterface $entity): bool {
+
+  // Got hints for how to do this from here.
+  // https://www.drupal.org/node/3012353
+  $temp_store_repository = \Drupal::service('layout_builder.tempstore_repository');
+  $entity_context = EntityContext::fromEntity($entity);
+
+  // Our 'plugin' is 'overrides', or the 'unsaved changes' of a node.
+  $overrides_section_storage = \Drupal::service('plugin.manager.layout_builder.section_storage')
+    ->load('overrides', ['entity' => $entity_context]);
+
+  // If it exists, clear it out.
+  if ($temp_store_repository->has($overrides_section_storage)) {
+    $temp_store_repository->delete($overrides_section_storage);
+    return TRUE;
+  }
+
+  // Else, return false, signifying no need to clear tempstore.
+  return FALSE;
 }

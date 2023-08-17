@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
@@ -148,7 +149,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: -5
+            weight: -4
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -171,7 +172,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: -4
+            weight: -3
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -189,7 +190,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -2
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -208,8 +209,10 @@ third_party_settings:
                 label: inline
                 settings:
                   link: true
-                third_party_settings: {  }
-            weight: -6
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: -5
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -223,7 +226,7 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: -8
+            weight: -7
             additional:
               layout_builder_styles_style:
                 block_margin_bottom: block_margin_bottom
@@ -236,7 +239,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: -7
+            weight: -6
             additional: {  }
             third_party_settings: {  }
           -
@@ -248,7 +251,7 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: -3
+            weight: -2
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -272,7 +275,26 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: -1
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a785fe21-1c39-4c79-aac0-a5dbd5cb049c
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_subhead'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -8
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -372,6 +394,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_article_subhead:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
   field_contact_reference:
     type: entity_reference_label

@@ -1,12 +1,11 @@
-uuid: 8e2fcca5-e676-46f7-bb66-b975aa325daa
+uuid: a66bd5dd-ebc1-4adc-8e75-45176ff95408
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_room_seating_chart
+    - media.type.file
     - node.type.room
-  module:
-    - file
 id: node.room.field_room_seating_chart
 field_name: field_room_seating_chart
 entity_type: node
@@ -18,10 +17,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:file'
-  handler_settings: {  }
-  file_directory: '[date:custom:Y]-[date:custom:m]'
-  file_extensions: pdf
-  max_filesize: ''
-  description_field: false
-field_type: file
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

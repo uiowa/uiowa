@@ -52,7 +52,7 @@
     {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
       {% block accordion_content %}
         <div class="grid--twocol--50-50">
-          <div class="list-container photoswipe-gallery">
+          <div class="list-container__inner photoswipe-gallery">
             {% for item in accordion_item_content %}
               {{ item.content }}
             {% endfor %}

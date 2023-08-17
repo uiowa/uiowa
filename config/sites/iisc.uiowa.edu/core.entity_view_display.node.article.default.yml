@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
@@ -210,7 +211,9 @@ third_party_settings:
                 label: inline
                 settings:
                   link: true
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: -6
             additional:
               layout_builder_styles_style:
@@ -298,7 +301,26 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 12
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 864b0ab8-edc7-4b79-b53b-5ca5c0fe8935
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_subhead'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -9
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -433,6 +455,7 @@ hidden:
   field_article_author: true
   field_article_preserve_links: true
   field_article_source_link_direct: true
+  field_article_subhead: true
   field_contact_reference: true
   field_gallery_images: true
   field_meta_tags: true

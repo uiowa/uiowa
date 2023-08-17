@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_maui_academic_dates",
  *   admin_label = @Translation("Academic dates"),
- *   category = @Translation("MAUI")
+ *   category = @Translation("Site custom")
  * )
  */
 class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -335,7 +335,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         '#type' => 'link',
         '#url' => Url::fromUri($more_link),
         '#attributes' => [
-          'class' => ['bttn', 'bttn--primary'],
+          'class' => ['bttn', 'bttn--primary', 'more-link'],
         ],
       ];
     }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: wellbeing.uiowa.ddev.site
+    protocol: https
+  machine_name: wellbeing
+  human_name: wellbeing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: wellbeing.prod
+drupal:
+  db:
+    database: wellbeing_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://wellbeing.prod.drupal.uiowa.edu'
+  requester: clrson
+  site-name: 'Well-Being at Iowa'

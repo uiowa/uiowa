@@ -5,8 +5,35 @@
  * Custom functionality the Facilities website.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
+
+/**
+ * Set dynamic allowed values event status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'cambus' => 'Cambus',
+    'coralville' => 'Coralville',
+    'iowaCity' => 'Iowa City',
+  ];
+}
 
 /**
  * Implements hook_form_alter().
@@ -28,6 +55,39 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       Any buildings created or modified that are not in the source data will be overwritten.');
       break;
 
+    case 'node_project_form':
+    case 'node_project_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Set a placeholder text, and add a submit handler
+      // for if we have a webcam link but no title.
+      $form['field_project_webcam']['widget'][0]['title']['#placeholder'] = 'View webcam';
+      // Unshift to put our handler at the front of the list,
+      // to ensure the value will get set prior to save.
+      array_unshift($form['actions']['submit']['#submit'], 'facilities_core_project_submit');
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:projectss_import`.
+      \Drupal::messenger()->addWarning('This content type is managed through an automated process.
+      Any projects created or modified that are not in the source data will be overwritten.');
+      break;
+
+  }
+}
+
+/**
+ * Submit handler to set a default webcam link title if none is provided.
+ */
+function facilities_core_project_submit($form, FormStateInterface $form_state): void {
+  $webcam = $form_state->getValue([
+    'field_project_webcam',
+    '0',
+  ]);
+  if (!empty($webcam['uri']) && empty($webcam['title'])) {
+    $form_state->setValue([
+      'field_project_webcam',
+      '0',
+      'title',
+    ], 'View webcam');
   }
 }
 
@@ -36,6 +96,38 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
  */
 function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_alert_building':
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
+      break;
+
+    case 'field_alert_date':
+      $view_mode = $variables['element']['#view_mode'];
+      if ($view_mode === '_custom') {
+        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_icon($variables, 'fa-calendar fa-li');
+      }
+      break;
+
+    case 'field_alert_location':
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt fa-li');
+      break;
+
+    case 'field_alert_traffic_control_plan':
+      uiowa_core_set_attributes($variables, [
+        'bttn',
+        'bttn--tertiary',
+        'bttn--medium',
+        'bttn--full',
+      ]);
+      break;
+
+    case 'field_alert_affected_bus_routes':
+      uiowa_core_set_field_label_icon($variables, 'fa-bus');
+      uiowa_core_set_attributes($variables, 'badge badge--light');
+      break;
+
     case 'field_building_honoree_name':
       // Change label for output.
       $variables['element']['#title'] = 'Honoree';
@@ -72,8 +164,7 @@ function facilities_core_preprocess_layout(&$variables) {
 
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'named_building',
@@ -115,5 +206,65 @@ function facilities_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] .= 'bg--white block-padding__all border';
       break;
 
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:alert:field_alert_traffic_control_plan':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+        'block-margin__right',
+      ]);
+      break;
+
   }
+}
+
+/**
+ * Implements hook_preprocess_file_link().
+ */
+function facilities_core_preprocess_file_link(&$variables) {
+  // Remove pdf class.
+  unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_media(&$variables) {
+  // Extra classes for the Traffic plan field. Limit it
+  // to 'file' media so we don't potentially add extra stuff
+  // to other media types like images.
+  if ($variables['media']->getSource()?->getPluginId() === 'file') {
+    $variables['attributes']['class'] = ['padding--inline-start--sm'];
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function facilities_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'alert') {
+    $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
+    if (!empty($traffic_plan)) {
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($traffic_plan);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
+      $file->setFilename('Traffic Plan');
+      $file->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function facilities_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_alert_traffic_control_plan__alert__default' => [
+      'template' => 'field--node--field-alert-traffic-control-plan--alert--default',
+      'base hook' => 'field',
+    ],
+  ];
 }

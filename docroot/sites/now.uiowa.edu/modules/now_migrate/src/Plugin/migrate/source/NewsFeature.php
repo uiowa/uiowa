@@ -22,18 +22,24 @@ class NewsFeature extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
-    parent::prepareRow($row);
+  public function query() {
+    $query = parent::query();
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid');
+    return $query;
+  }
 
-    // Set our tagMapping if it's not already.
-    if (empty($this->tagMapping)) {
-      $this->tagMapping = \Drupal::database()
-        ->select('taxonomy_term_field_data', 't')
-        ->fields('t', ['name', 'tid'])
-        ->condition('t.vid', 'tags', '=')
-        ->execute()
-        ->fetchAllKeyed();
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
     }
+
+    parent::prepareRow($row);
 
     // Map various old fields into Tags.
     $tag_tids = [];
@@ -41,7 +47,6 @@ class NewsFeature extends BaseNodeSource {
       'field_news_from',
       'field_news_about',
       'field_news_for',
-      'field_news_keywords',
     ] as $field_name) {
       $values = $row->getSourceProperty($field_name);
       if (!isset($values)) {
@@ -62,10 +67,12 @@ class NewsFeature extends BaseNodeSource {
       $tags = [];
       foreach ($tag_results as $result) {
         $tag_name = $result['name'];
-        $tid = $this->createTag($tag_name);
+        $tid = $this->createTag($tag_name, $row);
 
         // Add the mapped TID to match our tag name.
-        $tags[] = $tid;
+        if ($tid) {
+          $tags[] = $tid;
+        }
 
       }
       $row->setSourceProperty('tags', $tags);
@@ -96,9 +103,10 @@ class NewsFeature extends BaseNodeSource {
         }
       }
 
-      // Check and return any redirects for the paths in our array.
+      // Check and return any redirects for the paths in our array,
+      // as well as any redirect options.
       $redirects = $this->select('redirect', 'r')
-        ->fields('r', ['redirect'])
+        ->fields('r', ['redirect', 'redirect_options'])
         ->condition('r.source', $paths, 'IN')
         ->execute();
 
@@ -107,6 +115,26 @@ class NewsFeature extends BaseNodeSource {
         foreach ($redirects as $redirect) {
           if (UrlHelper::isExternal($redirect['redirect'])) {
             $target = $redirect['redirect'];
+            // We need to unserialize the options,
+            // and then check if there is a query (there are
+            // other options possible we don't need).
+            $options = unserialize($redirect['redirect_options'], [
+              'allowed_classes' => TRUE,
+            ]);
+            if (!empty($options) && isset($options['query'])) {
+              // Start our query string, and
+              // if we're not the first query parameter,
+              // we need to include an extra '&',
+              // so initialize 'first' as a check for this.
+              $query_string = '?';
+              $first = TRUE;
+              foreach ($options['query'] as $prop => $val) {
+                $query_string .= ($first) ? '' : '&';
+                $first = FALSE;
+                $query_string .= "{$prop}={$val}";
+              }
+              $target .= $query_string;
+            }
           }
         }
         if (isset($target)) {
@@ -121,12 +149,6 @@ class NewsFeature extends BaseNodeSource {
     }
 
     if (!empty($body)) {
-      // Check for a subhead, and prepend it to the body if so.
-      $subhead = $row->getSourceProperty('field_subhead');
-      if (!empty($subhead)) {
-        $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
-        $body[0]['value'] = $subhead . $body[0]['value'];
-      }
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
 
@@ -148,6 +170,9 @@ class NewsFeature extends BaseNodeSource {
         $this,
         'calloutReplace',
       ], $body[0]['value']);
+
+      // Remove empty <p> tags as well.
+      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
 
       $row->setSourceProperty('body', $body);
 
@@ -244,7 +269,7 @@ class NewsFeature extends BaseNodeSource {
         // If there is no media or the first media is far enough away,
         // left align the video, otherwise center align so that it
         // doesn't overlap later media.
-        if (preg_match('/drupal-media/is', substr($body[0]['value'], 0, 700)) === 0) {
+        if (preg_match('/(drupal-media)|(callout)/is', substr($body[0]['value'], 0, 700)) === 0) {
           $video = $this->createVideo($media[0]['fid'], 'right');
         }
         else {
@@ -322,42 +347,83 @@ class NewsFeature extends BaseNodeSource {
     // Extra spacings have been added in various places
     // for visual spacing. Remove them, or they'll throw
     // things off in the new callout component.
-    $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
+    // Remove anything after the first '<br>',
+    // as it is not in the same '<strong>' group
+    // as the ones on the first line.
+    $headline_match_string = preg_replace('%(<br>|<br \/>|<br\/>|<ul>).*%is', '', $match[2]);
 
-    // Look for a headline to use in the callout, as well as any additional
+    // Look for a headline to use in the callout, which are bolded strings
+    // at the start of the callout. Also look for any additional
     // line breaks. Like before, here they are unnecessary.
     $headline = '';
-    if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
-      // @todo Update this with proper callout headline construction.
-      $headline = '<h3>' . $headline_matches[1] . '</h3>';
-      // If we're adding the headline separately,
-      // remove it from the rest of the text, so we don't duplicate.
-      $match[2] = str_replace($headline_matches[0], '', $match[2]);
+    if (preg_match_all("|<strong>(.*?)<\/strong>(<br>)*|is", $headline_match_string, $headline_matches)) {
+      // Build the headline if we found one.
+      $headline_classes = implode(' ', [
+        'headline',
+        'block__headline',
+        'headline--serif',
+        'headline--underline',
+        'headline--center',
+      ]);
+
+      // If there are multiple <strong>'s, then we need to concatenate them.
+      $headline_text = '';
+      foreach ($headline_matches[1] as $value) {
+        $headline_text .= $value;
+        // If we're adding the headline separately,
+        // remove it from the rest of the text, so we don't duplicate.
+        $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
+      };
+
+      $headline = '<h4 class="' . $headline_classes . '">';
+      $headline .= '<span class="headline__heading">';
+      $headline .= $headline_text;
+      $headline .= '</span></h4>';
     }
 
-    // @todo Update this with proper callout construction.
-    return '<div class="callout">' . $headline . $match[2] . '</div>';
+    // Remove all leading and trailing 'br' tags.
+    $match[2] = preg_replace("%^(<br>|<br \/>|<br\/>\s)*%is", '', $match[2], 1);
+    $match[2] = preg_replace("%(<br>|<br \/>|<br\/>$|\s)*%is", '', $match[2], 1);
+
+    // Build the callout wrapper and return.
+    // We're defaulting to medium size, but taking the
+    // alignment from the source.
+    $wrapper_classes = 'block--word-break callout bg--gray inline--size-small inline--align-' . $match[1];
+    return '<div class="' . $wrapper_classes . '">' . $headline . '<p>' . $match[2] . '</p>' . '</div>';
   }
 
   /**
    * Helper function to check for existing tags and create if they don't exist.
    */
-  private function createTag($tag_name) {
-
-    // Check if we have a mapping. If we don't yet,
-    // then create a new tag and add it to our map.
-    if (!isset($this->tagMapping[$tag_name])) {
-      $term = Term::create([
-        'name' => $tag_name,
-        'vid' => 'tags',
-      ]);
-      if ($term->save()) {
-        $this->tagMapping[$tag_name] = $term->id();
-      }
+  private function createTag($tag_name, $row) {
+    // Check if we already have the tag in the destination.
+    $result = \Drupal::database()
+      ->select('taxonomy_term_field_data', 't')
+      ->fields('t', ['tid'])
+      ->condition('t.vid', 'tags', '=')
+      ->condition('t.name', $tag_name, '=')
+      ->execute()
+      ->fetchField();
+    if ($result) {
+      return $result;
+    }
+    // If we didn't have the tag already,
+    // then create a new tag and return its id.
+    $term = Term::create([
+      'name' => $tag_name,
+      'vid' => 'tags',
+    ]);
+    if ($term->save()) {
+      return $term->id();
     }
 
-    // Return tid for mapping to field.
-    return $this->tagMapping[$tag_name];
+    // If we didn't save for some reason, add a notice
+    // to the migration, and return a null.
+    $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
+    $this->migration
+      ->getIdMap()
+      ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+    return FALSE;
   }
 
 }

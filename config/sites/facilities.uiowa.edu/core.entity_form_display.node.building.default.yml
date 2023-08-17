@@ -4,11 +4,26 @@ status: true
 dependencies:
   config:
     - field.field.node.building.field_building_abbreviation
+    - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_image_url
+    - field.field.node.building.field_building_lactation_rooms
+    - field.field.node.building.field_building_latitude
+    - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
+    - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_rr_multi_men
+    - field.field.node.building.field_building_rr_multi_women
+    - field.field.node.building.field_building_rr_single_men
+    - field.field.node.building.field_building_rr_single_neutral
+    - field.field.node.building.field_building_rr_single_women
+    - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
   module:
     - content_moderation
+    - link
     - metatag
     - path
 id: node.building.default
@@ -30,9 +45,122 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_building_address:
+    type: string_textfield
+    weight: 27
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_area:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_image_url:
+    type: link_default
+    weight: 38
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_building_lactation_rooms:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_latitude:
+    type: string_textfield
+    weight: 39
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_longitude:
+    type: string_textfield
+    weight: 40
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_named_building:
+    type: entity_reference_autocomplete
+    weight: 31
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_number:
     type: string_textfield
     weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_ownership:
+    type: string_textfield
+    weight: 30
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_multi_men:
+    type: string_textfield
+    weight: 35
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_multi_women:
+    type: string_textfield
+    weight: 36
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_men:
+    type: string_textfield
+    weight: 33
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_neutral:
+    type: string_textfield
+    weight: 37
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_rr_single_women:
+    type: string_textfield
+    weight: 34
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_year_built:
+    type: string_textfield
+    weight: 29
     region: content
     settings:
       size: 60

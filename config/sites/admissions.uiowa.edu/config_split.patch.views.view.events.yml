@@ -1,0 +1,131 @@
+adding:
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            items_per_page: 20
+            tags:
+              next: ››
+              previous: ‹‹
+    page_calendar:
+      display_options:
+        enabled: true
+    page_upcoming:
+      display_options:
+        fields:
+          title:
+            element_label_colon: true
+        filters:
+          field_event_category_target_id:
+            expose:
+              label: 'Event Category'
+              identifier: category
+            parent: 0
+            none_label: '- Please select -'
+          field_event_performer_target_id_1:
+            operator: empty
+            exposed: false
+        defaults:
+          sorts: true
+        css_class: 'views-form--stacked views-grid--twocol--25-75 '
+        path: events/upcoming
+        menu:
+          type: 'default tab'
+          title: Upcoming
+removing:
+  dependencies:
+    module:
+      - better_exposed_filters
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            items_per_page: 10
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+    page_calendar:
+      display_options:
+        enabled: false
+    page_upcoming:
+      display_options:
+        fields:
+          title:
+            alter:
+              text: ''
+              path: ''
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              preserve_tags: ''
+            element_label_colon: false
+        exposed_form:
+          type: bef
+          options:
+            submit_button: Apply
+            reset_button: true
+            reset_button_label: Reset
+            exposed_sorts_label: 'Sort by'
+            expose_sort_order: true
+            sort_asc_label: Asc
+            sort_desc_label: Desc
+            text_input_required: 'Select any filter and click on Apply to see results'
+            text_input_required_format: filtered_html
+            bef:
+              general:
+                autosubmit_exclude_textfield: false
+                autosubmit_textfield_delay: 500
+                autosubmit_hide: false
+                input_required: false
+                allow_secondary: true
+                secondary_label: 'Advanced options'
+                secondary_open: true
+              filter:
+                combine:
+                  plugin_id: default
+                  advanced:
+                    placeholder_text: Search
+                    collapsible: false
+                    is_secondary: false
+                field_event_performer_target_id_1:
+                  plugin_id: default
+                  advanced:
+                    placeholder_text: Presenters
+                    rewrite:
+                      filter_rewrite_values: ''
+                    collapsible: false
+                    is_secondary: true
+        filters:
+          field_event_performer_target_id_1:
+            operator: or
+            exposed: true
+          field_event_category_target_id:
+            expose:
+              label: 'Event Categories'
+              identifier: field_event_category_target_id
+            parent: null
+            none_label: Category
+        defaults:
+          use_ajax: false
+          exposed_form: false
+          arguments: false
+        css_class: 'bef-form bef-form--label-hidden '
+        use_ajax: true
+        path: events
+        menu:
+          type: none
+          title: ''

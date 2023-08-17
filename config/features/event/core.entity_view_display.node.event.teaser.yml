@@ -5,12 +5,18 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
+    - field.field.node.event.field_event_attendance_mode
+    - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
     - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_status
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -20,7 +26,9 @@ dependencies:
     - node.type.event
   module:
     - address
+    - field_delimiter
     - link
+    - options
     - smart_date
     - text
     - user
@@ -38,6 +46,16 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
+  field_event_attendance:
+    type: boolean
+    label: visually_hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 11
+    region: content
   field_event_location:
     type: address_default
     label: visually_hidden
@@ -50,7 +68,9 @@ content:
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 9
     region: content
   field_event_series_link:
@@ -75,6 +95,13 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_event_status:
+    type: list_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
   field_event_virtual:
     type: link
     label: visually_hidden
@@ -97,6 +124,7 @@ content:
       force_chronological: false
       add_classes: false
       time_wrapper: true
+      localize: false
     third_party_settings: {  }
     weight: 0
     region: content
@@ -126,6 +154,10 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance_mode: true
+  field_event_category: true
+  field_event_directions: true
+  field_event_geolocation: true
   field_event_hide: true
   field_event_parent: true
   field_meta_tags: true

@@ -34,6 +34,9 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     sitenow_p2lb_node_p2lb($entity);
+
+    // Finally, clear the tempstore.
+    sitenow_p2lb_clear_tempstore($entity);
   }
 
 }

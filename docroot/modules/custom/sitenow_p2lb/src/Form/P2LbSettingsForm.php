@@ -107,15 +107,6 @@ class P2LbSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['delete'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Delete'),
-      '#name' => 'delete',
-      '#submit' => [
-        [$this, 'deleteButton'],
-      ],
-    ];
-
     $form['magic'] = [
       '#type' => 'submit',
       '#button_type' => 'danger',
@@ -132,21 +123,6 @@ class P2LbSettingsForm extends ConfigFormBase {
     // Unset the original, unused submit button.
     unset($form['actions']['submit']);
     return $form;
-  }
-
-  /**
-   * Delete connected paragraphs from the selected nodes.
-   */
-  public function deleteButton(array &$form, FormStateInterface $form_state) {
-    // Grab nids for all boxes that were checked (0s are filtered out).
-    $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
-    $nodes = $this->entityTypeManager
-      ->getStorage('node')
-      ->loadMultiple($nids);
-    foreach ($nodes as $node) {
-      sitenow_p2lb_remove_attached_paragraphs($node);
-    }
-    return $form_state;
   }
 
   /**
@@ -176,8 +152,9 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     // Grab all nids for nodes with paragraphs.
     $nids = sitenow_p2lb_paragraph_nodes();
-    foreach ($nids as $nid) {
-      sitenow_p2lb_node_p2lb($nid, TRUE);
+    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
+    foreach ($nodes as $node) {
+      sitenow_p2lb_node_p2lb($node);
     }
     return $form_state;
   }

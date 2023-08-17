@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labacl.uiowa.ddev.site
+    protocol: https
+  machine_name: labacl
+  human_name: acl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labacl.prod
+drupal:
+  db:
+    database: acl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labacl.prod.drupal.uiowa.edu'
+  requester: rhazelti
+  site-name: 'ACL Lab'

@@ -1,0 +1,424 @@
+adding:
+  dependencies:
+    config:
+      - field.storage.node.field_event_attendance
+      - field.storage.node.field_event_status
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            items_per_page: 0
+        style:
+          options:
+            grouping:
+              -
+                field: field_event_when_value
+                rendered: true
+                rendered_strip: false
+    page_upcoming:
+      display_options:
+        fields:
+          title:
+            label: Title
+          field_event_when_value:
+            id: field_event_when_value
+            table: node__field_event_when
+            field: field_event_when_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            label: ''
+            exclude: true
+            alter:
+              alter_text: false
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: false
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
+          field_event_attendance:
+            id: field_event_attendance
+            table: node__field_event_attendance
+            field: field_event_attendance
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: field
+            label: ''
+            exclude: false
+            alter:
+              alter_text: true
+              text: "{% if field_event_attendance == '1' %}\r\n  <strong>*</strong>\r\n{% endif %}"
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: false
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            click_sort_column: value
+            type: boolean
+            settings:
+              format: boolean
+              format_custom_false: ''
+              format_custom_true: ''
+            group_column: value
+            group_columns: {  }
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+          field_event_when_end_value:
+            id: field_event_when_end_value
+            table: node__field_event_when
+            field: field_event_when_end_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            label: ''
+            exclude: true
+            alter:
+              alter_text: false
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: false
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            date_format: custom
+            custom_date_format: 'g:i a'
+            timezone: ''
+          field_event_when_value_1:
+            id: field_event_when_value_1
+            table: node__field_event_when
+            field: field_event_when_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            label: Time
+            exclude: false
+            alter:
+              alter_text: true
+              text: '{{ field_event_when_value_1 }} - {{ field_event_when_end_value }}'
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: false
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            date_format: custom
+            custom_date_format: 'g:i a'
+            timezone: ''
+          field_event_status:
+            id: field_event_status
+            table: node__field_event_status
+            field: field_event_status
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: field
+            label: ''
+            exclude: false
+            alter:
+              alter_text: true
+              text: "{% if field_event_status__value == 'EventCancelled' %}\r\n  &nbsp;<span class=\"badge badge--orange\">{{ field_event_status }}</span>\r\n{% elseif field_event_status__value == 'EventRescheduled' %}\r\n  &nbsp;<span class=\"badge badge--green\">{{ field_event_status }}</span>\r\n{% endif %}"
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: false
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            click_sort_column: value
+            type: list_default
+            settings: {  }
+            group_column: value
+            group_columns: {  }
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+        style:
+          type: table
+          options:
+            grouping:
+              -
+                field: field_event_when_value
+                rendered: true
+                rendered_strip: false
+            row_class: ''
+            default_row_class: true
+            uses_fields: true
+            columns:
+              title: title
+              field_teaser: field_teaser
+              field_image: field_image
+              field_event_when_value: field_event_when_value
+              field_event_when_value_1: field_event_when_value_1
+              field_event_attendance: title
+              field_event_status: title
+            default: '-1'
+            info:
+              title:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_teaser:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_image:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_event_when_value:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_event_when_value_1:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_event_attendance:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              field_event_status:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+            override: true
+            sticky: false
+            summary: ''
+            empty_table: false
+            caption: ''
+            description: ''
+        row:
+          type: 'entity:node'
+          options:
+            view_mode: teaser
+        defaults:
+          style: false
+          row: false
+          header: false
+          footer: false
+        css_class: 'bef-form bef-form--label-hidden table-sticky'
+        header: {  }
+        footer:
+          area:
+            id: area
+            table: views
+            field: area
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: text
+            empty: false
+            content:
+              value: '<p><br /><strong>*</strong> Attendance Required</p>'
+              format: filtered_html
+            tokenize: false
+      cache_metadata:
+        tags:
+          - 'config:field.storage.node.field_event_attendance'
+          - 'config:field.storage.node.field_event_status'
+removing:
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            items_per_page: 10
+    page_upcoming:
+      display_options:
+        fields:
+          title:
+            label: ''
+        css_class: 'bef-form bef-form--label-hidden '

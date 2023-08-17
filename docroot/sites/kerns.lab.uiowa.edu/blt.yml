@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkerns.uiowa.ddev.site
+    protocol: https
+  machine_name: labkerns
+  human_name: kerns.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkerns.prod
+drupal:
+  db:
+    database: kerns_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkerns.prod.drupal.uiowa.edu'
+  requester: rjkerns
+  site-name: 'Kerns Research Group'

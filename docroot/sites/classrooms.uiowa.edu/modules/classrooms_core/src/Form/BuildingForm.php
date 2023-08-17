@@ -50,6 +50,13 @@ class BuildingForm extends EntityForm {
       '#description' => $this->t('Description of the building.'),
     ];
 
+    $form['number'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Number'),
+      '#default_value' => $this->entity->get('number'),
+      '#description' => $this->t('The facilities building number.'),
+    ];
+
     return $form;
   }
 

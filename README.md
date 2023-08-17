@@ -105,9 +105,7 @@ The packages below are locked at specific SHAs and will not update using the met
 | Package                       | Reason                                                                                                                         |
 |-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
-| drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                                                                        |
 | uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
-| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                                                            |
 | drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
 
 
@@ -134,5 +132,3 @@ You can also run blt commands on an Acquia Cloud environment, but you must run t
 BLT projects are designed to instill software development best practices (including git workflows).
 
 Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
-
-

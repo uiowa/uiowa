@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencepgsrm2024.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencepgsrm2024
+  human_name: pgsrm2024.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencepgsrm2024.prod
+drupal:
+  db:
+    database: pgsrm2024_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencepgsrm2024.prod.drupal.uiowa.edu'
+  requester: pvrma
+  site-name: 'PGSRM 2024 '
