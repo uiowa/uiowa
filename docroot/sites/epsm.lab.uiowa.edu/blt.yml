@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labepsm.uiowa.ddev.site
+    protocol: https
+  machine_name: labepsm
+  human_name: epsm.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labepsm.prod
+drupal:
+  db:
+    database: epsm_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labepsm.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Environmental Passing Sampling and Modeling Laboratory '

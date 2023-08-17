@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmac.uiowa.ddev.site
+    protocol: https
+  machine_name: labmac
+  human_name: mac.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmac.prod
+drupal:
+  db:
+    database: mac_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmac.prod.drupal.uiowa.edu'
+  requester: rmmcmurr
+  site-name: 'Mechanisms of Audio-Visual Categorization Lab'
