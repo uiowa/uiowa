@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.body
     - field.field.node.person.field_image
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
@@ -18,7 +18,7 @@ target_entity_type_id: node
 target_bundle: person
 schema_type: Person
 schema_properties:
-  field_person_bio: description
+  body: description
   field_person_email: email
   field_person_last_name: familyName
   field_person_first_name: givenName
