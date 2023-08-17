@@ -6,10 +6,16 @@ document.addEventListener("DOMContentLoaded", function() {
   const container = document.querySelector('.view-slideshow .view-content');
 
   // Get all the slides in the container.
-  const slides = container.querySelectorAll('.banner');
+  let slides = container.querySelectorAll('.banner');
+  slides.forEach(function(slide, index) {
+    if (index>5) {
+      slide.remove();
+    }
+  })
 
   // Shuffle the slides.
   const slideIndexArray = Object.keys(slides);
+
   shuffleArray(slideIndexArray);
 
   slides.forEach(function(slide, index) {
