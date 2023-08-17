@@ -6,6 +6,7 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Tasks\DrushTask;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
+use Robo\Collection\CollectionBuilder;
 use Symfony\Component\Console\Helper\Table;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
@@ -47,7 +48,7 @@ class ReportCommands extends BltTasks {
       // Create the file for exporting.
       if ($options['export']) {
         $now = date('Ymd-His');
-        $filename = "SiteNow-Website-Report-$now.csv";
+        $filename = "SiteNow-Report-Analytics-$now.csv";
         $root = $this->getConfigValue('repo.root');
         $filepath = "$root/$filename";
 
@@ -187,6 +188,134 @@ class ReportCommands extends BltTasks {
   }
 
   /**
+   * Generates a report with compliance details for sites.
+   *
+   * @command uiowa:report:last-login
+   *
+   * @aliases urll
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  public function lastLogin($options = ['export' => FALSE, 'debug' => FALSE]) {
+    $site_data = [];
+
+    $headers = [
+      'Application',
+      'URL',
+      'Version',
+      'Status',
+      'GA Property IDs',
+      'GTM Container IDs',
+    ];
+
+    $debug = $options['debug'];
+
+    $user_table = 'users';
+
+    $application_data = $this->getDomainsKeyedByApplication();
+
+    if (!empty($application_data)) {
+      // Create the file for exporting.
+      if ($options['export']) {
+        $now = date('Ymd-His');
+        $filename = "SiteNow-Report-Login-$now.csv";
+        $root = $this->getConfigValue('repo.root');
+        $filepath = "$root/$filename";
+
+        if (file_exists($filepath)) {
+          unlink($filepath);
+        }
+        $this->say("Created export file $filepath");
+        $fp = fopen($filepath, 'w+');
+        fputcsv($fp, $headers);
+        fclose($fp);
+      }
+
+      $this->say('Starting to check domains.');
+      foreach ($application_data as $machine_name => $data) {
+        $this->say("Processing domains for $machine_name...");
+        foreach ($data['domains'] as $domain) {
+          $this->say("Processing $domain");
+          $site = [
+            'application' => $machine_name,
+            'domain' => $domain,
+            'version' => 'V1, custom, or collegiate',
+            'status' => 'active',
+            'last_login' => '',
+          ];
+
+          // Run 'drush status' to see if the site exists.
+          $result = $this->getDrushTask($debug)
+            ->interactive(FALSE)
+            ->alias("$machine_name.prod")
+            ->ansi(FALSE)
+            ->drush('status')
+            ->option('uri', $domain)
+            ->run();
+
+          // If the site doesn't exist, skip to the next record.
+          if (str_contains($result->getMessage(), 'Drupal Settings File   :  MISSING')
+            || str_contains($result->getMessage(), 'Fatal error')) {
+            $site['status'] = 'inactive';
+          }
+          else {
+
+            // SiteNow V2/V3.
+            if (in_array($machine_name, $this->getD9ApplicationList())) {
+              $user_table = 'users_field_data';
+              // Check if V2 split is enabled to determine version.
+              $result = $this->getDrushTask($debug)
+                ->interactive(FALSE)
+                ->alias("$machine_name.prod")
+                ->ansi(FALSE)
+                ->drush('config:get')
+                ->args(['config_split.config_split.sitenow_v2', 'status'])
+                ->option('uri', $domain)
+                ->run();
+
+              $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
+            }
+
+            // Run 'drush config:get google_analytics.settings account'.
+            $result = $this->taskDrush()
+              ->alias("$machine_name.prod")
+              ->ansi(FALSE)
+              ->drush('sqlq')
+              ->args("SELECT login FROM $user_table ORDER BY login DESC LIMIT 1")
+              ->option('uri', $domain)
+              ->run();
+
+            $site['last_login'] = date('m/d/Y', (int) trim($result->getMessage()));
+          }
+          if ($options['export']) {
+            // Output to CSV file and copy to filesystem.
+            $fp = fopen($filepath, 'a');
+            fputcsv($fp, $site);
+            fclose($fp);
+            $this->say("Updated $filepath");
+          }
+          else {
+            $site_data[] = $site;
+          }
+        }
+      }
+      $this->say('Done');
+
+      if (!$options['export']) {
+        $this->say('Here are your results.');
+        $table = new Table($this->output);
+
+        $table->setHeaders($headers);
+        $table->setRows($site_data);
+        $table->render();
+      }
+    }
+    else {
+      $this->say('No domains were found for the supplied application.');
+    }
+  }
+
+  /**
    * Helper method to provide a drush task with suppressed output or not.
    *
    * @param bool $debug
@@ -195,7 +324,7 @@ class ReportCommands extends BltTasks {
    * @return \Acquia\Blt\Robo\Tasks\DrushTask
    *   The modified drush task.
    */
-  protected function getDrushTask(bool $debug = FALSE): DrushTask {
+  protected function getDrushTask(bool $debug = FALSE) {
     $task = $this->taskDrush();
 
     if (!$debug) {
