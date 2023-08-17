@@ -5590,3 +5590,9 @@ $sites['dining.uiowa.ddev.site'] = 'dining.uiowa.edu';
 $sites['dining.dev.drupal.uiowa.edu'] = 'dining.uiowa.edu';
 $sites['dining.stage.drupal.uiowa.edu'] = 'dining.uiowa.edu';
 $sites['dining.prod.drupal.uiowa.edu'] = 'dining.uiowa.edu';
+
+// Directory aliases for rkinser.sites.uiowa.edu.
+$sites['sitesrkinser.uiowa.ddev.site'] = 'rkinser.sites.uiowa.edu';
+$sites['sitesrkinser.dev.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
+$sites['sitesrkinser.stage.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
+$sites['sitesrkinser.prod.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
