@@ -3,29 +3,12 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
-use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
-use AcquiaCloudApi\Connector\Client;
-use AcquiaCloudApi\Connector\Connector;
+use Acquia\Blt\Robo\Tasks\DrushTask;
 use AcquiaCloudApi\Endpoints\Applications;
-use AcquiaCloudApi\Endpoints\Databases;
-use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
-use AcquiaCloudApi\Endpoints\SslCertificates;
-use AcquiaCloudApi\Exception\ApiErrorException;
-use AcquiaCloudApi\Response\OperationResponse;
-use Consolidation\AnnotatedCommand\CommandData;
-use Consolidation\AnnotatedCommand\CommandError;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Yaml\Yaml;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
-use Uiowa\Multisite;
 
 /**
  * Global multisite commands.
@@ -54,15 +37,6 @@ class ReportCommands extends BltTasks {
       'Status',
       'GA Property IDs',
       'GTM Container IDs',
-    ];
-
-    $d9_containers = [
-      'uiowa',
-      'uiowa01',
-      'uiowa02',
-      'uiowa03',
-      'uiowa04',
-      'uiowa05',
     ];
 
     $debug = $options['debug'];
@@ -116,7 +90,7 @@ class ReportCommands extends BltTasks {
           }
           else {
 
-            // SiteNow V2/V3
+            // SiteNow V2/V3.
             if (in_array($machine_name, $this->getD9ApplicationList())) {
               // Check if V2 split is enabled to determine version.
               $result = $this->getDrushTask($debug)
@@ -215,11 +189,13 @@ class ReportCommands extends BltTasks {
   /**
    * Helper method to provide a drush task with suppressed output or not.
    *
-   * @param $debug
+   * @param bool $debug
+   *   Whether to print output for debugging purposes.
    *
    * @return \Acquia\Blt\Robo\Tasks\DrushTask
+   *   The modified drush task.
    */
-  protected function getDrushTask($debug = FALSE) {
+  protected function getDrushTask(bool $debug = FALSE): DrushTask {
     $task = $this->taskDrush();
 
     if (!$debug) {
@@ -266,7 +242,7 @@ class ReportCommands extends BltTasks {
           continue;
         }
 
-        $application_data[$app_name]['domains'] = array_values(array_filter($environment->domains, function($domain) use ($app_name) {
+        $application_data[$app_name]['domains'] = array_values(array_filter($environment->domains, function ($domain) use ($app_name) {
           return !(str_contains($domain, '.prod.drupal.') || str_starts_with($domain, "$app_name.prod"));
         }));
       }
