@@ -56,7 +56,7 @@ class P2LbHelper {
        * @var int $section_delta
        * @var \Drupal\paragraphs\ParagraphInterface $section
        */
-      foreach ($sections as $section_delta => $section) {
+      foreach ($sections as $section) {
         /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $components_field */
         $components_field = $section->field_section_content_block;
         $components = $components_field->referencedEntities();
@@ -64,7 +64,7 @@ class P2LbHelper {
          * @var int $component_delta
          * @var \Drupal\paragraphs\ParagraphInterface $component
          */
-        foreach ($components as $component_delta => $component) {
+        foreach ($components as $component) {
           switch ($component->getType()) {
             case 'card':
               // Check if card has a title.
@@ -125,8 +125,6 @@ class P2LbHelper {
     }
     $issues[$issue]++;
   }
-
-
 
   /**
    * Helper function to provide a consistent block definition.

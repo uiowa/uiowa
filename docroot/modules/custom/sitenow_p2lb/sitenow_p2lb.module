@@ -541,16 +541,10 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
           'status' => 1,
           'parent_type' => 'block_content',
           'parent_field_name' => 'field_uiowa_collection_items',
-          'field_collection_body' => $accordion_item_paragraph
-            ?->field_accordion_item_body
-            ?->first()
-            ?->getValue(),
-          'field_collection_headline' => $accordion_item_paragraph
-            ?->field_accordion_item_title
-            ?->value,
-          'field_unique_id' => $accordion_item_paragraph
-            ?->field_uip_id
-            ?->value,
+          // Get text and format for body.
+          'field_collection_body' => $accordion_item_paragraph?->field_accordion_item_body?->first()?->getValue(),
+          'field_collection_headline' => $accordion_item_paragraph?->field_accordion_item_title?->value,
+          'field_unique_id' => $accordion_item_paragraph?->field_uip_id?->value,
         ]);
         if ($child->save()) {
           $children[] = $child;
@@ -877,18 +871,13 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
       $display_title = !$paragraph->field_uip_display_title->value;
-      $content_items = $paragraph->field_featured_content;
 
-      $block_definition = [
-        'type' => 'featured_content',
-        'langcode' => 'en',
-        'reusable' => 0,
-        'default_langcode' => 1,
+      $block_definition = P2LbHelper::defaultBlockDefinition('featured_content', [
         'status' => $paragraph->get('status')->getValue(),
-        'field_featured_content_item' => $content_items,
+        'field_featured_content_item' => $paragraph->field_featured_content,
         'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
-      ];
+      ]);
 
       break;
 
