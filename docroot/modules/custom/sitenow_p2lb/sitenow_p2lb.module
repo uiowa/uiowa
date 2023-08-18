@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
 
@@ -498,7 +499,7 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
 /**
  * Process individual paragraph.
  */
-function sitenow_p2lb_process_paragraph($paragraph, $node) {
+function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
   if (empty($paragraph)) {
     return [];
   }
@@ -531,31 +532,32 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_title = !$paragraph->field_uip_display_title->value;
       $accordion_items = $paragraph->get('field_accordion_item');
       foreach ($accordion_items as $accordion_item) {
-        $accordion_paragraph = $paragraph->load($accordion_item->target_id);
-        $accordion_item_body = $accordion_paragraph?->get('field_accordion_item_body')?->getValue();
-        $body = !empty($accordion_item_body) ? $accordion_item_body[0] : NULL;
-        $child_title = $accordion_paragraph->get('field_accordion_item_title')->getString();
-        $unique_id = $accordion_paragraph->get('field_uip_id')->getString();
+        /** @var \Drupal\paragraphs\ParagraphInterface $accordion_item_paragraph */
+        $accordion_item_paragraph = $paragraph->load($accordion_item->target_id);
+        // Get the body text and format for the accordion item.
         $child = $paragraph->create([
           'langcode' => 'en',
           'type' => 'uiowa_collection_item',
           'status' => 1,
           'parent_type' => 'block_content',
           'parent_field_name' => 'field_uiowa_collection_items',
-          'field_collection_body' => $body,
-          'field_collection_headline' => $child_title,
-          'field_unique_id' => $unique_id,
+          'field_collection_body' => $accordion_item_paragraph
+            ?->field_accordion_item_body
+            ?->first()
+            ?->getValue(),
+          'field_collection_headline' => $accordion_item_paragraph
+            ?->field_accordion_item_title
+            ?->value,
+          'field_unique_id' => $accordion_item_paragraph
+            ?->field_uip_id
+            ?->value,
         ]);
         if ($child->save()) {
           $children[] = $child;
         }
       }
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
+      $block_definition = P2LbHelper::defaultBlockDefinition('uiowa_collection', [
         'status' => $paragraph->get('status')->getValue(),
-        'reusable' => 0,
-        'default_langcode' => 1,
         'field_uiowa_collection_items' => $children,
         // Build a headline out of the title
         // and display title options.
@@ -565,17 +567,17 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'hide_headline' => $display_title,
           'headline_style' => 'default',
         ],
-      ];
+      ]);
       break;
 
     case 'accordion_item':
-      // Skip--handled by the parent accordion.
+      // Skip - handled by the parent accordion.
       break;
 
     case 'articles':
       $type = 'views_block:article_list_block-list_article';
       $more = $paragraph->field_articles_more->value;
-      $more_path = ($paragraph->field_articles_more_path->get(0)) ? $paragraph->field_articles_more_path->get(0)->uri : NULL;
+      $more_path = ($paragraph->field_articles_more_path->get(0)) ? $paragraph->field_articles_more_path?->uri : NULL;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -779,7 +781,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       }
 
       // Create the block definition based on what has been put together above.
-      $block_definition = sitenow_p2lb_block_definition($type, $fields);
+      $block_definition = P2LbHelper::defaultBlockDefinition($type, $fields);
 
       break;
 
@@ -808,7 +810,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $fids[] = $carousel_image->get('field_carousel_image_image')->getString();
       }
 
-      $block_definition = sitenow_p2lb_block_definition('uiowa_image_gallery', [
+      $block_definition = P2LbHelper::defaultBlockDefinition('uiowa_image_gallery', [
         'field_uiowa_gallery_image' => $fids,
         // Build a headline out of the title
         // and display title options.
@@ -915,7 +917,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'people':
       $type = 'views_block:people_list_block-list_card';
       $more = $paragraph->field_people_more->value;
-      $more_path = ($paragraph->field_people_more_path->get(0)) ? $paragraph->field_people_more_path->get(0)->uri : NULL;
+      $more_path = $paragraph->field_people_more_path?->uri;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.

@@ -126,4 +126,20 @@ class P2LbHelper {
     $issues[$issue]++;
   }
 
+
+
+  /**
+   * Helper function to provide a consistent block definition.
+   */
+  public static function defaultBlockDefinition($type, array $fields): array {
+    $block_definition = [
+      'type' => $type,
+      'langcode' => 'en',
+      'reusable' => 0,
+      'default_langcode' => 1,
+      'status' => 1,
+    ];
+    return array_merge($block_definition, $fields);
+  }
+
 }
