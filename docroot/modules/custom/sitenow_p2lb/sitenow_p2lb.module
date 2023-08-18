@@ -83,9 +83,7 @@ function sitenow_p2lb_preprocess_views_view_field (&$variables) {
   $id = $view->storage
     ->id();
   if ($id === 'content_v3_converter') {
-    $fid = $variables['field']->options['id'];
-    $is_nothing = $fid === 'nothing';
-    if ($is_nothing) {
+    if ($variables['field']->options['id'] === 'nothing') {
       $page = $variables['row']->_entity;
       $issues = P2LbHelper::analyzeNode($page);
 
