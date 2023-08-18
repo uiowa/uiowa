@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: dining.uiowa.ddev.site
+    protocol: https
+  machine_name: dining
+  human_name: dining.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dining.prod
+drupal:
+  db:
+    database: dining_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://dining.prod.drupal.uiowa.edu'
+  requester: neuma
+  site-name: dining.uiowa.edu
