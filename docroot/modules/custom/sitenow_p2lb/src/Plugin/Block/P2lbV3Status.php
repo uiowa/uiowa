@@ -30,7 +30,7 @@ class P2lbV3Status extends BlockBase {
       '#markup' => $nid !== NULL ?
         'this is the V3 status custom block of node' . $nid . '.'
         :
-        NULL,
+        'yowza',
     ];
   }
 }
