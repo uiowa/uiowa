@@ -72,8 +72,6 @@ class P2LbHelper {
 
         foreach ($components as $component) {
           switch ($component->getType()) {
-              // @todo Add case for when a banner gets turned into image + text
-              //   blocks.
             case 'card':
               // Check if card has a title.
               $label = $component->field_card_title?->value;
