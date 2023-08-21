@@ -204,8 +204,7 @@ class ReportCommands extends BltTasks {
       'URL',
       'Version',
       'Status',
-      'GA Property IDs',
-      'GTM Container IDs',
+      'Last Login,
     ];
 
     $debug = $options['debug'];
