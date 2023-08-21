@@ -1341,9 +1341,6 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
   switch ($block_type) {
     // @todo Update to make sure we have all blocks correctly covered,
     //   and update with latest default styles.
-    case 'uiowa_collection':
-      return [];
-
     case 'views_block:article_list_block-list_article':
       return [
         'block_background_style_light',
@@ -1371,9 +1368,6 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
         'media_format_widescreen',
       ];
 
-    case 'uiowa_slider':
-      return [];
-
     case 'uiowa_events':
       return [
         'block_background_style_light',
@@ -1389,26 +1383,26 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       ];
 
     case 'featured_content':
-      $classes = '';
-      if ($paragraph && $paragraph->hasField('field_uip_classes')) {
-        $classes = $paragraph->get('field_uip_classes')->value;
+      $styles = [
+        'list_format' => 'list_format_list',
+        'list_grid' => 'block_grid_threecol_33_34_33',
+        'border' => 'no_border',
+      ];
+      $classes = $paragraph->field_uip_classes?->getString();
+
+      if (!is_null($classes)) {
+        if (str_contains($classes, 'grid') || str_contains($classes, 'masonry')) {
+          $styles['list_format'] = 'list_format_grid';
+        }
+        if (str_contains($classes, 'hide-images')) {
+          $styles['block_hide_images'] = 'block_hide_images';
+        }
+        if (str_contains($classes, 'hide-descriptions')) {
+          $styles['block_hide_descriptions'] = 'block_hide_descriptions';
+        }
       }
 
-      if ($classes === 'grid' || $classes === 'masonry') {
-        return [
-          'list_format_grid',
-          'block_grid_threecol_33_34_33',
-        ];
-      }
-      else {
-        return [
-          'list_format_list',
-          'block_grid_threecol_33_34_33',
-        ];
-      }
-
-    case 'uiowa_image_gallery':
-      return [];
+      return array_values($styles);
 
     case 'views_block:people_list_block-list_card':
       return [
@@ -1428,12 +1422,9 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       // section styles method.
       return sitenow_p2lb_section_styles($paragraph);
 
-    case 'webform_block':
+    default:
       return [];
   }
-  // We didn't match a block type, so return an empty
-  // styles array.
-  return [];
 }
 
 /**

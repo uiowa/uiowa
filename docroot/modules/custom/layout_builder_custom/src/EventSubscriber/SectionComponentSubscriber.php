@@ -151,6 +151,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
           $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
+          if (isset($style_map['list_format']) && str_contains($style_map['list_format'], 'grid')) {
+            $style_map['card_media_position'] = 'card--stacked';
+          }
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
 
