@@ -188,7 +188,7 @@ class ReportCommands extends BltTasks {
   }
 
   /**
-   * Generates a report with compliance details for sites.
+   * Proof of concept to generate a list of last logins for sites.
    *
    * @command uiowa:report:last-login
    *
@@ -204,7 +204,7 @@ class ReportCommands extends BltTasks {
       'URL',
       'Version',
       'Status',
-      'Last Login,
+      'Last Login',
     ];
 
     $debug = $options['debug'];
