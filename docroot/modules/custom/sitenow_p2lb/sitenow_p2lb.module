@@ -77,8 +77,7 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
 /**
  * Implements hook_preprocess_HOOK().
  */
-
-function sitenow_p2lb_preprocess_views_view_field (&$variables) {
+function sitenow_p2lb_preprocess_views_view_field(&$variables) {
   $view = $variables['view'];
   $id = $view->storage
     ->id();
