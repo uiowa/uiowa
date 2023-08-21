@@ -50,22 +50,30 @@ class P2LbHelper {
     $cache_tags = $page->getCacheTags();
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
     $section_field = $page->field_page_content_block;
+    /** @var \Drupal\paragraphs\ParagraphInterface[] $sections */
     $sections = $section_field?->referencedEntities();
-    if (!is_null($sections)) {
-      /**
-       * @var int $section_delta
-       * @var \Drupal\paragraphs\ParagraphInterface $section
-       */
+    if (!empty($sections)) {
       foreach ($sections as $section) {
         /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $components_field */
         $components_field = $section->field_section_content_block;
+        /** @var \Drupal\paragraphs\ParagraphInterface[] $components */
         $components = $components_field->referencedEntities();
-        /**
-         * @var int $component_delta
-         * @var \Drupal\paragraphs\ParagraphInterface $component
-         */
+
+        if (empty($components)) {
+          continue;
+        }
+
+        // If the section has a background image.
+        if (!is_null($section?->field_section_image?->target_id)) {
+          if (count($components) > 1 || reset($components)->getType() !== 'text') {
+            static::addIssue($issues, 'Section contains a background image and multiple components or a single component that is not a text area. Affected sections will display an image followed by their components.');
+          }
+        }
+
         foreach ($components as $component) {
           switch ($component->getType()) {
+              // @todo Add case for when a banner gets turned into image + text
+              //   blocks.
             case 'card':
               // Check if card has a title.
               $label = $component->field_card_title?->value;

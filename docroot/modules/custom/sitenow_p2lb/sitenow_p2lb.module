@@ -263,8 +263,7 @@ function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout
   $paragraphs = $para_storage->loadMultiple($pids);
 
   // Check for a section image, and if so, handle it.
-  $section_image_fid = ($paragraph_section_object->field_section_image[0]) ?
-    $paragraph_section_object->field_section_image[0]->target_id : 0;
+  $section_image_fid = $paragraph_section_object?->field_section_image?->target_id;
   $banner_text = NULL;
 
   if ($section_image_fid) {
@@ -1118,14 +1117,12 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
 /**
  * Simple helper to create a section array.
  */
-function sitenow_p2lb_create_section_array($layout_id, $layout_settings) {
-  $section_array = [
+function sitenow_p2lb_create_section_array($layout_id, $layout_settings, array $components = []): array {
+  return [
     'layout_id' => $layout_id,
-    'components' => [],
+    'components' => $components,
     'layout_settings' => $layout_settings,
   ];
-
-  return $section_array;
 }
 
 /**
@@ -1218,7 +1215,7 @@ function sitenow_p2lb_section_styles($section_object) {
 function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   $section_array = [];
 
-  $text = (!is_null($banner_text)) ? $banner_text->get('field_text_body')->getValue()[0] : [
+  $text = $banner_text?->get('field_text_body')?->first()->getValue() ?? [
     'value' => '',
     'format' => NULL,
   ];
@@ -1260,70 +1257,85 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   $text['format'] = ($text['format'] === 'filtered_html') ?
     'minimal' : $text['format'];
 
-  $block = \Drupal::entityTypeManager()
-    ->getStorage('block_content')
-    ->create([
-      'type' => 'uiowa_banner',
-      'langcode' => 'en',
-      'status' => 1,
-      'reusable' => 0,
-      'default_langcode' => 1,
-      'field_uiowa_banner_excerpt' => $text,
-      'field_uiowa_banner_image' => $section_image_fid,
-      'field_uiowa_banner_title' => [
-        'size' => $h_level,
-        'text' => $title,
-      ],
-      'field_uiowa_banner_link' => $link,
-    ]);
+  if (empty($text['value']) && empty($title) && empty($excerpt)) {
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create(P2LbHelper::defaultBlockDefinition('uiowa_image', [
+        'field_uiowa_image_image' => $section_image_fid,
+      ]));
+  }
+  else {
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create(P2LbHelper::defaultBlockDefinition('uiowa_banner', [
+        'field_uiowa_banner_excerpt' => $text,
+        'field_uiowa_banner_image' => $section_image_fid,
+        'field_uiowa_banner_title' => [
+          'size' => $h_level,
+          'text' => $title,
+        ],
+        'field_uiowa_banner_link' => $link,
+      ]));
+  }
+
   // If we have a block save it, and check that it saved successfully.
-  if (isset($block) && $block->save()) {
+  if ($block->save()) {
     // Create the config that will be used to set the block in its section.
-    $uuid = $block->get('uuid')->getValue()[0]['value'];
+    $uuid = $block->get('uuid')?->value;
     $block_config = [
-      'id' => 'inline_block:uiowa_banner',
+      'id' => "inline_block:{$block->bundle()}",
       'label' => '',
       'provider' => 'layout_builder',
       'label_display' => 0,
       'block_revision_id' => $block->getRevisionId(),
       'view_mode' => 'full',
     ];
-    if (!empty($block_config)) {
-      $layout_settings = [
-        'label' => '',
-        'column_widths' => [],
-        'layout_builder_styles_style' => [
-          'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
-        ],
-      ];
-      $section_array = sitenow_p2lb_create_section_array('layout_onecol', $layout_settings);
-      $section_array['components'][$uuid] = [
+    $layout_settings = [
+      'label' => '',
+      'column_widths' => [],
+      'layout_builder_styles_style' => [
+        'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
+      ],
+    ];
+
+    $components = [
+      $uuid => [
         'uuid' => $uuid,
         'region' => 'content',
         'configuration' => $block_config,
+        'weight' => 0,
         'additional' => [
           'layout_builder_styles_style' => [
-            'image',
-            'headline_medium',
-            'banner_centered',
-            'banner_gradient_dark',
-            'banner_medium',
-            'button_primary',
-            'headline_bold_serif',
+            'media_format_widescreen',
           ],
-        ],
-        'weight' => 0,
+        ]
+      ]
+    ];
+
+    if ($block->bundle() === 'uiowa_banner') {
+      $components[$uuid]['additional']['layout_builder_styles_style'] = [
+        'image',
+        'headline_medium',
+        'banner_centered',
+        'banner_gradient_dark',
+        'banner_medium',
+        'button_primary',
+        'headline_bold_serif',
       ];
+
       // If there was a unique id set on the text paragraph,
       // we should set it on our banner config.
       if ($id = $banner_text?->field_uip_id->value) {
-        $section_array['components'][$uuid]['third_party_settings'] = [
+        $components[$uuid]['third_party_settings'] = [
           'layout_builder_custom' => [
             'unique_id' => $id,
           ],
         ];
       }
     }
+
+    // Create the section array.
+    $section_array = sitenow_p2lb_create_section_array('layout_onecol', $layout_settings, $components);
 
     // Update the block usage to the node.
     $database = \Drupal::database();
