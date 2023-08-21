@@ -276,7 +276,7 @@ class ReportCommands extends BltTasks {
               $site['version'] = str_contains(trim($result->getMessage()), ': false') ? 'V3' : 'V2';
             }
 
-            // Run 'drush config:get google_analytics.settings account'.
+            // Get the last login.
             $result = $this->taskDrush()
               ->alias("$machine_name.prod")
               ->ansi(FALSE)
