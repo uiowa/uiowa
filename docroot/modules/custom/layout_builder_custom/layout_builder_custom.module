@@ -1230,36 +1230,6 @@ function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$var
     $id = $block->get('field_uiowa_banner_image')->target_id;
     Cache::invalidateTags(['media:' . $id]);
   }
-
-  // Add banner--transparent class.
-  // Get the specified fields.
-  $fields_to_check = [
-    'field_uiowa_banner_excerpt',
-    'field_uiowa_banner_pre_title',
-  ];
-
-  // Check if all specified fields are empty.
-  $all_specified_fields_empty = TRUE;
-  foreach ($fields_to_check as $field_name) {
-    $field_value = $block->get($field_name)->getValue();
-
-    if (
-      isset($field_value[0]['value']) &&
-      !empty($field_value[0]['value'])
-    ) {
-      $all_specified_fields_empty = FALSE;
-      break;
-    }
-  }
-
-  $title_exists = isset($variables['elements']['content']['field_uiowa_banner_title']);
-  $title_value = $title_exists && isset($variables['elements']['content']['field_uiowa_banner_title'][0]['#text'])
-    ? $variables['elements']['content']['field_uiowa_banner_title'][0]['#text']
-    : NULL;
-
-  if ($all_specified_fields_empty && $title_exists && $title_value === NULL) {
-    $variables['attributes']['class'][] = 'banner--transparent';
-  }
 }
 
 /**
