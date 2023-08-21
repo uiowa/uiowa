@@ -159,6 +159,12 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
     $layout_section_list->appendSection(Section::fromArray($default_sections[$i]));
   }
 
+  // @todo Check if node would show a menu
+  // @todo If so, add a section with the "Page w/ sidebar" layout.
+  // @todo Place the menu in the sidebar region.
+  // @todo If the next section has a full or fluid item first, remove it from
+  //   that section and add it to this section with the region set to content.
+
   // Process all the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
     // It's possible for the section to fail to load,
