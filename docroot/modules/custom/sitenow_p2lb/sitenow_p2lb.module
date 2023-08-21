@@ -86,18 +86,18 @@ function sitenow_p2lb_preprocess_views_view_field (&$variables) {
     if ($variables['field']->options['id'] === 'nothing') {
       $page = $variables['row']->_entity;
       $issues = P2LbHelper::analyzeNode($page);
+      $build['#attached']['library'][] = 'sitenow_p2lb/overrides';
 
       if (!empty($issues)) {
 
-        $message = t('Check the @link for more details.', [
-          '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $page->id()])->toString(),
+        $message = t('Partially compatible - @link', [
+          '@link' => Link::createFromRoute('See details.', 'entity.node.p2lb_conversion_status', ['node' => $page->id()])->toString(),
         ]);
 
-        $build['#markup'] = '<div>❌</div><div>' . $message . '</div>';
-        $build['#attached']['library'][] = 'sitenow_p2lb/overrides';
+        $build['#markup'] = '<div>✴️</div><div>' . $message . '</div>';
       }
       else {
-        $build['#markup'] = '<div>✅</div>';
+        $build['#markup'] = '<div>✅</div><div>Fully compatible</div>';
       }
 
       $variables['output'] = $build;
