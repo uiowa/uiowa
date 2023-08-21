@@ -1,0 +1,18 @@
+{{ attach_library('uids_base/alert') }}
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+{% for row in rows %}
+  {%
+    set row_classes = [
+    default_row_class ? 'views-row',
+  ]
+  %}
+
+  {% include '@uids_base/uids/alert.html.twig' with {
+    'attributes': attributes.addClass('alert--warning alert--vertically-centered'),
+    'alert_icon': 'fa-exclamation-triangle',
+    'alert_content' : row.content,
+  } only %}
+
+{% endfor %}
