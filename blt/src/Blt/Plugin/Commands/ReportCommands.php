@@ -20,7 +20,7 @@ class ReportCommands extends BltTasks {
   use InspectorTrait;
 
   /**
-   * Generates a report with compliance details for sites.
+   * Generates a report of websites with their Google Analytics and Google Tag Manager ids.
    *
    * @command uiowa:report:analytics
    *
