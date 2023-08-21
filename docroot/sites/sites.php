@@ -5590,3 +5590,9 @@ $sites['sitesrkinser.uiowa.ddev.site'] = 'rkinser.sites.uiowa.edu';
 $sites['sitesrkinser.dev.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
 $sites['sitesrkinser.stage.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
 $sites['sitesrkinser.prod.drupal.uiowa.edu'] = 'rkinser.sites.uiowa.edu';
+
+// Directory aliases for mordkoff.lab.uiowa.edu.
+$sites['labmordkoff.uiowa.ddev.site'] = 'mordkoff.lab.uiowa.edu';
+$sites['labmordkoff.dev.drupal.uiowa.edu'] = 'mordkoff.lab.uiowa.edu';
+$sites['labmordkoff.stage.drupal.uiowa.edu'] = 'mordkoff.lab.uiowa.edu';
+$sites['labmordkoff.prod.drupal.uiowa.edu'] = 'mordkoff.lab.uiowa.edu';
