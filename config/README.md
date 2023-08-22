@@ -42,6 +42,8 @@ Deploy the code changes to each environment per the normal process and import
 the configuration from the split manually.
 ```drush @mysite.dev config:import --source ../config/sites/mysite.uiowa.edu --partial```
 
+You may have to run `cim` and `cr` after the partial import for certain config like a moderation_control block to register.
+
 ## Caveats
 **DO NOT** split core.extension for your site. This will only lead to problems.
 You can complete-split individual modules that your site needs and Config
