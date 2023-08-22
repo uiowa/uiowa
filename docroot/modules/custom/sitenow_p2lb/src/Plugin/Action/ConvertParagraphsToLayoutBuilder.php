@@ -2,7 +2,9 @@
 
 namespace Drupal\sitenow_p2lb\Plugin\Action;
 
+use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Action\ActionBase;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 
@@ -33,10 +35,10 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
-    sitenow_p2lb_node_p2lb($entity);
+    /** @var \Drupal\sitenow_p2lb\P2LbConverter $converter */
+    $converter = \Drupal::service('sitenow_p2lb.conversion_manager')->createConverter($entity);
 
-    // Finally, clear the tempstore.
-    sitenow_p2lb_clear_tempstore($entity);
+    $converter->convert();
   }
 
 }

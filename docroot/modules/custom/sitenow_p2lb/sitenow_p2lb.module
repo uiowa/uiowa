@@ -140,8 +140,9 @@ function sitenow_p2lb_paragraph_nodes() {
  *   Node being processed.
  */
 function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
+  $processed_sections = [];
   // Get sections from the page.
-  $section_ids = sitenow_p2lb_fetch_child_ids($node);
+  $paragraph_section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
   // but just in case, $layout will just re-set itself.
   /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout_section_list */
@@ -159,14 +160,8 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
     $layout_section_list->appendSection(Section::fromArray($default_sections[$i]));
   }
 
-  // @todo Check if node would show a menu
-  // @todo If so, add a section with the "Page w/ sidebar" layout.
-  // @todo Place the menu in the sidebar region.
-  // @todo If the next section has a full or fluid item first, remove it from
-  //   that section and add it to this section with the region set to content.
-
   // Process all the individual sections and update the layout.
-  foreach ($section_ids as $section_id) {
+  foreach ($paragraph_section_ids as $section_id) {
     // It's possible for the section to fail to load,
     // such as if the paragraph no longer exists.
     // Only overwrite if we successfully process.
@@ -250,9 +245,9 @@ function sitenow_p2lb_fetch_child_ids($parent) {
  * Process paragraphs section.
  */
 function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout_section_list, $node) {
-  $para_storage = \Drupal::service('entity_type.manager')
+  $paragraph_storage = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph');
-  $paragraph_section_object = $para_storage->load($section_id);
+  $paragraph_section_object = $paragraph_storage->load($section_id);
   if (!$paragraph_section_object) {
     return FALSE;
   }
@@ -266,7 +261,7 @@ function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout
 
   // Get all paragraphs attached to this section.
   $pids = sitenow_p2lb_fetch_child_ids($paragraph_section_object);
-  $paragraphs = $para_storage->loadMultiple($pids);
+  $paragraphs = $paragraph_storage->loadMultiple($pids);
 
   // Check for a section image, and if so, handle it.
   $section_image_fid = $paragraph_section_object?->field_section_image?->target_id;
