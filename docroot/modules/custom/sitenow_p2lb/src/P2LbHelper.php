@@ -48,6 +48,15 @@ class P2LbHelper {
     $issues = [];
     // Add the node cache tags for invalidation.
     $cache_tags = $page->getCacheTags();
+
+    // Check if node has menu children.
+    $menu_defaults = menu_ui_get_menu_link_defaults($page);
+    $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
+
+    if (!empty($menu_children)) {
+      static::addIssue($issues, 'The page displays a menu and the content may look different after conversion.');
+    }
+
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
     $section_field = $page->field_page_content_block;
     /** @var \Drupal\paragraphs\ParagraphInterface[] $sections */
@@ -112,7 +121,7 @@ class P2LbHelper {
       }
     }
 
-    \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $page->getCacheTags());
+    \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $cache_tags);
 
     return $issues;
   }

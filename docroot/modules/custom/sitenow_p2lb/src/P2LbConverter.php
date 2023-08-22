@@ -42,83 +42,18 @@ class P2LbConverter {
    * Convert a page from V2 to V3.
    */
   public function convert(): void {
-    // Process sections first.
-    $this->processSections();
-
-    // Check if node has menu children.
-    $menu_defaults = menu_ui_get_menu_link_defaults($this->page);
-    $menu_children = $this->entityTypeManager->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
-
-    if (!empty($menu_children)) {
-      // Define a menu block component.
-      $menu_block_uuid = \Drupal::service('uuid')->generate();
-      $components = [
-        $menu_block_uuid => [
-          'uuid' => $menu_block_uuid,
-          'region' => 'sidebar',
-          'configuration' => [
-            'id' => 'menu_block:main',
-            'label' => 'Main navigation',
-            'label_display' => NULL,
-            'provider' => 'menu_block',
-            'follow' => TRUE,
-            'follow_parent' => 'child',
-            'level' => 2,
-            'depth' => 1,
-            'expand_all_items' => FALSE,
-            'parent' => 'main:',
-            'suggestion' => 'main',
-            'label_type' => 'block',
-            'label_link' => FALSE,
-            'context_mapping' => [],
-          ],
-          'additional' => [
-            'layout_builder_styles_style' => [
-              'block_menu_vertical',
-            ],
-          ],
-          'weight' => 0,
-        ]
-      ];
-
-      // If the next section is a one column_layout, remove it from the
-      // converted sections and copy its components to the new section.
-      if (isset($this->convertedSections[0]) && $this->convertedSections[0]->getLayoutId() === 'layout_onecol') {
-        /** @var \Drupal\layout_builder\Section $first_section */
-        $first_section = array_shift($this->convertedSections);
-        foreach ($first_section->getComponents() as $uuid => $component) {
-          $components[$uuid] = $component->toArray();
-        }
-      }
-
-      // Create a section with the "Page w/ sidebar" layout.
-      $layout_settings = [
-        'label' => 'Menu',
-        'layout_builder_styles_style' => [
-          'section_margin_fixed_width_container',
-        ],
-      ];
-      // Create the section array.
-      $section_array = sitenow_p2lb_create_section_array('layout_page', $layout_settings, $components);
-
-      array_unshift($this->convertedSections, Section::fromArray($section_array));
-    }
-
-    // Get default page sections config.
-    $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
-
-    // Append content moderation and header sections
-    // from default config.
-    foreach (['content_moderation', 'header'] as $i => $default_section) {
-      array_unshift($this->convertedSections, Section::fromArray($default_sections[$i]));
-    }
-
-    $this->createNewRevision();
+    $this->processSections()
+      ->processMenu()
+      ->addLockedSections()
+      ->createNewRevision();
 
     // Finally, clear the tempstore.
     sitenow_p2lb_clear_tempstore($this->page);
   }
 
+  /**
+   * Process all the sections.
+   */
   protected function processSections() {
     // Get sections from the page.
     $section_ids = sitenow_p2lb_fetch_child_ids($this->page);
@@ -127,6 +62,8 @@ class P2LbConverter {
     foreach ($section_ids as $section_id) {
       $this->processSection($section_id);
     }
+
+    return $this;
   }
 
   /**
@@ -134,9 +71,6 @@ class P2LbConverter {
    *
    * @param $id
    *   The section paragraph ID.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function processSection($id) {
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
@@ -280,11 +214,92 @@ class P2LbConverter {
   }
 
   /**
+   * Checks if a menu block should display and makes appropriate adjustments.
+   */
+  protected function processMenu() {
+    if (!in_array('no_sidebars', array_column($this->page->get('field_publish_options')
+      ->getValue(), 'value'))) {
+      // Check if node has menu children.
+      $menu_defaults = menu_ui_get_menu_link_defaults($this->page);
+      $menu_children = $this->entityTypeManager->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
+
+      if (!empty($menu_children)) {
+        // Define a menu block component.
+        $menu_block_uuid = \Drupal::service('uuid')->generate();
+        $components = [
+          $menu_block_uuid => [
+            'uuid' => $menu_block_uuid,
+            'region' => 'sidebar',
+            'configuration' => [
+              'id' => 'menu_block:main',
+              'label' => 'Main navigation',
+              'label_display' => NULL,
+              'provider' => 'menu_block',
+              'follow' => TRUE,
+              'follow_parent' => 'child',
+              'level' => 2,
+              'depth' => 1,
+              'expand_all_items' => FALSE,
+              'parent' => 'main:',
+              'suggestion' => 'main',
+              'label_type' => 'block',
+              'label_link' => FALSE,
+              'context_mapping' => [],
+            ],
+            'additional' => [
+              'layout_builder_styles_style' => [
+                'block_menu_vertical',
+              ],
+            ],
+            'weight' => 0,
+          ]
+        ];
+
+        // If the next section is a one column_layout, remove it from the
+        // converted sections and copy its components to the new section.
+        if (isset($this->convertedSections[0]) && $this->convertedSections[0]->getLayoutId() === 'layout_onecol') {
+          /** @var \Drupal\layout_builder\Section $first_section */
+          $first_section = array_shift($this->convertedSections);
+          foreach ($first_section->getComponents() as $uuid => $component) {
+            $components[$uuid] = $component->toArray();
+          }
+        }
+
+        // Create a section with the "Page w/ sidebar" layout.
+        $layout_settings = [
+          'label' => 'Menu',
+          'layout_builder_styles_style' => [
+            'section_margin_fixed_width_container',
+          ],
+        ];
+        // Create the section array.
+        $section_array = sitenow_p2lb_create_section_array('layout_page', $layout_settings, $components);
+
+        array_unshift($this->convertedSections, Section::fromArray($section_array));
+      }
+    }
+
+    return $this;
+  }
+
+  /**
+   * Add default sections that are locked in V3.
+   */
+  protected function addLockedSections() {
+    // Get default page sections config.
+    $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
+
+    // Append content moderation and header sections
+    // from default config.
+    foreach (['content_moderation', 'header'] as $i => $default_section) {
+      array_unshift($this->convertedSections, Section::fromArray($default_sections[$i]));
+    }
+
+    return $this;
+  }
+
+  /**
    * Create a new revision and update the relevant fields and properties.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createNewRevision(): void {
     /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
