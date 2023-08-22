@@ -405,7 +405,7 @@ display:
               plugin_id: default
               advanced:
                 combine: true
-                combine_rewrite: "Building Ascending|Sort by: A - Z\r\nBuilding Descending|Sort by: Z - A\r\nMax Occupancy Ascending|Sort by: Occupancy (Low to High)\r\nMax Occupancy Descending|Sort by: Occupancy (High to Low)\r\n"
+                combine_rewrite: "Title Ascending|Sort by: A - Z\r\nTitle Descending|Sort by: Z - A\r\nMax Occupancy Ascending|Sort by: Occupancy (Low to High)\r\nMax Occupancy Descending|Sort by: Occupancy (High to Low)\r\n"
                 reset: false
                 reset_label: ''
                 collapsible: false
@@ -2254,18 +2254,20 @@ display:
           separator: ', '
           field_api_classes: false
       sorts:
-        field_room_building_id_target_id:
-          id: field_room_building_id_target_id
-          table: node__field_room_building_id
-          field: field_room_building_id_target_id
+        title:
+          id: title
+          table: node_field_data
+          field: title
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
           plugin_id: standard
           order: ASC
           expose:
-            label: Building
-            field_identifier: field_room_building_id_target_id
+            label: Title
+            field_identifier: title
           exposed: true
         field_room_max_occupancy_value:
           id: field_room_max_occupancy_value
