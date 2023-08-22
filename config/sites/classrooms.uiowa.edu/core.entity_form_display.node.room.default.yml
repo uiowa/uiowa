@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.room.field_room_accessibility_feature
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_classroom_furniture
+    - field.field.node.room.field_room_combined_id
     - field.field.node.room.field_room_design_details
     - field.field.node.room.field_room_features
     - field.field.node.room.field_room_guide
@@ -122,6 +123,14 @@ content:
   field_room_classroom_furniture:
     type: string_textfield
     weight: 7
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_room_combined_id:
+    type: string_textfield
+    weight: 32
     region: content
     settings:
       size: 60
@@ -269,6 +278,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

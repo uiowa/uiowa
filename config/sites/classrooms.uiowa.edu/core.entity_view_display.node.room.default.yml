@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.room.field_room_accessibility_feature
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_classroom_furniture
+    - field.field.node.room.field_room_combined_id
     - field.field.node.room.field_room_design_details
     - field.field.node.room.field_room_features
     - field.field.node.room.field_room_guide
@@ -193,8 +194,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: Schedule
-          column_widths: 33-67
           context_mapping: {  }
+          column_widths: 33-67
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
@@ -247,8 +248,8 @@ third_party_settings:
         layout_id: layout_threecol
         layout_settings:
           label: ''
-          column_widths: 33-34-33
           context_mapping: {  }
+          column_widths: 33-34-33
           layout_builder_styles_style:
             0: section_background_gray_pattern_brain
             1: section_margin_fixed_width_container
@@ -458,8 +459,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: Map
-          column_widths: 50-50
           context_mapping: {  }
+          column_widths: 50-50
           layout_builder_styles_style:
             0: section_background_style_gray
             1: section_margin_edge_to_edge
@@ -699,6 +700,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 20
+    region: content
+  field_room_combined_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 23
     region: content
   field_room_design_details:
     type: string
