@@ -5602,3 +5602,9 @@ $sites['labwrl.uiowa.ddev.site'] = 'wrl.lab.uiowa.edu';
 $sites['labwrl.dev.drupal.uiowa.edu'] = 'wrl.lab.uiowa.edu';
 $sites['labwrl.stage.drupal.uiowa.edu'] = 'wrl.lab.uiowa.edu';
 $sites['labwrl.prod.drupal.uiowa.edu'] = 'wrl.lab.uiowa.edu';
+
+// Directory aliases for workshops.journalism.uiowa.edu.
+$sites['journalismworkshops.uiowa.ddev.site'] = 'workshops.journalism.uiowa.edu';
+$sites['journalismworkshops.dev.drupal.uiowa.edu'] = 'workshops.journalism.uiowa.edu';
+$sites['journalismworkshops.stage.drupal.uiowa.edu'] = 'workshops.journalism.uiowa.edu';
+$sites['journalismworkshops.prod.drupal.uiowa.edu'] = 'workshops.journalism.uiowa.edu';
