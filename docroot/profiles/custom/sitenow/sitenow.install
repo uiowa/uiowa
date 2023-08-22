@@ -2486,9 +2486,25 @@ function sitenow_update_9064() {
 }
 
 /**
- * Update person bio field to long with summary.
+ * Set list grid defaults for existing featured content blocks.
  */
 function sitenow_update_9065() {
+  _update_all_blocks_by_plugin_id('inline_block:featured_content', function (&$component, $block) {
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+    $styles[] = 'list_format_list';
+    $styles[] = 'block_grid_threecol_33_34_33';
+    $styles[] = 'no_border';
+
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', $styles);
+
+  });
+  
+/**
+ * Update person bio field to long with summary.
+ */
+function sitenow_update_9066() {
 
   // Statically defining our fields to be updated. More can be added here.
   $fields = [
@@ -2584,7 +2600,7 @@ function sitenow_update_9065() {
 /**
  * Update summary cols with field_teaser values.
  */
-function sitenow_update_9066() {
+function sitenow_update_9067() {
   $field_types = [
     'body',
     'field_teaser',
@@ -2640,7 +2656,7 @@ function sitenow_update_9066() {
 /**
  * Update hide fields options for list blocks.
  */
-function sitenow_update_9067() {
+function sitenow_update_9068() {
   foreach ([
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
