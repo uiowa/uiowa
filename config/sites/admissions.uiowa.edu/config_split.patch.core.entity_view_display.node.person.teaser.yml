@@ -5,16 +5,33 @@ adding:
     module:
       - options
   content:
+    body:
+      weight: 5
+    field_image:
+      weight: 7
     field_person_territory:
       type: list_default
       label: inline
       settings: {  }
       third_party_settings: {  }
-      weight: 5
+      weight: 6
+      region: content
+    field_teaser:
+      type: basic_string
+      label: hidden
+      settings: {  }
+      third_party_settings: {  }
+      weight: 4
       region: content
     links:
-      weight: 6
+      weight: 8
 removing:
   content:
+    body:
+      weight: 4
+    field_image:
+      weight: 6
     links:
       weight: 5
+  hidden:
+    field_teaser: true
