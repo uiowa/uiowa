@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwrl.uiowa.ddev.site
+    protocol: https
+  machine_name: labwrl
+  human_name: wrl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwrl.prod
+drupal:
+  db:
+    database: wrl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwrl.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Wireless Research Lab'
