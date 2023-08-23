@@ -8,6 +8,7 @@ dependencies:
     - node
     - smart_date
     - user
+    - views_custom_cache_tag
 id: alerts_building_block
 label: 'Alerts building block'
 module: views
@@ -106,8 +107,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: 'time:hourly'
       empty: {  }
       sorts:
         created:
