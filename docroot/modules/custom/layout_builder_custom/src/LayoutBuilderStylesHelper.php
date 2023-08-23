@@ -62,14 +62,16 @@ class LayoutBuilderStylesHelper {
   public static function removeStylesFromAttributes(array &$attributes, array $style_map) {
     // Filter class list to only elements didn't match a style from the style
     // map.
-    $attributes['class'] = array_filter($attributes['class'], function ($class) use ($style_map) {
-      foreach ($style_map as $style) {
-        if (str_contains($style, $class)) {
-          return FALSE;
+    if (isset($attributes['class']) && is_array($attributes['class'])) {
+      $attributes['class'] = array_filter($attributes['class'], function ($class) use ($style_map) {
+        foreach ($style_map as $style) {
+          if (str_contains($style, $class)) {
+            return FALSE;
+          }
         }
-      }
-      return TRUE;
-    });
+        return TRUE;
+      });
+    }
   }
 
   /**
