@@ -26,9 +26,7 @@ function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_alert_edit_form':
     case 'node_alert_form':
       $additional_published_help_text = t('Note: this alert will be published within a one-hour window of the selected date and time.');
-      $additional_unpublished_help_text = t('Note: this alert will be unpublished within a one-hour window of the selected date and time.');
       $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
-      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
       $form["status"]["widget"]["value"]["#description"] = t('Optional: Use <em><a href="#edit-scheduler-settings">Scheduling options</a></em> to publish this content');
       break;
   }

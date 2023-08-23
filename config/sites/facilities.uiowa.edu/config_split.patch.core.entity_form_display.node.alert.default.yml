@@ -41,14 +41,10 @@ adding:
         placeholder: ''
       third_party_settings: {  }
     field_alert_building:
-      type: entity_reference_autocomplete
+      type: options_select
       weight: 2
       region: content
-      settings:
-        match_operator: CONTAINS
-        match_limit: 10
-        size: 60
-        placeholder: ''
+      settings: {  }
       third_party_settings: {  }
     field_alert_buildings_locations:
       type: string_textfield
@@ -59,6 +55,7 @@ adding:
         placeholder: ''
       third_party_settings: {  }
     field_alert_category:
+      type: options_buttons
       weight: 6
     field_alert_date:
       weight: 8
@@ -116,15 +113,18 @@ adding:
       weight: 26
     sticky:
       weight: 9
+    title:
+      weight: null
     uid:
       weight: 18
     unpublish_on:
+      type: datetime_timestamp_no_default
       weight: 22
       region: content
+      settings: {  }
+      third_party_settings: {  }
     url_redirects:
       weight: 24
-  hidden:
-    title: true
 removing:
   content:
     body:
@@ -132,7 +132,13 @@ removing:
     created:
       weight: 3
     field_alert_category:
+      type: entity_reference_autocomplete
       weight: 9
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
     field_alert_date:
       weight: 11
     field_meta_tags:
@@ -154,12 +160,10 @@ removing:
     sticky:
       weight: 5
     title:
-      settings:
-        size: 60
-        placeholder: ''
-      type: string_textfield
       weight: 0
     uid:
       weight: 1
     url_redirects:
       weight: 7
+  hidden:
+    unpublish_on: true
