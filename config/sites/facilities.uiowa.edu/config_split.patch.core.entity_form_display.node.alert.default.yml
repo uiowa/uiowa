@@ -15,12 +15,12 @@ adding:
       - media_library
   content:
     body:
-      weight: 16
+      weight: 15
     created:
-      weight: 20
+      weight: 19
     field_alert_accessible_route:
       type: string_textarea
-      weight: 13
+      weight: 12
       region: content
       settings:
         rows: 5
@@ -28,13 +28,13 @@ adding:
       third_party_settings: {  }
     field_alert_affected_bus_routes:
       type: options_buttons
-      weight: 12
+      weight: 11
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_alternate_route:
       type: string_textarea
-      weight: 14
+      weight: 13
       region: content
       settings:
         rows: 5
@@ -56,9 +56,9 @@ adding:
       third_party_settings: {  }
     field_alert_category:
       type: options_buttons
-      weight: 6
+      weight: 5
     field_alert_date:
-      weight: 8
+      weight: 7
     field_alert_override_building:
       type: boolean_checkbox
       weight: 3
@@ -84,47 +84,47 @@ adding:
       third_party_settings: {  }
     field_alert_traffic_control:
       type: options_buttons
-      weight: 10
+      weight: 9
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_traffic_control_plan:
       type: media_library_widget
-      weight: 11
+      weight: 10
       region: content
       settings:
         media_types: {  }
       third_party_settings: {  }
     field_meta_tags:
-      weight: 17
+      weight: 16
     moderation_state:
-      weight: 25
+      weight: 24
     path:
-      weight: 23
+      weight: 22
     promote:
-      weight: 7
+      weight: 6
     publish_on:
-      weight: 21
+      weight: 20
     scheduler_settings:
-      weight: 19
-    simple_sitemap:
-      weight: 15
-    status:
-      weight: 26
-    sticky:
-      weight: 9
-    title:
-      weight: null
-    uid:
       weight: 18
+    simple_sitemap:
+      weight: 14
+    status:
+      weight: 25
+    sticky:
+      weight: 8
+    uid:
+      weight: 17
     unpublish_on:
       type: datetime_timestamp_no_default
-      weight: 22
+      weight: 21
       region: content
       settings: {  }
       third_party_settings: {  }
     url_redirects:
-      weight: 24
+      weight: 23
+  hidden:
+    title: true
 removing:
   content:
     body:
@@ -159,11 +159,17 @@ removing:
       weight: 10
     sticky:
       weight: 5
-    title:
-      weight: 0
     uid:
       weight: 1
     url_redirects:
       weight: 7
+    title:
+      type: string_textfield
+      weight: 0
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
   hidden:
     unpublish_on: true
