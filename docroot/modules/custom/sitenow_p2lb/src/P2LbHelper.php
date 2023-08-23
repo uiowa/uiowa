@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_p2lb;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
@@ -93,6 +94,15 @@ class P2LbHelper {
               // Card body isn't required.
               // Check or set to array with empty value.
               $excerpt = $component->field_card_body?->value;
+
+              // Link isn't required. Check for one, or set to null.
+              $link = $component->field_card_link?->first()?->getValue();
+
+              $test_excerpt = $excerpt;
+              $test_link = P2LbHelper::extractLink($test_excerpt);
+              if (empty($link) || ($test_link && $test_link['uri'] == $link['uri'])) {
+                $excerpt = $test_excerpt;
+              }
               if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
                 static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
               }
@@ -104,6 +114,7 @@ class P2LbHelper {
               /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $carousel_items_field */
               $carousel_items_field = $component->field_carousel_item;
               $carousel_items = $carousel_items_field->referencedEntities();
+              static::addIssue($issues, 'Contains a carousel which has no exact V3 counterpart. The carousel will be converted to an image gallery.');
               foreach ($carousel_items as $carousel_item) {
                 // Cases for carousel image ID and caption being set.
                 $caption = $carousel_item->field_carousel_image_caption?->value;
@@ -156,6 +167,36 @@ class P2LbHelper {
       'status' => 1,
     ];
     return array_merge($block_definition, $fields);
+  }
+
+  /**
+   * @param string $text
+   *
+   * @return array|null
+   */
+  public static function extractLink(&$text): ?array {
+    if (!empty($text)) {
+      $dom = Html::load($text);
+
+      $xpath = new \DOMXPath($dom);
+      $buttons = $xpath->query("//a[contains(@class, 'bttn')]");
+      if ($buttons->length > 0) {
+        /** @var \DOMElement $button */
+        $button = $buttons[0];
+        $button->parentNode->removeChild($button);
+        $uri = $button->getAttribute('href');
+        $text = Html::serialize($dom);
+
+        return [
+          'uri' => (str_starts_with($uri, 'http')) ?
+            $uri : "internal:$uri",
+          'title' => $button->nodeValue,
+          'options' => [],
+        ];
+      }
+    }
+
+    return NULL;
   }
 
 }

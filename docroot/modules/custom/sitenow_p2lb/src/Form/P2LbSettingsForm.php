@@ -9,7 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
-use Drupal\sitenow_p2lb\P2LbConversionManagerInterface;
+use Drupal\sitenow_p2lb\P2LbConverterManagerInterface;
+use Drupal\sitenow_p2lb\P2LbHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -32,7 +33,8 @@ class P2LbSettingsForm extends ConfigFormBase {
 
   /**
    * The sitenow_p2lb.conversion_manager service.
-   * @var \Drupal\sitenow_p2lb\P2LbConverterManager
+   *
+   * @var \Drupal\sitenow_p2lb\P2LbConverterManagerInterface
    */
   protected $conversionManager;
 
@@ -46,7 +48,7 @@ class P2LbSettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity_type.manager service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager, P2LbConversionManagerInterface $conversionManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager, P2LbConverterManagerInterface $conversionManager) {
     parent::__construct($config_factory);
     $this->configStorage = $configStorage;
     $this->entityTypeManager = $entityTypeManager;

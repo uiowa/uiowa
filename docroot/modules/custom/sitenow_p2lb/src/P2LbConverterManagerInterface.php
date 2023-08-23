@@ -4,7 +4,7 @@ namespace Drupal\sitenow_p2lb;
 
 use Drupal\sitenow_pages\Entity\Page;
 
-interface P2LbConversionManagerInterface {
+interface P2LbConverterManagerInterface {
 
   /**
    * Instantiates a converter object for a page.
