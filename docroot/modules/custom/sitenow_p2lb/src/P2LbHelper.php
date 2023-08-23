@@ -49,12 +49,15 @@ class P2LbHelper {
     // Add the node cache tags for invalidation.
     $cache_tags = $page->getCacheTags();
 
-    // Check if node has menu children.
-    $menu_defaults = menu_ui_get_menu_link_defaults($page);
-    $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
+    if (!in_array('no_sidebars', array_column($page->get('field_publish_options')
+      ->getValue(), 'value'))) {
+      // Check if node has menu children.
+      $menu_defaults = menu_ui_get_menu_link_defaults($page);
+      $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
 
-    if (!empty($menu_children)) {
-      static::addIssue($issues, 'The page displays a menu and the content may look different after conversion.');
+      if (!empty($menu_children)) {
+        static::addIssue($issues, 'The page displays a menu and the content may look different after conversion.');
+      }
     }
 
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
