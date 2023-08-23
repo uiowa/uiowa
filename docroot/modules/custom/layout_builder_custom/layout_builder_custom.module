@@ -1166,7 +1166,10 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
-  $variables['attributes']['class'][] = LayoutBuilderStylesHelper::LIST_PREFIX;
+
+  LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
+  $variables['attributes']['class'][] = 'list-container grid--first-item-full-width';
+
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
   $variables['content']['referenced_items'] = [];
@@ -1174,14 +1177,16 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   /** @var \Drupal\block_content\Entity\BlockContent $block */
   $block = $variables['content']['#block_content'];
 
-  // This is a single value field.
-  $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
+  $override_styles = $variables['elements']['#override_styles'] ?: [];
 
-  if (empty($headline_field['headline'])) {
-    $heading_size = $headline_field['child_heading_size'];
+  // This is a single value field.
+  $headline_field = $block->field_uiowa_headline;
+
+  if (empty($headline_field?->headline)) {
+    $heading_size = $headline_field?->child_heading_size;
   }
   else {
-    $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+    $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
@@ -1189,18 +1194,14 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
     if ($target) {
       $entity = $target->getEntity();
 
-      // Associate the block's cache tags with each entity so that the
-      // appropriate render cache ID is cleared when the block changes.
-      $cache_tags = $block->getCacheTags();
-      $entity->addCacheTags($cache_tags);
-      // Grab a fresh copy of the node.
-      $id = $entity->id();
-      Cache::invalidateTags(['node:' . $id]);
-
       // Construct the entity teaser markup manually to pass in the heading
       // size variable for the template and append it to the block content.
       $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
-      $build['#heading_size'] = $heading_size;
+      $build['#title_heading_size'] = $heading_size;
+
+      if (!empty($override_styles)) {
+        $build['#override_styles'] = $override_styles;
+      }
       $render = \Drupal::service('renderer')->render($build);
 
       $variables['content']['referenced_items'][] = [
