@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmordkoff.uiowa.ddev.site
+    protocol: https
+  machine_name: labmordkoff
+  human_name: mordkoff.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmordkoff.prod
+drupal:
+  db:
+    database: mordkoff_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmordkoff.prod.drupal.uiowa.edu'
+  requester: jmordkof
+  site-name: mordkoff
