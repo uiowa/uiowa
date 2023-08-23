@@ -1,10 +1,38 @@
-<div class="alert {{ attributes ? attributes.class }}">
-  <div class="alert__icon">
+{% set alert_dismissible = alert_dismissible | default(false) %}
+{% set alert_classes = [
+  'alert',
+  'alert--icon',
+  'alert--vertically-centered',
+  alert_type == 'status' ? 'alert--success',
+  alert_type == 'warning' ? 'alert--warning',
+  alert_type == 'info' ? 'alert--info',
+  alert_type == 'error' ? 'alert--danger',
+  alert_dismissible ? 'alert--dismissible' : '',
+] %}
+
+{% set icon = '' %}
+{% if alert_type == 'status' %}
+  {% set icon = 'fa-check' %}
+{% elseif alert_type == 'warning' %}
+  {% set icon = 'fa-exclamation-triangle' %}
+{% elseif alert_type == 'info' %}
+  {% set icon = 'fa-info' %}
+{% elseif alert_type == 'error' %}
+  {% set icon = 'fa-exclamation' %}
+{% endif %}
+
+<div {{ attributes ? attributes.addClass(alert_classes) }} ">
+<div class="alert__icon">
     <span class="fa-stack fa-1x">
       <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
-      <span role="presentation" class="fas fa-stack-1x fa-inverse {{ alert_icon }}"></span></span>
-  </div>
-  {% block alert_content %}
-    {{ alert_content }}
-  {% endblock %}
+      <span role="presentation" class="fas fa-stack-1x fa-inverse {{ icon }}"></span>
+    </span>
+</div>
+{% block alert_content %}
+  <div>{{ alert_content }}</div>
+{% endblock %}
+  {% if alert_dismissible %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span role="presentation" class="fas fa-times"></span></button>
+  {% endif %}
 </div>
