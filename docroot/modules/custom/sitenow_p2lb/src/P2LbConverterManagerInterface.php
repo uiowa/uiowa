@@ -4,6 +4,9 @@ namespace Drupal\sitenow_p2lb;
 
 use Drupal\sitenow_pages\Entity\Page;
 
+/**
+ * Converter manager interface.
+ */
 interface P2LbConverterManagerInterface {
 
   /**
@@ -16,4 +19,5 @@ interface P2LbConverterManagerInterface {
    *   The converter object.
    */
   public function createConverter(Page $page): P2LbConverter;
+
 }

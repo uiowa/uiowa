@@ -2,9 +2,7 @@
 
 namespace Drupal\sitenow_p2lb\Plugin\Action;
 
-use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Action\ActionBase;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 

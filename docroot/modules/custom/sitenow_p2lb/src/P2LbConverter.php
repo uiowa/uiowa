@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_p2lb;
 
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\layout_builder\Section;
 use Drupal\sitenow_pages\Entity\Page;
@@ -13,16 +12,22 @@ use Drupal\sitenow_pages\Entity\Page;
 class P2LbConverter {
 
   /**
+   * The page being converted.
+   *
    * @var \Drupal\sitenow_pages\Entity\Page
    */
   protected Page $page;
 
   /**
+   * Sections that have been converted.
+   *
    * @var array
    */
   protected $convertedSections = [];
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
@@ -69,7 +74,7 @@ class P2LbConverter {
   /**
    * Process a section.
    *
-   * @param $id
+   * @param string|int $id
    *   The section paragraph ID.
    */
   protected function processSection($id) {
@@ -97,7 +102,8 @@ class P2LbConverter {
     $banner_text = NULL;
 
     if ($section_image_fid) {
-      // If the first (or only) paragraph is text, use it for the created banner.
+      // If the first (or only) paragraph is text, use it for the created
+      // banner.
       if (!empty($paragraphs) && reset($paragraphs)->getType() === 'text') {
         $banner_text = array_shift($paragraphs);
       }
@@ -252,7 +258,7 @@ class P2LbConverter {
               ],
             ],
             'weight' => 0,
-          ]
+          ],
         ];
 
         // If the next section is a one column_layout, remove it from the

@@ -170,11 +170,15 @@ class P2LbHelper {
   }
 
   /**
-   * @param string $text
+   * Extract a link from text.
+   *
+   * @param string|null $text
+   *   The text being checked.
    *
    * @return array|null
+   *   The link formatted for a field or null.
    */
-  public static function extractLink(&$text): ?array {
+  public static function extractLink(?string &$text): ?array {
     if (!empty($text)) {
       $dom = Html::load($text);
 
@@ -188,8 +192,7 @@ class P2LbHelper {
         $text = Html::serialize($dom);
 
         return [
-          'uri' => (str_starts_with($uri, 'http')) ?
-            $uri : "internal:$uri",
+          'uri' => (str_starts_with($uri, 'http')) ? $uri : "internal:$uri",
           'title' => $button->nodeValue,
           'options' => [],
         ];
