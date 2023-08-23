@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgbjj.uiowa.ddev.site
+    protocol: https
+  machine_name: orgbjj
+  human_name: bjj.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgbjj.prod
+drupal:
+  db:
+    database: bjj_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgbjj.prod.drupal.uiowa.edu'
+  requester: aloren
+  site-name: 'UIowa BJJ'
