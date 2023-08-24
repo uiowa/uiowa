@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_p2lb;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
@@ -48,6 +49,18 @@ class P2LbHelper {
     $issues = [];
     // Add the node cache tags for invalidation.
     $cache_tags = $page->getCacheTags();
+
+    if (!in_array('no_sidebars', array_column($page->get('field_publish_options')
+      ->getValue(), 'value'))) {
+      // Check if node has menu children.
+      $menu_defaults = menu_ui_get_menu_link_defaults($page);
+      $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
+
+      if (!empty($menu_children)) {
+        static::addIssue($issues, 'The page displays a menu and the content may look different after conversion. After you run the conversion, the menu will not display on unpublished revisions of the page.');
+      }
+    }
+
     /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $section_field */
     $section_field = $page->field_page_content_block;
     /** @var \Drupal\paragraphs\ParagraphInterface[] $sections */
@@ -76,13 +89,24 @@ class P2LbHelper {
               // Check if card has a title.
               $label = $component->field_card_title?->value;
               if (!$label) {
-                static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas.');
+                static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas or images.');
               }
-              // Card body isn't required.
-              // Check or set to array with empty value.
-              $excerpt = $component->field_card_body?->value;
-              if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
-                static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
+              else {
+                // Card body isn't required.
+                // Check or set to array with empty value.
+                $excerpt = $component->field_card_body?->value;
+
+                // Link isn't required. Check for one, or set to null.
+                $link = $component->field_card_link?->first()?->getValue();
+
+                $test_excerpt = $excerpt;
+                $test_link = P2LbHelper::extractLink($test_excerpt);
+                if (empty($link) || ($test_link && $test_link['uri'] === $link['uri'])) {
+                  $excerpt = $test_excerpt;
+                }
+                if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+                  static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
+                }
               }
               // Add the paragraph cache tags for invalidation.
               $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());
@@ -92,6 +116,7 @@ class P2LbHelper {
               /** @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $carousel_items_field */
               $carousel_items_field = $component->field_carousel_item;
               $carousel_items = $carousel_items_field->referencedEntities();
+              static::addIssue($issues, 'Contains a carousel which has no exact V3 counterpart. The carousel will be converted to an image gallery.');
               foreach ($carousel_items as $carousel_item) {
                 // Cases for carousel image ID and caption being set.
                 $caption = $carousel_item->field_carousel_image_caption?->value;
@@ -112,7 +137,7 @@ class P2LbHelper {
       }
     }
 
-    \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $page->getCacheTags());
+    \Drupal::cache()->set($cid, $issues, Cache::PERMANENT, $cache_tags);
 
     return $issues;
   }
@@ -144,6 +169,39 @@ class P2LbHelper {
       'status' => 1,
     ];
     return array_merge($block_definition, $fields);
+  }
+
+  /**
+   * Extract a link from text.
+   *
+   * @param string|null $text
+   *   The text being checked.
+   *
+   * @return array|null
+   *   The link formatted for a field or null.
+   */
+  public static function extractLink(?string &$text): ?array {
+    if (!empty($text)) {
+      $dom = Html::load($text);
+
+      $xpath = new \DOMXPath($dom);
+      $buttons = $xpath->query("//a[contains(@class, 'bttn')]");
+      if ($buttons->length > 0) {
+        /** @var \DOMElement $button */
+        $button = $buttons[0];
+        $button->parentNode->removeChild($button);
+        $uri = $button->getAttribute('href');
+        $text = Html::serialize($dom);
+
+        return [
+          'uri' => (str_starts_with($uri, 'http')) ? $uri : "internal:$uri",
+          'title' => $button->nodeValue,
+          'options' => [],
+        ];
+      }
+    }
+
+    return NULL;
   }
 
 }
