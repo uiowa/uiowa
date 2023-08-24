@@ -57,7 +57,7 @@ class P2LbHelper {
       $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
 
       if (!empty($menu_children)) {
-        static::addIssue($issues, 'The page displays a menu and the content may look different after conversion.');
+        static::addIssue($issues, 'The page displays a menu and the content may look different after conversion. After you run the conversion, the menu will not display on unpublished revisions of the page.');
       }
     }
 
