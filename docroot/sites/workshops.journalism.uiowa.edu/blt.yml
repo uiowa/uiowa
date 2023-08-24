@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: journalismworkshops.uiowa.ddev.site
+    protocol: https
+  machine_name: journalismworkshops
+  human_name: workshops.journalism.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: journalismworkshops.prod
+drupal:
+  db:
+    database: workshops_journalism_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://journalismworkshops.prod.drupal.uiowa.edu'
+  requester: msillman
+  site-name: workshops.journalism.uiowa.edu
