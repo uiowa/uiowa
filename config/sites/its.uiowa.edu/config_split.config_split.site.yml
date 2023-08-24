@@ -1,0 +1,26 @@
+uuid: 8ff40ace-a53a-4a73-a2bd-f9a086b7d9e1
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The its.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/its.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - metatag.metatag_defaults.node__service
+  - node.type.service
+  - pathauto.pattern.service
+  - schemadotorg.schemadotorg_mapping.node.service
+  - simple_sitemap.bundle_settings.default.node.service
+  - 'core.entity_view_display.node.service.*'
+  - 'core.entity_form_display.node.service.*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'

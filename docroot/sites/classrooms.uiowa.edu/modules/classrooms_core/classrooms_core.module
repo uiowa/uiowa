@@ -65,6 +65,9 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
     case 'node_room_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
 
+      // Computed field for use in views. No access needed.
+      $form['field_room_combined_id']['#access'] = FALSE;
+
       // These are imported fields that editors should not interact with.
       $form['field_room_name']['#disabled'] = TRUE;
       $form['field_room_accessibility_feature']['#disabled'] = TRUE;
@@ -469,6 +472,10 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     // Set title programmatically based on building and room id.
     $title = "{$building->label()} $room_id";
     $entity->set('title', $title);
+
+    // Set a combined building id and room id value for use in views.
+    $combined_id = "{$building->id()} $room_id";
+    $entity->set('field_room_combined_id', $combined_id);
   }
 
   RoomItemProcessor::process($entity, RoomItemProcessor::getRecord($entity));
