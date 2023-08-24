@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesrkinser.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesrkinser
+  human_name: rkinser.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrkinser.prod
+drupal:
+  db:
+    database: rkinser_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesrkinser.prod.drupal.uiowa.edu'
+  requester: rkinser
+  site-name: 'Ryan Kinser''s Webpage'
