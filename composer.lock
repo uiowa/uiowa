@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af1f92e1048937dc6d1272152363bd4b",
+    "content-hash": "8e4a037996396d748de3eb4fdf23bb04",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9724,9 +9724,8 @@
             "name": "drupal/purge_queuer_coretags",
             "version": "3.2.0",
             "require": {
-                "drupal/core": "^8.7.7 || ^9",
-                "drupal/purge": "^3.0.0-beta9",
-                "php": ">=7.2"
+                "drupal/core": "^8.9 || ^9",
+                "drupal/purge": "*"
             },
             "type": "metapackage",
             "extra": {
@@ -9737,9 +9736,6 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "branch-alias": {
-                    "dev-8.x-3.x": "3.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9748,8 +9744,8 @@
             ],
             "authors": [
                 {
-                    "name": "Niels van Mourik",
-                    "homepage": "http://www.nielsvm.org"
+                    "name": "djbobbydrake",
+                    "homepage": "https://www.drupal.org/user/336378"
                 },
                 {
                     "name": "japerry",
@@ -9811,6 +9807,10 @@
                 {
                     "name": "aleksey.tk",
                     "homepage": "https://www.drupal.org/user/22093"
+                },
+                {
+                    "name": "bohart",
+                    "homepage": "https://www.drupal.org/user/289861"
                 },
                 {
                     "name": "Dylan Donkersgoed",
@@ -9879,6 +9879,10 @@
                 {
                     "name": "Dave Reid",
                     "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "Kristen Pol",
+                    "homepage": "https://www.drupal.org/user/8389"
                 },
                 {
                     "name": "pifagor",
@@ -10404,13 +10408,14 @@
                 "drupal/allowed_formats": "*",
                 "drupal/auto_entitylabel": "*",
                 "drupal/cer": "*",
-                "drupal/ckeditor": "~1.0",
+                "drupal/ckeditor": "^1.0",
                 "drupal/config_rewrite": "*",
                 "drupal/custom_field": "*",
                 "drupal/devel": "*",
-                "drupal/entity_reference_override": "~2.0",
+                "drupal/entity_reference_override": "^2.0",
                 "drupal/entity_reference_revisions": "*",
-                "drupal/entity_usage": "~2.0",
+                "drupal/entity_usage": "^2.0",
+                "drupal/epp": "*",
                 "drupal/existing_values_autocomplete_widget": "*",
                 "drupal/field_group": "*",
                 "drupal/field_validation": "*",
@@ -10425,9 +10430,9 @@
                 "drupal/office_hours": "*",
                 "drupal/paragraphs": "*",
                 "drupal/paragraphs-paragraphs_library": "*",
-                "drupal/range": "~1.0",
-                "drupal/rdf": "~2.0",
-                "drupal/scheduler": "~2.0",
+                "drupal/range": "^1.0",
+                "drupal/rdf": "^2.0",
+                "drupal/scheduler": "^2.0",
                 "drupal/schemadotorg_jsonapi": "*",
                 "drupal/schemadotorg_jsonld": "*",
                 "drupal/schemadotorg_media": "*",
@@ -10435,7 +10440,7 @@
                 "drupal/schemadotorg_sidebar": "*",
                 "drupal/simple_sitemap": "*",
                 "drupal/smart_date": "*",
-                "drupal/token": "~1.0",
+                "drupal/token": "^1.0",
                 "drupal/type_tray": "*",
                 "michelf/php-markdown": "^1.0"
             },
@@ -10453,8 +10458,8 @@
                     "dev-1.0.x": "1.0.x-dev"
                 },
                 "drupal": {
-                    "version": "1.0.0-alpha3+60-dev",
-                    "datestamp": "1690854716",
+                    "version": "1.0.0-alpha5+2-dev",
+                    "datestamp": "1692823389",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -10462,7 +10467,7 @@
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^10"
+                        "drush.services.yml": "^10 || ^11"
                     }
                 }
             },
@@ -14139,6 +14144,18 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/slick-carousel/-/slick-carousel-1.8.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/vanilla-icon-picker",
+            "version": "1.2.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/vanilla-icon-picker/-/vanilla-icon-picker-1.2.0.tgz"
             },
             "type": "npm-asset",
             "license": [
