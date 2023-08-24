@@ -384,6 +384,13 @@ targetEntityType: node
 bundle: person
 mode: default
 content:
+  body:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
@@ -404,13 +411,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 12
-    region: content
-  body:
-    type: text_default
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view
