@@ -89,22 +89,24 @@ class P2LbHelper {
               // Check if card has a title.
               $label = $component->field_card_title?->value;
               if (!$label) {
-                static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas.');
+                static::addIssue($issues, 'Contains cards with no label, which is required for V3. Affected cards will be converted to text areas or images.');
               }
-              // Card body isn't required.
-              // Check or set to array with empty value.
-              $excerpt = $component->field_card_body?->value;
+              else {
+                // Card body isn't required.
+                // Check or set to array with empty value.
+                $excerpt = $component->field_card_body?->value;
 
-              // Link isn't required. Check for one, or set to null.
-              $link = $component->field_card_link?->first()?->getValue();
+                // Link isn't required. Check for one, or set to null.
+                $link = $component->field_card_link?->first()?->getValue();
 
-              $test_excerpt = $excerpt;
-              $test_link = P2LbHelper::extractLink($test_excerpt);
-              if (empty($link) || ($test_link && $test_link['uri'] == $link['uri'])) {
-                $excerpt = $test_excerpt;
-              }
-              if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal')) {
-                static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
+                $test_excerpt = $excerpt;
+                $test_link = P2LbHelper::extractLink($test_excerpt);
+                if (empty($link) || ($test_link && $test_link['uri'] === $link['uri'])) {
+                  $excerpt = $test_excerpt;
+                }
+                if ($excerpt && !static::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+                  static::addIssue($issues, 'Contains cards with content that uses markup not allowed in V3. Affected cards will be converted to text areas.');
+                }
               }
               // Add the paragraph cache tags for invalidation.
               $cache_tags = Cache::mergeTags($cache_tags, $component->getCacheTags());

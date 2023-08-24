@@ -485,7 +485,7 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
       else {
         $test_excerpt = $excerpt;
         $test_link = P2LbHelper::extractLink($test_excerpt);
-        if (empty($link) || ($test_link && $test_link['uri'] == $link['uri'])) {
+        if (empty($link) || ($test_link && $test_link['uri'] === $link['uri'])) {
           $link = $test_link;
           $excerpt = $test_excerpt;
         }
