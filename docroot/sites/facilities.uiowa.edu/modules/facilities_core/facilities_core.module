@@ -256,27 +256,20 @@ function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
     // Load the referenced entity from the entity reference field.
     $building_reference = $entity->get('field_alert_building')->entity;
+    $building_locations = $entity->get('field_alert_buildings_locations')->value;
+    $short_work_desc = $entity->get('field_alert_short_work_desc')->value;
 
-    // Check if the referenced entity is valid.
-    if ($building_reference) {
-      $building_title = $building_reference->get('title')->value;
-      $building_locations = $entity->get('field_alert_buildings_locations')->value;
+    // Determine the building title based on conditions.
+    $building_title = $building_reference ? $building_reference->get('title')->value : '';
+    $output = $building_locations ?: $building_title;
 
-      if (!empty($building_locations)) {
-        $building_title = $building_locations;
-      }
-
-      // Use the updated entity reference value and the other field value.
-      $output = $building_title . ' - ' . $entity->get('field_alert_short_work_desc')->value;
-    }
-    elseif (!empty($entity->get('field_alert_buildings_locations')->value)) {
-      // Use only the value of field_alert_buildings_locations if building is empty.
-      $output = $entity->get('field_alert_buildings_locations')->value;
+    // Combine the output with the short work description
+    // adding a hyphen if there's content.
+    if (!empty($output) && !empty($short_work_desc)) {
+      $output .= ' - ' . $short_work_desc;
     }
     else {
-      // If both entity reference and field_alert_buildings_locations
-      // are missing, use only the other field value.
-      $output = $entity->get('field_alert_short_work_desc')->value;
+      $output .= $short_work_desc;
     }
 
     // Set the combined output as the node title.
