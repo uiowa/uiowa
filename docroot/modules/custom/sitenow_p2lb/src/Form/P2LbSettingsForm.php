@@ -31,7 +31,7 @@ class P2LbSettingsForm extends ConfigFormBase {
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The sitenow_p2lb.conversion_manager service.
+   * The sitenow_p2lb.converter_manager service.
    *
    * @var \Drupal\sitenow_p2lb\P2LbConverterManagerInterface
    */
@@ -64,7 +64,7 @@ class P2LbSettingsForm extends ConfigFormBase {
       $container->get('config.factory'),
       $container->get('config.storage'),
       $container->get('entity_type.manager'),
-      $container->get('sitenow_p2lb.conversion_manager'),
+      $container->get('sitenow_p2lb.converter_manager'),
     );
   }
 

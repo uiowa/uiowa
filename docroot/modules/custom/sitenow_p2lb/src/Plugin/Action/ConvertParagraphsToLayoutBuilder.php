@@ -34,7 +34,7 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     /** @var \Drupal\sitenow_p2lb\P2LbConverter $converter */
-    $converter = \Drupal::service('sitenow_p2lb.conversion_manager')->createConverter($entity);
+    $converter = \Drupal::service('sitenow_p2lb.converter_manager')->createConverter($entity);
 
     $converter->convert();
   }
