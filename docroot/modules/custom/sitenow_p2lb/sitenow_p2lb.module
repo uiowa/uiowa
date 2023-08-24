@@ -164,83 +164,6 @@ function sitenow_p2lb_paragraph_nodes() {
 }
 
 /**
- * Convert a node from paragraphs to layout builder.
- *
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $node
- *   Node being processed.
- */
-function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL) {
-  // Get sections from the page.
-  $section_ids = sitenow_p2lb_fetch_child_ids($node);
-  // Grab the layout. We should have sections to process,
-  // but just in case, $layout will just re-set itself.
-  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout_section_list */
-  $layout_section_list = $node->get('layout_builder__layout');
-
-  // Clear the section list, in case it has been overridden for some reason.
-  $layout_section_list->setValue([]);
-
-  // Get default page sections config.
-  $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
-
-  // Append content moderation and header sections
-  // from default config.
-  foreach (['content_moderation', 'header'] as $i => $default_section) {
-    $layout_section_list->appendSection(Section::fromArray($default_sections[$i]));
-  }
-
-  // Process all the individual sections and update the layout.
-  foreach ($section_ids as $section_id) {
-    // It's possible for the section to fail to load,
-    // such as if the paragraph no longer exists.
-    // Only overwrite if we successfully process.
-    if ($new_layout = sitenow_p2lb_process_section($section_id, $layout_section_list, $node)) {
-      $layout_section_list = $new_layout;
-    }
-  }
-
-  // Need to set with an array of sections, retrieved with getSections().
-  if ($layout_section_list) {
-    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-
-    // Create a new revision from node storage.
-    $new_revision = $node_storage->createRevision($node);
-
-    // Set the layout section list field to the V3 version.
-    $new_revision->set('layout_builder__layout', $layout_section_list->getSections());
-
-    // Unset the paragraphs block.
-    $new_revision->set('field_page_content_block', NULL);
-
-    // Set value of field_v3_conversion_revision_id to current revision ID.
-    $new_revision->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
-
-    // Set the new revision as a "Draft".
-    $new_revision->set('moderation_state', 'draft');
-
-    // Add a message to the revision log.
-    $new_revision->revision_log = 'Converted page to v3.';
-
-    // Set the user ID to the current user's ID for the revision.
-    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
-
-    // Set the relevant revision timestamps.
-    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
-
-    // Save the new revision.
-    $new_revision->save();
-
-    return TRUE;
-  }
-
-  // Should be good to go, but if there was anything weird,
-  // return FALSE to indicate no processing was done.
-  return FALSE;
-}
-
-/**
  * Fetch all child ids attached to a parent node or section.
  */
 function sitenow_p2lb_fetch_child_ids($parent) {
@@ -268,149 +191,6 @@ function sitenow_p2lb_fetch_child_ids($parent) {
     }
   }
   return $ids;
-}
-
-/**
- * Process paragraphs section.
- */
-function sitenow_p2lb_process_section($section_id, LayoutSectionItemList $layout_section_list, $node) {
-  $para_storage = \Drupal::service('entity_type.manager')
-    ->getStorage('paragraph');
-  $paragraph_section_object = $para_storage->load($section_id);
-  if (!$paragraph_section_object) {
-    return FALSE;
-  }
-
-  $paragraph_section_unique_id = $paragraph_section_object->field_uip_id->value ?: NULL;
-
-  // Grab section title and styles.
-  $section_title = ($paragraph_section_object->field_section_title) ?
-    $paragraph_section_object->field_section_title->value : '';
-  $section_styles = sitenow_p2lb_section_styles($paragraph_section_object);
-
-  // Get all paragraphs attached to this section.
-  $pids = sitenow_p2lb_fetch_child_ids($paragraph_section_object);
-  $paragraphs = $para_storage->loadMultiple($pids);
-
-  // Check for a section image, and if so, handle it.
-  $section_image_fid = $paragraph_section_object?->field_section_image?->target_id;
-  $banner_text = NULL;
-
-  if ($section_image_fid) {
-    // If the first (or only) paragraph is text, use it for the created banner.
-    if (!empty($paragraphs) && reset($paragraphs)->getType() === 'text') {
-      $banner_text = array_shift($paragraphs);
-    }
-
-    // Append our new background image section.
-    $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text, $node);
-    if (!empty($section_array)) {
-      $section = Section::fromArray($section_array);
-      $layout_section_list->appendSection($section);
-      // If that was the only paragraph, we're done with this p_section.
-      if (empty($paragraphs)) {
-        return $layout_section_list;
-      }
-    }
-  }
-
-  // Widths are set at the paragraph level. Grab our column widths.
-  $col_widths = [];
-  foreach ($paragraphs as $paragraph) {
-    $col_str = $paragraph->field_uip_colwidth->getString();
-    // 'Fluid' paragraph will be a col_width of 0.
-    $col_widths[] = (int) preg_replace('|[^0-9]|', '', $col_str);
-  }
-
-  $sections_infos = sitenow_p2lb_determine_columns($col_widths);
-
-  // Helpers for iterating through paragraphs later.
-  $paragraph_iter = 0;
-  $paragraph_keys = array_keys($paragraphs);
-
-  // Helpers for section config settings later.
-  $regional = [
-    'first',
-    'second',
-    'third',
-    'fourth',
-  ];
-  $w2d = [
-    1 => 'one',
-    2 => 'two',
-    3 => 'three',
-    4 => 'four',
-  ];
-
-  // Create and append sections to our $layout (section list).
-  foreach ($sections_infos as $delta => $section_info) {
-    // Catch broken section infos and put into a 'blank slate' section.
-    $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
-
-    // Determine column layout and create the text string.
-    $formatter = $w2d[$num_cols] ?: 'one';
-    $layout_id = "layout_{$formatter}col";
-
-    $col_width_str = sitenow_p2lb_multicol_settings($section_info['col_widths']);
-    $layout_settings = [
-      'label' => $section_title,
-      'column_widths' => $col_width_str,
-      'layout_builder_styles_style' => $section_styles,
-    ];
-
-    // If this is the first section and there is a unique ID, add it to the
-    // layout settings.
-    if ($delta === 0 && $paragraph_section_unique_id) {
-      $layout_settings['layout_builder_custom_unique_id'] = $paragraph_section_unique_id;
-    }
-
-    $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
-
-    // Iterate through the columns and attach the next paragraph in the list.
-    for ($i = 0; $i < $num_cols; $i++) {
-      // We might have more columns available than remaining paragraphs.
-      if ($paragraph_iter >= count($paragraphs)) {
-        break;
-      }
-      $key = $paragraph_keys[$paragraph_iter++];
-
-      // This block_config will be empty
-      // if the paragraph didn't process correctly.
-      // And in some cases, like webforms, we will
-      // receive multiple block configs.
-      $block_configs = sitenow_p2lb_process_paragraph($paragraphs[$key], $node);
-      foreach ($block_configs as $block_config) {
-        // Onecol uses 'content', rest use region for column placement.
-        $region = ($num_cols === 1) ? 'content' : $regional[$i];
-        $uuid = $block_config['uuid'];
-        $config = $block_config['configuration'];
-        $styles = $block_config['styles'];
-
-        $section_array['components'][$uuid] = [
-          'uuid' => $uuid,
-          'region' => $region,
-          'configuration' => $config,
-          'additional' => [
-            'layout_builder_styles_style' => $styles,
-          ],
-          'weight' => 0,
-        ];
-        // If we had a user-provided unique id,
-        // add it to the block's third-party settings.
-        if (!empty($block_config['id'])) {
-          $section_array['components'][$uuid]['third_party_settings'] = [
-            'layout_builder_custom' => [
-              'unique_id' => $block_config['id'],
-            ],
-          ];
-        }
-      }
-    }
-    $section = Section::fromArray($section_array);
-    $layout_section_list->appendSection($section);
-  }
-
-  return $layout_section_list;
 }
 
 /**
@@ -702,10 +482,18 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
           $type = 'uiowa_text_area';
         }
       }
-      elseif ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
-        // Converting to a card would result in data loss. Convert to a text
-        // area instead.
-        $type = 'uiowa_text_area';
+      else {
+        $test_excerpt = $excerpt;
+        $test_link = P2LbHelper::extractLink($test_excerpt);
+        if (empty($link) || ($test_link && $test_link['uri'] === $link['uri'])) {
+          $link = $test_link;
+          $excerpt = $test_excerpt;
+        }
+        if ($excerpt && !P2LbHelper::formattedTextIsSame($excerpt, 'filtered_html', 'minimal_plus')) {
+          // Converting to a card would result in data loss. Convert to a text
+          // area instead.
+          $type = 'uiowa_text_area';
+        }
       }
 
       $fields = [];
@@ -1490,21 +1278,6 @@ function _sitenow_p2lb_get_page_lb_sections_config() {
   $config = $source->read('core.entity_view_display.node.page.default');
 
   return $config['third_party_settings']['layout_builder']['sections'];
-}
-
-/**
- * Helper function to provide a consistent block definition.
- */
-function sitenow_p2lb_block_definition($type, array $fields) {
-  $block_definition = [
-    'langcode' => 'en',
-    'reusable' => 0,
-    'default_langcode' => 1,
-    'status' => 1,
-  ];
-
-  $block_definition['type'] = $type;
-  return array_merge($block_definition, $fields);
 }
 
 /**
