@@ -23,16 +23,27 @@ chosen:
     - core/jquery
     - core/jquery.once
 
-fontawesome-iconpicker:
-  css:
-    theme:
-      /libraries/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.css: {}
-  js:
-    /libraries/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.js: {}
-    js/iconpicker.behaviors.js: {}
-  dependencies:
-    - core/jquery
-
 get_clickid:
   js:
     js/get_clickid.js: { preprocess: false }
+
+vanilla-icon-picker-theme-default:
+  css:
+    theme:
+      /libraries/vanilla-icon-picker/dist/themes/default.min.css: {minified: true }
+
+vanilla-icon-picker-theme-bootstrap:
+  dependencies:
+    - sitenow/vanilla-icon-picker-theme-default
+  css:
+    theme:
+      /libraries/vanilla-icon-picker/dist/themes/bootstrap-5.min.css: {minified: true }
+
+vanilla-icon-picker:
+  dependencies:
+    - core/drupal
+    - core/once
+    - sitenow/vanilla-icon-picker-theme-default
+  js:
+    /libraries/vanilla-icon-picker/dist/icon-picker.min.js: {minified: true }
+    js/fontawesome_iconpicker_vanilla.js: {}
