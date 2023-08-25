@@ -1,0 +1,26 @@
+uuid: bd7ff459-374c-4313-afd5-4cc5f37f434f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_service_fees
+    - node.type.service
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal_plus
+id: node.service.field_service_fees
+field_name: field_service_fees
+entity_type: node
+bundle: service
+label: Fees
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
