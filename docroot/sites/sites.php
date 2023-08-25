@@ -3197,12 +3197,6 @@ $sites['clcl.dev.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.stage.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.prod.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 
-// Directory aliases for rise.uiowa.edu.
-$sites['rise.uiowa.ddev.site'] = 'rise.uiowa.edu';
-$sites['rise.dev.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-$sites['rise.stage.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-$sites['rise.prod.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-
 // Directory aliases for passport.uiowa.edu.
 $sites['passport.uiowa.ddev.site'] = 'passport.uiowa.edu';
 $sites['passport.dev.drupal.uiowa.edu'] = 'passport.uiowa.edu';
