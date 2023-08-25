@@ -8,10 +8,12 @@ dependencies:
     - field.field.node.alert.field_alert_affected_bus_routes
     - field.field.node.alert.field_alert_alternate_route
     - field.field.node.alert.field_alert_building
+    - field.field.node.alert.field_alert_buildings_locations
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
-    - field.field.node.alert.field_alert_location
-    - field.field.node.alert.field_alert_reason_for_closure
+    - field.field.node.alert.field_alert_override_building
+    - field.field.node.alert.field_alert_project_number
+    - field.field.node.alert.field_alert_short_work_desc
     - field.field.node.alert.field_alert_traffic_control
     - field.field.node.alert.field_alert_traffic_control_plan
     - field.field.node.alert.field_meta_tags
@@ -86,25 +88,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 70921c30-e64e-4bef-975b-3dce9ae0e320
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_reason_for_closure'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 3b843159-1293-4659-bde1-fc53d21e5271
             region: main
             configuration:
@@ -117,7 +100,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -139,7 +122,7 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 9
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -188,25 +171,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 72819392-cb2d-4c5d-99bb-281d4ae3abb1
-            region: card_meta
-            configuration:
-              id: 'field_block:node:alert:field_alert_location'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: basic_string
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 98cbf817-9960-4a76-b37b-8f6513811fc9
             region: card_meta
             configuration:
@@ -245,7 +209,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 10
+            weight: 15
             additional: {  }
             third_party_settings: {  }
           -
@@ -264,7 +228,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -283,7 +247,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -305,6 +269,26 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ','
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 741b97a9-fd94-49f5-9e99-87173c28d57c
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_project_number'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 16
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -355,6 +339,14 @@ content:
     third_party_settings: {  }
     weight: 106
     region: content
+  field_alert_buildings_locations:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 117
+    region: content
   field_alert_category:
     type: entity_reference_label
     label: above
@@ -377,19 +369,31 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
-  field_alert_location:
-    type: basic_string
+  field_alert_override_building:
+    type: boolean
     label: above
-    settings: {  }
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
     third_party_settings: {  }
-    weight: 107
+    weight: 119
     region: content
-  field_alert_reason_for_closure:
-    type: basic_string
+  field_alert_project_number:
+    type: string
     label: above
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 113
+    weight: 118
+    region: content
+  field_alert_short_work_desc:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 116
     region: content
   field_alert_traffic_control:
     type: boolean
