@@ -5614,3 +5614,9 @@ $sites['orgbjj.uiowa.ddev.site'] = 'bjj.org.uiowa.edu';
 $sites['orgbjj.dev.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
 $sites['orgbjj.stage.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
 $sites['orgbjj.prod.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
+
+// Directory aliases for iowawomensicehockeyclub.org.uiowa.edu.
+$sites['orgiowawomensicehockeyclub.uiowa.ddev.site'] = 'iowawomensicehockeyclub.org.uiowa.edu';
+$sites['orgiowawomensicehockeyclub.dev.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';
+$sites['orgiowawomensicehockeyclub.stage.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';
+$sites['orgiowawomensicehockeyclub.prod.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';

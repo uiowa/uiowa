@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgiowawomensicehockeyclub.uiowa.ddev.site
+    protocol: https
+  machine_name: orgiowawomensicehockeyclub
+  human_name: iowawomensicehockeyclub.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgiowawomensicehockeyclub.prod
+drupal:
+  db:
+    database: iowawomensicehockeyclub_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgiowawomensicehockeyclub.prod.drupal.uiowa.edu'
+  requester: mvasilevich
+  site-name: 'Iowa Women''s Ice Hockey Club'
