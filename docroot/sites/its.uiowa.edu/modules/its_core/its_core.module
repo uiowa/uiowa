@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for ITS Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\housing_core\Entity\HousingResidenceHall;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function its_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['residence_hall'])) {
+    $bundles['node']['service']['class'] = HousingResidenceHall::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_service_edit_form':
+    case 'node_service_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:residence_hall:field_residence_hall_contact':
+      uiowa_core_set_attributes($variables, ['list-container']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function its_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_residence_hall_who_lives':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function its_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'its_core/global';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'service') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function its_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_residence_hall_floor_plans__residence_hall' => [
+      'template' => 'field--node--field-residence-hall-floor-plans--residence-hall',
+      'base hook' => 'field',
+    ],
+    'field__node__field_residence_hall_furnishings__residence_hall__default' => [
+      'template' => 'field--node--field-residence-hall-accordions--residence-hall--default',
+      'base hook' => 'field',
+    ],
+  ];
+}
