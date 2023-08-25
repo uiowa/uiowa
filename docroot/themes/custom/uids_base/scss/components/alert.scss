@@ -18,9 +18,18 @@
   margin-top: 9px;
 }
 
+.alert + .alert {
+  margin-top: 1.6rem;
+}
+
 .region-alert {
-  width: $container-width;
-  margin: 0 auto;
+  max-width: $container-width;
+  margin: 0 $mobile-width-gutter;
+  @include breakpoint(page-container) {
+    margin: 0 auto;
+    width: 100%;
+  }
+
   .alert {
     margin-top: 1.6rem;
 
@@ -38,4 +47,3 @@
     margin-left: 0;
   }
 }
-
