@@ -2,11 +2,6 @@
 @import "uids/assets/scss/_utilities.scss";
 @import "uids/components/alert/alert.scss";
 
-// @todo Move this to UIDS?
-.alert {
-  padding: 1.05rem 1.05rem;
-}
-
 .alert a {
  .bg--black--pattern--brain &,
  .bg-pattern--brain-black &,
@@ -32,6 +27,15 @@
     &:nth-last-child(n+1) {
       margin-bottom: 1.6rem;
     }
+  }
+}
+
+.alert--dismissible [type="button"] {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  svg {
+    margin-left: 0;
   }
 }
 
