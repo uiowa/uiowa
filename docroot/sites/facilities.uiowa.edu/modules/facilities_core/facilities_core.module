@@ -40,6 +40,18 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_alert_form':
+    case 'node_alert_edit_form':
+
+      // Show or hide the field_alert_buildings_locations field based on the checkbox value.
+      $form['field_alert_buildings_locations']['#states'] = [
+        'visible' => [
+          ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      break;
+
     case 'node_named_building_form':
     case 'node_named_building_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
@@ -242,6 +254,27 @@ function facilities_core_preprocess_media(&$variables) {
  */
 function facilities_core_node_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'alert') {
+    // Load the referenced entity from the entity reference field.
+    $building_reference = $entity->get('field_alert_building')->entity;
+    $building_locations = $entity->get('field_alert_buildings_locations')->value;
+    $short_work_desc = $entity->get('field_alert_short_work_desc')->value;
+
+    // Determine the building title based on conditions.
+    $building_title = $building_reference ? $building_reference->get('title')->value : '';
+    $output = $building_locations ?: $building_title;
+
+    // Combine the output with the short work description
+    // adding a hyphen if there's content.
+    if (!empty($output) && !empty($short_work_desc)) {
+      $output .= ' - ' . $short_work_desc;
+    }
+    else {
+      $output .= $short_work_desc;
+    }
+
+    // Set the combined output as the node title.
+    $entity->setTitle($output);
+
     $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
     if (!empty($traffic_plan)) {
       // Media will still display the file name when
