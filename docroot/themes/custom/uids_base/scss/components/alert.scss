@@ -22,6 +22,16 @@
   margin-top: 1.6rem;
 }
 
+.alert--dismissible [type="button"] {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  svg {
+    margin-left: 0;
+  }
+}
+
+// Set max width for alert region.
 .region-alert {
   max-width: $container-width;
   margin: 0 $mobile-width-gutter;
@@ -39,11 +49,14 @@
   }
 }
 
-.alert--dismissible [type="button"] {
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  svg {
-    margin-left: 0;
+// Duplicate unsaved changes alert in layout builder layout.
+.layout-builder {
+  .alert--dismissible {
+    max-width: 1310px;
+    margin: 0 $mobile-width-gutter;
+    @include breakpoint(page-container) {
+      margin: 0 auto;
+      width: 100%;
+    }
   }
 }
