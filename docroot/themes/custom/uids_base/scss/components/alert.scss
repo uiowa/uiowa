@@ -2,13 +2,15 @@
 @import "uids/assets/scss/_utilities.scss";
 @import "uids/components/alert/alert.scss";
 
-.alert a {
- .bg--black--pattern--brain &,
- .bg-pattern--brain-black &,
+.alert {
  [class*="bg--black"] & {
-   color: inherit;
+   color: $secondary;
+   a {
+     color: $secondary;
+   }
  }
 }
+
 
 .alert ul {
   margin-top: 0;
@@ -21,6 +23,7 @@
   }
 }
 
+// SVG in JS style adjustments for alert icon.
 .alert__icon .svg-inline--fa.fa-stack-2x {
   height: 100%;
 }
@@ -29,10 +32,12 @@
   margin-top: 9px;
 }
 
+// If alerts are stacked, add top margin between them.
 .alert + .alert {
   margin-top: 1.6rem;
 }
 
+// Override form styles for type="button".
 .alert--dismissible [type="button"] {
   position: absolute;
   padding: 0;
@@ -60,7 +65,7 @@
   }
 }
 
-// Duplicate unsaved changes alert in layout builder layout.
+// Set max-width for duplicate unsaved changes alert in layout builder layout.
 .layout-builder {
   .alert--dismissible {
     max-width: 1310px;
