@@ -890,20 +890,49 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
         $menu_link_options = $first_item->get('options')->getValue() ?: [];
         $menu = $menu_link->getMenuName();
         if ($menu === 'social') {
+          $option = [
+            'theme' => 'default',
+            'iconSource' => [
+              [
+                "key" => "fa6-brands",
+                "prefix" => "fa-brands fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-brands.json",
+              ],
+              [
+                "key" => "fa6-regular",
+                "prefix" => "fa-regular fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-regular.json",
+              ],
+              [
+                "key" => "fa6-solid",
+                "prefix" => "fa-solid fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-solid.json",
+              ],
+            ],
+            'closeOnSelect' => TRUE,
+            'i18n' => [
+              'input:placeholder' => t('Search icon…'),
+              'text:title' => t('Select icon'),
+              'text:empty' => t('No results found…'),
+              'btn:save' => t('Save'),
+            ],
+          ];
+
           $form['fa_icon'] = [
             '#type' => 'textfield',
             '#title' => t('FontAwesome Icon'),
             '#default_value' => !empty($menu_link_options['fa_icon']) ? $menu_link_options['fa_icon'] : '',
             '#attributes' => [
-              'autocomplete' => 'off',
+              'data-option' => json_encode($option),
+              'data-theme' => 'default',
               'class' => [
-                'fa-iconpicker',
+                'fontawesomeIconPickerVanillaIconPicker',
               ],
             ],
             '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
             '#attached' => [
               'library' => [
-                'sitenow/fontawesome-iconpicker',
+                'sitenow/vanilla-icon-picker',
               ],
             ],
           ];
