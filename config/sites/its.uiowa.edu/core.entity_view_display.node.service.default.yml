@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.uiowa_spacer_separator
     - block_content.type.uiowa_text_area
     - field.field.node.service.body
     - field.field.node.service.field_meta_tags
@@ -54,11 +55,12 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: 'Header'
+          label: Header
           context_mapping: {  }
           layout_builder_styles_style:
             0: section_background_black_pattern_community
             1: section_margin_edge_to_edge
+            restore_default_spacing: restore_default_spacing
         components:
           -
             uuid: 6eced04f-8ad2-4f0b-8c74-39dc9d58709b
@@ -110,6 +112,42 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+        components:
+          -
+            uuid: f15b0115-1699-4e58-823f-b90f656ed2d4
+            region: content
+            configuration:
+              id: 'inline_block:uiowa_spacer_separator'
+              label: null
+              label_display: null
+              provider: layout_builder
+              view_mode: full
+              context_mapping: {  }
+              block_revision_id: 2243
+              block_serialized: null
+              type: uiowa_spacer_separator
+              uuid: ac628a5b-420d-4c66-bb9c-ecd8db8197ee
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
@@ -120,6 +158,7 @@ third_party_settings:
             1: section_margin_fixed_width_container
             2: section_card_media_size_large
             3: section_card_media_format_widescreen
+            remove_default_top_padding: remove_default_top_padding
             section_order_reversed: section_order_reversed
             section_alignment_start: section_alignment_start
         components:
@@ -139,7 +178,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -158,7 +197,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -180,7 +219,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
