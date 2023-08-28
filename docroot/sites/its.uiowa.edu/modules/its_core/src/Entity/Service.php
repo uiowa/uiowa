@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\housing_core\Entity;
+namespace Drupal\its_core\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for residence hall entries.
+ * Provides an interface for ITS Service entries.
  */
-class HousingResidenceHall extends NodeBundleBase implements RendersAsCardInterface {
+class Service extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}
