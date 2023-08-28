@@ -1,21 +1,7 @@
 _core:
   default_config_hash: kVLaNV10JOymh1CXy3n1pxRP-ccd3Vcd-ndShhRpDag
 field_prefix: field_
-field_prefix_ui: false
 schema_types:
-  default_types:
-    WebPage:
-      name: page
-      label: Page
-    FAQPage:
-      name: faq
-      label: FAQ
-    QAPage:
-      name: qa
-      label: 'Q&A'
-    MedicalClinic:
-      name: clinic
-      label: Clinic
   main_properties:
     AudioObject: null
     Comment: text
@@ -689,6 +675,19 @@ schema_types:
       - text
       - text_long
       - text_with_summary
+  default_types:
+    WebPage:
+      name: page
+      label: Page
+    FAQPage:
+      name: faq
+      label: FAQ
+    QAPage:
+      name: qa
+      label: 'Q&A'
+    MedicalClinic:
+      name: clinic
+      label: Clinic
 schema_properties:
   range_includes:
     FAQPage--mainEntity:
@@ -1222,7 +1221,6 @@ schema_properties:
     nsn:
       label: 'NATO Stock Number (NSN)'
       max_length: 13
-  default_field_types: {  }
   default_field_weights:
     - subtype
     - name
@@ -1313,3 +1311,5 @@ schema_properties:
     - relatedLink
     - hasPart
     - mainEntity
+  default_field_types: {  }
+field_prefix_ui: false
