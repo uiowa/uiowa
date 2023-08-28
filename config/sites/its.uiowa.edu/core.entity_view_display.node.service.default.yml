@@ -117,10 +117,11 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_large
+            3: section_card_media_format_widescreen
             section_order_reversed: section_order_reversed
-            section_margin_fixed_width_container: section_margin_fixed_width_container
-            section_card_media_size_large: section_card_media_size_large
-            section_card_media_format_widescreen: section_card_media_format_widescreen
             section_alignment_start: section_alignment_start
         components:
           -
@@ -215,7 +216,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
             weight: 1
@@ -271,7 +272,13 @@ third_party_settings:
             weight: 3
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.service.default
 targetEntityType: node
 bundle: service
