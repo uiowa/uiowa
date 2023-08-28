@@ -10,8 +10,8 @@
   %}
 
   {% include '@uids_base/uids/alert.html.twig' with {
-    'attributes': attributes.addClass('alert--warning alert--vertically-centered'),
-    'alert_icon': 'fa-exclamation-triangle',
+    'attributes': attributes,
+    'alert_type': 'warning',
     'alert_content' : row.content,
   } only %}
 
