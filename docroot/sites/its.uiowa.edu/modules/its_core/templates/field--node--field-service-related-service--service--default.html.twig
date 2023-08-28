@@ -37,30 +37,13 @@
  * @see template_preprocess_field()
  */
 #}
-{% set accordion_item = {
-  'accordion_h_size': 'h3',
-  'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ 0,
-  'accordion_type': 'single',
-  'accordion_hash':  label|clean_class,
-  'accordion_parent_id': '#accordion-' ~ label|clean_class,
-  'accordion_item_label': label,
-  'accordion_item_content': items,
-  'accordion_item_expanded': 'false',
-  'accordion_button_class': 'border',
-} %}
 
-<div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
-    {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
-      {% block accordion_content %}
-        <ul class="fa-ul element--list-none element--two-column">
-          {% for item in accordion_item_content  %}
-            <li>
-              {{ item.content }}
-            </li>
-          {% endfor %}
-        </ul>
-      {% endblock %}
-    {% endembed %}
-  </div>
-</div>
+<p><strong>{{ label }}:</strong></p>
+
+<ul class="tags-list">
+  {% for item in items %}
+    <li class="tags-list__tag">
+      {{ item.content }}
+    </li>
+  {% endfor %}
+</ul>

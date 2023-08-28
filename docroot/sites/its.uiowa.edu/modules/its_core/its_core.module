@@ -47,12 +47,8 @@ function its_core_preprocess_block(&$variables) {
  */
 function its_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
-    case 'field_residence_hall_who_lives':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
-
+    case 'field_service_related_service':
+      $variables['#attached']['library'][] = 'uids_base/tags';
       break;
   }
 }
@@ -75,6 +71,7 @@ function its_core_preprocess_field__node__title(&$variables) {
     uiowa_core_set_attributes($variables, [
       'headline headline--serif',
       'headline--highlight',
+      'headline--small',
     ]);
   }
 }
@@ -84,8 +81,8 @@ function its_core_preprocess_field__node__title(&$variables) {
  */
 function its_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_residence_hall_floor_plans__residence_hall' => [
-      'template' => 'field--node--field-residence-hall-floor-plans--residence-hall',
+    'field__node__field_service_related_service__service__default' => [
+      'template' => 'field--node--field-service-related-service--service--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_furnishings__residence_hall__default' => [
