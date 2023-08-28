@@ -15,6 +15,7 @@ dependencies:
     - taxonomy
     - text
     - user
+    - views_custom_cache_tag
 id: alerts_list_block
 label: 'Alerts list block'
 module: views
@@ -322,8 +323,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: none
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:alert\r\ntime:hourly"
       empty:
         area:
           id: area
