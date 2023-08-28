@@ -111,19 +111,21 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_twocol
+        layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
+            section_order_reversed: section_order_reversed
+            section_margin_fixed_width_container: section_margin_fixed_width_container
+            section_card_media_size_large: section_card_media_size_large
+            section_card_media_format_widescreen: section_card_media_format_widescreen
             section_alignment_start: section_alignment_start
         components:
           -
             uuid: a9c56efc-642e-4c59-a510-f0c1f6bc8c71
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:service:body'
               label: null
@@ -142,7 +144,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: cb67293a-420a-4f10-8cfa-b9cd301d60cc
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:service:field_service_contact'
               label: null
@@ -161,7 +163,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 478fe1de-e223-4951-a4e1-918e68749c2e
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:service:field_service_related_service'
               label: null
@@ -183,7 +185,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: bf024fdc-d375-4a03-bbf3-93046024d979
-            region: second
+            region: card_media
             configuration:
               id: 'inline_block:uiowa_text_area'
               label: null
@@ -202,7 +204,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 9ece07f7-3120-4707-853b-7d6755ae3fb0
-            region: second
+            region: card_media
             configuration:
               id: 'field_block:node:service:field_service_fees'
               label: null
@@ -221,7 +223,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: cdb9564b-aa6d-4f16-96f5-75b5cbd617e1
-            region: second
+            region: card_media
             configuration:
               id: 'field_block:node:service:field_service_website'
               label: null
@@ -245,7 +247,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: f8acd225-3518-4f3a-a2c9-8d6e3dbd079e
-            region: second
+            region: card_media
             configuration:
               id: 'field_block:node:service:field_service_quick_links'
               label: null
