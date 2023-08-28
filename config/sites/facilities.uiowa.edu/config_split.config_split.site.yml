@@ -16,13 +16,17 @@ theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_view_display.node.alert.default
+  - field.field.node.alert.field_alert_override_building
+  - field.field.node.alert.field_alert_project_number
+  - field.field.node.alert.field_alert_short_work_desc
   - field.storage.node.field_alert_accessible_route
   - field.storage.node.field_alert_affected_bus_routes
   - field.storage.node.field_alert_alternate_route
   - field.storage.node.field_alert_building
-  - field.storage.node.field_alert_location
-  - field.storage.node.field_alert_publish_on
-  - field.storage.node.field_alert_reason_for_closure
+  - field.storage.node.field_alert_buildings_locations
+  - field.storage.node.field_alert_override_building
+  - field.storage.node.field_alert_project_number
+  - field.storage.node.field_alert_short_work_desc
   - field.storage.node.field_alert_traffic_control
   - field.storage.node.field_alert_traffic_control_plan
   - metatag.metatag_defaults.node__named_building
@@ -39,15 +43,17 @@ complete_list:
   - simple_sitemap.bundle_settings.default.node.building
   - simple_sitemap.bundle_settings.default.node.named_building
   - simple_sitemap.bundle_settings.default.node.project
+  - user.role.collaborator
   - views.view.building_list
   - views.view.named_building_details
   - views.view.named_building_list
+  - field.storage.node.field_alert_publish_on
   - 'field.storage.node.field_building_*'
   - 'field.storage.node.field_project_*'
-  - user.role.collaborator
 partial_list:
   - administerusersbyrole.settings
   - core.entity_view_display.node.alert.teaser
+  - field.field.node.alert.body
   - field.field.node.alert.field_alert_date
   - metatag.settings
   - schemadotorg.schemadotorg_mapping.node.alert
