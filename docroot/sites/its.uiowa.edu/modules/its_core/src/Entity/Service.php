@@ -13,15 +13,17 @@ class Service extends NodeBundleBase implements RendersAsCardInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_headline_style' => 'default',
-      'card_media_position' => 'card--stacked',
-      'media_size' => 'media--large',
-      'styles' => '',
-      'border' => '',
-    ];
+  public function buildCard(array &$build) {
+    parent::buildCard($build);
+
+    // Process additional card mappings.
+    // @todo Remove when https://github.com/uiowa/uiowa/pull/6769 has merged.
+    $this->mapFieldsToCardBuild($build, [
+      '#content' => 'body',
+    ]);
+
+    $build['#link_indicator'] = TRUE;
+
   }
 
 }
