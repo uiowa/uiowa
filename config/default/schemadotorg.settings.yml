@@ -1,7 +1,21 @@
 _core:
   default_config_hash: kVLaNV10JOymh1CXy3n1pxRP-ccd3Vcd-ndShhRpDag
 field_prefix: field_
+field_prefix_ui: false
 schema_types:
+  default_types:
+    WebPage:
+      name: page
+      label: Page
+    FAQPage:
+      name: faq
+      label: FAQ
+    QAPage:
+      name: qa
+      label: 'Q&A'
+    MedicalClinic:
+      name: clinic
+      label: Clinic
   main_properties:
     AudioObject: null
     Comment: text
@@ -21,18 +35,8 @@ schema_types:
       - inLanguage
     Article:
       - articleBody
-      - author
       - headline
-      - keywords
-    NewsArticle:
-      - dateline
-      - printColumn
-      - printEdition
-      - printPage
-      - printSection
-    TechArticle:
-      - dependencies
-      - proficiencyLevel
+      - image
     Atlas:
       - name
     Blog:
@@ -44,11 +48,6 @@ schema_types:
     Question:
       - acceptedAnswer
       - name
-    Course:
-      - courseCode
-      - coursePrerequisites
-      - hasCourseInstance
-      - numberOfCredits
     CreativeWorkSeason:
       - description
       - endDate
@@ -57,7 +56,6 @@ schema_types:
       - name
       - seasonNumber
       - startDate
-      - trailer
     CreativeWorkSeries:
       - description
       - endDate
@@ -71,9 +69,7 @@ schema_types:
       - actor
       - containsSeason
       - director
-      - musicBy
       - productionCompany
-      - trailer
     Diet:
       - dietFeatures
       - expertConsiderations
@@ -82,25 +78,22 @@ schema_types:
     Drawing:
       - name
     Episode:
+      - datePublished
       - description
       - duration
       - episodeNumber
       - name
     PodcastEpisode:
       - actor
+    Statement:
+      - text
     TVEpisode:
       - actor
       - director
-      - image
-      - musicBy
-      - trailer
     ExercisePlan:
       - name
     Game:
-      - characterAttribute
-      - gameItem
       - name
-      - quest
     VideoGame:
       - gamePlatform
       - musicBy
@@ -108,30 +101,29 @@ schema_types:
     Guide:
       - name
     HowTo:
-      - educationalLevel
       - image
       - keywords
       - name
-      - performTime
-      - prepTime
       - step
       - supply
       - text
       - tool
-      - totalTime
-      - yield
     Recipe:
       - '-step'
+      - '-supply'
+      - '-tool'
       - cookTime
       - cookingMethod
       - nationality
       - nutrition
+      - prepTime
       - recipeCategory
       - recipeCuisine
       - recipeIngredient
       - recipeInstructions
       - recipeYield
       - suitableForDiet
+      - totalTime
     HowToDirection:
       - text
     HowToSection:
@@ -149,6 +141,7 @@ schema_types:
       - learningResourceType
       - name
       - teaches
+      - text
     MediaObject:
       - name
     AudioObject:
@@ -200,8 +193,6 @@ schema_types:
       - penciler
     Quotation:
       - creator
-      - isPartOf
-      - name
       - text
     Review:
       - itemReviewed
@@ -265,9 +256,14 @@ schema_types:
       - primaryImageOfPage
       - relatedLink
       - significantLink
+      - text
     CollectionPage:
+      - '-primaryImageOfPage'
+      - '-significantLink'
+      - '-relatedLink'
+      - name
+      - text
       - hasPart
-      - mentions
     FAQPage:
       - mainEntity
     MedicalWebPage:
@@ -276,19 +272,13 @@ schema_types:
       - mainEntity
     WebSite:
       - name
+      - text
     Event:
       - description
       - eventSchedule
-      - eventStatus
-      - image
       - inLanguage
-      - location
       - name
-      - organizer
-      - performer
     CourseInstance:
-      - '-organizer'
-      - '-performer'
       - courseMode
       - courseWorkload
       - instructor
@@ -298,7 +288,6 @@ schema_types:
     BroadcastEvent:
       - broadcastOfEvent
       - isLiveBroadcast
-      - subtitleLanguage
       - videoFormat
     MedicalAudience:
       - audienceType
@@ -320,11 +309,12 @@ schema_types:
       - occupationalCategory
       - programPrerequisites
       - programType
-      - provider
       - startDate
       - timeOfDay
       - timeToComplete
     ItemList:
+      - description
+      - name
       - itemListElement
     JobPosting:
       - applicationContact
@@ -384,8 +374,10 @@ schema_types:
       - serviceUrl
     ContactPoint:
       - contactType
-      - email
+      - contactOption
       - telephone
+      - email
+      - hoursAvailable
     PostalAddress:
       - addressCountry
       - addressLocality
@@ -516,7 +508,6 @@ schema_types:
       - description
       - email
       - image
-      - memberOf
       - name
       - sameAs
       - telephone
@@ -527,7 +518,6 @@ schema_types:
       - employee
       - openingHours
     Hospital:
-      - '-employee'
       - availableService
       - medicalSpecialty
     MovieTheater:
@@ -549,14 +539,11 @@ schema_types:
       - starRating
     MedicalBusiness:
       - availableService
-      - department
+      - amenityFeature
       - email
-      - faxNumber
-      - founder
       - hospitalAffiliation
       - isAcceptingNewPatients
       - medicalSpecialty
-      - memberOf
       - openingHours
       - telephone
     MedicalClinic:
@@ -577,20 +564,21 @@ schema_types:
       - additionalName
       - description
       - email
+      - telephone
       - familyName
-      - gender
       - givenName
-      - honorificPrefix
-      - honorificSuffix
       - image
       - knowsLanguage
+      - memberOf
       - name
       - sameAs
-      - telephone
+      - worksFor
     Place:
       - address
       - description
       - image
+      - latitude
+      - longitude
       - name
       - telephone
     CivicStructure:
@@ -629,6 +617,8 @@ schema_types:
       - vehicleModelDate
       - vehicleSeatingCapacity
   default_property_values:
+    MonetaryAmount:
+      currency: USD
     Offer:
       priceCurrency: USD
   default_field_types:
@@ -637,8 +627,7 @@ schema_types:
       - list_string
       - 'field_ui:entity_reference:taxonomy_term'
     PostalAddress:
-      - address
-      - text
+      - string_long
     AudioObject:
       - 'field_ui:entity_reference:media'
       - link
@@ -657,6 +646,13 @@ schema_types:
       - decimal
       - float
       - integer
+    MonetaryAmount:
+      - range_integer
+      - range_decimal
+      - range_float
+      - integer
+      - decimal
+      - float
     Mass:
       - decimal
       - float
@@ -705,6 +701,14 @@ schema_properties:
     HowToStep--itemListElement:
       - HowToDirection
       - HowToTip
+    CollectionPage--hasPart:
+      - WebPage
+      - Statement
+      - Quotation
+      - ItemList
+      - AudioObject
+      - ImageObject
+      - VideoObject
     ImageGallery--hasPart:
       - ImageObject
     MediaGallery--hasPart:
@@ -752,7 +756,6 @@ schema_properties:
     - contentReferenceTime
     - correction
     - creditText
-    - deathDate
     - deathPlace
     - diversityStaffingReport
     - downvoteCount
@@ -762,7 +765,6 @@ schema_properties:
     - encodingFormat
     - funder
     - funding
-    - geo
     - geoContains
     - geoCoveredBy
     - geoCovers
@@ -773,8 +775,6 @@ schema_properties:
     - geoOverlaps
     - geoTouches
     - geoWithin
-    - globalLocationNumber
-    - globalLocationNumber
     - gtin
     - gtin12
     - gtin13
@@ -821,12 +821,6 @@ schema_properties:
     FAQPage--mainEntity:
       label: Questions
       unlimited: true
-    ImageGallery--hasPart:
-      label: Images
-      unlimited: true
-    MediaGallery--hasPart:
-      label: Media
-      unlimited: true
     MenuItem--offers:
       type: decimal
       name: offers_price
@@ -839,8 +833,6 @@ schema_properties:
     Person--givenName:
       label: 'First name'
       required: true
-    Physician--founder:
-      label: 'Physician biography'
     QAPage--mainEntity:
       label: Questions
       unlimited: true
@@ -848,11 +840,15 @@ schema_properties:
       label: Answer
     Question--name:
       label: Question
+    MediaGallery--hasPart:
+      label: Media
+    ImageGallery--hasPart:
+      label: Images
     VideoGallery--hasPart:
       label: Videos
-      unlimited: true
     about:
       type: text_long
+      unlimited: true
     acceptedAnswer:
       type: text_long
     activeIngredient:
@@ -873,6 +869,7 @@ schema_properties:
       label: Alumni
       unlimited: true
     alumniOf:
+      type: string
       unlimited: true
     amenityFeature:
       label: 'Amenity features'
@@ -911,9 +908,13 @@ schema_properties:
       unlimited: true
     benefits:
       unlimited: true
+    birthPlace:
+      type: string
     blogPost:
       label: 'Blog posts'
       unlimited: true
+    bodyLocation:
+      type: text_long
     category:
       label: Categories
       unlimited: true
@@ -949,6 +950,11 @@ schema_properties:
       unlimited: true
     coursePrerequisites:
       type: string
+      unlimited: true
+    deathPlace:
+      type: string
+    department:
+      label: Departments
       unlimited: true
     description:
       type: text_long
@@ -989,6 +995,8 @@ schema_properties:
       unlimited: true
     faxNumber:
       type: telephone
+    followup:
+      type: text_long
     foodWarning:
       type: text_long
     founder:
@@ -996,11 +1004,16 @@ schema_properties:
     gamePlatform:
       label: 'Game platforms'
       unlimited: true
+    geo:
+      label: Geolocation
     hasCourseInstance:
       label: 'Course instances'
       unlimited: true
     hasHealthAspect:
       label: 'Health aspects'
+      unlimited: true
+    hasMap:
+      label: Maps
       unlimited: true
     hasMenu:
       label: Menus
@@ -1011,16 +1024,26 @@ schema_properties:
     hasMenuSection:
       label: 'Menu sections'
       unlimited: true
+    hasPart:
+      label: Items
+      unlimited: true
     healthCondition:
       label: 'Health conditions'
       unlimited: true
     height:
       type: string
+    howPerformed:
+      type: text_long
+    honorificPrefix:
+      label: Honorific
+    honorificSuffix:
+      label: Degree
     hospitalAffiliation:
       unlimited: true
     increasesRiskOf:
       unlimited: true
     itemListElement:
+      type: text_long
       label: Items
       unlimited: true
     jobBenefits:
@@ -1033,6 +1056,10 @@ schema_properties:
     learningResourceType:
       label: 'Learning resource types'
       unlimited: true
+    longitude:
+      type: decimal
+    latitude:
+      type: decimal
     manufacturer:
       type: string
     material:
@@ -1149,6 +1176,8 @@ schema_properties:
     studySubject:
       label: 'Study subjects'
       unlimited: true
+    subjectOf:
+      unlimited: true
     suitableForDiet:
       label: 'Suitable for diets'
       unlimited: true
@@ -1174,18 +1203,43 @@ schema_properties:
     width:
       type: string
     worksFor:
+      type: string
       unlimited: true
+    asin:
+      label: 'Amazon Standard Identification Number (ASIN)'
+      max_length: 10
+    globalLocationNumber:
+      label: 'Global Location Number (GLN)'
+      max_length: 13
+    gtin8:
+      max_length: 8
+    gtin12:
+      max_length: 12
+    gtin13:
+      max_length: 13
+    gtin14:
+      max_length: 14
+    nsn:
+      label: 'NATO Stock Number (NSN)'
+      max_length: 13
+  default_field_types: {  }
   default_field_weights:
+    - subtype
     - name
     - title
     - alternateName
+    - image
+    - logo
+    - primaryImageOfPage
+    - eventSchedule
+    - startDate
+    - endDate
+    - slogan
     - description
     - text
     - acceptedAnswer
-    - image
-    - logo
-    - slogan
     - author
+    - creator
     - contactType
     - telephone
     - email
@@ -1195,9 +1249,6 @@ schema_properties:
     - addressRegion
     - addressCountry
     - postalCode
-    - eventSchedule
-    - startDate
-    - endDate
     - dayOfWeek
     - opens
     - hoursAvailable
@@ -1210,10 +1261,6 @@ schema_properties:
     - unitText
     - unitCode
     - currency
-    - prepTime
-    - performTime
-    - totalTime
-    - requiredQuantity
     - servingSize
     - calories
     - fatContent
@@ -1235,7 +1282,6 @@ schema_properties:
     - hasMenuItem
     - offers
     - price
-    - suitableForDiet
     - datePosted
     - validThrough
     - aggregateRating
@@ -1263,17 +1309,7 @@ schema_properties:
     - ratingExplanation
     - ratingValue
     - review
-    - epidemiology
-    - primaryPrevention
-    - possibleTreatment
-    - bodyLocation
-    - procedureType
-    - preparation
-    - howPerformed
-    - followup
-    - causeOf
-    - hasCourse
-    - healthCondition
-    - increasesRiskOf
-    - usedToDiagnose
-    - usesDevice
+    - significantLink
+    - relatedLink
+    - hasPart
+    - mainEntity
