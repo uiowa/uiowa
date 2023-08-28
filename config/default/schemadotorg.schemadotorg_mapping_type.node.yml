@@ -100,8 +100,41 @@ default_schema_type_properties:
     - dateCreated
     - dateModified
   Article:
+    - '-name'
     - '-text'
     - articleBody
+default_schema_type_view_displays:
+  teaser:
+    Thing:
+      - description
+    Event:
+      - eventSchedule
+      - startDate
+      - endDate
+    Person:
+      - image
+    Place:
+      - image
+      - address
+    LocalBusiness:
+      - openingHours
+    Episode:
+      - duration
+      - episodeNumber
+    Hospital:
+      - availableService
+    MedicalOrganization:
+      - medicalSpecialty
+    MedicalClinic:
+      - availableService
+    Physician:
+      - availableService
+      - medicalSpecialty
+    JobPosting:
+      - datePosted
+    Recipe:
+      - image
+      - cookTime
 default_base_fields:
   uuid: {  }
   revision_uid: {  }
@@ -112,12 +145,12 @@ default_base_fields:
   langcode:
     - inLanguage
   title:
-    - name
     - headline
     - title
+    - name
   body:
-    - description
     - articleBody
+    - description
     - text
   created:
     - dateCreated
@@ -125,3 +158,18 @@ default_base_fields:
     - dateModified
   field_tags:
     - keywords
+default_component_weights:
+  langcode: 200
+  links: 200
+  uid: 200
+  created: 200
+  promote: 210
+  sticky: 210
+  publish_on: 210
+  publish_state: 210
+  unpublish_on: 210
+  unpublish_state: 210
+  moderation_state: 210
+  simple_sitemap: 220
+  path: 220
+  status: 220
