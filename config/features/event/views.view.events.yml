@@ -21,6 +21,7 @@ dependencies:
     - smart_date
     - taxonomy
     - user
+    - views_custom_cache_tag
 _core:
   default_config_hash: MpdI7MwVh_vkZ2S1hpubCByqty9K8tTetJOMul3ppFI
 id: events
@@ -122,8 +123,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:event\r\ntime:hourly"
       empty:
         area_text_custom:
           id: area_text_custom
