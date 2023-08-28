@@ -20,6 +20,7 @@ dependencies:
     - smart_date
     - taxonomy
     - user
+    - views_custom_cache_tag
 id: events_list_block
 label: Events
 module: views
@@ -516,8 +517,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:event\r\ntime:hourly"
       empty:
         area:
           id: area
