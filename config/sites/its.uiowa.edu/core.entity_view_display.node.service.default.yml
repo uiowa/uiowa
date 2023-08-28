@@ -186,7 +186,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: bf024fdc-d375-4a03-bbf3-93046024d979
-            region: card_meta
+            region: card_title
             configuration:
               id: 'inline_block:uiowa_text_area'
               label: null
@@ -204,27 +204,8 @@ third_party_settings:
                 - ''
             third_party_settings: {  }
           -
-            uuid: 9ece07f7-3120-4707-853b-7d6755ae3fb0
-            region: card_meta
-            configuration:
-              id: 'field_block:node:service:field_service_fees'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: cdb9564b-aa6d-4f16-96f5-75b5cbd617e1
-            region: card_meta
+            region: card_content
             configuration:
               id: 'field_block:node:service:field_service_website'
               label: null
@@ -243,12 +224,31 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 2
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9ece07f7-3120-4707-853b-7d6755ae3fb0
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_fees'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
             uuid: f8acd225-3518-4f3a-a2c9-8d6e3dbd079e
-            region: card_meta
+            region: card_content
             configuration:
               id: 'field_block:node:service:field_service_quick_links'
               label: null
@@ -261,7 +261,7 @@ third_party_settings:
                 type: link
                 label: above
                 settings:
-                  trim_length: 140
+                  trim_length: 120
                   url_only: false
                   url_plain: false
                   rel: '0'
@@ -269,7 +269,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 3
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
