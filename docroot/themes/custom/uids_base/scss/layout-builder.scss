@@ -448,3 +448,21 @@ blockquote.layout-builder-block.is-layout-builder-highlighted  {
 .block-inline-blockuiowa-text-area.layout-builder-block {
   min-height: 40px;
 }
+
+// Alerts.
+// Set max-width for duplicate unsaved changes alert in layout builder layout.
+.layout-builder {
+  .alert--dismissible {
+    max-width: 1310px;
+    margin: 0 $mobile-width-gutter;
+    @include breakpoint(page-container) {
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+}
+
+// Hide the edit message on layout builder pages.
+[data-drupal-selector="edit-message"] {
+  display: none;
+}
