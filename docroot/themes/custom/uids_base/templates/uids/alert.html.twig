@@ -21,7 +21,7 @@
   {% set icon = 'fa-exclamation' %}
 {% endif %}
 
-<div {{ attributes ? attributes.addClass(alert_classes) }} ">
+<div role="alert" aria-label="{{ alert_type }} message" {{ attributes ? attributes.addClass(alert_classes) }} ">
 <div class="alert__icon">
     <span class="fa-stack fa-1x">
       <span role="presentation" class="fas fa-circle fa-stack-2x"></span>

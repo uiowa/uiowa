@@ -42,7 +42,7 @@
   {% endset %}
 
   {% include '@uids_base/uids/alert.html.twig' with {
-    'attributes': attributes.addClass(classes,'block'),
+    'attributes': attributes,
     'alert_content' : alert_content,
     'alert_dismissible' : true,
     'alert_type': type,
