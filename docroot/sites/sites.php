@@ -5615,11 +5615,11 @@ $sites['orgbjj.dev.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
 $sites['orgbjj.stage.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
 $sites['orgbjj.prod.drupal.uiowa.edu'] = 'bjj.org.uiowa.edu';
 
-// Directory aliases for iowawomensicehockeyclub.org.uiowa.edu.
-$sites['orgiowawomensicehockeyclub.uiowa.ddev.site'] = 'iowawomensicehockeyclub.org.uiowa.edu';
-$sites['orgiowawomensicehockeyclub.dev.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';
-$sites['orgiowawomensicehockeyclub.stage.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';
-$sites['orgiowawomensicehockeyclub.prod.drupal.uiowa.edu'] = 'iowawomensicehockeyclub.org.uiowa.edu';
+// Directory aliases for womensicehockeyclub.org.uiowa.edu.
+$sites['orgwomensicehockeyclub.uiowa.ddev.site'] = 'womensicehockeyclub.org.uiowa.edu';
+$sites['orgwomensicehockeyclub.dev.drupal.uiowa.edu'] = 'womensicehockeyclub.org.uiowa.edu';
+$sites['orgwomensicehockeyclub.stage.drupal.uiowa.edu'] = 'womensicehockeyclub.org.uiowa.edu';
+$sites['orgwomensicehockeyclub.prod.drupal.uiowa.edu'] = 'womensicehockeyclub.org.uiowa.edu';
 
 // Directory aliases for swan.lab.uiowa.edu.
 $sites['labswan.uiowa.ddev.site'] = 'swan.lab.uiowa.edu';
