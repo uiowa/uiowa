@@ -35,10 +35,35 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
  * Implements hook_cron().
  */
 function uiowa_core_cron() {
-  $request_time = \Drupal::time()->getRequestTime();
-  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+  // Daily.
+  $state_key = 'uiowa_core_daily_last';
+  $daily_last_cleared = \Drupal::state()->get($state_key);
+  $today = date('Y-m-d');
+  if (!$daily_last_cleared || $daily_last_cleared != $today) {
+    \Drupal::state()->set($state_key, $today);
+    Cache::invalidateTags(['time:daily']);
 
-  if (!$last_run || $request_time - $last_run >= 3540) {
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+  }
+
+  // Hourly.
+  $request_time = \Drupal::time()->getRequestTime();
+  $state_key = 'uiowa_core_hourly_last';
+  $hourly_last_cleared = \Drupal::state()->get($state_key);
+
+  if (!$hourly_last_cleared || $request_time - $hourly_last_cleared >= 3540) {
+    \Drupal::state()->set($state_key, $request_time);
     Cache::invalidateTags(['time:hourly']);
 
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -53,8 +78,6 @@ function uiowa_core_cron() {
 
       $purgeQueue->add($queuer, $invalidations);
     }
-
-    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
   }
 }
 
