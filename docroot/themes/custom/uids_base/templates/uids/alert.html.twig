@@ -1,0 +1,10 @@
+<div class="alert {{ attributes ? attributes.class }}">
+  <div class="alert__icon">
+    <span class="fa-stack fa-1x">
+      <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
+      <span role="presentation" class="fas fa-stack-1x fa-inverse {{ alert_icon }}"></span></span>
+  </div>
+  {% block alert_content %}
+    {{ alert_content }}
+  {% endblock %}
+</div>

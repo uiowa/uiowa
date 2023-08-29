@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f03afaff8dc897c8a63ee71c398a807c",
+    "content-hash": "0ee7e8f7dcb017a5f5b809547c716653",
     "packages": [
         {
             "name": "acquia/blt",
@@ -597,16 +597,16 @@
         },
         {
             "name": "bower-asset/fontawesome",
-            "version": "5.15.4",
+            "version": "6.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "7d3d774145ac38663f6d1effc6def0334b68ab7e"
+                "reference": "f0c25837a3fe0e03783b939559e088abcbfb3c4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/7d3d774145ac38663f6d1effc6def0334b68ab7e",
-                "reference": "7d3d774145ac38663f6d1effc6def0334b68ab7e"
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/f0c25837a3fe0e03783b939559e088abcbfb3c4b",
+                "reference": "f0c25837a3fe0e03783b939559e088abcbfb3c4b"
             },
             "type": "bower-asset"
         },
@@ -9724,9 +9724,8 @@
             "name": "drupal/purge_queuer_coretags",
             "version": "3.2.0",
             "require": {
-                "drupal/core": "^8.7.7 || ^9",
-                "drupal/purge": "^3.0.0-beta9",
-                "php": ">=7.2"
+                "drupal/core": "^8.9 || ^9",
+                "drupal/purge": "*"
             },
             "type": "metapackage",
             "extra": {
@@ -9737,9 +9736,6 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "branch-alias": {
-                    "dev-8.x-3.x": "3.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9748,8 +9744,8 @@
             ],
             "authors": [
                 {
-                    "name": "Niels van Mourik",
-                    "homepage": "http://www.nielsvm.org"
+                    "name": "djbobbydrake",
+                    "homepage": "https://www.drupal.org/user/336378"
                 },
                 {
                     "name": "japerry",
@@ -9811,6 +9807,10 @@
                 {
                     "name": "aleksey.tk",
                     "homepage": "https://www.drupal.org/user/22093"
+                },
+                {
+                    "name": "bohart",
+                    "homepage": "https://www.drupal.org/user/289861"
                 },
                 {
                     "name": "Dylan Donkersgoed",
@@ -9879,6 +9879,10 @@
                 {
                     "name": "Dave Reid",
                     "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "Kristen Pol",
+                    "homepage": "https://www.drupal.org/user/8389"
                 },
                 {
                     "name": "pifagor",
@@ -10389,41 +10393,46 @@
         },
         {
             "name": "drupal/schemadotorg",
-            "version": "dev-1.0.x",
+            "version": "1.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/schemadotorg.git",
-                "reference": "c0079f37290a80305a5d1a3dff0c8abd29b0d481"
+                "reference": "1.0.0-alpha4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/schemadotorg-1.0.0-alpha4.zip",
+                "reference": "1.0.0-alpha4",
+                "shasum": "8f4e62fa2cbcc5b8b4375ae4cca852976fadbb76"
             },
             "require": {
                 "drupal/core": "^9.4 || ^10.0",
                 "php": "^8.1"
             },
             "require-dev": {
-                "drupal/address": "*",
-                "drupal/allowed_formats": "*",
-                "drupal/auto_entitylabel": "*",
-                "drupal/cer": "*",
+                "drupal/address": "~1.0",
+                "drupal/allowed_formats": "~2.0",
+                "drupal/auto_entitylabel": "~3.0",
+                "drupal/cer": "~5.0",
                 "drupal/ckeditor": "~1.0",
-                "drupal/config_rewrite": "*",
-                "drupal/custom_field": "*",
+                "drupal/config_rewrite": "~1.0",
+                "drupal/custom_field": "~1.0",
                 "drupal/devel": "*",
-                "drupal/entity_reference_override": "~2.0",
                 "drupal/entity_reference_revisions": "*",
                 "drupal/entity_usage": "~2.0",
-                "drupal/existing_values_autocomplete_widget": "*",
-                "drupal/field_group": "*",
-                "drupal/field_validation": "*",
+                "drupal/existing_values_autocomplete_widget": "~2.0",
+                "drupal/field_group": "~3.0",
+                "drupal/field_validation": "^1.0",
                 "drupal/flexfield": "*",
-                "drupal/focal_point": "*",
-                "drupal/geolocation": "*",
-                "drupal/inline_entity_form": "*",
-                "drupal/jsonapi_extras": "*",
-                "drupal/layout_paragraphs": "*",
-                "drupal/link_attributes": "*",
-                "drupal/metatag": "*",
-                "drupal/office_hours": "*",
-                "drupal/paragraphs": "*",
+                "drupal/focal_point": "~2.0",
+                "drupal/geolocation": "~3.0",
+                "drupal/inline_entity_form": "~2.0",
+                "drupal/jsonapi_extras": "~3.0",
+                "drupal/layout_paragraphs": "~2.0",
+                "drupal/link_attributes": "~1.0",
+                "drupal/metatag": "~1.0",
+                "drupal/office_hours": "~1.0",
+                "drupal/paragraphs": "~1.0",
                 "drupal/paragraphs-paragraphs_library": "*",
                 "drupal/range": "~1.0",
                 "drupal/rdf": "~2.0",
@@ -10432,11 +10441,9 @@
                 "drupal/schemadotorg_jsonld": "*",
                 "drupal/schemadotorg_media": "*",
                 "drupal/schemadotorg_paragraphs": "*",
-                "drupal/schemadotorg_sidebar": "*",
-                "drupal/simple_sitemap": "*",
-                "drupal/smart_date": "*",
+                "drupal/simple_sitemap": "~4.0",
+                "drupal/smart_date": "~4.0",
                 "drupal/token": "~1.0",
-                "drupal/type_tray": "*",
                 "michelf/php-markdown": "^1.0"
             },
             "suggest": {
@@ -10449,15 +10456,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.0.x": "1.0.x-dev"
-                },
                 "drupal": {
-                    "version": "1.0.0-alpha3+60-dev",
-                    "datestamp": "1690854716",
+                    "version": "1.0.0-alpha4",
+                    "datestamp": "1685723538",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
@@ -11464,6 +11468,50 @@
                 "source": "https://git.drupalcode.org/project/views_bulk_operations/-/tree/8.x-3.x",
                 "issues": "https://www.drupal.org/project/issues/views_bulk_operations?version=8.x",
                 "docs": "https://www.drupal.org/docs/8/modules/views-bulk-operations-vbo"
+            }
+        },
+        {
+            "name": "drupal/views_custom_cache_tag",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_custom_cache_tag.git",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_custom_cache_tag-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "8dfe2dc68b05187cf01529b7be99c4889fc47e80"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1671650418",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                }
+            ],
+            "description": "Add views custom cache tag.",
+            "homepage": "https://www.drupal.org/project/views_custom_cache_tag",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_custom_cache_tag"
             }
         },
         {
@@ -14086,18 +14134,6 @@
             ]
         },
         {
-            "name": "npm-asset/fontawesome-iconpicker",
-            "version": "3.2.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/fontawesome-iconpicker/-/fontawesome-iconpicker-3.2.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/jquery-collapse",
             "version": "1.1.2",
             "dist": {
@@ -14139,6 +14175,18 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/slick-carousel/-/slick-carousel-1.8.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/vanilla-icon-picker",
+            "version": "1.2.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/vanilla-icon-picker/-/vanilla-icon-picker-1.2.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -22525,7 +22573,6 @@
         "drupal/node_revision_delete": 15,
         "drupal/private_content": 5,
         "drupal/rabbit_hole": 10,
-        "drupal/schemadotorg": 20,
         "drupal/swiftmailer": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 5,
