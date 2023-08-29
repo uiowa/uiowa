@@ -527,12 +527,6 @@ $sites['designcenter.dev.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 $sites['designcenter.stage.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 $sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 
-// Directory aliases for icru.research.uiowa.edu.
-$sites['researchicru.uiowa.ddev.site'] = 'icru.research.uiowa.edu';
-$sites['researchicru.dev.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
-$sites['researchicru.stage.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
-$sites['researchicru.prod.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
-
 // Directory aliases for icsa.uiowa.edu.
 $sites['icsa.uiowa.ddev.site'] = 'icsa.uiowa.edu';
 $sites['icsa.dev.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
@@ -3197,12 +3191,6 @@ $sites['clcl.dev.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.stage.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.prod.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 
-// Directory aliases for rise.uiowa.edu.
-$sites['rise.uiowa.ddev.site'] = 'rise.uiowa.edu';
-$sites['rise.dev.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-$sites['rise.stage.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-$sites['rise.prod.drupal.uiowa.edu'] = 'rise.uiowa.edu';
-
 // Directory aliases for passport.uiowa.edu.
 $sites['passport.uiowa.ddev.site'] = 'passport.uiowa.edu';
 $sites['passport.dev.drupal.uiowa.edu'] = 'passport.uiowa.edu';
@@ -3460,12 +3448,6 @@ $sites['labbeckergroup.uiowa.ddev.site'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.dev.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.stage.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.prod.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
-
-// Directory aliases for icomm.lab.uiowa.edu.
-$sites['labicomm.uiowa.ddev.site'] = 'icomm.lab.uiowa.edu';
-$sites['labicomm.dev.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
-$sites['labicomm.stage.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
-$sites['labicomm.prod.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
 
 // Directory aliases for iowajpec.org.
 $sites['org-iowajpec.uiowa.ddev.site'] = 'iowajpec.org';
