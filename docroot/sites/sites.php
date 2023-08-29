@@ -5626,3 +5626,9 @@ $sites['labswan.uiowa.ddev.site'] = 'swan.lab.uiowa.edu';
 $sites['labswan.dev.drupal.uiowa.edu'] = 'swan.lab.uiowa.edu';
 $sites['labswan.stage.drupal.uiowa.edu'] = 'swan.lab.uiowa.edu';
 $sites['labswan.prod.drupal.uiowa.edu'] = 'swan.lab.uiowa.edu';
+
+// Directory aliases for iise.org.uiowa.edu.
+$sites['orgiise.uiowa.ddev.site'] = 'iise.org.uiowa.edu';
+$sites['orgiise.dev.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
+$sites['orgiise.stage.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
+$sites['orgiise.prod.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
