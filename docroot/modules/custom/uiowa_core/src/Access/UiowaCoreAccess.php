@@ -14,7 +14,7 @@ class UiowaCoreAccess implements AccessInterface {
   /**
    * A custom access uiowa.
    *
-   * @param  \Drupal\Core\Session\AccountInterface|null  $account
+   * @param \Drupal\Core\Session\AccountInterface|null $account
    *   Run access checks for this account.
    *
    * @return \Drupal\Core\Access\AccessResultInterface

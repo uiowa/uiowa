@@ -71,8 +71,8 @@ class Dispatch {
    *
    * @param string $method
    *   The HTTP method to use.
-   * @param string $path
-   *   The API path to use. Do not include the base URL.
+   * @param string $endpoint
+   *   The entire API endpoint URL or just the path relative to the base URL.
    * @param array $params
    *   Optional URI query parameters.
    * @param array $options
@@ -122,8 +122,6 @@ class Dispatch {
 
   /**
    * Return a list of campaigns keyed by endpoint.
-   *
-   * @return array
    */
   public function getCampaigns() {
     return $this->getNamesKeyedByEndpoint('campaigns');
@@ -131,8 +129,6 @@ class Dispatch {
 
   /**
    * Return a list of populations keyed by endpoint.
-   *
-   * @return array
    */
   public function getPopulations() {
     return $this->getNamesKeyedByEndpoint('populations');
@@ -140,7 +136,6 @@ class Dispatch {
 
   /**
    * Return a list of suppression lists keyed by endpoint.
-   * @return array
    */
   public function getSuppressionLists() {
     return $this->getNamesKeyedByEndpoint('suppressionlists');
@@ -148,7 +143,6 @@ class Dispatch {
 
   /**
    * Return a list of suppression lists keyed by endpoint.
-   * @return array
    */
   public function getTemplates() {
     return $this->getNamesKeyedByEndpoint('templates');
@@ -156,12 +150,8 @@ class Dispatch {
 
   /**
    * Helper function to generate lists of dispatch options keyed by endpoint.
-   *
-   * @param $type
-   *
-   * @return array
    */
-  protected function getNamesKeyedByEndpoint($type): array {
+  protected function getNamesKeyedByEndpoint(string $type): array {
     $list = $this->request('GET', $type);
     if (!$list) {
       return [];
