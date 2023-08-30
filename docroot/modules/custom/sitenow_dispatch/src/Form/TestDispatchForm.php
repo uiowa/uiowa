@@ -68,29 +68,29 @@ class TestDispatchForm extends FormBase {
     $campaigns = $this->dispatch->getCampaigns();
     array_unshift($campaigns, 'None');
 
-    $form['dispatch_test']['campaign'] = [
+    $form['campaign'] = [
       '#type' => 'select',
       '#title' => $this->t('Campaign'),
       '#description' => $this->t('Choose a Dispatch campaign.'),
-      '#default_value' => '',
+      '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/campaigns/1233665067',
       '#options' => $campaigns,
     ];
 
-    $populations = $this->dispatch->getCampaigns();
+    $populations = $this->dispatch->getPopulations();
     array_unshift($populations, 'None');
 
-    $form['dispatch_test']['population'] = [
+    $form['population'] = [
       '#type' => 'select',
       '#title' => $this->t('Population'),
       '#description' => $this->t('Choose a Dispatch population.'),
-      '#default_value' => '',
+      '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/612115495',
       '#options' => $populations,
     ];
 
     $suppression_list = $this->dispatch->getSuppressionLists();
     array_unshift($suppression_list, 'None');
 
-    $form['dispatch_test']['suppression_list'] = [
+    $form['suppression_list'] = [
       '#type' => 'select',
       '#title' => $this->t('Suppression list'),
       '#description' => $this->t('Choose a Dispatch suppression list.'),
@@ -101,24 +101,24 @@ class TestDispatchForm extends FormBase {
     $templates = $this->dispatch->getTemplates();
     array_unshift($templates, 'None');
 
-    $form['dispatch_test']['template'] = [
+    $form['template'] = [
       '#type' => 'select',
       '#title' => $this->t('Template'),
       '#description' => $this->t('Choose a Dispatch template.'),
-      '#default_value' => '',
+      '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/templates/1237284721',
       '#options' => $templates,
     ];
 
-    $form['dispatch_test']['subject'] = [
+    $form['subject'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Subject'),
-      '#default_value' => '',
+      '#default_value' => 'Test subject',
     ];
 
-    $form['dispatch_test']['body'] = [
+    $form['body'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Body'),
-      '#default_value' => '',
+      '#default_value' => 'Test body',
     ];
 
     $form['actions'] = ['#type' => 'actions'];
@@ -142,7 +142,39 @@ class TestDispatchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Add submission handling.
+    $campaign = $form_state->getValue('campaign');
+    $subject = $form_state->getValue('subject');
+    $data = (object) [
+      'type' => 'EMAIL',
+      'name' => date('Y-m-d H:i:s',time()) . ' Dispatch Test',
+      'email' => (object) [
+        'fromAddress' => 'its-web@uiowa.edu',
+        'fromName' => 'OSC - Web Services',
+        'subject' => $subject,
+      ],
+      'destinations' => (object) [
+        (object) [
+          'bounceAddress' => 'its-web@uiowa.edu',
+          'linkTrackingDisabled' => 'false',
+          'openTrackingDisabled' => 'false',
+          'replyToAddress' => 'its-web@uiowa.edu',
+          'type' => 'SMTP',
+          'suppressionList' => $form_state->getValue('suppression_list'),
+        ],
+      ],
+      'placeholders' => (object) [
+        'Title' => $subject,
+        'Body' => $form_state->getValue('body'),
+      ],
+      'priority' => '5',
+      'bypassApproval' => 'true',
+      'template' => $form_state->getValue('template'),
+      'population' => $form_state->getValue('population'),
+    ];
+
+    $response = $this->dispatch->request('POST', $campaign . '/communications', [], [
+      'data' => json_encode($data),
+    ]);
   }
 
 }
