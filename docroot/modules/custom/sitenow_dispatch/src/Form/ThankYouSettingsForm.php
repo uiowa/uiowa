@@ -27,13 +27,6 @@ class ThankYouSettingsForm extends ConfigFormBase {
   protected $check;
 
   /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -50,11 +43,10 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check, $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
     $this->check = $check;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -65,7 +57,6 @@ class ThankYouSettingsForm extends ConfigFormBase {
       $container->get('config.factory'),
       $container->get('sitenow_dispatch.dispatch'),
       $container->get('uiowa_core.access_checker'),
-      $container->get('entity_type.manager'),
     );
   }
 
@@ -78,7 +69,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
 
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
-    /** @var Drupal\Core\Access\AccessResultInterface $access */
+    /** @var \Drupal\Core\Access\AccessResultInterface $access */
     $access = $this->check->access($this->currentUser()->getAccount());
     $enabled = $config->get('thanks.enabled') ?? FALSE;
 
