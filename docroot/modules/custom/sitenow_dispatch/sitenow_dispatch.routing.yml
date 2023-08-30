@@ -12,7 +12,7 @@ sitenow_dispatch.test_dispatch:
     _title: 'SiteNow Dispatch settings'
     _form: 'Drupal\sitenow_dispatch\Form\TestDispatchForm'
   requirements:
-    _permission: 'administer sitenow_dispatch configuration'
+    _custom_access: 'Drupal\uiowa_core\Access\UiowaCoreAccess::access'
 
 sitenow_dispatch.thanks:
   path: '/admin/config/sitenow/sitenow-dispatch/thanks'
