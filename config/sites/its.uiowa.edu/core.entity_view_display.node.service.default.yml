@@ -3,8 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.uiowa_spacer_separator
-    - block_content.type.uiowa_text_area
     - field.field.node.service.body
     - field.field.node.service.field_meta_tags
     - field.field.node.service.field_service_alias
@@ -18,7 +16,6 @@ dependencies:
     - node.type.service
   module:
     - layout_builder
-    - link
     - text
     - user
   theme:
@@ -75,7 +72,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: string
-                label: visually_hidden
+                label: hidden
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
@@ -83,7 +80,7 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 4d222da8-3da7-4baf-a9a8-711b2293cf08
+            uuid: 2d8ed27d-c6eb-4551-b195-5c757fcc4314
             region: content
             configuration:
               id: 'field_block:node:service:field_service_audience'
@@ -112,58 +109,18 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            section_margin_remove_default_margins: section_margin_remove_default_margins
-        components:
-          -
-            uuid: f15b0115-1699-4e58-823f-b90f656ed2d4
-            region: content
-            configuration:
-              id: 'inline_block:uiowa_spacer_separator'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              context_mapping: {  }
-              block_revision_id: 2243
-              block_serialized: null
-              type: uiowa_spacer_separator
-              uuid: ac628a5b-420d-4c66-bb9c-ecd8db8197ee
-            weight: 0
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
-      -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
           context_mapping: {  }
-          column_widths: 67-33
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            2: section_card_media_size_large
-            3: section_card_media_format_widescreen
-            remove_default_top_padding: remove_default_top_padding
-            section_order_reversed: section_order_reversed
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_fixed_width_container
+            - section_card_media_size_large
+            - section_card_media_format_widescreen
         components:
           -
-            uuid: a9c56efc-642e-4c59-a510-f0c1f6bc8c71
+            uuid: 53d732fa-a435-4be6-814d-80a36105fa4e
             region: main
             configuration:
               id: 'field_block:node:service:body'
@@ -178,11 +135,11 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: cb67293a-420a-4f10-8cfa-b9cd301d60cc
+            uuid: 106c04ef-4df6-44cc-ba5f-9430b0fc1605
             region: main
             configuration:
               id: 'field_block:node:service:field_service_contact'
@@ -197,11 +154,11 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 478fe1de-e223-4951-a4e1-918e68749c2e
+            uuid: 69b3b122-d180-4794-b05b-2f99e84d6fc3
             region: main
             configuration:
               id: 'field_block:node:service:field_service_related_service'
@@ -219,54 +176,11 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 3
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: bf024fdc-d375-4a03-bbf3-93046024d979
-            region: card_title
-            configuration:
-              id: 'inline_block:uiowa_text_area'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              context_mapping: {  }
-              block_revision_id: 2236
-              block_serialized: null
-              type: uiowa_text_area
-              uuid: 48b02ad4-2a0c-4944-b59b-6eb56c3b74b3
-            weight: 0
-            additional:
-              layout_builder_styles_style:
-                - ''
-            third_party_settings: {  }
-          -
-            uuid: cdb9564b-aa6d-4f16-96f5-75b5cbd617e1
-            region: card_content
-            configuration:
-              id: 'field_block:node:service:field_service_website'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: above
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9ece07f7-3120-4707-853b-7d6755ae3fb0
+            uuid: 18c4011e-2eda-466c-ab5b-9ff700b40756
             region: card_content
             configuration:
               id: 'field_block:node:service:field_service_fees'
@@ -281,11 +195,35 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: f8acd225-3518-4f3a-a2c9-8d6e3dbd079e
+            uuid: ed94a75b-3916-4f46-83b9-ae611442901a
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 120
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 75f95ee5-eb90-4526-8127-53ce60ce905f
             region: card_content
             configuration:
               id: 'field_block:node:service:field_service_quick_links'
@@ -307,16 +245,10 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 7
+            weight: 4
             additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
+        third_party_settings: {  }
 id: node.service.default
 targetEntityType: node
 bundle: service
@@ -334,75 +266,6 @@ content:
     third_party_settings: {  }
     weight: -20
     region: content
-  field_service_alias:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_service_audience:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  field_service_category:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  field_service_contact:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  field_service_fees:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  field_service_quick_links:
-    type: link
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  field_service_related_service:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  field_service_website:
-    type: link
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    weight: 7
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -413,4 +276,12 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_meta_tags: true
+  field_service_alias: true
+  field_service_audience: true
+  field_service_category: true
+  field_service_contact: true
+  field_service_fees: true
+  field_service_quick_links: true
+  field_service_related_service: true
+  field_service_website: true
   search_api_excerpt: true
