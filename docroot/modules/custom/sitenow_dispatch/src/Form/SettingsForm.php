@@ -64,7 +64,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->get('sitenow_dispatch.settings');
+    $config = $this->config('sitenow_dispatch.settings');
     $api_key = $config->get('api_key');
 
     $form['description_text'] = [
@@ -78,7 +78,6 @@ class SettingsForm extends ConfigFormBase {
         'value' => $api_key,
       ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
-      '#required' => TRUE,
     ];
 
     if ($api_key) {
@@ -86,81 +85,6 @@ class SettingsForm extends ConfigFormBase {
         $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
           '@client' => $client,
         ]);
-      }
-
-      // Limit the dispatch email test functionality to Admins.
-      /** @var \Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      if ($check->access()->isAllowed()) {
-
-        $form['dispatch_test'] = [
-          '#type' => 'details',
-          '#title' => $this->t('Dispatch email testing'),
-          '#description' => $this->t('A developer tool for testing dispatch emails'),
-          '#open' => TRUE,
-        ];
-
-        $campaigns = $this->dispatch->getCampaigns();
-        array_unshift($campaigns, 'None');
-
-        $form['dispatch_test']['campaign'] = [
-          '#type' => 'select',
-          '#title' => $this->t('Campaign'),
-          '#description' => $this->t('Choose a Dispatch campaign.'),
-          '#default_value' => '',
-          '#options' => $campaigns,
-        ];
-
-        $populations = $this->dispatch->getCampaigns();
-        array_unshift($populations, 'None');
-
-        $form['dispatch_test']['population'] = [
-          '#type' => 'select',
-          '#title' => $this->t('Population'),
-          '#description' => $this->t('Choose a Dispatch population.'),
-          '#default_value' => '',
-          '#options' => $populations,
-        ];
-
-        $suppression_list = $this->dispatch->getSuppressionLists();
-        array_unshift($suppression_list, 'None');
-
-        $form['dispatch_test']['suppression_list'] = [
-          '#type' => 'select',
-          '#title' => $this->t('Suppression list'),
-          '#description' => $this->t('Choose a Dispatch suppression list.'),
-          '#default_value' => '',
-          '#options' => $suppression_list,
-        ];
-
-        $templates = $this->dispatch->getTemplates();
-        array_unshift($templates, 'None');
-
-        $form['dispatch_test']['template'] = [
-          '#type' => 'select',
-          '#title' => $this->t('Template'),
-          '#description' => $this->t('Choose a Dispatch template.'),
-          '#default_value' => '',
-          '#options' => $templates,
-        ];
-
-        $form['dispatch_test']['subject'] = [
-          '#type' => 'text',
-          '#title' => $this->t('Subject'),
-          '#default_value' => '',
-        ];
-
-        $form['dispatch_test']['body'] = [
-          '#type' => 'textarea',
-          '#title' => $this->t('Body'),
-          '#default_value' => '',
-        ];
-
-        $form['dispatch_test']['send'] = [
-          '#type' => 'submit',
-          '#value' => $this->t('Send test email'),
-        ];
       }
     }
 
@@ -173,19 +97,21 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $api_key = trim($form_state->getValue('api_key'));
 
-    // Validate the api_key being submitted in the form rather than config.
-    $client = $this->dispatch->request('GET', 'client', [], [
-      'headers' => [
-        'x-dispatch-api-key' => $api_key,
-      ],
-    ]);
+    if ($api_key) {
+      // Validate the api_key being submitted in the form rather than config.
+      $client = $this->dispatch->setApiKey($api_key)->request('GET', 'client');
 
-    if ($client === FALSE) {
-      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+      if ($client === FALSE) {
+        $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+      }
+      else {
+        $form_state->setValue('api_key', $api_key);
+        $form_state->setValue('client', $client->name);
+      }
     }
     else {
-      $form_state->setValue('api_key', $api_key);
-      $form_state->setValue('client', $client->name);
+      $form_state->unsetValue('api_key');
+      $form_state->unsetValue('client');
     }
   }
 

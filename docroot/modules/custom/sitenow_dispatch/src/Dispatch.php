@@ -45,9 +45,9 @@ class Dispatch {
   /**
    * The API key for accessing the API.
    *
-   * @var string
+   * @var string|null
    */
-  protected string $apiKey = '';
+  protected ?string $apiKey = NULL;
 
   /**
    * Constructs a Dispatch object.
@@ -64,6 +64,11 @@ class Dispatch {
     $this->configFactory = $configFactory;
     $this->logger = $logger;
     $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
+  }
+
+  public function setApiKey($key) {
+    $this->apiKey = $key;
+    return $this;
   }
 
   /**
