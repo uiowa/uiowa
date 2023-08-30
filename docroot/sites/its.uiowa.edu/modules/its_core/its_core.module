@@ -61,11 +61,6 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['label'] = 'Available to';
       break;
 
-    case 'field_service_website':
-      // Wrap the field output in a <p> tag.
-      $variables['items'][0]['content']['#prefix'] = '<p>';
-      $variables['items'][0]['content']['#suffix'] = '</p>';
-      break;
   }
 }
 
