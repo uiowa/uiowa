@@ -146,7 +146,7 @@ class TestDispatchForm extends FormBase {
     $subject = $form_state->getValue('subject');
     $data = (object) [
       'type' => 'EMAIL',
-      'name' => date('Y-m-d H:i:s',time()) . ' Dispatch Test',
+      'name' => date('Y-m-d H:i:s', time()) . ' Dispatch Test',
       'email' => (object) [
         'fromAddress' => 'its-web@uiowa.edu',
         'fromName' => 'OSC - Web Services',

@@ -66,6 +66,9 @@ class Dispatch {
     $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
   }
 
+  /**
+   * Set the API key.
+   */
   public function setApiKey($key) {
     $this->apiKey = $key;
     return $this;
