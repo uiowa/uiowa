@@ -81,10 +81,87 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    if ($api_key && $client = $config->get('client')) {
-      $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
-        '@client' => $client,
-      ]);
+    if ($api_key) {
+      if ($client = $config->get('client')) {
+        $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
+          '@client' => $client,
+        ]);
+      }
+
+      // Limit the dispatch email test functionality to Admins.
+      /** @var \Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      if ($check->access()->isAllowed()) {
+
+        $form['dispatch_test'] = [
+          '#type' => 'details',
+          '#title' => $this->t('Dispatch email testing'),
+          '#description' => $this->t('A developer tool for testing dispatch emails'),
+          '#open' => TRUE,
+        ];
+
+        $campaigns = $this->dispatch->getCampaigns();
+        array_unshift($campaigns, 'None');
+
+        $form['dispatch_test']['campaign'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Campaign'),
+          '#description' => $this->t('Choose a Dispatch campaign.'),
+          '#default_value' => '',
+          '#options' => $campaigns,
+        ];
+
+        $populations = $this->dispatch->getCampaigns();
+        array_unshift($populations, 'None');
+
+        $form['dispatch_test']['population'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Population'),
+          '#description' => $this->t('Choose a Dispatch population.'),
+          '#default_value' => '',
+          '#options' => $populations,
+        ];
+
+        $suppression_list = $this->dispatch->getSuppressionLists();
+        array_unshift($suppression_list, 'None');
+
+        $form['dispatch_test']['suppression_list'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Suppression list'),
+          '#description' => $this->t('Choose a Dispatch suppression list.'),
+          '#default_value' => '',
+          '#options' => $suppression_list,
+        ];
+
+        $templates = $this->dispatch->getTemplates();
+        array_unshift($templates, 'None');
+
+        $form['dispatch_test']['template'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Template'),
+          '#description' => $this->t('Choose a Dispatch template.'),
+          '#default_value' => '',
+          '#options' => $templates,
+        ];
+
+        $form['dispatch_test']['subject'] = [
+          '#type' => 'text',
+          '#title' => $this->t('Subject'),
+          '#default_value' => '',
+        ];
+
+        $form['dispatch_test']['body'] = [
+          '#type' => 'textarea',
+          '#title' => $this->t('Body'),
+          '#default_value' => '',
+        ];
+
+        $form['dispatch_test']['send'] = [
+          '#type' => 'submit',
+          '#value' => $this->t('Send test email'),
+        ];
+      }
     }
 
     return parent::buildForm($form, $form_state);

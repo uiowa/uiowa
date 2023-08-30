@@ -38,7 +38,11 @@ class SubscribeForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('config.factory'), $container->get('http_client'), $container->get('sitenow_dispatch.dispatch'));
+    return new static(
+      $container->get('config.factory'),
+      $container->get('http_client'),
+      $container->get('sitenow_dispatch.dispatch'),
+    );
   }
 
   /**

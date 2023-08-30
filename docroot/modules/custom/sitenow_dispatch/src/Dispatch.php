@@ -43,6 +43,13 @@ class Dispatch {
   protected $logger;
 
   /**
+   * The API key for accessing the API.
+   *
+   * @var string
+   */
+  protected string $apiKey = '';
+
+  /**
    * Constructs a Dispatch object.
    *
    * @param \GuzzleHttp\ClientInterface $http_client
@@ -56,6 +63,7 @@ class Dispatch {
     $this->client = $http_client;
     $this->configFactory = $configFactory;
     $this->logger = $logger;
+    $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
   }
 
   /**
@@ -73,21 +81,23 @@ class Dispatch {
    * @return mixed
    *   The API response data.
    */
-  public function request(string $method, string $path, array $params = [], array $options = []) {
+  public function request(string $method, string $endpoint, array $params = [], array $options = []) {
     // Encode any special characters and trim duplicate slash.
-    $path = UrlHelper::encodePath($path);
-    $uri = self::BASE . ltrim($path, '/');
+    if (!str_starts_with($endpoint, self::BASE)) {
+      $endpoint = UrlHelper::encodePath(ltrim($endpoint, '/'));
+      $endpoint = self::BASE . $endpoint;
+    }
 
     // Append any query string parameters.
     if (!empty($params)) {
       $query = UrlHelper::buildQuery($params);
-      $uri .= "?{$query}";
+      $endpoint .= "?{$query}";
     }
 
     // Merge additional options with default but allow overriding.
     $options = array_merge([
       'headers' => [
-        'x-dispatch-api-key' => $api_key ?? $this->configFactory->get('sitenow_dispatch.settings')->get('api_key'),
+        'x-dispatch-api-key' => $this->apiKey,
       ],
     ], $options);
 
@@ -95,11 +105,11 @@ class Dispatch {
     $options['headers']['Accept'] = 'application/json';
 
     try {
-      $response = $this->client->request($method, $uri, $options);
+      $response = $this->client->request($method, $endpoint, $options);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-        '@endpoint' => $uri,
+        '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
         '@error' => $e->getMessage(),
       ]);
@@ -108,6 +118,62 @@ class Dispatch {
     }
 
     return json_decode($response->getBody()->getContents());
+  }
+
+  /**
+   * Return a list of campaigns keyed by endpoint.
+   *
+   * @return array
+   */
+  public function getCampaigns() {
+    return $this->getNamesKeyedByEndpoint('campaigns');
+  }
+
+  /**
+   * Return a list of populations keyed by endpoint.
+   *
+   * @return array
+   */
+  public function getPopulations() {
+    return $this->getNamesKeyedByEndpoint('populations');
+  }
+
+  /**
+   * Return a list of suppression lists keyed by endpoint.
+   * @return array
+   */
+  public function getSuppressionLists() {
+    return $this->getNamesKeyedByEndpoint('suppressionlists');
+  }
+
+  /**
+   * Return a list of suppression lists keyed by endpoint.
+   * @return array
+   */
+  public function getTemplates() {
+    return $this->getNamesKeyedByEndpoint('templates');
+  }
+
+  /**
+   * Helper function to generate lists of dispatch options keyed by endpoint.
+   *
+   * @param $type
+   *
+   * @return array
+   */
+  protected function getNamesKeyedByEndpoint($type): array {
+    $list = $this->request('GET', $type);
+    if (!$list) {
+      return [];
+    }
+    $return = [];
+    foreach ($list as $endpoint) {
+      $item = $this->request('GET', $endpoint);
+      if ($item) {
+        $return[$endpoint] = $item->name;
+      }
+    }
+    return $return;
   }
 
 }
