@@ -5,17 +5,46 @@
  * Installation functions for sitenow_p2lb module.
  */
 
+use Drupal\Core\Database\Database;
+
 /**
  * Helper function for uninstalling config related to p2lb.
  */
 function sitenow_p2lb_uninstall() {
+
+  // Delete all revisions for the page content type.
+  $database = Database::getConnection();
+
+  // Query all nodes of the "page" content type.
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'page')
+    ->execute();
+
+  foreach ($nids as $nid) {
+    // Get the latest revision ID.
+    $latest_revision_id = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->load($nid)
+      ->getRevisionId();
+
+    // Delete previous revisions of the node.
+    $database->delete('node_revision')
+      ->condition('nid', $nid)
+      ->condition('vid', $latest_revision_id, '<')
+      ->execute();
+
+    \Drupal::logger('sitenow_p2lb')->notice('Deleted previous revisions for Node ID: ' . $nid);
+  }
+
   // Turn off V2.
   $config_factory = \Drupal::configFactory();
   $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
   $sitenow_v2->set('status', FALSE);
   $sitenow_v2->save(TRUE);
+
   // Turn off p2lb.
   $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
   $sitenow_p2lb->set('status', FALSE);
   $sitenow_p2lb->save(TRUE);
+
 }
