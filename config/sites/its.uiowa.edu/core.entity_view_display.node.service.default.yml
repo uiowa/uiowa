@@ -39,13 +39,13 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
-        layout_id: layout_header
+        layout_id: layout_onecol
         layout_settings:
-          label: Header
+          label: ''
           context_mapping: {  }
           layout_builder_styles_style:
             0: section_background_black_pattern_community
-            1: section_margin_edge_to_edge
+            1: section_margin_fixed_width_container
             restore_default_spacing: restore_default_spacing
         components:
           -
@@ -65,7 +65,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: -2
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -87,7 +87,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: -1
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -103,10 +103,11 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
-            - section_card_media_size_large
-            - section_card_media_format_widescreen
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_large
+            3: section_card_media_format_widescreen
+            section_padding_top_extra: section_padding_top_extra
         components:
           -
             uuid: 53d732fa-a435-4be6-814d-80a36105fa4e
