@@ -722,11 +722,21 @@ function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
         unset($variables['attributes']['class'][$key]);
       }
     }
+    // Check if it's a background class.
     if (str_starts_with($class, 'bg--')) {
-      $variables['card_background'] = $class;
+      // If it's a specified background, include it,
+      // otherwise unset it from the section.
+      if ($class !== 'bg--none') {
+        $variables['card_background'] = $class;
+      }
+      else {
+        unset($variables['attributes']['class'][$key]);
+      }
       $bg_added = TRUE;
     }
   }
+  // Default to bg--white unless we had specified
+  // a background (including bg--none).
   if (!$bg_added) {
     $variables['card_background'] = 'bg--white';
   }
