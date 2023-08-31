@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.uiowa_text_area
     - field.field.node.service.body
     - field.field.node.service.field_meta_tags
     - field.field.node.service.field_service_alias
@@ -35,18 +34,7 @@ third_party_settings:
             0: ''
             1: section_container_narrow
             section_margin_remove_default_margins: section_margin_remove_default_margins
-        components:
-          -
-            uuid: 44d64f4f-f5cb-414c-9668-f1bd67427663
-            region: content
-            configuration:
-              id: 'extra_field_block:node:service:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -248,25 +236,6 @@ third_party_settings:
                     delimiter: ''
             weight: 4
             additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 637b28b0-a5fd-432c-bdae-87a2f906db9a
-            region: card_title
-            configuration:
-              id: 'inline_block:uiowa_text_area'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              context_mapping: {  }
-              block_revision_id: 2236
-              block_serialized: null
-              type: uiowa_text_area
-              uuid: b8c23065-deaa-433f-ab9d-9a9ebec60f4b
-            weight: 0
-            additional:
-              layout_builder_styles_style:
-                - ''
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
