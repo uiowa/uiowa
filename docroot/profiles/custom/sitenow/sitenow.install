@@ -7,9 +7,12 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -2503,9 +2506,129 @@ function sitenow_update_9065() {
 }
 
 /**
+ * Update alert classes.
+ */
+function sitenow_update_9067() {
+  $search_replace = [
+    'alert-danger' => 'alert--danger',
+    'alert-warning' => 'alert--warning',
+    'alert-success' => 'alert--success',
+    'alert-info' => 'alert--info',
+  ];
+
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge($text_long, $text_with_summary);
+
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!($entity_storage instanceof SqlContentEntityStorage)) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      $tables = [];
+      $field_name = $field_storage_definition->getName();
+      try {
+        $tables[] = $table_mapping->getFieldTableName($field_name);
+        $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+      // See if the field has a revision table.
+      $revision_table = NULL;
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+          $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+        $tables[] = $revision_table;
+      }
+      if (!empty($tables)) {
+        $db = \Drupal::database();
+
+        foreach ($tables as $table) {
+          $update_count = 0;
+          $query = $db->select($table, 't')
+            ->fields('t');
+
+          // Build a condition group from our search strings.
+          $or_group = $query->orConditionGroup();
+
+          foreach ($search_replace as $needle => $string) {
+            $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+          }
+
+          $results = $query->condition($or_group)
+            ->execute();
+
+          foreach ($results as $record) {
+
+            // Load the HTML fragment as a DOMDocument object.
+            $document = Html::load($record->{$value_column});
+
+            // Get all <div> elements from the HTML fragment.
+            $instances = $document->getElementsByTagName('div');
+
+            // A regressive loop (starting with the end) is used to loop
+            // through matching elements so that they don't affect other
+            // elements when they are updated.
+            $i = $instances->length - 1;
+
+            while ($i >= 0) {
+              // The current <div> element.
+              $dom_element = $instances->item($i);
+
+              $class = $dom_element->getAttribute('class');
+
+              foreach ($search_replace as $needle => $replace) {
+                $class = str_replace($needle, $replace, $class);
+              }
+
+              if (trim($class)) {
+                $dom_element->setAttribute('class', $class);
+              }
+              else {
+                $dom_element->removeAttribute('class');
+              }
+
+              $i--;
+            }
+
+            // Run database update to store updated $value_column as
+            // Html::serialize($document).
+            $db->update($table)
+              ->fields([
+                $value_column => Html::serialize($document),
+              ])
+              ->condition('entity_id', $record->entity_id)
+              ->condition('revision_id', $record->revision_id)
+              ->execute();
+
+            $update_count++;
+          }
+
+          if ($update_count) {
+            \Drupal::messenger()
+              ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+          }
+        }
+      }
+    }
+  }
+}
+
  * Update person bio field to long with summary.
  */
-function sitenow_update_9066() {
+function sitenow_update_9068() {
 
   // Statically defining our fields to be updated. More can be added here.
   $fields = [
@@ -2601,7 +2724,7 @@ function sitenow_update_9066() {
 /**
  * Update summary cols with field_teaser values.
  */
-function sitenow_update_9067() {
+function sitenow_update_9069() {
   $field_types = [
     'body',
     'field_teaser',
@@ -2657,7 +2780,7 @@ function sitenow_update_9067() {
 /**
  * Update hide fields options for list blocks.
  */
-function sitenow_update_9068() {
+function sitenow_update_9070() {
   foreach ([
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
@@ -2669,5 +2792,6 @@ function sitenow_update_9068() {
       unset($config['fields']['field_teaser']);
       $component->setConfiguration($config);
     });
-  }
-}
+   }
+ }
+    
