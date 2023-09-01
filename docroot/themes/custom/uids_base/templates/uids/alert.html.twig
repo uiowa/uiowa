@@ -22,15 +22,15 @@
 {% endif %}
 
 <div role="{{ alert_role ? alert_role : 'alert' }}" aria-label="{{ alert_type }} message" {{ attributes ? attributes.addClass(alert_classes) }}>
-<div class="alert__icon">
-    <span class="fa-stack fa-1x">
-      <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
-      <span role="presentation" class="fas fa-stack-1x fa-inverse {{ icon }}"></span>
-    </span>
-</div>
-{% block alert_content %}
-  <div>{{ alert_content }}</div>
-{% endblock %}
+  <div class="alert__icon">
+      <span class="fa-stack fa-1x">
+        <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
+        <span role="presentation" class="fas fa-stack-1x fa-inverse {{ icon }}"></span>
+      </span>
+  </div>
+  {% block alert_content %}
+    <div>{{ alert_content }}</div>
+  {% endblock %}
   {% if alert_dismissible %}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span role="presentation" class="fas fa-times"></span>
