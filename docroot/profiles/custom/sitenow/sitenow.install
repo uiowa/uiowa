@@ -2509,25 +2509,20 @@ function sitenow_update_9065() {
  * Update alert classes.
  */
 function sitenow_update_9067() {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $search_replace = [
+    'alert-danger' => 'alert--danger',
+    'alert-warning' => 'alert--warning',
+    'alert-success' => 'alert--success',
+    'alert-info' => 'alert--info',
+  ];
 
-  // Limit to just sites running uids_base.
-  if ($active_theme->getName() === 'uids_base') {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge($text_long, $text_with_summary);
 
-    $search_replace = [
-      'alert-danger' => 'alert--danger',
-      'alert-warning' => 'alert--warning',
-      'alert-success' => 'alert--success',
-      'alert-info' => 'alert--info',
-    ];
-
-    $entity_type_manager = \Drupal::entityTypeManager();
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
-    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
-    $entity_field_map = array_merge($text_long, $text_with_summary);
-
-    foreach ($entity_field_map as $entity_type_id => $field_map) {
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
       $entity_storage = $entity_type_manager->getStorage($entity_type_id);
       if (!($entity_storage instanceof SqlContentEntityStorage)) {
         continue;
@@ -2565,6 +2560,7 @@ function sitenow_update_9067() {
             $query = $db->select($table, 't')
               ->fields('t');
 
+            // Build a condition group from our search strings.
             $or_group = $query->orConditionGroup();
 
             foreach ($search_replace as $needle => $string) {
@@ -2576,38 +2572,35 @@ function sitenow_update_9067() {
 
             foreach ($results as $record) {
 
+              // Load the HTML fragment as a DOMDocument object.
               $document = Html::load($record->{$value_column});
 
-              foreach (['div'] as $tag) {
-                $instances = $document->getElementsByTagName($tag);
+              // Get all <div> elements from the HTML fragment.
+              $instances = $document->getElementsByTagName('div');
 
-                // We don't actually need the regressive loop
-                // here, but its copied/pasted.
-                $i = $instances->length - 1;
+              // A regressive loop (starting with the end) is used to loop
+              // through matching elements so that they don't affect other
+              // elements when they are updated.
+              $i = $instances->length - 1;
 
-                while ($i >= 0) {
-                  // The current <div> element.
-                  $dom_element = $instances->item($i);
+              while ($i >= 0) {
+                // The current <div> element.
+                $dom_element = $instances->item($i);
 
-                  $class = $dom_element->getAttribute('class');
+                $class = $dom_element->getAttribute('class');
 
-                  switch ($tag) {
-                    case 'div':
-                      foreach ($search_replace as $needle => $replace) {
-                        $class = str_replace($needle, $replace, $class);
-                      }
-                      break;
-                  }
-
-                  if (trim($class)) {
-                    $dom_element->setAttribute('class', $class);
-                  }
-                  else {
-                    $dom_element->removeAttribute('class');
-                  }
-
-                  $i--;
+                foreach ($search_replace as $needle => $replace) {
+                  $class = str_replace($needle, $replace, $class);
                 }
+
+                if (trim($class)) {
+                  $dom_element->setAttribute('class', $class);
+                }
+                else {
+                  $dom_element->removeAttribute('class');
+                }
+
+                $i--;
               }
 
               // Run database update to store updated $value_column as
@@ -2631,6 +2624,4 @@ function sitenow_update_9067() {
         }
       }
     }
-
-  }
 }
