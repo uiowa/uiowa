@@ -107,7 +107,6 @@ third_party_settings:
             1: section_margin_fixed_width_container
             2: section_card_media_size_large
             3: section_card_media_format_widescreen
-            section_padding_top_extra: section_padding_top_extra
             section_alignment_start: section_alignment_start
         components:
           -
@@ -171,25 +170,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 18c4011e-2eda-466c-ab5b-9ff700b40756
-            region: card_content
-            configuration:
-              id: 'field_block:node:service:field_service_fees'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: ed94a75b-3916-4f46-83b9-ae611442901a
             region: card_content
             configuration:
@@ -237,6 +217,25 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ''
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 18c4011e-2eda-466c-ab5b-9ff700b40756
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_fees'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
