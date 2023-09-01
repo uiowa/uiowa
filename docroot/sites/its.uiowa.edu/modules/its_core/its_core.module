@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\its_core\Entity\Service;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -39,6 +40,23 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   // so it won't default to bg--white
   // in uids_base_preprocess_layout__twocol__card_sidebar().
   $variables['attributes']['class'][] = 'bg--none';
+
+  // If we have card content, add an "Overview" card title.
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface) {
+    if ($node->getType() === 'service') {
+      if (!$node->field_service_fees->isEmpty() ||
+        !$node->field_service_website->isEmpty() ||
+        !$node->field_service_quick_links->isEmpty()
+      ) {
+        $variables['content']['card_title'] = [
+          '#type' => 'markup',
+          '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
+        ];
+      }
+    }
+  }
+
 }
 
 /**
