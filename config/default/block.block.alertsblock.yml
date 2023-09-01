@@ -3,13 +3,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - system
     - uiowa_alerts
   theme:
     - uids_base
 id: alertsblock
 theme: uids_base
 region: alert
-weight: 0
+weight: -12
 provider: null
 plugin: uiowa_alerts_block
 settings:
@@ -17,4 +18,8 @@ settings:
   label: 'Alerts block'
   label_display: '0'
   provider: uiowa_alerts
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/node/*/layout'

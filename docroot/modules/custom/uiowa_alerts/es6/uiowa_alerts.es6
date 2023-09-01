@@ -30,15 +30,23 @@
                     .replace(' PM', 'pm');
 
                   let alert = `
-<div class="hawk-alert alert alert-danger">
-<div class="hawk-alert-message" role="region" aria-label="hawk alert message">
-    <span class="hawk-alert-heading">
-        <span class="hawk-alert-label">Hawk Alert</span>
-        <span class="hawk-alert-date">${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span>
+<div class="alert alert--icon alert--danger">
+  <div class="alert__icon">
+    <span class="fa-stack fa-1x">
+      <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
+      <span role="presentation" class="fas fa-stack-1x fa-inverse fa-exclamation"></span>
     </span>
-    <span class="hawk-alert-body">${item.hawkalert.alert}</span>
-    <a class="hawk-alert-link alert-link" href=https://${item.hawkalert.more_info_link}>Visit ${item.hawkalert.more_info_link} for more information.</a>
-</div>
+  </div>
+  <div class="hawk-alert-message" role="region" aria-label="hawk alert message">
+    <h2 class="headline headline--serif">
+      <span class="hawk-alert-heading">
+        <span class="hawk-alert-label">Hawk Alert</span>
+      </span>
+    </h2>
+    <p><em><span class="hawk-alert-date">${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span></em><br />
+      <span class="hawk-alert-body">${item.hawkalert.alert}</span>
+      <a class="hawk-alert-link alert-link" href=https://${item.hawkalert.more_info_link}>Visit ${item.hawkalert.more_info_link} for more information.</a></p>
+  </div>
 </div>
         `;
                   messages.add(alert, {
