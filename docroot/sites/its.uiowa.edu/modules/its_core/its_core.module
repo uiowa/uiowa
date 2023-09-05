@@ -33,12 +33,12 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       // Hide the additional fees info field unless
       // we've changed it from No Charge.
       $form['field_service_fees_info']['#states'] = [
-          'visible' => [
-            ':input[name="field_service_fees"]' => [
-              'value' => 'other',
-            ],
+        'visible' => [
+          ':input[name="field_service_fees"]' => [
+            'value' => 'other',
           ],
-        ];
+        ],
+      ];
       break;
 
   }
