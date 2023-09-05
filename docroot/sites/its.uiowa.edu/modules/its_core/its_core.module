@@ -39,6 +39,9 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           ],
         ],
       ];
+
+      // Split the audience checkboxes into two columns.
+      $form['field_service_audience']['#attributes']['class'][] = 'multi--column';
       break;
 
   }
