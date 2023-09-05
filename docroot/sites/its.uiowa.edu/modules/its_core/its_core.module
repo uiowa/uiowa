@@ -98,6 +98,8 @@ function its_core_preprocess_field(&$variables, $hook) {
         // Wrap the field output in <details> tags and append the summary.
         $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
         $variables['items'][0]['content']['#suffix'] = $details_close;
+        // Hide the default label, because we have the details.
+        $variables['label_display'] = 'visually_hidden';
       }
       // If it wasn't marked as "other" for fees,
       // replace the markup with the "no charge" verbiage.
