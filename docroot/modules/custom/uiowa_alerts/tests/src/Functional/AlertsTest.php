@@ -91,7 +91,7 @@ class AlertsTest extends BrowserTestBase {
     $this->drupalGet('<front>');
     $session = $this->assertSession();
     $session->pageTextContains("This is an alert of type $level.");
-    $session->elementExists('css', 'div.alert-' . strtolower($level));
+    $session->elementExists('css', 'div.alert--' . strtolower($level));
 
   }
 
