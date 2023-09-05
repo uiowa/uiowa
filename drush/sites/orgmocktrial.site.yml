@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: orgmocktrial.uiowa.ddev.site
+  paths:
+    files: sites/mocktrial.org.uiowa.edu/files
+dev:
+  uri: orgmocktrial.dev.drupal.uiowa.edu
+  host: uiowa05dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/mocktrial.org.uiowa.edu/files
+  root: /var/www/html/uiowa05.dev/docroot
+  user: uiowa05.dev
+prod:
+  uri: mocktrial.org.uiowa.edu
+  host: uiowa05.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/mocktrial.org.uiowa.edu/files
+  root: /var/www/html/uiowa05.prod/docroot
+  user: uiowa05.prod
+test:
+  uri: orgmocktrial.stage.drupal.uiowa.edu
+  host: uiowa05stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/mocktrial.org.uiowa.edu/files
+  root: /var/www/html/uiowa05.test/docroot
+  user: uiowa05.test
