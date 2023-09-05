@@ -81,20 +81,33 @@ function its_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_service_fees_info':
-      // Wrap the field output in a <details> tag.
-      $details_open = '<details>';
-      $details_close = '</details>';
+      $node = $variables['element']['#object'];
+      // Check that we have it marked as "other" for fees.
+      if ($node->hasField('field_service_fees') && $node->field_service_fees?->value === 'other') {
+        // Wrap the field output in a <details> tag.
+        $details_open = '<details>';
+        $details_close = '</details>';
 
-      // Get the field label and wrap it in a <summary> tag.
-      $field_label = '<summary>' . $variables['label'] . '</summary>';
-      $summary = [
-        '#type' => 'markup',
-        '#markup' => $field_label,
-      ];
+        // Get the field label and wrap it in a <summary> tag.
+        $field_label = '<summary>' . $variables['label'] . '</summary>';
+        $summary = [
+          '#type' => 'markup',
+          '#markup' => $field_label,
+        ];
 
-      // Wrap the field output in <details> tags and append the summary.
-      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
-      $variables['items'][0]['content']['#suffix'] = $details_close;
+        // Wrap the field output in <details> tags and append the summary.
+        $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+        $variables['items'][0]['content']['#suffix'] = $details_close;
+      }
+      // If it wasn't marked as "other" for fees,
+      // replace the markup with the "no charge" verbiage.
+      else {
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>There is no charge for use of this service.</p>',
+        ];
+      }
+
       break;
 
     case 'field_service_audience':
