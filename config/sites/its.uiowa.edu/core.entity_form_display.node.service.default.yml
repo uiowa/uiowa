@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.service.field_service_category
     - field.field.node.service.field_service_contact
     - field.field.node.service.field_service_fees
+    - field.field.node.service.field_service_fees_info
     - field.field.node.service.field_service_quick_links
     - field.field.node.service.field_service_related_service
     - field.field.node.service.field_service_website
@@ -42,7 +43,7 @@ content:
         hide_guidelines: '0'
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 200
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -91,8 +92,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_service_fees:
+    type: options_select
+    weight: 222
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_service_fees_info:
     type: text_textarea
-    weight: 29
+    weight: 223
     region: content
     settings:
       rows: 5
@@ -126,38 +133,38 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 10
+    weight: 210
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 8
+    weight: 220
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 6
+    weight: 210
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 5
+    weight: 220
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 11
+    weight: 220
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 7
+    weight: 210
     region: content
     settings:
       display_label: true
@@ -172,7 +179,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 200
     region: content
     settings:
       match_operator: CONTAINS

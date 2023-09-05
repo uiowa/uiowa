@@ -10,12 +10,14 @@ dependencies:
     - field.field.node.service.field_service_category
     - field.field.node.service.field_service_contact
     - field.field.node.service.field_service_fees
+    - field.field.node.service.field_service_fees_info
     - field.field.node.service.field_service_quick_links
     - field.field.node.service.field_service_related_service
     - field.field.node.service.field_service_website
     - node.type.service
   module:
     - layout_builder
+    - options
     - text
     - user
   theme:
@@ -34,7 +36,18 @@ third_party_settings:
             0: ''
             1: section_container_narrow
             section_margin_remove_default_margins: section_margin_remove_default_margins
-        components: {  }
+        components:
+          -
+            uuid: a8aa26f1-3b4b-477a-96ba-a2f21a524dc7
+            region: content
+            configuration:
+              id: 'extra_field_block:node:service:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -220,10 +233,10 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 18c4011e-2eda-466c-ab5b-9ff700b40756
+            uuid: f69d16ba-5683-4589-975b-ba7c071355d6
             region: card_content
             configuration:
-              id: 'field_block:node:service:field_service_fees'
+              id: 'field_block:node:service:field_service_fees_info'
               label: null
               label_display: null
               provider: layout_builder
@@ -232,7 +245,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: text_default
-                label: visually_hidden
+                label: above
                 settings: {  }
                 third_party_settings: {  }
             weight: 5
@@ -262,10 +275,24 @@ content:
     third_party_settings: {  }
     weight: -20
     region: content
+  field_service_fees:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 202
+    region: content
+  field_service_fees_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 203
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 200
     region: content
 hidden:
   entity_print_view_epub: true
@@ -276,7 +303,6 @@ hidden:
   field_service_audience: true
   field_service_category: true
   field_service_contact: true
-  field_service_fees: true
   field_service_quick_links: true
   field_service_related_service: true
   field_service_website: true

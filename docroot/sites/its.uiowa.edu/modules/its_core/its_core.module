@@ -27,6 +27,18 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_service_edit_form':
     case 'node_service_form':
       _sitenow_node_form_defaults($form, $form_state);
+
+      // Change the empty option label.
+      $form['field_service_fees']['widget']['#options']['_none'] = 'No Charge';
+      // Hide the additional fees info field unless
+      // we've changed it from No Charge.
+      $form['field_service_fees_info']['#states'] = [
+          'visible' => [
+            ':input[name="field_service_fees"]' => [
+              'value' => 'other',
+            ],
+          ],
+        ];
       break;
 
   }
@@ -45,7 +57,7 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
   if ($node instanceof NodeInterface) {
     if ($node->getType() === 'service') {
-      if (!$node->field_service_fees->isEmpty() ||
+      if (!$node->field_service_fees_info->isEmpty() ||
         !$node->field_service_website->isEmpty() ||
         !$node->field_service_quick_links->isEmpty()
       ) {
@@ -68,7 +80,7 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['#attached']['library'][] = 'uids_base/tags';
       break;
 
-    case 'field_service_fees':
+    case 'field_service_fees_info':
       // Wrap the field output in a <details> tag.
       $details_open = '<details>';
       $details_close = '</details>';

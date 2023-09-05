@@ -1,16 +1,21 @@
-uuid: bf1a2a65-3572-4ca8-96a4-e5cb47d854a1
+uuid: 958d6656-c280-46ab-8aeb-aa4f032b551d
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - text
+    - options
 id: node.field_service_fees
 field_name: field_service_fees
 entity_type: node
-type: text_long
-settings: {  }
-module: text
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
 locked: false
 cardinality: 1
 translatable: true
