@@ -209,10 +209,11 @@
 .card details {
   summary {
     cursor: pointer;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     background: $light;
-    padding: 0.5rem 1.2rem 0.5rem 0.3rem;
-    margin-left: -4px;
+    padding: 0.5rem 1.2rem 0.5rem calc(20px + 0.3rem);
+    border-radius: 2px;
 
     &::-webkit-details-marker,
     &::marker {
@@ -225,12 +226,16 @@
     content: "\f0da";
     color: $secondary;
     @include fas();
+    line-height: 9px;
+    padding: 0.325rem;
+    position: absolute;
+    width: 10px;
+    height: 10px;
   }
 
   &[open] {
     > summary::before {
       content: "\f0d7";
-      padding-left: .325rem;
     }
     > summary {
       margin-bottom: .5rem;
