@@ -35,6 +35,13 @@ function sitenow_p2lb_uninstall() {
     \Drupal::logger('sitenow_p2lb')->notice('Deleted previous revisions for Node ID: ' . $nid);
   }
 
+  // Delete orphaned paragraphs, three-levels deep.
+  $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
+  for ($i = 0; $i < 3; $i++) {
+    $purger->setBatch(['paragraph']);
+    drush_backend_batch_process();
+  }
+
   // Turn off V2.
   $config_factory = \Drupal::configFactory();
   $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
