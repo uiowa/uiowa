@@ -7,7 +7,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\its_core\Entity\Service;
-use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -28,8 +27,10 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_service_form':
       _sitenow_node_form_defaults($form, $form_state);
 
-      // Change the empty option label.
-      $form['field_service_fees']['widget']['#options']['_none'] = 'No Charge';
+      // Remove the empty option and default
+      // to "No Charge" if no default value already exists.
+      $form['field_service_fees']['widget']['#default_value'] = $form['field_service_fees']['widget']['#default_value'] ?? 'no_charge';
+      unset($form['field_service_fees']['widget']['#options']['_none']);
       // Hide the additional fees info field unless
       // we've changed it from No Charge.
       $form['field_service_fees_info']['#states'] = [
@@ -56,21 +57,13 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   // in uids_base_preprocess_layout__twocol__card_sidebar().
   $variables['attributes']['class'][] = 'bg--none';
 
-  // If we have card content, add an "Overview" card title.
-  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
-  if ($node instanceof NodeInterface) {
-    if ($node->getType() === 'service') {
-      if (!$node->field_service_fees_info->isEmpty() ||
-        !$node->field_service_website->isEmpty() ||
-        !$node->field_service_quick_links->isEmpty()
-      ) {
-        $variables['content']['card_title'] = [
-          '#type' => 'markup',
-          '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
-        ];
-      }
-    }
-  }
+  // We will always have card content, since
+  // we have fees or a default "No fees..." text,
+  // so add our static card title.
+  $variables['content']['card_title'] = [
+    '#type' => 'markup',
+    '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
+  ];
 
 }
 
@@ -83,10 +76,16 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['#attached']['library'][] = 'uids_base/tags';
       break;
 
-    case 'field_service_fees_info':
+    case 'field_service_fees':
       $node = $variables['element']['#object'];
       // Check that we have it marked as "other" for fees.
-      if ($node->hasField('field_service_fees') && $node->field_service_fees?->value === 'other') {
+      if ($node->field_service_fees?->value === 'other' && !empty($node->field_service_fees_info?->value)) {
+        $variables['items'][0]['content'] = [
+          '#type' => 'processed_text',
+          '#text' => $node->field_service_fees_info->value,
+          '#format' => $node->field_service_fees_info->format,
+          '#langcode' => 'en',
+        ];
         // Wrap the field output in a <details> tag.
         $details_open = '<details>';
         $details_close = '</details>';
