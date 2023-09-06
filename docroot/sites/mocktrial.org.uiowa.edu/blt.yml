@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgmocktrial.uiowa.ddev.site
+    protocol: https
+  machine_name: orgmocktrial
+  human_name: mocktrial.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgmocktrial.prod
+drupal:
+  db:
+    database: mocktrial_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgmocktrial.prod.drupal.uiowa.edu'
+  requester: vdemarco
+  site-name: 'University of Iowa Mock Trial'
