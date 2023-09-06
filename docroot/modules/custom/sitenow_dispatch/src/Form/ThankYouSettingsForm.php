@@ -15,7 +15,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -55,7 +55,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('uiowa_core.access_checker'),
     );
   }

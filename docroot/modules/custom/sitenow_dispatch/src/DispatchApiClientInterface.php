@@ -21,7 +21,7 @@ interface DispatchApiClientInterface {
   public function setApiKey($key): DispatchApiClientInterface;
 
   /**
-   * Make a DispatchApiClient API request and return JSON-decoded data.
+   * Make a Dispatch API request and return JSON-decoded data.
    *
    * @param  string  $method
    *    The HTTP method to use.

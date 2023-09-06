@@ -21,7 +21,7 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * The config factory service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -41,7 +41,7 @@ class SubscribeForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('http_client'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
     );
   }
 

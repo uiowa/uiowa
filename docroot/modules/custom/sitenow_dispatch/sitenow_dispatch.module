@@ -5,6 +5,8 @@
  * SiteNow Dispatch module hooks.
  */
 
+use Drupal\field\Entity\FieldConfig;
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -14,4 +16,38 @@ function sitenow_dispatch_preprocess_block(&$variables) {
     && $variables['configuration']['provider'] === 'sitenow_dispatch') {
     $variables['attributes']['class'][] = 'block-webform';
   }
+}
+
+/**
+ * Helper function to get content type fields as placeholders.
+ *
+ * @param $content_type
+ *   Machine name of a node bundle.
+ *
+ * @return array
+ */
+function _sitenow_dispatch_get_placeholders($bundle) {
+  $placeholders = [
+    'node_url' => 'NodeUrl',
+    'node_title' => 'NodeTitle',
+    'alert_subject' => 'alertSubject',
+  ];
+  $skip = [
+    'layout_builder__layout',
+    'field_meta_tags',
+  ];
+  $entity_field_manager = Drupal::service('entity_field.manager');
+  $fields = $entity_field_manager->getFieldDefinitions('node', $bundle);
+  foreach ($fields as $field_name => $field) {
+    if (!$field instanceof FieldConfig || in_array($field_name, $skip)) {
+      continue;
+    }
+    $n = $field_name;
+    $n = str_replace('field_', '', $n);
+    $n = ucwords($n, '_');
+    $n = str_replace('_', '', $n);
+    $placeholders[$field_name] = $n;
+  }
+
+  return $placeholders;
 }

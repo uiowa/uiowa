@@ -36,7 +36,7 @@ class ThankYouForm extends FormBase {
   /**
    * The config factory service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -47,7 +47,7 @@ class ThankYouForm extends FormBase {
     $instance = parent::create($container);
     $instance->jsonController = $container->get('serialization.json');
     $instance->httpClient = $container->get('http_client');
-    $instance->dispatch = $container->get('sitenow_dispatch.dispatch');
+    $instance->dispatch = $container->get('sitenow_dispatch.dispatch_client');
     return $instance;
   }
 

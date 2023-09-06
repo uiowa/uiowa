@@ -39,7 +39,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The config factory service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -70,7 +70,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $plugin_definition,
       $container->get('config.factory'),
       $container->get('form_builder'),
-      $container->get('sitenow_dispatch.dispatch')
+      $container->get('sitenow_dispatch.dispatch_client')
     );
   }
 

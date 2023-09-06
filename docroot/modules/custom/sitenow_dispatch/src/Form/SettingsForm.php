@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +16,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -43,7 +44,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, DispatchApiClientInterface $dispatch, $entityTypeManager) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
     $this->entityTypeManager = $entityTypeManager;
@@ -55,7 +56,7 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('entity_type.manager'),
     );
   }

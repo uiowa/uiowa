@@ -12,7 +12,7 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
- * A DispatchApiClient API service.
+ * A Dispatch API service.
  *
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
