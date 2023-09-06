@@ -1,0 +1,21 @@
+facilities_core.settings_form:
+  path: '/admin/config/sitenow/facilities'
+  defaults:
+    _title: 'Facilities settings'
+    _form: 'Drupal\facilities_core\Form\SettingsForm'
+  requirements:
+    _permission: 'administer sitenow_dispatch configuration'
+
+entity.node.facilities_core_dispatch:
+  path: '/node/{node}/dispatch'
+  defaults:
+    _title: Dispatch
+    _form: 'Drupal\facilities_core\Form\NodeAlertDispatchForm'
+  requirements:
+    _entity_access: 'node.view all revisions'
+    node: \d+
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
