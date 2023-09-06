@@ -12,11 +12,11 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
- * A Dispatch API service.
+ * A DispatchApiClient API service.
  *
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
-class Dispatch {
+class DispatchApiClient implements DispatchApiClientInterface {
   const BASE = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
   use StringTranslationTrait;
@@ -50,44 +50,39 @@ class Dispatch {
   protected ?string $apiKey = NULL;
 
   /**
-   * Constructs a Dispatch object.
+   * Constructs a DispatchApiClient object.
    *
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
-   * @param Psr\Log\LoggerInterface $logger
+   * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    */
   public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, LoggerInterface $logger) {
     $this->client = $http_client;
     $this->configFactory = $configFactory;
     $this->logger = $logger;
-    $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
+    $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL;
   }
 
   /**
-   * Set the API key.
+   * {@inheritdoc}
    */
-  public function setApiKey($key) {
+  public function getApiKey(): string|null {
+    return $this->apiKey;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setApiKey($key): DispatchApiClientInterface {
     $this->apiKey = $key;
     return $this;
   }
 
   /**
-   * Make a Dispatch API request and return JSON-decoded data.
-   *
-   * @param string $method
-   *   The HTTP method to use.
-   * @param string $endpoint
-   *   The entire API endpoint URL or just the path relative to the base URL.
-   * @param array $params
-   *   Optional URI query parameters.
-   * @param array $options
-   *   Additional request options. Accept and API key set automatically.
-   *
-   * @return mixed
-   *   The API response data.
+   * {@inheritdoc}
    */
   public function request(string $method, string $endpoint, array $params = [], array $options = []) {
     // Encode any special characters and trim duplicate slash.
@@ -119,7 +114,7 @@ class Dispatch {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
         '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
-        '@error' => $e->getMessage(),
+        '@error' => $e->getResponse()->getBody()->getContents(),
       ]);
 
       return FALSE;
@@ -129,31 +124,46 @@ class Dispatch {
   }
 
   /**
-   * Return a list of campaigns keyed by endpoint.
+   * {@inheritdoc}
    */
   public function getCampaigns() {
     return $this->getNamesKeyedByEndpoint('campaigns');
   }
 
   /**
-   * Return a list of populations keyed by endpoint.
+   * {@inheritdoc}
+   */
+  public function getCommunications($campaign) {
+    return $this->getNamesKeyedByEndpoint($campaign . '/communications');
+  }
+
+  public function getCommunication($id) {
+    return $this->request('GET', $id);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getPopulations() {
     return $this->getNamesKeyedByEndpoint('populations');
   }
 
   /**
-   * Return a list of suppression lists keyed by endpoint.
+   * {@inheritdoc}
    */
   public function getSuppressionLists() {
     return $this->getNamesKeyedByEndpoint('suppressionlists');
   }
 
   /**
-   * Return a list of suppression lists keyed by endpoint.
+   * {@inheritdoc}
    */
   public function getTemplates() {
     return $this->getNamesKeyedByEndpoint('templates');
+  }
+
+  public function getTemplate($id) {
+    return $this->request('GET', $id);
   }
 
   /**
