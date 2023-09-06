@@ -6,6 +6,7 @@
  */
 
 use Drupal\node\Entity\Node;
+use Drush\Drush;
 
 /**
  * Helper function for uninstalling config related to p2lb.
@@ -35,7 +36,7 @@ function sitenow_p2lb_uninstall() {
     \Drupal::logger('sitenow_p2lb')->notice('Deleted previous revisions for Node ID: ' . $nid);
   }
 
-  // Delete orphaned paragraphs, three-levels deep.
+  // Delete orphaned paragraphs, three-levels deep (section > block > item).
   $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
   for ($i = 0; $i < 3; $i++) {
     $purger->setBatch(['paragraph']);
@@ -52,5 +53,13 @@ function sitenow_p2lb_uninstall() {
   $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
   $sitenow_p2lb->set('status', FALSE);
   $sitenow_p2lb->save(TRUE);
+
+  // Programmatically run `cim` twice. Second run needed for core.extension.
+  $config_import = Drush::processManager()->drush(Drush::service('site.alias.manager')
+    ->getSelf(), 'cim');
+  for ($i = 0; $i < 2; $i++) {
+    $config_import->run();
+    drupal_flush_all_caches();
+  }
 
 }
