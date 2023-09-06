@@ -9,6 +9,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -50,6 +51,11 @@ class DispatchApiClient implements DispatchApiClientInterface {
   protected ?string $apiKey = NULL;
 
   /**
+   * The last response object that was returned with the API.
+   */
+  protected ?ResponseInterface $lastResponse;
+
+  /**
    * Constructs a DispatchApiClient object.
    *
    * @param \GuzzleHttp\ClientInterface $http_client
@@ -82,6 +88,15 @@ class DispatchApiClient implements DispatchApiClientInterface {
   }
 
   /**
+   * Return the last API request response.
+   *
+   * @return \Psr\Http\Message\ResponseInterface|null
+   */
+  public function getLastResponse(): ?ResponseInterface {
+    return $this->lastResponse;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function request(string $method, string $endpoint, array $params = [], array $options = []) {
@@ -108,7 +123,7 @@ class DispatchApiClient implements DispatchApiClientInterface {
     $options['headers']['Accept'] = 'application/json';
 
     try {
-      $response = $this->client->request($method, $endpoint, $options);
+      $this->lastResponse = $this->client->request($method, $endpoint, $options);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
@@ -120,7 +135,7 @@ class DispatchApiClient implements DispatchApiClientInterface {
       return FALSE;
     }
 
-    return json_decode($response->getBody()->getContents());
+    return json_decode($this->lastResponse->getBody()->getContents());
   }
 
   /**

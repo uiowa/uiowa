@@ -88,7 +88,7 @@ class NodeAlertDispatchForm extends FormBase {
     ];
 
     $form['schedule']['placeholder_label'] = [
-      '#markup' => '<h3>Placeholders</h3>',
+      '#markup' => '<h4>Placeholders</h4>',
     ];
 
     $placeholders = _sitenow_dispatch_get_placeholders('alert');
@@ -106,7 +106,7 @@ class NodeAlertDispatchForm extends FormBase {
 
     $form['schedule']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Send DispatchApiClient request'),
+      '#value' => $this->t('Send Dispatch request'),
     ];
 
     return $form;
@@ -137,18 +137,31 @@ class NodeAlertDispatchForm extends FormBase {
       }
     }
 
+    // Construct the scheduled message object.
     $data = (object) [
       'occurrence' => 'ONE_TIME',
-      'startTime' => date('Y-m-d H:i:s', $schedule_start),
-      'businessDaysOnly' => FALSE,
+      'startTime' => date('M d, Y H:i:s', $schedule_start),
+      'businessDaysOnly' => TRUE,
       'includeBatchResponse' => TRUE,
-      'createPublicArchive' => FALSE,
       'communicationOverrideVars' => (object) $placeholders,
     ];
 
-    $this->dispatch->request('POST', $communication_id . '/schedules', [], [
+    $response = $this->dispatch->request('POST', $communication_id . '/schedules', [], [
       'json' => $data,
     ]);
+
+    $this->logger('facilities_core')->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>',[
+      '@endpoint' => $communication_id,
+      '@code' => $response->code,
+    ]);
+
+    $this->node->field_dispatch_log[] = [
+      'timestamp' => $schedule_start,
+      'username' => \Drupal::currentUser()->getAccountName(),
+      //'message_id' => '',
+    ];
+
+    //$this->node->save();
   }
 
 }
