@@ -2,32 +2,42 @@
 
 namespace Drupal\facilities_core\Form;
 
-use Drupal\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Send Dispatch requests for alert nodes.
+ */
 class NodeAlertDispatchForm extends FormBase {
 
   /**
+   * The node being acted upon.
+   *
    * @var \Drupal\node\NodeInterface
    */
-  protected $node;
+  protected NodeInterface $node;
 
   /**
-   * @var \Drupal\sitenow_dispatch\DispatchApiClientInterface;
+   * Constructor method for NodeAlertDispatchForm class.
+   *
+   * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
+   *   The Dispatch API client.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
-  protected $dispatch;
+  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer) {}
 
-
-  public function __construct(DispatchApiClientInterface $dispatch) {
-    $this->dispatch = $dispatch;
-  }
-
-  public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container) {
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
     return new static(
       $container->get('sitenow_dispatch.dispatch_client'),
+      $container->get('renderer'),
     );
   }
 
@@ -47,7 +57,7 @@ class NodeAlertDispatchForm extends FormBase {
 
     if (is_null($this->dispatch->getApiKey())) {
       $form['no_api_key'] = [
-        '#markup' => $this->t('A Dispatch API key has not been entered. Please add your API key.')
+        '#markup' => $this->t('A Dispatch API key has not been entered. Please add your API key.'),
       ];
 
       return $form;
@@ -57,7 +67,7 @@ class NodeAlertDispatchForm extends FormBase {
 
     if (!$communication_id) {
       $form['no_communication_id'] = [
-        '#markup' => $this->t('A Dispatch communication ID has not been entered. Please select a communication ID in settings.')
+        '#markup' => $this->t('A Dispatch communication ID has not been entered. Please select a communication ID in settings.'),
       ];
 
       return $form;
@@ -72,7 +82,7 @@ class NodeAlertDispatchForm extends FormBase {
 
     $form['schedule']['start'] = [
       '#type' => 'datetime',
-      '#title' => t('Send date and time'),
+      '#title' => $this->t('Send date and time'),
       '#required' => TRUE,
       '#date_increment' => 60,
     ];
@@ -110,7 +120,6 @@ class NodeAlertDispatchForm extends FormBase {
     $schedule_start = strtotime($form_state->getValue('start'));
 
     $communication_id = $config->get('alert_dispatch_communication_id');
-    $renderer = \Drupal::service('renderer');
 
     $placeholders = [];
 
@@ -118,24 +127,26 @@ class NodeAlertDispatchForm extends FormBase {
       switch ($field_name) {
         case 'alert_subject':
           $placeholders[$placeholder] = $this->node->getTitle() . ' - OSC TEST';
+          break;
+
         default:
           $render = $this->node->{$field_name}?->view('dispatch');
           if (!empty($render)) {
-            $placeholders[$placeholder] = $renderer->renderRoot($render);
+            $placeholders[$placeholder] = $this->renderer->renderRoot($render);
           }
       }
     }
 
     $data = (object) [
       'occurrence' => 'ONE_TIME',
-      'startTime' => date('Y-m-d H:i:s', time()),
+      'startTime' => date('Y-m-d H:i:s', $schedule_start),
       'businessDaysOnly' => FALSE,
       'includeBatchResponse' => TRUE,
       'createPublicArchive' => FALSE,
       'communicationOverrideVars' => (object) $placeholders,
     ];
 
-    $response = $this->dispatch->request('POST',  $communication_id . '/schedules', [], [
+    $this->dispatch->request('POST', $communication_id . '/schedules', [], [
       'json' => $data,
     ]);
   }

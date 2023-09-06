@@ -137,6 +137,9 @@ class DispatchApiClient implements DispatchApiClientInterface {
     return $this->getNamesKeyedByEndpoint($campaign . '/communications');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getCommunication($id) {
     return $this->request('GET', $id);
   }
@@ -162,6 +165,9 @@ class DispatchApiClient implements DispatchApiClientInterface {
     return $this->getNamesKeyedByEndpoint('templates');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getTemplate($id) {
     return $this->request('GET', $id);
   }

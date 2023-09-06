@@ -2,6 +2,9 @@
 
 namespace Drupal\sitenow_dispatch;
 
+/**
+ * A Dispatch API client interface.
+ */
 interface DispatchApiClientInterface {
 
   /**
@@ -12,28 +15,28 @@ interface DispatchApiClientInterface {
   /**
    * Set the API key.
    *
-   * @param $key
+   * @param string $key
    *   The API key being set.
    *
    * @return \Drupal\sitenow_dispatch\DispatchApiClientInterface
    *   The DispatchApiClientInterface object.
    */
-  public function setApiKey($key): DispatchApiClientInterface;
+  public function setApiKey(string $key): DispatchApiClientInterface;
 
   /**
    * Make a Dispatch API request and return JSON-decoded data.
    *
-   * @param  string  $method
-   *    The HTTP method to use.
-   * @param  string  $endpoint
-   *    The entire API endpoint URL or just the path relative to the base URL.
-   * @param  array  $params
-   *    Optional URI query parameters.
-   * @param  array  $options
-   *    Additional request options. Accept and API key set automatically.
+   * @param string $method
+   *   The HTTP method to use.
+   * @param string $endpoint
+   *   The entire API endpoint URL or just the path relative to the base URL.
+   * @param array $params
+   *   Optional URI query parameters.
+   * @param array $options
+   *   Additional request options. Accept and API key set automatically.
    *
    * @return mixed
-   *    The API response data or FALSE.
+   *   The API response data or FALSE.
    */
   public function request(string $method, string $endpoint, array $params = [], array $options = []);
 
@@ -63,7 +66,8 @@ interface DispatchApiClientInterface {
   public function getSuppressionLists();
 
   /**
-   * Return a list of suppression lists keyed by endpoint.
+   * Return a list of templates keyed by endpoint.
    */
   public function getTemplates();
+
 }

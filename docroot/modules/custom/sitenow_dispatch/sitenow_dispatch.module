@@ -21,12 +21,13 @@ function sitenow_dispatch_preprocess_block(&$variables) {
 /**
  * Helper function to get content type fields as placeholders.
  *
- * @param $content_type
+ * @param string $bundle
  *   Machine name of a node bundle.
  *
  * @return array
+ *   The array of placeholders keyed by field name.
  */
-function _sitenow_dispatch_get_placeholders($bundle) {
+function _sitenow_dispatch_get_placeholders(string $bundle): array {
   $placeholders = [
     'node_url' => 'NodeUrl',
     'node_title' => 'NodeTitle',
