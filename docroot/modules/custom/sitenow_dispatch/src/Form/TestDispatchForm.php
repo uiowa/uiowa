@@ -16,7 +16,7 @@ class TestDispatchForm extends FormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -46,7 +46,7 @@ class TestDispatchForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
     );
   }
 
@@ -65,17 +65,43 @@ class TestDispatchForm extends FormBase {
       return $form;
     }
 
+    $form['campaign'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'dispatch-campaign'
+      ],
+    ];
+
     $campaigns = $this->dispatch->getCampaigns();
     array_unshift($campaigns, 'None');
 
-    $form['campaign'] = [
+    $default_campaign = 'https://apps.its.uiowa.edu/dispatch/api/v1/campaigns/1233665067';
+
+    $form['campaign']['campaign'] = [
       '#type' => 'select',
       '#title' => $this->t('Campaign'),
       '#description' => $this->t('Choose a Dispatch campaign.'),
-      '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/campaigns/1233665067',
+      '#default_value' => $default_campaign,
       '#options' => $campaigns,
+      '#ajax' => [
+        'callback' => [$this, 'campaignSelected'],
+        'event' => 'change',
+        'wrapper' => 'dispatch-campaign',
+      ],
     ];
 
+    $communications = $this->dispatch->getCommunications($default_campaign);
+    array_unshift($communications, 'None');
+    $form['campaign']['communication'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Communication'),
+      '#description' => $this->t('Choose the Dispatch communication to use.'),
+      '#default_value' => '',
+      '#options' => $communications,
+    ];
+
+    // @todo Pull a list of communications.
+    // @todo Populations should hide if a communication is selected.
     $populations = $this->dispatch->getPopulations();
     array_unshift($populations, 'None');
 
@@ -85,6 +111,16 @@ class TestDispatchForm extends FormBase {
       '#description' => $this->t('Choose a Dispatch population.'),
       '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/612115495',
       '#options' => $populations,
+//      '#states' => [
+//        'visible' => [
+//          // Always show when list format is grid.
+//          [
+//            ':input[name="communication"]' => [
+//              'value' => 0,
+//            ],
+//          ],
+//        ],
+//      ],
     ];
 
     $suppression_list = $this->dispatch->getSuppressionLists();
@@ -96,6 +132,16 @@ class TestDispatchForm extends FormBase {
       '#description' => $this->t('Choose a Dispatch suppression list.'),
       '#default_value' => '',
       '#options' => $suppression_list,
+//      '#states' => [
+//        'visible' => [
+//          // Always show when list format is grid.
+//          [
+//            ':input[name="communication"]' => [
+//              'value' => 0,
+//            ],
+//          ],
+//        ],
+//      ],
     ];
 
     $templates = $this->dispatch->getTemplates();
@@ -107,6 +153,16 @@ class TestDispatchForm extends FormBase {
       '#description' => $this->t('Choose a Dispatch template.'),
       '#default_value' => 'https://apps.its.uiowa.edu/dispatch/api/v1/templates/1237284721',
       '#options' => $templates,
+//      '#states' => [
+//        'visible' => [
+//          // Always show when list format is grid.
+//          [
+//            ':input[name="communication"]' => [
+//              'value' => 0,
+//            ],
+//          ],
+//        ],
+//      ],
     ];
 
     $form['subject'] = [
@@ -142,39 +198,77 @@ class TestDispatchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $campaign = $form_state->getValue('campaign');
+//    $campaign = $form_state->getValue('campaign');
     $subject = $form_state->getValue('subject');
-    $data = (object) [
-      'type' => 'EMAIL',
-      'name' => date('Y-m-d H:i:s', time()) . ' Dispatch Test',
-      'email' => (object) [
-        'fromAddress' => 'its-web@uiowa.edu',
-        'fromName' => 'OSC - Web Services',
-        'subject' => $subject,
-      ],
-      'destinations' => (object) [
-        (object) [
-          'bounceAddress' => 'its-web@uiowa.edu',
-          'linkTrackingDisabled' => 'false',
-          'openTrackingDisabled' => 'false',
-          'replyToAddress' => 'its-web@uiowa.edu',
-          'type' => 'SMTP',
-          'suppressionList' => $form_state->getValue('suppression_list'),
-        ],
-      ],
-      'placeholders' => (object) [
-        'Title' => $subject,
-        'Body' => $form_state->getValue('body'),
-      ],
-      'priority' => '5',
-      'bypassApproval' => 'true',
-      'template' => $form_state->getValue('template'),
-      'population' => $form_state->getValue('population'),
-    ];
+//    $data = (object) [
+//      'type' => 'EMAIL',
+//      'name' => date('Y-m-d H:i:s', time()) . ' Dispatch Test',
+//      'email' => (object) [
+//        'fromAddress' => 'its-web@uiowa.edu',
+//        'fromName' => 'OSC - Web Services',
+//        'subject' => $subject,
+//      ],
+//      'destinations' => [
+//        (object) [
+//          'type' => 'SMTP',
+//          'bounceAddress' => 'its-web@uiowa.edu',
+//          'linkTrackingDisabled' => 'false',
+//          'openTrackingDisabled' => 'false',
+//          'replyToAddress' => 'its-web@uiowa.edu',
+//        ],
+//      ],
+//      'placeholders' => (object) [
+//        'Title' => $subject,
+//        'Body' => $form_state->getValue('body'),
+//      ],
+//      'priority' => '5',
+//      'bypassApproval' => 'true',
+//      'template' => $form_state->getValue('template'),
+//      'population' => $form_state->getValue('population'),
+//    ];
+//
+//    if ($form_state->getValue('suppression_list') != 0) {
+//      $data->destinations[0]->suppression_list = $form_state->getValue('suppression_list');
+//    }
 
-    $response = $this->dispatch->request('POST', $campaign . '/communications', [], [
-      'data' => json_encode($data),
-    ]);
+    $communication = $form_state->getValue('communication');
+
+    if ($communication) {
+
+      $data = (object) [
+        'occurrence' => 'ONE_TIME',
+        'startTime' => date('Y-m-d H:i:s', time()),
+        'businessDaysOnly' => FALSE,
+        'includeBatchResponse' => TRUE,
+        'createPublicArchive' => FALSE,
+        'communicationOverrideVars' => (object) [
+          'dynamicSubject' => $subject,
+        ],
+      ];
+
+      $response = $this->dispatch->request('POST',  $communication . '/schedules', [], [
+        'json' => $data,
+      ]);
+
+      $test = 'thing';
+    }
+  }
+
+  public function campaignSelected(array &$form, FormStateInterface $form_state) {
+    if ($campaign = $form_state->getValue('campaign')) {
+      if ($campaign !== 0) {
+        $communications = $this->dispatch->getCommunications($campaign);
+        array_unshift($communications, 'None');
+        $form['campaign']['communication'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Communication'),
+          '#description' => $this->t('Choose the Dispatch communication to use.'),
+          '#options' => $communications,
+        ];
+      }
+    }
+
+    return $form['campaign'];
   }
 
 }
