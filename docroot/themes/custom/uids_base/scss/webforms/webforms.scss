@@ -278,23 +278,12 @@
 // Preview
 // --------------------------------
 .node-preview-container {
-  //@extend .alert;
-  //@extend .alert-warning;
   margin-bottom: 0;
-
-  a {
-    //@extend .alert-link;
-  }
 
   form {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .node-preview-backlink {
-    //@extend .btn;
-    //@extend .btn-warning;
   }
 }
 
@@ -320,69 +309,9 @@
 // --------------------------------
 .webform-message {
   margin: 0.625rem 0;
-
-  div[role="alert"].alert {
-    background: $info-light;
-    padding: $md 0;
-    padding-block: $md;
-    padding-inline: 0;
-    border: 1px solid;
-    border-color: rgba($info, 0.03);
-    border-bottom: 2px solid rgba($info, 0.8);
-    border-block-end: 2px solid rgba($info, 0.8);
-
-    .close:before {
-      background: rgba($info, 0.8);
-    }
-
-    &.alert-danger {
-      background: $danger-light;
-      border-color: rgba($danger, 0.03);
-      border-bottom: 2px solid rgba($danger, 0.8);
-      border-block-end: 2px solid rgba($danger, 0.8);
-
-      .close:before {
-        background: rgba($danger, 0.8);
-      }
-    }
-
-    &.alert-success {
-      background: $success-light;
-      border-color: rgba($success, 0.03);
-      border-bottom: 2px solid rgba($success, 0.8);
-      border-block-end: 2px solid rgba($success, 0.8);
-
-      .close:before {
-        background: rgba($success, 0.8);
-      }
-    }
-
-    &.alert-warning {
-      background: $warning-light;
-      border-color: rgba($warning, 0.09);
-      border-bottom: 2px solid rgba($warning, 0.8);
-      border-block-end: 2px solid rgba($warning, 0.8);
-
-      .close:before {
-        background: rgba(#000000, 0.7);
-      }
-    }
-  }
-
-  button {
-    padding: 0 0 0 0.625rem;
-    padding-block-end: 0.625rem;
-    margin-right: 0;
-    margin-inline-end: 0;
-
-    &.close:before {
-      width: 26px;
-      height: 26px;
-      margin-right: 5px;
-      margin-inline-end: 5px;
-      padding: 5px;
-      font-size: 1rem;
-    }
+  // Hide the close link in favor of the close button provided by alert component.
+  .webform-message__link {
+    display: none!important;
   }
 }
 
