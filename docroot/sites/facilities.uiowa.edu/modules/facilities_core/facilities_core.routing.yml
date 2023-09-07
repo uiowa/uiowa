@@ -13,6 +13,7 @@ entity.node.facilities_core_dispatch:
     _form: 'Drupal\facilities_core\Form\NodeAlertDispatchForm'
   requirements:
     _entity_access: 'node.view all revisions'
+    _entity_bundles: 'node:alert'
     node: \d+
   options:
     _node_operation_route: TRUE
