@@ -73,41 +73,41 @@ class NodeAlertDispatchForm extends FormBase {
       return $form;
     }
 
-    $form['schedule'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Schedule Email Communication'),
-      '#open' => TRUE,
-      '#collapsible' => FALSE,
+    $form['title'] = [
+      '#markup' => $this->t('<h3>Schedule Email Communication</h3>'),
     ];
 
-    $form['schedule']['start'] = [
+    $form['start'] = [
       '#type' => 'datetime',
       '#title' => $this->t('Send date and time'),
       '#required' => TRUE,
       '#date_increment' => 60,
     ];
 
-    $form['schedule']['placeholder_label'] = [
-      '#markup' => '<h4>Placeholders</h4>',
+    $form['placeholders'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Placeholders'),
+      '#description' => $this->t('These placeholders will be used to fill in the message that is sent.'),
+      '#open' => FALSE,
     ];
 
     $placeholders = $this->getPlaceholders();
 
     foreach ($placeholders as $placeholder => $preview) {
 
-      $form['schedule'][$placeholder]['label'] = [
+      $form['placeholders'][$placeholder]['label'] = [
         '#type' => 'label',
         '#title' => $placeholder,
       ];
 
       if (!empty($preview)) {
-        $form['schedule'][$placeholder]['value'] = [
+        $form['placeholders'][$placeholder]['value'] = [
           '#markup' => $preview,
         ];
       }
     }
 
-    $form['schedule']['submit'] = [
+    $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Send Dispatch request'),
     ];
