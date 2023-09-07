@@ -5,43 +5,19 @@
  * Installation functions for sitenow_p2lb module.
  */
 
-use Drupal\node\Entity\Node;
 use Drush\Drush;
 
 /**
- * Helper function for uninstalling config related to p2lb.
+ * Helper function for uninstalling config related to P2LB.
  */
 function sitenow_p2lb_uninstall() {
-  // Query all nodes of the "page" content type.
-  $nids = \Drupal::entityQuery('node')
-    ->condition('type', 'page')
-    ->execute();
 
-  foreach ($nids as $nid) {
-    $node = Node::load($nid);
+  $alias = Drush::aliasManager()->getSelf();
 
-    // Fetch revision ids.
-    $vids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
-
-    // Get the protected revision.
-    $protected_vid = $node->get('field_v3_conversion_revision_id')->value;
-
-    foreach ($vids as $vid) {
-      if ($vid <= $protected_vid) {
-        // Built-in protection from deleting active revision.
-        \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
-      }
-    }
-
-    \Drupal::logger('sitenow_p2lb')->notice('Deleted previous revisions for Node ID: ' . $nid);
-  }
-
-  // Delete orphaned paragraphs, three-levels deep (section > block > item).
-  $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
-  for ($i = 0; $i < 3; $i++) {
-    $purger->setBatch(['paragraph']);
-    drush_backend_batch_process();
-  }
+  // Clean up revisions and delete orphans.
+  $delete_revisions = Drush::processManager()->drush($alias, 'sitenow_p2lb:delete-revisions');
+  $delete_revisions->run($delete_revisions->showRealtime());
+  $delete_revisions->getOutput();
 
   // Turn off V2.
   $config_factory = \Drupal::configFactory();
@@ -49,16 +25,16 @@ function sitenow_p2lb_uninstall() {
   $sitenow_v2->set('status', FALSE);
   $sitenow_v2->save(TRUE);
 
-  // Turn off p2lb.
+  // Turn off P2LB.
   $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
   $sitenow_p2lb->set('status', FALSE);
   $sitenow_p2lb->save(TRUE);
 
   // Programmatically run `cim` twice. Second run needed for core.extension.
-  $config_import = Drush::processManager()->drush(Drush::service('site.alias.manager')
-    ->getSelf(), 'cim');
+  $config_import = Drush::processManager()->drush($alias, 'cim');
   for ($i = 0; $i < 2; $i++) {
-    $config_import->run();
+    $config_import->run($config_import->showRealtime());
+    $config_import->getOutput();
     drupal_flush_all_caches();
   }
 
