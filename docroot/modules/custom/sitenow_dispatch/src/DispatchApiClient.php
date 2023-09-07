@@ -90,9 +90,6 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
     // Re-set Accept header in case it was accidentally left out of $options.
     $options['headers']['Accept'] = 'application/json';
 
-    // Default $data to FALSE in case of API fetch failure.
-    $data = FALSE;
-
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
     }

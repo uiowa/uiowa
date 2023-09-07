@@ -139,6 +139,14 @@ class NodeAlertDispatchForm extends FormBase {
       'json' => $data,
     ]);
 
+    $result_endpoint = $this->dispatch->getLastResponse()->getHeader('Location')[0];
+
+    $this->dispatch->get($result_endpoint, [
+      'query' => [
+        'includeMembers' => TRUE,
+      ],
+    ]);
+
     // @todo Finish setting up the log.
     $this->node->field_dispatch_log[] = [
       'timestamp' => $schedule_start,
