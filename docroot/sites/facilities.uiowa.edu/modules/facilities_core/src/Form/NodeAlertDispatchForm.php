@@ -139,15 +139,22 @@ class NodeAlertDispatchForm extends FormBase {
       'json' => $data,
     ]);
 
+    // @todo Finish setting up the log.
     $this->node->field_dispatch_log[] = [
       'timestamp' => $schedule_start,
       'username' => \Drupal::currentUser()->getAccountName(),
-      //'message_id' => '',
+      // 'message_id' => '',
     ];
 
-    //$this->node->save();
+    // $this->node->save();
   }
 
+  /**
+   * Prepare placeholders for display.
+   *
+   * @return array
+   *   The rendered placeholder values keyed by placeholder name.
+   */
   protected function getPlaceholders() {
     $placeholders = [];
 

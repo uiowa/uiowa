@@ -29,6 +29,7 @@ interface DispatchApiClientInterface {
    * Return the last API request response.
    *
    * @return \Psr\Http\Message\ResponseInterface|null
+   *   The response object.
    */
   public function getLastResponse(): ?ResponseInterface;
 

@@ -15,9 +15,9 @@ abstract class ApiClientBase implements ApiClientInterface {
   use StringTranslationTrait;
 
   /**
-   * The length of time the cache
+   * The length of time the cache.
    */
-  protected int $cache_length = 900;
+  protected int $cacheLength = 900;
 
   /**
    * The HTTP client.

@@ -4,7 +4,6 @@ namespace Drupal\sitenow_dispatch;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -86,7 +85,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
 
-      $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>',[
+      $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
         '@endpoint' => $endpoint,
         '@code' => $this->lastResponse->getStatusCode(),
       ]);
