@@ -233,7 +233,7 @@ class ThankYouForm extends FormBase {
     // Attempt to post to Dispatch API to send the emails, and let the user
     // know if it was successful or if an error occurred. The actual error will
     // be logged by the dispatch service.
-    $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [], [
+    $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [
       'body' => json_encode($data),
       'headers' => [
         'x-dispatch-api-key' => $api_key,

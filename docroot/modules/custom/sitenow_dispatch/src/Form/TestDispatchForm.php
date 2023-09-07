@@ -148,7 +148,7 @@ class TestDispatchForm extends FormBase {
         ],
       ];
 
-      $this->dispatch->request('POST', $communication . '/schedules', [], [
+      $this->dispatch->request('POST', $communication . '/schedules', [
         'json' => $data,
       ]);
     }

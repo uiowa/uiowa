@@ -2,6 +2,8 @@
 
 namespace Drupal\sitenow_dispatch;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * A Dispatch API client interface.
  */
@@ -24,21 +26,11 @@ interface DispatchApiClientInterface {
   public function setApiKey(string $key): DispatchApiClientInterface;
 
   /**
-   * Make a Dispatch API request and return JSON-decoded data.
+   * Return the last API request response.
    *
-   * @param string $method
-   *   The HTTP method to use.
-   * @param string $endpoint
-   *   The entire API endpoint URL or just the path relative to the base URL.
-   * @param array $params
-   *   Optional URI query parameters.
-   * @param array $options
-   *   Additional request options. Accept and API key set automatically.
-   *
-   * @return mixed
-   *   The API response data or FALSE.
+   * @return \Psr\Http\Message\ResponseInterface|null
    */
-  public function request(string $method, string $endpoint, array $params = [], array $options = []);
+  public function getLastResponse(): ?ResponseInterface;
 
   /**
    * Return a list of campaigns keyed by endpoint.

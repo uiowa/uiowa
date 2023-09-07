@@ -100,11 +100,11 @@ class SubscribeForm extends ConfigFormBase {
     $last = $form_state->getValue('last');
     $population = $form_state->getValue('population');
 
-    $this->dispatch->request('POST', "populations/$population/subscribers", [], [
+    $this->dispatch->request('POST', "populations/$population/subscribers", [
       'body' => json_encode([
-        "toAddress" => $email,
-        "firstName" => $first,
-        "lastName" => $last,
+        'toAddress' => $email,
+        'firstName' => $first,
+        'lastName' => $last,
       ]),
     ]);
 
@@ -121,7 +121,9 @@ class SubscribeForm extends ConfigFormBase {
     $population = $form_state->getValue('population');
 
     $response = $this->dispatch->request('GET', "populations/$population/subscribers", [
-      'search' => $email,
+      'query' => [
+        'search' => $email,
+      ],
     ]);
 
     if ($response->recordsReturned > 0) {

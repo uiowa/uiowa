@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -17,31 +18,8 @@ use Psr\Log\LoggerInterface;
  *
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
-class DispatchApiClient implements DispatchApiClientInterface {
+class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterface {
   const BASE = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
-
-  use StringTranslationTrait;
-
-  /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $client;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
 
   /**
    * The API key for accessing the API.
@@ -66,9 +44,7 @@ class DispatchApiClient implements DispatchApiClientInterface {
    *   The logger.
    */
   public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, LoggerInterface $logger) {
-    $this->client = $http_client;
-    $this->configFactory = $configFactory;
-    $this->logger = $logger;
+    parent::__construct($http_client, $configFactory, $logger);
     $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL;
   }
 
@@ -88,28 +64,13 @@ class DispatchApiClient implements DispatchApiClientInterface {
   }
 
   /**
-   * Return the last API request response.
-   *
-   * @return \Psr\Http\Message\ResponseInterface|null
-   */
-  public function getLastResponse(): ?ResponseInterface {
-    return $this->lastResponse;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function request(string $method, string $endpoint, array $params = [], array $options = []) {
+  public function request(string $method, string $endpoint, array $options = []) {
     // Encode any special characters and trim duplicate slash.
     if (!str_starts_with($endpoint, self::BASE)) {
       $endpoint = UrlHelper::encodePath(ltrim($endpoint, '/'));
       $endpoint = self::BASE . $endpoint;
-    }
-
-    // Append any query string parameters.
-    if (!empty($params)) {
-      $query = UrlHelper::buildQuery($params);
-      $endpoint .= "?{$query}";
     }
 
     // Merge additional options with default but allow overriding.
@@ -124,6 +85,11 @@ class DispatchApiClient implements DispatchApiClientInterface {
 
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
+
+      $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>',[
+        '@endpoint' => $endpoint,
+        '@code' => $this->lastResponse->getStatusCode(),
+      ]);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
@@ -136,6 +102,13 @@ class DispatchApiClient implements DispatchApiClientInterface {
     }
 
     return json_decode($this->lastResponse->getBody()->getContents());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLastResponse(): ?ResponseInterface {
+    return $this->lastResponse;
   }
 
   /**

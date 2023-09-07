@@ -91,17 +91,20 @@ class NodeAlertDispatchForm extends FormBase {
       '#markup' => '<h4>Placeholders</h4>',
     ];
 
-    $placeholders = _sitenow_dispatch_get_placeholders('alert');
+    $placeholders = $this->getPlaceholders();
 
-    foreach ($placeholders as $field_name => $placeholder) {
-      $value = $node->{$field_name}?->view('dispatch') ?? [];
+    foreach ($placeholders as $placeholder => $preview) {
 
-      $form['schedule'][$field_name]['label'] = [
+      $form['schedule'][$placeholder]['label'] = [
         '#type' => 'label',
         '#title' => $placeholder,
       ];
 
-      $form['schedule'][$field_name]['value'] = $value;
+      if (!empty($preview)) {
+        $form['schedule'][$placeholder]['value'] = [
+          '#markup' => $preview,
+        ];
+      }
     }
 
     $form['schedule']['submit'] = [
@@ -121,6 +124,31 @@ class NodeAlertDispatchForm extends FormBase {
 
     $communication_id = $config->get('alert_dispatch_communication_id');
 
+    $placeholders = $this->getPlaceholders();
+
+    // Construct the scheduled message object.
+    $data = (object) [
+      'occurrence' => 'ONE_TIME',
+      'startTime' => date('M d, Y H:i:s', $schedule_start),
+      'businessDaysOnly' => TRUE,
+      'includeBatchResponse' => TRUE,
+      'communicationOverrideVars' => (object) $placeholders,
+    ];
+
+    $this->dispatch->request('POST', $communication_id . '/schedules', [
+      'json' => $data,
+    ]);
+
+    $this->node->field_dispatch_log[] = [
+      'timestamp' => $schedule_start,
+      'username' => \Drupal::currentUser()->getAccountName(),
+      //'message_id' => '',
+    ];
+
+    //$this->node->save();
+  }
+
+  protected function getPlaceholders() {
     $placeholders = [];
 
     foreach (_sitenow_dispatch_get_placeholders('alert') as $field_name => $placeholder) {
@@ -137,31 +165,7 @@ class NodeAlertDispatchForm extends FormBase {
       }
     }
 
-    // Construct the scheduled message object.
-    $data = (object) [
-      'occurrence' => 'ONE_TIME',
-      'startTime' => date('M d, Y H:i:s', $schedule_start),
-      'businessDaysOnly' => TRUE,
-      'includeBatchResponse' => TRUE,
-      'communicationOverrideVars' => (object) $placeholders,
-    ];
-
-    $response = $this->dispatch->request('POST', $communication_id . '/schedules', [], [
-      'json' => $data,
-    ]);
-
-    $this->logger('facilities_core')->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>',[
-      '@endpoint' => $communication_id,
-      '@code' => $response->code,
-    ]);
-
-    $this->node->field_dispatch_log[] = [
-      'timestamp' => $schedule_start,
-      'username' => \Drupal::currentUser()->getAccountName(),
-      //'message_id' => '',
-    ];
-
-    //$this->node->save();
+    return $placeholders;
   }
 
 }
