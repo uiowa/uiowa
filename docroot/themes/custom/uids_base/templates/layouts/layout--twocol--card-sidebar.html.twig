@@ -40,7 +40,7 @@
 
     {% if content.card_media or content.card_title or content.card_subtitle or content.card_meta or content.card_content or content.card_button %}
       {% set card = {
-        attributes: create_attribute().addClass('card', 'bg--white', 'layout__region-container'),
+        attributes: create_attribute().addClass('card', card_background, 'layout__region-container'),
         region_attributes: region_attributes,
         content: content,
         subtitle: content.card_subtitle,
