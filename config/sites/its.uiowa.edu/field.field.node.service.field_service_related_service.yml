@@ -1,0 +1,28 @@
+uuid: 678569f7-81f1-4e10-8905-2299cf870600
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_service_related_service
+    - node.type.service
+id: node.service.field_service_related_service
+field_name: field_service_related_service
+entity_type: node
+bundle: service
+label: 'Related Services'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      service: service
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

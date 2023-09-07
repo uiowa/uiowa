@@ -1,9 +1,10 @@
-uuid: 125da24a-f4db-42e2-91a5-b618bd84eaac
+uuid: 7df3d467-c166-4b85-8821-cce94b12b8ee
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.service.body
+    - field.field.node.service.field_service_category
     - node.type.service
 id: node.service
 target_entity_type_id: node
@@ -12,3 +13,4 @@ schema_type: Service
 schema_properties:
   body: description
   title: name
+  field_service_category: serviceType
