@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drush\Commands\DrushCommands;
+use Drush\Drush;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -44,21 +45,21 @@ class P2LbCommands extends DrushCommands {
   }
 
   /**
-   * Deletes v2 page revisions.
+   * Clean up and remove v2/P2LB.
    *
    * @param array $options
    *   Additional options for the command.
    *
-   * @command sitenow_p2lb:delete-revisions
+   * @command sitenow_p2lb:cleanup
    *
    * @option batch The batch size
-   * @aliases p2lb-delete-revisions
-   * @usage sitenow_p2lb:delete-revisions
+   * @aliases p2lb-cleanup
+   * @usage sitenow_p2lb:cleanup
    *  Ideally run during the finishing process.
-   * @usage sitenow_p2lb:delete-revisions --batch=5
+   * @usage sitenow_p2lb:cleanup --batch=5
    *  Process nodes with a specified batch size.
    */
-  public function deleteRevisions(array $options = ['batch' => 5]) {
+  public function cleanup(array $options = ['batch' => 5]) {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
@@ -123,6 +124,24 @@ class P2LbCommands extends DrushCommands {
       $purger->setBatch(['paragraph']);
       drush_backend_batch_process();
     }
+
+    // Turn off V2.
+    $config_factory = \Drupal::configFactory();
+    $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2->set('status', FALSE);
+    $sitenow_v2->save(TRUE);
+
+    // Turn off P2LB.
+    $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
+    $sitenow_p2lb->set('status', FALSE);
+    $sitenow_p2lb->save(TRUE);
+
+    // Programmatically run `cim`.
+    $alias = Drush::aliasManager()->getSelf();
+    $config_import = Drush::processManager()->drush($alias, 'cim');
+    $config_import->run($config_import->showRealtime());
+    $config_import->getOutput();
+    drupal_flush_all_caches();
 
     // Switch user back.
     $this->accountSwitcher->switchBack();

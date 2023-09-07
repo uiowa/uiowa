@@ -5,12 +5,12 @@ namespace Drupal\sitenow_p2lb;
 use Drupal\node\Entity\Node;
 
 /**
- *
+ * Batch process for cleaning up P2LB.
  */
 class P2LbDeleteRevisions {
 
   /**
-   *
+   * Delete v2 Page revisions.
    */
   public static function deleteRevisions(int $batch_id, array $nids, object &$context) {
     $context['message'] = t('Batch @batch_id', [
