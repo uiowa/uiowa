@@ -120,7 +120,7 @@ class SubscribeForm extends ConfigFormBase {
     $email = $form_state->getValue('email');
     $population = $form_state->getValue('population');
 
-    $response = $this->dispatch->request('GET', "populations/$population/subscribers", [
+    $response = $this->dispatch->get("populations/$population/subscribers", [
       'query' => [
         'search' => $email,
       ],

@@ -8,7 +8,7 @@ namespace Drupal\uiowa_core;
 interface ApiClientInterface {
 
   /**
-   * Make a Dispatch API request and return JSON-decoded data.
+   * Performs and API request and returns response data.
    *
    * @param string $method
    *   The HTTP method to use.
@@ -21,5 +21,18 @@ interface ApiClientInterface {
    *   The API response data or FALSE.
    */
   public function request(string $method, string $endpoint, array $options = []);
+
+  /**
+   * Performs a 'GET' request and returns response data.
+   *
+   * @param $endpoint
+   *   The endpoint.
+   * @param array $options
+   *   The options.
+   *
+   * @return false|mixed
+   *   The response data or FALSE.
+   */
+  public function get(string $endpoint, array $options = []);
 
 }

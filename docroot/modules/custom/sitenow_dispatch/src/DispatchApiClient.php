@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dispatch;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
@@ -35,16 +36,23 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   /**
    * Constructs a DispatchApiClient object.
    *
-   * @param \GuzzleHttp\ClientInterface $http_client
+   * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    */
-  public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, LoggerInterface $logger) {
-    parent::__construct($http_client, $configFactory, $logger);
+  public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
+    parent::__construct($client, $logger, $cache, $configFactory);
     $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getCacheIdBase(): string {
+    return 'sitenow_dispatch';
   }
 
   /**
@@ -82,13 +90,11 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
     // Re-set Accept header in case it was accidentally left out of $options.
     $options['headers']['Accept'] = 'application/json';
 
+    // Default $data to FALSE in case of API fetch failure.
+    $data = FALSE;
+
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
-
-      $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
-        '@endpoint' => $endpoint,
-        '@code' => $this->lastResponse->getStatusCode(),
-      ]);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
@@ -100,7 +106,14 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
       return FALSE;
     }
 
-    return json_decode($this->lastResponse->getBody()->getContents());
+    $data = json_decode($this->lastResponse->getBody()->getContents());
+
+    $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+      '@endpoint' => $endpoint,
+      '@code' => $this->lastResponse->getStatusCode(),
+    ]);
+
+    return $data;
   }
 
   /**
@@ -128,7 +141,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * {@inheritdoc}
    */
   public function getCommunication($id) {
-    return $this->request('GET', $id);
+    return $this->get($id);
   }
 
   /**
@@ -156,20 +169,20 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * {@inheritdoc}
    */
   public function getTemplate($id) {
-    return $this->request('GET', $id);
+    return $this->get($id);
   }
 
   /**
    * Helper function to generate lists of dispatch options keyed by endpoint.
    */
   protected function getNamesKeyedByEndpoint(string $type): array {
-    $list = $this->request('GET', $type);
+    $list = $this->get($type);
     if (!$list) {
       return [];
     }
     $return = [];
     foreach ($list as $endpoint) {
-      $item = $this->request('GET', $endpoint);
+      $item = $this->get($endpoint);
       if ($item) {
         $return[$endpoint] = $item->name;
       }

@@ -78,7 +78,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    $populations = $this->dispatch->request('GET', 'populations');
+    $populations = $this->dispatch->get('populations');
 
     // If the population is empty, we have an invalid API key.
     if ($populations === FALSE) {
@@ -96,7 +96,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $populationOptions = [];
     foreach ($populations as $population) {
       $path = basename($population);
-      $response = $this->dispatch->request('GET', "populations/$path");
+      $response = $this->dispatch->get("populations/$path");
       if ($response->dataSourceType === 'SubscriptionList') {
         $populationOptions[$response->id] = $response->name;
       }
