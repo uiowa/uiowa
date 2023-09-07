@@ -9,7 +9,8 @@ weight: 70
 stackable: true
 storage: folder
 folder: ../config/sites/its.uiowa.edu
-module: {  }
+module:
+  its_core: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -18,9 +19,11 @@ complete_list:
   - pathauto.pattern.service
   - schemadotorg.schemadotorg_mapping.node.service
   - simple_sitemap.bundle_settings.default.node.service
-  - 'core.entity_view_display.node.service.*'
-  - 'core.entity_form_display.node.service.*'
+  - taxonomy.vocabulary.audience
+  - taxonomy.vocabulary.service_category
+  - 'field.storage.node.field_service_*'
 partial_list:
+  - field.field.block_content.featured_content.field_featured_content_item
   - metatag.settings
   - workflows.workflow.editorial
   - 'user.role.*'
