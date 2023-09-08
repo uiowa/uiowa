@@ -5,33 +5,24 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
-  /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $client;
 
   /**
-   * The config factory service.
+   * Constructs the SubscribeForm object.
    *
-   * @var \Drupal\sitenow_dispatch\DispatchApiClient
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
+   *   The Dispatch API client service.
    */
-  protected $dispatch;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, $client, $dispatch) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch) {
     parent::__construct($config_factory);
-    $this->client = $client;
-    $this->dispatch = $dispatch;
   }
 
   /**
@@ -40,7 +31,6 @@ class SubscribeForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('http_client'),
       $container->get('sitenow_dispatch.dispatch_client'),
     );
   }

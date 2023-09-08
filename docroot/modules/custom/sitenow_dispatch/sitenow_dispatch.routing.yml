@@ -6,14 +6,6 @@ sitenow_dispatch.settings_form:
   requirements:
     _permission: 'administer sitenow_dispatch configuration'
 
-sitenow_dispatch.test_dispatch:
-  path: '/admin/config/sitenow/sitenow-dispatch/test'
-  defaults:
-    _title: 'Test Dispatch'
-    _form: 'Drupal\sitenow_dispatch\Form\TestDispatchForm'
-  requirements:
-    _custom_access: 'Drupal\uiowa_core\Access\UiowaCoreAccess::access'
-
 sitenow_dispatch.thanks:
   path: '/admin/config/sitenow/sitenow-dispatch/thanks'
   defaults:
@@ -21,3 +13,11 @@ sitenow_dispatch.thanks:
     _form: 'Drupal\sitenow_dispatch\Form\ThankYouSettingsForm'
   requirements:
     _permission: 'administer sitenow_dispatch configuration'
+
+sitenow_dispatch.test_dispatch:
+  path: '/admin/config/sitenow/sitenow-dispatch/test'
+  defaults:
+    _title: 'Test Dispatch'
+    _form: 'Drupal\sitenow_dispatch\Form\TestDispatchForm'
+  requirements:
+    _custom_access: 'Drupal\uiowa_core\Access\UiowaCoreAccess::access'

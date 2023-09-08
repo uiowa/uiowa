@@ -120,12 +120,6 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
     return $this->getNamesKeyedByEndpoint('populations');
   }
 
-  public function postPopulationAddSubscriber(string $population, array $subscriber) {
-    return $this->request('POST', "populations/$population/subscribers", [
-      'json' => $subscriber,
-    ]);
-  }
-
   /**
    * {@inheritdoc}
    */

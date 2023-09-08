@@ -4,7 +4,7 @@ facilities_core.settings_form:
     _title: 'Facilities settings'
     _form: 'Drupal\facilities_core\Form\SettingsForm'
   requirements:
-    _permission: 'administer sitenow_dispatch configuration'
+    _custom_access: 'Drupal\uiowa_core\Access\UiowaCoreAccess::access'
 
 entity.node.facilities_core_dispatch:
   path: '/node/{node}/dispatch'
