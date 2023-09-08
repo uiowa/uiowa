@@ -2627,11 +2627,16 @@ function sitenow_update_9067() {
 }
 
 /**
- * Set new style-selector theme setting.
+ * Set new branding options theme setting.
  */
 function sitenow_update_9068() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
-  $config->set('header.branding_options', 'iowa');
+  if ($config->set('style.style_selector', 'gray')) {
+    $config->set('header.branding_options', 'regents');
+  }
+  else {
+    $config->set('header.branding_options', 'iowa');
+  }
   $config->save();
 }
