@@ -51,7 +51,7 @@ interface ApiClientInterface {
   /**
    * Performs a 'GET' request and returns response data.
    *
-   * @param $endpoint
+   * @param string $endpoint
    *   The endpoint.
    * @param array $options
    *   The options.

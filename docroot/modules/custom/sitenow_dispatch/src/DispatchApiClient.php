@@ -2,14 +2,10 @@
 
 namespace Drupal\sitenow_dispatch;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +15,6 @@ use Psr\Log\LoggerInterface;
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
 class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterface {
-  const BASE = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
   /**
    * The last response object that was returned with the API.
@@ -31,10 +26,12 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The Config Factory object.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache backend service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The Config Factory object.
    */
   public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
     parent::__construct($client, $logger, $cache, $configFactory);
@@ -77,9 +74,11 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   }
 
   /**
-   * @param $communication_id
+   * Send a request to add a scheduled message to a communication.
+   *
+   * @param string $communication_id
    *   A Dispatch communication endpoint.
-   * @param $start_time
+   * @param string $start_time
    *   The formatted start time for when the message should be sent.
    * @param array $overrides
    *   An array of variable to override communication settings.
@@ -87,7 +86,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * @return false|string
    *   The message response or FALSE.
    */
-  public function postCommunicationSchedule($communication_id, $start_time, array $overrides = []) {
+  public function postCommunicationSchedule(string $communication_id, string $start_time, array $overrides = []) {
     // Construct the scheduled message object.
     $data = (object) [
       'occurrence' => 'ONE_TIME',

@@ -5,19 +5,14 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClient;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure sitenow_dispatch settings for this site.
  */
 class ThankYouSettingsForm extends ConfigFormBase {
-
-  /**
-   * The dispatch service.
-   *
-   * @var \Drupal\sitenow_dispatch\DispatchApiClient
-   */
-  protected $dispatch;
 
   /**
    * The dispatch service.
@@ -43,9 +38,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, $check) {
     parent::__construct($config_factory);
-    $this->dispatch = $dispatch;
     $this->check = $check;
   }
 
@@ -70,7 +64,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
     /** @var \Drupal\Core\Access\AccessResultInterface $access */
-    $access = $this->check->access($this->currentUser()->getAccount());
+    $access = $this->check->access();
     $enabled = $config->get('thanks.enabled') ?? FALSE;
 
     // Set the form tree to make accessing all nested values easier elsewhere.

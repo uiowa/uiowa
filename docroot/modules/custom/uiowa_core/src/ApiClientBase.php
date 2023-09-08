@@ -34,12 +34,12 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * Constructs a DispatchApiClient object.
    *
-   * @param \Psr\Log\LoggerInterface $logger
-   *    The logger.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *    The uiowa_maui cache.
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache backend.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
    */
@@ -54,6 +54,7 @@ abstract class ApiClientBase implements ApiClientInterface {
    * Returns a string for constructing cache ID's.
    *
    * @return string
+   *   The base cache ID string.
    */
   abstract protected function getCacheIdBase();
 

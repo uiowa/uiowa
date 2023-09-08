@@ -115,7 +115,6 @@ class NodeAlertDispatchForm extends FormBase {
       '#value' => $this->t('Send Dispatch request'),
     ];
 
-
     // Only render table data if there's field data.
     if (!empty($node->field_dispatch_log)) {
       $form['log_fieldset'] = [
@@ -125,16 +124,16 @@ class NodeAlertDispatchForm extends FormBase {
       // Build table header.
       $header = [
         [
-          'data' => t('Date Requested'),
+          'data' => $this->t('Date Requested'),
           'field' => 'timestamp',
           'sort' => 'desc',
         ],
         [
-          'data' => t('User'),
+          'data' => $this->t('User'),
           'field' => 'username',
         ],
         [
-          'data' => t('Communication ID'),
+          'data' => $this->t('Communication ID'),
           'field' => 'message_id',
         ],
       ];
