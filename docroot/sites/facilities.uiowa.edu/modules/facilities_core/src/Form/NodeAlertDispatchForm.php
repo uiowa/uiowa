@@ -115,74 +115,6 @@ class NodeAlertDispatchForm extends FormBase {
       '#value' => $this->t('Send Dispatch request'),
     ];
 
-    // Only render table data if there's field data.
-    if (!empty($node->field_dispatch_log)) {
-      $form['log_fieldset'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Dispatch Log'),
-      ];
-      // Build table header.
-      $header = [
-        [
-          'data' => $this->t('Date Requested'),
-          'field' => 'timestamp',
-          'sort' => 'desc',
-        ],
-        [
-          'data' => $this->t('User'),
-          'field' => 'username',
-        ],
-        [
-          'data' => $this->t('Communication ID'),
-          'field' => 'message_id',
-        ],
-      ];
-      // Build table rows.
-      $rows = [];
-      foreach ($node->field_dispatch_log as $delta => $log) {
-        $row = unserialize($log->value);
-        foreach ($row as $key => &$d) {
-          switch ($key) {
-            case 'timestamp':
-              $d = [
-                '#markup' => new FormattableMarkup('<span class="sr-only">@timestamp</span>@date', [
-                  '@timestamp' => $d,
-                  '@date' => \Drupal::service('date.formatter')->format($d, 'custom', 'M j, Y - g:i:sa'),
-                ]),
-              ];
-              break;
-
-            case 'message_id':
-//              $url = Url::fromUri('https://apps.its.uiowa.edu/dispatch/messages/view/' . $d);
-//              $d = (Link::fromTextAndUrl($d, $url))->toRenderable();
-//              $d['#attributes'] = ['target' => '_blank'];
-              break;
-          }
-        }
-        $rows[] = $row;
-      }
-      // Sort table data.
-      //      $order = tablesort_get_order($header);
-      //      $sort = tablesort_get_sort($header);
-      //      $sql = $order['sql'];
-      //      if ($sort == 'asc') {
-      //        usort($rows, function($a, $b) use ($sql) {
-      //          return ($a[$sql] < $b[$sql]) ? -1 : 1;
-      //        });
-      //      }
-      //      if ($sort == 'desc') {
-      //        usort($rows, function($a, $b) use ($sql) {
-      //          return ($a[$sql] > $b[$sql]) ? -1 : 1;
-      //        });
-      //      }
-      // Render table results.
-      $form['log_fieldset']['results_table'] = [
-        '#theme' => 'table',
-        '#header' => $header,
-        '#rows' => $rows,
-      ];
-    }
-
     return $form;
   }
 
@@ -192,24 +124,13 @@ class NodeAlertDispatchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('facilities_core.settings');
     $schedule_start = strtotime($form_state->getValue('start'));
-    $schedule_start = date('M d, Y H:i:s', $schedule_start);
 
     $communication_id = $config->get('alert_dispatch_communication_id');
 
     $placeholders = $this->getPlaceholders();
 
-    $result_endpoint = $this->dispatch->postCommunicationSchedule($communication_id, $schedule_start, $placeholders);
+    $this->dispatch->postCommunicationSchedule($communication_id, $schedule_start, $placeholders);
 
-    $message = $this->dispatch->request('GET', $result_endpoint);
-
-    // @todo Finish setting up the log.
-    $this->node->field_dispatch_log[] = serialize([
-      'timestamp' => $schedule_start,
-      'username' => \Drupal::currentUser()->getAccountName(),
-      'message_id' => $message->id,
-    ]);
-
-    $this->node->save();
     $this->messenger()->addMessage($this->t('Message request has been sent.'));
   }
 
