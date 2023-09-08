@@ -22,13 +22,6 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   const BASE = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
   /**
-   * The API key for accessing the API.
-   *
-   * @var string|null
-   */
-  protected ?string $apiKey = NULL;
-
-  /**
    * The last response object that was returned with the API.
    */
   protected ?ResponseInterface $lastResponse;
@@ -51,73 +44,15 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   /**
    * {@inheritdoc}
    */
+  public function basePath(): string {
+    return 'https://apps.its.uiowa.edu/dispatch/api/v1/';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function getCacheIdBase(): string {
     return 'sitenow_dispatch';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getApiKey(): string|null {
-    return $this->apiKey;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setApiKey($key): DispatchApiClientInterface {
-    $this->apiKey = $key;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function request(string $method, string $endpoint, array $options = []) {
-    // Encode any special characters and trim duplicate slash.
-    if (!str_starts_with($endpoint, self::BASE)) {
-      $endpoint = UrlHelper::encodePath(ltrim($endpoint, '/'));
-      $endpoint = self::BASE . $endpoint;
-    }
-
-    // Merge additional options with default but allow overriding.
-    $options = array_merge([
-      'headers' => [
-        'x-dispatch-api-key' => $this->apiKey,
-      ],
-    ], $options);
-
-    // Re-set Accept header in case it was accidentally left out of $options.
-    $options['headers']['Accept'] = 'application/json';
-
-    try {
-      $this->lastResponse = $this->client->request($method, $endpoint, $options);
-    }
-    catch (RequestException | GuzzleException | ClientException $e) {
-      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-        '@endpoint' => $endpoint,
-        '@code' => $e->getCode(),
-        '@error' => $e->getResponse()->getBody()->getContents(),
-      ]);
-
-      return FALSE;
-    }
-
-    $data = json_decode($this->lastResponse->getBody()->getContents());
-
-    $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
-      '@endpoint' => $endpoint,
-      '@code' => $this->lastResponse->getStatusCode(),
-    ]);
-
-    return $data;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getLastResponse(): ?ResponseInterface {
-    return $this->lastResponse;
   }
 
   /**
@@ -142,10 +77,53 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   }
 
   /**
+   * @param $communication_id
+   *   A Dispatch communication endpoint.
+   * @param $start_time
+   *   The formatted start time for when the message should be sent.
+   * @param array $overrides
+   *   An array of variable to override communication settings.
+   *
+   * @return false|string
+   *   The message response or FALSE.
+   */
+  public function postCommunicationSchedule($communication_id, $start_time, array $overrides = []) {
+    // Construct the scheduled message object.
+    $data = (object) [
+      'occurrence' => 'ONE_TIME',
+      'startTime' => $start_time,
+      'businessDaysOnly' => TRUE,
+      'includeBatchResponse' => TRUE,
+    ];
+
+    if (!empty($overrides)) {
+      $data->communicationOverrideVars = $overrides;
+    }
+
+    $this->request('POST', $communication_id . '/schedules', [
+      'json' => $data,
+    ]);
+
+    $location = $this->lastResponse()->getHeader('Location');
+
+    if (!empty($location)) {
+      return $location[0];
+    }
+
+    return FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getPopulations() {
     return $this->getNamesKeyedByEndpoint('populations');
+  }
+
+  public function postPopulationAddSubscriber(string $population, array $subscriber) {
+    return $this->request('POST', "populations/$population/subscribers", [
+      'json' => $subscriber,
+    ]);
   }
 
   /**

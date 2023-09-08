@@ -100,7 +100,7 @@ class SettingsForm extends ConfigFormBase {
 
     if ($api_key) {
       // Validate the api_key being submitted in the form rather than config.
-      $client = $this->dispatch->setApiKey($api_key)->get('client');
+      $client = $this->dispatch->setKey($api_key)->get('client');
 
       if ($client === FALSE) {
         $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');

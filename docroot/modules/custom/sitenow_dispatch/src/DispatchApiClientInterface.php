@@ -10,30 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 interface DispatchApiClientInterface {
 
   /**
-   * Get the API key.
-   */
-  public function getApiKey(): string|NULL;
-
-  /**
-   * Set the API key.
-   *
-   * @param string $key
-   *   The API key being set.
-   *
-   * @return \Drupal\sitenow_dispatch\DispatchApiClientInterface
-   *   The DispatchApiClientInterface object.
-   */
-  public function setApiKey(string $key): DispatchApiClientInterface;
-
-  /**
-   * Return the last API request response.
-   *
-   * @return \Psr\Http\Message\ResponseInterface|null
-   *   The response object.
-   */
-  public function getLastResponse(): ?ResponseInterface;
-
-  /**
    * Return a list of campaigns keyed by endpoint.
    */
   public function getCampaigns();

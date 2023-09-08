@@ -2,9 +2,12 @@
 
 namespace Drupal\facilities_core\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,7 +58,7 @@ class NodeAlertDispatchForm extends FormBase {
     $config = $this->config('facilities_core.settings');
     $this->node = $node;
 
-    if (is_null($this->dispatch->getApiKey())) {
+    if (is_null($this->dispatch->getKey())) {
       $form['no_api_key'] = [
         '#markup' => $this->t('A Dispatch API key has not been entered. Please add your API key.'),
       ];
@@ -112,49 +115,103 @@ class NodeAlertDispatchForm extends FormBase {
       '#value' => $this->t('Send Dispatch request'),
     ];
 
+
+    // Only render table data if there's field data.
+    if (!empty($node->field_dispatch_log)) {
+      $form['log_fieldset'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Dispatch Log'),
+      ];
+      // Build table header.
+      $header = [
+        [
+          'data' => t('Date Requested'),
+          'field' => 'timestamp',
+          'sort' => 'desc',
+        ],
+        [
+          'data' => t('User'),
+          'field' => 'username',
+        ],
+        [
+          'data' => t('Communication ID'),
+          'field' => 'message_id',
+        ],
+      ];
+      // Build table rows.
+      $rows = [];
+      foreach ($node->field_dispatch_log as $delta => $log) {
+        $row = unserialize($log->value);
+        foreach ($row as $key => &$d) {
+          switch ($key) {
+            case 'timestamp':
+              $d = [
+                '#markup' => new FormattableMarkup('<span class="sr-only">@timestamp</span>@date', [
+                  '@timestamp' => $d,
+                  '@date' => \Drupal::service('date.formatter')->format($d, 'custom', 'M j, Y - g:i:sa'),
+                ]),
+              ];
+              break;
+
+            case 'message_id':
+//              $url = Url::fromUri('https://apps.its.uiowa.edu/dispatch/messages/view/' . $d);
+//              $d = (Link::fromTextAndUrl($d, $url))->toRenderable();
+//              $d['#attributes'] = ['target' => '_blank'];
+              break;
+          }
+        }
+        $rows[] = $row;
+      }
+      // Sort table data.
+      //      $order = tablesort_get_order($header);
+      //      $sort = tablesort_get_sort($header);
+      //      $sql = $order['sql'];
+      //      if ($sort == 'asc') {
+      //        usort($rows, function($a, $b) use ($sql) {
+      //          return ($a[$sql] < $b[$sql]) ? -1 : 1;
+      //        });
+      //      }
+      //      if ($sort == 'desc') {
+      //        usort($rows, function($a, $b) use ($sql) {
+      //          return ($a[$sql] > $b[$sql]) ? -1 : 1;
+      //        });
+      //      }
+      // Render table results.
+      $form['log_fieldset']['results_table'] = [
+        '#theme' => 'table',
+        '#header' => $header,
+        '#rows' => $rows,
+      ];
+    }
+
     return $form;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state, NodeInterface $node = NULL) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('facilities_core.settings');
     $schedule_start = strtotime($form_state->getValue('start'));
+    $schedule_start = date('M d, Y H:i:s', $schedule_start);
 
     $communication_id = $config->get('alert_dispatch_communication_id');
 
     $placeholders = $this->getPlaceholders();
 
-    // Construct the scheduled message object.
-    $data = (object) [
-      'occurrence' => 'ONE_TIME',
-      'startTime' => date('M d, Y H:i:s', $schedule_start),
-      'businessDaysOnly' => TRUE,
-      'includeBatchResponse' => TRUE,
-      'communicationOverrideVars' => (object) $placeholders,
-    ];
+    $result_endpoint = $this->dispatch->postCommunicationSchedule($communication_id, $schedule_start, $placeholders);
 
-    $this->dispatch->request('POST', $communication_id . '/schedules', [
-      'json' => $data,
-    ]);
-
-    $result_endpoint = $this->dispatch->getLastResponse()->getHeader('Location')[0];
-
-    $this->dispatch->get($result_endpoint, [
-      'query' => [
-        'includeMembers' => TRUE,
-      ],
-    ]);
+    $message = $this->dispatch->request('GET', $result_endpoint);
 
     // @todo Finish setting up the log.
-    $this->node->field_dispatch_log[] = [
+    $this->node->field_dispatch_log[] = serialize([
       'timestamp' => $schedule_start,
       'username' => \Drupal::currentUser()->getAccountName(),
-      // 'message_id' => '',
-    ];
+      'message_id' => $message->id,
+    ]);
 
-    // $this->node->save();
+    $this->node->save();
+    $this->messenger()->addMessage($this->t('Message request has been sent.'));
   }
 
   /**
