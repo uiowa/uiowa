@@ -151,3 +151,13 @@ function its_core_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements template_preprocess_views_view_unformatted().
+ */
+function its_core_preprocess_views_view_unformatted(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'services') {
+    $variables['views_heading_classes'][] = 'headline--uppercase';
+  }
+}
