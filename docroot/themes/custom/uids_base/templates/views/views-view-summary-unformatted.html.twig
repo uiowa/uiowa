@@ -18,6 +18,26 @@
  * @see template_preprocess_views_view_summary_unformatted()
  */
 #}
+{% set break = 0 %}
+{% for number in 0..9 if break == 0 %}
+  {% set row = '' %}
+  {% for loop_row in rows  %}
+    {% if (loop_row.link == number) %}
+      {% set row = loop_row %}
+    {% endif %}
+  {% endfor %}
+
+  {% if row %}
+    {{ options.inline ? '<span' : '<div' }} class="views-summary views-summary-unformatted">
+    <a href="{{ row.url[:-1] }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>#</a>
+    {% if options.count %}
+      ({{ row.count }})
+    {% endif %}
+    {{ options.inline ? '</span>' : '</div>' }}
+    {% set break = 1 %}
+  {% endif %}
+{% endfor %}
+
 {% for letter in 'a'..'z' %}
   {% set row = '' %}
   {{ options.inline ? '<span' : '<div' }} class="views-summary views-summary-unformatted">
@@ -39,3 +59,5 @@
   {{ options.inline ? '</span>' : '</div>' }}
 
 {% endfor %}
+
+
