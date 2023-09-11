@@ -2632,7 +2632,7 @@ function sitenow_update_9067() {
 function sitenow_update_9068() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
-  if ($config->set('style.style_selector', 'gray')) {
+  if ($config->get('style.style_selector') === 'gray') {
     $config->set('header.branding_options', 'regents');
   }
   else {
