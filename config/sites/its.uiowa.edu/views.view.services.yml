@@ -598,6 +598,18 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'There are currently no results to display.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -942,6 +954,7 @@ display:
         type: views_query
         options: {  }
       defaults:
+        empty: false
         pager: false
         exposed_form: false
         style: false
