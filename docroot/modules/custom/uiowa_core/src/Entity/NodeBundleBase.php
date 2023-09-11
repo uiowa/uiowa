@@ -37,20 +37,21 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    */
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
-    // Add shared fields to card.
-
-    if (sitenow_get_version()  === 'v3' || $build['#node']->values['type']['x-default'] != 'page') {
-      $content =  'body';
-      }
+    // V2 pages still need field_teaser, everything else uses body summary.
+    if (sitenow_get_version() === 'v3' || $build['#node']->values['type']['x-default'] != 'page') {
+      $content = 'body';
+    }
     else {
       $content = 'field_teaser';
     }
-    if ($build)
-    $this->mapFieldsToCardBuild($build, [
-      '#media' => 'field_image',
-      '#title' => 'title',
-      '#content' => $content,
-    ]);
+    // Add shared fields to card.
+    if ($build) {
+      $this->mapFieldsToCardBuild($build, [
+        '#media' => 'field_image',
+        '#title' => 'title',
+        '#content' => $content,
+      ]);
+    }
 
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
