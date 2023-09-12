@@ -3,10 +3,8 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Tasks\DrushTask;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
-use Robo\Collection\CollectionBuilder;
 use Symfony\Component\Console\Helper\Table;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
