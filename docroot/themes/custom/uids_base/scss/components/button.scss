@@ -29,13 +29,20 @@
 }
 
 .block.bttn--row {
-  &.bttn--full {
-    flex-direction: column;
-    display: flex;
-    gap: 1.5rem;
+  flex-direction: column;
+  display: flex;
+  gap: 1.5rem;
 
-    @include breakpoint(sm) {
+  @include breakpoint(xsm) {
+    display: block;
+  }
+
+  &.bttn--full {
+
+    @include breakpoint(xsm) {
       flex-direction: row;
+      display: flex;
+      gap: 1.5rem;
     }
 
     a.bttn {
@@ -44,10 +51,13 @@
   }
 
   .bttn {
-    margin: 0 1.5rem 1.5rem 0;
+
+    @include breakpoint(xsm) {
+      margin: 0 1.5rem 1.5rem 0;
+    }
 
     +.bttn {
-      @include breakpoint(sm) {
+      @include breakpoint(xsm) {
         margin: 0 1.5rem 1.5rem 0;
       }
     }
