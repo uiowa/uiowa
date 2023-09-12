@@ -5626,3 +5626,9 @@ $sites['orgmocktrial.uiowa.ddev.site'] = 'mocktrial.org.uiowa.edu';
 $sites['orgmocktrial.dev.drupal.uiowa.edu'] = 'mocktrial.org.uiowa.edu';
 $sites['orgmocktrial.stage.drupal.uiowa.edu'] = 'mocktrial.org.uiowa.edu';
 $sites['orgmocktrial.prod.drupal.uiowa.edu'] = 'mocktrial.org.uiowa.edu';
+
+// Directory aliases for lira-learning.lab.uiowa.edu.
+$sites['lablira-learning.uiowa.ddev.site'] = 'lira-learning.lab.uiowa.edu';
+$sites['lablira-learning.dev.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
+$sites['lablira-learning.stage.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
+$sites['lablira-learning.prod.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
