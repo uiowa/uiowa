@@ -8,7 +8,6 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\sitenow_dispatch\DispatchApiClient;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -2,8 +2,6 @@
 
 namespace Drupal\sitenow_dispatch;
 
-use Psr\Http\Message\ResponseInterface;
-
 /**
  * A Dispatch API client interface.
  */
