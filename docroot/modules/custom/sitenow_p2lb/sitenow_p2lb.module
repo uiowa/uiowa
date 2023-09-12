@@ -13,9 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Url;
-use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\layout_builder\Section;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
@@ -94,7 +92,7 @@ function sitenow_p2lb_preprocess_views_view_field(&$variables) {
           '@link' => Link::createFromRoute('See details.', 'entity.node.p2lb_conversion_status', ['node' => $page->id()])->toString(),
         ]);
 
-        $build['#markup'] = '<div>✴️</div><div>' . $message .'<br>' . $link . '</div>';
+        $build['#markup'] = '<div>✴️</div><div>' . $message . '<br>' . $link . '</div>';
       }
       else {
         $build['#markup'] = '<div>✅</div><div>Fully compatible</div>';
@@ -1126,8 +1124,8 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
           'layout_builder_styles_style' => [
             'media_format_widescreen',
           ],
-        ]
-      ]
+        ],
+      ],
     ];
 
     if ($block->bundle() === 'uiowa_banner') {
