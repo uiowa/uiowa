@@ -54,7 +54,6 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
   $view = $form_state->get('view');
   if ($view->id() === 'services') {
-    // For all views with exposed filters.
     if ($form_id === 'views_exposed_form') {
       $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community';
     }
