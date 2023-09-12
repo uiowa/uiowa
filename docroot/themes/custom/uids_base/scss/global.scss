@@ -21,6 +21,9 @@ $imgpath: '../../uids/assets/images';
 // Bust out of container.
 .block--edge-to-edge {
   margin: 0 calc(50% - 50vw);
+  > .form--inline {
+    @extend %container;
+  }
 }
 
 // Set an element to display inline.
