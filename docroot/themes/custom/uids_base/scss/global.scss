@@ -43,10 +43,16 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Set object to cover.
-.element--cover * {
-  object-fit: cover;
-  height: 100%;
+.element--cover {
+  * {
+    object-fit: cover;
+    height: 100%;
+  }
+  .contextual-links {
+    height: auto;
+  }
 }
+
 
 // Containers within a background color useful for views blocks.
 .block--bg-container {
