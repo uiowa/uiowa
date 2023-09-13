@@ -10,41 +10,13 @@
   text-align: center;
 }
 
-// Default flex styles.
-.block-inline-blockuiowa-image-gallery:not([class*="image-gallery--grid"])  .uiowa-image-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: -$gutter / 2;
-  margin-right: -$gutter / 2;
-
-  .field--name-field-gallery-images {
-    flex-basis: 100%;
-  }
-  .media--view-mode-image-gallery {
-    display: table-cell;
-    flex: 220px 1 1;
-    margin: 0 .6rem 1rem;
-    a.photoswipe {
-      &:hover, &:focus {
-        img {
-          opacity:0.6;
-        }
-      }
-    }
-    img {
-      object-fit: cover;
-      height: 220px;
-      width: 100%;
-    }
-  }
-}
-
 // Masonry
 .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
   display: block;
   column-count: 2;
   gap: 1.5rem;
+  margin-left: -0.625rem;
+  margin-right: -0.625rem;
   @include breakpoint(sm) {
     column-count: 3;
   }
@@ -57,38 +29,40 @@
     margin: 0 0 1.5rem;
     img {
       object-fit: unset;
+      aspect-ratio: unset;
       height: auto;
     }
   }
 }
 
-.image-gallery--grid .uiowa-image-gallery {
-  display: grid;
-  grid-gap: 1.5rem;
-}
 
 /* Use :has to provide better visual fallback for 1 or 2 items */
 /* Only works in https://caniuse.com/css-has */
-.image-gallery--auto-fit .uiowa-image-gallery:has(.media:first-child:last-child),
-.image-gallery--auto-fit .uiowa-image-gallery:has(.media:first-child + .media:last-child) {
+.uiowa-image-gallery:has(.media:first-child:last-child),
+.uiowa-image-gallery:has(.media:first-child + .media:last-child) {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-.image-gallery--auto-fit .uiowa-image-gallery {
+//image-gallery--auto-fit
+.uiowa-image-gallery {
+  display: grid;
+  grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
-.image-gallery--auto-fill .uiowa-image-gallery  {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
+//.image-gallery--auto-fill .uiowa-image-gallery  {
+//  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+//}
 
 .uiowa-image-gallery img {
   object-fit: cover;
   width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .image-gallery--default .uiowa-image-gallery img {
   object-fit: unset;
+  aspect-ratio: unset;
   width: 100%;
 }
 
