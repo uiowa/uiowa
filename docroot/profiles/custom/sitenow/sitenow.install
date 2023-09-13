@@ -2760,7 +2760,7 @@ function sitenow_update_9069() {
       AND {$table}.bundle = {$teaser_table}.bundle
       AND {$table}.revision_id = {$teaser_table}.revision_id
       AND {$teaser_table}.field_teaser_value <> ''
-      AND {$teaser_table}.field_teaser_value <> {$table}.body_summary
+      AND ({$teaser_table}.field_teaser_value <> {$table}.body_summary OR {$table}.body_summary IS NULL)
     ")
       ->execute();
     if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
@@ -2771,7 +2771,7 @@ function sitenow_update_9069() {
         AND {$revision_table}.bundle = {$teaser_revision_table}.bundle
         AND {$revision_table}.entity_id = {$teaser_revision_table}.entity_id
         AND {$teaser_revision_table}.field_teaser_value <> ''
-        AND {$teaser_revision_table}.field_teaser_value <> {$revision_table}.body_summary
+        AND ({$teaser_revision_table}.field_teaser_value <> {$revision_table}.body_summary OR {$revision_table}.body_summary IS NULL)
       ")
         ->execute();
     }
