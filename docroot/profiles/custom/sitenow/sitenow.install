@@ -2776,6 +2776,22 @@ function sitenow_update_9069() {
         ->execute();
     }
   }
+
+// Updates body_summary for any nodes not already in tables due to empty body.
+  $database->query("
+    INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
+    SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
+    FROM {$teaser_table}
+    WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node__body))
+  ")
+    ->execute();
+  $database->query("
+    INSERT IGNORE INTO {$revision_table} ({$revision_table}.bundle, {$revision_table}.deleted, {$revision_table}.entity_id, {$revision_table}.revision_id, {$revision_table}.langcode, {$revision_table}.delta, {$revision_table}.body_value, {$revision_table}.body_summary, {$revision_table}.body_format)
+    SELECT {$teaser_revision_table}.bundle, {$teaser_revision_table}.deleted, {$teaser_revision_table}.entity_id, {$teaser_revision_table}.revision_id, {$teaser_revision_table}.langcode, {$teaser_revision_table}.delta, '', {$teaser_revision_table}.field_teaser_value, 'filtered_html'
+    FROM $teaser_revision_table
+    WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node_revision__body))
+  ")
+    ->execute();
 }
 
 /**
