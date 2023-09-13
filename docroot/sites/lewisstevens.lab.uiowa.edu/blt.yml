@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablewisstevens.uiowa.ddev.site
+    protocol: https
+  machine_name: lablewisstevens
+  human_name: lewisstevens.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablewisstevens.prod
+drupal:
+  db:
+    database: lewisstevens_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablewisstevens.prod.drupal.uiowa.edu'
+  requester: sjadhv
+  site-name: 'The Applied Materials Laboratory'
