@@ -5632,3 +5632,9 @@ $sites['lablira-learning.uiowa.ddev.site'] = 'lira-learning.lab.uiowa.edu';
 $sites['lablira-learning.dev.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
 $sites['lablira-learning.stage.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
 $sites['lablira-learning.prod.drupal.uiowa.edu'] = 'lira-learning.lab.uiowa.edu';
+
+// Directory aliases for lewisstevens.lab.uiowa.edu.
+$sites['lablewisstevens.uiowa.ddev.site'] = 'lewisstevens.lab.uiowa.edu';
+$sites['lablewisstevens.dev.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
+$sites['lablewisstevens.stage.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
+$sites['lablewisstevens.prod.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
