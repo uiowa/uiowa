@@ -49,6 +49,18 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'services') {
+    if ($form_id === 'views_exposed_form') {
+      $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community';
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
  */
 function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
@@ -149,5 +161,19 @@ function its_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-service-quick-links--service--default',
       'base hook' => 'field',
     ],
+    'views_view_summary_unformatted__services' => [
+      'template' => 'views-view-summary-unformatted--services',
+      'base hook' => 'view',
+    ],
   ];
+}
+
+/**
+ * Implements template_preprocess_views_view_unformatted().
+ */
+function its_core_preprocess_views_view_unformatted(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'services') {
+    $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+  }
 }
