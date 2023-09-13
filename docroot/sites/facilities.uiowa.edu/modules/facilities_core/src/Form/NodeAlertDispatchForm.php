@@ -143,7 +143,7 @@ class NodeAlertDispatchForm extends FormBase {
     foreach (_sitenow_dispatch_get_placeholders('alert') as $field_name => $placeholder) {
       switch ($field_name) {
         case 'alert_subject':
-          $placeholders[$placeholder] = $this->node->getTitle() . ' - OSC TEST';
+          $placeholders[$placeholder] = $this->node->getTitle();
           break;
 
         default:
