@@ -143,6 +143,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('style.style_selector'),
   ];
 
+  // Value set on submit. Read-only for admins.
   $form['style']['style_selector']['#disabled'] = TRUE;
 
   // Only allow access to this field for users
