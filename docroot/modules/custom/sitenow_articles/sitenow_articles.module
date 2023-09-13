@@ -645,7 +645,7 @@ function sitenow_articles_preprocess_block(&$variables) {
     //   want to use the gallery image field for other content.
     //   https://github.com/uiowa/uiowa/issues/6287
     case 'field_block:node:article:field_gallery_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20';
+      $variables['attributes']['class'][] = 'image-gallery--auto-fit image-gallery--square image-gallery--grid';
       $variables['attributes']['class'][] = 'photoswipe-gallery';
 
       break;
