@@ -29,7 +29,7 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * The length of time the cache.
    */
-  protected int $cacheLength = 900;
+  protected int $cacheLength = 60;
 
   /**
    * Constructs a DispatchApiClient object.
