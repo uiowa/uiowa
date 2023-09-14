@@ -1,0 +1,19 @@
+uuid: 69c5615b-a0c1-4cd8-a8a9-d8abb1291fef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.microsite.body
+    - field.field.node.microsite.field_image
+    - node.type.microsite
+id: node.microsite
+target_entity_type_id: node
+target_bundle: microsite
+schema_type: WebPage
+schema_properties:
+  created: dateCreated
+  changed: dateModified
+  langcode: inLanguage
+  title: name
+  field_image: primaryImageOfPage
+  body: text

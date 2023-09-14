@@ -1,0 +1,45 @@
+uuid: 3223b027-f5e0-43e5-b199-53348c617e53
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.subpage.field_subpage_body
+    - field.field.paragraph.subpage.field_subpage_slug
+    - field.field.paragraph.subpage.field_subpage_title
+    - paragraphs.paragraphs_type.subpage
+  module:
+    - text
+id: paragraph.subpage.default
+targetEntityType: paragraph
+bundle: subpage
+mode: default
+content:
+  field_subpage_body:
+    type: text_textarea_with_summary
+    weight: 2
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  field_subpage_slug:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_subpage_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

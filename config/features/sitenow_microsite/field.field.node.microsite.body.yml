@@ -1,0 +1,23 @@
+uuid: c47a4e27-691b-42b1-bb8d-594d47f30b82
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.microsite
+  module:
+    - text
+id: node.microsite.body
+field_name: body
+entity_type: node
+bundle: microsite
+label: Text
+description: 'The textual content of this CreativeWork.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary
