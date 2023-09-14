@@ -1,0 +1,6 @@
+services:
+  sitenow_p2lb.commands:
+    class: Drupal\sitenow_p2lb\Commands\P2LbCommands
+    arguments: ['@account_switcher', '@logger.channel.sitenow_p2lb', '@entity_type.manager']
+    tags:
+      - { name: drush.command }
