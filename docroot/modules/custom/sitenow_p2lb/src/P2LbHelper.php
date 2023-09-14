@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_p2lb;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
@@ -194,7 +195,7 @@ class P2LbHelper {
         $text = Html::serialize($dom);
 
         return [
-          'uri' => (str_starts_with($uri, 'http')) ? $uri : "internal:$uri",
+          'uri' => (UrlHelper::isExternal($uri)) ? $uri : "internal:$uri",
           'title' => $button->nodeValue,
           'options' => [],
         ];
