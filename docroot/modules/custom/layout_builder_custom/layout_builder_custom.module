@@ -226,6 +226,21 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'inline_block:uiowa_card':
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
 
+          case 'inline_block:uiowa_image_gallery':
+            $form['#attached']['library'][] = 'layout_builder_custom/image-block-form';
+
+            // Set '#states' for card image size.
+            $form['layout_builder_style_default']['#states'] = [
+              'visible' => [
+                // Always show when media format is set to 'circle'.
+                [
+                  ':input[name="layout_builder_style_media_format"]' => [
+                    'value' => 'media_format_no_crop',
+                  ],
+                ],
+              ],
+            ];
+
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
