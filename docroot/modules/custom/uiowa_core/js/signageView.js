@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', doSomething, false);
 let slideIndex = 0;
 let title;
 let slides;
-let transitionTime = 10; // In seconds.
+let transitionTime = 6; // In seconds.
 
 function doSomething () {
   const queryString = window.location.search;
@@ -13,7 +13,7 @@ function doSomething () {
   initSlides();
   if (isSignage !== null) {
     document.querySelector('html').classList.add('signage-view');
-    setTimeout(showSlides, (transitionTime * 1000));
+    showSlides();
   }
   else {
     // console.log(title, slides);
