@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb\Commands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
 use Psr\Log\LoggerInterface;
@@ -13,6 +14,7 @@ use Psr\Log\LoggerInterface;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -109,7 +111,7 @@ class P2LbCommands extends DrushCommands {
       $i += $batch_size;
     }
     $batch = [
-      'title' => t('Processing @num node(s).', [
+      'title' => $this->t('Processing @num node(s).', [
         '@num' => $num_operations,
       ]),
       'operations' => $operations,
