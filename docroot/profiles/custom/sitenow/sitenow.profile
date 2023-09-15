@@ -16,7 +16,6 @@ use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\layout_builder\InlineBlockUsage;
@@ -364,6 +363,8 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
  * Custom node content type form defaults.
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
+  // @todo Remove this after the transition to body summary
+  //   has been completed.
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
@@ -382,6 +383,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     ];
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
+
+    // If we're in v3 or a non-page content type in v2 (article, person),
+    // then disable the field_teaser and add help text.
+    if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
+      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
+      $form['field_teaser']['#disabled'] = TRUE;
+    }
   }
 
   if (isset($form['field_image'])) {
@@ -1134,48 +1142,4 @@ function featured_image_size_values(FieldStorageDefinitionInterface $definition,
   ];
 
   return $options;
-}
-
-/**
- * Implements hook_tokens().
- */
-function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $replacements = [];
-  if (!empty($data['node'])) {
-    // Limit this to content types that have 'field_teaser' field.
-    if ($data['node']->hasField('field_teaser')) {
-      foreach ($tokens as $name => $original) {
-        switch ($name) {
-          // Not consistent across content types which
-          // token is used for meta description.
-          case 'field_teaser':
-          case 'field_teaser:value':
-            $field_teaser = $data['node']->get('field_teaser')->value;
-            if (empty($field_teaser)) {
-              // Person content type.
-              if ($data['node']->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
-                $replacement_value = $data['node']->get('field_person_bio')->value;
-              }
-              // Article content type, v3 Page content type.
-              if ($data['node']->hasField('body') && !empty($data['node']->get('body')->value)) {
-                $replacement_value = $data['node']->get('body')->value;
-              }
-              if (!empty($replacement_value)) {
-                // Plain text doesn't do faulty html correction, and don't
-                // want tags counting towards limit.
-                $replacement_value = trim(strip_tags($replacement_value));
-                // Using text.module text_summary().
-                // @todo Make length a configuration setting.
-                //   See https://github.com/uiowa/uiowa/issues/5024
-                $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
-              }
-            }
-            break;
-
-        }
-      }
-    }
-  }
-
-  return $replacements;
 }

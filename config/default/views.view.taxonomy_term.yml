@@ -4,9 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.storage.node.field_teaser
+    - field.storage.node.body
   module:
     - node
+    - smart_trim
     - taxonomy
     - user
 _core:
@@ -335,10 +336,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
           admin_label: ''
@@ -385,8 +386,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: true
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -692,7 +711,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_teaser'
+        - 'config:field.storage.node.body'
   page_1:
     id: page_1
     display_title: Page

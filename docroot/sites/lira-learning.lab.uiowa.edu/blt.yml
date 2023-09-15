@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablira-learning.uiowa.ddev.site
+    protocol: https
+  machine_name: lablira-learning
+  human_name: lira-learning.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablira-learning.prod
+drupal:
+  db:
+    database: lira_learning_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablira-learning.prod.drupal.uiowa.edu'
+  requester: mlira
+  site-name: 'Lira Learning Lab'

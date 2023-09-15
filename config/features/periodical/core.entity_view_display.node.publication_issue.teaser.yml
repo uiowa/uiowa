@@ -16,7 +16,7 @@ dependencies:
     - field.field.node.publication_issue.field_meta_tags
     - node.type.publication_issue
   module:
-    - text
+    - smart_trim
     - user
 id: node.publication_issue.teaser
 targetEntityType: node
@@ -24,10 +24,27 @@ bundle: publication_issue
 mode: teaser
 content:
   body:
-    type: text_summary_or_trimmed
+    type: smart_trim
     label: hidden
     settings:
-      trim_length: 600
+      trim_length: 0
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: true
+        replace_tokens: false
     third_party_settings: {  }
     weight: 0
     region: content
