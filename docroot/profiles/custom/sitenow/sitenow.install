@@ -2812,3 +2812,18 @@ function sitenow_update_9070() {
     });
   }
 }
+
+/**
+ * Set new branding options theme setting.
+ */
+function sitenow_update_9071() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  if ($config->get('style.style_selector') === 'gray') {
+    $config->set('header.branding_options', 'regents');
+  }
+  else {
+    $config->set('header.branding_options', 'iowa');
+  }
+  $config->save();
+}
