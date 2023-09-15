@@ -30,7 +30,7 @@ dependencies:
     - link
     - options
     - smart_date
-    - text
+    - smart_trim
     - user
 _core:
   default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
@@ -40,11 +40,29 @@ bundle: event
 mode: teaser
 content:
   body:
-    type: text_default
+    type: smart_trim
     label: visually_hidden
-    settings: {  }
+    settings:
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+        replace_tokens: false
     third_party_settings: {  }
-    weight: 8
+    weight: 1
     region: content
   field_event_attendance:
     type: boolean
@@ -54,7 +72,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 11
+    weight: 10
     region: content
   field_event_location:
     type: address_default
@@ -71,7 +89,7 @@ content:
     third_party_settings:
       field_delimiter:
         delimiter: ','
-    weight: 9
+    weight: 8
     region: content
   field_event_series_link:
     type: link
@@ -100,7 +118,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 9
     region: content
   field_event_virtual:
     type: link
@@ -137,13 +155,6 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
-  field_teaser:
-    type: basic_string
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -162,4 +173,5 @@ hidden:
   field_event_parent: true
   field_meta_tags: true
   field_tags: true
+  field_teaser: true
   search_api_excerpt: true
