@@ -43,7 +43,8 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
     case 'node_alert_form':
     case 'node_alert_edit_form':
 
-      // Show or hide the field_alert_buildings_locations field based on the checkbox value.
+      // Show or hide the field_alert_buildings_locations field based on the
+      // checkbox value.
       $form['field_alert_buildings_locations']['#states'] = [
         'visible' => [
           ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],

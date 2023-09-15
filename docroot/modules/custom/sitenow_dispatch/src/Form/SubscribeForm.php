@@ -5,40 +5,34 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
-  /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $client;
 
   /**
-   * The config factory service.
+   * Constructs the SubscribeForm object.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
+   *   The Dispatch API client service.
    */
-  protected $dispatch;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, $client, $dispatch) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch) {
     parent::__construct($config_factory);
-    $this->client = $client;
-    $this->dispatch = $dispatch;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('config.factory'), $container->get('http_client'), $container->get('sitenow_dispatch.dispatch'));
+    return new static(
+      $container->get('config.factory'),
+      $container->get('sitenow_dispatch.dispatch_client'),
+    );
   }
 
   /**
@@ -96,11 +90,11 @@ class SubscribeForm extends ConfigFormBase {
     $last = $form_state->getValue('last');
     $population = $form_state->getValue('population');
 
-    $this->dispatch->request('POST', "populations/$population/subscribers", [], [
+    $this->dispatch->request('POST', "populations/$population/subscribers", [
       'body' => json_encode([
-        "toAddress" => $email,
-        "firstName" => $first,
-        "lastName" => $last,
+        'toAddress' => $email,
+        'firstName' => $first,
+        'lastName' => $last,
       ]),
     ]);
 
@@ -116,8 +110,10 @@ class SubscribeForm extends ConfigFormBase {
     $email = $form_state->getValue('email');
     $population = $form_state->getValue('population');
 
-    $response = $this->dispatch->request('GET', "populations/$population/subscribers", [
-      'search' => $email,
+    $response = $this->dispatch->get("populations/$population/subscribers", [
+      'query' => [
+        'search' => $email,
+      ],
     ]);
 
     if ($response->recordsReturned > 0) {
