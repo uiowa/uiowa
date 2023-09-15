@@ -1,0 +1,88 @@
+.signage-view {
+  body {
+    overflow: hidden;
+  }
+
+  .node__content {
+    &:before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 509;
+    }
+  }
+
+  .signage-title {
+    z-index: 520;
+    position: fixed;
+    top: 0;
+    background: var(--brand-primary);
+    width: 100%;
+    padding: 0.8rem 1rem 1rem 1rem !important;
+
+    .layout__spacing_container {
+      margin: 0 auto 0 0;
+    }
+
+    .block-system-breadcrumb-block {
+      display: none;
+    }
+  }
+
+  .signage-slide {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 510;
+    background: white;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+
+    &:before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 1;
+      background: black;
+      transition: opacity 2s ease-in-out;
+      z-index: 511;
+    }
+
+    &.show-slide {
+      opacity: 1;
+      z-index: 512;
+
+      &:before {
+        opacity: 0;
+      }
+    }
+
+
+    &.signage--has-title {
+      height: calc(100vh - 82px);
+      top: 82px;
+    }
+
+    .layout__spacing_container {
+      height: 100%;
+    }
+
+    .layout__region {
+      height: 100%;
+    }
+
+    .layout__region > * {
+      height: 100%;
+    }
+  }
+}
