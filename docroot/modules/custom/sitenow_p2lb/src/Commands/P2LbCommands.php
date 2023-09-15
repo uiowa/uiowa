@@ -38,12 +38,28 @@ class P2LbCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
+   * The reference revision orphan purger.
+   *
+   * @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger
+   */
+  protected $orphanPurger;
+
+  /**
+   * The config service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
    * Command constructor.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager, $orphanPurger, $config) {
     $this->accountSwitcher = $accountSwitcher;
     $this->logger = $logger;
     $this->entityTypeManager = $entityTypeManager;
+    $this->orphanPurger = $orphanPurger;
+    $this->config = $config;
   }
 
   /**
@@ -122,20 +138,18 @@ class P2LbCommands extends DrushCommands {
     $this->logger('sitenow_p2lb')->notice('Process batch operations ended.');
 
     // Delete orphaned paragraphs, three-levels deep (section > block > item).
-    $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
     for ($i = 0; $i < 3; $i++) {
-      $purger->setBatch(['paragraph']);
+      $this->orphanPurger->setBatch(['paragraph']);
       drush_backend_batch_process();
     }
 
     // Turn off V2.
-    $config_factory = \Drupal::configFactory();
-    $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2 = $this->config->getEditable('config_split.config_split.sitenow_v2');
     $sitenow_v2->set('status', FALSE);
     $sitenow_v2->save(TRUE);
 
     // Turn off P2LB.
-    $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
+    $sitenow_p2lb = $this->config->getEditable('config_split.config_split.p2lb');
     $sitenow_p2lb->set('status', FALSE);
     $sitenow_p2lb->save(TRUE);
 
