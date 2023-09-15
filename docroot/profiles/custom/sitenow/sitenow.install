@@ -166,14 +166,16 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
 
           $component_arr = $component->toArray();
 
-          $revision_id = $component_arr['configuration']['block_revision_id'];
-          if ($revision_id) {
-            $block = $block_storage->loadRevision($revision_id);
+          if (isset($component_arr['configuration']['block_revision_id'])) {
+            $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
           }
-          else {
+          elseif (isset($component_arr['configuration']['block_serialized'])) {
             $block = unserialize($component_arr['configuration']['block_serialized'], [
               'allowed_classes' => TRUE,
             ]);
+          }
+          else {
+            $block = NULL;
           }
 
           call_user_func_array($process, [&$component, $block]);

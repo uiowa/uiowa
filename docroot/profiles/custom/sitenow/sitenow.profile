@@ -16,7 +16,6 @@ use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\layout_builder\InlineBlockUsage;
