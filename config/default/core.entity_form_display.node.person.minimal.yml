@@ -4,9 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -62,6 +62,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 3
@@ -70,10 +75,10 @@ content:
       display_label: true
     third_party_settings: {  }
 hidden:
+  body: true
   created: true
   field_image: true
   field_meta_tags: true
-  field_person_bio: true
   field_person_contact_information: true
   field_person_credential: true
   field_person_education: true

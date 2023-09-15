@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.body
     - field.storage.node.field_image
-    - field.storage.node.field_teaser
     - image.style.paragraph_preview
     - node.type.article
     - node.type.page
@@ -16,6 +16,7 @@ dependencies:
     - entity_browser
     - media
     - node
+    - smart_trim
     - taxonomy
     - user
 id: featured_content
@@ -213,10 +214,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
           admin_label: ''
@@ -240,14 +241,14 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 140
+            max_length: 0
             word_boundary: true
             ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
             strip_tags: false
-            trim: true
+            trim: false
             preserve_tags: ''
             html: false
           element_type: ''
@@ -263,8 +264,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: true
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -768,7 +787,7 @@ display:
             entity_browser_select: entity_browser_select
             field_image: field_image
             title: title
-            field_teaser: field_teaser
+            body: body
             uid: uid
             type: type
             moderation_state: moderation_state
@@ -794,7 +813,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_teaser:
+            body:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -876,8 +895,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'
         - 'config:workflow_list'
   entity_browser_featured:
     id: entity_browser_featured
@@ -898,6 +917,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'
         - 'config:workflow_list'
