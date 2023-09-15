@@ -1253,7 +1253,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
           // If view is attached to parent entity.
           if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
-            // If block_config is attached to the view display and layout_builder_styles exist in that.
+            // If block_config is attached to the view display
+            // and layout_builder_styles exist in that.
             if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
               $media_formats = [
                 'media_format_widescreen' => 'large__widescreen',
