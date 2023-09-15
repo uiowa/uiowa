@@ -263,6 +263,7 @@ trait CreateMediaTrait {
       ->getStorage('file')
       ->getQuery()
       ->condition('filename', $filename)
+      ->accessCheck(TRUE)
       ->execute();
 
     if (empty($files)) {

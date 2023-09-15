@@ -94,6 +94,7 @@ class P2LbCommands extends DrushCommands {
         ->getQuery()
         ->condition('type', 'page')
         ->range($i, $batch_size)
+        ->accessCheck(TRUE)
         ->execute();
 
       $operations[] = [
