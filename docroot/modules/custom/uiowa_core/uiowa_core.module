@@ -50,7 +50,7 @@ function uiowa_core_cron() {
       $queuer = $purgeQueuers->get('coretags');
 
       $invalidations = [
-        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+        $purgeInvalidationFactory->get('tag', 'time:daily'),
       ];
 
       $purgeQueue->add($queuer, $invalidations);

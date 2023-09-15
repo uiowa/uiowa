@@ -24,8 +24,7 @@ function grad_custom_preprocess_node(&$variables) {
           case 'teaser':
             // Show trimmed body/bio if no teaser is provided.
             if ($node->get('field_teaser')->isEmpty()) {
-              $field = ($type === 'person' ? 'field_person_bio' : 'body');
-              $variables['content']['field_teaser'] = $variables['node']->$field->view([
+              $variables['content']['field_teaser'] = $variables['node']->body->view([
                 'label' => 'hidden',
                 'type' => 'smart_trim',
                 'weight' => 99,

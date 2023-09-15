@@ -153,7 +153,11 @@ class P2LbConverter {
       $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
 
       // Determine column layout and create the text string.
-      $formatter = $w2d[$num_cols] ?: 'one';
+      $formatter = 'one';
+      if (isset($w2d[$num_cols])) {
+        $formatter = $w2d[$num_cols];
+      }
+
       $layout_id = "layout_{$formatter}col";
 
       $col_width_str = sitenow_p2lb_multicol_settings($section_info['col_widths']);
