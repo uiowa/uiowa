@@ -2754,7 +2754,7 @@ function sitenow_update_9069() {
   $teaser_revision_table = $field_types['field_teaser']['revision_table'];
   $table = $field_types['body']['table'];
   $revision_table = $field_types['body']['revision_table'];
-  if ($database->schema()->tableExists($teaser_table) && $database->schema()->tableExists($table)) {
+  if ($database->schema()->tableExists($teaser_table) && $database->schema()->tableExists($table) && $database->schema()->tableExists('node')) {
     $database->query("
       UPDATE {$teaser_table}, {$table}
       SET {$table}.body_summary = {$teaser_table}.field_teaser_value
@@ -2763,6 +2763,14 @@ function sitenow_update_9069() {
       AND {$table}.revision_id = {$teaser_table}.revision_id
       AND {$teaser_table}.field_teaser_value <> ''
       AND ({$teaser_table}.field_teaser_value <> {$table}.body_summary OR {$table}.body_summary IS NULL)
+    ")
+      ->execute();
+    // Updates body_summary for any nodes not already in tables due to empty body.
+    $database->query("
+      INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
+      SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
+      FROM {$teaser_table}
+      WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node__body))
     ")
       ->execute();
     if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
@@ -2776,24 +2784,15 @@ function sitenow_update_9069() {
         AND ({$teaser_revision_table}.field_teaser_value <> {$revision_table}.body_summary OR {$revision_table}.body_summary IS NULL)
       ")
         ->execute();
+      $database->query("
+        INSERT IGNORE INTO {$revision_table} ({$revision_table}.bundle, {$revision_table}.deleted, {$revision_table}.entity_id, {$revision_table}.revision_id, {$revision_table}.langcode, {$revision_table}.delta, {$revision_table}.body_value, {$revision_table}.body_summary, {$revision_table}.body_format)
+        SELECT {$teaser_revision_table}.bundle, {$teaser_revision_table}.deleted, {$teaser_revision_table}.entity_id, {$teaser_revision_table}.revision_id, {$teaser_revision_table}.langcode, {$teaser_revision_table}.delta, '', {$teaser_revision_table}.field_teaser_value, 'filtered_html'
+        FROM $teaser_revision_table
+        WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node_revision__body))
+      ")
+        ->execute();
     }
   }
-
-  // Updates body_summary for any nodes not already in tables due to empty body.
-  $database->query("
-    INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
-    SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
-    FROM {$teaser_table}
-    WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node__body))
-  ")
-    ->execute();
-  $database->query("
-    INSERT IGNORE INTO {$revision_table} ({$revision_table}.bundle, {$revision_table}.deleted, {$revision_table}.entity_id, {$revision_table}.revision_id, {$revision_table}.langcode, {$revision_table}.delta, {$revision_table}.body_value, {$revision_table}.body_summary, {$revision_table}.body_format)
-    SELECT {$teaser_revision_table}.bundle, {$teaser_revision_table}.deleted, {$teaser_revision_table}.entity_id, {$teaser_revision_table}.revision_id, {$teaser_revision_table}.langcode, {$teaser_revision_table}.delta, '', {$teaser_revision_table}.field_teaser_value, 'filtered_html'
-    FROM $teaser_revision_table
-    WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node_revision__body))
-  ")
-    ->execute();
 }
 
 /**
