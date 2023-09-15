@@ -21,7 +21,6 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
         $options = [];
         $options[''] = t('Any date');
         $db = \Drupal::database();
-        $time = time();
         if ($db->schema()->tableExists('node__field_event_when')) {
           $data = $db->select('node__field_event_when', 'when')
             ->fields('when', ['field_event_when_end_value'])
