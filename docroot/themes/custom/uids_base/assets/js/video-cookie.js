@@ -71,4 +71,4 @@
     cookies.set(UIOWA_VIDEO_COOKIE, cookieString, { expires: 36135, path: '/' });
   }
 
-})(jQuery, Drupal, once, cookies);
+})(jQuery, Drupal, once, window.Cookies);
