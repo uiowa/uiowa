@@ -2,6 +2,16 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_page_content_block
+  content:
+    field_teaser:
+      type: basic_string
+      label: hidden
+      settings: {  }
+      third_party_settings: {  }
+      weight: 3
+      region: content
   hidden:
     field_page_content_block: true
-removing: {  }
+removing:
+  hidden:
+    field_teaser: true

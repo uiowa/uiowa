@@ -166,14 +166,16 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
 
           $component_arr = $component->toArray();
 
-          $revision_id = $component_arr['configuration']['block_revision_id'];
-          if ($revision_id) {
-            $block = $block_storage->loadRevision($revision_id);
+          if (isset($component_arr['configuration']['block_revision_id'])) {
+            $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
           }
-          else {
+          elseif (isset($component_arr['configuration']['block_serialized'])) {
             $block = unserialize($component_arr['configuration']['block_serialized'], [
               'allowed_classes' => TRUE,
             ]);
+          }
+          else {
+            $block = NULL;
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -2624,4 +2626,204 @@ function sitenow_update_9067() {
       }
     }
   }
+}
+
+/**
+ * Update person bio field to long with summary.
+ */
+function sitenow_update_9068() {
+
+  // Statically defining our fields to be updated. More can be added here.
+  $fields = [
+    'field_person_bio' => [
+      'format_col' => 'field_person_bio_format',
+      'summary_col' => 'field_person_bio_summary',
+      'value_col' => 'field_person_bio_value',
+    ],
+  ];
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+
+  foreach ($fields as $field_name => &$field) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name => &$field) {
+    $table = $field['table'];
+    $revision_table = $field['revision_table'];
+    $entity_type = 'node';
+
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (is_null($field_storage)) {
+      continue;
+    }
+
+    // Fetch data currently stored in the field and save for later.
+    $rows = NULL;
+    $revision_rows = NULL;
+    if ($database->schema()->tableExists($table)) {
+      $rows = $database
+        ->select($table, 't')
+        ->fields('t')
+        ->execute()
+        ->fetchAll();
+      if ($database->schema()->tableExists($revision_table)) {
+        $revision_rows = $database
+          ->select($revision_table, 'r')
+          ->fields('r')
+          ->execute()
+          ->fetchAll();
+      }
+    }
+
+    // Place into the body database, as after config import
+    // that will be the person body location.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $row['body_format'] = 'filtered_html';
+        // Set a blank summary. It'll be updated in the next update hook.
+        $row['body_summary'] = '';
+        $row['body_value'] = $row[$field['value_col']];
+        foreach ($field as $col_name) {
+          unset($row[$col_name]);
+        }
+        $database
+          ->insert('node__body')
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $row['body_format'] = 'filtered_html';
+        // Set a blank summary. It'll be updated in the next update hook.
+        $row['body_summary'] = '';
+        $row['body_value'] = $row[$field['value_col']];
+        foreach ($field as $col_name) {
+          unset($row[$col_name]);
+        }
+        $database
+          ->insert('node_revision__body')
+          ->fields($row)
+          ->execute();
+      }
+    }
+  }
+}
+
+/**
+ * Update summary cols with field_teaser values.
+ */
+function sitenow_update_9069() {
+  $field_types = [
+    'body',
+    'field_teaser',
+  ];
+
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  foreach ($field_types as $field_name) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field_types[$field_name]['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field_types[$field_name]['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  $teaser_table = $field_types['field_teaser']['table'];
+  $teaser_revision_table = $field_types['field_teaser']['revision_table'];
+  $table = $field_types['body']['table'];
+  $revision_table = $field_types['body']['revision_table'];
+  if ($database->schema()->tableExists($teaser_table) && $database->schema()->tableExists($table) && $database->schema()->tableExists('node')) {
+    $database->query("
+      UPDATE {$teaser_table}, {$table}
+      SET {$table}.body_summary = {$teaser_table}.field_teaser_value
+      WHERE {$table}.entity_id = {$teaser_table}.entity_id
+      AND {$table}.bundle = {$teaser_table}.bundle
+      AND {$table}.revision_id = {$teaser_table}.revision_id
+      AND {$teaser_table}.field_teaser_value <> ''
+      AND ({$teaser_table}.field_teaser_value <> {$table}.body_summary OR {$table}.body_summary IS NULL)
+    ")
+      ->execute();
+    // Updates body_summary for any nodes not already in tables due to empty body.
+    $database->query("
+      INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
+      SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
+      FROM {$teaser_table}
+      WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node__body))
+    ")
+      ->execute();
+    if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
+      $database->query("
+        UPDATE {$teaser_revision_table}, {$revision_table}
+        SET {$revision_table}.body_summary = {$teaser_revision_table}.field_teaser_value
+        WHERE {$revision_table}.revision_id = {$teaser_revision_table}.revision_id
+        AND {$revision_table}.bundle = {$teaser_revision_table}.bundle
+        AND {$revision_table}.entity_id = {$teaser_revision_table}.entity_id
+        AND {$teaser_revision_table}.field_teaser_value <> ''
+        AND ({$teaser_revision_table}.field_teaser_value <> {$revision_table}.body_summary OR {$revision_table}.body_summary IS NULL)
+      ")
+        ->execute();
+      $database->query("
+        INSERT IGNORE INTO {$revision_table} ({$revision_table}.bundle, {$revision_table}.deleted, {$revision_table}.entity_id, {$revision_table}.revision_id, {$revision_table}.langcode, {$revision_table}.delta, {$revision_table}.body_value, {$revision_table}.body_summary, {$revision_table}.body_format)
+        SELECT {$teaser_revision_table}.bundle, {$teaser_revision_table}.deleted, {$teaser_revision_table}.entity_id, {$teaser_revision_table}.revision_id, {$teaser_revision_table}.langcode, {$teaser_revision_table}.delta, '', {$teaser_revision_table}.field_teaser_value, 'filtered_html'
+        FROM $teaser_revision_table
+        WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node_revision__body))
+      ")
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Update hide fields options for list blocks.
+ */
+function sitenow_update_9070() {
+  foreach ([
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-list_card',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+      $config = $component->getConfiguration();
+      $config['fields']['body'] = $config['fields']['field_teaser'];
+      unset($config['fields']['field_teaser']);
+      $component->setConfiguration($config);
+    });
+  }
+}
+
+/**
+ * Set new branding options theme setting.
+ */
+function sitenow_update_9071() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  if ($config->get('style.style_selector') === 'gray') {
+    $config->set('header.branding_options', 'regents');
+  }
+  else {
+    $config->set('header.branding_options', 'iowa');
+  }
+  $config->save();
 }

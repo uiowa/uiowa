@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_email
@@ -11,14 +12,13 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_teaser
     - node.type.person
 id: node.person
 target_entity_type_id: node
 target_bundle: person
 schema_type: Person
 schema_properties:
-  field_teaser: description
+  body: description
   field_person_email: email
   field_person_last_name: familyName
   field_person_first_name: givenName

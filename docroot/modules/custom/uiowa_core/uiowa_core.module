@@ -913,16 +913,21 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
 
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
+    $theme_config = $config_factory->getEditable('uids_base.settings');
+    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
 
     foreach ($tokens as $name => $original) {
       // Find the desired token by name.
       switch ($name) {
         case 'org_name':
-          $replacements[$original] = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          $org_name = $ccom_site ? 'Carver College of Medicine' : 'The University of Iowa';
+          $replacements[$original] = $config->get('uiowa_core.org_name') ?? $org_name;
           break;
 
         case 'favicon_assets_path':
-          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? '/profiles/custom/sitenow/assets/';
+          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
+
           break;
       }
     }
