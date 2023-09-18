@@ -1,0 +1,24 @@
+local:
+  root: /var/www/html/docroot
+  uri: uiowa.ddev.site
+dev:
+  uri: uiowa06dev.prod.acquia-sites.com
+  host: uiowa06dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa06.dev/docroot
+  user: uiowa06.dev
+prod:
+  uri: uiowa06.prod.acquia-sites.com
+  host: uiowa06.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa06.prod/docroot
+  user: uiowa06.prod
+test:
+  uri: uiowa06stg.prod.acquia-sites.com
+  host: uiowa06stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa06.test/docroot
+  user: uiowa06.test
