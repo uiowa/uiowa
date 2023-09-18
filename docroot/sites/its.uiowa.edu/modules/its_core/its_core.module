@@ -62,6 +62,20 @@ function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+
+    case 'field_block:node:article:field_article_related_service':
+      $variables['attributes']['class'][] = 'article--meta block-margin__default--removed';
+      $variables['#attached']['library'][] = 'its_core/related-service';
+
+      break;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
  */
 function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
