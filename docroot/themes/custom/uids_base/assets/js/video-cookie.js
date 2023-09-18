@@ -1,4 +1,4 @@
-(function ($, Drupal, cookies) {
+(function ($, Drupal, once, cookies) {
 
   'use strict';
 
@@ -6,8 +6,7 @@
 
   Drupal.behaviors.uidsVideoCookie = {
     attach: function (context, settings) {
-      $('.media--video', context).once('media-video-attach').each(function () {
-        const video = this.querySelector('video');
+      $(once('media-video-attach', 'media--video', context)).each(function() {        const video = this.querySelector('video');
         // We only need to execute the rest of this if the video element exists.
         if (video) {
           const btn = this.querySelector('.video-controls .video-btn');
@@ -72,4 +71,4 @@
     cookies.set(UIOWA_VIDEO_COOKIE, cookieString, { expires: 36135, path: '/' });
   }
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once, cookies);
