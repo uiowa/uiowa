@@ -2,42 +2,57 @@
   display: none;
 }
 
-#drupal-off-canvas {
+/**
+ * Target off-canvas styling using both the
+ * D8/9 and D10 methods.
+ * See https://www.drupal.org/node/3305664
+ */
+#drupal-off-canvas:not(.drupal-off-canvas-reset),
+#drupal-off-canvas-wrapper {
   width: 100% !important;
 }
 
-#drupal-off-canvas p {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) p,
+#drupal-off-canvas-wrapper p {
   line-height: 1.75;
 }
 
-#drupal-off-canvas .form-select,
-#drupal-off-canvas .form-text {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .form-select,
+#drupal-off-canvas-wrapper .form-select,
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .form-text,
+#drupal-off-canvas-wrapper .form-text {
   width: 100%;
 }
 
-#drupal-off-canvas ul {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) ul,
+#drupal-off-canvas-wrapper ul {
   display: inline-block;
   width: 100% !important;
 }
 
-#drupal-off-canvas .filter-help > a {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .filter-help > a,
+#drupal-off-canvas-wrapper .filter-help > a {
   margin-right: 20px;
 }
 
-#drupal-off-canvas .field--name-field-uiowa-card-title .form-select {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .field--name-field-uiowa-card-title .form-select,
+#drupal-off-canvas-wrapper .field--name-field-uiowa-card-title .form-select {
   padding: 5px 4px 4px 4px;
   margin-top: 4px;
 }
 
-#drupal-off-canvas .ui-autocomplete {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .ui-autocomplete,
+#drupal-off-canvas-wrapper .ui-autocomplete {
   color: #000;
 }
 
 /**
  * Reset first th and td to not be 150px.
  */
-#drupal-off-canvas th:first-child,
-#drupal-off-canvas td:first-child {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) th:first-child,
+#drupal-off-canvas-wrapper th:first-child,
+#drupal-off-canvas:not(.drupal-off-canvas-reset) td:first-child,
+#drupal-off-canvas-wrapper td:first-child {
   width: auto;
 }
 
