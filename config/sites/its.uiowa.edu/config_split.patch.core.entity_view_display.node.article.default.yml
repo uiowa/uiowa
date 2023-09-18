@@ -1,0 +1,64 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.article.field_article_related_service
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_g8g8r2ss44ug675:
+              weight: -2
+            config_split_sequence_n7r23rl7s495b455:
+              weight: -1
+            config_split_sequence_6unagl336lh12mcg:
+              weight: 1
+            config_split_sequence_dq811qjpongaei9c:
+              weight: 0
+            config_split_sequence_bvhbhnm8pg1ku93i:
+              weight: 2
+            config_split_sequence_eavcpch7veur5bu:
+              uuid: f4ab1295-92a6-4706-ae13-618fcbab91b5
+              region: content
+              configuration:
+                id: 'field_block:node:article:field_article_related_service'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: inline
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: -3
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_article_related_service:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 14
+      region: content
+removing:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_g8g8r2ss44ug675:
+              weight: -4
+            config_split_sequence_n7r23rl7s495b455:
+              weight: -3
+            config_split_sequence_6unagl336lh12mcg:
+              weight: -1
+            config_split_sequence_dq811qjpongaei9c:
+              weight: -2
+            config_split_sequence_bvhbhnm8pg1ku93i:
+              weight: 0
