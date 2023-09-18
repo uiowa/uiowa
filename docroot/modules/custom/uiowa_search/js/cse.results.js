@@ -3,7 +3,7 @@
  * UIowa search CSE results functionality.
  */
 
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
 
   'use strict';
 
@@ -26,7 +26,7 @@
   // Attach uiowaSearchResults behavior.
   Drupal.behaviors.uiowaSearchResults = {
     attach: function(context, settings) {
-      $('body', context).once('uiowaSearchResults').each(function() {
+      $(once('uiowaSearchResults', 'body', context)).each(function() {
         window.__gcse = {
           parsetags: 'explicit',
           callback: Drupal.uiowaSearchResults,
@@ -42,4 +42,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);
