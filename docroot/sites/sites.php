@@ -5638,3 +5638,9 @@ $sites['lablewisstevens.uiowa.ddev.site'] = 'lewisstevens.lab.uiowa.edu';
 $sites['lablewisstevens.dev.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
 $sites['lablewisstevens.stage.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
 $sites['lablewisstevens.prod.drupal.uiowa.edu'] = 'lewisstevens.lab.uiowa.edu';
+
+// Directory aliases for beckermann.lab.uiowa.edu.
+$sites['labbeckermann.uiowa.ddev.site'] = 'beckermann.lab.uiowa.edu';
+$sites['labbeckermann.dev.drupal.uiowa.edu'] = 'beckermann.lab.uiowa.edu';
+$sites['labbeckermann.stage.drupal.uiowa.edu'] = 'beckermann.lab.uiowa.edu';
+$sites['labbeckermann.prod.drupal.uiowa.edu'] = 'beckermann.lab.uiowa.edu';
