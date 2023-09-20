@@ -2,17 +2,44 @@
 
 namespace Drupal\facilities_core\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Drupal\sitenow_dispatch\MessageLogRepository;
+use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Send Dispatch requests for alert nodes.
  */
 class NodeAlertDispatchForm extends FormBase {
+
+  /**
+   * Message Log repository service.
+   *
+   * @var \Drupal\sitenow_dispatch\MessageLogRepository
+   */
+  protected MessageLogRepository $repository;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The user storage.
+   *
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected $userStorage;
 
   /**
    * The node being acted upon.
@@ -28,8 +55,18 @@ class NodeAlertDispatchForm extends FormBase {
    *   The Dispatch API client.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\sitenow_dispatch\MessageLogRepository $repository
+   *   The message repository.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
+   * @param \Drupal\user\UserStorageInterface $user_storage
+   *   The user storage.
    */
-  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer) {}
+  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer, MessageLogRepository $repository, AccountProxyInterface $current_user, UserStorageInterface $user_storage) {
+    $this->repository = $repository;
+    $this->currentUser = $current_user;
+    $this->userStorage = $user_storage;
+  }
 
   /**
    * {@inheritdoc}
@@ -38,6 +75,9 @@ class NodeAlertDispatchForm extends FormBase {
     return new static(
       $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('renderer'),
+      $container->get('sitenow_dispatch.message_log_repository'),
+      $container->get('current_user'),
+      $container->get('entity_type.manager')->getStorage('user')
     );
   }
 
@@ -76,6 +116,70 @@ class NodeAlertDispatchForm extends FormBase {
     $form['title'] = [
       '#markup' => $this->t('<h3>Schedule Email Communication</h3>'),
     ];
+
+    // Load log messages related to this node.
+    $logs = $this->repository->load(['entity_id' => $node->id()]);
+
+    if (!empty($logs)) {
+      $logs = json_decode(json_encode($logs), TRUE);
+      $form['notification_log'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Dispatch Log'),
+        '#open' => TRUE,
+      ];
+      $header = [
+        [
+          'data' => $this->t('Message ID'),
+          'field' => 'mid',
+        ],
+        [
+          'data' => $this->t('User'),
+          'field' => 'uid',
+        ],
+        [
+          'data' => $this->t('Date Requested'),
+          'field' => 'date',
+          'sort' => 'desc',
+        ],
+      ];
+      // Build table rows.
+      $rows = [];
+      foreach ($logs as $row) {
+
+        foreach ($row as $key => &$d) {
+          unset($row['lid']);
+          unset($row['entity_id']);
+          switch ($key) {
+            case 'date':
+              $d = new FormattableMarkup('<span class="sr-only">@timestamp</span>@date', [
+                '@timestamp' => $d,
+                '@date' => \Drupal::service('date.formatter')->format(strtotime($d), 'custom', 'M j, Y - g:i:sa'),
+              ]);
+              break;
+
+            case 'uid':
+              $account = $this->userStorage->load($d);
+              $d = $account->getAccountName();
+              break;
+
+            case 'mid':
+              $communication_id_slug = basename($communication_id);
+              // https://apps.its.uiowa.edu/dispatch/communications/1238605612?showBatch=1241267773
+              $url = Url::fromUri("https://apps.its.uiowa.edu/dispatch/communications/$communication_id_slug?showBatch=$d");
+              $d = Link::fromTextAndUrl($d, $url)->toString();
+              break;
+          }
+        }
+        $rows[] = $row;
+      }
+
+      // Render table results.
+      $form['notification_log']['table'] = [
+        '#theme' => 'table',
+        '#header' => $header,
+        '#rows' => $rows,
+      ];
+    }
 
     $form['start'] = [
       '#type' => 'datetime',
@@ -126,7 +230,18 @@ class NodeAlertDispatchForm extends FormBase {
 
     $placeholders = $this->getPlaceholders();
 
-    $this->dispatch->postCommunicationSchedule($communication_id, $schedule_start, $placeholders);
+    $result_endpoint = $this->dispatch->postCommunicationSchedule($communication_id, $schedule_start, $placeholders);
+
+    $message = $this->dispatch->request('GET', $result_endpoint);
+
+    // Create log entry.
+    $entry = [
+      'mid' => $message->id,
+      'date' => date('Y-m-d H:i:s', $schedule_start),
+      'entity_id' => $this->node->id(),
+      'uid' => $this->currentUser->id(),
+    ];
+    $this->repository->insert($entry);
 
     $this->messenger()->addMessage($this->t('Message request has been sent.'));
   }
