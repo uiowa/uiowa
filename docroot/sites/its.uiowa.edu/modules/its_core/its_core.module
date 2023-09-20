@@ -68,9 +68,7 @@ function its_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
 
     case 'field_block:node:article:field_article_related_service':
-      $variables['attributes']['class'][] = 'article--meta block-margin__default--removed';
-      $variables['#attached']['library'][] = 'its_core/related-service';
-
+      $variables['attributes']['class'][] = 'article--meta';
       break;
   }
 }
