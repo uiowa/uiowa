@@ -1,6 +1,6 @@
 # uiowa
 
-The base application on Acquia Cloud for the University of Iowa.
+The base application on Acquia Cloud for the University of Iowa. 
 
 # Getting Started
 
