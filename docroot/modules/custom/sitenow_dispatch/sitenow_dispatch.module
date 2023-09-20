@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\field\Entity\FieldConfig;
 
 /**
@@ -56,6 +57,9 @@ function _sitenow_dispatch_get_placeholders(string $bundle): array {
  * Implements hook_entity_delete().
  */
 function sitenow_dispatch_entity_delete(EntityInterface $entity) {
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
   // Delete any log messages related to this entity.
   /** @var Drupal\sitenow_dispatch\MessageLogRepository $repository */
   $repository = \Drupal::service('sitenow_dispatch.message_log_repository');
