@@ -4,10 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.storage.node.field_article_author
-    - field.storage.node.field_teaser
     - node.type.article
-    - views.view.articles
   module:
     - node
     - user
@@ -258,6 +255,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      css_class: grid--threecol--33-34-33
       use_ajax: true
       header: {  }
       footer: {  }
