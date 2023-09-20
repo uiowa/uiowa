@@ -15,15 +15,13 @@
 
 .region-after-content {
   .block.bttn--row:not([class*="bttn--full"])  {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+
     .bttn {
-      margin: 0;
+      margin-bottom: 0;
 
       + .bttn {
         @include breakpoint(sm) {
-          margin: 0;
+          margin-bottom: 0;
         }
       }
     }
