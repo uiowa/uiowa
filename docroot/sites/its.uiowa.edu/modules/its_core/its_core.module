@@ -187,8 +187,26 @@ function its_core_theme($existing, $type, $theme, $path) {
  * Implements template_preprocess_views_view_unformatted().
  */
 function its_core_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+  $view_id = $view->id();
+
   // Check if the current view has a specific ID or display ID.
-  if ($variables['view']->id() == 'services') {
-    $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+  switch ($view_id) {
+    case 'services':
+      $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+      break;
+    case 'service_related_articles':
+      $lb_styles = $view?->display_handler
+        ?->getOption('layout_builder_styles') ?? [];
+
+      foreach ($variables['rows'] as &$row_build) {
+        if (!isset($row_build['content']['#override_styles'])) {
+          $row_build['content']['#overrides_styles'] = [];
+        }
+        $row_build['content']['#override_styles']['card_media_position'] = '';
+        $row_build['content']['#override_styles']['media_size'] = 'media--small';
+        $row_build['content']['#override_styles']['border'] = '';
+      }
+      break;
   }
 }
