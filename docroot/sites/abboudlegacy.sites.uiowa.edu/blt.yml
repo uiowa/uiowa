@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesabboudlegacy.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesabboudlegacy
+  human_name: abboudlegacy.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesabboudlegacy.prod
+drupal:
+  db:
+    database: abboudlegacy_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesabboudlegacy.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'The Legacy of François M. Abboud, MD'
