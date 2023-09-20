@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: sitesabboudlegacy.uiowa.ddev.site
+  paths:
+    files: sites/abboudlegacy.sites.uiowa.edu/files
+dev:
+  uri: sitesabboudlegacy.dev.drupal.uiowa.edu
+  host: uiowa05dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/abboudlegacy.sites.uiowa.edu/files
+  root: /var/www/html/uiowa05.dev/docroot
+  user: uiowa05.dev
+prod:
+  uri: abboudlegacy.sites.uiowa.edu
+  host: uiowa05.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/abboudlegacy.sites.uiowa.edu/files
+  root: /var/www/html/uiowa05.prod/docroot
+  user: uiowa05.prod
+test:
+  uri: sitesabboudlegacy.stage.drupal.uiowa.edu
+  host: uiowa05stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/abboudlegacy.sites.uiowa.edu/files
+  root: /var/www/html/uiowa05.test/docroot
+  user: uiowa05.test
