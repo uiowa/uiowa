@@ -195,6 +195,7 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
     case 'services':
       $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
       break;
+
     case 'service_related_articles':
       $lb_styles = $view?->display_handler
         ?->getOption('layout_builder_styles') ?? [];
