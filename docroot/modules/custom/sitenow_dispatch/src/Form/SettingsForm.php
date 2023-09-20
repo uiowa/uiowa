@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +16,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
   protected $dispatch;
 
@@ -43,7 +44,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, DispatchApiClientInterface $dispatch, $entityTypeManager) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
     $this->entityTypeManager = $entityTypeManager;
@@ -55,7 +56,7 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('entity_type.manager'),
     );
   }
@@ -64,7 +65,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory()->get('sitenow_dispatch.settings');
+    $config = $this->config('sitenow_dispatch.settings');
     $api_key = $config->get('api_key');
 
     $form['description_text'] = [
@@ -78,13 +79,14 @@ class SettingsForm extends ConfigFormBase {
         'value' => $api_key,
       ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
-      '#required' => TRUE,
     ];
 
-    if ($api_key && $client = $config->get('client')) {
-      $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
-        '@client' => $client,
-      ]);
+    if ($api_key) {
+      if ($client = $config->get('client')) {
+        $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
+          '@client' => $client,
+        ]);
+      }
     }
 
     return parent::buildForm($form, $form_state);
@@ -96,19 +98,21 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $api_key = trim($form_state->getValue('api_key'));
 
-    // Validate the api_key being submitted in the form rather than config.
-    $client = $this->dispatch->request('GET', 'client', [], [
-      'headers' => [
-        'x-dispatch-api-key' => $api_key,
-      ],
-    ]);
+    if ($api_key) {
+      // Validate the api_key being submitted in the form rather than config.
+      $client = $this->dispatch->setKey($api_key)->get('client');
 
-    if ($client === FALSE) {
-      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+      if ($client === FALSE) {
+        $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+      }
+      else {
+        $form_state->setValue('api_key', $api_key);
+        $form_state->setValue('client', $client->name);
+      }
     }
     else {
-      $form_state->setValue('api_key', $api_key);
-      $form_state->setValue('client', $client->name);
+      $form_state->unsetValue('api_key');
+      $form_state->unsetValue('client');
     }
   }
 

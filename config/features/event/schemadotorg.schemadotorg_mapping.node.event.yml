@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.event.body
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -11,14 +12,13 @@ dependencies:
     - field.field.node.event.field_event_status
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
-    - field.field.node.event.field_teaser
     - node.type.event
 id: node.event
 target_entity_type_id: node
 target_bundle: event
 schema_type: Event
 schema_properties:
-  field_teaser: description
+  body: description
   field_event_attendance_mode: eventAttendanceMode
   field_event_when: eventSchedule
   field_event_status: eventStatus

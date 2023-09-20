@@ -12,13 +12,22 @@
 
       {% if uiowa_logo is not empty %}
       {{ attach_library('uids_base/logo') }}
+
+      {% if header_branding == 'iowa' %}
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
-        logo_path_2: uiowa_logo_path,
         logo_path_png: uiowa_logo_path_png,
         logo_classes: 'logo--footer',
         logo_id: 'footer',
       } %}
+      {% elseif header_branding == 'ccom' %}
+        {% include '@uids_base/uids/logo-ccom.twig' with {
+          logo_path_png: uihc_logo_path_png,
+          logo_classes: 'logo--footer logo--ccom',
+          logo_id: 'footer',
+        } %}
+      {% endif %}
+
       {% endif %}
 
       {% block site_name %}
