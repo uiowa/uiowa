@@ -244,6 +244,7 @@ class NodeAlertDispatchForm extends FormBase {
     $this->repository->insert($entry);
 
     $this->messenger()->addMessage($this->t('Message request has been sent.'));
+    \Drupal::service('cache_tags.invalidator')->invalidateTags(['dispatch:message']);
   }
 
   /**

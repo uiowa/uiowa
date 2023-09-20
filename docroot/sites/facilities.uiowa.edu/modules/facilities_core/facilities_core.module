@@ -5,6 +5,7 @@
  * Custom functionality the Facilities website.
  */
 
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -33,6 +34,19 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
     'coralville' => 'Coralville',
     'iowaCity' => 'Iowa City',
   ];
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  if (isset($data['tabs'][0]['facilities_core.node.dispatch'])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $data['cacheability']->addCacheTags(['dispatch:message']);
+    $repository = \Drupal::service('sitenow_dispatch.message_log_repository');
+    $count = count($repository->load(['entity_id' => $node->id()]));
+    $data['tabs'][0]['facilities_core.node.dispatch']['#link']['title'] = 'Notifications (' . $count . ')';
+  }
 }
 
 /**
