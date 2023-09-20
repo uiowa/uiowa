@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_article_type
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_embargo_information
@@ -52,7 +53,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -62,13 +63,6 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_teaser:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden:
   article_created_date: true
@@ -81,6 +75,7 @@ hidden:
   field_article_source_link: true
   field_article_source_link_direct: true
   field_article_source_org: true
+  field_article_subhead: true
   field_article_type: true
   field_contact_reference: true
   field_embargo_information: true
@@ -91,5 +86,6 @@ hidden:
   field_original_publication_date: true
   field_related_content: true
   field_tags: true
+  field_teaser: true
   links: true
   search_api_excerpt: true

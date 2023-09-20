@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,23 +16,9 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
-   */
-  protected $dispatch;
-
-  /**
-   * The dispatch service.
-   *
    * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
    */
   protected $check;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -50,11 +37,9 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check, $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, $check) {
     parent::__construct($config_factory);
-    $this->dispatch = $dispatch;
     $this->check = $check;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -63,9 +48,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('uiowa_core.access_checker'),
-      $container->get('entity_type.manager'),
     );
   }
 
@@ -78,8 +62,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
 
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
-    /** @var Drupal\Core\Access\AccessResultInterface $access */
-    $access = $this->check->access($this->currentUser()->getAccount());
+    /** @var \Drupal\Core\Access\AccessResultInterface $access */
+    $access = $this->check->access();
     $enabled = $config->get('thanks.enabled') ?? FALSE;
 
     // Set the form tree to make accessing all nested values easier elsewhere.

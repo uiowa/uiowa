@@ -2,6 +2,12 @@ services:
   logger.channel.sitenow_dispatch:
     parent: logger.channel_base
     arguments: [ 'sitenow_dispatch' ]
-  sitenow_dispatch.dispatch:
-    class: Drupal\sitenow_dispatch\Dispatch
-    arguments: ['@http_client', '@config.factory', '@logger.channel.sitenow_dispatch']
+  cache.sitenow_dispatch:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['sitenow_dispatch']
+  sitenow_dispatch.dispatch_client:
+    class: Drupal\sitenow_dispatch\DispatchApiClient
+    arguments: ['@http_client', '@logger.channel.sitenow_dispatch', '@cache.sitenow_dispatch', '@config.factory', ]
