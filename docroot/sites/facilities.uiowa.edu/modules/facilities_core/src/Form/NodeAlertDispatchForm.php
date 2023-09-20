@@ -117,6 +117,36 @@ class NodeAlertDispatchForm extends FormBase {
       '#markup' => $this->t('<h3>Schedule Email Communication</h3>'),
     ];
 
+    $form['start'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Send date and time'),
+      '#required' => TRUE,
+      '#date_increment' => 60,
+    ];
+
+    $form['placeholders'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Placeholders'),
+      '#description' => $this->t('These placeholders will be used to fill in the message that is sent.'),
+      '#open' => FALSE,
+    ];
+
+    $placeholders = $this->getPlaceholders();
+
+    foreach ($placeholders as $placeholder => $preview) {
+
+      $form['placeholders'][$placeholder]['label'] = [
+        '#type' => 'label',
+        '#title' => $placeholder,
+      ];
+
+      if (!empty($preview)) {
+        $form['placeholders'][$placeholder]['value'] = [
+          '#markup' => $preview,
+        ];
+      }
+    }
+
     // Load log messages related to this node.
     $logs = $this->repository->load(['entity_id' => $node->id()]);
 
@@ -179,36 +209,6 @@ class NodeAlertDispatchForm extends FormBase {
         '#header' => $header,
         '#rows' => $rows,
       ];
-    }
-
-    $form['start'] = [
-      '#type' => 'datetime',
-      '#title' => $this->t('Send date and time'),
-      '#required' => TRUE,
-      '#date_increment' => 60,
-    ];
-
-    $form['placeholders'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Placeholders'),
-      '#description' => $this->t('These placeholders will be used to fill in the message that is sent.'),
-      '#open' => FALSE,
-    ];
-
-    $placeholders = $this->getPlaceholders();
-
-    foreach ($placeholders as $placeholder => $preview) {
-
-      $form['placeholders'][$placeholder]['label'] = [
-        '#type' => 'label',
-        '#title' => $placeholder,
-      ];
-
-      if (!empty($preview)) {
-        $form['placeholders'][$placeholder]['value'] = [
-          '#markup' => $preview,
-        ];
-      }
     }
 
     $form['submit'] = [
