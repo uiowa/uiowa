@@ -5650,3 +5650,9 @@ $sites['sitesabboudlegacy.uiowa.ddev.site'] = 'abboudlegacy.sites.uiowa.edu';
 $sites['sitesabboudlegacy.dev.drupal.uiowa.edu'] = 'abboudlegacy.sites.uiowa.edu';
 $sites['sitesabboudlegacy.stage.drupal.uiowa.edu'] = 'abboudlegacy.sites.uiowa.edu';
 $sites['sitesabboudlegacy.prod.drupal.uiowa.edu'] = 'abboudlegacy.sites.uiowa.edu';
+
+// Directory aliases for appil.medicine.uiowa.edu.
+$sites['medicineappil.uiowa.ddev.site'] = 'appil.medicine.uiowa.edu';
+$sites['medicineappil.dev.drupal.uiowa.edu'] = 'appil.medicine.uiowa.edu';
+$sites['medicineappil.stage.drupal.uiowa.edu'] = 'appil.medicine.uiowa.edu';
+$sites['medicineappil.prod.drupal.uiowa.edu'] = 'appil.medicine.uiowa.edu';
