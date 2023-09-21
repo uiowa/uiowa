@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for sitenow_dispatch.
+ */
+
+/**
+ * Create new database table.
+ */
+function sitenow_dispatch_update_9001() {
+  $schema['sitenow_dispatch_messages_log'] = [
+    'description' => 'Stores dispatch log information tied to an entity_id',
+    'fields' => [
+      'lid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Log ID'),
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Entity ID'),
+      ],
+      'date' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => t('The scheduled date for the message'),
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t("User's {users}.uid"),
+      ],
+      'mid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Message ID'),
+      ],
+    ],
+    'primary key' => ['lid'],
+    'indexes' => [
+      'entity_id' => ['entity_id'],
+      'mid' => ['mid'],
+      'uid' => ['uid'],
+      'date' => ['date'],
+    ],
+  ];
+  \Drupal::database()
+    ->schema()
+    ->createTable('sitenow_dispatch_messages_log', $schema['sitenow_dispatch_messages_log']);
+}
+
+/**
+ * Implements hook_schema().
+ *
+ * Defines the database tables used by this module.
+ *
+ * @see hook_schema()
+ *
+ * @ingroup sitenow_dispatch_messages_log
+ */
+function sitenow_dispatch_schema() {
+  $schema['sitenow_dispatch_messages_log'] = [
+    'description' => 'Stores dispatch log information tied to an entity_id',
+    'fields' => [
+      'lid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Log ID',
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Entity ID',
+      ],
+      'date' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The scheduled date for the message',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "User's {users}.uid",
+      ],
+      'mid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Message ID',
+      ],
+    ],
+    'primary key' => ['lid'],
+    'indexes' => [
+      'entity_id' => ['entity_id'],
+      'mid' => ['mid'],
+      'uid' => ['uid'],
+      'date' => ['date'],
+    ],
+  ];
+
+  return $schema;
+}
