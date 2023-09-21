@@ -841,7 +841,7 @@ function uiowa_core_preprocess_block(&$variables) {
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] = 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
@@ -933,6 +933,17 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
     }
   }
   return $replacements;
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function uiowa_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'related_manually_referenced_content') {
+    // Attach the grid class.
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
 }
 
 /**
