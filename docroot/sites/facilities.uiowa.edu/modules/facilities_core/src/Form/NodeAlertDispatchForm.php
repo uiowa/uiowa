@@ -3,17 +3,20 @@
 namespace Drupal\facilities_core\Form;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\TableSort;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Drupal\sitenow_dispatch\MessageLogRepository;
 use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Send Dispatch requests for alert nodes.
@@ -32,14 +35,28 @@ class NodeAlertDispatchForm extends FormBase {
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected $currentUser;
+  protected AccountProxyInterface $currentUser;
 
   /**
    * The user storage.
    *
    * @var \Drupal\user\UserStorageInterface
    */
-  protected $userStorage;
+  protected UserStorageInterface $userStorage;
+
+  /**
+   * The date formatter.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected DateFormatterInterface $dateFormatter;
+
+  /**
+   * The current Request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected Request $request;
 
   /**
    * The node being acted upon.
@@ -61,11 +78,17 @@ class NodeAlertDispatchForm extends FormBase {
    *   The current user.
    * @param \Drupal\user\UserStorageInterface $user_storage
    *   The user storage.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   *   The date formatter service.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The current request.
    */
-  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer, MessageLogRepository $repository, AccountProxyInterface $current_user, UserStorageInterface $user_storage) {
+  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer, MessageLogRepository $repository, AccountProxyInterface $current_user, UserStorageInterface $user_storage, DateFormatterInterface $date_formatter, Request $request) {
     $this->repository = $repository;
     $this->currentUser = $current_user;
     $this->userStorage = $user_storage;
+    $this->dateFormatter = $date_formatter;
+    $this->request = $request;
   }
 
   /**
@@ -77,7 +100,9 @@ class NodeAlertDispatchForm extends FormBase {
       $container->get('renderer'),
       $container->get('sitenow_dispatch.message_log_repository'),
       $container->get('current_user'),
-      $container->get('entity_type.manager')->getStorage('user')
+      $container->get('entity_type.manager')->getStorage('user'),
+      $container->get('date.formatter'),
+      $container->get('request_stack')->getCurrentRequest()
     );
   }
 
@@ -152,26 +177,38 @@ class NodeAlertDispatchForm extends FormBase {
 
     if (!empty($logs)) {
       $logs = json_decode(json_encode($logs), TRUE);
+
       $form['notification_log'] = [
         '#type' => 'details',
         '#title' => $this->t('Dispatch Log'),
         '#open' => TRUE,
       ];
-      $header = [
+      $headers = [
         [
-          'data' => $this->t('Message ID'),
-          'field' => 'mid',
+          'data' => $this->t('Date Requested'),
+          'field' => 'date',
+          'sort' => 'asc',
         ],
         [
           'data' => $this->t('User'),
           'field' => 'uid',
         ],
         [
-          'data' => $this->t('Date Requested'),
-          'field' => 'date',
-          'sort' => 'desc',
+          'data' => $this->t('Message ID'),
+          'field' => 'mid',
         ],
       ];
+
+      // Sort the table according to the options passed in the query arguments.
+      // Lifted from https://drupal.stackexchange.com/a/300621.
+      $sort = TableSort::getSort($headers, $this->request);
+      $order_by = TableSort::getOrder($headers, $this->request)['sql'];
+
+      usort($logs, function (array $a, array $b) use ($sort, $order_by): int {
+        $result = $a[$order_by] <=> $b[$order_by];
+        return $sort === 'asc' ? $result : -$result;
+      });
+
       // Build table rows.
       $rows = [];
       foreach ($logs as $row) {
@@ -183,7 +220,7 @@ class NodeAlertDispatchForm extends FormBase {
             case 'date':
               $d = new FormattableMarkup('<span class="sr-only">@timestamp</span>@date', [
                 '@timestamp' => $d,
-                '@date' => \Drupal::service('date.formatter')->format(strtotime($d), 'custom', 'M j, Y - g:i:sa'),
+                '@date' => $this->dateFormatter->format($d, 'custom', 'M j, Y - g:i:sa'),
               ]);
               break;
 
@@ -206,7 +243,7 @@ class NodeAlertDispatchForm extends FormBase {
       // Render table results.
       $form['notification_log']['table'] = [
         '#theme' => 'table',
-        '#header' => $header,
+        '#header' => $headers,
         '#rows' => $rows,
       ];
     }
@@ -237,7 +274,7 @@ class NodeAlertDispatchForm extends FormBase {
     // Create log entry.
     $entry = [
       'mid' => $message->id,
-      'date' => date('Y-m-d H:i:s', $schedule_start),
+      'date' => $schedule_start,
       'entity_id' => $this->node->id(),
       'uid' => $this->currentUser->id(),
     ];

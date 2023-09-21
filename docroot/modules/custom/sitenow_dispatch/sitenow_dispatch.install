@@ -17,17 +17,17 @@ function sitenow_dispatch_update_9001() {
         'not null' => TRUE,
         'description' => t('Log ID'),
       ],
-      'mid' => [
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => t('Message ID'),
-      ],
       'entity_id' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => t('Entity ID'),
+      ],
+      'date' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => t('The scheduled date for the message'),
       ],
       'uid' => [
         'type' => 'int',
@@ -35,11 +35,11 @@ function sitenow_dispatch_update_9001() {
         'default' => 0,
         'description' => t("User's {users}.uid"),
       ],
-      'date' => [
-        'type' => 'varchar',
-        'mysql_type' => 'datetime',
-        'not null' => FALSE,
-        'description' => t('The scheduled date for the message'),
+      'mid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Message ID'),
       ],
     ],
     'primary key' => ['lid'],
@@ -73,17 +73,17 @@ function sitenow_dispatch_schema() {
         'not null' => TRUE,
         'description' => 'Log ID',
       ],
-      'mid' => [
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => 'Message ID',
-      ],
       'entity_id' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Entity ID',
+      ],
+      'date' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The scheduled date for the message',
       ],
       'uid' => [
         'type' => 'int',
@@ -91,11 +91,11 @@ function sitenow_dispatch_schema() {
         'default' => 0,
         'description' => "User's {users}.uid",
       ],
-      'date' => [
-        'type' => 'varchar',
-        'mysql_type' => 'datetime',
-        'not null' => FALSE,
-        'description' => 'The scheduled date for the message',
+      'mid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Message ID',
       ],
     ],
     'primary key' => ['lid'],
