@@ -2,10 +2,12 @@
 
 namespace Drupal\sitenow_p2lb\Commands;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
 use Psr\Log\LoggerInterface;
@@ -45,21 +47,21 @@ class P2LbCommands extends DrushCommands {
   protected $orphanPurger;
 
   /**
-   * The config service.
+   * The config factory object.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $config;
+  protected $configFactory;
 
   /**
    * Command constructor.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager, $orphanPurger, $config) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->logger = $logger;
     $this->entityTypeManager = $entityTypeManager;
     $this->orphanPurger = $orphanPurger;
-    $this->config = $config;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -144,12 +146,12 @@ class P2LbCommands extends DrushCommands {
     }
 
     // Turn off V2.
-    $sitenow_v2 = $this->config->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');
     $sitenow_v2->set('status', FALSE);
     $sitenow_v2->save(TRUE);
 
     // Turn off P2LB.
-    $sitenow_p2lb = $this->config->getEditable('config_split.config_split.p2lb');
+    $sitenow_p2lb = $this->configFactory->getEditable('config_split.config_split.p2lb');
     $sitenow_p2lb->set('status', FALSE);
     $sitenow_p2lb->save(TRUE);
 
