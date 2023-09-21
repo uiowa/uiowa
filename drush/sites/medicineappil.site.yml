@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: medicineappil.uiowa.ddev.site
+  paths:
+    files: sites/appil.medicine.uiowa.edu/files
+dev:
+  uri: medicineappil.dev.drupal.uiowa.edu
+  host: uiowa06dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/appil.medicine.uiowa.edu/files
+  root: /var/www/html/uiowa06.dev/docroot
+  user: uiowa06.dev
+prod:
+  uri: appil.medicine.uiowa.edu
+  host: uiowa06.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/appil.medicine.uiowa.edu/files
+  root: /var/www/html/uiowa06.prod/docroot
+  user: uiowa06.prod
+test:
+  uri: medicineappil.stage.drupal.uiowa.edu
+  host: uiowa06stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/appil.medicine.uiowa.edu/files
+  root: /var/www/html/uiowa06.test/docroot
+  user: uiowa06.test

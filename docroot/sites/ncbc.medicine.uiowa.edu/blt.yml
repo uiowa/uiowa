@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinencbc.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinencbc
+  human_name: ncbc.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinencbc.prod
+drupal:
+  db:
+    database: ncbc_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinencbc.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Neural Circuits and Behavior Core'

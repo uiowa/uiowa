@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineappil.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineappil
+  human_name: appil.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineappil.prod
+drupal:
+  db:
+    database: appil_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineappil.prod.drupal.uiowa.edu'
+  requester: efry
+  site-name: 'Advanced Pulmonary Physiomic Imaging Laboratory'
