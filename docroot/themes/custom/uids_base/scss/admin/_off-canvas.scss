@@ -1,6 +1,5 @@
 // Fix for off-canvas dialog update button being hidden.
-.ui-dialog-off-canvas #drupal-off-canvas:not(.drupal-off-canvas-reset),
-.ui-dialog-off-canvas #drupal-off-canvas-wrapper {
+.ui-dialog-off-canvas #drupal-off-canvas {
   overflow-y: scroll!important;
   &::after {
     float: left;
@@ -13,8 +12,7 @@
 }
 
 // Grid for image gallery block.
-#drupal-off-canvas:not(.drupal-off-canvas-reset),
-#drupal-off-canvas-wrapper  {
+#drupal-off-canvas  {
   .media-library-selection {
     @include grid-base;
     @include breakpoint(sm) {
@@ -23,8 +21,7 @@
   }
 }
 // Responsive images within drupal-off-canvas and cursor move for media library grid.
-#drupal-off-canvas:not(.drupal-off-canvas-reset),
-#drupal-off-canvas-wrapper {
+#drupal-off-canvas {
   img {
     width: 100%;
   }
@@ -38,10 +35,8 @@
 /*
  * Off-canvas overrides
  */
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-choice span,
-#drupal-off-canvas-wrapper .search-choice span,
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-field .chosen-search-input,
-#drupal-off-canvas-wrapper .search-field .chosen-search-input {
+#drupal-off-canvas .search-choice span,
+#drupal-off-canvas .search-field .chosen-search-input {
   color: #000 !important;
   background: #fff !important;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
@@ -51,21 +46,18 @@
 }
 
 // Override classy negative bottom margin.
-#drupal-off-canvas:not(.drupal-off-canvas-reset) table,
-#drupal-off-canvas-wrapper table {
+#drupal-off-canvas table {
   margin: 0 -20px 0 -20px;
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .layout-builder-style-heading,
-#drupal-off-canvas-wrapper .layout-builder-style-heading {
+#drupal-off-canvas .layout-builder-style-heading {
   border-bottom: 1px solid #999;
   font-size: 15px;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .ui-autocomplete,
-#drupal-off-canvas-wrapper .ui-autocomplete {
+#drupal-off-canvas .ui-autocomplete {
   li {
     background: #fff !important;
 
@@ -77,13 +69,11 @@
   }
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-choice span,
-#drupal-off-canvas-wrapper .search-choice span {
+#drupal-off-canvas .search-choice span {
   background: transparent !important;
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .field--type-entity-reference-revisions>div>fieldset,
-#drupal-off-canvas-wrapper .field--type-entity-reference-revisions>div>fieldset {
+#drupal-off-canvas .field--type-entity-reference-revisions>div>fieldset {
   border: 1px solid #999;
   padding: 15px;
 
@@ -100,28 +90,23 @@
   }
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) th.ief-tabledrag-header,
-#drupal-off-canvas-wrapper th.ief-tabledrag-header,
-#drupal-off-canvas:not(.drupal-off-canvas-reset) td.ief-tabledrag-handle,
-#drupal-off-canvas-wrapper td.ief-tabledrag-handle {
+#drupal-off-canvas th.ief-tabledrag-header,
+#drupal-off-canvas td.ief-tabledrag-handle {
   width: 20px
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) select[multiple] option,
-#drupal-off-canvas-wrapper select[multiple] option {
+#drupal-off-canvas select[multiple] option {
   color: #000;
   background: #fff;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
 }
 
-#drupal-off-canvas:not(.drupal-off-canvas-reset) form,
-#drupal-off-canvas-wrapper form {
+#drupal-off-canvas form {
   padding-top: 10px;
 }
 
 // Statistic admin UX.
-#drupal-off-canvas:not(.drupal-off-canvas-reset),
-#drupal-off-canvas-wrapper {
+#drupal-off-canvas {
   [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
 
     .fieldset-legend {
@@ -137,18 +122,15 @@
 }
 
 // Allow the details summary open/close marker to appear.
-#drupal-off-canvas:not(.drupal-off-canvas-reset) details,
-#drupal-off-canvas-wrapper details,
-#drupal-off-canvas:not(.drupal-off-canvas-reset) summary,
-#drupal-off-canvas-wrapper summary {
+#drupal-off-canvas details,
+#drupal-off-canvas summary {
   list-style-position:revert;
   list-style-image: none;
   list-style-type: revert;
 }
 
 // Styles for smart date date range.
-#drupal-off-canvas:not(.drupal-off-canvas-reset) .smartdate--time-inline,
-#drupal-off-canvas-wrapper .smartdate--time-inline {
+#drupal-off-canvas .smartdate--time-inline {
   @include breakpoint(sm) {
     display: flex !important;
     align-items: center !important;
