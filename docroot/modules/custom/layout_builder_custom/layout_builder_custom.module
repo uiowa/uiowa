@@ -272,6 +272,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
                 break;
 
+              // Set square to default for image gallery.
+              case 'inline_block:uiowa_image_gallery':
+                $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
+                break;
+
               // Media left, media circle, and no border are the defaults.
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
