@@ -2843,23 +2843,19 @@ function sitenow_update_9072() {
       $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
       $has_padding_all = in_array('block_padding_all', $styles);
 
-      // Initialize the final styles array.
-      $final_styles = [];
-      // Check if there are multiple styles selected.
+      // Match expression to determine the styles.
+      $final_styles = match (TRUE) {
+        $has_padding_all_extra => ['block_padding_all_extra'],
+        $has_padding_all => ['block_padding_all'],
+        default => [],
+      };
+
+      // If both 'block_padding_all_extra' and 'block_padding_all'
+      // are selected, remove 'block_padding_all'.
       if ($has_padding_all_extra && $has_padding_all) {
-        // If both are selected, set it to all extra.
         $styles = array_diff($styles, ['block_padding_all']);
       }
-      elseif ($has_padding_all_extra) {
-        // Only 'block_padding_all_extra' is selected.
-        $final_styles[] = 'block_padding_all_extra';
-      }
-      elseif ($has_padding_all) {
-        // Only 'block_padding_all' is selected.
-        $final_styles[] = 'block_padding_all';
-      }
 
-      // Merge the final styles with any other existing styles.
       $styles = array_unique(array_merge($styles, $final_styles));
 
       $component->set('layout_builder_styles_style', $styles);
