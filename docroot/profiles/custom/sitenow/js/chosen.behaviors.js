@@ -3,10 +3,10 @@
  * Chosen.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   Drupal.behaviors.selectChosen = {
-    attach: function (context, setting) {
-      $("select[multiple='multiple']", context).once('selectChosen').each(function () {
+    attach: function (context) {
+      $(once('selectChosen', "select[multiple='multiple']", context)).each(function () {
         $("select[multiple='multiple']").chosen({
           placeholder_text_multiple: "- Select -",
           width: "100%",
@@ -14,4 +14,4 @@
       });
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);
