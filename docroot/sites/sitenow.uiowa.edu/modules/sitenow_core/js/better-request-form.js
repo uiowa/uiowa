@@ -3,7 +3,7 @@
  * Request form enhancements.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   'use strict';
 
   /**
@@ -11,7 +11,7 @@
    */
   Drupal.behaviors.betterRequestForm = {
     attach: function (context, settings) {
-      $('#edit-request-type input', context).once('betterRequestForm').click(function (e) {
+      $(once('betterRequestForm', '#edit-request-type input', context)).click(function (e) {
         let val = $(this).val();
 
         if (val === 'New') {
@@ -30,4 +30,4 @@
     }
   };
 
-} (jQuery, Drupal));
+} (jQuery, Drupal, once));
