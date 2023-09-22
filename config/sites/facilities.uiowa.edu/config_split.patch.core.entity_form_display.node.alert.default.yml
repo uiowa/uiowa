@@ -15,12 +15,12 @@ adding:
       - media_library
   content:
     body:
-      weight: 9
+      weight: 8
     created:
-      weight: 20
+      weight: 19
     field_alert_accessible_route:
       type: string_textarea
-      weight: 14
+      weight: 13
       region: content
       settings:
         rows: 5
@@ -28,13 +28,13 @@ adding:
       third_party_settings: {  }
     field_alert_affected_bus_routes:
       type: options_buttons
-      weight: 13
+      weight: 12
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_alternate_route:
       type: string_textarea
-      weight: 15
+      weight: 14
       region: content
       settings:
         rows: 5
@@ -42,13 +42,13 @@ adding:
       third_party_settings: {  }
     field_alert_building:
       type: options_select
-      weight: 3
+      weight: 2
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_buildings_locations:
       type: string_textfield
-      weight: 5
+      weight: 4
       region: content
       settings:
         size: 60
@@ -56,19 +56,19 @@ adding:
       third_party_settings: {  }
     field_alert_category:
       type: options_buttons
-      weight: 6
+      weight: 5
     field_alert_date:
-      weight: 8
+      weight: 7
     field_alert_override_building:
       type: boolean_checkbox
-      weight: 4
+      weight: 3
       region: content
       settings:
         display_label: true
       third_party_settings: {  }
     field_alert_project_number:
       type: string_textfield
-      weight: 1
+      weight: 0
       region: content
       settings:
         size: 60
@@ -76,7 +76,7 @@ adding:
       third_party_settings: {  }
     field_alert_short_work_desc:
       type: string_textfield
-      weight: 2
+      weight: 1
       region: content
       settings:
         size: 60
@@ -84,45 +84,47 @@ adding:
       third_party_settings: {  }
     field_alert_traffic_control:
       type: options_buttons
-      weight: 11
+      weight: 10
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_traffic_control_plan:
       type: media_library_widget
-      weight: 12
+      weight: 11
       region: content
       settings:
         media_types: {  }
       third_party_settings: {  }
     field_meta_tags:
-      weight: 17
-    moderation_state:
-      weight: 25
-    path:
-      weight: 23
-    promote:
-      weight: 7
-    publish_on:
-      weight: 21
-    scheduler_settings:
-      weight: 19
-    simple_sitemap:
       weight: 16
-    status:
-      weight: 26
-    sticky:
-      weight: 10
-    uid:
+    moderation_state:
+      weight: 24
+    path:
+      weight: 22
+    promote:
+      weight: 6
+    publish_on:
+      weight: 20
+    scheduler_settings:
       weight: 18
+    simple_sitemap:
+      weight: 15
+    status:
+      weight: 25
+    sticky:
+      weight: 9
+    uid:
+      weight: 17
     unpublish_on:
       type: datetime_timestamp_no_default
-      weight: 22
+      weight: 21
       region: content
       settings: {  }
       third_party_settings: {  }
     url_redirects:
-      weight: 24
+      weight: 23
+  hidden:
+    title: true
 removing:
   content:
     body:
@@ -161,5 +163,13 @@ removing:
       weight: 1
     url_redirects:
       weight: 7
+    title:
+      type: string_textfield
+      weight: 0
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
   hidden:
     unpublish_on: true
