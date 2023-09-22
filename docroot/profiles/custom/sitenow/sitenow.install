@@ -2840,25 +2840,28 @@ function sitenow_update_9072() {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
       $styles = $component->get('layout_builder_styles_style');
 
-      $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
-      $has_padding_all = in_array('block_padding_all', $styles);
+      if (is_array($styles)) {
 
-      // Match expression to determine the styles.
-      $final_styles = match (TRUE) {
-        $has_padding_all_extra => ['block_padding_all_extra'],
-        $has_padding_all => ['block_padding_all'],
-        default => [],
-      };
+        $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
+        $has_padding_all = in_array('block_padding_all', $styles);
 
-      // If both 'block_padding_all_extra' and 'block_padding_all'
-      // are selected, remove 'block_padding_all'.
-      if ($has_padding_all_extra && $has_padding_all) {
-        $styles = array_diff($styles, ['block_padding_all']);
+        // Match expression to determine the styles.
+        $final_styles = match (TRUE) {
+          $has_padding_all_extra => ['block_padding_all_extra'],
+          $has_padding_all => ['block_padding_all'],
+          default => [],
+        };
+
+        // If both 'block_padding_all_extra' and 'block_padding_all'
+        // are selected, remove 'block_padding_all'.
+        if ($has_padding_all_extra && $has_padding_all) {
+          $styles = array_diff($styles, ['block_padding_all']);
+        }
+
+        $styles = array_unique(array_merge($styles, $final_styles));
+
+        $component->set('layout_builder_styles_style', $styles);
       }
-
-      $styles = array_unique(array_merge($styles, $final_styles));
-
-      $component->set('layout_builder_styles_style', $styles);
     });
   }
 }
