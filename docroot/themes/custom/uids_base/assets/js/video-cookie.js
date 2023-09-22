@@ -5,8 +5,8 @@
   const UIOWA_VIDEO_COOKIE = 'uiowa-video';
 
   Drupal.behaviors.uidsVideoCookie = {
-    attach: function (context, settings) {
-      $(once('media-video-attach', 'media--video', context)).each(function () {
+    attach: function (context) {
+      $(once('media-video-attach', '.media--video', context)).each(function () {
         const video = this.querySelector('video');
         // We only need to execute the rest of this if the video element exists.
         if (video) {
@@ -58,7 +58,7 @@
                   }
                 }
               }
-            }
+            };
           }
         }
       });
