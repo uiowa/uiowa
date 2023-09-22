@@ -1,8 +1,8 @@
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
   // Attach aos_kiosk behavior.
   Drupal.behaviors.aos_kiosk = {
     attach: function (context, settings) {
-      $('.view-id-areas_of_study_kiosk', context).once('aos_kiosk').each(function (index) {
+      $(once('aos_kiosk', '.view-id-areas_of_study_kiosk', context)).each(function (index) {
         // Create a mutation observer for the future to watch for changes to the view.
         let observeDOM = (function(){
           let MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
@@ -111,4 +111,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);
