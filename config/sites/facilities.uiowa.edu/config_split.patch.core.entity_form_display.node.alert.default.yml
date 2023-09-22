@@ -15,24 +15,10 @@ adding:
       - media_library
   content:
     body:
-      weight: 8
+      weight: 9
     created:
-      weight: 19
+      weight: 20
     field_alert_accessible_route:
-      type: string_textarea
-      weight: 13
-      region: content
-      settings:
-        rows: 5
-        placeholder: ''
-      third_party_settings: {  }
-    field_alert_affected_bus_routes:
-      type: options_buttons
-      weight: 12
-      region: content
-      settings: {  }
-      third_party_settings: {  }
-    field_alert_alternate_route:
       type: string_textarea
       weight: 14
       region: content
@@ -40,15 +26,29 @@ adding:
         rows: 5
         placeholder: ''
       third_party_settings: {  }
+    field_alert_affected_bus_routes:
+      type: options_buttons
+      weight: 13
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_alternate_route:
+      type: string_textarea
+      weight: 15
+      region: content
+      settings:
+        rows: 5
+        placeholder: ''
+      third_party_settings: {  }
     field_alert_building:
       type: options_select
-      weight: 2
+      weight: 3
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_buildings_locations:
       type: string_textfield
-      weight: 4
+      weight: 5
       region: content
       settings:
         size: 60
@@ -56,25 +56,17 @@ adding:
       third_party_settings: {  }
     field_alert_category:
       type: options_buttons
-      weight: 5
+      weight: 6
     field_alert_date:
-      weight: 7
+      weight: 8
     field_alert_override_building:
       type: boolean_checkbox
-      weight: 3
+      weight: 4
       region: content
       settings:
         display_label: true
       third_party_settings: {  }
     field_alert_project_number:
-      type: string_textfield
-      weight: 0
-      region: content
-      settings:
-        size: 60
-        placeholder: ''
-      third_party_settings: {  }
-    field_alert_short_work_desc:
       type: string_textfield
       weight: 1
       region: content
@@ -82,47 +74,55 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
+    field_alert_short_work_desc:
+      type: string_textfield
+      weight: 2
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
     field_alert_traffic_control:
       type: options_buttons
-      weight: 10
+      weight: 11
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_traffic_control_plan:
       type: media_library_widget
-      weight: 11
+      weight: 12
       region: content
       settings:
         media_types: {  }
       third_party_settings: {  }
     field_meta_tags:
-      weight: 16
-    moderation_state:
-      weight: 24
-    path:
-      weight: 22
-    promote:
-      weight: 6
-    publish_on:
-      weight: 20
-    scheduler_settings:
-      weight: 18
-    simple_sitemap:
-      weight: 15
-    status:
-      weight: 25
-    sticky:
-      weight: 9
-    uid:
       weight: 17
+    moderation_state:
+      weight: 25
+    path:
+      weight: 23
+    promote:
+      weight: 7
+    publish_on:
+      weight: 21
+    scheduler_settings:
+      weight: 19
+    simple_sitemap:
+      weight: 16
+    status:
+      weight: 26
+    sticky:
+      weight: 10
+    uid:
+      weight: 18
     unpublish_on:
       type: datetime_timestamp_no_default
-      weight: 21
+      weight: 22
       region: content
       settings: {  }
       third_party_settings: {  }
     url_redirects:
-      weight: 23
+      weight: 24
   hidden:
     title: true
 removing:
@@ -163,13 +163,5 @@ removing:
       weight: 1
     url_redirects:
       weight: 7
-    title:
-      type: string_textfield
-      weight: 0
-      region: content
-      settings:
-        size: 60
-        placeholder: ''
-      third_party_settings: {  }
   hidden:
     unpublish_on: true
