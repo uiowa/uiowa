@@ -6,6 +6,15 @@
 // This needs to be declared globally outside the behavior.
 uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
+function vanillaOnce() {
+  if (!document.body.getAttribute('data-once')) {
+    document.body.setAttribute('data-once', 'true');
+    return true;
+  } else {
+    return false;
+  }
+}
+
 (function ($, Drupal) {
   'use strict';
 
@@ -145,7 +154,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
    */
   Drupal.behaviors.uiowaProfiles = {
     attach: function (context, settings) {
-      $(document, context).once('uiowaProfiles').each(function() {
+      if (vanillaOnce) {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
         // Note that this seems to observe multiple changes per person.
@@ -159,7 +168,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
           childList: true,
           subtree: true
         });
-      });
+      }
     }
   };
 
