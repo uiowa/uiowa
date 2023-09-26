@@ -5680,3 +5680,9 @@ $sites['medicinecommunity.uiowa.ddev.site'] = 'community.medicine.uiowa.edu';
 $sites['medicinecommunity.dev.drupal.uiowa.edu'] = 'community.medicine.uiowa.edu';
 $sites['medicinecommunity.stage.drupal.uiowa.edu'] = 'community.medicine.uiowa.edu';
 $sites['medicinecommunity.prod.drupal.uiowa.edu'] = 'community.medicine.uiowa.edu';
+
+// Directory aliases for shpep.medicine.uiowa.edu.
+$sites['medicineshpep.uiowa.ddev.site'] = 'shpep.medicine.uiowa.edu';
+$sites['medicineshpep.dev.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
+$sites['medicineshpep.stage.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
+$sites['medicineshpep.prod.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
