@@ -6,16 +6,7 @@
 // This needs to be declared globally outside the behavior.
 uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
-function vanillaOnce() {
-  if (!document.body.getAttribute('data-once')) {
-    document.body.setAttribute('data-once', 'true');
-    return true;
-  } else {
-    return false;
-  }
-}
-
-(function ($, Drupal) {
+(function (Drupal, once) {
   'use strict';
 
   Drupal.uiowaProfiles = {};
@@ -153,8 +144,8 @@ function vanillaOnce() {
    * Profiles behavior.
    */
   Drupal.behaviors.uiowaProfiles = {
-    attach: function (context, settings) {
-      if (vanillaOnce) {
+    attach(context, settings) {
+      once('uiowaProfiles', context).forEach(function(profiles) {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
         // Note that this seems to observe multiple changes per person.
@@ -168,8 +159,8 @@ function vanillaOnce() {
           childList: true,
           subtree: true
         });
-      }
+      });
     }
   };
 
-} (jQuery, Drupal));
+} (Drupal, once));
