@@ -51,8 +51,8 @@
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
     {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
       {% block accordion_content %}
-        <div class="grid--twocol--50-50">
-          <div class="list-container__inner photoswipe-gallery">
+        <div class="media--widescreen">
+          <div class="uiowa-image-gallery photoswipe-gallery">
             {% for item in accordion_item_content %}
               {{ item.content }}
             {% endfor %}

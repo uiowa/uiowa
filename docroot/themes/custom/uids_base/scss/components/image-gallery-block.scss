@@ -9,48 +9,6 @@
 .pswp__caption__center {
   text-align: center;
 }
-.block-inline-blockuiowa-image-gallery .uiowa-image-gallery,
-.block-field-blocknodearticlefield-gallery-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: -$gutter / 2;
-  margin-right: -$gutter / 2;
-
-  .page-node-type-article & {
-    margin-left: unset;
-    margin-right: unset;
-  }
-
-  .field--name-field-gallery-images {
-    flex-basis: 100%;
-  }
-  .media--view-mode-image-gallery {
-    display: table-cell;
-    flex: 220px 1 1;
-    margin: 0 .6rem 1rem;
-    a.photoswipe {
-      &:hover, &:focus {
-        img {
-          opacity:0.6;
-        }
-      }
-    }
-    img {
-      object-fit: cover;
-      height: 220px;
-      width: 100%;
-    }
-  }
-}
-
-.block-field-blocknodearticlefield-gallery-images .media--view-mode-image-gallery {
-  display: block;
-  margin: 0 .6rem 1rem;
-  @include breakpoint(sm) {
-    margin: 0;
-  }
-}
 
 // Masonry
 .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
@@ -69,18 +27,43 @@
     margin: 0 0 1.5rem;
     img {
       object-fit: unset;
+      aspect-ratio: unset;
       height: auto;
     }
   }
 }
 
-@supports (overflow:-webkit-marquee) and (justify-content:inherit) {
-  /*
-    Define here the CSS styles applied only to the Safari 9 version when
-    running in any device
-   */
 
-  .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery .media--view-mode-image-gallery {
-    display: inline-flex;
-  }
+/* Use :has to provide better visual fallback for 1 or 2 items */
+/* Only works in https://caniuse.com/css-has */
+.uiowa-image-gallery:has(.media:first-child:last-child),
+.uiowa-image-gallery:has(.media:first-child + .media:last-child) {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+//image-gallery--auto-fit
+.uiowa-image-gallery {
+  display: grid;
+  grid-gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.uiowa-image-gallery img {
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.media--no-crop .uiowa-image-gallery img {
+  object-fit: unset;
+  aspect-ratio: unset;
+  width: 100%;
+}
+
+.media--square .uiowa-image-gallery img {
+  aspect-ratio: 1 / 1;
+}
+
+.media--widescreen .uiowa-image-gallery img {
+  aspect-ratio: 16 / 9;
 }
