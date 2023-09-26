@@ -383,7 +383,8 @@ class SettingsForm extends ConfigFormBase {
         return $this->aliasCleaner->cleanAlias($v['path']);
       }, $directories);
 
-      // Count how many times each path occurs and mark it as a duplicate if > 1.
+      // Count how many times each path occurs
+      // and mark it as a duplicate if > 1.
       $dups = [];
 
       foreach (array_count_values($paths) as $val => $c) {

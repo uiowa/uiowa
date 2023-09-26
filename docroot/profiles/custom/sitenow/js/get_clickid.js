@@ -1,13 +1,13 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   // Attach get_clickid behavior to webform.
   Drupal.behaviors.get_clickid = {
-    attach: function (context, settings) {
+    attach: function (context) {
       // With Acquia varnish, Webform can't pre-populate
       // Google/Facebook Click IDs (gclid, fbclid).
       // So this JS is added to forms with these hidden inputs.
       const params = new URLSearchParams(window.location.search);
       let query = [];
-      // Get the params from the address bar so we have values to
+      // Get the params from the address bar, so we have values to
       // populate inputs that meet our attribute criteria.
       // Prepopulate is a custom attribute added in sitenow.profile sitenow_webform_element_alter().
       ['gclid', 'fbclid'].forEach(function (param) {
@@ -23,12 +23,12 @@
       // populate the value.
       if (query.length) {
         let queryString = query.join(',');
-        $('.webform-submission-form', context).once('get_clickid').each(function (index) {
+        $(once('get_clickid', '.webform-submission-form', context)).each(function () {
           context.querySelectorAll(queryString).forEach(function (input) {
             input.value = params.get(input.name);
-          })
+          });
         });
       }
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

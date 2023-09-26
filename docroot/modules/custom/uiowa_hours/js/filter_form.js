@@ -1,8 +1,8 @@
-(function ($, Drupal, drupalSettings) {
+(function (Drupal, $, once) {
   'use strict';
   Drupal.behaviors.uiowa_hours_filter_form = {
-    attach: function (context, settings) {
-      $('.uiowa-hours-filter-form').once('filter_form').each(function () {
+    attach: function (context) {
+      $(once('filter_form', '.uiowa-hours-filter-form', context)).each(function () {
         let isDisabled = $('input[type="submit"]', this).prop('disabled');
 
         if (isDisabled) {
@@ -20,4 +20,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, jQuery, once);

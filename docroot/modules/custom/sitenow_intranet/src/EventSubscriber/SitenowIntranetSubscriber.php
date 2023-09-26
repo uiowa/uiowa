@@ -16,6 +16,23 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class SitenowIntranetSubscriber implements EventSubscriberInterface {
 
   /**
+   * Current user account.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a SitenowIntranetSubscriber.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   */
+  public function __construct($current_user) {
+    $this->currentUser = $current_user;
+  }
+
+  /**
    * Kernel request event handler.
    *
    * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
@@ -30,13 +47,12 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
     // whether it is a sub-request (which is what happens when you throw the
     // HttpException classes).
     if (is_null($code) || !(in_array($code, array_keys($status_code_map)) && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
-      $current_user = \Drupal::currentUser();
       $route_name = $event->getRequest()
         ?->attributes
         ?->get('_route');
       // Deny anonymous users unless they are hitting routes that need to be
       // accessible.
-      if ($current_user->isAnonymous()) {
+      if ($this->currentUser->isAnonymous()) {
         if (!in_array($route_name, [
           'robotstxt.content',
           'samlauth.saml_controller_acs',
@@ -52,7 +68,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
       // Even though the id() method shows that it is supposed to return an int,
       // it sometimes does not, so we are casting the value to an int to ensure
       // it matches.
-      elseif ((int) $current_user->id() !== 1 && $current_user->getRoles() === ['authenticated']) {
+      elseif ((int) $this->currentUser->id() !== 1 && $this->currentUser->getRoles() === ['authenticated']) {
         if (!in_array($route_name, [
           'entity.user.edit_form',
           'entity.user.canonical',
