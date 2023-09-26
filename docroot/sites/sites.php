@@ -5668,3 +5668,9 @@ $sites['medicinegenomeediting.uiowa.ddev.site'] = 'genomeediting.medicine.uiowa.
 $sites['medicinegenomeediting.dev.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
 $sites['medicinegenomeediting.stage.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
 $sites['medicinegenomeediting.prod.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
+
+// Directory aliases for crystallography.medicine.uiowa.edu.
+$sites['medicinecrystallography.uiowa.ddev.site'] = 'crystallography.medicine.uiowa.edu';
+$sites['medicinecrystallography.dev.drupal.uiowa.edu'] = 'crystallography.medicine.uiowa.edu';
+$sites['medicinecrystallography.stage.drupal.uiowa.edu'] = 'crystallography.medicine.uiowa.edu';
+$sites['medicinecrystallography.prod.drupal.uiowa.edu'] = 'crystallography.medicine.uiowa.edu';
