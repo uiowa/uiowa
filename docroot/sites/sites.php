@@ -5716,3 +5716,9 @@ $sites['medicinedemo.uiowa.ddev.site'] = 'demo.medicine.uiowa.edu';
 $sites['medicinedemo.dev.drupal.uiowa.edu'] = 'demo.medicine.uiowa.edu';
 $sites['medicinedemo.stage.drupal.uiowa.edu'] = 'demo.medicine.uiowa.edu';
 $sites['medicinedemo.prod.drupal.uiowa.edu'] = 'demo.medicine.uiowa.edu';
+
+// Directory aliases for mind.lab.uiowa.edu.
+$sites['labmind.uiowa.ddev.site'] = 'mind.lab.uiowa.edu';
+$sites['labmind.dev.drupal.uiowa.edu'] = 'mind.lab.uiowa.edu';
+$sites['labmind.stage.drupal.uiowa.edu'] = 'mind.lab.uiowa.edu';
+$sites['labmind.prod.drupal.uiowa.edu'] = 'mind.lab.uiowa.edu';
