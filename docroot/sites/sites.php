@@ -5686,3 +5686,9 @@ $sites['medicineshpep.uiowa.ddev.site'] = 'shpep.medicine.uiowa.edu';
 $sites['medicineshpep.dev.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
 $sites['medicineshpep.stage.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
 $sites['medicineshpep.prod.drupal.uiowa.edu'] = 'shpep.medicine.uiowa.edu';
+
+// Directory aliases for perfusion.medicine.uiowa.edu.
+$sites['medicineperfusion.uiowa.ddev.site'] = 'perfusion.medicine.uiowa.edu';
+$sites['medicineperfusion.dev.drupal.uiowa.edu'] = 'perfusion.medicine.uiowa.edu';
+$sites['medicineperfusion.stage.drupal.uiowa.edu'] = 'perfusion.medicine.uiowa.edu';
+$sites['medicineperfusion.prod.drupal.uiowa.edu'] = 'perfusion.medicine.uiowa.edu';
