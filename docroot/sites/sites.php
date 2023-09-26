@@ -5662,3 +5662,9 @@ $sites['medicinencbc.uiowa.ddev.site'] = 'ncbc.medicine.uiowa.edu';
 $sites['medicinencbc.dev.drupal.uiowa.edu'] = 'ncbc.medicine.uiowa.edu';
 $sites['medicinencbc.stage.drupal.uiowa.edu'] = 'ncbc.medicine.uiowa.edu';
 $sites['medicinencbc.prod.drupal.uiowa.edu'] = 'ncbc.medicine.uiowa.edu';
+
+// Directory aliases for genomeediting.medicine.uiowa.edu.
+$sites['medicinegenomeediting.uiowa.ddev.site'] = 'genomeediting.medicine.uiowa.edu';
+$sites['medicinegenomeediting.dev.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
+$sites['medicinegenomeediting.stage.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
+$sites['medicinegenomeediting.prod.drupal.uiowa.edu'] = 'genomeediting.medicine.uiowa.edu';
