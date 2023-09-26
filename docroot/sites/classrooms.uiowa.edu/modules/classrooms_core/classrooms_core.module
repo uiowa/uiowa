@@ -190,7 +190,7 @@ function classrooms_core_preprocess_block(&$variables) {
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
       uiowa_core_set_attributes($variables, [
-        'grid--threecol--33-34-33',
+        'media--widescreen',
         'photoswipe-gallery',
       ]);
       break;
