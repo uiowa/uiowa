@@ -1,10 +1,16 @@
 /**
  * @file
  */
-(function ($, Drupal, drupalSettings, cookies) {
+(function ($, Drupal, drupalSettings, cookies, once) {
   Drupal.behaviors.layoutBuilderCustomOverrides = {
     attach: function (context, settings) {
-      $(window).once('off-canvas-overrides').on({
+      // Can not use `window` or `document` directly.
+      if (!once('off-canvas-overrides', 'html').length) {
+        // Early return avoid changing the indentation
+        // for the rest of the code.
+        return;
+      }
+      $(window).on({
         'dialog:aftercreate': function (event, dialog, $element) {
           let justCreated = true;
           if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
@@ -57,4 +63,4 @@
     origBeforeSubmit.call(formValues, element, options);
   };
 
-})(jQuery, Drupal, drupalSettings, window.Cookies);
+})(jQuery, Drupal, drupalSettings, window.Cookies, once);

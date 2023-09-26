@@ -5,11 +5,11 @@
  * Using jQuery here since it was deemed necessary for this to work in IE11.
  */
 
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, drupalSettings, once) {
   // Query our shim API for data and update placeholders.
   Drupal.behaviors.uiowaCovid = {
     attach: function (context, settings) {
-      $('.block-uiowa-covid').once('uiowaCovid').each(function () {
+      $(once('uiowaCovid', '.block-uiowa-covid')).each(function () {
         $.ajax({
           url: settings.uiowaCovid.endpoint,
           dataType: "json",
@@ -45,4 +45,4 @@
     }
   };
 
-}(jQuery, Drupal, drupalSettings));
+}(jQuery, Drupal, drupalSettings, once));

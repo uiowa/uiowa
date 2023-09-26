@@ -38,7 +38,7 @@ global-styling:
       assets/css/theme/print.css: { media: print }
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
 
 # Third-party libraries
 # Accessible Menu
@@ -128,7 +128,8 @@ video-cookie:
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
-    - core/jquery.cookie
+    - core/once
+    - core/js-cookie
     - uids_base/video
 slider:
   css:
@@ -163,8 +164,8 @@ hero-block-video:
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
-    - core/jquery.once
-    - core/jquery.cookie
+    - core/once
+    - core/js-cookie
 vertical-video:
   css:
     component:
@@ -258,6 +259,8 @@ paragraphs-carousel:
       assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
+    - core/jquery
+    - core/once
 paragraphs-featured-content:
   css:
     component:
