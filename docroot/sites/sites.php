@@ -5704,3 +5704,9 @@ $sites['medicinevectorcore.uiowa.ddev.site'] = 'vectorcore.medicine.uiowa.edu';
 $sites['medicinevectorcore.dev.drupal.uiowa.edu'] = 'vectorcore.medicine.uiowa.edu';
 $sites['medicinevectorcore.stage.drupal.uiowa.edu'] = 'vectorcore.medicine.uiowa.edu';
 $sites['medicinevectorcore.prod.drupal.uiowa.edu'] = 'vectorcore.medicine.uiowa.edu';
+
+// Directory aliases for pain.medicine.uiowa.edu.
+$sites['medicinepain.uiowa.ddev.site'] = 'pain.medicine.uiowa.edu';
+$sites['medicinepain.dev.drupal.uiowa.edu'] = 'pain.medicine.uiowa.edu';
+$sites['medicinepain.stage.drupal.uiowa.edu'] = 'pain.medicine.uiowa.edu';
+$sites['medicinepain.prod.drupal.uiowa.edu'] = 'pain.medicine.uiowa.edu';
