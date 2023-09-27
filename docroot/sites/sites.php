@@ -5728,3 +5728,9 @@ $sites['labmokadem.uiowa.ddev.site'] = 'mokadem.lab.uiowa.edu';
 $sites['labmokadem.dev.drupal.uiowa.edu'] = 'mokadem.lab.uiowa.edu';
 $sites['labmokadem.stage.drupal.uiowa.edu'] = 'mokadem.lab.uiowa.edu';
 $sites['labmokadem.prod.drupal.uiowa.edu'] = 'mokadem.lab.uiowa.edu';
+
+// Directory aliases for hallieroach.sites.uiowa.edu.
+$sites['siteshallieroach.uiowa.ddev.site'] = 'hallieroach.sites.uiowa.edu';
+$sites['siteshallieroach.dev.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
+$sites['siteshallieroach.stage.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
+$sites['siteshallieroach.prod.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
