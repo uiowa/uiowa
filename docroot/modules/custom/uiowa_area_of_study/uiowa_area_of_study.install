@@ -35,6 +35,7 @@ function uiowa_area_of_study_update_9003(&$sandbox) {
   // Process all nodes.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'area_of_study')
       ->execute();
     $sandbox['total'] = count($query);

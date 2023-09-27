@@ -165,7 +165,7 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     // Grab all nids for nodes with paragraphs.
     $nids = sitenow_p2lb_paragraph_nodes();
-    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($nids);
+    $nodes = $this->entityTypeManager->getStorage('node')->loadMultiple($nids);
 
     foreach ($nodes as $node) {
       $this->conversionManager->createConverter($node)->convert();

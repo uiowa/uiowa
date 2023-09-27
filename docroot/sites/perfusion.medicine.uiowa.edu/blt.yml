@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineperfusion.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineperfusion
+  human_name: perfusion.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineperfusion.prod
+drupal:
+  db:
+    database: perfusion_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineperfusion.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Perfusion Education Program'
