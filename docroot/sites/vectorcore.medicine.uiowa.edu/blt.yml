@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinevectorcore.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinevectorcore
+  human_name: vectorcore.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinevectorcore.prod
+drupal:
+  db:
+    database: vectorcore_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinevectorcore.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Viral Vector Core Facility'

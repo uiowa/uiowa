@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinegenomeediting.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinegenomeediting
+  human_name: genomeediting.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinegenomeediting.prod
+drupal:
+  db:
+    database: genomeediting_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinegenomeediting.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Genome Editing Facility'
