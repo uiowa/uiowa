@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmind.uiowa.ddev.site
+    protocol: https
+  machine_name: labmind
+  human_name: mind.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmind.prod
+drupal:
+  db:
+    database: mind_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmind.prod.drupal.uiowa.edu'
+  requester: ellamorris
+  site-name: 'M.I.N.D. Lab '

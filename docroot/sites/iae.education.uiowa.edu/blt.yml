@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: educationiae.uiowa.ddev.site
+    protocol: https
+  machine_name: educationiae
+  human_name: iae.education.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: educationiae.prod
+drupal:
+  db:
+    database: iae_education_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://educationiae.prod.drupal.uiowa.edu'
+  requester: jfinley
+  site-name: 'Iowa Academy of Education'

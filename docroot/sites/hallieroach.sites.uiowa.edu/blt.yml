@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshallieroach.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshallieroach
+  human_name: hallieroach.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshallieroach.prod
+drupal:
+  db:
+    database: hallieroach_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshallieroach.prod.drupal.uiowa.edu'
+  requester: hmroach
+  site-name: hallieroach
