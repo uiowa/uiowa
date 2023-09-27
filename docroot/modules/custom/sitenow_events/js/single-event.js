@@ -2,7 +2,7 @@
  * @file
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   Drupal.theme.date_repeats_anchor = function (id, path, title, classes, icon) {
     var markup = '<span class="date-repeats-icon fas fa-ellipsis-h"></span><a id="' + id + '" href="' + path + '" title="' + title + '" class="' + classes + '">' + title + '</a>';
     return markup;
@@ -11,7 +11,7 @@
   // Attach behavior.
   Drupal.behaviors.date_repeats = {
     attach: function (context, settings) {
-      $('div.event-time', context).once("date-repeats").each(function () {
+      $(once('date-repeats', 'div.event-time', context)).each(function() {
         var dateFuture = $(this).find('.date-instance__future');
         var datePast = $(this).find('.date-instance__past');
         var dateToggle = Drupal.theme('date_repeats_anchor', 'date-repeats-toggle', '#', 'Show All Dates', 'date-repeats-toggle is-collapsed');
@@ -68,4 +68,4 @@
       });
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);
