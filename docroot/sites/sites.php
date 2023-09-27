@@ -5734,3 +5734,9 @@ $sites['siteshallieroach.uiowa.ddev.site'] = 'hallieroach.sites.uiowa.edu';
 $sites['siteshallieroach.dev.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
 $sites['siteshallieroach.stage.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
 $sites['siteshallieroach.prod.drupal.uiowa.edu'] = 'hallieroach.sites.uiowa.edu';
+
+// Directory aliases for iae.education.uiowa.edu.
+$sites['educationiae.uiowa.ddev.site'] = 'iae.education.uiowa.edu';
+$sites['educationiae.dev.drupal.uiowa.edu'] = 'iae.education.uiowa.edu';
+$sites['educationiae.stage.drupal.uiowa.edu'] = 'iae.education.uiowa.edu';
+$sites['educationiae.prod.drupal.uiowa.edu'] = 'iae.education.uiowa.edu';
