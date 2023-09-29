@@ -105,7 +105,7 @@
         "drupal/core-project-message": "^9.5.9",
         "drupal/core-recommended": "^9.5.9",
         "drupal/crop": "^2.2",
-        "drupal/cshs": "^3.6",
+        "drupal/cshs": "^4.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/devel": "^4.0",
         "drupal/diff": "^1.1",
@@ -132,7 +132,7 @@
         "drupal/google_tag": "^1.3",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "^2.1",
-        "drupal/iframe_title_filter": "^1.1",
+        "drupal/iframe_title_filter": "^2.0",
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^3.0",
         "drupal/inline_entity_form": "^1.0.0-rc2",
@@ -158,7 +158,7 @@
         "drupal/media_thumbnails_video": "^2.0",
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/menu_block": "^1.7",
-        "drupal/menu_breadcrumb": "^1.7",
+        "drupal/menu_breadcrumb": "^2.0",
         "drupal/menu_link_weight": "^1.0@beta",
         "drupal/menu_per_role": "^1.2",
         "drupal/metatag": "^1.16",
@@ -230,9 +230,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/config_ignore": {
-                "Clear Config Filter plugin cache to update from 2.x to 3.x": "https://www.drupal.org/files/issues/2021-10-25/3226493-3.patch"
-            },
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
@@ -254,7 +251,7 @@
                 "Tabledrag is broken in layout builder sidebar": "https://www.drupal.org/files/issues/2023-03-23/3316720-tabledrag-broken-layout-builder-12.patch"
             },
             "drupal/default_content": {
-                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2021-04-07/3160146-37.patch",
+                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2022-12-06/default_content-3160146-53.patch",
                 "Predictable order of content import": "https://www.drupal.org/files/issues/2020-10-08/3175870.patch"
             },
             "drupal/entity_embed": {
@@ -308,9 +305,6 @@
             },
             "drupal/redirect": {
                 "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
-            },
-            "drupal/replicate": {
-                "Replicating node with non-reusable block added via layout builder does not replicate the block": "https://www.drupal.org/files/issues/2021-10-14/replicate_lb_block_references-3100765-18.patch"
             },
             "drupal/jquery_ui_touch_punch": {
                 "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"
