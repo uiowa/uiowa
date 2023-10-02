@@ -1188,7 +1188,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
 
   LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
-  $variables['attributes']['class'][] = 'list-container grid--first-item-full-width';
+  $variables['attributes']['class'][] = 'list-container';
 
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
@@ -1207,6 +1207,8 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
+    // Add grid modifier class to exclude headline for rendering in grid.
+    $variables['attributes']['class'][] = 'grid--first-item-full-width';
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
