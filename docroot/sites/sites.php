@@ -5782,3 +5782,9 @@ $sites['labbaker.uiowa.ddev.site'] = 'baker.lab.uiowa.edu';
 $sites['labbaker.dev.drupal.uiowa.edu'] = 'baker.lab.uiowa.edu';
 $sites['labbaker.stage.drupal.uiowa.edu'] = 'baker.lab.uiowa.edu';
 $sites['labbaker.prod.drupal.uiowa.edu'] = 'baker.lab.uiowa.edu';
+
+// Directory aliases for fuentes.lab.uiowa.edu.
+$sites['labfuentes.uiowa.ddev.site'] = 'fuentes.lab.uiowa.edu';
+$sites['labfuentes.dev.drupal.uiowa.edu'] = 'fuentes.lab.uiowa.edu';
+$sites['labfuentes.stage.drupal.uiowa.edu'] = 'fuentes.lab.uiowa.edu';
+$sites['labfuentes.prod.drupal.uiowa.edu'] = 'fuentes.lab.uiowa.edu';
