@@ -233,7 +233,10 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
-        "patches": {
+        "patches": {,
+            "drupal/better_exposed_filters": {
+                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
+            },
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
@@ -293,9 +296,6 @@
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch"
             },
-            "drupal/webform": {
-                "Files cannot be attached to the form": "https://www.drupal.org/files/issues/2023-01-09/3328986-19.patch"
-            },
             "drupal/paragraphs": {
                 "Better error messages for missing referenced entities": "https://www.drupal.org/files/issues/2022-02-10/3095945-paragraphs-error-message-20.patch",
                 "find the correct revision ID of the parent": "https://www.drupal.org/files/issues/2020-07-08/access-controll-issue-3090200-22.patch"
@@ -307,8 +307,8 @@
             "drupal/redirect": {
                 "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
             },
-            "drupal/better_exposed_filters": {
-                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
+            "drupal/webform": {
+                "Files cannot be attached to the form": "https://www.drupal.org/files/issues/2023-01-09/3328986-19.patch"
             }
         },
         "installer-types": [
