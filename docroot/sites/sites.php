@@ -5764,3 +5764,9 @@ $sites['labweeks.uiowa.ddev.site'] = 'weeks.lab.uiowa.edu';
 $sites['labweeks.dev.drupal.uiowa.edu'] = 'weeks.lab.uiowa.edu';
 $sites['labweeks.stage.drupal.uiowa.edu'] = 'weeks.lab.uiowa.edu';
 $sites['labweeks.prod.drupal.uiowa.edu'] = 'weeks.lab.uiowa.edu';
+
+// Directory aliases for elcock.lab.uiowa.edu.
+$sites['labelcock.uiowa.ddev.site'] = 'elcock.lab.uiowa.edu';
+$sites['labelcock.dev.drupal.uiowa.edu'] = 'elcock.lab.uiowa.edu';
+$sites['labelcock.stage.drupal.uiowa.edu'] = 'elcock.lab.uiowa.edu';
+$sites['labelcock.prod.drupal.uiowa.edu'] = 'elcock.lab.uiowa.edu';
