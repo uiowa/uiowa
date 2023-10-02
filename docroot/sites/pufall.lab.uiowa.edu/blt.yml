@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpufall.uiowa.ddev.site
+    protocol: https
+  machine_name: labpufall
+  human_name: pufall.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpufall.prod
+drupal:
+  db:
+    database: pufall_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpufall.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Miles Pufall Laboratory'
