@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbaker.uiowa.ddev.site
+    protocol: https
+  machine_name: labbaker
+  human_name: baker.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbaker.prod
+drupal:
+  db:
+    database: baker_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbaker.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Sheila Baker Laboratory'
