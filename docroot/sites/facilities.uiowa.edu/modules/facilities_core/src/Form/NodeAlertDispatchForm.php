@@ -307,6 +307,9 @@ class NodeAlertDispatchForm extends FormBase {
       }
     }
 
+    // Filter out blank but not empty array items.
+    $placeholders = array_filter($placeholders);
+
     return $placeholders;
   }
 
