@@ -223,6 +223,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
             break;
 
+          case 'inline_block:uiowa_text_area':
+          case 'webform_block':
+
+            $form['layout_builder_style_padding']['#empty_option'] = 'None';
+            break;
+
           case 'inline_block:uiowa_card':
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
 
@@ -1188,7 +1194,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
 
   LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
-  $variables['attributes']['class'][] = 'list-container grid--first-item-full-width';
+  $variables['attributes']['class'][] = 'list-container';
 
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
@@ -1207,6 +1213,8 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
+    // Add grid modifier class to exclude headline for rendering in grid.
+    $variables['attributes']['class'][] = 'grid--first-item-full-width';
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
