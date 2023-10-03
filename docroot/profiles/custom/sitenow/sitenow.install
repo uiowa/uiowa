@@ -2853,3 +2853,41 @@ function sitenow_update_9072() {
     $component->set('layout_builder_styles_style', $styles);
   });
 }
+
+/**
+ * Update padding options for single select.
+ */
+function sitenow_update_9073() {
+  foreach ([
+    'inline_block:uiowa_text_area',
+    'webform_block',
+  ] as $block_plugin_id) {
+
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
+
+      if (is_array($styles)) {
+
+        $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
+        $has_padding_all = in_array('block_padding_all', $styles);
+
+        // Match expression to determine the styles.
+        $final_styles = match (TRUE) {
+          $has_padding_all_extra => ['block_padding_all_extra'],
+          $has_padding_all => ['block_padding_all'],
+          default => [],
+        };
+
+        // If both 'block_padding_all_extra' and 'block_padding_all'
+        // are selected, remove 'block_padding_all'.
+        if ($has_padding_all_extra && $has_padding_all) {
+          $styles = array_diff($styles, ['block_padding_all']);
+        }
+
+        $styles = array_unique(array_merge($styles, $final_styles));
+
+        $component->set('layout_builder_styles_style', $styles);
+      }
+    });
+  }
+}
