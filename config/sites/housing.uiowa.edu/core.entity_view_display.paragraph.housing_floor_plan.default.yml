@@ -10,7 +10,6 @@ dependencies:
     - paragraphs.paragraphs_type.housing_floor_plan
     - responsive_image.styles.medium__square
   module:
-    - lazy
     - photoswipe
     - text
 id: paragraph.housing_floor_plan.default
@@ -36,12 +35,7 @@ content:
       photoswipe_caption: custom
       photoswipe_caption_custom: '[media:field_media_caption]'
       photoswipe_view_mode: default
-      gallery_selector: ''
-    third_party_settings:
-      lazy:
-        lazy_image: '1'
-        placeholder_style: ''
-        data_uri: false
+    third_party_settings: {  }
     weight: 0
     region: content
   field_housing_floor_plan_pano:
@@ -54,5 +48,8 @@ content:
     weight: 2
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_housing_floor_plan_type: true
   search_api_excerpt: true
