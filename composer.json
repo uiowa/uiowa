@@ -96,7 +96,6 @@
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/block_content_permissions": "^1.9",
-        "drupal/components": "^2",
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "^3.0",
         "drupal/config_inspector": "^2.0",
@@ -118,7 +117,7 @@
         "drupal/entity_reference_revisions": "^1.5",
         "drupal/entity_reference_unpublished": "^2.0",
         "drupal/entity_usage": "^2.0@beta",
-        "drupal/field_delimiter": "^1.1",
+        "drupal/field_delimiter": "^2.0",
         "drupal/field_group": "^3.2",
         "drupal/file_mdm": "^2.4",
         "drupal/find_text": "^2.0@beta",
@@ -180,7 +179,7 @@
         "drupal/replicate": "^1.0",
         "drupal/replicate_ui": "^1.0",
         "drupal/reroute_email": "^2.1",
-        "drupal/responsive_table_filter": "^1.2",
+        "drupal/responsive_table_filter": "^2.0",
         "drupal/robotstxt": "^1.2",
         "drupal/scheduler": "^2.0",
         "drupal/schema_metatag": "^2.1",
@@ -192,11 +191,11 @@
         "drupal/smart_date": "^3.6.0",
         "drupal/smart_trim": "^2.0",
         "drupal/stage_file_proxy": "^1.0",
-        "drupal/superfish": "^1.4",
+        "drupal/superfish": "^1.6",
         "drupal/swiftmailer": "^2.0@beta",
         "drupal/taxonomy_path_breadcrumb": "^1.0@beta",
-        "drupal/theme_permission": "^2.0",
-        "drupal/tvi": "^1.0@RC",
+        "drupal/theme_permission": "dev-2.0.x#c924836",
+        "drupal/tvi": "^2.0@alpha",
         "drupal/views_bulk_operations": "^4.1",
         "drupal/views_custom_cache_tag": "^1.3",
         "drupal/views_tree": "^2.0@alpha",
@@ -230,6 +229,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/better_exposed_filters": {
+                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
+            },
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
@@ -260,17 +262,11 @@
             "drupal/entity_usage": {
                 "fatal error after saveing the page not have a reuse entity": "https://www.drupal.org/files/issues/2021-09-03/3098733-fatal-error-13.patch"
             },
-            "drupal/entity_print": {
-                "Error on layout builder": "https://www.drupal.org/files/issues/2020-02-06/3111643-1.patch"
-            },
             "drupal/field_delimiter": {
                 "Doesn't work in layout builder": "https://www.drupal.org/files/issues/2020-04-08/field_delimiter-3099580-7.patch"
             },
             "drupal/fragments": {
                 "remove_views_data_type": "https://www.drupal.org/files/issues/2022-08-24/3305851-remove_views_data_type-6.patch"
-            },
-            "drupal/google_analytics": {
-                "Add dependency on drupal:path_alias": "https://www.drupal.org/files/issues/2021-11-25/google_analytics-3246597-7.patch"
             },
             "drupal/inline_entity_form": {
                 "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
@@ -285,15 +281,12 @@
             "drupal/linkit": {
                 "Add Webform Matcher": "https://www.drupal.org/files/issues/2023-06-13/linkit-webform-matcher-2946234-36.patch"
             },
-            "drupal/metatag": {
-                "Fix for Undefined array key": "https://www.drupal.org/files/issues/2022-10-01/metatag-n3312950-2.patch",
-                "Fix for str_replace": "https://www.drupal.org/files/issues/2022-11-04/3319083-3.patch"
-            },
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch"
             },
-            "drupal/webform": {
-                "Files cannot be attached to the form": "https://www.drupal.org/files/issues/2023-01-09/3328986-19.patch"
+            "drupal/metatag": {
+                "Fix for Undefined array key": "https://www.drupal.org/files/issues/2022-10-01/metatag-n3312950-2.patch",
+                "Fix for str_replace": "https://www.drupal.org/files/issues/2022-11-04/3319083-3.patch"
             },
             "drupal/paragraphs": {
                 "Better error messages for missing referenced entities": "https://www.drupal.org/files/issues/2022-02-10/3095945-paragraphs-error-message-20.patch",
@@ -306,11 +299,11 @@
             "drupal/redirect": {
                 "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
             },
-            "drupal/jquery_ui_touch_punch": {
-                "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"
+            "drupal/theme_permission": {
+                "Automated Drupal 10 compatibility fixes": "https://www.drupal.org/files/issues/2023-08-24/theme_permission-10-2.0.x-dev-compatibility_0.patch"
             },
-            "drupal/better_exposed_filters": {
-                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
+            "drupal/webform": {
+                "Files cannot be attached to the form": "https://www.drupal.org/files/issues/2023-01-09/3328986-19.patch"
             }
         },
         "installer-types": [

@@ -233,6 +233,11 @@ $imgpath: '../../uids/assets/images';
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
+    &.border.block-padding__all--minimal,
+    &[class*="bg--"].block-padding__all--minimal,
+    &[class*="bg-pattern--"].block-padding__all--minimal {
+      padding: 2rem;
+    }
     &.border.block-padding__all--extra,
     &[class*="bg--"].block-padding__all--extra,
     &[class*="bg-pattern--"].block-padding__all--extra {
@@ -521,7 +526,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__all--extra {
     padding: 6rem;
   }
-  &__all--md {
+  &__all--minimal {
     padding: 2rem;
   }
 }
