@@ -5800,3 +5800,9 @@ $sites['labandersoncmdis.uiowa.ddev.site'] = 'andersoncmdis.lab.uiowa.edu';
 $sites['labandersoncmdis.dev.drupal.uiowa.edu'] = 'andersoncmdis.lab.uiowa.edu';
 $sites['labandersoncmdis.stage.drupal.uiowa.edu'] = 'andersoncmdis.lab.uiowa.edu';
 $sites['labandersoncmdis.prod.drupal.uiowa.edu'] = 'andersoncmdis.lab.uiowa.edu';
+
+// Directory aliases for cbb.research.uiowa.edu.
+$sites['researchcbb.uiowa.ddev.site'] = 'cbb.research.uiowa.edu';
+$sites['researchcbb.dev.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
+$sites['researchcbb.stage.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
+$sites['researchcbb.prod.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
