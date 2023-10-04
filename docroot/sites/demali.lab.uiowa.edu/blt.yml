@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdemali.uiowa.ddev.site
+    protocol: https
+  machine_name: labdemali
+  human_name: demali.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdemali.prod
+drupal:
+  db:
+    database: demali_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdemali.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Kris DeMali Laboratory'

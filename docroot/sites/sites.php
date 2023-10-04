@@ -5806,3 +5806,9 @@ $sites['researchcbb.uiowa.ddev.site'] = 'cbb.research.uiowa.edu';
 $sites['researchcbb.dev.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
 $sites['researchcbb.stage.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
 $sites['researchcbb.prod.drupal.uiowa.edu'] = 'cbb.research.uiowa.edu';
+
+// Directory aliases for demali.lab.uiowa.edu.
+$sites['labdemali.uiowa.ddev.site'] = 'demali.lab.uiowa.edu';
+$sites['labdemali.dev.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
+$sites['labdemali.stage.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
+$sites['labdemali.prod.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
