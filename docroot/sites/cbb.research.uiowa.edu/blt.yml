@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchcbb.uiowa.ddev.site
+    protocol: https
+  machine_name: researchcbb
+  human_name: cbb.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchcbb.prod
+drupal:
+  db:
+    database: cbb_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchcbb.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Center for Biocatalysis and Bioprocessing'
