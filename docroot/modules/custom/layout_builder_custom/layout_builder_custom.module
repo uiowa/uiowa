@@ -223,6 +223,27 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
             break;
 
+          case 'inline_block:uiowa_image_gallery':
+            $form['#attached']['library'][] = 'layout_builder_custom/image-block-form';
+
+            // Set '#states' for card image size.
+            $form['layout_builder_style_default']['#states'] = [
+              'visible' => [
+                // Always show masonry styles when media format is set to 'no crop'.
+                [
+                  ':input[name="layout_builder_style_media_format"]' => [
+                    'value' => 'media_format_no_crop',
+                  ],
+                ],
+              ],
+            ];
+            break;
+
+          case 'inline_block:uiowa_text_area':
+          case 'webform_block':
+            $form['layout_builder_style_padding']['#empty_option'] = 'None';
+            break;
+
           case 'inline_block:uiowa_card':
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
 
@@ -255,6 +276,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               // The card block is stacked by default.
               case 'inline_block:uiowa_card':
                 $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
+                break;
+
+              // Set square to default for image gallery.
+              case 'inline_block:uiowa_image_gallery':
+                $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
                 break;
 
               // Media left, media circle, and no border are the defaults.
@@ -1168,7 +1194,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
 
   LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
-  $variables['attributes']['class'][] = 'list-container grid--first-item-full-width';
+  $variables['attributes']['class'][] = 'list-container';
 
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
@@ -1187,6 +1213,8 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
+    // Add grid modifier class to exclude headline for rendering in grid.
+    $variables['attributes']['class'][] = 'grid--first-item-full-width';
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
@@ -1253,7 +1281,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
           // If view is attached to parent entity.
           if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
-            // If block_config is attached to the view display and layout_builder_styles exist in that.
+            // If block_config is attached to the view display
+            // and layout_builder_styles exist in that.
             if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
               $media_formats = [
                 'media_format_widescreen' => 'large__widescreen',

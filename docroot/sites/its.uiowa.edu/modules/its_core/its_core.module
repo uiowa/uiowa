@@ -22,6 +22,7 @@ function its_core_entity_bundle_info_alter(array &$bundles) {
  */
 function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+
     // Node form modifications.
     case 'node_service_edit_form':
     case 'node_service_form':
@@ -57,6 +58,18 @@ function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
     if ($form_id === 'views_exposed_form') {
       $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community';
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+
+    case 'field_block:node:article:field_article_related_service':
+      $variables['attributes']['class'][] = 'article--meta';
+      break;
   }
 }
 
@@ -172,8 +185,28 @@ function its_core_theme($existing, $type, $theme, $path) {
  * Implements template_preprocess_views_view_unformatted().
  */
 function its_core_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+  $view_id = $view->id();
+
   // Check if the current view has a specific ID or display ID.
-  if ($variables['view']->id() == 'services') {
-    $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+  switch ($view_id) {
+    case 'services':
+      $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+      break;
+
+    case 'service_related_articles':
+      $lb_styles = $view?->display_handler
+        ?->getOption('layout_builder_styles') ?? [];
+
+      foreach ($variables['rows'] as &$row_build) {
+        if (!isset($row_build['content']['#override_styles'])) {
+          $row_build['content']['#overrides_styles'] = [];
+        }
+        $row_build['content']['#override_styles']['card_media_position'] = '';
+        $row_build['content']['#override_styles']['media_size'] = 'media--small';
+        $row_build['content']['#override_styles']['border'] = '';
+      }
+      break;
+
   }
 }

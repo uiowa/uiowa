@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfuentes.uiowa.ddev.site
+    protocol: https
+  machine_name: labfuentes
+  human_name: fuentes.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfuentes.prod
+drupal:
+  db:
+    database: fuentes_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfuentes.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Ernesto Fuentes Laboratory'

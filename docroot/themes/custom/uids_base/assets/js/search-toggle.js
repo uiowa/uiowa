@@ -9,7 +9,7 @@ class SearchOverlay {
     if (this.searchButton) {
       this.searchButton.addEventListener('click', this.searchToggle.bind(this));
       this.searchButton.addEventListener('keydown', (event) => {
-        if (event.key == 'Escape') {
+        if (event.key === 'Escape') {
           this.searchButton.setAttribute('aria-expanded', 'false');
           this.wrapper.setAttribute('aria-hidden', 'true');
         }
@@ -45,14 +45,13 @@ class SearchOverlay {
   }
 }
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   'use strict';
 
   Drupal.behaviors.searchOverlay = {
-    attach: function (context, settings) {
+    attach: function (context) {
       // Instantiate the SearchOverlay class to attach the behavior
-      const [searchOverlay] = once('search_overlay', new SearchOverlay(context));
+      once('search_overlay', new SearchOverlay(context));
     }
   };
-})(jQuery, Drupal);
-
+})(jQuery, Drupal, once);

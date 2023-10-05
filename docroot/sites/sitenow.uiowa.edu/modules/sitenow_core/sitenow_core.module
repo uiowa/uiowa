@@ -28,13 +28,17 @@ function sitenow_core_webform_element_alter(array &$element, FormStateInterface 
  * Implements hook_form_alter().
  */
 function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'webform_submission_request_a_site_paragraph_431_add_form'
+  if ($form_id === 'webform_submission_request_a_site_node_26_add_form'
     || $form_id === 'webform_submission_request_a_site_add_form') {
     $form['#attached']['library'][] = 'sitenow_core/better-request-form';
 
-    $roles = \Drupal::currentUser()->getRoles();
+    /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+    $check = \Drupal::service('uiowa_core.access_checker');
 
-    if (!in_array('administrator', $roles)) {
+    /** @var Drupal\Core\Access\AccessResultInterface $access */
+    $access = $check->access(\Drupal::currentUser()->getAccount());
+
+    if ($access->isForbidden()) {
       $elements = WebformFormHelper::flattenElements($form['elements']);
       $elements['hawkid']['#disabled'] = TRUE;
       $elements['email']['#disabled'] = TRUE;

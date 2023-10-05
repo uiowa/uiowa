@@ -14,6 +14,8 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.article.default
+  - field.storage.node.field_article_related_service
   - metatag.metatag_defaults.node__service
   - node.type.service
   - pathauto.pattern.service
@@ -21,8 +23,12 @@ complete_list:
   - taxonomy.vocabulary.audience
   - taxonomy.vocabulary.service_category
   - views.view.services
+  - views.view.service_related_articles
   - 'field.storage.node.field_service_*'
 partial_list:
+  - core.entity_form_display.node.article.default
+  - core.entity_view_display.node.article.teaser
+  - core.entity_view_display.node.article.token
   - field.field.block_content.featured_content.field_featured_content_item
   - metatag.settings
   - workflows.workflow.editorial

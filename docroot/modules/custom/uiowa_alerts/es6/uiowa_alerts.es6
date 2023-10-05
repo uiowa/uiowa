@@ -3,11 +3,11 @@
  * Fetch University of Iowa alerts.
  */
 
-(($, Drupal, drupalSettings) => {
+(($, Drupal, drupalSettings, once) => {
   // Attach uiowaAlertsGetAlerts behavior.
   Drupal.behaviors.uiowaAlerts = {
     attach: (context, settings) => {
-      $('.block-uiowa-alerts-block', context).once('uiowaAlertsGetAlerts').each(() => {
+      $(once('uiowaAlertsGetAlerts', '.block-uiowa-alerts-block', context)).each(() => {
         const messages = new Drupal.Message($('.hawk-alerts-wrapper')[0]);
 
         const updateAlerts = () => {
@@ -82,4 +82,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

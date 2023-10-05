@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecommunity.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecommunity
+  human_name: community.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecommunity.prod
+drupal:
+  db:
+    database: community_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecommunity.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Community Education'

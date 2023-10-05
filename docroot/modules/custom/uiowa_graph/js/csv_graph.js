@@ -1,8 +1,8 @@
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal, once, drupalSettings) {
   // Attach csv_graph behavior.
   Drupal.behaviors.csv_graph = {
     attach: function (context, settings) {
-      $('.graph-container', context).once('csv_graph').each(function (index) {
+      $(once('csv_graph', '.graph-container', context)).each(function (index) {
         // .----start behavior container----.
         let graph_container = document.querySelectorAll('.graph-container')[index];
 
@@ -159,7 +159,7 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, once, drupalSettings);
 
 
 
