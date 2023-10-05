@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmokadem.uiowa.ddev.site
+    protocol: https
+  machine_name: labmokadem
+  human_name: mokadem.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmokadem.prod
+drupal:
+  db:
+    database: mokadem_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmokadem.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Mokadem Lab'

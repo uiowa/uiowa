@@ -3,14 +3,14 @@ description: Provides updated book module for the University of Iowa.
 package: University of Iowa
 
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 
 dependencies:
   - drupal:book
   - drupal:views
   - pathauto:pathauto
-  - search_api
-  - search_api_db
-  - views_tree
+  - drupal:search_api
+  - drupal:search_api_db
+  - drupal:views_tree
 
 php: 7.2

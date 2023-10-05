@@ -186,7 +186,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
           if ($changed) {
             $entity->setNewRevision();
             $entity->revision_log = 'Updated from source';
-            $entity->setRevisionCreationTime(REQUEST_TIME);
+            $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
             $entity->setRevisionUserId(1);
             $entity->save();
             $this->updated++;

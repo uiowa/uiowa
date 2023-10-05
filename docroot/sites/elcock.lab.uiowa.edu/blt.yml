@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labelcock.uiowa.ddev.site
+    protocol: https
+  machine_name: labelcock
+  human_name: elcock.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labelcock.prod
+drupal:
+  db:
+    database: elcock_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labelcock.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Adrian Elcock Laboratory'

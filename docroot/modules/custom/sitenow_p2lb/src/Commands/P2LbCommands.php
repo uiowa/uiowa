@@ -2,9 +2,12 @@
 
 namespace Drupal\sitenow_p2lb\Commands;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
 use Psr\Log\LoggerInterface;
@@ -13,6 +16,7 @@ use Psr\Log\LoggerInterface;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -36,12 +40,28 @@ class P2LbCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
+   * The reference revision orphan purger.
+   *
+   * @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger
+   */
+  protected $orphanPurger;
+
+  /**
+   * The config factory object.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Command constructor.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->logger = $logger;
     $this->entityTypeManager = $entityTypeManager;
+    $this->orphanPurger = $orphanPurger;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -94,6 +114,7 @@ class P2LbCommands extends DrushCommands {
         ->getQuery()
         ->condition('type', 'page')
         ->range($i, $batch_size)
+        ->accessCheck(TRUE)
         ->execute();
 
       $operations[] = [
@@ -108,7 +129,7 @@ class P2LbCommands extends DrushCommands {
       $i += $batch_size;
     }
     $batch = [
-      'title' => t('Processing @num node(s).', [
+      'title' => $this->t('Processing @num node(s).', [
         '@num' => $num_operations,
       ]),
       'operations' => $operations,
@@ -119,20 +140,18 @@ class P2LbCommands extends DrushCommands {
     $this->logger('sitenow_p2lb')->notice('Process batch operations ended.');
 
     // Delete orphaned paragraphs, three-levels deep (section > block > item).
-    $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
     for ($i = 0; $i < 3; $i++) {
-      $purger->setBatch(['paragraph']);
+      $this->orphanPurger->setBatch(['paragraph']);
       drush_backend_batch_process();
     }
 
     // Turn off V2.
-    $config_factory = \Drupal::configFactory();
-    $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');
     $sitenow_v2->set('status', FALSE);
     $sitenow_v2->save(TRUE);
 
     // Turn off P2LB.
-    $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
+    $sitenow_p2lb = $this->configFactory->getEditable('config_split.config_split.p2lb');
     $sitenow_p2lb->set('status', FALSE);
     $sitenow_p2lb->save(TRUE);
 

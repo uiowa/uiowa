@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwashington.uiowa.ddev.site
+    protocol: https
+  machine_name: labwashington
+  human_name: washington.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwashington.prod
+drupal:
+  db:
+    database: washington_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwashington.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Todd Washington Laboratory'

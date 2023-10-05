@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineshpep.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineshpep
+  human_name: shpep.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineshpep.prod
+drupal:
+  db:
+    database: shpep_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineshpep.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Summer Health Professions Education Program at the University of Iowa'

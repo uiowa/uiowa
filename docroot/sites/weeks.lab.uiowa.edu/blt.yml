@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labweeks.uiowa.ddev.site
+    protocol: https
+  machine_name: labweeks
+  human_name: weeks.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labweeks.prod
+drupal:
+  db:
+    database: weeks_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labweeks.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Daniel Weeks Laboratory'

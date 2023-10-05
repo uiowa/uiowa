@@ -6,7 +6,7 @@
 // This needs to be declared globally outside the behavior.
 uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
-(function ($, Drupal) {
+(function (Drupal, once) {
   'use strict';
 
   Drupal.uiowaProfiles = {};
@@ -144,8 +144,8 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
    * Profiles behavior.
    */
   Drupal.behaviors.uiowaProfiles = {
-    attach: function (context, settings) {
-      $(document, context).once('uiowaProfiles').each(function() {
+    attach(context, settings) {
+      once('uiowaProfiles', context).forEach(function(profiles) {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
         // Note that this seems to observe multiple changes per person.
@@ -163,4 +163,4 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
     }
   };
 
-} (jQuery, Drupal));
+} (Drupal, once));

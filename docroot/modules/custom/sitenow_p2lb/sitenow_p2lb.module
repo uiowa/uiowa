@@ -714,6 +714,7 @@ function sitenow_p2lb_process_paragraph(ParagraphInterface $paragraph, $node) {
         // Build a headline out of the title
         // and display title options.
         'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
+        'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
       ];
 
       break;
@@ -1209,6 +1210,21 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
         'block_grid_threecol_33_34_33',
         'no_border',
       ];
+
+    case 'uiowa_image_gallery':
+      $styles = [
+        'media_format' => 'media_format_square',
+      ];
+      $classes = $paragraph->field_uip_classes?->getString();
+
+      if (!is_null($classes)) {
+        if (str_contains($classes, 'masonry')) {
+          $styles['media_format'] = 'media_format_no_crop';
+          $styles['block_image_gallery_style_masonry'] = 'block_image_gallery_style_masonry';
+        }
+      }
+
+      return array_values($styles);
 
     case 'featured_content':
       $styles = [
