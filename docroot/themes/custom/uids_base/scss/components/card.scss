@@ -135,12 +135,12 @@
   }
 
 
-  // Hide styles used in events list block.
+  // Hide styles used in events list block and featured content block.
   .card {
     &.hide-descriptions {
       .card__description,
       .item-description,
-      .field--name-field-teaser {
+      .field--name-body {
         display: none;
       }
     }
@@ -203,4 +203,52 @@
 
 .card .headline {
   line-height: inherit;
+}
+
+// Card Details.
+.card details {
+  summary {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: $light;
+    padding: 0.5rem 1.2rem 0.5rem calc(20px + 0.5rem);
+    border-radius: 2px;
+    transition: background .15s ease-in-out;
+    width: fit-content;
+
+    &:hover {
+      background: #ededed;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display:none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm .9rem $xsm .625rem;
+    content: "\f0da";
+    color: $secondary;
+    @include fas();
+    line-height: 9px;
+    padding: 0.5rem;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    transform: rotate(0);
+    transition: .15s transform ease;
+  }
+
+  &[open] {
+    > summary::before {
+      transform: rotate(90deg);
+    }
+    > summary {
+      margin-bottom: .5rem;
+    }
+  }
 }

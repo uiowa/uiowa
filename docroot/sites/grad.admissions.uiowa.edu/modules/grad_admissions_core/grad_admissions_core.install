@@ -66,3 +66,52 @@ function grad_admissions_core_update_9001() {
     '@updated' => implode(', ', $updated),
   ]);
 }
+
+/**
+ * Update contact info strings.
+ */
+function grad_admissions_core_update_9002(&$sandbox) {
+  $contact_field_name = 'field_area_of_study_contact';
+  $updated = [];
+  $conversion_map = [
+    'Office of Admissions' => 'Enrollment Management',
+    '108 Calvin Hall' => '2900 University Capitol Centre<br />201 S. Clinton St.',
+    '52242-1396' => '52242',
+  ];
+
+  // Grab all our area of study nodes.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'area_of_study');
+
+  $db = \Drupal::database();
+
+  // Add conditions to match for our $conversion_map keys.
+  $or_conditions = $query->orConditionGroup();
+
+  foreach (array_keys($conversion_map) as $match) {
+    $or_conditions->condition('field_area_of_study_contact', '%' . $db->escapeLike($match) . '%', 'LIKE');
+  }
+
+  $query->condition($or_conditions);
+
+  $results = $query->execute();
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadMultiple($results);
+
+  foreach ($nodes as $node) {
+    $contact_info = $node->{$contact_field_name}->value;
+    $contact_info = str_replace(array_keys($conversion_map), $conversion_map, $contact_info);
+    $node->{$contact_field_name}->value = $contact_info;
+    // Set revision message and save.
+    $node->setRevisionLogMessage('Automated save for grad_admissions_core_update_9002.');
+
+    if ($node->save()) {
+      $updated[] = $node->id();
+    }
+  }
+
+  return t('Updated contact info in these nodes: @updated', [
+    '@updated' => implode(', ', $updated),
+  ]);
+}

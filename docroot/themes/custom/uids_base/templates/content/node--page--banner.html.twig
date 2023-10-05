@@ -97,6 +97,7 @@
 {% set block_banner = {
   'attributes': attributes.addClass(classes),
   'banner_image': content.field_image|render,
+  'banner_summary': content.body|render,
   'banner_title': node.label,
   'headline_level': headline_level,
   'headline_class' : headline_classes,

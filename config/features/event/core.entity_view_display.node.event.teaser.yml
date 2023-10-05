@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -28,7 +30,7 @@ dependencies:
     - link
     - options
     - smart_date
-    - text
+    - smart_trim
     - user
 _core:
   default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
@@ -38,11 +40,29 @@ bundle: event
 mode: teaser
 content:
   body:
-    type: text_default
+    type: smart_trim
     label: visually_hidden
-    settings: {  }
+    settings:
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+        replace_tokens: false
     third_party_settings: {  }
-    weight: 10
+    weight: 1
     region: content
   field_event_attendance:
     type: boolean
@@ -52,7 +72,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_event_location:
     type: address_default
@@ -69,7 +89,7 @@ content:
     third_party_settings:
       field_delimiter:
         delimiter: ','
-    weight: 11
+    weight: 8
     region: content
   field_event_series_link:
     type: link
@@ -98,7 +118,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_event_virtual:
     type: link
@@ -122,6 +142,7 @@ content:
       force_chronological: false
       add_classes: false
       time_wrapper: true
+      localize: false
     third_party_settings: {  }
     weight: 0
     region: content
@@ -133,13 +154,6 @@ content:
       link: false
     third_party_settings: {  }
     weight: 5
-    region: content
-  field_teaser:
-    type: basic_string
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
   links:
     settings: {  }
@@ -153,8 +167,11 @@ hidden:
   entity_print_view_word_docx: true
   field_event_attendance_mode: true
   field_event_category: true
+  field_event_directions: true
+  field_event_geolocation: true
   field_event_hide: true
   field_event_parent: true
   field_meta_tags: true
   field_tags: true
+  field_teaser: true
   search_api_excerpt: true

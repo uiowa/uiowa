@@ -3,10 +3,10 @@
  * Sitenow global scripts. Attached to every page.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
     Drupal.behaviors.sitenow = {
       attach: function (context, setting) {
-        $(document, context).once('sitenow').each(function () {
+        $(once('sitenow', 'body', context)).each(function () {
           console.log(
             'This is a Sitenow',
             setting.sitenow.version,
@@ -16,4 +16,4 @@
         });
       }
     };
-  })(jQuery, Drupal);
+  })(jQuery, Drupal, once);

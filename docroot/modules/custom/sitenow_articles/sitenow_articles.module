@@ -272,17 +272,15 @@ function sitenow_articles_preprocess_node(&$variables) {
             // Check if we don't have any gallery images.
             if ($node->hasField('field_gallery_images') &&
               empty($node->get('field_gallery_images')->getValue())) {
-              $layout_parts = ['content', 'second'];
               // If no gallery images, then hide the gallery jumplink.
-              sitenow_articles_unset_block($variables, $layout_parts, 'galleryjumplink_block');
+              uiowa_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
             }
 
             // Check if preserve links checkbox is checked.
             if ($node->hasField('field_article_preserve_links')) {
-              $layout_parts = ['content', 'first'];
               if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
                 // If it isn't checked, hide the broken links message.
-                sitenow_articles_unset_block($variables, $layout_parts, 'preservedlinksmessage_block');
+                uiowa_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
               }
             }
             break;
@@ -290,29 +288,22 @@ function sitenow_articles_preprocess_node(&$variables) {
         }
         break;
 
-    }
-  }
-}
+      case 'person':
 
-/**
- * Unsets a block from the given layout builder parts.
- *
- * @param array &$variables
- *   The variables array.
- * @param array $layout_parts
- *   The layout parts to loop through.
- * @param string $block_id
- *   The block ID to unset.
- */
-function sitenow_articles_unset_block(array &$variables, array $layout_parts, string $block_id) {
-  foreach ($layout_parts as $layout_part) {
-    if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
-      foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
-        if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
-          unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
-          break 2;
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            $person_display_config = \Drupal::config('sitenow_articles.settings')->get('display_articles_by_author');
+
+            if (!$person_display_config) {
+              uiowa_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
+            }
+
+            break;
+
         }
-      }
+        break;
+
     }
   }
 }
@@ -426,6 +417,14 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
     }
+  }
+
+  $variables['row_item_classes'] = [];
+
+  switch ($view->current_display) {
+    case 'articles_author':
+      uiowa_core_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
+      break;
   }
 }
 
@@ -644,7 +643,7 @@ function sitenow_articles_preprocess_block(&$variables) {
     //   want to use the gallery image field for other content.
     //   https://github.com/uiowa/uiowa/issues/6287
     case 'field_block:node:article:field_gallery_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20';
+      $variables['attributes']['class'][] = 'media--square';
       $variables['attributes']['class'][] = 'photoswipe-gallery';
 
       break;

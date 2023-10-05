@@ -37,6 +37,7 @@ function sitenow_people_update_8001() {
 
     // Get all the person nodes.
     $nids = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'person')
       ->execute();
 
@@ -79,6 +80,7 @@ function sitenow_people_update_8002() {
 
     // Get all the person nodes.
     $nids = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'person')
       ->execute();
 
@@ -208,7 +210,8 @@ function sitenow_people_update_9303() {
   // Load the field instance for the 'field_person_research_areas' field.
   $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
 
-  // Set the default label to the label of the 'field_person_research_areas' field.
+  // Set the default label
+  // to the label of the 'field_person_research_areas' field.
   $default_label = $fieldInstance->getLabel();
   $config->set('research_title', $default_label);
 

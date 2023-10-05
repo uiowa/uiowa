@@ -1,0 +1,29 @@
+uuid: f90a1701-5974-407d-883f-db82289698a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_traffic_control_plan
+    - media.type.file
+    - node.type.alert
+id: node.alert.field_alert_traffic_control_plan
+field_name: field_alert_traffic_control_plan
+entity_type: node
+bundle: alert
+label: 'Traffic control plan'
+description: 'Upload an accessible PDF of the traffic plan. If image or document is not accessible, provide a file description with a text alternative.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

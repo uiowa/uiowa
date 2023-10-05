@@ -11,10 +11,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\ViewExecutable;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -98,9 +100,70 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_category']['#group'] = 'node_relations';
       }
 
+      // Customize address field labels.
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['widget'][0]['address']['#after_build'][] = 'sitenow_events_customize_address';
+      }
+
       break;
 
   }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function sitenow_events_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'events') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+    $variables['#attached']['library'][] = 'uids_base/view-calendar';
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function sitenow_events_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
+    // Go through each of our filter display options
+    // and change the exposed option to false if
+    // it has not been selected to be displayed.
+    $config = \Drupal::config('sitenow_events.settings');
+    foreach ([
+      'date_range' => 'field_event_when',
+      'presenters' => 'field_event_performer_target_id_1',
+      'attendance_required' => 'field_event_attendance_value',
+      'attendance_mode' => 'field_event_attendance_mode_value',
+      'category' => 'field_event_category_target_id',
+    ] as $filter_option => $field_label) {
+      if ($config->get("filter_display.{$filter_option}") == FALSE) {
+        if ($filter_option === 'date_range') {
+          $timestamp = strtotime('now');
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_value");
+          $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', strtotime('+10 year', $timestamp));
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_end_value");
+          $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', $timestamp);
+          continue;
+        }
+        $filter = $view->display_handler->getHandler('filter', $field_label);
+        $filter->options['exposed'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Modify event addressfield company (organization) label.
+ */
+function sitenow_events_customize_address($element, $form_state) {
+  $element['organization']['#title'] = t('Location name');
+  return $element;
 }
 
 /**
@@ -177,12 +240,36 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_events_preprocess_page(&$variables) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if ($route_name === 'view.events.page_upcoming') {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Check for permission.
+    if ($user->hasPermission('administer sitenow events') === TRUE) {
+      $url = Url::fromRoute('sitenow_events.settings_form');
+      $settings_link = Link::fromTextAndUrl(t('SiteNow Events'), $url)
+        ->toString();
+      $message_text = t('This upcoming events page can be configured here: @settings_link', [
+        '@settings_link' => $settings_link,
+      ]);
+      \Drupal::messenger()->addStatus($message_text);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_virtual':
     case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_geolocation':
+    case 'field_block:node:event:field_event_directions':
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
@@ -528,7 +615,12 @@ function sitenow_events_preprocess_field(&$variables) {
       $field_label = $variables['element']['#title'];
       uiowa_core_set_attributes($variables, 'element--inline');
       if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
-        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
+        if ($variables['element']['#view_mode'] == 'teaser') {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
+        }
+        else {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--cool-gray">' . $field_label . '</span>';
+        }
       }
       else {
         uiowa_core_set_attributes($variables, 'sr-only');
@@ -541,6 +633,65 @@ function sitenow_events_preprocess_field(&$variables) {
       foreach ($variables["items"] as &$item) {
         $item['attributes']['class'] = 'tags-list__tag';
       }
+      break;
+
+    case 'field_event_directions':
+      // Wrap the field output in a <details> tag.
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
+      break;
+
+    case 'field_event_geolocation':
+      uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+
+      // Modify the field label.
+      $variables['label'] = t('Map');
+
+      // Check if the field exists.
+      if (isset($variables['element']['#items'])) {
+
+        // Retrieve the first item of the field values.
+        $geolocation = $variables['element']['#items']->first();
+
+        // Check if the field has a value.
+        if ($geolocation) {
+          // Access the 'latlon' value;.
+          $latlonValue = $geolocation->get('latlon')->getValue();
+
+          // Check if the 'latlon' value is available.
+          if (!empty($latlonValue)) {
+
+            // Construct the Google Maps link.
+            $googleMapsLink = 'https://www.google.com/maps?q=' . $latlonValue;
+
+            // Create the link element.
+            $link = [
+              '#type' => 'link',
+              '#title' => 'View on Google Maps',
+              '#url' => Url::fromUri($googleMapsLink),
+            ];
+
+            // Render the link.
+            $link_render_array = \Drupal::service('renderer')->render($link);
+
+            // Modify the field value to include the link.
+            $variables['items'][0]['content']['#markup'] = $link_render_array;
+          }
+        }
+      }
+
       break;
 
     case 'field_event_location':

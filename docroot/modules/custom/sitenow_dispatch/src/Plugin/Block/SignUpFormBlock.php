@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,41 +24,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The config factory service.
+   * Constructs a \Drupal\Component\Plugin\PluginBase object.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form builder service.
+   * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
+   *   The Dispatch API client service.
    */
-  protected $client;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\sitenow_dispatch\Dispatch
-   */
-  protected $dispatch;
-
-  /**
-   * The form builder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, FormBuilderInterface $formBuilder, $dispatch) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory, protected FormBuilderInterface $formBuilder, protected DispatchApiClientInterface $dispatch) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $configFactory;
-    $this->formBuilder = $formBuilder;
-    $this->dispatch = $dispatch;
   }
 
   /**
@@ -70,7 +53,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $plugin_definition,
       $container->get('config.factory'),
       $container->get('form_builder'),
-      $container->get('sitenow_dispatch.dispatch')
+      $container->get('sitenow_dispatch.dispatch_client')
     );
   }
 
@@ -78,7 +61,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    $populations = $this->dispatch->request('GET', 'populations');
+    $populations = $this->dispatch->get('populations');
 
     // If the population is empty, we have an invalid API key.
     if ($populations === FALSE) {
@@ -96,7 +79,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $populationOptions = [];
     foreach ($populations as $population) {
       $path = basename($population);
-      $response = $this->dispatch->request('GET', "populations/$path");
+      $response = $this->dispatch->get("populations/$path");
       if ($response->dataSourceType === 'SubscriptionList') {
         $populationOptions[$response->id] = $response->name;
       }

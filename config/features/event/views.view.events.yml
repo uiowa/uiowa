@@ -17,9 +17,11 @@ dependencies:
     - fullcalendar_view
     - link
     - node
+    - options
     - smart_date
     - taxonomy
     - user
+    - views_custom_cache_tag
 _core:
   default_config_hash: MpdI7MwVh_vkZ2S1hpubCByqty9K8tTetJOMul3ppFI
 id: events
@@ -121,8 +123,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:event\r\ntime:hourly"
       empty:
         area_text_custom:
           id: area_text_custom
@@ -1991,7 +1994,7 @@ display:
         sorts: false
         filters: false
         filter_groups: false
-      css_class: 'views-form--stacked grid--twocol--25-75 '
+      css_class: 'views-form--stacked views-grid--twocol--25-75 '
       group_by: false
       display_description: ''
       display_extenders:
@@ -2271,6 +2274,30 @@ display:
                   placeholder_text: Presenters
                   rewrite:
                     filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: true
+              field_event_attendance_value:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: "- Any -| Attendance\r\nTrue| Attendance required\r\nFalse|Attendance not required"
+                  collapsible: false
+                  is_secondary: true
+              field_event_category_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: '- Any -| Category'
+                  collapsible: false
+                  is_secondary: true
+              field_event_attendance_mode_value:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: '- Any -| Attendance mode'
                   collapsible: false
                   is_secondary: true
       arguments: {  }
@@ -2597,6 +2624,154 @@ display:
               view_name: event_presenters
               display_name: entity_reference_1
               arguments: {  }
+        field_event_attendance_value:
+          id: field_event_attendance_value
+          table: node__field_event_attendance
+          field: field_event_attendance_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: null
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Attendance Required'
+            description: ''
+            use_operator: false
+            operator: field_event_attendance_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_event_attendance_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_event_category_target_id:
+          id: field_event_category_target_id
+          table: node__field_event_category
+          field: field_event_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_event_category_target_id_op
+            label: 'Event Categories'
+            description: ''
+            use_operator: false
+            operator: field_event_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_event_category_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: event_categories
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: Category
+        field_event_attendance_mode_value:
+          id: field_event_attendance_mode_value
+          table: node__field_event_attendance_mode
+          field: field_event_attendance_mode_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_event_attendance_mode_value_op
+            label: 'Event Attendance'
+            description: ''
+            use_operator: false
+            operator: field_event_attendance_mode_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_event_attendance_mode_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
@@ -2621,7 +2796,7 @@ display:
           entity_type: node
           plugin_id: entity_reverse
           required: false
-      css_class: bef-form
+      css_class: 'bef-form bef-form--label-hidden '
       use_ajax: true
       display_description: ''
       display_extenders:
@@ -2650,6 +2825,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

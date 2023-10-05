@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsmubeen.uiowa.ddev.site
+    protocol: https
+  machine_name: labsmubeen
+  human_name: smubeen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsmubeen.prod
+drupal:
+  db:
+    database: smubeen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsmubeen.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Syed Mubeen Research Group'

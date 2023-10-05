@@ -1,0 +1,29 @@
+uuid: 08638ec6-b169-4afa-8fd7-e649fe16c4ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_accessibility_feature
+    - node.type.room
+    - taxonomy.vocabulary.accessibility_features
+id: node.room.field_room_accessibility_feature
+field_name: field_room_accessibility_feature
+entity_type: node
+bundle: room
+label: 'Accessibility Features'
+description: 'This field is populated using terms from <a href="/admin/structure/taxonomy/manage/accessibility_features/overview">Accessibility features</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      accessibility_features: accessibility_features
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

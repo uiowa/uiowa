@@ -3,6 +3,32 @@
 @import "uids3/components/typography/headings/headings.scss";
 @import "uids3/components/headline/headline.scss";
 
+// @todo https://github.com/uiowa/uiowa/issues/6584
+
+@mixin bg-dark {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &.headline.default {
+      color: $secondary;
+    }
+  }
+}
+
+@mixin bg-black {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &.headline.default {
+      color: $secondary;
+    }
+  }
+}
+
 html {
   box-sizing: border-box;
   -ms-overflow-style: scrollbar;

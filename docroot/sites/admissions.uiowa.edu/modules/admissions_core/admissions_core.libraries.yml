@@ -21,7 +21,7 @@ counselors-map:
   js:
     assets/js/counselors-map.js: { preprocess: false  }
   dependencies:
-    - core/jquery.once
+    - core/once
     - core/drupalSettings
     - core/drupal.message
 pdf:
@@ -44,3 +44,11 @@ area_of_study_kiosk:
   css:
     theme:
       assets/css/area-of-study-kiosk.css: {}
+  dependencies:
+    - core/once
+slideshow:
+  css:
+    theme:
+      assets/css/slideshow.css: {}
+  js:
+    assets/js/slideshow.js: { preprocess: false }

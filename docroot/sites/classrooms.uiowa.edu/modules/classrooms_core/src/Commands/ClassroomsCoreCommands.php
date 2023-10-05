@@ -100,25 +100,16 @@ class ClassroomsCoreCommands extends DrushCommands {
       $buildings = $cached->data;
     }
     else {
-      // Request from MAUI API
-      // and then filter based on Classroom's requirements.
-      $data = $this->mauiApi->getClassroomsData();
+      // Request from MAUI API. We're interested
+      // in both university and programmed classrooms.
       $buildings = [];
-      $filters = [
-        '1) University Classrooms - Level 1',
-        '1) University Classrooms - Original',
-        '1) University Classrooms',
-        '1) University Classrooms - Study Space',
-        '1) Programmed Classrooms - Level 2',
-        'Classroom-Programmed',
-      ];
-
-      foreach ($data as $room) {
-        $category = array_intersect($filters, $room->regionList);
-
-        if ($category) {
-          // Get the building id and name in the format we store them in.
-          $buildings[strtolower($room->buildingCode)] = ucwords(strtolower($room->buildingName));
+      foreach (['UNIVERSITY_CLASSROOM', 'PROGRAMMED_CLASSROOM'] as $filter) {
+        $data = $this->mauiApi->getClassroomsData($filter);
+        foreach ($data as $room) {
+          $buildings[strtolower($room->facilityBuilding?->building)] = [
+            'name' => $room->facilityBuilding?->buildingDescr,
+            'number' => $room->facilityBuilding?->buildingNumber,
+          ];
         }
       }
       // Create a cache item set to 6 hours.
@@ -134,12 +125,13 @@ class ClassroomsCoreCommands extends DrushCommands {
         ->accessCheck(TRUE);
       $entities = $query->execute();
 
-      foreach ($buildings as $building_id => $building_name) {
+      foreach ($buildings as $building_id => $building_info) {
         if (!in_array($building_id, $entities)) {
           $building = Building::create([
             'id' => $building_id,
-            'label' => $building_name,
+            'label' => $building_info['name'],
             'status' => 1,
+            'number' => $building_info['number'],
           ]);
           $building->save();
           $entities_created++;

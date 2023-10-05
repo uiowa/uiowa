@@ -21,7 +21,7 @@ global-styling:
       assets/css/components/typography/paragraph.css: {}
       assets/css/components/tables.css: {}
       assets/css/components/form/search.css: {}
-      assets/css/components/iowa-bar.css: {}
+      assets/css/components/brand-bar.css: {}
       assets/css/components/footer.css: {}
       assets/css/components/menus/group.css: {}
       assets/css/components/menus/superfish/superfish.css: {}
@@ -38,7 +38,7 @@ global-styling:
       assets/css/theme/print.css: { media: print }
   dependencies:
     - core/jquery
-    - core/jquery.once
+    - core/once
 
 # Third-party libraries
 # Accessible Menu
@@ -85,20 +85,12 @@ logo:
   css:
     component:
       assets/css/components/logo.css: { preprocess: false }
-site-name:
-  css:
-    component:
-      assets/css/components/site-name.css: { preprocess: false }
-site-slogan:
-  css:
-    component:
-      assets/css/components/site-slogan.css: { preprocess: false }
 search-toggle:
   css:
     component:
       assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
   js:
-    uids3/components/search-toggle/search-toggle.js: { preprocess: false  }
+    assets/js/search-toggle.js: { preprocess: false  }
 search-results:
   css:
     component:
@@ -108,7 +100,7 @@ toggle-nav:
     component:
       assets/css/components/menus/toggle-nav.css: { preprocess: false }
   js:
-    uids3/components/menus/toggle-nav/toggle-nav.js: { preprocess: false  }
+    assets/js/toggle-nav.js: { preprocess: false, attributes: { type: module } }
 accordion:
   css:
     component:
@@ -124,7 +116,7 @@ tabs:
     uids3/components/tabs/tabs.js: { preprocess: false }
 header-sticky:
   js:
-    uids3/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
+    assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
 banner:
   css:
     component:
@@ -136,7 +128,8 @@ video-cookie:
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
-    - core/jquery.cookie
+    - core/once
+    - core/js-cookie
     - uids_base/video
 slider:
   css:
@@ -171,8 +164,8 @@ hero-block-video:
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
-    - core/jquery.once
-    - core/jquery.cookie
+    - core/once
+    - core/js-cookie
 vertical-video:
   css:
     component:
@@ -266,6 +259,8 @@ paragraphs-carousel:
       assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
+    - core/jquery
+    - core/once
 paragraphs-featured-content:
   css:
     component:
@@ -314,6 +309,14 @@ view-taxonomy-term-colleges:
   css:
     component:
       assets/css/views/view-taxonomy-term-colleges.css: { preprocess: false }
+view-bef:
+  css:
+    component:
+      assets/css/views/bef/view-bef.css: { preprocess: false }
+view-calendar:
+  css:
+    component:
+      assets/css/views/view-calendar.css: { preprocess: false }
 views:
   css:
     component:

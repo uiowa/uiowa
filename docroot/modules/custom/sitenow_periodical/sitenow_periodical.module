@@ -52,3 +52,36 @@ function sitenow_periodical_preprocess_block(&$variables) {
       break;
   }
 }
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_periodical_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_article_issue':
+      uiowa_core_set_attributes($variables, 'field--label-inline');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function sitenow_periodical_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  // If it's the experts list, we need to add the
+  // research areas as well.
+  if ($view->id() === 'articles_author') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#content'])) {
+        $row_build['content']['#content'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_article_issue?->view();
+      }
+    }
+  }
+
+}

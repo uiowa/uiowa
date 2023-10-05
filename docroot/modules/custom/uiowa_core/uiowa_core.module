@@ -35,10 +35,35 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
  * Implements hook_cron().
  */
 function uiowa_core_cron() {
-  $request_time = \Drupal::time()->getRequestTime();
-  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+  // Daily.
+  $state_key = 'uiowa_core_daily_last';
+  $daily_last_cleared = \Drupal::state()->get($state_key);
+  $today = date('Y-m-d');
+  if (!$daily_last_cleared || $daily_last_cleared != $today) {
+    \Drupal::state()->set($state_key, $today);
+    Cache::invalidateTags(['time:daily']);
 
-  if (!$last_run || $request_time - $last_run >= 3540) {
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:daily'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+  }
+
+  // Hourly.
+  $request_time = \Drupal::time()->getRequestTime();
+  $state_key = 'uiowa_core_hourly_last';
+  $hourly_last_cleared = \Drupal::state()->get($state_key);
+
+  if (!$hourly_last_cleared || $request_time - $hourly_last_cleared >= 3540) {
+    \Drupal::state()->set($state_key, $request_time);
     Cache::invalidateTags(['time:hourly']);
 
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -53,8 +78,6 @@ function uiowa_core_cron() {
 
       $purgeQueue->add($queuer, $invalidations);
     }
-
-    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
   }
 }
 
@@ -658,9 +681,11 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
       break;
 
-    // Fixes a bug with BEF, details here:
-    // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
     case 'views_exposed_form':
+      $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
+
+      // Fixes a bug with BEF, details here:
+      // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
       foreach ($form as $k => $v) {
         if (str_contains($k, '_collapsible')) {
           $form[$k]['#open'] = FALSE;
@@ -820,7 +845,7 @@ function uiowa_core_preprocess_block(&$variables) {
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] = 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
@@ -892,21 +917,37 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
 
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
+    $theme_config = $config_factory->getEditable('uids_base.settings');
+    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
 
     foreach ($tokens as $name => $original) {
       // Find the desired token by name.
       switch ($name) {
         case 'org_name':
-          $replacements[$original] = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          $org_name = $ccom_site ? 'Carver College of Medicine' : 'The University of Iowa';
+          $replacements[$original] = $config->get('uiowa_core.org_name') ?? $org_name;
           break;
 
         case 'favicon_assets_path':
-          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? '/profiles/custom/sitenow/assets/';
+          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
+
           break;
       }
     }
   }
   return $replacements;
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function uiowa_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'related_manually_referenced_content') {
+    // Attach the grid class.
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
 }
 
 /**
@@ -1242,4 +1283,44 @@ function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
  */
 function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): bool {
   return uiowa_core_html_cleanup($string, $allowed_tags) === '';
+}
+
+/**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id) {
+  if (isset($variables['content']['_layout_builder'])) {
+    foreach ($variables['content']['_layout_builder'] as &$layout) {
+      foreach ($layout as &$layout_part) {
+        if (is_array($layout_part)) {
+          foreach ($layout_part as $key => $block) {
+            if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+              unset($layout_part[$key]);
+              break 2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to hide views row fields.
+ */
+function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
+  foreach ($variables['rows'] as &$row_build) {
+    if (!isset($row_build['content']['#hide_fields'])) {
+      $row_build['content']['#hide_fields'] = [];
+    }
+
+    foreach ($fields_to_hide as $field_to_hide) {
+      $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+  }
 }

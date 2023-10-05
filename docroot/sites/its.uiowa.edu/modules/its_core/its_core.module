@@ -1,0 +1,212 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for ITS Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\its_core\Entity\Service;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function its_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['service'])) {
+    $bundles['node']['service']['class'] = Service::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+
+    // Node form modifications.
+    case 'node_service_edit_form':
+    case 'node_service_form':
+      _sitenow_node_form_defaults($form, $form_state);
+
+      // Remove the empty option and default
+      // to "No Charge" if no default value already exists.
+      $form['field_service_fees']['widget']['#default_value'] = $form['field_service_fees']['widget']['#default_value'] ?? 'no_charge';
+      unset($form['field_service_fees']['widget']['#options']['_none']);
+      // Hide the additional fees info field unless
+      // we've changed it from No Charge.
+      $form['field_service_fees_info']['#states'] = [
+        'visible' => [
+          ':input[name="field_service_fees"]' => [
+            'value' => 'other',
+          ],
+        ],
+      ];
+
+      // Split the audience checkboxes into two columns.
+      $form['field_service_audience']['#attributes']['class'][] = 'multi--column';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'services') {
+    if ($form_id === 'views_exposed_form') {
+      $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+
+    case 'field_block:node:article:field_article_related_service':
+      $variables['attributes']['class'][] = 'article--meta';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  // Directly specify a none-background
+  // so it won't default to bg--white
+  // in uids_base_preprocess_layout__twocol__card_sidebar().
+  $variables['attributes']['class'][] = 'bg--none';
+
+  // We will always have card content, since
+  // we have fees or a default "No fees..." text,
+  // so add our static card title.
+  $variables['content']['card_title'] = [
+    '#type' => 'markup',
+    '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
+  ];
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function its_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_service_related_service':
+      $variables['#attached']['library'][] = 'uids_base/tags';
+      break;
+
+    case 'field_service_fees':
+      $node = $variables['element']['#object'];
+      // Check that we have it marked as "other" for fees.
+      if ($node->field_service_fees?->value === 'other' && !empty($node->field_service_fees_info?->value)) {
+        $variables['items'][0]['content'] = [
+          '#type' => 'processed_text',
+          '#text' => $node->field_service_fees_info->value,
+          '#format' => $node->field_service_fees_info->format,
+          '#langcode' => 'en',
+        ];
+        // Wrap the field output in a <details> tag.
+        $details_open = '<details>';
+        $details_close = '</details>';
+
+        // Get the field label and wrap it in a <summary> tag.
+        $field_label = '<summary>' . $variables['label'] . '</summary>';
+        $summary = [
+          '#type' => 'markup',
+          '#markup' => $field_label,
+        ];
+
+        // Wrap the field output in <details> tags and append the summary.
+        $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+        $variables['items'][0]['content']['#suffix'] = $details_close;
+        // Hide the default label, because we have the details.
+        $variables['label_display'] = 'visually_hidden';
+      }
+      // If it wasn't marked as "other" for fees,
+      // replace the markup with the "no charge" verbiage.
+      else {
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>There is no charge for use of this service.</p>',
+        ];
+      }
+
+      break;
+
+    case 'field_service_audience':
+      $variables['label'] = 'Available to';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'service') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline headline--serif',
+      'headline--highlight',
+      'headline--small',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function its_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_service_related_service__service__default' => [
+      'template' => 'field--node--field-service-related-service--service--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_service_quick_links__service__default' => [
+      'template' => 'field--node--field-service-quick-links--service--default',
+      'base hook' => 'field',
+    ],
+    'views_view_summary_unformatted__services' => [
+      'template' => 'views-view-summary-unformatted--services',
+      'base hook' => 'view',
+    ],
+  ];
+}
+
+/**
+ * Implements template_preprocess_views_view_unformatted().
+ */
+function its_core_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+  $view_id = $view->id();
+
+  // Check if the current view has a specific ID or display ID.
+  switch ($view_id) {
+    case 'services':
+      $variables['views_heading_classes'][] = 'headline headline--uppercase block-margin__bottom  block-margin__top--extra';
+      break;
+
+    case 'service_related_articles':
+      $lb_styles = $view?->display_handler
+        ?->getOption('layout_builder_styles') ?? [];
+
+      foreach ($variables['rows'] as &$row_build) {
+        if (!isset($row_build['content']['#override_styles'])) {
+          $row_build['content']['#overrides_styles'] = [];
+        }
+        $row_build['content']['#override_styles']['card_media_position'] = '';
+        $row_build['content']['#override_styles']['media_size'] = 'media--small';
+        $row_build['content']['#override_styles']['border'] = '';
+      }
+      break;
+
+  }
+}

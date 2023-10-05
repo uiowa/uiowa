@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchour.uiowa.ddev.site
+    protocol: https
+  machine_name: researchour
+  human_name: our.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchour.prod
+drupal:
+  db:
+    database: our_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchour.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'The Office of Undergraduate Research'

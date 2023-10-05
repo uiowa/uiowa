@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Alerts module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_alerts\Entity\Alert;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['alert'])) {
+    $bundles['node']['alert']['class'] = Alert::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Update help text for scheduler on alert content type.
+    case 'node_alert_edit_form':
+    case 'node_alert_form':
+      $additional_published_help_text = t('Note: this alert will be published within a one-hour window of the selected date and time.');
+      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
+      $form["status"]["widget"]["value"]["#description"] = t('Optional: Use <em><a href="#edit-scheduler-settings">Scheduling options</a></em> to publish this content');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_alerts_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_alert_category':
+      $view_mode = $variables['element']['#view_mode'];
+      if ($view_mode === 'teaser' || $view_mode === '_custom') {
+        // Make categories badges.
+        foreach ($variables['items'] as &$item) {
+          $field_label = $item['content']['#plain_text'];
+          unset($item['content']['#plain_text']);
+          $item['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
+        }
+      }
+      if ($view_mode === 'teaser') {
+        // Set the categories inline.
+        uiowa_core_set_attributes($variables, 'element--inline');
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_alerts_preprocess_node(&$variables) {
+  if ($variables['node']?->getType() === 'alert' && $variables['view_mode'] === 'full') {
+    $variables['#attached']['library'][] = 'sitenow_alerts/alert__full';
+  }
+}

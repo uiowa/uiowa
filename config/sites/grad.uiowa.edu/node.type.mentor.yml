@@ -10,9 +10,18 @@ third_party_settings:
     available_menus: {  }
     parent: ''
   node_revision_delete:
-    minimum_revisions_to_keep: 5
-    minimum_age_to_delete: 0
-    when_to_delete: 0
+    amount:
+      status: true
+      settings:
+        amount: 5
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
 name: Mentor
 type: mentor
 description: 'Use the <em>mentor</em> content type to create pages for mentors in SROP or similar programs.'

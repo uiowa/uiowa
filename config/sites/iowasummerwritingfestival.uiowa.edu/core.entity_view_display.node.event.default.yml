@@ -7,7 +7,9 @@ dependencies:
     - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
     - field.field.node.event.field_event_genre
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -152,7 +154,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -196,7 +198,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -239,10 +241,11 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
-          - uuid: 4c8bddf8-1b13-4acc-bc1d-ddbfd81de71e
+          -
+            uuid: 4c8bddf8-1b13-4acc-bc1d-ddbfd81de71e
             region: card_button
             configuration:
               id: 'field_block:node:event:field_event_registration_link'
@@ -261,10 +264,10 @@ third_party_settings:
                   url_plain: false
                   rel: '0'
                   target: _blank
-                third_party_settings: { }
+                third_party_settings: {  }
             weight: 0
-            additional: { }
-            third_party_settings: { }
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: ecb379fa-76c3-4fbd-a8a5-217f52a97d55
             region: main
@@ -286,7 +289,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -351,7 +354,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -372,7 +375,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -394,7 +397,47 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a98d3301-d3d8-4eca-b307-ccafb0fd4e9e
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_directions'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ca17b643-1e4a-4ff0-849d-086f5a3fbe2a
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_geolocation'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: geofield_default
+                label: visually_hidden
+                settings:
+                  output_format: wkt
+                  output_escape: true
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -543,7 +586,9 @@ hidden:
   field_event_attendance: true
   field_event_attendance_mode: true
   field_event_category: true
+  field_event_directions: true
   field_event_genre: true
+  field_event_geolocation: true
   field_event_hide: true
   field_event_registration_link: true
   field_event_series_link_direct: true

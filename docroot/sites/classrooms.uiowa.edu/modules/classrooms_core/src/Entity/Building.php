@@ -42,7 +42,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description"
+ *     "description",
+ *     "number"
  *   }
  * )
  */
@@ -68,5 +69,12 @@ class Building extends ConfigEntityBase implements BuildingInterface {
    * @var string
    */
   protected $description;
+
+  /**
+   * The building number.
+   *
+   * @var string
+   */
+  protected $number;
 
 }

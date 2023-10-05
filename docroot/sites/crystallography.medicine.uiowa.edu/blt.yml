@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecrystallography.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecrystallography
+  human_name: crystallography.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecrystallography.prod
+drupal:
+  db:
+    database: crystallography_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecrystallography.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Protein and Crystallography Facility'

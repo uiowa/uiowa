@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgriffin.uiowa.ddev.site
+    protocol: https
+  machine_name: labgriffin
+  human_name: griffin.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgriffin.prod
+drupal:
+  db:
+    database: griffin_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgriffin.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Griffin Lab'

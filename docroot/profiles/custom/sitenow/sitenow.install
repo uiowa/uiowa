@@ -7,9 +7,12 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -163,14 +166,16 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
 
           $component_arr = $component->toArray();
 
-          $revision_id = $component_arr['configuration']['block_revision_id'];
-          if ($revision_id) {
-            $block = $block_storage->loadRevision($revision_id);
+          if (isset($component_arr['configuration']['block_revision_id'])) {
+            $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
           }
-          else {
+          elseif (isset($component_arr['configuration']['block_serialized'])) {
             $block = unserialize($component_arr['configuration']['block_serialized'], [
               'allowed_classes' => TRUE,
             ]);
+          }
+          else {
+            $block = NULL;
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -203,6 +208,7 @@ function sitenow_update_9001() {
   foreach ($block_types as $block_type) {
     // Find NIDs for all nodes with at least one aggregator block.
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'page')
       ->condition('layout_builder__layout', '%' . $block_type . '%', 'LIKE');
 
@@ -274,6 +280,7 @@ function sitenow_update_9002() {
 function sitenow_update_9003(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
+      ->accessCheck(TRUE)
       ->condition('expanded', 0, '=')
       ->execute();
     $sandbox['total'] = count($query);
@@ -431,6 +438,7 @@ function sitenow_update_9006(&$sandbox) {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'person')
       ->execute();
 
@@ -996,6 +1004,7 @@ function sitenow_update_9011() {
 
   // Delete remaining orphans?
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_people')
     ->execute();
   if ($result) {
@@ -1155,6 +1164,7 @@ function sitenow_update_9014() {
 
   // Delete remaining orphans?
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_people')
     ->execute();
 
@@ -1443,6 +1453,7 @@ function sitenow_update_9025() {
 
   // Delete uiowa_articles orphans.
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_articles')
     ->execute();
   if ($result) {
@@ -2403,6 +2414,7 @@ function sitenow_update_9062(&$sandbox) {
   // for our new field.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'event')
       ->execute();
 
@@ -2458,4 +2470,424 @@ function sitenow_update_9062(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 
+}
+
+/**
+ * Allow event content type to be replicated if it exists.
+ */
+function sitenow_update_9063() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
+  $replicate_allowed[] = 'event';
+  $config
+    ->set('uiowa_core.replicate_allowed', $replicate_allowed)
+    ->save();
+}
+
+/**
+ * Update any existing cards where button display is not set.
+ */
+function sitenow_update_9064() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
+    if ($block->get('field_uiowa_card_button_display')->value == NULL) {
+      $block->set('field_uiowa_card_button_display', 'Use site default');
+      $block->save();
+    }
+  });
+}
+
+/**
+ * Set list grid defaults for existing featured content blocks.
+ */
+function sitenow_update_9065() {
+  _update_all_blocks_by_plugin_id('inline_block:featured_content', function (&$component, $block) {
+    // @phpstan-ignore-next-line
+    $styles = $component->get('layout_builder_styles_style');
+    $styles[] = 'list_format_list';
+    $styles[] = 'block_grid_threecol_33_34_33';
+    $styles[] = 'no_border';
+
+    // @phpstan-ignore-next-line
+    $component->set('layout_builder_styles_style', $styles);
+
+  });
+}
+
+/**
+ * Update alert classes.
+ */
+function sitenow_update_9067() {
+  $search_replace = [
+    'alert-danger' => 'alert--danger',
+    'alert-warning' => 'alert--warning',
+    'alert-success' => 'alert--success',
+    'alert-info' => 'alert--info',
+  ];
+
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge($text_long, $text_with_summary);
+
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!($entity_storage instanceof SqlContentEntityStorage)) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      $tables = [];
+      $field_name = $field_storage_definition->getName();
+      try {
+        $tables[] = $table_mapping->getFieldTableName($field_name);
+        $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+      // See if the field has a revision table.
+      $revision_table = NULL;
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+          $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+        $tables[] = $revision_table;
+      }
+      if (!empty($tables)) {
+        $db = \Drupal::database();
+
+        foreach ($tables as $table) {
+          $update_count = 0;
+          $query = $db->select($table, 't')
+            ->fields('t');
+
+          // Build a condition group from our search strings.
+          $or_group = $query->orConditionGroup();
+
+          foreach ($search_replace as $needle => $string) {
+            $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+          }
+
+          $results = $query->condition($or_group)
+            ->execute();
+
+          foreach ($results as $record) {
+
+            // Load the HTML fragment as a DOMDocument object.
+            $document = Html::load($record->{$value_column});
+
+            // Get all <div> elements from the HTML fragment.
+            $instances = $document->getElementsByTagName('div');
+
+            // A regressive loop (starting with the end) is used to loop
+            // through matching elements so that they don't affect other
+            // elements when they are updated.
+            $i = $instances->length - 1;
+
+            while ($i >= 0) {
+              // The current <div> element.
+              $dom_element = $instances->item($i);
+
+              $class = $dom_element->getAttribute('class');
+
+              foreach ($search_replace as $needle => $replace) {
+                $class = str_replace($needle, $replace, $class);
+              }
+
+              if (trim($class)) {
+                $dom_element->setAttribute('class', $class);
+              }
+              else {
+                $dom_element->removeAttribute('class');
+              }
+
+              $i--;
+            }
+
+            // Run database update to store updated $value_column as
+            // Html::serialize($document).
+            $db->update($table)
+              ->fields([
+                $value_column => Html::serialize($document),
+              ])
+              ->condition('entity_id', $record->entity_id)
+              ->condition('revision_id', $record->revision_id)
+              ->execute();
+
+            $update_count++;
+          }
+
+          if ($update_count) {
+            \Drupal::messenger()
+              ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Update person bio field to long with summary.
+ */
+function sitenow_update_9068() {
+
+  // Statically defining our fields to be updated. More can be added here.
+  $fields = [
+    'field_person_bio' => [
+      'format_col' => 'field_person_bio_format',
+      'summary_col' => 'field_person_bio_summary',
+      'value_col' => 'field_person_bio_value',
+    ],
+  ];
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+
+  foreach ($fields as $field_name => &$field) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name => &$field) {
+    $table = $field['table'];
+    $revision_table = $field['revision_table'];
+    $entity_type = 'node';
+
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (is_null($field_storage)) {
+      continue;
+    }
+
+    // Fetch data currently stored in the field and save for later.
+    $rows = NULL;
+    $revision_rows = NULL;
+    if ($database->schema()->tableExists($table)) {
+      $rows = $database
+        ->select($table, 't')
+        ->fields('t')
+        ->execute()
+        ->fetchAll();
+      if ($database->schema()->tableExists($revision_table)) {
+        $revision_rows = $database
+          ->select($revision_table, 'r')
+          ->fields('r')
+          ->execute()
+          ->fetchAll();
+      }
+    }
+
+    // Place into the body database, as after config import
+    // that will be the person body location.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $row['body_format'] = 'filtered_html';
+        // Set a blank summary. It'll be updated in the next update hook.
+        $row['body_summary'] = '';
+        $row['body_value'] = $row[$field['value_col']];
+        foreach ($field as $col_name) {
+          unset($row[$col_name]);
+        }
+        $database
+          ->insert('node__body')
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $row['body_format'] = 'filtered_html';
+        // Set a blank summary. It'll be updated in the next update hook.
+        $row['body_summary'] = '';
+        $row['body_value'] = $row[$field['value_col']];
+        foreach ($field as $col_name) {
+          unset($row[$col_name]);
+        }
+        $database
+          ->insert('node_revision__body')
+          ->fields($row)
+          ->execute();
+      }
+    }
+  }
+}
+
+/**
+ * Update summary cols with field_teaser values.
+ */
+function sitenow_update_9069() {
+  $field_types = [
+    'body',
+    'field_teaser',
+  ];
+
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  foreach ($field_types as $field_name) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field_types[$field_name]['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field_types[$field_name]['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  $teaser_table = $field_types['field_teaser']['table'];
+  $teaser_revision_table = $field_types['field_teaser']['revision_table'];
+  $table = $field_types['body']['table'];
+  $revision_table = $field_types['body']['revision_table'];
+  if ($database->schema()->tableExists($teaser_table) && $database->schema()->tableExists($table) && $database->schema()->tableExists('node')) {
+    $database->query("
+      UPDATE {$teaser_table}, {$table}
+      SET {$table}.body_summary = {$teaser_table}.field_teaser_value
+      WHERE {$table}.entity_id = {$teaser_table}.entity_id
+      AND {$table}.bundle = {$teaser_table}.bundle
+      AND {$table}.revision_id = {$teaser_table}.revision_id
+      AND {$teaser_table}.field_teaser_value <> ''
+      AND ({$teaser_table}.field_teaser_value <> {$table}.body_summary OR {$table}.body_summary IS NULL)
+    ")
+      ->execute();
+    // Updates body_summary for any nodes not already
+    // in tables due to empty body.
+    $database->query("
+      INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
+      SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
+      FROM {$teaser_table}
+      WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node__body))
+    ")
+      ->execute();
+    if ($database->schema()->tableExists($teaser_revision_table) && $database->schema()->tableExists($revision_table)) {
+      $database->query("
+        UPDATE {$teaser_revision_table}, {$revision_table}
+        SET {$revision_table}.body_summary = {$teaser_revision_table}.field_teaser_value
+        WHERE {$revision_table}.revision_id = {$teaser_revision_table}.revision_id
+        AND {$revision_table}.bundle = {$teaser_revision_table}.bundle
+        AND {$revision_table}.entity_id = {$teaser_revision_table}.entity_id
+        AND {$teaser_revision_table}.field_teaser_value <> ''
+        AND ({$teaser_revision_table}.field_teaser_value <> {$revision_table}.body_summary OR {$revision_table}.body_summary IS NULL)
+      ")
+        ->execute();
+      $database->query("
+        INSERT IGNORE INTO {$revision_table} ({$revision_table}.bundle, {$revision_table}.deleted, {$revision_table}.entity_id, {$revision_table}.revision_id, {$revision_table}.langcode, {$revision_table}.delta, {$revision_table}.body_value, {$revision_table}.body_summary, {$revision_table}.body_format)
+        SELECT {$teaser_revision_table}.bundle, {$teaser_revision_table}.deleted, {$teaser_revision_table}.entity_id, {$teaser_revision_table}.revision_id, {$teaser_revision_table}.langcode, {$teaser_revision_table}.delta, '', {$teaser_revision_table}.field_teaser_value, 'filtered_html'
+        FROM $teaser_revision_table
+        WHERE entity_id IN (SELECT nid FROM node WHERE nid NOT IN (SELECT DISTINCT entity_id FROM node_revision__body))
+      ")
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Update hide fields options for list blocks.
+ */
+function sitenow_update_9070() {
+  foreach ([
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-list_card',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+      $config = $component->getConfiguration();
+      $config['fields']['body'] = $config['fields']['field_teaser'];
+      unset($config['fields']['field_teaser']);
+      $component->setConfiguration($config);
+    });
+  }
+}
+
+/**
+ * Set new branding options theme setting.
+ */
+function sitenow_update_9071() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  if ($config->get('style.style_selector') === 'gray') {
+    $config->set('header.branding_options', 'regents');
+  }
+  else {
+    $config->set('header.branding_options', 'iowa');
+  }
+  $config->save();
+}
+
+/**
+ * Set existing image gallery blocks with default media size value.
+ */
+function sitenow_update_9072() {
+  $block_plugin_id = 'inline_block:uiowa_image_gallery';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    if (in_array('block_image_gallery_style_masonry', $styles)) {
+      $styles[] = 'media_format_no_crop';
+    }
+    else {
+      $styles[] = 'media_format_square';
+    }
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
+
+/**
+ * Update padding options for single select.
+ */
+function sitenow_update_9073() {
+  foreach ([
+    'inline_block:uiowa_text_area',
+    'webform_block',
+  ] as $block_plugin_id) {
+
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
+
+      if (is_array($styles)) {
+
+        $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
+        $has_padding_all = in_array('block_padding_all', $styles);
+
+        // Match expression to determine the styles.
+        $final_styles = match (TRUE) {
+          $has_padding_all_extra => ['block_padding_all_extra'],
+          $has_padding_all => ['block_padding_all'],
+          default => [],
+        };
+
+        // If both 'block_padding_all_extra' and 'block_padding_all'
+        // are selected, remove 'block_padding_all'.
+        if ($has_padding_all_extra && $has_padding_all) {
+          $styles = array_diff($styles, ['block_padding_all']);
+        }
+
+        $styles = array_unique(array_merge($styles, $final_styles));
+
+        $component->set('layout_builder_styles_style', $styles);
+      }
+    });
+  }
 }

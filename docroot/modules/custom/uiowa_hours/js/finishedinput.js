@@ -1,11 +1,11 @@
-(function ($, Drupal, drupalSettings) {
+(function (Drupal, $, once) {
   'use strict';
   Drupal.behaviors.uiowa_hours_finishedinput = {
-    attach: function (context, settings) {
+    attach: function (context) {
       var typingTimer;
       var delay = 1100;
 
-      $('.form-date').once('finished_input').each(function () {
+      $(once('finished_input', '.form-date', context)).each(function () {
         $(this).on('input', function () {
           clearTimeout(typingTimer);
           if ($(this).val()) {
@@ -18,4 +18,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, jQuery, once);

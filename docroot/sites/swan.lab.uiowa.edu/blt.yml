@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labswan.uiowa.ddev.site
+    protocol: https
+  machine_name: labswan
+  human_name: swan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labswan.prod
+drupal:
+  db:
+    database: swan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labswan.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Swan Research Lab'

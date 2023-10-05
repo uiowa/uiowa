@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhbc.uiowa.ddev.site
+    protocol: https
+  machine_name: labhbc
+  human_name: hbc.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhbc.prod
+drupal:
+  db:
+    database: hbc_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhbc.prod.drupal.uiowa.edu'
+  requester: coehler
+  site-name: 'Health, Brain, and Cognition Lab'

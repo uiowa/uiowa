@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labahwa.uiowa.ddev.site
+    protocol: https
+  machine_name: labahwa
+  human_name: ahwa.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labahwa.prod
+drupal:
+  db:
+    database: ahwa_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labahwa.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Advanced Hydrology and Warning Applications'

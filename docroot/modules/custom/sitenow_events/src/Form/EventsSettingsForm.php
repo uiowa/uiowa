@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_events\Form;
 
+use Drupal\config_split\ConfigSplitManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,6 +30,13 @@ class EventsSettingsForm extends ConfigFormBase {
   protected $aliasRepository;
 
   /**
+   * The config split manager.
+   *
+   * @var \Drupal\config_split\ConfigSplitManager
+   */
+  protected $configSplitManager;
+
+  /**
    * The Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -37,11 +45,14 @@ class EventsSettingsForm extends ConfigFormBase {
    *   The alias cleaner.
    * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
    *   The alias checker.
+   * @param \Drupal\config_split\ConfigSplitManager $configSplitManager
+   *   The config split manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, ConfigSplitManager $configSplitManager) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $pathauto_alias_cleaner;
     $this->aliasRepository = $aliasRepository;
+    $this->configSplitManager = $configSplitManager;
   }
 
   /**
@@ -51,7 +62,8 @@ class EventsSettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path_alias.repository')
+      $container->get('path_alias.repository'),
+      $container->get('config_split.manager'),
     );
   }
 
@@ -106,6 +118,51 @@ class EventsSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $config_split = $this->configSplitManager->getSplitConfig('config_split.config_split.event');
+    if (isset($config_split) && $config_split->get('status')) {
+      $form['sitenow_events_filter'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Upcoming Events Filters',
+        '#description' => $this->t('These settings affect locally created events and their lists.'),
+        '#collapsible' => FALSE,
+      ];
+      $form['sitenow_events_filter']['filter_date_range'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Date Range'),
+        '#description' => $this->t('Allow filtering by the date range'),
+        '#default_value' => $config->get('filter_display.date_range'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_presenters'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Presenters'),
+        '#description' => $this->t('Allow filtering by presenter'),
+        '#default_value' => $config->get('filter_display.presenters'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_attendance_required'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Attendance Required'),
+        '#description' => $this->t('Allow filtering by attendance requirement'),
+        '#default_value' => $config->get('filter_display.attendance_required'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_attendance_mode'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Attendance type'),
+        '#description' => $this->t('Allow filtering by attendance type'),
+        '#default_value' => $config->get('filter_display.attendance_mode'),
+        '#size' => 60,
+      ];
+      $form['sitenow_events_filter']['filter_category'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Category'),
+        '#description' => $this->t('Allow filtering by category'),
+        '#default_value' => $config->get('filter_display.category'),
+        '#size' => 60,
+      ];
+    }
+
     return $form;
   }
 
@@ -137,7 +194,28 @@ class EventsSettingsForm extends ConfigFormBase {
       ->set('event_link', $form_state->getValue('sitenow_events_event_link'))
       ->set('single_event_path', $path)
       ->save();
+
+    $config_split = $this->configSplitManager->getSplitConfig('config_split.config_split.event');
+    if (isset($config_split) && $config_split->get('status')) {
+      $filters = [];
+      foreach ([
+        'date_range',
+        'presenters',
+        'attendance_required',
+        'attendance_mode',
+        'category',
+      ] as $filter_option) {
+        $filters[$filter_option] = $form_state->getValue("filter_{$filter_option}");
+      }
+      $this->config('sitenow_events.settings')
+        ->set('filter_display', $filters)
+        ->save();
+    }
+
     parent::submitForm($form, $form_state);
+
+    // Clear cache.
+    drupal_flush_all_caches();
   }
 
 }

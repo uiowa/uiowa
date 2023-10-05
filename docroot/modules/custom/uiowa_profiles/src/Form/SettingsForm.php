@@ -376,53 +376,57 @@ class SettingsForm extends ConfigFormBase {
       'directories',
     ]);
 
-    // Get all the directory paths as an array.
-    $paths = array_map(function ($v) {
-      return $this->aliasCleaner->cleanAlias($v['path']);
-    }, $directories);
+    if (isset($directories)) {
 
-    // Count how many times each path occurs and mark it as a duplicate if > 1.
-    $dups = [];
+      // Get all the directory paths as an array.
+      $paths = array_map(function ($v) {
+        return $this->aliasCleaner->cleanAlias($v['path']);
+      }, $directories);
 
-    foreach (array_count_values($paths) as $val => $c) {
-      if ($c > 1) {
-        $dups[] = $val;
+      // Count how many times each path occurs
+      // and mark it as a duplicate if > 1.
+      $dups = [];
+
+      foreach (array_count_values($paths) as $val => $c) {
+        if ($c > 1) {
+          $dups[] = $val;
+        }
       }
-    }
 
-    foreach ($directories as $key => $directory) {
-      // Make sure the API key does not have any extra spaces before/after it.
-      $form_state->setValue([
-        'profiles_fieldset',
-        'tabs_container',
-        'directories',
-        $key,
-        'api_key',
-      ], trim($directory['api_key']));
-
-      $path = $this->aliasCleaner->cleanAlias($directory['path']);
-
-      /** @var \Drupal\Core\Url $url */
-      $url = $this->pathValidator->getUrlIfValid($path);
-
-      // If $url is anything besides FALSE then the path is already in use. We
-      // also check if the route belongs to another module or is a duplicate
-      // of another directory.
-      if ($url &&
-        !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
-        $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is already in use.');
-      }
-      if (in_array($path, $dups)) {
-        $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is a duplicate of another directory path.');
-      }
-      else {
+      foreach ($directories as $key => $directory) {
+        // Make sure the API key does not have any extra spaces before/after it.
         $form_state->setValue([
           'profiles_fieldset',
           'tabs_container',
           'directories',
           $key,
-          'path',
-        ], $path);
+          'api_key',
+        ], trim($directory['api_key']));
+
+        $path = $this->aliasCleaner->cleanAlias($directory['path']);
+
+        /** @var \Drupal\Core\Url $url */
+        $url = $this->pathValidator->getUrlIfValid($path);
+
+        // If $url is anything besides FALSE then the path is already in use. We
+        // also check if the route belongs to another module or is a duplicate
+        // of another directory.
+        if ($url &&
+          !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
+          $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is already in use.');
+        }
+        if (in_array($path, $dups)) {
+          $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is a duplicate of another directory path.');
+        }
+        else {
+          $form_state->setValue([
+            'profiles_fieldset',
+            'tabs_container',
+            'directories',
+            $key,
+            'path',
+          ], $path);
+        }
       }
     }
 

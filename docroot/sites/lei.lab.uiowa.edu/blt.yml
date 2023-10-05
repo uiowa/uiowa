@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablei.uiowa.ddev.site
+    protocol: https
+  machine_name: lablei
+  human_name: lei.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablei.prod
+drupal:
+  db:
+    database: lei_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablei.prod.drupal.uiowa.edu'
+  requester: jtraer
+  site-name: 'Lab for Ecological Inference'

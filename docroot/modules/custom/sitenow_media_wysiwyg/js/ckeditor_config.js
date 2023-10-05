@@ -43,7 +43,6 @@ if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) 
   // Set allowed fields.
   let allowedInstances = [
     "edit-body-0-value",
-    "edit-field-person-bio-0-value",
     "edit-settings-block-form-field-uiowa-text-area-0-value"
   ];
   // Get ckeditor instances keys.

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: catering.uiowa.ddev.site
+    protocol: https
+  machine_name: catering
+  human_name: catering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: catering.prod
+drupal:
+  db:
+    database: catering_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://catering.prod.drupal.uiowa.edu'
+  requester: neuma
+  site-name: catering.uiowa.edu

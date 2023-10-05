@@ -3,9 +3,6 @@
   header_nav,
 ]) %}
 
-{{ attach_library('uids_base/iowa-bar') }}
-{{ attach_library('uids_base/header') }}
-
 {% if header_nav == 'toggle' %}
   {% if not logged_in %}
     {{ attach_library('uids_base/header-sticky') }}
@@ -18,14 +15,23 @@
   <div class="iowa-bar__container">
     {% block logo %}
       {% if uiowa_logo is not empty %}
-      {{ attach_library('uids_base/logo') }}
-      {% include '@uids_base/uids/logo.twig' with {
-        path: uiowa_url,
-        logo_classes: 'logo--tab',
-        logo_path: iowa_logo_path,
-        logo_path_png: uiowa_logo_path_png,
-        logo_id: 'header',
-      } %}
+        {{ attach_library('uids_base/logo') }}
+
+        {% if header_branding == 'iowa' %}
+          {% include '@uids_base/uids/logo.twig' with {
+            path: uiowa_url,
+            logo_classes: 'logo--tab',
+            logo_path_png: uiowa_logo_path_png,
+            logo_id: 'header',
+          } %}
+        {% elseif header_branding == 'ccom' %}
+          {% include '@uids_base/uids/logo-ccom.twig' with {
+            logo_classes: 'logo--tab logo--ccom',
+            logo_path_png: uihc_logo_path_png,
+            logo_id: 'header',
+          } %}
+        {% endif %}
+
       {% else %}
         <div class="top-bar"></div>
       {% endif %}
@@ -42,7 +48,7 @@
 </header>
 
 {% block horizontal_nav %}
-  {% if header_nav in ['horizontal', 'mega'] %}
+  {% if header_nav in['horizontal', 'mega'] %}
     {{ attach_library('uids_base/mega-menu') }}
     {{ attach_library('uids_base/horizontal-menu') }}
     {% set nav_attributes = create_attribute() %}

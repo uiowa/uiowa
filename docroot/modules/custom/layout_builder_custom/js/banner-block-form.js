@@ -1,12 +1,12 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   "use strict";
 
   Drupal.behaviors.bannerVideoExtend = {
-    attach: function (context, settings) {
+    attach: function (context) {
       // We target the .media-library-widget class because there are not a lot of
       // good choices for classes/IDs to target in the inline block form.
-      $('.media-library-widget', context).once('media-form-attach').each(function () {
+      $(once('media-form-attach', '.media-library-widget', context)).each(function () {
 
         // Check that we can access the next field.
         const checkbox_wrapper = $('div[data-drupal-selector$="autoplay-wrapper"]');
@@ -31,4 +31,4 @@
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

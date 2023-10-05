@@ -17,7 +17,7 @@ git:
     - 'uiowa03@svn-37631.prod.hosting.acquia.com:uiowa03.git'
     - 'uiowa04@svn-37631.prod.hosting.acquia.com:uiowa04.git'
     - 'uiowa05@svn-45062.prod.hosting.acquia.com:uiowa05.git'
-    - 'uihcsn01@svn-45062.prod.hosting.acquia.com:uihcsn01.git'
+    - 'uiowa06@svn-45062.prod.hosting.acquia.com:uiowa06.git'
   hooks:
     commit-msg: false
     pre-commit: false
@@ -44,6 +44,7 @@ validate:
       - drupal_entity
     filters:
       - image_style
+      - smart_date_format
 drupal:
   db:
     host: ddev-uiowa-db
@@ -79,7 +80,7 @@ uiowa:
     uiowa03: 3d87eca7-89d1-47e2-84db-bc7ad52a9363
     uiowa04: bf806a95-49a1-4bfe-9eed-6b91a89e694a
     uiowa05: c87bbab2-34fe-475b-a30b-6414b83e0c69
-    uihcsn01: b23f6ba2-2103-4497-a2eb-ac95010a3435
+    uiowa06: efb3347a-e483-48a6-bb6f-c48b72fa86ea
   run_first:
     - 'emergency.uiowa.edu'
     - 'police.uiowa.edu'

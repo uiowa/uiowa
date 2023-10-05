@@ -1,0 +1,21 @@
+uuid: 02910bd0-08db-452c-8dd6-dca74d9f2fbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_geolocation
+    - node.type.event
+  module:
+    - geofield
+id: node.event.field_event_geolocation
+field_name: field_event_geolocation
+entity_type: node
+bundle: event
+label: Geolocation
+description: 'This is used for API integrations only.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: geofield

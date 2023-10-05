@@ -5,23 +5,23 @@ dependencies: {  }
 id: node__person
 label: 'Content: Person'
 tags:
-  shortlink: '[current-page:url:unaliased]'
-  title: '[node:title] | [site:name] - [uiowa_core:org_name]'
   canonical_url: '[current-page:url:absolute]'
-  description: '[node:field_teaser:value]'
+  description: '[node:summary]'
   image_src: '[node:field_image:entity:field_media_image:large]'
-  og_type: profile
+  og_description: '[node:summary]'
   og_image_url: '[node:field_image:entity:field_media_image:large]'
-  og_url: '[current-page:url:absolute]'
-  og_description: '[node:field_teaser:value]'
   og_site_name: '[site:name] - [uiowa_core:org_name]'
   og_title: '[node:title]'
-  schema_person_type: Person
-  schema_person_image: 'a:3:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:49:"[node:field_image:entity:field_media_image:large]";}'
+  og_type: profile
+  og_url: '[current-page:url:absolute]'
+  schema_person_description: '[node:summary]'
   schema_person_email: '[node:field_person_email]'
-  schema_person_name: '[node:title]'
   schema_person_family_name: '[node:field_person_last_name]'
-  schema_person_telephone: '[node:field_person_phone]'
-  schema_person_description: '[node:field_teaser:value]'
   schema_person_given_name: '[node:field_person_first_name]'
+  schema_person_image: 'a:3:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:49:"[node:field_image:entity:field_media_image:large]";}'
   schema_person_job_title: '[node:field_person_position]'
+  schema_person_name: '[node:title]'
+  schema_person_telephone: '[node:field_person_phone]'
+  schema_person_type: Person
+  shortlink: '[current-page:url:unaliased]'
+  title: '[node:title] | [site:name] - [uiowa_core:org_name]'

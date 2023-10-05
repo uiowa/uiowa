@@ -6,7 +6,6 @@ _meta:
   default_langcode: en
   depends:
     99436d77-db6b-43b8-8e04-ea2f0e62b590: media
-    922b3b26-306a-457c-ba18-2c00966f81cf: node
 default:
   revision_uid:
     -
@@ -40,13 +39,23 @@ default:
       alias: /people/herky-hawk
       langcode: en
       pathauto: 1
+  rh_action:
+    -
+      value: display_page
+  rh_redirect_response:
+    -
+      value: 301
+  rh_redirect_fallback_action:
+    -
+      value: bundle_default
   field_image:
     -
       entity: 99436d77-db6b-43b8-8e04-ea2f0e62b590
-  field_person_bio:
+  body:
     -
       value: "<p>Herky the Hawk has been the symbol of the University of Iowa and its intercollegiate athletics teams for more than 60 years. The Hawkeye nickname came to life in 1948 when a cartoon character, later to be named Herky the Hawk, was hatched. The creator was Richard Spencer III, an instructor of journalism at the UI. The impish hawk was an immediate hit and he acquired his name through a statewide contest staged by the UI Athletics Department. John Franklin, a Belle Plaine alumnus, was the man who suggested Herky.</p>\r\n\r\n<p>Since his birth 60 years ago, Herky has symbolized intercollegiate athletics at the UI and epitomized University life in Iowa City. He even donned a military uniform during the Korean War and became the insignia of the 124th Fighting Squadron.</p>\r\n\r\n<p>During the mid-1950s, Herky came to life at a football game as the Iowa mascot with a black leather head and gold felt feathers. Herky represents not only the University of Iowa, but also the entire state of Iowa...hence the state's nickname, the Hawkeye State. Herky can be seen at all home and away football games, home basketball games, home volleyball games, home wrestling meets and many other home athletics events. Herky travels when the team goes to bowl games and post season basketball tournaments and the annual wrestling national championship. He can be seen at events throughout Iowa during the year, including the Iowa State Fair, parades, grand openings, charity events, weddings and various other events.</p>\r\n"
       format: filtered_html
+      summary: 'Add a short biography for every person. It''s important for SEO and will be referenced on the /people page. To hide a specific person, go to the ''Promotion Options'' and select ''Hide on lists''.'
   field_person_first_name:
     -
       value: Herky
@@ -62,6 +71,6 @@ default:
   field_person_position:
     -
       value: 'University of Iowa Mascot'
-  field_teaser:
+  field_person_website_link_direct:
     -
-      value: 'Add a short biography for every person. It''s important for SEO and will be referenced on the /people page. To hide a specific person, go to the ''Promotion Options'' and select ''Hide on lists''.'
+      value: false

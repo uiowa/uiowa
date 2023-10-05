@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdavies.uiowa.ddev.site
+    protocol: https
+  machine_name: labdavies
+  human_name: davies.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdavies.prod
+drupal:
+  db:
+    database: davies_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdavies.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Brandon Davies Laboratory'

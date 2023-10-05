@@ -23,3 +23,17 @@ sitenow_p2lb.content_converted:
     _title: 'Converted'
   requirements:
     _permission: 'administer basic site settings'
+
+entity.node.p2lb_conversion_status:
+  path: '/node/{node}/conversion-status'
+  defaults:
+    _title: 'V3 Status'
+    _controller: '\Drupal\sitenow_p2lb\Controller\P2LbController::status'
+  requirements:
+    _entity_access: 'node.view all revisions'
+    node: \d+
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node

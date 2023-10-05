@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.event.field_event_attendance
     - field.field.node.event.field_event_attendance_mode
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -24,6 +26,7 @@ dependencies:
     - views.view.events
   module:
     - address
+    - geofield
     - layout_builder
     - layout_builder_restrictions
     - link
@@ -129,7 +132,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -173,7 +176,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -216,7 +219,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -240,7 +243,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -305,7 +308,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -327,7 +330,47 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4af637aa-7d06-479c-9f2d-5a3a55e6d91d
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_directions'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 967dfcb2-deab-40ad-9084-dbc3700f8b72
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_geolocation'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: geofield_default
+                label: visually_hidden
+                settings:
+                  output_format: wkt
+                  output_escape: true
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -403,6 +446,15 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     weight: 103
+    region: content
+  field_event_geolocation:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 105
     region: content
   field_event_location:
     type: address_default
@@ -485,6 +537,7 @@ hidden:
   entity_print_view_word_docx: true
   field_event_attendance_mode: true
   field_event_category: true
+  field_event_directions: true
   field_event_hide: true
   field_event_series_link_direct: true
   field_event_status: true

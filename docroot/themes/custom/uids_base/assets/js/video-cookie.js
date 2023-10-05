@@ -1,12 +1,12 @@
-(function ($, Drupal) {
+(function ($, Drupal, once, cookies) {
 
   'use strict';
 
   const UIOWA_VIDEO_COOKIE = 'uiowa-video';
 
   Drupal.behaviors.uidsVideoCookie = {
-    attach: function (context, settings) {
-      $('.media--video', context).once('media-video-attach').each(function () {
+    attach: function (context) {
+      $(once('media-video-attach', '.media--video', context)).each(function () {
         const video = this.querySelector('video');
         // We only need to execute the rest of this if the video element exists.
         if (video) {
@@ -15,8 +15,8 @@
             // Set videoCookieCollection to be an empty dictionary.
             let videoCookieCollection = {};
             // If the video cookie already exists, load it in to the videoCookieCollection variable.
-            if ($.cookie(UIOWA_VIDEO_COOKIE)) {
-              videoCookieCollection = JSON.parse($.cookie(UIOWA_VIDEO_COOKIE));
+            if (cookies.get(UIOWA_VIDEO_COOKIE)) {
+              videoCookieCollection = JSON.parse(cookies.get(UIOWA_VIDEO_COOKIE));
             }
             // Also get the cookie id for later usage.
             const videoCookieId = video.getAttribute('data-video-cookie-id');
@@ -34,8 +34,8 @@
             // On the video controls button click...
             btn.onclick = function() {
               // Update the video cookie to make sure we have the latest one.
-              if ($.cookie(UIOWA_VIDEO_COOKIE)) {
-                videoCookieCollection = JSON.parse($.cookie(UIOWA_VIDEO_COOKIE));
+              if (cookies.get(UIOWA_VIDEO_COOKIE)) {
+                videoCookieCollection = JSON.parse(cookies.get(UIOWA_VIDEO_COOKIE));
               }
               // And then if the video is paused...
               if (video.paused) {
@@ -45,12 +45,12 @@
               }
               else {
                 // Remove a cookie based upon the cookie id index.
-                if ($.cookie(UIOWA_VIDEO_COOKIE)) {
+                if (cookies.get(UIOWA_VIDEO_COOKIE)) {
                   delete videoCookieCollection[videoCookieId];
 
                   // If cookie array is empty, remove cookie dictionary.
                   if (Object.keys(videoCookieCollection).length === 0) {
-                    $.removeCookie(UIOWA_VIDEO_COOKIE, { path: '/' });
+                    cookies.remove(UIOWA_VIDEO_COOKIE, { path: '/' });
                   }
                   // Else, re-save the dictionary.
                   else {
@@ -58,7 +58,7 @@
                   }
                 }
               }
-            }
+            };
           }
         }
       });
@@ -69,7 +69,7 @@
     // String-ify the cookie JSON so it can be saved.
     const cookieString = JSON.stringify(cookie);
     // Cookie is set to expire in 99 years.
-    $.cookie(UIOWA_VIDEO_COOKIE, cookieString, { expires: 36135, path: '/' });
+    cookies.set(UIOWA_VIDEO_COOKIE, cookieString, { expires: 36135, path: '/' });
   }
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once, window.Cookies);
