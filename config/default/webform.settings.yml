@@ -246,9 +246,15 @@ export:
   header_prefix: true
   header_prefix_key_delimiter: __
   header_prefix_label_delimiter: ': '
+  entity_reference_items:
+    - id
+    - title
+    - url
   options_single_format: compact
   options_multiple_format: compact
   options_item_format: label
+  likert_answers_format: label
+  signature_format: status
   composite_element_item_format: label
   excluded_exporters:
     yaml: yaml
@@ -360,9 +366,6 @@ ui:
   toolbar_item: false
 libraries:
   excluded_libraries:
-    - algolia.places
-    - ckeditor.codemirror
-    - ckeditor.image
     - jquery.chosen
     - jquery.rateit
     - signature_pad
