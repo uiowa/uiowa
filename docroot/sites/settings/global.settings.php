@@ -66,6 +66,12 @@ $settings['mailer_sendmail_commands'] = [
   ini_get('sendmail_path') . ' -t',
 ];
 
+if ($ah_env !== 'local') {
+  // Set this in config since the config references the actual text of the
+  // command, which is different for each environment.
+  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = ini_get('sendmail_path') . ' -t';
+}
+
 // Set recommended New Relic configuration.
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
 ini_set('newrelic.loglevel', 'error');
