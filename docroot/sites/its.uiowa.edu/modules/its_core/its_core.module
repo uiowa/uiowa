@@ -216,8 +216,8 @@ function its_core_preprocess_breadcrumb(&$variables) {
   if (!isset($node) || $node->getType() !== 'service') {
     return;
   }
-  // Grab our referenced Service Category taxonomy term,
-  // and add an additional crumb to the breadcrumb.
+  // Grab our referenced Service Category taxonomy term
+  // and add a crumb to the breadcrumb.
   if ($node->hasField('field_service_category')) {
     $category = $node->field_service_category?->entity;
     $category_name = $category->name?->value;
@@ -230,9 +230,8 @@ function its_core_preprocess_breadcrumb(&$variables) {
       ];
     }
   }
-  // Also include an unlinked crumb
-  // with the current service title to help avoid confusion
-  // with the Service Category crumb.
+  // Also include an unlinked crumb to the current page
+  // matching our breadcrumb pattern.
   $variables['breadcrumb'][] = [
     'text' => $node->getTitle(),
   ];
