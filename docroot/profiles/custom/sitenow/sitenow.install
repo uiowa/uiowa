@@ -2891,3 +2891,21 @@ function sitenow_update_9073() {
     });
   }
 }
+
+/**
+ * Update the remote video media type config to remove the dependency on
+ * oembed_providers.
+ */
+function sitenow_update_9074() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // The following config is needed for the next update.
+  $config_names = [
+    'media.type.remote_video',
+  ];
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+}
