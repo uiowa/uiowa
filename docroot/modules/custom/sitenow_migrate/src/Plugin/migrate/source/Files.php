@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\file\Plugin\migrate\source\d7\File;
 use Drupal\migrate\Event\MigrateRollbackEvent;
 use Drupal\migrate\Row;
+use Drupal\migrate_drupal\Plugin\migrate\source\DrupalSqlBase;
 
 /**
  * Basic implementation of the source plugin.
@@ -86,6 +87,22 @@ class Files extends File {
       ->getStorage('media');
     $mediaEntities = $entityManager->loadMultiple($results);
     $entityManager->delete($mediaEntities);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function initializeIterator() {
+    $this->privatePath = $this->variableGet('file_private_path', NULL);
+    $publicPath = $this->variableGet('file_public_path', NULL);
+    if (is_null($publicPath)) {
+      $publicPath = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
+        ->get('shared_configuration.source.constants.public_file_path');
+    }
+    $this->publicPath = $publicPath;
+    // We need to skip over the direct parent and go directly
+    // to its parent to avoid re-setting the publicPath.
+    return DrupalSqlBase::initializeIterator();
   }
 
 }
