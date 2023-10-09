@@ -20,21 +20,8 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class BrandCoreCommands extends DrushCommands {
+
   use LoggerChannelTrait;
-
-  /**
-   * The account_switcher service.
-   *
-   * @var \Drupal\Core\Session\AccountSwitcherInterface
-   */
-  protected $accountSwitcher;
-
-  /**
-   * The date_formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
 
   /**
    * Drush command constructor.
@@ -46,7 +33,7 @@ class BrandCoreCommands extends DrushCommands {
    * @param \Drupal\symfony_mailer\EmailFactoryInterface $emailFactory
    *   The plugin.manager.mail service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory) {
+  public function __construct(protected AccountSwitcherInterface $accountSwitcher, protected DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
   }

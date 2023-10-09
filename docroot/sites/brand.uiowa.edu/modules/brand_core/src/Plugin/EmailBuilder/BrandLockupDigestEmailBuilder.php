@@ -34,8 +34,6 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
    * {@inheritdoc}
    */
   public function build(EmailInterface $email) {
-//    $email->addTextHeader('Content-Type', 'text/html; charset=UTF-8; format=flowed; delsp=yes');
-
     $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
 
     if ($email->getSubType() == 'lockup_review_digest') {
