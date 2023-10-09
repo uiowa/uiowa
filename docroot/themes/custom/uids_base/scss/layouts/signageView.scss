@@ -43,7 +43,9 @@
     background: white;
     padding: 0;
     opacity: 0;
-    transition: opacity 2s ease-in-out;
+    transform: translateZ(0px);
+    transition: all 2s ease-in-out;
+    transition-property: opacity, transform;
 
     &:before {
       content: '';
@@ -54,12 +56,14 @@
       height: 100vh;
       opacity: 1;
       background: black;
-      transition: opacity 2s ease-in-out;
+      transition: all 2s ease-in-out;
+      transition-property: opacity;
       z-index: 511;
     }
 
     &.show-slide {
       opacity: 1;
+      transform: translateZ(10px);
       z-index: 512;
 
       &:before {
