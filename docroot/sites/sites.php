@@ -5812,3 +5812,9 @@ $sites['labdemali.uiowa.ddev.site'] = 'demali.lab.uiowa.edu';
 $sites['labdemali.dev.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
 $sites['labdemali.stage.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
 $sites['labdemali.prod.drupal.uiowa.edu'] = 'demali.lab.uiowa.edu';
+
+// Directory aliases for mccray.lab.uiowa.edu.
+$sites['labmccray.uiowa.ddev.site'] = 'mccray.lab.uiowa.edu';
+$sites['labmccray.dev.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
+$sites['labmccray.stage.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
+$sites['labmccray.prod.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
