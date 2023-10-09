@@ -120,72 +120,37 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
- * Implements hook_mail_alter().
+ * Implements hook_mailer_PHASE().
  */
-function uiowa_core_mail_alter(&$message) {
+function uiowa_core_mailer_build(EmailInterface $email) {
   // Add header in use by email team to avoid spam/external tagging.
-  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+  $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
 
-  unset($message['from']);
-
-  if (!array_key_exists('from', $message)) {
-    $message['from'] = \Drupal::config('system.site')->get('mail');
+  // Set a from address to the site email address if none are set.
+  if (empty($email->getFrom())) {
+    $email->setFrom([
+      new Address(\Drupal::config('system.site')->get('mail'), \Drupal::config('system.site')->get('name'))
+    ]);
   }
 
   // Override the from address if it doesn't match our Platform Email domain
   // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
   // multiple from addresses here because that doesn't seem to work currently -
   // hook_mail_alter isn't even invoked for some reason.
-  try {
-    $from = Address::create($message['from']);
-    $domain = explode('@', $from->getAddress());
+  $from_addresses = $email->getFrom();
+
+  foreach ($from_addresses as &$from) {
+
+    $domain = explode('@', $from->getEmail());
     $domain = array_pop($domain);
 
     if ($domain != 'uiowa.edu') {
-      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $name = $from->getDisplayName() ?: \Drupal::config('system.site')->get('name');
       $from = new Address('sitenow-noreply@uiowa.edu', $name);
-      $message['headers']['From'] = $from->toString();
     }
   }
-  catch (RfcComplianceException $e) {
-    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
-      '@from' => $message['from'],
-    ]));
-  }
+  $email->setFrom($from_addresses);
 }
-
-/**
- * Implements hook_mailer_PHASE().
- */
-//function uiowa_core_mailer_build(EmailInterface $email) {
-//  // Add header in use by email team to avoid spam/external tagging.
-//  $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
-//
-//  // Set a from address to the site email address if none are set.
-//  if (empty($email->getFrom())) {
-//    $email->setFrom([
-//      new Address(\Drupal::config('system.site')->get('mail'), \Drupal::config('system.site')->get('name'))
-//    ]);
-//  }
-//
-//  // Override the from address if it doesn't match our Platform Email domain
-//  // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
-//  // multiple from addresses here because that doesn't seem to work currently -
-//  // hook_mail_alter isn't even invoked for some reason.
-//  $from_addresses = $email->getFrom();
-//
-//  foreach ($from_addresses as &$from) {
-//
-//    $domain = explode('@', $from->getEmail());
-//    $domain = array_pop($domain);
-//
-//    if ($domain != 'uiowa.edu') {
-//      $name = $from->getDisplayName() ?: \Drupal::config('system.site')->get('name');
-//      $from = new Address('sitenow-noreply@uiowa.edu', $name);
-//    }
-//  }
-//  $email->setFrom($from_addresses);
-//}
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
