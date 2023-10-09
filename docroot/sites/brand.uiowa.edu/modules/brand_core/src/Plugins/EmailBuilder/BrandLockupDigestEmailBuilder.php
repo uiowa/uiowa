@@ -2,15 +2,10 @@
 
 namespace Drupal\brand_core\Plugin\EmailBuilder;
 
-use Drupal\Core\Site\Settings;
-use Drupal\Core\Url;
-use Drupal\symfony_mailer\EmailFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\symfony_mailer\EmailInterface;
-use Drupal\symfony_mailer\Exception\SkipMailException;
-use Drupal\symfony_mailer\Entity\MailerPolicy;
 use Drupal\symfony_mailer\MailerHelperTrait;
 use Drupal\symfony_mailer\Processor\EmailBuilderBase;
-use Drupal\update\UpdateManagerInterface;
 
 /**
  * Defines an Email Builder for the Lockup Digest email.
@@ -26,6 +21,7 @@ use Drupal\update\UpdateManagerInterface;
 class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
 
   use MailerHelperTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -48,7 +44,7 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
     ];
 
     if ($email->getSubType() == 'lockup-review-digest') {
-      $email->setSubject(t('Brand Manual - You have @results @label to review',
+      $email->setSubject($this->t('Brand Manual - You have @results @label to review',
         [
           '@results' => $email->getParam('results'),
           '@label' => $email->getParam('label'),
@@ -56,16 +52,16 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
 
       $body = [];
 
-      $body[] = t('You have @results @label to review:', [
+      $body[] = $this->t('You have @results @label to review:', [
         '@results' => $email->getParam('results'),
         '@label' => $email->getParam('label'),
       ], $options);
 
       foreach ($email->getParam('lockups') as $lockup) {
-        $body[] = t('- @lockup', ['@lockup' => $lockup], $options);
+        $body[] = $this->t('- @lockup', ['@lockup' => $lockup], $options);
       }
 
-      $body[] = t('@login', ['@login' => $email->getParam('login_url')],
+      $body[] = $this->t('@login', ['@login' => $email->getParam('login_url')],
         $options);
 
       $email->setBody($body);
