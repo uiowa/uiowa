@@ -11,11 +11,8 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  * Defines an Email Builder for the Lockup Digest email.
  *
  * @EmailBuilder(
- *   id = "brand_lockup_digest",
- *   sub_types = { },
- *   override = TRUE,
- *   common_adjusters = {"email_subject", "email_body", "email_to"},
- *   import = @Translation(""),
+ *   id = "brand_core",
+ *   sub_types = {"lockup_review_digest" = @Translation("Lockup Review Digest")},
  * )
  */
 class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
@@ -26,7 +23,7 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, array $lockups, string $label, string $results, string $login_url) {
+  public function createParams(EmailInterface $email, array $lockups = NULL, string $label = NULL, string $results = NULL, string $login_url = NULL) {
     $email->setParam('lockups', $lockups)
       ->setParam('label', $label)
       ->setParam('results', $results)
@@ -40,10 +37,10 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
     $email->addTextHeader('Content-Type', 'text/html; charset=UTF-8; format=flowed; delsp=yes');
 
     $options = [
-      'langcode' => $email->getLangcode(),
+//      'langcode' => $email->getLangcode(),
     ];
 
-    if ($email->getSubType() == 'lockup-review-digest') {
+    if ($email->getSubType() == 'lockup_review_digest') {
       $email->setSubject($this->t('Brand Manual - You have @results @label to review',
         [
           '@results' => $email->getParam('results'),

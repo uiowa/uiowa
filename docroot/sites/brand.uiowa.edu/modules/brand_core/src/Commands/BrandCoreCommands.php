@@ -9,6 +9,7 @@ use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\Url;
+use Drupal\symfony_mailer\EmailFactoryInterface;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -36,13 +37,6 @@ class BrandCoreCommands extends DrushCommands {
   protected $dateFormatter;
 
   /**
-   * The plugin.manager.mail service.
-   *
-   * @var \Drupal\Core\Mail\MailManagerInterface
-   */
-  protected $mailManager;
-
-  /**
    * The config.factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -56,15 +50,14 @@ class BrandCoreCommands extends DrushCommands {
    *   The account_switcher service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date_formatter service.
-   * @param \Drupal\Core\Mail\MailManagerInterface $mailManager
+   * @param \Drupal\symfony_mailer\EmailFactoryInterface $emailFactory
    *   The plugin.manager.mail service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config.factory service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory, ConfigFactoryInterface $configFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
-    $this->mailManager = $mailManager;
     $this->configFactory = $configFactory;
   }
 
@@ -105,16 +98,15 @@ class BrandCoreCommands extends DrushCommands {
       ];
 
       $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $site_email = $this->configFactory->get('system.site')->get('mail');
-      $result = $this->mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
+      $email = $this->emailFactory->sendTypedEmail('brand_core', 'lockup_review_digest', $params);
 
-      if ($result['result'] !== TRUE) {
-        $this->getLogger('brand_core')->error('Lockup Review Digest Not Sent');
-        $this->output()->writeln('Lockup Review Digest Not Sent');
+      if ($email->getError()) {
+        $this->getLogger('brand_core')->error('Lockup Review Digest not sent');
+        $this->output()->writeln('Lockup Review Digest not sent');
       }
       else {
-        $this->getLogger('brand_core')->notice('Lockup Review Digest Sent');
-        $this->output()->writeln('Lockup Review Digest Sent');
+        $this->getLogger('brand_core')->notice('Lockup Review Digest sent');
+        $this->output()->writeln('Lockup Review Digest sent');
       }
     }
     else {
