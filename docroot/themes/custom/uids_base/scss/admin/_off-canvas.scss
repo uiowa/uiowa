@@ -193,6 +193,17 @@
   color: $secondary;
 }
 
+#drupal-off-canvas .alert ul li {
+  display: inline-block;
+  border-bottom: none;
+  + li {
+    &:before {
+      content: ",";
+      padding: 0 .2rem 0 .1rem;
+    }
+  }
+}
+
 // Accessible off-canvas form item error color.
 #drupal-off-canvas .uids-content .form-item--error-message * {
   color: #E8A392 !important;
