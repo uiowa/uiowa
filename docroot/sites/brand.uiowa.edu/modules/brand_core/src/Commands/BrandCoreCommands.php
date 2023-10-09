@@ -37,13 +37,6 @@ class BrandCoreCommands extends DrushCommands {
   protected $dateFormatter;
 
   /**
-   * The config.factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Drush command constructor.
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
@@ -52,13 +45,10 @@ class BrandCoreCommands extends DrushCommands {
    *   The date_formatter service.
    * @param \Drupal\symfony_mailer\EmailFactoryInterface $emailFactory
    *   The plugin.manager.mail service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config.factory service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory, ConfigFactoryInterface $configFactory) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
-    $this->configFactory = $configFactory;
   }
 
   /**
@@ -78,30 +68,29 @@ class BrandCoreCommands extends DrushCommands {
 
     if (!empty($view)) {
       $results = count($view);
-      $params['lockups'] = [];
+      $lockups = [];
       // Access field data from the view results.
       foreach ($view as $row) {
         $entity = $row->_entity;
         $timestamp = $entity->get('revision_timestamp');
         $date = $this->dateFormatter->format($timestamp->value, 'short', NULL, 'America/Chicago');
-        $params['lockups'][] = $entity->getTitle() . ' - Last updated: ' . $date;
+        $lockups[] = $entity->getTitle() . ' - Last updated: ' . $date;
       }
 
       $label = $results > 1 ? 'lockups' : 'lockup';
 
       // Prepare params for digest email.
-      $params['label'] = $label;
-      $params['results'] = (string) $results;
+      $results = (string) $results;
       global $base_url;
       $url_options = [
         'query' => ['destination' => '/admin/content/lockups'],
       ];
 
-      $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $email = $this->emailFactory->sendTypedEmail('brand_core', 'lockup_review_digest', $params);
+      $login_url = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
+      $email = $this->emailFactory->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
 
       if ($email->getError()) {
-        $this->getLogger('brand_core')->error('Lockup Review Digest not sent');
+        $this->getLogger('brand_core')->error('Lockup Review Digest not sent. Error: @error');
         $this->output()->writeln('Lockup Review Digest not sent');
       }
       else {
