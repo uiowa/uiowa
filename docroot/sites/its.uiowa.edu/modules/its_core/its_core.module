@@ -195,9 +195,6 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'service_related_articles':
-      $lb_styles = $view?->display_handler
-        ?->getOption('layout_builder_styles') ?? [];
-
       foreach ($variables['rows'] as &$row_build) {
         if (!isset($row_build['content']['#override_styles'])) {
           $row_build['content']['#overrides_styles'] = [];
@@ -211,7 +208,10 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
   }
 }
 
-function its_core_preprocess_breadcrumb(&$variables) {
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function its_core_preprocess_breadcrumb(&$variables): void {
   $node = \Drupal::routeMatch()->getParameter('node');
   if (!isset($node) || $node->getType() !== 'service') {
     return;
