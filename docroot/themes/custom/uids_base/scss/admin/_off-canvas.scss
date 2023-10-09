@@ -157,15 +157,37 @@
   }
 }
 
-#drupal-off-canvas .alert span {
+// Alerts.
+#drupal-off-canvas .alert span,
+#drupal-off-canvas .alert svg.fa-stack-2x {
   position: relative!important;
 }
 
+#drupal-off-canvas .alert svg {
+  margin: 0;
+}
+
+#drupal-off-canvas .alert__icon .svg-inline--fa.fa-stack-1x {
+  margin: 0;
+  left: -2px;
+  top: -1px;
+}
+
+#drupal-off-canvas .alert a {
+  color: $link-color;
+}
+
 #drupal-off-canvas .alert button  {
-  color: #000;
+  color: $secondary;
   position: absolute;
+  right: 2rem;
+  top: 1rem;
+}
+
+.alert__icon .svg-inline--fa.fa-stack-2x {
+  height: 2rem;
 }
 
 #drupal-off-canvas form .alert div {
-  color:#333!important;
+  color: $secondary;
 }
