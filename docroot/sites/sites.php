@@ -5842,3 +5842,9 @@ $sites['medicineinbc.uiowa.ddev.site'] = 'inbc.medicine.uiowa.edu';
 $sites['medicineinbc.dev.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
 $sites['medicineinbc.stage.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
 $sites['medicineinbc.prod.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
+
+// Directory aliases for saic.medicine.uiowa.edu.
+$sites['medicinesaic.uiowa.ddev.site'] = 'saic.medicine.uiowa.edu';
+$sites['medicinesaic.dev.drupal.uiowa.edu'] = 'saic.medicine.uiowa.edu';
+$sites['medicinesaic.stage.drupal.uiowa.edu'] = 'saic.medicine.uiowa.edu';
+$sites['medicinesaic.prod.drupal.uiowa.edu'] = 'saic.medicine.uiowa.edu';
