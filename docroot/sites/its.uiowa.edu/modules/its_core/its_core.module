@@ -220,9 +220,9 @@ function its_core_preprocess_breadcrumb(&$variables): void {
   // and add a crumb to the breadcrumb.
   if ($node->hasField('field_service_category')) {
     $category = $node->field_service_category?->entity;
-    $category_name = $category->name?->value;
+    $category_name = $category?->name?->value;
     $category_path = \Drupal::service('path_alias.manager')
-      ->getAliasByPath('/taxonomy/term/' . $category->tid->value);
+      ->getAliasByPath('/taxonomy/term/' . $category?->tid?->value);
     if (isset($category_name) && isset($category_path)) {
       $variables['breadcrumb'][] = [
         'text' => $category_name,
