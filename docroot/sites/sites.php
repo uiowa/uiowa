@@ -5836,3 +5836,9 @@ $sites['medicinecme.uiowa.ddev.site'] = 'cme.medicine.uiowa.edu';
 $sites['medicinecme.dev.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
 $sites['medicinecme.stage.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
 $sites['medicinecme.prod.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
+
+// Directory aliases for inbc.medicine.uiowa.edu.
+$sites['medicineinbc.uiowa.ddev.site'] = 'inbc.medicine.uiowa.edu';
+$sites['medicineinbc.dev.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
+$sites['medicineinbc.stage.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
+$sites['medicineinbc.prod.drupal.uiowa.edu'] = 'inbc.medicine.uiowa.edu';
