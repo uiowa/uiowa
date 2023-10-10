@@ -230,9 +230,4 @@ function its_core_preprocess_breadcrumb(&$variables): void {
       ];
     }
   }
-  // Also include an unlinked crumb to the current page
-  // matching our breadcrumb pattern.
-  $variables['breadcrumb'][] = [
-    'text' => $node->getTitle(),
-  ];
 }
