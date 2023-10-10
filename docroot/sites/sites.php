@@ -5824,3 +5824,15 @@ $sites['labscan.uiowa.ddev.site'] = 'scan.lab.uiowa.edu';
 $sites['labscan.dev.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
 $sites['labscan.stage.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
 $sites['labscan.prod.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
+
+// Directory aliases for geneticscluster.medicine.uiowa.edu.
+$sites['medicinegeneticscluster.uiowa.ddev.site'] = 'geneticscluster.medicine.uiowa.edu';
+$sites['medicinegeneticscluster.dev.drupal.uiowa.edu'] = 'geneticscluster.medicine.uiowa.edu';
+$sites['medicinegeneticscluster.stage.drupal.uiowa.edu'] = 'geneticscluster.medicine.uiowa.edu';
+$sites['medicinegeneticscluster.prod.drupal.uiowa.edu'] = 'geneticscluster.medicine.uiowa.edu';
+
+// Directory aliases for cme.medicine.uiowa.edu.
+$sites['medicinecme.uiowa.ddev.site'] = 'cme.medicine.uiowa.edu';
+$sites['medicinecme.dev.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
+$sites['medicinecme.stage.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
+$sites['medicinecme.prod.drupal.uiowa.edu'] = 'cme.medicine.uiowa.edu';
