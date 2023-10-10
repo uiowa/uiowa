@@ -45,22 +45,34 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
 
       $body = [];
 
-      $body[] = $this->t('You have @results @label to review:', [
-        '@results' => $email->getParam('results'),
-        '@label' => $email->getParam('label'),
-      ]);
+      $body[] = [
+        '#markup' => $this->t('You have @results @label to review:', [
+          '@results' => $email->getParam('results'),
+          '@label' => $email->getParam('label'),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
 
       foreach ($email->getParam('lockups') as $lockup) {
-        $body[] = $this->t('- @lockup', [
-          '@lockup' => $lockup,
-        ]);
+        $body[] = [
+          '#markup' => $this->t('<li>@lockup', [
+            '@lockup' => $lockup,
+          ]),
+          '#prefix' => '<ul>',
+          '#suffix' => '</ul>',
+        ];
       }
 
-      $body[] = $this->t('@login', [
-        '@login' => $email->getParam('login_url'),
-      ]);
+      $body[] = [
+        '#markup' => $this->t('@login', [
+          '@login' => $email->getParam('login_url'),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
 
-      $email->setBody(implode("\n", $body));
+      $email->setBody(['body' => $body]);
     }
   }
 
