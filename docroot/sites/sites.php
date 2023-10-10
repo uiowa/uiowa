@@ -5818,3 +5818,9 @@ $sites['labmccray.uiowa.ddev.site'] = 'mccray.lab.uiowa.edu';
 $sites['labmccray.dev.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
 $sites['labmccray.stage.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
 $sites['labmccray.prod.drupal.uiowa.edu'] = 'mccray.lab.uiowa.edu';
+
+// Directory aliases for scan.lab.uiowa.edu.
+$sites['labscan.uiowa.ddev.site'] = 'scan.lab.uiowa.edu';
+$sites['labscan.dev.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
+$sites['labscan.stage.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
+$sites['labscan.prod.drupal.uiowa.edu'] = 'scan.lab.uiowa.edu';
