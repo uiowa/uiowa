@@ -272,14 +272,12 @@ function sitenow_articles_preprocess_node(&$variables) {
             // Check if we don't have any gallery images.
             if ($node->hasField('field_gallery_images') &&
               empty($node->get('field_gallery_images')->getValue())) {
-              $layout_parts = ['content', 'second'];
               // If no gallery images, then hide the gallery jumplink.
               uiowa_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
             }
 
             // Check if preserve links checkbox is checked.
             if ($node->hasField('field_article_preserve_links')) {
-              $layout_parts = ['content', 'first'];
               if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
                 // If it isn't checked, hide the broken links message.
                 uiowa_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
@@ -645,7 +643,7 @@ function sitenow_articles_preprocess_block(&$variables) {
     //   want to use the gallery image field for other content.
     //   https://github.com/uiowa/uiowa/issues/6287
     case 'field_block:node:article:field_gallery_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20';
+      $variables['attributes']['class'][] = 'media--square';
       $variables['attributes']['class'][] = 'photoswipe-gallery';
 
       break;

@@ -171,6 +171,7 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
   $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
 
   $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+    ->accessCheck(TRUE)
     ->condition('fid', $feeds, 'IN')
     ->sort('timestamp', 'DESC')
     ->sort('iid', 'DESC');

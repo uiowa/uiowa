@@ -3,8 +3,10 @@ type: theme
 base theme: classy
 description: UIDS (UIowa Design System) base theme
 package: Custom
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.2 || ^10
 screenshot: screenshot.png
+dependencies:
+  - classy:classy
 libraries-override:
   classy/base: false
   superfish/superfish_touchscreen: uids_base/sftouchscreen
@@ -30,10 +32,6 @@ regions:
   footer_first: 'Footer under logo'
   footer_second: 'Footer menus'
   page_bottom: 'Page bottom'
-# Components
-components:
-  namespaces:
-    uids: uids/components
 # Ckeditor styling for lead paragraphs and alerts
 ckeditor_stylesheets:
   - assets/css/components/video/video-utilities.css

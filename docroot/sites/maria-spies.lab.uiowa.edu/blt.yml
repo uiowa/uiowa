@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmaria-spies.uiowa.ddev.site
+    protocol: https
+  machine_name: labmaria-spies
+  human_name: maria-spies.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmaria-spies.prod
+drupal:
+  db:
+    database: maria_spies_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmaria-spies.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Maria Spies Laboratory'

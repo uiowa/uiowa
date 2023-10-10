@@ -128,7 +128,8 @@ class AcademicDatesForm extends FormBase {
           'headline--serif',
         ];
 
-        // Web description is not always set. The subsession takes priority if set.
+        // Web description is not always set.
+        // The subsession takes priority if set.
         $subsession = $date->subSession ?? FALSE;
 
         $item = [

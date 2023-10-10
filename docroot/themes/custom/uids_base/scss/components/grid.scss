@@ -74,26 +74,3 @@
     }
   }
 }
-
-// For use only for images.
-.grid--fivecol--20.photoswipe-gallery {
-  .list-container__inner {
-    @include breakpoint(sm) {
-      @include threecol-grid;
-    }
-    @include breakpoint(md) {
-      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
-    }
-  }
-}
-
-.grid--fivecol--20.photoswipe-gallery,
-.grid--threecol--33-34-33.photoswipe-gallery {
-  .list-container__inner {
-    display: grid;
-    gap: 1rem;
-    @include breakpoint(md) {
-      gap: 1.5rem;
-    }
-  }
-}

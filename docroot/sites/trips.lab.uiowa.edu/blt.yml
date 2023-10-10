@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtrips.uiowa.ddev.site
+    protocol: https
+  machine_name: labtrips
+  human_name: trips.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtrips.prod
+drupal:
+  db:
+    database: trips_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtrips.prod.drupal.uiowa.edu'
+  requester: rjdusil
+  site-name: 'TRIPS Lab'

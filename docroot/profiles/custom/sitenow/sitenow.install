@@ -208,6 +208,7 @@ function sitenow_update_9001() {
   foreach ($block_types as $block_type) {
     // Find NIDs for all nodes with at least one aggregator block.
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'page')
       ->condition('layout_builder__layout', '%' . $block_type . '%', 'LIKE');
 
@@ -279,6 +280,7 @@ function sitenow_update_9002() {
 function sitenow_update_9003(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
+      ->accessCheck(TRUE)
       ->condition('expanded', 0, '=')
       ->execute();
     $sandbox['total'] = count($query);
@@ -436,6 +438,7 @@ function sitenow_update_9006(&$sandbox) {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'person')
       ->execute();
 
@@ -1001,6 +1004,7 @@ function sitenow_update_9011() {
 
   // Delete remaining orphans?
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_people')
     ->execute();
   if ($result) {
@@ -1160,6 +1164,7 @@ function sitenow_update_9014() {
 
   // Delete remaining orphans?
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_people')
     ->execute();
 
@@ -1448,6 +1453,7 @@ function sitenow_update_9025() {
 
   // Delete uiowa_articles orphans.
   $result = \Drupal::entityQuery('block_content')
+    ->accessCheck(TRUE)
     ->condition('type', 'uiowa_articles')
     ->execute();
   if ($result) {
@@ -2408,6 +2414,7 @@ function sitenow_update_9062(&$sandbox) {
   // for our new field.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'event')
       ->execute();
 
@@ -2765,7 +2772,8 @@ function sitenow_update_9069() {
       AND ({$teaser_table}.field_teaser_value <> {$table}.body_summary OR {$table}.body_summary IS NULL)
     ")
       ->execute();
-    // Updates body_summary for any nodes not already in tables due to empty body.
+    // Updates body_summary for any nodes not already
+    // in tables due to empty body.
     $database->query("
       INSERT IGNORE INTO {$table} ({$table}.bundle, {$table}.deleted, {$table}.entity_id, {$table}.revision_id, {$table}.langcode, {$table}.delta, {$table}.body_value, {$table}.body_summary, {$table}.body_format)
       SELECT {$teaser_table}.bundle, {$teaser_table}.deleted, {$teaser_table}.entity_id, {$teaser_table}.revision_id, {$teaser_table}.langcode, {$teaser_table}.delta, '', {$teaser_table}.field_teaser_value, 'filtered_html'
@@ -2826,4 +2834,77 @@ function sitenow_update_9071() {
     $config->set('header.branding_options', 'iowa');
   }
   $config->save();
+}
+
+/**
+ * Set existing image gallery blocks with default media size value.
+ */
+function sitenow_update_9072() {
+  $block_plugin_id = 'inline_block:uiowa_image_gallery';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    if (in_array('block_image_gallery_style_masonry', $styles)) {
+      $styles[] = 'media_format_no_crop';
+    }
+    else {
+      $styles[] = 'media_format_square';
+    }
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
+
+/**
+ * Update padding options for single select.
+ */
+function sitenow_update_9073() {
+  foreach ([
+    'inline_block:uiowa_text_area',
+    'webform_block',
+  ] as $block_plugin_id) {
+
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
+
+      if (is_array($styles)) {
+
+        $has_padding_all_extra = in_array('block_padding_all_extra', $styles);
+        $has_padding_all = in_array('block_padding_all', $styles);
+
+        // Match expression to determine the styles.
+        $final_styles = match (TRUE) {
+          $has_padding_all_extra => ['block_padding_all_extra'],
+          $has_padding_all => ['block_padding_all'],
+          default => [],
+        };
+
+        // If both 'block_padding_all_extra' and 'block_padding_all'
+        // are selected, remove 'block_padding_all'.
+        if ($has_padding_all_extra && $has_padding_all) {
+          $styles = array_diff($styles, ['block_padding_all']);
+        }
+
+        $styles = array_unique(array_merge($styles, $final_styles));
+
+        $component->set('layout_builder_styles_style', $styles);
+      }
+    });
+  }
+}
+
+/**
+ * Remove the dependency on oembed_providers from remote video media type.
+ */
+function sitenow_update_9074() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // The following config is needed for the next update.
+  $config_names = [
+    'media.type.remote_video',
+  ];
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
 }
