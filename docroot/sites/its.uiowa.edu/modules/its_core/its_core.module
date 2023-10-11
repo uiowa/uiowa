@@ -195,9 +195,6 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'service_related_articles':
-      $lb_styles = $view?->display_handler
-        ?->getOption('layout_builder_styles') ?? [];
-
       foreach ($variables['rows'] as &$row_build) {
         if (!isset($row_build['content']['#override_styles'])) {
           $row_build['content']['#overrides_styles'] = [];
@@ -208,5 +205,29 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       }
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function its_core_preprocess_breadcrumb(&$variables): void {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (!isset($node) || $node->getType() !== 'service') {
+    return;
+  }
+  // Grab our referenced Service Category taxonomy term
+  // and add a crumb to the breadcrumb.
+  if ($node->hasField('field_service_category')) {
+    $category = $node->field_service_category?->entity;
+    $category_name = $category?->name?->value;
+    $category_path = \Drupal::service('path_alias.manager')
+      ->getAliasByPath('/taxonomy/term/' . $category?->tid?->value);
+    if (isset($category_name) && isset($category_path)) {
+      $variables['breadcrumb'][] = [
+        'text' => $category_name,
+        'url' => $category_path,
+      ];
+    }
   }
 }

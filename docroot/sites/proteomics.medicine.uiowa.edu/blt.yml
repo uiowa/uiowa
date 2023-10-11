@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineproteomics.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineproteomics
+  human_name: proteomics.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineproteomics.prod
+drupal:
+  db:
+    database: proteomics_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineproteomics.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Proteomics Facility'
