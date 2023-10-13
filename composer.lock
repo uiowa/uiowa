@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "acquia/blt",
-            "version": "13.7.0",
+            "version": "13.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acquia/blt.git",
-                "reference": "c6429b8052d03de7146dc93fefe5c69b96438d33"
+                "reference": "ccaf496c9d3d82edeee2f8771f94b008eb658253"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acquia/blt/zipball/c6429b8052d03de7146dc93fefe5c69b96438d33",
-                "reference": "c6429b8052d03de7146dc93fefe5c69b96438d33",
+                "url": "https://api.github.com/repos/acquia/blt/zipball/ccaf496c9d3d82edeee2f8771f94b008eb658253",
+                "reference": "ccaf496c9d3d82edeee2f8771f94b008eb658253",
                 "shasum": ""
             },
             "require": {
-                "acquia/drupal-environment-detector": "^1.5.0",
+                "acquia/drupal-environment-detector": "^1.5.3",
                 "composer-plugin-api": "^2.0",
                 "composer-runtime-api": "^2.0",
                 "consolidation/comments": "^1.0",
@@ -30,7 +30,7 @@
                 "dflydev/dot-access-data": "^1.1.0 || ^2 || ^3",
                 "doctrine/annotations": "^1.10.0",
                 "drupal/core": "^9.0.0-alpha1 || ^10.0.0-alpha1",
-                "drush/drush": "^11",
+                "drush/drush": "^11 || ^12",
                 "enlightn/security-checker": "^1.3",
                 "ext-json": "*",
                 "grasmash/yaml-cli": "^2.0.0 || ^3.0.0",
@@ -41,16 +41,14 @@
                 "symfony/console": "^4.4.6 || ^6",
                 "symfony/twig-bridge": "^3.4 || ^4 || ^5 || ^6",
                 "symfony/yaml": "^4.4 || ^5 || ^6",
-                "webmozart/path-util": "^2.3",
-                "zumba/amplitude-php": "^1.0.3"
+                "webmozart/path-util": "^2.3"
             },
             "conflict": {
                 "acquia/blt-behat": "<=1.0.0"
             },
             "require-dev": {
-                "acquia/coding-standards": "^1.0",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-                "roave/security-advisories": "dev-latest",
+                "acquia/coding-standards": "^2.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
                 "squizlabs/php_codesniffer": "^3.6"
             },
             "suggest": {
@@ -95,9 +93,9 @@
             "support": {
                 "docs": "https://docs.acquia.com/blt/",
                 "issues": "https://github.com/acquia/blt/issues",
-                "source": "https://github.com/acquia/blt/tree/13.7.0"
+                "source": "https://github.com/acquia/blt/tree/13.7.2"
             },
-            "time": "2022-11-21T18:57:34+00:00"
+            "time": "2023-08-22T21:43:45+00:00"
         },
         {
             "name": "acquia/blt-drupal-test",
@@ -231,20 +229,20 @@
         },
         {
             "name": "acquia/drupal-environment-detector",
-            "version": "1.5.2",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acquia/drupal-environment-detector.git",
-                "reference": "03a86edef4fb9dd75596462e08bc8737cf7f6c4a"
+                "reference": "396cc5ed5d7f9d40a8afbdc1800a189c15924450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acquia/drupal-environment-detector/zipball/03a86edef4fb9dd75596462e08bc8737cf7f6c4a",
-                "reference": "03a86edef4fb9dd75596462e08bc8737cf7f6c4a",
+                "url": "https://api.github.com/repos/acquia/drupal-environment-detector/zipball/396cc5ed5d7f9d40a8afbdc1800a189c15924450",
+                "reference": "396cc5ed5d7f9d40a8afbdc1800a189c15924450",
                 "shasum": ""
             },
             "conflict": {
-                "acquia/blt": "<13.5.2"
+                "acquia/blt": ">=12.0.0 <13.5.2"
             },
             "require-dev": {
                 "acquia/coding-standards": "^1.0.0",
@@ -254,7 +252,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-main": "1.x-dev"
                 },
                 "phpcodesniffer-search-depth": "4"
             },
@@ -278,9 +276,9 @@
             "description": "Provides common methods for detecting the current Acquia environment",
             "support": {
                 "issues": "https://github.com/acquia/drupal-environment-detector/issues",
-                "source": "https://github.com/acquia/drupal-environment-detector/tree/1.5.2"
+                "source": "https://github.com/acquia/drupal-environment-detector/tree/1.6.0"
             },
-            "time": "2022-09-01T17:55:45+00:00"
+            "time": "2023-02-28T18:45:28+00:00"
         },
         {
             "name": "acquia/memcache-settings",
@@ -1520,25 +1518,25 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "4.7.1",
+            "version": "4.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "fd263e3e9341d29758025b1a9b2878e3247525be"
+                "reference": "e01152f698eff4cb5df3ebfe5e097ef335dbd3c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/fd263e3e9341d29758025b1a9b2878e3247525be",
-                "reference": "fd263e3e9341d29758025b1a9b2878e3247525be",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/e01152f698eff4cb5df3ebfe5e097ef335dbd3c9",
+                "reference": "e01152f698eff4cb5df3ebfe5e097ef335dbd3c9",
                 "shasum": ""
             },
             "require": {
-                "consolidation/output-formatters": "^4.1.1",
+                "consolidation/output-formatters": "^4.3.1",
                 "php": ">=7.1.3",
-                "psr/log": "^1|^2|^3",
-                "symfony/console": "^4.4.8|^5|^6",
-                "symfony/event-dispatcher": "^4.4.8|^5|^6",
-                "symfony/finder": "^4.4.8|^5|^6"
+                "psr/log": "^1 || ^2 || ^3",
+                "symfony/console": "^4.4.8 || ^5 || ^6",
+                "symfony/event-dispatcher": "^4.4.8 || ^5 || ^6",
+                "symfony/finder": "^4.4.8 || ^5 || ^6"
             },
             "require-dev": {
                 "composer-runtime-api": "^2.0",
@@ -1570,9 +1568,9 @@
             "description": "Initialize Symfony Console commands from annotated command class methods.",
             "support": {
                 "issues": "https://github.com/consolidation/annotated-command/issues",
-                "source": "https://github.com/consolidation/annotated-command/tree/4.7.1"
+                "source": "https://github.com/consolidation/annotated-command/tree/4.9.1"
             },
-            "time": "2022-12-06T22:57:25+00:00"
+            "time": "2023-05-20T04:19:01+00:00"
         },
         {
             "name": "consolidation/comments",
@@ -1790,41 +1788,36 @@
         },
         {
             "name": "consolidation/output-formatters",
-            "version": "4.2.3",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/output-formatters.git",
-                "reference": "cbb50cc86775f14972003f797b61e232788bee1f"
+                "reference": "06711568b4cd169700ff7e8075db0a9a341ceb58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/cbb50cc86775f14972003f797b61e232788bee1f",
-                "reference": "cbb50cc86775f14972003f797b61e232788bee1f",
+                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/06711568b4cd169700ff7e8075db0a9a341ceb58",
+                "reference": "06711568b4cd169700ff7e8075db0a9a341ceb58",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-data": "^1.1.0 || ^2 || ^3",
                 "php": ">=7.1.3",
-                "symfony/console": "^4|^5|^6",
-                "symfony/finder": "^4|^5|^6"
+                "symfony/console": "^4 || ^5 || ^6",
+                "symfony/finder": "^4 || ^5 || ^6"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.4.2",
-                "phpunit/phpunit": ">=7",
+                "phpunit/phpunit": "^7 || ^8 || ^9",
                 "squizlabs/php_codesniffer": "^3",
-                "symfony/var-dumper": "^4|^5|^6",
-                "symfony/yaml": "^4|^5|^6",
-                "yoast/phpunit-polyfills": "^0.2.0"
+                "symfony/var-dumper": "^4 || ^5 || ^6",
+                "symfony/yaml": "^4 || ^5 || ^6",
+                "yoast/phpunit-polyfills": "^1"
             },
             "suggest": {
                 "symfony/var-dumper": "For using the var_dump formatter"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "4.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Consolidation\\OutputFormatters\\": "src"
@@ -1843,9 +1836,9 @@
             "description": "Format text by applying transformations provided by plug-in formatters.",
             "support": {
                 "issues": "https://github.com/consolidation/output-formatters/issues",
-                "source": "https://github.com/consolidation/output-formatters/tree/4.2.3"
+                "source": "https://github.com/consolidation/output-formatters/tree/4.3.2"
             },
-            "time": "2022-10-17T04:01:40+00:00"
+            "time": "2023-07-06T04:45:41+00:00"
         },
         {
             "name": "consolidation/robo",
@@ -1948,16 +1941,16 @@
         },
         {
             "name": "consolidation/self-update",
-            "version": "2.0.5",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/self-update.git",
-                "reference": "8a64bdd8daf5faa8e85f56534dd99caf928164b3"
+                "reference": "972a1016761c9b63314e040836a12795dff6953a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/self-update/zipball/8a64bdd8daf5faa8e85f56534dd99caf928164b3",
-                "reference": "8a64bdd8daf5faa8e85f56534dd99caf928164b3",
+                "url": "https://api.github.com/repos/consolidation/self-update/zipball/972a1016761c9b63314e040836a12795dff6953a",
+                "reference": "972a1016761c9b63314e040836a12795dff6953a",
                 "shasum": ""
             },
             "require": {
@@ -1997,9 +1990,9 @@
             "description": "Provides a self:update command for Symfony Console applications.",
             "support": {
                 "issues": "https://github.com/consolidation/self-update/issues",
-                "source": "https://github.com/consolidation/self-update/tree/2.0.5"
+                "source": "https://github.com/consolidation/self-update/tree/2.2.0"
             },
-            "time": "2022-02-09T22:44:24+00:00"
+            "time": "2023-03-18T01:37:41+00:00"
         },
         {
             "name": "consolidation/site-alias",
@@ -11414,22 +11407,22 @@
         },
         {
             "name": "drush/drush",
-            "version": "11.4.0",
+            "version": "11.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "d1f7809ceaf580c9e0bf4725e005975956af5629"
+                "reference": "f301df5dec8d2aacb03d3e01e0ffc6d98e10ae78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/d1f7809ceaf580c9e0bf4725e005975956af5629",
-                "reference": "d1f7809ceaf580c9e0bf4725e005975956af5629",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/f301df5dec8d2aacb03d3e01e0ffc6d98e10ae78",
+                "reference": "f301df5dec8d2aacb03d3e01e0ffc6d98e10ae78",
                 "shasum": ""
             },
             "require": {
                 "chi-teck/drupal-code-generator": "^2.4",
                 "composer/semver": "^1.4 || ^3",
-                "consolidation/annotated-command": "^4.7.0",
+                "consolidation/annotated-command": "^4.8.2",
                 "consolidation/config": "^2",
                 "consolidation/filter-via-dot-access-data": "^2",
                 "consolidation/robo": "^3.0.9 || ^4.0.1",
@@ -11547,7 +11540,7 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/11.4.0"
+                "source": "https://github.com/drush-ops/drush/tree/11.6.0"
             },
             "funding": [
                 {
@@ -11555,7 +11548,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-12-14T16:02:30+00:00"
+            "time": "2023-06-06T18:46:18+00:00"
         },
         {
             "name": "e0ipso/shaper",
@@ -13238,28 +13231,28 @@
         },
         {
             "name": "loophp/phposinfo",
-            "version": "1.7.2",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/loophp/phposinfo.git",
-                "reference": "106e7b3f00849dce1787ebf38da493ba586b48f2"
+                "reference": "9faccbfbf5364fd34fbc230961fa6fc51cc66b8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loophp/phposinfo/zipball/106e7b3f00849dce1787ebf38da493ba586b48f2",
-                "reference": "106e7b3f00849dce1787ebf38da493ba586b48f2",
+                "url": "https://api.github.com/repos/loophp/phposinfo/zipball/9faccbfbf5364fd34fbc230961fa6fc51cc66b8f",
+                "reference": "9faccbfbf5364fd34fbc230961fa6fc51cc66b8f",
                 "shasum": ""
             },
             "require": {
-                "php": ">= 7.3"
+                "php": "^8"
             },
             "require-dev": {
-                "drupol/php-conventions": "^3.0.2",
-                "friends-of-phpspec/phpspec-code-coverage": "^5",
-                "infection/infection": "^0.18",
-                "infection/phpspec-adapter": "^0.1.1",
-                "phpspec/phpspec": "^6",
-                "vimeo/psalm": "^4.6"
+                "drupol/php-conventions": "^5.0.0",
+                "ext-pcov": "*",
+                "friends-of-phpspec/phpspec-code-coverage": "^6",
+                "infection/infection": "^0.26",
+                "infection/phpspec-adapter": "^0.2.0",
+                "phpspec/phpspec": "^7"
             },
             "type": "library",
             "autoload": {
@@ -13282,21 +13275,16 @@
                 "operating system detection"
             ],
             "support": {
-                "docs": "https://loophp-collection.rtfd.io",
-                "issues": "https://github.com/loophp/collection/issues",
-                "source": "https://github.com/loophp/collection"
+                "issues": "https://github.com/loophp/phposinfo/issues",
+                "source": "https://github.com/loophp/phposinfo"
             },
             "funding": [
                 {
                     "url": "https://github.com/drupol",
                     "type": "github"
-                },
-                {
-                    "url": "https://www.paypal.me/drupol",
-                    "type": "paypal"
                 }
             ],
-            "time": "2021-06-29T07:18:36+00:00"
+            "time": "2022-12-20T20:21:10+00:00"
         },
         {
             "name": "lsolesen/pel",
@@ -15424,16 +15412,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.12",
+            "version": "v0.11.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7"
+                "reference": "bcb22101107f3bf770523b65630c9d547f60c540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
-                "reference": "52cb7c47d403c31c0adc9bf7710fc355f93c20f7",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/bcb22101107f3bf770523b65630c9d547f60c540",
+                "reference": "bcb22101107f3bf770523b65630c9d547f60c540",
                 "shasum": ""
             },
             "require": {
@@ -15463,6 +15451,10 @@
             "extra": {
                 "branch-alias": {
                     "dev-main": "0.11.x-dev"
+                },
+                "bamarni-bin": {
+                    "bin-links": false,
+                    "forward-command": false
                 }
             },
             "autoload": {
@@ -15494,9 +15486,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.12"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.21"
             },
-            "time": "2023-01-29T21:24:40+00:00"
+            "time": "2023-09-17T21:15:54+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -20425,16 +20417,16 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v4.4.45",
+            "version": "v4.4.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "7d6e6dbb1c029f4131e6e479ebd535a9a3633481"
+                "reference": "d6b0fbfd5e2fab79c0c7b8dfe579e47ee0999113"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/7d6e6dbb1c029f4131e6e479ebd535a9a3633481",
-                "reference": "7d6e6dbb1c029f4131e6e479ebd535a9a3633481",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/d6b0fbfd5e2fab79c0c7b8dfe579e47ee0999113",
+                "reference": "d6b0fbfd5e2fab79c0c7b8dfe579e47ee0999113",
                 "shasum": ""
             },
             "require": {
@@ -20522,7 +20514,7 @@
             "description": "Provides integration for Twig with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bridge/tree/v4.4.45"
+                "source": "https://github.com/symfony/twig-bridge/tree/v4.4.49"
             },
             "funding": [
                 {
@@ -20538,7 +20530,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-03T09:58:25+00:00"
+            "time": "2022-11-03T09:41:56+00:00"
         },
         {
             "name": "symfony/validator",
@@ -21300,67 +21292,6 @@
             },
             "abandoned": "symfony/filesystem",
             "time": "2015-12-17T08:42:14+00:00"
-        },
-        {
-            "name": "zumba/amplitude-php",
-            "version": "1.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zumba/amplitude-php.git",
-                "reference": "99d776d1b60d2a4d8bb26e4039e368edd3d89aac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zumba/amplitude-php/zipball/99d776d1b60d2a4d8bb26e4039e368edd3d89aac",
-                "reference": "99d776d1b60d2a4d8bb26e4039e368edd3d89aac",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=7.2",
-                "psr/log": "^1.0 | ^2.0 | ^3.0"
-            },
-            "require-dev": {
-                "php-coveralls/php-coveralls": "^2.4",
-                "phpunit/phpunit": "8.3.* | ^9",
-                "squizlabs/php_codesniffer": "3.4.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Zumba\\Amplitude\\": "./src/",
-                    "Zumba\\Amplitude\\Test\\": "./test/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Zumba Fitness, LLC",
-                    "homepage": "https://tech.zumba.com"
-                },
-                {
-                    "name": "Jonathan Foote",
-                    "email": "jonathan.foote@zumba.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP SDK for Amplitude",
-            "homepage": "https://github.com/zumba/amplitude-php",
-            "keywords": [
-                "amplitude",
-                "analytics",
-                "sdk",
-                "tracking"
-            ],
-            "support": {
-                "issues": "https://github.com/zumba/amplitude-php/issues",
-                "source": "https://github.com/zumba/amplitude-php/tree/1.0.6"
-            },
-            "time": "2022-09-09T13:49:49+00:00"
         }
     ],
     "packages-dev": [
