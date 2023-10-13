@@ -14,7 +14,14 @@ class MailTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_core', 'uiowa_core_test', 'filter', 'system'];
+  public static $modules = [
+    'filter',
+    'symfony_mailer',
+    'system',
+    'uiowa_core',
+    'uiowa_core_test',
+    'user',
+  ];
 
   /**
    * The email message.
