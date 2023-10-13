@@ -137,6 +137,11 @@ function uiowa_core_mail_alter(&$message) {
     // Add header in use by email team to avoid spam/external tagging.
     $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
 
+    // Set a from address to the site email address if none are set.
+    if (empty($message['from'])) {
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+    }
+
     // Override the from address if it doesn't match our Platform Email domain
     // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
     // multiple from addresses here because that doesn't seem to work currently -
