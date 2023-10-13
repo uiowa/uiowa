@@ -5848,3 +5848,9 @@ $sites['medicineproteomics.uiowa.ddev.site'] = 'proteomics.medicine.uiowa.edu';
 $sites['medicineproteomics.dev.drupal.uiowa.edu'] = 'proteomics.medicine.uiowa.edu';
 $sites['medicineproteomics.stage.drupal.uiowa.edu'] = 'proteomics.medicine.uiowa.edu';
 $sites['medicineproteomics.prod.drupal.uiowa.edu'] = 'proteomics.medicine.uiowa.edu';
+
+// Directory aliases for harty.lab.uiowa.edu.
+$sites['labharty.uiowa.ddev.site'] = 'harty.lab.uiowa.edu';
+$sites['labharty.dev.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
+$sites['labharty.stage.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
+$sites['labharty.prod.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
