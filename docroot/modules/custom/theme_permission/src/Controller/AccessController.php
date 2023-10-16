@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\theme_permission\Controller;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\system\Controller\SystemController;
+use Drupal\Core\Extension\ModuleExtensionList;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Theme\ThemeAccessCheck;
 use Drupal\Core\Url;
+use Drupal\system\Controller\SystemController;
+use Drupal\system\SystemManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Menu\MenuLinkTreeInterface;
-use Drupal\Core\Theme\ThemeAccessCheck;
-use Drupal\system\SystemManager;
-use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\Core\Extension\ModuleExtensionList;
-use Drupal\Core\Form\FormBuilderInterface;
 
 /**
  * Access Controller.
@@ -58,6 +58,8 @@ class AccessController extends SystemController {
    *   The theme handler.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree
    *   The menu link tree service.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $module_extension_list
+   *   The module extension list.
    */
   public function __construct(AccountInterface $current_user,
     RequestStack $request_stack,

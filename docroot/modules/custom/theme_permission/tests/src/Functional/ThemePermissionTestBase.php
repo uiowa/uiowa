@@ -58,7 +58,7 @@ abstract class ThemePermissionTestBase extends BrowserTestBase {
    */
   protected function userLogin(array $permissions = NULL) {
 
-    $permissions = isset($permissions) ? $permissions : [];
+    $permissions = $permissions ?? [];
     $userPermission = array_merge(
       $permissions,
       [

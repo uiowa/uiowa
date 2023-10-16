@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\theme_permission;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Extension\ThemeHandlerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Theme Permission.
