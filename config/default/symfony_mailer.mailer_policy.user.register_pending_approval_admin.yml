@@ -1,0 +1,23 @@
+uuid: 84edaeea-62af-4515-8eb8-fb0ea3f962ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 6_PE3lxRmcr3l6u87ZQj7g42tE_3X1kul08lJ8eAmxA
+id: user.register_pending_approval_admin
+configuration:
+  email_subject:
+    value: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
+  email_body:
+    content:
+      value: |-
+        <p>[user:display-name] has applied for an account at <a href="[site:url]">[site:name]</a>.
+        You may now use this link to <a href="[user:edit-url]">approve the request</a>.</p>
+      format: email_html
+  email_to:
+    addresses:
+      -
+        value: '<site>'
+        display: ''
