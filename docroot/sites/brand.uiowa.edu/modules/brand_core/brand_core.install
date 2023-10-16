@@ -123,3 +123,10 @@ function brand_core_update_8002(&$sandbox) {
 function brand_core_update_9001() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Enable symfony_mailer immediately.
+ */
+function brand_core_update_9002() {
+  \Drupal::service('module_installer')->install(['symfony_mailer']);
+}

@@ -14,7 +14,14 @@ class MailTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_core', 'uiowa_core_test', 'filter', 'system'];
+  public static $modules = [
+    'filter',
+    'symfony_mailer',
+    'system',
+    'uiowa_core',
+    'uiowa_core_test',
+    'user',
+  ];
 
   /**
    * The email message.
@@ -53,7 +60,7 @@ class MailTest extends KernelTestBase {
     $this->config('system.site')->set('mail', $from)->save();
     $this->config('system.site')->set('name', $name)->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
-    $this->assertEquals('ITS-Acquia', $result['headers']['X-UI-Hosted']);
+    $this->assertEquals('ITS-Acquia', $result['headers']['x-ui-hosted']);
   }
 
   /**
@@ -63,7 +70,7 @@ class MailTest extends KernelTestBase {
     $this->config('system.site')->set('mail', 'foo@bar.com')->save();
     $this->config('system.site')->set('name', 'Foo')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
-    $this->assertEquals("\"Foo\" <$this->serviceAccount>", $result['headers']['From']);
+    $this->assertEquals("Foo <$this->serviceAccount>", $result['headers']['from']);
   }
 
   /**
@@ -73,7 +80,7 @@ class MailTest extends KernelTestBase {
     $this->config('system.site')->set('mail', 'foo@uiowa.edu')->save();
     $this->config('system.site')->set('name', 'Foo')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
-    $this->assertNotEquals("\"Foo\" <$this->serviceAccount>", $result['headers']['From']);
+    $this->assertNotEquals("Foo <$this->serviceAccount>", $result['headers']['from']);
   }
 
   /**
@@ -83,7 +90,7 @@ class MailTest extends KernelTestBase {
     $this->config('system.site')->set('mail', 'foo@uiowa.edu')->save();
     $this->config('system.site')->set('name', 'Test Site')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core_test', 'key', 'admin@example.com', 'en', $this->params);
-    $this->assertEquals("\"Test Site\" <$this->serviceAccount>", $result['headers']['From']);
+    $this->assertEquals("Test Site <$this->serviceAccount>", $result['headers']['from']);
   }
 
   /**
