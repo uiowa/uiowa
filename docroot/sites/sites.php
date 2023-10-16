@@ -5866,3 +5866,9 @@ $sites['jobspharmacy-dean.uiowa.ddev.site'] = 'pharmacy-dean.jobs.uiowa.edu';
 $sites['jobspharmacy-dean.dev.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
 $sites['jobspharmacy-dean.stage.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
 $sites['jobspharmacy-dean.prod.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
+
+// Directory aliases for teaching.center.uiowa.edu.
+$sites['centerteaching.uiowa.ddev.site'] = 'teaching.center.uiowa.edu';
+$sites['centerteaching.dev.drupal.uiowa.edu'] = 'teaching.center.uiowa.edu';
+$sites['centerteaching.stage.drupal.uiowa.edu'] = 'teaching.center.uiowa.edu';
+$sites['centerteaching.prod.drupal.uiowa.edu'] = 'teaching.center.uiowa.edu';
