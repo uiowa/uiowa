@@ -5854,3 +5854,9 @@ $sites['labharty.uiowa.ddev.site'] = 'harty.lab.uiowa.edu';
 $sites['labharty.dev.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
 $sites['labharty.stage.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
 $sites['labharty.prod.drupal.uiowa.edu'] = 'harty.lab.uiowa.edu';
+
+// Directory aliases for kidsight.medicine.uiowa.edu.
+$sites['medicinekidsight.uiowa.ddev.site'] = 'kidsight.medicine.uiowa.edu';
+$sites['medicinekidsight.dev.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
+$sites['medicinekidsight.stage.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
+$sites['medicinekidsight.prod.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
