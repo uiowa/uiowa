@@ -5878,3 +5878,9 @@ $sites['labdayal.uiowa.ddev.site'] = 'dayal.lab.uiowa.edu';
 $sites['labdayal.dev.drupal.uiowa.edu'] = 'dayal.lab.uiowa.edu';
 $sites['labdayal.stage.drupal.uiowa.edu'] = 'dayal.lab.uiowa.edu';
 $sites['labdayal.prod.drupal.uiowa.edu'] = 'dayal.lab.uiowa.edu';
+
+// Directory aliases for ding.lab.uiowa.edu.
+$sites['labding.uiowa.ddev.site'] = 'ding.lab.uiowa.edu';
+$sites['labding.dev.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
+$sites['labding.stage.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
+$sites['labding.prod.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
