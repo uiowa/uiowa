@@ -2,13 +2,21 @@ adding:
   dependencies:
     config:
       - node.type.service
+      - taxonomy.vocabulary.audience
+      - taxonomy.vocabulary.service_category
   permissions:
     - 'create service content'
+    - 'create terms in audience'
+    - 'create terms in service_category'
     - 'delete any service content'
     - 'delete own service content'
     - 'delete service revisions'
+    - 'delete terms in audience'
+    - 'delete terms in service_category'
     - 'edit any service content'
     - 'edit own service content'
+    - 'edit terms in audience'
+    - 'edit terms in service_category'
     - 'enter service revision log entry'
     - 'override service authored by option'
     - 'override service authored on option'
