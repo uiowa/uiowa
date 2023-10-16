@@ -77,38 +77,19 @@ third_party_settings:
             third_party_settings: {  }
         third_party_settings: {  }
       -
-        layout_id: layout_twocol_card_sidebar
+        layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            2: section_card_media_size_large
-            3: section_card_media_format_circle
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_fixed_width_container
         components:
           -
-            uuid: 3b843159-1293-4659-bde1-fc53d21e5271
-            region: main
+            uuid: a5ea1760-e6bd-4129-afda-1e099a26a90a
+            region: content
             configuration:
-              id: 'field_block:node:alert:body'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 5ebd8baf-cd39-4784-ab48-04f2c373a3a2
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_traffic_control'
+              id: 'field_block:node:alert:field_alert_category'
               label: null
               label_display: null
               provider: layout_builder
@@ -116,19 +97,19 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: boolean
+                type: entity_reference_label
                 label: inline
                 settings:
-                  format: default
-                  format_custom_false: ''
-                  format_custom_true: ''
-                third_party_settings: {  }
-            weight: 14
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
             uuid: c71dd49f-ddf3-4685-90e8-58dff86c597d
-            region: card_meta
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_date'
               label: null
@@ -152,28 +133,8 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: cdb7beb1-a143-4174-b0d4-534c292ea4d2
-            region: card_meta
-            configuration:
-              id: 'field_block:node:alert:field_alert_traffic_control_plan'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 98cbf817-9960-4a76-b37b-8f6513811fc9
-            region: card_meta
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_building'
               label: null
@@ -188,14 +149,14 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 3
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: a5ea1760-e6bd-4129-afda-1e099a26a90a
-            region: main
+            uuid: cdb7beb1-a143-4174-b0d4-534c292ea4d2
+            region: content
             configuration:
-              id: 'field_block:node:alert:field_alert_category'
+              id: 'field_block:node:alert:field_alert_traffic_control_plan'
               label: null
               label_display: null
               provider: layout_builder
@@ -203,19 +164,39 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_label
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5ebd8baf-cd39-4784-ab48-04f2c373a3a2
+            region: content
+            configuration:
+              id: 'field_block:node:alert:field_alert_traffic_control'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: boolean
                 label: inline
                 settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 15
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 6b14d313-9af4-4e1b-8a01-dc5570c41c7a
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_accessible_route'
               label: null
@@ -229,12 +210,12 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 9ff1737c-374c-4bc6-993b-df940026bfbd
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_alternate_route'
               label: null
@@ -248,12 +229,12 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 12
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 646fc4c7-8bde-481d-a9ab-52a5e8b8f94c
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_affected_bus_routes'
               label: null
@@ -269,12 +250,28 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 4
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3b843159-1293-4659-bde1-fc53d21e5271
+            region: content
+            configuration:
+              id: 'field_block:node:alert:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 741b97a9-fd94-49f5-9e99-87173c28d57c
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_project_number'
               label: null
@@ -289,16 +286,10 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 16
+            weight: 9
             additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
+        third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:

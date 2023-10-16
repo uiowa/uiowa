@@ -142,12 +142,8 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_alert_traffic_control_plan':
-      uiowa_core_set_attributes($variables, [
-        'bttn',
-        'bttn--tertiary',
-        'bttn--medium',
-        'bttn--full',
-      ]);
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-file-pdf fa-li');
       break;
 
     case 'field_alert_affected_bus_routes':
@@ -310,10 +306,6 @@ function facilities_core_node_presave(EntityInterface $entity) {
  */
 function facilities_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_alert_traffic_control_plan__alert__default' => [
-      'template' => 'field--node--field-alert-traffic-control-plan--alert--default',
-      'base hook' => 'field',
-    ],
     'views_view_unformatted__alerts_building_block__alert' => [
       'template' => 'views-view-unformatted--alerts-building-block--alert',
       'base hook' => 'view',
