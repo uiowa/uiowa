@@ -21,6 +21,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\symfony_mailer\EmailInterface;
 use Drupal\uiowa_core\Entity\Card;
 use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
@@ -82,6 +83,16 @@ function uiowa_core_cron() {
 }
 
 /**
+ * Implements hook_entity_build_defaults_alter().
+ */
+function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
+  }
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function uiowa_core_entity_bundle_info_alter(array &$bundles) {
@@ -109,42 +120,82 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
+ * Implements hook_mail().
+ */
+function uiowa_core_mail($key, &$message, $params) {
+  // Empty to trigger LegacyEmailBuilder for instances where mail is sent from
+  // MailManagerReplacement::mail() directly.
+}
+
+/**
  * Implements hook_mail_alter().
  */
 function uiowa_core_mail_alter(&$message) {
+  if (!in_array($message['module'], [
+    'webform',
+  ])) {
+    // Add header in use by email team to avoid spam/external tagging.
+    $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+    // Set a from address to the site email address if none are set.
+    if (empty($message['from'])) {
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+    }
+
+    // Override the from address if it doesn't match our Platform Email domain
+    // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+    // multiple from addresses here because that doesn't seem to work currently -
+    // hook_mail_alter isn't even invoked for some reason.
+    try {
+      $from = Address::create($message['from']);
+      $domain = explode('@', $from->getAddress());
+      $domain = array_pop($domain);
+
+      if ($domain != 'uiowa.edu') {
+        $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+        $from = new Address('sitenow-noreply@uiowa.edu', $name);
+        $message['headers']['From'] = $from->toString();
+      }
+    }
+    catch (RfcComplianceException $e) {
+      \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+        '@from' => $message['from'],
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_mailer_PHASE().
+ */
+function uiowa_core_mailer_build(EmailInterface $email) {
   // Add header in use by email team to avoid spam/external tagging.
-  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+  $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
+
+  // Set a from address to the site email address if none are set.
+  if (empty($email->getFrom())) {
+    $email->setFrom([
+      new Address(\Drupal::config('system.site')->get('mail'), \Drupal::config('system.site')->get('name')),
+    ]);
+  }
 
   // Override the from address if it doesn't match our Platform Email domain
   // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
   // multiple from addresses here because that doesn't seem to work currently -
   // hook_mail_alter isn't even invoked for some reason.
-  try {
-    $from = Address::create($message['from']);
-    $domain = explode('@', $from->getAddress());
+  $from_addresses = $email->getFrom();
+
+  foreach ($from_addresses as &$from) {
+
+    $domain = explode('@', $from->getEmail());
     $domain = array_pop($domain);
 
     if ($domain != 'uiowa.edu') {
-      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $name = $from->getDisplayName() ?: \Drupal::config('system.site')->get('name');
       $from = new Address('sitenow-noreply@uiowa.edu', $name);
-      $message['headers']['From'] = $from->toString();
     }
   }
-  catch (RfcComplianceException $e) {
-    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
-      '@from' => $message['from'],
-    ]));
-  }
-}
-
-/**
- * Implements hook_entity_build_defaults_alter().
- */
-function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
-    // Add card build info.
-    $entity->addCardBuildInfo($build);
-  }
+  $email->setFrom($from_addresses);
 }
 
 /**
