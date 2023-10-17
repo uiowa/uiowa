@@ -5884,3 +5884,9 @@ $sites['labding.uiowa.ddev.site'] = 'ding.lab.uiowa.edu';
 $sites['labding.dev.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
 $sites['labding.stage.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
 $sites['labding.prod.drupal.uiowa.edu'] = 'ding.lab.uiowa.edu';
+
+// Directory aliases for lenert.lab.uiowa.edu.
+$sites['lablenert.uiowa.ddev.site'] = 'lenert.lab.uiowa.edu';
+$sites['lablenert.dev.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
+$sites['lablenert.stage.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
+$sites['lablenert.prod.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
