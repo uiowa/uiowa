@@ -123,11 +123,6 @@ function facilities_core_project_submit($form, FormStateInterface $form_state): 
  */
 function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
-    case 'field_alert_location':
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt fa-li');
-      break;
-
     case 'field_building_honoree_name':
       // Change label for output.
       $variables['element']['#title'] = 'Honoree';
