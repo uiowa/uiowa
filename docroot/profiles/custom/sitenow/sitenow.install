@@ -2926,3 +2926,10 @@ function sitenow_update_9075() {
     $config_storage->write($config_name, $source->read($config_name));
   }
 }
+
+/**
+ * Flush all caches after swapping colorbox with the photoswipe module.
+ */
+function sitenow_update_9076() {
+  drupal_flush_all_caches();
+}

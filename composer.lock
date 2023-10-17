@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1bb672d0ecf1dd4996aed8e278f4d556",
+    "content-hash": "33f6c2caf7e19694b86bd8eda56bd162",
     "packages": [
         {
             "name": "acquia/blt",
@@ -10816,51 +10816,6 @@
             }
         },
         {
-            "name": "drupal/theme_permission",
-            "version": "dev-2.0.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/theme_permission.git",
-                "reference": "c9248363b4ea8b3dcbf45f063a13c9dd20fb05f3"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.0.x": "2.0.x-dev"
-                },
-                "drupal": {
-                    "version": "2.0.0-beta1+3-dev",
-                    "datestamp": "1613989291",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "liber_t",
-                    "homepage": "https://www.drupal.org/user/3377176"
-                }
-            ],
-            "description": "This module extend  theme permission.",
-            "homepage": "https://www.drupal.org/project/theme_permission",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/theme_permission",
-                "issues": "https://www.drupal.org/project/issues/theme_permission"
-            }
-        },
-        {
             "name": "drupal/token",
             "version": "1.12.0",
             "source": {
@@ -15663,28 +15618,31 @@
         },
         {
             "name": "richardbporter/drush-users-commands",
-            "version": "3.0.4",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/richardbporter/drush-users-commands.git",
-                "reference": "a1512218f6468741bb4319d4884f49790e8a6e39"
+                "reference": "bb7acd507970d4c87706dfb89fc3144c602cd2a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/richardbporter/drush-users-commands/zipball/a1512218f6468741bb4319d4884f49790e8a6e39",
-                "reference": "a1512218f6468741bb4319d4884f49790e8a6e39",
+                "url": "https://api.github.com/repos/richardbporter/drush-users-commands/zipball/bb7acd507970d4c87706dfb89fc3144c602cd2a0",
+                "reference": "bb7acd507970d4c87706dfb89fc3144c602cd2a0",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "^2.1",
                 "drush/drush": "^11.0.5",
-                "php": ">=7.4"
+                "php": ">=8.0"
             },
             "require-dev": {
-                "drupal/core-composer-scaffold": "^9.3",
-                "drupal/core-recommended": "^9.3",
+                "drupal/coder": "^8.3",
+                "drupal/core-composer-scaffold": "^9.3 || ^10.0",
+                "drupal/core-recommended": "^9.3 || ^10.0",
+                "mglaman/drupal-check": "^1.4",
                 "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3"
+                "squizlabs/php_codesniffer": "^3",
+                "symfony/phpunit-bridge": "^6.1"
             },
             "type": "drupal-drush",
             "extra": {
@@ -15738,7 +15696,7 @@
             "authors": [
                 {
                     "name": "Richard B. Porter",
-                    "homepage": "https://richardbporter.github.io"
+                    "homepage": "https://github.com/richardbporter"
                 }
             ],
             "description": "Drush commands to interact with multiple Drupal users.",
@@ -15750,9 +15708,9 @@
             ],
             "support": {
                 "issues": "https://github.com/richardbporter/drush-users-commands/issues",
-                "source": "https://github.com/richardbporter/drush-users-commands/tree/3.0.4"
+                "source": "https://github.com/richardbporter/drush-users-commands/tree/3.2.1"
             },
-            "time": "2022-04-13T20:45:31+00:00"
+            "time": "2023-03-05T20:22:07+00:00"
         },
         {
             "name": "robrichards/xmlseclibs",
@@ -22264,7 +22222,6 @@
         "drupal/rabbit_hole": 10,
         "drupal/swiftmailer": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
-        "drupal/theme_permission": 20,
         "drupal/tvi": 15,
         "drupal/views_tree": 15,
         "drupal/webform": 10,
