@@ -1039,16 +1039,13 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
 
   $h_level = 'h2';
   $title = '';
+  $extracted_content = '';
 
   // Check if the text begins with an <h#> tag.
   if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
     $h_level = $matches[1];
     $title = $matches[2];
-    $text['value'] = str_replace(
-      $matches[0],
-      '',
-      $text['value']
-    );
+    $text['value'] = str_replace($matches[0], '', $text['value']);
   }
 
   $link = NULL;
@@ -1057,8 +1054,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   // Assumes only one button or link is present.
   // Any more links will remain in the body.
   if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
-    // Attach the bookended content into a single value.
-    $text['value'] = strip_tags($matches[1] . $matches[5]);
+    $text['value'] = $matches[1] . $matches[5];
     // Set URI based on link being absolute or relative.
     $uri = (substr($matches[3], 0, 4) === 'http') ?
       $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
@@ -1069,6 +1065,10 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
       'options' => [],
     ];
   }
+
+  // Concatenate the extracted content back with the
+  // rest of the text, excluding the title.
+  $text['value'] = $extracted_content . $text['value'];
 
   // Banner only allows up to minimal. Change if needed.
   $text['format'] = ($text['format'] === 'filtered_html') ?
