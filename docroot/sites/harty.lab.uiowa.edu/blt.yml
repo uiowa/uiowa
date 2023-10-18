@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labharty.uiowa.ddev.site
+    protocol: https
+  machine_name: labharty
+  human_name: harty.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labharty.prod
+drupal:
+  db:
+    database: harty_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labharty.prod.drupal.uiowa.edu'
+  requester: eastonw
+  site-name: 'Harty Laboratory'
