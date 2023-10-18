@@ -1039,7 +1039,6 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
 
   $h_level = 'h2';
   $title = '';
-  $extracted_content = '';
 
   // Check if the text begins with an <h#> tag.
   if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
@@ -1069,10 +1068,6 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
       'options' => [],
     ];
   }
-
-  // Concatenate the extracted content back with the
-  // rest of the text, excluding the title.
-  $text['value'] = $extracted_content . $text['value'];
 
   // Banner only allows up to minimal. Change if needed.
   $text['format'] = ($text['format'] === 'filtered_html') ?
