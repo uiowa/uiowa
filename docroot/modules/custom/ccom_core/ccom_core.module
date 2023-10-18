@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains ccom_core.module.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ccom_core_preprocess_block(&$variables) {
+  if (isset($variables['attributes']['id']) && $variables['attributes']['id'] ==='block-uids-base-footercontactinfo') {
+    $current_path = \Drupal::request()->getRequestUri();
+    $full_url = $_SERVER["HTTP_HOST"] .$current_path;
+    $newlink = '<p><a href="http://hc-vbugtracker.healthcare.uiowa.edu/projects/uihc-org/issues/new?issue[custom_field_values][1]=' . $full_url . '">Report an issue with this page</a></p>';
+    $variables["content"]["field_uiowa_text_area"][0]["#text"] .= $newlink;
+  }
+}
