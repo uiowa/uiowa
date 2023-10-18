@@ -28,7 +28,8 @@ use Drupal\views\ViewExecutable;
 function sitenow_ccom_preprocess_block(&$variables) {
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] ==='block-uids-base-footercontactinfo') {
     $current_path = \Drupal::service('path.current')->getPath();
-    $newlink = '<p><a href="http://hc-vbugtracker.healthcare.uiowa.edu/projects/uihc-org/issues/new?issue[custom_field_values][1]=' . $current_path . '">Report an issue with this page</a></p>';
+    $full_url = $_SERVER["HTTP_HOST"] .$current_path;;
+    $newlink = '<p><a href="http://hc-vbugtracker.healthcare.uiowa.edu/projects/uihc-org/issues/new?issue[custom_field_values][1]=' . $full_url . '">Report an issue with this page</a></p>';
     $variables["content"]["field_uiowa_text_area"][0]["#text"] .= $newlink;
 
   }
