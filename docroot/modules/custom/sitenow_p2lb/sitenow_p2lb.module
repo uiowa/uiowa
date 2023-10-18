@@ -1045,7 +1045,11 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
     $h_level = $matches[1];
     $title = $matches[2];
-    $text['value'] = str_replace($matches[0], '', $text['value']);
+    $text['value'] = str_replace(
+      $matches[0],
+      '',
+      $text['value']
+    );
   }
 
   $link = NULL;
