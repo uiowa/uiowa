@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e34de5ee4b3d965696bb186271ff4b2",
+    "content-hash": "7c64788d35df124ddad48f61ae038037",
     "packages": [
         {
             "name": "acquia/blt",
@@ -99,28 +99,22 @@
         },
         {
             "name": "acquia/blt-drupal-test",
-            "version": "v1.0.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/acquia/blt-drupal-test.git",
-                "reference": "8b85086d6efe606edeab3066ba9fad225eb4e80e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/acquia/blt-drupal-test/zipball/8b85086d6efe606edeab3066ba9fad225eb4e80e",
-                "reference": "8b85086d6efe606edeab3066ba9fad225eb4e80e",
-                "shasum": ""
+                "url": "https://github.com/modularlab/blt-drupal-test.git",
+                "reference": "bb2103f"
             },
             "require": {
-                "drupal/core-dev": "^9.0"
+                "drupal/core-dev": "^9.0 || ^10"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Acquia\\BltDrupalTest\\": "./src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -132,12 +126,7 @@
                 }
             ],
             "description": "PHPUnit integration for Acquia BLT",
-            "support": {
-                "issues": "https://github.com/acquia/blt-drupal-test/issues",
-                "source": "https://github.com/acquia/blt-drupal-test/tree/v1.0.0"
-            },
-            "abandoned": true,
-            "time": "2020-11-03T23:25:11+00:00"
+            "time": "2023-08-11T14:34:36+00:00"
         },
         {
             "name": "acquia/blt-multisite",
@@ -22063,6 +22052,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "acquia/blt-drupal-test": 20,
         "acquia/blt-multisite": 20,
         "acquia/blt-travis": 20,
         "drupal/config_split": 5,
