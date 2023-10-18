@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: jobspharmacy-dean.uiowa.ddev.site
+    protocol: https
+  machine_name: jobspharmacy-dean
+  human_name: pharmacy-dean.jobs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: jobspharmacy-dean.prod
+drupal:
+  db:
+    database: pharmacy_dean_jobs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://jobspharmacy-dean.prod.drupal.uiowa.edu'
+  requester: mjoneill
+  site-name: 'Pharmacy Dean Search'
