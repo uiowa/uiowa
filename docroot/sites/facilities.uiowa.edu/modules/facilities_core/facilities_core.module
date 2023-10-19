@@ -123,38 +123,6 @@ function facilities_core_project_submit($form, FormStateInterface $form_state): 
  */
 function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
-    case 'field_alert_building':
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
-      break;
-
-    case 'field_alert_date':
-      $view_mode = $variables['element']['#view_mode'];
-      if ($view_mode === '_custom') {
-        uiowa_core_set_attributes($variables, 'fa-ul');
-        uiowa_core_set_field_icon($variables, 'fa-calendar fa-li');
-      }
-      break;
-
-    case 'field_alert_location':
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt fa-li');
-      break;
-
-    case 'field_alert_traffic_control_plan':
-      uiowa_core_set_attributes($variables, [
-        'bttn',
-        'bttn--tertiary',
-        'bttn--medium',
-        'bttn--full',
-      ]);
-      break;
-
-    case 'field_alert_affected_bus_routes':
-      uiowa_core_set_field_label_icon($variables, 'fa-bus');
-      uiowa_core_set_attributes($variables, 'badge badge--light');
-      break;
-
     case 'field_building_honoree_name':
       // Change label for output.
       $variables['element']['#title'] = 'Honoree';
@@ -253,18 +221,6 @@ function facilities_core_preprocess_file_link(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function facilities_core_preprocess_media(&$variables) {
-  // Extra classes for the Traffic plan field. Limit it
-  // to 'file' media so we don't potentially add extra stuff
-  // to other media types like images.
-  if ($variables['media']->getSource()?->getPluginId() === 'file') {
-    $variables['attributes']['class'] = ['padding--inline-start--sm'];
-  }
-}
-
-/**
  * Implements hook_entity_presave().
  */
 function facilities_core_node_presave(EntityInterface $entity) {
@@ -310,10 +266,6 @@ function facilities_core_node_presave(EntityInterface $entity) {
  */
 function facilities_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_alert_traffic_control_plan__alert__default' => [
-      'template' => 'field--node--field-alert-traffic-control-plan--alert--default',
-      'base hook' => 'field',
-    ],
     'views_view_unformatted__alerts_building_block__alert' => [
       'template' => 'views-view-unformatted--alerts-building-block--alert',
       'base hook' => 'view',
