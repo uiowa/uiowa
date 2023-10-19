@@ -21,32 +21,38 @@ class Article extends BaseNodeSource {
 
   /**
    * The public file directory path.
+   *
+   * @var string
    */
-  protected string $publicPath;
+  protected $publicPath;
 
   /**
    * The private file directory path, if any.
+   *
+   * @var string
    */
-  protected string $privatePath;
+  protected $privatePath;
 
   /**
    * The temporary file directory path.
+   *
+   * @var string
    */
-  protected string $temporaryPath;
+  protected $temporaryPath;
 
   /**
    * Term-to-term mapping for tags.
    *
    * @var array
    */
-  protected array $termMapping;
+  protected $termMapping;
 
   /**
    * Reference-to-term mapping for tags.
    *
    * @var array
    */
-  protected array $refMapping;
+  protected $refMapping;
 
   /**
    * {@inheritdoc}
@@ -168,7 +174,7 @@ class Article extends BaseNodeSource {
   /**
    * Map taxonomy to a tag.
    */
-  protected function getTags(&$row): void {
+  protected function getTags(&$row) {
     $tids = $row->getSourceProperty('field_tags_tid');
     $target_ids = [
       'Primary Department: ' => $row->getSourceProperty('field_primary_department_target_id'),

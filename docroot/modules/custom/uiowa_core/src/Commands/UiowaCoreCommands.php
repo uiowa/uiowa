@@ -22,33 +22,45 @@ use Symfony\Component\Yaml\Yaml;
 class UiowaCoreCommands extends DrushCommands {
   /**
    * The uiowa_core logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
   protected ?LoggerInterface $logger;
 
   /**
    * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $configFactory;
+  protected $configFactory;
 
   /**
    * The module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandler
    */
-  protected ModuleHandler $moduleHandler;
+  protected $moduleHandler;
 
   /**
    * The purge invalidations service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService
    */
-  protected InvalidationsService $purgeInvalidations;
+  protected $purgeInvalidations;
 
   /**
    * The purge queuer service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Queuer\QueuersService
    */
-  protected QueuersService $purgeQueuer;
+  protected $purgeQueuer;
 
   /**
    * The purge queue service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Queue\QueueService
    */
-  protected QueueService $purgeQueue;
+  protected $purgeQueue;
 
   /**
    * Command constructor.
@@ -68,7 +80,7 @@ class UiowaCoreCommands extends DrushCommands {
    * @command uiowa_core:toggle-gtag
    * @aliases uicore-gtag
    */
-  public function toggleGtag(): void {
+  public function toggleGtag() {
     $config = $this->configFactory->getEditable('uiowa_core.settings');
     $uiowa_core_gtag = $config->get('uiowa_core.gtag');
 
@@ -107,7 +119,7 @@ class UiowaCoreCommands extends DrushCommands {
    *
    * @usage uiowa_core:custom_role_mappings
    */
-  public function customRoleMappings(): void {
+  public function customRoleMappings() {
     if ($this->moduleHandler->moduleExists('uiowa_auth')) {
       // Get site's role_mapping values from uiowa_auth module.
       $config = $this->configFactory->getEditable('uiowa_auth.settings');

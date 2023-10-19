@@ -51,27 +51,37 @@ class AcademicUnit extends ConfigEntityBase implements AcademicUnitInterface {
 
   /**
    * The academic unit ID.
+   *
+   * @var string
    */
-  protected string $id;
+  protected $id;
 
   /**
    * The academic unit label.
+   *
+   * @var string
    */
-  protected string $label;
+  protected $label;
 
   /**
    * The academic unit status.
+   *
+   * @var bool
    */
-  protected bool $status;
+  protected $status;
 
   /**
    * The academic unit type.
+   *
+   * @var string
    */
-  protected string $type;
+  protected $type;
 
   /**
    * A link to the academic unit homepage.
+   *
+   * @var string
    */
-  protected string $homepage;
+  protected $homepage;
 
 }

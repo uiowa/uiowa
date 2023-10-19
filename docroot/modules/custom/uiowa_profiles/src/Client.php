@@ -20,28 +20,38 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Client {
   /**
    * The Profiles settings config.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private ConfigFactoryInterface $config;
+  private $config;
 
   /**
    * The uiowa_profiles logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
-  private LoggerInterface $logger;
+  private $logger;
 
   /**
    * The Profiles environment.
+   *
+   * @var string
    */
-  protected string $environment;
+  protected $environment;
 
   /**
    * The Profiles API endpoint.
+   *
+   * @var string
    */
-  protected string $endpoint;
+  protected $endpoint;
 
   /**
    * The guzzle client.
+   *
+   * @var \GuzzleHttp\Client
    */
-  protected \GuzzleHttp\Client $httpClient;
+  protected $httpClient;
 
   /**
    * Constructs a Profiles service object.
@@ -72,7 +82,7 @@ class Client {
    * @return mixed
    *   The property value.
    */
-  public function __get(string $name): mixed {
+  public function __get($name) {
     return $this->$name;
   }
 
@@ -113,7 +123,7 @@ class Client {
    * @return string
    *   The API endpoint.
    */
-  protected function setEndpoint(): string {
+  protected function setEndpoint() {
     $endpoint = '';
 
     if ($this->environment === 'test') {
@@ -147,7 +157,7 @@ class Client {
    * @return string
    *   The API response data.
    */
-  public function request(string $method, string $path, array $params, array $options): string {
+  public function request($method, $path, array $params, array $options) {
     $path = ltrim($path, '/');
     $params = UrlHelper::buildQuery($params);
 

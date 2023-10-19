@@ -20,13 +20,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The form_builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected FormBuilderInterface $formBuilder;
+  protected $formBuilder;
 
   /**
    * The config_factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
    */
-  private ConfigFactory $configFactory;
+  private $configFactory;
 
   /**
    * Search block constructor.

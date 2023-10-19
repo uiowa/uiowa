@@ -99,7 +99,7 @@ class ValidateCommands extends BltTasks {
    * @return bool
    *   Is ddev or not.
    */
-  protected function isDdev(): bool {
+  protected function isDdev() {
     return getenv('IS_DDEV_PROJECT') ?? FALSE;
   }
 

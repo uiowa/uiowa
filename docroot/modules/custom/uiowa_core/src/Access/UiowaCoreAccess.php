@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_core\Access;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 
@@ -21,7 +20,7 @@ class UiowaCoreAccess implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account = NULL): AccessResultInterface {
+  public function access(AccountInterface $account = NULL) {
     // Check the current account if no account was passed.
     if (is_null($account)) {
       $account = \Drupal::currentUser()->getAccount();

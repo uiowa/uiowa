@@ -23,7 +23,7 @@ class LinkHelper {
    *
    * @see Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
    */
-  public static function getUriAsDisplayableString(string $uri): string {
+  public static function getUriAsDisplayableString($uri): string {
     $scheme = parse_url($uri, PHP_URL_SCHEME);
 
     // By default, the displayable string is the URI.

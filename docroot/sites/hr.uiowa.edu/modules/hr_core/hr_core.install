@@ -12,7 +12,7 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Rename site config split to 'hr' so it is imported correctly.
  */
-function hr_core_update_8001(): void {
+function hr_core_update_8001() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.site');
 
@@ -31,7 +31,7 @@ function hr_core_update_8001(): void {
 /**
  * Populate FAQ Categories.
  */
-function hr_core_update_8002(): void {
+function hr_core_update_8002() {
   // Obtain configuration from yaml files.
   $config_path = DRUPAL_ROOT . '/../config/hr.uiowa.edu/';
   $source = new FileStorage($config_path);
@@ -290,7 +290,7 @@ function hr_core_update_8002(): void {
 /**
  * Import new config ignore settings before uiowa_bar settings get erased.
  */
-function hr_core_update_8003(): void {
+function hr_core_update_8003() {
   // Obtain configuration from yaml files.
   $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
   $source = new FileStorage($config_path);
@@ -301,14 +301,14 @@ function hr_core_update_8003(): void {
 /**
  * Purge existing redirects.
  */
-function hr_core_update_8004(): void {
+function hr_core_update_8004() {
   \Drupal::database()->truncate('redirect')->execute();
 }
 
 /**
  * First batch of redirects.
  */
-function hr_core_update_8005(): void {
+function hr_core_update_8005() {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $path = $path_resolver->getPath('module', 'hr_core');
@@ -337,7 +337,7 @@ function hr_core_update_8005(): void {
 /**
  * Add uiowa_bootstrap to split so cim does not error on UIBS block deletion.
  */
-function hr_core_update_8006(): void {
+function hr_core_update_8006() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.hr');
 
@@ -351,7 +351,7 @@ function hr_core_update_8006(): void {
 /**
  * Import HR split config_ignore.settings so uiowa_bar.settings are kept.
  */
-function hr_core_update_8007(): void {
+function hr_core_update_8007() {
   $config_path = \Drupal::configFactory()->get('config_split.config_split.hr')->get('folder');
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
@@ -361,7 +361,7 @@ function hr_core_update_8007(): void {
 /**
  * Delete config that is no longer needed.
  */
-function hr_core_update_9001(): void {
+function hr_core_update_9001() {
   $config_files = [
     'block.block.views_block__units_block_contact_info',
     'block.block.views_block__content_related_block_content_related',
@@ -394,7 +394,7 @@ function hr_core_update_9001(): void {
 /**
  * Delete deprecated card options from content.
  */
-function hr_core_update_9002(): void {
+function hr_core_update_9002() {
   // There are no default card style options so these can be completely removed.
   $database = \Drupal::database();
   $database->delete('paragraph_revision__field_uip_classes')

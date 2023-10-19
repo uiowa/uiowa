@@ -19,8 +19,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CostCalculatorBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The form_builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected FormBuilderInterface $formBuilder;
+  protected $formBuilder;
 
   /**
    * {@inheritdoc}

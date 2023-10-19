@@ -11,14 +11,14 @@ use Drupal\node\Entity\Node;
 /**
  * Clear all caches after block constructor change.
  */
-function uiowa_area_of_study_update_9001(): void {
+function uiowa_area_of_study_update_9001() {
   drupal_flush_all_caches();
 }
 
 /**
  * Import rabbit hole config for programmatic save.
  */
-function uiowa_area_of_study_update_9002(): void {
+function uiowa_area_of_study_update_9002() {
   \Drupal::service('module_installer')->install(['rabbit_hole', 'rh_node']);
   $config_path = DRUPAL_ROOT . '/../config/features/areas_of_study';
   $source = new FileStorage($config_path);
@@ -31,7 +31,7 @@ function uiowa_area_of_study_update_9002(): void {
 /**
  * Re-save all AoS nodes.
  */
-function uiowa_area_of_study_update_9003(&$sandbox): void {
+function uiowa_area_of_study_update_9003(&$sandbox) {
   // Process all nodes.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')

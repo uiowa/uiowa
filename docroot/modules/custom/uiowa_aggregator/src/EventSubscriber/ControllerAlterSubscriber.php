@@ -17,13 +17,17 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
 
   /**
    * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $config;
+  protected $config;
 
   /**
    * The date formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatter
    */
-  protected DateFormatter $dateFormatter;
+  protected $dateFormatter;
 
   /**
    * Constructs event subscriber.
@@ -41,7 +45,7 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
   /**
    * Add a disclaimer about feed import/clear timings to aggregator overview.
    */
-  public function onView(ViewEvent $event): void {
+  public function onView(ViewEvent $event) {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
 

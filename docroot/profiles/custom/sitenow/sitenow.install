@@ -198,7 +198,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
 /**
  * Set list grid defaults for existing list blocks.
  */
-function sitenow_update_9001(): void {
+function sitenow_update_9001() {
   $block_types = [
     'uiowa_aggregator',
     'uiowa_events',
@@ -267,7 +267,7 @@ function sitenow_update_9001(): void {
 /**
  * Set new font-family theme setting.
  */
-function sitenow_update_9002(): void {
+function sitenow_update_9002() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('fonts.font-family', 'sans-serif');
@@ -277,7 +277,7 @@ function sitenow_update_9002(): void {
 /**
  * Set menu links to expanded by default.
  */
-function sitenow_update_9003(&$sandbox): void {
+function sitenow_update_9003(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
       ->accessCheck(TRUE)
@@ -322,7 +322,7 @@ function sitenow_update_9003(&$sandbox): void {
 /**
  * Update menu block instance settings to show 1 level of menu.
  */
-function sitenow_update_9004(&$sandbox): void {
+function sitenow_update_9004(&$sandbox) {
   $connection = Database::getConnection();
 
   // We need to adjust the records for the current node
@@ -560,21 +560,21 @@ function sitenow_update_9006(&$sandbox) {
 /**
  * Update button classes.
  */
-function sitenow_update_9007(): void {
+function sitenow_update_9007() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Fix table classes that were inadvertently broken.
  */
-function sitenow_update_9008(): void {
+function sitenow_update_9008() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Helper function to convert an existing people block to a list view block.
  */
-function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block): void {
+function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
   // @phpstan-ignore-next-line
   $styles = $component->get('layout_builder_styles_style');
 
@@ -713,7 +713,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 /**
  * Update all LB people blocks to views block.
  */
-function sitenow_update_9009(): void {
+function sitenow_update_9009() {
   $db = \Drupal::database();
   $block_storage = \Drupal::entityTypeManager()
     ->getStorage('block_content');
@@ -875,7 +875,7 @@ function sitenow_update_9009(): void {
 /**
  * Set - None - section container options to Normal.
  */
-function sitenow_update_9010(): void {
+function sitenow_update_9010() {
   $connection = Database::getConnection();
 
   // We need to adjust the records for the current node
@@ -999,7 +999,7 @@ function sitenow_update_9010(): void {
 /**
  * Redo 9009.
  */
-function sitenow_update_9011(): void {
+function sitenow_update_9011() {
   sitenow_update_9009();
 
   // Delete remaining orphans?
@@ -1017,7 +1017,7 @@ function sitenow_update_9011(): void {
 /**
  * Update existing uiowa_banner blocks to have a default headline_size style.
  */
-function sitenow_update_9012(): void {
+function sitenow_update_9012() {
   $db = \Drupal::database();
 
   $section_column = 'layout_builder__layout_section';
@@ -1151,7 +1151,7 @@ function sitenow_update_9012(): void {
 /**
  * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776.
  */
-function sitenow_update_9013(): void {
+function sitenow_update_9013() {
   // Batch it.
   node_access_rebuild(TRUE);
 }
@@ -1159,7 +1159,7 @@ function sitenow_update_9013(): void {
 /**
  * Redo 9009.
  */
-function sitenow_update_9014(): void {
+function sitenow_update_9014() {
   sitenow_update_9009();
 
   // Delete remaining orphans?
@@ -1181,14 +1181,14 @@ function sitenow_update_9014(): void {
 /**
  * Clear cache for lazy update and update engineering migrated files metadata.
  */
-function sitenow_update_9015(): void {
+function sitenow_update_9015() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Uninstall node_view_permissions, import role configs, rebuild permissions.
  */
-function sitenow_update_9016(): void {
+function sitenow_update_9016() {
   // Uninstall node_view_permissions module.
   \Drupal::service('module_installer')->uninstall(['node_view_permissions']);
 
@@ -1232,7 +1232,7 @@ function sitenow_update_9016(): void {
 /**
  * Activate new site splits prior to import so config remains constant.
  */
-function sitenow_update_9017(): void {
+function sitenow_update_9017() {
   $splits = [
     'sites/admissions.uiowa.edu' => 'admissions.uiowa.edu',
     'sites/brand.uiowa.edu' => 'brand.uiowa.edu',
@@ -1266,7 +1266,7 @@ function sitenow_update_9017(): void {
 /**
  * Add allowed replicate content entities.
  */
-function sitenow_update_9020(): void {
+function sitenow_update_9020() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $sitenow_v2_split = 'config_split:sitenow_v2';
@@ -1293,7 +1293,7 @@ function sitenow_update_9020(): void {
 /**
  * Shut down replicate for now.
  */
-function sitenow_update_9021(): void {
+function sitenow_update_9021() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_core.settings');
   $config
@@ -1304,29 +1304,29 @@ function sitenow_update_9021(): void {
 /**
  * Re-activate replicate functionality for v3 sites.
  */
-function sitenow_update_9022(): void {
+function sitenow_update_9022() {
   sitenow_update_9020();
 }
 
 /**
  * Run again for any sites that were installed without this config.
  */
-function sitenow_update_9023(): void {
+function sitenow_update_9023() {
   sitenow_update_9020();
 }
 
 /**
  * Remove headline content from footer block before setting perms.
  */
-function sitenow_update_9024(): void {
+function sitenow_update_9024() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Convert uiowa_articles to article_list_block.
  */
-function sitenow_update_9025(): void {
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block): void {
+function sitenow_update_9025() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
     // Default LB styles for new block.
@@ -1466,12 +1466,12 @@ function sitenow_update_9025(): void {
 /**
  * Update views list blocks with use_more_text option.
  */
-function sitenow_update_9026(): void {
+function sitenow_update_9026() {
   foreach ([
     'views_block:people_list_block-list_card',
     'views_block:article_list_block-list_article',
   ] as $block_plugin_id) {
-    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block): void {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
       $config = $component->get('configuration');
       $config['use_more_text'] = '';
       $component->setConfiguration($config);
@@ -1482,35 +1482,35 @@ function sitenow_update_9026(): void {
 /**
  * Clear all the caches.
  */
-function sitenow_update_9027(): void {
+function sitenow_update_9027() {
   drupal_flush_all_caches();
 }
 
 /**
  * Change footer content block to minimal format.
  */
-function sitenow_update_9028(): void {
+function sitenow_update_9028() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Flush all caches so drupal finds uiowa_auth module.
  */
-function sitenow_update_9029(): void {
+function sitenow_update_9029() {
   drupal_flush_all_caches();
 }
 
 /**
  * Flush all caches after swapping colorbox with the photoswipe module.
  */
-function sitenow_update_9030(): void {
+function sitenow_update_9030() {
   drupal_flush_all_caches();
 }
 
 /**
  * Clear plugin cache for photoswipe config import.
  */
-function sitenow_update_9031(): void {
+function sitenow_update_9031() {
   /** @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface $plugin_cache_clearer */
   $plugin_cache_clearer = \Drupal::service('plugin.cache_clearer');
   $plugin_cache_clearer->clearCachedDefinitions();
@@ -1519,14 +1519,14 @@ function sitenow_update_9031(): void {
 /**
  * Clear caches to regenerate image styles.
  */
-function sitenow_update_9032(): void {
+function sitenow_update_9032() {
   drupal_flush_all_caches();
 }
 
 /**
  * Create new headline field for headline alignment.
  */
-function sitenow_update_9033(): void {
+function sitenow_update_9033() {
   $headline_alignment = [
     'type' => 'varchar',
     'description' => 'Alignment for the heading.',
@@ -1542,7 +1542,7 @@ function sitenow_update_9033(): void {
 /**
  * Set the newly created footer.login_link theme setting to TRUE.
  */
-function sitenow_update_9034(): void {
+function sitenow_update_9034() {
   $config = \Drupal::configFactory()->getEditable('uids_base.settings');
 
   if (!$config->get('footer.login_link')) {
@@ -1554,7 +1554,7 @@ function sitenow_update_9034(): void {
 /**
  * Clean up media revisions.
  */
-function sitenow_update_9035(): void {
+function sitenow_update_9035() {
   $db = \Drupal::database();
   $entity_manager = \Drupal::service('entity_type.manager')
     ->getStorage('media');
@@ -1584,8 +1584,8 @@ function sitenow_update_9035(): void {
 /**
  * Set previously unset menu item styles to vertical.
  */
-function sitenow_update_9036(): void {
-  _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block): void {
+function sitenow_update_9036() {
+  _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
       $styles['block_menu_vertical'] = 'block_menu_vertical';
@@ -1598,14 +1598,14 @@ function sitenow_update_9036(): void {
 /**
  * Flush all caches.
  */
-function sitenow_update_9037(): void {
+function sitenow_update_9037() {
   drupal_flush_all_caches();
 }
 
 /**
  * Set existing blocks with a grid columns value.
  */
-function sitenow_update_9038(): void {
+function sitenow_update_9038() {
   foreach ([
     'inline_block:uiowa_articles',
     'inline_block:uiowa_events',
@@ -1615,7 +1615,7 @@ function sitenow_update_9038(): void {
     'views_block:people_list_block-list_card',
   ] as $block_plugin_id) {
 
-    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block): void {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
       $styles = $component->get('layout_builder_styles_style');
       if (in_array('list_format_list', $styles)) {
@@ -1637,26 +1637,26 @@ function sitenow_update_9038(): void {
 /**
  * Flush all caches for dependency updates.
  */
-function sitenow_update_9039(): void {
+function sitenow_update_9039() {
   drupal_flush_all_caches();
 }
 
 /**
  * Flush all caches for dependency update signature changes.
  */
-function sitenow_update_9040(): void {
+function sitenow_update_9040() {
   drupal_flush_all_caches();
 }
 
 /**
  * Set existing banner blocks with a default button style value.
  */
-function sitenow_update_9041(): void {
+function sitenow_update_9041() {
   // Loop through our newly updated banner blocks.
   foreach ([
     'inline_block:uiowa_banner',
   ] as $block_plugin_id) {
-    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block): void {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
       $styles = $component->get('layout_builder_styles_style');
       // We shouldn't, but check if we have a button style already set.
@@ -1682,35 +1682,35 @@ function sitenow_update_9041(): void {
 /**
  * Flush all caches so drupal finds uiowa_auth module.
  */
-function sitenow_update_9042(): void {
+function sitenow_update_9042() {
   drupal_flush_all_caches();
 }
 
 /**
  * Uninstall sitenow_find_text.
  */
-function sitenow_update_9043(): void {
+function sitenow_update_9043() {
   \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
 }
 
 /**
  * Update button classes again.
  */
-function sitenow_update_9044(): void {
+function sitenow_update_9044() {
   // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Flush all caches after the template changes in UIDS 4 pull request.
  */
-function sitenow_update_9045(): void {
+function sitenow_update_9045() {
   drupal_flush_all_caches();
 }
 
 /**
  * Set existing events block to be compatible with new date_range options.
  */
-function sitenow_update_9046(): void {
+function sitenow_update_9046() {
   // Need module enabled before field operations occur.
   \Drupal::service('module_installer')->install(['smart_date']);
 
@@ -1738,7 +1738,7 @@ function sitenow_update_9046(): void {
 
   drupal_flush_all_caches();
 
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_events', function (&$component, $block): void {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_events', function (&$component, $block) {
     $now = strtotime('now');
     $block->set(
       'field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]
@@ -1758,7 +1758,7 @@ function sitenow_update_9046(): void {
 /**
  * Update several fields from plain text to formatted basic text.
  */
-function sitenow_update_9047(): void {
+function sitenow_update_9047() {
 
   // Statically defining our fields to be updated. More can be added here.
   $fields = [
@@ -1902,14 +1902,14 @@ function sitenow_update_9047(): void {
 /**
  * Flush all caches after removing 175 logo and restoring regular logo.
  */
-function sitenow_update_9048(): void {
+function sitenow_update_9048() {
   drupal_flush_all_caches();
 }
 
 /**
  * Add article to replicate allowed content types.
  */
-function sitenow_update_9049(): void {
+function sitenow_update_9049() {
   /** @var \Drupal\config_split\Entity\ConfigSplitEntity $config_split_entities */
   $sitenow_v2 = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
   $sitenow_v2->get('status');
@@ -1928,15 +1928,15 @@ function sitenow_update_9049(): void {
 /**
  * Flush all caches because reasons.
  */
-function sitenow_update_9050(): void {
+function sitenow_update_9050() {
   drupal_flush_all_caches();
 }
 
 /**
  * Update card excerpt field format to the new minimal_plus format.
  */
-function sitenow_update_9051(): void {
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block): void {
+function sitenow_update_9051() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
 
     // Change the format for the card excerpt.
     if (!is_null($block)) {
@@ -1949,7 +1949,7 @@ function sitenow_update_9051(): void {
 /**
  * Import updated config ignore before site specific config is removed.
  */
-function sitenow_update_9052(): void {
+function sitenow_update_9052() {
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
@@ -1959,8 +1959,8 @@ function sitenow_update_9052(): void {
 /**
  * Re-run of 9051 to fix recently provisioned sites.
  */
-function sitenow_update_9053(): void {
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block): void {
+function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
 
     // Change the format for the card excerpt.
     if (!is_null($block)) {
@@ -1975,7 +1975,7 @@ function sitenow_update_9053(): void {
 /**
  * Import updated acquia_connector.settings around config_ignore.
  */
-function sitenow_update_9054(): void {
+function sitenow_update_9054() {
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
@@ -1985,7 +1985,7 @@ function sitenow_update_9054(): void {
 /**
  * Set new style-selector theme setting.
  */
-function sitenow_update_9055(): void {
+function sitenow_update_9055() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('style.style_selector', 'brand');
@@ -1995,7 +1995,7 @@ function sitenow_update_9055(): void {
 /**
  * Convert layout_section fields' 'section' column to a long blob.
  */
-function sitenow_update_9056(): void {
+function sitenow_update_9056() {
   $schema = Database::getConnection()->schema();
   $entity_type_manager = \Drupal::entityTypeManager();
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
@@ -2067,7 +2067,7 @@ function sitenow_update_9056(): void {
 /**
  * Update layout builder styles applied to cards.
  */
-function sitenow_update_9057(): void {
+function sitenow_update_9057() {
   // Apply updates to all blocks that are styled using card styles.
   _update_all_blocks_by_plugin_id([
     'inline_block:uiowa_card',
@@ -2077,7 +2077,7 @@ function sitenow_update_9057(): void {
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
     'views_block:events_list_block-card_list',
-  ], function (&$component, $block): void {
+  ], function (&$component, $block) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     // @phpstan-ignore-next-line
     $styles = $component->get('layout_builder_styles_style');
@@ -2165,7 +2165,7 @@ function sitenow_update_9057(): void {
 /**
  * Update sections with only cards to remove "Remove bottom spacing" style.
  */
-function sitenow_update_9058(&$sandbox): void {
+function sitenow_update_9058(&$sandbox) {
 
   $block_plugin_id = 'inline_block:uiowa_card';
 
@@ -2308,14 +2308,14 @@ function sitenow_update_9058(&$sandbox): void {
 /**
  * Set defaults for card headline styles.
  */
-function sitenow_update_9059(&$sandbox): void {
+function sitenow_update_9059(&$sandbox) {
   _update_all_blocks_by_plugin_id([
     'inline_block:uiowa_events',
     'inline_block:uiowa_aggregator',
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
     'views_block:events_list_block-card_list',
-  ], function (&$component, $block): void {
+  ], function (&$component, $block) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     // @phpstan-ignore-next-line
     $styles = $component->get('layout_builder_styles_style');
@@ -2347,8 +2347,8 @@ function sitenow_update_9059(&$sandbox): void {
 /**
  * Update search blocks to be aware of new fields.
  */
-function sitenow_update_9060(): void {
-  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block): void {
+function sitenow_update_9060() {
+  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block) {
 
     $config = $component->get('configuration');
     $config['query_prepend'] = '';
@@ -2475,7 +2475,7 @@ function sitenow_update_9062(&$sandbox) {
 /**
  * Allow event content type to be replicated if it exists.
  */
-function sitenow_update_9063(): void {
+function sitenow_update_9063() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_core.settings');
   $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
@@ -2488,8 +2488,8 @@ function sitenow_update_9063(): void {
 /**
  * Update any existing cards where button display is not set.
  */
-function sitenow_update_9064(): void {
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block): void {
+function sitenow_update_9064() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
     if ($block->get('field_uiowa_card_button_display')->value == NULL) {
       $block->set('field_uiowa_card_button_display', 'Use site default');
       $block->save();
@@ -2500,8 +2500,8 @@ function sitenow_update_9064(): void {
 /**
  * Set list grid defaults for existing featured content blocks.
  */
-function sitenow_update_9065(): void {
-  _update_all_blocks_by_plugin_id('inline_block:featured_content', function (&$component, $block): void {
+function sitenow_update_9065() {
+  _update_all_blocks_by_plugin_id('inline_block:featured_content', function (&$component, $block) {
     // @phpstan-ignore-next-line
     $styles = $component->get('layout_builder_styles_style');
     $styles[] = 'list_format_list';
@@ -2517,7 +2517,7 @@ function sitenow_update_9065(): void {
 /**
  * Update alert classes.
  */
-function sitenow_update_9067(): void {
+function sitenow_update_9067() {
   $search_replace = [
     'alert-danger' => 'alert--danger',
     'alert-warning' => 'alert--warning',
@@ -2638,7 +2638,7 @@ function sitenow_update_9067(): void {
 /**
  * Update person bio field to long with summary.
  */
-function sitenow_update_9068(): void {
+function sitenow_update_9068() {
 
   // Statically defining our fields to be updated. More can be added here.
   $fields = [
@@ -2734,7 +2734,7 @@ function sitenow_update_9068(): void {
 /**
  * Update summary cols with field_teaser values.
  */
-function sitenow_update_9069(): void {
+function sitenow_update_9069() {
   $field_types = [
     'body',
     'field_teaser',
@@ -2806,13 +2806,13 @@ function sitenow_update_9069(): void {
 /**
  * Update hide fields options for list blocks.
  */
-function sitenow_update_9070(): void {
+function sitenow_update_9070() {
   foreach ([
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
     'views_block:events_list_block-list_card',
   ] as $block_plugin_id) {
-    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component): void {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
       $config = $component->getConfiguration();
       $config['fields']['body'] = $config['fields']['field_teaser'];
       unset($config['fields']['field_teaser']);
@@ -2824,7 +2824,7 @@ function sitenow_update_9070(): void {
 /**
  * Set new branding options theme setting.
  */
-function sitenow_update_9071(): void {
+function sitenow_update_9071() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
   if ($config->get('style.style_selector') === 'gray') {
@@ -2839,10 +2839,10 @@ function sitenow_update_9071(): void {
 /**
  * Set existing image gallery blocks with default media size value.
  */
-function sitenow_update_9072(): void {
+function sitenow_update_9072() {
   $block_plugin_id = 'inline_block:uiowa_image_gallery';
 
-  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block): void {
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (in_array('block_image_gallery_style_masonry', $styles)) {
       $styles[] = 'media_format_no_crop';
@@ -2857,13 +2857,13 @@ function sitenow_update_9072(): void {
 /**
  * Update padding options for single select.
  */
-function sitenow_update_9073(): void {
+function sitenow_update_9073() {
   foreach ([
     'inline_block:uiowa_text_area',
     'webform_block',
   ] as $block_plugin_id) {
 
-    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block): void {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
       $styles = $component->get('layout_builder_styles_style');
 
       if (is_array($styles)) {
@@ -2895,7 +2895,7 @@ function sitenow_update_9073(): void {
 /**
  * Remove the dependency on oembed_providers from remote video media type.
  */
-function sitenow_update_9074(): void {
+function sitenow_update_9074() {
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
 
@@ -2912,7 +2912,7 @@ function sitenow_update_9074(): void {
 /**
  * Update config before module is uninstalled.
  */
-function sitenow_update_9075(): void {
+function sitenow_update_9075() {
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
 
@@ -2930,6 +2930,6 @@ function sitenow_update_9075(): void {
 /**
  * Flush all caches after swapping colorbox with the photoswipe module.
  */
-function sitenow_update_9076(): void {
+function sitenow_update_9076() {
   drupal_flush_all_caches();
 }

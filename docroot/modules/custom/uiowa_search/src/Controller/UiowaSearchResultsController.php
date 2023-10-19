@@ -20,7 +20,7 @@ class UiowaSearchResultsController extends ControllerBase {
    * @return array
    *   The render array for the search results page.
    */
-  public function build(Request $request): array {
+  public function build(Request $request) {
     $config = $this->config('uiowa_search.settings')->get('uiowa_search');
     $search_terms = $request->get('terms');
 

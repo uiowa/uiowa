@@ -18,23 +18,31 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
   /**
    * The pathauto.alias_cleaner service.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected AliasCleanerInterface $aliasCleaner;
+  protected $aliasCleaner;
 
   /**
    * The path.validator service.
+   *
+   * @var \Drupal\Core\Path\PathValidatorInterface
    */
-  protected PathValidatorInterface $pathValidator;
+  protected $pathValidator;
 
   /**
    * The route.builder service.
+   *
+   * @var \Drupal\Core\Routing\RouteBuilderInterface
    */
-  protected RouteBuilderInterface $routeBuilder;
+  protected $routeBuilder;
 
   /**
    * The router.route_provider service.
+   *
+   * @var \Drupal\Core\Routing\RouteProviderInterface
    */
-  protected RouteProviderInterface $routeProvider;
+  protected $routeProvider;
 
   /**
    * Settings form constructor.
@@ -305,7 +313,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * Submit button submit handler.
    */
-  public function addSubmit(array &$form, FormStateInterface $form_state): void {
+  public function addSubmit(array &$form, FormStateInterface $form_state) {
     $directories = $form_state->getValue([
       'profiles_fieldset',
       'tabs_container',
@@ -320,7 +328,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * Remove button submit handler.
    */
-  public function removeSubmit(array &$form, FormStateInterface $form_state): void {
+  public function removeSubmit(array &$form, FormStateInterface $form_state) {
     $delete = $form_state->getTriggeringElement()['#attributes']['data-directory-index'];
     $directories = $form_state->getValue([
       'profiles_fieldset',

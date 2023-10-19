@@ -17,7 +17,7 @@ interface PersonTypeInterface extends ConfigEntityInterface {
    * @return bool
    *   Whether the person type supports alternate versions.
    */
-  public function getAllowFormer(): bool;
+  public function getAllowFormer();
 
   /**
    * Returns list of person fields to allow based on this type.
@@ -25,6 +25,6 @@ interface PersonTypeInterface extends ConfigEntityInterface {
    * @return array
    *   The person fields to allow based on this type.
    */
-  public function getAllowedFields(): array;
+  public function getAllowedFields();
 
 }

@@ -22,8 +22,10 @@ class CreateRequirement extends ProcessPluginBase implements ContainerFactoryPlu
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}

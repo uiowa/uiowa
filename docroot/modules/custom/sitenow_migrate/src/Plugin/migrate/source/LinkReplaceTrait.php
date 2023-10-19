@@ -20,7 +20,7 @@ trait LinkReplaceTrait {
    * @param int $no_links_prior
    *   The creation year before which links should be removed.
    */
-  private function preLinkReplace(Row $row, string $field_name, int $no_links_prior = 0): void {
+  private function preLinkReplace(Row $row, string $field_name, int $no_links_prior = 0) {
     $field = $row->getSourceProperty($field_name);
     if (!empty($field)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
@@ -84,7 +84,7 @@ trait LinkReplaceTrait {
    * @param array $field_tables
    *   Array of the database tables and columns to check for broken links.
    */
-  private function postLinkReplace(string $entity_type, array $field_tables): void {
+  private function postLinkReplace(string $entity_type, array $field_tables) {
     $this->logger->notice('Beginning link replace.');
     // Initialize our storage manager and our
     // "broken link candidates" list to add to and edit later.
@@ -191,7 +191,7 @@ trait LinkReplaceTrait {
    *   or an int for a high water mark to check after,
    *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields, array|int $to_exclude = []): void {
+  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
     foreach ($fields as $field => $columns) {
       $query = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']));

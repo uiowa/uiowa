@@ -13,6 +13,8 @@ class P2LbConverter {
 
   /**
    * The page being converted.
+   *
+   * @var \Drupal\sitenow_pages\Entity\Page
    */
   protected Page $page;
 
@@ -21,10 +23,12 @@ class P2LbConverter {
    *
    * @var array
    */
-  protected array $convertedSections = [];
+  protected $convertedSections = [];
 
   /**
    * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
@@ -73,7 +77,7 @@ class P2LbConverter {
    * @param string|int $id
    *   The section paragraph ID.
    */
-  protected function processSection(string|int $id) {
+  protected function processSection($id) {
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
     $paragraph_section = $paragraph_storage->load($id);
 

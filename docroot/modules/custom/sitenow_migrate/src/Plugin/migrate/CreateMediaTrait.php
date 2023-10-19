@@ -2,8 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate;
 
-use Drupal\file\FileInterface;
-use Drupal\media\MediaStorage;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
 use GuzzleHttp\Exception\ClientException;
@@ -16,8 +14,10 @@ use GuzzleHttp\Exception\ServerException;
 trait CreateMediaTrait {
   /**
    * The Media storage.
+   *
+   * @var \Drupal\media\MediaStorage
    */
-  protected MediaStorage $mediaStorage;
+  protected $mediaStorage;
 
   /**
    * Create a media entity for files.
@@ -36,7 +36,7 @@ trait CreateMediaTrait {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMediaEntity(int $fid, array $meta = [], int $owner_id = 1, string $global_caption = NULL): false|int|string|null {
+  public function createMediaEntity($fid, array $meta = [], $owner_id = 1, $global_caption = NULL) {
     $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
     $file = $file_manager->load($fid);
@@ -161,7 +161,7 @@ trait CreateMediaTrait {
    * @return mixed
    *   Returns the file ID or FALSE if it doesn't exist.
    */
-  public function getNewFileId(string $filename): mixed {
+  public function getNewFileId($filename) {
     // Get a connection for the destination database
     // and retrieve the associated fid.
     return \Drupal::database()->select('file_managed', 'f')
@@ -189,7 +189,7 @@ trait CreateMediaTrait {
    * @return \Drupal\file\FileInterface
    *   The matching file entity or NULL if no entity exists.
    */
-  protected function getExistingFileEntity(string $destination, bool $set_permanent = TRUE): FileInterface {
+  protected function getExistingFileEntity($destination, $set_permanent = TRUE) {
     if ($files = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => $destination])) {
       // Grab the first file entity with a matching uri.
       // @todo Any logic for preference when there are multiple?

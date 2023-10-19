@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_apr\Routing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
@@ -14,8 +13,10 @@ use Symfony\Component\Routing\Route;
 class AprDynamic implements ContainerInjectionInterface {
   /**
    * The APR config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected ImmutableConfig $config;
+  protected $config;
 
   /**
    * Dynamic APR routes constructor.

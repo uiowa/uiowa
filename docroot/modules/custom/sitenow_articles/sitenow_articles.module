@@ -22,7 +22,7 @@ use Drupal\views\Views;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function sitenow_articles_entity_bundle_info_alter(array &$bundles): void {
+function sitenow_articles_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['article'])) {
     $bundles['node']['article']['class'] = Article::class;
   }
@@ -64,7 +64,7 @@ function sitenow_articles_entity_extra_field_info() {
 /**
  * Implements hook_form_alter().
  */
-function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_article_edit_form':
       if (isset($form['field_article_preserve_links'])) {
@@ -121,14 +121,14 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['options']['link_url']['#description'][2]['#markup'] = ' {{ sitenow_articles.path }} is the SiteNow Articles path setting.';
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_breadcrumb(&$variables): void {
+function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // Not ideal. Unset view contextual filter breadcrumb duplicates.
   // Waiting for https://www.drupal.org/project/drupal/issues/2966004,
   // https://www.drupal.org/project/drupal/issues/2787051...
@@ -154,7 +154,7 @@ function sitenow_articles_preprocess_breadcrumb(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_field(&$variables): void {
+function sitenow_articles_preprocess_field(&$variables) {
   if ($variables['element']['#field_name'] === 'field_article_author') {
     if ($variables['element']['#view_mode'] == 'teaser') {
       uiowa_core_set_field_icon($variables, 'fa-li fas fa-user-circle');
@@ -212,7 +212,7 @@ function sitenow_articles_preprocess_field(&$variables): void {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
+function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   if ($variables['element']['#field_name'] === 'field_article_author') {
     if ($variables['element']['#formatter'] === 'entity_reference_label') {
       $suggestions[] = 'field__node__field_article_author__sep';
@@ -223,7 +223,7 @@ function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, arr
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_page(&$variables): void {
+function sitenow_articles_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
   if ($route_name === 'view.articles.page_articles') {
@@ -246,7 +246,7 @@ function sitenow_articles_preprocess_page(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_node(&$variables): void {
+function sitenow_articles_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
 
@@ -311,7 +311,7 @@ function sitenow_articles_preprocess_node(&$variables): void {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
+function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   switch ($entity->getType()) {
     case 'article':
       if ($display->getComponent('article_created_date')) {
@@ -350,7 +350,7 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_views_view(&$variables): void {
+function sitenow_articles_preprocess_views_view(&$variables) {
   switch ($variables['id']) {
     case 'articles':
       $variables['#attached']['library'][] = 'uids_base/view-articles-list';
@@ -380,7 +380,7 @@ function sitenow_articles_preprocess_views_view(&$variables): void {
 /**
  * Implements hook_preprocess_views_view_summary().
  */
-function sitenow_articles_preprocess_views_view_summary(&$variables): void {
+function sitenow_articles_preprocess_views_view_summary(&$variables) {
   if ($variables['view']->current_display === 'block_articles_archive') {
     foreach ($variables['rows'] as $row) {
       $explode = explode('/', $row->url);
@@ -394,7 +394,7 @@ function sitenow_articles_preprocess_views_view_summary(&$variables): void {
 /**
  * Implements hook_preprocess_views_view_unformatted().
  */
-function sitenow_articles_preprocess_views_view_unformatted(&$variables): void {
+function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
 
   // Style stacked if from related_manually_referenced_content block grid,
@@ -431,7 +431,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables): void {
 /**
  * Implements hook_uip_classes_alter().
  */
-function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle): void {
+function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle) {
   switch ($bundle) {
     case 'articles':
       $options['hide-descriptions'] = 'Hide Summaries';
@@ -458,7 +458,7 @@ function sitenow_articles_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_paragraph(&$variables): void {
+function sitenow_articles_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
   switch ($paragraph->bundle()) {
     case 'articles':
@@ -579,7 +579,7 @@ function sitenow_articles_preprocess_paragraph(&$variables): void {
 /**
  * Implements hook_views_pre_render().
  */
-function sitenow_articles_views_pre_render(ViewExecutable $view): void {
+function sitenow_articles_views_pre_render(ViewExecutable $view) {
   // Add replacement token for articles page path.
   $view->build_info['substitutions']['{{ sitenow_articles.path }}'] = _sitenow_articles_path_token_value();
 }
@@ -587,7 +587,7 @@ function sitenow_articles_views_pre_render(ViewExecutable $view): void {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
   if ($view->id() === 'articles_block') {
     if ($view->current_display === 'block_articles') {
@@ -603,7 +603,7 @@ function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterfa
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_state, $context): void {
+function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element["#paragraph_type"] === 'articles') {
     if (!empty($element['subform']['field_articles_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -624,7 +624,7 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
 /**
  * Implements hook_inline_entity_form_table_fields_alter().
  */
-function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, array $context): void {
+function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, array $context) {
   if ($context['field_name'] === 'field_contact_reference') {
     // Clean up, minimize the person IEF form.
     if (in_array('person', $context['allowed_bundles'])) {
@@ -636,7 +636,7 @@ function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_articles_preprocess_block(&$variables): void {
+function sitenow_articles_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
 
     // @todo Move this to a more appropriate spot, if we may

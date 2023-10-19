@@ -5,8 +5,6 @@ namespace Drupal\Tests\uiowa_maui\Kernel;
 use Drupal\Core\Form\FormState;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\uiowa_maui\Form\AcademicDatesForm;
-use Drupal\uiowa_maui\MauiApi;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Test description.
@@ -22,8 +20,10 @@ class AcademicDatesFormTest extends KernelTestBase {
 
   /**
    * The MAUI mock.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi|\PHPUnit\Framework\MockObject\MockObject
    */
-  protected MauiApi|MockObject $maui;
+  protected $maui;
 
   /**
    * {@inheritdoc}
@@ -102,7 +102,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * Test form build without prefilters.
    */
-  public function testFormBuildWithoutPrefilters(): void {
+  public function testFormBuildWithoutPrefilters() {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
 
@@ -118,7 +118,7 @@ class AcademicDatesFormTest extends KernelTestBase {
    *
    * @dataProvider sessionPrefilterProvider
    */
-  public function testFormBuildWithPrefilters($session_prefilter): void {
+  public function testFormBuildWithPrefilters($session_prefilter) {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
 
@@ -131,7 +131,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * Test form build with prefilters.
    */
-  public function testFormBuildWithFormState(): void {
+  public function testFormBuildWithFormState() {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
     $form_state->setValue('session', 2);
@@ -146,7 +146,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * Test form IDs are not equal per request.
    */
-  public function testFormIdsDifferPerForm(): void {
+  public function testFormIdsDifferPerForm() {
     $one = new AcademicDatesForm($this->maui);
     $two = new AcademicDatesForm($this->maui);
 
@@ -158,7 +158,7 @@ class AcademicDatesFormTest extends KernelTestBase {
    *
    * @dataProvider datesLimitProvider
    */
-  public function testFormLimitDates($number, $limit, $expected_count): void {
+  public function testFormLimitDates($number, $limit, $expected_count) {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
     $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, $number, $limit);

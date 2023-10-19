@@ -13,7 +13,7 @@ use Drupal\node\NodeInterface;
 /**
  * Implements hook_state_options_alter().
  */
-function sppa_core_state_options_alter(&$options, $entity, $bundle): void {
+function sppa_core_state_options_alter(&$options, $entity, $bundle) {
   // Add additional options to states list for SPPA.
   $options['US'] = 'United States';
   $options['INTL'] = 'International';

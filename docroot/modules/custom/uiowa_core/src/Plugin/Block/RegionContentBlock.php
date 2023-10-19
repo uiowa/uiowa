@@ -25,16 +25,22 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
 
   /**
    * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected ConfigFactoryInterface $config;
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The current_route_match service.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected RouteMatchInterface $routeMatch;
 

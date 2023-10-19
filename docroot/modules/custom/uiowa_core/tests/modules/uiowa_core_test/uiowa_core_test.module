@@ -12,7 +12,7 @@
 /**
  * Implements hook_mail().
  */
-function uiowa_core_test_mail($key, &$message, $params): void {
+function uiowa_core_test_mail($key, &$message, $params) {
   // Simulate a module that only sets a from address with no name.
   // @see: MailTest::testFromNameSetToSiteNameIfEmptyAndNotUiowa.
   $message['from'] = 'foo@bar.com';

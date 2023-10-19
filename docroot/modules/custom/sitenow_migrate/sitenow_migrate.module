@@ -8,7 +8,7 @@
 /**
  * Implements hook_module_implements_alter().
  */
-function sitenow_migrate_module_implements_alter(&$implementations, $hook): void {
+function sitenow_migrate_module_implements_alter(&$implementations, $hook) {
   if ($hook === 'migration_plugins_alter') {
     // The migrate_drupal module alter throws an error during initial migrate
     // commands. It seems to be caused by us not having the migrate database key
@@ -26,7 +26,7 @@ function sitenow_migrate_module_implements_alter(&$implementations, $hook): void
 /**
  * Implements hook_migration_plugins_alter().
  */
-function sitenow_migrate_migration_plugins_alter(array &$migrations): void {
+function sitenow_migrate_migration_plugins_alter(array &$migrations) {
   // Filter out the default migrations provided by migrate_drupal.
   $migrations = array_filter($migrations, function (array $migration) {
     $group = $migration['migration_group'] ?? '';

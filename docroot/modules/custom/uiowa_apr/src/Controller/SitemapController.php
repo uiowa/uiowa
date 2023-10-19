@@ -4,14 +4,12 @@ namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_apr\Apr;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,23 +23,31 @@ class SitemapController extends ControllerBase {
 
   /**
    * The APR service.
+   *
+   * @var \Drupal\uiowa_apr\Apr
    */
-  protected Apr $apr;
+  protected $apr;
 
   /**
    * The APR settings immutable config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected ImmutableConfig $config;
+  protected $config;
 
   /**
    * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
    */
-  protected ClientInterface $httpClient;
+  protected $httpClient;
 
   /**
    * The uiowa_apr logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
-  protected LoggerInterface $logger;
+  protected $logger;
 
   /**
    * The controller constructor.
@@ -80,7 +86,7 @@ class SitemapController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   The response object.
    */
-  public function build(Request $request): Response {
+  public function build(Request $request) {
     // The returned sitemap URLs already include a slash so remove ours.
     $path = $this->config->get('directory.path');
 

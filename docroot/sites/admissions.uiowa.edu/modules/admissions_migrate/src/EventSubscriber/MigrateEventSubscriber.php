@@ -15,8 +15,10 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * Constructs event subscriber.
@@ -48,7 +50,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function onPostRollback(MigrateRollbackEvent $event): void {
+  public function onPostRollback(MigrateRollbackEvent $event) {
     $migration = $event->getMigration();
 
     if ($migration->id() === 'd7_admissions_aos') {
@@ -91,7 +93,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function onPostRowSave(MigratePostRowSaveEvent $event): void {
+  public function onPostRowSave(MigratePostRowSaveEvent $event) {
     $row = $event->getRow();
 
     if ($row->getSourceProperty('field_transfer_tips')) {

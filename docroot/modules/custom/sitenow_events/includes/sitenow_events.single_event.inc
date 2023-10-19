@@ -13,7 +13,7 @@ use Drupal\Component\Utility\Xss;
  * @param array &$variables
  *   Array reference of arguments given to the theme() function.
  */
-function template_preprocess_sitenow_events_single_event(array &$variables): void {
+function template_preprocess_sitenow_events_single_event(array &$variables) {
   $variables['#attached']['library'][] = 'sitenow_events/single-event';
 
   // Filter the description for any XSS.

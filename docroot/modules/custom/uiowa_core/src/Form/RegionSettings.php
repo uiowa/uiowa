@@ -17,11 +17,15 @@ class RegionSettings extends ConfigFormBase {
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
    */
   protected RendererInterface $renderer;
 

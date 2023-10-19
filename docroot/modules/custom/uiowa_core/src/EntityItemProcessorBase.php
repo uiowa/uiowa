@@ -16,7 +16,7 @@ abstract class EntityItemProcessorBase {
    *
    * @var array
    */
-  protected static array $fieldMap = [];
+  protected static $fieldMap = [];
 
   /**
    * Process an individual entity.
@@ -51,7 +51,7 @@ abstract class EntityItemProcessorBase {
    * @return string
    *   The property name.
    */
-  protected static function resolveFieldValuePropName(FieldDefinitionInterface $definition): string {
+  protected static function resolveFieldValuePropName(FieldDefinitionInterface $definition) {
     return match ($definition->getType()) {
       'entity_reference' => 'target_id',
       'link' => 'uri',

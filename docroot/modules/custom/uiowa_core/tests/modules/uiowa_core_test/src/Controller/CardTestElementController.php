@@ -19,7 +19,7 @@ class CardTestElementController extends ControllerBase {
    * @return array
    *   A render array containing a card.
    */
-  public function index(Request $request): array {
+  public function index(Request $request) {
     $build = [];
 
     // Render the contact form.

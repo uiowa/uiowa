@@ -51,7 +51,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test 401 response in sitenow_intranet.
    */
-  public function testAccessDeniedResponseCode(): void {
+  public function testAccessDeniedResponseCode() {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->statusCodeEquals(401);
@@ -60,7 +60,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test an authenticated user gets a 403.
    */
-  public function testUnauthorizedResponseCode(): void {
+  public function testUnauthorizedResponseCode() {
     $user = $this->createUser();
     $this->drupalLogin($user);
     $node = $this->drupalCreateNode();
@@ -71,7 +71,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test sitemap.xml returns access denied.
    */
-  public function testSitemapReturnsAccessDenied(): void {
+  public function testSitemapReturnsAccessDenied() {
     $this->drupalGet('sitemap.xml');
     $this->assertSession()->statusCodeEquals(401);
   }
@@ -79,7 +79,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test search returns access denied.
    */
-  public function testSearchReturnsAccessDenied(): void {
+  public function testSearchReturnsAccessDenied() {
     $this->drupalGet('search');
     $this->assertSession()->statusCodeEquals(401);
   }
@@ -87,7 +87,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test robots.txt returns 200.
    */
-  public function testRobotsReturnsOk(): void {
+  public function testRobotsReturnsOk() {
     $this->drupalGet('robots.txt');
     $this->assertSession()->statusCodeEquals(200);
   }
@@ -95,7 +95,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test robots.txt denies all.
    */
-  public function testRobotsDeniesAll(): void {
+  public function testRobotsDeniesAll() {
     $this->drupalGet('robots.txt');
     $content = $this->getSession()->getPage()->getContent();
     $this->assertEquals("User-agent: *\r\nDisallow: /", $content);
@@ -104,7 +104,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test the top links do not render on the access denied page.
    */
-  public function testNoTopLinks(): void {
+  public function testNoTopLinks() {
     Menu::create([
       'id' => 'top-links',
       'label' => 'Top links',
@@ -132,7 +132,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test the footer block does not render on the access denied page.
    */
-  public function testNoFooterBlock(): void {
+  public function testNoFooterBlock() {
     $this->drupalPlaceBlock('uids_base_footercontactinfo', [
       'region' => 'footer_first',
       'id' => 'uids_base_footercontactinfo',
@@ -147,7 +147,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test the footer login link is not present.
    */
-  public function testNoFooterLoginLink(): void {
+  public function testNoFooterLoginLink() {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->elementNotExists('css', '.uiowa-footer--login-link');
@@ -156,7 +156,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test the title and message functionality for a 403 response.
    */
-  public function testAccessDeniedTitleMessage(): void {
+  public function testAccessDeniedTitleMessage() {
     $this->config('sitenow_intranet.settings')
       ->set('access_denied.title', 'Access Denied')
       ->set('access_denied.message', '<p>This is some markup.</p>')
@@ -174,7 +174,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test the title and message functionality for a 401 response.
    */
-  public function testUnauthorizedTitleMessage(): void {
+  public function testUnauthorizedTitleMessage() {
     $this->config('sitenow_intranet.settings')
       ->set('unauthorized.title', 'Unauthorized')
       ->set('unauthorized.message', '<p>This is <strong>some</strong> markup.</p>')

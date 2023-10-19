@@ -25,14 +25,14 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_element_info_alter().
  */
-function layout_builder_custom_element_info_alter(array &$types): void {
+function layout_builder_custom_element_info_alter(array &$types) {
   $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function layout_builder_custom_form_layout_builder_configure_section_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function layout_builder_custom_form_layout_builder_configure_section_alter(&$form, FormStateInterface $form_state, $form_id) {
   $formObject = $form_state->getFormObject();
   /** @var \Drupal\Core\Layout\LayoutInterface $layout */
   $layout = $formObject->getLayout();
@@ -74,7 +74,7 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _layout_builder_custom_section_form_validate(array &$form, FormStateInterface $form_state): void {
+function _layout_builder_custom_section_form_validate(array &$form, FormStateInterface $form_state) {
   // Run unique_id clean for when the AJAX callback is not triggered.
   if ($unique_id = $form_state->getValue([
     'unique_id_wrapper',
@@ -95,7 +95,7 @@ function _layout_builder_custom_section_form_validate(array &$form, FormStateInt
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _layout_builder_custom_submit_section_form(array &$form, FormStateInterface $form_state): void {
+function _layout_builder_custom_submit_section_form(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder_styles\Form\ConfigureSectionForm $formObject */
   $formObject = $form_state->getFormObject();
   $config = $formObject->getLayout()->getConfiguration();
@@ -122,7 +122,7 @@ function _layout_builder_custom_submit_section_form(array &$form, FormStateInter
 /**
  * Implements hook_form_alter().
  */
-function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
@@ -540,7 +540,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state): void {
+function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
@@ -687,7 +687,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _layout_builder_custom_block_submit(array &$form, FormStateInterface $form_state): void {
+function _layout_builder_custom_block_submit(array &$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
@@ -818,7 +818,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
  * @return array
  *   The processed block element.
  */
-function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state): array {
+function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
@@ -1074,7 +1074,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context): void {
+function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
 
@@ -1131,7 +1131,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
  *
  * @see: layout_builder_custom_form_alter().
  */
-function _layout_builder_custom_add_lbs_heading(&$form): void {
+function _layout_builder_custom_add_lbs_heading(&$form) {
   $children = Element::children($form);
 
   $styles = array_filter($children, function ($v) {
@@ -1159,7 +1159,7 @@ function _layout_builder_custom_add_lbs_heading(&$form): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function layout_builder_custom_preprocess_block(&$variables): void {
+function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
   if (isset($variables['attributes']['class'])) {
 
@@ -1187,7 +1187,7 @@ function layout_builder_custom_preprocess_block(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for block__inline_block__featured_content.
  */
-function layout_builder_custom_preprocess_block__inline_block__featured_content(&$variables): void {
+function layout_builder_custom_preprocess_block__inline_block__featured_content(&$variables) {
   $variables['#attached']['library'][] = 'uids_base/node-type-article';
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
@@ -1242,7 +1242,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
 /**
  * Implements hook_preprocess_HOOK() for block__inline_block__uiowa_banner.
  */
-function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables): void {
+function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables) {
   $block = $variables['elements']['content']['#block_content'];
   // Media entity template needs to change based on this block,
   // so invalidate cache.
@@ -1255,7 +1255,7 @@ function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$var
 /**
  * Implements hook_preprocess_HOOK().
  */
-function layout_builder_custom_preprocess_layout(&$variables): void {
+function layout_builder_custom_preprocess_layout(&$variables) {
   // Apply a configured style to a layout by adding the style's CSS classes.
   if (isset($variables['settings']['layout_builder_custom_unique_id'])) {
     $variables['attributes']['id'] = $variables['settings']['layout_builder_custom_unique_id'];
@@ -1265,7 +1265,7 @@ function layout_builder_custom_preprocess_layout(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function layout_builder_custom_preprocess_media(&$variables): void {
+function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
   switch ($media->bundle()) {
     case 'image':
@@ -1313,7 +1313,7 @@ function layout_builder_custom_preprocess_media(&$variables): void {
 /**
  * Implements hook_preprocess_views_view().
  */
-function layout_builder_custom_preprocess_views_view(&$variables): void {
+function layout_builder_custom_preprocess_views_view(&$variables) {
 
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
@@ -1395,7 +1395,7 @@ function layout_builder_custom_preprocess_views_view(&$variables): void {
 /**
  * Implements hook_preprocess_views_view_unformatted().
  */
-function layout_builder_custom_preprocess_views_view_unformatted(&$variables): void {
+function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
 
@@ -1410,7 +1410,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables): v
 /**
  * Implements hook_views_plugins_display_alter().
  */
-function layout_builder_custom_views_plugins_display_alter(&$displays): void {
+function layout_builder_custom_views_plugins_display_alter(&$displays) {
   $moduleHandler = \Drupal::service('module_handler');
 
   $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
@@ -1429,7 +1429,7 @@ function layout_builder_custom_views_plugins_display_alter(&$displays): void {
 /**
  * Implements hook_views_pre_build().
  */
-function layout_builder_custom_views_pre_build(ViewExecutable $view): void {
+function layout_builder_custom_views_pre_build(ViewExecutable $view) {
   // Dynamically set pager id using cache.
   // Temp workaround until https://www.drupal.org/project/drupal/issues/3225987.
   // @todo Allow view config to override this (non-zero pager id?).
@@ -1452,7 +1452,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view): void {
 /**
  * Implements hook_views_pre_render().
  */
-function layout_builder_custom_views_pre_render(ViewExecutable $view): void {
+function layout_builder_custom_views_pre_render(ViewExecutable $view) {
   // Hotfix shim to not display exposed blocks, necessary because
   // of the hotfix above.
   // @todo Remove this exception when these view displays are removed. See
@@ -1479,7 +1479,7 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view): void {
  * @return mixed
  *   The form element.
  */
-function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state): mixed {
+function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
   $triggering_element = $form_state->getTriggeringElement();
   $unique_id = Html::cleanCssIdentifier($triggering_element['#value']);
 

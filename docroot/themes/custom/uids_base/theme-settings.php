@@ -12,7 +12,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $form_state): void {
+function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
 
   $config = \Drupal::config('system.site');
   $has_parent = $config->get('has_parent') ?: 0;
@@ -210,7 +210,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 /**
  * Test theme form settings submission handler.
  */
-function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface $form_state): void {
+function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface $form_state) {
   // Set color option based on branding_option.
   if ($form_state->getValue(['header', 'branding_options']) == 'regents') {
     $form_state->setValue('style.style_selector', 'gray');

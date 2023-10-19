@@ -18,7 +18,7 @@ class RegionHelper {
   /**
    * Custom node content type form defaults.
    */
-  public static function overrideNodeForm(&$form): void {
+  public static function overrideNodeForm(&$form) {
     if (empty($form)) {
       return;
     }

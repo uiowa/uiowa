@@ -20,8 +20,10 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The config service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $config;
+  protected $config;
 
   /**
    * Constructs an AlertsBlock object.
@@ -35,7 +37,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    */
-  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, ConfigFactoryInterface $config) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $config) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->config = $config;
   }

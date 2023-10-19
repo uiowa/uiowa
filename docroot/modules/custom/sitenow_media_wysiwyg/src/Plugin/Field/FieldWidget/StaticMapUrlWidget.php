@@ -58,7 +58,7 @@ class StaticMapUrlWidget extends LinkWidget {
   /**
    * Validates the static map URL.
    */
-  public static function uriValidation(&$element, $form_state): void {
+  public static function uriValidation(&$element, $form_state) {
     $value = $element['#value'];
     $parsed_url = UrlHelper::parse($value);
 

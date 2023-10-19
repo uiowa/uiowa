@@ -64,7 +64,7 @@ class PanoptoForm extends AddFormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Form state.
    */
-  public function addButtonSubmit(array $form, FormStateInterface $form_state): void {
+  public function addButtonSubmit(array $form, FormStateInterface $form_state) {
     $this->processInputValues([$form_state->getValue('url')], $form, $form_state);
   }
 

@@ -14,7 +14,7 @@ use Drupal\iisc_core\Entity\Project;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function iisc_core_entity_bundle_info_alter(array &$bundles): void {
+function iisc_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['project'])) {
     $bundles['node']['project']['class'] = Project::class;
   }
@@ -46,7 +46,7 @@ function iisc_core_entity_extra_field_info() {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function iisc_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
+function iisc_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->getType() === 'project' && $display->getComponent('project_created_date')) {
     $created = $entity->get('created')->value;
     $date = \Drupal::service('date.formatter')->format($created, 'medium');
@@ -76,7 +76,7 @@ function iisc_core_node_view(array &$build, EntityInterface $entity, EntityViewD
 /**
  * Implements hook_preprocess_field().
  */
-function iisc_core_preprocess_field(&$variables, $hook): void {
+function iisc_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'body':
       if ($variables['element']['#view_mode'] == 'teaser') {
@@ -90,7 +90,7 @@ function iisc_core_preprocess_field(&$variables, $hook): void {
 /**
  * Implements hook_form_alter().
  */
-function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Node form modifications.
     case 'node_partner_edit_form':
@@ -106,7 +106,7 @@ function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id):
 /**
  * Implements template_preprocess_views_view().
  */
-function iisc_core_preprocess_views_view(&$variables): void {
+function iisc_core_preprocess_views_view(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'iisc_projects') {
     // Attach the library using the #attached property.

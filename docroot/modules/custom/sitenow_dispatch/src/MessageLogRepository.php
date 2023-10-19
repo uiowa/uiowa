@@ -25,8 +25,10 @@ class MessageLogRepository {
 
   /**
    * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
    */
-  protected Connection $connection;
+  protected $connection;
 
   /**
    * Construct a repository object.
@@ -56,7 +58,7 @@ class MessageLogRepository {
    * @throws \Exception
    *   When the database insert fails.
    */
-  public function insert(array $entry): int {
+  public function insert(array $entry) {
     try {
       $return_value = $this->connection->insert('sitenow_dispatch_messages_log')
         ->fields($entry)
@@ -79,7 +81,7 @@ class MessageLogRepository {
    * @return int
    *   The number of updated rows.
    */
-  public function update(array $entry): int {
+  public function update(array $entry) {
     try {
       // Connection->update()...->execute() returns the number of rows updated.
       $count = $this->connection->update('sitenow_dispatch_messages_log')
@@ -106,7 +108,7 @@ class MessageLogRepository {
    *
    * @see Drupal\Core\Database\Connection::delete()
    */
-  public function delete(array $entry): void {
+  public function delete(array $entry) {
     $this->connection->delete('sitenow_dispatch_messages_log')
       ->condition('entity_id', $entry['entity_id'])
       ->execute();
@@ -124,7 +126,7 @@ class MessageLogRepository {
    *
    * @see Drupal\Core\Database\Connection::select()
    */
-  public function load(array $entry = []): array {
+  public function load(array $entry = []) {
     // Read all the fields from the sitenow_dispatch_messages_log table.
     $select = $this->connection
       ->select('sitenow_dispatch_messages_log')

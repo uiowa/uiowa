@@ -14,8 +14,10 @@ use Drupal\uiowa_core\Plugin\Filter\FilterIframe;
 class FilterIframeTest extends UnitTestCase {
   /**
    * The system under test.
+   *
+   * @var \Drupal\uiowa_core\Plugin\Filter\FilterIframe
    */
-  protected FilterIframe $sut;
+  protected $sut;
 
   /**
    * {@inheritdoc}
@@ -34,7 +36,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Test iframe removed if no src attribute.
    */
-  public function testIframeRemovedIfNoSrc(): void {
+  public function testIframeRemovedIfNoSrc() {
     $text = '<iframe bogus="yes"></iframe>';
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $this->assertStringNotContainsString($text, $processed);
@@ -43,7 +45,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Test iframe removed if no HTTPS.
    */
-  public function testIframeRemovedIfNoHttps(): void {
+  public function testIframeRemovedIfNoHttps() {
     $text = '<iframe src="<iframe src="http://foo.com/bar?nohttps=yes"></iframe>">';
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $this->assertStringNotContainsString($text, $processed);
@@ -52,7 +54,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Test iframe removed if not allowed.
    */
-  public function testIframeRemovedIfNotAllowed(): void {
+  public function testIframeRemovedIfNotAllowed() {
     $text = '<iframe src="https://bogus.com" allow="video microphone"></iframe>';
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $this->assertStringNotContainsString($text, $processed);
@@ -61,7 +63,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Test iframe removed if the src is an allowed domain but path is different.
    */
-  public function testIframeRemovedIfPathIsDifferent(): void {
+  public function testIframeRemovedIfPathIsDifferent() {
     $text = '<iframe src="https://baz.me/?quux=bar&foo=bar"></iframe>';
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $this->assertStringNotContainsString($text, $processed);
@@ -70,7 +72,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Test iframe allowed and attributes are set.
    */
-  public function testIframeAllowedAndAttributesSet(): void {
+  public function testIframeAllowedAndAttributesSet() {
     $text = '<iframe src="https://baz.me/qux?quux=bar&foo=bar"></iframe>';
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $html = Html::load($processed);
@@ -93,7 +95,7 @@ class FilterIframeTest extends UnitTestCase {
    *
    * @dataProvider providerDimensions
    */
-  public function testIframeAllowedAndClassesSet($aspectRatio, $width, $height): void {
+  public function testIframeAllowedAndClassesSet($aspectRatio, $width, $height) {
     $text = "<iframe src='https://foo.com/bar?baz=qux' width='{$width}' height='{$height}'></iframe>";
     $processed = $this->sut->process($text, 'en')->getProcessedText();
     $html = Html::load($processed);

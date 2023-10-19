@@ -34,14 +34,14 @@ class Articles extends BaseNodeSource {
    *
    * @var array
    */
-  protected array $tagMapping;
+  protected $tagMapping;
 
   /**
    * Mapping for article contacts.
    *
    * @var array
    */
-  protected array $contactMap;
+  protected $contactMap;
 
   /**
    * {@inheritdoc}

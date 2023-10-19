@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function cs_migrate_install(): void {
+function cs_migrate_install() {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'cs_migrate') . '/config/split';
@@ -31,7 +31,7 @@ function cs_migrate_install(): void {
 /**
  * Implements hook_uninstall().
  */
-function cs_migrate_uninstall(): void {
+function cs_migrate_uninstall() {
   // Disable the split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.cs_migrate');

@@ -22,7 +22,7 @@ use Drupal\views\Plugin\views\field\EntityField;
 /**
  * Implements hook_form_alter().
  */
-function uids_base_form_alter(&$form, $form_state, $form_id): void {
+function uids_base_form_alter(&$form, $form_state, $form_id) {
   $skip_forms = [
     'media_library_add_form_upload',
     'views_exposed_form',
@@ -49,7 +49,7 @@ function uids_base_form_alter(&$form, $form_state, $form_id): void {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id): void {
+function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
   // For all views with exposed filters.
   if ($form_id === 'views_exposed_form') {
     $form['#attributes']['class'][] = 'uids-content bg--gray';
@@ -65,14 +65,14 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id):
 /**
  * Implements hook_preprocess().
  */
-function uids_base_preprocess(&$variables, $hook): void {
+function uids_base_preprocess(&$variables, $hook) {
   $variables['base_path'] = base_path();
 }
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
-function uids_base_preprocess_html(&$variables): void {
+function uids_base_preprocess_html(&$variables) {
   $config = \Drupal::config('system.site');
   $variables['site_has_parent'] = $config->get('has_parent');
   // Body class for top links.
@@ -197,7 +197,7 @@ function uids_base_preprocess_html(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for page.html.twig.
  */
-function uids_base_preprocess_page(&$variables): void {
+function uids_base_preprocess_page(&$variables) {
   // Load the site name out of configuration.
   $config = \Drupal::config('system.site');
   $variables['site_name'] = $config->get('name');
@@ -345,7 +345,7 @@ function uids_base_preprocess_page(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
-function uids_base_preprocess_node(&$variables): void {
+function uids_base_preprocess_node(&$variables) {
   /**
    * @var \Drupal\node\Entity\Node $node
    */
@@ -412,7 +412,7 @@ function uids_base_preprocess_node(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for media.html.twig.
  */
-function uids_base_preprocess_media(array &$variables): void {
+function uids_base_preprocess_media(array &$variables) {
   /** @var \Drupal\media\Entity\Media $media */
   $media = $variables['media'];
 
@@ -452,7 +452,7 @@ function uids_base_preprocess_media(array &$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for field.html.twig.
  */
-function uids_base_preprocess_field(&$variables): void {
+function uids_base_preprocess_field(&$variables) {
   $variables['view_mode'] = $variables['element']['#view_mode'];
 
   switch ($variables['field_name']) {
@@ -514,7 +514,7 @@ function uids_base_preprocess_field(&$variables): void {
 /**
  * Implements hook_preprocess_layout().
  */
-function uids_base_preprocess_layout(&$variables): void {
+function uids_base_preprocess_layout(&$variables) {
   $node = $variables['content']['#entity'] ?: NULL;
   $route_matcher = \Drupal::routeMatch();
   // If we don't have the node yet, attempt
@@ -711,7 +711,7 @@ function uids_base_preprocess_layout(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
  */
-function uids_base_preprocess_layout__twocol__card_sidebar(&$variables): void {
+function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
   // Loop through the classes in the attributes array.
   $bg_added = FALSE;
   foreach ($variables['attributes']['class'] as $key => $class) {
@@ -747,7 +747,7 @@ function uids_base_preprocess_layout__twocol__card_sidebar(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
-function uids_base_preprocess_block(&$variables): void {
+function uids_base_preprocess_block(&$variables) {
   $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
 
   if (in_array($variables['base_plugin_id'], [
@@ -868,7 +868,7 @@ function uids_base_preprocess_block(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for the uids_base_local_tasks block.
  */
-function uids_base_preprocess_block__uids_base_local_tasks(&$variables): void {
+function uids_base_preprocess_block__uids_base_local_tasks(&$variables) {
   // Add the library to the block.
   $variables['#attached']['library'][] = 'uids_base/local-tasks';
 }
@@ -876,7 +876,7 @@ function uids_base_preprocess_block__uids_base_local_tasks(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__tab.html.twig.
  */
-function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables): void {
+function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) {
   $variables['tabs'] = [];
   $items = $variables['elements']['field_uiowa_collection_items']['#items'];
   foreach ($items as $delta => $item) {
@@ -897,7 +897,7 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables):
 /**
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__accordion.html.twig.
  */
-function uids_base_preprocess_block_content__uiowa_collection__accordion(&$variables): void {
+function uids_base_preprocess_block_content__uiowa_collection__accordion(&$variables) {
   $block = $variables['elements']['#block_content'];
   // If the value hasn't been set, or is set to multi-select,
   // pass "true" for use in constructing the accordion.
@@ -909,7 +909,7 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_menu(&$variables): void {
+function uids_base_preprocess_menu(&$variables) {
   switch ($variables['menu_name']) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
@@ -921,7 +921,7 @@ function uids_base_preprocess_menu(&$variables): void {
 /**
  * Implements hook_preprocess_menu_local_task().
  */
-function uids_base_preprocess_menu_local_task(&$variables): void {
+function uids_base_preprocess_menu_local_task(&$variables) {
   $url = $variables['link']['#url'];
 
   if ($url instanceof Url) {
@@ -957,7 +957,7 @@ function uids_base_preprocess_menu_local_task(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_paragraph(&$variables): void {
+function uids_base_preprocess_paragraph(&$variables) {
 
   $paragraph = $variables['paragraph'];
   // Get the value of the collection headline field.
@@ -1028,7 +1028,7 @@ function uids_base_preprocess_paragraph(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_views_view(&$variables): void {
+function uids_base_preprocess_views_view(&$variables) {
   $variables['more']['#options']['attributes']['class'] = [
     'bttn',
     'bttn--primary',
@@ -1039,7 +1039,7 @@ function uids_base_preprocess_views_view(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_views_view_field(&$variables): void {
+function uids_base_preprocess_views_view_field(&$variables) {
   $view = $variables['view'];
 
   // Limit this to the 'person_custom' view using
@@ -1074,7 +1074,7 @@ function uids_base_preprocess_views_view_field(&$variables): void {
 /**
  * Implements theme_preprocess_form().
  */
-function uids_base_preprocess_form(&$variables): void {
+function uids_base_preprocess_form(&$variables) {
   // Add 'uids-content' and 'uids-search' classes to search-block-form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] === 'search-block-form') {
     $variables['attributes']['class'][] = 'uids-content uids-search';
@@ -1084,7 +1084,7 @@ function uids_base_preprocess_form(&$variables): void {
 /**
  * Implements theme_preprocess_input().
  */
-function uids_base_preprocess_input(&$variables): void {
+function uids_base_preprocess_input(&$variables) {
   if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $variables['attributes']['class'] = [];
   }
@@ -1100,7 +1100,7 @@ function uids_base_preprocess_input(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uids_base_preprocess_superfish(array &$variables): void {
+function uids_base_preprocess_superfish(array &$variables) {
   // An access-aware boolean of whether the menu is empty or not.
   $variables['menu_is_empty'] = FALSE;
 
@@ -1117,7 +1117,7 @@ function uids_base_preprocess_superfish(array &$variables): void {
 /**
  * Implements hook_preprocess_superfish_menu_items().
  */
-function uids_base_preprocess_superfish_menu_items(array &$variables): void {
+function uids_base_preprocess_superfish_menu_items(array &$variables) {
   if (isset($variables['menu_items'])) {
     foreach ($variables['menu_items'] as $i => $menu_item) {
       if (isset($menu_item['link_menuparent'])) {
@@ -1137,7 +1137,7 @@ function uids_base_preprocess_superfish_menu_items(array &$variables): void {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
+function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   $element = $variables['element'];
   $suggestions[] = 'field__' . $element['#entity_type'] . '__' . $element['#field_name'] . '__' . $element['#bundle'] . '__' . $element['#view_mode'];
 }
@@ -1145,7 +1145,7 @@ function uids_base_theme_suggestions_field_alter(array &$suggestions, array $var
 /**
  * Implements hook_theme_suggestions_form_element_alter().
  */
-function uids_base_theme_suggestions_form_element_alter(array &$suggestions, array $variables): void {
+function uids_base_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $suggestions[] = $variables['theme_hook_original'] . '__uiowa_search__search_terms';
   }
@@ -1154,7 +1154,7 @@ function uids_base_theme_suggestions_form_element_alter(array &$suggestions, arr
 /**
  * Implements hook_theme_suggestion_input_alter().
  */
-function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables): void {
+function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables) {
   $element = $variables['element'];
 
   if (isset($element['#name']) && $element['#name'] === 'btnG') {
@@ -1165,7 +1165,7 @@ function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables
 /**
  * Implements hook_theme_suggestion_page_title_alter().
  */
-function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array $variables): void {
+function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array $variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   // Add page title suggestion for nodes.
   if (!empty($node) && is_object($node)) {
@@ -1176,7 +1176,7 @@ function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array
 /**
  * Implements hook_photoswipe_js_options_alter().
  */
-function uids_base_photoswipe_js_options_alter(array &$settings): void {
+function uids_base_photoswipe_js_options_alter(array &$settings) {
   // Disable's photoswipe's share links (twitter, fb, pintrest).
   $settings['shareEl'] = FALSE;
 }

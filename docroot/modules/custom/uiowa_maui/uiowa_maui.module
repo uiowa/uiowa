@@ -8,7 +8,7 @@
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_maui_preprocess_block(&$variables): void {
+function uiowa_maui_preprocess_block(&$variables) {
   if ($variables['elements']['#plugin_id'] === 'uiowa_maui_academic_dates') {
     $variables['attributes']['class'][] = 'list-container';
   }

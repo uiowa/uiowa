@@ -16,7 +16,7 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLinkDirect = 'field_event_series_link_direct';
+  protected $sourceLinkDirect = 'field_event_series_link_direct';
 
   /**
    * If entity has source link field.
@@ -24,7 +24,7 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLink = 'field_event_series_link';
+  protected $sourceLink = 'field_event_series_link';
 
   /**
    * {@inheritdoc}

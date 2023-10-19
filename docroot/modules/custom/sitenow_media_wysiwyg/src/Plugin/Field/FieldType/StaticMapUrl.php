@@ -68,7 +68,7 @@ class StaticMapUrl extends LinkItem {
    * @return array
    *   The list of allowed values.
    */
-  public static function allowedZoomValues(): array {
+  public static function allowedZoomValues() {
     return [
       15 => 15,
       16 => 16,

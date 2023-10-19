@@ -38,7 +38,7 @@ class SearchTest extends WebDriverTestBase {
   /**
    * Test that the search input is visible after clicking toggle button.
    */
-  public function testSearchInputVisibleAfterClickingSearchButton(): void {
+  public function testSearchInputVisibleAfterClickingSearchButton() {
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
     $this->drupalGet('<front>');
     $page = $this->getSession()->getPage();

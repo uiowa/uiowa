@@ -3,8 +3,6 @@
 namespace Drupal\Tests\uiowa_maui\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\uiowa_maui\MauiApi;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Test description.
@@ -14,8 +12,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 class MauiApiTest extends UnitTestCase {
   /**
    * Mock maui service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi|\PHPUnit\Framework\MockObject\MockObject
    */
-  protected MauiApi|MockObject $maui;
+  protected $maui;
 
   /**
    * {@inheritdoc}
@@ -28,7 +28,7 @@ class MauiApiTest extends UnitTestCase {
   /**
    * Initial test.
    */
-  public function testGetCurrentSession(): void {
+  public function testGetCurrentSession() {
     $current = (object) [
       'id' => 34,
       'shortDescription' => 'Summer 2021',
@@ -45,7 +45,7 @@ class MauiApiTest extends UnitTestCase {
   /**
    * Test sessions are returned in expected order.
    */
-  public function testGetSessionsBounded(): void {
+  public function testGetSessionsBounded() {
     $bounding = [
       (object) [
         'id' => 3,
@@ -79,7 +79,7 @@ class MauiApiTest extends UnitTestCase {
   /**
    * Test session dates returned in expected order with date categories.
    */
-  public function testSearchSessionDates(): void {
+  public function testSearchSessionDates() {
     $dates = [
       (object) [
         'id' => 435,

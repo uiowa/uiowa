@@ -26,8 +26,10 @@ class ExtractSummary extends ProcessPluginBase {
 
   /**
    * The truncation length to use if summary is constructed.
+   *
+   * @var int
    */
-  protected int $length = 400;
+  protected $length = 400;
 
   /**
    * {@inheritdoc}
@@ -81,7 +83,7 @@ class ExtractSummary extends ProcessPluginBase {
    * @return string
    *   The plain text string.
    */
-  protected function extractSummaryFromText(string $output, int $length = 400): string {
+  protected function extractSummaryFromText(string $output, int $length = 400) {
     // The following is the processing from
     // Drupal\smart_trim\Plugin\Field\FieldFormatter.
     // Strip caption.

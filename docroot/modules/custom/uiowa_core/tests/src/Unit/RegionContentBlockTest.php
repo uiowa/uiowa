@@ -19,7 +19,7 @@ class RegionContentBlockTest extends UnitTestCase {
   /**
    * Test that an exception is not thrown if fragment does not exist.
    */
-  public function testBlockBuildReturnsArrayAndDoesNotThrowException(): void {
+  public function testBlockBuildReturnsArrayAndDoesNotThrowException() {
     $configuration = [
       'block_id' => 'foo',
     ];

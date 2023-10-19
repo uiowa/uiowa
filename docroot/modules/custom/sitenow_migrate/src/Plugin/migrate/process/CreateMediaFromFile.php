@@ -28,13 +28,17 @@ class CreateMediaFromFile extends FileCopy {
 
   /**
    * New file ID.
+   *
+   * @var string
    */
-  protected string $newFid;
+  protected $newFid;
 
   /**
    * The base source url.
+   *
+   * @var string
    */
-  protected string $sourceBaseUrl;
+  protected $sourceBaseUrl;
 
   /**
    * {@inheritdoc}

@@ -18,16 +18,22 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class P2LbSettingsForm extends ConfigFormBase {
   /**
    * The config.storage service.
+   *
+   * @var \Drupal\Core\Config\StorageInterface
    */
   protected StorageInterface $configStorage;
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The sitenow_p2lb.converter_manager service.
+   *
+   * @var \Drupal\sitenow_p2lb\P2LbConverterManagerInterface
    */
   protected P2LbConverterManagerInterface $conversionManager;
 

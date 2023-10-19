@@ -28,7 +28,7 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
    * @see uiowa_auth_block_view_user_login_block_alter()
    * @see sitenow_core_block_view_user_login_block_alter()
    */
-  public static function preRender(array $build): array {
+  public static function preRender(array $build) {
 
     $path = \Drupal::service('path.current')->getPath();
 

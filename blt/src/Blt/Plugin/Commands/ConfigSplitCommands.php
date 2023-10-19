@@ -22,7 +22,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   public function updateFeatureSplits($options = [
     'split' => InputOption::VALUE_OPTIONAL,
-  ]): void {
+  ]) {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
     $root = $this->getConfigValue('repo.root');
     $finder = new Finder();
@@ -55,7 +55,7 @@ class ConfigSplitCommands extends BltTasks {
    *
    * @requireContainer
    */
-  public function updateMigrateSplits(): void {
+  public function updateMigrateSplits() {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
     $root = $this->getConfigValue('repo.root');
     $finder = new Finder();
@@ -90,7 +90,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   public function updateSiteSplits($options = [
     'host' => InputOption::VALUE_OPTIONAL,
-  ]): void {
+  ]) {
     $root = $this->getConfigValue('repo.root');
     $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();
@@ -118,7 +118,7 @@ class ConfigSplitCommands extends BltTasks {
   /**
    * Export a split.
    */
-  protected function updateSplit($split, $alias = 'default', $module = NULL): void {
+  protected function updateSplit($split, $alias = 'default', $module = NULL) {
     $id = $split['id'];
     $this->say("Updating the <comment>$id</comment> config split on $alias.");
 

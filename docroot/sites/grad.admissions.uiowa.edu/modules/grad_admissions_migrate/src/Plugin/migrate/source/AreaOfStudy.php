@@ -26,8 +26,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
   /**
    * The pathauto.alias_cleaner service.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected AliasCleanerInterface $aliasCleaner;
+  protected $aliasCleaner;
 
   /**
    * {@inheritdoc}
@@ -198,7 +200,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * @return array
    *   A simulated array of arrays similar to the migrate idMap.
    */
-  protected function brokenLinkLookup(int $nid): array {
+  protected function brokenLinkLookup($nid) {
     $lookup = [];
 
     $map = [
@@ -227,7 +229,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * @return false|string
    *   The new path or FALSE if not in the map.
    */
-  protected function manualLookup(int $nid): false|string {
+  protected function manualLookup($nid) {
     $map = [
       // source_nid => target_nid,
       // MAc. mac-program-estimated-costs.

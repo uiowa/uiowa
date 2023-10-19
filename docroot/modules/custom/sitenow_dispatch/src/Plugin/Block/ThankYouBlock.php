@@ -22,13 +22,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The form_builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected FormBuilderInterface $formBuilder;
+  protected $formBuilder;
 
   /**
    * The config.factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
    */
-  protected ConfigFactory $configFactory;
+  protected $configFactory;
 
   /**
    * {@inheritdoc}

@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\uiowa_core\Traits;
 
-use Drupal\config_split\ConfigSplitCliService;
 use Drupal\Core\Config\FileStorage;
-use Drupal\user\UserInterface;
 
 /**
  * A trait for enabling a config split in a test.
@@ -13,8 +11,10 @@ trait ConfigSplitTestTrait {
 
   /**
    * The CLI service.
+   *
+   * @var null|\Drupal\config_split\ConfigSplitCliService
    */
-  protected ?ConfigSplitCliService $cliService = NULL;
+  protected $cliService = NULL;
 
   /**
    * Enable a config split.
@@ -24,7 +24,7 @@ trait ConfigSplitTestTrait {
    * @param null|\Drupal\user\UserInterface $user
    *   The user to give permissions to.
    */
-  public function enableConfigSplit(string $split_name, ?UserInterface $user = NULL): void {
+  public function enableConfigSplit($split_name, $user = NULL) {
     // @todo Add check that split exists.
     // Import the split configuration.
     $config_path = DRUPAL_ROOT . '/../config/default';

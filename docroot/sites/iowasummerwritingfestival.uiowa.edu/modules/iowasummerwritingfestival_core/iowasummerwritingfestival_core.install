@@ -12,14 +12,14 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Implements hook_install().
  */
-function admissions_core_install(): void {
+function admissions_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Implements hook_uninstall().
  */
-function admissions_core_uninstall(): void {
+function admissions_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
@@ -68,7 +68,7 @@ function _event_type_map(): array {
 /**
  * Migrate options from event_type to Event categories taxonomy.
  */
-function iowasummerwritingfestival_core_update_9001(): void {
+function iowasummerwritingfestival_core_update_9001() {
 
   $config_path = DRUPAL_ROOT . '/../config/features/event';
   $source = new FileStorage($config_path);
@@ -102,7 +102,7 @@ function iowasummerwritingfestival_core_update_9001(): void {
 /**
  * Migrate event_type field values on Events to event_category reference field.
  */
-function iowasummerwritingfestival_core_update_9002(&$sandbox): void {
+function iowasummerwritingfestival_core_update_9002(&$sandbox) {
   $logger = \Drupal::logger('iowasummerwritingfestival_core');
 
   // Process all the event nodes.
@@ -186,7 +186,7 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox): void {
 /**
  * Set initial events filter configuration.
  */
-function iowasummerwritingfestival_core_update_9003(): void {
+function iowasummerwritingfestival_core_update_9003() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('sitenow_events.settings');
   $config->set('filter_display', [

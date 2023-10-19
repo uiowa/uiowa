@@ -21,13 +21,17 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
   /**
    * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * Drupal\Core\Config\ConfigFactoryInterface definition.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $configFactory;
+  protected $configFactory;
 
   /**
    * BlockComponentRenderArraySubscriber constructor.
@@ -59,7 +63,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
    * @param \Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent $event
    *   The section component render event.
    */
-  public function onBuildRender(SectionComponentBuildRenderArrayEvent $event): void {
+  public function onBuildRender(SectionComponentBuildRenderArrayEvent $event) {
     $block = $event->getPlugin();
     if (!$block instanceof BlockPluginInterface) {
       return;

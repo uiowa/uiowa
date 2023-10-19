@@ -4,7 +4,6 @@ namespace Drupal\Tests\uiowa_alerts\Functional;
 
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\user\Entity\User;
 
 /**
  * Test description.
@@ -31,8 +30,10 @@ class AlertsTest extends BrowserTestBase {
 
   /**
    * The logged in user with necessary permissions to administer alerts.
+   *
+   * @var \Drupal\user\Entity\User|false
    */
-  protected User|false $adminUser;
+  protected $adminUser;
 
   /**
    * {@inheritdoc}
@@ -78,7 +79,7 @@ class AlertsTest extends BrowserTestBase {
    *
    * @dataProvider alertLevels
    */
-  public function testCustomAlert($level): void {
+  public function testCustomAlert($level) {
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/sitenow/uiowa-alerts');
     $page = $this->getSession()->getPage();
@@ -100,7 +101,7 @@ class AlertsTest extends BrowserTestBase {
    * @return array
    *   Array of custom alert levels.
    */
-  public function alertLevels(): array {
+  public function alertLevels() {
     return [
       ['Info'],
       ['Warning'],

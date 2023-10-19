@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_search\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -16,8 +15,10 @@ class SearchForm extends FormBase {
 
   /**
    * The uiowa_search config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected ImmutableConfig $config;
+  protected $config;
 
   /**
    * The form constructor.

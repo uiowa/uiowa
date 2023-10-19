@@ -15,25 +15,31 @@ trait ProcessMediaTrait {
   use CreateMediaTrait;
   /**
    * The file system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected FileSystemInterface $fileSystem;
+  protected $fileSystem;
 
   /**
    * The default image view_mode.
+   *
+   * @var string
    */
-  protected string $viewMode = 'medium__no_crop';
+  protected $viewMode = 'medium__no_crop';
 
   /**
    * The default image alignment.
+   *
+   * @var string
    */
-  protected string $align = 'center';
+  protected $align = 'center';
 
   /**
    * Minimum image dimensions to pull over.
    *
    * @var array
    */
-  protected array $imageSizeRestrict = [];
+  protected $imageSizeRestrict = [];
 
   /**
    * Get the URL of the source public files path with a trailing slash.
@@ -75,7 +81,7 @@ trait ProcessMediaTrait {
    * @return string
    *   The updated body content with inline replacements.
    */
-  public function replaceInlineFiles(string $content): string {
+  public function replaceInlineFiles($content) {
     return preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
       $this,
       'entityReplace',
@@ -91,7 +97,7 @@ trait ProcessMediaTrait {
    * @return string
    *   The updated body content with inline replacements.
    */
-  public function replaceRelLinkedFiles(string $content): string {
+  public function replaceRelLinkedFiles($content) {
     return preg_replace_callback("|<a href=\"\/sites\/(.*?)\">(.*?)<\/a>|", [
       $this,
       'relLinkReplace',
@@ -236,7 +242,7 @@ trait ProcessMediaTrait {
    * @return string
    *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity(string $uuid, string $align, string $view_mode = ''): string {
+  public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
     $align = !empty($align) ? $align : $this->align;
 
     $media = [
@@ -264,7 +270,7 @@ trait ProcessMediaTrait {
    * @return string
    *   Returns markup as a plaintext string.
    */
-  public function constructInlineRelEntity(string $uuid, string $id): string {
+  public function constructInlineRelEntity(string $uuid, string $id) {
     $media = [
       'data-entity-substitution="media"',
       'data-entity-type="media"',
@@ -284,7 +290,7 @@ trait ProcessMediaTrait {
    * @return array
    *   Return associative array of file information for the given fid.
    */
-  public function fidQuery(int $fid): array {
+  public function fidQuery($fid) {
     return $this->select('file_managed', 'f')
       ->fields('f')
       ->condition('f.fid', $fid)
@@ -303,7 +309,7 @@ trait ProcessMediaTrait {
    * @return array
    *   An array consisting of mid, uuid for the file. Values false if not found.
    */
-  public function getMid(string $filename, string $type = 'image'): array {
+  public function getMid($filename, $type = 'image') {
     $tables = [
       'audio_file' => 'media__field_media_audio_file',
       'caption' => 'media__field_media_caption',
@@ -368,7 +374,7 @@ trait ProcessMediaTrait {
    *
    * @throws \Drupal\migrate\MigrateException
    */
-  public function downloadFile(string $filename, string $source_base_path, string $drupal_file_directory): int|bool {
+  public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
     $raw_file = @file_get_contents($source_base_path . rawurlencode($filename));
@@ -442,7 +448,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function processImageField(int $fid, string $alt = NULL, string $title = NULL, string $global_caption = NULL): ?int {
+  protected function processImageField($fid, $alt = NULL, $title = NULL, $global_caption = NULL) {
     $fileQuery = $this->fidQuery($fid);
     if (!str_starts_with($fileQuery['filemime'], 'image/')) {
       return NULL;
@@ -519,7 +525,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\migrate\MigrateException
    */
-  protected function processFileField(int $fid, array $meta = [], bool $return_fid = FALSE): ?int {
+  protected function processFileField($fid, array $meta = [], $return_fid = FALSE) {
     $fileQuery = $this->fidQuery($fid);
 
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
@@ -586,7 +592,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function replaceInlineImages(string $content, string $stub, string $view_mode = ''): string {
+  protected function replaceInlineImages(string $content, string $stub, $view_mode = '') {
     $view_mode = $view_mode ?? $this->view_mode;
     $drupal_file_directory = $this->getDrupalFileDirectory();
 

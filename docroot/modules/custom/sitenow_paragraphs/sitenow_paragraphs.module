@@ -32,7 +32,7 @@ function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_entity_create().
  */
-function sitenow_paragraphs_entity_create(EntityInterface $entity): void {
+function sitenow_paragraphs_entity_create(EntityInterface $entity) {
   /** @var \Drupal\node\NodeInterface $entity */
   // On new basic pages.
   if ($entity->bundle() === 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
@@ -57,7 +57,7 @@ function sitenow_paragraphs_entity_create(EntityInterface $entity): void {
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context): void {
+function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.
@@ -136,7 +136,7 @@ function sitenow_paragraphs_update_webform_edit_link($form, FormStateInterface $
 /**
  * Implements hook_entity_presave().
  */
-function sitenow_paragraphs_entity_presave(EntityInterface $entity): void {
+function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
   $type = $entity->getEntityType();
   if ($type->id() === 'paragraph') {
     // If unique id, clean it and save it as value.
@@ -149,14 +149,14 @@ function sitenow_paragraphs_entity_presave(EntityInterface $entity): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_paragraphs_preprocess_paragraph(&$variables): void {
+function sitenow_paragraphs_preprocess_paragraph(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $paragraph = $variables['paragraph'];
     if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
       $classes = [];
       $values = $paragraph->get('field_uip_classes')->getValue();
-      array_walk_recursive($values, function ($v) use (&$classes): void {
+      array_walk_recursive($values, function ($v) use (&$classes) {
         $classes[] = $v;
       });
       // For featured content only.
@@ -231,7 +231,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_paragraphs_preprocess_field(&$variables): void {
+function sitenow_paragraphs_preprocess_field(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {
@@ -258,7 +258,7 @@ function sitenow_paragraphs_preprocess_field(&$variables): void {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variables): void {
+function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {

@@ -11,21 +11,21 @@ use Drupal\node\Entity\Node;
 /**
  * Implements hook_install().
  */
-function classrooms_core_install(): void {
+function classrooms_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Implements hook_uninstall().
  */
-function classrooms_core_uninstall(): void {
+function classrooms_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Import config before next update (batched).
  */
-function classrooms_core_update_9001(): void {
+function classrooms_core_update_9001() {
   $config_path = DRUPAL_ROOT . '/../config/sites/classrooms.uiowa.edu/';
   $source = new FileStorage($config_path);
 
@@ -45,7 +45,7 @@ function classrooms_core_update_9001(): void {
 /**
  * Trigger a presave to populate new field on all existing rooms.
  */
-function classrooms_core_update_9002(&$sandbox): void {
+function classrooms_core_update_9002(&$sandbox) {
 
   // Process all room nodes to populate the field value.
   if (!isset($sandbox['total'])) {

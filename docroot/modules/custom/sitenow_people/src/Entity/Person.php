@@ -19,7 +19,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLinkDirect = 'field_person_website_link_direct';
+  protected $sourceLinkDirect = 'field_person_website_link_direct';
 
   /**
    * If entity has source link field.
@@ -27,7 +27,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLink = 'field_person_website';
+  protected $sourceLink = 'field_person_website';
 
   /**
    * {@inheritdoc}

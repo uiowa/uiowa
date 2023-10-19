@@ -4,9 +4,6 @@ namespace Drupal\Tests\sitenow\Unit;
 
 use Drupal\sitenow\ConfigOverride\SimpleSitemapOverride;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Simple sitemap config override test.
@@ -16,13 +13,17 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SimpleSitemapOverrideTest extends UnitTestCase {
   /**
    * RequestStack mock.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\HttpFoundation\RequestStack
    */
-  protected MockObject|RequestStack $requestStack;
+  protected $requestStack;
 
   /**
    * Request mock.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request|\PHPUnit\Framework\MockObject\MockObject
    */
-  protected Request|MockObject $request;
+  protected $request;
 
   /**
    * {@inheritdoc}
@@ -43,7 +44,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
    *
    * @dataProvider providerConfigByEnv
    */
-  public function testConfigByEnv($host): void {
+  public function testConfigByEnv($host) {
     $this->request->expects($this->any())
       ->method('getHost')
       ->will($this->returnValue($host));

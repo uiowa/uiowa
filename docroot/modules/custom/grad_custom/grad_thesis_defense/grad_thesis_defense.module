@@ -11,7 +11,7 @@ use Drupal\grad_thesis_defense\Entity\ThesisDefense;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function grad_thesis_defense_entity_bundle_info_alter(array &$bundles): void {
+function grad_thesis_defense_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['thesis_defense'])) {
     $bundles['node']['thesis_defense']['class'] = ThesisDefense::class;
   }
@@ -20,7 +20,7 @@ function grad_thesis_defense_entity_bundle_info_alter(array &$bundles): void {
 /**
  * Implements hook_entity_presave().
  */
-function grad_thesis_defense_entity_presave(EntityInterface $entity): void {
+function grad_thesis_defense_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'thesis_defense':
       // Setting the title with the first/last name values.
@@ -34,7 +34,7 @@ function grad_thesis_defense_entity_presave(EntityInterface $entity): void {
 /**
  * Implements hook_preprocess_field().
  */
-function grad_thesis_defense_preprocess_field(&$variables, $hook): void {
+function grad_thesis_defense_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_thesis_defense_date':
       uiowa_core_set_field_icon($variables, 'fas fa-calendar-alt');
@@ -59,7 +59,7 @@ function grad_thesis_defense_preprocess_field(&$variables, $hook): void {
 /**
  * Implements template_preprocess_views_view().
  */
-function grad_thesis_defense_preprocess_views_view(&$variables): void {
+function grad_thesis_defense_preprocess_views_view(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'thesis_defenses') {
     // Attach the library using the #attached property.

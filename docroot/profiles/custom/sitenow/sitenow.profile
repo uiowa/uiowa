@@ -29,7 +29,7 @@ use Drupal\system\Entity\Menu;
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_preprocess_html(&$variables): void {
+function sitenow_preprocess_html(&$variables) {
   $version = sitenow_get_version();
 
   $meta_web_author = [
@@ -53,7 +53,7 @@ function sitenow_preprocess_html(&$variables): void {
 /**
  * Implements hook_toolbar_alter().
  */
-function sitenow_toolbar_alter(&$items): void {
+function sitenow_toolbar_alter(&$items) {
   if (isset($items['acquia_connector'])) {
     unset($items['acquia_connector']);
   }
@@ -66,7 +66,7 @@ function sitenow_toolbar_alter(&$items): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_preprocess_breadcrumb(&$variables): void {
+function sitenow_preprocess_breadcrumb(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $routes = [];
@@ -92,7 +92,7 @@ function sitenow_preprocess_breadcrumb(&$variables): void {
 /**
  * Implements hook_preprocess_select().
  */
-function sitenow_preprocess_select(&$variables): void {
+function sitenow_preprocess_select(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
     if ($variables['element']['#multiple'] === TRUE) {
@@ -113,7 +113,7 @@ function sitenow_preprocess_select(&$variables): void {
 /**
  * Implements hook_module_implements_alter().
  */
-function sitenow_module_implements_alter(&$implementations, $hook): void {
+function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
   // @todo Refactor this to move sitenow last and then alter the altered query.
   //   See https://github.com/uiowa/uiowa/issues/5023
@@ -127,7 +127,7 @@ function sitenow_module_implements_alter(&$implementations, $hook): void {
  *
  * Override the administerusersbyrole query alter to only exclude admins.
  */
-function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterface $query): void {
+function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterface $query) {
 
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
@@ -154,7 +154,7 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   if ($form['id']['#default_value'] === 'top-links') {
     $theme = \Drupal::config('system.theme')->get('default');
@@ -173,7 +173,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
 /**
  * Custom submit handler for sitenow_form_block_form_alter().
  */
-function sitenow_block_form_submit($form, FormStateInterface $form_state): void {
+function sitenow_block_form_submit($form, FormStateInterface $form_state) {
   // Get block config object.
   $config = \Drupal::service('config.factory')->getEditable('block.block.' . $form['id']['#default_value']);
   // Get the config object settings.
@@ -190,7 +190,7 @@ function sitenow_block_form_submit($form, FormStateInterface $form_state): void 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function sitenow_theme_suggestions_block_alter(&$suggestions, $variables): void {
+function sitenow_theme_suggestions_block_alter(&$suggestions, $variables) {
   $template = $variables['elements']['#configuration']['block_template'] ?? FALSE;
   if ($template) {
     $suggestions[] = 'block__' . str_replace('-', '_', $template);
@@ -200,7 +200,7 @@ function sitenow_theme_suggestions_block_alter(&$suggestions, $variables): void 
 /**
  * Implements hook_preprocess_block().
  */
-function sitenow_preprocess_block(&$variables): void {
+function sitenow_preprocess_block(&$variables) {
   $classes = $variables['elements']['#configuration']['block_classes'] ?? FALSE;
   if ($classes) {
     $variables['attributes']['class'] = array_merge($variables['attributes']['class'], $classes);
@@ -230,7 +230,7 @@ function sitenow_preprocess_block(&$variables): void {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_state): void {
+function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_state) {
   // Check/prevent front page from being deleted on single delete.
   // Only need to alter the delete operation form.
   $form_object = $form_state->getFormObject();
@@ -260,7 +260,7 @@ function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_s
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_node_delete_multiple_confirm_form_alter(&$form): void {
+function sitenow_form_node_delete_multiple_confirm_form_alter(&$form) {
   // Check/prevent front page from being deleted on bulk delete.
   // Get and dissect front page path.
   $front = \Drupal::config('system.site')->get('page.front');
@@ -283,7 +283,7 @@ function sitenow_form_node_delete_multiple_confirm_form_alter(&$form): void {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
 
   if ($view && $view->id() === 'administerusersbyrole_people') {
@@ -302,7 +302,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$form, FormStateInterface $form_state, $form_id) {
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
@@ -343,7 +343,7 @@ function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$for
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Enable themes to be blacklisted.
   $form['blacklist_fieldset']['theme']['#access'] = TRUE;
 }
@@ -351,7 +351,7 @@ function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $f
 /**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
-function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state): void {
+function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   // Set a state variable to ensure config_split uses our Chosen
   // select implementation instead of checkboxes.
   if (!\Drupal::state()->get('config_split_use_select')) {
@@ -485,7 +485,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 /**
  * Implements hook_form_alter().
  */
-function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
   // Hide revision information on media entity add/edit forms
   // to prevent new revisions from being created. This aids our
@@ -587,7 +587,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id): v
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _sitenow_webform_validate(array &$form, FormStateInterface $form_state): void {
+function _sitenow_webform_validate(array &$form, FormStateInterface $form_state) {
   // Validate the managed_file webform component.
   if ($form_state->getValue(['properties', 'type']) === 'managed_file') {
     // Prevent non-default extensions from being added.
@@ -617,7 +617,7 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
 /**
  * Implements hook_webform_element_alter().
  */
-function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context): void {
+function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if (isset($element['#webform_key'])) {
     // With Acquia varnish, Webform can't pre-populate
     // Google/Facebook Click IDs (gclid, fbclid).
@@ -633,7 +633,7 @@ function sitenow_webform_element_alter(array &$element, FormStateInterface $form
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (isset($form['nid'], $form['nid']['#value'])) {
     $node = Node::load($form['nid']['#value']);
 
@@ -653,7 +653,7 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   $menus = Menu::loadMultiple();
   $social_media_menu = 'social';
   $custom_menu = 'footer-primary';
@@ -755,7 +755,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
  * @see sitenow_form_node_confirm_form_alter()
  * @see sitenow_form_node_delete_multiple_confirm_form_alter()
  */
-function _sitenow_prevent_front_delete_message(string $title): void {
+function _sitenow_prevent_front_delete_message($title) {
   // Print warning message informing user to use basic site settings.
   $url = Url::fromRoute('system.site_information_settings', [], ['fragment' => 'edit-site-frontpage']);
   $settings_link = Link::fromTextAndUrl(t('change the front page'), $url)
@@ -802,7 +802,7 @@ function publish_options_allowed_values(FieldStorageDefinitionInterface $definit
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function sitenow_preprocess_page(&$variables): void {
+function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
@@ -827,7 +827,7 @@ function sitenow_preprocess_page(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_preprocess_node(&$variables): void {
+function sitenow_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = $variables['node'];
@@ -886,7 +886,7 @@ function sitenow_preprocess_node(&$variables): void {
  *
  * @throws \Drupal\Core\TypedData\Exception\MissingDataException
  */
-function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof MenuLinkContentForm) {
     $menu_link = $form_object->getEntity();
@@ -957,7 +957,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
  *
  * @throws \Drupal\Core\TypedData\Exception\MissingDataException
  */
-function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInterface $form_state): void {
+function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInterface $form_state) {
   $icon_field = $form_state->getValue('fa_icon');
 
   $options = [
@@ -985,7 +985,7 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
 /**
  * Implements hook_link_alter().
  */
-function sitenow_link_alter(&$variables): void {
+function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
@@ -999,7 +999,7 @@ function sitenow_link_alter(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_preprocess_field(&$variables): void {
+function sitenow_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'title':
       if ($variables['element']['#view_mode'] === 'teaser') {
@@ -1012,7 +1012,7 @@ function sitenow_preprocess_field(&$variables): void {
 /**
  * Implements hook_page_attachments().
  */
-function sitenow_page_attachments(array &$attachments): void {
+function sitenow_page_attachments(array &$attachments) {
   // Attach css file on admin pages.
   $admin_context = \Drupal::service('router.admin_context');
   $admin_theme = \Drupal::config('system.theme')->get('admin');
@@ -1076,7 +1076,7 @@ function sitenow_get_version() {
 /**
  * Implements hook_entity_insert().
  */
-function sitenow_entity_insert(EntityInterface $entity): void {
+function sitenow_entity_insert(EntityInterface $entity) {
   // UUIDs for default content Home and About pages.
   $uuids = [
     '922b3b26-306a-457c-ba18-2c00966f81cf',

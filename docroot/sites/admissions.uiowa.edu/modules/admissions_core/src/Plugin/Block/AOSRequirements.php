@@ -21,13 +21,17 @@ class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterfa
 
   /**
    * The request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected RequestStack $requestStack;
+  protected $requestStack;
 
   /**
    * The node storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected EntityStorageInterface $nodeStorage;
+  protected $nodeStorage;
 
   /**
    * Constructs a new AOSRequirements instance.
@@ -43,7 +47,7 @@ class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterfa
    * @param \Drupal\Core\Entity\EntityStorageInterface $node_storage
    *   The node storage.
    */
-  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, RequestStack $request_stack, EntityStorageInterface $node_storage) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RequestStack $request_stack, EntityStorageInterface $node_storage) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
     $this->nodeStorage = $node_storage;

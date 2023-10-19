@@ -22,7 +22,7 @@ class UpdateCommands extends BltTasks {
    *
    * @command uiowa:update
    */
-  public function uiowaUpdate(): void {
+  public function uiowaUpdate() {
     $schema = $this->getSchemaVersion();
     $reflection = new \ReflectionClass(UpdateCommands::class);
     $methods = array_filter($reflection->getMethods(), function ($v) {
@@ -63,7 +63,7 @@ class UpdateCommands extends BltTasks {
    * @return string
    *   The current schema version or 1000 if none is set.
    */
-  protected function getSchemaVersion(): string {
+  protected function getSchemaVersion() {
     $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
 
     if (file_exists($file)) {
@@ -80,7 +80,7 @@ class UpdateCommands extends BltTasks {
    * @param int $version
    *   The version number to write to the schema file.
    */
-  protected function setSchemaVersion(int $version): void {
+  protected function setSchemaVersion($version) {
     $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
     file_put_contents($file, $version);
   }
@@ -93,7 +93,7 @@ class UpdateCommands extends BltTasks {
    *   description = "Write database include to settings.php for multisites."
    * )
    */
-  protected function update1001(): void {
+  protected function update1001() {
     $root = $this->getConfigValue('repo.root');
     $search = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n";
     $sites = Multisite::getAllSites($root);
@@ -132,7 +132,7 @@ EOD;
    *   description = "Update multisite blt files to localize sitenow config."
    * )
    */
-  protected function update1002(): void {
+  protected function update1002() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -171,7 +171,7 @@ EOD;
    *   description = "Write an includes.settings.php file for each multisite."
    * )
    */
-  protected function update1003(): void {
+  protected function update1003() {
     $data = <<<EOD
 <?php
 
@@ -216,7 +216,7 @@ EOD;
    *   description = "Revert multisite DB configuration to BLT defaults for VM."
    * )
    */
-  protected function update1004(): void {
+  protected function update1004() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -242,7 +242,7 @@ EOD;
    *   description = "Set VM vhosts for each multisite."
    * )
    */
-  protected function update1005(): void {
+  protected function update1005() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
     $file = $this->getConfigValue('vm.config');
@@ -273,7 +273,7 @@ EOD;
    *   description = "Set local host for multisites and regenerate settings."
    * )
    */
-  protected function update1006(): void {
+  protected function update1006() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -303,7 +303,7 @@ EOD;
    *   description = "Add local Drush aliases for existing sites."
    * )
    */
-  protected function update1007(): void {
+  protected function update1007() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -348,7 +348,7 @@ EOD;
    *   description = "Update drush aliases to use https:// in *.uri key."
    * )
    */
-  protected function update1008(): void {
+  protected function update1008() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -393,7 +393,7 @@ EOD;
    *   description = "Update collegiate blt.yml config with profile defaults."
    * )
    */
-  protected function update1009(): void {
+  protected function update1009() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -420,7 +420,7 @@ EOD;
    *   description = "Update drush aliases to remove local SSH options."
    * )
    */
-  protected function update1010(): void {
+  protected function update1010() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -444,7 +444,7 @@ EOD;
    *   description = "Update drush aliases to remove local host and user."
    * )
    */
-  protected function update1011(): void {
+  protected function update1011() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -469,7 +469,7 @@ EOD;
    *   description = "Update collegiate sites cm.stragety to core-only."
    * )
    */
-  protected function update1012(): void {
+  protected function update1012() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -497,7 +497,7 @@ EOD;
    *   description = "Update drush aliases to set files rsync target."
    * )
    */
-  protected function update1013(): void {
+  protected function update1013() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -525,7 +525,7 @@ EOD;
    *   description = "Update all multisites to use default BLT configuration."
    * )
    */
-  protected function update1014(): void {
+  protected function update1014() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -556,7 +556,7 @@ EOD;
    *   description = "Delete empty config split directories."
    * )
    */
-  protected function update1015(): void {
+  protected function update1015() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -582,7 +582,7 @@ EOD;
    *   description = "Update local Drush alias root path."
    * )
    */
-  protected function update1016(): void {
+  protected function update1016() {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 

@@ -16,7 +16,7 @@ class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLinkDirect = 'field_area_of_study_link_direct';
+  protected $sourceLinkDirect = 'field_area_of_study_link_direct';
 
   /**
    * If entity has source link field.
@@ -24,7 +24,7 @@ class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected ?string $sourceLink = 'field_area_of_study_source_link';
+  protected $sourceLink = 'field_area_of_study_source_link';
 
   /**
    * {@inheritdoc}

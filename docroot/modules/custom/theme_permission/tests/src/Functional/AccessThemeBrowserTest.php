@@ -16,7 +16,7 @@ class AccessThemeBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if user access to Bartik theme.
    */
-  public function testIfAccessThemeBartik(): void {
+  public function testIfAccessThemeBartik() {
     $this->userLogin(['administer themes bartik']);
     $this->drupalGet(Url::fromRoute('system.theme_settings_theme', ['theme' => 'bartik']));
     $this->assertSession()->statusCodeEquals(200);
@@ -25,7 +25,7 @@ class AccessThemeBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if user don't access to Bartik theme.
    */
-  public function testIfAccessDeniedThemeBartik(): void {
+  public function testIfAccessDeniedThemeBartik() {
     $this->userLogin();
     $this->drupalGet(Url::fromRoute('system.theme_settings_theme', ['theme' => 'bartik']));
     $this->assertSession()->statusCodeEquals(403);
@@ -34,7 +34,7 @@ class AccessThemeBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if the user accesses "Edit Administration theme".
    */
-  public function testEditAdminTheme(): void {
+  public function testEditAdminTheme() {
     $this->userLogin(['Edit Administration theme']);
     $this->drupalGet(Url::fromRoute('system.themes_page'));
     $this->assertSession()->pageTextContains('Choose "Default theme" to always use the same theme as the rest of the site.');
@@ -43,7 +43,7 @@ class AccessThemeBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if the user not accesses "Edit Administration theme".
    */
-  public function testNotEditAdminTheme(): void {
+  public function testNotEditAdminTheme() {
     $this->userLogin();
     $this->drupalGet(Url::fromRoute('system.themes_page'));
     $this->assertSession()->pageTextNotContains('Choose "Default theme" to always use the same theme as the rest of the site.');
@@ -52,7 +52,7 @@ class AccessThemeBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if permission is present in permissions page.
    */
-  public function testIfPermissionsIsPresent(): void {
+  public function testIfPermissionsIsPresent() {
     $this->userLogin(['administer permissions']);
     $this->drupalGet('/admin/people/permissions');
     $this->assertSession()->pageTextContains('administer themes bartik');

@@ -12,14 +12,14 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Implements hook_install().
  */
-function uiowa_edu_core_install(): void {
+function uiowa_edu_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Import a-z links from the current website.
  */
-function uiowa_edu_core_update_8001(&$sandbox): void {
+function uiowa_edu_core_update_8001(&$sandbox) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $path = $path_resolver->getPath('module', 'uiowa_edu_core');
@@ -47,7 +47,7 @@ function uiowa_edu_core_update_8001(&$sandbox): void {
 /**
  * First batch of redirects.
  */
-function uiowa_edu_core_update_8002(): void {
+function uiowa_edu_core_update_8002() {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $path = $path_resolver->getPath('module', 'uiowa_edu_core');
@@ -76,7 +76,7 @@ function uiowa_edu_core_update_8002(): void {
 /**
  * Import the newly enabled and config-ignored uiowa_alerts settings.
  */
-function uiowa_edu_core_update_8003(): void {
+function uiowa_edu_core_update_8003() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_alerts.settings');
 
@@ -92,7 +92,7 @@ function uiowa_edu_core_update_8003(): void {
 /**
  * Set new theme setting.
  */
-function uiowa_edu_core_update_8004(): void {
+function uiowa_edu_core_update_8004() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('header.top_links_limit', 3);
@@ -102,7 +102,7 @@ function uiowa_edu_core_update_8004(): void {
 /**
  * Set search config to not limit to uiowa.edu domain.
  */
-function uiowa_edu_core_update_8005(): void {
+function uiowa_edu_core_update_8005() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_search.settings');
   $config->set('uiowa_search.cse_scope', 0);
@@ -112,6 +112,6 @@ function uiowa_edu_core_update_8005(): void {
 /**
  * Implements hook_uninstall().
  */
-function uiowa_edu_core_uninstall(): void {
+function uiowa_edu_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }

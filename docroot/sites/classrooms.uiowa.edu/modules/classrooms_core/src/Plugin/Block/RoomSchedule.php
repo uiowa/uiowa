@@ -23,18 +23,24 @@ class RoomSchedule extends BlockBase implements ContainerFactoryPluginInterface 
 
   /**
    * The current route match service.
+   *
+   * @var \Drupal\Core\Routing\CurrentRouteMatch
    */
-  protected CurrentRouteMatch $currentRouteMatch;
+  protected $currentRouteMatch;
 
   /**
    * The current pager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManager
    */
-  protected PagerManager $pagerManager;
+  protected $pagerManager;
 
   /**
    * The uiowa_maui.api service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected MauiApi $mauiApi;
+  protected $mauiApi;
 
   /**
    * Constructs a new ThemeTestSubscriber.

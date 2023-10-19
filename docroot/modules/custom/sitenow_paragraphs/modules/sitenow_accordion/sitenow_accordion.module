@@ -8,7 +8,7 @@
 /**
  * Implements hook_preprocess_field().
  */
-function sitenow_accordion_preprocess_field(&$variables): void {
+function sitenow_accordion_preprocess_field(&$variables) {
 
   switch ($variables["element"]["#field_name"]) {
     case 'field_accordion_item':
@@ -27,7 +27,7 @@ function sitenow_accordion_preprocess_field(&$variables): void {
 /**
  * Implements hook_preprocess_paragraph().
  */
-function sitenow_accordion_preprocess_paragraph__accordion_item(&$variables): void {
+function sitenow_accordion_preprocess_paragraph__accordion_item(&$variables) {
   /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
 

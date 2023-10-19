@@ -15,8 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AcademicDatesForm extends FormBase {
   /**
    * The MAUI API service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected MauiApi $maui;
+  protected $maui;
 
   /**
    * DatesBySessionForm constructor.

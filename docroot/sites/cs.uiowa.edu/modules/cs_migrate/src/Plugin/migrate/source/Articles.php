@@ -118,7 +118,7 @@ class Articles extends BaseNodeSource {
    * @param \Drupal\migrate\Row $row
    *   The migration row result.
    */
-  public function fetchImageGallery(Row &$row): void {
+  public function fetchImageGallery(Row &$row) {
     $nid = $row->getSourceProperty('nid');
     // Grab info on all images attached in the gallery.
     $results = $this->select('field_data_field_image_gallery', 't')

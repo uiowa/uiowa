@@ -5,14 +5,12 @@ namespace Drupal\uiowa_apr\Controller;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_apr\Apr;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,23 +23,31 @@ class DirectoryController extends ControllerBase {
 
   /**
    * The APR service.
+   *
+   * @var \Drupal\uiowa_apr\Apr
    */
-  protected Apr $apr;
+  protected $apr;
 
   /**
    * The uiowa_apr config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected ImmutableConfig $config;
+  protected $config;
 
   /**
    * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
    */
-  protected ClientInterface $client;
+  protected $client;
 
   /**
    * The uiowa_apr logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
-  protected LoggerInterface $logger;
+  protected $logger;
 
   /**
    * DirectoryController constructor.
@@ -82,7 +88,7 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request, string $slug = NULL): array {
+  public function build(Request $request, $slug = NULL) {
     $build = [
       '#attached' => [
         'library' => [
@@ -169,7 +175,7 @@ class DirectoryController extends ControllerBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function title(Request $request, string $slug = NULL): array {
+  public function title(Request $request, $slug = NULL) {
     $build = [];
 
     // If a slug is set, this is a profile page. Otherwise, its the directory.

@@ -25,18 +25,24 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The Hours API service.
+   *
+   * @var \Drupal\uiowa_hours\HoursApi
    */
-  protected HoursApi $hours;
+  protected $hours;
 
   /**
    * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected FormBuilderInterface $formBuilder;
+  protected $formBuilder;
 
   /**
    * The config.factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected ConfigFactoryInterface $configFactory;
+  protected $configFactory;
 
   /**
    * Override the construction method.
@@ -54,7 +60,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory service.
    */
-  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder, ConfigFactoryInterface $configFactory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->hours = $hours;
     $this->formBuilder = $formBuilder;
@@ -75,7 +81,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *
    * @return static
    */
-  public static function create(ContainerInterface $container, array $configuration, string $plugin_id, mixed $plugin_definition): static {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
       $plugin_id,

@@ -134,7 +134,7 @@ class Articles extends BaseNodeSource {
    * @return false|string
    *   The new term or FALSE if not in the map.
    */
-  protected function manualLookup(int $tid): false|string {
+  protected function manualLookup($tid) {
     $map = [
       // Space Physics.
       6 => 106,

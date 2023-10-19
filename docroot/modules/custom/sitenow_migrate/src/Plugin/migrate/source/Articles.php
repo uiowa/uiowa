@@ -53,7 +53,7 @@ class Articles extends BaseNodeSource {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migration event.
    */
-  public function postImport(MigrateImportEvent $event): void {
+  public function postImport(MigrateImportEvent $event) {
     static $have_run = FALSE;
 
     if (!$have_run) {

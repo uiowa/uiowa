@@ -11,7 +11,7 @@ use Drupal\Core\Render\Element;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
@@ -35,7 +35,7 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
 /**
  * Implements hook_metatags_alter().
  */
-function sitenow_seo_metatags_alter(array &$metatags, array &$context): void {
+function sitenow_seo_metatags_alter(array &$metatags, array &$context) {
   // Append the page number to the title, if it is set and greater than 0.
   $page = \Drupal::service('pager.parameters')->findPage();
 
@@ -47,7 +47,7 @@ function sitenow_seo_metatags_alter(array &$metatags, array &$context): void {
 /**
  * Implements hook_form_alter().
  */
-function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Node form modifications.
     case 'node_page_edit_form':

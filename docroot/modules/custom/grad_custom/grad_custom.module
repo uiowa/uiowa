@@ -11,7 +11,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 /**
  * Implements hook_preprocess_HOOK().
  */
-function grad_custom_preprocess_node(&$variables): void {
+function grad_custom_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = $variables["node"];

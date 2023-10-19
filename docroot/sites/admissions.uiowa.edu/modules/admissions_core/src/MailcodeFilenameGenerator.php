@@ -13,13 +13,17 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
 
   /**
    * The original FilenameGenerator service.
+   *
+   * @var \Drupal\entity_print\FilenameGeneratorInterface
    */
-  protected FilenameGeneratorInterface $innerService;
+  protected $innerService;
 
   /**
    * The transliteration service.
+   *
+   * @var \Drupal\Component\Transliteration\TransliterationInterface
    */
-  protected TransliterationInterface $transliteration;
+  protected $transliteration;
 
   /**
    * The constructor.

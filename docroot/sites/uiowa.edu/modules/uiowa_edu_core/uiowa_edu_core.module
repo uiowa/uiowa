@@ -16,7 +16,7 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Change the label of the name field.
   $form['name']['widget'][0]['value']['#title'] = t('Administrative Name');
   // Add a description to the name field.
@@ -26,14 +26,14 @@ function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, FormState
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
-function uiowa_edu_core_preprocess_html(&$variables): void {
+function uiowa_edu_core_preprocess_html(&$variables) {
   $variables['#attached']['library'][] = 'uiowa/global-styling';
 }
 
 /**
  * Implements hook_views_pre_render().
  */
-function uiowa_edu_core_views_pre_render(ViewExecutable $view): void {
+function uiowa_edu_core_views_pre_render(ViewExecutable $view) {
   // Don't override the A-Z List view title on the fixed default.
   if ($view->current_display === 'page_a_z_list' && $view->args[0] === 'a') {
     $current_path = \Drupal::service('path.current')->getPath();

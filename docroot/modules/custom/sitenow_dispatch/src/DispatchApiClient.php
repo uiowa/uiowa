@@ -86,7 +86,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * @return false|string
    *   The message response or FALSE.
    */
-  public function postCommunicationSchedule(string $communication_id, string $start_time, array $overrides = []): false|string {
+  public function postCommunicationSchedule(string $communication_id, string $start_time, array $overrides = []) {
     // Construct the scheduled message object.
     $data = (object) [
       'occurrence' => 'ONE_TIME',

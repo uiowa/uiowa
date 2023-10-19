@@ -52,35 +52,45 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
 
   /**
    * The person type ID.
+   *
+   * @var string
    */
-  protected string $id;
+  protected $id;
 
   /**
    * The person type label.
+   *
+   * @var string
    */
-  protected string $label;
+  protected $label;
 
   /**
    * The person type status.
+   *
+   * @var bool
    */
-  protected bool $status;
+  protected $status;
 
   /**
    * The person_type description.
+   *
+   * @var string
    */
-  protected string $description;
+  protected $description;
 
   /**
    * A list of person fields to show for this type.
    *
    * @var array
    */
-  protected array $allowed_fields;
+  protected $allowed_fields;
 
   /**
    * Whether to allow a status property for this person type.
+   *
+   * @var bool
    */
-  protected bool $allow_former;
+  protected $allow_former;
 
   /**
    * {@inheritdoc}

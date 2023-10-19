@@ -11,7 +11,7 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_form_alter().
  */
-function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Use the form['#id'] over $form_id because it is more specific.
   switch ($form['#id']) {
     case 'views-exposed-form-events-page-upcoming':
@@ -87,7 +87,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
 /**
  * Custom submit handler for upcoming events page.
  */
-function oniowa_core_date_select_list($form, &$form_state): void {
+function oniowa_core_date_select_list($form, &$form_state) {
   // Grab the selected date,
   // and set an appropriate date range.
   $timestamp = $form_state->getValue('date_select');
@@ -100,7 +100,7 @@ function oniowa_core_date_select_list($form, &$form_state): void {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function oniowa_core_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
+function oniowa_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   if ($variables['element']['#field_name'] === 'field_event_when') {
     if ($variables['element']['#object']->view?->current_display == 'page_upcoming') {
       $suggestions[] = 'field__date_timeonly';
@@ -111,7 +111,7 @@ function oniowa_core_theme_suggestions_field_alter(array &$suggestions, array $v
 /**
  * Implements template_preprocess_views_view_unformatted().
  */
-function oniowa_core_preprocess_views_view_unformatted(&$variables): void {
+function oniowa_core_preprocess_views_view_unformatted(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'events') {
     $variables['views_heading_classes'][] = 'h5 headline headline--uppercase headline--highlight block__headline';
@@ -121,7 +121,7 @@ function oniowa_core_preprocess_views_view_unformatted(&$variables): void {
 /**
  * Implements hook_views_pre_build().
  */
-function oniowa_core_views_pre_build(ViewExecutable $view): void {
+function oniowa_core_views_pre_build(ViewExecutable $view) {
   if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
     // Go through each of our filter display options
     // and change the exposed option to false if

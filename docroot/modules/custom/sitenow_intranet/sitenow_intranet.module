@@ -15,7 +15,7 @@ use Drupal\sitenow_intranet\IntranetHelper;
 /**
  * Implements hook_preprocess_block().
  */
-function sitenow_intranet_preprocess_block(&$variables): void {
+function sitenow_intranet_preprocess_block(&$variables) {
   $code = IntranetHelper::getStatusCode();
 
   if (IntranetHelper::checkStatusCode($code)) {
@@ -77,7 +77,7 @@ function sitenow_intranet_preprocess_block(&$variables): void {
 /**
  * Implements hook_preprocess_page().
  */
-function sitenow_intranet_preprocess_page(&$variables): void {
+function sitenow_intranet_preprocess_page(&$variables) {
   $code = IntranetHelper::getStatusCode();
 
   if (IntranetHelper::checkStatusCode($code)) {
@@ -101,7 +101,7 @@ function sitenow_intranet_preprocess_page(&$variables): void {
 /**
  * Implements hook_preprocess_page_title().
  */
-function sitenow_intranet_preprocess_page_title(&$variables): void {
+function sitenow_intranet_preprocess_page_title(&$variables) {
   $code = IntranetHelper::getStatusCode();
 
   if (IntranetHelper::checkStatusCode($code)) {

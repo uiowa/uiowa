@@ -13,7 +13,7 @@ use Drupal\node\NodeInterface;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function housing_core_entity_bundle_info_alter(array &$bundles): void {
+function housing_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['residence_hall'])) {
     $bundles['node']['residence_hall']['class'] = HousingResidenceHall::class;
   }
@@ -25,7 +25,7 @@ function housing_core_entity_bundle_info_alter(array &$bundles): void {
 /**
  * Implements hook_form_alter().
  */
-function housing_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function housing_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Node form modifications.
     case 'node_residence_hall_edit_form':
@@ -39,7 +39,7 @@ function housing_core_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_preprocess_HOOK().
  */
-function housing_core_preprocess_block(&$variables): void {
+function housing_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
     case 'field_block:node:residence_hall:field_residence_hall_contact':
       uiowa_core_set_attributes($variables, ['list-container']);
@@ -77,7 +77,7 @@ function housing_core_preprocess_block(&$variables): void {
 /**
  * Implements hook_preprocess_field().
  */
-function housing_core_preprocess_field(&$variables, $hook): void {
+function housing_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_residence_hall_who_lives':
       if (!isset($variables['title_attributes']['class'])) {
@@ -226,14 +226,14 @@ function housing_core_preprocess_field(&$variables, $hook): void {
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
-function housing_core_preprocess_html(&$variables): void {
+function housing_core_preprocess_html(&$variables) {
   $variables['#attached']['library'][] = 'housing_core/global';
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function housing_core_preprocess_layout(&$variables): void {
+function housing_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
 
@@ -271,7 +271,7 @@ function housing_core_preprocess_layout(&$variables): void {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function housing_core_preprocess_field__node__title(&$variables): void {
+function housing_core_preprocess_field__node__title(&$variables) {
   if ($variables['element']['#bundle'] === 'residence_hall') {
     // Remove existing page title classes.
     $variables['attributes']['class'] = [];
@@ -287,7 +287,7 @@ function housing_core_preprocess_field__node__title(&$variables): void {
 /**
  * Implements template_preprocess_views_view().
  */
-function housing_core_preprocess_views_view(&$variables): void {
+function housing_core_preprocess_views_view(&$variables) {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'residence_halls') {
     // Attach the library using the #attached property.

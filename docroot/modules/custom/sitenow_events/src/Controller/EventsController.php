@@ -21,7 +21,7 @@ class EventsController extends ControllerBase {
    * @return array
    *   A render array for single event.
    */
-  public function build(int $event_id, int $event_instance): array {
+  public function build($event_id, $event_instance) {
     // If the configuration is to link out, make all event pages 404.
     if ($this->config('sitenow_events.settings')->get('event_link') === 'event-link-external') {
       throw new NotFoundHttpException();
@@ -54,7 +54,7 @@ class EventsController extends ControllerBase {
    * @return string
    *   The event title.
    */
-  public function title(int $event_id): string {
+  public function title($event_id) {
     $title = '';
     $event = $this->getEventData($event_id);
 

@@ -3,10 +3,8 @@
 namespace Drupal\sitenow_dispatch\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\sitenow_dispatch\DispatchApiClient;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,13 +15,17 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * The dispatch service.
+   *
+   * @var \Drupal\sitenow_dispatch\DispatchApiClient
    */
-  protected DispatchApiClient $dispatch;
+  protected $dispatch;
 
   /**
    * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}

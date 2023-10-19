@@ -22,28 +22,38 @@ class ReplicateSubscriber implements EventSubscriberInterface {
 
   /**
    * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * UUID.
+   *
+   * @var \Drupal\Component\Uuid\UuidInterface
    */
-  protected UuidInterface $uuid;
+  protected $uuid;
 
   /**
    * Current path.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
    */
-  protected CurrentPathStack $currentPath;
+  protected $currentPath;
 
   /**
    * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected AccountProxyInterface $currentUser;
+  protected $currentUser;
 
   /**
    * The datetime.time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected TimeInterface $time;
+  protected $time;
 
   /**
    * ReplicateSubscriber constructor.
@@ -119,7 +129,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The replicated entity.
    */
-  protected function additionalHandling(FieldableEntityInterface $entity): void {
+  protected function additionalHandling(FieldableEntityInterface $entity) {
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
     foreach ($field_item_list as $field_item) {
@@ -147,7 +157,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @return string
    *   The cloned entity's id.
    */
-  protected function getClonedNid(): string {
+  protected function getClonedNid() {
     $path = $this->currentPath->getPath();
     $parts = explode('/', $path);
     return (isset($parts[2])) ? $parts[2] : '';
@@ -159,7 +169,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The entity for which to set revision information.
    */
-  protected function setRevisionInformation(FieldableEntityInterface $entity): void {
+  protected function setRevisionInformation(FieldableEntityInterface $entity) {
     $replicant = $this->getClonedNid();
     if (!empty($replicant)) {
       $message = 'Replicated <a href="/node/' . $replicant . '">node/' . $replicant . '</a>.';
@@ -181,7 +191,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The entity with revisions to remove.
    */
-  protected function removeOldRevisions(FieldableEntityInterface $entity): void {
+  protected function removeOldRevisions(FieldableEntityInterface $entity) {
     if ($entity->getEntityTypeId() === 'node') {
       $node_storage_manager = $this->entityTypeManager->getStorage('node');
       $vids = $node_storage_manager->revisionIds($entity);

@@ -21,6 +21,8 @@ abstract class ApiClientBase implements ApiClientInterface {
 
   /**
    * The API key for accessing the API.
+   *
+   * @var string|null
    */
   protected ?string $apiKey = NULL;
 
@@ -54,7 +56,7 @@ abstract class ApiClientBase implements ApiClientInterface {
    * @return string
    *   The base cache ID string.
    */
-  abstract protected function getCacheIdBase(): string;
+  abstract protected function getCacheIdBase();
 
   /**
    * Get a cache ID for a request.
@@ -67,7 +69,7 @@ abstract class ApiClientBase implements ApiClientInterface {
    * @return string
    *   The cache ID.
    */
-  protected function getRequestCacheId(string $endpoint, array $options): string {
+  protected function getRequestCacheId(string $endpoint, array $options) {
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($endpoint . serialize($options));
 

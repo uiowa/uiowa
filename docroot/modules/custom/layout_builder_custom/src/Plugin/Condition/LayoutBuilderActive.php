@@ -25,8 +25,10 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
 
   /**
    * The route matcher.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
-  protected RouteMatchInterface $routeMatch;
+  protected $routeMatch;
 
   /**
    * Creates a new LayoutBuilderEnabled instance.
@@ -43,7 +45,7 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    */
-  public function __construct(RouteMatchInterface $current_route_match, array $configuration, string $plugin_id, mixed $plugin_definition) {
+  public function __construct(RouteMatchInterface $current_route_match, array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $current_route_match;
   }

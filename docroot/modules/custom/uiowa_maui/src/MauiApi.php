@@ -20,18 +20,24 @@ class MauiApi {
 
   /**
    * The uiowa_maui logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
-  protected LoggerInterface $logger;
+  protected $logger;
 
   /**
    * The uiowa_maui cache.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected CacheBackendInterface $cache;
+  protected $cache;
 
   /**
    * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
    */
-  protected ClientInterface $client;
+  protected $client;
 
   /**
    * Constructs a Maui object.
@@ -64,7 +70,7 @@ class MauiApi {
    * @return mixed
    *   The API response data.
    */
-  public function request(string $method, string $path, array $params = [], array $options = []): mixed {
+  public function request($method, $path, array $params = [], array $options = []) {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
     $uri = self::BASE . ltrim($path, '/');
@@ -123,7 +129,7 @@ class MauiApi {
    * @return array
    *   The session object.
    */
-  public function getCurrentSession(): array {
+  public function getCurrentSession() {
     return $this->request('GET', '/pub/registrar/sessions/current');
   }
 
@@ -138,7 +144,7 @@ class MauiApi {
    * @return array
    *   Array of session objects.
    */
-  public function getSessionsBounded(int $previous = 4, int $future = 4): array {
+  public function getSessionsBounded($previous = 4, $future = 4) {
     $data = $this->request('GET', '/pub/registrar/sessions/bounded', [
       'previous' => $previous,
       'future' => $future,
@@ -169,7 +175,7 @@ class MauiApi {
    * @return array
    *   JSON decoded array of response data.
    */
-  public function getSessionsRange(int $from, int $steps, string $term = NULL): array {
+  public function getSessionsRange($from, $steps, $term = NULL) {
     $data = $this->request('GET', '/pub/registrar/sessions/range', [
       'from' => $from,
       'steps' => $steps,
@@ -212,7 +218,7 @@ class MauiApi {
    * @return array
    *   JSON decoded array of response data.
    */
-  public function searchSessionDates(int $session_id, string $date_category = NULL, mixed $print_date = NULL, string $five_year_date = NULL, int $session_code = NULL, string $date = NULL, string $context = NULL): array {
+  public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
     $data = $this->request('GET', '/pub/registrar/session-dates', [
       'context' => $context,
       'date' => $date,
@@ -256,7 +262,7 @@ class MauiApi {
    * @return array
    *   List of session date categories.
    */
-  public function getDateCategories(): array {
+  public function getDateCategories() {
     return [
       'Student' => [
         'STUDENT' => 'All Student Dates',
@@ -288,7 +294,7 @@ class MauiApi {
    * @return mixed
    *   The API response data.
    */
-  public function getRoomData(string $building_id, string $room_id): mixed {
+  public function getRoomData($building_id, $room_id) {
     return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
   }
 
@@ -309,7 +315,7 @@ class MauiApi {
    * @return array
    *   JSON decoded array of response data.
    */
-  public function getRoomSchedule(string $startdate, string $enddate, string $building_id, string $room_id): array {
+  public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
     return $this->request('GET', '/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
   }
 
@@ -319,7 +325,7 @@ class MauiApi {
    * @return mixed
    *   The API response data.
    */
-  public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM'): mixed {
+  public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM') {
     return $this->request('GET',
       '/pub/facilityBuildingRoom/list',
       [

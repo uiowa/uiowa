@@ -17,18 +17,24 @@ class EventsSettingsForm extends ConfigFormBase {
 
   /**
    * The alias cleaner.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected AliasCleanerInterface $aliasCleaner;
+  protected $aliasCleaner;
 
   /**
    * The alias checker.
+   *
+   * @var \Drupal\path_alias\AliasRepositoryInterface
    */
-  protected AliasRepositoryInterface $aliasRepository;
+  protected $aliasRepository;
 
   /**
    * The config split manager.
+   *
+   * @var \Drupal\config_split\ConfigSplitManager
    */
-  protected ConfigSplitManager $configSplitManager;
+  protected $configSplitManager;
 
   /**
    * The Constructor.

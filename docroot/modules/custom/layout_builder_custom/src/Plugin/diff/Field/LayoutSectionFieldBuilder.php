@@ -96,7 +96,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @return false|string
    *   The resultant styles, or false if they aren't present.
    */
-  protected function processSectionStyles(int $id, Section $section): false|string {
+  protected function processSectionStyles(int $id, Section $section) {
     // Grab our lb styles, combine with our prefix, and add it to our results.
     $section_array = $section->toArray();
     // If we have layout_builder_styles,
@@ -125,7 +125,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @param array $result
    *   The final results array.
    */
-  protected function processBlock(EntityInterface $block, int $counter, array &$result): void {
+  protected function processBlock(EntityInterface $block, int $counter, array &$result) {
     foreach ($block->toArray() as $arr_key => $arr_value) {
       // There's a lot of extra stuff in the block array.
       // Only look at the field_ labelled fields.
@@ -176,7 +176,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @param array $result
    *   The final results array.
    */
-  protected function processListBlock(array $config, int $counter, array &$result): void {
+  protected function processListBlock(array $config, int $counter, array &$result) {
     // List blocks aren't built with field_ keys,
     // so we create a list of keys we know
     // we can skip for diffing purposes.
@@ -239,7 +239,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @return string
    *   The indexer to be used in the final results.
    */
-  protected function generateIndexer(string $arr_key, int $field_num = 0, string $value_key = ''): string {
+  protected function generateIndexer(string $arr_key, int $field_num = 0, string $value_key = '') {
     $field_col_name = ucwords($this->prettifyMachineName($arr_key));
     // Only include the number if we're on more than one field value,
     // and increment it for readability, rather than being zero-based.
@@ -265,7 +265,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @return string
    *   The more readable string.
    */
-  protected function prettifyMachineName(string $machine_name): string {
+  protected function prettifyMachineName(string $machine_name) {
     // Drop 'field' and 'uiowa' designators,
     // which don't really add anything for the editor.
     $machine_name = preg_replace('@(field\_)|(uiowa\_)@', '', $machine_name);

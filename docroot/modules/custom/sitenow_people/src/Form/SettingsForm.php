@@ -24,23 +24,31 @@ class SettingsForm extends ConfigFormBase {
   const SETTINGS = 'sitenow_people.settings';
   /**
    * The alias cleaner.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected AliasCleanerInterface $aliasCleaner;
+  protected $aliasCleaner;
 
   /**
    * The alias checker.
+   *
+   * @var \Drupal\path_alias\AliasRepositoryInterface
    */
-  protected AliasRepositoryInterface $aliasRepository;
+  protected $aliasRepository;
 
   /**
    * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected EntityTypeManager $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * The PathautoGenerator service.
+   *
+   * @var \Drupal\pathauto\PathautoGenerator
    */
-  protected PathautoGenerator $pathAutoGenerator;
+  protected $pathAutoGenerator;
 
   /**
    * The Constructor.

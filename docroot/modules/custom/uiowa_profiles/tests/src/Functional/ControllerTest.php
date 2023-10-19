@@ -58,7 +58,7 @@ class ControllerTest extends BrowserTestBase {
   /**
    * Test directory meta data.
    */
-  public function testDirectory(): void {
+  public function testDirectory() {
     $user = $this->createUser(['access content']);
     $this->drupalLogin($user);
     $this->drupalGet('directory');
@@ -73,7 +73,7 @@ class ControllerTest extends BrowserTestBase {
   /**
    * Test directory person page meta data.
    */
-  public function testDirectoryPerson(): void {
+  public function testDirectoryPerson() {
     $user = $this->createUser(['access content']);
     $this->drupalLogin($user);
     $this->drupalGet('directory/foo-bar');

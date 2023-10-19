@@ -27,28 +27,38 @@ class ClassroomsCoreCommands extends DrushCommands {
 
   /**
    * The account_switcher service.
+   *
+   * @var \Drupal\Core\Session\AccountSwitcherInterface
    */
-  protected AccountSwitcherInterface $accountSwitcher;
+  protected $accountSwitcher;
 
   /**
    * The uiowa_maui.api service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected MauiApi $mauiApi;
+  protected $mauiApi;
 
   /**
    * The cache.uiowa_maui service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected CacheBackendInterface $mauiCache;
+  protected $mauiCache;
 
   /**
    * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   /**
    * The datetime.time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected TimeInterface $time;
+  protected $time;
 
   /**
    * Drush command constructor.
@@ -80,7 +90,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @usage classrooms_core:buildings
    *  Ideally this is done as a crontab that is only run once a day.
    */
-  public function getBuildings(): void {
+  public function getBuildings() {
     $entities_created = 0;
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
@@ -158,7 +168,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @usage classrooms_core:rooms_import --batch=20
    *  Process rooms with a specified batch size.
    */
-  public function importRooms(array $options = ['batch' => 20]): void {
+  public function importRooms(array $options = ['batch' => 20]) {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 

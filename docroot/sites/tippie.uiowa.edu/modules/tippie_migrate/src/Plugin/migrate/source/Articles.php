@@ -34,14 +34,14 @@ class Articles extends BaseNodeSource {
    *
    * @var array
    */
-  protected array $termMapping;
+  protected $termMapping;
 
   /**
    * Tag-to-name mapping for keywords.
    *
    * @var array
    */
-  protected array $tagMapping;
+  protected $tagMapping;
 
   /**
    * {@inheritdoc}

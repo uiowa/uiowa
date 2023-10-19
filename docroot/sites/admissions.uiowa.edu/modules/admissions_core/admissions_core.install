@@ -15,21 +15,21 @@ use Drupal\layout_builder\SectionComponent;
 /**
  * Implements hook_install().
  */
-function admissions_core_install(): void {
+function admissions_core_install() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Implements hook_uninstall().
  */
-function admissions_core_uninstall(): void {
+function admissions_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Set weights to 0 for existing scholarships content.
  */
-function admissions_core_update_8001(): void {
+function admissions_core_update_8001() {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'scholarship');
 
@@ -48,7 +48,7 @@ function admissions_core_update_8001(): void {
 /**
  * Update the counselor select list to remove several options.
  */
-function admissions_core_update_8002(): void {
+function admissions_core_update_8002() {
   // Statically defining the field to be updated.
   $field_name = 'field_person_territory';
 
@@ -177,7 +177,7 @@ function admissions_core_update_8002(): void {
 /**
  * Update orgsync link in field_area_of_study_opportunity.
  */
-function admissions_core_update_9001(): void {
+function admissions_core_update_9001() {
   $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
 
   $ids = $query
@@ -221,7 +221,7 @@ function admissions_core_update_9001(): void {
  * fields with full_html as the format. Additionally convert
  * any of these that are Area of Study nodes to use filtered_html.
  */
-function admissions_core_update_9002(): void {
+function admissions_core_update_9002() {
   // Grab some services for later use.
   $entity_type_manager = \Drupal::entityTypeManager();
   $entity_field_manager = \Drupal::service('entity_field.manager');
@@ -359,14 +359,14 @@ function admissions_core_update_9003() {
 /**
  * Flush all caches after changing service constructors.
  */
-function admissions_core_update_9004(): void {
+function admissions_core_update_9004() {
   drupal_flush_all_caches();
 }
 
 /**
  * Disable the areas_of_study config split.
  */
-function admissions_core_update_9005(): void {
+function admissions_core_update_9005() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.areas_of_study');
   $config->set('status', FALSE);
@@ -376,7 +376,7 @@ function admissions_core_update_9005(): void {
 /**
  * Look for custom search block.
  */
-function admissions_core_update_9006(): void {
+function admissions_core_update_9006() {
   $db = \Drupal::database();
 
   $section_column = 'layout_builder__layout_section';
@@ -505,7 +505,7 @@ function admissions_core_update_9006(): void {
 /**
  * Set new style options for existing student profiles grid blocks.
  */
-function admissions_core_update_9007(): void {
+function admissions_core_update_9007() {
   // Find NIDs for all nodes with at least one student profiles grid block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
@@ -572,7 +572,7 @@ function admissions_core_update_9007(): void {
 /**
  * Set initial events filter configuration.
  */
-function admissions_core_update_9008(): void {
+function admissions_core_update_9008() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('sitenow_events.settings');
   $config->set('filter_display', [
