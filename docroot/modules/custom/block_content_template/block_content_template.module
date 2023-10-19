@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * @file
+ * Block content template functionality.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_theme().
+ */
+function block_content_template_theme() {
+  return [
+    'block_content' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for block_content.
+ */
+function block_content_template_block_content_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Add theming function when
+  // - the $build has a _layout_builder property
+  // @todo Possibly remove the above condition because it
+  //   seems to apply to every block on a page regardless
+  //   of whether it was placed by LB or not.
+  // - the block entity has a view property
+  // - the block entity has a _referringItem property
+  if (isset($build['_layout_builder']) || isset($entity->view) || isset($entity->_referringItem)) {
+    $build['#theme'] = 'block_content';
+  }
+}
+
+/**
+ * Preprocess function for block content template.
+ */
+function template_preprocess_block_content(&$variables) {
+  $block_content = $variables['elements']['#block_content'];
+  $variables['id'] = $block_content->id();
+  $variables['bundle'] = $block_content->bundle();
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $variables['label'] = $block_content->label();
+
+  // Helpful $content variable for templates.
+  $variables += ['content' => []];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+  // Create a valid HTML ID and make sure it is unique.
+  if (!empty($variables['elements']['#id'])) {
+    $variables['attributes']['id'] = Html::getUniqueId('block-content-' . $variables['elements']['#id']);
+  }
+
+  // Proactively add aria-describedby if possible to improve accessibility.
+  if ($variables['label'] && isset($variables['attributes']['role'])) {
+    $variables['title_attributes']['id'] = Html::getUniqueId($variables['label']);
+    $variables['attributes']['aria-describedby'] = $variables['title_attributes']['id'];
+  }
+
+  // Remove quick edit as it doesn't make sense here. It also points to the view
+  // for instance, which doesn't make sense at all.
+  if (isset($variables['attributes']['data-quickedit-entity-id'])) {
+    unset($variables['attributes']['data-quickedit-entity-id']);
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function block_content_template_theme_suggestions_block_content(array $variables) {
+  $suggestions = [];
+  $block_content = $variables['elements']['#block_content'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'block_content__' . $sanitized_view_mode;
+  $suggestions[] = 'block_content__' . $block_content->bundle();
+  $suggestions[] = 'block_content__' . $block_content->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'block_content__' . $block_content->id();
+  $suggestions[] = 'block_content__' . $block_content->id() . '__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
