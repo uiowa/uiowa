@@ -24,13 +24,13 @@ function block_content_template_theme() {
  * Implements hook_ENTITY_TYPE_view_alter() for block_content.
  */
 function block_content_template_block_content_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  // Add theming function when
-  // - the $build has a _layout_builder property
+  // Add theming function when:
+  // - The $build has a _layout_builder property.
   // @todo Possibly remove the above condition because it
   //   seems to apply to every block on a page regardless
   //   of whether it was placed by LB or not.
-  // - the block entity has a view property
-  // - the block entity has a _referringItem property
+  // - The block entity has a view property.
+  // - The block entity has a _referringItem property.
   if (isset($build['_layout_builder']) || isset($entity->view) || isset($entity->_referringItem)) {
     $build['#theme'] = 'block_content';
   }
