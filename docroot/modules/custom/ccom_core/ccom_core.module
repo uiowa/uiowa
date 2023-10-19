@@ -14,7 +14,7 @@ function ccom_core_preprocess_block(&$variables) {
     $full_url = \Drupal::request()->server->get('HTTP_HOST') . $current_path;
     $newlink = '<p><a href="http://hc-vbugtracker.healthcare.uiowa.edu/projects/uihc-org/issues/new?issue[custom_field_values][1]=' . $full_url . '">Report an issue with this page</a></p>';
     $variables["content"]["field_uiowa_text_area"][0]['#text'] .= $newlink;
-    $variables["content"]["field_uiowa_text_area"][0]['#cache'] = [
+    $variables['#cache'] = [
       'max-age' => 0,
     ];
   }
