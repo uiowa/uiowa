@@ -19,10 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -65,7 +63,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
         if ($node->hasField('field_person_territory') &&
           !$node->get('field_person_territory')->isEmpty()) {
           $values = $node->get('field_person_territory')->getValue();
-          array_walk_recursive($values, function ($v) use (&$territories) {
+          array_walk_recursive($values, function ($v) use (&$territories): void {
             $territories[] = $v;
           });
         }

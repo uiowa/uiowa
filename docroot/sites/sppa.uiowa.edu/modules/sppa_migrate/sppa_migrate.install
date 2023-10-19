@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function sppa_migrate_install() {
+function sppa_migrate_install(): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'sppa_migrate') . '/config/split';
@@ -31,7 +31,7 @@ function sppa_migrate_install() {
 /**
  * Implements hook_uninstall().
  */
-function sppa_migrate_uninstall() {
+function sppa_migrate_uninstall(): void {
   // Disable the split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.sppa_migrate');

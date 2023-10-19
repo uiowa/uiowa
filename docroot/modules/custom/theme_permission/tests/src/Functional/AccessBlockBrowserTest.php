@@ -14,7 +14,7 @@ class AccessBlockBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if user access to Bartik blocks configuration.
    */
-  public function testIfAccessThemeBartik() {
+  public function testIfAccessThemeBartik(): void {
     $this->userLogin(['administer themes bartik']);
     $this->drupalGet('/admin/structure/block/list/bartik');
     $this->assertSession()->statusCodeEquals(200);
@@ -23,7 +23,7 @@ class AccessBlockBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if user don't access to Bartik blocks configuration.
    */
-  public function testIfAccessDeniedThemeBartik() {
+  public function testIfAccessDeniedThemeBartik(): void {
     $this->userLogin();
     $this->drupalGet("/admin/structure/block/list/bartik");
     $this->assertSession()->statusCodeEquals(403);
@@ -32,7 +32,7 @@ class AccessBlockBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if block list contain seven url.
    */
-  public function testIfShowSeven() {
+  public function testIfShowSeven(): void {
     $this->userLogin(
       [
         'administer themes bartik',
@@ -46,7 +46,7 @@ class AccessBlockBrowserTest extends ThemePermissionTestBase {
   /**
    * Check if block list don't contain seven url.
    */
-  public function testIfNotShowSeven() {
+  public function testIfNotShowSeven(): void {
     $this->userLogin();
     $this->drupalGet("/admin/structure/block");
     $this->assertEmpty($this->getSession()->getPage()->find('xpath', '//a[contains(@href, "/admin/structure/block/list/seven")]'));

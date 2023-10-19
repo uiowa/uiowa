@@ -13,24 +13,18 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
 
   /**
    * Link directly to source field name, if it exists.
-   *
-   * @var string|null
    */
-  protected $sourceLinkDirect = NULL;
+  protected ?string $sourceLinkDirect = NULL;
 
   /**
    * Source link field name, if it exists.
-   *
-   * @var string|null
    */
-  protected $sourceLink = NULL;
+  protected ?string $sourceLink = NULL;
 
   /**
    * The config settings name, if one exists.
-   *
-   * @var string
    */
-  protected $configSettings = '';
+  protected string $configSettings = '';
 
   /**
    * {@inheritdoc}

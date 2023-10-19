@@ -59,7 +59,7 @@ class LayoutBuilderStylesHelper {
    * @param array $style_map
    *   A style map of Layout Builder styles.
    */
-  public static function removeStylesFromAttributes(array &$attributes, array $style_map) {
+  public static function removeStylesFromAttributes(array &$attributes, array $style_map): void {
     // Filter class list to only elements didn't match a style from the style
     // map.
     $attributes['class'] = array_filter($attributes['class'], function ($class) use ($style_map) {
@@ -106,7 +106,7 @@ class LayoutBuilderStylesHelper {
    * @param string $format
    *   The format of the media view mode.
    */
-  public static function setMediaViewModeFromStyle(array &$build, string $size, string $format) {
+  public static function setMediaViewModeFromStyle(array &$build, string $size, string $format): void {
     $media_formats = [
       'media--circle' => 'square',
       'media--square' => 'square',
@@ -139,7 +139,7 @@ class LayoutBuilderStylesHelper {
    * @param array $attributes
    *   The attributes array to be processed.
    */
-  public static function processGridClasses(array &$attributes) {
+  public static function processGridClasses(array &$attributes): void {
     if (in_array('list-container--list', $attributes['class'])) {
       foreach ($attributes['class'] as $key => $style) {
         if (str_starts_with($style, static::GRID_PREFIX)) {

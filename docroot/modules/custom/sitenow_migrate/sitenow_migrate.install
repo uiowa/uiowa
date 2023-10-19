@@ -12,7 +12,7 @@ use Drupal\Core\File\FileSystemInterface;
 /**
  * Implements hook_install().
  */
-function sitenow_migrate_install() {
+function sitenow_migrate_install(): void {
   // Recreation of media.install to ensure the generic file image is available
   // in the local environment prior to migration.
   // Helps with memory issues and errors during migration, if the file
@@ -48,7 +48,7 @@ function sitenow_migrate_install() {
 /**
  * Helper function for installing config related to a migration.
  */
-function sitenow_migrate_migration_install($sitename) {
+function sitenow_migrate_migration_install($sitename): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
 
@@ -83,7 +83,7 @@ function sitenow_migrate_migration_install($sitename) {
 /**
  * Helper function for uninstalling config related to a migration.
  */
-function sitenow_migrate_migration_uninstall($sitename) {
+function sitenow_migrate_migration_uninstall($sitename): void {
   if (!$sitename) {
     return;
   }

@@ -30,7 +30,7 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
    * @param \Drupal\entity_print\Event\PrintCssAlterEvent $event
    *   The PrintCssAlterEvent event.
    */
-  public function alterCss(PrintCssAlterEvent $event) {
+  public function alterCss(PrintCssAlterEvent $event): void {
     $event->getBuild()['#attached']['library'][] = 'admissions_core/pdf';
   }
 

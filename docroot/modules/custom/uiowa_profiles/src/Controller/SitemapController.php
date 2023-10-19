@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,24 +19,18 @@ class SitemapController extends ControllerBase {
 
   /**
    * The APR service.
-   *
-   * @var \Drupal\uiowa_profiles\Client
    */
-  protected $profiles;
+  protected Client $profiles;
 
   /**
    * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
    */
-  protected $httpClient;
+  protected ClientInterface $httpClient;
 
   /**
    * The uiowa_profiles logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * The controller constructor.
@@ -72,7 +67,7 @@ class SitemapController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   The response object.
    */
-  public function build(Request $request, $key) {
+  public function build(Request $request, int $key): Response {
     $directory = $this->config('uiowa_profiles.settings')->get('directories')[$key];
 
     $sitemap = $this->profiles->request('GET', 'people/sitemap', [

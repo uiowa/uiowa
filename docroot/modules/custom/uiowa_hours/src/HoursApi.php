@@ -21,31 +21,23 @@ class HoursApi {
 
   /**
    * The uiowa_hours logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
   protected LoggerInterface $logger;
 
   /**
    * The uiowa_hours cache.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   protected CacheBackendInterface $cache;
 
   /**
    * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
    */
   protected ClientInterface $client;
 
   /**
    * The resource group to use in the URL of API requests.
-   *
-   * @var string
    */
-  protected $group;
+  protected string $group;
 
   /**
    * Constructs a Hours object.
@@ -81,7 +73,7 @@ class HoursApi {
    * @return mixed
    *   The API response data.
    */
-  public function request($method, $path, array $params = [], array $options = []) {
+  public function request(string $method, string $path, array $params = [], array $options = []): mixed {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
     $uri = self::BASE . ltrim($path, '/');
@@ -141,7 +133,7 @@ class HoursApi {
    * @return array
    *   The array of groups.
    */
-  public function getGroups() {
+  public function getGroups(): array {
     $groups = $this->request('GET', '');
     sort($groups);
     return $groups;
@@ -156,7 +148,7 @@ class HoursApi {
    * @return array
    *   The array of resources.
    */
-  public function getResources($group) {
+  public function getResources(string $group): array {
     $resources = $this->request('GET', $group);
 
     // Capitalize all resources before sorting because some are already caps.
@@ -171,7 +163,7 @@ class HoursApi {
    * @return array
    *   An array of hours.
    */
-  public function getHours($resource, $start = 'today', $end = 'today') {
+  public function getHours($resource, $start = 'today', $end = 'today'): array {
     $start = strtotime($start);
     $end = strtotime($end);
 

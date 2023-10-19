@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Resave mentor titles without credentials.
  */
-function grad_core_update_9001() {
+function grad_core_update_9001(): void {
   $storage = \Drupal::entityTypeManager()->getStorage('node');
 
   $nids = \Drupal::entityQuery('node')
@@ -30,7 +30,7 @@ function grad_core_update_9001() {
 /**
  * Enable new thesis_defense config split.
  */
-function grad_core_update_9002() {
+function grad_core_update_9002(): void {
   // This site does not have the 'thesis_defense' split enabled.
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);

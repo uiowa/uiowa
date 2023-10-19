@@ -11,14 +11,14 @@ use Drupal\node\Entity\Node;
 /**
  * Implements hook_install().
  */
-function oniowa_core_install() {
+function oniowa_core_install(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Set sitenow_events configuration.
  */
-function oniowa_core_update_9001() {
+function oniowa_core_update_9001(): void {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('sitenow_events.settings');
   if (is_null($config->get('filter_display'))) {
@@ -36,7 +36,7 @@ function oniowa_core_update_9001() {
 /**
  * Import path config and bulk save events to update path.
  */
-function oniowa_core_update_9002(&$sandbox) {
+function oniowa_core_update_9002(&$sandbox): void {
   // Initialize if we haven't started the bulk
   // operations yet.
   if (!isset($sandbox['total'])) {
@@ -91,6 +91,6 @@ function oniowa_core_update_9002(&$sandbox) {
 /**
  * Implements hook_uninstall().
  */
-function oniowa_core_uninstall() {
+function oniowa_core_uninstall(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }

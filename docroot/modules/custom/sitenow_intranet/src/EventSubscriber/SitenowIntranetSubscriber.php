@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_intranet\EventSubscriber;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\sitenow_intranet\IntranetHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -17,10 +18,8 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
 
   /**
    * Current user account.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $currentUser;
+  protected AccountInterface $currentUser;
 
   /**
    * Constructs a SitenowIntranetSubscriber.
@@ -28,7 +27,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
    */
-  public function __construct($current_user) {
+  public function __construct(AccountInterface $current_user) {
     $this->currentUser = $current_user;
   }
 
@@ -38,7 +37,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
    *   Response event.
    */
-  public function onKernelRequest(RequestEvent $event) {
+  public function onKernelRequest(RequestEvent $event): void {
     $code = IntranetHelper::getStatusCode();
     $status_code_map = IntranetHelper::getStatusCodeMap();
     // The code below prevents us from getting into redirect loops when this

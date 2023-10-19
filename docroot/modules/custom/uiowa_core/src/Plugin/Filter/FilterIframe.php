@@ -146,7 +146,7 @@ class FilterIframe extends FilterBase {
    * @return array
    *   Key/value pairs of attributes.
    */
-  public function getIframeAttributes() {
+  public function getIframeAttributes(): array {
     return [
       'loading' => 'lazy',
       'seamless' => 'seamless',

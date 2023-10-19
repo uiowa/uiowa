@@ -20,10 +20,8 @@ class FacilitiesCoreCommands extends DrushCommands {
 
   /**
    * The account_switcher service.
-   *
-   * @var \Drupal\Core\Session\AccountSwitcherInterface
    */
-  protected $accountSwitcher;
+  protected AccountSwitcherInterface $accountSwitcher;
 
   /**
    * A nullable array of data returned by the API.
@@ -50,7 +48,7 @@ class FacilitiesCoreCommands extends DrushCommands {
    * @usage facilities_core:buildings_import
    *  Ideally this is done as a crontab that is only run once a day.
    */
-  public function importBuildings() {
+  public function importBuildings(): void {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 

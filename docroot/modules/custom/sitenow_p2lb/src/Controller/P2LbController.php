@@ -19,10 +19,8 @@ class P2LbController extends ControllerBase implements ContainerInjectionInterfa
 
   /**
    * The entity repository service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * Constructs a NodeController object.
@@ -52,7 +50,7 @@ class P2LbController extends ControllerBase implements ContainerInjectionInterfa
    * @return array
    *   An array as expected by \Drupal\Core\Render\RendererInterface::render().
    */
-  public function status(NodeInterface $node) {
+  public function status(NodeInterface $node): array {
     $build['#title'] = $this->t('V3 Conversion status for %title', ['%title' => $node->label()]);
 
     if ($node instanceof Page) {

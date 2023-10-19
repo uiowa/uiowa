@@ -21,38 +21,32 @@ class Article extends BaseNodeSource {
 
   /**
    * The public file directory path.
-   *
-   * @var string
    */
-  protected $publicPath;
+  protected string $publicPath;
 
   /**
    * The private file directory path, if any.
-   *
-   * @var string
    */
-  protected $privatePath;
+  protected string $privatePath;
 
   /**
    * The temporary file directory path.
-   *
-   * @var string
    */
-  protected $temporaryPath;
+  protected string $temporaryPath;
 
   /**
    * Node-to-node mapping for author content.
    *
    * @var array
    */
-  protected $authorMapping;
+  protected array $authorMapping;
 
   /**
    * Term-to-term mapping for tags.
    *
    * @var array
    */
-  protected $termMapping;
+  protected array $termMapping;
 
   /**
    * {@inheritdoc}
@@ -192,7 +186,7 @@ class Article extends BaseNodeSource {
    * @return int
    *   The nid for the new destination Person node.
    */
-  protected function getAuthor($author_nid) {
+  protected function getAuthor(int $author_nid): int {
     // If we have the mapping, then return.
     if (isset($this->authorMapping[$author_nid])) {
       return $this->authorMapping[$author_nid];
@@ -221,7 +215,7 @@ class Article extends BaseNodeSource {
   /**
    * Map taxonomy to a tag.
    */
-  protected function getTags(&$row) {
+  protected function getTags(&$row): void {
     $tids = array_merge($row->getSourceProperty('field_tags_tid'), $row->getSourceProperty('field_article_program_tid'));
     foreach ($tids as $tid) {
       if (isset($this->termMapping[$tid])) {

@@ -2,9 +2,12 @@
 
 namespace Drupal\Tests\uiowa_maui\Kernel;
 
+use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Form\FormState;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\uiowa_maui\MauiApi;
 use Drupal\uiowa_maui\Plugin\Block\AcademicDatesBlock;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Test description.
@@ -20,31 +23,27 @@ class AcademicDatesBlockTest extends KernelTestBase {
 
   /**
    * Mock MAUI service.
-   *
-   * @var \Drupal\uiowa_maui\MauiApi|\PHPUnit\Framework\MockObject\MockObject
    */
-  protected $maui;
+  protected MauiApi|MockObject $maui;
 
   /**
    * Mock FormBuilder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilder|\PHPUnit\Framework\MockObject\MockObject
    */
-  protected $formBuilder;
+  protected FormBuilder|MockObject $formBuilder;
 
   /**
    * Fake block plugin configuration.
    *
    * @var string[]
    */
-  protected $plugin;
+  protected array $plugin;
 
   /**
    * Shared initial config for the block constructor.
    *
    * @var array
    */
-  protected $blockConfig;
+  protected array $blockConfig;
 
   /**
    * {@inheritdoc}
@@ -116,7 +115,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
    *
    * @dataProvider placeholderProvider
    */
-  public function testHeadlinePlaceholderIsReplaced($placeholder) {
+  public function testHeadlinePlaceholderIsReplaced($placeholder): void {
     $config = $this->blockConfig;
     $config['headline'] = $placeholder;
     $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
@@ -128,7 +127,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * Test headline placeholder.
    */
-  public function testHeadlinePlaceholderCannotBeUsedWithExposedSession() {
+  public function testHeadlinePlaceholderCannotBeUsedWithExposedSession(): void {
     $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
     $form_state = new FormState();
 
@@ -149,7 +148,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * Test empty session and category select options are saved as NULL.
    */
-  public function testEmptyValuesSavedAsNull() {
+  public function testEmptyValuesSavedAsNull(): void {
     $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
 
     $form_state = new FormState();
@@ -174,7 +173,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * Test selected values for session and category.
    */
-  public function testNonEmptyValuesSavedAsNotNull() {
+  public function testNonEmptyValuesSavedAsNotNull(): void {
     $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
     $form_state = new FormState();
 
@@ -198,7 +197,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * The more link should render if display more link is checked.
    */
-  public function testMoreLinkDoesRenderIfSet() {
+  public function testMoreLinkDoesRenderIfSet(): void {
     $config = $this->blockConfig;
     $config['display_more_link'] = TRUE;
     $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
@@ -212,7 +211,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * The more link should not render if display more link is not checked.
    */
-  public function testMoreLinkDoesRenderIfNotSet() {
+  public function testMoreLinkDoesRenderIfNotSet(): void {
     $config = $this->blockConfig;
     $config['display_more_link'] = FALSE;
     $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';

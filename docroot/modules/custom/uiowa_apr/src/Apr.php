@@ -14,31 +14,23 @@ use Psr\Log\LoggerInterface;
 class Apr {
   /**
    * The APR settings config.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private $config;
+  private ConfigFactoryInterface $config;
 
   /**
    * The uiowa_apr logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  private $logger;
+  private LoggerInterface $logger;
 
   /**
    * The APR environment.
-   *
-   * @var string
    */
-  protected $environment;
+  protected string $environment;
 
   /**
    * The APR API endpoint.
-   *
-   * @var string
    */
-  protected $endpoint;
+  protected string $endpoint;
 
   /**
    * Constructs an Apr service object.
@@ -66,7 +58,7 @@ class Apr {
    * @return mixed
    *   The property value.
    */
-  public function __get($name) {
+  public function __get(string $name): mixed {
     return $this->$name;
   }
 
@@ -107,7 +99,7 @@ class Apr {
    * @return string
    *   The API endpoint.
    */
-  protected function setEndpoint() {
+  protected function setEndpoint(): string {
     $endpoint = '';
 
     if ($this->environment === 'test') {

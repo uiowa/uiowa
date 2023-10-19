@@ -137,7 +137,7 @@ class Articles extends BaseNodeSource {
    * @return false|string
    *   The new path or FALSE if not in the map.
    */
-  protected function manualLookup($nid) {
+  protected function manualLookup(int $nid): false|string {
     $map = [
       1122 => '/people/jeanine-p-abrons',
       1234 => '/people/guohua',

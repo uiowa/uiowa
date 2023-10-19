@@ -22,10 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * Config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * {@inheritdoc}

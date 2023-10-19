@@ -8,7 +8,7 @@
 /**
  * Update articles page meta description.
  */
-function sitenow_articles_update_8001() {
+function sitenow_articles_update_8001(): void {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('views.view.articles');
 
@@ -20,7 +20,7 @@ function sitenow_articles_update_8001() {
 /**
  * Add numeric validation to articles view arguments.
  */
-function sitenow_articles_update_9101() {
+function sitenow_articles_update_9101(): void {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('views.view.articles');
 
@@ -38,7 +38,7 @@ function sitenow_articles_update_9101() {
 /**
  * Add tag and related display config setting to articles.
  */
-function sitenow_articles_update_9301() {
+function sitenow_articles_update_9301(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
   $config->set('tag_display', 'do_not_display');
   $config->set('related_display', 'related_display');
@@ -49,7 +49,7 @@ function sitenow_articles_update_9301() {
 /**
  * Add link indicator on teasers config setting to pages.
  */
-function sitenow_articles_update_9302() {
+function sitenow_articles_update_9302(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
   $config->set('show_teaser_link_indicator', FALSE);
 
@@ -59,7 +59,7 @@ function sitenow_articles_update_9302() {
 /**
  * Update articles feed guid permalink to false.
  */
-function sitenow_articles_update_9303() {
+function sitenow_articles_update_9303(): void {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('views.view.articles');
 
@@ -71,7 +71,7 @@ function sitenow_articles_update_9303() {
 /**
  * Set related articles to card_grid instead of do_not_display.
  */
-function sitenow_articles_update_9304() {
+function sitenow_articles_update_9304(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
   if ($config->get('related_display') !== 'headings_lists') {
     $config->set('related_display', 'card_grid')
@@ -82,7 +82,7 @@ function sitenow_articles_update_9304() {
 /**
  * Add preserved link message display config setting to articles.
  */
-function sitenow_articles_update_9305() {
+function sitenow_articles_update_9305(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
 
   if (!$config->get('preserved_links_message_display_default')) {
@@ -94,7 +94,7 @@ function sitenow_articles_update_9305() {
 /**
  * Add articles config setting for displaying articles authored by view.
  */
-function sitenow_articles_update_9306() {
+function sitenow_articles_update_9306(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
   $config->set('display_articles_by_author', FALSE);
   $config->save();

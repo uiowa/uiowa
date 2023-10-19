@@ -11,21 +11,21 @@ use Drupal\field\Entity\FieldStorageConfig;
 /**
  * Implements hook_install().
  */
-function pharmacy_core_install() {
+function pharmacy_core_install(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Implements hook_uninstall().
  */
-function pharmacy_core_uninstall() {
+function pharmacy_core_uninstall(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Update person state options to use allowed values function.
  */
-function pharmacy_core_update_9001() {
+function pharmacy_core_update_9001(): void {
   // Grab all our initial field definitions
   // and related database table names.
   $field_name = 'field_person_territory';

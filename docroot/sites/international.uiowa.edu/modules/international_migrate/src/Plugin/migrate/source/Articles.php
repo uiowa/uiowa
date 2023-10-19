@@ -28,14 +28,14 @@ class Articles extends BaseNodeSource {
    *
    * @var array
    */
-  protected $termMapping;
+  protected array $termMapping;
 
   /**
    * Tag-to-name mapping for keywords.
    *
    * @var array
    */
-  protected $tagMapping;
+  protected array $tagMapping;
 
   /**
    * {@inheritdoc}
@@ -360,7 +360,7 @@ class Articles extends BaseNodeSource {
    * @return false|string|int
    *   The new node id, path, or FALSE if not in the map.
    */
-  protected function manualLookup(int $nid, int $inv_delta) {
+  protected function manualLookup(int $nid, int $inv_delta): false|string|int {
     // Depending on when the migration is run in production,
     // we may need to offset some of the node ids to account
     // for their new order in node id.

@@ -25,7 +25,7 @@ class GitCommands extends BltTasks {
    * @requireHost
    * @requireRemoteAccess
    */
-  public function clean() {
+  public function clean(): void {
     // Keep the last five releases. In reality, reverting to anything beyond
     // even the previous release is probably unfeasible.
     $tags = $this->getOriginTagsAsArtifacts();
@@ -92,7 +92,7 @@ class GitCommands extends BltTasks {
    * @requireHost
    * @requireCredentials
    */
-  public function deploy() {
+  public function deploy(): void {
     $latest = $this->getOriginTagsAsArtifacts()[0];
 
     // The API does not includes 'refs/' in code branches or tags.
@@ -157,7 +157,7 @@ class GitCommands extends BltTasks {
    *
    * @hidden
    */
-  public function postArtifactBuild() {
+  public function postArtifactBuild(): void {
     $this->garbageCollection();
     $this->writeGitVersion();
     $this->copyDrushCommands();
@@ -166,7 +166,7 @@ class GitCommands extends BltTasks {
   /**
    * Do some garbage collection in the build artifact before pushing.
    */
-  protected function garbageCollection() {
+  protected function garbageCollection(): void {
     $result = $this->taskGitStack()
       ->dir($this->getConfigValue('deploy.dir'))
       ->exec('prune')
@@ -182,7 +182,7 @@ class GitCommands extends BltTasks {
   /**
    * Write an unannotated Git tag version string to custom assets.
    */
-  protected function writeGitVersion() {
+  protected function writeGitVersion(): void {
     $result = $this->taskGit()
       ->dir($this->getConfigValue('repo.root'))
       ->exec('describe --tags')
@@ -237,7 +237,7 @@ class GitCommands extends BltTasks {
    * the build artifact. Rather than override that file and lose upstream
    * changes, we can copy our Drush commands via a post-command hook.
    */
-  protected function copyDrushCommands() {
+  protected function copyDrushCommands(): void {
     $root = $this->getConfigValue('repo.root');
     $deploy_dir = $this->getConfigValue('deploy.dir');
 
@@ -271,7 +271,7 @@ class GitCommands extends BltTasks {
    *
    * @throws \Robo\Exception\TaskException
    */
-  protected function getOriginTagsAsArtifacts() {
+  protected function getOriginTagsAsArtifacts(): array {
     $result = $this->taskExecStack()
       ->exec('git ls-remote --tags --refs origin')
       ->stopOnFail()

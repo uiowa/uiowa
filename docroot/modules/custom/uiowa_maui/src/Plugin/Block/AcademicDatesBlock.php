@@ -25,17 +25,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The MAUI API service.
-   *
-   * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui;
+  protected MauiApi $maui;
 
   /**
    * The form_builder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected $formBuilder;
+  protected FormBuilderInterface $formBuilder;
 
   /**
    * Override the construction method.
@@ -51,7 +47,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form_builder service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
     $this->formBuilder = $formBuilder;
@@ -71,7 +67,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
    *
    * @return static
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, string $plugin_id, mixed $plugin_definition): static {
     return new static(
       $configuration,
       $plugin_id,

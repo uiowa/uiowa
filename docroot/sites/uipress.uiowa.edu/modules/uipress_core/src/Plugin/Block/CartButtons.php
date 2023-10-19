@@ -20,10 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CartButtons extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The current route match.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
-  protected $routeMatch;
+  protected RouteMatchInterface $routeMatch;
 
   /**
    * {@inheritdoc}

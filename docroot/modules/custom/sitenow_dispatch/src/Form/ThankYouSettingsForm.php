@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Drupal\uiowa_core\Access\UiowaCoreAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,10 +16,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
 
   /**
    * The dispatch service.
-   *
-   * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
    */
-  protected $check;
+  protected UiowaCoreAccess $check;
 
   /**
    * {@inheritdoc}

@@ -11,7 +11,7 @@ use Drupal\sitenow_alerts\Entity\Alert;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
+function sitenow_alerts_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['alert'])) {
     $bundles['node']['alert']['class'] = Alert::class;
   }
@@ -20,7 +20,7 @@ function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
 /**
  * Implements hook_form_alter().
  */
-function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   switch ($form_id) {
     // Update help text for scheduler on alert content type.
     case 'node_alert_edit_form':
@@ -35,7 +35,7 @@ function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form
 /**
  * Implements hook_preprocess_field().
  */
-function sitenow_alerts_preprocess_field(&$variables, $hook) {
+function sitenow_alerts_preprocess_field(&$variables, $hook): void {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_category':
       $view_mode = $variables['element']['#view_mode'];
@@ -58,7 +58,7 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_alerts_preprocess_node(&$variables) {
+function sitenow_alerts_preprocess_node(&$variables): void {
   if ($variables['node']?->getType() === 'alert' && $variables['view_mode'] === 'full') {
     $variables['#attached']['library'][] = 'sitenow_alerts/alert__full';
   }

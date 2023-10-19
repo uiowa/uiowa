@@ -48,7 +48,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @hidden
    */
-  public function noop() {
+  public function noop(): void {
 
   }
 
@@ -70,7 +70,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    */
-  public function execute($cmd, array $options = ['exclude' => []]) {
+  public function execute(string $cmd, array $options = ['exclude' => []]): void {
     if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
@@ -136,7 +136,7 @@ class MultisiteCommands extends BltTasks {
       'prod',
     ],
     'dry-run' => FALSE,
-  ]) {
+  ]): mixed {
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
@@ -239,7 +239,7 @@ class MultisiteCommands extends BltTasks {
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function delete(array $options = ['simulate' => FALSE]) {
+  public function delete(array $options = ['simulate' => FALSE]): void {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -429,14 +429,14 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, array $options = [
+  public function create(string $host, array $options = [
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
     'split' => InputOption::VALUE_REQUIRED,
     'site-name' => InputOption::VALUE_REQUIRED,
-  ]) {
+  ]): void {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
@@ -962,7 +962,7 @@ EOD;
    *
    * @hook post-command drupal:install
    */
-  public function postDrupalInstall($result, CommandData $commandData) {
+  public function postDrupalInstall($result, CommandData $commandData): void {
     if ($multisite = $this->input->getOption('site')) {
       $this->switchSiteContext($multisite);
 
@@ -1012,7 +1012,7 @@ EOD;
    * @param string $message
    *   The message to send.
    */
-  protected function sendNotification($message) {
+  protected function sendNotification(string $message): void {
     $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
@@ -1079,7 +1079,7 @@ EOD;
    *
    * @throws \Robo\Exception\TaskException
    */
-  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
+  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod'): string {
     $result = $this->taskDrush()
       ->alias("$id.$env")
       ->drush('status')

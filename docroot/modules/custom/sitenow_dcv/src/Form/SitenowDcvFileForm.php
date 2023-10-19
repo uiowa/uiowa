@@ -16,24 +16,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SitenowDcvFileForm extends FormBase {
   /**
    * The file system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fileSystem;
+  protected FileSystemInterface $fileSystem;
 
   /**
    * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The state service.
-   *
-   * @var \Drupal\Core\State\State
    */
-  protected $state;
+  protected State $state;
 
   /**
    * SitenowDcvFileForm constructor.

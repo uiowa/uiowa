@@ -8,7 +8,7 @@
 /**
  * Implements hook_install().
  */
-function sitenow_periodical_install() {
+function sitenow_periodical_install(): void {
   // Load article listing view.
   $view = Drupal::entityTypeManager()->getStorage('view')->load('articles');
   if ($view) {
@@ -64,7 +64,7 @@ function sitenow_periodical_install() {
 /**
  * Implements hook_uninstall().
  */
-function sitenow_periodical_uninstall() {
+function sitenow_periodical_uninstall(): void {
   // Load article listing view.
   $view = Drupal::entityTypeManager()->getStorage('view')->load('articles');
   if ($view) {

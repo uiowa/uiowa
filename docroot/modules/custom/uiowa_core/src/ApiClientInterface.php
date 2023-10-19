@@ -46,7 +46,7 @@ interface ApiClientInterface {
    * @return mixed
    *   The API response data or FALSE.
    */
-  public function request(string $method, string $endpoint, array $options = []);
+  public function request(string $method, string $endpoint, array $options = []): mixed;
 
   /**
    * Performs a 'GET' request and returns response data.
@@ -59,7 +59,7 @@ interface ApiClientInterface {
    * @return false|mixed
    *   The response data or FALSE.
    */
-  public function get(string $endpoint, array $options = []);
+  public function get(string $endpoint, array $options = []): mixed;
 
   /**
    * Return the last API request response.

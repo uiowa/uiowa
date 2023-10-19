@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Implements hook_uninstall().
  */
-function sitenow_events_uninstall() {
+function sitenow_events_uninstall(): void {
   // Remove the module configuration.
   \Drupal::configFactory()->getEditable('sitenow_events.settings')->delete();
 }
@@ -18,7 +18,7 @@ function sitenow_events_uninstall() {
 /**
  * Delete the unused uievents database table.
  */
-function sitenow_events_update_8001() {
+function sitenow_events_update_8001(): void {
   Drupal::database()->schema()->dropTable('uievents');
   drupal_flush_all_caches();
 }
@@ -26,7 +26,7 @@ function sitenow_events_update_8001() {
 /**
  * Remove unnecessary config items and nesting.
  */
-function sitenow_events_update_8002() {
+function sitenow_events_update_8002(): void {
   $config = Drupal::configFactory()->getEditable('sitenow_events.settings');
   $new = [];
 

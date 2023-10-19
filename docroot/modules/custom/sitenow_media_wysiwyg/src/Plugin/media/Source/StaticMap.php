@@ -38,17 +38,13 @@ class StaticMap extends MediaSourceBase {
 
   /**
    * The http_client service.
-   *
-   * @var \GuzzleHttp\Client
    */
-  protected $client;
+  protected Client $client;
 
   /**
    * The file_system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fs;
+  protected FileSystemInterface $fs;
 
   /**
    * Constructs a new class instance.
@@ -74,7 +70,7 @@ class StaticMap extends MediaSourceBase {
    * @param \Drupal\Core\File\FileSystemInterface $fs
    *   The file_system service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client, FileSystemInterface $fs) {
+  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client, FileSystemInterface $fs) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_field_manager, $field_type_manager, $config_factory);
     $this->client = $client;
     $this->fs = $fs;

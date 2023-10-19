@@ -49,7 +49,7 @@ function sitenow_people_get_research_title() {
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function sitenow_people_entity_bundle_info_alter(array &$bundles) {
+function sitenow_people_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['person'])) {
     $bundles['node']['person']['class'] = Person::class;
   }
@@ -211,7 +211,7 @@ on presave based on first website link and the link directly to website checkbox
  * @return array
  *   The processed block element.
  */
-function _sitenow_people_process_people_block_filters(array $element, FormStateInterface $form_state, array &$form) {
+function _sitenow_people_process_people_block_filters(array $element, FormStateInterface $form_state, array &$form): array {
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state
     ->getFormObject()
@@ -334,7 +334,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 /**
  * Validation callback.
  */
-function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
+function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state): void {
   // @todo Potentially set the correct values here?
   //   Also potentially need to scope the following:
   //   We take our filter operators out of their wrapper,
@@ -388,7 +388,7 @@ function sitenow_people_person_types_callback(array &$form, FormStateInterface $
 /**
  * Helper function to remove all options except for 'Any' and $type.
  */
-function sitenow_people_person_type_status_filter_options(array &$field, $type) {
+function sitenow_people_person_type_status_filter_options(array &$field, $type): void {
   if (isset($field['#options'])) {
 
     foreach ($field['#options'] as $key => $option) {
@@ -403,14 +403,14 @@ function sitenow_people_person_type_status_filter_options(array &$field, $type) 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $form['options']['link_url']['#description'][2]['#markup'] = ' {{ sitenow_people.path }} is the SiteNow People path setting.';
 }
 
 /**
  * Implements hook_entity_presave().
  */
-function sitenow_people_entity_presave(EntityInterface $entity) {
+function sitenow_people_entity_presave(EntityInterface $entity): void {
   switch ($entity->bundle()) {
     case 'person':
       // Setting the title with the first/last name values.
@@ -446,7 +446,7 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_entity_view_alter().
  */
-function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // @todo Remove this line and just use $entity->bundle() instead.
@@ -484,7 +484,7 @@ function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity
  *
  * @see \Drupal\inline_entity_form\InlineFormInterface::getTableFields()
  */
-function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, array $context): void {
   if ($context['field_name'] === 'field_article_author') {
     // Clean up, minimize the person IEF form.
     if (in_array('person', $context['allowed_bundles'])) {
@@ -512,7 +512,7 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_block(&$variables) {
+function sitenow_people_preprocess_block(&$variables): void {
   switch ($variables['plugin_id']) {
 
     case 'field_block:node:person:field_person_phone':
@@ -530,7 +530,7 @@ function sitenow_people_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_field(&$variables) {
+function sitenow_people_preprocess_field(&$variables): void {
   switch ($variables['element']['#field_name']) {
     case 'field_person_contact_information':
       uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
@@ -573,7 +573,7 @@ function sitenow_people_preprocess_field(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_page(&$variables) {
+function sitenow_people_preprocess_page(&$variables): void {
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
   if (strpos($route_name, 'view.people.') === 0) {
@@ -631,7 +631,7 @@ the first website link.'));
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_views_view(&$variables) {
+function sitenow_people_preprocess_views_view(&$variables): void {
   switch ($variables['id']) {
     case 'people':
       // Unset header content if empty.
@@ -646,7 +646,7 @@ function sitenow_people_preprocess_views_view(&$variables) {
 /**
  * Implements hook_uip_classes_alter().
  */
-function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
+function sitenow_people_uip_classes_alter(&$options, $entity, $bundle): void {
   switch ($bundle) {
     case 'people':
       $options['hide-descriptions'] = 'Hide Biographies';
@@ -660,7 +660,7 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
 /**
  * Implements hook_views_pre_render().
  */
-function sitenow_people_views_pre_render(ViewExecutable $view) {
+function sitenow_people_views_pre_render(ViewExecutable $view): void {
   if ($view->id() === 'people' && $view->current_display === 'page_people_table') {
     // Add <th> label for Draggable Views, otherwise it is flagged
     // for accessibility.
@@ -674,7 +674,7 @@ function sitenow_people_views_pre_render(ViewExecutable $view) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_paragraph(&$variables) {
+function sitenow_people_preprocess_paragraph(&$variables): void {
   $paragraph = $variables['paragraph'];
   switch ($paragraph->bundle()) {
     case 'people':
@@ -813,7 +813,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $view = $form_state->get('view');
   if ($view->id() === 'people_block') {
     if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
@@ -841,7 +841,7 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context): void {
   if ($element['#paragraph_type'] === 'people') {
     if (!empty($element['subform']['field_people_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -862,7 +862,7 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
 /**
  * Custom submit handler for node person forms.
  */
-function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
+function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state): void {
   // Get all instances of field_uiowa_contact_address.
   $contact_addresses = $form_state->getValue('field_person_contact_information');
 

@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\layout_builder_custom\Functional;
 
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\Tests\BrowserTestBase;
 
@@ -19,24 +21,20 @@ class MenuBlockCustomTest extends BrowserTestBase {
 
   /**
    * The menu link plugin manager.
-   *
-   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
    */
-  protected $menuLinkManager;
+  protected MenuLinkManagerInterface $menuLinkManager;
 
   /**
    * The menu link content storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $menuLinkContentStorage;
+  protected EntityStorageInterface $menuLinkContentStorage;
 
   /**
    * An array containing the menu link plugin ids.
    *
    * @var array
    */
-  protected $links;
+  protected array $links;
 
   /**
    * {@inheritdoc}
@@ -145,7 +143,7 @@ class MenuBlockCustomTest extends BrowserTestBase {
   /**
    * Checks that our menu block overrides are in place.
    */
-  public function testMenuBlockOverrides() {
+  public function testMenuBlockOverrides(): void {
     // @todo Test menu orientation field is showing only once.
     // @todo Test parent field is hidden when follow is checked.
     // @todo Test initial visibility field is hidden when follow is checked.

@@ -20,17 +20,13 @@ class DataController extends ControllerBase {
 
   /**
    * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
    */
-  protected $client;
+  protected ClientInterface $client;
 
   /**
    * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * The controller constructor.
@@ -64,7 +60,7 @@ class DataController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   The JSON.
    */
-  public function build(Request $request) {
+  public function build(Request $request): JsonResponse {
     $pause = $request->query->get('pause', FALSE);
     $since = date('m-d-Y', $request->query->get('since', strtotime('2021/08/23')));
     $weekdays = DateHelper::weekDaysUntranslated();
@@ -131,7 +127,7 @@ class DataController extends ControllerBase {
    * @return string
    *   The previous reporting date string.
    */
-  private function getPreviousReportingDate($dow): string {
+  private function getPreviousReportingDate(string $dow): string {
     $dow = ucfirst(strtolower($dow));
     $previous = NULL;
 

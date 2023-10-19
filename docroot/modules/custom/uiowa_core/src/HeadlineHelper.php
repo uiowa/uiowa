@@ -71,7 +71,7 @@ class HeadlineHelper {
    *
    * @todo Investigate creating a custom render element for this.
    */
-  public static function getElement(array $defaults, $has_children = TRUE) {
+  public static function getElement(array $defaults, bool $has_children = TRUE): array {
     $heading_size_options = self::getHeadingOptions();
 
     $element['container'] = [

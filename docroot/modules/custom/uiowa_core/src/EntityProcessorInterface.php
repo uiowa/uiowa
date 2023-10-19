@@ -10,6 +10,6 @@ interface EntityProcessorInterface {
   /**
    * Run the process operation.
    */
-  public function process();
+  public function process(): void;
 
 }

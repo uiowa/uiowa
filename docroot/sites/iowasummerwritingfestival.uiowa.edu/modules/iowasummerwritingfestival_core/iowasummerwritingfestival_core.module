@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_form_alter().
  */
-function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   switch ($form_id) {
     case 'node_event_form':
     case 'node_event_edit_form':
@@ -48,7 +48,7 @@ function iowasummerwritingfestival_core_theme($existing, $type, $theme, $path) {
  *
  * @see options_allowed_values()
  */
-function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable) : array {
+function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
   $options = [];
 
   // Set the allowed values for the field_event_genre field to the following.

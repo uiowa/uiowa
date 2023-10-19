@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_webform_element_alter().
  */
-function tippie_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+function tippie_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context): void {
   if (isset($element['#webform_key'])) {
     if ($element['#webform_key'] === 'visitorid') {
       $element['#element_validate'][] = [

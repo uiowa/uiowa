@@ -8,9 +8,9 @@
 /**
  * Set new configuration for all MAUI blocks.
  */
-function uiowa_maui_update_9001() {
+function uiowa_maui_update_9001(): void {
   \Drupal::moduleHandler()->loadInclude('sitenow', 'install');
-  _update_all_blocks_by_plugin_id('uiowa_maui_academic_dates', function (&$component, $block) {
+  _update_all_blocks_by_plugin_id('uiowa_maui_academic_dates', function (&$component, $block): void {
     $config = $component->get('configuration');
     $config['items_to_display'] = 10;
     $config['limit_dates'] = FALSE;

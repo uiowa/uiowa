@@ -13,7 +13,7 @@ interface RendersAsCardInterface {
    * @param array $build
    *   The renderable build array.
    */
-  public function addCardBuildInfo(array &$build);
+  public function addCardBuildInfo(array &$build): void;
 
   /**
    * Build card teaser render array.
@@ -21,7 +21,7 @@ interface RendersAsCardInterface {
    * @param array $build
    *   The renderable build array.
    */
-  public function buildCard(array &$build);
+  public function buildCard(array &$build): void;
 
   /**
    * Return an array mapping card style group names to classes.
@@ -37,7 +37,7 @@ interface RendersAsCardInterface {
    * @param array $build
    *   The build array that is being updated.
    */
-  public function buildCardStyles(array &$build);
+  public function buildCardStyles(array &$build): void;
 
   /**
    * Determine whether a view mode should be rendered as a card.

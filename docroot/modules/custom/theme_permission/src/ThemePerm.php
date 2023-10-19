@@ -20,8 +20,6 @@ class ThemePerm implements ContainerInjectionInterface {
 
   /**
    * The theme handler.
-   *
-   * @var \Drupal\Core\Extension\ThemeHandlerInterface
    */
   protected ThemeHandlerInterface $themeHandler;
 
@@ -50,7 +48,7 @@ class ThemePerm implements ContainerInjectionInterface {
    * @return array
    *   The permissions.
    */
-  public function dynamicPermissions() :array {
+  public function dynamicPermissions(): array {
     $perms = [];
     $themes = $this->themeHandler->listInfo();
     foreach (array_keys($themes) as $theme) {

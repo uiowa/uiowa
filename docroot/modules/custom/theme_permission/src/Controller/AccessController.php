@@ -29,15 +29,11 @@ class AccessController extends SystemController {
 
   /**
    * Current user account.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $currentUser;
+  protected AccountInterface $currentUser;
 
   /**
    * Request stack.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected RequestStack $requestStack;
 

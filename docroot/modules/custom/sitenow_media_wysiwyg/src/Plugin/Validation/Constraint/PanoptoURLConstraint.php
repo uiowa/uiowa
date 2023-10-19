@@ -16,16 +16,12 @@ use Symfony\Component\Validator\Constraint;
 class PanoptoURLConstraint extends Constraint {
   /**
    * The message shown when the value does not start with the Panopto base URL.
-   *
-   * @var string
    */
-  public $noBaseUrl = 'The URL must start with %base.';
+  public string $noBaseUrl = 'The URL must start with %base.';
 
   /**
    * The message shown when the value does not include an ID.
-   *
-   * @var string
    */
-  public $noId = 'The URL must include an %id parameter.';
+  public string $noId = 'The URL must include an %id parameter.';
 
 }

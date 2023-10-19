@@ -27,14 +27,14 @@ class Articles extends BaseNodeSource {
    *
    * @var array
    */
-  protected $termMapping;
+  protected array $termMapping;
 
   /**
    * Node-to-term mapping for affiliations.
    *
    * @var array
    */
-  protected $affiliationMapping;
+  protected array $affiliationMapping;
 
   /**
    * {@inheritdoc}
@@ -229,7 +229,7 @@ class Articles extends BaseNodeSource {
   /**
    * Map taxonomy to a tag.
    */
-  protected function getTags(&$row) {
+  protected function getTags(&$row): void {
     $tables = [
       'field_data_field_tags' => ['field_tags_tid'],
     ];
@@ -298,7 +298,7 @@ class Articles extends BaseNodeSource {
   /**
    * Map affiliations to a tag.
    */
-  protected function getAffiliations(&$row) {
+  protected function getAffiliations(&$row): void {
     $tables = [
       'field_data_field_article_affiliation' => ['field_article_affiliation_target_id'],
     ];

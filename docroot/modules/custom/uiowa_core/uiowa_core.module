@@ -35,7 +35,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 /**
  * Implements hook_cron().
  */
-function uiowa_core_cron() {
+function uiowa_core_cron(): void {
   // Daily.
   $state_key = 'uiowa_core_daily_last';
   $daily_last_cleared = \Drupal::state()->get($state_key);
@@ -85,7 +85,7 @@ function uiowa_core_cron() {
 /**
  * Implements hook_entity_build_defaults_alter().
  */
-function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode): void {
   if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
     // Add card build info.
     $entity->addCardBuildInfo($build);
@@ -95,7 +95,7 @@ function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function uiowa_core_entity_bundle_info_alter(array &$bundles) {
+function uiowa_core_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['block_content']['uiowa_card'])) {
     $bundles['block_content']['uiowa_card']['class'] = Card::class;
   }
@@ -110,7 +110,7 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
 /**
  * Implements hook_module_implements_alter().
  */
-function uiowa_core_module_implements_alter(&$implementations, $hook) {
+function uiowa_core_module_implements_alter(&$implementations, $hook): void {
   // Our uiowa_core_cron() needs to run before purge_processor_cron().
   if ($hook === 'cron' && isset($implementations['purge_processor_cron'])) {
     $group = $implementations['purge_processor_cron'];
@@ -122,7 +122,7 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
 /**
  * Implements hook_mail().
  */
-function uiowa_core_mail($key, &$message, $params) {
+function uiowa_core_mail($key, &$message, $params): void {
   // Empty to trigger LegacyEmailBuilder for instances where mail is sent from
   // MailManagerReplacement::mail() directly.
 }
@@ -130,7 +130,7 @@ function uiowa_core_mail($key, &$message, $params) {
 /**
  * Implements hook_mail_alter().
  */
-function uiowa_core_mail_alter(&$message) {
+function uiowa_core_mail_alter(&$message): void {
   if (!in_array($message['module'], [
     'webform',
   ])) {
@@ -168,7 +168,7 @@ function uiowa_core_mail_alter(&$message) {
 /**
  * Implements hook_mailer_PHASE().
  */
-function uiowa_core_mailer_build(EmailInterface $email) {
+function uiowa_core_mailer_build(EmailInterface $email): void {
   // Add header in use by email team to avoid spam/external tagging.
   $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
 
@@ -204,7 +204,7 @@ function uiowa_core_mailer_build(EmailInterface $email) {
  * Invalidate related and tag view caches on content types that
  * support these views.
  */
-function uiowa_core_node_presave(Node $node) {
+function uiowa_core_node_presave(Node $node): void {
   $node_type = $node->getType();
   $type_map = [
     'article' => 'articles',
@@ -234,7 +234,7 @@ function uiowa_core_node_presave(Node $node) {
 /**
  * Implements hook_entity_view().
  */
-function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
   if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode) && !$entity instanceof BlockContent) {
     // Build the card.
     $entity->buildCard($build);
@@ -264,7 +264,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
 /**
  * Preprocess function uiowa_core_headline.
  */
-function template_preprocess_uiowa_core_headline(&$variables) {
+function template_preprocess_uiowa_core_headline(&$variables): void {
   if ((bool) $variables['hide_headline'] === TRUE) {
     $style = 'sr-only';
   }
@@ -281,7 +281,7 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 /**
  * Preprocess function for card.
  */
-function template_preprocess_card(&$variables) {
+function template_preprocess_card(&$variables): void {
   $element = $variables['element'];
 
   // Set up various attributes if not already set up.
@@ -442,7 +442,7 @@ function template_preprocess_card(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_core_preprocess_field(&$variables) {
+function uiowa_core_preprocess_field(&$variables): void {
   switch ($variables['field_name']) {
     case 'title':
       uiowa_core_set_attributes($variables, [
@@ -477,7 +477,7 @@ function uiowa_core_preprocess_field(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_core_preprocess_page(&$variables) {
+function uiowa_core_preprocess_page(&$variables): void {
   $current_route = \Drupal::routeMatch();
   $node = $current_route->getParameter('node');
 
@@ -564,7 +564,7 @@ function uiowa_core_preprocess_page(&$variables) {
 /**
  * Implements hook_page_attachments().
  */
-function uiowa_core_page_attachments(&$page) {
+function uiowa_core_page_attachments(&$page): void {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // Load campus-wide Google Tag in PROD.
@@ -583,7 +583,7 @@ function uiowa_core_page_attachments(&$page) {
 /**
  * Implements hook_form_alter().
  */
-function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
 
@@ -757,7 +757,7 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
 /**
  * Implements hook_preprocess_html().
  */
-function uiowa_core_preprocess_html(&$variables) {
+function uiowa_core_preprocess_html(&$variables): void {
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
     /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
@@ -810,7 +810,7 @@ function uiowa_core_preprocess_html(&$variables) {
 /**
  * Implements hook_local_tasks_alter().
  */
-function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
+function uiowa_core_menu_local_tasks_alter(&$data, $route_name): void {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
   if ($logged_in) {
     $data['tabs'][0]['entity.node.delete_form']['#weight'] = 110;
@@ -834,7 +834,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
 /**
  * Implements hook_entity_operation_alter().
  */
-function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity): void {
   // If we're using the replicate module, check if it's available.
   // Also check if we are operating on a node.
   if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
@@ -864,7 +864,7 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_core_preprocess_block(&$variables) {
+function uiowa_core_preprocess_block(&$variables): void {
   if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
     if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
       $variables['content']['#block_content']->buildCard($variables['content']);
@@ -989,7 +989,7 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
 /**
  * Implements template_preprocess_views_view().
  */
-function uiowa_core_preprocess_views_view(&$variables) {
+function uiowa_core_preprocess_views_view(&$variables): void {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'related_manually_referenced_content') {
     // Attach the grid class.
@@ -1210,7 +1210,7 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
 /**
  * Helper function convert exposed filter to select dropdown.
  */
-function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
+function uiowa_core_config_entity_filter_select(array &$form, $entity_id): void {
   // Get available configuration entities.
   $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
   $entities = $storage->getQuery();
@@ -1244,7 +1244,7 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field label icon.
  */
-function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes, string $icon_bg_classes = ''): void {
   if (!isset($variables['field_label_icon'])) {
     $variables['field_label_icon'] = '';
   }
@@ -1268,7 +1268,7 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = ''): void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1290,7 +1290,7 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes, stri
  * @param array|string $classes
  *   The class(es) to be added to the block/field's attributes.
  */
-function uiowa_core_set_attributes(array &$variables, array|string $classes) : void {
+function uiowa_core_set_attributes(array &$variables, array|string $classes): void {
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
@@ -1340,7 +1340,7 @@ function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): boo
  * @param string $block_id
  *   The block ID to unset.
  */
-function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id) {
+function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id): void {
   if (isset($variables['content']['_layout_builder'])) {
     foreach ($variables['content']['_layout_builder'] as &$layout) {
       foreach ($layout as &$layout_part) {
@@ -1360,7 +1360,7 @@ function uiowa_core_unset_layout_builder_block(array &$variables, string $block_
 /**
  * Helper function to hide views row fields.
  */
-function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
+function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide): void {
   foreach ($variables['rows'] as &$row_build) {
     if (!isset($row_build['content']['#hide_fields'])) {
       $row_build['content']['#hide_fields'] = [];

@@ -12,7 +12,7 @@ use Drupal\views\Views;
 /**
  * Implements hook_module_implements_alter().
  */
-function hr_core_module_implements_alter(&$implementations, $hook) {
+function hr_core_module_implements_alter(&$implementations, $hook): void {
   $hooks_to_order = [
     'form_alter',
   ];
@@ -27,7 +27,7 @@ function hr_core_module_implements_alter(&$implementations, $hook) {
 /**
  * Implements hook_form_alter().
  */
-function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   switch ($form_id) {
     case 'node_page_edit_form':
     case 'node_page_form':
@@ -86,7 +86,7 @@ function hr_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hr_core_preprocess_paragraph(&$variables) {
+function hr_core_preprocess_paragraph(&$variables): void {
   $paragraph = $variables['paragraph'];
   switch ($paragraph->bundle()) {
     case 'faqs':
@@ -102,7 +102,7 @@ function hr_core_preprocess_paragraph(&$variables) {
         if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
           $classes = [];
           $values = $paragraph->get('field_uip_classes')->getValue();
-          array_walk_recursive($values, function ($v) use (&$classes) {
+          array_walk_recursive($values, function ($v) use (&$classes): void {
             $classes[] = $v;
           });
           $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
@@ -144,7 +144,7 @@ function hr_core_preprocess_paragraph(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function hr_core_preprocess_node(&$variables) {
+function hr_core_preprocess_node(&$variables): void {
 
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {

@@ -4,6 +4,7 @@ namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,17 +16,13 @@ class PublicationsController extends ControllerBase {
 
   /**
    * The uiowa_apr.apr service.
-   *
-   * @var \Drupal\uiowa_apr\Apr
    */
-  protected $apr;
+  protected Apr $apr;
 
   /**
    * The uiowa_apr config settings.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $config;
+  protected ImmutableConfig $config;
 
   /**
    * The controller constructor.
@@ -56,7 +53,7 @@ class PublicationsController extends ControllerBase {
    * @return array
    *   The publications render array.
    */
-  public function build() {
+  public function build(): array {
     $build = [
       '#attached' => [
         'library' => [
@@ -111,7 +108,7 @@ class PublicationsController extends ControllerBase {
    * @return string
    *   The page title.
    */
-  public function title() {
+  public function title(): string {
     return Html::escape($this->config->get('publications.title')) ?? 'Publications';
   }
 

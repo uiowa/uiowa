@@ -15,10 +15,8 @@ class SitenowDcvController extends ControllerBase {
 
   /**
    * The EntityTypeManager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * SitenowDcvController constructor.

@@ -41,7 +41,7 @@ class P2LbHelper {
    * @return array
    *   The list of issues.
    */
-  public static function analyzeNode(Page $page) {
+  public static function analyzeNode(Page $page): array {
     // Check the cache first.
     $cid = "sitenow_p2lb_node_status:{$page->id()}";
     if ($item = \Drupal::cache()->get($cid)) {
@@ -151,7 +151,7 @@ class P2LbHelper {
    * @param string $issue
    *   The issue being added.
    */
-  protected static function addIssue(array &$issues, string $issue) {
+  protected static function addIssue(array &$issues, string $issue): void {
     if (!isset($issues[$issue])) {
       $issues[$issue] = 0;
     }

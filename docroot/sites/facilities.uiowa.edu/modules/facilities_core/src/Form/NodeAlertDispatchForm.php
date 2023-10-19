@@ -25,43 +25,31 @@ class NodeAlertDispatchForm extends FormBase {
 
   /**
    * Message Log repository service.
-   *
-   * @var \Drupal\sitenow_dispatch\MessageLogRepository
    */
   protected MessageLogRepository $repository;
 
   /**
    * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected AccountProxyInterface $currentUser;
 
   /**
    * The user storage.
-   *
-   * @var \Drupal\user\UserStorageInterface
    */
   protected UserStorageInterface $userStorage;
 
   /**
    * The date formatter.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected DateFormatterInterface $dateFormatter;
 
   /**
    * The current Request object.
-   *
-   * @var \Symfony\Component\HttpFoundation\Request
    */
   protected Request $request;
 
   /**
    * The node being acted upon.
-   *
-   * @var \Drupal\node\NodeInterface
    */
   protected NodeInterface $node;
 
@@ -290,7 +278,7 @@ class NodeAlertDispatchForm extends FormBase {
    * @return array
    *   The rendered placeholder values keyed by placeholder name.
    */
-  protected function getPlaceholders() {
+  protected function getPlaceholders(): array {
     $placeholders = [];
 
     foreach (_sitenow_dispatch_get_placeholders('alert') as $field_name => $placeholder) {

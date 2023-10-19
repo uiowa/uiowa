@@ -12,7 +12,7 @@ use Drupal\smart_trim\Truncate\TruncateHTML;
 /**
  * Implements hook_install().
  */
-function obermann_migrate_install() {
+function obermann_migrate_install(): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'obermann_migrate') . '/config/split';
@@ -33,7 +33,7 @@ function obermann_migrate_install() {
 /**
  * Implements hook_uninstall().
  */
-function obermann_migrate_uninstall() {
+function obermann_migrate_uninstall(): void {
   // Disable the split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.obermann_migrate');
@@ -48,7 +48,7 @@ function obermann_migrate_uninstall() {
 /**
  * Update article summaries from the migration.
  */
-function obermann_migrate_update_9001(&$sandbox) {
+function obermann_migrate_update_9001(&$sandbox): void {
   // Process all nodes that have a filled field_reference.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
@@ -122,7 +122,7 @@ function obermann_migrate_update_9001(&$sandbox) {
 /**
  * Update article summaries from the migration.
  */
-function obermann_migrate_update_9002(&$sandbox) {
+function obermann_migrate_update_9002(&$sandbox): void {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'article', '=')

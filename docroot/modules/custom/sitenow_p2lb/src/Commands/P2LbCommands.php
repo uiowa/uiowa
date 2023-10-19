@@ -20,38 +20,28 @@ class P2LbCommands extends DrushCommands {
 
   /**
    * The account_switcher service.
-   *
-   * @var \Drupal\Core\Session\AccountSwitcherInterface
    */
-  protected $accountSwitcher;
+  protected AccountSwitcherInterface $accountSwitcher;
 
   /**
    * The sitenow_p2lb logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The reference revision orphan purger.
-   *
-   * @var \Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger
    */
-  protected $orphanPurger;
+  protected EntityReferenceRevisionsOrphanPurger $orphanPurger;
 
   /**
    * The config factory object.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * Command constructor.
@@ -79,7 +69,7 @@ class P2LbCommands extends DrushCommands {
    * @usage sitenow_p2lb:cleanup --batch=5
    *  Process nodes with a specified batch size.
    */
-  public function cleanup(array $options = ['batch' => 5]) {
+  public function cleanup(array $options = ['batch' => 5]): void {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 

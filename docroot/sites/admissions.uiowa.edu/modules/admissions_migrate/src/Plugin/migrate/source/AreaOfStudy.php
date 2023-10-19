@@ -26,10 +26,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
   /**
    * The pathauto.alias_cleaner service.
-   *
-   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected $aliasCleaner;
+  protected AliasCleanerInterface $aliasCleaner;
 
   /**
    * {@inheritdoc}
@@ -211,7 +209,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * @return array
    *   A simulated array of arrays similar to the migrate idMap.
    */
-  protected function manualLookup($nid) {
+  protected function manualLookup(int $nid): array {
     $lookup = [];
 
     $map = [

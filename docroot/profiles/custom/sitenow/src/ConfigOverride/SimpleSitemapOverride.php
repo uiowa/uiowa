@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SimpleSitemapOverride implements ConfigFactoryOverrideInterface {
   /**
    * The RequestStack service.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected $requestStack;
+  protected RequestStack $requestStack;
 
   /**
    * Constructor to inject dependencies.

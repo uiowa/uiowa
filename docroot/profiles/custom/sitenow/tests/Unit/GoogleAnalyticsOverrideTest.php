@@ -26,7 +26,7 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
   /**
    * Test GA account is not overridden in prod environment.
    */
-  public function testConfigNotOverriddenInProd() {
+  public function testConfigNotOverriddenInProd(): void {
     putenv('AH_SITE_ENVIRONMENT=prod');
 
     $override = new GoogleAnalyticsOverride();
@@ -39,7 +39,7 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
    *
    * @dataProvider envProvider
    */
-  public function testConfigSetToEmptyStringInNonProd($env) {
+  public function testConfigSetToEmptyStringInNonProd($env): void {
     if ($env) {
       putenv("AH_SITE_ENVIRONMENT={$env}");
     }
@@ -55,7 +55,7 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
    * @return array
    *   Array of environment strings.
    */
-  public function envProvider() {
+  public function envProvider(): array {
     return [
       [FALSE],
       ['dev'],

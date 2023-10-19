@@ -21,7 +21,7 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function classrooms_core_entity_bundle_info_alter(array &$bundles) {
+function classrooms_core_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['room'])) {
     $bundles['node']['room']['class'] = ClassroomsRoom::class;
   }
@@ -59,7 +59,7 @@ function classrooms_core_entity_extra_field_info() {
 /**
  * Implements hook_form_alter().
  */
-function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   switch ($form_id) {
     case 'node_room_form':
     case 'node_room_edit_form':
@@ -106,7 +106,7 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function classrooms_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+function classrooms_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode): void {
   if ($node->bundle() === 'room' && $view_mode === 'full') {
     if ($display->getComponent('field_room_section_heading')) {
       $build['field_room_section_heading'] = [
@@ -146,7 +146,7 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
 /**
  * Implements hook_preprocess_HOOK().
  */
-function classrooms_core_preprocess_block(&$variables) {
+function classrooms_core_preprocess_block(&$variables): void {
   switch ($variables['plugin_id']) {
     // Unset request info buttons.
     case 'requestinfobutton_block':
@@ -226,14 +226,14 @@ function classrooms_core_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_file_link().
  */
-function classrooms_core_preprocess_file_link(&$variables) {
+function classrooms_core_preprocess_file_link(&$variables): void {
   unset($variables['attributes']['class']);
 }
 
 /**
  * Implements hook_entity_presave().
  */
-function classrooms_core_node_presave(EntityInterface $entity) {
+function classrooms_core_node_presave(EntityInterface $entity): void {
   if ($entity->bundle() == 'room') {
     $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
     if (!empty($seating_chart)) {
@@ -253,7 +253,7 @@ function classrooms_core_node_presave(EntityInterface $entity) {
 /**
  * Implements hook_preprocess_field().
  */
-function classrooms_core_preprocess_field(&$variables, $hook) {
+function classrooms_core_preprocess_field(&$variables, $hook): void {
   switch ($variables['element']['#field_name']) {
     case 'field_room_name':
       if ($variables['element']['#view_mode'] == 'teaser') {
@@ -375,7 +375,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function classrooms_core_preprocess_media(&$variables) {
+function classrooms_core_preprocess_media(&$variables): void {
   // Extra classes for the Seating Chart field. Limit it
   // to 'file' media so we don't potentially add extra stuff
   // to other media types like images.
@@ -387,7 +387,7 @@ function classrooms_core_preprocess_media(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function classrooms_core_preprocess_layout(&$variables) {
+function classrooms_core_preprocess_layout(&$variables): void {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
   $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
@@ -530,7 +530,7 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $view = $form_state->get('view');
   $view_display = $view->getDisplay();
   $block_id = $view_display->display['id'];
@@ -580,7 +580,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 /**
  * Implements hook_views_pre_view().
  */
-function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args): void {
   // Grid display of Rooms on Units vocab.
   if ($view->id() === 'taxonomy_term') {
 
@@ -622,7 +622,7 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
 /**
  * Helper function to preprocess rooms list.
  */
-function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) {
+function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide): void {
   foreach ($variables['rows'] as &$row_build) {
     if (!isset($row_build['content']['#hide_fields'])) {
       $row_build['content']['#hide_fields'] = [];
@@ -637,7 +637,7 @@ function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) 
 /**
  * Implements template_preprocess_views_view().
  */
-function classrooms_core_preprocess_views_view(&$variables) {
+function classrooms_core_preprocess_views_view(&$variables): void {
   // Check if the current view has a specific ID or display ID.
   if ($variables['view']->id() == 'room_list') {
     // Attach the library using the #attached property.
@@ -648,7 +648,7 @@ function classrooms_core_preprocess_views_view(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function classrooms_core_preprocess_views_view_unformatted(&$variables) {
+function classrooms_core_preprocess_views_view_unformatted(&$variables): void {
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
 

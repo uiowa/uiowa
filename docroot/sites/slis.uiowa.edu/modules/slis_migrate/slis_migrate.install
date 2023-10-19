@@ -8,7 +8,7 @@
 /**
  * Implements hook_install().
  */
-function slis_migrate_install() {
+function slis_migrate_install(): void {
   \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
   sitenow_migrate_migration_install('slis');
 }
@@ -16,7 +16,7 @@ function slis_migrate_install() {
 /**
  * Implements hook_uninstall().
  */
-function slis_migrate_uninstall() {
+function slis_migrate_uninstall(): void {
   \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
   sitenow_migrate_migration_uninstall('slis');
 }

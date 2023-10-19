@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function international_migrate_install() {
+function international_migrate_install(): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'international_migrate') . '/config/split';
@@ -31,7 +31,7 @@ function international_migrate_install() {
 /**
  * Implements hook_uninstall().
  */
-function international_migrate_uninstall() {
+function international_migrate_uninstall(): void {
   // Disable the split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.international_migrate');

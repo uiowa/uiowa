@@ -17,7 +17,7 @@ class RemoveXFrameOptionsSubscriber implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The event.
    */
-  public function removeFrameOptions(ResponseEvent $event) {
+  public function removeFrameOptions(ResponseEvent $event): void {
     $response = $event->getResponse();
     $response->headers->set('X-Frame-Options', 'ALLOW-FROM https://parking.uiowa.edu/');
     $response->headers->set('Content-Security-Policy', 'frame-ancestors \'self\' https://parking.uiowa.edu/');

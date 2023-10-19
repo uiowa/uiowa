@@ -8,14 +8,14 @@
 /**
  * Implements hook_install().
  */
-function admissions_core_install() {
+function admissions_core_install(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
  * Implements hook_uninstall().
  */
-function admissions_core_uninstall() {
+function admissions_core_uninstall(): void {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 

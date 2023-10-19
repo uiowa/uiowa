@@ -23,17 +23,13 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
 
   /**
    * The form_builder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected $formBuilder;
+  protected FormBuilderInterface $formBuilder;
 
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}

@@ -18,7 +18,7 @@ class FilesystemTest extends UnitTestCase {
   /**
    * Each app should have a Drush alias.
    */
-  public function testAppDrushAliasesExist() {
+  public function testAppDrushAliasesExist(): void {
     $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
 
     foreach ($config['uiowa']['applications'] as $application => $attrs) {
@@ -29,7 +29,7 @@ class FilesystemTest extends UnitTestCase {
   /**
    * Each local Drush alias should have a correct Drupal root.
    */
-  public function testLocalAliasesDrupalRoot() {
+  public function testLocalAliasesDrupalRoot(): void {
     $finder = new Finder();
 
     $files = $finder
@@ -48,7 +48,7 @@ class FilesystemTest extends UnitTestCase {
   /**
    * Test that app aliases do not have a files path set.
    */
-  public function testAppAliasesDoNotHaveFilesPath() {
+  public function testAppAliasesDoNotHaveFilesPath(): void {
     $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
 
     foreach ($config['uiowa']['applications'] as $app => $attrs) {
@@ -65,14 +65,14 @@ class FilesystemTest extends UnitTestCase {
   /**
    * Test that the robots.txt file does not exist.
    */
-  public function testRobotsTxtDoesNotExist() {
+  public function testRobotsTxtDoesNotExist(): void {
     $this->assertFileDoesNotExist($this->root . '/robots.txt');
   }
 
   /**
    * Test sites.php entries exist.
    */
-  public function testDirectoryAliasesExist() {
+  public function testDirectoryAliasesExist(): void {
     $sites = Multisite::getAllSites($this->root . '/..');
     $haystack = file_get_contents($this->root . '/sites/sites.php');
 
@@ -96,7 +96,7 @@ EOD;
   /**
    * Test global settings are as expected.
    */
-  public function testGlobalSettingsFile() {
+  public function testGlobalSettingsFile(): void {
     $file = $this->root . '/sites/settings/global.settings.php';
     $this->assertFileExists($file);
     $haystack = file_get_contents($file);
@@ -121,7 +121,7 @@ EOD;
   /**
    * Test that multisite files exist and that BLT config is set correctly.
    */
-  public function testMultisiteFiles() {
+  public function testMultisiteFiles(): void {
     $sites = Multisite::getAllSites($this->root . '/..');
 
     foreach ($sites as $site) {
@@ -178,7 +178,7 @@ EOD;
   /**
    * Test that a private file scheme split exists for every default public one.
    */
-  public function testFilesScheme() {
+  public function testFilesScheme(): void {
     $finder = new Finder();
 
     $default_config = $finder

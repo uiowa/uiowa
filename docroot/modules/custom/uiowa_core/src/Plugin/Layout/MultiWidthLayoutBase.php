@@ -69,7 +69,7 @@ abstract class MultiWidthLayoutBase extends LayoutDefault implements PluginFormI
    *   The width options array where the keys are strings that will be added to
    *   the CSS classes and the values are the human readable labels.
    */
-  abstract protected function getWidthOptions();
+  abstract protected function getWidthOptions(): array;
 
   /**
    * Provides a default value for the width options.
@@ -77,7 +77,7 @@ abstract class MultiWidthLayoutBase extends LayoutDefault implements PluginFormI
    * @return string
    *   A key from the array returned by ::getWidthOptions().
    */
-  protected function getDefaultWidth() {
+  protected function getDefaultWidth(): string {
     // Return the first available key from the list of options.
     $width_classes = array_keys($this->getWidthOptions());
     return array_shift($width_classes);

@@ -12,7 +12,7 @@ use Drupal\uipress_core\Entity\Book;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function uipress_core_entity_bundle_info_alter(array &$bundles) {
+function uipress_core_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['book'])) {
     $bundles['node']['book']['class'] = Book::class;
   }
@@ -21,7 +21,7 @@ function uipress_core_entity_bundle_info_alter(array &$bundles) {
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context): void {
   if ($element['#paragraph_type'] === 'book_type') {
     if (isset($element['subform']['field_book_ebook_ownership'])) {
       // Set the field_book_ebook_ownership field to only be visible when ebook
@@ -42,7 +42,7 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uipress_core_preprocess_block(&$variables) {
+function uipress_core_preprocess_block(&$variables): void {
   switch ($variables['elements']['#plugin_id']) {
     // Display book interior images in a two column grid.
     case 'field_block:node:book:field_book_interior_pages':
@@ -59,7 +59,7 @@ function uipress_core_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_field().
  */
-function uipress_core_preprocess_field(&$variables, $hook) {
+function uipress_core_preprocess_field(&$variables, $hook): void {
   switch ($variables['element']['#field_name']) {
     case 'field_book_related_reads':
       if (!isset($variables['title_attributes']['class'])) {
@@ -84,14 +84,14 @@ function uipress_core_preprocess_field(&$variables, $hook) {
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
-function uipress_core_preprocess_html(&$variables) {
+function uipress_core_preprocess_html(&$variables): void {
   $variables['#attached']['library'][] = 'uipress_core/global';
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uipress_core_preprocess_paragraph__book_type(&$variables) {
+function uipress_core_preprocess_paragraph__book_type(&$variables): void {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
@@ -146,7 +146,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uipress_core_preprocess_views_view_unformatted(&$variables) {
+function uipress_core_preprocess_views_view_unformatted(&$variables): void {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'book_publication_details') {
@@ -170,7 +170,7 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uipress_core_preprocess_views_view_fields(&$variables) {
+function uipress_core_preprocess_views_view_fields(&$variables): void {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'book_tabs') {
@@ -228,7 +228,7 @@ function uipress_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_preprocess_views_view().
  */
-function uipress_core_preprocess_views_view(&$variables) {
+function uipress_core_preprocess_views_view(&$variables): void {
   $view = $variables['view'];
   $id = $view->storage->id();
 
@@ -240,7 +240,7 @@ function uipress_core_preprocess_views_view(&$variables) {
 /**
  * Implements hook_cron().
  */
-function uipress_core_cron() {
+function uipress_core_cron(): void {
   // Check if we've run this yet today. Sales change
   // at most daily, so once in the morning is enough.
   $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
@@ -281,7 +281,7 @@ function uipress_core_cron() {
  * @return array
  *   The NIDs of interest.
  */
-function uipress_core_get_current_sales() {
+function uipress_core_get_current_sales(): array {
   $today = date('Y-m-d');
   $yesterday = date('Y-m-d', strtotime('yesterday'));
   $pids = \Drupal::entityQuery('paragraph')

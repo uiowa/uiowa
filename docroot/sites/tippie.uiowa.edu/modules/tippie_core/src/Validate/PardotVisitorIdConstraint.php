@@ -19,7 +19,7 @@ class PardotVisitorIdConstraint {
    * @param array $form
    *   The complete form structure.
    */
-  public static function validate(array &$element, FormStateInterface $formState, array &$form) {
+  public static function validate(array &$element, FormStateInterface $formState, array &$form): void {
     $visitor_id = NULL;
 
     $cookies = \Drupal::request()->cookies->all();

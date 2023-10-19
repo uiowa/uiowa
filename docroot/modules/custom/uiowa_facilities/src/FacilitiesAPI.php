@@ -18,24 +18,18 @@ class FacilitiesAPI {
 
   /**
    * The uiowa_facilities logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * The uiowa_facilities cache.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected $cache;
+  protected CacheBackendInterface $cache;
 
   /**
    * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
    */
-  protected $client;
+  protected ClientInterface $client;
 
   /**
    * Constructs a FM object.
@@ -68,7 +62,7 @@ class FacilitiesAPI {
    * @return mixed
    *   The API response data.
    */
-  public function request($method, $path, array $params = [], array $options = []) {
+  public function request(string $method, string $path, array $params = [], array $options = []): mixed {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
     $uri = self::BASE . ltrim($path, '/');
@@ -127,7 +121,7 @@ class FacilitiesAPI {
    * @return array
    *   The buildings object.
    */
-  public function getBuildings() {
+  public function getBuildings(): array {
     return $this->request('GET', 'buildings');
   }
 
@@ -137,7 +131,7 @@ class FacilitiesAPI {
    * @return array
    *   The building object.
    */
-  public function getBuilding($building_number) {
+  public function getBuilding($building_number): array {
     return $this->request('GET', 'building', [
       'bldgnumber' => $building_number,
     ]);
@@ -149,7 +143,7 @@ class FacilitiesAPI {
    * @return array
    *   The building coordinators object.
    */
-  public function getBuildingCoordinators($building_number) {
+  public function getBuildingCoordinators($building_number): array {
     $data = $this->request('GET', 'bldgCoordinators');
     $contact = [];
 

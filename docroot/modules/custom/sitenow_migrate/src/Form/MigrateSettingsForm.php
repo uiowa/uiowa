@@ -7,6 +7,7 @@ use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\CachedDiscoveryClearerInterface;
+use Drupal\migrate\Plugin\MigrationPluginManager;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -16,24 +17,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class MigrateSettingsForm extends ConfigFormBase {
   /**
    * The config.storage service.
-   *
-   * @var \Drupal\Core\Config\StorageInterface
    */
-  protected $configStorage;
+  protected StorageInterface $configStorage;
 
   /**
    * Migration plugin manager service.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManager
    */
-  protected $migrationPluginManager;
+  protected MigrationPluginManager $migrationPluginManager;
 
   /**
    * The plugin.cache_clearer service.
-   *
-   * @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface
    */
-  protected $pluginCacheClearer;
+  protected CachedDiscoveryClearerInterface $pluginCacheClearer;
 
   /**
    * Form constructor.

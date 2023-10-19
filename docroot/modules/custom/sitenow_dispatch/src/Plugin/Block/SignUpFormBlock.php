@@ -39,7 +39,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
    *   The Dispatch API client service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected ConfigFactoryInterface $configFactory, protected FormBuilderInterface $formBuilder, protected DispatchApiClientInterface $dispatch) {
+  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, protected ConfigFactoryInterface $configFactory, protected FormBuilderInterface $formBuilder, protected DispatchApiClientInterface $dispatch) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 

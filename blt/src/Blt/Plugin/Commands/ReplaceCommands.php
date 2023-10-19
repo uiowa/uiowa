@@ -19,7 +19,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @hook replace-command artifact:update:drupal:all-sites
    */
-  public function replaceDrupalUpdateAll() {
+  public function replaceDrupalUpdateAll(): void {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
@@ -98,7 +98,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @hook replace-command artifact:ac-hooks:post-db-copy
    */
-  public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
+  public function replacePostDbCopy($site, $target_env, $db_name, $source_env): void {
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
       $db = $this->getConfigValue('drupal.db.database');
@@ -120,7 +120,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @command tests:deprecated
    */
-  public function testsDeprecated() {
+  public function testsDeprecated(): void {
     $this->say("Checking for deprecated code.");
     $bin = $this->getConfigValue('composer.bin');
     $root = $this->getConfigValue('repo.root');
@@ -163,7 +163,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @hook replace-command tests:frontend:run
    */
-  public function testsFrontend() {
+  public function testsFrontend(): void {
     if (EnvironmentDetector::isCiEnv()) {
       // We don't want to snapshot develop because it could be unstable.
       if (getenv('TRAVIS_BRANCH') != 'develop') {
@@ -190,7 +190,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @hook pre-command source:build:settings
    */
-  public function preSourceBuildSettings() {
+  public function preSourceBuildSettings(): void {
     if (!$this->confirm('This will delete all local.settings.php files for all multisites. Are you sure?', TRUE)) {
       throw new \Exception('Aborted.');
     }
@@ -223,7 +223,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @hook post-command source:build:settings
    */
-  public function postSourceBuildSettings() {
+  public function postSourceBuildSettings(): void {
     $root = $this->getConfigValue('repo.root');
 
     foreach ($this->getConfigValue('multisites') as $site) {
@@ -266,7 +266,7 @@ EOD;
    *
    * @hook pre-command tests:drupal:phpunit:run
    */
-  public function preTestsDrupalPhpunitRun() {
+  public function preTestsDrupalPhpunitRun(): void {
     if (EnvironmentDetector::isCiEnv()) {
       $this->logger->info("Launching chromedriver...");
       $chromeDriverHost = 'http://localhost';
@@ -289,7 +289,7 @@ EOD;
    *
    * @hook post-command tests:drupal:phpunit:run
    */
-  public function postTestsDrupalPhpunitRun() {
+  public function postTestsDrupalPhpunitRun(): void {
     if (EnvironmentDetector::isCiEnv()) {
       $this->logger->info("Killing running chromedriver processes...");
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');

@@ -44,7 +44,7 @@ class Pages extends BaseNodeSource {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migration event.
    */
-  public function postImport(MigrateImportEvent $event) {
+  public function postImport(MigrateImportEvent $event): void {
     static $have_run = FALSE;
     if (!$have_run) {
       $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);

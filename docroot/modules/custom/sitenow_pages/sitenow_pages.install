@@ -8,7 +8,7 @@
 /**
  * Add tag and related display config setting to pages.
  */
-function sitenow_pages_update_9301() {
+function sitenow_pages_update_9301(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
   $config->set('tag_display', 'do_not_display');
   $config->set('related_display', 'do_not_display');
@@ -19,7 +19,7 @@ function sitenow_pages_update_9301() {
 /**
  * Add link indicator on teasers config setting to pages.
  */
-function sitenow_pages_update_9302() {
+function sitenow_pages_update_9302(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
   $config->set('show_teaser_link_indicator', FALSE);
 
@@ -29,7 +29,7 @@ function sitenow_pages_update_9302() {
 /**
  * Set site default for card arrow button.
  */
-function sitenow_pages_update_9303() {
+function sitenow_pages_update_9303(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
   $config->set('card_link_indicator_display', TRUE);
 

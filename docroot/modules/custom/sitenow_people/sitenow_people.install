@@ -14,7 +14,7 @@ use Drupal\node\Entity\Node;
  *
  * Converts the research areas field to use a new field name.
  */
-function sitenow_people_update_8001() {
+function sitenow_people_update_8001(): void {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $split = 'config_split:person_extended';
@@ -58,7 +58,7 @@ function sitenow_people_update_8001() {
  *
  * Only runs on sites that have 'person_extended' enabled.
  */
-function sitenow_people_update_8002() {
+function sitenow_people_update_8002(): void {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $split = 'config_split:person_extended';
@@ -121,7 +121,7 @@ function sitenow_people_update_8002() {
 /**
  * Add people filters to existing sites.
  */
-function sitenow_people_update_9101() {
+function sitenow_people_update_9101(): void {
   // Get the current stuff.
   $current_view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
   $current_default =& $current_view->getDisplay('default');
@@ -181,7 +181,7 @@ function sitenow_people_update_9101() {
 /**
  * Add tag and related display config setting to people.
  */
-function sitenow_people_update_9301() {
+function sitenow_people_update_9301(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
   $config->set('tag_display', 'do_not_display');
   $config->set('related_display', 'do_not_display');
@@ -191,7 +191,7 @@ function sitenow_people_update_9301() {
 /**
  * Add link indicator on teasers config setting to people.
  */
-function sitenow_people_update_9302() {
+function sitenow_people_update_9302(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
   $config->set('show_teaser_link_indicator', FALSE);
 
@@ -201,7 +201,7 @@ function sitenow_people_update_9302() {
 /**
  * Make Research Areas label customizable.
  */
-function sitenow_people_update_9303() {
+function sitenow_people_update_9303(): void {
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
 
   // Load the entity field manager service.

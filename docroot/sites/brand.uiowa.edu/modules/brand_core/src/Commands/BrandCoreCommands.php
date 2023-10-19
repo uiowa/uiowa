@@ -2,10 +2,8 @@
 
 namespace Drupal\brand_core\Commands;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\Url;
@@ -48,7 +46,7 @@ class BrandCoreCommands extends DrushCommands {
    * @usage brand_core:lockup-digest --msg
    *  Ideally this is done as a crontab that is only sent once a day.
    */
-  public function lockupDigest($options = ['msg' => FALSE]) {
+  public function lockupDigest($options = ['msg' => FALSE]): void {
     // Switch to the admin user to get hidden view result.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
     $view = views_get_view_result('lockup_moderation', 'block_review');

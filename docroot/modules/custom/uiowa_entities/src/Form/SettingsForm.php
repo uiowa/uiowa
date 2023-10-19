@@ -18,31 +18,23 @@ class SettingsForm extends ConfigFormBase {
 
   /**
    * The alias cleaner.
-   *
-   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected $aliasCleaner;
+  protected AliasCleanerInterface $aliasCleaner;
 
   /**
    * The alias checker.
-   *
-   * @var \Drupal\path_alias\AliasRepositoryInterface
    */
-  protected $aliasRepository;
+  protected AliasRepositoryInterface $aliasRepository;
 
   /**
    * The EntityTypeManager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $entityTypeManager;
+  protected EntityTypeManager $entityTypeManager;
 
   /**
    * The PathautoGenerator service.
-   *
-   * @var \Drupal\pathauto\PathautoGenerator
    */
-  protected $pathAutoGenerator;
+  protected PathautoGenerator $pathAutoGenerator;
 
   /**
    * The Constructor.

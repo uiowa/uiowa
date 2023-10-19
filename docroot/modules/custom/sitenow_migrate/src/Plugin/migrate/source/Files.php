@@ -63,7 +63,7 @@ class Files extends File {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function preRollback(MigrateRollbackEvent $event) {
+  public function preRollback(MigrateRollbackEvent $event): void {
     $migration_id = $event->getMigration()->id();
     $migrate_map = 'migrate_map_' . $migration_id;
     // Get our destination file ids.

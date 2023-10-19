@@ -21,7 +21,7 @@ abstract class ThemePermissionTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  public static array $modules = [
     'user',
     'system',
     'theme_permission',
@@ -56,7 +56,7 @@ abstract class ThemePermissionTestBase extends BrowserTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function userLogin(array $permissions = NULL) {
+  protected function userLogin(array $permissions = NULL): void {
 
     $permissions = $permissions ?? [];
     $userPermission = array_merge(

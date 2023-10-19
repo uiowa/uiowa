@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Tasks\DrushTask;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use Symfony\Component\Console\Helper\Table;
@@ -29,7 +30,7 @@ class ReportCommands extends BltTasks {
    *
    * @throws \Robo\Exception\TaskException
    */
-  public function analytics($options = ['export' => FALSE, 'debug' => FALSE]) {
+  public function analytics($options = ['export' => FALSE, 'debug' => FALSE]): void {
     $site_data = [];
 
     $headers = [
@@ -197,7 +198,7 @@ class ReportCommands extends BltTasks {
    *
    * @throws \Robo\Exception\TaskException
    */
-  public function lastLogin($options = ['export' => FALSE, 'debug' => FALSE]) {
+  public function lastLogin($options = ['export' => FALSE, 'debug' => FALSE]): void {
     $site_data = [];
 
     $headers = [
@@ -324,7 +325,7 @@ class ReportCommands extends BltTasks {
    * @return \Acquia\Blt\Robo\Tasks\DrushTask
    *   The modified drush task.
    */
-  protected function getDrushTask(bool $debug = FALSE) {
+  protected function getDrushTask(bool $debug = FALSE): DrushTask {
     $task = $this->taskDrush();
 
     if (!$debug) {

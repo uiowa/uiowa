@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 /**
  * Update all unpublished nodes to set grant access.
  */
-function sppa_core_update_9001(&$sandbox) {
+function sppa_core_update_9001(&$sandbox): void {
 
   // Process all the unpublished nodes.
   if (!isset($sandbox['total'])) {

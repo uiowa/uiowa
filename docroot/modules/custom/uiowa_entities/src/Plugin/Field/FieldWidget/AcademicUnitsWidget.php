@@ -27,10 +27,8 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
 
   /**
    * The EntityTypeManager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $entityTypeManager;
+  protected EntityTypeManager $entityTypeManager;
 
   /**
    * AcademicUnitsWidget constructor.
@@ -65,7 +63,7 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
       }
       // Update values to the text labels
       // rather than the objects themselves.
-      array_walk($options, function (&$value, $key) {
+      array_walk($options, function (&$value, $key): void {
         $value = $value->get('label');
       });
       // Add an empty option if the widget needs one.

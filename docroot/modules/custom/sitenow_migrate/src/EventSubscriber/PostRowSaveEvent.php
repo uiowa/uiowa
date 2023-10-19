@@ -16,17 +16,13 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
   /**
    * The EntityTypeManager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $entityTypeManager;
+  protected EntityTypeManager $entityTypeManager;
 
   /**
    * The active database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
    */
-  protected $database;
+  protected Connection $database;
 
   /**
    * PostRowSaveEvent constructor.
@@ -72,7 +68,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   /**
    * Create a media entity for images.
    */
-  public function makeEntity($row, $fids) {
+  public function makeEntity($row, $fids): void {
     /** @var \Drupal\file\FileInterface $file */
     $file = $this->entityTypeManager->getStorage('file')->load($fids[0]);
 

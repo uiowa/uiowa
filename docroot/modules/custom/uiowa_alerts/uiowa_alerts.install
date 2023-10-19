@@ -8,7 +8,7 @@
 /**
  * Delete old config items.
  */
-function uiowa_alerts_update_8001() {
+function uiowa_alerts_update_8001(): void {
   $config = \Drupal::configFactory()->getEditable('uiowa_alerts.settings');
   $config
     ->delete('source')
@@ -19,7 +19,7 @@ function uiowa_alerts_update_8001() {
 /**
  * Migrate old config items to nested collection.
  */
-function uiowa_alerts_update_8002() {
+function uiowa_alerts_update_8002(): void {
   $changes = [
     'hawk_alert_display' => 'hawk_alert.display',
     'hawk_alert_source' => 'hawk_alert.source',

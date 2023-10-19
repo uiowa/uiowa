@@ -11,7 +11,7 @@ use Drupal\Core\Serialization\Yaml;
 /**
  * Import default config_ignore.settings to avoid deleting webforms.
  */
-function sitenow_core_update_8001() {
+function sitenow_core_update_8001(): void {
   $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
@@ -22,7 +22,7 @@ function sitenow_core_update_8001() {
 /**
  * Update the request form BLT command to use the new split option.
  */
-function sitenow_core_update_8002() {
+function sitenow_core_update_8002(): void {
   $config = \Drupal::configFactory()->getEditable('webform.webform.request_a_site');
   $elements = $config->get('elements');
 

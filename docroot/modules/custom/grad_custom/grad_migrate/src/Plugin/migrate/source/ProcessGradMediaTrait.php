@@ -32,7 +32,7 @@ trait ProcessGradMediaTrait {
   /**
    * Process an image field.
    */
-  protected function processImageField(&$row, $field_name) {
+  protected function processImageField(&$row, $field_name): void {
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty("{$field_name}_fid");
 

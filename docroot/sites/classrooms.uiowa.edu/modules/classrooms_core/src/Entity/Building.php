@@ -51,30 +51,22 @@ class Building extends ConfigEntityBase implements BuildingInterface {
 
   /**
    * The building ID.
-   *
-   * @var string
    */
-  protected $id;
+  protected string $id;
 
   /**
    * The building label.
-   *
-   * @var string
    */
-  protected $label;
+  protected string $label;
 
   /**
    * The building description.
-   *
-   * @var string
    */
-  protected $description;
+  protected string $description;
 
   /**
    * The building number.
-   *
-   * @var string
    */
-  protected $number;
+  protected string $number;
 
 }

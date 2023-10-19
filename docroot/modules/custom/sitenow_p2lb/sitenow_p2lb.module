@@ -21,7 +21,7 @@ use Drupal\sitenow_pages\Entity\Page;
 /**
  * Implements hook_form_alter().
  */
-function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if ($form_id === 'views_form_content_v3_converter_moderated_content') {
     // Give both submit buttons their proper label.
     $form['header']['node_bulk_form']['actions']['submit']['#value'] = t('Magic button');
@@ -32,7 +32,7 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   // Disable display of the Paragraph sections for new content.
   $form['field_page_content_block']['#access'] = FALSE;
 }
@@ -40,7 +40,7 @@ function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $node = $form_state->getFormObject()?->getEntity();
   if ($node instanceof Page && empty($form_state->getUserInput())) {
     // Check if field_v3_conversion_revision_id is set,
@@ -76,7 +76,7 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_p2lb_preprocess_views_view_field(&$variables) {
+function sitenow_p2lb_preprocess_views_view_field(&$variables): void {
   $view = $variables['view'];
   $id = $view->storage
     ->id();
@@ -106,7 +106,7 @@ function sitenow_p2lb_preprocess_views_view_field(&$variables) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_p2lb_form_node_revision_delete_confirm_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $form_values = $form_state->getBuildInfo()['args'][0];
 
   // Get node id.
@@ -200,7 +200,7 @@ function sitenow_p2lb_fetch_child_ids($parent) {
  * @return array
  *   An array of section column definitions.
  */
-function sitenow_p2lb_determine_columns(array $col_widths) {
+function sitenow_p2lb_determine_columns(array $col_widths): array {
   $sections = [];
 
   $total_col_width = array_sum($col_widths);
@@ -1306,7 +1306,7 @@ function _sitenow_p2lb_get_page_lb_sections_config() {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function sitenow_p2lb_get_protected_revision_id(string $nid) {
+function sitenow_p2lb_get_protected_revision_id(string $nid): ?string {
 
   // Guard against the node id being null.
   if (!$nid) {

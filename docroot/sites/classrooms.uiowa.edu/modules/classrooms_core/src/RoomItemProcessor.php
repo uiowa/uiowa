@@ -166,7 +166,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
   /**
    * Process the record before comparison.
    */
-  public function processRecord(&$record) {
+  public function processRecord(&$record): void {
     // Set to null if we don't have a proper int.
     if (isset($record->maxOccupancy) && filter_var($record->maxOccupancy, FILTER_VALIDATE_INT) === FALSE) {
       $record->maxOccupancy = NULL;
@@ -223,7 +223,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected static function processRecordTerm(string $term_name, string $vid, bool $create_new = TRUE) {
+  protected static function processRecordTerm(string $term_name, string $vid, bool $create_new = TRUE): string {
     // Returns all terms matching name within vocabulary.
     $term = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')

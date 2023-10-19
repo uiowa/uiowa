@@ -13,7 +13,7 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Populate organization terms.
  */
-function brand_core_update_8001() {
+function brand_core_update_8001(): void {
   // Obtain configuration from yaml files.
   $config_path = DRUPAL_ROOT . '/../config/brand.uiowa.edu/';
   $source = new FileStorage($config_path);
@@ -69,7 +69,7 @@ function brand_core_update_8001() {
 /**
  * Re-generate all approved lockups.
  */
-function brand_core_update_8002(&$sandbox) {
+function brand_core_update_8002(&$sandbox): void {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
@@ -120,13 +120,13 @@ function brand_core_update_8002(&$sandbox) {
 /**
  * Flush all caches after changing service constructor.
  */
-function brand_core_update_9001() {
+function brand_core_update_9001(): void {
   drupal_flush_all_caches();
 }
 
 /**
  * Enable symfony_mailer immediately.
  */
-function brand_core_update_9002() {
+function brand_core_update_9002(): void {
   \Drupal::service('module_installer')->install(['symfony_mailer']);
 }

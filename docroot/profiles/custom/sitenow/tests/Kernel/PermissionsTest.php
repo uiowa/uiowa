@@ -36,7 +36,7 @@ class PermissionsTest extends EntityKernelTestBase {
   /**
    * Test node creation (example).
    */
-  public function testNodeCreation() {
+  public function testNodeCreation(): void {
     $title = 'Front page';
 
     $editor = $this->createUser();
@@ -55,7 +55,7 @@ class PermissionsTest extends EntityKernelTestBase {
   /**
    * Test editor permissions.
    */
-  public function testEditorPermissions() {
+  public function testEditorPermissions(): void {
     $path = $this->getDrupalRoot();
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.editor');
@@ -81,7 +81,7 @@ class PermissionsTest extends EntityKernelTestBase {
   /**
    * Test publisher permissions.
    */
-  public function testPublisherPermission() {
+  public function testPublisherPermission(): void {
     $path = $this->getDrupalRoot();
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.publisher');
@@ -103,7 +103,7 @@ class PermissionsTest extends EntityKernelTestBase {
   /**
    * Test webmaster permissions.
    */
-  public function testWebmasterPermission() {
+  public function testWebmasterPermission(): void {
     $path = $this->getDrupalRoot();
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.webmaster');

@@ -8,7 +8,7 @@
 /**
  * Implements hook_install().
  */
-function uiowa_book_install() {
+function uiowa_book_install(): void {
   // Alter the core.entity_form_display.node.book.default.yml file.
   \Drupal::service('entity_display.repository')
     ->getFormDisplay('node', 'book', 'default')

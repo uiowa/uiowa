@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 
@@ -14,24 +15,18 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * The entity type.
-   *
-   * @var string
    */
   public string $entityType = 'node';
 
   /**
    * The entity bundle.
-   *
-   * @var string
    */
   public string $bundle;
 
   /**
    * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  public $entityTypeManager;
+  public EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The list of existing entity ID's that is being synced.
@@ -42,66 +37,54 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * The number of created entities.
-   *
-   * @var int
    */
-  protected $created = 0;
+  protected int $created = 0;
 
   /**
    * The number of deleted entities.
-   *
-   * @var int
    */
-  protected $deleted = 0;
+  protected int $deleted = 0;
 
   /**
    * The number of updated entities.
-   *
-   * @var int
    */
-  protected $updated = 0;
+  protected int $updated = 0;
 
   /**
    * The number of skipped entities.
-   *
-   * @var int
    */
-  protected $skipped = 0;
+  protected int $skipped = 0;
 
   /**
    * The entity field/property that is used to match records to entities.
-   *
-   * @var string
    */
-  protected $fieldSyncKey = 'nid';
+  protected string $fieldSyncKey = 'nid';
 
   /**
    * The key of the API record that is used to match records to entities.
-   *
-   * @var string
    */
-  protected $apiRecordSyncKey = '';
+  protected string $apiRecordSyncKey = '';
 
   /**
    * A map of API record sync key values matched to entity ID's.
    *
    * @var array
    */
-  protected $keyMap = [];
+  protected array $keyMap = [];
 
   /**
    * API records that have been processed.
    *
    * @var array
    */
-  protected $processedRecords = [];
+  protected array $processedRecords = [];
 
   /**
    * An array of entities that have been loaded, keyed by entity ID.
    *
    * @var array
    */
-  protected $existingEntities = [];
+  protected array $existingEntities = [];
 
   /**
    * Constructs an EntityProcessorBase instance.
@@ -119,7 +102,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getEntityIds() {
+  public function getEntityIds(): ?array {
     if (!isset($this->entityIds)) {
       // Get existing building nodes.
       $this->entityIds = $this->entityTypeManager
@@ -218,7 +201,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   /**
    * Get the records to be processed.
    */
-  protected function getData() {}
+  protected function getData(): void {}
 
   /**
    * If an individual record needs additional processing, handle it here.
@@ -226,7 +209,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @param mixed $record
    *   The record being processed.
    */
-  protected function processRecord(&$record) {}
+  protected function processRecord(mixed &$record): void {}
 
   /**
    * Perform processing of the entity.
@@ -236,7 +219,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @param mixed $record
    *   The source record.
    */
-  protected function processEntity(ContentEntityInterface &$entity, $record): bool {}
+  protected function processEntity(ContentEntityInterface &$entity, mixed $record): bool {}
 
   /**
    * Get created entities count.
@@ -244,7 +227,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @return int
    *   The created entity count.
    */
-  public function getCreated() {
+  public function getCreated(): int {
     return $this->created;
   }
 
@@ -254,7 +237,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @return int
    *   The deleted entity count.
    */
-  public function getDeleted() {
+  public function getDeleted(): int {
     return $this->deleted;
   }
 
@@ -264,7 +247,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @return int
    *   The updated entity count.
    */
-  public function getUpdated() {
+  public function getUpdated(): int {
     return $this->updated;
   }
 
@@ -274,7 +257,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    * @return int
    *   The updated entity count.
    */
-  public function getSkipped() {
+  public function getSkipped(): int {
     return $this->skipped;
   }
 

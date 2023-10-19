@@ -17,24 +17,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
   /**
    * The pathauto.alias_cleaner service.
-   *
-   * @var \Drupal\pathauto\AliasCleanerInterface
    */
-  protected $aliasCleaner;
+  protected AliasCleanerInterface $aliasCleaner;
 
   /**
    * The path.validator service.
-   *
-   * @var \Drupal\Core\Path\PathValidatorInterface
    */
-  protected $pathValidator;
+  protected PathValidatorInterface $pathValidator;
 
   /**
    * The route.builder service.
-   *
-   * @var \Drupal\Core\Routing\RouteBuilderInterface
    */
-  protected $routeBuilder;
+  protected RouteBuilderInterface $routeBuilder;
 
   /**
    * Settings form constructor.

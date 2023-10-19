@@ -25,7 +25,7 @@ class Multisite {
    *
    * @throws \Exception
    */
-  public static function getDatabaseName($dir) {
+  public static function getDatabaseName(string $dir): string {
     if ($dir == 'default') {
       throw new \Exception('The default site is configured automatically by BLT.');
     }
@@ -50,7 +50,7 @@ class Multisite {
    *
    * @throws \Exception
    */
-  public static function getIdentifier($uri) {
+  public static function getIdentifier(string $uri): string {
     if ($parsed = parse_url($uri)) {
 
       // Make a special exception for the default site and homepage. The
@@ -109,7 +109,7 @@ class Multisite {
    * @return array
    *   Internal domains keyed by AC environment machine name.
    */
-  public static function getInternalDomains($id) {
+  public static function getInternalDomains(string $id): array {
     return [
       'local' => "{$id}.uiowa.ddev.site",
       'dev' => "{$id}.dev.drupal.uiowa.edu",
@@ -127,7 +127,7 @@ class Multisite {
    * @return array
    *   An array of sites.
    */
-  public static function getAllSites($root) {
+  public static function getAllSites(string $root): array {
     $finder = new Finder();
 
     $dirs = $finder
@@ -151,7 +151,7 @@ class Multisite {
    * @param string $host
    *   The host, i.e. the multisite directory.
    */
-  public static function getSslParts($host) {
+  public static function getSslParts(string $host) {
     // Explode by domain and limit to two parts. Search for wildcard coverage.
     $host_parts = explode('.', $host, 2);
 

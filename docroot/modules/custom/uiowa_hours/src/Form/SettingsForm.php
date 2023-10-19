@@ -13,10 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
   /**
    * The Hours API service.
-   *
-   * @var \Drupal\uiowa_hours\HoursApi
    */
-  protected $hours;
+  protected HoursApi $hours;
 
   /**
    * HoursFilterForm constructor.

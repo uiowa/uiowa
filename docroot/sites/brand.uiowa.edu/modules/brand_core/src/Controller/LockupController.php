@@ -18,24 +18,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class LockupController extends ControllerBase {
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The file_system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fs;
+  protected FileSystemInterface $fs;
 
   /**
    * The extension.path.resolver service.
-   *
-   * @var \Drupal\Core\Extension\ExtensionPathResolver
    */
-  protected $extensionPathResolver;
+  protected ExtensionPathResolver $extensionPathResolver;
 
   /**
    * Lockup controller constructor.
@@ -67,7 +61,7 @@ class LockupController extends ControllerBase {
   /**
    * Generate Lockup.
    */
-  public function generate($nid) {
+  public function generate($nid): void {
     $is_node = $this->entityTypeManager->getStorage('node')->getQuery()->condition('nid', $nid)->execute();
 
     if ($is_node) {
@@ -653,7 +647,7 @@ class LockupController extends ControllerBase {
   /**
    * Add Stacked Logo.
    */
-  public function addStackedLogo($svg, $iowa_color) {
+  public function addStackedLogo($svg, $iowa_color): void {
     $svg->addPath('M172.51,13.23h-1.73V25.69h1.73v4.54H163V25.69h1.73V13.23H163V8.77h9.51Z', ["fill" => $iowa_color]);
     $svg->addPath('M185.29,30.23H178.4c-2.5,0-4.14-1.64-4.14-4.33V13.09a4,4,0,0,1,3.66-4.31,3.85,3.85,0,0,1,.48,0h6.89c2.5,0,4.13,1.67,4.13,4.32V25.87a4,4,0,0,1-3.62,4.35A4.34,4.34,0,0,1,185.29,30.23Zm-2-4.51V13.23h-3V25.69Z', ["fill" => $iowa_color]);
     $svg->addPath('M192.13,13.24h-1.52V8.78h9v4.46h-1.7l1.55,10.31,3.21-14.79h4.57l3.43,14.79,1.25-10.31h-1.57V8.78h8.89v4.46h-1.48l-2.69,17h-7.25L205,17.58l-2.88,12.66h-7Z', ["fill" => $iowa_color]);
@@ -663,7 +657,7 @@ class LockupController extends ControllerBase {
   /**
    * Add Horizontal Logo.
    */
-  public function addHorizontalLogo($svg, $iowa_color) {
+  public function addHorizontalLogo($svg, $iowa_color): void {
     $svg->addPath('M54.9,43.73H53.17V56.19H54.9v4.54H45.39V56.19h1.73V43.73H45.39V39.27H54.9Z', ["fill" => $iowa_color]);
     $svg->addPath('M67.68,60.73H60.79c-2.5,0-4.14-1.64-4.14-4.33V43.59a4,4,0,0,1,3.66-4.31,3.85,3.85,0,0,1,.48,0h6.89c2.5,0,4.13,1.67,4.13,4.32V56.37a4,4,0,0,1-3.62,4.35A4.34,4.34,0,0,1,67.68,60.73Zm-2-4.51V43.73h-3V56.19Z', ["fill" => $iowa_color]);
     $svg->addPath('M74.52,43.74H73V39.28h9v4.46H80.3l1.55,10.31,3.21-14.79h4.57l3.43,14.79,1.25-10.31H92.74V39.28h8.89v4.46h-1.48l-2.69,17H90.21L87.4,48.08,84.52,60.74h-7Z', ["fill" => $iowa_color]);

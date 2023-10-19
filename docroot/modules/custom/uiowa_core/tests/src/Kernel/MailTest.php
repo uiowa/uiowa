@@ -28,14 +28,12 @@ class MailTest extends KernelTestBase {
    *
    * @var array
    */
-  protected $params;
+  protected array $params;
 
   /**
    * The service account email address.
-   *
-   * @var string
    */
-  protected $serviceAccount;
+  protected string $serviceAccount;
 
   /**
    * {@inheritdoc}
@@ -56,7 +54,7 @@ class MailTest extends KernelTestBase {
    *
    * @dataProvider providerO365
    */
-  public function testO365HeaderSet($from, $name) {
+  public function testO365HeaderSet($from, $name): void {
     $this->config('system.site')->set('mail', $from)->save();
     $this->config('system.site')->set('name', $name)->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
@@ -66,7 +64,7 @@ class MailTest extends KernelTestBase {
   /**
    * Test the from email is overridden if not originating from uiowa.edu.
    */
-  public function testFromAddressOverriddenIfNotUiowa() {
+  public function testFromAddressOverriddenIfNotUiowa(): void {
     $this->config('system.site')->set('mail', 'foo@bar.com')->save();
     $this->config('system.site')->set('name', 'Foo')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
@@ -76,7 +74,7 @@ class MailTest extends KernelTestBase {
   /**
    * Test the from email is not overridden if originating from uiowa.edu.
    */
-  public function testFromAddressNotOverriddenIfUiowa() {
+  public function testFromAddressNotOverriddenIfUiowa(): void {
     $this->config('system.site')->set('mail', 'foo@uiowa.edu')->save();
     $this->config('system.site')->set('name', 'Foo')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core', 'key', 'admin@example.com', 'en', $this->params);
@@ -86,7 +84,7 @@ class MailTest extends KernelTestBase {
   /**
    * Test the from name is set to site name if empty for non-uiowa.edu emails.
    */
-  public function testFromNameSetToSiteNameIfEmptyAndNotUiowa() {
+  public function testFromNameSetToSiteNameIfEmptyAndNotUiowa(): void {
     $this->config('system.site')->set('mail', 'foo@uiowa.edu')->save();
     $this->config('system.site')->set('name', 'Test Site')->save();
     $result = $this->container->get('plugin.manager.mail')->mail('uiowa_core_test', 'key', 'admin@example.com', 'en', $this->params);
@@ -99,7 +97,7 @@ class MailTest extends KernelTestBase {
    * @return array
    *   Array of arguments.
    */
-  public function providerO365() {
+  public function providerO365(): array {
     return [
       [
         'someone@external.com',

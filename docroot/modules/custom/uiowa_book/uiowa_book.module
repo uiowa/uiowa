@@ -51,7 +51,7 @@ function uiowa_book_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_page_attachments().
  */
-function uiowa_book_page_attachments(array &$attachments) {
+function uiowa_book_page_attachments(array &$attachments): void {
   $attachments['#attached']['library'][] = 'uiowa_book/uiowa_book_styling';
 }
 
@@ -84,7 +84,7 @@ function uiowa_book_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_theme_registry_alter().
  */
-function uiowa_book_theme_registry_alter(&$theme_registry) {
+function uiowa_book_theme_registry_alter(&$theme_registry): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $theme_registry['book_navigation']['path'] = $path_resolver->getPath('module', 'uiowa_book') . '/templates';

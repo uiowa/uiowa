@@ -23,10 +23,8 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
 
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -81,7 +79,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  private function createParagraphItem(array $item, Row $row) {
+  private function createParagraphItem(array $item, Row $row): array {
     if (str_contains($item['value'], '(')) {
       [$label, $abbr] = explode('(', $item['value']);
       $label = trim($label);

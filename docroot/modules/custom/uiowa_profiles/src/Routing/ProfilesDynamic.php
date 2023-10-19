@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_profiles\Routing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
@@ -13,10 +14,8 @@ use Symfony\Component\Routing\Route;
 class ProfilesDynamic implements ContainerInjectionInterface {
   /**
    * The Profiles config.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $config;
+  protected ImmutableConfig $config;
 
   /**
    * Dynamic Profiles routes constructor.

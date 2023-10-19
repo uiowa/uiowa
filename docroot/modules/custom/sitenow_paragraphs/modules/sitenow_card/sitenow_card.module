@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_card_preprocess_paragraph__card(&$variables) {
+function sitenow_card_preprocess_paragraph__card(&$variables): void {
   $paragraph = $variables['paragraph'];
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {

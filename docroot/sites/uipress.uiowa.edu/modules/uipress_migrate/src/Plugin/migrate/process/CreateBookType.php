@@ -23,15 +23,11 @@ class CreateBookType extends ProcessPluginBase implements ContainerFactoryPlugin
 
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The date.formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected DateFormatterInterface $dateFormat;
 

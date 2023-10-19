@@ -88,7 +88,7 @@ class PeopleBlockViewTest extends BrowserTestBase {
    * @param int $total
    *   The number of items to create.
    */
-  public function generatePeople($total = 20) {
+  public function generatePeople(int $total = 20): void {
     for ($i = 0; $i < $total; $i++) {
 
       $node_data = [

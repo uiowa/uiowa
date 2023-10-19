@@ -13,6 +13,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
 use Drupal\smart_trim\TruncateHTML;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,61 +26,51 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
 
   /**
    * The module handler.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fileSystem;
+  protected FileSystemInterface $fileSystem;
 
   /**
    * The sitenow_migrate logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * Number of records to fetch from the database during each batch.
    *
    * A value of zero indicates no batching is to be done.
-   *
-   * @var int
    */
-  protected $batchSize = 100;
+  protected int $batchSize = 100;
 
   /**
    * Counter for memory resets.
-   *
-   * @var int
    */
-  protected $rowCount = 0;
+  protected int $rowCount = 0;
 
   /**
    * Holder to pass entity ID around.
-   *
-   * @var int
    */
-  protected $entityId = 0;
+  protected int $entityId = 0;
 
   /**
    * Collector for post-migrate reporting.
    *
    * @var array
    */
-  protected $reporter = [];
+  protected array $reporter = [];
 
   /**
    * Fields with multiple values that need to be fetched.
    *
    * @var array
    */
-  protected $multiValueFields = [];
+  protected array $multiValueFields = [];
 
   /**
    * Files with media fields on the source.
    *
    * @var array
    */
-  protected $sourceMediaFields = [];
+  protected array $sourceMediaFields = [];
 
   /**
    * {@inheritdoc}
@@ -180,7 +171,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @param \Drupal\migrate\Row $row
    *   The migration row result.
    */
-  protected function processMultiValueFields(Row $row) {
+  protected function processMultiValueFields(Row $row): void {
     if (!empty($this->configuration['multi_value_fields'])) {
       foreach ($this->configuration['multi_value_fields'] as $field_name => $fields) {
         if (!isset($this->multiValueFields[$field_name])) {
@@ -201,7 +192,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    *
    * @throws \Exception
    */
-  public function processMediaFields(Row $row) {
+  public function processMediaFields(Row $row): void {
     // Loop through each entry in the process section of the migration config.
     foreach ($this->sourceMediaFields as $field_name) {
       $field = $row->getSourceProperty($field_name);
@@ -250,7 +241,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @param array $tables
    *   An associative array of table names and fields to add.
    */
-  public function fetchAdditionalFields(Row &$row, array $tables) {
+  public function fetchAdditionalFields(Row &$row, array $tables): void {
     $nid = $row->getSourceProperty('nid');
     foreach ($tables as $field_name => $fields) {
       if (!is_array($fields)) {
@@ -288,7 +279,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @param \Drupal\migrate\Row $row
    *   The migration row result.
    */
-  public function fetchUrlAliases(Row &$row) {
+  public function fetchUrlAliases(Row &$row): void {
     $nid = $row->getSourceProperty('nid');
     $row->setSourceProperty('alias', $this->select('url_alias', 'alias')
       ->fields('alias', ['alias'])
@@ -303,7 +294,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate import event.
    */
-  public function postImport(MigrateImportEvent $event) {}
+  public function postImport(MigrateImportEvent $event): void {}
 
   /**
    * Run pre-migration tasks.
@@ -311,7 +302,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate import event.
    */
-  public function preImport(MigrateImportEvent $event) {}
+  public function preImport(MigrateImportEvent $event): void {}
 
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.
@@ -329,7 +320,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function clearMemory($size = 100) {
+  public function clearMemory(int $size = 100): int {
     if ($this->rowCount++ % $size === 0) {
       // First, try resetting Drupal's static storage - this frequently releases
       // plenty of memory to continue.
@@ -378,7 +369,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @return string
    *   The plain text string.
    */
-  protected function extractSummaryFromText(string $output, int $length = 400) {
+  protected function extractSummaryFromText(string $output, int $length = 400): string {
     // The following is the processing from
     // Drupal\smart_trim\Plugin\Field\FieldFormatter.
     // Strip caption.
@@ -417,7 +408,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @return int
    *   The node id of the last-most migrated node.
    */
-  public function getLastMigrated() {
+  public function getLastMigrated(): int {
     $db = \Drupal::database();
     if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
       return 0;

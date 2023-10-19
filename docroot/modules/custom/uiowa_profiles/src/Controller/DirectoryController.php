@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\uiowa_profiles\Client;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,31 +20,23 @@ class DirectoryController extends ControllerBase {
 
   /**
    * The Profiles service.
-   *
-   * @var \Drupal\uiowa_profiles\Client
    */
-  protected $profiles;
+  protected Client $profiles;
 
   /**
    * The breadcrumb manager service.
-   *
-   * @var \Drupal\Core\Breadcrumb\BreadcrumbManager
    */
-  protected $breadcrumb;
+  protected BreadcrumbManager $breadcrumb;
 
   /**
    * The uiowa_profiles logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * The current route match.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
-  protected $routeMatch;
+  protected RouteMatchInterface $routeMatch;
 
   /**
    * DirectoryController constructor.
@@ -86,7 +79,7 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request, $key, $slug = NULL) {
+  public function build(Request $request, int $key, string $slug = NULL): array {
     $directory = $this->config('uiowa_profiles.settings')->get('directories')[$key];
 
     $build = [

@@ -14,10 +14,8 @@ class EventsRoutes implements ContainerInjectionInterface {
 
   /**
    * The Config.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $config;
+  protected ConfigFactoryInterface $config;
 
   /**
    * Class constructor.
@@ -44,7 +42,7 @@ class EventsRoutes implements ContainerInjectionInterface {
    * @return \Symfony\Component\Routing\Route[]
    *   An array of route objects.
    */
-  public function routes() {
+  public function routes(): array {
     $routes = [];
 
     $path = $this->config->get('single_event_path') ?: 'event';

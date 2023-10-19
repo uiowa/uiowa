@@ -17,10 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class HoursFilterForm extends FormBase {
   /**
    * The Hours API service.
-   *
-   * @var \Drupal\uiowa_hours\HoursApi
    */
-  protected $hours;
+  protected HoursApi $hours;
 
   /**
    * HoursFilterForm constructor.
@@ -160,7 +158,7 @@ class HoursFilterForm extends FormBase {
    *
    * @see self::buildForm()
    */
-  protected function hoursRender(array $result, string $result_id, array $block_config) {
+  protected function hoursRender(array $result, string $result_id, array $block_config): array {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];

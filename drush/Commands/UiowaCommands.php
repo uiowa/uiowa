@@ -26,7 +26,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @var array
    */
-  protected $sanitizedConfig = [];
+  protected array $sanitizedConfig = [];
 
   /**
    * Add additional fields to status command output.
@@ -41,7 +41,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @return array
    *   The altered command result.
    */
-  public function alterStatus($result, CommandData $commandData) {
+  public function alterStatus(mixed $result, CommandData $commandData): array {
     if ($app = getenv('AH_SITE_GROUP')) {
       $result['application'] = $app;
     }
@@ -54,7 +54,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @hook init core:status
    */
-  public function initStatus(InputInterface $input, AnnotationData $annotationData) {
+  public function initStatus(InputInterface $input, AnnotationData $annotationData): void {
     $fields = explode(',', $input->getOption('fields'));
     $defaults = $annotationData->getList('default-fields');
 
@@ -79,7 +79,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @throws \Exception
    */
-  public function postSqlSync($result, CommandData $commandData) {
+  public function postSqlSync(mixed $result, CommandData $commandData): void {
     $record = $this->siteAliasManager()->getAlias($commandData->input()->getArgument('target'));
 
     if ($record->isRemote()) {
@@ -116,7 +116,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @return string
    *   The size of the database in megabytes.
    */
-  public function databaseSize() {
+  public function databaseSize(): string {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
     /** @var \Consolidation\SiteProcess\SiteProcess $process */
@@ -158,7 +158,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    *   Tables in RowsOfFields output formatter.
    */
-  public function tableSize(int $size = 1, $options = ['format' => 'table']) {
+  public function tableSize(int $size = 1, mixed $options = ['format' => 'table']): RowsOfFields {
     $size = $this->input()->getArgument('size') * 1024 * 1024;
     $selfRecord = $this->siteAliasManager()->getSelf();
     $args = ["SELECT table_name AS \"Tables\", ROUND(((data_length + index_length) / 1024 / 1024), 2) \"Size in MB\" FROM information_schema.TABLES WHERE table_schema = DATABASE() AND (data_length + index_length) > $size ORDER BY (data_length + index_length) DESC;"];
@@ -260,7 +260,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @aliases udu
    */
-  public function setupSiteForDebuggingUpdate() {
+  public function setupSiteForDebuggingUpdate(): void {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
     // This doesn't actually make a difference at this point, but is good to

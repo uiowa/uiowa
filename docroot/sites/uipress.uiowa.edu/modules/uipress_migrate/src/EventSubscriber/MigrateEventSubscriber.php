@@ -14,10 +14,8 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * Constructs event subscriber.
@@ -48,7 +46,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function onPostRollback(MigrateRollbackEvent $event) {
+  public function onPostRollback(MigrateRollbackEvent $event): void {
     $migration = $event->getMigration();
 
     if ($migration->id() === 'uipress_books') {

@@ -20,24 +20,18 @@ class Blog extends BaseNodeSource {
 
   /**
    * The public file directory path.
-   *
-   * @var string
    */
-  protected $publicPath;
+  protected string $publicPath;
 
   /**
    * The private file directory path, if any.
-   *
-   * @var string
    */
-  protected $privatePath;
+  protected string $privatePath;
 
   /**
    * The temporary file directory path.
-   *
-   * @var string
    */
-  protected $temporaryPath;
+  protected string $temporaryPath;
 
   /**
    * {@inheritdoc}

@@ -11,7 +11,7 @@ use Drupal\its_core\Entity\Service;
 /**
  * Implements hook_entity_bundle_info_alter().
  */
-function its_core_entity_bundle_info_alter(array &$bundles) {
+function its_core_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['node']['service'])) {
     $bundles['node']['service']['class'] = Service::class;
   }
@@ -20,7 +20,7 @@ function its_core_entity_bundle_info_alter(array &$bundles) {
 /**
  * Implements hook_form_alter().
  */
-function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   switch ($form_id) {
 
     // Node form modifications.
@@ -52,7 +52,7 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id): void {
   $view = $form_state->get('view');
   if ($view->id() === 'services') {
     if ($form_id === 'views_exposed_form') {
@@ -64,7 +64,7 @@ function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function its_core_preprocess_block(&$variables) {
+function its_core_preprocess_block(&$variables): void {
   switch ($variables['elements']['#plugin_id']) {
 
     case 'field_block:node:article:field_article_related_service':
@@ -76,7 +76,7 @@ function its_core_preprocess_block(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
  */
-function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+function its_core_preprocess_layout__twocol__card_sidebar(&$variables): void {
   // Directly specify a none-background
   // so it won't default to bg--white
   // in uids_base_preprocess_layout__twocol__card_sidebar().
@@ -94,7 +94,7 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
 /**
  * Implements hook_preprocess_field().
  */
-function its_core_preprocess_field(&$variables, $hook) {
+function its_core_preprocess_field(&$variables, $hook): void {
   switch ($variables['element']['#field_name']) {
     case 'field_service_related_service':
       $variables['#attached']['library'][] = 'uids_base/tags';
@@ -148,7 +148,7 @@ function its_core_preprocess_field(&$variables, $hook) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function its_core_preprocess_field__node__title(&$variables) {
+function its_core_preprocess_field__node__title(&$variables): void {
   if ($variables['element']['#bundle'] === 'service') {
     // Remove existing page title classes.
     $variables['attributes']['class'] = [];
@@ -184,7 +184,7 @@ function its_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements template_preprocess_views_view_unformatted().
  */
-function its_core_preprocess_views_view_unformatted(&$variables) {
+function its_core_preprocess_views_view_unformatted(&$variables): void {
   $view = $variables['view'];
   $view_id = $view->id();
 

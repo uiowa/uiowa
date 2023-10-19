@@ -22,7 +22,7 @@ function sitenow_blockquote_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_uip_classes_alter().
  */
-function sitenow_blockquote_uip_classes_alter(&$options, $entity, $bundle) {
+function sitenow_blockquote_uip_classes_alter(&$options, $entity, $bundle): void {
   switch ($bundle) {
     case 'blockquote':
       $options['blockquote-center'] = 'Align Center';
@@ -35,7 +35,7 @@ function sitenow_blockquote_uip_classes_alter(&$options, $entity, $bundle) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function sitenow_blockquote_theme_suggestions_field_alter(&$suggestions, $variables) {
+function sitenow_blockquote_theme_suggestions_field_alter(&$suggestions, $variables): void {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {
@@ -51,7 +51,7 @@ function sitenow_blockquote_theme_suggestions_field_alter(&$suggestions, $variab
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_blockquote_preprocess_paragraph__blockquote(&$variables) {
+function sitenow_blockquote_preprocess_paragraph__blockquote(&$variables): void {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // Create new blockquote attributes.

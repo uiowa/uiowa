@@ -171,7 +171,7 @@ class Articles extends BaseNodeSource {
    * @return false|string
    *   The new term or FALSE if not in the map.
    */
-  protected function manualLookup($tid) {
+  protected function manualLookup(int $tid): false|string {
     $map = [
       // Transit Study 2019-2020 => news-CAMBUS.
       96 => 51,

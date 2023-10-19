@@ -13,7 +13,7 @@ use Drupal\webform\Utility\WebformFormHelper;
 /**
  * Implements hook_webform_element_alter().
  */
-function sitenow_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+function sitenow_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context): void {
   if (isset($element['#webform_id'])) {
     if ($element['#webform_id'] === 'request_a_site--uri') {
       $element['#element_validate'][] = [
@@ -27,7 +27,7 @@ function sitenow_core_webform_element_alter(array &$element, FormStateInterface 
 /**
  * Implements hook_form_alter().
  */
-function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if ($form_id === 'webform_submission_request_a_site_node_26_add_form'
     || $form_id === 'webform_submission_request_a_site_add_form') {
     $form['#attached']['library'][] = 'sitenow_core/better-request-form';
@@ -58,7 +58,7 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_module_implements_alter().
  */
-function sitenow_core_module_implements_alter(&$implementations, $hook) {
+function sitenow_core_module_implements_alter(&$implementations, $hook): void {
   if ($hook === 'block_view_alter'
     && isset($implementations['sitenow_core'], $implementations['uiowa_auth'])) {
     $group = $implementations['sitenow_core'];
@@ -70,6 +70,6 @@ function sitenow_core_module_implements_alter(&$implementations, $hook) {
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter().
  */
-function sitenow_core_block_view_user_login_block_alter(array &$build, BlockPluginInterface $block) {
+function sitenow_core_block_view_user_login_block_alter(array &$build, BlockPluginInterface $block): void {
   $build['#pre_render'][] = [UserLoginBlockPreRender::class, 'preRender'];
 }

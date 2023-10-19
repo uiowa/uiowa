@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function engineering_migrate_install() {
+function engineering_migrate_install(): void {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'engineering_migrate') . '/config/split';

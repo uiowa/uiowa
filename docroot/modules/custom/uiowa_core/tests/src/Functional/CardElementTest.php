@@ -38,7 +38,7 @@ class CardElementTest extends BrowserTestBase {
   /**
    * Tests a card being rendered.
    */
-  public function testCard() {
+  public function testCard(): void {
     $assert_session = $this->assertSession();
 
     // Check card element defaults.

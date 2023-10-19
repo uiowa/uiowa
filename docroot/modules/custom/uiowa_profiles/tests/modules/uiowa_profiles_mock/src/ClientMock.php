@@ -13,10 +13,8 @@ use Psr\Log\LoggerInterface;
 class ClientMock extends Client {
   /**
    * The original service.
-   *
-   * @var \Drupal\uiowa_profiles\Client
    */
-  protected $innerService;
+  protected Client $innerService;
 
   /**
    * The constructor.

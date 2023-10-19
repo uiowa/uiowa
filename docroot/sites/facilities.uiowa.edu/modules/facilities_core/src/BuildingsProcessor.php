@@ -81,7 +81,7 @@ class BuildingsProcessor extends EntityProcessorBase {
    * @return int|null
    *   The entity ID of the named building, if it exists.
    */
-  protected function findNamedBuildingNid($string) {
+  protected function findNamedBuildingNid(string $string): ?int {
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'named_building')
       ->condition('field_building_building_id', $string)

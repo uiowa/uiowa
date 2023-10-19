@@ -22,7 +22,7 @@ class BatchRooms {
    * @param object $context
    *   Context for operations.
    */
-  public static function processNode(int $batch_id, array $nodes, object $room_processor, object &$context) {
+  public static function processNode(int $batch_id, array $nodes, object $room_processor, object &$context): void {
     // Optional message displayed under the progressbar.
     $context['message'] = t('Running Batch "@id"', [
       '@id' => $batch_id,
@@ -60,7 +60,7 @@ class BatchRooms {
    * @param array $operations
    *   Array of operations.
    */
-  public static function processNodeFinished($success, array $results, array $operations) {
+  public static function processNodeFinished(bool $success, array $results, array $operations): void {
     $messenger = \Drupal::messenger();
 
     if ($success) {

@@ -23,29 +23,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The routeMatch.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected RouteMatchInterface $routeMatch;
 
   /**
    * The path_alias.manager service.
-   *
-   * @var \Drupal\path_alias\AliasManagerInterface
    */
   protected AliasManagerInterface $aliasManager;
 
   /**
    * The date.formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected DateFormatterInterface $dateFormat;
 
