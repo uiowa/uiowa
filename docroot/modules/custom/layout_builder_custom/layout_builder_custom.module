@@ -229,7 +229,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Set '#states' for card image size.
             $form['layout_builder_style_default']['#states'] = [
               'visible' => [
-                // Always show masonry styles when media format is set to 'no crop'.
+                // Always show masonry styles when media format
+                // is set to 'no crop'.
                 [
                   ':input[name="layout_builder_style_media_format"]' => [
                     'value' => 'media_format_no_crop',

@@ -144,7 +144,7 @@ function uiowa_core_mail_alter(&$message) {
 
     // Override the from address if it doesn't match our Platform Email domain
     // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
-    // multiple from addresses here because that doesn't seem to work currently -
+    // multiple from addresses here because that doesn't seem to work currently
     // hook_mail_alter isn't even invoked for some reason.
     try {
       $from = Address::create($message['from']);
