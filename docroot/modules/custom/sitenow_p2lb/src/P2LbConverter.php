@@ -47,13 +47,43 @@ class P2LbConverter {
    * Convert a page from V2 to V3.
    */
   public function convert(): void {
-    $this->processSections()
+    $this->duplicateExistingRevision()
+      ->processSections()
       ->processMenu()
       ->addLockedSections()
       ->createNewRevision();
 
     // Finally, clear the tempstore.
     sitenow_p2lb_clear_tempstore($this->page);
+  }
+
+  /**
+   * Duplicate most recent published v2 revision for node.
+   */
+  protected function duplicateExistingRevision() {
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage */
+    $node_storage = $this->entityTypeManager->getStorage('node');
+
+    // Create a new revision from node storage.
+    $new_revision = $node_storage->createRevision($this->page);
+
+    // Set the new revision as "Published".
+    $new_revision->set('moderation_state', 'published');
+
+    // Add a message to the revision log.
+    $new_revision->revision_log = 'Copy of last published v2 revision.';
+
+    // Set the user ID to the current user's ID for the revision.
+    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
+
+    // Set the relevant revision timestamps.
+    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
+
+    // Save the new revision.
+    $new_revision->save();
+
+    return $this;
   }
 
   /**
