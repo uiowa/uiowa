@@ -1213,8 +1213,9 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
 function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
   // Get available configuration entities.
   $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
-  $entities = $storage->getQuery();
-  $entities = $entities->condition('status', 1)
+  $entities = $storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('status', 1)
     ->sort('title')
     ->execute();
 

@@ -60,6 +60,7 @@ function sitenow_events_update_9001(&$sandbox) {
   // Process all the event nodes.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
+      ->accessCheck(TRUE)
       ->condition('type', 'event')
       ->execute();
 
