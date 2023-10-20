@@ -293,10 +293,12 @@ function uipress_core_get_current_sales() {
     // just ended yesterday, so that we still wipe their cache
     // and don't display a sale that has since ended.
     ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->accessCheck()
     ->execute();
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'book')
     ->condition('field_book_type', $pids, 'IN')
+    ->accessCheck()
     ->execute();
   return array_values($nids);
 }
