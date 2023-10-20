@@ -52,6 +52,7 @@ function oniowa_core_update_9002(&$sandbox) {
 
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'event')
+      ->accessCheck()
       ->execute();
 
     $sandbox['total'] = count($query);
