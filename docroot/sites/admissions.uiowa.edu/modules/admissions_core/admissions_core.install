@@ -183,6 +183,7 @@ function admissions_core_update_9001() {
 
   $ids = $query
     ->condition('type', 'area_of_study')
+    ->accessCheck()
     ->execute();
 
   if ($ids) {
