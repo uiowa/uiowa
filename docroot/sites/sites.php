@@ -5908,3 +5908,9 @@ $sites['medicineogps.uiowa.ddev.site'] = 'ogps.medicine.uiowa.edu';
 $sites['medicineogps.dev.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
 $sites['medicineogps.stage.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
 $sites['medicineogps.prod.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
+
+// Directory aliases for flowcytometry.medicine.uiowa.edu.
+$sites['medicineflowcytometry.uiowa.ddev.site'] = 'flowcytometry.medicine.uiowa.edu';
+$sites['medicineflowcytometry.dev.drupal.uiowa.edu'] = 'flowcytometry.medicine.uiowa.edu';
+$sites['medicineflowcytometry.stage.drupal.uiowa.edu'] = 'flowcytometry.medicine.uiowa.edu';
+$sites['medicineflowcytometry.prod.drupal.uiowa.edu'] = 'flowcytometry.medicine.uiowa.edu';
