@@ -5896,3 +5896,9 @@ $sites['medicinebiochemstores.uiowa.ddev.site'] = 'biochemstores.medicine.uiowa.
 $sites['medicinebiochemstores.dev.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
 $sites['medicinebiochemstores.stage.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
 $sites['medicinebiochemstores.prod.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
+
+// Directory aliases for wellstone.medicine.uiowa.edu.
+$sites['medicinewellstone.uiowa.ddev.site'] = 'wellstone.medicine.uiowa.edu';
+$sites['medicinewellstone.dev.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
+$sites['medicinewellstone.stage.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
+$sites['medicinewellstone.prod.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
