@@ -139,6 +139,16 @@ class SubscribeForm extends ConfigFormBase {
     parent::validateForm($form, $form_state);
   }
 
+  /**
+   * Process a custom field from the API and add it to the form.
+   *
+   * @param $custom_field
+   *   A custom field defined by the Dispatch API.
+   * @param $form
+   *   The form to which field elements will be added.
+   *
+   * @return void
+   */
   protected function processCustomField($custom_field, &$form) {
     /**
      * fieldType = 'TEXT'
@@ -153,7 +163,7 @@ class SubscribeForm extends ConfigFormBase {
     $map = [
       'TEXT' => 'textfield',
       'DROPDOWN' => 'select',
-      'RADIO' => 'radio',
+      'RADIO' => 'radios',
     ];
     if (!isset($custom_field->fieldType) || !isset($map[$custom_field->fieldType])) {
       return;
@@ -173,12 +183,24 @@ class SubscribeForm extends ConfigFormBase {
       '#required' => $custom_field->required,
       '#description' => $custom_field->helpText,
     ];
-    if (in_array($field_type, ['select', 'radio'])) {
-      $options = explode('\r\n', $custom_field->listOptions);
+
+    // Add options to the form element if needed.
+    if (in_array($field_type, ['select', 'radios'])) {
+      // Split the options on carriage returns.
+      $options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
+      // Form API expects a set of key => value pairs.
+      // In our case, these can be the same.
+      $options = array_combine($options, $options);
       $form['custom_fields'][$custom_field->key]['#options'] = $options;
     }
   }
 
+  /**
+   * A helper function for development.
+   *
+   * @return array
+   *   An array of test objects.
+   */
   protected function testObjects() {
     $defs = [];
     $defs[] = [
