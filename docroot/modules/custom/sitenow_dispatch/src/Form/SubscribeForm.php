@@ -76,7 +76,13 @@ class SubscribeForm extends ConfigFormBase {
 
     $parameters = $this->dispatch->get("populations/$population");
 
-    foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
+    if ($parameters?->subscriptionList?->hidePhone === FALSE) {
+      $form['phone'] = [
+        '#type' => 'tel',
+        '#title' => $this->t('Phone number'),
+      ];
+    }
+      foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $this->processCustomField($custom_field, $form);
     }
     // @todo Remove this.
@@ -106,6 +112,10 @@ class SubscribeForm extends ConfigFormBase {
     ];
 
     $parameters = $this->dispatch->get("populations/$population");
+    if ($parameters?->subscriptionList?->hidePhone === FALSE) {
+      $phone = $form_state->getValue('phone');
+      $body['toPhone'] = $phone;
+    }
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $body[$custom_field->key] = $form_state->getValue($custom_field->key);
     }
@@ -174,7 +184,7 @@ class SubscribeForm extends ConfigFormBase {
 
     // We can't have a select list or radio
     // without options, so if that's empty, skip.
-    if (in_array($field_type, ['select', 'radio']) && empty($custom_field->listOptions)) {
+    if (in_array($field_type, ['select', 'radio', 'checkboxes']) && empty($custom_field->listOptions)) {
       return;
     }
 
@@ -189,10 +199,24 @@ class SubscribeForm extends ConfigFormBase {
     // Add options to the form element if needed.
     if (in_array($field_type, ['select', 'radios', 'checkboxes'])) {
       // Split the options on carriage returns.
-      $options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
+      $dispatch_options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
       // Form API expects a set of key => value pairs.
-      // In our case, these can be the same.
-      $options = array_combine($options, $options);
+      // In our case, we may or may not have labels
+      // in the form of "value,label" or "value."
+      $options = [];
+      foreach ($dispatch_options as $option) {
+        // Limit it to 2 parts so the string scan will
+        // stop once it hits the first comma.
+        $parts = explode(',', $option, 2);
+        // If we only have one part, then we need to
+        // set the value to itself as its key.
+        if (count($parts) === 1) {
+          $options[$option] = $option;
+        }
+        else {
+          $options[$parts[0]] = $parts[1];
+        }
+      }
       $form['custom_fields'][$custom_field->key]['#options'] = $options;
     }
   }
@@ -234,6 +258,36 @@ class SubscribeForm extends ConfigFormBase {
       'defaultValue' => 'Blue',
       'helpText' => 'Please answer this question.',
       'sortOrder' => 2,
+    ];
+    $defs[] = [
+      'fieldType' => 'NUMBER',
+      'key' => 'thingthree',
+      'label' => 'Three',
+      'listOptions' => '',
+      'required' => FALSE,
+      'defaultValue' => '',
+      'helpText' => '',
+      'sortOrder' => 3,
+    ];
+    $defs[] = [
+      'fieldType' => 'CHECKBOX',
+      'key' => 'thingfour',
+      'label' => 'Four',
+      'listOptions' => '',
+      'required' => FALSE,
+      'defaultValue' => '',
+      'helpText' => '',
+      'sortOrder' => 4,
+    ];
+    $defs[] = [
+      'fieldType' => 'CHECKBOX',
+      'key' => 'thingfive',
+      'label' => 'Five',
+      'listOptions' => "Red\r\nOrange\r\nYellow",
+      'required' => FALSE,
+      'defaultValue' => '',
+      'helpText' => '',
+      'sortOrder' => 5,
     ];
     $objects = [];
     foreach ($defs as $definition) {
