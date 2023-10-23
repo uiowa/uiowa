@@ -5944,3 +5944,9 @@ $sites['medicinebiomed.uiowa.ddev.site'] = 'biomed.medicine.uiowa.edu';
 $sites['medicinebiomed.dev.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
 $sites['medicinebiomed.stage.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
 $sites['medicinebiomed.prod.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
+
+// Directory aliases for craniofacial.medicine.uiowa.edu.
+$sites['medicinecraniofacial.uiowa.ddev.site'] = 'craniofacial.medicine.uiowa.edu';
+$sites['medicinecraniofacial.dev.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
+$sites['medicinecraniofacial.stage.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
+$sites['medicinecraniofacial.prod.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
