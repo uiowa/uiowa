@@ -5920,3 +5920,9 @@ $sites['medicinefacultyaffairs.uiowa.ddev.site'] = 'facultyaffairs.medicine.uiow
 $sites['medicinefacultyaffairs.dev.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
 $sites['medicinefacultyaffairs.stage.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
 $sites['medicinefacultyaffairs.prod.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
+
+// Directory aliases for it.medicine.uiowa.edu.
+$sites['medicineit.uiowa.ddev.site'] = 'it.medicine.uiowa.edu';
+$sites['medicineit.dev.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
+$sites['medicineit.stage.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
+$sites['medicineit.prod.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
