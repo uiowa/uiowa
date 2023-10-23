@@ -5926,3 +5926,9 @@ $sites['medicineit.uiowa.ddev.site'] = 'it.medicine.uiowa.edu';
 $sites['medicineit.dev.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
 $sites['medicineit.stage.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
 $sites['medicineit.prod.drupal.uiowa.edu'] = 'it.medicine.uiowa.edu';
+
+// Directory aliases for sercc.medicine.uiowa.edu.
+$sites['medicinesercc.uiowa.ddev.site'] = 'sercc.medicine.uiowa.edu';
+$sites['medicinesercc.dev.drupal.uiowa.edu'] = 'sercc.medicine.uiowa.edu';
+$sites['medicinesercc.stage.drupal.uiowa.edu'] = 'sercc.medicine.uiowa.edu';
+$sites['medicinesercc.prod.drupal.uiowa.edu'] = 'sercc.medicine.uiowa.edu';
