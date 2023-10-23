@@ -5950,3 +5950,9 @@ $sites['medicinecraniofacial.uiowa.ddev.site'] = 'craniofacial.medicine.uiowa.ed
 $sites['medicinecraniofacial.dev.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
 $sites['medicinecraniofacial.stage.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
 $sites['medicinecraniofacial.prod.drupal.uiowa.edu'] = 'craniofacial.medicine.uiowa.edu';
+
+// Directory aliases for genetherapy.medicine.uiowa.edu.
+$sites['medicinegenetherapy.uiowa.ddev.site'] = 'genetherapy.medicine.uiowa.edu';
+$sites['medicinegenetherapy.dev.drupal.uiowa.edu'] = 'genetherapy.medicine.uiowa.edu';
+$sites['medicinegenetherapy.stage.drupal.uiowa.edu'] = 'genetherapy.medicine.uiowa.edu';
+$sites['medicinegenetherapy.prod.drupal.uiowa.edu'] = 'genetherapy.medicine.uiowa.edu';
