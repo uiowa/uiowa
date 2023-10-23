@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinebiochemstores.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinebiochemstores
+  human_name: biochemstores.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinebiochemstores.prod
+drupal:
+  db:
+    database: biochemstores_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinebiochemstores.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Biochemistry Stores'

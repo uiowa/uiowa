@@ -5890,3 +5890,9 @@ $sites['lablenert.uiowa.ddev.site'] = 'lenert.lab.uiowa.edu';
 $sites['lablenert.dev.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
 $sites['lablenert.stage.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
 $sites['lablenert.prod.drupal.uiowa.edu'] = 'lenert.lab.uiowa.edu';
+
+// Directory aliases for biochemstores.medicine.uiowa.edu.
+$sites['medicinebiochemstores.uiowa.ddev.site'] = 'biochemstores.medicine.uiowa.edu';
+$sites['medicinebiochemstores.dev.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
+$sites['medicinebiochemstores.stage.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
+$sites['medicinebiochemstores.prod.drupal.uiowa.edu'] = 'biochemstores.medicine.uiowa.edu';
