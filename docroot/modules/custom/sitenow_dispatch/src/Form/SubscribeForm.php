@@ -74,6 +74,16 @@ class SubscribeForm extends ConfigFormBase {
       '#value' => $population,
     ];
 
+    $parameters = $this->dispatch->get("populations/$population");
+
+    foreach($parameters?->subscriptionList?->customFields as $custom_field) {
+      $this->processCustomField($custom_field, $form);
+    }
+    // @todo Remove this.
+    foreach ($this->testObjects() as $custom_field) {
+      $this->processCustomField($custom_field, $form);
+    }
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -89,13 +99,19 @@ class SubscribeForm extends ConfigFormBase {
     $first = $form_state->getValue('first');
     $last = $form_state->getValue('last');
     $population = $form_state->getValue('population');
+    $body = [
+      'toAddress' => $email,
+      'firstName' => $first,
+      'lastName' => $last,
+    ];
+
+    $parameters = $this->dispatch->get("populations/$population");
+    foreach($parameters?->subscriptionList?->customFields as $custom_field) {
+      $body[$custom_field->key] = $form_state->getValue($custom_field->key);
+    }
 
     $this->dispatch->request('POST', "populations/$population/subscribers", [
-      'body' => json_encode([
-        'toAddress' => $email,
-        'firstName' => $first,
-        'lastName' => $last,
-      ]),
+      'body' => json_encode($body),
     ]);
 
     $this->messenger()->addStatus($this->t('@email has been added to the subscription list.', [
@@ -121,6 +137,89 @@ class SubscribeForm extends ConfigFormBase {
     }
 
     parent::validateForm($form, $form_state);
+  }
+
+  protected function processCustomField($custom_field, &$form) {
+    /**
+     * fieldType = 'TEXT'
+     * key = 'unit'
+     * label = 'Unit/Organization'
+     * listOptions = ''
+     * required = false
+     * defaultValue = NULL
+     * helpText = NULL
+     * sortOrder = (int) 0
+     */
+    $map = [
+      'TEXT' => 'textfield',
+      'DROPDOWN' => 'select',
+      'RADIO' => 'radio',
+    ];
+    if (!isset($custom_field->fieldType) || !isset($map[$custom_field->fieldType])) {
+      return;
+    }
+    $field_type = $map[$custom_field->fieldType];
+
+    // We can't have a select list or radio
+    // without options, so if that's empty, skip.
+    if (in_array($field_type, ['select', 'radio']) && empty($custom_field->listOptions)) {
+      return;
+    }
+
+    $form['custom_fields'][$custom_field->key] = [
+      '#type' => $field_type,
+      '#title' => $custom_field->label,
+      '#default_value' => $custom_field->defaultValue,
+      '#required' => $custom_field->required,
+      '#description' => $custom_field->helpText,
+    ];
+    if (in_array($field_type, ['select', 'radio'])) {
+      $options = explode('\r\n', $custom_field->listOptions);
+      $form['custom_fields'][$custom_field->key]['#options'] = $options;
+    }
+  }
+
+  protected function testObjects() {
+    $defs = [];
+    $defs[] = [
+      'fieldType' => 'TEXT',
+      'key' => 'program',
+      'label' => 'Program',
+      'listOptions' => '',
+      'required' => FALSE,
+      'defaultValue' => '',
+      'helpText' => '',
+      'sortOrder' => 0,
+    ];
+    $defs[] = [
+      'fieldType' => 'DROPDOWN',
+      'key' => 'thingone',
+      'label' => 'One',
+      'listOptions' => "alpha\r\nbeta\r\ngamma",
+      'required' => false,
+      'defaultValue' => 'beta',
+      'helpText' => 'The thing with the stuff',
+      'sortOrder' => 1,
+    ];
+    $defs[] = [
+      'fieldType' => 'RADIO',
+      'key' => 'thingtwo',
+      'label' => 'Two',
+      'listOptions' => "Red\r\nOrange\r\nYellow\r\nGreen\r\nBlue\r\nIndigo\r\nViolet",
+      'required' => false,
+      'defaultValue' => 'Blue',
+      'helpText' => 'Please answer this question.',
+      'sortOrder' => 2,
+    ];
+    $objects = [];
+    foreach($defs as $definition) {
+      $obj = new \stdClass();
+      foreach ($definition as $key => $value) {
+        $obj->$key = $value;
+      }
+      $objects[] = $obj;
+    }
+    return $objects;
   }
 
 }
