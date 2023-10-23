@@ -76,7 +76,7 @@ class SubscribeForm extends ConfigFormBase {
 
     $parameters = $this->dispatch->get("populations/$population");
 
-    foreach($parameters?->subscriptionList?->customFields as $custom_field) {
+    foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $this->processCustomField($custom_field, $form);
     }
     // @todo Remove this.
@@ -106,7 +106,7 @@ class SubscribeForm extends ConfigFormBase {
     ];
 
     $parameters = $this->dispatch->get("populations/$population");
-    foreach($parameters?->subscriptionList?->customFields as $custom_field) {
+    foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $body[$custom_field->key] = $form_state->getValue($custom_field->key);
     }
 
@@ -142,15 +142,15 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * Process a custom field from the API and add it to the form.
    *
-   * @param $custom_field
+   * @param Object $custom_field
    *   A custom field defined by the Dispatch API.
-   * @param $form
+   * @param array $form
    *   The form to which field elements will be added.
-   *
-   * @return void
    */
-  protected function processCustomField($custom_field, &$form) {
-    /**
+  protected function processCustomField(Object $custom_field, array &$form) : void {
+    /*
+     * The custom field is an object defined by the
+     * Dispatch API with fields like the following:
      * fieldType = 'TEXT'
      * key = 'unit'
      * label = 'Unit/Organization'
@@ -218,7 +218,7 @@ class SubscribeForm extends ConfigFormBase {
       'key' => 'thingone',
       'label' => 'One',
       'listOptions' => "alpha\r\nbeta\r\ngamma",
-      'required' => false,
+      'required' => FALSE,
       'defaultValue' => 'beta',
       'helpText' => 'The thing with the stuff',
       'sortOrder' => 1,
@@ -228,13 +228,13 @@ class SubscribeForm extends ConfigFormBase {
       'key' => 'thingtwo',
       'label' => 'Two',
       'listOptions' => "Red\r\nOrange\r\nYellow\r\nGreen\r\nBlue\r\nIndigo\r\nViolet",
-      'required' => false,
+      'required' => FALSE,
       'defaultValue' => 'Blue',
       'helpText' => 'Please answer this question.',
       'sortOrder' => 2,
     ];
     $objects = [];
-    foreach($defs as $definition) {
+    foreach ($defs as $definition) {
       $obj = new \stdClass();
       foreach ($definition as $key => $value) {
         $obj->$key = $value;
