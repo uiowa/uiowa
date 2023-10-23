@@ -162,6 +162,8 @@ class SubscribeForm extends ConfigFormBase {
      */
     $map = [
       'TEXT' => 'textfield',
+      'NUMBER' => 'number',
+      'CHECKBOX' => 'checkboxes',
       'DROPDOWN' => 'select',
       'RADIO' => 'radios',
     ];
@@ -185,7 +187,7 @@ class SubscribeForm extends ConfigFormBase {
     ];
 
     // Add options to the form element if needed.
-    if (in_array($field_type, ['select', 'radios'])) {
+    if (in_array($field_type, ['select', 'radios', 'checkboxes'])) {
       // Split the options on carriage returns.
       $options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
       // Form API expects a set of key => value pairs.
