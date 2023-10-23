@@ -5902,3 +5902,9 @@ $sites['medicinewellstone.uiowa.ddev.site'] = 'wellstone.medicine.uiowa.edu';
 $sites['medicinewellstone.dev.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
 $sites['medicinewellstone.stage.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
 $sites['medicinewellstone.prod.drupal.uiowa.edu'] = 'wellstone.medicine.uiowa.edu';
+
+// Directory aliases for ogps.medicine.uiowa.edu.
+$sites['medicineogps.uiowa.ddev.site'] = 'ogps.medicine.uiowa.edu';
+$sites['medicineogps.dev.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
+$sites['medicineogps.stage.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
+$sites['medicineogps.prod.drupal.uiowa.edu'] = 'ogps.medicine.uiowa.edu';
