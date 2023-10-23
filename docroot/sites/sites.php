@@ -5938,3 +5938,9 @@ $sites['medicineinflammation.uiowa.ddev.site'] = 'inflammation.medicine.uiowa.ed
 $sites['medicineinflammation.dev.drupal.uiowa.edu'] = 'inflammation.medicine.uiowa.edu';
 $sites['medicineinflammation.stage.drupal.uiowa.edu'] = 'inflammation.medicine.uiowa.edu';
 $sites['medicineinflammation.prod.drupal.uiowa.edu'] = 'inflammation.medicine.uiowa.edu';
+
+// Directory aliases for biomed.medicine.uiowa.edu.
+$sites['medicinebiomed.uiowa.ddev.site'] = 'biomed.medicine.uiowa.edu';
+$sites['medicinebiomed.dev.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
+$sites['medicinebiomed.stage.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
+$sites['medicinebiomed.prod.drupal.uiowa.edu'] = 'biomed.medicine.uiowa.edu';
