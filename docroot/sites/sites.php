@@ -5962,3 +5962,9 @@ $sites['medicineimmunologycenter.uiowa.ddev.site'] = 'immunologycenter.medicine.
 $sites['medicineimmunologycenter.dev.drupal.uiowa.edu'] = 'immunologycenter.medicine.uiowa.edu';
 $sites['medicineimmunologycenter.stage.drupal.uiowa.edu'] = 'immunologycenter.medicine.uiowa.edu';
 $sites['medicineimmunologycenter.prod.drupal.uiowa.edu'] = 'immunologycenter.medicine.uiowa.edu';
+
+// Directory aliases for vaccine.medicine.uiowa.edu.
+$sites['medicinevaccine.uiowa.ddev.site'] = 'vaccine.medicine.uiowa.edu';
+$sites['medicinevaccine.dev.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
+$sites['medicinevaccine.stage.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
+$sites['medicinevaccine.prod.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
