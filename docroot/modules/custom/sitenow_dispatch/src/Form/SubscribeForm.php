@@ -113,7 +113,16 @@ class SubscribeForm extends ConfigFormBase {
       $body['toPhone'] = $phone;
     }
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
-      $body[$custom_field->key] = $form_state->getValue($custom_field->key);
+      $value = $form_state->getValue($custom_field->key);
+      // Checkboxes allows for multiple values, but stores them
+      // as a comma delimited string in Dispatch, so first
+      // implode our value(s).
+      if ($custom_field->fieldType === 'CHECKBOX') {
+        // Filter out any 0s in the array, which indicate
+        // unchecked boxes, and pass the cleaned array to implode.
+        $value = implode(',', array_filter($value));
+      }
+      $body[$custom_field->key] = $value;
     }
 
     $this->dispatch->request('POST', "populations/$population/subscribers", [
