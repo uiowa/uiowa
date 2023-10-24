@@ -218,6 +218,14 @@ class SubscribeForm extends ConfigFormBase {
         }
       }
       $form['custom_fields'][$custom_field->key]['#options'] = $options;
+
+      // Checkboxes take an array as their default value,
+      // unlike the other field options.
+      // Split on commas and replace the single string
+      // that we added prior.
+      if ($field_type === 'checkboxes') {
+        $form['custom_fields'][$custom_field->key]['#default_value'] = explode(',', $custom_field->defaultValue);
+      }
     }
   }
 
