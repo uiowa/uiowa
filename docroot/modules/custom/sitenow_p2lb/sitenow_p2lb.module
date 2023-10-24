@@ -1057,7 +1057,8 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   // Assumes only one button or link is present.
   // Any more links will remain in the body.
   if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
-    $text['value'] = strip_tags($matches[1] . $matches[5], ['p', 'a', 'strong', 'em', 'h2', 'h3', 'h4','h6' ]);
+    $text['value'] = strip_tags($matches[1] . $matches[5],
+      ['p', 'a', 'strong', 'em', 'h2', 'h3', 'h4', 'h6']);
     // Set URI based on link being absolute or relative.
     $uri = (substr($matches[3], 0, 4) === 'http') ?
       $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
