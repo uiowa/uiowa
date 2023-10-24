@@ -24,13 +24,6 @@ function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, FormState
 }
 
 /**
- * Implements hook_preprocess_HOOK() for html.html.twig.
- */
-function uiowa_edu_core_preprocess_html(&$variables) {
-  $variables['#attached']['library'][] = 'uiowa/global-styling';
-}
-
-/**
  * Implements hook_views_pre_render().
  */
 function uiowa_edu_core_views_pre_render(ViewExecutable $view) {
