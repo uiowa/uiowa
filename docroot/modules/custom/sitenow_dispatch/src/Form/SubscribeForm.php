@@ -85,10 +85,6 @@ class SubscribeForm extends ConfigFormBase {
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $this->processCustomField($custom_field, $form);
     }
-    // @todo Remove this.
-    foreach ($this->testObjects() as $custom_field) {
-      $this->processCustomField($custom_field, $form);
-    }
 
     $form['submit'] = [
       '#type' => 'submit',
@@ -227,85 +223,6 @@ class SubscribeForm extends ConfigFormBase {
         $form['custom_fields'][$custom_field->key]['#default_value'] = explode(',', $custom_field->defaultValue);
       }
     }
-  }
-
-  /**
-   * A helper function for development.
-   *
-   * @return array
-   *   An array of test objects.
-   */
-  protected function testObjects() {
-    $defs = [];
-    $defs[] = [
-      'fieldType' => 'TEXT',
-      'key' => 'program',
-      'label' => 'Program',
-      'listOptions' => '',
-      'required' => FALSE,
-      'defaultValue' => '',
-      'helpText' => '',
-      'sortOrder' => 0,
-    ];
-    $defs[] = [
-      'fieldType' => 'DROPDOWN',
-      'key' => 'thingone',
-      'label' => 'One',
-      'listOptions' => "alpha\r\nbeta\r\ngamma",
-      'required' => FALSE,
-      'defaultValue' => 'beta',
-      'helpText' => 'The thing with the stuff',
-      'sortOrder' => 1,
-    ];
-    $defs[] = [
-      'fieldType' => 'RADIO',
-      'key' => 'thingtwo',
-      'label' => 'Two',
-      'listOptions' => "Red\r\nOrange\r\nYellow\r\nGreen\r\nBlue\r\nIndigo\r\nViolet",
-      'required' => FALSE,
-      'defaultValue' => 'Blue',
-      'helpText' => 'Please answer this question.',
-      'sortOrder' => 2,
-    ];
-    $defs[] = [
-      'fieldType' => 'NUMBER',
-      'key' => 'thingthree',
-      'label' => 'Three',
-      'listOptions' => '',
-      'required' => FALSE,
-      'defaultValue' => '',
-      'helpText' => '',
-      'sortOrder' => 3,
-    ];
-    $defs[] = [
-      'fieldType' => 'CHECKBOX',
-      'key' => 'thingfour',
-      'label' => 'Four',
-      'listOptions' => '',
-      'required' => FALSE,
-      'defaultValue' => '',
-      'helpText' => '',
-      'sortOrder' => 4,
-    ];
-    $defs[] = [
-      'fieldType' => 'CHECKBOX',
-      'key' => 'thingfive',
-      'label' => 'Five',
-      'listOptions' => "Red\r\nOrange\r\nYellow",
-      'required' => FALSE,
-      'defaultValue' => '',
-      'helpText' => '',
-      'sortOrder' => 5,
-    ];
-    $objects = [];
-    foreach ($defs as $definition) {
-      $obj = new \stdClass();
-      foreach ($definition as $key => $value) {
-        $obj->$key = $value;
-      }
-      $objects[] = $obj;
-    }
-    return $objects;
   }
 
 }
