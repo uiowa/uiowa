@@ -82,7 +82,7 @@ class SubscribeForm extends ConfigFormBase {
         '#title' => $this->t('Phone number'),
       ];
     }
-      foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
+    foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
       $this->processCustomField($custom_field, $form);
     }
     // @todo Remove this.
@@ -202,7 +202,7 @@ class SubscribeForm extends ConfigFormBase {
       $dispatch_options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
       // Form API expects a set of key => value pairs.
       // In our case, we may or may not have labels
-      // in the form of "value,label" or "value."
+      // in the form of value,label or value.
       $options = [];
       foreach ($dispatch_options as $option) {
         // Limit it to 2 parts so the string scan will
