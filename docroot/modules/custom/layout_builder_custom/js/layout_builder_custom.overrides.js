@@ -29,22 +29,17 @@
           if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 1) {
             let offCanvasWidth;
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
-            console.log(offCanvasCookie);
-            console.log(offCanvasCookie === undefined);
             if (offCanvasCookie === undefined) {
               offCanvasWidth = 500;
             } else {
               offCanvasWidth = offCanvasCookie;
             }
-            console.log(offCanvasWidth);
 
             body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
 
             let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
             $element.parent().on('dialogContentResize.off-canvas', eventData, function() {
-              console.log('recalculating')
               if (!justCreated) {
-                console.log('I`m in');
                 // Cookie that expires in 99 years.
                 const width = offCanvas.getBoundingClientRect().width
                 cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: 'drupalSettings.layoutBuilderCustom.cookieDomain' });
