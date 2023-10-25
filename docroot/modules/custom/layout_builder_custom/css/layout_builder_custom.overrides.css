@@ -12,11 +12,24 @@
   padding: 0px;
 }
 
+/**
+ * The height is 1px too small.
+ */
+#drupal-off-canvas-wrapper:after {
+  position: absolute;
+  content: '';
+  left: -1px;
+  bottom: -1px;
+  background-color: var(--off-canvas-wrapper-border-color);
+  height: 1px;
+  width: calc(100% + 1px);
+}
+
 #drupal-off-canvas {
   width: calc(100% - 1px) !important;
   height: calc(100% - (var(--off-canvas-title-padding) * 2 + 1.4rem)) !important;
   overflow: auto;
-  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding);
+  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding) ;
 }
 
 #drupal-off-canvas-wrapper .ui-dialog-titlebar {

@@ -63,8 +63,5 @@
     origBeforeSubmit.call(formValues, element, options);
   };
 
-  function dragHandleBehaviorStopgap() {
-    //ui-resizable-handle ui-resizable-w
-  }
 
 })(jQuery, Drupal, drupalSettings, window.Cookies, once);
