@@ -82,7 +82,7 @@
       return
     }
     interacting = true;
-    handle.addEventListener('mousemove', function(event) {
+    document.addEventListener('mousemove', function(event) {
       dragHandleBehaviorStopgap(event);
     });
     handle.addEventListener('mouseup', function(event) {
@@ -95,7 +95,7 @@
 
   function dragHandleResetEvents(event) {
 
-    handle.removeEventListener('mousemove', function(event) {
+    document.removeEventListener('mousemove', function(event) {
       dragHandleBehaviorStopgap(event);
     });
     handle.removeEventListener('mouseup', function(event) {
