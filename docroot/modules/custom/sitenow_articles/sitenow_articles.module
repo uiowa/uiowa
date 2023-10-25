@@ -76,6 +76,12 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
         }
       }
     case 'node_article_form':
+      // Update help text for scheduler on article content type.
+      if (isset($form['publish_on'])) {
+        $additional_published_help_text = t('Note: this article will be published within a one-hour window of the selected date and time.');
+        $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
+      }
+
       if (isset($form['field_related_content'])) {
         // Set field_related_content to node_reference group.
         $form['field_related_content']['#group'] = 'node_relations';
