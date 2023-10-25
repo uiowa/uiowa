@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinefacultyaffairs.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinefacultyaffairs
+  human_name: facultyaffairs.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinefacultyaffairs.prod
+drupal:
+  db:
+    database: facultyaffairs_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinefacultyaffairs.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Office of Faculty Affairs and Development'
