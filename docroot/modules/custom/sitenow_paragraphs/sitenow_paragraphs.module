@@ -55,9 +55,9 @@ function sitenow_paragraphs_entity_create(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_item_WIDGET_TYPE_form_alter().
  */
-function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
+function sitenow_paragraphs_field_widget_single_item_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.

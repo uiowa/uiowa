@@ -601,9 +601,9 @@ function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterfa
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_item_WIDGET_TYPE_form_alter().
  */
-function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_articles_field_widget_single_item_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element["#paragraph_type"] === 'articles') {
     if (!empty($element['subform']['field_articles_more'])) {
       $parents_array = $element['subform']['#parents'];
