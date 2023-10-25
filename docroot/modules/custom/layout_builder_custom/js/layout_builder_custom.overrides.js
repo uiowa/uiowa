@@ -90,7 +90,7 @@
     });
   }
   function dragHandleBehaviorStopgap(event) {
-    mainContent.style.paddingRight = offCanvas.style.width;
+    mainContent.style.paddingRight = (parseFloat(offCanvas.style.width) + 13) + 'px';
   }
 
   function dragHandleResetEvents(event) {
