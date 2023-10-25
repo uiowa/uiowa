@@ -204,7 +204,10 @@ class SubscribeForm extends ConfigFormBase {
     // Add options to the form element if needed.
     if (in_array($field_type, ['select', 'radios', 'checkboxes'])) {
       // Split the options on carriage returns.
-      $dispatch_options = preg_split('%\r\n|\r|\n%', $custom_field->listOptions);
+      // Trim the dispatch options first,
+      // so we don't create erroneous options
+      // out of excess whitespace.
+      $dispatch_options = preg_split('%\r\n|\r|\n%', trim($custom_field->listOptions));
       // Form API expects a set of key => value pairs.
       // In our case, we may or may not have labels
       // in the form of value,label or value.
