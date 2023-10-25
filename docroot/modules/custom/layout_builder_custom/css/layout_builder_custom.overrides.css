@@ -7,10 +7,16 @@
  * D8/9 and D10 methods.
  * See https://www.drupal.org/node/3305664
  */
+
+.js-off-canvas-dialog-open .dialog-off-canvas-main-canvas {
+  padding-right: calc(var(--off-canvas-width) + 13px) !important;
+}
+
 #drupal-off-canvas-wrapper {
   overflow: visible;
   padding: 0px;
   margin-right: -1px;
+  width: var(--off-canvas-width) !important;
 }
 
 .dialog-off-canvas-main-canvas {
