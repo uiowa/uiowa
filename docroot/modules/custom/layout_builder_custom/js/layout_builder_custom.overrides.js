@@ -94,6 +94,3 @@
   }
 
 })(jQuery, Drupal, drupalSettings, window.Cookies, once);
-
-
-
