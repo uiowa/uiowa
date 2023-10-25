@@ -57,38 +57,6 @@ class P2LbConverter {
   }
 
   /**
-   * Duplicate most recent published v2 revision for node.
-   */
-  protected function duplicateExistingRevision() {
-    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $node_storage_1 */
-    $node_storage_1 = $this->entityTypeManager->getStorage('node');
-
-    // Create a new revision from node storage.
-    $duplicate_revision = $node_storage_1->createRevision($this->page);
-
-    // Set the new revision as "Published".
-    $duplicate_revision->set('moderation_state', 'published');
-
-    // Add a message to the revision log.
-    $duplicate_revision->revision_log = 'Copy of last published v2 revision.';
-
-    // Set the user ID to the current user's ID for the revision.
-    $duplicate_revision->setRevisionUserId(\Drupal::currentUser()->id());
-
-    // Set the relevant revision timestamps.
-    $duplicate_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-    $duplicate_revision->setChangedTime(\Drupal::time()->getRequestTime());
-    $duplicate_revision->setNewRevision();
-
-    // Save the new revision.
-    $duplicate_revision->save();
-    $duplicate_revision->updateLoadedRevisionId();
-    $this->page = $duplicate_revision;
-
-    return $this;
-  }
-
-  /**
    * Process all the sections.
    */
   protected function processSections() {
