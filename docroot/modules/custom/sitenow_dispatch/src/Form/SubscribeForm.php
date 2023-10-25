@@ -231,7 +231,7 @@ class SubscribeForm extends ConfigFormBase {
       // unlike the other field options.
       // Split on commas and replace the single string
       // that we added prior.
-      if ($field_type === 'checkboxes') {
+      if ($field_type === 'checkboxes' && !empty($custom_field->defaultValue)) {
         $form['custom_fields'][$custom_field->key]['#default_value'] = explode(',', $custom_field->defaultValue);
       }
     }
