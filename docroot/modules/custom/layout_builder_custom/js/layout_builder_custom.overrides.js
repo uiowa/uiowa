@@ -18,9 +18,14 @@
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
             if (offCanvasCookie === undefined) {
               offCanvasWidth = 500;
+              console.log('no cookie');
             } else {
               offCanvasWidth = offCanvasCookie;
+              console.log('COOKS');
+              console.log(cookies);
             }
+            console.log($element);
+            console.log(offCanvasWidth);
             const container = $($element).parent()[0];
             container.style.width = offCanvasWidth + 'px';
 
