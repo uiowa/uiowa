@@ -1073,9 +1073,9 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+function layout_builder_custom_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
 
