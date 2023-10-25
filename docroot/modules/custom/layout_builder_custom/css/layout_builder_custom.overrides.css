@@ -7,9 +7,12 @@
  * D8/9 and D10 methods.
  * See https://www.drupal.org/node/3305664
  */
-#drupal-off-canvas:not(.drupal-off-canvas-reset),
 #drupal-off-canvas-wrapper {
-  width: 100% !important;
+  overflow: visible;
+}
+
+#drupal-off-canvas {
+  overflow: auto;
 }
 
 #drupal-off-canvas:not(.drupal-off-canvas-reset) p,
