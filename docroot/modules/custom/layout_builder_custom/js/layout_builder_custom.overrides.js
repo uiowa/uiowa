@@ -82,14 +82,25 @@
       return
     }
     interacting = true;
-    handle.addEventListener('mouseup', function(event) {
+    handle.addEventListener('mousemove', function(event) {
       dragHandleBehaviorStopgap(event);
+    });
+    handle.addEventListener('mouseup', function(event) {
+      dragHandleResetEvents(event);
     });
   }
   function dragHandleBehaviorStopgap(event) {
-    handle.removeEventListener('mouseup', dragHandleBehaviorStopgap);
-
     mainContent.style.paddingRight = offCanvas.style.width;
+  }
+
+  function dragHandleResetEvents(event) {
+
+    handle.removeEventListener('mousemove', function(event) {
+      dragHandleBehaviorStopgap(event);
+    });
+    handle.removeEventListener('mouseup', function(event) {
+      dragHandleResetEvents(event);
+    });
     interacting = false;
   }
 
