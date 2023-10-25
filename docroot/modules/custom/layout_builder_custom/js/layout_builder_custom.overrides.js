@@ -2,6 +2,11 @@
  * @file
  */
 (function ($, Drupal, drupalSettings, cookies, once) {
+  let handle;
+  let mainContent;
+  let offCanvas;
+  let interacting = false;
+
   Drupal.behaviors.layoutBuilderCustomOverrides = {
     attach: function (context, settings) {
       // Can not use `window` or `document` directly.
@@ -35,6 +40,14 @@
               justCreated = false;
             });
           }
+
+          // This gets the proper elements for the drag handle fix.
+          handle = document.querySelector('.ui-resizable-handle.ui-resizable-w');
+          mainContent = document.querySelector('.dialog-off-canvas-main-canvas');
+          offCanvas = handle.parentElement;
+          handle.addEventListener('mousedown', function(event) {
+            dragHandleBehaviorStopgapAwait(event);
+          });
         }
       });
     }
@@ -63,5 +76,24 @@
     origBeforeSubmit.call(formValues, element, options);
   };
 
+  // Wait for the mouse-up and reset the width of the main content.
+  function dragHandleBehaviorStopgapAwait(event) {
+    if (interacting) {
+      return
+    }
+    interacting = true;
+    handle.addEventListener('mouseup', function(event) {
+      dragHandleBehaviorStopgap(event);
+    });
+  }
+  function dragHandleBehaviorStopgap(event) {
+    handle.removeEventListener('mouseup', dragHandleBehaviorStopgap);
+
+    mainContent.style.paddingRight = offCanvas.style.width;
+    interacting = false;
+  }
 
 })(jQuery, Drupal, drupalSettings, window.Cookies, once);
+
+
+
