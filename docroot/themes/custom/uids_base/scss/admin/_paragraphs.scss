@@ -40,13 +40,19 @@
     border: none !important;
     background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
   }
-  //
-  //.paragraphs-dropdown-actions {
-  //  border: none !important;
-  //  top: 1px !important;
-  //  right: 26px !important;
-  //  width: 98px !important;
-  //  box-shadow: none !important;
-  //  background: inherit !important;
-  //}
+
+  .paragraphs-dropdown {
+    .paragraphs-dropdown-actions {
+      display: none !important;
+      border: none !important;
+      top: 1px !important;
+      right: 26px !important;
+      width: 98px !important;
+      box-shadow: none !important;
+      background: inherit !important;
+    }
+    &.open .paragraphs-dropdown-actions {
+      display: block !important;
+    }
+  }
 }
