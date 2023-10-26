@@ -7,17 +7,31 @@
   }
 
   [id*="settings-block-form-field-uiowa-"][id*="-item-wrapper-"] {
-    padding: 12px;
-    margin: 6px;
+    padding: 12px !important;
+    margin: 6px !important;
   }
 
   .paragraph-top {
-    grid-template-columns: auto 10px auto 100px;
+    display: grid !important;
+    grid-template-columns: auto 10px auto 100px !important;
+    font-size: 12px !important;
   }
 
   .summary-content {
-    display: inline-block;
-    width: 100%;
+    display: inline-block !important;
+    width: 100% !important;
+  }
+
+  .paragraphs-actions {
+    display: flex !important;
+    align-items: center !important;
+    //grid-column-start: 4 !important;
+    //grid-column-end: 5 !important;
+    //grid-row-start: 1 !important;
+    //grid-row-end: span 1 !important;
+    //justify-self: end !important;
+    //grid-column: 4 / 5 !important;
+    //grid-row: 1 / span 1 !important;
   }
 
   .paragraphs-dropdown-toggle {
@@ -26,13 +40,13 @@
     border: none !important;
     background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
   }
-
-  .paragraphs-dropdown-actions {
-    border: none;
-    top: 1px;
-    right: 26px;
-    width: 98px;
-    box-shadow: none;
-    background: inherit;
-  }
+  //
+  //.paragraphs-dropdown-actions {
+  //  border: none !important;
+  //  top: 1px !important;
+  //  right: 26px !important;
+  //  width: 98px !important;
+  //  box-shadow: none !important;
+  //  background: inherit !important;
+  //}
 }
