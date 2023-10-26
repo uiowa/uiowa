@@ -208,3 +208,68 @@
 #drupal-off-canvas .uids-content .form-item--error-message * {
   color: #E8A392 !important;
 }
+
+// Paragraphs widget admin UX. Collections and Slider.
+#drupal-off-canvas-wrapper {
+  .paragraphs-tabs-wrapper {
+    .field-multiple-drag {
+      padding: 6px 8px !important;
+    }
+
+    [id*="settings-block-form-field-uiowa-"][id*="-item-wrapper-"] {
+      padding: 12px !important;
+      margin: 6px !important;
+    }
+
+    .paragraph-top {
+      display: grid !important;
+      grid-template-columns: auto 10px auto 100px !important;
+      font-size: 12px !important;
+    }
+
+    .summary-content {
+      display: inline-block !important;
+    }
+
+    .paragraphs-actions {
+      display: flex !important;
+      align-items: center !important;
+      min-width: 110px;
+
+      .button {
+        margin-bottom: 0;
+      }
+    }
+
+    button.paragraphs-dropdown-toggle {
+      width: 26px;
+      height: 26px;
+      border: none;
+      background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
+    }
+
+    .paragraphs-dropdown {
+      position: relative;
+
+      .paragraphs-dropdown-actions {
+        display: none;
+        border: none;
+        box-shadow: none;
+        background: inherit;
+      }
+
+      &.open .paragraphs-dropdown-actions {
+        display: inline-block;
+        position: absolute;
+        right: 26px;
+        top: -1px;
+
+        .button {
+          font-size: var(--off-canvas-button-font-size);
+          padding: var(--off-canvas-button-padding);
+        }
+      }
+    }
+  }
+}
+
