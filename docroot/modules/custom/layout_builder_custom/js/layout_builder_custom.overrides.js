@@ -30,9 +30,9 @@
             let offCanvasWidth;
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
             if (offCanvasCookie === undefined) {
-              offCanvasWidth = 500;
+              offCanvasWidth = adjustedWidth(500)
             } else {
-              offCanvasWidth = offCanvasCookie;
+              offCanvasWidth = adjustedWidth(offCanvasCookie);
             }
 
             body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
@@ -95,11 +95,11 @@
   }
   function dragHandleBehaviorStopgap(init = false) {
     if (init) {
-      body.style.setProperty('--off-canvas-width', parseFloat(offCanvas.getBoundingClientRect().width) + 'px');
-      offCanvas.style.width = parseFloat(offCanvas.getBoundingClientRect().width) + 'px';
+      body.style.setProperty('--off-canvas-width', adjustedWidth(parseFloat(offCanvas.getBoundingClientRect().width)) + 'px');
+      offCanvas.style.width = adjustedWidth(parseFloat(offCanvas.getBoundingClientRect().width)) + 'px';
     }
     else {
-      body.style.setProperty('--off-canvas-width', (parseFloat(offCanvas.style.width)) + 'px');
+      body.style.setProperty('--off-canvas-width', adjustedWidth(parseFloat(offCanvas.style.width)) + 'px');
     }
   }
 
@@ -112,6 +112,31 @@
       dragHandleResetEvents(event);
     });
     interacting = false;
+  }
+
+  function minmax(min, val, max) {
+    if (val < min) {
+      return min;
+    } else if (val > max) {
+      return max;
+    } else {
+      return val;
+    }
+  }
+
+  function adjustedWidth(width) {
+    return minmax(300, width, maxOffWidth());
+  }
+
+  function maxOffWidth() {
+    let innerWidth;
+    if (body) {
+      innerWidth = body.getBoundingClientRect().width + 2;
+    }
+    else {
+      innerWidth = window.innerWidth;
+    }
+    return innerWidth - handle.getBoundingClientRect().width;
   }
 
 })(jQuery, Drupal, drupalSettings, window.Cookies, once);
