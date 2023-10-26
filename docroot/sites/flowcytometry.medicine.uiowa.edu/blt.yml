@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineflowcytometry.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineflowcytometry
+  human_name: flowcytometry.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineflowcytometry.prod
+drupal:
+  db:
+    database: flowcytometry_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineflowcytometry.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Flow Cytometry'
