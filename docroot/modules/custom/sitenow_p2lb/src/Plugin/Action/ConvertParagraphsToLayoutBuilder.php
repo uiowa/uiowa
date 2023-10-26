@@ -34,6 +34,20 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     /** @var \Drupal\sitenow_p2lb\P2LbConverter $converter */
+    $node_storage = \Drupal::entityTypeManager()
+      ->getStorage('node');
+
+    // Get node id.
+    $nid = $entity->get('nid')->getString();
+
+    // Get latest revision ID.
+    $vid = $node_storage
+      ->getLatestRevisionId($nid);
+
+    // Load latest revision.
+    $entity = $node_storage
+      ->loadRevision($vid);
+
     $converter = \Drupal::service('sitenow_p2lb.converter_manager')->createConverter($entity);
 
     $converter->convert();
