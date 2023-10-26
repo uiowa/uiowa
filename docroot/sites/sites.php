@@ -5980,3 +5980,9 @@ $sites['classportmanagement.uiowa.ddev.site'] = 'sportmanagement.clas.uiowa.edu'
 $sites['classportmanagement.dev.drupal.uiowa.edu'] = 'sportmanagement.clas.uiowa.edu';
 $sites['classportmanagement.stage.drupal.uiowa.edu'] = 'sportmanagement.clas.uiowa.edu';
 $sites['classportmanagement.prod.drupal.uiowa.edu'] = 'sportmanagement.clas.uiowa.edu';
+
+// Directory aliases for nickljockschat.lab.uiowa.edu.
+$sites['labnickljockschat.uiowa.ddev.site'] = 'nickljockschat.lab.uiowa.edu';
+$sites['labnickljockschat.dev.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
+$sites['labnickljockschat.stage.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
+$sites['labnickljockschat.prod.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
