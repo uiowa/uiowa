@@ -185,7 +185,7 @@ function sitenow_p2lb_fetch_child_ids($parent) {
   $content = $parent->get($field);
   if (!is_null($content)) {
     foreach ($content as $content_ref) {
-      $ids[] = $content_ref->target_id;
+      $ids[] = $content_ref->target_revision_id;
     }
   }
   return $ids;
