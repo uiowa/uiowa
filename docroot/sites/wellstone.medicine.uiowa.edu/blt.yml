@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinewellstone.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinewellstone
+  human_name: wellstone.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinewellstone.prod
+drupal:
+  db:
+    database: wellstone_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinewellstone.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Wellstone Muscular Dystrophy Specialized Research Center'
