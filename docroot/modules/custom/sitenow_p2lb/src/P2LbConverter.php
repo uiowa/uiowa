@@ -47,8 +47,8 @@ class P2LbConverter {
    * Helper to load the most recent revision.
    *
    * @param \Drupal\sitenow_pages\Entity\Page $page
+   *   The page being converted.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
