@@ -207,6 +207,7 @@ class ClassroomsCoreCommands extends DrushCommands {
         ->getQuery()
         ->condition('type', 'room')
         ->range($i, $batch_size)
+        ->accessCheck()
         ->execute();
       $nodes = $storage->loadMultiple($nids);
 

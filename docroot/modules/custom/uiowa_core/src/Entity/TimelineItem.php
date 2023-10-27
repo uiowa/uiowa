@@ -78,4 +78,14 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
     ];
   }
 
+  /**
+   * Get view modes that should be rendered as a card.
+   *
+   * @return string[]
+   *   The list of view modes.
+   */
+  protected function getCardViewModes(): array {
+    return ['default'];
+  }
+
 }

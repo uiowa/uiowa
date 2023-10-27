@@ -838,7 +838,8 @@ function admissions_core_preprocess_node(&$variables) {
         $query = \Drupal::entityQuery('node')
           ->condition('type', 'major')
           ->condition('status', 1)
-          ->condition('field_major_area_of_study', $area_of_study_id, '=');
+          ->condition('field_major_area_of_study', $area_of_study_id, '=')
+          ->accessCheck();
         // We only really need to know if there areas of study,
         // and not which or how many, because the link will just be
         // based on the aos id.

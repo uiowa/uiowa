@@ -208,7 +208,7 @@ function sitenow_update_9001() {
   foreach ($block_types as $block_type) {
     // Find NIDs for all nodes with at least one aggregator block.
     $query = \Drupal::entityQuery('node')
-      ->accessCheck(TRUE)
+      ->accessCheck()
       ->condition('type', 'page')
       ->condition('layout_builder__layout', '%' . $block_type . '%', 'LIKE');
 
@@ -280,7 +280,7 @@ function sitenow_update_9002() {
 function sitenow_update_9003(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
-      ->accessCheck(TRUE)
+      ->accessCheck()
       ->condition('expanded', 0, '=')
       ->execute();
     $sandbox['total'] = count($query);

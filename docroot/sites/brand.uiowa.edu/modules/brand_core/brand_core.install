@@ -74,6 +74,7 @@ function brand_core_update_8002(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'lockup')
+      ->accessCheck()
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
