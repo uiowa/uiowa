@@ -1,0 +1,49 @@
+uuid: 4a4abbfd-453e-4eb3-abf8-3da1d710ecf4
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The classrooms.uiowa.edu site split.'
+weight: 67
+stackable: true
+storage: folder
+folder: ../config/sites/classrooms.uiowa.edu
+module:
+  better_exposed_filters: 0
+  classrooms_core: 0
+  fontawesome_iconpicker_widget: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
+  rabbit_hole: 0
+  rh_taxonomy: 0
+  uiowa_maui: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - field.storage.taxonomy_term.field_api_mapping
+  - field.storage.taxonomy_term.field_technology_features_icon
+  - metatag.metatag_defaults.node__room
+  - node.type.room
+  - pathauto.pattern.room
+  - rabbit_hole.behavior_settings.default
+  - rabbit_hole.behavior_settings.default_bundle
+  - simple_sitemap.bundle_settings.default.node.room
+  - taxonomy.vocabulary.accessibility_features
+  - taxonomy.vocabulary.room_features
+  - taxonomy.vocabulary.room_types
+  - taxonomy.vocabulary.scheduling_regions
+  - taxonomy.vocabulary.technology_features
+  - taxonomy.vocabulary.units
+  - views.view.room_list
+  - 'core.entity_view_display.node.room.*'
+  - 'field.storage.node.field_room*'
+  - 'classrooms_core.building.*'
+  - 'field.storage.taxonomy_term.field_unit*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'
+  - 'core.entity_view_display.*'

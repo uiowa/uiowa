@@ -3,11 +3,6 @@ services:
     class: Drupal\sitenow\EventSubscriber\RouteSubscriber
     tags:
       - { name: event_subscriber }
-  sitenow.acquia_connector_override:
-    class: Drupal\sitenow\ConfigOverride\AcquiaConnectorOverride
-    arguments: [ '@request_stack' ]
-    tags:
-      - { name: config.factory.override }
   sitenow.simple_sitemap_override:
     class: Drupal\sitenow\ConfigOverride\SimpleSitemapOverride
     arguments: [ '@request_stack' ]

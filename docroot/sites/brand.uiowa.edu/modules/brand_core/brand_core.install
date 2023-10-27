@@ -5,10 +5,10 @@
  * Install, update and uninstall functions for the brand_core module.
  */
 
+use Drupal\brand_core\Controller\LockupController;
+use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Config\FileStorage;
-use Drupal\brand_core\Controller\LockupController;
 
 /**
  * Populate organization terms.
@@ -74,6 +74,7 @@ function brand_core_update_8002(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'lockup')
+      ->accessCheck()
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
@@ -122,4 +123,11 @@ function brand_core_update_8002(&$sandbox) {
  */
 function brand_core_update_9001() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Enable symfony_mailer immediately.
+ */
+function brand_core_update_9002() {
+  \Drupal::service('module_installer')->install(['symfony_mailer']);
 }

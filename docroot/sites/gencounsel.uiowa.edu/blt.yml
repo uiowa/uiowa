@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: gencounsel.uiowa.ddev.site
+    protocol: https
+  machine_name: gencounsel
+  human_name: gencounsel.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gencounsel.prod
+drupal:
+  db:
+    database: gencounsel_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://gencounsel.prod.drupal.uiowa.edu'
+  requester: shonson
+  site-name: 'University of Iowa Office of the General Counsel'

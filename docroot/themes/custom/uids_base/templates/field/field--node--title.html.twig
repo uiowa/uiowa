@@ -3,15 +3,8 @@
     {{ item.content }}
   {%- endfor -%}
 {% else %}
-  {%
-    set classes = [
-    'page-title',
-    'headline--serif',
-    'headline',
-  ]
-  %}
   {%- for item in items -%}
-    <h1 {{ attributes.addClass(classes) }}>{{ item.content }}</h1>
+    <h1 {{ attributes }}><span>{{ item.content }}</span></h1>
   {%- endfor -%}
   {% if title %}
     {{ title }}

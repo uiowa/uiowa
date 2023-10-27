@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: educationirrc.uiowa.ddev.site
+    protocol: https
+  machine_name: educationirrc
+  human_name: irrc.education.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: educationirrc.prod
+drupal:
+  db:
+    database: irrc_education_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://educationirrc.prod.drupal.uiowa.edu'
+  requester: bwalizer
+  site-name: 'Iowa Reading Reseach Center'

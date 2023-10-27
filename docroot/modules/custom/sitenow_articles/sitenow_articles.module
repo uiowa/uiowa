@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Article configuration for the University of Iowa.
+ * Article functionality for the SiteNow platform.
  */
 
 use Drupal\Component\Utility\Html;
@@ -13,10 +13,33 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
+use Drupal\sitenow_articles\Entity\Article;
 use Drupal\user\Entity\User;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_articles_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['article'])) {
+    $bundles['node']['article']['class'] = Article::class;
+  }
+}
+
+/**
+ * Helper function to check if the "articles_narrow" split is enabled.
+ *
+ * @return bool
+ *   Returns TRUE if the split is enabled, FALSE otherwise.
+ */
+function sitenow_articles_narrow_is_enabled(): bool {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::service('config.factory');
+  $articles_narrow_split_config = $config_factory->get('config_split.config_split.articles_narrow');
+  return ($articles_narrow_split_config->get('status') === TRUE);
+}
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -66,6 +89,31 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
       if ($form_id === 'node_article_form') {
         $form['field_article_preserve_links']['#access'] = FALSE;
       }
+
+      // If a new person is being created for the contact field,
+      // they don't have a "title" yet, and so we need to fetch
+      // their first and last names and combine in order to display.
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
       break;
   }
 }
@@ -85,7 +133,7 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // Waiting for https://www.drupal.org/project/drupal/issues/2966004,
   // https://www.drupal.org/project/drupal/issues/2787051...
   $routes = [];
-  foreach ($variables["links"] as $key => $link) {
+  foreach ($variables['links'] as $key => $link) {
     $url = $link->getURL();
     // Test for external paths.
     if ($url->isRouted()) {
@@ -95,9 +143,9 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // For breadcrumb links built from view articles path, reduce duplicates.
   if (in_array('view.articles.page_articles', $routes)) {
     $unique_routes = array_keys(array_unique($routes, SORT_REGULAR));
-    foreach ($variables["breadcrumb"] as $key => $value) {
+    foreach ($variables['breadcrumb'] as $key => $value) {
       if (!in_array($key, $unique_routes)) {
-        unset($variables["breadcrumb"][$key]);
+        unset($variables['breadcrumb'][$key]);
       }
     }
   }
@@ -108,9 +156,17 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
  */
 function sitenow_articles_preprocess_field(&$variables) {
   if ($variables['element']['#field_name'] === 'field_article_author') {
+    if ($variables['element']['#view_mode'] == 'teaser') {
+      uiowa_core_set_field_icon($variables, 'fa-li fas fa-user-circle');
+    }
     if ($variables['element']['#formatter'] === 'entity_reference_label') {
-      $variables['element']["#title"] = 'Written by';
-      $variables["label"] = 'Written by';
+      $variables['element']['#title'] = 'Written by';
+      $variables['label'] = 'Written by';
+      // Remove the label for article teasers.
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_title_attributes($variables, 'visually-hidden');
+        uiowa_core_set_attributes($variables, 'field--label-visually_hidden');
+      }
     }
     // Loop through all author fields in the byline and add credentials
     // (if available) to their names.
@@ -127,28 +183,28 @@ function sitenow_articles_preprocess_field(&$variables) {
   }
   if ($variables['element']['#field_name'] === 'field_article_source_org') {
     if ($variables['element']['#formatter'] === 'string') {
-      $variables['element']["#title"] = 'Organization';
-      $variables["label"] = 'Organization';
+      $variables['element']['#title'] = 'Organization';
+      $variables['label'] = 'Organization';
     }
   }
   if ($variables['element']['#field_name'] === 'field_article_source_link') {
     if ($variables['element']['#formatter'] === 'link') {
-      $variables['element']["#title"] = 'Source';
-      $variables["label"] = 'Source';
+      $variables['element']['#title'] = 'Source';
+      $variables['label'] = 'Source';
     }
   }
   if ($variables['element']['#field_name'] === 'field_image_caption') {
-    $variables["attributes"]['class'][] = 'figure-caption';
-    $variables["attributes"]['id'] = 'node-caption';
+    $variables['attributes']['class'][] = 'figure-caption';
+    $variables['attributes']['id'] = 'node-caption';
   }
   if ($variables['element']['#field_name'] === 'field_image') {
     $node = $variables['element']['#object'];
     if ($node->hasField('field_image_caption') && !$node->get('field_image_caption')->isEmpty()) {
-      $variables["attributes"]['aria-describedby'] = 'node-caption';
+      $variables['attributes']['aria-describedby'] = 'node-caption';
     }
   }
   if ($variables['element']['#field_name'] === 'field_related_content') {
-    $variables['attributes']['class'][] = 'inner--grid';
+    $variables['attributes']['class'][] = 'list-container--grid';
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
@@ -194,7 +250,8 @@ function sitenow_articles_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
 
-    $node = $variables["node"];
+    $node = $variables['node'];
+
     switch ($node->getType()) {
       case 'article':
         $variables['content']['article_author'] = $node->field_article_author->view([
@@ -202,74 +259,48 @@ function sitenow_articles_preprocess_node(&$variables) {
           'label' => 'inline',
           'settings' => [],
         ]);
-        if (!$node->get('field_article_source_org')->isEmpty() && !$node->get('field_article_source_link')->isEmpty()) {
-          $variables["content"]["field_article_source_link"][0]["#title"] = $node->field_article_source_org->value;
-          switch ($variables['view_mode']) {
-            case 'teaser':
-              // Unset source link if directly linking out to prevent
-              // redundant links.
-              if ($node->hasField('field_article_source_link_direct')) {
-                if ((int) $node->field_article_source_link_direct->value === 1 && !$node->get('field_article_source_link')->isEmpty()) {
-                  unset($variables["content"]["field_article_source_link"]);
-                }
-                else {
-                  unset($variables["content"]["field_article_source_org"]);
-                }
-              }
-              break;
 
-            case 'full':
-            case 'default':
-              unset($variables["content"]["field_article_source_org"]);
-              break;
-
-          }
-        }
-        if ($variables['view_mode'] === 'teaser') {
-          // Heading needs to change based on placement. Defaults to h3 in twig.
-          $current_route = \Drupal::routeMatch();
-          $route_name = $current_route->getRouteName();
-          $variables['#cache']['contexts'][] = 'route.name';
-          if (strpos($route_name, 'view.articles.') === 0) {
-            $variables['heading_size'] = 'h2';
-          }
-
-          if ($node->hasField('field_article_source_link_direct')) {
-            if ((int) $node->field_article_source_link_direct->value === 1 && !$node->get('field_article_source_link')->isEmpty()) {
-              unset($variables['content']['field_article_source_link']);
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            // For now, different byline behavior on full node than on teaser.
+            if (!$node->get('field_article_source_org')->isEmpty() && !$node->get('field_article_source_link')->isEmpty()) {
+              $variables['content']['field_article_source_link'][0]['#title'] = $node->field_article_source_org->value;
+              unset($variables['content']['field_article_source_org']);
             }
-          }
-        }
-        if (in_array($variables['view_mode'], ['default', 'full'])) {
-          // Check if we don't have any gallery images.
-          if ($node->hasField('field_gallery_images') &&
-            empty($node->get('field_gallery_images')->getValue())) {
-            // Loop through our article layout blocks and look for
-            // the gallery jump link block (defined by this module).
-            // We expect it to be the last block in most cases,
-            // so we iterate in reverse.
-            foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
-              if (isset($block['#plugin_id']) && $block['#plugin_id'] === 'galleryjumplink_block') {
-                unset($variables['content']['_layout_builder'][1]['content'][$key]);
-                // There should only be one instance of the jump link,
-                // so if we've already unset it, finish the loop.
-                break;
-              }
-            }
-          }
 
-          if ($node->hasField('field_article_preserve_links')) {
+            // Check if we don't have any gallery images.
+            if ($node->hasField('field_gallery_images') &&
+              empty($node->get('field_gallery_images')->getValue())) {
+              // If no gallery images, then hide the gallery jumplink.
+              uiowa_core_unset_layout_builder_block($variables, 'galleryjumplink_block');
+            }
+
             // Check if preserve links checkbox is checked.
-            if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
-              // If it isn't checked, hide the broken links message.
-              foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
-                if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
-                  unset($variables['content']['_layout_builder'][1]['content'][$key]);
-                  break;
-                }
+            if ($node->hasField('field_article_preserve_links')) {
+              if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
+                // If it isn't checked, hide the broken links message.
+                uiowa_core_unset_layout_builder_block($variables, 'preservedlinksmessage_block');
               }
             }
-          }
+            break;
+
+        }
+        break;
+
+      case 'person':
+
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            $person_display_config = \Drupal::config('sitenow_articles.settings')->get('display_articles_by_author');
+
+            if (!$person_display_config) {
+              uiowa_core_unset_layout_builder_block($variables, 'views_block:articles_author-articles_author');
+            }
+
+            break;
+
         }
         break;
 
@@ -287,10 +318,30 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
         $created = $entity->get('created')->value;
         $date = \Drupal::service('date.formatter')->format($created, 'medium');
         $build['article_created_date'] = [
-          '#type' => 'markup',
-          '#markup' => '<span class="article-created-date">' . $date . '</span>',
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['article-created-date'],
+          ],
+          'date' => [
+            '#type' => 'markup',
+            '#markup' => $date,
+            '#weight' => 0,
+          ],
         ];
+
+        if ($view_mode !== 'teaser' && sitenow_articles_narrow_is_enabled()) {
+          $build['article_created_date']['title'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => t('Published:'),
+            '#attributes' => [
+              'class' => ['field__label'],
+            ],
+            '#weight' => -10,
+          ];
+        }
       }
+
       break;
 
   }
@@ -302,6 +353,8 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
 function sitenow_articles_preprocess_views_view(&$variables) {
   switch ($variables['id']) {
     case 'articles':
+      $variables['#attached']['library'][] = 'uids_base/view-articles-list';
+
       /** @var  \Drupal\views\ViewExecutable $view */
       $view = $variables['view'];
 
@@ -317,6 +370,10 @@ function sitenow_articles_preprocess_views_view(&$variables) {
 
       break;
 
+    case 'article_list_block':
+      $variables['#attached']['library'][] = 'uids_base/view-articles-list';
+      break;
+
   }
 }
 
@@ -324,8 +381,8 @@ function sitenow_articles_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_views_view_summary().
  */
 function sitenow_articles_preprocess_views_view_summary(&$variables) {
-  if ($variables["view"]->current_display === 'block_articles_archive') {
-    foreach ($variables["rows"] as $row) {
+  if ($variables['view']->current_display === 'block_articles_archive') {
+    foreach ($variables['rows'] as $row) {
       $explode = explode('/', $row->url);
       unset($explode[3]);
       $explode[2] = substr_replace($explode[2], '/', 4, 0);
@@ -338,69 +395,36 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
  * Implements hook_preprocess_views_view_unformatted().
  */
 function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
-  /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
-  if ($view->id() === 'article_list_block') {
-    $rows = $variables['rows'];
-    $style = $view->style_plugin;
 
-    foreach ($rows as $id => $row) {
-      // Need to get these values regardless of whether they are hidden or not.
-      $link_direct = (int) $row['content']['#node']->get('field_article_source_link_direct')->value;
-      $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
-      $org = $row['content']['#node']->get('field_article_source_org')->value;
-      $nid = $row['content']['#node']->get('nid')->value;
+  // Style stacked if from related_manually_referenced_content block grid,
+  // otherwise media right. Unset completely for SiteNow v2.
+  if ($view->id() === 'related_manually_referenced_content' && $view->current_display === 'block_grid') {
 
-      // If source link is set and link direct is checked, set $card_link_url to
-      // source link. Otherwise, $card_link_url should be set to node link.
-      if ($link_direct === 1
-        && isset($source_link) && !empty($source_link)) {
-        $card_link_url = $source_link;
-      }
-      else {
-        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-      }
+    // Add appropriate card styles for v2/3 teaser view modes.
+    // @todo Remove after v2 dies.
+    //   See https://github.com/uiowa/uiowa/issues/4948
+    $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
-      $card_tag = [
-        '#type' => 'html_tag',
-        '#tag' => 'span',
-        '#attributes' => [
-          'class' => [
-            'field--name-field-article-source-link',
-          ],
-        ],
-      ];
-      if ($org && $style->getField($id, 'field_article_source_org')) {
-        $org = $style->getField($id, 'field_article_source_org');
-        // If source link is hidden...
-        if ($style->getField($id, 'field_article_source_link') === NULL) {
-          // But source_link has value...
-          if ($source_link) {
-            // Wrap org in the source link.
-            $org = Link::fromTextAndUrl($style->getField($id, 'field_article_source_org'), Url::fromUri($source_link))
-              ->toString();
-          }
-        }
-
-        $card_tag['org'] = [
-          '#prefix' => '<span class="views-field-article-source-link">',
-          '#markup' => $org,
-          '#suffix' => '</span>',
+    if (!$is_v2) {
+      foreach ($variables['rows'] as &$row_build) {
+        $row_build['content']['#override_styles'] = [
+          'card_media_position' => 'card--stacked',
+          'bg' => 'bg--white',
+          'media_format' => 'media--widescreen',
+          'media_size' => 'media--large',
+          'hide_descriptions' => 'hide-descriptions',
         ];
       }
-      if ($source_link && $style->getField($id, 'field_article_source_link')) {
-        $card_tag['source_link'] = [
-          '#prefix' => '<span class="views-field-article-source-link">',
-          '#markup' => $style->getField($id, 'field_article_source_link'),
-          '#suffix' => '</span>',
-        ];
-      }
-
-      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'created');
-      $variables['rows'][$id]['card_options']['card_tag'] = \Drupal::service('renderer')->render($card_tag);
-      $variables['rows'][$id]['card_options']['card_meta'] = $style->getField($id, 'field_article_author');
     }
+  }
+
+  $variables['row_item_classes'] = [];
+
+  switch ($view->current_display) {
+    case 'articles_author':
+      uiowa_core_views_row_hide_fields($variables, 'field_article_author', 'field_teaser', 'field_image', 'field_article_source_org', 'field_article_source_link');
+      break;
   }
 }
 
@@ -577,9 +601,9 @@ function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterfa
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_articles_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element["#paragraph_type"] === 'articles') {
     if (!empty($element['subform']['field_articles_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -598,34 +622,55 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
 }
 
 /**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_contact_reference') {
+    // Clean up, minimize the person IEF form.
+    if (in_array('person', $context['allowed_bundles'])) {
+      $fields['label']['label'] = t('Contact name');
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
-    case 'views_block:article_list_block-list_article':
-      if (isset($variables['attributes']['class'])) {
-        // Unset classes meant for children.
-        foreach ($variables['attributes']['class'] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
-              unset($variables['attributes']['class'][$key]);
-            }
-          }
-        }
-      }
-
-      break;
 
     // @todo Move this to a more appropriate spot, if we may
     //   want to use the gallery image field for other content.
+    //   https://github.com/uiowa/uiowa/issues/6287
     case 'field_block:node:article:field_gallery_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20';
+      $variables['attributes']['class'][] = 'media--square';
       $variables['attributes']['class'][] = 'photoswipe-gallery';
+
+      break;
+
+    case 'field_block:node:article:field_article_author':
+    case 'field_block:node:article:field_article_source_link':
+    case 'field_block:node:article:field_article_source_org':
+    case 'galleryjumplink_block':
+    case 'field_block:node:article:field_image_caption':
+      $variables['attributes']['class'][] = 'article--meta';
+
+      break;
+
+    case 'field_block:node:article:field_article_subhead':
+      $variables['attributes']['class'][] = 'element--light-intro';
+
+      break;
+
+    case 'field_block:node:article:field_contact_reference':
+      $variables['attributes']['class'][] = 'article--meta article--meta__block';
+
+      break;
+
+    case 'field_block:node:article:body':
+      if (sitenow_articles_narrow_is_enabled()) {
+        $variables['attributes']['class'][] = 'block-margin__default--removed';
+      }
 
       break;
   }
@@ -668,6 +713,9 @@ function sitenow_articles_tokens($type, $tokens, array $data, array $options, Bu
 
 /**
  * Callback to get the SiteNow Articles view path.
+ *
+ * @todo Revisit how this is constructed.
+ * https://github.com/uiowa/uiowa/issues/6286
  */
 function _sitenow_articles_path_token_value() {
 

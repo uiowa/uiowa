@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesspark.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesspark
+  human_name: spark.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesspark.prod
+drupal:
+  db:
+    database: spark_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesspark.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Space Physics and Astronomy Research Kamp'

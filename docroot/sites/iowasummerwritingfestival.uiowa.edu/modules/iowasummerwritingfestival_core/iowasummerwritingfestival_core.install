@@ -1,0 +1,214 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for iowasummerwritingfestival_core.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_install().
+ */
+function admissions_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function admissions_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Provide an array map of event_type values.
+ *
+ * @return array
+ *   An array of key => value pairs for event types.
+ */
+function _event_type_map(): array {
+  return [
+    'Banquet' => 'Banquet',
+    'BoardMeeting' => 'Board Meeting',
+    'Colloquium' => 'Colloquium',
+    'Conference' => 'Conference',
+    'Convention' => 'Convention',
+    'Course' => 'Course',
+    'Exhibition' => 'Exhibition',
+    'Exposition' => 'Exposition',
+    'Fair' => 'Fair',
+    'Festival' => 'Festival',
+    'Fundraiser' => 'Fundraiser',
+    'Gala' => 'Gala',
+    'GeneralSession' => 'General Session',
+    'GreenMeeting' => 'Green Meeting',
+    'Lecture' => 'Lecture',
+    'Meetup' => 'Meetup',
+    'NetworkingEvent' => 'Networking Event',
+    'Panel' => 'Panel',
+    'Party' => 'Party',
+    'PressConference' => 'Press Conference',
+    'ProductLaunch' => 'Product Launch',
+    'Reading' => 'Reading',
+    'Reception' => 'Reception',
+    'Retreat' => 'Retreat',
+    'Round-Table' => 'Round-Table',
+    'Seminar' => 'Seminar',
+    'Session' => 'Session',
+    'SocialEvent' => 'Social Event',
+    'Symposium' => 'Symposium',
+    'TradeShow' => 'Trade Show',
+    'Workshop' => 'Workshop',
+  ];
+}
+
+/**
+ * Migrate options from event_type to Event categories taxonomy.
+ */
+function iowasummerwritingfestival_core_update_9001() {
+
+  $config_path = DRUPAL_ROOT . '/../config/features/event';
+  $source = new FileStorage($config_path);
+
+  // Limit to only what we need for the following
+  // update hook and in the order we want it.
+  $config = [
+    'taxonomy_vocabulary' => 'taxonomy.vocabulary.event_categories',
+    'field_storage_config' => 'field.storage.node.field_event_category',
+    'field_config' => 'field.field.node.event.field_event_category',
+  ];
+
+  foreach ($config as $type => $config_file) {
+    \Drupal::entityTypeManager()
+      ->getStorage($type)
+      ->create($source->read($config_file))
+      ->save();
+  }
+
+  // Instantiate the typemap for later.
+  $type_map = _event_type_map();
+
+  foreach ($type_map as $type) {
+    Term::create([
+      'name' => $type,
+      'vid' => 'event_categories',
+    ])->save();
+  }
+}
+
+/**
+ * Migrate event_type field values on Events to event_category reference field.
+ */
+function iowasummerwritingfestival_core_update_9002(&$sandbox) {
+  $logger = \Drupal::logger('iowasummerwritingfestival_core');
+
+  // Process all the event nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->accessCheck()
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 10;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set the field and save it with a new revision.
+    $node = Node::load($nid);
+
+    $event_category_term_id = NULL;
+
+    if (!isset($node->get('field_event_type')->getValue()[0])) {
+      $logger->notice('No "event_type" on node ' . $nid . '.');
+    }
+    else {
+      $event_type = $node->get('field_event_type')->getValue()[0];
+      $taxonomy_term_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $event_category_term_array = $taxonomy_term_manager?->loadByProperties(['name' => $event_type]);
+
+      // We found no term matches on the site, something is wrong.
+      if (count($event_category_term_array) === 0) {
+        $logger->error('No "event_categories" term matches the source "event_type" on node ' . $nid . toString() . '.');
+      }
+
+      // Matches found, so we check for the one that's in "event_categories":
+      else {
+        foreach ($event_category_term_array as $key => $term) {
+          if ($term->bundle() === 'event_categories') {
+
+            // And set it.
+            $event_category_term_id = $key;
+          }
+        }
+      }
+    }
+
+    // If we have a relevant tid, update the 'node_event_category' field.
+    if ($event_category_term_id !== NULL) {
+      $node->set('field_event_category', ['target_id' => $event_category_term_id]);
+
+      // We only need to save if we edit the values.
+      $node->setRevisionUserId(1);
+      $node->setRevisionLogMessage('Automated save.');
+      $node->save();
+    }
+
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Set initial events filter configuration.
+ */
+function iowasummerwritingfestival_core_update_9003() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  $config->set('filter_display', [
+    'date_range' => 1,
+    'presenters' => 1,
+    'attendance_required' => 0,
+    'attendance_mode' => 0,
+    'category' => 0,
+  ]);
+  $config->save();
+
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'event')
+    ->accessCheck()
+    ->execute();
+  foreach ($nids as $nid) {
+    $node = Node::load($nid);
+    // Set the new value and revision message, and save.
+    $node->set('field_event_attendance', FALSE);
+    $node->setRevisionLogMessage('Automated save.');
+    $node->setRevisionUserId(1);
+    $node->save();
+  }
+}

@@ -1,0 +1,28 @@
+uuid: 8330ab7c-3610-47f3-b843-e6d3d7202f69
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_date
+    - node.type.alert
+  module:
+    - smart_date
+id: node.alert.field_alert_date
+field_name: field_alert_date
+entity_type: node
+bundle: alert
+label: 'Dates affected'
+description: 'Add a date or date range for this alert.'
+required: false
+translatable: false
+default_value:
+  -
+    default_duration: 60
+    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
+    default_date_type: next_hour
+    default_date: ''
+    min: ''
+    max: ''
+default_value_callback: ''
+settings: {  }
+field_type: smartdate

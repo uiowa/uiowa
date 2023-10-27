@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesasce.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesasce
+  human_name: asce.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesasce.prod
+drupal:
+  db:
+    database: asce_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesasce.prod.drupal.uiowa.edu'
+  requester: ggianforte
+  site-name: 'ASCE University of Iowa Student Chapter'

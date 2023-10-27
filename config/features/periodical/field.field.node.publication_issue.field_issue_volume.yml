@@ -1,0 +1,25 @@
+uuid: 7bc2f7ab-e2ae-479a-8ec9-3959afcd35a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_issue_volume
+    - node.type.publication_issue
+id: node.publication_issue.field_issue_volume
+field_name: field_issue_volume
+entity_type: node
+bundle: publication_issue
+label: Volume
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

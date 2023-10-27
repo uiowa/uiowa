@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencemidwestdnarepair.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencemidwestdnarepair
+  human_name: midwestdnarepair.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemidwestdnarepair.prod
+drupal:
+  db:
+    database: midwestdnarepair_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencemidwestdnarepair.prod.drupal.uiowa.edu'
+  requester: ssmolikove
+  site-name: 'Midwest DNA Repair Symposium'

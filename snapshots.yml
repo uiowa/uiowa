@@ -1,16 +1,20 @@
 - name: Front page with events block hidden
   url: /
-  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';"
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
   waitForTimeout: 1000
 - name: About page with search input visible
   url: /about
-  execute: "document.querySelector('.search-button').click()"
+  execute: "document.querySelector('.search-button').click();document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
 - name: People
   url: /people
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
 - name: Person
   url: /people/herky-hawk
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
 - name: Articles
   url: /news
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
 - name: Article
   url: /news/2019/09/demo-article
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
   waitForTimeout: 1000

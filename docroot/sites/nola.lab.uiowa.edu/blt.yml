@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnola.uiowa.ddev.site
+    protocol: https
+  machine_name: labnola
+  human_name: nola.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnola.prod
+drupal:
+  db:
+    database: nola_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnola.prod.drupal.uiowa.edu'
+  requester: rileyn
+  site-name: nola.lab.uiowa.edu

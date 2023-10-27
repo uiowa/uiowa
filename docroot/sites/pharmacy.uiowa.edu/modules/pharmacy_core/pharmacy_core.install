@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Pharmacy Core module.
+ */
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_install().
+ */
+function pharmacy_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function pharmacy_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Update person state options to use allowed values function.
+ */
+function pharmacy_core_update_9001() {
+  // Grab all our initial field definitions
+  // and related database table names.
+  $field_name = 'field_person_territory';
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  $field_definition = $storage_definitions[$field_name];
+  if ($field_definition) {
+    $field_table = $table_mapping->getDedicatedDataTableName($field_definition);
+    $field_revision_table = $table_mapping->getDedicatedRevisionTableName($field_definition);
+  }
+
+  // Do some initializations.
+  $database = \Drupal::database();
+  $field_storage = FieldStorageConfig::loadByName('node', $field_name);
+  $rows = NULL;
+  $revision_rows = NULL;
+
+  // Defensive checks for table existence, and grab
+  // any existing data including revisions.
+  if ($database->schema()->tableExists($field_table)) {
+    $rows = $database->select($field_table, 't')
+      ->fields('t')
+      ->execute()
+      ->fetchAll();
+    if ($database->schema()->tableExists($field_revision_table)) {
+      $revision_rows = $database->select($field_revision_table, 'r')
+        ->fields('r')
+        ->execute()
+        ->fetchAll();
+    }
+  }
+
+  // Grab the existing config.
+  // The changes are at the storage level,
+  // so these will be re-used as is later.
+  $field_config = FieldConfig::loadByName('node', 'person', $field_name);
+
+  // Fetch the current field storage
+  // and update it to remove the allowed values
+  // and instead use an allowed values function.
+  $new_field_storage = $field_storage->toArray();
+  $new_field_storage['settings'] = [
+    'allowed_values' => [],
+    'allowed_values_function' => 'uiowa_core_state_options',
+  ];
+
+  // Deleting at the field_storage level takes care of the bundles as well.
+  $field_storage->delete();
+
+  // Purge in order for new field to be created after deleting the old.
+  field_purge_batch(100);
+
+  // Save our new, updated field storage.
+  $new_field_storage = FieldStorageConfig::create($new_field_storage);
+  $new_field_storage->save();
+
+  // Create our new field to match the field storage.
+  $new_field_config = FieldConfig::create($field_config->toArray());
+  $new_field_config->save();
+
+  // Replace into the new fields data we saved from the old fields.
+  if (!is_null($rows)) {
+    foreach ($rows as $row) {
+      $row = (array) $row;
+      // Do a quick check for the international option,
+      // and skip if found.
+      if ($row['field_person_territory_value'] === 'intl') {
+        continue;
+      }
+      $database
+        ->insert($field_table)
+        ->fields($row)
+        ->execute();
+    }
+  }
+  if (!is_null($revision_rows)) {
+    foreach ($revision_rows as $row) {
+      $row = (array) $row;
+      // Do a quick check for the international option,
+      // and skip if found.
+      if ($row['field_person_territory_value'] === 'intl') {
+        continue;
+      }
+      $database
+        ->insert($field_revision_table)
+        ->fields($row)
+        ->execute();
+    }
+  }
+}

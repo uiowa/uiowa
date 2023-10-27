@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesidream.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesidream
+  human_name: idream.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesidream.prod
+drupal:
+  db:
+    database: idream_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesidream.prod.drupal.uiowa.edu'
+  requester: mlawlr
+  site-name: iDREAM

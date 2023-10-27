@@ -3,12 +3,14 @@
 namespace Drupal\uiowa_core\Commands;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleHandler;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService;
 use Drupal\purge\Plugin\Purge\Queue\QueueService;
 use Drupal\purge\Plugin\Purge\Queuer\QueuersService;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * A Drush command file.
@@ -23,7 +25,7 @@ class UiowaCoreCommands extends DrushCommands {
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected ?LoggerInterface $logger;
 
   /**
    * The config factory service.
@@ -106,6 +108,46 @@ class UiowaCoreCommands extends DrushCommands {
       ];
 
       $this->purgeQueue->add($queuer, $invalidations);
+    }
+  }
+
+  /**
+   * Displays custom role mappings if any.
+   *
+   * @command uiowa_core:custom_role_mappings
+   * @aliases uicore-crm
+   *
+   * @usage uiowa_core:custom_role_mappings
+   */
+  public function customRoleMappings() {
+    if ($this->moduleHandler->moduleExists('uiowa_auth')) {
+      // Get site's role_mapping values from uiowa_auth module.
+      $config = $this->configFactory->getEditable('uiowa_auth.settings');
+      $role_mappings = $config->get('role_mappings');
+
+      // Get site default role_mappings from config directory.
+      $config_path = DRUPAL_ROOT . '/../config/default';
+      $source = new FileStorage($config_path);
+      $uiowa_auth = $source->read('uiowa_auth.settings');
+      $default_mappings = $uiowa_auth['role_mappings'];
+
+      if (!empty($role_mappings) && !empty($default_mappings)) {
+        // Compare site to default mappings.
+        $diff = array_diff($role_mappings, $default_mappings);
+
+        if ($diff) {
+          // Prettify and dump result.
+          $result = Yaml::dump($diff);
+          $this->logger->notice($result);
+        }
+      }
+      else {
+        $this->logger->notice('Configuration to compare does not exist.');
+      }
+
+    }
+    else {
+      $this->logger->notice('uiowa_auth is not enabled.');
     }
   }
 

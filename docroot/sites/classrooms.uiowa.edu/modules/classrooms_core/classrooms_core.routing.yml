@@ -1,0 +1,31 @@
+entity.building.collection:
+  path: '/admin/structure/building'
+  defaults:
+    _entity_list: 'building'
+    _title: 'Building configuration'
+  requirements:
+    _permission: 'administer building'
+
+entity.building.add_form:
+  path: '/admin/structure/building/add'
+  defaults:
+    _entity_form: 'building.add'
+    _title: 'Add a building'
+  requirements:
+    _permission: 'administer building'
+
+entity.building.edit_form:
+  path: '/admin/structure/building/{building}'
+  defaults:
+    _entity_form: 'building.edit'
+    _title: 'Edit a building'
+  requirements:
+    _permission: 'administer building'
+
+entity.building.delete_form:
+  path: '/admin/structure/building/{building}/delete'
+  defaults:
+    _entity_form: 'building.delete'
+    _title: 'Delete a building'
+  requirements:
+    _permission: 'administer building'

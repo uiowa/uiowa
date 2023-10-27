@@ -2,6 +2,13 @@
 @import "uids3/assets/scss/_utilities.scss";
 
 // Timeline block
+.block-inline-blockuiowa-timeline {
+  position: relative;
+  // prevent line from going into another section.
+  overflow: hidden;
+  padding-top: 10px;
+}
+
 .timeline {
   transition: all 0.4s ease;
   position: relative;
@@ -14,12 +21,23 @@
 .timeline--wrapper {
   position: relative;
   list-style: none;
+
+  .card {
+    .card__details + footer .bttn {
+      margin-top: 0;
+    }
+    header + .card__details + footer .bttn {
+      margin-top: 1.25rem;
+    }
+  }
+
   .card__details {
     @include breakpoint(md) {
       margin: 0;
     }
   }
-  .card__icon {
+
+  .timeline__icon {
     position: absolute;
     font-size: 25px;
     background: $light;
@@ -29,17 +47,32 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    top: -90px;
-    right: -31px;
+    top: -79px;
+    right: calc(50% - 30px);
+    line-height: 0;
+
     [class*=bg--gray] & {
       background: $grey-light;
     }
+
     @include breakpoint(md) {
       top: -30px;
       right: inherit;
     }
+
+    .field--name-field-timeline-icon {
+      width: 100%;
+      text-align: center;
+    }
+
+    .svg-inline--fa {
+      font-size: inherit;
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
-  .card__icon-wrapper {
+
+  .timeline__icon-wrapper {
     position: absolute;
     top: 0;
     left: 50%;
@@ -53,8 +86,8 @@
   @include breakpoint(md) {
     width: 50%;
   }
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   &:first-child {
     @include breakpoint(md) {
       margin-top: $desktop-width-gutter;
@@ -64,9 +97,11 @@
     margin-bottom: $desktop-width-gutter;
   }
   .timeline--card {
+    height: 100%;
     margin-top: $desktop-width-gutter;
     @include breakpoint(md) {
       margin-top: inherit;
+      height: auto;
     }
     &:after {
       bottom: 100%;
@@ -80,7 +115,7 @@
       pointer-events: none;
       border-color: transparent;
       border-width: 15px;
-      //border-bottom-color: #63666a;
+
       @include breakpoint(md) {
         top: 50%;
         border-bottom-color: transparent;
@@ -113,9 +148,9 @@
     @include breakpoint(md) {
       margin-left: auto;
     }
-    .card__icon {
+    .timeline__icon {
       @include breakpoint(md) {
-        right: 25px;
+        right: 27px;
       }
     }
     .field--name-field-timeline-date {
@@ -144,7 +179,7 @@
       }
 
     }
-    .card__icon-wrapper {
+    .timeline__icon-wrapper {
       @include breakpoint(md) {
         left: 0;
       }
@@ -164,10 +199,11 @@
   &:nth-child(even) {
     @include breakpoint(md) {
       margin-right: auto;
+      padding-right: 5px;
     }
-    .card__icon {
+    .timeline__icon {
       @include breakpoint(md) {
-        right: -90px;
+        right: -91px;
       }
     }
     .field--name-field-timeline-date {
@@ -183,7 +219,7 @@
         }
       }
     }
-    .card__icon-wrapper {
+    .timeline__icon-wrapper {
       @include breakpoint(md) {
         right: 0;
       }
@@ -220,13 +256,13 @@ li:first-child .timeline--card.js-scroll {
 
 .timeline-line {
   position: absolute;
-  left: 50%;
+  left: calc(50% - 3px);
   height: 100%;
 }
 
 .timeline-line__mask {
   position: absolute;
-  width: 5px;
+  width: 6px;
   height: 100%;
   background-color: #fafafa;
   clip: rect(0, auto, auto, 0);
@@ -236,7 +272,7 @@ li:first-child .timeline--card.js-scroll {
 .timeline-line__fill {
   background-color: $primary;
   height: 53%;
-  width: 5px;
+  width: 100%;
   position: fixed;
   top: 0;
   [class*=bg--gold] & {

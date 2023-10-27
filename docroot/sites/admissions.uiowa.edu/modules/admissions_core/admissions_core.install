@@ -31,7 +31,8 @@ function admissions_core_uninstall() {
  */
 function admissions_core_update_8001() {
   $query = \Drupal::entityQuery('node')
-    ->condition('type', 'scholarship');
+    ->condition('type', 'scholarship')
+    ->accessCheck();
 
   $results = $query->execute();
   $nodes = Drupal::entityTypeManager()->getStorage('node')->loadMultiple($results);
@@ -182,6 +183,7 @@ function admissions_core_update_9001() {
 
   $ids = $query
     ->condition('type', 'area_of_study')
+    ->accessCheck()
     ->execute();
 
   if ($ids) {
@@ -509,7 +511,8 @@ function admissions_core_update_9007() {
   // Find NIDs for all nodes with at least one student profiles grid block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
-    ->condition('layout_builder__layout', '%student_grid%', 'LIKE');
+    ->condition('layout_builder__layout', '%student_grid%', 'LIKE')
+    ->accessCheck();
 
   $results = $query->execute();
 
@@ -567,4 +570,20 @@ function admissions_core_update_9007() {
       }
     }
   }
+}
+
+/**
+ * Set initial events filter configuration.
+ */
+function admissions_core_update_9008() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  $config->set('filter_display', [
+    'date_range' => 0,
+    'presenters' => 0,
+    'attendance_required' => 0,
+    'attendance_mode' => 0,
+    'category' => 1,
+  ]);
+  $config->save();
 }

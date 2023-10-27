@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesdpriester.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesdpriester
+  human_name: dpriester.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesdpriester.prod
+drupal:
+  db:
+    database: dpriester_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesdpriester.prod.drupal.uiowa.edu'
+  requester: dpriester
+  site-name: dpriester

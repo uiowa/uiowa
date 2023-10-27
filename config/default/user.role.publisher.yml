@@ -6,6 +6,8 @@ dependencies:
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
+    - filter.format.minimal_plus
+    - filter.format.webform_default
     - media.type.audio
     - media.type.facebook
     - media.type.file
@@ -30,6 +32,7 @@ dependencies:
     - entity_usage
     - file
     - filter
+    - find_text
     - fragments
     - google_analytics
     - media
@@ -39,6 +42,7 @@ dependencies:
     - node
     - override_node_options
     - path
+    - rabbit_hole
     - replicate_ui
     - system
     - taxonomy
@@ -56,6 +60,7 @@ permissions:
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
   - 'access files overview'
+  - 'access find text'
   - 'access fragments overview'
   - 'access media overview'
   - 'access media_wysiwyg_browser entity browser pages'
@@ -184,6 +189,7 @@ permissions:
   - 'override article published option'
   - 'override page published option'
   - 'override person published option'
+  - 'rabbit hole bypass node'
   - 'replicate entities'
   - 'revert article revisions'
   - 'revert page revisions'
@@ -200,6 +206,7 @@ permissions:
   - 'use text format basic'
   - 'use text format filtered_html'
   - 'use text format minimal'
+  - 'use text format minimal_plus'
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view latest version'

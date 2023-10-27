@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labandersoncmdis.uiowa.ddev.site
+    protocol: https
+  machine_name: labandersoncmdis
+  human_name: andersoncmdis.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labandersoncmdis.prod
+drupal:
+  db:
+    database: andersoncmdis_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labandersoncmdis.prod.drupal.uiowa.edu'
+  requester: etanderson
+  site-name: 'Anderson Lab- Cardiometabolic Disorders and Therapeutic Development'

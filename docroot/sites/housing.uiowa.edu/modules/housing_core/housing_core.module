@@ -6,8 +6,21 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\housing_core\Entity\HousingCTA;
+use Drupal\housing_core\Entity\HousingResidenceHall;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function housing_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['residence_hall'])) {
+    $bundles['node']['residence_hall']['class'] = HousingResidenceHall::class;
+  }
+  if (isset($bundles['paragraph']['housing_cta'])) {
+    $bundles['paragraph']['housing_cta']['class'] = HousingCTA::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -28,6 +41,10 @@ function housing_core_form_alter(&$form, FormStateInterface $form_state, $form_i
  */
 function housing_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:residence_hall:field_residence_hall_contact':
+      uiowa_core_set_attributes($variables, ['list-container']);
+      break;
+
     // Display residence hall building links in a two column grid.
     case 'field_block:node:residence_hall:field_residence_hall_bldg_links':
       $variables['attributes']['class'][] = 'grid--twocol--50-50';
@@ -40,7 +57,13 @@ function housing_core_preprocess_block(&$variables) {
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:residence_hall:field_residence_hall_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20 photoswipe-gallery';
+      $variables['attributes']['class'][] = 'media--widescreen photoswipe-gallery';
+      break;
+
+    // Unset default block margin.
+    case 'field_block:node:residence_hall:field_residence_hall_amenities':
+    case 'field_block:node:residence_hall:field_residence_hall_rates':
+      uiowa_core_set_attributes($variables, ['block-margin__default--removed']);
       break;
 
     // Display residence hall cta links in a three column grid.
@@ -87,32 +110,81 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_neighborhd':
-    case 'field_residence_hall_population':
-    case 'field_residence_hall_year_built':
-    case 'field_residence_hall_building':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = '';
+      uiowa_core_set_field_icon($variables, 'fa-compass fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] = t('@value neighborhood', [
+          '@value' => $variables['items'][0]['content']['#markup'],
+        ]);
       }
-      $variables['attributes']['class'] .= 'badge badge--secondary';
+
+      break;
+
+    case 'field_residence_hall_population':
+      uiowa_core_set_field_icon($variables, 'fa-user fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] = t('@value students live here', [
+          '@value' => $variables['items'][0]['content']['#markup'],
+        ]);
+      }
+
+      break;
+
+    case 'field_residence_hall_year_built':
+      uiowa_core_set_field_icon($variables, 'fa-calendar far');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
+      if (isset($variables['items'][0]['content']['#context']['value'])) {
+        $variables['items'][0]['content']['#context']['value'] = t('Opened in @value', [
+          '@value' => $variables['items'][0]['content']['#context']['value'],
+        ]);
+      }
+
+      break;
+
+    case 'field_residence_hall_building':
+      uiowa_core_set_field_icon($variables, 'fa-building fas');
+      uiowa_core_set_attributes($variables, 'badge badge--secondary');
 
       break;
 
     case 'field_residence_hall_getting':
     case 'field_residence_hall_rr_desc':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline';
-
+      uiowa_core_set_title_attributes($variables, [
+        'h2',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       break;
 
     case 'field_residence_hall_llc':
-    case 'field_residence_hall_meet_us':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline headline--center';
+      uiowa_core_set_title_attributes($variables, [
+        'h2',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+        'headline--center',
+      ]);
+      break;
 
+    case 'field_residence_hall_meet_us':
+      $variables['field_container_classes'] = 'list-container__inner';
+      uiowa_core_set_title_attributes($variables, [
+        'h2',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+        'headline--center',
+      ]);
+      uiowa_core_set_attributes($variables, 'list-container');
+
+      break;
+
+    case 'field_residence_hall_contact':
+      uiowa_core_set_attributes($variables, [
+        'list-container__inner',
+      ]);
       break;
 
     case 'field_residence_hall_floor_plans':
@@ -146,7 +218,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
     case 'field_residence_hall_bldg_links':
     case 'field_residence_hall_cta':
-      $variables['field_container_classes'] = 'list-container';
+      $variables['field_container_classes'] = 'list-container__inner';
       break;
   }
 }
@@ -167,8 +239,7 @@ function housing_core_preprocess_layout(&$variables) {
 
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'residence_hall',
@@ -200,28 +271,27 @@ function housing_core_preprocess_layout(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function housing_core_preprocess_paragraph(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $paragraph = $variables['paragraph'];
-    $parent = $paragraph->getParentEntity();
-    if ($parent instanceof ContentEntityInterface) {
-      $housing_cta = [
-        'field_residence_hall_cta' => 'bg--white card--enclosed card--centered card--alignment-center media--border card--stacked',
-        'field_residence_hall_contact' => 'card--centered-left card--alignment-left media--border card--media-left',
-        'field_residence_hall_bldg_links' => 'card--centered-left card--alignment-left media--border card--media-left',
-      ];
-      $id = $paragraph->id();
-      foreach ($housing_cta as $field => $label) {
-        if ($parent->hasField($field)) {
-          foreach ($parent->get($field)->getValue() as $item) {
-            if ($item['target_id'] === $id) {
-              $variables['cta_card_classes'] = $label;
-            }
-          }
-        }
-      }
-    }
+function housing_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'residence_hall') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'text-align-center',
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function housing_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'residence_halls') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
   }
 }
 
@@ -234,16 +304,8 @@ function housing_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-residence-hall-floor-plans--residence-hall',
       'base hook' => 'field',
     ],
-    'paragraph__housing_cta__default' => [
-      'template' => 'paragraph--housing-cta--default',
-      'base hook' => 'paragraph',
-    ],
     'field__node__field_residence_hall_furnishings__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-accordions--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_neighborhd__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-neighborhd--residence-hall--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_amenities__residence_hall__default' => [
@@ -260,22 +322,6 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_emerg_link__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-emerg-link--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_population__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-population--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_year_built__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-year-built--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_residence_hall_building__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-building--residence-hall--default',
-      'base hook' => 'field',
-    ],
-    'field__node__title__residence_hall__default' => [
-      'template' => 'field--node--title--residence-hall--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_images__residence_hall__default' => [
@@ -305,10 +351,6 @@ function housing_core_theme($existing, $type, $theme, $path) {
     'field__paragraph__field_housing_floor_plan_pano__housing_floor_plan' => [
       'template' => 'field--paragraph--field-housing-floor-plan-pano--housing-floor-plan',
       'base hook' => 'field',
-    ],
-    'node__residence_hall__teaser' => [
-      'template' => 'node--residence-hall--teaser',
-      'base hook' => 'node',
     ],
     'taxonomy_term__who_lives_here' => [
       'template' => 'taxonomy-term--who-lives-here',

@@ -54,9 +54,9 @@
 
   {% if no_body %}
     {#
-          sitenow_card includes the ability to have just an image and a link.
-          This isn't considered a card in UIDS, so in that case we just output
-          an image wrapped in a link.
+      The V2 card includes the ability to have just an image and a link.
+      This isn't considered a card in UIDS, so in that case we just output
+      an image wrapped in a link.
     #}
     {% set paragraph_card_link = {
       'link_url': content.field_card_link[0]['#url'],
@@ -74,17 +74,29 @@
   {% else %}
     {# This is a card and can be handled as such. #}
     {% set paragraph_card = {
-      'attributes': card_attributes.addClass(['card--enclosed']),
-      'card_image': content.field_card_image|render,
-      'card_text': content.field_card_body|render,
-      'card_subtitle': content.field_card_subtitle,
-      'card_title': content.field_card_title|render,
-      'card_link_url': content.field_card_link[0]['#url'],
-      'headline_level': 'h2',
+      'attributes': card_attributes.addClass(content.field_card_title and content.field_card_link[0]['#url'] ? 'click-container' : ''),
+      'media': content.field_card_image|render,
+      'content': content.field_card_body|render,
+      'subtitle': content.field_card_subtitle,
+      'title': content.field_card_title,
+      'link_url': content.field_card_link[0]['#url'],
       'paragraph': paragraph,
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+
+      {% block heading %}
+        {% set headline = {
+          'headline_level': 'h2',
+          'headline_class': 'headline',
+          'headline_text': title,
+          'headline_url': link_url,
+          'headline_url_class': (title and link_url) ? 'click-target' : null,
+        } %}
+        <header>
+          {% include '@uids_base/uids/headline.html.twig' with headline only %}
+        </header>
+      {% endblock %}
 
       {# We override this because the text is formatted already. #}
       {% block card_content %}

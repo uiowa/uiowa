@@ -4,17 +4,18 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.body
     - field.storage.node.field_article_author
     - field.storage.node.field_article_source_link
     - field.storage.node.field_article_source_link_direct
     - field.storage.node.field_article_source_org
     - field.storage.node.field_image
-    - field.storage.node.field_teaser
     - node.type.article
     - taxonomy.vocabulary.tags
   module:
     - link
     - node
+    - smart_trim
     - taxonomy
     - user
 id: article_list_block
@@ -421,10 +422,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
           admin_label: Summary
@@ -471,8 +472,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: true
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -497,7 +516,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ path(''entity.node.canonical'', {''node'': nid}) }}'
+            text: "{{ path('entity.node.canonical', {'node': nid}) }}"
             make_link: false
             path: ''
             absolute: false
@@ -820,12 +839,12 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_article_author'
         - 'config:field.storage.node.field_article_source_link'
         - 'config:field.storage.node.field_article_source_link_direct'
         - 'config:field.storage.node.field_article_source_org'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'
   list_article:
     id: list_article
     display_title: 'Article list'
@@ -870,9 +889,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_article_author'
         - 'config:field.storage.node.field_article_source_link'
         - 'config:field.storage.node.field_article_source_link_direct'
         - 'config:field.storage.node.field_article_source_org'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'

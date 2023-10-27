@@ -1,0 +1,19 @@
+adding:
+  uuid: a7074516-d0cf-4904-ba39-a13e1f752bcc
+  dependencies:
+    config:
+      - node.type.contact
+  description: 'The <i>Point of contact</i> for this piece of content. When adding a new contact to reference, select whether this should be created as a <i>Contact</i> or a <i>Person</i>.'
+  translatable: false
+  settings:
+    handler_settings:
+      target_bundles:
+        contact: contact
+      auto_create_bundle: contact
+removing:
+  uuid: 545130ca-03f0-4f75-bfd6-d846ab4b7726
+  description: 'The <i>Point of contact</i> for this piece of content.'
+  translatable: true
+  settings:
+    handler_settings:
+      auto_create_bundle: ''

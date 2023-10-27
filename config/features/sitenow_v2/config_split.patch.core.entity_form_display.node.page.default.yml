@@ -3,6 +3,7 @@ adding:
     config:
       - field.field.node.page.field_page_content_block
     module:
+      - allowed_formats
       - paragraphs
   content:
     field_page_content_block:
@@ -42,7 +43,6 @@ removing:
         rows: 9
         summary_rows: 3
         placeholder: ''
-        show_summary: false
       type: text_textarea_with_summary
       weight: 1
     field_publish_options:
@@ -51,3 +51,5 @@ removing:
       weight: 2
     moderation_state:
       weight: 16
+    simple_sitemap:
+      weight: 10

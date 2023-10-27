@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: performingartscallboard.uiowa.ddev.site
+    protocol: https
+  machine_name: performingartscallboard
+  human_name: callboard.performingarts.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: performingartscallboard.prod
+drupal:
+  db:
+    database: callboard_performingarts_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://performingartscallboard.prod.drupal.uiowa.edu'
+  requester: slparadis
+  site-name: 'Performing Arts Callboard'

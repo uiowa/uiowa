@@ -1,0 +1,54 @@
+uuid: 719fd83c-5389-4539-861b-2def28b6c47c
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.webform_default
+  module:
+    - ckeditor
+    - webform
+format: webform_default
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Format
+            - Bold
+            - Italic
+            - Superscript
+            - Subscript
+        -
+          name: Media
+          items:
+            - SpecialChar
+            - ImceImage
+        -
+          name: Linking
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Lists
+          items:
+            - NumberedList
+            - BulletedList
+        -
+          name: Indentation
+          items:
+            - Outdent
+            - Indent
+        -
+          name: 'Block Formatting'
+          items:
+            - Blockquote
+        -
+          name: Tools
+          items:
+            - Source
+            - Maximize
+  plugins: {  }
+image_upload: {  }

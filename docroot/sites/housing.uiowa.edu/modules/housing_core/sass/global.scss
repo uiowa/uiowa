@@ -20,9 +20,6 @@
   }
 
   .banner {
-    .field--label-visually_hidden .svg-inline--fa {
-      margin-right: 0;
-    }
 
     [class*="block-field-blocknoderesidence-hallfield-"] {
       display: inline-block;
@@ -47,7 +44,7 @@
     }
   }
 
-  .accordion .grid--twocol--50-50 .list-container {
+  .accordion .grid--twocol--50-50 .list-container__inner {
     column-gap: 1rem;
   }
 
@@ -76,62 +73,5 @@
 
   [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
     text-align: center;
-  }
-}
-// Residence Hall search page.
-
-.view-residence-halls {
-  @include breakpoint(sm) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-
-  .view-header {
-    width: 100%;
-  }
-
-  .view-filters {
-    @include breakpoint(sm) {
-      flex: 0 0 25%;
-      max-width: 25%;
-      margin-right: 3rem;
-    }
-  }
-
-  .view-content,
-  .view-empty {
-    flex: 1 0 0;
-  }
-
-  .views-exposed-form .form--inline {
-    flex-wrap: wrap;
-  }
-
-  .views-exposed-form.uids-content:not(.uids-search) {
-    .form-actions {
-      margin-top: 0.5rem;
-      width: 100%;
-      margin-right: 0;
-    }
-
-    .button {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-
-    .form-item {
-      margin-right: 0;
-    }
-  }
-
-  .uids-content {
-    .form-item:first-child {
-      margin-top: 1rem;
-    }
-
-    .form-item {
-      margin-top: 0.5rem;
-    }
   }
 }

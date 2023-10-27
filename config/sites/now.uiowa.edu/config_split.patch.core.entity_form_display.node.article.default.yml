@@ -68,7 +68,6 @@ adding:
       weight: 25
       region: content
       settings:
-        hide_date: '1'
         modal: false
         default_duration: 60
         default_duration_increments: |-
@@ -78,6 +77,7 @@ adding:
           120|2 hours
           custom
         show_extra: false
+        hide_date: '1'
       third_party_settings: {  }
     field_related_content:
       weight: 26
@@ -102,7 +102,7 @@ adding:
 removing:
   content:
     body:
-      weight: 1
+      weight: 2
     created:
       weight: 11
     field_article_author:
@@ -113,8 +113,12 @@ removing:
       weight: 21
     field_article_source_org:
       weight: 19
-    field_featured_image_display:
+    field_contact_reference:
       weight: 22
+      settings:
+        collapsed: true
+    field_featured_image_display:
+      weight: 23
     field_gallery_images:
       weight: 7
     field_image:
@@ -124,7 +128,7 @@ removing:
     field_meta_tags:
       weight: 8
     field_related_content:
-      weight: 23
+      weight: 24
     field_tags:
       weight: 12
     field_teaser:

@@ -58,21 +58,18 @@
     .headline--large.headline--serif:not([class*="banner__pre-title"]),
     .headline--large:not([class*="banner__pre-title"]) {
       font-size: 2.6rem;
-      font-size: containerClamp(2.6rem, 2.6rem);
     }
 
     // Set medium heading size
     .headline--medium.headline--serif:not([class*="banner__pre-title"]),
     .headline--medium:not([class*="banner__pre-title"]) {
       font-size: 2.2rem;
-      font-size: containerClamp(2.1rem, 2.1rem);
     }
 
     // Set small heading size
     .headline--small.headline--serif:not([class*="banner__pre-title"]),
     .headline--small:not([class*="banner__pre-title"]) {
       font-size: 1.8rem;
-      font-size: containerClamp(1.6rem, 1.6rem);
     }
   }
 
@@ -179,11 +176,11 @@
     }
   }
 
-// Set large heading size for page titles in banner
+// Set medium heading size for page titles in banner
 .layout--title.banner .bold-headline,
 .layout--title.banner .headline.page-title {
-  font-size: 4.7rem;
-  font-size: containerClamp(2.5rem, 4.7rem);
+  font-size: 3.7rem;
+  font-size: clamp(2.2rem,calc(3.3803vw + .9324rem),3.7rem);
 }
 
 .banner__image {
@@ -202,10 +199,6 @@
         }
       }
     }
-  }
-  .field--name-field-media-image img {
-    // Override height:auto set in media--type-image.scss
-    height: 100%;
   }
 }
 

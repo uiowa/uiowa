@@ -1,0 +1,12 @@
+#!/bin/bash
+
+## Description: Debug an update hook.
+## Usage: debug-update [flags] [args]
+## Example: ddev phpcbf docroot/modules/custom/my_module
+
+ddev drush $@ udu
+ddev xdebug
+ddev drush $@ updb -y
+ddev xdebug off
+ddev drush $@ cim -y
+ddev drush $@ cim -y

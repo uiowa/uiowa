@@ -1,0 +1,26 @@
+uuid: b217c28b-fae6-480c-b97b-95fda34705ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_issue_editors_note
+    - node.type.publication_issue
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - filtered_html
+id: node.publication_issue.field_issue_editors_note
+field_name: field_issue_editors_note
+entity_type: node
+bundle: publication_issue
+label: 'Editor''s Note'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -5,13 +5,23 @@
  * Contains grad_admissions_core.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\grad_admissions_core\Entity\GradAdmissionsAreaOfStudy;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function grad_admissions_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['area_of_study'])) {
+    $bundles['node']['area_of_study']['class'] = GradAdmissionsAreaOfStudy::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -110,8 +120,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
 
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'area_of_study',
@@ -185,6 +194,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
             ->condition('status', 1)
             ->condition('type', 'area_of_study')
             ->condition('field_area_of_study_area', $tid)
+            ->accessCheck()
             ->execute();
           if (!empty($nids)) {
             $degree_types = '';
@@ -246,14 +256,6 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-apply-link--area-of-study',
       'base hook' => 'field',
     ],
-    'taxonomy_term__teaser' => [
-      'template' => 'taxonomy-term--teaser',
-      'base hook' => 'node',
-    ],
-    'node__area_of_study__teaser' => [
-      'template' => 'node--area-of-study--teaser',
-      'base hook' => 'node',
-    ],
   ];
 }
 
@@ -273,14 +275,5 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
       $suggestions[] = 'field__comma_separated';
       break;
 
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
- */
-function grad_admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
-  if ($variables['elements']['#view_mode'] === 'teaser') {
-    $suggestions[] = 'taxonomy_term__teaser';
   }
 }

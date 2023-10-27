@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesauditorytrainingindex.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesauditorytrainingindex
+  human_name: auditorytrainingindex.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesauditorytrainingindex.prod
+drupal:
+  db:
+    database: auditorytrainingindex_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesauditorytrainingindex.prod.drupal.uiowa.edu'
+  requester: ejeon
+  site-name: 'Auditory Training Index'

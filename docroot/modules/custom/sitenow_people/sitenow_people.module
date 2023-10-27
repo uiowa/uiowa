@@ -10,19 +10,50 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\NodeInterface;
+use Drupal\sitenow_people\Entity\Person;
 use Drupal\sitenow_people\PersonTypeInterface;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Helper function to get the research title from the site config.
+ */
+function sitenow_people_get_research_title() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $research_title = $config->get('research_title');
+
+  if (empty($research_title)) {
+    // Load the entity field manager service.
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    // Load the field instance for the 'field_person_research_areas' field.
+    $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'person')['field_person_research_areas'];
+
+    $research_title = $fieldInstance->getLabel();
+  }
+
+  return $research_title;
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_people_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['person'])) {
+    $bundles['node']['person']['class'] = Person::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -88,6 +119,25 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             'message' => t('Please wait...'),
           ],
         ];
+
+        if (isset($form['field_person_website_link_direct'])) {
+          // Show 'Link directly to website' checkbox only if a site is added.
+          $form['field_person_website_link_direct']['#states'] = [
+            'visible' => [
+              ':input[name="field_person_website[0][uri]"]' => ['filled' => TRUE],
+            ],
+          ];
+          // Only visible to admins, but disable.
+          if (isset($form["rabbit_hole"])) {
+            $form["rabbit_hole"]['admin_notice'] = [
+              '#type' => 'markup',
+              '#markup' => t('<em>These rabbit hole settings are being set
+on presave based on first website link and the link directly to website checkbox.</em>'),
+              '#weight' => -99,
+            ];
+            $form["rabbit_hole"]['#disabled'] = TRUE;
+          }
+        }
 
         $type_selections = [];
 
@@ -194,7 +244,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Display person types as a select list.
-      _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+      uiowa_core_config_entity_filter_select($element['field_person_types_target_id'], 'person_type');
 
       // Only continue if person type status filter exists.
       if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
@@ -366,6 +416,28 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
+
+      // Check for rabbit_hole functionality.
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rh_action')) {
+        $link_direct = (int) $entity->get('field_person_website_link_direct')->value;
+        $source_link = $entity->get('field_person_website')->uri;
+        // If source link and direct to source are set,
+        // change the rabbit hole setting to redirect
+        // and set the url to the source link token.
+        if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+          $entity->rh_action->value = 'page_redirect';
+          $entity->rh_redirect->value = '[node:field_person_website:0:uri]';
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'display_page';
+        }
+        else {
+          // Match content type settings.
+          $entity->rh_action->value = 'display_page';
+          $entity->rh_redirect->value = NULL;
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'bundle_default';
+        }
+      }
       break;
 
   }
@@ -440,26 +512,61 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_page_title(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($route_name === 'entity.node.canonical') {
-      $node = \Drupal::routeMatch()->getParameter('node');
-    }
-    elseif ($route_name === 'entity.node.preview') {
-      $node = \Drupal::routeMatch()->getParameter('node_preview');
-    }
-    if (isset($node)) {
-      switch ($node->getType()) {
-        case 'person':
-          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
-            ->isEmpty()) {
-            $variables['subtitle'] = $node->field_person_credential->value;
-          }
-          break;
+function sitenow_people_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+
+    case 'field_block:node:person:field_person_phone':
+    case 'field_block:node:person:field_person_education':
+    case 'field_block:node:person:field_person_hometown':
+    case 'field_block:node:person:field_person_website':
+    case 'field_block:node:person:field_person_contact_information':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_person_contact_information':
+      uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_education':
+      uiowa_core_set_field_icon($variables, 'fa-university fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_email':
+      uiowa_core_set_field_icon($variables, 'fa-envelope fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_hometown':
+      if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'person') {
+        uiowa_core_set_field_icon($variables, 'fa-globe-americas fa-li');
+        uiowa_core_set_attributes($variables, 'fa-ul');
       }
-    }
+      break;
+
+    case 'field_person_phone':
+      uiowa_core_set_field_icon($variables, 'fa-phone fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_website':
+      uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_research_areas':
+      $variables['label'] = sitenow_people_get_research_title();
+      break;
   }
 }
 
@@ -494,47 +601,46 @@ function sitenow_people_preprocess_page(&$variables) {
       \Drupal::messenger()->addStatus($message_text);
     }
   }
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'person':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_person_website_link_direct')
+            && (int) $node->get('field_person_website_link_direct')->value === 1) {
+            if ($node->hasField('field_person_website') && !$node->get('field_person_website')->isEmpty()) {
+              if (\Drupal::currentUser()
+                ->hasPermission('rabbit hole bypass node') === TRUE) {
+                \Drupal::messenger()
+                  ->addWarning(t('Visitors are being redirected to
+the first website link.'));
+              }
+            }
+          }
+          break;
+      }
+    }
+  }
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_people_preprocess_views_view(&$variables) {
-  switch ($variables["id"]) {
+  switch ($variables['id']) {
     case 'people':
       // Unset header content if empty.
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
       break;
 
   }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $node = $variables["node"];
-    switch ($node->getType()) {
-      case 'person':
-        switch ($variables['view_mode']) {
-          case 'teaser':
-            // Heading needs to change by placement. Defaults to h3 in twig.
-            $current_route = \Drupal::routeMatch();
-            $route_name = $current_route->getRouteName();
-            $variables['#cache']['contexts'][] = 'route.name';
-            if (strpos($route_name, 'view.people.') === 0) {
-              $variables['heading_size'] = 'h2';
-            }
-            break;
-        }
-        break;
-    }
-  }
-
 }
 
 /**
@@ -555,11 +661,12 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
  * Implements hook_views_pre_render().
  */
 function sitenow_people_views_pre_render(ViewExecutable $view) {
-  // Add <th> label for Draggable Views, otherwise it is flagged
-  // for accessibility.
   if ($view->id() === 'people' && $view->current_display === 'page_people_table') {
+    // Add <th> label for Draggable Views, otherwise it is flagged
+    // for accessibility.
     $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
+
   // Add replacement token for people page path.
   $view->build_info['substitutions']['{{ sitenow_people.path }}'] = _sitenow_people_path_token_value();
 }
@@ -719,44 +826,22 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 
   if ($view->id() === 'people') {
+    // Change the research areas label.
+    if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+      $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+    }
+
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
-      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
+      uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
     }
   }
 }
 
 /**
- * Helper function to add person types as select options.
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function _sitenow_people_person_type_filter_select(array &$form) {
-  // Get available person type configuration entities.
-  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
-  $types = $storage->getQuery();
-  $types = $types->condition('status', 1)
-    ->sort('title')
-    ->execute();
-
-  // Build a list of person type options.
-  $options = [];
-  $person_types = $storage->loadMultiple($types);
-  foreach ($person_types as $type) {
-    $options[$type->id()] = $type->label();
-  }
-  asort($options);
-
-  // Rebuild the person type text filter as select list.
-  $form['#type'] = 'select';
-  $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('- Any -');
-  $form['#options'] = $options;
-  unset($form['#size']);
-}
-
-/**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
- */
-function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'people') {
     if (!empty($element['subform']['field_people_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -771,32 +856,6 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
         ];
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_block(&$variables) {
-  switch ($variables['elements']['#plugin_id']) {
-    case 'views_block:people_list_block-list_card':
-      if (isset($variables['attributes']['class'])) {
-        // Unset classes meant for children.
-        foreach ($variables['attributes']['class'] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
-              unset($variables['attributes']['class'][$key]);
-            }
-          }
-        }
-      }
-
-      break;
   }
 }
 
@@ -848,21 +907,34 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
 }
 
 /**
- * Implements hook_allowed_values_function().
+ * Set dynamic allowed values person type status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @see options_allowed_values()
  */
-function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+  $types = [];
+
   $allowed_types = \Drupal::entityTypeManager()
     ->getStorage('person_type')->loadByProperties([
       'status' => TRUE,
       'allow_former' => TRUE,
     ]);
-
-  $types = [];
-
   foreach ($allowed_types as $type) {
     $types[$type->id()] = t('Former @type', [
       '@type' => $type->label(),
     ]);
+  }
+
+  // To resolve an issue with ListItemBase generateSampleValue.
+  if (empty($types)) {
+    $types['_none'] = '-None-';
   }
 
   return $types;
@@ -920,10 +992,8 @@ function _sitenow_people_path_token_value() {
       continue;
     }
 
-    // @todo Do we need to do anything besides this?
     return '/' . $display['display_options']['path'];
   }
 
-  // @todo Is this appropriate when there is no value?
   return '';
 }

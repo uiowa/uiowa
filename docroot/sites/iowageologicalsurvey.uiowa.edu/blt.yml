@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: iowageologicalsurvey.uiowa.ddev.site
+    protocol: https
+  machine_name: iowageologicalsurvey
+  human_name: iowageologicalsurvey.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iowageologicalsurvey.prod
+drupal:
+  db:
+    database: iowageologicalsurvey_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://iowageologicalsurvey.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Iowa Geological Survey'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labiowabrainbank.uiowa.ddev.site
+    protocol: https
+  machine_name: labiowabrainbank
+  human_name: iowabrainbank.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labiowabrainbank.prod
+drupal:
+  db:
+    database: iowabrainbank_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labiowabrainbank.prod.drupal.uiowa.edu'
+  requester: eastonw
+  site-name: 'Iowa Brain Bank'

@@ -5,6 +5,8 @@
  * Install hooks for sitenow_events.
  */
 
+use Drupal\node\Entity\Node;
+
 /**
  * Implements hook_uninstall().
  */
@@ -39,4 +41,63 @@ function sitenow_events_update_8002() {
   $config->setData($new);
   $config->save();
 
+}
+
+/**
+ * Update sites using the event feature to introduce a new field we set value.
+ *
+ * Updated to remove field config import as only ISWF hasn't run
+ * and already has the config in place.
+ */
+function sitenow_events_update_9001(&$sandbox) {
+  $event_split = \Drupal::entityTypeManager()->getStorage('config_split')->load('event');
+
+  // Only run for sites with the event split enabled.
+  if ($event_split->get('status') == FALSE) {
+    return t('Event split is not active, so no update to run.');
+  }
+
+  // Process all the event nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'event')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set the field and save it with a new revision.
+    $node = Node::load($nid);
+    $node->set('field_event_status', 'EventScheduled');
+    // Set revision message and save.
+    $node->setRevisionLogMessage('Automated save.');
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
 }

@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Uiowa Core settings for this site.
@@ -70,7 +70,7 @@ class RegionSettings extends ConfigFormBase {
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('uiowa_core.settings');
 
-    $query = $this->entityTypeManager->getStorage('block')->getQuery();
+    $query = $this->entityTypeManager->getStorage('block')->getQuery()->accessCheck(TRUE);
     $query->condition('plugin', 'region_content_block');
     $region_content_blocks = $query->execute();
     $region_config = $config->get('uiowa_core.region_content');
@@ -184,7 +184,7 @@ class RegionSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $config = $this->config('uiowa_core.settings');
-    $query = $this->entityTypeManager->getStorage('block')->getQuery();
+    $query = $this->entityTypeManager->getStorage('block')->getQuery()->accessCheck(TRUE);
     $query->condition('plugin', 'region_content_block');
     $region_content_blocks = $query->execute();
     foreach ($region_content_blocks as $key => $value) {

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labci-electrophysiology.uiowa.ddev.site
+    protocol: https
+  machine_name: labci-electrophysiology
+  human_name: ci-electrophysiology.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labci-electrophysiology.prod
+drupal:
+  db:
+    database: ci_electrophysiology_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labci-electrophysiology.prod.drupal.uiowa.edu'
+  requester: ostrem
+  site-name: ci-electrophysiology

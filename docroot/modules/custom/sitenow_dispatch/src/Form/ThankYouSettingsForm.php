@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,23 +16,9 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var \Drupal\sitenow_dispatch\Dispatch
-   */
-  protected $dispatch;
-
-  /**
-   * The dispatch service.
-   *
    * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
    */
   protected $check;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -50,11 +37,9 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check, $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, $check) {
     parent::__construct($config_factory);
-    $this->dispatch = $dispatch;
     $this->check = $check;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -63,9 +48,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('uiowa_core.access_checker'),
-      $container->get('entity_type.manager'),
     );
   }
 
@@ -78,8 +62,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
 
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
-    /** @var Drupal\Core\Access\AccessResultInterface $access */
-    $access = $this->check->access($this->currentUser()->getAccount());
+    /** @var \Drupal\Core\Access\AccessResultInterface $access */
+    $access = $this->check->access();
     $enabled = $config->get('thanks.enabled') ?? FALSE;
 
     // Set the form tree to make accessing all nested values easier elsewhere.
@@ -178,7 +162,16 @@ class ThankYouSettingsForm extends ConfigFormBase {
         '#description' => $this->t('An additional email address to send a copy to.'),
         '#default_value' => $config->get('thanks.email'),
       ];
+
+      $form['thanks']['approval'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Approval'),
+        '#default_value' => $config->get('thanks.approval') ?? FALSE,
+        '#required' => FALSE,
+        '#description' => $this->t('Display approval checkbox for publicly sharing thank you.'),
+      ];
     }
+
     else {
       $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact the <a href=":link">ITS Help Desk</a>.', [
         ':link' => 'https://its.uiowa.edu/contact',
@@ -196,6 +189,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
     $bools = [
       ['thanks', 'enabled'],
       ['thanks', 'supervisor'],
+      ['thanks', 'approval'],
     ];
 
     foreach ($bools as $bool) {
@@ -215,6 +209,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
         'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
         'email' => $form_state->getValue(['thanks', 'email']),
+        'approval' => $form_state->getValue(['thanks', 'approval']),
       ])
       ->save();
 

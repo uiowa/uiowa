@@ -57,7 +57,7 @@
   line-height: 1.7;
 }
 #search-results .gs-no-results-result .gs-snippet, #search-results .gs-error-result .gs-snippet {
-  border: 2px solid #FFCD00;
+  border: 2px solid $primary;
   background-color: #fffae6;
 }
 #search-results button.gsc-search-button {
@@ -77,6 +77,9 @@
 }
 #search-results .gsc-webResult .gsc-result {
   padding: 0 0 35px 0;
+}
+#search-results .gsc-webResult.gsc-result:hover {
+  border-color: #fff;
 }
 #search-results .gsc-search-box-tools .gsc-search-box .gsc-input {
   padding-right: 0;
@@ -156,3 +159,4 @@
     }
   }
 }
+

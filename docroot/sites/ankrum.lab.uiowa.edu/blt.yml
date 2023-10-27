@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labankrum.uiowa.ddev.site
+    protocol: https
+  machine_name: labankrum
+  human_name: ankrum.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labankrum.prod
+drupal:
+  db:
+    database: ankrum_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labankrum.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Ankrum Lab'

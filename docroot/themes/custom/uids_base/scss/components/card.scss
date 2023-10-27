@@ -1,8 +1,9 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/card/card.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/card/card.scss";
 
 // @todo move back to UIDS
+// https://github.com/uiowa/uiowa/issues/6295
 
 .card {
   p + p {
@@ -14,60 +15,8 @@
   p[class*="uids-component-"] {
     font-weight: normal;
   }
-
-  &__description + .btn,
-  &__description + .bttn {
-    margin-top: 1.05rem;
-  }
-
-  &__details + .bttn {
-    margin-top: .425rem;
-  }
-
-  &__title+.bttn {
-    margin-top: .55rem;
-  }
-
-  &.card--media-right,
-  &.card--media-left {
-    .card__title+.bttn {
-      margin-top: .925rem;
-    }
-  }
-
-  &.card--media-right.card__list,
-  &.card--media-left.card__list {
-    .card__title+.bttn {
-      margin-top: .85rem;
-    }
-  }
-
-  &__description {
-    font-size: 1rem;
-    word-wrap: anywhere;
-    overflow-wrap: anywhere;
-  }
-
-  &.card--button-position {
-    .card__body {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      div:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .card__description {
-      margin-bottom: 1.05rem;
-    }
-
-    .bttn {
-      margin-top: auto;
-    }
-  }
 }
+
 
 // Circle button.
 .card {
@@ -100,224 +49,206 @@
   }
 }
 
-
-// ie11
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .card.card--button-position {
-    .card__body {
-      display: block;
-
-      div:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .card__description {
-      margin-bottom: 0;
-    }
-
-    .bttn {
-      margin-top: 1.05rem;
-    }
-  }
-
-  .card__body .media {
-    flex-shrink: 0;
-    width: 100%;
-    min-height: 1px;
-  }
-
-  .card__body .media img {
-    flex-shrink: 0;
-    width: 100%;
-    min-height: 1px;
+.card__meta {
+  margin-top: 0.3rem;
+  .field + .field {
+    margin-top: .3rem;
   }
 }
 
-// Remove padding if no section background and bg--white is set on card
-.layout__container:not([class*="bg-"]) {
-  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__media + .card__body {
-      @include breakpoint(sm) {
-        padding: 0 0 $md 2rem;
-      }
-    }
+// Icons.
+.card--centered {
+  .fa-circle {
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 50%;
   }
-  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__media + .card__body {
-      @include breakpoint(sm) {
-        padding: 0 2rem $md 0;
-      }
-    }
-  }
-  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
-  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__body {
-      padding-left: 0;
-      padding-right: 0;
-      padding-bottom: 0;
-    }
-  }
-}
-
-// Allow cards to be stacked within layouts
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol {
-  .card {
-    flex: 1 1 100%;
-  }
-}
-
-// Set background for all v2 cards
-.paragraph--type--section {
-  &[class*=bg-] {
-    .card {
-      //color: $secondary;
-    }
-  }
-
-  .card {
-    background: #fff;
-  }
-
-  .paragraph--type--card {
-    .card {
-      border: 1px solid rgba(0, 0, 0, .125);
-    }
-  }
-}
-
-.card {
-  .card__meta,
-  .card__subtitle {
-    .svg-inline--fa {
-      margin-right: .3rem;
-    }
-    a {
-      text-decoration: none;
-    }
-  }
-
-  .card__meta {
-    .fontawesome-icons {
-      display: inline-block;
-    }
-    .svg-inline--fa {
-      font-size: 1rem;
-      line-height: 1.2;
-    }
-  }
-
-  &__label {
+  .fa-li {
+    left: 0;
     position: relative;
+  }
 
-    .svg-inline--fa {
-      height: 100%;
+  .fa-ul {
+    margin-left: 0;
+  }
+  .card__meta {
+    .fa-ul {
+      margin-left: 0;
     }
   }
-  &--alignment-center {
-    .card__label {
-      padding-left: 0;
+}
 
-      .svg-inline--fa {
-        @include element-invisible;
+.card__meta {
+  .fa-li {
+    top: 5px;
+    width: 1.5em;
+    .card--centered & {
+      top: 0;
+    }
+  }
+  .fa-ul {
+    margin-left: 2rem;
+  }
+  .svg-inline--fa {
+    font-size: 1rem;
+    margin-right: .3rem;
+    margin-left: 0;
+  }
+  .fa-stack {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    &.fa-li {
+      position: absolute;
+      margin-left: 0.3rem;
+      top: -2px;
+    }
+  }
+  .svg-inline--fa.fa-stack-2x {
+    height: 1.2rem;
+    width: 1.3rem;
+  }
+  .svg-inline--fa.fa-stack-1x {
+    height: 0.6rem;
+    font-size: .8rem;
+    width: 1.3rem;
+  }
+}
+
+  // Allow cards to be stacked within layouts.
+  .layout--fourcol,
+  .layout--threecol,
+  .layout--twocol {
+    .card {
+      flex: 1 1 100%;
+    }
+  }
+
+  // Remove text decoration.
+  .card {
+    .card__meta,
+    .card__subtitle {
+      a {
+        text-decoration: none;
       }
     }
   }
 
-  &.hide-descriptions {
-    .card__description,
-    .item-description,
-    .field--name-field-teaser {
-      display: none;
+
+  // Hide styles used in events list block and featured content block.
+  .card {
+    &.hide-descriptions {
+      .card__description,
+      .item-description,
+      .field--name-body {
+        display: none;
+      }
     }
-  }
-  &.hide-images {
-    .card__media {
-      display: none;
+    &.hide-images {
+      .media__inner {
+        display: none;
+      }
     }
-    .card__body {
-      @include breakpoint(sm) {
-        padding: 0 !important;
+    &.hide-details {
+      .card__details {
+        display: none;
       }
     }
   }
-  &.hide-details .card__details {
+
+  // V2 - Set background for all v2 cards.
+  .paragraph--type--section {
+    .card {
+      background: #fff;
+    }
+
+    .paragraph--type--card {
+      .card {
+        border: 1px solid rgba(0, 0, 0, .125);
+      }
+    }
+  }
+
+// Event block
+.card {
+  .fontawesome-icons {
+    display: inline-block;
+  }
+  &.hide-images .media {
     display: none;
   }
 }
 
-// Fix for adding padding if images are hidden within stack format.
-.card.hide-images.card--stacked.card--enclosed .card__body,
-.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
-  padding: 2rem!important;
-}
-
-// Card__head styles
-
-.card {
-  &__head {
-    flex-wrap: wrap;
+// Remove padding if no section background and bg--white is set on card.
+.layout__container:not([class*="bg--"]) {
+  .card[class*="bg--white"][class*="borderless"] {
     padding: 0;
-    text-align: center;
-    @include center(horizontal);
-    @include breakpoint(sm) {
-      padding: 0 0 2rem;
+    .media__inner {
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 0;
     }
-    @include breakpoint(md) {
-      margin: 0;
-      display: block;
-    }
-
-    p {
-      @include brand-cool-gray;
-      margin: 0;
-    }
-
-    .bold-headline {
-      display: block;
-    }
-
-    .bttn {
-      flex-basis: 100%;
-      padding-top: $sm;
+    &.card--layout-left .media__inner {
       @include breakpoint(sm) {
-        padding-top: $md;
-      }
-
-      &.bttn--link:focus,
-      &.bttn--link:hover {
-        background: transparent;
-        text-decoration: underline;
+        margin-right: 2rem;
       }
     }
-
-    h2 {
-      margin: 0;
-      padding: 0;
+    &.card--layout-right .media__inner {
+      @include breakpoint(sm) {
+        margin-left: 2rem;
+      }
     }
   }
 }
 
-// Card list styles
-.card--list .card__meta {
-  margin-top: .3rem;
+.card .headline {
+  line-height: inherit;
 }
 
-.card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
-  margin: 0 0 .125rem
-}
-
-// Flexbox for centered icons
-.card__meta.card__meta--icon {
-  display: flex;
-  flex-wrap: wrap;
-  .card__icon {
-    flex: 0 1 $lg;
+// Card Details.
+.card details {
+  summary {
+    position: relative;
+    cursor: pointer;
     display: flex;
-    justify-content: center;
-    padding-top: .135rem;
+    align-items: center;
+    background: $light;
+    padding: 0.5rem 1.2rem 0.5rem calc(20px + 0.5rem);
+    border-radius: 2px;
+    transition: background .15s ease-in-out;
+    width: fit-content;
+
+    &:hover {
+      background: #ededed;
+    }
+
+    &::-webkit-details-marker,
+    &::marker {
+      display:none;
+    }
+  }
+
+  summary::before {
+    padding: $xsm .9rem $xsm .625rem;
+    content: "\f0da";
+    color: $secondary;
+    @include fas();
+    line-height: 9px;
+    padding: 0.5rem;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    transform: rotate(0);
+    transition: .15s transform ease;
+  }
+
+  &[open] {
+    > summary::before {
+      transform: rotate(90deg);
+    }
+    > summary {
+      margin-bottom: .5rem;
+    }
   }
 }

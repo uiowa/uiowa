@@ -1,0 +1,26 @@
+uuid: 98d5d86c-2ee1-4b56-9eda-3aef563b1506
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_author_bio
+    - node.type.article
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - filtered_html
+id: node.article.field_article_author_bio
+field_name: field_article_author_bio
+entity_type: node
+bundle: article
+label: 'Author Biography'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

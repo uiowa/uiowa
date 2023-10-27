@@ -10,97 +10,106 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\sitenow_intranet\IntranetHelper;
 
 /**
- * Implements hook_restrict_ip_access_denied_page_alter().
+ * Implements hook_preprocess_block().
  */
-function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
-  $config = \Drupal::config('sitenow_intranet.settings');
-  \Drupal::service('renderer')->addCacheableDependency($page, $config);
+function sitenow_intranet_preprocess_block(&$variables) {
+  $code = IntranetHelper::getStatusCode();
 
-  if (isset($page['access_denied'])) {
-    unset($page['access_denied']);
+  if (IntranetHelper::checkStatusCode($code)) {
+    switch ($variables['plugin_id']) {
+      case 'page_title_block':
+        $variables['attributes']['class'][] = 'block-padding__top';
+        break;
+
+      case 'system_breadcrumb_block':
+        unset($variables['content']);
+        break;
+
+      case 'system_main_block':
+        $config = \Drupal::config('sitenow_intranet.settings');
+        $status_code_map = IntranetHelper::getStatusCodeMap();
+
+        $variables['content'] = [
+          '#markup' => check_markup($config->get("{$status_code_map[$code]}.message"), 'minimal'),
+          '#prefix' => '<div class="text-align-center">',
+          '#suffix' => '</div>',
+        ];
+
+        // If the user is logged-in, show a logout link on the access denied
+        // page.
+        if ($code === 403 && \Drupal::currentUser()->isAuthenticated()) {
+          $variables['content']['logout_link'] = [
+            '#type' => 'link',
+            '#title' => t('Logout'),
+            '#url' => Url::fromRoute('user.logout') ,
+            '#prefix' => '<p class="text-align-center">',
+            '#suffix' => '</p>',
+            '#attributes' => [
+              'class' => [
+                'bttn',
+                'bttn--primary',
+                'bttn--caps',
+              ],
+            ],
+          ];
+        }
+        break;
+
+      case 'uiowa_alerts_block':
+        foreach ($variables['content']['wrapper'] as $wrapper => $content) {
+          // Check that it's a content element and not a block property,
+          // and skip if it's the hawk alert content,
+          // as we want that to always display.
+          if (str_starts_with($wrapper, '#') || $wrapper === 'hawk_alerts') {
+            continue;
+          }
+          unset($variables['content']['wrapper'][$wrapper]);
+        }
+        break;
+
+    }
   }
+}
 
-  // Create our own access denied page and login.
-  $page['main'] = [
-    '#type' => 'html_tag',
-    '#tag' => 'main',
-    '#attributes' => [
-      'role' => 'main',
-      'class' => 'page__container',
-    ],
-  ];
+/**
+ * Implements hook_preprocess_page().
+ */
+function sitenow_intranet_preprocess_page(&$variables) {
+  $code = IntranetHelper::getStatusCode();
 
-  $page['main']['title_container'] = [
-    '#type' => 'html_tag',
-    '#tag' => 'div',
-    '#attributes' => [
-      'class' => [
-        'section-padding__top-extra',
-        'layout--title',
-        'layout__container',
-        'layout',
-      ],
-    ],
-  ];
-  $page['main']['title_container']['title'] = [
-    '#prefix' => '<h1 class="page-title headline--serif headline text-align-center">',
-    '#suffix' => '</h1>',
-  ];
-
-  // Display a different message to authenticated users with no other roles.
-  $roles = \Drupal::currentUser()->getRoles();
-  if (count($roles) === 1 && in_array('authenticated', $roles)) {
-    $page['main']['title_container']['title']['#markup'] = $config->get('unauthorized.title');
-
-    $page['main']['message'] = [
-      '#markup' => check_markup($config->get('unauthorized.message'), 'minimal'),
-      '#prefix' => '<div class="text-align-center">',
-      '#suffix' => '</div>',
-    ];
-
-    // If the user is authenticated but has no other roles, return a 403.
-    $page['#attached']['http_header'][] = ['Status', '403'];
+  if (IntranetHelper::checkStatusCode($code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    \Drupal::service('renderer')->addCacheableDependency($variables, $config);
+    foreach ([
+      'action_menu',
+      'footer_first',
+      'footer_second',
+      'pre_footer',
+      'primary_menu',
+      'region_content',
+    ] as $region) {
+      if (isset($variables['page'][$region])) {
+        unset($variables['page'][$region]);
+      }
+    }
   }
-  else {
-    $page['main']['title_container']['title']['#markup'] = $config->get('access_denied.title');
+}
 
-    $page['main']['message'] = [
-      '#markup' => check_markup($config->get('access_denied.message'), 'minimal'),
-      '#prefix' => '<div class="text-align-center">',
-      '#suffix' => '</div>',
-    ];
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function sitenow_intranet_preprocess_page_title(&$variables) {
+  $code = IntranetHelper::getStatusCode();
 
-    // If the user is not authenticated, return a 401.
-    $page['#attached']['http_header'][] = ['Status', '401'];
-  }
+  if (IntranetHelper::checkStatusCode($code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    $status_code_map = IntranetHelper::getStatusCodeMap();
 
-  if (isset($page['logout_link'])) {
-    $page['main']['logout_link'] = $page['logout_link'];
-    $page['main']['logout_link']['#prefix'] = '<p class="text-align-center">';
-    $page['main']['logout_link']['#suffix'] = '</p>';
-    unset($page['logout_link']);
-  }
-
-  $route = 'samlauth.saml_controller_login';
-  $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
-
-  if (isset($page['login_link']) && $exists) {
-    $page['main']['login_link'] = [
-      '#type' => 'link',
-      '#title' => t('HawkID Login'),
-      '#url' => Url::fromRoute($route, ['destination' => '/']),
-      '#prefix' => '<p class="text-align-center">',
-      '#suffix' => '</p>',
-      '#attributes' => [
-        'class' => [
-          'bttn',
-          'bttn--primary',
-          'bttn--caps',
-        ],
-      ],
-    ];
-    unset($page['login_link']);
+    // Override title and add class to center it.
+    $variables['title'] = $config->get("{$status_code_map[$code]}.title");
+    $variables['title_attributes']['class'][] = 'text-align-center';
   }
 }

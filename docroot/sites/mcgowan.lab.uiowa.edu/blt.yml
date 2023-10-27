@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmcgowan.uiowa.ddev.site
+    protocol: https
+  machine_name: labmcgowan
+  human_name: mcgowan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmcgowan.prod
+drupal:
+  db:
+    database: mcgowan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmcgowan.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'McGowan Lab'

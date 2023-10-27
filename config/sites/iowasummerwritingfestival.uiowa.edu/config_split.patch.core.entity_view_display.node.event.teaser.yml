@@ -1,0 +1,33 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_genre
+      - field.field.node.event.field_event_registration_link
+  content:
+    field_event_genre:
+      type: list_default
+      label: inline
+      settings: {  }
+      third_party_settings: {  }
+      weight: 11
+      region: content
+    field_event_registration_link:
+      type: link
+      label: above
+      settings:
+        trim_length: 80
+        url_only: false
+        url_plain: false
+        rel: '0'
+        target: _blank
+      third_party_settings: {  }
+      weight: 10
+      region: content
+    field_event_when:
+      settings:
+        format: default_long_date
+removing:
+  content:
+    field_event_when:
+      settings:
+        format: default

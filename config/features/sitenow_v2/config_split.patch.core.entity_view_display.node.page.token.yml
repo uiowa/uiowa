@@ -8,12 +8,28 @@ adding:
       label: above
       settings:
         trim_length: 600
-      weight: null
+      weight: 0
+    field_image:
+      weight: 1
+    field_teaser:
+      type: basic_string
+      label: hidden
+      settings: {  }
+      third_party_settings: {  }
+      weight: 2
+      region: content
   hidden:
     field_page_content_block: true
 removing:
+  dependencies:
+    config:
+      - field.field.node.page.layout_builder__layout
   content:
     body:
       type: text_default
       label: hidden
-      weight: 2
+      weight: 1
+    field_image:
+      weight: 0
+  hidden:
+    field_teaser: true

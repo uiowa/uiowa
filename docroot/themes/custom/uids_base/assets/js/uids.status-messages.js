@@ -3,14 +3,14 @@
  * UIDS status messages behaviors.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   'use strict';
   /**
    * Close any dismissible alerts on button click.
    */
   Drupal.behaviors.uidsStatusMessages = {
     attach: function (context, settings) {
-      $('.alert-dismissible').once('uidsStatusMessages').each(function() {
+      $(once('uidsStatusMessages', '.alert--dismissible')).each(function() {
         $("button[data-dismiss='alert']", this).click(function(e) {
           $(this).parent().hide();
         });
@@ -18,4 +18,4 @@
     }
   };
 
-} (jQuery, Drupal));
+} (jQuery, Drupal, once));

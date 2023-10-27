@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbuchakjian.uiowa.ddev.site
+    protocol: https
+  machine_name: labbuchakjian
+  human_name: buchakjian.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbuchakjian.prod
+drupal:
+  db:
+    database: buchakjian_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbuchakjian.prod.drupal.uiowa.edu'
+  requester: suaroon
+  site-name: 'Buchakjian Research Lab'

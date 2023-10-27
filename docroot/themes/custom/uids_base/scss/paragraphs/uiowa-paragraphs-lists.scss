@@ -17,388 +17,14 @@
   }
 }
 
-.paragraph--type--articles,
-.paragraph--type--events,
-.paragraph--type--people,
-.paragraph--type--featured-content {
-
-  &.hide-images .card__media,
-  &.hide-images .content-image {
-    display: none;
-  }
-}
-
-// Shared Articles and Events Lists
-.paragraph--type--articles.list,
-.paragraph--type--people.list,
-.view-display-id-page_articles,
-.view-id-people {
-
-  .card__media {
-    @include card-media-horizontal-right;
-
-    @include breakpoint(sm) {
-      margin-top: $lg;
-      margin-bottom: $gutter;
-    }
-  }
-
-  .card__body {
-    flex: 1;
-  }
-
-  .card__title {
-    @include breakpoint(sm) {
-      padding: 0;
-    }
-  }
-
-  .node--type-article {
-    display: flex;
-    @include breakpoint(sm) {
-      flex-direction: row-reverse;
-    }
-  }
-}
-
-// Featured content list
-.paragraph--type--featured-content.list {
-  .field--name-field-featured-content {
-    @include list-group;
-    @include list-group-flush;
-  }
-
-  .content-image,
-  .card__media {
-    @include card-media-horizontal-right;
-
-    @include breakpoint(sm) {
-      margin-top: $lg;
-    }
-    &.media--circle {
-      @include breakpoint(sm) {
-        margin-top: 0;
-      }
-    }
-  }
-}
-
-.paragraph--type--featured-content {
-  @include breakpoint(sm) {
-    margin-top: $lg;
-  }
-
-  figure {
-    margin: 0;
-
-    img {
-      margin-bottom: 0;
-    }
-  }
-
-  .media-body h3 {
-    @include card-header;
-  }
-
-  .node--view-mode-teaser.media {
-    @include card;
-  }
-
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin-top: $gutter;
-  }
-
-  .media-body {
-    @include card-body;
-  }
-
-
-  .card__body {
-    flex: 1;
-  }
-
-  .card__title {
-    @include breakpoint(sm) {
-      padding: 0;
-    }
-  }
-
-  .card--list {
-    &.card--person-teaser {
-      @include breakpoint(sm) {
-        margin-top: 1.6rem;
-      }
-    }
-  }
-  .node--type-article {
-    @include breakpoint(sm) {
-      display: flex;
-      flex-direction: row-reverse;
-    }
-    &.card--person-teaser {
-      @include breakpoint(sm) {
-        margin-top: 1.6rem;
-      }
-    }
-  }
-}
-
-.paragraph--type--featured-content.grid,
-.paragraph--type--featured-content.masonry {
-  .media-body {
-    padding: 2rem;
-  }
-  .card--person-teaser {
-    @include breakpoint(sm) {
-      padding: 2rem!important;
-      margin-top: 0;
-    }
-  }
-}
-
-// Articles List
-.paragraph--type--articles.list,
-.paragraph--type--people.list {
-  .view-content {
-    @include list-group;
-    @include list-group-flush;
-    margin-top: $gutter;
-  }
-
-  .views-row {
-
-    &:first-child {
-      border-top: none;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .node__content {
-    @include media-body;
-  }
-}
-
-.paragraph--type--people.list {
-  .views-row {
-    border-bottom: none;
-  }
-}
-
-// Events List
+// List Events
 .paragraph--type--events.list {
   .uiowa-events {
     margin-top: $gutter;
   }
-
-  .card {
-    @include breakpoint(sm) {
-      border-bottom: 1px solid rgba(0, 0, 0, .125);
-      // @todo Remove when uiowa/uiowa#2670 and uiowa/uiowa#2554 are resolved.
-      &.card--media-left,
-      &.card--media-right {
-        .paragraph--type--section:not([class*="bg-"]) & {
-          margin-bottom: 0;
-        }
-      }
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-  }
 }
 
-// People Table
-.view-display-id-page_people_table {
-
-  table td,
-  table th {
-    padding: 0;
-  }
-
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin-top: $gutter;
-  }
-
-  .card__media {
-    margin-bottom: $gutter;
-  }
-}
-
-// Feature Content Grid
-
-.paragraph--type--featured-content.grid {
-  .field--name-field-featured-content {
-    margin-top: $gutter;
-
-    @include breakpoint(md) {
-      display: flex;
-      flex-wrap: wrap;
-    }
-  }
-
-  .featured-content-item {
-    @include breakpoint(sm) {
-      margin-bottom: $mobile-width-gutter;
-    }
-
-    @include breakpoint(md) {
-      flex: 0 0 calc(50% - 1.5rem);
-      margin-bottom: $desktop-width-gutter;
-
-      .layout--has-sidebar & {
-        flex: 0 0 calc(50% - 1.5rem);
-      }
-
-
-      &:nth-child(2n+1) {
-        margin-right: $desktop-width-gutter;
-      }
-    }
-
-    @include breakpoint(page-container) {
-      flex: 0 0 calc(34.5% - 3rem);
-      margin-bottom: $desktop-width-gutter;
-
-      .sidebar-invisible.layout--has-sidebar & {
-        flex: 0 0 calc(34.5% - 3rem);
-      }
-
-      .layout--has-sidebar & {
-        flex: 0 0 calc(34.5% - 3rem);
-      }
-
-      &:nth-child(2n+1) {
-        margin-right: 0;
-      }
-
-      &:nth-child(3n+2) {
-        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
-      }
-    }
-
-    display: flex;
-  }
-
-  .card,
-  .node--view-mode-teaser.media {
-    @include card-enclosed;
-    border: 1px solid rgba(0,0,0,.125)!important;
-    .media--circle {
-      margin-top: 2rem;
-      @include breakpoint(sm) {
-        margin-top: 0;
-      }
-    }
-    &.card--person-teaser {
-      .card__body {
-        @include breakpoint(sm) {
-          padding: 0;
-        }
-      }
-    }
-  }
-}
-
-.paragraph--type--featured-content.list .node--type-page.node--view-mode-teaser.media {
-  display: flex;
-
-  @include breakpoint(sm) {
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
-  }
-}
-
-.paragraph--type--people.grid,
-.paragraph--type--people.masonry {
-  .card {
-    @include breakpoint(sm) {
-      padding: 2rem !important;
-    }
-  }
-  &.hide-images .card  {
-    @include breakpoint(sm) {
-      padding: 2rem !important;
-    }
-  }
-}
-
-// Articles Grid
-.paragraph--type--articles.grid,
-.paragraph--type--people.grid {
-  .view-content {
-    margin-top: $gutter;
-
-    @include breakpoint(md) {
-      display: flex;
-      flex-wrap: wrap;
-    }
-  }
-
-  .views-row {
-    @include breakpoint(sm) {
-      margin-bottom: $mobile-width-gutter;
-    }
-
-    @include breakpoint(md) {
-      flex: 0 0 calc(50% - 1.5rem);
-      margin-bottom: $desktop-width-gutter;
-
-      .layout--has-sidebar & {
-        flex: 0 0 calc(50% - 1.5rem);
-      }
-
-
-      &:nth-child(2n+1) {
-        margin-right: $desktop-width-gutter;
-      }
-    }
-
-    @include breakpoint(page-container) {
-      flex: 0 0 calc(34.5% - 3rem);
-      margin-bottom: $desktop-width-gutter;
-
-      .sidebar-invisible.layout--has-sidebar & {
-        flex: 0 0 calc(34.5% - 3rem);
-      }
-
-      .layout--has-sidebar & {
-        flex: 0 0 calc(34.5% - 3rem);
-      }
-
-
-      &:nth-child(2n+1) {
-        margin-right: $gutter;
-        margin-right: 0;
-      }
-
-      &:nth-child(3n+2) {
-        margin-left: 0;
-        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
-      }
-    }
-
-    display: flex;
-  }
-
-  .card {
-    @include card-enclosed;
-    border-color: rgba(0,0,0,.125) !important;
-    &.card--person-teaser {
-      .card__body {
-        @include breakpoint(sm) {
-          padding: 0;
-        }
-      }
-    }
-  }
-}
-
-// Events Grid
+// Grid Events
 .paragraph--type--events.grid {
   .uiowa-events {
     @include breakpoint(md) {
@@ -456,119 +82,16 @@
 
   .card {
     @include card-enclosed;
+    margin: 0;
+
+    .card__meta .fa-ul {
+      display: inline-block;
+      margin-left: 0;
+    }
+
     .card__body {
       padding: 0;
     }
-  }
-}
-
-
-// Masonry Featured Content
-.paragraph--type--featured-content.masonry {
-  .field--name-field-featured-content {
-    margin-top: $gutter;
-
-    //@include card-columns;
-    @include breakpoint(sm) {
-      column-count: 3;
-      column-gap: 1.25rem;
-      orphans: 1;
-    }
-  }
-
-  .featured-content-item {
-    display: inline-block;
-    @include card-enclosed;
-    border: none!important;
-    width: 100%;
-    margin-bottom: $gutter;
-    .card.card--person-teaser {
-      .card__body {
-        @include breakpoint(sm) {
-          padding: 0;
-        }
-      }
-    }
-    .card, .node--view-mode-teaser.media  {
-      border: 1px solid;
-      border-color: rgba(0,0,0,.125) !important;
-      .media--circle {
-        margin-top: 2rem;
-        @include breakpoint(sm) {
-          margin-top: 0;
-        }
-      }
-    }
-  }
-
-  .node--type-article {
-    display: flex;
-  }
-
-  figure img {
-    @include card-img-top;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .node__content .field--name-title {
-    @include card-title;
-  }
-}
-
-
-// Masonry Articles
-.paragraph--type--articles.masonry,
-.paragraph--type--people.masonry {
-  .view-content {
-    margin-top: $gutter;
-
-    //@include card-columns;
-    @include breakpoint(sm) {
-      column-count: 3;
-      column-gap: 1.25rem;
-      orphans: 1;
-    }
-  }
-
-  .views-row {
-    //@include card-enclosed;
-    display: inline-block;
-    width: 100%;
-    margin-bottom: $gutter;
-  }
-
-  .node--type-article {
-    display: flex;
-  }
-
-  figure img {
-    @include card-img-top;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .node__content {
-    @include card-body;
-  }
-
-  .card__body {
-    padding: 2rem;
-  }
-  .card {
-    border: 1px solid;
-    border-color: rgba(0,0,0,.125)!important;
-  }
-  .card.card--person-teaser {
-    .card__body {
-      @include breakpoint(sm) {
-        padding: 0;
-      }
-    }
-  }
-
-  .node__content .field--name-title {
-    @include card-title;
   }
 }
 
@@ -593,35 +116,238 @@
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
+    .card__meta .fa-ul {
+      display: inline-block;
+      margin-left: 0;
+    }
+
     .card__body {
       padding: 0;
     }
   }
 }
 
-// Hide Images
+// List People
+.paragraph--type--people.list {
 
-.paragraph--type--articles.hide-images {
-  figure img {
+  .views-row {
+    border-bottom: none;
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+}
+
+
+// Grid/Masonry People
+.paragraph--type--people.grid,
+.paragraph--type--people.masonry {
+  .card {
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
+  }
+  &.hide-images .card  {
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
+  }
+}
+
+// Grid Articles, People, Featured Content with card_4x adjustments.
+.paragraph--type--articles.grid,
+.paragraph--type--people.grid,
+.paragraph--type--featured-content.grid {
+  .field--name-field-featured-content,
+  .view-content {
+    margin-top: $gutter;
+
+    @include breakpoint(md) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  .featured-content-item,
+  .views-row {
+    margin-top: 0 !important;
+    @include breakpoint(sm) {
+      margin-bottom: $mobile-width-gutter;
+    }
+
+    @include breakpoint(md) {
+      flex: 0 0 calc(50% - 1.5rem);
+      margin-bottom: $desktop-width-gutter;
+
+      .layout--has-sidebar & {
+        flex: 0 0 calc(50% - 1.5rem);
+      }
+
+
+      &:nth-child(2n+1) {
+        margin-right: $desktop-width-gutter;
+      }
+    }
+
+    @include breakpoint(page-container) {
+      flex: 0 0 calc(34.5% - 3rem);
+      margin-bottom: $desktop-width-gutter;
+
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 calc(34.5% - 3rem);
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 calc(34.5% - 3rem);
+      }
+
+
+      &:nth-child(2n+1) {
+        margin-right: $gutter;
+        margin-right: 0;
+      }
+
+      &:nth-child(3n+2) {
+        margin-left: 0;
+        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
+      }
+    }
+
+    display: flex;
+  }
+
+  .card {
+    display: block;
+
+    .media {
+      width: 100%;
+      .media__inner {
+        margin: 0;
+      }
+    }
+    .media:not(.media--circle) {
+      max-width: 100%;
+    }
+    .card__body {
+      padding: 2rem;
+    }
+  }
+}
+
+// Masonry Featured Content, Articles, People with card_4x adjustments.
+.paragraph--type--featured-content.masonry,
+.paragraph--type--articles.masonry,
+.paragraph--type--people.masonry {
+  .field--name-field-featured-content,
+  .view-content {
+    margin-top: $gutter;
+
+    @include breakpoint(sm) {
+      column-count: 3;
+      column-gap: 1.25rem;
+      orphans: 1;
+    }
+  }
+
+  .featured-content-item,
+  .views-row {
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,.125) !important;
+    width: 100%;
+    margin-bottom: 1.25rem;
+    margin-top: 0 !important;
+    .card {
+      display: block;
+
+      .media {
+        width: 100%;
+        .media__inner {
+          margin: 0;
+        }
+      }
+      .media:not(.media--circle) {
+        max-width: 100%;
+      }
+      .media--circle {
+        margin-top: 2rem;
+      }
+      .card__body {
+        padding: 2rem;
+      }
+    }
+  }
+}
+
+// People list overrides to keep left image sized with card_4x.
+.paragraph--type--people.list {
+  .media--circle {
+    margin-top: 0;
+  }
+  .media.media--type-image {
+    flex: none;
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+// Grid/Masonry People overrides to keep image left with card_4x.
+.paragraph--type--people.grid,
+.paragraph--type--people.masonry {
+  .views-row {
+    .card {
+      display: flex;
+      .media {
+        .media__inner {
+          margin-right: 1rem;
+        }
+      }
+      .media--circle {
+        margin-top: 0;
+      }
+      .card__body {
+        padding: 0;
+      }
+    }
+  }
+}
+
+
+// Hide Images
+.paragraph--type--articles,
+.paragraph--type--events,
+.paragraph--type--people,
+.paragraph--type--featured-content {
+
+  &.hide-images .media,
+  &.hide-images .content-image,
+  &.hide-images figure img {
     display: none;
   }
 }
 
-// Hide Descriptions
+// Hide Article, People, Featured Content descriptions
 .paragraph--type--articles.hide-descriptions,
 .paragraph--type--people.hide-descriptions,
 .paragraph--type--featured-content.hide-descriptions {
-  .field--name-field-teaser {
+  .field--name-field-teaser,
+  .field--name-body {
     display: none;
   }
 }
 
+// Hide Events descriptions
 .paragraph--type--events.hide-descriptions {
   p {
     display: none;
   }
 }
-
 
 // everything over 2445px
 @media only screen and (min-width: 1425px) {

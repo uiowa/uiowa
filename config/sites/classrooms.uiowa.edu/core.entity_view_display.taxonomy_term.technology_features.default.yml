@@ -1,0 +1,44 @@
+uuid: 4071e3a8-c3c5-4e92-af18-65d48605804d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.technology_features.field_api_mapping
+    - field.field.taxonomy_term.technology_features.field_technology_features_icon
+    - taxonomy.vocabulary.technology_features
+  module:
+    - fontawesome
+    - text
+id: taxonomy_term.technology_features.default
+targetEntityType: taxonomy_term
+bundle: technology_features
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_api_mapping:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_technology_features_icon:
+    type: fontawesome_icon_formatter
+    label: hidden
+    settings:
+      layers: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

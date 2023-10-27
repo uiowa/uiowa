@@ -9,15 +9,15 @@
  * @see https://www.drupal.org/node/2217931
  */
 
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\brand_core\Controller\LockupController;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\brand_core\Controller\LockupController;
 
 /**
  * Implements hook_toolbar_alter().
@@ -356,39 +356,6 @@ function brand_core_tokens($type, $tokens, array $data, array $options, Bubbleab
   }
 
   return $replacements;
-}
-
-/**
- * Implements hook_mail().
- */
-function brand_core_mail($key, &$message, $params) {
-  $message['from'] = \Drupal::config('system.site')->get('mail');
-  $message['reply-to'] = $message['from'];
-  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-
-  $options = [
-    'langcode' => $message['langcode'],
-  ];
-
-  switch ($key) {
-    case 'lockup-review-digest':
-      $message['subject'] = t('Brand Manual - You have @results @label to review', [
-        '@results' => $params['results'],
-        '@label' => $params['label'],
-      ], $options);
-
-      $message['body'][] = t('You have @results @label to review:', [
-        '@results' => $params['results'],
-        '@label' => $params['label'],
-        '@login' => $params['login'],
-      ], $options);
-
-      foreach ($params['lockups'] as $lockup) {
-        $message['body'][] = t('- @lockup', ['@lockup' => $lockup], $options);
-      }
-      $message['body'][] = t('@login', ['@login' => $params['login']], $options);
-      break;
-  }
 }
 
 /**

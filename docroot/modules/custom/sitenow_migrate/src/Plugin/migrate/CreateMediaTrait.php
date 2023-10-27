@@ -4,9 +4,9 @@ namespace Drupal\sitenow_migrate\Plugin\migrate;
 
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * A trait for handling on-demand media creation.
@@ -28,13 +28,15 @@ trait CreateMediaTrait {
    *   Associative array metadata for the file such as alt and title.
    * @param int $owner_id
    *   User id for the media owner, or default to the administrator account.
+   * @param string $global_caption
+   *   The optional image global caption.
    *
    * @return false|int|string|null
    *   Media id, if successful, or else false.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMediaEntity($fid, array $meta = [], $owner_id = 1) {
+  public function createMediaEntity($fid, array $meta = [], $owner_id = 1, $global_caption = NULL) {
     $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
     $file = $file_manager->load($fid);
@@ -78,6 +80,12 @@ trait CreateMediaTrait {
             'alt' => $meta['alt'],
             'title' => $meta['title'],
           ];
+          if ($global_caption) {
+            $media_entity['field_media_caption'] = [
+              'value' => $global_caption,
+              'format' => 'minimal',
+            ];
+          }
           break;
 
         case 'application':
@@ -96,10 +104,10 @@ trait CreateMediaTrait {
           }
           else {
             // If we didn't have a title, check if we had
-            // a human readable filename to use for the description
-            // (that doesn't match the true filename, which
+            // a human-readable filename to use for the description
+            // that doesn't match the true filename, which
             // would be used in displays with an empty description.
-            if (!str_ends_with($meta['file_uri'], $meta['filename'])) {
+            if (isset($meta['file_uri']) && !str_ends_with($meta['file_uri'], $meta['filename'])) {
               $media_entity['field_media_file']['description'] = $meta['filename'];
             }
           }
@@ -255,6 +263,7 @@ trait CreateMediaTrait {
       ->getStorage('file')
       ->getQuery()
       ->condition('filename', $filename)
+      ->accessCheck(TRUE)
       ->execute();
 
     if (empty($files)) {
@@ -300,6 +309,58 @@ trait CreateMediaTrait {
         return FALSE;
       }
     }
+  }
+
+  /**
+   * From file id, check if an oembed media exists, and create if not.
+   */
+  protected function createVideo($fid, $alignment = 'center') {
+    $file_query = $this->fidQuery($fid);
+    // Get the video source.
+    $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+    $vid_uri = urldecode($vid_uri);
+    $new_id = \Drupal::database()->select('media__field_media_oembed_video', 'o')
+      ->fields('o', ['entity_id'])
+      ->condition('o.field_media_oembed_video_value', $vid_uri, '=')
+      ->execute()
+      ->fetchField();
+    if (!$new_id) {
+      $media_entity = [
+        'langcode' => 'en',
+        'metadata' => [],
+        'bundle' => 'remote_video',
+        'field_media_oembed_video' => $vid_uri,
+      ];
+
+      $media_manager = $this->entityTypeManager->getStorage('media');
+      /** @var \Drupal\Media\MediaInterface $media */
+      $media = $media_manager->create($media_entity);
+      $media->setName($file_query['filename']);
+      $media->setOwnerId(1);
+      $media->save();
+
+      $uuid = $media->uuid();
+    }
+    else {
+      // Get the uuid.
+      $uuid = \Drupal::service('entity_type.manager')
+        ->getStorage('media')
+        ->load($new_id)
+        ->uuid();
+    }
+
+    $media = [
+      '#type' => 'html_tag',
+      '#tag' => 'drupal-media',
+      '#attributes' => [
+        'data-align' => $alignment,
+        'data-entity-type' => 'media',
+        'data-entity-uuid' => $uuid,
+        'data-view-mode' => 'medium',
+      ],
+    ];
+
+    return \Drupal::service('renderer')->renderPlain($media);
   }
 
 }

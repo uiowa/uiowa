@@ -173,6 +173,14 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $form['global']['sitenow_people_research_areas'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Override for Research Areas label'),
+      '#description' => $this->t('For users visiting the site, Research Areas labels will be overridden with this value. Defaults to <em>Research areas</em>.'),
+      '#default_value' => sitenow_people_get_research_title(),
+      '#required' => TRUE,
+    ];
+
     $form['global']['sitenow_people_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -202,10 +210,11 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => isset($default["display_options"]["filters"]["field_person_types_target_id"]),
       '#size' => 60,
     ];
+
     $form['global']['sitenow_people_filter']['filter_research'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Research Area'),
-      '#description' => $this->t('Allow filtering by research area'),
+      '#title' => $this->t('Research Areas'),
+      '#description' => $this->t('Allow filtering by Research Areas'),
       '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
       '#size' => 60,
     ];
@@ -310,6 +319,7 @@ class SettingsForm extends ConfigFormBase {
     $status = (int) $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
+    $research_title = $form_state->getValue('sitenow_people_research_areas');
     $header_content = $form_state->getValue('sitenow_people_header_content');
     $filters['combine'] = $form_state->getValue('filter_search');
     $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
@@ -562,6 +572,11 @@ class SettingsForm extends ConfigFormBase {
       ->set('related_display', $related_display)
       ->save();
     parent::submitForm($form, $form_state);
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the research areas label default.
+      ->set('research_title', $research_title)
+      ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.

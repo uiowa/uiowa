@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.uiowa_collection_item.field_automatically_open
     - field.field.paragraph.uiowa_collection_item.field_collection_body
     - field.field.paragraph.uiowa_collection_item.field_collection_headline
+    - field.field.paragraph.uiowa_collection_item.field_unique_id
     - paragraphs.paragraphs_type.uiowa_collection_item
   module:
     - layout_builder
@@ -34,6 +35,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_unique_id:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true

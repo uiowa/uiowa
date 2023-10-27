@@ -264,21 +264,6 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: ''
-          exposed: false
         created:
           id: created
           table: node_field_data
@@ -295,6 +280,21 @@ display:
             field_identifier: ''
           exposed: false
           granularity: second
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments:
         field_project_partner_target_id:
           id: field_project_partner_target_id
@@ -718,7 +718,7 @@ display:
           admin_label: 'field_project_partner: Content'
           plugin_id: standard
           required: false
-      css_class: bef-exposed-form--secondary
+      css_class: 'bef-form bef-form--label-hidden'
       display_description: ''
       display_extenders:
         metatag_display_extender:
@@ -1090,7 +1090,7 @@ display:
           admin_label: 'field_project_college_department: Taxonomy term'
           plugin_id: standard
           required: false
-      css_class: 'grid--fourcol--25 inner--grid'
+      css_class: grid--fourcol--25
       use_ajax: true
       group_by: true
       display_description: ''
@@ -1708,7 +1708,7 @@ display:
           admin_label: 'field_tags: Taxonomy term'
           plugin_id: standard
           required: false
-      css_class: 'grid--fourcol--25 inner--grid'
+      css_class: grid--fourcol--25
       group_by: true
       display_description: ''
       display_extenders:

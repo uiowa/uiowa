@@ -52,7 +52,7 @@ content:
       link: true
     third_party_settings:
       field_delimiter:
-        delimiter: ''
+        delimiter: ','
     weight: 1
     region: content
   field_book_editor:
@@ -60,7 +60,9 @@ content:
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 3
     region: content
   field_book_type:
@@ -85,6 +87,9 @@ content:
     region: content
 hidden:
   content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_book_afterword_author: true
   field_book_art: true
   field_book_awards: true

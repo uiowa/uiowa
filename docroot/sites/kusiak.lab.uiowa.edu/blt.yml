@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkusiak.uiowa.ddev.site
+    protocol: https
+  machine_name: labkusiak
+  human_name: kusiak.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkusiak.prod
+drupal:
+  db:
+    database: kusiak_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkusiak.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Intelligent Systems Laboratory'

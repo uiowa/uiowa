@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepain.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepain
+  human_name: pain.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepain.prod
+drupal:
+  db:
+    database: pain_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepain.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Pain Research Program'

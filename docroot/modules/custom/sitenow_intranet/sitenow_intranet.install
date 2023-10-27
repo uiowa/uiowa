@@ -5,8 +5,6 @@
  * Install, update and uninstall functions for the Sitenow Intranet module.
  */
 
-use Drupal\Core\Config\FileStorage;
-
 /**
  * Implements hook_install().
  */
@@ -17,41 +15,12 @@ function sitenow_intranet_install() {
   $config->set('status', TRUE);
   $config->save(TRUE);
 
-  $config_path = DRUPAL_ROOT . '/../config/features/sitenow_intranet';
-  $source = new FileStorage($config_path);
-
-  // Import the one complete split item we need to write to the db below.
-  $config_storage = \Drupal::service('config.storage');
-  $config_storage->write('restrict_ip.settings', $source->read('restrict_ip.settings'));
-
-  // Insert active config since it isn't tracked in stored config.
-  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
-    'type' => 'white',
-    'path' => '/saml/*',
-  ]);
-
-  $database->execute();
-
-  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
-    'type' => 'white',
-    'path' => '/admin/*',
-  ]);
-
-  $database->execute();
-
-  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
-    'type' => 'white',
-    'path' => '/robots.txt',
-  ]);
-
-  $database->execute();
-
   // Set some sane default configuration.
   $config_factory->getEditable('sitenow_intranet.settings')
     ->set('unauthorized.title', 'Unauthorized')
-    ->set('unauthorized.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
+    ->set('unauthorized.message', '<p>You must log in to access this page.</p>')
     ->set('access_denied.title', 'Access denied')
-    ->set('access_denied.message', '<p>You must log in to access this page.</p>')
+    ->set('access_denied.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
     ->save();
 
   $config_factory->getEditable('uids_base.settings')

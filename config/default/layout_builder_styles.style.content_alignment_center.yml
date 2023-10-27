@@ -4,14 +4,15 @@ status: true
 dependencies: {  }
 id: content_alignment_center
 label: Center
-classes: "card--centered\r\ncard--alignment-center"
+classes: card--centered
 type: component
 group: content_alignment
 block_restrictions:
+  - 'inline_block:featured_content'
   - 'inline_block:uiowa_card'
   - 'inline_block:uiowa_events'
   - 'inline_block:uiowa_aggregator'
   - 'views_block:article_list_block-list_article'
   - 'views_block:people_list_block-list_card'
 layout_restrictions: {  }
-weight: -33
+weight: -40

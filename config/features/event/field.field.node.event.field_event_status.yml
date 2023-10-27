@@ -1,0 +1,23 @@
+uuid: 620bb254-b73d-4c7a-82c1-aa213da5a9a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_status
+    - node.type.event
+  module:
+    - options
+id: node.event.field_event_status
+field_name: field_event_status
+entity_type: node
+bundle: event
+label: 'Event status'
+description: 'An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.'
+required: true
+translatable: true
+default_value:
+  -
+    value: EventScheduled
+default_value_callback: ''
+settings: {  }
+field_type: list_string

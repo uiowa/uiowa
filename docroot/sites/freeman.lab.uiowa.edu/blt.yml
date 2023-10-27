@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfreeman.uiowa.ddev.site
+    protocol: https
+  machine_name: labfreeman
+  human_name: freeman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfreeman.prod
+drupal:
+  db:
+    database: freeman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfreeman.prod.drupal.uiowa.edu'
+  requester: jhfreemn
+  site-name: 'Neuroscience of Learning Lab'

@@ -1,0 +1,308 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality the Facilities website.
+ */
+
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
+use Drupal\node\NodeInterface;
+
+/**
+ * Set dynamic allowed values event status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'cambus' => 'Cambus',
+    'coralville' => 'Coralville',
+    'iowaCity' => 'Iowa City',
+  ];
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  if (isset($data['tabs'][0]['facilities_core.node.dispatch'])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $data['cacheability']->addCacheTags(['dispatch:message']);
+    $repository = \Drupal::service('sitenow_dispatch.message_log_repository');
+    $count = count($repository->load(['entity_id' => $node->id()]));
+    $data['tabs'][0]['facilities_core.node.dispatch']['#link']['title'] = 'Notifications (' . $count . ')';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_alert_form':
+    case 'node_alert_edit_form':
+
+      // Show or hide the field_alert_buildings_locations field based on the
+      // checkbox value.
+      $form['field_alert_buildings_locations']['#states'] = [
+        'visible' => [
+          ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      break;
+
+    case 'node_named_building_form':
+    case 'node_named_building_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+    case 'node_building_form':
+    case 'node_building_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:buildings_import`.
+      \Drupal::messenger()->addWarning('This content type is managed through an automated process.
+      Any buildings created or modified that are not in the source data will be overwritten.');
+      break;
+
+    case 'node_project_form':
+    case 'node_project_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Set a placeholder text, and add a submit handler
+      // for if we have a webcam link but no title.
+      $form['field_project_webcam']['widget'][0]['title']['#placeholder'] = 'View webcam';
+      // Unshift to put our handler at the front of the list,
+      // to ensure the value will get set prior to save.
+      array_unshift($form['actions']['submit']['#submit'], 'facilities_core_project_submit');
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:projectss_import`.
+      \Drupal::messenger()->addWarning('This content type is managed through an automated process.
+      Any projects created or modified that are not in the source data will be overwritten.');
+      break;
+
+  }
+}
+
+/**
+ * Submit handler to set a default webcam link title if none is provided.
+ */
+function facilities_core_project_submit($form, FormStateInterface $form_state): void {
+  $webcam = $form_state->getValue([
+    'field_project_webcam',
+    '0',
+  ]);
+  if (!empty($webcam['uri']) && empty($webcam['title'])) {
+    $form_state->setValue([
+      'field_project_webcam',
+      '0',
+      'title',
+    ], 'View webcam');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_building_honoree_name':
+      // Change label for output.
+      $variables['element']['#title'] = 'Honoree';
+      $variables['label'] = 'Honoree';
+      $node = $variables['element']['#object'];
+      // Append the last name if it exists.
+      if (!$node->get('field_building_honoree_last_name')->isEmpty()) {
+        $last = $node->get('field_building_honoree_last_name')->value;
+        // Loop through and overwrite the value.
+        foreach ($variables['items'] as $key => $item) {
+          $variables['items'][$key]['content']['#context']['value'] .= ' ' . $last;
+        }
+      }
+      break;
+
+    case 'field_building_year_built':
+    case 'field_building_address':
+    case 'field_building_additional_info':
+      // Assumes these are being called in
+      // views_block:named_buildings-block_building using Views field api.
+      if ($variables['element']['#view_mode'] === '_custom') {
+        $variables['label_display'] = 'inline';
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  // Process the header layout.
+  if ($layout->id() === 'layout_header') {
+    $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'named_building',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+      }
+      switch ($node->getType()) {
+        case 'named_building':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
+          }
+          break;
+
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:named_building_details-block_honoree':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'bg--gray block-padding__all block-margin__default--removed';
+      break;
+
+    case 'views_block:named_building_details-block_building':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'bg--white block-padding__all border';
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:alert:field_alert_traffic_control_plan':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+        'block-margin__right',
+      ]);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_file_link().
+ */
+function facilities_core_preprocess_file_link(&$variables) {
+  // Remove pdf class.
+  unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function facilities_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'alert') {
+    // Load the referenced entity from the entity reference field.
+    $building_reference = $entity->get('field_alert_building')->entity;
+    $building_locations = $entity->get('field_alert_buildings_locations')->value;
+    $short_work_desc = $entity->get('field_alert_short_work_desc')->value;
+
+    // Determine the building title based on conditions.
+    $building_title = $building_reference ? $building_reference->get('title')->value : '';
+    $output = $building_locations ?: $building_title;
+
+    // Combine the output with the short work description
+    // adding a hyphen if there's content.
+    if (!empty($output) && !empty($short_work_desc)) {
+      $output .= ' - ' . $short_work_desc;
+    }
+    else {
+      $output .= $short_work_desc;
+    }
+
+    // Set the combined output as the node title.
+    $entity->setTitle($output);
+
+    $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
+    if (!empty($traffic_plan)) {
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($traffic_plan);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
+      $file->setFilename('Traffic Plan');
+      $file->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function facilities_core_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view_unformatted__alerts_building_block__alert' => [
+      'template' => 'views-view-unformatted--alerts-building-block--alert',
+      'base hook' => 'view',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_hook().
+ */
+function facilities_core_preprocess_input(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $current_route = \Drupal::routeMatch();
+    $node_type_data = $current_route?->getParameter('node_type');
+    $node_type = $node_type_data?->get('type');
+
+    if (isset($node_type) && $node_type === 'alert') {
+      if ($variables['element']['#type'] == 'textfield') {
+        $variables['attributes']['spellcheck'] = 'true';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook().
+ */
+function facilities_core_preprocess_textarea(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $current_route = \Drupal::routeMatch();
+    $node_type_data = $current_route?->getParameter('node_type');
+    $node_type = $node_type_data?->get('type');
+
+    if (isset($node_type) && $node_type === 'alert') {
+      $variables['attributes']['spellcheck'] = 'true';
+    }
+  }
+}

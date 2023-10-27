@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: dsri.uiowa.ddev.site
+    protocol: https
+  machine_name: dsri
+  human_name: dsri.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dsri.prod
+drupal:
+  db:
+    database: dsri_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://dsri.prod.drupal.uiowa.edu'
+  requester: roggentienk

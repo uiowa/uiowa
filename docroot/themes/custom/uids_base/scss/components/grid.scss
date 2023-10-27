@@ -1,12 +1,22 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/grid/grid.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/grid/grid.scss";
 
-.list-container {
-  [class*="grid--"].view & {
-    margin-bottom: $mobile-height-gutter;;
+// List container spacing.
+.list-container:not([class*="grid--twocol"]):not([class*="grid--threecol"]) {
+  .list-container__inner {
+    > div + div {
+      margin-top: 1.6rem;
+    }
   }
-  .card {
+}
+
+.list-container__inner {
+  [class*="grid--"].view & {
+    margin-bottom: $mobile-height-gutter;
+  }
+  .card,
+  .views-field {
     height: 100%;
     .section-alignment__start & {
       height: auto;
@@ -16,52 +26,51 @@
 
 // Set first item within list-container to full width
 .grid--first-item-full-width {
-  .list-container {
+  .list-container__inner {
     :first-child {
       grid-column: 1 / -1;
     }
   }
 }
 
-  // These override the grid settings in grid.scss from UIDS
-.inner--list.grid--threecol--33-34-33 .list-container,
-.inner--list.grid--twocol--50-50 .list-container {
-  display: inherit;
+// Utility class to set an item within a grid to full-width.
+.list-container__item--full {
+  grid-column: 1 / -1;
 }
 
-.inner--grid.grid--threecol--33-34-33 .list-container,
-.inner--grid.grid--twocol--50-50 .list-container{
+.grid--threecol--33-34-33,
+.grid--twocol--50-50 {
+  .list-container__inner {
+    display: grid;
+  }
+}
+
+// These lines help the inner-grid mixin.
+.list-container--grid.grid--threecol--33-34-33 .list-container__inner,
+.list-container--grid.grid--twocol--50-50 .list-container__inner {
   grid-template-columns: inherit;
   gap: $mobile-height-gutter;
 }
 
-.inner--grid .more-link {
+.list-container--grid .more-link {
   margin-top: $mobile-height-gutter;
 }
 
-.grid--twocol--50-50 .list-container {
+.grid--twocol--50-50 .list-container__inner {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;
+    align-self: self-start;
   }
 }
 
 // Additional grid classes.
 .grid--fourcol--25 {
-  .list-container {
+  .list-container__inner {
+    display: grid;
+    gap: $mobile-height-gutter;
     @include grid-base;
     @include breakpoint(md) {
       @include fourcol-grid;
-    }
-  }
-}
-
-// For use only for images.
-.grid--fivecol--20 {
-  .list-container {
-    @include grid-base;
-    @include breakpoint(sm) {
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
     }
   }
 }

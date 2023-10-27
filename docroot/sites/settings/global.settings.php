@@ -45,7 +45,6 @@ switch ($ah_env) {
     break;
 }
 
-
 /**
  * A custom theme for the offline page.
  *
@@ -58,9 +57,20 @@ switch ($ah_env) {
  */
 $settings['maintenance_theme'] = 'uids_base';
 
-
 // Override BLTs hash salt to be unique per site.
 $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
+
+// Compatibility with Acquia Platform Email for Symfony Mailer module.
+// See https://docs.acquia.com/cloud-platform/manage/platform-email/faq/#can-i-use-symfony-mailer-with-platform-email
+$settings['mailer_sendmail_commands'] = [
+  ini_get('sendmail_path') . ' -t',
+];
+
+if ($ah_env !== 'local') {
+  // Set this in config since the config references the actual text of the
+  // command, which is different for each environment.
+  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = ini_get('sendmail_path') . ' -t';
+}
 
 // Set recommended New Relic configuration.
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
@@ -68,4 +78,9 @@ ini_set('newrelic.loglevel', 'error');
 
 if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
+}
+
+// Memory increase for large menu pages so webmasters can save changes.
+if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
+  ini_set('memory_limit', '256M');
 }

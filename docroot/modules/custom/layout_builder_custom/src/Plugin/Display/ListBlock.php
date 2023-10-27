@@ -7,11 +7,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
+use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 
 /**
  * Provides a List Block display plugin override.
@@ -509,6 +509,12 @@ class ListBlock extends CoreBlock {
       'exposed_filters',
     ]));
 
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the block configuration below is the only way we have found
+    // so far to be able to access them when we need them.
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
     }
@@ -529,9 +535,17 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
+    // Add the block config in case we need to reference it later.
+    $this->setOption('block_config', $config);
 
+    // We pass layout builder styles from the block to the view. When the view
+    // is refreshed via AJAX (e.g. using a pager), the view is updated but not
+    // the block. This means that we don't have the opportunity to pull layout
+    // builder styles from the component in SectionComponentSubscriber. Adding
+    // the styles to the display from the block configuration below is the only
+    // way we have found so far to be able to access them when we need them.
     if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
+      $this->setOption('layout_builder_styles', $config['layout_builder_styles']);
     }
 
     // Attach the headline, if configured.
@@ -554,7 +568,7 @@ class ListBlock extends CoreBlock {
         $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
       }
 
-      $this->view->display_handler->setOption('heading_size', $child_heading_size);
+      $this->setOption('heading_size', $child_heading_size);
     }
 
     // Change fields output based on block configuration.
@@ -597,19 +611,19 @@ class ListBlock extends CoreBlock {
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
-        $this->view->display_handler->setOption('use_more', TRUE);
-        $this->view->display_handler->setOption('use_more_always', TRUE);
-        $this->view->display_handler->setOption('link_display', 'custom_url');
+        $this->setOption('use_more', TRUE);
+        $this->setOption('use_more_always', TRUE);
+        $this->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
-          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+          $this->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
         }
         if (!empty($config['use_more_text'])) {
-          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
+          $this->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {
         // Don't display the more link.
-        $this->view->display_handler->setOption('use_more', FALSE);
+        $this->setOption('use_more', FALSE);
       }
     }
   }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinesercc.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinesercc
+  human_name: sercc.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinesercc.prod
+drupal:
+  db:
+    database: sercc_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinesercc.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Scientific Editing and Research Communication Core'

@@ -3,8 +3,8 @@
 namespace Drupal\layout_builder_custom\Plugin\diff\Field;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\layout_builder\Section;
 
 /**

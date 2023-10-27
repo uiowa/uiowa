@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmast.uiowa.ddev.site
+    protocol: https
+  machine_name: labmast
+  human_name: mast.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmast.prod
+drupal:
+  db:
+    database: mast_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmast.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'The Marine Science and Technology Laboratory'

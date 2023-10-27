@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: writersworkshopintranet.uiowa.ddev.site
+    protocol: https
+  machine_name: writersworkshopintranet
+  human_name: intranet.writersworkshop.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writersworkshopintranet.prod
+drupal:
+  db:
+    database: intranet_writersworkshop_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writersworkshopintranet.prod.drupal.uiowa.edu'
+  requester: aleksandra
+  site-name: 'Iowa Writers Workshop Intranet'

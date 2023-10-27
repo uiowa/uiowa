@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwallrath.uiowa.ddev.site
+    protocol: https
+  machine_name: labwallrath
+  human_name: wallrath.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwallrath.prod
+drupal:
+  db:
+    database: wallrath_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwallrath.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: wallrath.lab.uiowa.edu

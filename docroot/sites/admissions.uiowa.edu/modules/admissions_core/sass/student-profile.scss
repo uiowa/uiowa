@@ -3,51 +3,23 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_grid.scss";
 
 .block-views-blockstudent-card-block-student-grid {
-  &[class*="grid"].hide-details {
-    .view-content.list-container {
+  &[class*="grid"] {
+    .view-content.list-container__inner {
       gap: 0 !important;
     }
 
-    .card__body {
-      display: none;
-    }
-
     &.grid__mobile {
-      &.grid--threecol--33-34-33,
-      &.grid--twocol--50-50 {
-        .list-container {
-          @include display-grid;
-
-          .card {
-            margin-bottom: 0;
-          }
-        }
-      }
-
       &.grid--threecol--33-34-33 {
-        .list-container {
+        .list-container__inner {
+          @include display-grid;
           @include threecol-grid;
         }
       }
-
-      &.grid--twocol--50-50 {
-        .list-container {
-          @include twocol-grid;
-          gap: $desktop-width-gutter;
-        }
-      }
-
     }
   }
 
-  .views-col {
-    display: flex;
-    align-items: stretch;
-
+  .views-row {
     a:not(:empty) {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       width: 100%;
 
       .empty-img {
@@ -59,9 +31,5 @@
         background-image: url('/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/one-person-BLACK.png');
       }
     }
-  }
-
-  .views-row {
-    display: flex;
   }
 }

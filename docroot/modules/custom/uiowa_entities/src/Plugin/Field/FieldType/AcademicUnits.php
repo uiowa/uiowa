@@ -2,13 +2,13 @@
 
 namespace Drupal\uiowa_entities\Plugin\Field\FieldType;
 
+use Drupal\Core\Entity\TypedData\EntityDataDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
-use Drupal\Core\TypedData\DataReferenceTargetDefinition;
-use Drupal\Core\Entity\TypedData\EntityDataDefinition;
-use Drupal\Core\TypedData\DataReferenceDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TypedData\DataReferenceDefinition;
+use Drupal\Core\TypedData\DataReferenceTargetDefinition;
 
 /**
  * Provides a field type of AcademicUnits.

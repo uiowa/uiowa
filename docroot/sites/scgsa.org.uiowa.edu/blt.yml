@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgscgsa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgscgsa
+  human_name: scgsa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgscgsa.prod
+drupal:
+  db:
+    database: scgsa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgscgsa.prod.drupal.uiowa.edu'
+  requester: asmith241
+  site-name: 'The Sociology and Criminology Graduate Student Association'

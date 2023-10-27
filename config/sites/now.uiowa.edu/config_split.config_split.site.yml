@@ -10,10 +10,11 @@ stackable: true
 storage: folder
 folder: ../config/sites/now.uiowa.edu
 module:
-  now_core: 0
+  now_core: 10
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.person.default
   - field.field.node.article.field_article_type
   - field.field.node.article.field_embargo_information
   - field.field.node.article.field_original_publication_date
@@ -21,16 +22,16 @@ complete_list:
   - field.storage.node.field_embargo_information
   - field.storage.node.field_original_publication_date
   - node.type.contact
+  - views.view.iowa_now_experts
   - 'field.field.node.contact.*'
   - 'field.storage.node.field_contact_*'
   - 'core.base_field_override.node.contact.*'
   - 'core.entity_view_display.node.contact.*'
   - 'core.entity_form_display.node.contact.*'
   - 'core.entity_view_display.node.article.*'
-  - 'core.entity_view_display.node.person.*'
-  - views.view.iowa_now_experts
 partial_list:
   - field.field.node.article.field_contact_reference
   - field.field.node.person.field_contact_reference
   - 'core.entity_form_display.node.article.*'
   - 'core.entity_form_display.node.person.*'
+  - 'core.entity_view_display.node.person.*'

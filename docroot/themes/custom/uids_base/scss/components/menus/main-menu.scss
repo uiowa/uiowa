@@ -461,7 +461,7 @@
           }
 
           &:before {
-            background: #ffcd00;
+            background: $primary;
             content: "";
             position: absolute;
             left: 48%;
@@ -510,7 +510,7 @@
           }
 
           &:before {
-            background: #ffcd00;
+            background: $primary;
             content: "";
             position: absolute;
             left: 48%;
@@ -648,7 +648,7 @@ button#main-menu-toggle {
   }
   width: 100%;
   text-align: left;
-  height: 60px;
+  min-height: 60px;
   border: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -658,15 +658,20 @@ button#main-menu-toggle {
   font-size: 1rem;
   font-weight: bold;
   background: none;
-  padding: 0;
+  padding: 1rem 0;
+  display: flex;
+
+  span {
+    display: inline-block;
+    line-height: 1.6;
+  }
 
   &:before {
     content: "\f0c9";
     @include fas();
     font-weight: 900;
-    line-height: 0.8;
-    margin-right: 15px;
-    padding: 7px;
+    margin-right: 10px;
+    padding: 4px 7px 4px 1px;
     width: 25px;
     height: 25px;
   }
@@ -676,5 +681,7 @@ button#main-menu-toggle {
     color: #fff;
     border-radius: 50%;
     background: #999;
+    line-height: .9;
+    padding: 5px 7px;
   }
 }

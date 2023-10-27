@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiosaah-design.uiowa.ddev.site
+    protocol: https
+  machine_name: studiosaah-design
+  human_name: saah-design.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiosaah-design.prod
+drupal:
+  db:
+    database: saah_design_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiosaah-design.prod.drupal.uiowa.edu'
+  requester: kamaher
+  site-name: 'SAAH Design Studio'

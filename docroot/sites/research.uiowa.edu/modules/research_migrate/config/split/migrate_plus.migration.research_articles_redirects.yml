@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies: {  }
+id: research_articles_redirects
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - research
+migration_group: sitenow_migrate
+label: 'Article Redirects'
+source:
+  plugin: research_articles
+  node_type: ovpred_article
+  constants:
+    redirect_prefix: 'internal:/node/'
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: research_articles
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required:
+    - research_articles

@@ -6,7 +6,9 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_state_options_alter().
@@ -38,4 +40,57 @@ function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, Conten
     'MPA' => 'MPA',
   ];
   return $options;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function sppa_core_node_grants(AccountInterface $account, $op) {
+  $grants = [];
+
+  if ($op === 'view') {
+    // Assign grants for nodes that are unpublished.
+    // Drupal has three permissions related to viewing unpublished content.
+    // The "view any unpublished content" permissions is actually part
+    // of the content moderation module, but there
+    // is an effort to migrate it to core: https://drupal.org/i/273595
+    if ($account->hasPermission('view any unpublished content') || $account->hasPermission('bypass node access')) {
+      $grants['unpublished_all'] = [1];
+    }
+    if ($account->hasPermission('view own unpublished content')) {
+      $grants['unpublished_own'] = [$account->id()];
+    }
+  }
+
+  return $grants;
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function sppa_core_node_access_records(NodeInterface $node) {
+  $grants = [];
+
+  if (!$node->isPublished()) {
+    // For unpublished nodes, create two grants. One which can be unlocked
+    // if the user has permission to bypass or view any unpublished nodes,
+    // and the other which can be unlocked if the user has permission to
+    // view only unpublished nodes they authored.
+    $grants[] = [
+      'realm' => 'unpublished_all',
+      'gid' => 1,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+    ];
+    $grants[] = [
+      'realm' => 'unpublished_own',
+      'gid' => $node->getOwnerId(),
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+    ];
+  }
+
+  return $grants;
 }

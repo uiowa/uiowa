@@ -24,8 +24,7 @@ function grad_custom_preprocess_node(&$variables) {
           case 'teaser':
             // Show trimmed body/bio if no teaser is provided.
             if ($node->get('field_teaser')->isEmpty()) {
-              $field = ($type === 'person' ? 'field_person_bio' : 'body');
-              $variables['content']['field_teaser'] = $variables['node']->$field->view([
+              $variables['content']['field_teaser'] = $variables['node']->body->view([
                 'label' => 'hidden',
                 'type' => 'smart_trim',
                 'weight' => 99,
@@ -244,16 +243,6 @@ function _grad_custom_program_list() {
         'CER',
       ],
     ],
-    'ADV_PR_NURS' => [
-      'maui_code' => "ADV_PR_NURS",
-      'label' => "Advanced Practice Nursing",
-      'end_session' => "20138",
-      'start_session' => "19983",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
-      ],
-    ],
     'AFR_AM' => [
       'maui_code' => "AFR_AM",
       'label' => "African American Studies",
@@ -333,7 +322,7 @@ function _grad_custom_program_list() {
       'maui_code' => "ANTH",
       'label' => "Anthropology",
       'end_session' => "",
-      'start_session' => "19723",
+      'start_session' => "19703",
       'parent_code' => "",
       'objectives' => [
         'MA',
@@ -374,11 +363,21 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
+    'ARTIFICIAL_INTEL_MODEL' => [
+      'maui_code' => "ARTIFICIAL_INTEL_MODEL",
+      'label' => "Artificial Intelligence, Modeling and Simulation in Engineering",
+      'end_session' => "",
+      'start_session' => "20223",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
     'ART_HIST' => [
       'maui_code' => "ART_HIST",
       'label' => "Art History",
       'end_session' => "",
-      'start_session' => "19703",
+      'start_session' => "19673",
       'parent_code' => "",
       'objectives' => [
         'MA',
@@ -418,31 +417,21 @@ function _grad_custom_program_list() {
         'MS',
       ],
     ],
-    'ATHL_TNG' => [
-      'maui_code' => "ATHL_TNG",
-      'label' => "Athletic Training",
-      'end_session' => "20188",
-      'start_session' => "20188",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-      ],
-    ],
-    'BI0_SCI' => [
-      'maui_code' => "BI0_SCI",
-      'label' => "Biosciences Program",
-      'end_session' => "20161",
-      'start_session' => "19983",
-      'parent_code' => "",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'BIOCHEM' => [
       'maui_code' => "BIOCHEM",
       'label' => "Biochemistry",
       'end_session' => "",
       'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'BIOCHEM_MOLEC_BIO' => [
+      'maui_code' => "BIOCHEM_MOLEC_BIO",
+      'label' => "Biochemistry and Molecular Biology",
+      'end_session' => "",
+      'start_session' => "20228",
       'parent_code' => "",
       'objectives' => [
         'MS',
@@ -453,12 +442,10 @@ function _grad_custom_program_list() {
     'BIOLOGY' => [
       'maui_code' => "BIOLOGY",
       'label' => "Biology",
-      'end_session' => "20131",
+      'end_session' => "",
       'start_session' => "19653",
       'parent_code' => "",
       'objectives' => [
-        'MS',
-        'PHD',
         'PI',
       ],
     ],
@@ -518,17 +505,6 @@ function _grad_custom_program_list() {
         'MFA',
       ],
     ],
-    'BOTANY' => [
-      'maui_code' => "BOTANY",
-      'label' => "Botany",
-      'end_session' => "19981",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PHD',
-      ],
-    ],
     'BUSN' => [
       'maui_code' => "BUSN",
       'label' => "Business Administration",
@@ -547,28 +523,7 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'CER',
-        'MS',
         'PI',
-      ],
-    ],
-    'CE_DISTANCE' => [
-      'maui_code' => "CE_DISTANCE",
-      'label' => "Continuing Education Distance",
-      'end_session' => "20181",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'NONE',
-      ],
-    ],
-    'CE_ON_CAMPUS' => [
-      'maui_code' => "CE_ON_CAMPUS",
-      'label' => "Continuing Education On Campus",
-      'end_session' => "20138",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'NONE',
       ],
     ],
     'CHEM' => [
@@ -587,7 +542,7 @@ function _grad_custom_program_list() {
       'maui_code' => "CHEM_BIO_ENGR",
       'label' => "Chemical and Biochemical Engineering",
       'end_session' => "",
-      'start_session' => "19653",
+      'start_session' => "19968",
       'parent_code' => "",
       'objectives' => [
         'MS',
@@ -631,7 +586,7 @@ function _grad_custom_program_list() {
       'maui_code' => "CLASSICS",
       'label' => "Classics",
       'end_session' => "",
-      'start_session' => "19743",
+      'start_session' => "19653",
       'parent_code' => "",
       'objectives' => [
         'MA',
@@ -642,11 +597,10 @@ function _grad_custom_program_list() {
     'CLIN_INV_GRAD' => [
       'maui_code' => "CLIN_INV_GRAD",
       'label' => "Clinical Investigation",
-      'end_session' => "20113",
-      'start_session' => "20031",
+      'end_session' => "",
+      'start_session' => "20053",
       'parent_code' => "",
       'objectives' => [
-        'CER',
         'MS',
       ],
     ],
@@ -685,11 +639,10 @@ function _grad_custom_program_list() {
     'COMM_BEH_HLTH' => [
       'maui_code' => "COMM_BEH_HLTH",
       'label' => "Community and Behavioral Health",
-      'end_session' => "20185",
+      'end_session' => "",
       'start_session' => "20028",
       'parent_code' => "",
       'objectives' => [
-        'MS',
         'PHD',
         'PI',
       ],
@@ -697,23 +650,10 @@ function _grad_custom_program_list() {
     'COMPARATIVE_LIT' => [
       'maui_code' => "COMPARATIVE_LIT",
       'label' => "Comparative Literature",
-      'end_session' => "20121",
+      'end_session' => "",
       'start_session' => "19653",
       'parent_code' => "",
       'objectives' => [
-        'MA',
-        'PHD',
-        'PI',
-      ],
-    ],
-    'COMP_LIT_TRANSL' => [
-      'maui_code' => "COMP_LIT_TRANSL",
-      'label' => "Comparative Literature - Translation",
-      'end_session' => "20191",
-      'start_session' => "19873",
-      'parent_code' => "",
-      'objectives' => [
-        'MFA',
         'PI',
       ],
     ],
@@ -721,7 +661,7 @@ function _grad_custom_program_list() {
       'maui_code' => "COMP_SCI",
       'label' => "Computer Science",
       'end_session' => "",
-      'start_session' => "19663",
+      'start_session' => "19983",
       'parent_code' => "",
       'objectives' => [
         'MCS',
@@ -730,9 +670,19 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
+    'CRIM' => [
+      'maui_code' => "CRIM",
+      'label' => "Criminology",
+      'end_session' => "",
+      'start_session' => "20223",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
     'CRSD' => [
       'maui_code' => "CRSD",
-      'label' => "Rehabilitation and Counselor Education",
+      'label' => "Counselor Education",
       'end_session' => "",
       'start_session' => "19903",
       'parent_code' => "",
@@ -754,6 +704,16 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
+    'DATA_SCI' => [
+      'maui_code' => "DATA_SCI",
+      'label' => "Data Science",
+      'end_session' => "",
+      'start_session' => "20223",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+      ],
+    ],
     'DENT_PH' => [
       'maui_code' => "DENT_PH",
       'label' => "Dental Public Health",
@@ -762,17 +722,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'MS',
-        'PI',
-      ],
-    ],
-    'DIET_INTERN' => [
-      'maui_code' => "DIET_INTERN",
-      'label' => "Dietetic Internship Program",
-      'end_session' => "20205",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
         'PI',
       ],
     ],
@@ -826,19 +775,20 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'EDU',
-        'MA',
-        'MAT',
-        'PHD',
       ],
     ],
     'EDUC_PLS' => [
       'maui_code' => "EDUC_PLS",
       'label' => "Educational Policy and Leadership Studies",
-      'end_session' => "20118",
+      'end_session' => "",
       'start_session' => "19903",
       'parent_code' => "",
       'objectives' => [
+        'EDD',
+        'EDS',
+        'EDU',
         'MA',
+        'PHD',
       ],
     ],
     'ELEC_COMP_ENGR' => [
@@ -876,16 +826,6 @@ function _grad_custom_program_list() {
         'CER',
       ],
     ],
-    'ENGIN_INFO_TECH' => [
-      'maui_code' => "ENGIN_INFO_TECH",
-      'label' => "Engineering and Information Technology",
-      'end_session' => "20195",
-      'start_session' => "20193",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-      ],
-    ],
     'ENGL' => [
       'maui_code' => "ENGL",
       'label' => "English",
@@ -894,7 +834,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'MA',
-        'MFA',
         'PHD',
         'PI',
       ],
@@ -904,18 +843,6 @@ function _grad_custom_program_list() {
       'label' => "Epidemiology",
       'end_session' => "",
       'start_session' => "20001",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PHD',
-        'PI',
-      ],
-    ],
-    'EXER_SCI' => [
-      'maui_code' => "EXER_SCI",
-      'label' => "Exercise Science",
-      'end_session' => "20123",
-      'start_session' => "19918",
       'parent_code' => "",
       'objectives' => [
         'MS',
@@ -982,22 +909,10 @@ function _grad_custom_program_list() {
       'maui_code' => "FREE_RADIC_RAD",
       'label' => "Free Radical and Radiation Biology",
       'end_session' => "",
-      'start_session' => "19993",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PHD',
-        'PI',
-      ],
-    ],
-    'FREN' => [
-      'maui_code' => "FREN",
-      'label' => "French",
-      'end_session' => "20083",
       'start_session' => "19653",
       'parent_code' => "",
       'objectives' => [
-        'MA',
+        'MS',
         'PHD',
         'PI',
       ],
@@ -1057,7 +972,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'MA',
-        'PHD',
         'PI',
       ],
     ],
@@ -1081,16 +995,6 @@ function _grad_custom_program_list() {
         'NONE',
       ],
     ],
-    'GRAD_WKS' => [
-      'maui_code' => "GRAD_WKS",
-      'label' => "Graduate Workshop",
-      'end_session' => "20181",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'NONE',
-      ],
-    ],
     'GREEK' => [
       'maui_code' => "GREEK",
       'label' => "Greek",
@@ -1100,26 +1004,6 @@ function _grad_custom_program_list() {
       'objectives' => [
         'MA',
         'PI',
-      ],
-    ],
-    'HEALTH_INFORM' => [
-      'maui_code' => "HEALTH_INFORM",
-      'label' => "Health Informatics",
-      'end_session' => "20068",
-      'start_session' => "19993",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
-      ],
-    ],
-    'HEALTH_POLICY' => [
-      'maui_code' => "HEALTH_POLICY",
-      'label' => "Health Policy",
-      'end_session' => "",
-      'start_session' => "20148",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
       ],
     ],
     'HEALTH_SYSTEMS' => [
@@ -1174,19 +1058,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'MHA',
-        'PHD',
-        'PI',
-      ],
-    ],
-    'HLTH_SPORT' => [
-      'maui_code' => "HLTH_SPORT",
-      'label' => "Health and Sport Studies",
-      'end_session' => "20123",
-      'start_session' => "19951",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-        'PHD',
         'PI',
       ],
     ],
@@ -1198,6 +1069,16 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'PHD',
+      ],
+    ],
+    'HLTH_SVC_POL_RES' => [
+      'maui_code' => "HLTH_SVC_POL_RES",
+      'label' => "Health Services and Policy Research",
+      'end_session' => "",
+      'start_session' => "20223",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
       ],
     ],
     'HUMAN_TOX' => [
@@ -1258,28 +1139,6 @@ function _grad_custom_program_list() {
         'CER',
       ],
     ],
-    'INTD_MSTR' => [
-      'maui_code' => "INTD_MSTR",
-      'label' => "Interdisciplinary Studies-Master''s",
-      'end_session' => "20131",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-        'MFA',
-        'MS',
-      ],
-    ],
-    'INTD_PHD' => [
-      'maui_code' => "INTD_PHD",
-      'label' => "Interdisciplinary Studies-PhD",
-      'end_session' => "20131",
-      'start_session' => "19903",
-      'parent_code' => "",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'INTEGRATED_BIOLOGY' => [
       'maui_code' => "INTEGRATED_BIOLOGY",
       'label' => "Integrated Biology",
@@ -1291,27 +1150,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'INTEG_PHYS_HH' => [
-      'maui_code' => "INTEG_PHYS_HH",
-      'label' => "Integrative Physiology",
-      'end_session' => "20123",
-      'start_session' => "20063",
-      'parent_code' => "",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'INTL_STUDIES_GRAD' => [
-      'maui_code' => "INTL_STUDIES_GRAD",
-      'label' => "International Studies",
-      'end_session' => "20133",
-      'start_session' => "20093",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-        'PI',
-      ],
-    ],
     'JRNL' => [
       'maui_code' => "JRNL",
       'label' => "Journalism",
@@ -1319,8 +1157,17 @@ function _grad_custom_program_list() {
       'start_session' => "19653",
       'parent_code' => "",
       'objectives' => [
-        'MA',
         'PI',
+      ],
+    ],
+    'K-12_EQT_INC' => [
+      'maui_code' => "K-12_EQT_INC",
+      'label' => "K-12 Equity and Inclusion",
+      'end_session' => "",
+      'start_session' => "20213",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
       ],
     ],
     'LATIN' => [
@@ -1328,17 +1175,6 @@ function _grad_custom_program_list() {
       'label' => "Latin",
       'end_session' => "",
       'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-        'PI',
-      ],
-    ],
-    'LEIS_STDS' => [
-      'maui_code' => "LEIS_STDS",
-      'label' => "Leisure Studies",
-      'end_session' => "20191",
-      'start_session' => "20023",
       'parent_code' => "",
       'objectives' => [
         'MA',
@@ -1380,13 +1216,14 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
-    'MASS_COMMS' => [
-      'maui_code' => "MASS_COMMS",
-      'label' => "Mass Communications",
+    'MASS_COMMUNICATION' => [
+      'maui_code' => "MASS_COMMUNICATION",
+      'label' => "Mass Communication",
       'end_session' => "",
-      'start_session' => "19653",
+      'start_session' => "20218",
       'parent_code' => "",
       'objectives' => [
+        'MA',
         'PHD',
         'PI',
       ],
@@ -1512,14 +1349,14 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'MULTI_EDUC_CULT' => [
-      'maui_code' => "MULTI_EDUC_CULT",
-      'label' => "Multicultural Education and Culturally Competent Practice",
-      'end_session' => "20183",
-      'start_session' => "20098",
-      'parent_code' => "",
+    'MULTILINGUAL_EDUC' => [
+      'maui_code' => "MULTILINGUAL_EDUC",
+      'label' => "Multilingual Education",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "TCH_LRN",
       'objectives' => [
-        'CER',
+        'MA',
       ],
     ],
     'MUSIC' => [
@@ -1531,19 +1368,8 @@ function _grad_custom_program_list() {
       'objectives' => [
         'DMA',
         'MA',
-        'MFA',
         'PHD',
         'PI',
-      ],
-    ],
-    'MUSIC_SACRED' => [
-      'maui_code' => "MUSIC_SACRED",
-      'label' => "Sacred Music",
-      'end_session' => "",
-      'start_session' => "19908",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
       ],
     ],
     'MUSIC_THRY_PEDAGOGY' => [
@@ -1571,34 +1397,13 @@ function _grad_custom_program_list() {
       'maui_code' => "NURS",
       'label' => "Nursing",
       'end_session' => "",
-      'start_session' => "20071",
+      'start_session' => "19883",
       'parent_code' => "",
       'objectives' => [
         'DNP',
-        'MA',
         'MSN',
         'PHD',
         'PI',
-      ],
-    ],
-    'NURS_INFORM' => [
-      'maui_code' => "NURS_INFORM",
-      'label' => "Nursing Informatics",
-      'end_session' => "20113",
-      'start_session' => "19973",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
-      ],
-    ],
-    'NURS_SVC_ADM' => [
-      'maui_code' => "NURS_SVC_ADM",
-      'label' => "Nursing Service Administration",
-      'end_session' => "20113",
-      'start_session' => "20021",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
       ],
     ],
     'OCC_ENV_HLTH' => [
@@ -1621,17 +1426,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'CER',
-      ],
-    ],
-    'OPER_DENT' => [
-      'maui_code' => "OPER_DENT",
-      'label' => "Operative Dentistry",
-      'end_session' => "20131",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PI',
       ],
     ],
     'ORAL_MAX_SURG' => [
@@ -1735,16 +1529,6 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
-    'PHYSICAL_EDUCATION' => [
-      'maui_code' => "PHYSICAL_EDUCATION",
-      'label' => "Physical Education",
-      'end_session' => "19921",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-      ],
-    ],
     'PHYSICS' => [
       'maui_code' => "PHYSICS",
       'label' => "Physics",
@@ -1755,27 +1539,6 @@ function _grad_custom_program_list() {
         'MS',
         'PHD',
         'PI',
-      ],
-    ],
-    'PHYS_ASST_STDS' => [
-      'maui_code' => "PHYS_ASST_STDS",
-      'label' => "Physician Assistant Studies",
-      'end_session' => "20068",
-      'start_session' => "19923",
-      'parent_code' => "",
-      'objectives' => [
-        'MPA',
-      ],
-    ],
-    'PHYS_EDUC' => [
-      'maui_code' => "PHYS_EDUC",
-      'label' => "Physical Education",
-      'end_session' => "19948",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MA',
-        'PHD',
       ],
     ],
     'PHYS_REH_SCI' => [
@@ -1798,7 +1561,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'DPT',
-        'MA',
       ],
     ],
     'PH_CERT_GRAD' => [
@@ -1831,17 +1593,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'PGT',
-      ],
-    ],
-    'PREV_MED' => [
-      'maui_code' => "PREV_MED",
-      'label' => "Preventive Medicine and Environmental Health",
-      'end_session' => "20103",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PHD',
       ],
     ],
     'PSYCH' => [
@@ -1877,16 +1628,6 @@ function _grad_custom_program_list() {
         'MA',
         'PHD',
         'PI',
-      ],
-    ],
-    'PUBLIC_HEALTH_CERT' => [
-      'maui_code' => "PUBLIC_HEALTH_CERT",
-      'label' => "Public Health",
-      'end_session' => "20193",
-      'start_session' => "20123",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
       ],
     ],
     'PUB_AFF' => [
@@ -1929,16 +1670,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'NONE',
-      ],
-    ],
-    'RHET_INQ' => [
-      'maui_code' => "RHET_INQ",
-      'label' => "Rhetorics of Inquiry",
-      'end_session' => "20138",
-      'start_session' => "19941",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
       ],
     ],
     'SCI_EDUC' => [
@@ -2004,7 +1735,7 @@ function _grad_custom_program_list() {
       'maui_code' => "SOC_WK",
       'label' => "Social Work",
       'end_session' => "",
-      'start_session' => "19663",
+      'start_session' => "19973",
       'parent_code' => "",
       'objectives' => [
         'MSW',
@@ -2122,36 +1853,15 @@ function _grad_custom_program_list() {
         'MS',
       ],
     ],
-    'SP_ADDICT' => [
-      'maui_code' => "SP_ADDICT",
-      'label' => "Addiction Studies",
-      'end_session' => "20178",
-      'start_session' => "20028",
-      'parent_code' => "COMM_BEH_HLTH",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_ADULT/GER_NP' => [
       'maui_code' => "SP_ADULT/GER_NP",
       'label' => "Adult Gerontology Primary Care Nurse Practitioner",
       'end_session' => "",
-      'start_session' => "19948",
+      'start_session' => "20111",
       'parent_code' => "NURS",
       'objectives' => [
         'DNP',
-        'MA',
         'MSN',
-      ],
-    ],
-    'SP_ADULT_GER_NP' => [
-      'maui_code' => "SP_ADULT_GER_NP",
-      'label' => "Adult Gerontology Nurse Practitioner-Primary Care",
-      'end_session' => "20178",
-      'start_session' => "20141",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
       ],
     ],
     'SP_ADULT_GER_NP_ACUTE' => [
@@ -2163,16 +1873,6 @@ function _grad_custom_program_list() {
       'objectives' => [
         'DNP',
         'MSN',
-      ],
-    ],
-    'SP_ADULT_GER_NP_ACUTE_1' => [
-      'maui_code' => "SP_ADULT_GER_NP_ACUTE_1",
-      'label' => "Adult/Gerontology Nurse Practitioner-Acute Care",
-      'end_session' => "20178",
-      'start_session' => "20153",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
       ],
     ],
     'SP_AEA_AM_GOV_5-12' => [
@@ -2435,12 +2135,12 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_AEP_EARLY_CHILD_K-8' => [
-      'maui_code' => "SP_AEP_EARLY_CHILD_K-8",
-      'label' => "Early Childhood Added Endorsement Program PK-K",
-      'end_session' => "20178",
-      'start_session' => "20143",
-      'parent_code' => "ELEM_EDUC",
+    'SP_AEP_DYSLEX_SPEC_K-12' => [
+      'maui_code' => "SP_AEP_DYSLEX_SPEC_K-12",
+      'label' => "Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "20213",
+      'parent_code' => "DYSLEX_SPEC",
       'objectives' => [
         'EDU',
       ],
@@ -2511,16 +2211,6 @@ function _grad_custom_program_list() {
       'end_session' => "",
       'start_session' => "19903",
       'parent_code' => "FGN_LANG_EDUC",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_AEP_GEN_SCI_5-12' => [
-      'maui_code' => "SP_AEP_GEN_SCI_5-12",
-      'label' => "General Science Added Endorsement Program 5-12",
-      'end_session' => "20128",
-      'start_session' => "19903",
-      'parent_code' => "SCI_EDUC",
       'objectives' => [
         'EDU',
       ],
@@ -2605,16 +2295,6 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_AEP_JOURN_5-12' => [
-      'maui_code' => "SP_AEP_JOURN_5-12",
-      'label' => "Added Endorsement Program 5-12",
-      'end_session' => "20178",
-      'start_session' => "19903",
-      'parent_code' => "JOURNALISM_EDUC",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
     'SP_AEP_LANG_ARTS_5-8' => [
       'maui_code' => "SP_AEP_LANG_ARTS_5-8",
       'label' => "Language Arts Added Endorsement Program 5-8",
@@ -2665,16 +2345,6 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_AEP_MUSIC_SP_K-8' => [
-      'maui_code' => "SP_AEP_MUSIC_SP_K-8",
-      'label' => "Music Added Endorsement Program K-8",
-      'end_session' => "",
-      'start_session' => "19903",
-      'parent_code' => "ELEM_EDUC",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
     'SP_AEP_PHYSICS_5-12' => [
       'maui_code' => "SP_AEP_PHYSICS_5-12",
       'label' => "Physics Added Endorsement Program 5-12",
@@ -2691,16 +2361,6 @@ function _grad_custom_program_list() {
       'end_session' => "",
       'start_session' => "20133",
       'parent_code' => "ELEM_EDUC",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_AEP_PHYS_SCI_5-12' => [
-      'maui_code' => "SP_AEP_PHYS_SCI_5-12",
-      'label' => "Physical Science Added Endorsement Program 5-12",
-      'end_session' => "20128",
-      'start_session' => "19903",
-      'parent_code' => "SCI_EDUC",
       'objectives' => [
         'EDU',
       ],
@@ -2905,6 +2565,16 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
+    'SP_AEP_SOC_SCI_5-12' => [
+      'maui_code' => "SP_AEP_SOC_SCI_5-12",
+      'label' => "Social Sciences - Basic Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "20208",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
     'SP_AEP_SOC_SCI_SP_K-8' => [
       'maui_code' => "SP_AEP_SOC_SCI_SP_K-8",
       'label' => "Social Science Added Endorsement Program K-8",
@@ -2973,7 +2643,6 @@ function _grad_custom_program_list() {
       'parent_code' => "OCC_ENV_HLTH",
       'objectives' => [
         'MS',
-        'PHD',
       ],
     ],
     'SP_ALGEBRA_HS_CRED_5-8' => [
@@ -3001,11 +2670,10 @@ function _grad_custom_program_list() {
       'maui_code' => "SP_ANES_NURS",
       'label' => "Anesthesia Nursing",
       'end_session' => "",
-      'start_session' => "19948",
+      'start_session' => "20111",
       'parent_code' => "NURS",
       'objectives' => [
         'DNP',
-        'MA',
         'MSN',
       ],
     ],
@@ -3029,7 +2697,6 @@ function _grad_custom_program_list() {
       'objectives' => [
         'MA',
         'MAT',
-        'PHD',
       ],
     ],
     'SP_ASTRONOMY' => [
@@ -3038,58 +2705,6 @@ function _grad_custom_program_list() {
       'end_session' => "",
       'start_session' => "20123",
       'parent_code' => "PHYSICS",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_ATHLETIC_TRNG' => [
-      'maui_code' => "SP_ATHLETIC_TRNG",
-      'label' => "Athletic Training",
-      'end_session' => "20173",
-      'start_session' => "20123",
-      'parent_code' => "HLTH_HUM_PHYS",
-      'objectives' => [
-        'MS',
-      ],
-    ],
-    'SP_ATHL_ADM' => [
-      'maui_code' => "SP_ATHL_ADM",
-      'label' => "Athletic Administration",
-      'end_session' => "20101",
-      'start_session' => "19953",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_BIOCHEM' => [
-      'maui_code' => "SP_BIOCHEM",
-      'label' => "Biochemistry",
-      'end_session' => "20203",
-      'start_session' => "20163",
-      'parent_code' => "BIOMED_SCI_GRAD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_BIOINF_CMP' => [
-      'maui_code' => "SP_BIOINF_CMP",
-      'label' => "Bioinformatics and Computational Biology",
-      'end_session' => "",
-      'start_session' => "20138",
-      'parent_code' => "INFORM",
-      'objectives' => [
-        'CER',
-        'MS',
-        'PHD',
-      ],
-    ],
-    'SP_BIOSTATS' => [
-      'maui_code' => "SP_BIOSTATS",
-      'label' => "Biostatistics",
-      'end_session' => "20068",
-      'start_session' => "19903",
-      'parent_code' => "PREV_MED",
       'objectives' => [
         'PHD',
       ],
@@ -3155,16 +2770,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_CELL_DEV_BIOL_2A1' => [
-      'maui_code' => "SP_CELL_DEV_BIOL_2A1",
-      'label' => "Cell and Developmental Biology",
-      'end_session' => "20131",
-      'start_session' => "20058",
-      'parent_code' => "BIOLOGY",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_CHILD_LIFE_HHP' => [
       'maui_code' => "SP_CHILD_LIFE_HHP",
       'label' => "Child Life",
@@ -3188,7 +2793,7 @@ function _grad_custom_program_list() {
     ],
     'SP_CHOR_CNDCT_PED' => [
       'maui_code' => "SP_CHOR_CNDCT_PED",
-      'label' => "Choral Conducting & Pedagogy",
+      'label' => "Choral Conducting",
       'end_session' => "",
       'start_session' => "20203",
       'parent_code' => "MUSIC",
@@ -3241,7 +2846,7 @@ function _grad_custom_program_list() {
     'SP_CLIN_PHRM_SCI' => [
       'maui_code' => "SP_CLIN_PHRM_SCI",
       'label' => "Clinical Pharmaceutical Sciences",
-      'end_session' => "",
+      'end_session' => "20231",
       'start_session' => "19903",
       'parent_code' => "PHAR",
       'objectives' => [
@@ -3268,16 +2873,6 @@ function _grad_custom_program_list() {
       'parent_code' => "MASTERS_PH",
       'objectives' => [
         'MPH',
-      ],
-    ],
-    'SP_COMM_REHAB' => [
-      'maui_code' => "SP_COMM_REHAB",
-      'label' => "Community/Rehabilitation Counseling",
-      'end_session' => "20101",
-      'start_session' => "20081",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'MA',
       ],
     ],
     'SP_COMM_RSRCH' => [
@@ -3362,38 +2957,6 @@ function _grad_custom_program_list() {
         'MCS',
       ],
     ],
-    'SP_CULT_ST' => [
-      'maui_code' => "SP_CULT_ST",
-      'label' => "Cultural Studies in Sport and Leisure",
-      'end_session' => "20041",
-      'start_session' => "19951",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-        'PHD',
-      ],
-    ],
-    'SP_CURR_SPRV' => [
-      'maui_code' => "SP_CURR_SPRV",
-      'label' => "Curriculum and Supervision",
-      'end_session' => "20128",
-      'start_session' => "19903",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'MA',
-        'PHD',
-      ],
-    ],
-    'SP_C_EDUC' => [
-      'maui_code' => "SP_C_EDUC",
-      'label' => "Counselor Education",
-      'end_session' => "20058",
-      'start_session' => "19903",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_C_EDUC_SPRV' => [
       'maui_code' => "SP_C_EDUC_SPRV",
       'label' => "Counselor Education and Supervision",
@@ -3407,11 +2970,10 @@ function _grad_custom_program_list() {
     'SP_C_PSYCH' => [
       'maui_code' => "SP_C_PSYCH",
       'label' => "Counseling Psychology",
-      'end_session' => "20205",
-      'start_session' => "20153",
+      'end_session' => "",
+      'start_session' => "19903",
       'parent_code' => "PSYCH_QUANT",
       'objectives' => [
-        'MA',
         'PHD',
       ],
     ],
@@ -3429,7 +2991,7 @@ function _grad_custom_program_list() {
       'maui_code' => "SP_DEV_READ",
       'label' => "Developmental Reading",
       'end_session' => "",
-      'start_session' => "19823",
+      'start_session' => "19903",
       'parent_code' => "TCH_LRN",
       'objectives' => [
         'MA',
@@ -3455,27 +3017,25 @@ function _grad_custom_program_list() {
         'MFA',
       ],
     ],
-    'SP_EARLY_CHILD_ED' => [
-      'maui_code' => "SP_EARLY_CHILD_ED",
-      'label' => "Early Childhood Education and Care",
-      'end_session' => "20071",
-      'start_session' => "19903",
-      'parent_code' => "TCH_LRN",
+    'SP_DRUG_DISC_EXP_THER' => [
+      'maui_code' => "SP_DRUG_DISC_EXP_THER",
+      'label' => "Drug Discovery and Experimental Therapeutics",
+      'end_session' => "",
+      'start_session' => "20233",
+      'parent_code' => "PHAR",
       'objectives' => [
-        'MA',
+        'MS',
+        'PHD',
       ],
     ],
     'SP_EDUC_ADMIN' => [
       'maui_code' => "SP_EDUC_ADMIN",
       'label' => "Educational Administration",
-      'end_session' => "20101",
+      'end_session' => "",
       'start_session' => "19903",
       'parent_code' => "EDUC_PLS",
       'objectives' => [
-        'EDS',
         'EDU',
-        'MA',
-        'PHD',
       ],
     ],
     'SP_EDUC_LDRSHIP' => [
@@ -3486,17 +3046,6 @@ function _grad_custom_program_list() {
       'parent_code' => "EDUC_PLS",
       'objectives' => [
         'EDS',
-        'MA',
-        'PHD',
-      ],
-    ],
-    'SP_EDUC_PSYCH' => [
-      'maui_code' => "SP_EDUC_PSYCH",
-      'label' => "Educational Psychology",
-      'end_session' => "20153",
-      'start_session' => "19903",
-      'parent_code' => "PSYCH_QUANT",
-      'objectives' => [
         'MA',
         'PHD',
       ],
@@ -3517,17 +3066,6 @@ function _grad_custom_program_list() {
       'end_session' => "",
       'start_session' => "19903",
       'parent_code' => "PSYCH_QUANT",
-      'objectives' => [
-        'MA',
-        'PHD',
-      ],
-    ],
-    'SP_EL_ED' => [
-      'maui_code' => "SP_EL_ED",
-      'label' => "Elementary Education",
-      'end_session' => "20101",
-      'start_session' => "19903",
-      'parent_code' => "TCH_LRN",
       'objectives' => [
         'MA',
         'PHD',
@@ -3616,16 +3154,6 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_EVOLU' => [
-      'maui_code' => "SP_EVOLU",
-      'label' => "Evolution",
-      'end_session' => "20131",
-      'start_session' => "20058",
-      'parent_code' => "BIOLOGY",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_EXECUTIVE' => [
       'maui_code' => "SP_EXECUTIVE",
       'label' => "Executive",
@@ -3654,42 +3182,7 @@ function _grad_custom_program_list() {
       'parent_code' => "NURS",
       'objectives' => [
         'DNP',
-        'MA',
         'MSN',
-      ],
-    ],
-    'SP_FAM_NP' => [
-      'maui_code' => "SP_FAM_NP",
-      'label' => "Family Nurse Practitioner",
-      'end_session' => "20178",
-      'start_session' => "20141",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
-      ],
-    ],
-    'SP_FGN_LANG_ED' => [
-      'maui_code' => "SP_FGN_LANG_ED",
-      'label' => "Foreign Language Education",
-      'end_session' => "20111",
-      'start_session' => "19921",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'MA',
-        'MAT',
-        'PHD',
-      ],
-    ],
-    'SP_FGN_LANG_ESL_ED' => [
-      'maui_code' => "SP_FGN_LANG_ESL_ED",
-      'label' => "Multilingual Education",
-      'end_session' => "20201",
-      'start_session' => "19991",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'MA',
-        'MAT',
-        'PHD',
       ],
     ],
     'SP_FINANCE' => [
@@ -3703,22 +3196,22 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
+    'SP_FOUND' => [
+      'maui_code' => "SP_FOUND",
+      'label' => "Foundations",
+      'end_session' => "",
+      'start_session' => "20213",
+      'parent_code' => "COMM",
+      'objectives' => [
+        'MA',
+      ],
+    ],
     'SP_FREE_RAD_RADIAT_BIOL' => [
       'maui_code' => "SP_FREE_RAD_RADIAT_BIOL",
       'label' => "Free Radical and Radiation Biology",
       'end_session' => "",
       'start_session' => "20163",
       'parent_code' => "BIOMED_SCI_GRAD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_GENETICS' => [
-      'maui_code' => "SP_GENETICS",
-      'label' => "Genetics",
-      'end_session' => "20131",
-      'start_session' => "20058",
-      'parent_code' => "BIOLOGY",
       'objectives' => [
         'PHD',
       ],
@@ -3738,32 +3231,10 @@ function _grad_custom_program_list() {
       'maui_code' => "SP_GEOINFORMATICS",
       'label' => "Geoinformatics",
       'end_session' => "",
-      'start_session' => "20098",
+      'start_session' => "20153",
       'parent_code' => "INFORM",
       'objectives' => [
-        'CER',
         'MS',
-        'PHD',
-      ],
-    ],
-    'SP_HEALTH_COMM' => [
-      'maui_code' => "SP_HEALTH_COMM",
-      'label' => "Health Communication",
-      'end_session' => "20178",
-      'start_session' => "20048",
-      'parent_code' => "MASTERS_PH",
-      'objectives' => [
-        'MPH',
-      ],
-    ],
-    'SP_HEALTH_SYST' => [
-      'maui_code' => "SP_HEALTH_SYST",
-      'label' => "Health Systems",
-      'end_session' => "20178",
-      'start_session' => "20168",
-      'parent_code' => "NRSG_ADV_PRACT",
-      'objectives' => [
-        'CER',
       ],
     ],
     'SP_HEALTH_SYSTEMS' => [
@@ -3798,17 +3269,6 @@ function _grad_custom_program_list() {
         'EDD',
       ],
     ],
-    'SP_HLTH_COMM' => [
-      'maui_code' => "SP_HLTH_COMM",
-      'label' => "Health Communication",
-      'end_session' => "20178",
-      'start_session' => "20048",
-      'parent_code' => "COMM_BEH_HLTH",
-      'objectives' => [
-        'MS',
-        'PHD',
-      ],
-    ],
     'SP_HLTH_INFORM' => [
       'maui_code' => "SP_HLTH_INFORM",
       'label' => "Health Informatics",
@@ -3816,9 +3276,7 @@ function _grad_custom_program_list() {
       'start_session' => "20068",
       'parent_code' => "INFORM",
       'objectives' => [
-        'CER',
         'MS',
-        'PHD',
       ],
     ],
     'SP_HLTH_INFO_PHARM' => [
@@ -3831,14 +3289,14 @@ function _grad_custom_program_list() {
         'MS',
       ],
     ],
-    'SP_HLTH_PROM' => [
-      'maui_code' => "SP_HLTH_PROM",
-      'label' => "Health Promotion",
-      'end_session' => "20041",
-      'start_session' => "19951",
-      'parent_code' => "HLTH_SPORT",
+    'SP_HUM_COMP_INTERACT' => [
+      'maui_code' => "SP_HUM_COMP_INTERACT",
+      'label' => "Human-Computer Interaction",
+      'end_session' => "",
+      'start_session' => "20213",
+      'parent_code' => "INFORM",
       'objectives' => [
-        'MA',
+        'MS',
       ],
     ],
     'SP_HYD' => [
@@ -3852,47 +3310,14 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_IMMUN' => [
-      'maui_code' => "SP_IMMUN",
-      'label' => "Immunology",
-      'end_session' => "20203",
-      'start_session' => "20163",
-      'parent_code' => "BIOMED_SCI_GRAD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_INDUS_HYG' => [
       'maui_code' => "SP_INDUS_HYG",
       'label' => "Industrial Hygiene",
-      'end_session' => "20188",
+      'end_session' => "",
       'start_session' => "20001",
       'parent_code' => "OCC_ENV_HLTH",
       'objectives' => [
         'MS',
-        'PHD',
-      ],
-    ],
-    'SP_INFO_SCI_(INFO)' => [
-      'maui_code' => "SP_INFO_SCI_(INFO)",
-      'label' => "Information Science",
-      'end_session' => "",
-      'start_session' => "20068",
-      'parent_code' => "INFORM",
-      'objectives' => [
-        'CER',
-        'MS',
-        'PHD',
-      ],
-    ],
-    'SP_INFO_SCI_(LIS)' => [
-      'maui_code' => "SP_INFO_SCI_(LIS)",
-      'label' => "Information Sciences",
-      'end_session' => "20161",
-      'start_session' => "19928",
-      'parent_code' => "LIBR_INFO_SCI",
-      'objectives' => [
-        'MA',
       ],
     ],
     'SP_INFO_TECH' => [
@@ -3903,16 +3328,6 @@ function _grad_custom_program_list() {
       'parent_code' => "ENGIN_INFO_TECH",
       'objectives' => [
         'MS',
-      ],
-    ],
-    'SP_INSTR_DSGN_TECH' => [
-      'maui_code' => "SP_INSTR_DSGN_TECH",
-      'label' => "Instructional Design and Technology",
-      'end_session' => "20063",
-      'start_session' => "19903",
-      'parent_code' => "PSQF_EDUCATION",
-      'objectives' => [
-        'PHD',
       ],
     ],
     'SP_INST_STR_I_MM_AEP_5-12' => [
@@ -3988,16 +3403,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_LANG_LIT_CULT' => [
-      'maui_code' => "SP_LANG_LIT_CULT",
-      'label' => "Language, Literacy, and Culture",
-      'end_session' => "20201",
-      'start_session' => "19978",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_LAW' => [
       'maui_code' => "SP_LAW",
       'label' => "Law",
@@ -4006,26 +3411,6 @@ function _grad_custom_program_list() {
       'parent_code' => "MASTERS_PH",
       'objectives' => [
         'MPH',
-      ],
-    ],
-    'SP_LEIS_REC_MGMT' => [
-      'maui_code' => "SP_LEIS_REC_MGMT",
-      'label' => "Leisure and Recreational Sport Management",
-      'end_session' => "20123",
-      'start_session' => "20023",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-      ],
-    ],
-    'SP_LEIS_REC_SPT_MGMT' => [
-      'maui_code' => "SP_LEIS_REC_SPT_MGMT",
-      'label' => "Leisure and Recreational Sport Management",
-      'end_session' => "20191",
-      'start_session' => "20023",
-      'parent_code' => "LEIS_STDS",
-      'objectives' => [
-        'MA',
       ],
     ],
     'SP_LIT_ST' => [
@@ -4078,14 +3463,15 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_LRNG_SCI' => [
-      'maui_code' => "SP_LRNG_SCI",
-      'label' => "Learning Sciences",
+    'SP_LRNG_SCI_ED_PSYCH' => [
+      'maui_code' => "SP_LRNG_SCI_ED_PSYCH",
+      'label' => "Learning Sciences and Educational Psychology",
       'end_session' => "",
-      'start_session' => "20153",
+      'start_session' => "20223",
       'parent_code' => "PSYCH_QUANT",
       'objectives' => [
         'MA',
+        'PHD',
       ],
     ],
     'SP_LW' => [
@@ -4096,16 +3482,6 @@ function _grad_custom_program_list() {
       'parent_code' => "HLTH_MGMT_POL",
       'objectives' => [
         'MHA',
-      ],
-    ],
-    'SP_MAR_FAM_THER' => [
-      'maui_code' => "SP_MAR_FAM_THER",
-      'label' => "Couple and Family Therapy",
-      'end_session' => "20173",
-      'start_session' => "19903",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'PHD',
       ],
     ],
     'SP_MATH_ED' => [
@@ -4143,7 +3519,7 @@ function _grad_custom_program_list() {
     'SP_MED_NAT_PROD_CHEM' => [
       'maui_code' => "SP_MED_NAT_PROD_CHEM",
       'label' => "Medicinal & Natural Products Chemistry",
-      'end_session' => "",
+      'end_session' => "20231",
       'start_session' => "19903",
       'parent_code' => "PHAR",
       'objectives' => [
@@ -4173,16 +3549,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_MICROBIOL' => [
-      'maui_code' => "SP_MICROBIOL",
-      'label' => "Microbiology",
-      'end_session' => "20203",
-      'start_session' => "20163",
-      'parent_code' => "BIOMED_SCI_GRAD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_MKTG' => [
       'maui_code' => "SP_MKTG",
       'label' => "Marketing",
@@ -4197,8 +3563,8 @@ function _grad_custom_program_list() {
     'SP_MOLEC_CELL_BIOL' => [
       'maui_code' => "SP_MOLEC_CELL_BIOL",
       'label' => "Molecular Medicine",
-      'end_session' => "20205",
-      'start_session' => "20163",
+      'end_session' => "",
+      'start_session' => "20208",
       'parent_code' => "BIOMED_SCI_GRAD",
       'objectives' => [
         'PHD',
@@ -4212,6 +3578,16 @@ function _grad_custom_program_list() {
       'parent_code' => "BIOMED_SCI_GRAD",
       'objectives' => [
         'PHD',
+      ],
+    ],
+    'SP_MSN_APRN' => [
+      'maui_code' => "SP_MSN_APRN",
+      'label' => "For MSN and Advanced Practice Registered Nurses (APRN)",
+      'end_session' => "",
+      'start_session' => "20208",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
       ],
     ],
     'SP_MUSICOL' => [
@@ -4257,16 +3633,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_NEUROBIOL_2A4' => [
-      'maui_code' => "SP_NEUROBIOL_2A4",
-      'label' => "Neurobiology",
-      'end_session' => "20131",
-      'start_session' => "20058",
-      'parent_code' => "BIOLOGY",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
     'SP_NONFIC' => [
       'maui_code' => "SP_NONFIC",
       'label' => "Nonfiction Writing",
@@ -4275,6 +3641,16 @@ function _grad_custom_program_list() {
       'parent_code' => "ENGL",
       'objectives' => [
         'MFA',
+      ],
+    ],
+    'SP_NURS_ENT_TO_PRAC' => [
+      'maui_code' => "SP_NURS_ENT_TO_PRAC",
+      'label' => "Entry into Practice",
+      'end_session' => "",
+      'start_session' => "20228",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'MSN',
       ],
     ],
     'SP_NURS_INFOR' => [
@@ -4289,12 +3665,11 @@ function _grad_custom_program_list() {
     ],
     'SP_NURS_MGR' => [
       'maui_code' => "SP_NURS_MGR",
-      'label' => "Nurse Manager",
-      'end_session' => "19951",
-      'start_session' => "19883",
+      'label' => "Nursing Systems Administration",
+      'end_session' => "",
+      'start_session' => "19948",
       'parent_code' => "NURS",
       'objectives' => [
-        'MA',
         'MSN',
       ],
     ],
@@ -4360,16 +3735,6 @@ function _grad_custom_program_list() {
         'MA',
       ],
     ],
-    'SP_PEDIAT_NP_PC' => [
-      'maui_code' => "SP_PEDIAT_NP_PC",
-      'label' => "Pediatric Nurse Practitioner-Primary Care",
-      'end_session' => "20178",
-      'start_session' => "20141",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
-      ],
-    ],
     'SP_PED_NP' => [
       'maui_code' => "SP_PED_NP",
       'label' => "Pediatric Nurse Practitioner",
@@ -4377,8 +3742,6 @@ function _grad_custom_program_list() {
       'start_session' => "19948",
       'parent_code' => "NURS",
       'objectives' => [
-        'DNP',
-        'MA',
         'MSN',
       ],
     ],
@@ -4391,16 +3754,6 @@ function _grad_custom_program_list() {
       'objectives' => [
         'DNP',
         'MSN',
-      ],
-    ],
-    'SP_PED_NP_ACUTE_1' => [
-      'maui_code' => "SP_PED_NP_ACUTE_1",
-      'label' => "Pediatric Nurse Practitioner-Acute Care",
-      'end_session' => "20178",
-      'start_session' => "20153",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
       ],
     ],
     'SP_PED_NP_PC' => [
@@ -4466,16 +3819,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_PHYS_SCI_AEP_5-12' => [
-      'maui_code' => "SP_PHYS_SCI_AEP_5-12",
-      'label' => "Physical Science Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
     'SP_PIANO' => [
       'maui_code' => "SP_PIANO",
       'label' => "Piano",
@@ -4505,16 +3848,6 @@ function _grad_custom_program_list() {
       'parent_code' => "THEATRE_ARTS",
       'objectives' => [
         'MFA',
-      ],
-    ],
-    'SP_POL_ADM_MPH_PG' => [
-      'maui_code' => "SP_POL_ADM_MPH_PG",
-      'label' => "Policy and Administration",
-      'end_session' => "20103",
-      'start_session' => "20001",
-      'parent_code' => "MASTERS_PH",
-      'objectives' => [
-        'MPH',
       ],
     ],
     'SP_POL_MPH_PG' => [
@@ -4551,63 +3884,11 @@ function _grad_custom_program_list() {
       'maui_code' => "SP_PSYCH_MH_APN",
       'label' => "Psychiatric/Mental Health Nurse Practitioner",
       'end_session' => "",
-      'start_session' => "19988",
+      'start_session' => "20111",
       'parent_code' => "NURS",
       'objectives' => [
         'DNP',
         'MSN',
-      ],
-    ],
-    'SP_PSYCH_MH_NP' => [
-      'maui_code' => "SP_PSYCH_MH_NP",
-      'label' => "Psychiatric/Mental Health Nurse Practitioner",
-      'end_session' => "20178",
-      'start_session' => "20141",
-      'parent_code' => "ADV_PR_NURS",
-      'objectives' => [
-        'CER',
-      ],
-    ],
-    'SP_PSYCH_SP' => [
-      'maui_code' => "SP_PSYCH_SP",
-      'label' => "Psychology of Sport",
-      'end_session' => "20041",
-      'start_session' => "19951",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_PSYCH_SP_HLTH_BEHAV' => [
-      'maui_code' => "SP_PSYCH_SP_HLTH_BEHAV",
-      'label' => "Psychology of Sport and Health Behavior",
-      'end_session' => "20041",
-      'start_session' => "20023",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-      ],
-    ],
-    'SP_PSYCH_SP_PH_ACT' => [
-      'maui_code' => "SP_PSYCH_SP_PH_ACT",
-      'label' => "Psychology of Sport and Physical Activity",
-      'end_session' => "20123",
-      'start_session' => "20041",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-        'PHD',
-      ],
-    ],
-    'SP_REHAB_C' => [
-      'maui_code' => "SP_REHAB_C",
-      'label' => "Rehabilitation Counseling",
-      'end_session' => "20101",
-      'start_session' => "19903",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'MA',
-        'PHD',
       ],
     ],
     'SP_REHAB_COUNS_PROG' => [
@@ -4618,36 +3899,6 @@ function _grad_custom_program_list() {
       'parent_code' => "CRSD",
       'objectives' => [
         'MA',
-      ],
-    ],
-    'SP_REHAB_C_EDUC' => [
-      'maui_code' => "SP_REHAB_C_EDUC",
-      'label' => "Rehabilitation Counselor Education",
-      'end_session' => "20168",
-      'start_session' => "20058",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_REHAB_MNTL_HLTH_CNSLNG' => [
-      'maui_code' => "SP_REHAB_MNTL_HLTH_CNSLNG",
-      'label' => "Rehabilitation and Mental Health Counseling",
-      'end_session' => "20181",
-      'start_session' => "20103",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'MA',
-      ],
-    ],
-    'SP_REHAB_PSYCH' => [
-      'maui_code' => "SP_REHAB_PSYCH",
-      'label' => "Rehabilitation Psychology",
-      'end_session' => "",
-      'start_session' => "19903",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'PHD',
       ],
     ],
     'SP_RHET_ST' => [
@@ -4669,16 +3920,6 @@ function _grad_custom_program_list() {
       'parent_code' => "CRSD",
       'objectives' => [
         'MA',
-      ],
-    ],
-    'SP_SCHL_CURR_AS_PLCY' => [
-      'maui_code' => "SP_SCHL_CURR_AS_PLCY",
-      'label' => "School Curriculum and Assessment Policy",
-      'end_session' => "",
-      'start_session' => "20073",
-      'parent_code' => "EDUC_PLS",
-      'objectives' => [
-        'EDS',
       ],
     ],
     'SP_SCHL_C_LPP_K-12' => [
@@ -4722,146 +3963,6 @@ function _grad_custom_program_list() {
         'MAT',
         'MS',
         'PHD',
-      ],
-    ],
-    'SP_SCI_ED_AEA_BIOL_5-12' => [
-      'maui_code' => "SP_SCI_ED_AEA_BIOL_5-12",
-      'label' => "Science Education Additional Emphasis Area Biology 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_AEA_CHEM_5-12' => [
-      'maui_code' => "SP_SCI_ED_AEA_CHEM_5-12",
-      'label' => "Science Education Additional Emphasis Area Chemistry 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_AEA_ERSCI_5-12' => [
-      'maui_code' => "SP_SCI_ED_AEA_ERSCI_5-12",
-      'label' => "Science Education Additional Emphasis Area Earth Science 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_AEA_PHYS_5-12' => [
-      'maui_code' => "SP_SCI_ED_AEA_PHYS_5-12",
-      'label' => "Science Education Additional Emphasis Area Physics 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_ALL_SCI_AEP_912' => [
-      'maui_code' => "SP_SCI_ED_ALL_SCI_AEP_912",
-      'label' => "Science Education All Science Added Endorsement Program 9-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_BIOL_AEP_5-12' => [
-      'maui_code' => "SP_SCI_ED_BIOL_AEP_5-12",
-      'label' => "Science Education Biology Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_CHEM_AEP_5-12' => [
-      'maui_code' => "SP_SCI_ED_CHEM_AEP_5-12",
-      'label' => "Science Education Chemistry Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_ERTHSCI_AEP_512' => [
-      'maui_code' => "SP_SCI_ED_ERTHSCI_AEP_512",
-      'label' => "Science Education Earth Science Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_GEN_SCI_AEP_512' => [
-      'maui_code' => "SP_SCI_ED_GEN_SCI_AEP_512",
-      'label' => "Science Education General Science Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_PHYS_AEP_5-12' => [
-      'maui_code' => "SP_SCI_ED_PHYS_AEP_5-12",
-      'label' => "Science Education Physics Added Endorsement Program 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_TEP_BIO_EMP512' => [
-      'maui_code' => "SP_SCI_ED_TEP_BIO_EMP512",
-      'label' => "Science Education Teacher Education Program Biology Emphasis 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_TEP_CHEM_EM_512' => [
-      'maui_code' => "SP_SCI_ED_TEP_CHEM_EM_512",
-      'label' => "Science Education Teacher Education Program Chemistry Emphasis 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SCI_ED_TEP_PHYS_EM_512' => [
-      'maui_code' => "SP_SCI_ED_TEP_PHYS_EM_512",
-      'label' => "Science Education Teacher Education Program Physics Emphasis 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_SC_ED_TEP_ERTHSC_EM512' => [
-      'maui_code' => "SP_SC_ED_TEP_ERTHSC_EM512",
-      'label' => "Science Education Teacher Education Program Earth Science Emphasis 5-12",
-      'end_session' => "20118",
-      'start_session' => "20118",
-      'parent_code' => "TCH_LRN",
-      'objectives' => [
-        'EDU',
       ],
     ],
     'SP_SFTWR_ENGR_(ECE)' => [
@@ -4927,27 +4028,6 @@ function _grad_custom_program_list() {
         'PHD',
       ],
     ],
-    'SP_SPT_LEIS_MGMT' => [
-      'maui_code' => "SP_SPT_LEIS_MGMT",
-      'label' => "Sport and Leisure Management",
-      'end_session' => "20041",
-      'start_session' => "19951",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-      ],
-    ],
-    'SP_SPT_ST' => [
-      'maui_code' => "SP_SPT_ST",
-      'label' => "Sport Studies",
-      'end_session' => "20101",
-      'start_session' => "20023",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-        'PHD',
-      ],
-    ],
     'SP_SS_ED' => [
       'maui_code' => "SP_SS_ED",
       'label' => "Social Studies Education",
@@ -4957,7 +4037,6 @@ function _grad_custom_program_list() {
       'objectives' => [
         'MA',
         'MAT',
-        'PHD',
       ],
     ],
     'SP_STAGE_MGMT' => [
@@ -4999,27 +4078,6 @@ function _grad_custom_program_list() {
       'parent_code' => "CIV_ENV_ENGR",
       'objectives' => [
         'MS',
-        'PHD',
-      ],
-    ],
-    'SP_ST_AFF_ADM_REA' => [
-      'maui_code' => "SP_ST_AFF_ADM_REA",
-      'label' => "Student Affairs Administration and Research",
-      'end_session' => "",
-      'start_session' => "20003",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'PHD',
-      ],
-    ],
-    'SP_ST_DEV_PSE' => [
-      'maui_code' => "SP_ST_DEV_PSE",
-      'label' => "Student Development in Postsecondary Education",
-      'end_session' => "",
-      'start_session' => "19903",
-      'parent_code' => "CRSD",
-      'objectives' => [
-        'MA',
         'PHD',
       ],
     ],
@@ -5404,36 +4462,6 @@ function _grad_custom_program_list() {
         'EDU',
       ],
     ],
-    'SP_TE_MATH_K-12' => [
-      'maui_code' => "SP_TE_MATH_K-12",
-      'label' => "Teacher Education Program K-12",
-      'end_session' => "20103",
-      'start_session' => "19903",
-      'parent_code' => "MATH_EDUC",
-      'objectives' => [
-        'EDU',
-      ],
-    ],
-    'SP_THER_REC_(HSS)' => [
-      'maui_code' => "SP_THER_REC_(HSS)",
-      'label' => "Therapeutic Recreation",
-      'end_session' => "20123",
-      'start_session' => "19951",
-      'parent_code' => "HLTH_SPORT",
-      'objectives' => [
-        'MA',
-      ],
-    ],
-    'SP_THER_REC_(LS)' => [
-      'maui_code' => "SP_THER_REC_(LS)",
-      'label' => "Therapeutic Recreation",
-      'end_session' => "20191",
-      'start_session' => "20023",
-      'parent_code' => "LEIS_STDS",
-      'objectives' => [
-        'MA',
-      ],
-    ],
     'SP_TRANSP' => [
       'maui_code' => "SP_TRANSP",
       'label' => "Transportation",
@@ -5521,17 +4549,6 @@ function _grad_custom_program_list() {
         'PI',
       ],
     ],
-    'STAT_GENETICS' => [
-      'maui_code' => "STAT_GENETICS",
-      'label' => "Statistical Genetics",
-      'end_session' => "20108",
-      'start_session' => "20023",
-      'parent_code' => "",
-      'objectives' => [
-        'CER',
-        'PHD',
-      ],
-    ],
     'STOMA' => [
       'maui_code' => "STOMA",
       'label' => "Stomatology",
@@ -5573,26 +4590,38 @@ function _grad_custom_program_list() {
         'CER',
       ],
     ],
-    'TCH_LRN' => [
-      'maui_code' => "TCH_LRN",
-      'label' => "Teaching and Learning",
-      'end_session' => "20123",
-      'start_session' => "19903",
+    'SUS_DEV' => [
+      'maui_code' => "SUS_DEV",
+      'label' => "Sustainable Development",
+      'end_session' => "",
+      'start_session' => "20223",
       'parent_code' => "",
       'objectives' => [
-        'MA',
-        'MAT',
-        'PHD',
+        'MS',
       ],
     ],
-    'TEACH_ENGL_AS_FOR_LANG' => [
-      'maui_code' => "TEACH_ENGL_AS_FOR_LANG",
-      'label' => "Teaching English as a Foreign Language",
-      'end_session' => "20178",
-      'start_session' => "20153",
+    'TALENT_DEVELOP' => [
+      'maui_code' => "TALENT_DEVELOP",
+      'label' => "Talent Development",
+      'end_session' => "",
+      'start_session' => "20223",
       'parent_code' => "",
       'objectives' => [
         'CER',
+      ],
+    ],
+    'TCH_LRN' => [
+      'maui_code' => "TCH_LRN",
+      'label' => "Teaching and Learning",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'MAT',
+        'MS',
+        'PHD',
       ],
     ],
     'THEATRE_ARTS' => [
@@ -5614,7 +4643,6 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'MS',
-        'PHD',
         'PI',
       ],
     ],
@@ -5628,11 +4656,11 @@ function _grad_custom_program_list() {
         'CER',
       ],
     ],
-    'TRANSP_STDS' => [
-      'maui_code' => "TRANSP_STDS",
-      'label' => "Transportation Studies",
+    'TRANSP_PLAN' => [
+      'maui_code' => "TRANSP_PLAN",
+      'label' => "Transportation Planning",
       'end_session' => "",
-      'start_session' => "19703",
+      'start_session' => "20223",
       'parent_code' => "",
       'objectives' => [
         'CER',
@@ -5645,7 +4673,6 @@ function _grad_custom_program_list() {
       'start_session' => "19663",
       'parent_code' => "",
       'objectives' => [
-        'MA',
         'MS',
         'PI',
       ],
@@ -5658,19 +4685,7 @@ function _grad_custom_program_list() {
       'parent_code' => "",
       'objectives' => [
         'CER',
-        'PHD',
         'PI',
-      ],
-    ],
-    'ZOOLOGY' => [
-      'maui_code' => "ZOOLOGY",
-      'label' => "Zoology",
-      'end_session' => "19861",
-      'start_session' => "19653",
-      'parent_code' => "",
-      'objectives' => [
-        'MS',
-        'PHD',
       ],
     ],
     'ct_biol_lifesci' => [

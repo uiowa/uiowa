@@ -3,25 +3,30 @@ _core:
 ignored_config_entities:
   - acquia_connector.settings
   - 'block.block.main_navigation__superfish__horizontal:status'
-  - 'block.block.main_navigation__superfish__toggle:status'
   - 'block.block.main_navigation__superfish__mega:status'
-  - 'config_split.config_split.advanced_webform:status'
+  - 'block.block.main_navigation__superfish__toggle:status'
   - 'config_split.config_split.additional_person_types:status'
+  - 'config_split.config_split.advanced_webform:status'
   - 'config_split.config_split.apr:status'
   - 'config_split.config_split.areas_of_study:status'
+  - 'config_split.config_split.articles_narrow:status'
+  - 'config_split.config_split.ccom:status'
   - 'config_split.config_split.collegiate:status'
   - 'config_split.config_split.event:status'
   - 'config_split.config_split.grad_person_extended:status'
   - 'config_split.config_split.p2lb:status'
+  - 'config_split.config_split.periodical:status'
   - 'config_split.config_split.profiles:status'
   - 'config_split.config_split.scholarship:status'
+  - 'config_split.config_split.sitenow_alerts:status'
+  - 'config_split.config_split.sitenow_intranet:status'
   - 'config_split.config_split.sitenow_migrate:status'
   - 'config_split.config_split.sitenow_v2:status'
   - 'config_split.config_split.thesis_defense:status'
   - 'config_split.config_split.topic_page:status'
   - 'config_split.config_split.uiowa_graph:status'
   - 'config_split.config_split.uiowa_hours:status'
-  - 'config_split.config_split.sitenow_intranet:status'
+  - 'config_split.config_split.uiowa_maui:status'
   - google_analytics.settings
   - 'google_tag.container.*'
   - migrate_plus.migration_group.default
@@ -39,11 +44,13 @@ ignored_config_entities:
   - uids_base.settings
   - uiowa_alerts.settings
   - uiowa_apr.settings
-  - uiowa_hours.settings
-  - uiowa_search.settings
+  - 'uiowa_auth.settings:role_mappings'
   - uiowa_core.settings
+  - uiowa_hours.settings
   - uiowa_profiles.settings
+  - uiowa_search.settings
   - views.view.articles
   - views.view.people
   - 'webform.webform.*'
+mode: simple
 enable_export_filtering: true

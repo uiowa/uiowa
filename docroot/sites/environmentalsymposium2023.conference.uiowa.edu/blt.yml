@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferenceenvironmentalsymposium2023.uiowa.ddev.site
+    protocol: https
+  machine_name: conferenceenvironmentalsymposium2023
+  human_name: environmentalsymposium2023.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceenvironmentalsymposium2023.prod
+drupal:
+  db:
+    database: environmentalsymposium2023_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferenceenvironmentalsymposium2023.prod.drupal.uiowa.edu'
+  requester: arpruitt
+  site-name: 'The Human Rights Conundrum: Climate Change Interventions as Both Problem and Solution'

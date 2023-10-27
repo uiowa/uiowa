@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labproteinfolding.uiowa.ddev.site
+    protocol: https
+  machine_name: labproteinfolding
+  human_name: proteinfolding.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labproteinfolding.prod
+drupal:
+  db:
+    database: proteinfolding_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labproteinfolding.prod.drupal.uiowa.edu'
+  requester: marschul
+  site-name: 'Schultz laboratory'

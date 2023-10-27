@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: psychologybbip.uiowa.ddev.site
+    protocol: https
+  machine_name: psychologybbip
+  human_name: bbip.psychology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychologybbip.prod
+drupal:
+  db:
+    database: bbip_psychology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://psychologybbip.prod.drupal.uiowa.edu'
+  requester: lutgendo
+  site-name: 'Behavioral-Biomedical Interface Training Program'

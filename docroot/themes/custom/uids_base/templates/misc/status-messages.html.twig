@@ -28,31 +28,24 @@
 {{ attach_library('uids_base/status-messages') }}
 
 {% for type, messages in message_list %}
-  {% set classes = [
-    'alert',
-    'alert-dismissible',
-    'fade',
-    'show',
-    type == 'status' ? 'alert-success',
-    type == 'warning' ? 'alert-warning',
-    type == 'error' ? 'alert-danger',
-  ] %}
 
-  <div role="alert" aria-label="{{ status_headings[type] }}" {{ attributes|without('role', 'aria-label').addClass(classes) }}>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    {% if status_headings[type] %}
-      <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
-    {% endif %}
+  {% set alert_content %}
     {% if messages|length > 1 %}
       <ul>
         {% for message in messages %}
-          <li>{{ message }}</li>
+          <li>{{ message|render|striptags }}</li>
         {% endfor %}
       </ul>
     {% else %}
       {{ messages|first }}
     {% endif %}
-  </div>
+  {% endset %}
+
+  {% include '@uids_base/uids/alert.html.twig' with {
+    'attributes': attributes,
+    'alert_content' : alert_content,
+    'alert_dismissible' : true,
+    'alert_type': type,
+  } only %}
+
 {% endfor %}

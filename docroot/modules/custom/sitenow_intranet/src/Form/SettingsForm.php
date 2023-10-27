@@ -33,7 +33,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['unauthorized'] = [
       '#type' => 'fieldset',
-      '#description' => $this->t('The <em>Unauthorized</em> page will be displayed to users that have logged in but lack the proper role/permission to access the site.'),
+      '#description' => $this->t('The <em>Unauthorized</em> page will be displayed to users that have not logged in yet.'),
     ];
 
     $form['unauthorized']['title'] = [
@@ -55,7 +55,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['access_denied'] = [
       '#type' => 'fieldset',
-      '#description' => $this->t('The <em>Access denied</em> page will be displayed to users that have not logged in yet.'),
+      '#description' => $this->t('The <em>Access denied</em> page will be displayed to users that have logged in but lack the proper role/permission to access the site.'),
     ];
 
     $form['access_denied']['title'] = [

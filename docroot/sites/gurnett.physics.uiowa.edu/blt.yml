@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: physicsgurnett.uiowa.ddev.site
+    protocol: https
+  machine_name: physicsgurnett
+  human_name: gurnett.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsgurnett.prod
+drupal:
+  db:
+    database: gurnett_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://physicsgurnett.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Donald A. Gurnett'

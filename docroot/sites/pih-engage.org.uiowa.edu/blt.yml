@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgpih-engage.uiowa.ddev.site
+    protocol: https
+  machine_name: orgpih-engage
+  human_name: pih-engage.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgpih-engage.prod
+drupal:
+  db:
+    database: pih_engage_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgpih-engage.prod.drupal.uiowa.edu'
+  requester: esteenhoek
+  site-name: 'Partners In Health Engage'

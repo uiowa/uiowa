@@ -1,99 +1,232 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
-@import "view-calendar.scss";
-@import "view-bef.scss";
 
+// Use "views-form--stacked" class for exposed forms in a sidebar column.
 .views-exposed-form {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 2rem;
+  position: relative;
 
-  [type=checkbox], [type=radio] {
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+
+  fieldset {
+    &.fieldgroup {
+      padding: 0;
+    }
+
+    .fieldset-legend {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.8;
+    }
+  }
+
+  [type=checkbox],
+  [type=radio] {
     height: 1.2rem;
     width: 1.2rem;
-    margin: 0 .35rem 0 .25rem;
+    margin: 0 0.35rem 0 0.25rem;
     -webkit-transform: scale(1.3, 1.3);
   }
-  [type='checkbox']+label,
-  [type='radio']+label {
+
+  [type='checkbox'] + label,
+  [type='radio'] + label {
     font-weight: $font-weight-normal;
     flex-basis: 75%;
   }
 
   .form-type-checkbox {
     display: flex;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
-  details {
-    &.form-wrapper {
-      display: block;
-      border: 1px solid;
-      border-color: #c4c4c4;
-      flex-basis: 100%;
-      background: #fff;
+  .form-actions {
+    .views-form--stacked & {
+      width: 100%;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+
+  &.uids-content:not(.uids-search) {
+    .button {
+      @include bttn--secondary;
+      max-height: 3.45rem;
+      padding: 1rem 1.25rem;
+      font-size: clamp(0.9rem, calc(0.7887vw + 0.6042rem), 1.25rem);
+      @include breakpoint(md) {
+        padding: 0.9rem 1.25rem 1.1rem;
+      }
     }
 
-    .details-wrapper {
-      padding: 0 1rem 1rem;
+    input[id^='edit-reset'] {
+      color: var(--brand-secondary);
+      background: var(--brand-primary);
     }
+  }
 
-    summary {
-      position: relative;
-      padding: 1rem;
-      cursor: pointer;
-    }
+  .button {
+    border: 0;
 
-    &[open] summary {
-      border-bottom: 1px solid;
-      border-color: #c4c4c4;
-      margin-bottom: 1em;
+    .views-form--stacked & {
+      flex: 1;
+      @include breakpoint(sm) {
+        flex-basis: 100%;
+      }
     }
   }
 
   .form--inline {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-start;
     flex-wrap: wrap;
+  }
+}
+
+.views-exposed-form:not([class*="bef"]) {
+  .form--inline {
     @include breakpoint(sm) {
-      flex-wrap: unset;
+      display: flex;
+      justify-content: flex-start;
+
+      .views-form--stacked & {
+        flex-wrap: wrap;
+      }
     }
+  }
+
+  .form-actions {
+    gap: 0.9rem;
+    display: flex;
+
+    @include breakpoint(sm) {
+      margin-top: 2.5em;
+    }
+
+    input[id^='edit-reset'] {
+      .views-form--stacked & {
+        width: 100%;
+        display: flex;
+        gap: 1.5rem;
+      }
+    }
+  }
+
+  &.uids-content:not(.uids-search) {
+    padding: 5px 19px;
+
+    .views-form--stacked & {
+      padding: 1rem 1.5rem;
+    }
+
+    [type=text],
+    select {
+      .views-form--stacked & {
+        margin-bottom: 0;
+      }
+    }
+
+    .form-item {
+      .views-form--stacked & {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        @include breakpoint(sm) {
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      &.form-type-checkbox {
+        .views-form--stacked & {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .form-actions:not(:last-child),
+    .form-item:not(:last-child) {
+      @include breakpoint(sm) {
+        margin-right: 1em;
+
+        .views-form--stacked & {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .form-actions {
+      @include breakpoint(sm) {
+        margin-top: 2.5em;
+      }
+
+      .button {
+        flex: 1;
+        .views-form--stacked & {
+          @include breakpoint(sm) {
+            flex-basis: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .button {
+    @include bttn--secondary;
+    border: 0;
   }
 
   .js-form-item {
     flex: auto 1 1;
     @include breakpoint(sm) {
       flex: 1;
+
+      .views-form--stacked & {
+        flex: 0 1 100%;
+      }
     }
   }
 
   .form-group {
-    margin: 0 1rem 1rem 1rem;
+    margin: 0 1rem 1rem;
   }
 }
 
-.bg-dark, .bg-black {
+// Background color overrides.
+.bg-black,
+.bg-dark {
   .pager__item.pager__item--ellipsis {
     color: #5d5656;
   }
+
   .pager__item a {
     color: $primary;
   }
 }
+
 .bg-yellow {
   .pager__item a {
     color: $secondary;
   }
+
   .pager__item.is-active a {
     color: white;
   }
 }
 
 // feed icons
-
 .feed-icons {
   .bttn {
-    svg{
+    svg {
       margin-left: 0;
       margin-right: $xsm;
     }
@@ -109,16 +242,34 @@
   font-size: $content-font-size;
 }
 
-// Remove margin-bottom for last item in card--lists.
-.block-views-blockpeople-list-block-list-card {
-  .views-row:last-child .card--list {
-    margin-bottom: 0;
-  }
-}
+// Layout
+.views-grid--twocol--25-75 {
+  @include grid-base;
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 1.5rem;
 
-.block-inline-blockuiowa-events,
-.view-article-list-block {
-  .card--list:last-child  {
-    margin-bottom: 0;
+    .view-header {
+      grid-column: 1 / -1;
+    }
+
+    .view-filters {
+      grid-area: 2/1/6/2;
+      min-width: 200px;
+    }
+
+    .view-content,
+    .view-empty {
+      grid-area: 2/2/6/5;
+      min-width: 0;
+    }
+
+    .pager.list-container__item--full {
+      grid-area: 6/2/6/5;
+    }
+  }
+  @include breakpoint(page-container) {
+    gap: 3rem;
   }
 }

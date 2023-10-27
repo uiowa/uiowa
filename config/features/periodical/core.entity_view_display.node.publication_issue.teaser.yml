@@ -1,0 +1,70 @@
+uuid: dd637eb2-0f94-41ae-8b6d-aa129767ed3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.publication_issue.body
+    - field.field.node.publication_issue.field_image
+    - field.field.node.publication_issue.field_issue_contributors_notes
+    - field.field.node.publication_issue.field_issue_editors_note
+    - field.field.node.publication_issue.field_issue_masthead
+    - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_release_date
+    - field.field.node.publication_issue.field_issue_title
+    - field.field.node.publication_issue.field_issue_volume
+    - field.field.node.publication_issue.field_meta_tags
+    - node.type.publication_issue
+  module:
+    - smart_trim
+    - user
+id: node.publication_issue.teaser
+targetEntityType: node
+bundle: publication_issue
+mode: teaser
+content:
+  body:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 0
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: true
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_image: true
+  field_issue_contributors_notes: true
+  field_issue_editors_note: true
+  field_issue_masthead: true
+  field_issue_number: true
+  field_issue_release_date: true
+  field_issue_title: true
+  field_issue_volume: true
+  field_meta_tags: true
+  search_api_excerpt: true

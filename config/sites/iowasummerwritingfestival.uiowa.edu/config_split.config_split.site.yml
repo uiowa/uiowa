@@ -1,0 +1,29 @@
+uuid: 74e69a1e-6fae-42fe-941e-c3eb950ac258
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The iowasummerwritingfestival.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/iowasummerwritingfestival.uiowa.edu
+module:
+  iowasummerwritingfestival_core: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_view_display.node.event.default
+  - field.storage.node.field_event_genre
+  - field.storage.node.field_event_registration_link
+  - smart_date.smart_date_format.default_long_date
+partial_list:
+  - core.entity_view_display.node.event.teaser
+  - core.entity_view_display.node.event.token
+  - views.view.events
+  - 'core.entity_form_display.node.event.*'

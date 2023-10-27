@@ -1,0 +1,67 @@
+adding:
+  display:
+    page_upcoming:
+      display_options:
+        exposed_form:
+          options:
+            bef:
+              filter:
+                field_event_genre_value:
+                  plugin_id: bef
+                  advanced:
+                    sort_options: false
+                    rewrite:
+                      filter_rewrite_values: ''
+                    collapsible: true
+                    is_secondary: true
+                  select_all_none: true
+                  select_all_none_nested: false
+                  display_inline: false
+        filters:
+          field_event_genre_value:
+            id: field_event_genre_value
+            table: node__field_event_genre
+            field: field_event_genre_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: list_field
+            operator: or
+            value: {  }
+            group: 1
+            exposed: true
+            expose:
+              operator_id: field_event_genre_value_op
+              label: Genre
+              description: ''
+              use_operator: false
+              operator: field_event_genre_value_op
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: field_event_genre_value
+              required: false
+              remember: false
+              multiple: true
+              remember_roles:
+                authenticated: authenticated
+                anonymous: '0'
+                viewer: '0'
+                editor: '0'
+                publisher: '0'
+                webmaster: '0'
+                administrator: '0'
+              reduce: false
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+            reduce_duplicates: true
+removing: {  }

@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_alerts\Plugin\Block;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -99,6 +99,17 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $filtered_message = check_markup($message, 'minimal');
       $level = $config->get('custom_alert.level');
 
+      // Map alert level to icon.
+      if ($level == 'warning') {
+        $icon = 'fa-exclamation-triangle';
+      }
+      elseif ($level == 'info') {
+        $icon = 'fa-info';
+      }
+      elseif ($level == 'danger') {
+        $icon = 'fa-exclamation';
+      }
+
       $build['wrapper']['custom_alert'] = [
         '#type' => 'container',
         '#attributes' => [
@@ -111,10 +122,27 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
           '#attributes' => [
             'class' => [
               'alert',
-              "alert-{$level}",
+              'alert--icon',
+              'alert--vertically-centered',
+              "alert--{$level}",
             ],
             'role' => 'region',
             'aria-label' => ($level === 'danger') ? 'alert message' : "{$level} message",
+          ],
+          // This is the newly added container for the icon.
+          'alert_icon' => [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => 'alert__icon',
+            ],
+            'icon_markup' => [
+              '#markup' => '
+            <span class="fa-stack fa-1x">
+              <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
+              <span role="presentation" class="fas fa-stack-1x fa-inverse ' . $icon . '"></span>
+            </span>
+          ',
+            ],
           ],
           'message_wrapper' => [
             '#type' => 'container',

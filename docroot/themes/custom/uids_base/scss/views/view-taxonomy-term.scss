@@ -2,6 +2,15 @@
 @import "uids3/assets/scss/_utilities.scss";
 
 .view-taxonomy-term {
+  // Style the term image.
+  .view-header {
+    // Add spacing between header and content area if using fields.
+    .content {
+      .field + .field:last-child {
+        margin-bottom: $mobile-height-gutter;
+      }
+    }
+  }
   .content {
     .field--name-field-image {
       @include breakpoint(sm) {
@@ -14,28 +23,9 @@
   }
   @include margin($top: $lg);
   &[class*="grid--"] {
-    .view-content.list-container {
-      .views-row {
-        border: none;
-      }
+    .view-content.list-container__inner {
       @include breakpoint(sm) {
         display: grid;
-      }
-    }
-  }
-  .view-content {
-    @include list-group;
-    @include list-group-flush;
-
-    .views-row {
-      @include list-group-item;
-      padding: 0;
-      .card--media-left,
-      .card--media-right {
-        margin-top: 1.6rem;
-      }
-      &:first-child {
-        border-top: none;
       }
     }
   }

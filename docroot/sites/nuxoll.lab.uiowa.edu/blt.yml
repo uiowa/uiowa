@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnuxoll.uiowa.ddev.site
+    protocol: https
+  machine_name: labnuxoll
+  human_name: nuxoll.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnuxoll.prod
+drupal:
+  db:
+    database: nuxoll_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnuxoll.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Nuxoll Research Group'

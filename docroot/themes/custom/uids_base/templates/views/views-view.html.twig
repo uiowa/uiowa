@@ -37,6 +37,7 @@
     'view-id-' ~ id,
     'view-display-id-' ~ display_id,
     dom_id ? 'js-view-dom-id-' ~ dom_id,
+    'list-container',
   ]
 %}
 {{ attach_library('uids_base/views') }}
@@ -58,7 +59,8 @@
     </div>
   {% endif %}
   {% if exposed %}
-    <div class="view-filters">
+    {% set views_filter_attributes = views_filter_attributes ?: create_attribute() %}
+    <div {{ views_filter_attributes.addclass(views_filter_classes, 'view-filters') }}>
       {{ exposed }}
     </div>
   {% endif %}
@@ -69,7 +71,8 @@
   {% endif %}
 
   {% if rows %}
-    <div class="view-content list-container">
+    {% set views_content_attributes = views_content_attributes ?: create_attribute() %}
+    <div {{ views_content_attributes.addclass(views_content_classes, 'view-content list-container__inner') }}>
       {{ rows }}
     </div>
   {% elseif empty %}

@@ -17,6 +17,7 @@ dependencies:
     - node.type.page
     - workflows.workflow.editorial
   module:
+    - allowed_formats
     - content_moderation
     - media_library
     - metatag
@@ -35,8 +36,11 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
+      show_summary: true
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
   created:
     type: datetime_timestamp
     weight: 5
@@ -132,6 +136,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

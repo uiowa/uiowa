@@ -2,16 +2,17 @@
 
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -48,6 +49,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected $currentUser;
 
   /**
+   * The datetime.time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * ReplicateSubscriber constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -58,12 +66,15 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The current path.
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The datetime.time service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, UuidInterface $uuid, CurrentPathStack $currentPath, AccountProxyInterface $currentUser) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, UuidInterface $uuid, CurrentPathStack $currentPath, AccountProxyInterface $currentUser, TimeInterface $time) {
     $this->entityTypeManager = $entityTypeManager;
     $this->uuid = $uuid;
     $this->currentPath = $currentPath;
     $this->currentUser = $currentUser;
+    $this->time = $time;
   }
 
   /**
@@ -168,7 +179,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     }
     $entity->setRevisionLogMessage($message);
     $entity->setRevisionUserId($this->currentUser->id());
-    $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
+    $entity->setRevisionCreationTime($this->time->getRequestTime());
     // @todo Possibly remove in the future?
     // https://www.drupal.org/project/drupal/issues/2769741
     $entity->setRevisionTranslationAffected(TRUE);

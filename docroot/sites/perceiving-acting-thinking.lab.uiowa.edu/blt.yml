@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labperceiving-acting-thinking.uiowa.ddev.site
+    protocol: https
+  machine_name: labperceiving-acting-thinking
+  human_name: perceiving-acting-thinking.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labperceiving-acting-thinking.prod
+drupal:
+  db:
+    database: perceiving_acting_thinking_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labperceiving-acting-thinking.prod.drupal.uiowa.edu'
+  requester: jplumert
+  site-name: perceiving-acting-thinking

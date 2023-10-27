@@ -3,11 +3,11 @@
 namespace Drupal\education_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
-use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
 
 /**

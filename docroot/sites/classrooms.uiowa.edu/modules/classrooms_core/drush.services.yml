@@ -1,0 +1,6 @@
+services:
+  classrooms_core.commands:
+    class: \Drupal\classrooms_core\Commands\ClassroomsCoreCommands
+    arguments: ['@account_switcher', '@uiowa_maui.api', '@cache.uiowa_maui', '@entity_type.manager', '@datetime.time']
+    tags:
+      - { name: drush.command }

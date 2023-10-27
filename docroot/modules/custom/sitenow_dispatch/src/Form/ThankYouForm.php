@@ -2,15 +2,18 @@
 
 namespace Drupal\sitenow_dispatch\Form;
 
+use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Utility\Xss;
 
 /**
  * Provides a Dispatch-enabled Thank You form.
@@ -20,35 +23,28 @@ class ThankYouForm extends FormBase {
   use LoggerChannelTrait;
 
   /**
-   * The serialization.json service.
+   * Constructs the ThankYouForm object.
    *
-   * @var \Drupal\Component\Serialization\Json
+   * @param \GuzzleHttp\ClientInterface $client
+   *   The Guzzle client service.
+   * @param \Drupal\Component\Serialization\Json $json
+   *   The JSON controller.
+   * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
+   *   The Dispatch API client service.
    */
-  protected $jsonController;
-
-  /**
-   * The HTTP Client service.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $httpClient;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\sitenow_dispatch\Dispatch
-   */
-  protected $dispatch;
+  public function __construct(protected ClientInterface $client, protected Json $json, protected DispatchApiClientInterface $dispatch) {
+    $this->dispatch->setKey($this->config('sitenow_dispatch.settings')->get('thanks.api_key'));
+  }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    $instance = parent::create($container);
-    $instance->jsonController = $container->get('serialization.json');
-    $instance->httpClient = $container->get('http_client');
-    $instance->dispatch = $container->get('sitenow_dispatch.dispatch');
-    return $instance;
+    return new static(
+      $container->get('http_client'),
+      $container->get('serialization.json'),
+      $container->get('sitenow_dispatch.dispatch_client'),
+    );
   }
 
   /**
@@ -91,6 +87,13 @@ class ThankYouForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    if ($this->config('sitenow_dispatch.settings')->get('thanks.approval')) {
+      $form['approval'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("<div><em>Please feel free to include this thank-you in staff recognition events or materials.</em></div>"),
+      ];
+    }
+
     if ($this->config('sitenow_dispatch.settings')->get('thanks.supervisor')) {
       $form['placeholder']['message']['#description'] = $this->t("<div><em>A copy of this message will be sent to the employee's supervisor(s).</em></div>");
     }
@@ -116,13 +119,13 @@ class ThankYouForm extends FormBase {
     $token = $config->get('thanks.hr_token');
 
     try {
-      $request = $this->httpClient->get("$endpoint/$email?api_token=$token", [
+      $request = $this->client->get("$endpoint/$email?api_token=$token", [
         'headers' => [
           'Accept' => 'application/json',
         ],
       ]);
 
-      $hr_data = $this->jsonController->decode($request->getBody()->getContents());
+      $hr_data = $this->json->decode($request->getBody()->getContents());
       $form_state->setValue('hr_data', $hr_data);
       parent::validateForm($form, $form_state);
     }
@@ -151,7 +154,6 @@ class ThankYouForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $hr_data = $form_state->getValue('hr_data');
     $config = $this->config('sitenow_dispatch.settings');
-    $api_key = $config->get('thanks.api_key');
     $communication = $config->get('thanks.communication');
 
     // Combine placeholders on thank you form with settings form.
@@ -175,6 +177,12 @@ class ThankYouForm extends FormBase {
       ],
       'includeBatchResponse' => FALSE,
     ];
+
+    // Appending a statement to the footer if approved to be included in
+    // promotional materials.
+    if ($config->get('thanks.approval') && $form_state->getValue('approval') == 1) {
+      $data['members'][0]['footer_statement'] .= ' This message has been approved to be included in staff recognition events or materials.';
+    }
 
     // Add the placeholders to the recipient (first) member.
     foreach ($placeholders as $key => $value) {
@@ -220,11 +228,8 @@ class ThankYouForm extends FormBase {
     // Attempt to post to Dispatch API to send the emails, and let the user
     // know if it was successful or if an error occurred. The actual error will
     // be logged by the dispatch service.
-    $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [], [
-      'body' => json_encode($data),
-      'headers' => [
-        'x-dispatch-api-key' => $api_key,
-      ],
+    $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [
+      'json' => $data,
     ]);
     if ($posted === FALSE) {
       $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":link">ITS Help Desk</a>.', [

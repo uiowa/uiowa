@@ -6,8 +6,8 @@
  */
 
 use Drupal\Core\Config\FileStorage;
-use Drupal\smart_trim\Truncate\TruncateHTML;
 use Drupal\node\Entity\Node;
+use Drupal\smart_trim\Truncate\TruncateHTML;
 
 /**
  * Implements hook_install().
@@ -53,6 +53,7 @@ function obermann_migrate_update_9001(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'article', '=')
+      ->accessCheck()
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
@@ -126,6 +127,7 @@ function obermann_migrate_update_9002(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'article', '=')
+      ->accessCheck()
       ->execute();
 
     $sandbox['total'] = count($query);

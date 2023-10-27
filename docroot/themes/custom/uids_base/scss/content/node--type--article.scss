@@ -2,147 +2,30 @@
 @import "uids3/assets/scss/_utilities.scss";
 @import "uids3/components/card/_card-mixins.scss";
 
-article.node--type-article,
-div[role=article].node--type-article {
-
-  .article-created-date {
-    display: block;
-    @include card-subtitle;
-
-    .page-node-type-article & {
-      color: $secondary;
-    }
-  }
-
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin: .5rem 0 0;
-  }
-
+// Style the article page.
+.node--type-article {
   .field--name-body {
     margin: $gutter 0;
   }
 
-  .field--name-field-article-author {
-    .field__label {
-      display: inline;
-      margin-right: $xsm;
-    }
-
-    .field__items {
-      padding-right: 0;
-      display: inline-block;
-    }
-
-    display: inline-block;
-    font-family: $font-family-serif;
-    font-size: 1.2rem;
-
-    a {
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-
-    &:after {
-      display: inline-block;
-    }
-
-    .field__items {
-      .field__item {
-        display: inline;
-
-        &:not(:first-child) {
-          padding-left: $xsm;
-
-          &:before {
-            content: '| ';
-            color: $grey;
-            padding-right: $xsm;
-          }
-        }
-      }
-    }
+  .article-created-date {
+    display: block;
+    @include card-subtitle;
   }
 
-  // Remove
-  .field--name-field-article-source-org {
-    display: inline-block;
-    font-family: $font-family-serif;
-    font-size: 1.2rem;
-
-    a {
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-
-    &:after {
-      display: inline-block;
-    }
-  }
-
-
-  .block-field-blocknodearticlefield-article-source-org,
-  .block-field-blocknodearticlefield-article-source-link,
-  .block-field-blocknodearticlefield-article-author {
-    display: inline;
-  }
-
-  .field--name-field-article-source-link {
-    display: inline-block;
-    font-family: $font-family-serif;
-    font-size: 1.2rem;
-
-    .link-item {
-      display: inline-block;
-    }
-
-    a {
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-
-    &:after {
-      display: inline-block;
-    }
-  }
-}
-
-
-.field--name-field-article-author+.field--name-field-article-source-link {
-  &:before {
-    content: '- ';
-    color: $grey;
-    margin: 0 $xsm;
-  }
-}
-
-
-article.node--type-article {
   // Remove colon being added by field.css.
   .field--label-above .field--label-inline:after {
     content: "";
   }
 
   .block-extra-field-blocknodearticlearticle-created-date {
-    margin: 0 0 $sm;
+    margin: 0 0 0.7rem;
   }
 
   .block-field-blocknodearticlefield-article-source-org+.block-field-blocknodearticlefield-article-source-link:before {
     content: "| ";
     color: #737373;
-    margin: 0 .325rem;
+    margin: 0 0.325rem;
   }
 
   .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org {
@@ -154,60 +37,70 @@ article.node--type-article {
   }
 
   .gallery-jump-link {
-    font-family: Zilla Slab,serif;
-    font-size: 1.2rem;
-    margin-top: 0.4rem;
-
-    a {
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+    display: block;
 
     svg {
       margin-right: 0.3rem;
     }
   }
-}
 
-article.node--type-article.node--view-mode-full,
-div[role=article].node--type-article.node--view-mode-full {
+  .block-field-blocknodearticlefield-image-caption {
+    font-style: italic;
+    z-index: 3;
+    position: relative;
+    margin-bottom: $mobile-height-gutter;
+    line-height: 1.3;
+    @include breakpoint(sm) {
+      color: #fff;
+      order: 2;
+      margin-bottom: unset;
+      margin-top: $gutter;
+    }
+  }
+
+  // @todo Move this to UIDS in https://github.com/uiowa/uids/issues/721
+  .banner__content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .field--name-field-image-caption {
-    margin: 1rem 0 3rem 0;
+    margin: 1rem 0 3rem;
     color: #666;
   }
-
-  .article-meta {
-    margin: 1rem 0;
-  }
 }
 
-article.node--type-article.node--view-mode-teaser,
-div[role=article].node--type-article.node--view-mode-teaser {
-  .content-image img {
-    height: auto;
+
+.article--meta {
+  display: inline-block;
+  font-family: $font-family-serif;
+  font-size: 1.2rem;
+  line-height: 1.7;
+
+  a {
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
-  .field--name-title {
+  &:after {
+    display: inline-block;
+  }
+
+  .field__item,
+  .link-item {
+    display: inline-block;
+  }
+
+  .field--label-inline {
+    margin-bottom: 0;
+  }
+
+  &.article--meta__block {
     display: block;
-  }
-}
-
-.grid.paragraph--type--articles,
-.masonry.paragraph--type--articles {
-
-  article.node--type-article.node--view-mode-teaser,
-  div[role=article].node--type-article.node--view-mode-teaser {
-    .content-image {
-      margin-left: 0;
-    }
-
-    .content-image img {
-      margin-left: 0 !important;
-      max-width: 100%;
-    }
   }
 }
 
@@ -222,14 +115,122 @@ div[role=article].node--type-article.node--view-mode-teaser {
 
 // Arrow button spacing for article teasers
 .card.node--type-article {
-  &.card--media-right,
-  &.card--media-left {
+  &.card--media-left,
+  &.card--media-right {
     .field--name-field-article-author.field--label-inline {
       margin-bottom: 0;
+      display: inline-block;
     }
-    .article-meta+.bttn,
-    .field--name-field-teaser+.bttn {
+
+    .article--meta+.bttn,
+    .field--name-body+.bttn {
       margin-top: 1.05rem;
     }
   }
 }
+
+// Overrides for narrow article.
+.node--type-article .layout--twocol--67-33 {
+  .article-created-date {
+    opacity: 1;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .article--meta {
+    .field__item {
+      display: block;
+    }
+  }
+
+  .field--name-field-article-subhead {
+    margin: $gutter 0;
+  }
+
+  .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org:before {
+    content: none;
+  }
+
+  .block-field-blocknodearticlefield-article-source-org+.block-field-blocknodearticlefield-article-source-link:before {
+    content: none;
+  }
+
+  .layout__region--second {
+    @include breakpoint(md) {
+      margin-top: $mobile-height-gutter;
+      padding-left: $desktop-width-gutter;
+      border-left: 1px solid #ccc;
+    }
+  }
+}
+
+// Styles for article lists.
+.field--name-field-article-author {
+  .field__label {
+    display: inline;
+    margin-right: $xsm;
+  }
+
+  &.field--label-above {
+    margin-bottom: 0;
+    margin-top: 0.125rem;
+  }
+
+  .field__items {
+    padding-right: 0;
+    display: inline-block;
+  }
+  display: inline-block;
+}
+
+.field--name-field-article-source-link {
+  .link-item {
+    display: inline-block;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:after {
+    display: inline-block;
+  }
+}
+
+.field--name-field-article-author + .field--name-field-article-source-link,
+.field--name-field-article-author + .field--article-byline,
+.block-field-blocknodearticlefield-article-author + .block-field-blocknodearticlefield-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}
+
+// V2 Styles.
+.paragraph--type--articles.list {
+  .field--name-body {
+    @include card-paragraph;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.grid.paragraph--type--articles,
+.masonry.paragraph--type--articles {
+  .node--type-article.node--view-mode-teaser {
+    .content-image {
+      margin-left: 0;
+    }
+
+    .content-image img {
+      margin-left: 0 !important;
+      max-width: 100%;
+    }
+  }
+}
+

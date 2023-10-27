@@ -14,8 +14,6 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_article_form':
     case 'node_article_edit_form':
-    case 'node_person_form':
-    case 'node_person_edit_form':
       $form['field_contact_reference']['#states'] = [
         'visible' => [
           ':input[name="field_article_type"]' => [
@@ -26,6 +24,39 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         ],
       ];
 
+      $form['field_embargo_information']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+            'value' => 'featured',
+          ],
+        ],
+      ];
+
+      $form['field_original_publication_date']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+            ['value' => 'in-the-news'],
+            'or',
+            ['value' => 'ui-spotlight'],
+          ],
+        ],
+      ];
+
+      // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
+      //   is resolved.
+      // Smart_date deals with ranges, but we only need a single date,
+      // so unset the extra "to" in the form and hide the end date.
+      // JS will update the end date to match the start date
+      // without showing clutter to the end user.
+      unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
+      $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
+      break;
+
+    // Article contacts are taken care of in sitenow_articles.module,
+    // but person nodes with contact references need extra processing
+    // in order to display newly created person names.
+    case 'node_person_form':
+    case 'node_person_edit_form':
       // Check that there are entities.
       if (isset($form['field_contact_reference']['widget']['entities'])) {
         $contacts = $form['field_contact_reference']['widget']['entities'];
@@ -47,47 +78,7 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           }
         }
       }
-      break;
-  }
-  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
-    $form['field_embargo_information']['#states'] = [
-      'visible' => [
-        ':input[name="field_article_type"]' => [
-          'value' => 'featured',
-        ],
-      ],
-    ];
 
-    $form['field_original_publication_date']['#states'] = [
-      'visible' => [
-        ':input[name="field_article_type"]' => [
-          ['value' => 'in-the-news'],
-          'or',
-          ['value' => 'ui-spotlight'],
-        ],
-      ],
-    ];
-
-    // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
-    //   is resolved.
-    // Smart_date deals with ranges, but we only need a single date,
-    // so unset the extra "to" in the form and hide the end date.
-    // JS will update the end date to match the start date
-    // without showing clutter to the end user.
-    unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
-    $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
-  }
-}
-
-/**
- * Implements hook_inline_entity_form_table_fields_alter().
- */
-function now_core_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['field_name'] === 'field_contact_reference') {
-    // Clean up, minimize the person IEF form.
-    if (in_array('contact', $context['allowed_bundles']) && in_array('person', $context['allowed_bundles'])) {
-      $fields['label']['label'] = t('Contact name');
-    }
   }
 }
 
@@ -140,7 +131,7 @@ function now_core_node_presave($entity) {
       // To account for articles created prior to requiring this field,
       // we also need to check if the field is empty. If it was,
       // we won't have a TID to remove.
-      $old_tid = (!empty($entity->original->field_article_type_value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+      $old_tid = (!empty($entity->original->field_article_type->value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
     }
     // If the old TID is the same as the new,
     // then we can treat it like the entity is new.
@@ -218,6 +209,28 @@ function now_core_node_presave($entity) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function now_core_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  // If it's the experts list, we need to add the
+  // research areas as well.
+  if ($view->id() === 'iowa_now_experts') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#content'])) {
+        $row_build['content']['#content'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#content'][] = $row_build['content']['#node']->field_person_research_areas?->view();
+      }
+    }
+  }
+
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
@@ -281,62 +294,4 @@ function now_core_article_type_tag_map(string $article_type = '') {
     return $map;
   }
   return $map[$article_type] ?? FALSE;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function now_core_preprocess_views_view_unformatted(&$variables) {
-
-  $view = $variables['view'];
-  $variables['row_item_classes'] = [];
-  if ($view->current_display === 'page_experts_list') {
-    $style = $view->style_plugin;
-    $rows = $variables['rows'];
-
-    $default_classes = [
-      'card--list',
-      'card--media-left',
-      'card--person-teaser',
-    ];
-
-    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
-    foreach ($rows as $id => $row) {
-      // Set remaining row_item_classes as attributes on each row.
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-      // Get node path to link card with.
-      $nid = $view->result[$id]->_entity->id();
-      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-      $meta_combined = $style->getField($id, 'field_person_phone') . " " . $style->getField($id, 'field_person_email');
-      $meta = ['#markup' => $meta_combined];
-
-      // Initialize card_options variable.
-      $variables['rows'][$id]['card_options'] = [
-        'attributes' => $variables['rows'][$id]['attributes'],
-        'media_styles' => ['media--circle', 'media--border'],
-        'media_sizes' => ['card__media--small'],
-        'card_image' => $style->getField($id, 'field_image'),
-        'card_title' => $style->getField($id, 'title'),
-        'card_link_url' => $link,
-        'card_subtitle' => $style->getField($id, 'field_person_position'),
-        'card_meta' => $meta,
-        'card_text' => $style->getField($id, 'field_person_research_areas'),
-      ];
-    }
-  }
-}
-
-/**
- * Implements hook_theme().
- */
-function now_core_theme($existing, $type, $theme, $path) {
-  return [
-    'views_view_unformatted__iowa_now_experts' => [
-      'template' => 'views-view-unformatted--iowa-now-experts',
-      'base hook' => 'view',
-    ],
-  ];
 }

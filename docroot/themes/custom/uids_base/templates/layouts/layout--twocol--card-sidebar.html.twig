@@ -1,0 +1,103 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+
+{% set sidebar = content.sidebar|render %}
+
+{%
+  set classes = [
+  'layout',
+  'layout__container',
+  'layout--twocol',
+  'layout--twocol--67-33',
+  settings.extra_classes,
+]
+%}
+{{ attach_library('uids_base/card') }}
+
+{% set attributes = attributes.addClass(classes) %}
+
+{# Exterior container is necessary so that background colors can go all the way to the edge. #}
+<div{{ attributes.addClass(classes) }}>
+  {# Middle container is necessary for having a fixed width container inside a section with a visible background. #}
+  <div class="layout__spacing_container">
+    {%  if content.main %}
+      <div {{ region_attributes.main.addClass('layout__region', 'layout__region--main') }}>
+        {{ content.main }}
+      </div>
+    {% endif %}
+
+    {% if content.card_media or content.card_title or content.card_subtitle or content.card_meta or content.card_content or content.card_button %}
+      {% set card = {
+        attributes: create_attribute().addClass('card', card_background, 'layout__region-container'),
+        region_attributes: region_attributes,
+        content: content,
+        subtitle: content.card_subtitle,
+        meta: content.card_meta,
+      } %}
+      {% embed '@uids_base/uids/card.html.twig' with card only %}
+        {% block media %}
+          {% if content.card_media is not empty %}
+            {{ attach_library('uids_base/media') }}
+            <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
+              <div class="media__inner">
+                {{ content.card_media }}
+              </div>
+            </div>
+          {% endif %}
+        {% endblock %}
+
+        {% block heading %}
+          {% if content.card_title %}
+            <header {{ region_attributes.card_title.addClass('layout__region', 'layout__region--card-title') }}>
+              {{ content.card_title }}
+            </header>
+          {% endif %}
+        {% endblock %}
+
+        {% block content %}
+          {% if content.card_content %}
+            <div {{ region_attributes.card_content.addClass('layout__region', 'layout__region--card-content') }}>
+              {{ content.card_content }}
+            </div>
+          {% endif %}
+        {% endblock %}
+
+        {% block subtitle %}
+          {% if content.card_subtitle %}
+            <div {{ region_attributes.card_subtitle.addClass('layout__region', 'layout__region--card-subtitle', 'card__subtitle') }}>
+              {{ content.card_subtitle }}
+            </div>
+          {% endif %}
+        {% endblock %}
+
+        {% block meta %}
+          {% if content.card_meta %}
+            <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta') }}>
+              {{ content.card_meta }}
+            </div>
+          {% endif %}
+        {% endblock %}
+
+        {% block button %}
+          {% if content.card_button %}
+            <footer {{ region_attributes.card_button.addClass('layout__region', 'layout__region--card-button') }}>
+              {{ content.card_button }}
+            </footer>
+          {% endif %}
+        {% endblock %}
+      {% endembed %}
+    {% endif %}
+  </div>
+</div>

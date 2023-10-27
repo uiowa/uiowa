@@ -2,18 +2,17 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
-use AcquiaCloudApi\Response\OperationResponse;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
-use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
+use AcquiaCloudApi\Response\OperationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use GuzzleHttp\Client as GuzzleClient;
@@ -21,6 +20,7 @@ use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 
@@ -29,6 +29,7 @@ use Uiowa\Multisite;
  */
 class MultisiteCommands extends BltTasks {
 
+  use AcquiaCloudApiTrait;
   use InspectorTrait;
 
   /**
@@ -287,7 +288,7 @@ class MultisiteCommands extends BltTasks {
         }
 
         /** @var \AcquiaCloudApi\Connector\Client $client */
-        $client = $this->getAcquiaCloudApiClient();
+        $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
         foreach ($this->getConfigValue('uiowa.applications') as $name => $uuid) {
           /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
@@ -441,7 +442,7 @@ EOD
     $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = $this->getAcquiaCloudApiClient();
+    $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
@@ -741,7 +742,7 @@ EOD;
     $new = $this->askChoice("Site $site is currently on $old. Which cloud application should it be transferred to?", array_keys($choices));
 
     // Instantiate a new API client to use with requests.
-    $client = $this->getAcquiaCloudApiClient();
+    $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
     // Check that new application has SSL coverage.
     $client->addQuery('filter', "name=$mode");
@@ -1003,24 +1004,6 @@ EOD;
           ->run();
       }
     }
-  }
-
-  /**
-   * Return new Client for interacting with Acquia Cloud API.
-   *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   ConnectorInterface client.
-   */
-  protected function getAcquiaCloudApiClient() {
-    $connector = new Connector([
-      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
-      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
-    ]);
-
-    /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = Client::factory($connector);
-
-    return $client;
   }
 
   /**

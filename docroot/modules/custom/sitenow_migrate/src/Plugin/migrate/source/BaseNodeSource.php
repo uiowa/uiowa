@@ -205,6 +205,11 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     // Loop through each entry in the process section of the migration config.
     foreach ($this->sourceMediaFields as $field_name) {
       $field = $row->getSourceProperty($field_name);
+      // If the field wasn't filled on the source,
+      // this will be empty and we can exit early.
+      if (empty($field)) {
+        return;
+      }
       $vid = $row->getSourceProperty('vid');
       $query = $this->select("field_revision_$field_name", 'fr')
         ->condition('fr.revision_id', $vid)

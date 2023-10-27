@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labiowabrainbank.uiowa.ddev.site
+  paths:
+    files: sites/iowabrainbank.lab.uiowa.edu/files
+dev:
+  uri: labiowabrainbank.dev.drupal.uiowa.edu
+  host: uiowa03dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/iowabrainbank.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.dev/docroot
+  user: uiowa03.dev
+prod:
+  uri: iowabrainbank.lab.uiowa.edu
+  host: uiowa03.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/iowabrainbank.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.prod/docroot
+  user: uiowa03.prod
+test:
+  uri: labiowabrainbank.stage.drupal.uiowa.edu
+  host: uiowa03stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/iowabrainbank.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.test/docroot
+  user: uiowa03.test

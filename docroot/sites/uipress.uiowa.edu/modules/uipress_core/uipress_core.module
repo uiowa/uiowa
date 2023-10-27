@@ -7,12 +7,21 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Template\Attribute;
+use Drupal\uipress_core\Entity\Book;
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_entity_bundle_info_alter().
  */
-function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+function uipress_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['book'])) {
+    $bundles['node']['book']['class'] = Book::class;
+  }
+}
+
+/**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function uipress_core_field_widget_single_element_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'book_type') {
     if (isset($element['subform']['field_book_ebook_ownership'])) {
       // Set the field_book_ebook_ownership field to only be visible when ebook
@@ -63,11 +72,11 @@ function uipress_core_preprocess_field(&$variables, $hook) {
       }
       $variables['attributes']['class'] .= 'grid--threecol--33-34-33';
 
-      $variables['field_container_classes'] = 'list-container';
+      $variables['field_container_classes'] = 'list-container__inner';
       break;
 
     case 'field_book_interior_pages':
-      $variables['field_container_classes'] = 'list-container';
+      $variables['field_container_classes'] = 'list-container__inner';
       break;
   }
 }
@@ -77,54 +86,6 @@ function uipress_core_preprocess_field(&$variables, $hook) {
  */
 function uipress_core_preprocess_html(&$variables) {
   $variables['#attached']['library'][] = 'uipress_core/global';
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uipress_core_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  // Append person credentials to the node label in the teaser view mode. This
-  // happens on the full node view for all people by default in LBC.
-  // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
-  if ($node->getType() === 'book' && $variables['view_mode'] === 'teaser') {
-    $default_classes = [
-      'card--list',
-      'card--media-right',
-      'card--centered-left',
-    ];
-
-    $media_styles = [
-      'card__media--medium',
-      'card__media',
-    ];
-    $attributes = new Attribute($variables['attributes']);
-    $attributes->addClass($default_classes);
-
-    $media_attributes = new Attribute();
-    $media_attributes->addClass($media_styles);
-
-    if (!$node->get('field_book_author')->isEmpty()) {
-      $subtitle = $variables['content']['field_book_author'];
-    }
-    else {
-      $subtitle = $variables['content']['field_book_editor'];
-    }
-
-    $variables['card_options'] = [
-      'attributes' => $attributes,
-      'media_attributes' => $media_attributes,
-      'card_link_url' => $node->toUrl()->toString(),
-      'card_title' => $node->getTitle(),
-      'card_image' => $variables['content']['field_image'],
-      'card_subtitle' => $subtitle,
-      'card_meta' => $variables['content']['field_book_type'],
-      'headline_level' => 'h3',
-      'headline_class' => 'card__title headline',
-    ];
-  }
 }
 
 /**
@@ -237,10 +198,6 @@ function uipress_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--paragraph--field-book-sale-code--book-type--default',
       'base hook' => 'field',
     ],
-    'node__book__teaser' => [
-      'template' => 'node--book--teaser',
-      'base hook' => 'node',
-    ],
     'field__node__field_book_type' => [
       'template' => 'field--node--field-book-type',
       'base hook' => 'field',
@@ -336,10 +293,12 @@ function uipress_core_get_current_sales() {
     // just ended yesterday, so that we still wipe their cache
     // and don't display a sale that has since ended.
     ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->accessCheck()
     ->execute();
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'book')
     ->condition('field_book_type', $pids, 'IN')
+    ->accessCheck()
     ->execute();
   return array_values($nids);
 }

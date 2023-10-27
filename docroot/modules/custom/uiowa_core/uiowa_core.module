@@ -5,41 +5,66 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\symfony_mailer\EmailInterface;
+use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Event;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
+use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
-use Drupal\uiowa_core\RegionHelper;
-
-/**
- * Implements hook_config_schema_info_alter().
- */
-function uiowa_core_config_schema_info_alter(&$definitions) {
-  // Make sure that the order of filters in the config export file is always
-  // the same, to avoid false positive differences.
-  // @todo https://github.com/uiowa/uiowa/issues/5034
-  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
-}
 
 /**
  * Implements hook_cron().
  */
 function uiowa_core_cron() {
-  $request_time = \Drupal::time()->getRequestTime();
-  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+  // Daily.
+  $state_key = 'uiowa_core_daily_last';
+  $daily_last_cleared = \Drupal::state()->get($state_key);
+  $today = date('Y-m-d');
+  if (!$daily_last_cleared || $daily_last_cleared != $today) {
+    \Drupal::state()->set($state_key, $today);
+    Cache::invalidateTags(['time:daily']);
 
-  if (!$last_run || $request_time - $last_run >= 3540) {
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:daily'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+  }
+
+  // Hourly.
+  $request_time = \Drupal::time()->getRequestTime();
+  $state_key = 'uiowa_core_hourly_last';
+  $hourly_last_cleared = \Drupal::state()->get($state_key);
+
+  if (!$hourly_last_cleared || $request_time - $hourly_last_cleared >= 3540) {
+    \Drupal::state()->set($state_key, $request_time);
     Cache::invalidateTags(['time:hourly']);
 
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -54,8 +79,31 @@ function uiowa_core_cron() {
 
       $purgeQueue->add($queuer, $invalidations);
     }
+  }
+}
 
-    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
+/**
+ * Implements hook_entity_build_defaults_alter().
+ */
+function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function uiowa_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['block_content']['uiowa_card'])) {
+    $bundles['block_content']['uiowa_card']['class'] = Card::class;
+  }
+  if (isset($bundles['block_content']['uiowa_event'])) {
+    $bundles['block_content']['uiowa_event']['class'] = Event::class;
+  }
+  if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
+    $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
   }
 }
 
@@ -72,31 +120,124 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
+ * Implements hook_mail().
+ */
+function uiowa_core_mail($key, &$message, $params) {
+  // Empty to trigger LegacyEmailBuilder for instances where mail is sent from
+  // MailManagerReplacement::mail() directly.
+}
+
+/**
  * Implements hook_mail_alter().
  */
 function uiowa_core_mail_alter(&$message) {
+  if (!in_array($message['module'], [
+    'webform',
+  ])) {
+    // Add header in use by email team to avoid spam/external tagging.
+    $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+    // Set a from address to the site email address if none are set.
+    if (empty($message['from'])) {
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+    }
+
+    // Override the from address if it doesn't match our Platform Email domain
+    // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+    // multiple from addresses here because that doesn't seem to work currently
+    // hook_mail_alter isn't even invoked for some reason.
+    try {
+      $from = Address::create($message['from']);
+      $domain = explode('@', $from->getAddress());
+      $domain = array_pop($domain);
+
+      if ($domain != 'uiowa.edu') {
+        $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+        $from = new Address('sitenow-noreply@uiowa.edu', $name);
+        $message['headers']['From'] = $from->toString();
+      }
+    }
+    catch (RfcComplianceException $e) {
+      \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+        '@from' => $message['from'],
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_mailer_PHASE().
+ */
+function uiowa_core_mailer_build(EmailInterface $email) {
   // Add header in use by email team to avoid spam/external tagging.
-  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+  $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
+
+  // Set a from address to the site email address if none are set.
+  if (empty($email->getFrom())) {
+    $email->setFrom([
+      new Address(\Drupal::config('system.site')->get('mail'), \Drupal::config('system.site')->get('name')),
+    ]);
+  }
 
   // Override the from address if it doesn't match our Platform Email domain
   // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
   // multiple from addresses here because that doesn't seem to work currently -
   // hook_mail_alter isn't even invoked for some reason.
-  try {
-    $from = Address::create($message['from']);
-    $domain = explode('@', $from->getAddress());
+  $from_addresses = $email->getFrom();
+
+  foreach ($from_addresses as &$from) {
+
+    $domain = explode('@', $from->getEmail());
     $domain = array_pop($domain);
 
     if ($domain != 'uiowa.edu') {
-      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $name = $from->getDisplayName() ?: \Drupal::config('system.site')->get('name');
       $from = new Address('sitenow-noreply@uiowa.edu', $name);
-      $message['headers']['From'] = $from->toString();
     }
   }
-  catch (RfcComplianceException $e) {
-    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
-      '@from' => $message['from'],
-    ]));
+  $email->setFrom($from_addresses);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Invalidate related and tag view caches on content types that
+ * support these views.
+ */
+function uiowa_core_node_presave(Node $node) {
+  $node_type = $node->getType();
+  $type_map = [
+    'article' => 'articles',
+    'page' => 'pages',
+    'person' => 'people',
+  ];
+
+  // Only proceed if this is a supported content type.
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    // We'll do this for tag list and related content.
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      // Only proceed if the option is turned on for this content type.
+      if ($config->get($setting) !== 'do_not_display') {
+        // Get the view and invalidate the cache.
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode) && !$entity instanceof BlockContent) {
+    // Build the card.
+    $entity->buildCard($build);
   }
 }
 
@@ -105,6 +246,9 @@ function uiowa_core_mail_alter(&$message) {
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
   return [
+    'card' => [
+      'render element' => 'element',
+    ],
     'uiowa_core_headline' => [
       'variables' => [
         'headline' => NULL,
@@ -135,25 +279,197 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Preprocess function for card.
  */
-function uiowa_core_preprocess_node(&$variables) {
-  if ($variables['view_mode'] === 'teaser') {
-    $show_teaser_link_indicator = FALSE;
-    $node_type = $variables['node']->bundle();
-    $type_map = [
-      'page' => 'pages',
-      'person' => 'people',
-      'article' => 'articles',
+function template_preprocess_card(&$variables) {
+  $element = $variables['element'];
+
+  // Set up various attributes if not already set up.
+  foreach ([
+    'attributes',
+    'button_attributes',
+    'media_attributes',
+  ] as $attributes_type) {
+    if (!isset($element["#$attributes_type"])) {
+      $element["#$attributes_type"] = [];
+    }
+  }
+
+  // Create a set of title headline classes in case its needed.
+  $headline_classes = ['headline'];
+
+  // Loop through all classes, add any media and headline classes
+  // to the array and remove them from the card classes.
+  if (isset($element['#attributes']['class'])) {
+    foreach ($element['#attributes']['class'] as $key => $style) {
+      if (str_starts_with($style, 'media')) {
+        $element['#media_attributes']['class'][] = $style;
+        unset($element['#attributes']['class'][$key]);
+      }
+      if (str_starts_with($style, 'headline')) {
+        $headline_classes[] = $style;
+        unset($element['#attributes']['class'][$key]);
+      }
+    }
+  }
+
+  $linked_element = FALSE;
+
+  // If there is no URL, then it is not linked.
+  if (!empty($element['#url'])) {
+    if (!is_null($element['#title'])) {
+      $linked_element = 'title';
+    }
+    elseif (isset($element['#link_text'])) {
+      $linked_element = 'button';
+    }
+    elseif (!empty($element['#media'])) {
+      $linked_element = 'media';
+    }
+    else {
+      $linked_element = 'button';
+    }
+  }
+
+  $element['#linked_element'] = $linked_element;
+
+  if (!empty($element['#title'])) {
+    $element['#headline'] = [
+      'headline_text' => $element['#title'],
+      'headline_level' => $element['#title_heading_size'] ?: 'h2',
+      'headline_class' => $headline_classes,
     ];
 
-    if (isset($type_map[$node_type])) {
-      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-      $config = \Drupal::configFactory()->getEditable($config_name);
-
-      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+    // Set 'click-target' class on headline URL if title is the linked element.
+    if ($element['#linked_element'] === 'title') {
+      $element['#headline']['headline_url'] = $element['#url'];
+      $element['#headline']['headline_url_class'] = 'click-target';
     }
-    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
+  }
+
+  // Set 'aria-hidden' on the button if it is not linked.
+  if ($element['#linked_element'] !== 'button') {
+    $element['#button_attributes']['aria-hidden'] = TRUE;
+  }
+
+  // If title and link text are set, set a button id attribute for
+  // aria-describedby.
+  if (is_string($element['#title']) && !empty($element['#link_text'])) {
+    $aria_id = Html::getUniqueId($element['#title']);
+    $element['#headline']['headline_aria'] = $aria_id;
+    $element['#button_attributes']['id'] = $aria_id;
+  }
+
+  if (!empty($element['#url'])) {
+    // Add click-container class if there is a link.
+    $element['#attributes']['class'][] = 'click-container';
+  }
+  else {
+    // If there is no URL, set a data attribute so our click a11y script knows
+    // to ignore this card.
+    $element['#attributes']['data-uids-no-link'] = TRUE;
+  }
+
+  $element['#attributes']['class'][] = 'block--word-break';
+
+  // Initialize a list of button classes we need to use.
+  $button_classes = [
+    'bttn',
+    'bttn--primary',
+    'bttn--transparent',
+    'bttn--light-font',
+  ];
+
+  // Add the 'click-target' class to the button if it is linked.
+  if ($element['#linked_element'] === 'button') {
+    $button_classes[] = 'click-target';
+  }
+
+  // Set appropriate button classes if there is a URL, no link text, and link
+  // indicator should be shown.
+  if (isset($element['#url']) && !isset($element['#link_text']) && $element['#link_indicator']) {
+    $button_classes = [
+      ...$button_classes,
+      'bttn--circle',
+      'bttn--no-text',
+    ];
+  }
+
+  // Add button classes.
+  if (!isset($element['#button_attributes']['class'])) {
+    $element['#button_attributes']['class'] = [];
+  }
+
+  $element['#button_attributes']['class'] = [
+    ...$element['#button_attributes']['class'],
+    ...$button_classes,
+  ];
+
+  // Transfer properties and slots from the render element to variables for
+  // processing in the template.
+  foreach ([
+    'attributes',
+    'button_attributes',
+    'media',
+    'media_attributes',
+    'headline',
+    'subtitle',
+    'meta',
+    'content',
+    'url',
+    'link_text',
+    'link_indicator',
+    'linked_element',
+  ] as $prop) {
+    if (isset($element["#$prop"])) {
+      // If this is an attributes array, convert it to an Attribute first.
+      if (str_ends_with($prop, 'attributes') && !$element["#$prop"] instanceof Attribute) {
+        $element["#$prop"] = new Attribute($element["#$prop"]);
+      }
+      $variables[$prop] = $element["#$prop"];
+    }
+    else {
+      $variables[$prop] = NULL;
+    }
+  }
+
+  // If there is a media element, add the media library.
+  if (isset($element['#media'])) {
+    $variables['#attached']['library'][] = 'uids_base/media';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_field(&$variables) {
+  switch ($variables['field_name']) {
+    case 'title':
+      uiowa_core_set_attributes($variables, [
+        'page-title',
+        'headline--serif',
+        'headline',
+      ]);
+      break;
+  }
+
+  // Check for filtered_html or full_html textareas
+  // that might contain a callout, and if found,
+  // add the associated uids_base library.
+  switch ($variables['field_type']) {
+    case 'text_with_summary':
+    case 'text_long':
+      if (isset($variables['element'][0]['#format']) &&
+        in_array($variables['element'][0]['#format'],
+          [
+            'filtered_html',
+            'full_html',
+          ])) {
+        if (isset($variables['element'][0]['#text']) && preg_match('%<div.*?class=".*?callout.*?">%is', $variables['element'][0]['#text'])) {
+          $variables['#attached']['library'][] = 'uids_base/callout';
+        }
+      }
+      break;
   }
 
 }
@@ -405,6 +721,24 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_page_form':
       RegionHelper::overrideNodeForm($form);
       break;
+
+    // Add multi column to person types.
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      $form['field_person_types']['#attributes']['class'][] = 'multi--column';
+      break;
+
+    case 'views_exposed_form':
+      $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
+
+      // Fixes a bug with BEF, details here:
+      // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
+      foreach ($form as $k => $v) {
+        if (str_contains($k, '_collapsible')) {
+          $form[$k]['#open'] = FALSE;
+        }
+      }
+      break;
   }
 }
 
@@ -531,66 +865,135 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_block(&$variables) {
+  if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
+    if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
+      $variables['content']['#block_content']->buildCard($variables['content']);
+
+      // Prevent contextual links from displaying.
+      if (isset($variables['content']['#contextual_links'])) {
+        unset($variables['content']['#contextual_links']);
+      }
+
+    }
+  }
   switch ($variables['plugin_id']) {
     case 'views_block:tags_list-tags_list':
       $variables['#attached']['library'][] = 'uids_base/tags';
       $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'layout-container tags-list__container block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_manually_referenced_content-block_grid':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
+
+    case 'system_main_block':
+      $current_route = \Drupal::routeMatch();
+      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), [
+        'system.401',
+        'system.403',
+      ])) {
+        $variables['content']['login_link'] = [
+          '#type' => 'link',
+          '#title' => t('HawkID Login'),
+          '#url' => Url::fromRoute('samlauth.saml_controller_login', [
+            'destination' => \Drupal::request()->getRequestUri(),
+          ]),
+          '#prefix' => '<p class="text-align-center">',
+          '#suffix' => '</p>',
+          '#attributes' => [
+            'class' => [
+              'bttn',
+              'bttn--primary',
+              'bttn--caps',
+            ],
+          ],
+          '#cache' => [
+            'max-age' => 0,
+          ],
+        ];
+      }
+      break;
+
   }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * Invalidate related and tag view caches on content types that
- * support these views.
+ * Implements hook_token_info().
  */
-function uiowa_core_node_presave(Node $node) {
-  $node_type = $node->getType();
-  $type_map = [
-    'article' => 'articles',
-    'page' => 'pages',
-    'person' => 'people',
+function uiowa_core_token_info(): array {
+  $info = [];
+  $info['types']['uiowa_core'] = [
+    'name' => t('UIowa Core'),
+    'description' => t('Tokens for UIowa Core.'),
   ];
+  $info['tokens']['uiowa_core']['org_name'] = [
+    'name' => 'Organization Name',
+    'description' => 'A token to override the default University of Iowa organization name.',
+  ];
+  $info['tokens']['uiowa_core']['favicon_assets_path'] = [
+    'name' => 'Favicon assets path',
+    'description' => 'A token to override the default favicons path.',
+  ];
+  return $info;
+}
 
-  // Only proceed if this is a supported content type.
-  if (isset($type_map[$node_type])) {
-    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-    $config = \Drupal::configFactory()->getEditable($config_name);
-    // We'll do this for tag list and related content.
-    foreach ([
-      'tag_display' => 'tags_list',
-      'related_display' => 'related_content',
-    ] as $setting => $view_name) {
-      // Only proceed if the option is turned on for this content type.
-      if ($config->get($setting) !== 'do_not_display') {
-        // Get the view and invalidate the cache.
-        $view = Views::getView($view_name);
-        $view->storage->invalidateCaches();
+/**
+ * Implements hook_tokens().
+ */
+function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type === 'uiowa_core') {
+
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uiowa_core.settings');
+    $theme_config = $config_factory->getEditable('uids_base.settings');
+    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'org_name':
+          $org_name = $ccom_site ? 'Carver College of Medicine' : 'The University of Iowa';
+          $replacements[$original] = $config->get('uiowa_core.org_name') ?? $org_name;
+          break;
+
+        case 'favicon_assets_path':
+          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
+
+          break;
       }
     }
+  }
+  return $replacements;
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function uiowa_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'related_manually_referenced_content') {
+    // Attach the grid class.
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
 
@@ -802,4 +1205,170 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
   }
 
   return $options;
+}
+
+/**
+ * Helper function convert exposed filter to select dropdown.
+ */
+function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
+  // Get available configuration entities.
+  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
+  $entities = $storage->getQuery()
+    ->accessCheck()
+    ->condition('status', 1)
+    ->sort('title')
+    ->execute();
+
+  // Build a list of options.
+  $options = [];
+  $config_entities = $storage->loadMultiple($entities);
+  foreach ($config_entities as $item) {
+    $options[$item->id()] = $item->label();
+  }
+  asort($options);
+
+  // Rebuild the text filter as select list dropdown.
+  $form['#type'] = 'select';
+  $form['#multiple'] = FALSE;
+  $form['#empty_option'] = t('- Any -');
+  $form['#options'] = $options;
+  unset($form['#size']);
+}
+
+/**
+ * Helper function to set the field label icon.
+ *
+ * @param array $variables
+ *   The field variables array.
+ * @param string $icon_classes
+ *   The Font Awesome class for the field label icon.
+ * @param string $icon_bg_classes
+ *   The Font Awesome class for the background of the field label icon.
+ */
+function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+  if (!isset($variables['field_label_icon'])) {
+    $variables['field_label_icon'] = '';
+  }
+  $variables['field_label_icon'] = implode(' ',
+    [
+      $variables['field_label_icon'],
+      $icon_classes,
+    ]);
+  if (!empty($icon_bg_classes)) {
+    $variables['field_label_icon_bg'] = $icon_bg_classes;
+  }
+}
+
+/**
+ * Helper function to set the field icon.
+ *
+ * @param array $variables
+ *   The field variables array.
+ * @param string $icon_classes
+ *   The Font Awesome class for the field icon.
+ * @param string $icon_bg_classes
+ *   The Font Awesome class for the background of the field icon.
+ */
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+  if (!isset($variables['field_icon'])) {
+    $variables['field_icon'] = '';
+  }
+  $variables['field_icon'] = implode(' ',
+    [
+      $variables['field_icon'],
+      $icon_classes,
+    ]);
+  if (!empty($icon_bg_classes)) {
+    $variables['field_icon_bg'] = $icon_bg_classes;
+  }
+}
+
+/**
+ * Helper function to set the block/field's attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param array|string $classes
+ *   The class(es) to be added to the block/field's attributes.
+ */
+function uiowa_core_set_attributes(array &$variables, array|string $classes) : void {
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  if (!is_array($classes)) {
+    $classes = [$classes];
+  }
+  $variables['attributes']['class'] = array_unique(array_merge($variables['attributes']['class'], $classes));
+}
+
+/**
+ * Helper function to set the block/field's title attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param array|string $title_classes
+ *   The class(es) to be added to the block/field's title attributes.
+ */
+function uiowa_core_set_title_attributes(array &$variables, array|string $title_classes): void {
+  if (!isset($variables['title_attributes']['class'])) {
+    $variables['title_attributes']['class'] = [];
+  }
+  if (!is_array($title_classes)) {
+    $title_classes = [$title_classes];
+  }
+  $variables['title_attributes']['class'] = array_unique(array_merge($variables['title_attributes']['class'], $title_classes));
+}
+
+/**
+ * Helper function to clean up html tags.
+ */
+function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
+  return trim(strip_tags($string, $allowed_tags));
+}
+
+/**
+ * Helper function to determine if empty.
+ */
+function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): bool {
+  return uiowa_core_html_cleanup($string, $allowed_tags) === '';
+}
+
+/**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function uiowa_core_unset_layout_builder_block(array &$variables, string $block_id) {
+  if (isset($variables['content']['_layout_builder'])) {
+    foreach ($variables['content']['_layout_builder'] as &$layout) {
+      foreach ($layout as &$layout_part) {
+        if (is_array($layout_part)) {
+          foreach ($layout_part as $key => $block) {
+            if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+              unset($layout_part[$key]);
+              break 2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to hide views row fields.
+ */
+function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
+  foreach ($variables['rows'] as &$row_build) {
+    if (!isset($row_build['content']['#hide_fields'])) {
+      $row_build['content']['#hide_fields'] = [];
+    }
+
+    foreach ($fields_to_hide as $field_to_hide) {
+      $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+  }
 }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labholoreality.uiowa.ddev.site
+    protocol: https
+  machine_name: labholoreality
+  human_name: holoreality.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labholoreality.prod
+drupal:
+  db:
+    database: holoreality_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labholoreality.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Holo Reality Lab'

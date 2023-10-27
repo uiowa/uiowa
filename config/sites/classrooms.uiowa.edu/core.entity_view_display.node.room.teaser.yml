@@ -1,0 +1,129 @@
+uuid: 4e585298-cdff-4cac-98e5-636491a3cbc1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.room.body
+    - field.field.node.room.field_gallery_images
+    - field.field.node.room.field_image
+    - field.field.node.room.field_meta_tags
+    - field.field.node.room.field_room_accessibility_feature
+    - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_classroom_furniture
+    - field.field.node.room.field_room_combined_id
+    - field.field.node.room.field_room_design_details
+    - field.field.node.room.field_room_features
+    - field.field.node.room.field_room_guide
+    - field.field.node.room.field_room_instruction_category
+    - field.field.node.room.field_room_map
+    - field.field.node.room.field_room_max_occupancy
+    - field.field.node.room.field_room_name
+    - field.field.node.room.field_room_responsible_unit
+    - field.field.node.room.field_room_room_id
+    - field.field.node.room.field_room_scheduling_regions
+    - field.field.node.room.field_room_seating_chart
+    - field.field.node.room.field_room_technology_features
+    - field.field.node.room.field_room_tile_details
+    - field.field.node.room.field_room_type
+    - field.field.node.room.field_room_video
+    - node.type.room
+  module:
+    - user
+id: node.room.teaser
+targetEntityType: node
+bundle: room
+mode: teaser
+content:
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_room_building_id:
+    type: entity_reference_entity_id
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_room_features:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
+    weight: 7
+    region: content
+  field_room_max_occupancy:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ''
+      prefix_suffix: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_room_name:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_room_responsible_unit:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_room_room_id:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_room_type:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+hidden:
+  body: true
+  content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_gallery_images: true
+  field_meta_tags: true
+  field_room_accessibility_feature: true
+  field_room_building_link: true
+  field_room_classroom_furniture: true
+  field_room_combined_id: true
+  field_room_design_details: true
+  field_room_guide: true
+  field_room_instruction_category: true
+  field_room_map: true
+  field_room_map_link: true
+  field_room_scheduling_regions: true
+  field_room_seating_chart: true
+  field_room_section_heading: true
+  field_room_technology_features: true
+  field_room_tile_details: true
+  field_room_video: true
+  links: true
+  search_api_excerpt: true

@@ -38,14 +38,18 @@ class UiowaSearchResultsController extends ControllerBase {
       'site' => 'default_collection',
     ];
 
-    $build['search'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
-      '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
-      '#attributes' => [
-        'target' => '_blank',
-      ],
-    ];
+    $display_search_all_uiowa = $config['display_search_all_uiowa'] ?? TRUE;
+
+    if ($display_search_all_uiowa) {
+      $build['search'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
+        '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
+        '#attributes' => [
+          'target' => '_blank',
+        ],
+      ];
+    }
 
     $build['results_container'] = [
       '#type' => 'container',

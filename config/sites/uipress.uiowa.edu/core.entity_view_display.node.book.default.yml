@@ -158,7 +158,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -10
             additional: {  }
             third_party_settings: {  }
@@ -178,7 +178,9 @@ third_party_settings:
                 label: inline
                 settings:
                   link: true
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: 0
             additional:
               layout_builder_styles_style:
@@ -202,7 +204,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -9
             additional: {  }
             third_party_settings: {  }
@@ -224,7 +226,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -5
             additional: {  }
             third_party_settings: {  }
@@ -246,7 +248,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -2
             additional: {  }
             third_party_settings: {  }
@@ -287,7 +289,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -1
             additional: {  }
             third_party_settings: {  }
@@ -309,7 +311,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -3
             additional: {  }
             third_party_settings: {  }
@@ -331,7 +333,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -6
             additional: {  }
             third_party_settings: {  }
@@ -353,7 +355,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -7
             additional: {  }
             third_party_settings: {  }
@@ -375,7 +377,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -4
             additional: {  }
             third_party_settings: {  }
@@ -397,7 +399,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: -8
             additional: {  }
             third_party_settings: {  }
@@ -423,7 +425,6 @@ third_party_settings:
                   photoswipe_caption: title
                   photoswipe_caption_custom: ''
                   photoswipe_view_mode: _custom
-                  gallery_selector: ''
                 third_party_settings: {  }
             weight: 2
             additional: {  }
@@ -491,7 +492,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: 2
             additional:
               layout_builder_styles_style:
@@ -854,12 +855,12 @@ content:
       trim_suffix: ''
       wrap_output: false
       wrap_class: trimmed
+      summary_handler: full
+      trim_options: {  }
       more_link: false
       more_class: more-link
       more_text: More
       more_aria_label: 'Read more about [node:title]'
-      summary_handler: full
-      trim_options: {  }
     third_party_settings: {  }
     weight: 6
     region: content

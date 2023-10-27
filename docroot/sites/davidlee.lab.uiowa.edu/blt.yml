@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdavidlee.uiowa.ddev.site
+    protocol: https
+  machine_name: labdavidlee
+  human_name: davidlee.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdavidlee.prod
+drupal:
+  db:
+    database: davidlee_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdavidlee.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Laboratory for Advanced Construction Technology'

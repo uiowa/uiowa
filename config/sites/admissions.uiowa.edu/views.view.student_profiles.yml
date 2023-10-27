@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_person_hometown
     - field.storage.node.field_student_profile_blurb
     - field.storage.node.field_student_profile_country
@@ -630,14 +631,27 @@ display:
         - 'config:field.storage.node.field_student_profile_image'
         - 'config:field.storage.node.field_student_profile_major'
         - 'config:field.storage.node.field_student_profile_state'
-  page_1:
-    id: page_1
+  student_profile_page:
+    id: student_profile_page
     display_title: Page
     display_plugin: page
     position: 2
     display_options:
+      style:
+        type: default
+        options: {  }
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
+      defaults:
+        style: false
+        row: false
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: student-profiles
     cache_metadata:
       max-age: -1

@@ -5,18 +5,21 @@
  * Contains lb_enhancements.module.
  */
 
-use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\layout_builder_custom\LayoutBuilderPreRender;
-use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
-use Drupal\layout_builder_styles\Entity\LayoutBuilderStyleGroup;
-use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
-use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\ctools_views\Plugin\Display\Block;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\layout_builder_custom\LayoutBuilderPreRender;
+use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
+use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
+use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+use Drupal\uiowa_core\Element\Card;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -24,6 +27,96 @@ use Drupal\views\ViewExecutable;
  */
 function layout_builder_custom_element_info_alter(array &$types) {
   $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_layout_builder_configure_section_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $formObject = $form_state->getFormObject();
+  /** @var \Drupal\Core\Layout\LayoutInterface $layout */
+  $layout = $formObject->getLayout();
+  $config = $layout->getConfiguration();
+  // Section component unique ID is stored in third-party settings.
+  $form['unique_id_wrapper'] = [
+    '#type' => 'container',
+    '#weight' => 0,
+    '#attributes' => [
+      'id' => 'unique-id-wrapper',
+    ],
+    'unique_id' => [
+      '#type' => 'textfield',
+      '#title' => t('Unique ID'),
+      '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
+      '#default_value' => $config['layout_builder_custom_unique_id'] ?: '',
+      '#ajax' => [
+        'callback' => '_layout_builder_custom_unique_id',
+        'wrapper' => 'unique-id-wrapper',
+        'disable-refocus' => TRUE,
+      ],
+    ],
+  ];
+
+  // Add custom validation for section form.
+  $form['#validate'][] = '_layout_builder_custom_section_form_validate';
+
+  // Our submit handler must execute before the default one, because the
+  // default handler stores the section & component data in the tempstore
+  // and we need to update those objects before that happens.
+  array_unshift($form['#submit'], '_layout_builder_custom_submit_section_form');
+}
+
+/**
+ * Custom validation for layout_builder_add/update_block form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_section_form_validate(array &$form, FormStateInterface $form_state) {
+  // Run unique_id clean for when the AJAX callback is not triggered.
+  if ($unique_id = $form_state->getValue([
+    'unique_id_wrapper',
+    'unique_id',
+  ])) {
+    $form_state->setValue([
+      'unique_id_wrapper',
+      'unique_id',
+    ], Html::cleanCssIdentifier($unique_id));
+  }
+}
+
+/**
+ * Custom submit handler for layout builder section configure form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_submit_section_form(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder_styles\Form\ConfigureSectionForm $formObject */
+  $formObject = $form_state->getFormObject();
+  $config = $formObject->getLayout()->getConfiguration();
+  if (!$config) {
+    $config = [];
+  }
+
+  // Save the third-party value if set, otherwise unset it.
+  if ($unique_id = $form_state->getValue([
+    'unique_id_wrapper',
+    'unique_id',
+  ])) {
+    $config['layout_builder_custom_unique_id'] = $unique_id;
+  }
+  else {
+    unset($config['layout_builder_custom_unique_id']);
+  }
+
+  $formObject
+    ->getLayout()
+    ->setConfiguration($config);
 }
 
 /**
@@ -51,73 +144,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // @todo Write a patch for layout_builder_styles that adds these options. See
       //   https://github.com/uiowa/uiowa/issues/5010
       // An array of options for altering Layout Builder Styles behavior.
-      $lbs_extra_options = [
-        'banner_gradient' => [
-          'default' => 'banner_gradient_dark',
-        ],
-        'banner_height' => [
-          'default' => 'banner_medium',
-        ],
-        'banner_type' => [
-          'default' => 'banner_centered_left',
-        ],
-        'button_style' => [
-          'default' => 'button_primary',
-        ],
-        'button_size' => [
-          'default' => 'button_medium',
-        ],
-        'card_image_size' => [
-          'default' => 'card_image_large',
-        ],
-        'card_media_position' => [
-          'default' => 'card_media_position_stacked',
-        ],
-        'content_alignment' => [
-          'default' => 'content_alignment_left',
-        ],
-        'grid_columns' => [
-          'default' => 'block_grid_threecol_33_34_33',
-        ],
-        'headline_type' => [
-          'default' => 'headline_bold_serif',
-        ],
-        'headline_size' => [
-          'default' => 'headline_large',
-        ],
-        'list_format' => [
-          'default' => 'list_format_list',
-        ],
-        'media_format' => [
-          'default' => 'media_format_widescreen',
-        ],
-        'menu_orientation' => [
-          'default' => 'block_menu_vertical',
-        ],
-      ];
-
-      $groups = LayoutBuilderStyleGroup::loadMultiple();
-
-      // Loop through layout builder style groups.
-      foreach (array_keys($groups) as $group) {
-
-        // Check if we have extra options defined.
-        if (isset($lbs_extra_options[$group])) {
-          // The key that is used in the form array.
-          $group_key = 'layout_builder_style_' . $group;
-
-          // Check if the style group is set in the form.
-          if (isset($form[$group_key])) {
-
-            if ($form_id === 'layout_builder_add_block') {
-              // Set default for this group if it exists.
-              if (isset($lbs_extra_options[$group]['default'])) {
-                $form[$group_key]['#default_value'] = [$lbs_extra_options[$group]['default']];
-              }
-            }
-          }
-        }
-      }
+      $lb_styles_extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
 
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
@@ -196,6 +223,28 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
             break;
 
+          case 'inline_block:uiowa_image_gallery':
+            $form['#attached']['library'][] = 'layout_builder_custom/image-block-form';
+
+            // Set '#states' for card image size.
+            $form['layout_builder_style_default']['#states'] = [
+              'visible' => [
+                // Always show masonry styles when media format
+                // is set to 'no crop'.
+                [
+                  ':input[name="layout_builder_style_media_format"]' => [
+                    'value' => 'media_format_no_crop',
+                  ],
+                ],
+              ],
+            ];
+            break;
+
+          case 'inline_block:uiowa_text_area':
+          case 'webform_block':
+            $form['layout_builder_style_padding']['#empty_option'] = 'None';
+            break;
+
           case 'inline_block:uiowa_card':
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
 
@@ -206,7 +255,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'views_block:events_list_block-card_list':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
-            $form['layout_builder_style_card_image_size']['#states'] = [
+            $form['layout_builder_style_media_size']['#states'] = [
               'visible' => [
                 // Always show when media format is set to 'circle'.
                 [
@@ -214,7 +263,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                     'value' => 'media_format_circle',
                   ],
                 ],
-                // Always show when card media position is not 'stacked'.
+                // Show when a media position is selected.
                 [
                   ':input[name="layout_builder_style_card_media_position"]' => [
                     '!value' => 'card_media_position_stacked',
@@ -223,72 +272,49 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
-            $defaults = [
-              'layout_builder_style_background' => 'block_background_style_light',
-              'layout_builder_style_card_image_size' => 'card_image_small',
-              'layout_builder_style_card_media_position' => 'card_media_position_right',
-              'layout_builder_style_content_alignment' => 'content_alignment_left',
-              'layout_builder_style_media_format' => 'media_format_widescreen',
-            ];
-
-            $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
-
+            // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
-              case 'inline_block:uiowa_aggregator':
-                break;
-
+              // The card block is stacked by default.
               case 'inline_block:uiowa_card':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_stacked';
+                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
                 break;
 
+              // Set square to default for image gallery.
+              case 'inline_block:uiowa_image_gallery':
+                $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
+                break;
+
+              // Media left, media circle, and no border are the defaults.
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
-                $defaults['layout_builder_style_media_format'] = 'media_format_circle';
-                break;
-
-              case 'views_block:article_list_block-list_article':
-                $defaults['layout_builder_style_card_image_size'] = 'card_image_medium';
-                break;
-
               case 'views_block:people_list_block-list_card':
-                $defaults['layout_builder_style_media_format'] = 'media_format_circle';
+                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
+                $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
+                $lb_styles_extra_settings['border']['default'] = 'no_border';
+                break;
+
+              // No border is the default.
+              case 'inline_block:uiowa_aggregator':
+              case 'views_block:article_list_block-list_article':
+                $lb_styles_extra_settings['border']['default'] = 'no_border';
+                break;
             }
 
-            foreach ($defaults as $key => $default) {
-              if (isset($form[$key]) && isset($form[$key]['#options'][$default])) {
-                $form[$key]['#options'][$default] .= ' (default)';
-              }
-            }
-
-            // Set layout builder style default settings.
+            // Make some block-specific add form adjustments.
             if ($form_id === 'layout_builder_add_block') {
-
-              if (isset($form['layout_builder_style_list_format'])) {
-                $form['layout_builder_style_list_format']['#default_value'] = 'list_format_list';
-              }
-              if (isset($form['layout_builder_style_grid_columns'])) {
-                $form['layout_builder_style_grid_columns']['#default_value'] = 'block_grid_threecol_33_34_33';
-              }
-
               switch ($block->getPluginId()) {
+                // This case should fall through to the next
+                // to set the default items_per_page.
                 case 'views_block:article_list_block-list_article':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
-                  break;
 
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   break;
               }
-
-              foreach ($defaults as $key => $default) {
-                if (isset($form[$key])) {
-                  $form[$key]['#default_value'] = $default;
-                }
-              }
             }
+
             break;
 
           case 'inline_block:uiowa_collection':
@@ -368,8 +394,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['#title'] = t('Visibility options');
             // Move the advanced settings to be the first section.
             $form['settings']['advanced']['#weight'] = -5;
-            // Hide the options to set the block title and link.
-            $form['settings']['advanced']['label_type']['#access'] = FALSE;
+            // Append 'Menu' to the end of the admin label for clarity.
+            $form['settings']['admin_label']['#plain_text'] .= ' Menu';
+            // Unset the menu option in the label.
+            unset($form['settings']['advanced']['label_type']['#options']['menu']);
+            // Adjust the default text.
+            $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
+            // Update the description on the label_type.
+            $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. The title is displayed only for screen reader users. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
+            // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
             // visibility level should be set to 1 if used.
@@ -426,6 +459,42 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
+      // Loop through map of default styles and append text indicating
+      // that they are the defaults if appropriate.
+      foreach ($lb_styles_extra_settings as $key => $settings) {
+        // The key that is used in the form array.
+        $key = 'layout_builder_style_' . $key;
+        // If the style group is set...
+        if (isset($form[$key])) {
+          if (isset($settings['default'])) {
+            // If an alternative label has been added for the empty option,
+            // use it instead.
+            if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
+              $form[$key]['#empty_option'] = t('@label', [
+                '@label' => $settings['empty_label'],
+              ]);
+            }
+
+            // If the default option is exists, add the text there.
+            if (isset($form[$key]['#options'][$settings['default']])) {
+              $form[$key]['#options'][$settings['default']] .= ' (default)';
+            }
+            // Otherwise, if the empty option should be the default, add
+            // the text there.
+            elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
+              $form[$key]['#empty_option'] = t('@empty_option (default)', [
+                '@empty_option' => $form[$key]['#empty_option']->render(),
+              ], $form[$key]['#empty_option']->getOptions());
+            }
+          }
+
+          // Set layout builder style default settings.
+          if ($form_id === 'layout_builder_add_block') {
+            $form[$key]['#default_value'] = [$settings['default']];
+          }
+        }
+      }
+
       $form['settings'] += [
         '#weight' => 0,
       ];
@@ -452,27 +521,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
-      $single_select_groups = [
-        'layout_builder_style_background',
-        'layout_builder_style_container',
-        'layout_builder_style_components',
-      ];
-
-      foreach ($single_select_groups as $group) {
-        if (isset($form[$group])) {
-          // Disable multiple selection and weight before LBS elements so focus
-          // on a Chosen-enabled select does not obscure other form elements.
-          $form[$group]['#multiple'] = FALSE;
-          $form[$group]['#weight'] = 89;
-        }
-      }
-
       break;
 
     case 'fragment_region_item_layout_builder_form':
     case 'fragment_region_item_after_content_layout_builder_form':
     case 'node_page_layout_builder_form':
       $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+      $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
+      $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
       break;
   }
 }
@@ -559,25 +615,29 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
           }
           else {
             // Restrict time range values.
-            $min = strtotime('01-01-1970');
-            $max = strtotime('31-12-2037');
-            $start = $form_state->getValue([
-              'settings',
-              'block_form',
-              'field_uiowa_events_date_range',
-            ])[0]['time_wrapper']['value']->format('U');
-            $end = $form_state->getValue([
-              'settings',
-              'block_form',
-              'field_uiowa_events_date_range',
-            ])[0]['time_wrapper']['end_value']->format('U');
-            if ($start < $min || $start > $max) {
-              $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
-                t('Invalid start date.'));
-            }
-            if ($end < $min || $end > $max) {
-              $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
-                t('Invalid end date.'));
+            $min = $form['settings']['block_form']['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#attributes']['min'];
+            $max = $form['settings']['block_form']['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#attributes']['max'];
+            if ($min && $max) {
+              $min = strtotime($min);
+              $max = strtotime($max);
+              $start = $form_state->getValue([
+                'settings',
+                'block_form',
+                'field_uiowa_events_date_range',
+              ])[0]['time_wrapper']['value']->format('U');
+              $end = $form_state->getValue([
+                'settings',
+                'block_form',
+                'field_uiowa_events_date_range',
+              ])[0]['time_wrapper']['end_value']->format('U');
+              if ($start < $min || $start > $max) {
+                $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+                  t('Invalid start date.'));
+              }
+              if ($end < $min || $end > $max) {
+                $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+                  t('Invalid end date.'));
+              }
             }
           }
         }
@@ -692,16 +752,16 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         $media_position = $form_state->getValue('layout_builder_style_card_media_position');
         $media_format = $form_state->getValue('layout_builder_style_media_format');
 
-        if ($media_position === 'card_media_position_stacked') {
-          if (in_array($media_format, [
-            'media_format_widescreen',
-            'media_format_square',
-          ])) {
-            $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
-            // @todo Should we set a message here to let the user
-            //   know the image size was changed? See
-            //   https://github.com/uiowa/uiowa/issues/5036
-          }
+        // If the media position is stacked and the media format is square or
+        // widescreen, set the media size to large.
+        if ($media_position === '' && in_array($media_format, [
+          'media_format_widescreen',
+          'media_format_square',
+        ])) {
+          $form_state->setValue('layout_builder_style_media_size', 'media_size_large');
+          // @todo Should we set a message here to let the user
+          //   know the image size was changed? See
+          //   https://github.com/uiowa/uiowa/issues/5036
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
@@ -914,10 +974,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       case 'inline_block:uiowa_events':
         if (isset($element['field_uiowa_events_date_range'])) {
-          // Set a date picker limit to our UNIX min/max.
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#date_year_range'] = '1970:2037';
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['end_value']['#date_year_range'] = '1970:2037';
-
           // Show date range field when timeframe is set to date_range.
           $element['field_uiowa_events_date_range']['#states'] = [
             'visible' => [
@@ -960,8 +1016,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         }
 
         // Default to multiselect and remove the empty option.
-        $element["field_accordion_type"]["widget"]["#default_value"] = $element["field_accordion_type"]["widget"]["#default_value"] ?? 'multi_select';
-        unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
+        $element['field_accordion_type']['widget']['#default_value'] = $element['field_accordion_type']['widget']['#default_value'] ?? 'multi_select';
+        unset($element['field_accordion_type']['widget']['#options']['_none']);
         // Only show the "accordion type" field if accordion view mode
         // has been selected.
         $element['field_accordion_type']['widget']['#states'] = [
@@ -1017,19 +1073,24 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+function layout_builder_custom_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
 
       case 'uiowa_collection_item':
-      case 'uiowa_slide':
-        // If it exists, pop the headline and place it in the label.
-        if (!empty($element['top']['summary']['fields_info']['#summary']['content'])) {
-          $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
-          $element['top']['type']['label']['#markup'] = $headline;
+        if (isset($element['subform']['field_unique_id'])) {
+          $element['subform']['#prefix'] = '<div id="unique-id-wrapper-child">';
+          $element['subform']['#suffix'] = '</div>';
+          $element['subform']['field_unique_id']['widget'][0]['value']['#ajax'] = [
+            'callback' => '_layout_builder_custom_unique_id',
+            'event' => 'change',
+            'wrapper' => 'unique-id-wrapper-child',
+            'disable-refocus' => TRUE,
+          ];
         }
+
         break;
 
       case 'uiowa_timeline_item':
@@ -1040,43 +1101,22 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
         }
 
         break;
     }
   }
-}
-
-/**
- * Implements hook_theme().
- *
- * @todo Test to see if this is needed anymore. See
- * https://github.com/uiowa/uiowa/issues/5040
- */
-function layout_builder_custom_theme($existing, $type, $theme, $path) {
-  $theme = [
-    'uiowa_headline_widget' => [
-      'variables' => [
-        'headline' => NULL,
-        'heading_size' => NULL,
-        'hide_headline' => NULL,
-        'headline_alignment' => NULL,
-        'child_heading_size' => NULL,
-      ],
-    ],
-  ];
-  return $theme;
 }
 
 /**
@@ -1117,75 +1157,104 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
  */
 function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
-  if (isset($variables['elements']['#attributes']['class'])) {
-    if (is_string($variables['elements']['#attributes']['class'])) {
-      $variables['elements']['#attributes']['class'] = explode(' ', $variables['elements']['#attributes']['class']);
-    }
-    $is_list = array_search('inner--list', $variables['elements']['#attributes']['class']);
-    if ($is_list) {
-      foreach ($variables['elements']['#attributes']['class'] as $key => $style) {
-        if (str_starts_with($style, 'grid--')) {
-          unset($variables['elements']['#attributes']['class'][$key]);
-        }
-      }
+  if (isset($variables['attributes']['class'])) {
+
+    // If this is a views block...
+    // @todo This check is faulty because it is too broad and
+    //   catches some examples that we don't want.
+    //   See https://github.com/uiowa/uiowa/issues/6341
+    if ($variables['base_plugin_id'] === 'views_block') {
+
+      // Filter out any card styles.
+      $card_styles = Card::filterCardStyles($variables['attributes']['class']);
+      $variables['attributes']['class'] = array_diff($variables['attributes']['class'], $card_styles);
+
+      // Get a list of formatting styles that will be displayed
+      // on the view instead of the block and remove them.
+      $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
+        LayoutBuilderStylesHelper::LIST_PREFIX,
+        LayoutBuilderStylesHelper::GRID_PREFIX,
+      ]);
+      LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
     }
   }
+}
 
-  switch ($variables['elements']['#plugin_id']) {
-    case 'inline_block:featured_content':
-      // Take control of the referenced entity renders to pass in heading size.
-      unset($variables['content']['field_featured_content_item']);
-      $variables['content']['referenced_items'] = [];
+/**
+ * Implements hook_preprocess_HOOK() for block__inline_block__featured_content.
+ */
+function layout_builder_custom_preprocess_block__inline_block__featured_content(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/node-type-article';
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
 
-      /** @var \Drupal\block_content\Entity\BlockContent $block */
-      $block = $variables['content']['#block_content'];
+  LayoutBuilderStylesHelper::processGridClasses($variables['attributes']);
+  $variables['attributes']['class'][] = 'list-container';
 
-      // This is a single value field.
-      $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
+  // Take control of the referenced entity renders to pass in heading size.
+  unset($variables['content']['field_featured_content_item']);
+  $variables['content']['referenced_items'] = [];
 
-      if (empty($headline_field['headline'])) {
-        $heading_size = $headline_field['child_heading_size'];
+  /** @var \Drupal\block_content\Entity\BlockContent $block */
+  $block = $variables['content']['#block_content'];
+
+  $override_styles = $variables['elements']['#override_styles'] ?: [];
+
+  // This is a single value field.
+  $headline_field = $block->field_uiowa_headline;
+
+  if (empty($headline_field?->headline)) {
+    $heading_size = $headline_field?->child_heading_size;
+  }
+  else {
+    $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
+    // Add grid modifier class to exclude headline for rendering in grid.
+    $variables['attributes']['class'][] = 'grid--first-item-full-width';
+  }
+
+  foreach ($block->get('field_featured_content_item') as $item) {
+    $target = $item->getProperties(TRUE)['entity']->getTarget();
+    if ($target) {
+      $entity = $target->getEntity();
+
+      // Construct the entity teaser markup manually to pass in the heading
+      // size variable for the template and append it to the block content.
+      $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
+      $build['#title_heading_size'] = $heading_size;
+
+      if (!empty($override_styles)) {
+        $build['#override_styles'] = $override_styles;
       }
-      else {
-        $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-      }
+      $render = \Drupal::service('renderer')->render($build);
 
-      foreach ($block->get('field_featured_content_item') as $item) {
-        $target = $item->getProperties(TRUE)['entity']->getTarget();
-        if ($target) {
-          $entity = $target->getEntity();
+      $variables['content']['referenced_items'][] = [
+        '#markup' => $render,
+      ];
+    }
+  }
+}
 
-          // Associate the block's cache tags with each entity so that the
-          // appropriate render cache ID is cleared when the block changes.
-          $cache_tags = $block->getCacheTags();
-          $entity->addCacheTags($cache_tags);
-          // Grab a fresh copy of the node.
-          $id = $entity->id();
-          Cache::invalidateTags(['node:' . $id]);
+/**
+ * Implements hook_preprocess_HOOK() for block__inline_block__uiowa_banner.
+ */
+function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables) {
+  $block = $variables['elements']['content']['#block_content'];
+  // Media entity template needs to change based on this block,
+  // so invalidate cache.
+  if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
+    $id = $block->get('field_uiowa_banner_image')->target_id;
+    Cache::invalidateTags(['media:' . $id]);
+  }
+}
 
-          // Construct the entity teaser markup manually to pass in the heading
-          // size variable for the template and append it to the block content.
-          $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
-          $build['#heading_size'] = $heading_size;
-          $render = \Drupal::service('renderer')->render($build);
-
-          $variables['content']['referenced_items'][] = [
-            '#markup' => $render,
-          ];
-        }
-      }
-
-      break;
-
-    case 'inline_block:uiowa_banner':
-      $block = $variables['elements']['content']['#block_content'];
-      // Media entity template needs to change based on this block,
-      // so invalidate cache.
-      if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $id = $block->get('field_uiowa_banner_image')->target_id;
-        Cache::invalidateTags(['media:' . $id]);
-      }
-      break;
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_builder_custom_preprocess_layout(&$variables) {
+  // Apply a configured style to a layout by adding the style's CSS classes.
+  if (isset($variables['settings']['layout_builder_custom_unique_id'])) {
+    $variables['attributes']['id'] = $variables['settings']['layout_builder_custom_unique_id'];
   }
 }
 
@@ -1208,9 +1277,9 @@ function layout_builder_custom_preprocess_media(&$variables) {
           // If view is attached to parent entity.
           if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
-            // If row_styles were attached to the view.
-            if ($view->display_handler->getOption('row_styles')) {
-              $row_styles = $view->display_handler->getOption('row_styles');
+            // If block_config is attached to the view display
+            // and layout_builder_styles exist in that.
+            if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
               $media_formats = [
                 'media_format_widescreen' => 'large__widescreen',
                 'media_format_square' => 'large__square',
@@ -1218,7 +1287,7 @@ function layout_builder_custom_preprocess_media(&$variables) {
               ];
               // Change view_mode based on lb_styles.
               foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $row_styles)) {
+                if (in_array($style, $layout_builder_styles)) {
                   $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
                   // Prevents sticky cached images.
                   $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
@@ -1238,110 +1307,98 @@ function layout_builder_custom_preprocess_media(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_views_view().
+ */
+function layout_builder_custom_preprocess_views_view(&$variables) {
+
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  if ($view->display_handler instanceof ListBlock) {
+
+    // Initialize some empty arrays that might be processed.
+    $hide_fields = [];
+    $override_styles = [];
+    $view_styles = [];
+
+    // Initialize the class list, if it doesn't exist.
+    if (!isset($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = [];
+    }
+
+    // Check if we have Layout Builder Styles to process.
+    if (!is_null($layout_builder_styles = $view
+      ?->display_handler
+      ?->getOption('layout_builder_styles'))) {
+
+      // Convert the style list into a map that can be used for overriding
+      // style defaults later.
+      $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($layout_builder_styles);
+
+      // Filter the style map to just classes related to the card.
+      $override_styles = Card::filterCardStyles($style_map);
+
+      // A list of styles to pull from the block to display on the view.
+      $filter_prefixes = [LayoutBuilderStylesHelper::LIST_PREFIX];
+
+      // If this is meant to display as a grid, add that prefix.
+      if (!in_array('list-container--list', $style_map)) {
+        $filter_prefixes[] = LayoutBuilderStylesHelper::GRID_PREFIX;
+      }
+
+      // Get the filtered list of styles.
+      $view_styles = LayoutBuilderStylesHelper::filterStyles($style_map, $filter_prefixes);
+    }
+
+    // Construct the new array of classes to display.
+    $variables['attributes']['class'] = [
+      ...$variables['attributes']['class'],
+      ...array_values($view_styles),
+    ];
+
+    if (!is_null($block_config = $view
+      ?->display_handler
+      ?->getOption('block_config'))) {
+
+      // Build the list of fields to hide.
+      if (isset($block_config['fields'])) {
+        foreach ($block_config['fields'] as $field_name => $hide_field) {
+          if ((int) $hide_field['hide'] === 1) {
+            $hide_fields[] = $field_name;
+          }
+        }
+      }
+    }
+
+    // Check if there are view rows to act upon.
+    if (isset($variables['rows'][0]['#rows'])) {
+
+      // Loop through view rows and set styles to override and hidden
+      // fields.
+      foreach ($variables['rows'][0]['#rows'] as &$row_build) {
+
+        if (!empty($override_styles)) {
+          $row_build['#override_styles'] = $override_styles;
+        }
+        if (!empty($hide_fields)) {
+          $row_build['#hide_fields'] = $hide_fields;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_views_view_unformatted().
  */
 function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
-  // @todo Figure out how to appropriately scope this. See
-  //   https://github.com/uiowa/uiowa/issues/5041
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
-  $variables['row_item_classes'] = [];
 
-  $row_styles = $view->display_handler->getOption('row_styles');
-  if (isset($row_styles) && !empty($variables['rows'])) {
-
-    // Convert single selection to an array for consistent processing.
-    if (!is_array($row_styles)) {
-      $row_styles = [$row_styles];
-    }
-    // @todo remove card--person-teaser when v2 is no longer in use.
-    //   See https://github.com/uiowa/uiowa/issues/4948
-    $default_classes = [
-      'card--list',
-      'card--person-teaser',
-    ];
-
-    // Retrieve all styles from selection(s).
-    $item_classes = [
-      'card_media_position' => 'card--media-right',
-    ];
-
-    foreach ($row_styles as $style_id) {
-      // Account for incorrectly configured component configuration which may
-      // have a NULL style ID. We cannot pass NULL to the storage handler or
-      // it will throw an exception.
-      if (empty($style_id)) {
-        continue;
-      }
-      /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
-      $style = \Drupal::entityTypeManager()->getStorage('layout_builder_style')->load($style_id);
-      if ($style) {
-        // @todo Check if the style group matches a class that is used for
-        //   the media element and put it in a separate array. See
-        //   https://github.com/uiowa/uiowa/issues/5042
-        $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
-        $item_classes[$style->getGroup()] = implode(' ', $classes);
-        $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
-      }
-    }
-    // @todo Add media element classes to a separate variable. See
-    //   https://github.com/uiowa/uiowa/issues/5043
-    $variables['row_item_classes'] = array_merge($default_classes, array_values($item_classes));
-  }
-
-  $machine_name = $view->getDisplay()->display['id'];
-
-  // @todo Change this to just match 'card_list' once there is an update hook
-  //   to transition existing block instances to new machine name. See
-  //   https://github.com/uiowa/uiowa/issues/5044
-  if (in_array($machine_name, [
-    'card_list',
-    'list_article',
-  ])) {
-    $rows = $variables['rows'];
-    $style = $view->style_plugin;
-    $style_classes = [];
-    $size_classes = [];
-
-    if (isset($variables['row_item_classes'])) {
-
-      foreach ($variables['row_item_classes'] as $key => &$class) {
-
-        if (str_starts_with($class, 'media--')) {
-          $style_classes[] = $class;
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'card__media')) {
-          $size_classes[] = $class;
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'inner')) {
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'grid')) {
-          unset($variables['row_item_classes'][$key]);
-        }
-      }
-    }
-    foreach ($rows as $id => $row) {
-      // Set remaining row_item_classes as attributes on each row.
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-
-      // Initialize card_options variable.
-      $variables['rows'][$id]['card_options'] = [
-        'attributes' => $variables['rows'][$id]['attributes'],
-        'media_styles' => $style_classes,
-        'media_sizes' => $size_classes,
-        'card_title' => $style->getField($id, 'title'),
-        'card_link_url' => '',
-        'card_image' => $style->getField($id, 'field_image'),
-        'card_text' => $style->getField($id, 'field_teaser'),
-        'card_tag' => '',
-        'card_date' => '',
-        'headline_level' => $view->display_handler->getOption('heading_size'),
-      ];
+  // If there is a heading size set, pass it through to the row content.
+  if ($heading_size = $view?->display_handler?->getOption('heading_size')) {
+    foreach ($variables['rows'] as &$row_build) {
+      $row_build['content']['#title_heading_size'] = $heading_size;
     }
   }
 }
@@ -1419,11 +1476,19 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
  *   The form element.
  */
 function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
-  $unique_id = Html::cleanCssIdentifier($form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ]));
+  $triggering_element = $form_state->getTriggeringElement();
+  $unique_id = Html::cleanCssIdentifier($triggering_element['#value']);
 
-  $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
-  return $form['unique_id_wrapper'];
+  // Check if the trigger element is a nested field.
+  if (isset($triggering_element['#field_parents']) && isset($triggering_element['#array_parents'])) {
+    // Access the part of the form we want to return.
+    $parent = NestedArray::getValue($form, array_slice($triggering_element['#array_parents'], 0, -4));
+    $parent['field_unique_id']['widget'][0]['value']['#value'] = $unique_id;
+    return $parent;
+  }
+  else {
+    $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
+    return $form['unique_id_wrapper'];
+  }
+
 }

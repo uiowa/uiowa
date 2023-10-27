@@ -19,7 +19,6 @@ dependencies:
     - field.field.node.mentor.field_scholar_bio_headline
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
-    - views.view.mentor_card
   module:
     - layout_builder
     - link
@@ -28,7 +27,6 @@ dependencies:
     - text
     - uiowa_entities
     - user
-    - views
   theme:
     - uids_base
 third_party_settings:
@@ -37,17 +35,101 @@ third_party_settings:
     allow_custom: false
     sections:
       -
-        layout_id: layout_twocol
+        layout_id: layout_onecol
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: a6770436-4cb6-49dc-be6a-77c1fb2407e9
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a3bf7212-558d-4b53-ab41-5cf42251006e
+            region: content
+            configuration:
+              id: 'field_block:node:mentor:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 706e8d8e-380c-43af-8cdb-44e40d8055ea
+            region: content
+            configuration:
+              id: 'field_block:node:mentor:field_person_position'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: Content
           context_mapping: {  }
-          column_widths: 67-33
           layout_builder_styles_style:
+            0: ''
+            section_margin_fixed_width_container: section_margin_fixed_width_container
+            1: section_card_media_size_medium
+            2: section_card_media_format_circle
             section_alignment_start: section_alignment_start
         components:
           -
+            uuid: b0048174-792d-4298-a8af-a3343e0b7fb4
+            region: main
+            configuration:
+              id: 'field_block:node:mentor:field_uiowa_college'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: uiowa_academic_units_formatter
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: a86c1e4a-4fb9-4be9-a354-70e5166e3083
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:mentor:field_grad_program_all_degree'
               label_display: '0'
@@ -58,43 +140,14 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 2
             additional:
               layout_builder_styles_style:
                 block_margin_top: block_margin_top
-          -
-            uuid: 1e130784-692b-447b-b7e5-8fe749c354b9
-            region: first
-            configuration:
-              id: 'field_block:node:mentor:field_person_mentor_qualif'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 10
-            additional: {  }
-          -
-            uuid: 8e7bd06d-b317-422c-bbbc-0dbfb6b72dc7
-            region: first
-            configuration:
-              id: 'field_block:node:mentor:field_person_mentor_ug_role'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 11
-            additional: {  }
+            third_party_settings: {  }
           -
             uuid: 297bb165-e5db-4fec-a1f4-a69e7637377b
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:mentor:field_scholar_bio_headline'
               label: null
@@ -109,11 +162,12 @@ third_party_settings:
                 settings:
                   size: h3
                 third_party_settings: {  }
-            weight: 7
+            weight: 3
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 9242bc32-9e2b-491c-9b65-c53569f9ce9c
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:mentor:field_scholar_bio'
               label_display: '0'
@@ -124,11 +178,12 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: 4
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 08e1c521-09e2-4640-968c-e01eec96c20f
-            region: first
+            region: main
             configuration:
               id: 'field_block:node:mentor:field_person_research_assistants'
               label: null
@@ -143,85 +198,133 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 5
             additional: {  }
+            third_party_settings: {  }
           -
-            uuid: b0048174-792d-4298-a8af-a3343e0b7fb4
-            region: first
+            uuid: 1e130784-692b-447b-b7e5-8fe749c354b9
+            region: main
             configuration:
-              id: 'field_block:node:mentor:field_uiowa_college'
+              id: 'field_block:node:mentor:field_person_mentor_qualif'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: uiowa_academic_units_formatter
-                label: visually_hidden
+                type: text_default
+                label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
+            third_party_settings: {  }
           -
-            uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
-            region: first
+            uuid: 8e7bd06d-b317-422c-bbbc-0dbfb6b72dc7
+            region: main
             configuration:
-              id: system_breadcrumb_block
-              label: Breadcrumbs
+              id: 'field_block:node:mentor:field_person_mentor_ug_role'
               label_display: '0'
-              provider: system
-              context_mapping: {  }
-            weight: 2
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
             additional: {  }
+            third_party_settings: {  }
           -
-            uuid: 67a1e643-c773-4015-a856-3609f77513e8
-            region: first
+            uuid: 2a0dd41b-53a7-4e43-a036-d0039da8019b
+            region: card_media
             configuration:
-              id: 'field_block:node:page:title'
-              label: Title
-              label_display: '0'
+              id: 'field_block:node:mentor:field_image'
+              label: null
+              label_display: null
               provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: string
-                label: visually_hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-          -
-            uuid: 706e8d8e-380c-43af-8cdb-44e40d8055ea
-            region: first
-            configuration:
-              id: 'field_block:node:mentor:field_person_position'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
+                type: entity_reference_entity_view
                 label: hidden
                 settings:
-                  link_to_entity: false
+                  view_mode: medium__square
                 third_party_settings: {  }
-            weight: 4
+            weight: 0
             additional: {  }
+            third_party_settings: {  }
           -
-            uuid: 371069fc-372e-4f83-927a-7c5995918c8b
-            region: second
+            uuid: 8bc11052-c91e-438d-99f7-2f021425a70d
+            region: card_meta
             configuration:
-              id: 'views_block:mentor_card-block_1'
+              id: 'field_block:node:mentor:field_person_email'
               label: null
               label_display: null
-              provider: views
-              context_mapping: {  }
-              views_label: ''
-              items_per_page: '1'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: email_mailto
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: 0
-            additional:
-              layout_builder_styles_style:
-                block_margin_top: block_margin_top
-        third_party_settings: {  }
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 765bebf5-f2f1-4e1a-817f-4aa1f34cfd12
+            region: card_meta
+            configuration:
+              id: 'field_block:node:mentor:field_person_phone'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: telephone_link
+                label: visually_hidden
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0e955bbf-6d2e-4ded-a2cc-4bf3d94295d7
+            region: card_meta
+            configuration:
+              id: 'field_block:node:mentor:field_person_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.mentor.default
 targetEntityType: node
 bundle: mentor
@@ -322,6 +425,9 @@ content:
     weight: 3
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_person_credential: true
   field_person_first_name: true
   field_person_last_name: true

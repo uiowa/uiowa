@@ -3,9 +3,9 @@
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldType\StaticMapUrl;
 use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
 

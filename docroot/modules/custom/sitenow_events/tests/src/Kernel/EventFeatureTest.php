@@ -3,8 +3,8 @@
 namespace Drupal\Tests\sitenow_events\Kernel;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
 
 /**
  * Events kernel test.

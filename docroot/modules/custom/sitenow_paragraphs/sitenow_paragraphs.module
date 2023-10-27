@@ -5,13 +5,13 @@
  * Contains sitenow_paragraph.module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_theme().
@@ -55,9 +55,9 @@ function sitenow_paragraphs_entity_create(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
+function sitenow_paragraphs_field_widget_single_element_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.
@@ -170,6 +170,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         $result = array_intersect($display_options, $classes);
         if (!$result) {
           $classes[] = 'list';
+          $classes[] = 'list-container';
         }
       }
       $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
@@ -177,6 +178,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
     else {
       if ($paragraph->bundle() === 'featured_content') {
         $variables['attributes']['class'][] = 'list';
+        $variables['attributes']['class'][] = 'list-container';
       }
     }
     switch ($paragraph->bundle()) {
@@ -233,6 +235,10 @@ function sitenow_paragraphs_preprocess_field(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {
+      case 'field_featured_content':
+        uiowa_core_set_attributes($variables, 'list-container__inner');
+        break;
+
       case 'field_section_content_block':
         $paragraph = $variables["element"]["#object"];
         $variables['section_attributes'] = new Attribute();
@@ -289,6 +295,10 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  * @see options_allowed_values()
  */
 function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+  // Need to make sure this isn't cached. As we have run into issues
+  // where the selected option is not a valid choice.
+  $cacheable = FALSE;
+
   $options = [];
 
   if (!is_null($entity)) {

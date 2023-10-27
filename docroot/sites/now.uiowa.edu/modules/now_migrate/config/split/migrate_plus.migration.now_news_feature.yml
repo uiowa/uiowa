@@ -1,0 +1,48 @@
+id: now_news_feature
+label: News Feature
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - now
+migration_group: sitenow_migrate
+source:
+  plugin: now_news_feature
+  node_type: news_feature
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_article_subhead: field_subhead
+  field_image: field_primary_media
+  field_featured_image_display: featured_image_display
+  field_image_caption: field_primary_media_caption/0/value
+  body: body
+  field_teaser: body_summary
+  field_tags: tags
+  field_article_source_org: field_by_line
+  field_article_type:
+    plugin: default_value
+    default_value: featured
+  field_article_preserve_links: field_news_broken_links_message
+  field_embargo_information: field_embargo_message/0/value
+  field_gallery_images: gallery
+  field_article_source_link/uri: custom_source_link
+  field_article_source_link_direct: field_article_source_link_direct
+migration_dependencies: null

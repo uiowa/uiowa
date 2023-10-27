@@ -4,18 +4,22 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.body
     - field.storage.node.field_image
     - field.storage.node.field_person_credential
     - field.storage.node.field_person_email
     - field.storage.node.field_person_phone
     - field.storage.node.field_person_position
-    - field.storage.node.field_teaser
+    - field.storage.node.field_person_website
+    - field.storage.node.field_person_website_link_direct
     - node.type.person
     - taxonomy.vocabulary.research_areas
     - taxonomy.vocabulary.tags
   module:
+    - link
     - node
     - options
+    - smart_trim
     - taxonomy
     - telephone
     - user
@@ -163,13 +167,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
-          admin_label: 'Short Bio'
+          admin_label: ''
           plugin_id: field
           label: ''
           exclude: false
@@ -213,8 +217,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: true
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -529,6 +551,138 @@ display:
           text: view
           output_url_as_text: true
           absolute: false
+        field_person_website:
+          id: field_person_website
+          table: node__field_person_website
+          field: field_person_website
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '{{ field_person_website__uri }}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: '{{ view_node }}'
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: uri
+          type: link
+          settings:
+            trim_length: 80
+            url_only: true
+            url_plain: false
+            rel: '0'
+            target: '0'
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 1
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: ol
+          separator: ', '
+          field_api_classes: false
+        field_person_website_link_direct:
+          id: field_person_website_link_direct
+          table: node__field_person_website_link_direct
+          field: field_person_website_link_direct
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_false: ''
+            format_custom_true: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       pager:
         type: mini
         options:
@@ -941,12 +1095,14 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_person_credential'
         - 'config:field.storage.node.field_person_email'
         - 'config:field.storage.node.field_person_phone'
         - 'config:field.storage.node.field_person_position'
-        - 'config:field.storage.node.field_teaser'
+        - 'config:field.storage.node.field_person_website'
+        - 'config:field.storage.node.field_person_website_link_direct'
   list_card:
     id: list_card
     display_title: 'People list'
@@ -1000,9 +1156,11 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_person_credential'
         - 'config:field.storage.node.field_person_email'
         - 'config:field.storage.node.field_person_phone'
         - 'config:field.storage.node.field_person_position'
-        - 'config:field.storage.node.field_teaser'
+        - 'config:field.storage.node.field_person_website'
+        - 'config:field.storage.node.field_person_website_link_direct'

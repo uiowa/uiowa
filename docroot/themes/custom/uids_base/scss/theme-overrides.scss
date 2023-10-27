@@ -1,0 +1,117 @@
+@import "../uids/assets/scss/_variables.scss";
+@import "../uids/assets/scss/_utilities.scss";
+
+.off-brand {
+
+  .bg--white--pattern--brain,
+  .bg--white--pattern--particle {
+    filter: grayscale(100%);
+  }
+
+  // Without the block Iowa logo, the top bar will not render on some headers.
+  // Sticky headers.
+
+  &.no-top-links.header-sticky.toolbar-horizontal.toolbar-tray-open.below {
+    @include breakpoint(md) {
+      padding-top: 171px !important;
+    }
+  }
+
+  &.no-top-links.header-sticky.below {
+    @include breakpoint(md) {
+      padding-top: 90px;
+    }
+  }
+
+  &.header-sticky.scroll-down .iowa-bar__below .iowa-bar__container,
+  &.header-sticky.scroll-up .iowa-bar__below .iowa-bar__container {
+    .site-name img {
+      max-height: 50px;
+      padding-top: 5px;
+    }
+  }
+  // Toggle nav absolute positioning for header without top-links.
+  &.no-top-links .iowa-bar.iowa-bar--narrow .toggle-nav__bttn {
+    @include breakpoint(page-container) {
+      top: 0;
+    }
+  }
+
+  &.no-top-links .iowa-bar.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
+    @include breakpoint(md) {
+      top: 90px;
+    }
+  }
+
+  // Added a top-bar div to maintain the height of the top-links bar.
+  .iowa-bar--full,
+  .iowa-bar--narrow {
+    .top-bar {
+      height: 70px;
+      background: $secondary;
+      @include breakpoint(md) {
+        height: auto;
+        background: none;
+      }
+    }
+  }
+  // Adjust height for top bar on narrow header.
+  &.has-top-links .iowa-bar--narrow .top-bar {
+    @include breakpoint(md) {
+      height: 50px;
+    }
+  }
+
+  &.no-top-links .iowa-bar--narrow .parent-site-name {
+    min-height: 50px;
+  }
+
+  // Setting container to block on mobile to get elements to stack.
+  .iowa-bar--full .iowa-bar__container {
+    display: block;
+    @include breakpoint(md) {
+      display: flex;
+    }
+  }
+
+  .iowa-bar--full .menu--top {
+    @include breakpoint(page-container) {
+      margin-top: 14px;
+    }
+  }
+
+  div.site-name {
+    padding-left: 20px;
+    @include breakpoint(md) {
+      padding: 10px 20px;
+    }
+    @include breakpoint(page-container) {
+      padding: 10px 20px 10px 0;
+    }
+  }
+
+  h1.site-name {
+    padding-left: 20px;
+    @include breakpoint(md) {
+      padding: 25px 20px 15px;
+    }
+    @include breakpoint(page-container) {
+      padding-left: 0;
+    }
+  }
+
+  .iowa-bar--full {
+    .site-name img {
+      max-height: 60px;
+    }
+
+    .site-name {
+      margin-top: 0;
+    }
+  }
+
+  .site-name img {
+    max-height: 70px;
+  }
+
+}

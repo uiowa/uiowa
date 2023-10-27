@@ -1,0 +1,6 @@
+services:
+  facilities_core.commands:
+    class: \Drupal\facilities_core\Commands\FacilitiesCoreCommands
+    arguments: ['@account_switcher']
+    tags:
+      - { name: drush.command }

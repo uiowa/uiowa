@@ -31,8 +31,10 @@
   }
 
   .view-footer {
+    margin-top: $mobile-height-gutter;
     grid-area: 2 / 3 / 4 / 4;
     @include breakpoint(sm) {
+      margin-top: 0;
       margin-left: 3rem;
     }
     @include breakpoint(page-container) {

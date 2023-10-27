@@ -13,8 +13,10 @@ adding:
     module:
       - datetime
   content:
+    body:
+      weight: 12
     created:
-      weight: 20
+      weight: 21
     field_grad_program_all_degree:
       type: options_select
       weight: 15
@@ -22,11 +24,9 @@ adding:
       settings: {  }
       third_party_settings: {  }
     field_meta_tags:
-      weight: 31
-    field_person_bio:
-      weight: 12
+      weight: 32
     field_person_contact_information:
-      weight: 30
+      weight: 31
     field_person_department:
       type: entity_reference_autocomplete
       weight: 14
@@ -42,7 +42,7 @@ adding:
     field_person_email:
       weight: 8
     field_person_hide:
-      weight: 29
+      weight: 30
     field_person_hometown:
       type: string_textfield
       weight: 11
@@ -65,6 +65,8 @@ adding:
       third_party_settings: {  }
     field_person_website:
       weight: 18
+    field_person_website_link_direct:
+      weight: 19
     field_pt_student_advisor:
       type: entity_reference_autocomplete
       weight: 16
@@ -77,7 +79,7 @@ adding:
       third_party_settings: {  }
     field_pt_student_cur_pos_inst:
       type: string_textfield
-      weight: 33
+      weight: 35
       region: content
       settings:
         size: 60
@@ -85,7 +87,7 @@ adding:
       third_party_settings: {  }
     field_pt_student_cur_pos_title:
       type: string_textfield
-      weight: 34
+      weight: 36
       region: content
       settings:
         size: 60
@@ -93,26 +95,26 @@ adding:
       third_party_settings: {  }
     field_pt_student_defense_date:
       type: datetime_default
-      weight: 32
+      weight: 33
       region: content
       settings: {  }
       third_party_settings: {  }
     field_pt_student_program_start:
       type: datetime_default
-      weight: 32
+      weight: 34
       region: content
       settings: {  }
       third_party_settings: {  }
     field_tags:
-      weight: 21
-    field_teaser:
-      weight: 28
-    moderation_state:
-      weight: 27
-    path:
-      weight: 24
-    promote:
       weight: 22
+    field_teaser:
+      weight: 29
+    moderation_state:
+      weight: 28
+    path:
+      weight: 25
+    promote:
+      weight: 23
     pt_student_dissertation_title:
       type: string_textfield
       weight: 10
@@ -122,52 +124,54 @@ adding:
         placeholder: ''
       third_party_settings: {  }
     status:
-      weight: 26
+      weight: 27
     sticky:
-      weight: 23
+      weight: 24
     uid:
-      weight: 19
+      weight: 20
     url_redirects:
-      weight: 25
+      weight: 26
 removing:
   content:
-    created:
-      weight: 14
-    field_meta_tags:
-      weight: 25
-    field_person_bio:
-      weight: 9
-    field_person_contact_information:
-      weight: 24
-    field_person_education:
+    body:
       weight: 10
+    created:
+      weight: 17
+    field_meta_tags:
+      weight: 28
+    field_person_contact_information:
+      weight: 27
+    field_person_education:
+      weight: 11
     field_person_email:
       weight: 7
     field_person_hide:
-      weight: 23
+      weight: 26
     field_person_phone:
       weight: 8
     field_person_research_areas:
-      weight: 11
-    field_person_website:
-      weight: 12
-    field_tags:
-      weight: 15
-    field_teaser:
-      weight: 22
-    moderation_state:
-      weight: 21
-    path:
-      weight: 18
-    promote:
-      weight: 16
-    status:
-      weight: 20
-    sticky:
-      weight: 17
-    uid:
       weight: 13
-    url_redirects:
+    field_person_website:
+      weight: 14
+    field_person_website_link_direct:
+      weight: 15
+    field_tags:
+      weight: 18
+    field_teaser:
+      weight: 25
+    moderation_state:
+      weight: 24
+    path:
+      weight: 21
+    promote:
       weight: 19
+    status:
+      weight: 23
+    sticky:
+      weight: 20
+    uid:
+      weight: 16
+    url_redirects:
+      weight: 22
   hidden:
     field_person_hometown: true

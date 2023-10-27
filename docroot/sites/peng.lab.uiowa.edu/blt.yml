@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpeng.uiowa.ddev.site
+    protocol: https
+  machine_name: labpeng
+  human_name: peng.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpeng.prod
+drupal:
+  db:
+    database: peng_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpeng.prod.drupal.uiowa.edu'
+  requester: jenkinsn
+  site-name: 'Multiparametric Quantitative MRI Group'

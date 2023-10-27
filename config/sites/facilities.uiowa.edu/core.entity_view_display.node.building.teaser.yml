@@ -1,0 +1,68 @@
+uuid: b51d8dce-4510-40b4-90c5-71650cfdd900
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.building.field_building_abbreviation
+    - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_image_url
+    - field.field.node.building.field_building_lactation_rooms
+    - field.field.node.building.field_building_latitude
+    - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_named_building
+    - field.field.node.building.field_building_number
+    - field.field.node.building.field_building_ownership
+    - field.field.node.building.field_building_rr_multi_men
+    - field.field.node.building.field_building_rr_multi_women
+    - field.field.node.building.field_building_rr_single_men
+    - field.field.node.building.field_building_rr_single_neutral
+    - field.field.node.building.field_building_rr_single_women
+    - field.field.node.building.field_building_year_built
+    - field.field.node.building.field_meta_tags
+    - node.type.building
+  module:
+    - user
+id: node.building.teaser
+targetEntityType: node
+bundle: building
+mode: teaser
+content:
+  field_building_abbreviation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_building_number:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_building_address: true
+  field_building_area: true
+  field_building_image_url: true
+  field_building_lactation_rooms: true
+  field_building_latitude: true
+  field_building_longitude: true
+  field_building_named_building: true
+  field_building_ownership: true
+  field_building_rr_multi_men: true
+  field_building_rr_multi_women: true
+  field_building_rr_single_men: true
+  field_building_rr_single_neutral: true
+  field_building_rr_single_women: true
+  field_building_year_built: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

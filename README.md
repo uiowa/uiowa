@@ -53,15 +53,17 @@ multisites:
 ```
 
 ### Common Tasks
-Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files _only_ for the multisite defined in BLT configuration. By default, this is all multisites but be aware that the `local.blt.yml` change documented above will override that. You can temporarily remove that override if you need to generate settings files for all multisites.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files for all multisites.
+
+Local configuration overrides can be set in a local.blt.yml file for each multisite as that file is not tracked in git. For example, to configure stage file proxy in the way it would normally be defined in local.settings.php (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) you would enter it in the local.blt.yml file like:
+
+```
+uiowa:
+  stage_file_proxy:
+    origin: https://sandbox.prod.drupal.uiowa.edu
+```
 
 The `blt frontend` command will install and compile frontend assets.
-
-Local configuration overrides can be set in the local.settings.php file for each multisite. For example, to configure stage file proxy:
-```
-$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-$config['stage_file_proxy.settings']['hotlink'] = TRUE;
-```
 
 ## Multisite Management
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
@@ -100,13 +102,10 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                       | Reason                                                                                                                         |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
-| drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                                                                        |
-| uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
-| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                                                            |
-| drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
+| Package                      | Reason                                                                                                                         |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| uiowa/block_content_template | Forked from a deprecated project.                                                                                              |
+| drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                    |
 
 
 

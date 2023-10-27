@@ -100,6 +100,18 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('header.toppage'),
   ];
 
+  $form['header']['branding_options'] = [
+    '#type' => 'select',
+    '#title' => t('Branding options'),
+    '#description' => t('Select an option'),
+    '#options' => [
+      'iowa' => t('Iowa'),
+      'ccom' => t('CCOM'),
+      'regents' => t('Regents'),
+    ],
+    '#default_value' => theme_get_setting('header.branding_options'),
+  ];
+
   $top_links_limit = theme_get_setting('header.top_links_limit');
 
   // Get limit, otherwise limit to 2.
@@ -109,6 +121,36 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#access' => FALSE,
     '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
+
+  // Change theme style.
+  $form['style'] = [
+    '#type' => 'details',
+    '#title' => t('Color Palette'),
+    '#description' => t('Configure the color palette for the uids_base theme.'),
+    '#weight' => -1000,
+    '#open' => TRUE,
+    '#tree' => TRUE,
+  ];
+
+  $form['style']['style_selector'] = [
+    '#type' => 'select',
+    '#title' => t('Style'),
+    '#description' => t('This option changes the primary gold theme color.'),
+    '#options' => [
+      'brand' => t('Iowa brand'),
+      'gray' => t('Gray'),
+    ],
+    '#default_value' => theme_get_setting('style.style_selector'),
+  ];
+
+  // Value set on submit. Read-only for admins.
+  $form['style']['style_selector']['#disabled'] = TRUE;
+
+  // Only allow access to this field for users
+  // with the 'administer site configuration' permission.
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['style']['#access'] = FALSE;
+  }
 
   // These fields are only available to writing university for now.
   $form['fonts'] = [
@@ -169,11 +211,19 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
  * Test theme form settings submission handler.
  */
 function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface $form_state) {
+  // Set color option based on branding_option.
+  if ($form_state->getValue(['header', 'branding_options']) == 'regents') {
+    $form_state->setValue('style.style_selector', 'gray');
+  }
+  else {
+    $form_state->setValue('style.style_selector', 'brand');
+  }
 
   $nav_style = $form_state->getValue(['header', 'nav_style']);
 
   $ids = \Drupal::entityQuery('block')
     ->condition('plugin', 'superfish:main')
+    ->accessCheck()
     ->execute();
 
   foreach ($ids as $id) {

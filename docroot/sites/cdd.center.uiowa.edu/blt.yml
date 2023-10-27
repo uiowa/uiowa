@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centercdd.uiowa.ddev.site
+    protocol: https
+  machine_name: centercdd
+  human_name: cdd.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centercdd.prod
+drupal:
+  db:
+    database: cdd_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centercdd.prod.drupal.uiowa.edu'
+  requester: johnstn
+  site-name: 'Center for Disabilities and Development'

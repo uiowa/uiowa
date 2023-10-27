@@ -1,7 +1,7 @@
 @import "../uids/assets/scss/_variables.scss";
 $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_utilities.scss";
-@import "../uids/assets/scss/_local-fonts.scss";
+@import "../uids3/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
 // Word break classes.
@@ -21,7 +21,38 @@ $imgpath: '../../uids/assets/images';
 // Bust out of container.
 .block--edge-to-edge {
   margin: 0 calc(50% - 50vw);
+  > .form--inline {
+    @extend %container;
+  }
 }
+
+// Set an element to display inline.
+.element--inline-breakpoint {
+  @include breakpoint(sm) {
+    display: inline-flex;
+  }
+}
+
+.element--inline {
+  display: inline-flex;
+}
+
+// Align items in a grid to the top.
+.element--align-top {
+  align-self: start;
+}
+
+// Set object to cover.
+.element--cover {
+  * {
+    object-fit: cover;
+    height: 100%;
+  }
+  .contextual-links {
+    height: auto;
+  }
+}
+
 
 // Containers within a background color useful for views blocks.
 .block--bg-container {
@@ -52,6 +83,10 @@ $imgpath: '../../uids/assets/images';
   .slider,
   .stat {
     flex-basis: 100%;
+    min-width: 0;
+  }
+  .card {
+    height: 100%;
   }
 }
 
@@ -68,6 +103,7 @@ $imgpath: '../../uids/assets/images';
   &.section-alignment__start {
     .layout__region {
       display: inherit;
+      flex-wrap: inherit;
     }
   }
 }
@@ -196,6 +232,11 @@ $imgpath: '../../uids/assets/images';
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
+    }
+    &.border.block-padding__all--minimal,
+    &[class*="bg--"].block-padding__all--minimal,
+    &[class*="bg-pattern--"].block-padding__all--minimal {
+      padding: 2rem;
     }
     &.border.block-padding__all--extra,
     &[class*="bg--"].block-padding__all--extra,
@@ -339,7 +380,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       display: grid;
 
       .layout__region--first,
-      .layout__region--sidebar {
+      .layout__region--sidebar,
+      .layout__region--main {
         order: 2;
         @include breakpoint(md) {
           order: inherit;
@@ -347,11 +389,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
 
       .layout__region--second,
-      .layout__region--content {
+      .layout__region--content,
+      .layout__region-container {
         order: 1;
         @include breakpoint(md) {
           order: inherit;
         }
+      }
+      .layout__region-container {
+        margin-bottom: $mobile-height-gutter;
       }
     }
   }
@@ -419,7 +465,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Add margins for all stacked layout regions for mobile.
-
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol,
@@ -446,6 +491,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Unset margin for regions within card layout.
+.layout--twocol {
+  .layout__region.layout__region--card-media {
+    margin-bottom: 0;
+  }
+}
+
 // Container fix for responsive tables
 
 .layout__spacing_container {
@@ -454,7 +506,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 // Block Margins / Padding
 
-.block-padding {
+.block-padding,
+.element--padding {
   &__top {
     padding-top: $desktop-width-gutter;
   }
@@ -473,9 +526,22 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__all--extra {
     padding: 6rem;
   }
-  &__all--md {
+  &__all--minimal {
     padding: 2rem;
   }
+}
+
+// CSS logical property padding utility classes.
+.padding--block--sm {
+  padding-block: 0.5rem;
+}
+
+.padding--inline-start--sm {
+  padding-inline-start: 0.5rem;
+}
+
+.padding--inline--md {
+  padding-inline: 1rem;
 }
 
 .block-margin {
@@ -539,24 +605,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .block + .block.block-margin__default--removed {
         margin-top: 0;
       }
-      // Override card margins.
-      .block.card--media-right,
-      .block.card--media-left,
-      .block +.block.card--media-right,
-      .block +.block.card--media-left {
-        margin-bottom: 0;
-      }
-    }
-  }
-}
-
-// Override card margins for layouts where
-// section padding has been removed and card margin was assumed.
-.layout__container[class*="section-padding__removed"] {
-  .layout__region {
-    .block.card--media-right:first-child:last-child,
-    .block.card--media-left:first-child:last-child {
-      margin-bottom: 1.6rem;
     }
   }
 }
@@ -565,7 +613,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout__container {
   .layout__region {
     .block.block-system-breadcrumb-block + .block[class*="block-field-"],
-    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"],
+    .block.block-field-blocknodepersontitle + .block[class*="block-field-"] {
       margin-top: 0;
     }
   }
@@ -657,7 +706,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .view-display-id-attachment_a_z_list,
-.view-display-id-attachment_book_a_z_list {
+.view-display-id-attachment_book_a_z_list,
+.view-display-id-attachment_services {
   >div {
     @include flexbox;
     @include margin($top: 0, $left: 0, $bottom: $xlg);
@@ -678,7 +728,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       a {
         display: block;
         text-decoration: none;
-        color: #4F4F4F;
+        color: $secondary;
         line-height: 1;
         @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
 
@@ -688,9 +738,17 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
           background: $light;
         }
       }
+      // Not-linked.
+      div {
+        display: block;
+        text-decoration: none;
+        color: $grey;
+        line-height: 1;
+        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
+      }
 
       &:last-child {
-        a {
+        a, div {
           @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
           }
@@ -809,4 +867,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .screen-reader-text {
   @include element-invisible;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.js .js-hide {
+  display: none !important;
 }

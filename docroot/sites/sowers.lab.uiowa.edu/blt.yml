@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsowers.uiowa.ddev.site
+    protocol: https
+  machine_name: labsowers
+  human_name: sowers.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsowers.prod
+drupal:
+  db:
+    database: sowers_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsowers.prod.drupal.uiowa.edu'
+  requester: jswaite
+  site-name: 'Sowers Lab'

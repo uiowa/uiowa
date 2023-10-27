@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: organstig.uiowa.ddev.site
+    protocol: https
+  machine_name: organstig
+  human_name: anstig.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: organstig.prod
+drupal:
+  db:
+    database: anstig_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://organstig.prod.drupal.uiowa.edu'
+  requester: msdosembet
+  site-name: 'Association of Neuropsychology Students and Trainees (ANST)'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtanaka.uiowa.ddev.site
+    protocol: https
+  machine_name: labtanaka
+  human_name: tanaka.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtanaka.prod
+drupal:
+  db:
+    database: tanaka_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtanaka.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Tanaka Lab'

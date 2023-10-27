@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhornbuckle.uiowa.ddev.site
+    protocol: https
+  machine_name: labhornbuckle
+  human_name: hornbuckle.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhornbuckle.prod
+drupal:
+  db:
+    database: hornbuckle_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhornbuckle.prod.drupal.uiowa.edu'
+  requester: kchorn
+  site-name: 'Hornbuckle Group Research Website'

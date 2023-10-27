@@ -1,0 +1,21 @@
+uuid: 9edec094-6669-4015-9832-86ee14112b91
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_event_status
+field_name: field_event_status
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: '_sitenow_events_get_status_options'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

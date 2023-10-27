@@ -10,17 +10,24 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
+    - field.field.node.article.field_article_type
+    - field.field.node.article.field_contact_reference
+    - field.field.node.article.field_embargo_information
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
+    - field.field.node.article.field_original_publication_date
     - field.field.node.article.field_related_content
     - field.field.node.article.field_tags
     - field.field.node.article.field_teaser
     - node.type.article
   module:
+    - field_delimiter
     - link
+    - smart_trim
     - user
 id: node.article.teaser
 targetEntityType: node
@@ -31,6 +38,41 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  body:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 0
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: true
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_article_author:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
+    weight: 6
     region: content
   field_article_source_link:
     type: link
@@ -71,21 +113,13 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
-  field_teaser:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
 hidden:
-  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_article_author: true
   field_article_preserve_links: true
+  field_article_subhead: true
   field_article_type: true
   field_contact_reference: true
   field_embargo_information: true
@@ -96,5 +130,6 @@ hidden:
   field_original_publication_date: true
   field_related_content: true
   field_tags: true
+  field_teaser: true
   links: true
   search_api_excerpt: true

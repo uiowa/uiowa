@@ -1,7 +1,6 @@
 {% extends '@uids_base/layout/header.html.twig' %}
 
 {% block uiowa_bar %}
-  {{ attach_library('uids_base/site-slogan') }}
 
   {% if site_has_parent %}
     {% include '@uids_base/uids/site-parent.html.twig' with {
@@ -15,11 +14,16 @@
   <div class="iowa-bar__below {{ header_nav }}">
     <div class="iowa-bar__container">
 
-      {{ attach_library('uids_base/site-name') }}
-      {% include '@uids_base/uids/site-name.html.twig' with {
-        'site_name': site_name,
-        'site_url': path('<front>'),
-      } %}
+      {% if logo_path and is_off_brand %}
+        <div class="site-name">
+          <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
+        </div>
+      {% else %}
+        {% include '@uids_base/uids/site-name.html.twig' with {
+          'site_name': site_name,
+          'site_url': path('<front>'),
+        } %}
+      {% endif %}
 
       {% if page.search %}
         {% include '@uids_base/uids/global/search-toggle.html.twig' with {

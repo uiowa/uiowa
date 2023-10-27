@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: classrooms_migrate
+label: 'Classrooms Migrate'
+description: 'Migrations for Classrooms'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/classrooms.uiowa.edu/modules/classrooms_migrate/config/split
+module:
+  classrooms_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.classrooms_migrate
+  - 'migrate_plus.migration.classrooms_*'
+partial_list: {  }

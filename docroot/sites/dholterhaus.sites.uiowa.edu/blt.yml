@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesdholterhaus.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesdholterhaus
+  human_name: dholterhaus.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesdholterhaus.prod
+drupal:
+  db:
+    database: dholterhaus_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesdholterhaus.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: dholterh@sites.uiowa.edu

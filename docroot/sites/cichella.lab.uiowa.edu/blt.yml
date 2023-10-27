@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcichella.uiowa.ddev.site
+    protocol: https
+  machine_name: labcichella
+  human_name: cichella.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcichella.prod
+drupal:
+  db:
+    database: cichella_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcichella.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'CAS Lab'

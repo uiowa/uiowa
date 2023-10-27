@@ -1,0 +1,26 @@
+uuid: be6bade2-d212-477c-86ad-2b2a09e9e66b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_translator
+    - node.type.article
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal
+id: node.article.field_article_translator
+field_name: field_article_translator
+entity_type: node
+bundle: article
+label: Translator
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

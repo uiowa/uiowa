@@ -1,12 +1,12 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   "use strict";
 
-  Drupal.behaviors.quoteBlock= {
-    attach: function (context, settings) {
+  Drupal.behaviors.quoteBlock = {
+    attach: function (context) {
       // We target the .media-library-widget class because there are not a lot of
       // good choices for classes/IDs to target in the inline block form.
-      $('.media-library-widget', context).once('media-form-attach').each(function () {
+      $(once('media-form-attach', '.media-library-widget', context)).each(function () {
 
         // Check that we can access the next field.
         const $form_wrapper = $(this).parent().parent().parent();
@@ -21,8 +21,8 @@
               // hide image settings.
             $image_position_field.parent().hide();
           }
-        })
+        });
       }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

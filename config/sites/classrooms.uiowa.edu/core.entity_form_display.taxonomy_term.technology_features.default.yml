@@ -1,0 +1,61 @@
+uuid: acf3b640-a542-4765-bf49-c1358d235314
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.technology_features.field_api_mapping
+    - field.field.taxonomy_term.technology_features.field_technology_features_icon
+    - taxonomy.vocabulary.technology_features
+  module:
+    - fontawesome
+    - path
+    - text
+id: taxonomy_term.technology_features.default
+targetEntityType: taxonomy_term
+bundle: technology_features
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_api_mapping:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_technology_features_icon:
+    type: fontawesome_icon_widget
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden: {  }

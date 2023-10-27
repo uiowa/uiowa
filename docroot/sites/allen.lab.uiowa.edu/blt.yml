@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: laballen.uiowa.ddev.site
+    protocol: https
+  machine_name: laballen
+  human_name: allen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: laballen.prod
+drupal:
+  db:
+    database: allen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://laballen.prod.drupal.uiowa.edu'
+  requester: smithgr
+  site-name: allen.lab.uiowa.edu

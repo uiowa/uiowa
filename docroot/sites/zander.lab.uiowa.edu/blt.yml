@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labzander.uiowa.ddev.site
+    protocol: https
+  machine_name: labzander
+  human_name: zander.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labzander.prod
+drupal:
+  db:
+    database: zander_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labzander.prod.drupal.uiowa.edu'
+  requester: chernndez
+  site-name: 'Zander Lab'

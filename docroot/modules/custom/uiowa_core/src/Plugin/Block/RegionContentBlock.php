@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_core\Plugin\Block;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;

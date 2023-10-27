@@ -1,0 +1,19 @@
+uuid: 5b09e1c0-c6e3-4db0-9e0d-58df75ecf6cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_unique_id
+    - paragraphs.paragraphs_type.uiowa_collection_item
+id: paragraph.uiowa_collection_item.field_unique_id
+field_name: field_unique_id
+entity_type: paragraph
+bundle: uiowa_collection_item
+label: 'Unique ID'
+description: 'Provide a unique identifier for this collection item. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters. The collection item headline will be used if no value is provided.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

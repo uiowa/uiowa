@@ -14,7 +14,7 @@ layout_twocol:
   label: 'Two column'
   template: templates/layouts/layout--twocol
   library: uids_base/twocol
-  class: '\Drupal\layout_builder\Plugin\Layout\TwoColumnLayout'
+  class: '\Drupal\uiowa_core\Plugin\Layout\TwoColumnLayout'
   category: 'Columns: 2'
   default_region: first
   icon_map:
@@ -99,3 +99,31 @@ layout_page:
       label: Sidebar
     content:
       label: Content
+
+layout_twocol_card_sidebar:
+  label: 'Two column with card sidebar'
+  template: templates/layouts/layout--twocol--card-sidebar
+  library: uids_base/twocol
+  category: 'Columns: 2'
+  icon_map:
+    - [main, card_media]
+    - [main, card_title]
+    - [main, card_subtitle]
+    - [main, card_meta]
+    - [main, card_content]
+    - [main, card_button]
+  regions:
+    main:
+      label: Content
+    card_media:
+      label: 'Card: Media'
+    card_title:
+      label: 'Card: Title'
+    card_subtitle:
+      label: 'Card: Subtitle'
+    card_meta:
+      label: 'Card: Meta'
+    card_content:
+      label: 'Card: Content'
+    card_button:
+      label: 'Card: Button'

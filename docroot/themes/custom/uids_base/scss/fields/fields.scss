@@ -35,7 +35,20 @@
     line-height: 1;
   }
 
-  [class*="card__"] & {
+  &.badge,
+  .badge & {
+    font-size: 1.1rem;
+    + .field__items {
+      margin-left: $sm;
+      font-weight: normal;
+      .field__item {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -43,6 +56,9 @@
 
 .field--label-inline {
   margin-bottom: $sm;
+  [class*="card__"] & {
+    margin-bottom: 0;
+  }
 
   .svg-inline--fa {
     margin-right: 0.3rem;
@@ -65,11 +81,13 @@
   &.h4,
   &.h5,
   &.h6,
-  &[class*="element--"] {
+  &.element--bold-intro,
+  &.element--light-intro {
     line-height: inherit;
   }
 
-  [class*="card__"] & {
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -78,7 +96,8 @@
     p#{&} {
       font-size: 1.2rem;
 
-      [class*="element--"] &,
+      .element--bold-intro &,
+      .element--light-intro &,
       .h1 &,
       .h2 &,
       .h3 &,
@@ -107,6 +126,9 @@
 
   .field__items {
     display: inline;
+    &.uiowa-image-gallery {
+      display: grid;
+    }
   }
 
   .field__item {
@@ -117,20 +139,6 @@
 .field--type-text-long.field--label-inline {
   p {
     display: inline;
-  }
-}
-
-.field--label-inline.field--type-entity-reference,
-.field--label-inline.field--type-link,
-.field--label-inline.field--type-string,
-.field--label-visually_hidden.field--type-entity-reference:not([class*="image"]),
-.field--label-visually_hidden.field--type-link {
-  .field__item + .field__item {
-    &:before {
-      content: ",";
-      padding-right: $xsm;
-      margin-left: -3px;
-    }
   }
 }
 
@@ -152,6 +160,12 @@
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
   margin-top: $sm;
+  .element--three-column &,
+  .element--two-column & {
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
 }
 
 .field--label-hidden + .field--label-above,

@@ -1,0 +1,22 @@
+uuid: dbf95c27-d8eb-4819-a461-cfff4aaf1e47
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: named_building
+label: 'Named building'
+type: 'canonical_entities:node'
+pattern: 'named-building/[node:title]'
+selection_criteria:
+  32b5e170-b950-4151-8e15-8fe15e569215:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 32b5e170-b950-4151-8e15-8fe15e569215
+    context_mapping:
+      node: node
+    bundles:
+      named_building: named_building
+selection_logic: and
+weight: -5
+relationships: {  }

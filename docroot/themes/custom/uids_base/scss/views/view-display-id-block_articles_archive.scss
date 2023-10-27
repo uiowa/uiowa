@@ -1,42 +1,28 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/card/_card-mixins.scss";
+
+// This file contains the styles for the archive block for the /admin/config/sitenow/uiowa-articles page.
 
 .view-display-id-page_articles .view-display-id-block_articles_archive {
-  //@include card;
-
   .view-header {
-    @include card-header;
     @include h6;
     margin-bottom: 0;
     padding: 0;
   }
 
   .view-content {
-    //@include card-body;
     padding: 0;
     margin-bottom: 0;
     display: block;
 
     ul {
-      @include list-group;
-      @include list-group-flush;
-
       li {
         margin: 0;
-        //list-style-type: none;
       }
 
       li a {
-        //@include list-group-item;
-        //@include list-group-item-action;
         border-radius: 0;
         background-color: transparent;
-
-        &:hover,
-        &:focus {
-          //text-decoration: underline;
-        }
       }
 
       li a:first-child,

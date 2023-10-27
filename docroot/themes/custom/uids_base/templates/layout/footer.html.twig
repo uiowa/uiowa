@@ -10,22 +10,33 @@
   <div class="footer__container footer__container--flex">
     <div class="footer__links footer__links--contact">
 
+      {% if uiowa_logo is not empty %}
       {{ attach_library('uids_base/logo') }}
+
+      {% if header_branding == 'iowa' %}
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
-        logo_path_2: uiowa_logo_path,
         logo_path_png: uiowa_logo_path_png,
         logo_classes: 'logo--footer',
         logo_id: 'footer',
       } %}
+      {% elseif header_branding == 'ccom' %}
+        {% include '@uids_base/uids/logo-ccom.twig' with {
+          logo_path_png: uihc_logo_path_png,
+          logo_classes: 'logo--footer logo--ccom',
+          logo_id: 'footer',
+        } %}
+      {% endif %}
+
+      {% endif %}
 
       {% block site_name %}
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
           {% if header_type != 'homepage' %}
-            <a class="site-name-link" href="{{ path('<front>') }}">
-              <h2 class="site-name">{{ site_name }}</h2>
-            </a>
+              <a class="site-name-link" href="{{ path('<front>') }}">
+                <h2 class="site-name">{{ site_name }}</h2>
+              </a>
           {% endif %}
         {% endif %}
       {% endblock %}
@@ -62,7 +73,9 @@
 
   </div>
   <div class="footer__container">
+    {% if uiowa_logo is not empty %}
     {% include '@uids_base/uids/footer--socket-menu.twig' %}
+    {% endif %}
   </div>
 
 </footer>

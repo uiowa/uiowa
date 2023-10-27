@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labliu.uiowa.ddev.site
+    protocol: https
+  machine_name: labliu
+  human_name: liu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labliu.prod
+drupal:
+  db:
+    database: liu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labliu.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Integrated Imaging and Cyberphysical System Laboratory'
