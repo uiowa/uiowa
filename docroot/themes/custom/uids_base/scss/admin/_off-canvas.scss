@@ -158,48 +158,72 @@
 }
 
 // Alerts.
-#drupal-off-canvas .alert span,
-#drupal-off-canvas .alert svg.fa-stack-2x {
+#drupal-off-canvas-wrapper .alert span,
+#drupal-off-canvas-wrapper .alert svg.fa-stack-2x {
   position: relative!important;
 }
 
-#drupal-off-canvas .alert svg {
+#drupal-off-canvas-wrapper .alert svg {
   margin: 0;
+  height: 1.2rem;
 }
 
-#drupal-off-canvas .alert__icon .svg-inline--fa.fa-stack-1x {
+#drupal-off-canvas-wrapper .alert  {
+  display: flex;
+  background: #fbeeeb;
+  border-color: #00000020;
+  border-radius: 2px;
+  padding: 1.5rem!important;
+  line-height: 1.3;
+  font-size: 1.2rem;
+  position: relative;
+  align-items: center;
+}
+
+#drupal-off-canvas-wrapper .alert__icon  {
+  padding-right: 1.5rem!important;
+}
+
+#drupal-off-canvas-wrapper .alert__icon .svg-inline--fa.fa-stack-1x {
   margin: 0;
-  left: -2px;
+  left: -3px;
   top: -1px;
 }
 
-#drupal-off-canvas .alert__icon .svg-inline--fa.fa-stack-2x {
+#drupal-off-canvas-wrapper .alert__icon .svg-inline--fa.fa-stack-2x {
   height: 2rem;
   width: 2rem;
 }
 
-#drupal-off-canvas .alert a {
+#drupal-off-canvas-wrapper .alert a {
   color: $link-color;
 }
 
-#drupal-off-canvas .alert button  {
+#drupal-off-canvas-wrapper .alert button  {
   color: $secondary;
   position: absolute;
-  right: 2rem;
+  right: 1.2rem;
   top: 1rem;
+  background: none;
+  border: none;
 }
 
-#drupal-off-canvas form .alert div {
+#drupal-off-canvas-wrapper form .alert div {
   color: $secondary;
 }
 
-#drupal-off-canvas .alert ul.item-list__comma-list li {
-  display: inline-block;
-  border-bottom: none;
-  + li {
-    &:before {
-      content: ",";
-      padding: 0 .2rem 0 .1rem;
+#drupal-off-canvas-wrapper .alert ul.item-list__comma-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  li {
+    display: inline-block;
+    border-bottom: none;
+
+    + li {
+      &:before {
+        content: ",";
+        padding: 0 .2rem 0 .1rem;
+      }
     }
   }
 }
@@ -279,6 +303,11 @@
     &.paragraph--type--uiowa-timeline-item {
       display: flex;
 
+      .field--name-field-uiowa-slide-content p {
+        margin-top: 0;
+        line-height: 1.4;
+      }
+
       .field--name-field-uiowa-slide-image,
       .field--name-field-timeline-icon,
       .field--name-field-timeline-media {
@@ -287,4 +316,5 @@
     }
   }
 }
+
 
