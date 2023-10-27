@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
     - field.field.node.page.layout_builder__layout
+    - field.field.node.page.layout_selection
     - node.type.page
     - workflows.workflow.editorial
   module:
@@ -110,6 +111,12 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  layout_selection:
+    type: options_select
+    weight: 27
+    region: content
+    settings: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
