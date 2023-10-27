@@ -223,7 +223,7 @@ function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface 
 
   $ids = \Drupal::entityQuery('block')
     ->condition('plugin', 'superfish:main')
-    ->accessCheck(TRUE)
+    ->accessCheck()
     ->execute();
 
   foreach ($ids as $id) {

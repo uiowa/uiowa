@@ -19,9 +19,9 @@ function uipress_core_entity_bundle_info_alter(array &$bundles) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+function uipress_core_field_widget_single_element_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'book_type') {
     if (isset($element['subform']['field_book_ebook_ownership'])) {
       // Set the field_book_ebook_ownership field to only be visible when ebook
@@ -293,10 +293,12 @@ function uipress_core_get_current_sales() {
     // just ended yesterday, so that we still wipe their cache
     // and don't display a sale that has since ended.
     ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->accessCheck()
     ->execute();
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'book')
     ->condition('field_book_type', $pids, 'IN')
+    ->accessCheck()
     ->execute();
   return array_values($nids);
 }

@@ -194,6 +194,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
             ->condition('status', 1)
             ->condition('type', 'area_of_study')
             ->condition('field_area_of_study_area', $tid)
+            ->accessCheck()
             ->execute();
           if (!empty($nids)) {
             $degree_types = '';

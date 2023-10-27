@@ -104,7 +104,6 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                      | Reason                                                                                                                         |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| acquia/blt-travis            | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
 | uiowa/block_content_template | Forked from a deprecated project.                                                                                              |
 | drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                    |
 
