@@ -30,7 +30,7 @@ class P2LbCommands extends DrushCommands {
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected ?LoggerInterface $logger;
 
   /**
    * The entity_type.manager service.

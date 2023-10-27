@@ -47,7 +47,6 @@ field_settings:
         - field.storage.node.book_tags
       module:
         - taxonomy
-        - taxonomy
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -106,13 +105,16 @@ processor_settings:
   content_access:
     weights:
       preprocess_query: -30
+  custom_value: {  }
   entity_status: {  }
+  entity_type: {  }
   highlight:
     weights:
       postprocess_query: 0
     prefix: '<strong>'
     suffix: '</strong>'
     excerpt: true
+    excerpt_always: false
     excerpt_length: 256
     exclude_fields: {  }
     highlight: always
@@ -127,6 +129,7 @@ processor_settings:
       - book_owner
       - book_tags
       - title
+  language_with_fallback: {  }
   rendered_item: {  }
 tracker_settings:
   default:
@@ -134,4 +137,5 @@ tracker_settings:
 options:
   cron_limit: 50
   index_directly: true
+  track_changes_in_references: false
 server: database_server

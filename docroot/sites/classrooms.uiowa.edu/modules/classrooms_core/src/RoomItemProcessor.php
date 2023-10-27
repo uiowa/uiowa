@@ -56,10 +56,12 @@ class RoomItemProcessor extends EntityItemProcessorBase {
       $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
         ->condition('vid', 'room_features')
         ->condition('vid', 'accessibility_features')
-        ->condition('vid', 'technology_features');
+        ->condition('vid', 'technology_features')
+        ->accessCheck();
 
       $tids = \Drupal::entityQuery('taxonomy_term')
         ->condition($query)
+        ->accessCheck()
         ->execute();
       if ($tids) {
         $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
@@ -184,6 +186,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     if (isset($record->regionList)) {
       $query = \Drupal::entityQuery('taxonomy_term')
         ->condition('vid', 'scheduling_regions')
+        ->accessCheck()
         ->execute();
 
       if ($query) {

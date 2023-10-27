@@ -12,9 +12,9 @@ use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+function sitenow_media_wysiwyg_field_widget_single_element_panopto_url_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
   // There is a second help message that adds more confusion to the link field.
   // @see: LinkWidget::formElement().
   // Extra checking due to "Cannot use object of type
