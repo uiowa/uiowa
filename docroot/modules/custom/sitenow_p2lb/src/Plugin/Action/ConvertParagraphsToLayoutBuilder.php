@@ -40,17 +40,55 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
     // Get node id.
     $nid = $entity->get('nid')->getString();
 
+//    // Get current revision ID.
+//    $published_revision = $entity->getRevisionId();
+
     // Get latest revision ID.
-    $vid = $node_storage
+    $latest_vid = $node_storage
       ->getLatestRevisionId($nid);
 
     // Load latest revision.
     $entity = $node_storage
-      ->loadRevision($vid);
+      ->loadRevision($latest_vid);
+
+//    // Duplicate latest revision
+//    $new_revision = $node_storage->createRevision($entity);
+//
+//    // Set the new revision as a "Published".
+//    $new_revision->set('moderation_state', 'published');
+//
+//    // Add a message to the revision log.
+//    $new_revision->revision_log = 'Temporary revision';
+//
+//    // Set the user ID to the current user's ID for the revision.
+//    $new_revision->setRevisionUserId(\Drupal::currentUser()->id());
+//
+//    // Set the relevant revision timestamps.
+//    $new_revision->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+//    $new_revision->setChangedTime(\Drupal::time()->getRequestTime());
+//
+//    // Save the new revision.
+//    $new_revision->save();
+//
+//    // Get the new latest revision ID.
+//    $new_vid = $node_storage
+//      ->getLatestRevisionId($nid);
+//
+//    // Load latest revision.
+//    $entity = $node_storage
+//      ->loadRevision($new_vid);
 
     $converter = \Drupal::service('sitenow_p2lb.converter_manager')->createConverter($entity);
 
     $converter->convert();
+
+//    // Set back to original published revision
+//    $node_storage->loadRevision($published_revision);
+//
+//    // Delete that new published revision we made
+//    $revision_to_delete = $new_vid;
+//    $node_storage->deleteRevision($revision_to_delete);
+
   }
 
 }
