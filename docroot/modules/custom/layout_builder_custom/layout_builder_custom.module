@@ -1090,12 +1090,7 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
             'disable-refocus' => TRUE,
           ];
         }
-      case 'uiowa_slide':
-        // If it exists, pop the headline and place it in the label.
-        if (!empty($element['top']['summary']['fields_info']['#summary']['content'])) {
-          $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
-          $element['top']['type']['label']['#markup'] = $headline;
-        }
+
         break;
 
       case 'uiowa_timeline_item':
