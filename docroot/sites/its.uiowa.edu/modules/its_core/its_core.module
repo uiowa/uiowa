@@ -238,6 +238,9 @@ function its_core_preprocess_breadcrumb(&$variables): void {
  * Allowed values function for student profiles territory field.
  */
 function its_core_alert_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  if (is_null($entity)) {
+    return [];
+  }
   $cacheable = FALSE;
   if (method_exists($entity, 'bundle')) {
     $bundle = $entity->bundle();
