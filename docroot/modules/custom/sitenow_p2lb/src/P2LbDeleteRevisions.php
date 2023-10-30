@@ -20,8 +20,10 @@ class P2LbDeleteRevisions {
       $node = Node::load($nid);
       $context['results'][] = $node->id();
 
+      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
       // Fetch revision ids.
-      $vids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
+      $vids = $node_storage->revisionIds($node);
 
       // Get the protected revision.
       $protected_vid = $node->get('field_v3_conversion_revision_id')->value;
@@ -30,7 +32,7 @@ class P2LbDeleteRevisions {
         foreach ($vids as $vid) {
           if ($vid <= $protected_vid) {
             // Built-in protection from deleting active revision.
-            \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($vid);
+            $node_storage->deleteRevision($vid);
           }
         }
         \Drupal::logger('sitenow_p2lb')->notice('Deleted previous revisions for Node ID: ' . $nid);
