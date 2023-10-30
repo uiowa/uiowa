@@ -938,6 +938,7 @@ function uids_base_preprocess_menu_local_task(&$variables) {
     foreach ($supported_entity_types as $entity_type) {
       $route_icon_map['entity.' . $entity_type . '.canonical'] = 'view';
       $route_icon_map['entity.' . $entity_type . '.edit_form'] = 'edit';
+      $route_icon_map['entity.' . $entity_type . '.latest_version'] = 'latest';
       $route_icon_map['entity.' . $entity_type . '.delete_form'] = 'delete';
       $route_icon_map['entity.' . $entity_type . '.version_history'] = 'history';
       $route_icon_map['entity.' . $entity_type . '.entity_usage'] = 'usage';

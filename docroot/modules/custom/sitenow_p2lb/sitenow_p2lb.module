@@ -74,6 +74,25 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
 }
 
 /**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function sitenow_p2lb_preprocess_menu_local_task(&$variables) {
+  $url = $variables['link']['#url'];
+
+  if ($url instanceof Url) {
+    $route_name = $url->getRouteName();
+    if ($route_name === 'entity.node.p2lb_conversion_status') {
+      $theme = \Drupal::service('theme.manager')->getActiveTheme();
+      if ($theme->getName() === 'uids_base') {
+        $variables['#attached']['library'][] = 'sitenow_p2lb/overrides';
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--p2lb';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_p2lb_preprocess_views_view_field(&$variables) {
@@ -185,7 +204,7 @@ function sitenow_p2lb_fetch_child_ids($parent) {
   $content = $parent->get($field);
   if (!is_null($content)) {
     foreach ($content as $content_ref) {
-      $ids[] = $content_ref->target_id;
+      $ids[] = $content_ref->target_revision_id;
     }
   }
   return $ids;
