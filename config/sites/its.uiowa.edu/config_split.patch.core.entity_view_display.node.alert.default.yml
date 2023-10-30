@@ -1,0 +1,36 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.alert.field_alert_type
+    module:
+      - options
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_b19sh3m6alurvbna:
+              uuid: d32658bc-ed47-4cbb-a9f3-45a3b986816c
+              region: content
+              configuration:
+                id: 'field_block:node:alert:field_alert_type'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: list_default
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_alert_type:
+      type: list_default
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 106
+      region: content
+removing: {  }

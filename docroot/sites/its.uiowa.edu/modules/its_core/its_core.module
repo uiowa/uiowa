@@ -5,7 +5,9 @@
  * Primary module hooks for ITS Core module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\its_core\Entity\Service;
 
 /**
@@ -230,4 +232,25 @@ function its_core_preprocess_breadcrumb(&$variables): void {
       ];
     }
   }
+}
+
+/**
+ * Allowed values function for student profiles territory field.
+ */
+function its_core_alert_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $cacheable = FALSE;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+  }
+  $options = [
+    'outage' => 'Outage',
+    'service-announcement' => 'Service Announcement',
+    'maintenance' => 'Maintenance',
+    'degredation' => 'Degredation of Service',
+  ];
+
+  // Allow modules to alter options.
+  \Drupal::moduleHandler()->alter('state_options', $options, $entity, $bundle);
+
+  return $options;
 }
