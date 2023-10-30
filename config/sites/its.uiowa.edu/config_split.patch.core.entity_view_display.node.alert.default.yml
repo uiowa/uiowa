@@ -1,6 +1,7 @@
 adding:
   dependencies:
     config:
+      - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_type
     module:
       - options
@@ -25,7 +26,32 @@ adding:
               weight: 2
               additional: {  }
               third_party_settings: {  }
+            config_split_sequence_9nnjsfbob1aqqtf2:
+              uuid: c3c366b0-61e1-485a-a74d-89dc2e282847
+              region: content
+              configuration:
+                id: 'field_block:node:alert:field_alert_service_affected'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: 3
+              additional: {  }
+              third_party_settings: {  }
   content:
+    field_alert_service_affected:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 107
+      region: content
     field_alert_type:
       type: list_default
       label: above

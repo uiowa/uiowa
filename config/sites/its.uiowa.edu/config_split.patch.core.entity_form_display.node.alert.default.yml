@@ -1,8 +1,19 @@
 adding:
   dependencies:
     config:
+      - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_type
   content:
+    field_alert_service_affected:
+      type: entity_reference_autocomplete
+      weight: 27
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
     field_alert_type:
       type: options_select
       weight: 26
