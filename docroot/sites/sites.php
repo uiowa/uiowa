@@ -5986,3 +5986,9 @@ $sites['labnickljockschat.uiowa.ddev.site'] = 'nickljockschat.lab.uiowa.edu';
 $sites['labnickljockschat.dev.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
 $sites['labnickljockschat.stage.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
 $sites['labnickljockschat.prod.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
+
+// Directory aliases for v-bal.lab.uiowa.edu.
+$sites['labv-bal.uiowa.ddev.site'] = 'v-bal.lab.uiowa.edu';
+$sites['labv-bal.dev.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
+$sites['labv-bal.stage.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
+$sites['labv-bal.prod.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
