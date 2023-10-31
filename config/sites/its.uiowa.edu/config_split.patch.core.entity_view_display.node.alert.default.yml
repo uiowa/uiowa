@@ -10,25 +10,9 @@ adding:
       sections:
         -
           components:
-            config_split_sequence_b19sh3m6alurvbna:
-              uuid: d32658bc-ed47-4cbb-a9f3-45a3b986816c
-              region: content
-              configuration:
-                id: 'field_block:node:alert:field_alert_type'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: list_default
-                  label: above
-                  settings: {  }
-                  third_party_settings: {  }
-              weight: 2
-              additional: {  }
-              third_party_settings: {  }
             config_split_sequence_9nnjsfbob1aqqtf2:
               uuid: c3c366b0-61e1-485a-a74d-89dc2e282847
-              region: content
+              region: main
               configuration:
                 id: 'field_block:node:alert:field_alert_service_affected'
                 label_display: '0'
@@ -40,7 +24,23 @@ adding:
                   settings:
                     link: true
                   third_party_settings: {  }
-              weight: 3
+              weight: 0
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_b19sh3m6alurvbna:
+              uuid: d32658bc-ed47-4cbb-a9f3-45a3b986816c
+              region: main
+              configuration:
+                id: 'field_block:node:alert:field_alert_type'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: list_default
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 1
               additional: {  }
               third_party_settings: {  }
   content:
