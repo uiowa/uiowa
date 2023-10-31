@@ -1,6 +1,6 @@
 uuid: bbc7b9f4-42b5-4134-9934-1ae03755fa28
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.admin
@@ -1068,7 +1068,7 @@ display:
         empty: false
         access: false
         arguments: false
-      display_description: 'Scheduled media on user profile, showing just that user''s scheduled media'
+      display_description: "Scheduled media on user profile, showing just that user's scheduled media"
       display_comment: 'Access to the user view is controlled via a custom RouteSubscriber. The high-level "view media" permission is added to satisfy the security_review module'
       display_extenders: {  }
       path: user/%user/scheduled_media
