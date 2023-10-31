@@ -5992,3 +5992,9 @@ $sites['labv-bal.uiowa.ddev.site'] = 'v-bal.lab.uiowa.edu';
 $sites['labv-bal.dev.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
 $sites['labv-bal.stage.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
 $sites['labv-bal.prod.drupal.uiowa.edu'] = 'v-bal.lab.uiowa.edu';
+
+// Directory aliases for badovinac.lab.uiowa.edu.
+$sites['labbadovinac.uiowa.ddev.site'] = 'badovinac.lab.uiowa.edu';
+$sites['labbadovinac.dev.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
+$sites['labbadovinac.stage.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
+$sites['labbadovinac.prod.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
