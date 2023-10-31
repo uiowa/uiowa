@@ -39,8 +39,30 @@ class P2LbConverter {
    *   The page being processed.
    */
   public function __construct(Page $page) {
-    $this->page = $page;
     $this->entityTypeManager = \Drupal::service('entity_type.manager');
+    $this->page = $this->getLatestRevision($page);
+  }
+
+  /**
+   * Helper to load the most recent revision.
+   *
+   * @param \Drupal\sitenow_pages\Entity\Page $page
+   *   The page being converted.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getLatestRevision(Page $page): Page {
+    $node_storage = $this->entityTypeManager
+      ->getStorage('node');
+
+    // Get latest revision ID.
+    $latest_vid = $node_storage
+      ->getLatestRevisionId($page->id());
+
+    // Load latest revision.
+    return $node_storage
+      ->loadRevision($latest_vid);
   }
 
   /**
@@ -74,12 +96,12 @@ class P2LbConverter {
   /**
    * Process a section.
    *
-   * @param string|int $id
+   * @param string|int $revision_id
    *   The section paragraph ID.
    */
-  protected function processSection($id) {
+  protected function processSection($revision_id) {
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
-    $paragraph_section = $paragraph_storage->load($id);
+    $paragraph_section = $paragraph_storage->loadRevision($revision_id);
 
     // Stop processing if there is no section found.
     if (!$paragraph_section) {
@@ -94,8 +116,8 @@ class P2LbConverter {
     $section_styles = sitenow_p2lb_section_styles($paragraph_section);
 
     // Get all paragraphs attached to this section.
-    $pids = sitenow_p2lb_fetch_child_ids($paragraph_section);
-    $paragraphs = $paragraph_storage->loadMultiple($pids);
+    $pvids = sitenow_p2lb_fetch_child_ids($paragraph_section);
+    $paragraphs = $paragraph_storage->loadMultipleRevisions($pvids);
 
     // Check for a section image, and if so, handle it.
     $section_image_fid = $paragraph_section->field_section_image?->target_id;

@@ -85,7 +85,8 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                   $query = \Drupal::entityQuery('node')
                     ->condition('status', 1)
                     ->condition('type', 'transfer_tips')
-                    ->condition('field_transfer_tips_aos', $parent->id());
+                    ->condition('field_transfer_tips_aos', $parent->id())
+                    ->accessCheck();
                   $nids = $query->execute();
 
                   if (!empty($nids)) {
@@ -102,7 +103,8 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                   $query = \Drupal::entityQuery('node')
                     ->condition('type', 'major')
                     ->condition('status', 1)
-                    ->condition('field_major_area_of_study', $parent->id(), '=');
+                    ->condition('field_major_area_of_study', $parent->id(), '=')
+                    ->accessCheck();
                   // We only really need to know if there are areas of study,
                   // and not which or how many, because the link will just be
                   // based on the aos id.

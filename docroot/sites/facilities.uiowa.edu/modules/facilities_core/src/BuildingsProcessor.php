@@ -85,6 +85,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'named_building')
       ->condition('field_building_building_id', $string)
+      ->accessCheck()
       ->execute();
 
     foreach ($nids as $nid) {

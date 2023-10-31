@@ -25,7 +25,7 @@ class UiowaCoreCommands extends DrushCommands {
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected ?LoggerInterface $logger;
 
   /**
    * The config factory service.
