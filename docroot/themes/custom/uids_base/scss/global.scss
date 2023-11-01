@@ -476,6 +476,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
   }
 
+
   // If section order is reversed, add margin back into last-child.
   &.section-order__reversed {
     .layout__region:last-child {
@@ -487,6 +488,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
     .layout__region:first-child {
       margin-bottom: 0;
+    }
+  }
+
+  // Remove mobile margins if column spacing is removed.
+  &.column-spacing__removed {
+    .layout__region:not(:last-child) {
+      margin-bottom: 0;
+    }
+    &.section-order__reversed {
+      .layout__region:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
