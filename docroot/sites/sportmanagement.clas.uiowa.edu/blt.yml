@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: classportmanagement.uiowa.ddev.site
+    protocol: https
+  machine_name: classportmanagement
+  human_name: sportmanagement.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: classportmanagement.prod
+drupal:
+  db:
+    database: sportmanagement_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://classportmanagement.prod.drupal.uiowa.edu'
+  requester: mwright27
+  site-name: 'Sport and Recreation Management'
