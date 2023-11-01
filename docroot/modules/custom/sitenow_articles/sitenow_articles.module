@@ -76,17 +76,20 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
         }
       }
     case 'node_article_form':
-      // Update help text for scheduler on article content type.
+      // Update help text for scheduler on article content type
+      // and hide the publish/unpublish state fields.
+      $hide_classes = ['js', 'js-hide'];
       if (isset($form['publish_on'])) {
-        $additional_published_help_text = t('Note: this article will be published within a one-hour window of the selected date and time.');
+        $additional_published_help_text = t('Note: this article will transition to a published state within a one-hour window of the selected date and time.');
         $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
-        $form['publish_state']['#disabled'] = TRUE;
+        $form['publish_state']['#attributes']['class'] = array_merge($form['publish_state']['#attributes']['class'], $hide_classes);
       }
       // Update help text on scheduler unpublish_on for article content type.
       if (isset($form['unpublish_on'])) {
-        $additional_unpublished_help_text = t('Note: this article will be archived within a one-hour window of the selected date and time.');
+        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
+        $additional_unpublished_help_text = t('Note: this article will transition to an archived state within a one-hour window of the selected date and time.');
         $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
-        $form['unpublish_state']['#disabled'] = TRUE;
+        $form['unpublish_state']['#attributes']['class'] = array_merge($form['publish_state']['#attributes']['class'], $hide_classes);
       }
 
       if (isset($form['field_related_content'])) {
