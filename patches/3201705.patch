@@ -1,0 +1,34 @@
+diff --git a/src/EntityReferenceRevisionsOrphanPurger.php b/src/EntityReferenceRevisionsOrphanPurger.php
+index ed7604c3d26ebb70577bf07ab25351d6a731941f..13304cf4286c7e4d6ba85dfa9aa174bd459f383b 100644
+--- a/src/EntityReferenceRevisionsOrphanPurger.php
++++ b/src/EntityReferenceRevisionsOrphanPurger.php
+@@ -316,7 +316,28 @@ class EntityReferenceRevisionsOrphanPurger {
+ 
+     $status = $this->isValidParent($parent_type, $parent_field_name);
+     if ($status !== static::PARENT_VALID) {
+-      return $status == static::PARENT_INVALID_SKIP ? TRUE : FALSE;
++      if($status == static::PARENT_INVALID_SKIP){
++        $fieldMap = $this->entityFieldManager->getFieldMapByFieldType('entity_reference_revisions');
++        foreach ($fieldMap as $fieldMapEntityType => $fieldMapFields){
++          foreach($fieldMapFields as $fieldMapFieldName => $fieldMapField){
++            foreach($fieldMapField['bundles'] as $fieldMapFieldBundle) {
++              $fieldDefinitions = $this->entityFieldManager->getFieldDefinitions($fieldMapEntityType, $fieldMapFieldBundle);
++              if($fieldDefinitions[$fieldMapFieldName] && $fieldDefinitions[$fieldMapFieldName]->getFieldStorageDefinition()->getSetting('target_type') == $composite_revision->getEntityTypeId()){
++                $refCount = $this->entityTypeManager->getStorage($fieldMapEntityType)->getQuery()
++                  ->accessCheck(TRUE)
++                  ->condition($this->entityTypeManager->getDefinition($fieldMapEntityType)->getKey('bundle'), $fieldMapFieldBundle)
++                  ->condition($fieldMapFieldName.'.target_revision_id', $composite_revision->getRevisionId())
++                  ->count()
++                  ->execute();
++                if($refCount >= 1){
++                  return TRUE;
++                }
++              }
++            }
++          }
++        }
++      }
++      return FALSE;
+     }
+ 
+     // Check if the revision is used in any revision of the parent, if that

@@ -51,6 +51,7 @@ function classrooms_core_update_9002(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'room')
+      ->accessCheck()
       ->execute();
 
     $sandbox['total'] = count($query);

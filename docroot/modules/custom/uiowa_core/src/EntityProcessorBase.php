@@ -125,6 +125,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       $this->entityIds = $this->entityTypeManager
         ->getStorage($this->entityType)
         ->getQuery()
+        ->accessCheck(TRUE)
         ->condition('type', $this->bundle)
         ->execute();
     }

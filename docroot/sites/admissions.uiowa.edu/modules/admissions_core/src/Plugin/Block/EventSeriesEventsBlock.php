@@ -91,7 +91,8 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
         ->condition('type', 'event')
         ->condition('status', 1)
         ->condition('field_event_series_link.uri', 'entity:node/' . $nid, '=')
-        ->sort('field_event_when.value', 'ASC');
+        ->sort('field_event_when.value', 'ASC')
+        ->accessCheck();
 
       $nids = $query->execute();
       if (!empty($nids)) {

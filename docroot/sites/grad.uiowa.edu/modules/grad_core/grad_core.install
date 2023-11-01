@@ -15,6 +15,7 @@ function grad_core_update_9001() {
 
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'mentor')
+    ->accessCheck()
     ->execute();
 
   $result = $storage->loadMultiple($nids);
