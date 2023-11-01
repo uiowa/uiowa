@@ -24,6 +24,30 @@ adding:
               weight: 0
               additional: {  }
               third_party_settings: {  }
+        -
+          components:
+            config_split_sequence_42vifq8g48vbludn:
+              uuid: 92e69073-c326-4ac8-92bd-8e152d082316
+              region: main
+              configuration:
+                id: 'field_block:node:alert:field_alert_service_affected'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: inline
+                  settings:
+                    link: true
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ''
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
   content:
     field_alert_service_affected:
       type: entity_reference_label
