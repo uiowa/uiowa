@@ -2970,6 +2970,9 @@ function sitenow_update_10002() {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $config = $component->getConfiguration();
     $config['pager_offset'] = (int) $config['pager_offset'];
+    if ($config['pager_offset'] < 0) {
+      $config['pager_offset'] = 0;
+    }
     $component->setConfiguration($config);
   });
 }
