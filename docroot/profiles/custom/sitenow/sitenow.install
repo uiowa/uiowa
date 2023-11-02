@@ -2969,10 +2969,13 @@ function sitenow_update_10002() {
   ], function (&$component, $block) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $config = $component->getConfiguration();
-    $config['pager_offset'] = (int) $config['pager_offset'];
-    if ($config['pager_offset'] < 0) {
-      $config['pager_offset'] = 0;
+
+    if (array_key_exists('pager_offset', $config)) {
+      $config['pager_offset'] = (int) $config['pager_offset'];
+      if ($config['pager_offset'] < 0) {
+        $config['pager_offset'] = 0;
+      }
+      $component->setConfiguration($config);
     }
-    $component->setConfiguration($config);
   });
 }
