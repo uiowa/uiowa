@@ -5986,3 +5986,9 @@ $sites['labbadovinac.uiowa.ddev.site'] = 'badovinac.lab.uiowa.edu';
 $sites['labbadovinac.dev.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
 $sites['labbadovinac.stage.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
 $sites['labbadovinac.prod.drupal.uiowa.edu'] = 'badovinac.lab.uiowa.edu';
+
+// Directory aliases for nmr.medicine.uiowa.edu.
+$sites['medicinenmr.uiowa.ddev.site'] = 'nmr.medicine.uiowa.edu';
+$sites['medicinenmr.dev.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
+$sites['medicinenmr.stage.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
+$sites['medicinenmr.prod.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
