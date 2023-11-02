@@ -146,22 +146,25 @@ function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStat
  */
 function sitenow_articles_entity_presave(EntityInterface $entity) {
   if ($entity->bundle() == 'article') {
-    $set_state = $entity->moderation_state->value;
-    if ($set_state === 'published' && !$entity->isPublished()) {
-      if ($entity->isNew()) {
-        $fallback_state = 'draft';
+    // Catching an odd situation where scheduler.module changes the node
+    // status to unpublished but doesn't change the moderation state.
+    if ($set_state = $entity->moderation_state->value) {
+      if ($set_state == 'published' && !$entity->isPublished()) {
+        if ($entity->isNew()) {
+          $fallback_state = 'draft';
+        }
+        else {
+          $fallback_state = $entity->original->moderation_state->value;
+        }
+        // Add a user message along with changing the state.
+        $entity->moderation_state = $fallback_state;
+        $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set @set_state moderation state. Switching back to @fallback_state.', [
+          '@label' => $entity->label(),
+          '@set_state' => $set_state,
+          '@fallback_state' => $fallback_state,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
       }
-      else {
-        $fallback_state = $entity->original->moderation_state->value;
-      }
-      // Add a user message along with changing the state.
-      $entity->moderation_state = $fallback_state;
-      $warning_text = t('Scheduling criteria for <em>"@label,"</em> conflicts with the set @set_state moderation state. Switching back to @fallback_state.', [
-        '@label' => $entity->label(),
-        '@set_state' => $set_state,
-        '@fallback_state' => $fallback_state,
-      ]);
-      \Drupal::messenger()->addWarning($warning_text);
     }
   }
 }
