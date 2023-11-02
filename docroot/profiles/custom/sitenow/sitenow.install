@@ -2956,3 +2956,20 @@ function sitenow_update_10001() {
     }
   }
 }
+
+/**
+ * Update
+ */
+function sitenow_update_10002() {
+  // Apply updates to all blocks that are styled using card styles.
+  _update_all_blocks_by_plugin_id([
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+    'views_block:events_list_block-card_list',
+  ], function (&$component, $block) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    $config = $component->getConfiguration();
+    $config['pager_offset'] = (int) $config['pager_offset'];
+    $component->setConfiguration($config);
+  });
+}
