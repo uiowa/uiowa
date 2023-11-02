@@ -1,11 +1,11 @@
 adding:
   dependencies:
     config:
-      - field.field.node.article.field_article_related_service
+      - field.field.node.alert.field_alert_service_affected
   content:
-    field_article_related_service:
+    field_alert_service_affected:
       type: entity_reference_autocomplete
-      weight: 26
+      weight: 27
       region: content
       settings:
         match_operator: CONTAINS
@@ -14,6 +14,6 @@ adding:
         placeholder: ''
       third_party_settings: {  }
 removing:
-  hidden:
-    publish_on: true
-    unpublish_on: true
+  dependencies:
+    config:
+      - workflows.workflow.editorial

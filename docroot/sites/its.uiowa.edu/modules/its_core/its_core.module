@@ -5,7 +5,9 @@
  * Primary module hooks for ITS Core module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\its_core\Entity\Service;
 
 /**
@@ -96,6 +98,17 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
  */
 function its_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_alert_date':
+      // If we don't have an "end" time or a specified start/text/time
+      // in our start time, it means we have an "ongoing" event,
+      // and we should alter the label.
+      if (!isset($variables['items'][0]['content']['end'])
+        && !isset($variables['items'][0]['content']['start']['#text']['time']['#markup'])
+      ) {
+        $variables['label'] = 'Start time';
+      }
+      break;
+
     case 'field_service_related_service':
       $variables['#attached']['library'][] = 'uids_base/tags';
       break;
