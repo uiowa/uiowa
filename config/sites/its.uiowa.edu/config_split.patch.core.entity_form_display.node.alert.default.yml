@@ -1,0 +1,19 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.alert.field_alert_service_affected
+  content:
+    field_alert_service_affected:
+      type: entity_reference_autocomplete
+      weight: 27
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing:
+  dependencies:
+    config:
+      - workflows.workflow.editorial
