@@ -158,12 +158,26 @@ function sitenow_articles_entity_presave(EntityInterface $entity) {
         }
         // Add a user message along with changing the state.
         $entity->moderation_state = $fallback_state;
-        $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set @set_state moderation state. Switching back to @fallback_state.', [
+        $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
           '@label' => $entity->label(),
           '@set_state' => $set_state,
           '@fallback_state' => $fallback_state,
         ]);
         \Drupal::messenger()->addWarning($warning_text);
+      }
+    }
+    if ($set_state == 'archived') {
+      if ($archive_time = $entity->unpublish_on->value) {
+        $request_time = \Drupal::time()->getRequestTime();
+        if ($archive_time > $request_time) {
+          $entity->moderation_state = $entity->original->moderation_state->value;
+          $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+            '@label' => $entity->label(),
+            '@set_state' => $set_state,
+            '@fallback_state' => $entity->original->moderation_state->value,
+          ]);
+          \Drupal::messenger()->addWarning($warning_text);
+        }
       }
     }
   }
