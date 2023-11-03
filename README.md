@@ -102,10 +102,12 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                      | Reason                                                                                                                         |
-|------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| uiowa/block_content_template | Forked from a deprecated project.                                                                                              |
-| drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                    |
+| Package                      | Reason                                                                                                                       |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| uiowa/block_content_template | Forked from a deprecated project.                                                                                            |
+| drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                  |
+| bower-asset/fontawesome | The version we were using abruptly disappeared on 11/02/2023.|
+
 
 
 
