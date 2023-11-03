@@ -1,0 +1,36 @@
+id: ccom_article
+label: CCOM Article
+dependencies:
+  enforced:
+    module:
+      - ccom_migrate
+migration_tags:
+  - CCOM
+migration_group: ccom_migrate
+source:
+  plugin: ccom_article
+  node_type: article
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: field_primary_media
+  body: body
+  field_teaser: body_summary
+  field_tags: tags
+migration_dependencies: {  }
