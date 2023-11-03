@@ -64,6 +64,7 @@ class CcomArticle extends BaseNodeSource {
     // @todo Create Source field info from field_article_external_url and field_article_iowanow_url.
     // @todo Create gallery from field_article_gallery.
     // @todo Look at what exists in source metatags and map.
+    // @todo Take a closer look at the field_date field and how it can map to created.
 
     return TRUE;
   }
