@@ -6082,3 +6082,9 @@ $sites['labstapleton.uiowa.ddev.site'] = 'stapleton.lab.uiowa.edu';
 $sites['labstapleton.dev.drupal.uiowa.edu'] = 'stapleton.lab.uiowa.edu';
 $sites['labstapleton.stage.drupal.uiowa.edu'] = 'stapleton.lab.uiowa.edu';
 $sites['labstapleton.prod.drupal.uiowa.edu'] = 'stapleton.lab.uiowa.edu';
+
+// Directory aliases for jalal.lab.uiowa.edu.
+$sites['labjalal.uiowa.ddev.site'] = 'jalal.lab.uiowa.edu';
+$sites['labjalal.dev.drupal.uiowa.edu'] = 'jalal.lab.uiowa.edu';
+$sites['labjalal.stage.drupal.uiowa.edu'] = 'jalal.lab.uiowa.edu';
+$sites['labjalal.prod.drupal.uiowa.edu'] = 'jalal.lab.uiowa.edu';

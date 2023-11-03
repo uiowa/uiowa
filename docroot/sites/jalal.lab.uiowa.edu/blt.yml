@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjalal.uiowa.ddev.site
+    protocol: https
+  machine_name: labjalal
+  human_name: jalal.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjalal.prod
+drupal:
+  db:
+    database: jalal_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjalal.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'The Human Translational Nephrology Lab - Dr. Jalal, PI'
