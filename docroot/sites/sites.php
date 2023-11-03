@@ -6034,3 +6034,9 @@ $sites['labince.uiowa.ddev.site'] = 'ince.lab.uiowa.edu';
 $sites['labince.dev.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
 $sites['labince.stage.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
 $sites['labince.prod.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
+
+// Directory aliases for elliott.lab.uiowa.edu.
+$sites['labelliott.uiowa.ddev.site'] = 'elliott.lab.uiowa.edu';
+$sites['labelliott.dev.drupal.uiowa.edu'] = 'elliott.lab.uiowa.edu';
+$sites['labelliott.stage.drupal.uiowa.edu'] = 'elliott.lab.uiowa.edu';
+$sites['labelliott.prod.drupal.uiowa.edu'] = 'elliott.lab.uiowa.edu';
