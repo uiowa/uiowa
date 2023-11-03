@@ -21,7 +21,7 @@ process:
     map:
       und: en
   moderation_state: moderation_state
-  created: created
+  created: field_date
   changed: changed
   status: status
   promote: promote
@@ -29,8 +29,12 @@ process:
     plugin: default_value
     default_value: 1
   title: title
-  field_image: field_primary_media
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+  field_article_source_org: field_article_publication
   body: body
   field_teaser: body_summary
   field_tags: tags
+  source_link: source_link
 migration_dependencies: {  }

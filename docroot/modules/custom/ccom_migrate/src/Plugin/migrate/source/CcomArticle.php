@@ -35,6 +35,36 @@ class CcomArticle extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Create tags from field_tags source field.
+    $values = $row->getSourceProperty('field_tags');
+    $tag_tids = [];
+    foreach ($values as $tid_array) {
+      $tag_tids[] = $tid_array['tid'];
+    }
+    if (!empty($tag_tids)) {
+      // Fetch tag names based on TIDs from our old site.
+      $tag_results = $this->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tag_tids, 'IN')
+        ->execute();
+      $tags = [];
+      foreach ($tag_results as $result) {
+        $tag_name = $result['name'];
+        $tid = $this->createTag($tag_name, $row);
+
+        // Add the mapped TID to match our tag name.
+        if ($tid) {
+          $tags[] = $tid;
+        }
+
+      }
+      $row->setSourceProperty('tags', $tags);
+    }
+
+    // @todo Create Source field info from field_article_external_url and field_article_iowanow_url.
+    // @todo Create gallery from field_article_gallery.
+    // @todo Look at what exists in source metatags and map.
+
     return TRUE;
   }
 
