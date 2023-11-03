@@ -5992,3 +5992,9 @@ $sites['medicinenmr.uiowa.ddev.site'] = 'nmr.medicine.uiowa.edu';
 $sites['medicinenmr.dev.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
 $sites['medicinenmr.stage.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
 $sites['medicinenmr.prod.drupal.uiowa.edu'] = 'nmr.medicine.uiowa.edu';
+
+// Directory aliases for ahmad.lab.uiowa.edu.
+$sites['labahmad.uiowa.ddev.site'] = 'ahmad.lab.uiowa.edu';
+$sites['labahmad.dev.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
+$sites['labahmad.stage.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
+$sites['labahmad.prod.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
