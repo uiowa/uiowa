@@ -6070,3 +6070,9 @@ $sites['labmaretzky.uiowa.ddev.site'] = 'maretzky.lab.uiowa.edu';
 $sites['labmaretzky.dev.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
 $sites['labmaretzky.stage.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
 $sites['labmaretzky.prod.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
+
+// Directory aliases for meier.lab.uiowa.edu.
+$sites['labmeier.uiowa.ddev.site'] = 'meier.lab.uiowa.edu';
+$sites['labmeier.dev.drupal.uiowa.edu'] = 'meier.lab.uiowa.edu';
+$sites['labmeier.stage.drupal.uiowa.edu'] = 'meier.lab.uiowa.edu';
+$sites['labmeier.prod.drupal.uiowa.edu'] = 'meier.lab.uiowa.edu';
