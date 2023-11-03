@@ -6028,3 +6028,9 @@ $sites['labimai.uiowa.ddev.site'] = 'imai.lab.uiowa.edu';
 $sites['labimai.dev.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
 $sites['labimai.stage.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
 $sites['labimai.prod.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
+
+// Directory aliases for ince.lab.uiowa.edu.
+$sites['labince.uiowa.ddev.site'] = 'ince.lab.uiowa.edu';
+$sites['labince.dev.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
+$sites['labince.stage.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
+$sites['labince.prod.drupal.uiowa.edu'] = 'ince.lab.uiowa.edu';
