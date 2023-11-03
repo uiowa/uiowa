@@ -62,9 +62,41 @@ class CcomArticle extends BaseNodeSource {
     }
 
     // @todo Create Source field info from field_article_external_url and field_article_iowanow_url.
-    // @todo Create gallery from field_article_gallery.
+    // Process the gallery images from field_article_gallery.
+    $gallery = $row->getSourceProperty('field_article_gallery');
+    if (!empty($gallery)) {
+
+      // @todo Check how the gallery images are stored in CCOM sites,
+      //   and adjust the following.
+      // The d7 galleries are a separate entity, so we need to fetch it
+      // and then process the individual images attached.
+      $gallery_query = $this->select('field_data_field_gallery_photos', 'g')
+        ->fields('g')
+        ->condition('g.entity_id', $gallery[0]['target_id'], '=');
+      // Grab title and alt directly from these tables,
+      // as they are the most accurate for the photo gallery images.
+      $gallery_query->join('field_data_field_file_image_title_text', 'title', 'g.field_gallery_photos_fid = title.entity_id');
+      $gallery_query->join('field_data_field_file_image_alt_text', 'alt', 'g.field_gallery_photos_fid = alt.entity_id');
+      $images = $gallery_query->fields('title')
+        ->fields('alt')
+        ->execute();
+      $new_images = [];
+      foreach ($images as $image) {
+        // On the source site, the image title is used as the caption
+        // in photo galleries, so pass it in as the global caption
+        // parameter for the new site.
+        $new_images[] = $this->processImageField($image['field_gallery_photos_fid'], $image['field_file_image_alt_text_value'], $image['field_file_image_title_text_value'], $image['field_file_image_title_text_value']);
+      }
+      $row->setSourceProperty('gallery', $new_images);
+    }
+
     // @todo Look at what exists in source metatags and map.
-    // @todo Take a closer look at the field_date field and how it can map to created.
+    // If a date is specified in field_date,
+    // convert to a timestamp and map to created.
+    $date = $row->getSourceProperty('field_date');
+    if (!empty($date)) {
+      $row->setSourceProperty('created', strtotime($date));
+    }
 
     return TRUE;
   }
