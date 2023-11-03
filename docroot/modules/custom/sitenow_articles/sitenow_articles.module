@@ -145,10 +145,12 @@ function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStat
  * Implements hook_entity_presave().
  */
 function sitenow_articles_entity_presave(EntityInterface $entity) {
+  // This should be moved and expanded if additional
+  // types use a combination of scheduler/moderation.
   if ($entity->bundle() == 'article') {
-    // Catching an odd situation where scheduler.module changes the node
+    // Catching an odd situation after scheduler where it changes the node
     // status to unpublished but doesn't change the moderation state.
-    if ($set_state = $entity->moderation_state->value) {
+    if ($set_state = $entity->moderation_state?->value) {
       if ($set_state == 'published' && !$entity->isPublished()) {
         if ($entity->isNew()) {
           $fallback_state = 'draft';
@@ -165,18 +167,20 @@ function sitenow_articles_entity_presave(EntityInterface $entity) {
         ]);
         \Drupal::messenger()->addWarning($warning_text);
       }
-    }
-    if ($set_state == 'archived') {
-      if ($archive_time = $entity->unpublish_on->value) {
-        $request_time = \Drupal::time()->getRequestTime();
-        if ($archive_time > $request_time) {
-          $entity->moderation_state = $entity->original->moderation_state->value;
-          $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
-            '@label' => $entity->label(),
-            '@set_state' => $set_state,
-            '@fallback_state' => $entity->original->moderation_state->value,
-          ]);
-          \Drupal::messenger()->addWarning($warning_text);
+      // Such as during bulk operations, prevent archive transition
+      // when there is a future date set.
+      if ($set_state == 'archived') {
+        if ($archive_time = $entity->unpublish_on?->value) {
+          $request_time = \Drupal::time()->getRequestTime();
+          if ($archive_time > $request_time) {
+            $entity->moderation_state = $entity->original->moderation_state->value;
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+              '@label' => $entity->label(),
+              '@set_state' => $set_state,
+              '@fallback_state' => $entity->original->moderation_state->value,
+            ]);
+            \Drupal::messenger()->addWarning($warning_text);
+          }
         }
       }
     }
