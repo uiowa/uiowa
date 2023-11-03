@@ -6064,3 +6064,9 @@ $sites['labgurung.uiowa.ddev.site'] = 'gurung.lab.uiowa.edu';
 $sites['labgurung.dev.drupal.uiowa.edu'] = 'gurung.lab.uiowa.edu';
 $sites['labgurung.stage.drupal.uiowa.edu'] = 'gurung.lab.uiowa.edu';
 $sites['labgurung.prod.drupal.uiowa.edu'] = 'gurung.lab.uiowa.edu';
+
+// Directory aliases for maretzky.lab.uiowa.edu.
+$sites['labmaretzky.uiowa.ddev.site'] = 'maretzky.lab.uiowa.edu';
+$sites['labmaretzky.dev.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
+$sites['labmaretzky.stage.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
+$sites['labmaretzky.prod.drupal.uiowa.edu'] = 'maretzky.lab.uiowa.edu';
