@@ -2,6 +2,7 @@ adding:
   dependencies:
     config:
       - field.field.node.alert.field_alert_service_affected
+      - workflows.workflow.editorial
   content:
     field_alert_service_affected:
       type: entity_reference_autocomplete
@@ -13,7 +14,4 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-removing:
-  dependencies:
-    config:
-      - workflows.workflow.editorial
+removing: {  }
