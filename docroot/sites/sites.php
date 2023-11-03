@@ -5998,3 +5998,9 @@ $sites['labahmad.uiowa.ddev.site'] = 'ahmad.lab.uiowa.edu';
 $sites['labahmad.dev.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
 $sites['labahmad.stage.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
 $sites['labahmad.prod.drupal.uiowa.edu'] = 'ahmad.lab.uiowa.edu';
+
+// Directory aliases for hodgson-zingman.lab.uiowa.edu.
+$sites['labhodgson-zingman.uiowa.ddev.site'] = 'hodgson-zingman.lab.uiowa.edu';
+$sites['labhodgson-zingman.dev.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.edu';
+$sites['labhodgson-zingman.stage.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.edu';
+$sites['labhodgson-zingman.prod.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.edu';
