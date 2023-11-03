@@ -6022,3 +6022,9 @@ $sites['laboneill.uiowa.ddev.site'] = 'oneill.lab.uiowa.edu';
 $sites['laboneill.dev.drupal.uiowa.edu'] = 'oneill.lab.uiowa.edu';
 $sites['laboneill.stage.drupal.uiowa.edu'] = 'oneill.lab.uiowa.edu';
 $sites['laboneill.prod.drupal.uiowa.edu'] = 'oneill.lab.uiowa.edu';
+
+// Directory aliases for imai.lab.uiowa.edu.
+$sites['labimai.uiowa.ddev.site'] = 'imai.lab.uiowa.edu';
+$sites['labimai.dev.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
+$sites['labimai.stage.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
+$sites['labimai.prod.drupal.uiowa.edu'] = 'imai.lab.uiowa.edu';
