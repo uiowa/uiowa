@@ -2,13 +2,56 @@
 
 namespace Drupal\facilities_core;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\FileInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Sync building information.
  */
 class BuildingsProcessor extends EntityProcessorBase {
+
+  /**
+   * The http_client service.
+   *
+   * @var Client
+   */
+  protected Client $client;
+
+  /**
+   * The file_system service.
+   *
+   * @var FileSystemInterface
+   */
+  protected FileSystemInterface $fs;
+
+  /**
+   * Constructs a new class instance.
+   *
+   * @param Client $client
+   *   The http_client service.
+   * @param FileSystemInterface $fs
+   *   The file_system service.
+   */
+  public function __construct(Client $client, FileSystemInterface $fs) {
+    parent::__construct();
+    $this->client = $client;
+    $this->fs = $fs;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('http_client'),
+      $container->get('file_system')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -45,6 +88,9 @@ class BuildingsProcessor extends EntityProcessorBase {
       // Request from Facilities API to get buildings.
       $facilities_api = \Drupal::service('uiowa_facilities.api');
       $result = $facilities_api->getBuilding($building_number);
+      // Get image
+      // Use some type of caching strategy
+      $this->processResult($result);
       foreach ((array) $result as $key => $value) {
         $record->{$key} = $value;
       }
@@ -62,6 +108,32 @@ class BuildingsProcessor extends EntityProcessorBase {
     // entity ID for an existing named building.
     if (isset($record->namedBuilding)) {
       $record->namedBuilding = $this->findNamedBuildingNid($record->{$this->apiRecordSyncKey});
+    }
+  }
+
+  protected function processResult(&$result) {
+    try {
+      $building_image_url = $result->imageUrl;
+      $this->client->request('GET', $building_image_url);
+
+      $scheme = $this->configFactory->get('system.file')->get('default_scheme');
+      $destination = $scheme . '://building_images/';
+      $building_number = $result->buildingNumber;
+      $realpath = $this->fs->realpath($destination);
+
+      if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
+        /** @var FileInterface $file */
+        $file = system_retrieve_file($building_image_url, "{$destination}{$building_number}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
+        $result->imageUrl = $file->getFileUri();
+      }
+    }
+    catch (ClientException $e) {
+      $this->getLogger('facilities_core')->warning($this->t('Unable to get image for @building.', [
+        '@building' => $result->buildingNumber . ' : ' . $result->buildingFormalName,
+      ]));
+
+      // Use the default thumbnail if we can't get one.
+      $result->imageUrl = '';
     }
   }
 
