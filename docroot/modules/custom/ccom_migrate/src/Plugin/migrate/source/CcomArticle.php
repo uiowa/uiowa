@@ -107,6 +107,9 @@ class CcomArticle extends BaseNodeSource {
       $this->align = 'left';
       // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+
+      // Check for prepended dates in the body field.
+      $body[0]['value'] = preg_replace('%^<p>(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}<\/p>%', '', $body[0]['value']);
       // Set the format to filtered_html while we have it.
       $body[0]['format'] = 'filtered_html';
 
