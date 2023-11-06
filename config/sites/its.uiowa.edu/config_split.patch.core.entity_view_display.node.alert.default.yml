@@ -24,6 +24,17 @@ adding:
               weight: 0
               additional: {  }
               third_party_settings: {  }
+            config_split_sequence_ako1b5e48kom6han:
+              uuid: b04a7a65-26cb-40d7-a79d-5a6352bb237e
+              region: content
+              configuration:
+                id: 'extra_field_block:node:alert:content_moderation_control'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
         -
           components:
             config_split_sequence_42vifq8g48vbludn:
@@ -49,6 +60,11 @@ adding:
               additional: {  }
               third_party_settings: {  }
   content:
+    content_moderation_control:
+      settings: {  }
+      third_party_settings: {  }
+      weight: -20
+      region: content
     field_alert_service_affected:
       type: entity_reference_label
       label: above
