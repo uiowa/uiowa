@@ -95,8 +95,8 @@ class CcomArticle extends BaseNodeSource {
     // If a date is specified in field_date,
     // convert to a timestamp and map to created.
     $date = $row->getSourceProperty('field_date');
-    if (!empty($date)) {
-      $row->setSourceProperty('created', strtotime($date));
+    if (!empty($date) && isset($date[0]['value'])) {
+      $row->setSourceProperty('created', strtotime($date[0]['value']));
     }
 
     // Replace inline files and images in the body,
