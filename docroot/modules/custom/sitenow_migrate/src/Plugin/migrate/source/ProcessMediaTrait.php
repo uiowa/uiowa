@@ -122,8 +122,13 @@ trait ProcessMediaTrait {
     $file_data = $this->fidQuery($fid);
 
     if (!$file_data) {
-      // Failed to find a file, so let's leave the content unchanged.
-      return $match;
+      // Failed to find a file, so let's leave the content unchanged
+      // but log a message in the migration table.
+      $message = "Failed to replace file with fid: $fid.";
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $this->getCurrentIds()['nid']], $message);
+      return $match[0];
     }
 
     $filename = $file_data['filename'];
