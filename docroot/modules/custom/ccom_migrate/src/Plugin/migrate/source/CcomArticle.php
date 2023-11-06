@@ -99,6 +99,20 @@ class CcomArticle extends BaseNodeSource {
       $row->setSourceProperty('created', strtotime($date));
     }
 
+    // Replace inline files and images in the body,
+    // and set for placement in the body and teaser fields.
+    $body = $row->getSourceProperty('body');
+    if (!empty($body)) {
+      $this->viewMode = 'medium__no_crop';
+      $this->align = 'left';
+      // Search for D7 inline embeds and replace with D8 inline entities.
+      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+      // Set the format to filtered_html while we have it.
+      $body[0]['format'] = 'filtered_html';
+
+      $row->setSourceProperty('body', $body);
+    }
+
     return TRUE;
   }
 
