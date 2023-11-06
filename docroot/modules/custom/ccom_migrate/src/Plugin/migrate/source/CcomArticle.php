@@ -103,7 +103,7 @@ class CcomArticle extends BaseNodeSource {
     // and set for placement in the body and teaser fields.
     $body = $row->getSourceProperty('body');
     if (!empty($body)) {
-      $this->viewMode = 'medium__no_crop';
+      $this->viewMode = 'large';
       $this->align = 'left';
       // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
