@@ -54,7 +54,9 @@ class CcomArticle extends BaseNodeSource {
 
         // Add the mapped TID to match our tag name.
         if ($tid) {
-          $tags[] = $tid;
+          $tags[] = [
+            'tid' => $tid
+          ];
         }
 
       }
