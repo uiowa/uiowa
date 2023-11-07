@@ -69,17 +69,13 @@ class CcomArticle extends BaseNodeSource {
     if (!empty($iowanow_url)) {
       // Set the title manually if it's Iowa Now,
       // since it's often not defined on the source.
-      $source = [
-        'url' => $iowanow_url['url'],
-        'title' => 'Iowa Now',
-      ];
+      $source = $iowanow_url;
+      $source[0]['title'] = 'Iowa Now';
     }
-    elseif (!empty($external_url)) {
+    else {
       $source = $external_url;
     }
-    if (isset($source)) {
-      $row->setSourceProperty('source', $source);
-    }
+    $row->setSourceProperty('source', $source);
 
     // Process the gallery images from field_article_gallery.
     $gallery = $row->getSourceProperty('field_article_gallery');
