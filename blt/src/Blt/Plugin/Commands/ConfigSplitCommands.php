@@ -22,6 +22,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   public function updateFeatureSplits($options = [
     'split' => InputOption::VALUE_OPTIONAL,
+    'skip-export' => FALSE,
   ]) {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
     $root = $this->getConfigValue('repo.root');
@@ -43,7 +44,14 @@ class ConfigSplitCommands extends BltTasks {
         if (isset($options['split']) && $options['split'] !== $id) {
           continue;
         }
-        $this->updateSplit($split);
+
+        if (NULL !== $id = $this->getSplitId($split)) {
+          $this->setupSplit($id);
+
+          if (!isset($options['skip-export']) || $options['skip-export'] === FALSE) {
+            $this->updateSplit($id);
+          }
+        }
       }
     }
   }
@@ -76,7 +84,10 @@ class ConfigSplitCommands extends BltTasks {
         $split = YamlMunge::parseFile($split_file->getPathname());
         $alias = Multisite::getIdentifier("https://$host");
         $this->switchSiteContext($host);
-        $this->updateSplit($split, $alias, $module);
+        if (NULL !== $id = $this->getSplitId($split)) {
+          $this->setupSplit($id, $alias, $module);
+          $this->updateSplit($id, $alias);
+        }
       }
     }
   }
@@ -90,6 +101,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   public function updateSiteSplits($options = [
     'host' => InputOption::VALUE_OPTIONAL,
+    'skip-export' => FALSE,
   ]) {
     $root = $this->getConfigValue('repo.root');
     $split_name = 'config_split.config_split.site.yml';
@@ -111,16 +123,20 @@ class ConfigSplitCommands extends BltTasks {
       }
       $alias = Multisite::getIdentifier("https://$host");
       $this->switchSiteContext($host);
-      $this->updateSplit($split, $alias);
+      if (NULL !== $id = $this->getSplitId($split)) {
+        $this->setupSplit($id, $alias);
+        if (!isset($options['skip-export']) || $options['skip-export'] === FALSE) {
+          $this->updateSplit($id, $alias);
+        }
+      }
     }
   }
 
   /**
-   * Export a split.
+   * Sync a site and make sure that the split is installed.
    */
-  protected function updateSplit($split, $alias = 'default', $module = NULL) {
-    $id = $split['id'];
-    $this->say("Updating the <comment>$id</comment> config split on $alias.");
+  protected function setupSplit($split_id, $alias = 'default', $module = NULL) {
+    $this->say("Setting up the <comment>$split_id</comment> config split on $alias.");
 
     // Recreate the database in case this site has never been blt-synced before.
     $this->taskDrush()
@@ -147,13 +163,13 @@ class ConfigSplitCommands extends BltTasks {
       ->stopOnFail(FALSE)
       ->drush('config:get')
       ->alias("$alias.local")
-      ->args("config_split.config_split.{$id}", 'status')
+      ->args("config_split.config_split.{$split_id}", 'status')
       ->run();
 
     $status = FALSE;
     if ($result->getExitCode() !== 1 && $result->getMessage() !== '') {
       $status = trim($result->getMessage());
-      $status = str_replace("'config_split.config_split.$id:status': ", '', $status);
+      $status = str_replace("'config_split.config_split.$split_id:status': ", '', $status);
       $status = $status === 'true';
     }
 
@@ -163,11 +179,20 @@ class ConfigSplitCommands extends BltTasks {
       $this->taskDrush()
         ->stopOnFail(FALSE)
         ->drush('config:set')
-        ->args("config_split.config_split.{$id}", 'status', TRUE)
+        ->args("config_split.config_split.{$split_id}", 'status', TRUE)
         ->drush('cache:rebuild')
         ->drush('config:import')
+        ->drush('config:import')
+        ->drush('config:status')
         ->run();
     }
+  }
+
+  /**
+   * Export a split.
+   */
+  protected function updateSplit($split_id, $alias = 'default') {
+    $this->say("Updating the <comment>$split_id</comment> config split on $alias.");
 
     // Run database updates after config.
     $this->taskDrush()
@@ -181,8 +206,15 @@ class ConfigSplitCommands extends BltTasks {
       ->stopOnFail(FALSE)
       ->drush('config-split:export')
       ->alias("$alias.local")
-      ->arg($id)
+      ->arg($split_id)
       ->run();
+  }
+
+  /**
+   * Get the Split ID or NULL.
+   */
+  protected function getSplitId($split) {
+    return $split['id'] ?? NULL;
   }
 
 }
