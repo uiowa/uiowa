@@ -89,7 +89,9 @@ class CcomArticle extends BaseNodeSource {
 
     // Look at what exists in source metatags and map.
     if ($metatags = $row->getSourceProperty('pseudo_metatag_entities')) {
-      $unserialized = unserialize($metatags);
+      $unserialized = unserialize($metatags, [
+        'allowed_classes' => TRUE,
+      ]);
       foreach ($unserialized as $item => $value) {
         // Add a notice and log a message for the
         // metatags that aren't being mapped.
