@@ -54,9 +54,7 @@ class CcomArticle extends BaseNodeSource {
 
         // Add the mapped TID to match our tag name.
         if ($tid) {
-          $tags[] = [
-            'tid' => $tid
-          ];
+          $tags[] = $tid;
         }
 
       }
@@ -111,11 +109,11 @@ class CcomArticle extends BaseNodeSource {
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Check for prepended dates in the body field.
-      if (preg_match('%^<p>(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}<\/p>%', $body[0]['value'], $matches)) {
+      if (preg_match('%^<p>((January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4})<\/p>%', $body[0]['value'], $matches)) {
         // If we didn't have a specified date, but had a prepended date,
         // use this one over the article created date.
         if (!$date) {
-          $row->setSourceProperty('created', strtotime($matches[0]));
+          $row->setSourceProperty('created', strtotime($matches[1]));
         }
         // Remove the now erroneous date.
         $body[0]['value'] = preg_replace('%^<p>(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}<\/p>%', '', $body[0]['value']);
