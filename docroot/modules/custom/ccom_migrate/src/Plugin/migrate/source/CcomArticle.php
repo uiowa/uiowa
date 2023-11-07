@@ -87,7 +87,24 @@ class CcomArticle extends BaseNodeSource {
       $row->setSourceProperty('gallery', $new_images);
     }
 
-    // @todo Look at what exists in source metatags and map.
+    // Look at what exists in source metatags and map.
+    if ($metatags = $row->getSourceProperty('pseudo_metatag_entities')) {
+      $unserialized = unserialize($metatags);
+      foreach ($unserialized as $item => $value) {
+        // Add a notice and log a message for the
+        // metatags that aren't being mapped.
+        $value = $value['value'];
+        $message = "Metatag $item: $value not migrated.";
+        $this->migration
+          ->getIdMap()
+          ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+        $this->logger->notice('Metatag @item: @value not migrated for node: @nid', [
+          '@item' => $item,
+          '@value' => $value,
+          '@nid' => $row->getSourceProperty('nid'),
+        ]);
+      }
+    }
     // If a date is specified in field_date,
     // convert to a timestamp and map to created.
     $date = $row->getSourceProperty('field_date');
