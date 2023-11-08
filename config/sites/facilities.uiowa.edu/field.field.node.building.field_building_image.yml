@@ -1,0 +1,27 @@
+uuid: cfa03ca0-44c8-434c-9e62-242503c878c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_building_image
+    - node.type.building
+  module:
+    - file
+id: node.building.field_building_image
+field_name: field_building_image
+entity_type: node
+bundle: building
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: building_images
+  file_extensions: jpg
+  max_filesize: ''
+  description_field: false
+field_type: file

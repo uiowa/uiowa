@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
-    - field.field.node.building.field_building_image_url
+    - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
@@ -21,11 +21,10 @@ dependencies:
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
-    - responsive_image.styles.full__no_crop
     - views.view.alerts_building_block
   module:
     - facilities_core
-    - imagecache_external
+    - file
     - layout_builder
     - layout_builder_restrictions
     - user
@@ -42,24 +41,6 @@ third_party_settings:
         layout_settings:
           label: ''
         components:
-          -
-            uuid: 63b3edf5-9c8b-402b-a3cf-0648e923d01d
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_image_url'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: imagecache_external_responsive_image
-                label: hidden
-                settings:
-                  imagecache_external_link: ''
-                  imagecache_external_responsive_style: full__no_crop
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: ea1b511d-b9a8-409b-8e78-be36b9fb96e5
             region: content
@@ -321,6 +302,23 @@ third_party_settings:
             weight: 15
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 84c9aab8-5314-4c26-a03d-42622eb13a2b
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: file_default
+                label: above
+                settings:
+                  use_description_as_link_text: true
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -363,14 +361,13 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  field_building_image_url:
-    type: imagecache_external_responsive_image
-    label: hidden
+  field_building_image:
+    type: file_default
+    label: above
     settings:
-      imagecache_external_link: ''
-      imagecache_external_responsive_style: full__no_crop
+      use_description_as_link_text: true
     third_party_settings: {  }
-    weight: 0
+    weight: 14
     region: content
   field_building_lactation_rooms:
     type: string
