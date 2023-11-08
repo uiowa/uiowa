@@ -96,6 +96,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     }
   }
 
+  // TODO: rename function.
   protected function processResult(&$result) {
     $this->client = \Drupal::service('http_client');
     $this->fs = \Drupal::service('file_system');
@@ -111,9 +112,9 @@ class BuildingsProcessor extends EntityProcessorBase {
       $realpath = $this->fs->realpath($destination);
 
       if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-        /** @var FileInterface $file */
-        $file = system_retrieve_file($building_image_url, "{$destination}{$building_number}.jpg", FALSE, FileSystemInterface::EXISTS_REPLACE);
-        $result->imageUrl = str_replace('public', 'internal', $file);
+        $data = file_get_contents($building_image_url);
+        $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
+        $result->imageUrl = ['target_id' => $file->id()];
       }
     }
     catch (ClientException $e) {
