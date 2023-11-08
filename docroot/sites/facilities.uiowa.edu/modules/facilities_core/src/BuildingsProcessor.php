@@ -123,29 +123,30 @@ class BuildingsProcessor extends EntityProcessorBase {
     $this->configFactory = \Drupal::service('config.factory');
     $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
 
+    if (!empty($result->imageUrl)) {
+      try {
+        $building_image_url = $result->imageUrl;
+        $this->client->request('GET', $building_image_url);
 
-    try {
-      $building_image_url = $result->imageUrl;
-      $this->client->request('GET', $building_image_url);
+        $scheme = $this->configFactory->get('system.file')->get('default_scheme');
+        $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
+        $building_number = $result->buildingNumber;
+        $realpath = $this->fs->realpath($destination);
 
-      $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-      $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
-      $building_number = $result->buildingNumber;
-      $realpath = $this->fs->realpath($destination);
-
-      if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-        $data = file_get_contents($building_image_url);
-        $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
-        $result->imageUrl = ['target_id' => $file->id()];
+        if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
+          $data = file_get_contents($building_image_url);
+          $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
+          $result->imageUrl = ['target_id' => $file->id()];
+        }
       }
-    }
-    catch (ClientException $e) {
-      $this->getLogger('facilities_core')->warning($this->t('Unable to get image for @building.', [
-        '@building' => $result->buildingNumber . ' : ' . $result->buildingFormalName,
-      ]));
+      catch (ClientException $e) {
+        $this->getLogger('facilities_core')->warning($this->t('Unable to get image for @building.', [
+          '@building' => $result->buildingNumber . ' : ' . $result->buildingFormalName,
+        ]));
 
-      // Use the default thumbnail if we can't get one.
-      $result->imageUrl = '';
+        // Use the default thumbnail if we can't get one.
+        $result->imageUrl = '';
+      }
     }
   }
 
