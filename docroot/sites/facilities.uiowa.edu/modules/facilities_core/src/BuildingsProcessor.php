@@ -5,8 +5,8 @@ namespace Drupal\facilities_core;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Url;
-use Drupal\file\FileInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -30,6 +30,13 @@ class BuildingsProcessor extends EntityProcessorBase {
    * @var FileSystemInterface
    */
   protected FileSystemInterface $fs;
+
+  /**
+   * The file_system service.
+   *
+   * @var \Drupal\field\FieldConfigInterface|null
+   */
+  protected ?FieldConfigInterface $imageFieldConfig;
 
   /**
    * The file_system service.
@@ -101,13 +108,15 @@ class BuildingsProcessor extends EntityProcessorBase {
     $this->client = \Drupal::service('http_client');
     $this->fs = \Drupal::service('file_system');
     $this->configFactory = \Drupal::service('config.factory');
+    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
+
 
     try {
       $building_image_url = $result->imageUrl;
       $this->client->request('GET', $building_image_url);
 
       $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-      $destination = $scheme . '://building_images/';
+      $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
       $building_number = $result->buildingNumber;
       $realpath = $this->fs->realpath($destination);
 
