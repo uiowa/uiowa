@@ -10,6 +10,7 @@ use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 
 
 /**
@@ -82,7 +83,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       $result = $facilities_api->getBuilding($building_number);
       // Get image
       // Use some type of caching strategy
-      $this->processResult($result);
+      $this->processResultImage($result);
       foreach ((array) $result as $key => $value) {
         $record->{$key} = $value;
       }
@@ -103,8 +104,20 @@ class BuildingsProcessor extends EntityProcessorBase {
     }
   }
 
-  // TODO: rename function.
-  protected function processResult(&$result) {
+  /**
+   * Save a local version of an image gotten from the facilities API
+   *     and assign that as the building image.
+   *
+   * @param array $result
+   *   The result array reference that contains the image URL.
+   *
+   * @return null
+   *   This function modifies the image URL in place on the result reference.
+   *
+   * @throws GuzzleException
+   *    Throws an exception if it can't get the image for the building.
+   */
+  protected function processResultImage(&$result) {
     $this->client = \Drupal::service('http_client');
     $this->fs = \Drupal::service('file_system');
     $this->configFactory = \Drupal::service('config.factory');
