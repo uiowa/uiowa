@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labirani.uiowa.ddev.site
+    protocol: https
+  machine_name: labirani
+  human_name: irani.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labirani.prod
+drupal:
+  db:
+    database: irani_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labirani.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Irani Lab'
