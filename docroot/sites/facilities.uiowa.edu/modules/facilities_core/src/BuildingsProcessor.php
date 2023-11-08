@@ -5,10 +5,12 @@ namespace Drupal\facilities_core;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+
 
 /**
  * Sync building information.
@@ -30,28 +32,11 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected FileSystemInterface $fs;
 
   /**
-   * Constructs a new class instance.
+   * The file_system service.
    *
-   * @param Client $client
-   *   The http_client service.
-   * @param FileSystemInterface $fs
-   *   The file_system service.
+   * @var ConfigFactoryInterface
    */
-  public function __construct(Client $client, FileSystemInterface $fs) {
-    parent::__construct();
-    $this->client = $client;
-    $this->fs = $fs;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get('http_client'),
-      $container->get('file_system')
-    );
-  }
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * {@inheritdoc}
@@ -112,6 +97,10 @@ class BuildingsProcessor extends EntityProcessorBase {
   }
 
   protected function processResult(&$result) {
+    $this->client = \Drupal::service('http_client');
+    $this->fs = \Drupal::service('file_system');
+    $this->configFactory = \Drupal::service('config.factory');
+
     try {
       $building_image_url = $result->imageUrl;
       $this->client->request('GET', $building_image_url);
@@ -123,8 +112,8 @@ class BuildingsProcessor extends EntityProcessorBase {
 
       if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
         /** @var FileInterface $file */
-        $file = system_retrieve_file($building_image_url, "{$destination}{$building_number}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
-        $result->imageUrl = $file->getFileUri();
+        $file = system_retrieve_file($building_image_url, "{$destination}{$building_number}.jpg", FALSE, FileSystemInterface::EXISTS_REPLACE);
+        $result->imageUrl = str_replace('public', 'internal', $file);
       }
     }
     catch (ClientException $e) {
