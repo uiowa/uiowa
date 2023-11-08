@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.base_field_override.node.building.title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
@@ -55,7 +56,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -72,7 +73,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -89,7 +90,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -109,7 +110,7 @@ third_party_settings:
                   scale: 2
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -126,7 +127,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -143,7 +144,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -160,7 +161,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -177,7 +178,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 8
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -194,7 +195,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -211,7 +212,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 10
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -228,7 +229,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 11
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           -
@@ -245,7 +246,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 12
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -262,7 +263,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 13
+            weight: 15
             additional: {  }
             third_party_settings: {  }
           -
@@ -275,7 +276,7 @@ third_party_settings:
               provider: facilities_core
               context_mapping:
                 node: layout_builder.entity
-            weight: 14
+            weight: 16
             additional: {  }
             third_party_settings: {  }
           -
@@ -299,7 +300,27 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 15
+            weight: 17
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9f2327dd-c4e8-41fc-973a-3f9f3a911dba
+            region: content
+            configuration:
+              id: 'field_block:node:building:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: heading_text
+                label: visually_hidden
+                settings:
+                  size: h1
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -307,16 +328,19 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:building:field_building_image'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: file_default
-                label: above
+                type: entity_print_base64_image_formatter
+                label: visually_hidden
                 settings:
-                  use_description_as_link_text: true
+                  image_style: widescreen__1920_x_1080
                 third_party_settings: {  }
-            weight: 16
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
