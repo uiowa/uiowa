@@ -288,6 +288,31 @@ function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityVi
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    if (isset($variables['publish_on'])) {
+      $date = $variables['publish_on'];
+      $state = 'published';
+    }
+    elseif (isset($variables['unpublish_on'])) {
+      $date = $variables['unpublish_on'];
+      $state = 'archived';
+    }
+
+    if (!empty($date) && $variables['view_mode'] == 'full') {
+      $warning_text = t('This content is currently scheduled for @date to be @state. Editors are restricted from editing until @state.', [
+        '@date' => $date,
+        '@state' => $state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
