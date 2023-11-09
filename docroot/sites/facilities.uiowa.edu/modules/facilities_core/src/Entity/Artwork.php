@@ -17,13 +17,28 @@ class Artwork extends NodeBundleBase implements RendersAsCardInterface {
     parent::buildCard($build);
 
     // Process additional card mappings.
-    // @todo Remove when https://github.com/uiowa/uiowa/pull/6769 has merged.
     $this->mapFieldsToCardBuild($build, [
-      '#content' => 'body',
+      '#content' => 'field_artwork_status',
+      '#subtitle' => 'field_artwork_year',
+      '#meta' => ['field_artwork_artist'],
     ]);
 
     $build['#link_indicator'] = TRUE;
 
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultCardStyles(): array {
+    return [
+      ...parent::getDefaultCardStyles(),
+      'card_media_position' => 'card--stacked',
+      'card_headline_style' => '',
+      'media_size' => 'media--large',
+      'border' => '',
+    ];
+  }
+
 }
+
