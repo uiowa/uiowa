@@ -145,31 +145,26 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-          order: DESC
+          plugin_id: standard
+          order: ASC
           expose:
             label: ''
             field_identifier: ''
           exposed: false
-          granularity: second
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
           plugin_id: standard
           order: ASC
           expose:
