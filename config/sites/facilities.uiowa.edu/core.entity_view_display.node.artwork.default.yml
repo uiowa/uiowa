@@ -104,16 +104,19 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_building'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: visually_hidden
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -121,12 +124,15 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_artist'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: visually_hidden
                 settings:
                   link: true
                 third_party_settings: {  }
@@ -134,36 +140,22 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 2ccbe3ed-7775-4c46-b5c1-5caad455b3d4
-            region: first
-            configuration:
-              id: 'field_block:node:artwork:field_artwork_dimension'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 937e9e10-b691-43e8-b051-eb3355e25fae
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_status'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: list_default
-                label: above
+                label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -171,18 +163,21 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_artist_website'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: link
-                label: above
+                label: visually_hidden
                 settings:
                   trim_length: 80
                   url_only: false
                   url_plain: false
-                  rel: ''
-                  target: ''
+                  rel: '0'
+                  target: '0'
                 third_party_settings: {  }
             weight: 8
             additional: {  }
@@ -192,12 +187,15 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_year'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: number_integer
-                label: above
+                label: visually_hidden
                 settings:
                   thousand_separator: ''
                   prefix_suffix: true
@@ -210,16 +208,41 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_medium'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: visually_hidden
                 settings:
-                  link: true
-                third_party_settings: {  }
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2ccbe3ed-7775-4c46-b5c1-5caad455b3d4
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_dimension'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }

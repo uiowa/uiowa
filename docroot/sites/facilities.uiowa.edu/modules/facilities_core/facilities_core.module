@@ -69,6 +69,8 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_named_building_form':
     case 'node_named_building_edit_form':
+    case 'node_artwork_form':
+    case 'node_artwork_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
@@ -145,6 +147,20 @@ function facilities_core_preprocess_field(&$variables) {
       // views_block:named_buildings-block_building using Views field api.
       if ($variables['element']['#view_mode'] === '_custom') {
         $variables['label_display'] = 'inline';
+      }
+      break;
+
+    case 'field_artwork_status':
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'Uninstalled') {
+          uiowa_core_set_attributes($variables, 'badge badge--orange element--inline');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Active') {
+          uiowa_core_set_attributes($variables, 'badge badge--green element--inline');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Not Currently On View') {
+          uiowa_core_set_attributes($variables, 'badge badge--cool-gray element--inline');
+        }
       }
       break;
   }
