@@ -14,7 +14,7 @@ use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 
 /**
- * Set dynamic allowed values event status.
+ * Set dynamic allowed values bus routes status.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
@@ -34,6 +34,38 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
     'coralville' => 'Coralville',
     'iowaCity' => 'Iowa City',
   ];
+}
+
+/**
+ * Set dynamic allowed values artwork status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'uninstalled' => 'Uninstalled',
+    'active' => 'Active',
+    'notOnView' => 'Not Currently On View',
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function facilities_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['artwork'])) {
+    $bundles['node']['artwork']['class'] = Artwork::class;
+  }
 }
 
 /**

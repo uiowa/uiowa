@@ -10,17 +10,8 @@ field_name: field_artwork_status
 entity_type: node
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: '0'
-      label: Uninstalled
-    -
-      value: '1'
-      label: Active
-    -
-      value: '2'
-      label: 'Not Currently On View'
-  allowed_values_function: ''
+  allowed_values: {  }
+  allowed_values_function: 'facilities_core_get_artwork_status_options'
 module: options
 locked: false
 cardinality: 1
