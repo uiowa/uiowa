@@ -293,21 +293,23 @@ function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityVi
 function uiowa_core_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    if (isset($variables['publish_on'])) {
-      $date = $variables['publish_on'];
-      $state = 'published';
-    }
-    elseif (isset($variables['unpublish_on'])) {
-      $date = $variables['unpublish_on'];
-      $state = 'archived';
-    }
-
-    if (!empty($date) && $variables['view_mode'] == 'full') {
-      $warning_text = t('This content is currently scheduled for @date to be @state. Editors are restricted from editing until @state.', [
-        '@date' => $date,
-        '@state' => $state,
-      ]);
-      \Drupal::messenger()->addWarning($warning_text);
+    $node = $variables['node'];
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Check for permission.
+    $type = $node->getType();
+    // Showing a message to editors and up about how scheduling locks
+    // editors from editing the content.
+    if ($user->hasPermission('edit any ' . $type . ' content') === TRUE) {
+      if (isset($variables['publish_on'])) {
+        $date = $variables['publish_on'];
+        if ($variables['view_mode'] == 'full') {
+          $warning_text = t('This content is currently scheduled for @date to be published. Editors are restricted from editing until published.', [
+            '@date' => $date,
+          ]);
+          \Drupal::messenger()->addWarning($warning_text);
+        }
+      }
     }
   }
 }
