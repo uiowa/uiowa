@@ -38,8 +38,10 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 50-50
           layout_builder_styles_style:
-            - section_background_style_gray
-            - section_margin_fixed_width_container
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            restore_default_spacing: restore_default_spacing
         components:
           -
             uuid: 9e654c4d-b4fa-4515-9783-4848dbbf9f6c
@@ -104,26 +106,6 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:artwork:field_artwork_building'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: visually_hidden
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 523a2a8a-d2e1-4d00-b114-ade650ae5a85
-            region: first
-            configuration:
-              id: 'field_block:node:artwork:field_artwork_artist'
               label: null
               label_display: null
               provider: layout_builder
@@ -245,7 +227,33 @@ third_party_settings:
             weight: 4
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 523a2a8a-d2e1-4d00-b114-ade650ae5a85
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_artist'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol
         layout_settings:

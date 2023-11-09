@@ -150,6 +150,18 @@ function facilities_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_artwork_building':
+      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
+      break;
+
+    case 'field_artwork_artist':
+      uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
+      break;
+
+    case 'field_artwork_artist_website':
+      uiowa_core_set_field_icon($variables, 'fa-link fa-li');
+      break;
+
     case 'field_artwork_status':
       if (isset($variables['element'][0]['#markup'])) {
         if ($variables['element'][0]['#markup'] === 'Uninstalled') {
@@ -222,6 +234,33 @@ function facilities_core_preprocess_block(&$variables) {
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
         'block-margin__right',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_image':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_artist':
+      uiowa_core_set_attributes($variables, [
+        'fa-ul',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_building':
+    case 'field_block:node:artwork:field_artwork_artist_website':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__default--removed',
+        'fa-ul',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_medium':
+    case 'field_block:node:artwork:field_artwork_dimension':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__default--removed',
       ]);
       break;
 
