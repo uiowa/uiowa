@@ -1,0 +1,29 @@
+uuid: d4750883-7272-4f6a-a79c-0a51116cac9e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_artwork_medium
+    - node.type.artwork
+    - taxonomy.vocabulary.artwork_medium
+id: node.artwork.field_artwork_medium
+field_name: field_artwork_medium
+entity_type: node
+bundle: artwork
+label: 'Artwork medium'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      artwork_medium: artwork_medium
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
