@@ -105,6 +105,16 @@ class BuildingsProcessor extends EntityProcessorBase {
   }
 
   /**
+   * Initialize relevant services.
+   */
+  public function init() {
+    $this->client = \Drupal::service('http_client');
+    $this->fs = \Drupal::service('file_system');
+    $this->configFactory = \Drupal::service('config.factory');
+    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
+  }
+
+  /**
    * Save a local version of an image gotten from the facilities API
    *     and assign that as the building image.
    *
@@ -118,11 +128,6 @@ class BuildingsProcessor extends EntityProcessorBase {
    *    Throws an exception if it can't get the image for the building.
    */
   protected function processResultImage(&$result) {
-    $this->client = \Drupal::service('http_client');
-    $this->fs = \Drupal::service('file_system');
-    $this->configFactory = \Drupal::service('config.factory');
-    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
-
     if (!empty($result->imageUrl)) {
       try {
         $building_image_url = $result->imageUrl;
