@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\facilities_core\Entity\Artwork;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 
@@ -275,6 +276,7 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:artwork:field_image':
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
+        'uiowa-image-gallery--single',
       ]);
       break;
 

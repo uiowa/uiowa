@@ -67,3 +67,16 @@
 .media--widescreen .uiowa-image-gallery img {
   aspect-ratio: 16 / 9;
 }
+
+// Single page image with enlarge icon.
+.uiowa-image-gallery--single a {
+  position: relative;
+  float: right;
+  text-align: right;
+  &:after {
+    @include fas();
+    content: "\f065";
+    font-size: 1.8rem;
+    padding-top: 1.5rem;
+  }
+}
