@@ -10,8 +10,6 @@ use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-
 
 /**
  * Sync building information.
@@ -21,14 +19,14 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * The http_client service.
    *
-   * @var Client
+   * @var \GuzzleHttp\Client
    */
   protected Client $client;
 
   /**
    * The file_system service.
    *
-   * @var FileSystemInterface
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected FileSystemInterface $fs;
 
@@ -42,7 +40,7 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * The file_system service.
    *
-   * @var ConfigFactoryInterface
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected ConfigFactoryInterface $configFactory;
 
@@ -82,7 +80,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       $facilities_api = \Drupal::service('uiowa_facilities.api');
       $result = $facilities_api->getBuilding($building_number);
       // Get image
-      // Use some type of caching strategy
+      // Use some type of caching strategy.
       $this->processResultImage($result);
       foreach ((array) $result as $key => $value) {
         $record->{$key} = $value;
@@ -121,10 +119,7 @@ class BuildingsProcessor extends EntityProcessorBase {
    * @param array $result
    *   The result array reference that contains the image URL.
    *
-   * @return null
-   *   This function modifies the image URL in place on the result reference.
-   *
-   * @throws GuzzleException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    *    Throws an exception if it can't get the image for the building.
    */
   protected function processResultImage(&$result) {
