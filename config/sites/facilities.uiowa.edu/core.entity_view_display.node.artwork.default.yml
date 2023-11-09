@@ -118,7 +118,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -137,7 +137,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -161,7 +161,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -177,7 +177,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: number_integer
-                label: visually_hidden
+                label: inline
                 settings:
                   thousand_separator: ''
                   prefix_suffix: true
@@ -198,12 +198,12 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: visually_hidden
+                label: inline
                 settings:
                   link: false
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: 3
             additional: {  }
             third_party_settings: {  }
@@ -220,7 +220,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: string
-                label: visually_hidden
+                label: inline
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
@@ -244,7 +244,26 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1ddc97ee-a349-460d-aca6-8918863f1dd4
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_location'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -326,22 +345,6 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 13
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1ddc97ee-a349-460d-aca6-8918863f1dd4
-            region: first
-            configuration:
-              id: 'field_block:node:artwork:field_artwork_location'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 10
             additional: {  }
             third_party_settings: {  }
         third_party_settings:

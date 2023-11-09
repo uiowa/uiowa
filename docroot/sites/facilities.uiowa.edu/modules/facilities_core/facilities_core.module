@@ -152,26 +152,29 @@ function facilities_core_preprocess_field(&$variables) {
 
     case 'field_artwork_building':
       uiowa_core_set_field_icon($variables, 'fa-building fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
       break;
 
     case 'field_artwork_artist':
       uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
       break;
 
     case 'field_artwork_artist_website':
       uiowa_core_set_field_icon($variables, 'fa-link fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
       break;
 
     case 'field_artwork_status':
       if (isset($variables['element'][0]['#markup'])) {
         if ($variables['element'][0]['#markup'] === 'Uninstalled') {
-          uiowa_core_set_attributes($variables, 'badge badge--orange element--inline');
+          uiowa_core_set_attributes($variables, 'badge badge--blue');
         }
         elseif ($variables['element'][0]['#markup'] === 'Active') {
-          uiowa_core_set_attributes($variables, 'badge badge--green element--inline');
+          uiowa_core_set_attributes($variables, 'badge badge--green');
         }
         elseif ($variables['element'][0]['#markup'] === 'Not Currently On View') {
-          uiowa_core_set_attributes($variables, 'badge badge--cool-gray element--inline');
+          uiowa_core_set_attributes($variables, 'badge badge--orange');
         }
       }
       break;
@@ -249,6 +252,12 @@ function facilities_core_preprocess_block(&$variables) {
       ]);
       break;
 
+    case 'field_block:node:artwork:title':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+      ]);
+      break;
+
     case 'field_block:node:artwork:field_artwork_building':
     case 'field_block:node:artwork:field_artwork_artist_website':
       uiowa_core_set_attributes($variables, [
@@ -258,7 +267,9 @@ function facilities_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:artwork:field_artwork_medium':
+    case 'field_block:node:artwork:field_artwork_year':
     case 'field_block:node:artwork:field_artwork_dimension':
+    case 'field_block:node:artwork:field_artwork_location':
       uiowa_core_set_attributes($variables, [
         'block-margin__default--removed',
       ]);
