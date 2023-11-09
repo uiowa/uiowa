@@ -144,9 +144,9 @@ class BuildingsProcessor extends EntityProcessorBase {
           // this next block intends to only construct readable, usable text
           // while discarding unnecessary concatenators or null values.
           $buildingName = $result?->buildingFormalName ?: '';
-          $address = $result?->address ? 'located at ' . $result?->address : null;
-          $address2 = $result?->address2 ? ', ' . $result?->address2 : null;
-          $addressFull = $address ? $address . $address2 : null;
+          $address = $result?->address ? 'located at ' . $result?->address : NULL;
+          $address2 = $result?->address2 ? ', ' . $result?->address2 : NULL;
+          $addressFull = $address ? $address . $address2 : NULL;
 
           $altText = $buildingName;
           if ($altText && $addressFull) {
@@ -159,7 +159,7 @@ class BuildingsProcessor extends EntityProcessorBase {
           $result->imageUrl = [
             'target_id' => $file->id(),
             'title' => $buildingName,
-            'alt' => $altText
+            'alt' => $altText,
           ];
         }
       }
