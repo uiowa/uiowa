@@ -136,12 +136,33 @@ class BuildingsProcessor extends EntityProcessorBase {
         if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
           $data = file_get_contents($building_image_url);
           $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
-          $result->imageUrl = ['target_id' => $file->id()];
+
+          // In trying to be thoughtful about the alt text,
+          // this next block intends to only construct readable, usable text
+          // while discarding unnecessary concatenators or null values.
+          $buildingName = $result?->buildingFormalName ?: '';
+          $address = $result?->address ? 'located at ' . $result?->address : null;
+          $address2 = $result?->address2 ? ', ' . $result?->address2 : null;
+          $addressFull = $address ? $address . $address2 : null;
+
+          $altText = $buildingName;
+          if ($altText && $addressFull) {
+            $altText .= (', ' . $addressFull);
+          }
+          else {
+            $altText = $addressFull;
+          }
+
+          $result->imageUrl = [
+            'target_id' => $file->id(),
+            'title' => $buildingName,
+            'alt' => $altText
+          ];
         }
       }
       catch (ClientException $e) {
         $this->getLogger('facilities_core')->warning($this->t('Unable to get image for @building.', [
-          '@building' => $result->buildingNumber . ' : ' . $result->buildingFormalName,
+          '@building' => $result?->buildingNumber . ' : ' . $result?->buildingFormalName,
         ]));
 
         // Use the default thumbnail if we can't get one.
