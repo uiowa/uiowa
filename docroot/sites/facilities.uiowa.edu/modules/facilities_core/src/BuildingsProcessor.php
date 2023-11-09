@@ -113,8 +113,11 @@ class BuildingsProcessor extends EntityProcessorBase {
   }
 
   /**
+   * Cache local image from API.
+   *
    * Save a local version of an image gotten from the facilities API
-   *     and assign that as the building image.
+   * and assign that as the building image. Additionally, add title
+   * and alt text to the image field based on API data.
    *
    * @param array $result
    *   The result array reference that contains the image URL.
