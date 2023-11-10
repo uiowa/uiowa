@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\media\Entity\Media;
 use Drupal\uiowa_core\HeadlineHelper;
+
 /**
  * Implements hook_entity_base_field_info().
  */
@@ -20,8 +21,9 @@ function uiowa_aggregator_entity_base_field_info(EntityTypeInterface $entity_typ
   if ($entity_type->id() === 'aggregator_feed') {
     $fields = [];
     $fields['purge_items'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Purge existing items'))
+      ->setLabel(t('Purge existing items on fetch'))
       ->setDescription(t('Purge existing items each time before fetching feed content.'))
+      ->setDefaultValue(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 9,
