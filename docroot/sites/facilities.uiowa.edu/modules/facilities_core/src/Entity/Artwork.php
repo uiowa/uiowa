@@ -41,4 +41,3 @@ class Artwork extends NodeBundleBase implements RendersAsCardInterface {
   }
 
 }
-
