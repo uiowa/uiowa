@@ -323,14 +323,19 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: b30f07b2-892c-4527-b83c-16afdf877c12
+            uuid: ad095f4e-1317-4580-8090-142afbda148c
             region: first
             configuration:
-              id: 'extra_field_block:node:artwork:links'
+              id: 'field_block:node:artwork:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 11
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           -
@@ -346,23 +351,18 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 12
+            weight: 15
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: ad095f4e-1317-4580-8090-142afbda148c
+            uuid: b30f07b2-892c-4527-b83c-16afdf877c12
             region: first
             configuration:
-              id: 'field_block:node:artwork:body'
+              id: 'extra_field_block:node:artwork:links'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 13
+            weight: 14
             additional: {  }
             third_party_settings: {  }
         third_party_settings:

@@ -198,6 +198,17 @@ function facilities_core_preprocess_field(&$variables) {
     case 'field_artwork_artist_website':
       uiowa_core_set_field_icon($variables, 'fa-link fa-li');
       uiowa_core_set_attributes($variables, 'is-medium');
+
+      $url = $variables['items'][0]['content']['#url'];
+      $link_text = t("Artist's website");
+
+      $link = [
+        '#type' => 'link',
+        '#title' => $link_text,
+        '#url' => $url,
+      ];
+
+      $variables['items'][0]['content'] = $link;
       break;
 
     case 'field_artwork_status':
