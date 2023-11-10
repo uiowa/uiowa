@@ -5243,12 +5243,6 @@ $sites['exchanges.dev.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 $sites['exchanges.stage.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 $sites['exchanges.prod.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 
-// Directory aliases for btaaromancelanguages.conference.uiowa.edu.
-$sites['conferencebtaaromancelanguages.uiowa.ddev.site'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.dev.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.stage.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.prod.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-
 // Directory aliases for speak.lab.uiowa.edu.
 $sites['labspeak.uiowa.ddev.site'] = 'speak.lab.uiowa.edu';
 $sites['labspeak.dev.drupal.uiowa.edu'] = 'speak.lab.uiowa.edu';
