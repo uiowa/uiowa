@@ -335,11 +335,18 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_print_base64_image_formatter
+                type: image
                 label: visually_hidden
                 settings:
+                  image_link: ''
                   image_style: widescreen__1920_x_1080
-                third_party_settings: {  }
+                  image_loading:
+                    attribute: lazy
+                third_party_settings:
+                  lazy:
+                    lazy_image: '0'
+                    placeholder_style: ''
+                    data_uri: false
             weight: 2
             additional: {  }
             third_party_settings: {  }
