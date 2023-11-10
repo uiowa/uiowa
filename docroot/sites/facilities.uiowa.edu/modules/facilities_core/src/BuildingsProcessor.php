@@ -140,26 +140,13 @@ class BuildingsProcessor extends EntityProcessorBase {
           $data = file_get_contents($building_image_url);
           $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
 
-          // In trying to be thoughtful about the alt text,
-          // this next block intends to only construct readable, usable text
-          // while discarding unnecessary concatenators or null values.
-          $buildingName = $result?->buildingFormalName ?: '';
-          $address = $result?->address ? 'located at ' . $result?->address : NULL;
-          $address2 = $result?->address2 ? ', ' . $result?->address2 : NULL;
-          $addressFull = $address ? $address . $address2 : NULL;
-
-          $altText = $buildingName;
-          if ($altText && $addressFull) {
-            $altText .= (', ' . $addressFull);
-          }
-          else {
-            $altText = $addressFull;
-          }
+          $building_formal_name = $result?->buildingFormalName ?: '';
+          $alt_text = $building_formal_name;
 
           $result->imageUrl = [
             'target_id' => $file->id(),
-            'title' => $buildingName,
-            'alt' => $altText,
+            'title' => $building_formal_name,
+            'alt' => $alt_text,
           ];
         }
       }
