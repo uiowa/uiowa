@@ -116,8 +116,8 @@ class BuildingsProcessor extends EntityProcessorBase {
    * Cache local image from API.
    *
    * Save a local version of an image gotten from the facilities API
-   * and assign that as the building image. Additionally, add title
-   * and alt text to the image field based on API data.
+   * and assign that as the building image. Additionally, add
+   * alt text to the image field based on API data.
    *
    * @param array $result
    *   The result array reference that contains the image URL.
@@ -141,12 +141,10 @@ class BuildingsProcessor extends EntityProcessorBase {
           $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
 
           $building_formal_name = $result?->buildingFormalName ?: '';
-          $alt_text = $building_formal_name;
 
           $result->imageUrl = [
             'target_id' => $file->id(),
-            'title' => $building_formal_name,
-            'alt' => $alt_text,
+            'alt' => $building_formal_name,
           ];
         }
       }
