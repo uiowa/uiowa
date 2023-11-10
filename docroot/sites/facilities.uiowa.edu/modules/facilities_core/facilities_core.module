@@ -189,8 +189,10 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_artwork_artist':
-      uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
-      uiowa_core_set_attributes($variables, 'is-medium');
+      if ($variables['element']['#view_mode'] === '_custom') {
+        uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
+        uiowa_core_set_attributes($variables, 'is-medium');
+      }
       break;
 
     case 'field_artwork_artist_website':
