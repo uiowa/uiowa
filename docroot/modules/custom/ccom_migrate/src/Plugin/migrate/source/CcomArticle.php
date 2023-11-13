@@ -87,7 +87,7 @@ class CcomArticle extends BaseNodeSource {
     if (!empty($gallery)) {
       $new_images = [];
       foreach ($gallery as $gallery_image) {
-        $new_images[] = $this->processImageField($gallery_image['field_article_gallery_fid'], $gallery_image['field_article_gallery_alt'], $gallery_image['field_article_gallery_title'], $gallery_image['field_article_gallery_title']);
+        $new_images[] = $this->processImageField($gallery_image['fid'], $gallery_image['alt'], $gallery_image['title'], $gallery_image['title']);
       }
       $row->setSourceProperty('gallery', $new_images);
     }
