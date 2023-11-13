@@ -737,6 +737,33 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ->addStatus($message);
     }
   }
+  
+  if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
+    // Update help text for scheduler on content types and if moderation
+    // is enabled, hide the publish/unpublish state fields.
+    $hide_classes = ['js', 'js-hide'];
+    if (isset($form['publish_on'])) {
+      $additional_published_help_text = t('Note: this content will transition to a published state within a one-hour window of the selected date and time.');
+      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
+      $form['publish_state']['#attributes']['class'] = (!empty($form['publish_state']['#attributes']['class']) ? array_merge($form['publish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+    }
+    if (isset($form['unpublish_on'])) {
+      if (isset($form['unpublish_state'])) {
+        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
+        $state = 'archived';
+        $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+      }
+      else {
+        $state = 'unpublished';
+      }
+
+      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
+        '@state' => $state,
+      ]);
+      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
+
+    }
+  }
 
   switch ($form_id) {
     case 'fragment_region_item_add_form':
