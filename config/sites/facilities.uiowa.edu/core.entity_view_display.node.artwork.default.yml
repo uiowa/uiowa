@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
+    - facilities_core
     - layout_builder
     - link
     - metatag
@@ -319,7 +320,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 0
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -363,6 +364,18 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2ad0a584-31b7-483a-b596-404dd6bf2ebf
+            region: second
+            configuration:
+              id: artworkmaplink_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:

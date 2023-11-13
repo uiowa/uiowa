@@ -300,6 +300,7 @@ function facilities_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:artwork:title':
+    case 'artworkmaplink_block':
       uiowa_core_set_attributes($variables, [
         'block-margin__bottom--extra',
       ]);
