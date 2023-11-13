@@ -6,6 +6,7 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
+use function PHPUnit\Framework\isEmpty;
 
 /**
  * Migrate Source plugin.
@@ -76,6 +77,10 @@ class CcomArticle extends BaseNodeSource {
       $source = $external_url;
     }
     $row->setSourceProperty('source', $source);
+    // If we added an external source link,
+    // then also set the "link directly to source" option.
+    $link_direct = !empty($source);
+    $row->setSourceProperty('link_direct', $link_direct);
 
     // Process the gallery images from field_article_gallery.
     $gallery = $row->getSourceProperty('field_article_gallery');
