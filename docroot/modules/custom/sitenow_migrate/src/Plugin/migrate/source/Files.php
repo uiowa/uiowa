@@ -37,6 +37,10 @@ class Files extends File {
    * If the migrated file is an image, grab the alt and title text values.
    */
   public function fetchMeta($row) {
+    if (!$this->database->schema()->tableExists('field_data_field_file_image_alt_text') ||
+      !$this->database->schema()->tableExists('field_data_field_file_image_title_text')) {
+      return [];
+    }
     $query = $this->select('file_managed', 'f');
     $query->join('field_data_field_file_image_alt_text', 'a', 'a.entity_id = f.fid');
     $query->join('field_data_field_file_image_title_text', 't', 't.entity_id = f.fid');
