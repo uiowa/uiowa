@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.media.field_media_caption
+    - filter.format.minimal
     - media.type.image
   module:
     - allowed_formats
@@ -23,5 +24,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal
 field_type: text_long

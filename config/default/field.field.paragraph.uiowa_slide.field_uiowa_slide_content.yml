@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_uiowa_slide_content
+    - filter.format.minimal
+    - filter.format.plain_text
     - paragraphs.paragraphs_type.uiowa_slide
   module:
     - allowed_formats
@@ -24,5 +26,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal
+    - plain_text
 field_type: text_long

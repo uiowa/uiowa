@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_aggregator
     - field.storage.block_content.field_uiowa_aggregator_text
+    - filter.format.minimal
   module:
     - allowed_formats
     - text
@@ -26,5 +27,6 @@ default_value:
     format: minimal
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal
 field_type: text_long

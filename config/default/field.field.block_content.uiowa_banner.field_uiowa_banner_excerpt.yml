@@ -5,6 +5,8 @@ dependencies:
   config:
     - block_content.type.uiowa_banner
     - field.storage.block_content.field_uiowa_banner_excerpt
+    - filter.format.minimal
+    - filter.format.plain_text
   module:
     - allowed_formats
     - text
@@ -26,5 +28,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal
+    - plain_text
 field_type: text_long
