@@ -8,11 +8,6 @@ dependencies:
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - basic
-      - plain_text
 id: block_content.uiowa_quote.field_uiowa_quote_content
 field_name: field_uiowa_quote_content
 entity_type: block_content
@@ -24,5 +19,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - basic
+    - plain_text
 field_type: text_long
