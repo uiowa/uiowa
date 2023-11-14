@@ -1,0 +1,42 @@
+uuid: 8269f3d1-93ec-4b5b-af16-36cb2d1ac86d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: S0b1lDB8movUVQaJwp-Y93NpCEQkj20Rh7n6fi_wjiM
+id: d7_page
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: sitenow_migrate
+label: 'Basic page migration from Drupal 7'
+source:
+  plugin: pages
+  node_type: page
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title: title
+  type:
+    plugin: default_value
+    default_value: page
+  uid:
+    plugin: default_value
+    default_value: 0
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  body: body
+  field_teaser: body_summary
+  moderation_state: moderation_state
+destination:
+  plugin: 'entity:node'
+  type: page
+migration_dependencies: null
