@@ -56,6 +56,9 @@ trait ProcessMediaTrait {
       if ($files_dir = $this->variableGet('file_public_path', NULL)) {
         return "{$base_url}/{$files_dir}/";
       }
+      elseif ($files_dir = $this->configuration['constants']['public_file_path']) {
+        return "{$base_url}/{$files_dir}/";
+      }
       else {
         throw new MigrateException('Cannot process media. No public files path variable set.');
       }
@@ -119,8 +122,13 @@ trait ProcessMediaTrait {
     $file_data = $this->fidQuery($fid);
 
     if (!$file_data) {
-      // Failed to find a file, so let's leave the content unchanged.
-      return $match;
+      // Failed to find a file, so let's leave the content unchanged
+      // but log a message in the migration table.
+      $message = "Failed to replace file with fid: $fid.";
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $this->getCurrentIds()['nid']], $message);
+      return $match[0];
     }
 
     $filename = $file_data['filename'];
