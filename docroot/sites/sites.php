@@ -2405,12 +2405,6 @@ $sites['labharwani.dev.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
 $sites['labharwani.stage.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
 $sites['labharwani.prod.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
 
-// Directory aliases for felder.lab.uiowa.edu.
-$sites['labfelder.uiowa.ddev.site'] = 'felder.lab.uiowa.edu';
-$sites['labfelder.dev.drupal.uiowa.edu'] = 'felder.lab.uiowa.edu';
-$sites['labfelder.stage.drupal.uiowa.edu'] = 'felder.lab.uiowa.edu';
-$sites['labfelder.prod.drupal.uiowa.edu'] = 'felder.lab.uiowa.edu';
-
 // Directory aliases for faraci.lab.uiowa.edu.
 $sites['labfaraci.uiowa.ddev.site'] = 'faraci.lab.uiowa.edu';
 $sites['labfaraci.dev.drupal.uiowa.edu'] = 'faraci.lab.uiowa.edu';
@@ -5243,12 +5237,6 @@ $sites['exchanges.dev.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 $sites['exchanges.stage.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 $sites['exchanges.prod.drupal.uiowa.edu'] = 'exchanges.uiowa.edu';
 
-// Directory aliases for btaaromancelanguages.conference.uiowa.edu.
-$sites['conferencebtaaromancelanguages.uiowa.ddev.site'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.dev.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.stage.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-$sites['conferencebtaaromancelanguages.prod.drupal.uiowa.edu'] = 'btaaromancelanguages.conference.uiowa.edu';
-
 // Directory aliases for speak.lab.uiowa.edu.
 $sites['labspeak.uiowa.ddev.site'] = 'speak.lab.uiowa.edu';
 $sites['labspeak.dev.drupal.uiowa.edu'] = 'speak.lab.uiowa.edu';
@@ -6118,3 +6106,15 @@ $sites['fo.uiowa.ddev.site'] = 'fo.uiowa.edu';
 $sites['fo.dev.drupal.uiowa.edu'] = 'fo.uiowa.edu';
 $sites['fo.stage.drupal.uiowa.edu'] = 'fo.uiowa.edu';
 $sites['fo.prod.drupal.uiowa.edu'] = 'fo.uiowa.edu';
+
+// Directory aliases for hccc-oinc.sites.uiowa.edu.
+$sites['siteshccc-oinc.uiowa.ddev.site'] = 'hccc-oinc.sites.uiowa.edu';
+$sites['siteshccc-oinc.dev.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
+$sites['siteshccc-oinc.stage.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
+$sites['siteshccc-oinc.prod.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
+
+// Directory aliases for languageacrossthelifespan.lab.uiowa.edu.
+$sites['lablanguageacrossthelifespan.uiowa.ddev.site'] = 'languageacrossthelifespan.lab.uiowa.edu';
+$sites['lablanguageacrossthelifespan.dev.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
+$sites['lablanguageacrossthelifespan.stage.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
+$sites['lablanguageacrossthelifespan.prod.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
