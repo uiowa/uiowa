@@ -8,10 +8,6 @@ dependencies:
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - filtered_html
 id: node.publication_issue.field_issue_masthead
 field_name: field_issue_masthead
 entity_type: node
@@ -23,5 +19,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - filtered_html
 field_type: text_long

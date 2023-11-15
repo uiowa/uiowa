@@ -8,10 +8,6 @@ dependencies:
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - filtered_html
 id: node.article.field_article_author_bio
 field_name: field_article_author_bio
 entity_type: node
@@ -23,5 +19,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats: {  }
+  allowed_formats:
+    - filtered_html
 field_type: text_long
