@@ -157,6 +157,9 @@ class BuildingsProcessor extends EntityProcessorBase {
         $result->imageUrl = '';
       }
     }
+    else {
+      $result->imageUrl = NULL;
+    }
   }
 
   /**
