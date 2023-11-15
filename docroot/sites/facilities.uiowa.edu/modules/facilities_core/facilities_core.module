@@ -10,11 +10,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\facilities_core\Entity\Artwork;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 
 /**
- * Set dynamic allowed values event status.
+ * Set dynamic allowed values bus routes status.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
@@ -34,6 +35,38 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
     'coralville' => 'Coralville',
     'iowaCity' => 'Iowa City',
   ];
+}
+
+/**
+ * Set dynamic allowed values artwork status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'uninstalled' => 'Uninstalled',
+    'active' => 'Active',
+    'notOnView' => 'Not Currently On View',
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function facilities_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['artwork'])) {
+    $bundles['node']['artwork']['class'] = Artwork::class;
+  }
 }
 
 /**
@@ -69,6 +102,8 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_named_building_form':
     case 'node_named_building_edit_form':
+    case 'node_artwork_form':
+    case 'node_artwork_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
@@ -147,6 +182,48 @@ function facilities_core_preprocess_field(&$variables) {
         $variables['label_display'] = 'inline';
       }
       break;
+
+    case 'field_artwork_building':
+      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
+      break;
+
+    case 'field_artwork_artist':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
+        uiowa_core_set_attributes($variables, 'is-medium');
+      }
+      break;
+
+    case 'field_artwork_artist_website':
+      uiowa_core_set_field_icon($variables, 'fa-link fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
+
+      $url = $variables['items'][0]['content']['#url'];
+      $link_text = t("Artist's website");
+
+      $link = [
+        '#type' => 'link',
+        '#title' => $link_text,
+        '#url' => $url,
+      ];
+
+      $variables['items'][0]['content'] = $link;
+      break;
+
+    case 'field_artwork_status':
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'Uninstalled') {
+          uiowa_core_set_attributes($variables, 'badge badge--blue');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Active') {
+          uiowa_core_set_attributes($variables, 'badge badge--green');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Not Currently On View') {
+          uiowa_core_set_attributes($variables, 'badge badge--orange');
+        }
+      }
+      break;
   }
 }
 
@@ -206,6 +283,43 @@ function facilities_core_preprocess_block(&$variables) {
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
         'block-margin__right',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_image':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+        'uiowa-image-gallery--single',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_artist':
+      uiowa_core_set_attributes($variables, [
+        'fa-ul',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:title':
+    case 'artworkmaplink_block':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_building':
+    case 'field_block:node:artwork:field_artwork_artist_website':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__default--removed',
+        'fa-ul',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_medium':
+    case 'field_block:node:artwork:field_artwork_year':
+    case 'field_block:node:artwork:field_artwork_dimension':
+    case 'field_block:node:artwork:field_artwork_location':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__default--removed',
       ]);
       break;
 
