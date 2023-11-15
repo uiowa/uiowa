@@ -150,6 +150,9 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     if ($this->getEntityIds()) {
       $entities = $storage->loadMultiple($this->getEntityIds());
       foreach ($entities as $entity_id => $entity) {
+        if ($entity->get('title')->getValue()[0] === 'UIHC at Forevergreen Road'){
+          $foo='bar';
+        }
         if ($entity instanceof FieldableEntityInterface) {
           if ($entity->hasField($this->fieldSyncKey) && !$entity->get($this->fieldSyncKey)->isEmpty()) {
             $this->existingEntities[$entity_id] = $entity;
@@ -160,6 +163,9 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     }
 
     foreach ($this->getData() as $record) {
+      if($record->buildingCommonName  === 'UIHC at Forevergreen Road') {
+        $foo='bar';
+      }
       $recordSyncKey = $record->{$this->apiRecordSyncKey};
       $this->processedRecords[] = $recordSyncKey;
 
@@ -170,7 +176,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
         // If existing, update values if different.
-        $entity = $this->existingNodes[$existing_nid] ?? $storage->load($existing_nid);
+        $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
       }
       else {
         // If not, create new.
@@ -181,6 +187,9 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
       if ($entity instanceof ContentEntityInterface) {
 
+        if($record->buildingCommonName  === 'UIHC at Forevergreen Road') {
+          $foo='bar';
+        }
         $changed = $this->processEntity($entity, $record);
 
         if (!is_null($existing_nid)) {
