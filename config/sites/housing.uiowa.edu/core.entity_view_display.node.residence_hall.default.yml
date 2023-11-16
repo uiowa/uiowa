@@ -40,6 +40,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - layout_builder_restrictions
     - link
     - options
     - text
@@ -208,8 +209,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 67-33
           context_mapping: {  }
+          column_widths: 67-33
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
@@ -296,8 +297,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 67-33
           context_mapping: {  }
+          column_widths: 67-33
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
@@ -393,8 +394,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 50-50
           context_mapping: {  }
+          column_widths: 50-50
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
@@ -463,8 +464,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 50-50
           context_mapping: {  }
+          column_widths: 50-50
           layout_builder_styles_style:
             0: section_background_white_pattern_community
             1: section_margin_fixed_width_container
@@ -575,8 +576,8 @@ third_party_settings:
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 50-50
           context_mapping: {  }
+          column_widths: 50-50
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
@@ -860,6 +861,15 @@ third_party_settings:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.residence_hall.default
 targetEntityType: node
 bundle: residence_hall
