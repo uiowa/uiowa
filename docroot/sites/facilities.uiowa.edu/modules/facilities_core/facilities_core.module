@@ -201,13 +201,9 @@ function facilities_core_preprocess_field(&$variables) {
       }
       if ($variables['element']['#view_mode'] === 'teaser') {
         if (!empty($variables['items'])) {
-          // Access the first item in the array.
+          // Show only the first gallery item on teaser.
           $first_item = reset($variables['items']);
-
-          // Replace the field output with the first item.
           $variables['items'] = [$first_item];
-
-          // Additional manipulation or output customization can be done here.
         }
       }
       break;
