@@ -19,6 +19,7 @@ class Artwork extends NodeBundleBase implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => 'field_artwork_status',
+      '#media' => 'field_gallery_images',
     ]);
 
     // Combine 'field_artwork_artist' and 'field_artwork_year' into '#subtitle'.

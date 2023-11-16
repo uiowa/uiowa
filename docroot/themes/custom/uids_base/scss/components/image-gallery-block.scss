@@ -68,15 +68,18 @@
   aspect-ratio: 16 / 9;
 }
 
-// Single page image with enlarge icon.
-.uiowa-image-gallery--single a {
-  position: relative;
-  float: right;
-  text-align: right;
-  &:after {
-    @include fas();
-    content: "\f065";
-    font-size: 1.3rem;
-    padding-top: 1.5rem;
+// Modifier class for a single page image.
+.uiowa-image-gallery.uiowa-image-gallery--single:has(.media:first-child:last-child),
+.uiowa-image-gallery.uiowa-image-gallery--single:has(.media:first-child + .media:last-child) {
+  grid-template-columns: unset;
+  a {
+    position: relative;
+    &:after {
+      @include fas();
+      content: "\f065";
+      font-size: 1.3rem;
+      padding-top: 1.5rem;
+    }
   }
 }
+
