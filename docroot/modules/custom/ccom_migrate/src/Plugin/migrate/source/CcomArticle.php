@@ -6,7 +6,6 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Migrate Source plugin.
