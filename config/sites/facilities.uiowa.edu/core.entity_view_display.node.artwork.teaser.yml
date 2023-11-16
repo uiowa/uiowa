@@ -1,0 +1,80 @@
+uuid: abf0cebf-ab0e-4acb-926c-c6f742942885
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.artwork.body
+    - field.field.node.artwork.field_artwork_artist
+    - field.field.node.artwork.field_artwork_artist_website
+    - field.field.node.artwork.field_artwork_building
+    - field.field.node.artwork.field_artwork_dimension
+    - field.field.node.artwork.field_artwork_location
+    - field.field.node.artwork.field_artwork_medium
+    - field.field.node.artwork.field_artwork_status
+    - field.field.node.artwork.field_artwork_video
+    - field.field.node.artwork.field_artwork_year
+    - field.field.node.artwork.field_image
+    - field.field.node.artwork.field_image_caption
+    - field.field.node.artwork.field_meta_tags
+    - node.type.artwork
+  module:
+    - options
+    - user
+id: node.artwork.teaser
+targetEntityType: node
+bundle: artwork
+mode: teaser
+content:
+  field_artwork_artist:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_artwork_status:
+    type: list_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_artwork_year:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_artwork_artist_website: true
+  field_artwork_building: true
+  field_artwork_dimension: true
+  field_artwork_location: true
+  field_artwork_medium: true
+  field_artwork_video: true
+  field_image_caption: true
+  field_meta_tags: true
+  search_api_excerpt: true
