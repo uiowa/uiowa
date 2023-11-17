@@ -13,9 +13,9 @@ dependencies:
     - field.field.node.artwork.field_artwork_status
     - field.field.node.artwork.field_artwork_video
     - field.field.node.artwork.field_artwork_year
+    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_image
     - field.field.node.artwork.field_image_caption
-    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
@@ -108,7 +108,7 @@ content:
     third_party_settings: {  }
   field_artwork_video:
     type: media_library_widget
-    weight: 19
+    weight: 20
     region: content
     settings:
       media_types: {  }
@@ -122,21 +122,21 @@ content:
     third_party_settings: {  }
   field_gallery_images:
     type: media_library_widget
-    weight: 1
+    weight: 19
     region: content
     settings:
-      media_types: { }
-    third_party_settings: { }
+      media_types: {  }
+    third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 21
+    weight: 22
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_image_caption:
     type: string_textfield
-    weight: 22
+    weight: 23
     region: content
     settings:
       size: 60
@@ -144,7 +144,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 20
+    weight: 21
     region: content
     settings:
       sidebar: true
