@@ -159,32 +159,45 @@ class ConfigSplitCommands extends BltTasks {
         ->run();
     }
 
-    $result = $this->taskDrush()
-      ->stopOnFail(FALSE)
-      ->drush('config:get')
-      ->alias("$alias.local")
-      ->args("config_split.config_split.{$split_id}", 'status')
-      ->run();
+    $enable_splits = [
+      $split_id,
+    ];
 
-    $status = FALSE;
-    if ($result->getExitCode() !== 1 && $result->getMessage() !== '') {
-      $status = trim($result->getMessage());
-      $status = str_replace("'config_split.config_split.$split_id:status': ", '', $status);
-      $status = $status === 'true';
+
+    $dependencies = $this->getConfigValue("uiowa.development.config_split.splits.$split_id.dependencies");
+    if (is_array($dependencies)) {
+      $enable_splits = array_merge($dependencies, $enable_splits);
     }
 
-    // If the split is not enabled, enable it, rebuild cache, and re-import
-    // config.
-    if (!$status) {
-      $this->taskDrush()
+    foreach ($enable_splits as $enable_split_id) {
+
+      $result = $this->taskDrush()
         ->stopOnFail(FALSE)
-        ->drush('config:set')
-        ->args("config_split.config_split.{$split_id}", 'status', TRUE)
-        ->drush('cache:rebuild')
-        ->drush('config:import')
-        ->drush('config:import')
-        ->drush('config:status')
+        ->drush('config:get')
+        ->alias("$alias.local")
+        ->args("config_split.config_split.{$enable_split_id}", 'status')
         ->run();
+
+      $status = FALSE;
+      if ($result->getExitCode() !== 1 && $result->getMessage() !== '') {
+        $status = trim($result->getMessage());
+        $status = str_replace("'config_split.config_split.$enable_split_id:status': ", '', $status);
+        $status = $status === 'true';
+      }
+
+      // If the split is not enabled, enable it, rebuild cache, and re-import
+      // config.
+      if (!$status) {
+        $this->taskDrush()
+          ->stopOnFail(FALSE)
+          ->drush('config:set')
+          ->args("config_split.config_split.{$enable_split_id}", 'status', TRUE)
+          ->drush('cache:rebuild')
+          ->drush('config:import')
+          ->drush('config:import')
+          ->drush('config:status')
+          ->run();
+      }
     }
   }
 
