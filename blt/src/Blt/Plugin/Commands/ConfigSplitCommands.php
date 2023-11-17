@@ -159,18 +159,20 @@ class ConfigSplitCommands extends BltTasks {
         ->run();
     }
 
+    // Create an array of splits to be enabled.
     $enable_splits = [
       $split_id,
     ];
 
-
+    // Check configuration to see if this split has any dependencies on
+    // other splits and add them to the splits to be enabled.
     $dependencies = $this->getConfigValue("uiowa.development.config_split.splits.$split_id.dependencies");
     if (is_array($dependencies)) {
       $enable_splits = array_merge($dependencies, $enable_splits);
     }
 
     foreach ($enable_splits as $enable_split_id) {
-
+      // Check the split status.
       $result = $this->taskDrush()
         ->stopOnFail(FALSE)
         ->drush('config:get')
