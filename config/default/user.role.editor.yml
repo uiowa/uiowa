@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.uiowa_text_area
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
     - core.entity_view_display.node.page.default
@@ -28,6 +29,7 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
+    - block_content
     - content_moderation
     - contextual
     - entity_browser
@@ -56,6 +58,7 @@ weight: -6
 is_admin: false
 permissions:
   - 'access administration pages'
+  - 'access block library'
   - 'access content'
   - 'access content overview'
   - 'access contextual links'
@@ -159,6 +162,7 @@ permissions:
   - 'edit any remote_video media'
   - 'edit any static_map media'
   - 'edit any twitter media'
+  - 'edit any uiowa_text_area block content'
   - 'edit own article content'
   - 'edit own audio media'
   - 'edit own facebook media'
