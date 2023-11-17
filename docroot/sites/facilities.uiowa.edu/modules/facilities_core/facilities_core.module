@@ -197,14 +197,7 @@ function facilities_core_preprocess_field(&$variables) {
 
     case 'field_gallery_images':
       if ($variables['element']['#view_mode'] === '_custom') {
-        uiowa_core_set_attributes($variables, 'uiowa-image-gallery--single');
-      }
-      if ($variables['element']['#view_mode'] === 'teaser') {
-        if (!empty($variables['items'])) {
-          // Show only the first gallery item on teaser.
-          $first_item = reset($variables['items']);
-          $variables['items'] = [$first_item];
-        }
+        uiowa_core_set_attributes($variables, 'uiowa-image-gallery--thumbnail');
       }
       break;
 
@@ -299,9 +292,15 @@ function facilities_core_preprocess_block(&$variables) {
       ]);
       break;
 
-    case 'field_block:node:artwork:field_gallery_images':
+    case 'field_block:node:artwork:field_image':
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
+        'uiowa-image-gallery--single',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_gallery_images':
+      uiowa_core_set_attributes($variables, [
         'media--widescreen',
         'photoswipe-gallery',
       ]);
@@ -314,9 +313,14 @@ function facilities_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:artwork:title':
-    case 'artworkmaplink_block':
       uiowa_core_set_attributes($variables, [
         'block-margin__bottom--extra',
+      ]);
+      break;
+
+    case 'artworkmaplink_block':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
       ]);
       break;
 
