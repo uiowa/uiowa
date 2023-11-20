@@ -71,13 +71,13 @@
 }
 
 // Single page photoswipe image with thumbnails.
-.uiowa-image-gallery--single .photoswipe-gallery {
+.uiowa-image-gallery--single {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.uiowa-image-gallery--single  a {
+.uiowa-image-gallery--single  .field__item {
   flex: 1;
   &:first-child {
     flex: 0 0 100%;
@@ -97,7 +97,7 @@
 }
 
 .uiowa-image-gallery--single {
-  a:first-child:last-child {
+  .field__item:first-child:last-child a {
    position: relative;
    float: right;
    text-align: right;

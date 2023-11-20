@@ -196,9 +196,7 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_gallery_images':
-      if ($variables['element']['#view_mode'] === '_custom') {
-        uiowa_core_set_attributes($variables, 'uiowa-image-gallery--thumbnail');
-      }
+      $variables['field_container_classes'] = 'uiowa-image-gallery--single';
       break;
 
     case 'field_artwork_artist_website':
@@ -295,7 +293,6 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:artwork:field_gallery_images':
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
-        'uiowa-image-gallery--single',
       ]);
       break;
 
