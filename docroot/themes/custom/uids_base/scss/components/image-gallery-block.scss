@@ -48,9 +48,6 @@
   display: grid;
   grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  &.uiowa-image-gallery--thumbnail {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
 }
 
 .uiowa-image-gallery img {
@@ -73,15 +70,42 @@
   aspect-ratio: 16 / 9;
 }
 
-// Single page photoswipe field_image with enlarge icon.
-.uiowa-image-gallery--single a {
-  position: relative;
-  float: right;
-  text-align: right;
-  &:after {
-    @include fas();
-    content: "\f065";
-    font-size: 1.3rem;
-    padding-top: 1.5rem;
+// Single page photoswipe image with thumbnails.
+.uiowa-image-gallery--single .photoswipe-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.uiowa-image-gallery--single  a {
+  flex: 1;
+  &:first-child {
+    flex: 0 0 100%;
+  }
+  // Set a max width for smaller images.
+  &:not(:first-child) {
+    @include breakpoint(sm) {
+      max-width: calc(20% - 10px);
+    }
+  }
+}
+
+.uiowa-image-gallery--single img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.uiowa-image-gallery--single {
+  a:first-child:last-child {
+   position: relative;
+   float: right;
+   text-align: right;
+    &:after {
+     @include fas();
+     content: "\f065";
+     font-size: 1.3rem;
+     padding-top: 1.5rem;
+    }
   }
 }
