@@ -13,7 +13,7 @@ dependencies:
     - field.field.node.artwork.field_artwork_status
     - field.field.node.artwork.field_artwork_video
     - field.field.node.artwork.field_artwork_year
-    - field.field.node.artwork.field_image
+    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
@@ -239,14 +239,14 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 17875c9f-289e-461d-90b6-6c4de9466c77
+            uuid: 5a3c005d-08e6-4431-9d98-277fb41732c0
             region: second
             configuration:
-              id: 'field_block:node:artwork:field_image'
+              id: 'field_block:node:artwork:field_gallery_images'
               label: null
               label_display: null
               provider: layout_builder
@@ -254,11 +254,11 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: photoswipe_responsive_field_formatter
-                label: above
+                type: photoswipe_field_formatter
+                label: hidden
                 settings:
                   photoswipe_node_style_first: ''
-                  photoswipe_node_style: medium__widescreen
+                  photoswipe_node_style: widescreen__1920_x_1080
                   photoswipe_image_style: ''
                   photoswipe_reference_image_field: field_media_image
                   photoswipe_caption: custom
@@ -468,6 +468,14 @@ content:
     third_party_settings: {  }
     weight: 103
     region: content
+  field_gallery_images:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 113
+    region: first
   field_meta_tags:
     type: metatag_empty_formatter
     label: above
@@ -484,5 +492,4 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_image: true
   search_api_excerpt: true

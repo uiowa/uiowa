@@ -14,7 +14,7 @@ dependencies:
     - field.field.node.artwork.field_artwork_status
     - field.field.node.artwork.field_artwork_video
     - field.field.node.artwork.field_artwork_year
-    - field.field.node.artwork.field_image
+    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
@@ -49,15 +49,6 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
-  field_image:
-    type: entity_reference_entity_view
-    label: hidden
-    settings:
-      view_mode: large__widescreen
-      link: false
-    third_party_settings: {  }
-    weight: 1
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -74,5 +65,6 @@ hidden:
   field_artwork_location: true
   field_artwork_medium: true
   field_artwork_video: true
+  field_gallery_images: true
   field_meta_tags: true
   search_api_excerpt: true

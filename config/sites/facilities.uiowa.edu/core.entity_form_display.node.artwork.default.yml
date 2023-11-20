@@ -13,7 +13,7 @@ dependencies:
     - field.field.node.artwork.field_artwork_status
     - field.field.node.artwork.field_artwork_video
     - field.field.node.artwork.field_artwork_year
-    - field.field.node.artwork.field_image
+    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
@@ -118,9 +118,9 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_image:
+  field_gallery_images:
     type: media_library_widget
-    weight: 22
+    weight: 26
     region: content
     settings:
       media_types: {  }
