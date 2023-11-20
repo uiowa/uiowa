@@ -195,6 +195,12 @@ function facilities_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_gallery_images':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        uiowa_core_set_attributes($variables, 'uiowa-image-gallery--thumbnail');
+      }
+      break;
+
     case 'field_artwork_artist_website':
       uiowa_core_set_field_icon($variables, 'fa-link fa-li');
       uiowa_core_set_attributes($variables, 'is-medium');
@@ -286,17 +292,10 @@ function facilities_core_preprocess_block(&$variables) {
       ]);
       break;
 
-    case 'field_block:node:artwork:field_image':
+    case 'field_block:node:artwork:field_gallery_images':
       uiowa_core_set_attributes($variables, [
         'block-margin__top--extra',
         'uiowa-image-gallery--single',
-      ]);
-      break;
-
-    case 'field_block:node:artwork:field_gallery_images':
-      uiowa_core_set_attributes($variables, [
-        'media--widescreen',
-        'photoswipe-gallery',
       ]);
       break;
 
