@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
+    - field_delimiter
     - options
     - user
 id: node.artwork.teaser
@@ -31,7 +32,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_artwork_status:
     type: list_default
@@ -47,6 +48,17 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
+    weight: 2
+    region: content
+  field_gallery_images:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     weight: 3
     region: content
   links:
@@ -65,6 +77,5 @@ hidden:
   field_artwork_location: true
   field_artwork_medium: true
   field_artwork_video: true
-  field_gallery_images: true
   field_meta_tags: true
   search_api_excerpt: true

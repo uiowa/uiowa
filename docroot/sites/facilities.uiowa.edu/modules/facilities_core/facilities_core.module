@@ -196,7 +196,16 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_gallery_images':
-      $variables['field_container_classes'] = 'uiowa-image-gallery--single';
+      if ($variables['element']['#view_mode'] === '_custom') {
+        $variables['field_container_classes'] = 'uiowa-image-gallery--single';
+      }
+      if ($variables['element']['#view_mode'] === 'teaser') {
+        if (!empty($variables['items'])) {
+          // Access the first item in the array.
+          $first_item = reset($variables['items']);
+          $variables['items'] = [$first_item];
+        }
+      }
       break;
 
     case 'field_artwork_artist_website':
