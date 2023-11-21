@@ -78,14 +78,20 @@
 }
 
 .uiowa-image-gallery--single  .field__item {
-  flex: 1;
+  @include breakpoint(sm) {
+    flex: 1;
+  }
   &:first-child {
     flex: 0 0 100%;
   }
   // Set a max width for smaller images.
   &:not(:first-child) {
     @include breakpoint(sm) {
-      max-width: calc(20% - 10px);
+      max-width: calc(15% - 10px);
+      img {
+        object-fit: cover;
+        aspect-ratio: 1 / 1;
+      }
     }
   }
 }
