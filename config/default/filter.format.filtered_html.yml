@@ -25,7 +25,6 @@ dependencies:
   module:
     - editor
     - iframe_title_filter
-    - lazy
     - linkit
     - media
     - responsive_table_filter
@@ -66,7 +65,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite class=""> <code> <ul type class=""> <ol start type class=""> <li> <dl> <dt> <dd> <s> <sup> <sub> <pre class=""> <span class=""> <hr class=""> <table border summary id role="presentation, grid" aria-label aria-labelledby class=""> <caption id> <tbody class=""> <thead class=""> <tfoot class=""> <th id align valign colspan rowspan scope class=""> <td align valign colspan rowspan headers class=""> <tr align valign class=""> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class=""> <iframe src width height allowfullscreen title loading="lazy" seamless sandbox="allow-same-origin allow-scripts allow-popups"> <a href hreflang title id target aria-label rel data-* class=""> <p class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id class=""> <div class="">'
+      allowed_html: '<em> <strong> <cite> <blockquote cite class> <code> <ul type class> <ol start type class> <li> <dl> <dt> <dd> <s> <sup> <sub> <pre class> <span class> <hr class> <table border summary id role aria-label aria-labelledby class> <caption id> <tbody class> <thead class> <tfoot class> <th id align valign colspan rowspan scope class> <td align valign colspan rowspan headers class> <tr align valign class> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class> <iframe src width height allowfullscreen title loading seamless sandbox> <a href hreflang title id target aria-label rel data-* class> <p class> <h2 id class> <h3 id class> <h4 id class> <h5 id class> <h6 id class> <div class>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -121,14 +120,6 @@ filters:
     weight: -36
     settings:
       filter_url_length: 72
-  lazy_filter:
-    id: lazy_filter
-    provider: lazy
-    status: false
-    weight: -34
-    settings:
-      image: true
-      iframe: true
   linkit:
     id: linkit
     provider: linkit

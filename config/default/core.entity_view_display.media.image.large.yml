@@ -12,7 +12,6 @@ dependencies:
   module:
     - image
     - layout_builder
-    - lazy
 third_party_settings:
   layout_builder:
     enabled: false
@@ -32,11 +31,7 @@ content:
       image_style: large
       image_loading:
         attribute: lazy
-    third_party_settings:
-      lazy:
-        lazy_image: '0'
-        placeholder_style: ''
-        data_uri: false
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
