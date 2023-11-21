@@ -170,7 +170,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
         // If existing, update values if different.
-        $entity = $this->existingNodes[$existing_nid] ?? $storage->load($existing_nid);
+        $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
       }
       else {
         // If not, create new.
@@ -180,7 +180,6 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       }
 
       if ($entity instanceof ContentEntityInterface) {
-
         $changed = $this->processEntity($entity, $record);
 
         if (!is_null($existing_nid)) {

@@ -36,6 +36,12 @@
 
 // Full width images
 .media--type-image {
+  // Add fade-in for lazy images.
+  img {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+  }
+
   &--full {
     img {
       width: 100%;
