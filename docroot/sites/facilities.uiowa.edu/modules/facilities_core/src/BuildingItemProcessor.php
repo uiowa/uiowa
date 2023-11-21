@@ -21,7 +21,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_year_built' => 'yearBuilt',
     'field_building_ownership' => 'owned',
     'field_building_named_building' => 'namedBuilding',
-    'field_building_image_url' => 'imageUrl',
+    'field_building_image' => 'imageUrl',
     'field_building_rr_multi_men' => 'multiUserRestroomsMen',
     'field_building_rr_multi_women' => 'multiUserRestroomsWomen',
     'field_building_rr_single_men' => 'singleUserRestroomsMen',
