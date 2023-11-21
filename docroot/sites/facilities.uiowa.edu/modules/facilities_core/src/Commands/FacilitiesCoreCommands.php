@@ -56,7 +56,7 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     $this->getLogger('facilities_core')->notice("Starting the facilities building content sync. This may take a little time if the information isn't cached.");
     $sync_service = new BuildingsProcessor();
-
+    $sync_service->init();
     $sync_service->process();
 
     $arguments = [
