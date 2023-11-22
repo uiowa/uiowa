@@ -1,0 +1,273 @@
+uuid: 53f9320e-4653-441a-94fd-7c24967c9a76
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.alert.body
+    - field.field.node.alert.field_alert_category
+    - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_service_affected
+    - field.field.node.alert.field_meta_tags
+    - node.type.alert
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - metatag
+    - smart_date
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: b3e65666-a6fc-426c-a324-4d2aab8c575a
+            region: content
+            configuration:
+              id: 'field_block:node:alert:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9b52552c-4b33-4e1c-af4e-eb4ccf06b521
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c3c366b0-61e1-485a-a74d-89dc2e282847
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_service_affected'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b04a7a65-26cb-40d7-a79d-5a6352bb237e
+            region: content
+            configuration:
+              id: 'extra_field_block:node:alert:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_card_sidebar
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_large
+            3: section_card_media_format_square
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 4cb09feb-1691-4d46-8b4d-c757d4e11c1a
+            region: card_meta
+            configuration:
+              id: 'field_block:node:alert:field_alert_date'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_dailyrange
+                label: above
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: true
+                  add_classes: true
+                  time_wrapper: true
+                  localize: 0
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
+            region: main
+            configuration:
+              id: 'field_block:node:alert:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 92e69073-c326-4ac8-92bd-8e152d082316
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_service_affected'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: node.alert.default
+targetEntityType: node
+bundle: alert
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_alert_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_alert_date:
+    type: smartdate_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      localize: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_alert_service_affected:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
