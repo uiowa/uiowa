@@ -3,11 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.base_field_override.node.building.title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
-    - field.field.node.building.field_building_image
+    - field.field.node.building.field_building_image_url
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
@@ -22,10 +21,11 @@ dependencies:
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_meta_tags
     - node.type.building
+    - responsive_image.styles.full__no_crop
     - views.view.alerts_building_block
   module:
     - facilities_core
-    - file
+    - imagecache_external
     - layout_builder
     - layout_builder_restrictions
     - user
@@ -43,6 +43,24 @@ third_party_settings:
           label: ''
         components:
           -
+            uuid: 63b3edf5-9c8b-402b-a3cf-0648e923d01d
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_image_url'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: imagecache_external_responsive_image
+                label: hidden
+                settings:
+                  imagecache_external_link: ''
+                  imagecache_external_responsive_style: full__no_crop
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: ea1b511d-b9a8-409b-8e78-be36b9fb96e5
             region: content
             configuration:
@@ -56,7 +74,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -73,7 +91,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 4
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -90,7 +108,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -110,7 +128,7 @@ third_party_settings:
                   scale: 2
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 6
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -127,7 +145,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 7
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -144,7 +162,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 8
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -161,7 +179,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 9
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -178,7 +196,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 10
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -195,7 +213,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 11
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -212,7 +230,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 12
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -229,7 +247,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 13
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -246,7 +264,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 14
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -263,7 +281,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 15
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           -
@@ -276,7 +294,7 @@ third_party_settings:
               provider: facilities_core
               context_mapping:
                 node: layout_builder.entity
-            weight: 16
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -300,54 +318,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 17
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9f2327dd-c4e8-41fc-973a-3f9f3a911dba
-            region: content
-            configuration:
-              id: 'field_block:node:building:title'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: heading_text
-                label: visually_hidden
-                settings:
-                  size: h1
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 84c9aab8-5314-4c26-a03d-42622eb13a2b
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_image'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: image
-                label: visually_hidden
-                settings:
-                  image_link: ''
-                  image_style: widescreen__1920_x_1080
-                  image_loading:
-                    attribute: lazy
-                third_party_settings:
-                  lazy:
-                    lazy_image: '0'
-                    placeholder_style: ''
-                    data_uri: false
-            weight: 2
+            weight: 15
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -392,13 +363,14 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  field_building_image:
-    type: file_default
-    label: above
+  field_building_image_url:
+    type: imagecache_external_responsive_image
+    label: hidden
     settings:
-      use_description_as_link_text: true
+      imagecache_external_link: ''
+      imagecache_external_responsive_style: full__no_crop
     third_party_settings: {  }
-    weight: 14
+    weight: 0
     region: content
   field_building_lactation_rooms:
     type: string
