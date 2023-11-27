@@ -235,7 +235,9 @@ class MigrateSettingsForm extends ConfigFormBase {
           ->save();
       }
       else {
-        $types = explode(',', $form_state->getValue($definition));
+        $types = $form_state->getValue($definition);
+        $types = str_replace(' ', '', $types);
+        $types = explode(',', $types);
         $this->configFactory->getEditable("migrate_plus.migration.d7_{$definition}")
           ->set('source.node_type', $types)
           ->save();
