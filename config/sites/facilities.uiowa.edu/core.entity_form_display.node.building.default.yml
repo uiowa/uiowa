@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
-    - field.field.node.building.field_building_image_url
+    - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
@@ -23,7 +23,7 @@ dependencies:
     - node.type.building
   module:
     - content_moderation
-    - link
+    - file
     - metatag
     - path
 id: node.building.default
@@ -60,13 +60,12 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_building_image_url:
-    type: link_default
-    weight: 38
+  field_building_image:
+    type: file_generic
+    weight: 41
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      progress_indicator: throbber
     third_party_settings: {  }
   field_building_lactation_rooms:
     type: string_textfield

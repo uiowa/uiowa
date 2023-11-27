@@ -33,15 +33,17 @@
   }
 }
 
-
-/* Use :has to provide better visual fallback for 1 or 2 items */
-/* Only works in https://caniuse.com/css-has */
-.uiowa-image-gallery:has(.media:first-child:last-child),
-.uiowa-image-gallery:has(.media:first-child + .media:last-child) {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+// Use :has to provide better visual fallback for 1 or 2 items.
+.uiowa-image-gallery {
+  // One item.
+  &:has(> .media:only-child),
+  // Two items.
+  &:has(> .media:first-child + .media:last-child) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
 }
 
-//image-gallery--auto-fit
+// image-gallery--auto-fit.
 .uiowa-image-gallery {
   display: grid;
   grid-gap: 1.5rem;
@@ -66,4 +68,50 @@
 
 .media--widescreen .uiowa-image-gallery img {
   aspect-ratio: 16 / 9;
+}
+
+// Single page photoswipe image with thumbnails.
+.uiowa-image-gallery--single {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.uiowa-image-gallery--single  .field__item {
+  @include breakpoint(sm) {
+    flex: 1;
+  }
+  &:first-child {
+    flex: 0 0 100%;
+  }
+  // Set a max width for smaller images.
+  &:not(:first-child) {
+    @include breakpoint(sm) {
+      max-width: calc(15% - 10px);
+      img {
+        object-fit: cover;
+        aspect-ratio: 1 / 1;
+      }
+    }
+  }
+}
+
+.uiowa-image-gallery--single img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.uiowa-image-gallery--single {
+  .field__item:first-child:last-child a {
+   position: relative;
+   float: right;
+   text-align: right;
+    &:after {
+     @include fas();
+     content: "\f065";
+     font-size: 1.3rem;
+     padding-top: 1.5rem;
+    }
+  }
 }

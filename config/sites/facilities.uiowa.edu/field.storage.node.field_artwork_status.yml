@@ -1,0 +1,21 @@
+uuid: d91bec67-0399-49f6-a08d-c94c66c6c72e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_artwork_status
+field_name: field_artwork_status
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'facilities_core_get_artwork_status_options'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

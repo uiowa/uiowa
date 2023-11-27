@@ -56,8 +56,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
       $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
         ->condition('vid', 'room_features')
         ->condition('vid', 'accessibility_features')
-        ->condition('vid', 'technology_features')
-        ->accessCheck();
+        ->condition('vid', 'technology_features');
 
       $tids = \Drupal::entityQuery('taxonomy_term')
         ->condition($query)
