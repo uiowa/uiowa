@@ -187,6 +187,18 @@ function sitenow_articles_preprocess_field(&$variables) {
       $variables['label'] = 'Organization';
     }
   }
+  if ($variables['element']['#field_name'] === 'field_gallery_images') {
+    if ($variables['element']['#bundle'] === 'article') {
+      $variables['field_container_classes'] = 'uiowa-image-gallery';
+      uiowa_core_set_title_attributes($variables, [
+        'h2',
+        'block__headline',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
+    }
+  }
   if ($variables['element']['#field_name'] === 'field_article_source_link') {
     if ($variables['element']['#formatter'] === 'link') {
       $variables['element']['#title'] = 'Source';
