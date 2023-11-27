@@ -300,31 +300,8 @@ function uiowa_core_preprocess_node(&$variables) {
     if ($user->hasPermission('view any unpublished content') === TRUE) {
       if (isset($variables['publish_on']) && $variables['node']->moderation_state?->value) {
         if ($variables['view_mode'] === 'full') {
-          /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
-          $messenger = \Drupal::service('messenger');
-          // Target status messages because we know Scheduler
-          // and the uiowa_core_form_alter() are writing to this type.
-          $messages = $messenger->messagesByType('status');
-
-          // Loop through messages and modify them.
-          foreach ($messages as $key => $message) {
-            // Check if the message contains the typical scheduler message text.
-            if (str_contains($message, 'is scheduled')) {
-              $messages[$key] = $message . ' Editors are restricted from editing until published.';
-            }
-            // Remove this remnant message from the form_alter.
-            if (str_contains($message, 'This content is currently scheduled to be published.')) {
-              unset($messages[$key]);
-            }
-          }
-          // Clear all existing messages.
-          // Messenger doesn't allow altering existing.
-          $messenger->deleteByType('status');
-
-          // Add the modified array of messages back to the messenger service.
-          foreach ($messages as $message) {
-            $messenger->addStatus($message);
-          }
+          \Drupal::messenger()
+            ->addStatus(t('Due to scheduling, editors are restricted from editing until published.'));
         }
       }
     }
