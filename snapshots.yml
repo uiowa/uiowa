@@ -1,38 +1,20 @@
-references:
-  hide-alerts: &hide-alerts |
-    document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';
-  disable-lazy: &disable-lazy |
-    let allImages = document.querySelectorAll('img');
-    allImages.forEach((img) => {img.setAttribute('loading', 'eager');});
-snapshots:
-  - name: Front page with events block hidden
-    url: /
-    execute: {
-      beforeSnapshot() {
-        document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';
-        *hide-alerts
-        *disable-lazy
-      }
-    }
-    waitForTimeout: 1000
-  - name: About page with search input visible
-    url: /about
-    execute: {
-      beforeSnapshot() {
-        document.querySelector('.search-button').click();
-        *hide-alerts
-      }
-    }
-  - name: People
-    url: /people
-    execute: *hide-alerts
-  - name: Person
-    url: /people/herky-hawk
-    execute: *hide-alerts
-  - name: Articles
-    url: /news
-    execute: *hide-alerts
-  - name: Article
-    url: /news/2019/09/demo-article
-    execute: *hide-alerts
-    waitForTimeout: 1000
+- name: Front page with events block hidden
+  url: /
+  execute: "let allImages = document.querySelectorAll('img');allImages.forEach((img) => {img.setAttribute('loading', 'eager');});document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+  waitForTimeout: 1000
+- name: About page with search input visible
+  url: /about
+  execute: "document.querySelector('.search-button').click();document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+- name: People
+  url: /people
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+- name: Person
+  url: /people/herky-hawk
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+- name: Articles
+  url: /news
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+- name: Article
+  url: /news/2019/09/demo-article
+  execute: "document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+  waitForTimeout: 1000
