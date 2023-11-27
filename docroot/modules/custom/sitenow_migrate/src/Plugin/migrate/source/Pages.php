@@ -29,10 +29,20 @@ class Pages extends BaseNodeSource {
 
     if (isset($body[0])) {
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
-      $row->setSourceProperty('body', $body);
 
-      // Check summary, and create one if none exists.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
+      foreach ($row->getSource() as $field_name => $value) {
+        if (str_starts_with($field_name, 'field_') && !empty($value)) {
+          $this->logger->notice($this->t('Unmapped field found in node @nid.', [
+            '@nid' => $row->getSourceProperty('nid'),
+          ]));
+          if (is_array($value)) {
+            $value = json_encode($value);
+          }
+          $body[0]['value'] = $body[0]['value'] . "{$field_name}: {$value}";
+        }
+      }
+
+      $row->setSourceProperty('body', $body);
     }
 
     return TRUE;

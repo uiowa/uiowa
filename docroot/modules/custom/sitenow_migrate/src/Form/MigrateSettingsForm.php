@@ -168,6 +168,30 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('shared_configuration.source.constants.public_file_path'),
     ];
 
+    $form['definitions'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Definitions'),
+      '#description' => $this->t('Source mappings to destination node types.'),
+    ];
+
+    $form['definitions']['page'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Page'),
+      '#default_value' => $config->get('shared_configuration.source.definitions.page'),
+    ];
+
+    $form['definitions']['article'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Article'),
+      '#default_value' => $config->get('shared_configuration.source.definitions.article'),
+    ];
+
+    $form['definitions']['person'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Person'),
+      '#default_value' => $config->get('shared_configuration.source.definitions.person'),
+    ];
+
     return $form;
   }
 
@@ -192,12 +216,31 @@ class MigrateSettingsForm extends ConfigFormBase {
           'driver' => 'mysql',
           'prefix' => NULL,
         ],
+        'definitions' => [
+          'page' => $form_state->getValue('page'),
+          'article' => $form_state->getValue('article'),
+          'person' => $form_state->getValue('person'),
+        ],
       ],
     ];
 
     $this->config('migrate_plus.migration_group.sitenow_migrate')
       ->set('shared_configuration', $shared_config)
       ->save();
+
+    foreach (['page', 'article', 'person'] as $definition) {
+      if (empty($form_state->getValue($definition))) {
+        $this->configFactory->getEditable("migrate_plus.migration.d7_{$definition}")
+          ->set('source.node_type', $definition)
+          ->save();
+      }
+      else {
+        $types = explode(',', $form_state->getValue($definition));
+        $this->configFactory->getEditable("migrate_plus.migration.d7_{$definition}")
+          ->set('source.node_type', $types)
+          ->save();
+      }
+    }
 
     // If the DB connection changes, this is required to reflect that in
     // the Drush migrate:status command. Save developers from running a CR.

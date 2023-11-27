@@ -34,8 +34,10 @@ process:
   promote: promote
   sticky: sticky
   body: body
-  field_teaser: body_summary
   moderation_state: moderation_state
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
 destination:
   plugin: 'entity:node'
   type: page
