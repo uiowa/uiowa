@@ -1,6 +1,6 @@
-- name: Front page with events block hidden
+- name: Front page with events block, lazyloaded images hidden
   url: /
-  execute: "let allImages = document.querySelectorAll('img');allImages.forEach((img) => {img.setAttribute('loading', 'eager');});document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';document.querySelector('.lazyloaded').style.display = 'none';"
   waitForTimeout: 1000
 - name: About page with search input visible
   url: /about
