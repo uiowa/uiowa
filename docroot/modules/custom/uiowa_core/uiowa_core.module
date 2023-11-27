@@ -301,7 +301,7 @@ function uiowa_core_preprocess_node(&$variables) {
       if (isset($variables['publish_on']) && $variables['node']->moderation_state?->value) {
         if ($variables['view_mode'] === 'full') {
           \Drupal::messenger()
-            ->addStatus(t('Due to scheduling, editors are restricted from editing until published.'));
+            ->addStatus(t('This content has been scheduled for publishing and editors are restricted from editing until published.'));
         }
       }
     }
