@@ -31,7 +31,7 @@ class Pages extends BaseNodeSource {
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       foreach ($row->getSource() as $field_name => $value) {
-        if (str_starts_with($field_name, 'field_') && !empty($value)) {
+        if (str_starts_with($field_name, 'field_') && !empty($value) && !$row->hasDestinationProperty($field_name)) {
           $this->logger->notice($this->t('Unmapped field found in node @nid.', [
             '@nid' => $row->getSourceProperty('nid'),
           ]));
