@@ -1,18 +1,18 @@
-uuid: 9e51034a-af03-4333-9824-9e986331f3d4
+uuid: b3e1ecb7-aa7c-4197-8d7a-ce55ec0e6b6a
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
+    - field.storage.node.field_gallery_images
     - media.type.image
     - node.type.artwork
-id: node.artwork.field_image
-field_name: field_image
+id: node.artwork.field_gallery_images
+field_name: field_gallery_images
 entity_type: node
 bundle: artwork
-label: Image
+label: Image(s)
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
@@ -24,6 +24,6 @@ settings:
     sort:
       field: _none
       direction: ASC
-    auto_create: true
+    auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

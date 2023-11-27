@@ -13,8 +13,7 @@ dependencies:
     - field.field.node.artwork.field_artwork_status
     - field.field.node.artwork.field_artwork_video
     - field.field.node.artwork.field_artwork_year
-    - field.field.node.artwork.field_image
-    - field.field.node.artwork.field_image_caption
+    - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
     - node.type.artwork
   module:
@@ -38,7 +37,7 @@ third_party_settings:
         layout_settings:
           label: ''
           context_mapping: {  }
-          column_widths: 33-67
+          column_widths: 50-50
           layout_builder_styles_style:
             0: section_background_style_gray
             1: section_margin_fixed_width_container
@@ -79,32 +78,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 420e8375-cd8c-4582-82c7-2a95a6adbaca
-            region: second
-            configuration:
-              id: 'field_block:node:artwork:field_image'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: photoswipe_field_formatter
-                label: visually_hidden
-                settings:
-                  photoswipe_node_style_first: ''
-                  photoswipe_node_style: widescreen__1024_x_576
-                  photoswipe_image_style: ''
-                  photoswipe_reference_image_field: field_media_image
-                  photoswipe_caption: custom
-                  photoswipe_caption_custom: '[node:field_image_caption]'
-                  photoswipe_view_mode: _custom
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 91896151-09c9-4117-a49b-8c83c38cf71c
             region: first
             configuration:
@@ -121,7 +94,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -140,7 +113,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -164,7 +137,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -247,7 +220,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -266,24 +239,35 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 506d65a1-8d8d-4099-900f-d38d43344f57
-            region: first
+            uuid: 5a3c005d-08e6-4431-9d98-277fb41732c0
+            region: second
             configuration:
-              id: 'field_block:node:artwork:field_image_caption'
-              label_display: '0'
+              id: 'field_block:node:artwork:field_gallery_images'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: string
-                label: above
+                type: photoswipe_field_formatter
+                label: hidden
                 settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 10
+                  photoswipe_node_style_first: ''
+                  photoswipe_node_style: widescreen__1920_x_1080
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_caption: custom
+                  photoswipe_caption_custom: "[node:title] \r\n [node:field_artwork_artist] \r\n[node:field_artwork_year]"
+                  photoswipe_view_mode: _custom
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -304,26 +288,6 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
         components:
-          -
-            uuid: 098d617e-77da-4a95-a682-4cf74026daa6
-            region: second
-            configuration:
-              id: 'field_block:node:artwork:field_artwork_video'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: default
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: ad095f4e-1317-4580-8090-142afbda148c
             region: first
@@ -376,7 +340,27 @@ third_party_settings:
               label_display: null
               provider: facilities_core
               context_mapping: {  }
-            weight: 1
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 098d617e-77da-4a95-a682-4cf74026daa6
+            region: second
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_video'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -484,21 +468,13 @@ content:
     third_party_settings: {  }
     weight: 103
     region: content
-  field_image:
+  field_gallery_images:
     type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
     weight: 113
-    region: content
-  field_image_caption:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 114
     region: first
   field_meta_tags:
     type: metatag_empty_formatter
