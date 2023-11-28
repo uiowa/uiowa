@@ -6124,3 +6124,9 @@ $sites['engineeringiseh.uiowa.ddev.site'] = 'iseh.engineering.uiowa.edu';
 $sites['engineeringiseh.dev.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
 $sites['engineeringiseh.stage.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
 $sites['engineeringiseh.prod.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
+
+// Directory aliases for hultman.lab.uiowa.edu.
+$sites['labhultman.uiowa.ddev.site'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.dev.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.stage.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.prod.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
