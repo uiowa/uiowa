@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitessandboxnext.uiowa.ddev.site
+    protocol: https
+  machine_name: sitessandboxnext
+  human_name: sandboxnext.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitessandboxnext.prod
+drupal:
+  db:
+    database: sandboxnext_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitessandboxnext.prod.drupal.uiowa.edu'
+  requester: jwhitsit
+  site-name: SandboxNext
