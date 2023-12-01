@@ -4,15 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_area_of_study_subtitle
+    - filter.format.minimal
+    - filter.format.plain_text
     - node.type.area_of_study
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
-      - plain_text
 id: node.area_of_study.field_area_of_study_subtitle
 field_name: field_area_of_study_subtitle
 entity_type: node
@@ -23,5 +19,8 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
+    - plain_text
 field_type: text_long

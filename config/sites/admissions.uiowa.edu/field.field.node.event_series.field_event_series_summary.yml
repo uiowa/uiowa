@@ -4,14 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_event_series_summary
+    - filter.format.minimal
     - node.type.event_series
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: node.event_series.field_event_series_summary
 field_name: field_event_series_summary
 entity_type: node
@@ -22,5 +18,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

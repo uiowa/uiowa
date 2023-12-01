@@ -6,8 +6,10 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateHelper;
+use Drupal\Core\Utility\Error;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -114,7 +116,8 @@ class DataController extends ControllerBase {
       }
     }
     catch (RequestException | GuzzleException | ClientException $e) {
-      watchdog_exception('uiowa_covid', $e);
+      $logger = \Drupal::logger('uiowa_covid');
+      Error::logException($logger, $e);
     }
 
     return new JsonResponse($data, 200, [
