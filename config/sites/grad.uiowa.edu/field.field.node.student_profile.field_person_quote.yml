@@ -4,14 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_person_quote
+    - filter.format.minimal
     - node.type.student_profile
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: node.student_profile.field_person_quote
 field_name: field_person_quote
 entity_type: node
@@ -22,5 +18,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

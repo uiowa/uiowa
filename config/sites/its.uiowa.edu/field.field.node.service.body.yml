@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.body
     - node.type.service
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.service.body
 field_name: body
 entity_type: node
@@ -24,4 +20,5 @@ default_value_callback: ''
 settings:
   display_summary: true
   required_summary: false
+  allowed_formats: {  }
 field_type: text_with_summary

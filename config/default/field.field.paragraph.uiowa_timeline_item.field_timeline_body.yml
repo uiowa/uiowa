@@ -4,14 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_timeline_body
+    - filter.format.minimal
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: paragraph.uiowa_timeline_item.field_timeline_body
 field_name: field_timeline_body
 entity_type: paragraph
@@ -22,5 +19,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

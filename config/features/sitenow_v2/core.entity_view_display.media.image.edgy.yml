@@ -10,7 +10,6 @@ dependencies:
     - media.type.image
     - responsive_image.styles.ui_edgy_no_crop
   module:
-    - lazy
     - responsive_image
 _core:
   default_config_hash: HW52IsyizTd9psyOjhjteunTeM7jjttYXkwPB0YAbcU
@@ -25,9 +24,9 @@ content:
     settings:
       responsive_image_style: ui_edgy_no_crop
       image_link: ''
-    third_party_settings:
-      lazy:
-        lazy_image: '1'
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
