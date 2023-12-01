@@ -731,6 +731,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       display: block;
       text-align: center;
       margin: 0 $sm $sm 0;
+      color: $grey;
+      @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
 
       @include breakpoint(page-container) {
         border-right: none;
@@ -742,8 +744,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         display: block;
         text-decoration: none;
         color: $secondary;
-        line-height: 1;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
 
         &:hover,
         &:focus,
@@ -751,20 +751,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
           background: $light;
         }
       }
-      // Not-linked.
-      div {
-        display: block;
-        text-decoration: none;
-        color: $grey;
-        line-height: 1;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
-      }
 
       &:last-child {
-        a, div {
           @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
-          }
         }
       }
     }
