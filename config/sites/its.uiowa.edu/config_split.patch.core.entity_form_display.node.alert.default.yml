@@ -8,7 +8,7 @@ adding:
       weight: 12
     field_alert_service_affected:
       type: entity_reference_autocomplete
-      weight: 17
+      weight: 14
       region: content
       settings:
         match_operator: CONTAINS
@@ -19,23 +19,17 @@ adding:
     field_meta_tags:
       weight: 13
     publish_on:
-      weight: 15
+      weight: 16
     publish_state:
       type: options_select
-      weight: 16
+      weight: 17
       region: content
       settings: {  }
       third_party_settings: {  }
     scheduler_settings:
-      weight: 14
+      weight: 15
     simple_sitemap:
       weight: 11
-    unpublish_on:
-      type: datetime_timestamp_no_default
-      weight: 18
-      region: content
-      settings: {  }
-      third_party_settings: {  }
 removing:
   content:
     field_alert_date:
@@ -50,4 +44,3 @@ removing:
       weight: 10
   hidden:
     publish_state: true
-    unpublish_on: true
