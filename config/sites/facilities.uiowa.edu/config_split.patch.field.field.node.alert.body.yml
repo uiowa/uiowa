@@ -1,11 +1,10 @@
 adding:
   dependencies:
-    module:
-      - allowed_formats
-  third_party_settings:
-    allowed_formats:
-      allowed_formats:
-        - minimal_plus
+    config:
+      - filter.format.minimal_plus
   label: 'Reason and details for closure'
+  settings:
+    allowed_formats:
+      - minimal_plus
 removing:
   label: Body

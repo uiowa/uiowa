@@ -1083,6 +1083,24 @@ function uids_base_preprocess_form(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_image().
+ */
+function uids_base_preprocess_image(&$variables) {
+  if (isset($variables['attributes']) && isset($variables['attributes']['loading'])) {
+    $loading_attributes = $variables['attributes']['loading'];
+    if ($loading_attributes === "lazy") {
+      // Ensure $variables['attributes']['class'] is an array.
+      if (!isset($variables['attributes']['class']) || !is_array($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [];
+      }
+
+      $variables['attributes']['class'][] = 'lazyload';
+      $variables['#attached']['library'][] = 'uids_base/lazy-load-animation';
+    }
+  }
+}
+
+/**
  * Implements theme_preprocess_input().
  */
 function uids_base_preprocess_input(&$variables) {

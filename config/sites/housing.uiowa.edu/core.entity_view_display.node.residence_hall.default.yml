@@ -40,6 +40,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - layout_builder_restrictions
     - link
     - options
     - text
@@ -860,6 +861,15 @@ third_party_settings:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.residence_hall.default
 targetEntityType: node
 bundle: residence_hall

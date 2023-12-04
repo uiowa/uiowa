@@ -1,5 +1,5 @@
 diff --git a/core/modules/views/src/Plugin/views/display/Block.php b/core/modules/views/src/Plugin/views/display/Block.php
-index 00bdf1a10b..5d43405623 100644
+index 00bdf1a10b843513843b988f09a623811860802f..b01bbb8f812286d636cd9158def3b1665bbb0c84 100644
 --- a/core/modules/views/src/Plugin/views/display/Block.php
 +++ b/core/modules/views/src/Plugin/views/display/Block.php
 @@ -3,12 +3,20 @@
@@ -62,11 +62,11 @@ index 00bdf1a10b..5d43405623 100644
     *   The entity type manager.
     * @param \Drupal\Core\Block\BlockManagerInterface $block_manager
     *   The block manager.
-+   * @param  \Drupal\Core\KeyValueStore\KeyValueFactoryInterface  $key_value
++   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $key_value
 +   *   The key/value manager service.
-+   * @param  \Drupal\Core\Plugin\Context\ContextRepositoryInterface  $context_repository
++   * @param \Drupal\Core\Plugin\Context\ContextRepositoryInterface $context_repository
 +   *   The context repository.
-+   * @param  \Drupal\Core\Plugin\Context\ContextHandlerInterface  $context_handler
++   * @param \Drupal\Core\Plugin\Context\ContextHandlerInterface $context_handler
 +   *   The ContextHandler for applying contexts to conditions properly.
     */
 -  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, BlockManagerInterface $block_manager) {
@@ -105,26 +105,24 @@ index 00bdf1a10b..5d43405623 100644
      );
    }
  
-@@ -359,16 +419,193 @@ public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_s
+@@ -359,16 +419,192 @@ public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_s
    /**
     * Allows to change the display settings right before executing the block.
     *
--   * @param \Drupal\views\Plugin\Block\ViewsBlock $block
 +   * When this block is rebuilt as part of an AJAX call, the AJAX handler does
 +   * not have block instance settings and context information available.
 +   * Because of that, the first time this block is rendered the block instance
 +   * overrides are put in the key/value store. The first time the block is
-+   * rendered is normally during a non-AJAX request, but it could be an Ajax
++   * rendered is normally during a non-AJax request but it could be an Ajax
 +   * request. This is possible only when all following calls pass along the
-+   * 'block_config_key' query param, and it  matches the key generated here.
-+   *
-+   * @param  \Drupal\views\Plugin\Block\ViewsBlock  $block
-    *   The block plugin for views displays.
--   */
-+   * @see \Drupal\views\Plugin\views\display\Block::getConfigurationFromHashedKey()
++   * 'block_config_key' query param and it  matches the key generated here.
 +   *
 +   * @see \Drupal\views\Plugin\views\display\Block::preview()
-+   * +   */
++   * @see \Drupal\views\Plugin\views\display\Block::getConfigurationFromHashedKey()
++   *
+    * @param \Drupal\views\Plugin\Block\ViewsBlock $block
+    *   The block plugin for views displays.
+    */
    public function preBlockBuild(ViewsBlock $block) {
      $config = $block->getConfiguration();
 +
@@ -156,11 +154,10 @@ index 00bdf1a10b..5d43405623 100644
 +    else {
 +      // If the received key does not validate, mark the build as failed, which
 +      // will abort the rendering process.
-+      // @see \Drupal\views\ViewExecutable::render()
++      // See \Drupal\views\ViewExecutable::render().
 +      $this->view->build_info['fail'] = TRUE;
 +      return;
 +    }
-+
 +
      if ($config['items_per_page'] !== 'none') {
        $this->view->setItemsPerPage($config['items_per_page']);
@@ -302,10 +299,10 @@ index 00bdf1a10b..5d43405623 100644
     * {@inheritdoc}
     */
 diff --git a/core/modules/views/src/Plugin/views/display/DisplayPluginBase.php b/core/modules/views/src/Plugin/views/display/DisplayPluginBase.php
-index 52f575d2a4..50573294d4 100644
+index ef24bb6eee649d0994c9e751152bffcb7ac4369e..c01a275c14b74bc0405d2fd33ab69b2604d27ebe 100644
 --- a/core/modules/views/src/Plugin/views/display/DisplayPluginBase.php
 +++ b/core/modules/views/src/Plugin/views/display/DisplayPluginBase.php
-@@ -2462,6 +2462,12 @@ public static function buildBasicRenderable($view_id, $display_id, array $args =
+@@ -2457,6 +2457,12 @@ public static function buildBasicRenderable($view_id, $display_id, array $args =
  
    }
  
@@ -319,10 +316,10 @@ index 52f575d2a4..50573294d4 100644
     * {@inheritdoc}
     */
 diff --git a/core/modules/views/src/Plugin/views/display/DisplayPluginInterface.php b/core/modules/views/src/Plugin/views/display/DisplayPluginInterface.php
-index abc03be58c..679da7ffea 100644
+index bb75dde12b1fd824130a3ed7db3592a15a27aeee..1a3d8257eafcf8af3f780a526f5f4c69bcedb297 100644
 --- a/core/modules/views/src/Plugin/views/display/DisplayPluginInterface.php
 +++ b/core/modules/views/src/Plugin/views/display/DisplayPluginInterface.php
-@@ -491,6 +491,11 @@ public static function buildBasicRenderable($view_id, $display_id, array $args =
+@@ -494,6 +494,11 @@ public static function buildBasicRenderable($view_id, $display_id, array $args =
     */
    public function buildRenderable(array $args = [], $cache = TRUE);
  
@@ -335,7 +332,7 @@ index abc03be58c..679da7ffea 100644
     * Renders the display for the purposes of a live preview.
     *
 diff --git a/core/modules/views/src/ViewExecutable.php b/core/modules/views/src/ViewExecutable.php
-index defce1aa8c..2699036a59 100644
+index 0543d5569559770c158eb2513b02c7f4a84e11f3..c756687746fd52513d9b8a7d811aa5b4388216ca 100644
 --- a/core/modules/views/src/ViewExecutable.php
 +++ b/core/modules/views/src/ViewExecutable.php
 @@ -1672,6 +1672,11 @@ public function preview($display_id = NULL, $args = []) {
@@ -352,7 +349,7 @@ index defce1aa8c..2699036a59 100644
      $output = $this->display_handler->preview();
 diff --git a/core/modules/views/tests/modules/views_test_config/test_views/views.view.content_block_overrides_ajax_test.yml b/core/modules/views/tests/modules/views_test_config/test_views/views.view.content_block_overrides_ajax_test.yml
 new file mode 100644
-index 0000000000..bbe4e675e1
+index 0000000000000000000000000000000000000000..bbe4e675e16ccd704d03cc24deb11c0e96613f93
 --- /dev/null
 +++ b/core/modules/views/tests/modules/views_test_config/test_views/views.view.content_block_overrides_ajax_test.yml
 @@ -0,0 +1,222 @@
@@ -579,7 +576,7 @@ index 0000000000..bbe4e675e1
 +        - user.permissions
 +      tags: {  }
 diff --git a/core/modules/views/tests/src/Unit/Plugin/views/display/BlockTest.php b/core/modules/views/tests/src/Unit/Plugin/views/display/BlockTest.php
-index bc19101824..804dbd626e 100644
+index bc191018246d2926adec99065ade4ec3476bc821..804dbd626e6386d2c6bad378af10a05497057860 100644
 --- a/core/modules/views/tests/src/Unit/Plugin/views/display/BlockTest.php
 +++ b/core/modules/views/tests/src/Unit/Plugin/views/display/BlockTest.php
 @@ -3,6 +3,7 @@
@@ -669,13 +666,14 @@ index bc19101824..804dbd626e 100644
      $this->blockDisplay->view = $this->executable;
  
 diff --git a/core/modules/views/views.module b/core/modules/views/views.module
-index a8d0a2bb5e..6fb9d5e422 100644
+index 74c321c9ee65a2c7d6ce7b3c7d3044acc5cd55a4..5f612eb5959b89017a98911b2e65ece27d715519 100644
 --- a/core/modules/views/views.module
 +++ b/core/modules/views/views.module
-@@ -803,6 +803,17 @@ function views_local_tasks_alter(&$local_tasks) {
-   $local_task->alterLocalTasks($local_tasks);
+@@ -813,3 +813,47 @@ function views_view_presave(ViewEntityInterface $view) {
+   $config_updater = \Drupal::classResolver(ViewsConfigUpdater::class);
+   $config_updater->updateAll($view);
  }
- 
++
 +/**
 + * Implements hook_ENTITY_TYPE_update().
 + */
@@ -687,14 +685,10 @@ index a8d0a2bb5e..6fb9d5e422 100644
 +  }
 +}
 +
- /**
-  * Implements hook_ENTITY_TYPE_delete().
-  */
-@@ -816,4 +827,32 @@ function views_view_delete(EntityInterface $entity) {
-       break;
-     }
-   }
-+
++/**
++ * Implements hook_ENTITY_TYPE_update().
++ */
++function views_view_delete(EntityInterface $entity) {
 +  views_view_update($entity);
 +}
 +
@@ -722,4 +716,4 @@ index a8d0a2bb5e..6fb9d5e422 100644
 + */
 +function views_block_delete(EntityInterface $entity) {
 +  views_block_update($entity);
- }
++}
