@@ -1085,10 +1085,11 @@ function uids_base_preprocess_form(&$variables) {
 /**
  * Implements hook_preprocess_image().
  */
-function uids_base_preprocess_image(&$variables) {
+function theme_base_preprocess_image(&$variables) {
   if (isset($variables['attributes']) && isset($variables['attributes']['loading'])) {
     $loading_attributes = $variables['attributes']['loading'];
     if ($loading_attributes === "lazy") {
+      $variables['attributes']['class'] = $variables['attributes']['class'] ?? [];
       $variables['attributes']['class'][] = 'lazyload';
       $variables['#attached']['library'][] = 'uids_base/lazy-load-animation';
     }
