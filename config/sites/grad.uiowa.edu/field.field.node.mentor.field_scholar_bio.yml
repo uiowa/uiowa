@@ -4,14 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_scholar_bio
+    - filter.format.minimal
     - node.type.mentor
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: node.mentor.field_scholar_bio
 field_name: field_scholar_bio
 entity_type: node
@@ -25,4 +21,6 @@ default_value_callback: ''
 settings:
   display_summary: true
   required_summary: false
+  allowed_formats:
+    - minimal
 field_type: text_with_summary

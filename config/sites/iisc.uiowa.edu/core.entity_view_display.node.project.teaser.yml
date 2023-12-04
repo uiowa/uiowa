@@ -30,12 +30,7 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 6
-    region: content
-  content_moderation_control:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
   field_academic_year:
     type: list_default
@@ -51,7 +46,7 @@ content:
       view_mode: medium__widescreen
       link: false
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   field_project_partner:
     type: entity_reference_label
@@ -64,7 +59,7 @@ content:
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   project_created_date:
     settings: {  }
@@ -72,6 +67,7 @@ content:
     weight: 0
     region: content
 hidden:
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true

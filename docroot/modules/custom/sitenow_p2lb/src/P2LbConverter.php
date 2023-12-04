@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_p2lb;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\layout_builder\Section;
 use Drupal\sitenow_pages\Entity\Page;
 
@@ -101,6 +102,10 @@ class P2LbConverter {
    */
   protected function processSection($revision_id) {
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
+    // Ensure that $paragraph_storage has the method we need.
+    if (!$paragraph_storage instanceof RevisionableStorageInterface) {
+      return FALSE;
+    }
     $paragraph_section = $paragraph_storage->loadRevision($revision_id);
 
     // Stop processing if there is no section found.
