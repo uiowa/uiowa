@@ -7,7 +7,7 @@ client.test:
   remote: https://profiles-test.uiowa.edu
   license: MIT
   js:
-    js/uiowa-profiles.js: { }
+    js/uiowa-profiles.js: { preprocess: false }
     https://cdn.jsdelivr.net/npm/vue@3.3/dist/vue.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-router@4.2/dist/vue-router.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/index.iife.min.js: { type: external, minified: true }
@@ -25,7 +25,7 @@ client.prod:
   remote: https://profiles.uiowa.edu
   license: MIT
   js:
-    js/uiowa-profiles.js: { }
+    js/uiowa-profiles.js: { preprocess: false }
     https://cdn.jsdelivr.net/npm/vue@3.3/dist/vue.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-router@4.2/dist/vue-router.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/index.iife.min.js: { type: external, minified: true }
