@@ -292,6 +292,19 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       ]);
       break;
 
+    case 'field_gallery_images':
+      if ($variables['element']['#bundle'] === 'room') {
+        $variables['field_container_classes'] = 'uiowa-image-gallery';
+        uiowa_core_set_title_attributes($variables, [
+          'h2',
+          'block__headline',
+          'headline',
+          'headline--serif',
+          'headline--underline',
+        ]);
+      }
+      break;
+
     case 'field_room_type':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_label_icon($variables, 'fa-building fa-li');
