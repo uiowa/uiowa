@@ -1,23 +1,35 @@
 adding:
   dependencies:
     config:
+      - node.type.artwork
       - node.type.building
       - node.type.named_building
       - node.type.project
+      - taxonomy.vocabulary.artwork_medium
   permissions:
+    - 'create artwork content'
     - 'create named_building content'
+    - 'create terms in artwork_medium'
     - 'delete named_building revisions'
+    - 'delete own artwork content'
     - 'delete own named_building content'
+    - 'edit any artwork content'
     - 'edit any named_building content'
     - 'edit any project content'
+    - 'edit own artwork content'
     - 'edit own named_building content'
     - 'edit own project content'
+    - 'edit terms in artwork_medium'
+    - 'enter artwork revision log entry'
     - 'enter named_building revision log entry'
     - 'enter project revision log entry'
+    - 'override artwork published option'
     - 'override named_building published option'
     - 'override project published option'
+    - 'revert artwork revisions'
     - 'revert named_building revisions'
     - 'revert project revisions'
+    - 'view artwork revisions'
     - 'view building revisions'
     - 'view named_building revisions'
     - 'view project revisions'

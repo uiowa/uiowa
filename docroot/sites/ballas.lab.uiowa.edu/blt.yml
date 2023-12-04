@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labballas.uiowa.ddev.site
+    protocol: https
+  machine_name: labballas
+  human_name: ballas.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labballas.prod
+drupal:
+  db:
+    database: ballas_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labballas.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Ballas Lab'

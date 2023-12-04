@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.transfer_tips.field_meta_tags
     - field.field.node.transfer_tips.field_transfer_tips_aos
     - node.type.transfer_tips
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - metatag
@@ -39,6 +40,7 @@ content:
     region: content
     settings:
       sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_transfer_tips_aos:
     type: entity_reference_autocomplete_tags
@@ -68,6 +70,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

@@ -3,6 +3,7 @@
 namespace Drupal\international_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
@@ -305,7 +306,7 @@ class Articles extends BaseNodeSource {
       $component = $section_array['components'][$uuid];
       $revision_id = $component['configuration']['block_revision_id'];
 
-      if ($block = $block_manager->loadRevision($revision_id)) {
+      if ($block_manager instanceof RevisionableStorageInterface && $block = $block_manager->loadRevision($revision_id)) {
         $block_text = $block->field_uiowa_text_area->value;
 
         $doc = Html::load($block_text);

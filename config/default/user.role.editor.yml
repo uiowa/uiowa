@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.uiowa_text_area
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
     - core.entity_view_display.node.page.default
@@ -10,7 +11,6 @@ dependencies:
     - filter.format.filtered_html
     - filter.format.minimal
     - filter.format.minimal_plus
-    - filter.format.webform_default
     - media.type.audio
     - media.type.facebook
     - media.type.file
@@ -29,7 +29,7 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
-    - block_content_permissions
+    - block_content
     - content_moderation
     - contextual
     - entity_browser
@@ -58,6 +58,7 @@ weight: -6
 is_admin: false
 permissions:
   - 'access administration pages'
+  - 'access block library'
   - 'access content'
   - 'access content overview'
   - 'access contextual links'
@@ -111,7 +112,6 @@ permissions:
   - 'create article content'
   - 'create audio media'
   - 'create facebook media'
-  - 'create featured_content block content'
   - 'create file media'
   - 'create image media'
   - 'create instagram media'
@@ -125,23 +125,8 @@ permissions:
   - 'create terms in research_areas'
   - 'create terms in tags'
   - 'create twitter media'
-  - 'create uiowa_aggregator block content'
-  - 'create uiowa_banner block content'
-  - 'create uiowa_card block content'
-  - 'create uiowa_collection block content'
-  - 'create uiowa_cta block content'
-  - 'create uiowa_event block content'
-  - 'create uiowa_events block content'
-  - 'create uiowa_image block content'
-  - 'create uiowa_image_gallery block content'
-  - 'create uiowa_quote block content'
-  - 'create uiowa_slider block content'
-  - 'create uiowa_statistic block content'
-  - 'create uiowa_text_area block content'
-  - 'create uiowa_timeline block content'
   - 'delete any audio media'
   - 'delete any facebook media'
-  - 'delete any featured_content block content'
   - 'delete any file media'
   - 'delete any image media'
   - 'delete any instagram media'
@@ -149,28 +134,12 @@ permissions:
   - 'delete any remote_video media'
   - 'delete any static_map media'
   - 'delete any twitter media'
-  - 'delete any uiowa_aggregator block content'
-  - 'delete any uiowa_banner block content'
-  - 'delete any uiowa_card block content'
-  - 'delete any uiowa_collection block content'
-  - 'delete any uiowa_cta block content'
-  - 'delete any uiowa_event block content'
-  - 'delete any uiowa_events block content'
-  - 'delete any uiowa_hero block content'
-  - 'delete any uiowa_image block content'
-  - 'delete any uiowa_image_gallery block content'
-  - 'delete any uiowa_page_title_hero block content'
-  - 'delete any uiowa_quote block content'
-  - 'delete any uiowa_slider block content'
-  - 'delete any uiowa_spacer_separator block content'
-  - 'delete any uiowa_statistic block content'
-  - 'delete any uiowa_text_area block content'
-  - 'delete any uiowa_timeline block content'
   - 'delete article revisions'
   - 'delete own article content'
   - 'delete own audio media'
   - 'delete own facebook media'
   - 'delete own file media'
+  - 'delete own files'
   - 'delete own image media'
   - 'delete own instagram media'
   - 'delete own page content'
@@ -193,6 +162,7 @@ permissions:
   - 'edit any remote_video media'
   - 'edit any static_map media'
   - 'edit any twitter media'
+  - 'edit any uiowa_text_area block content'
   - 'edit own article content'
   - 'edit own audio media'
   - 'edit own facebook media'
@@ -218,24 +188,6 @@ permissions:
   - 'revert article revisions'
   - 'revert page revisions'
   - 'skip antibot'
-  - 'update any featured_content block content'
-  - 'update any uiowa_aggregator block content'
-  - 'update any uiowa_banner block content'
-  - 'update any uiowa_card block content'
-  - 'update any uiowa_collection block content'
-  - 'update any uiowa_cta block content'
-  - 'update any uiowa_event block content'
-  - 'update any uiowa_events block content'
-  - 'update any uiowa_hero block content'
-  - 'update any uiowa_image block content'
-  - 'update any uiowa_image_gallery block content'
-  - 'update any uiowa_page_title_hero block content'
-  - 'update any uiowa_quote block content'
-  - 'update any uiowa_slider block content'
-  - 'update any uiowa_spacer_separator block content'
-  - 'update any uiowa_statistic block content'
-  - 'update any uiowa_text_area block content'
-  - 'update any uiowa_timeline block content'
   - 'update own region_item fragments'
   - 'update own region_item_after_content fragments'
   - 'update region_item fragments'
