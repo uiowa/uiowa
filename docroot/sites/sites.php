@@ -743,12 +743,6 @@ $sites['adsforruralamerica.dev.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.ed
 $sites['adsforruralamerica.stage.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
 $sites['adsforruralamerica.prod.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
 
-// Directory aliases for idrs2020.org.
-$sites['org-idrs2020.uiowa.ddev.site'] = 'idrs2020.org';
-$sites['org-idrs2020.dev.drupal.uiowa.edu'] = 'idrs2020.org';
-$sites['org-idrs2020.stage.drupal.uiowa.edu'] = 'idrs2020.org';
-$sites['org-idrs2020.prod.drupal.uiowa.edu'] = 'idrs2020.org';
-
 // Directory aliases for horn.studio.uiowa.edu.
 $sites['studiohorn.uiowa.ddev.site'] = 'horn.studio.uiowa.edu';
 $sites['studiohorn.dev.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
@@ -6118,3 +6112,21 @@ $sites['lablanguageacrossthelifespan.uiowa.ddev.site'] = 'languageacrossthelifes
 $sites['lablanguageacrossthelifespan.dev.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
 $sites['lablanguageacrossthelifespan.stage.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
 $sites['lablanguageacrossthelifespan.prod.drupal.uiowa.edu'] = 'languageacrossthelifespan.lab.uiowa.edu';
+
+// Directory aliases for iseh.engineering.uiowa.edu.
+$sites['engineeringiseh.uiowa.ddev.site'] = 'iseh.engineering.uiowa.edu';
+$sites['engineeringiseh.dev.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
+$sites['engineeringiseh.stage.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
+$sites['engineeringiseh.prod.drupal.uiowa.edu'] = 'iseh.engineering.uiowa.edu';
+
+// Directory aliases for hultman.lab.uiowa.edu.
+$sites['labhultman.uiowa.ddev.site'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.dev.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.stage.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
+$sites['labhultman.prod.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
+
+// Directory aliases for sandboxnext.sites.uiowa.edu.
+$sites['sitessandboxnext.uiowa.ddev.site'] = 'sandboxnext.sites.uiowa.edu';
+$sites['sitessandboxnext.dev.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
+$sites['sitessandboxnext.stage.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
+$sites['sitessandboxnext.prod.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';

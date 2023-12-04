@@ -8,19 +8,17 @@ dependencies:
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - filtered_html
 id: node.publication_issue.field_issue_editors_note
 field_name: field_issue_editors_note
 entity_type: node
 bundle: publication_issue
-label: 'Editor''s Note'
+label: "Editor's Note"
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - filtered_html
 field_type: text_long

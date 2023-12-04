@@ -13,6 +13,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -778,7 +779,8 @@ function sitenow_events_load(array $params = [
       $request = \Drupal::httpClient()->get($endpoint);
     }
     catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
+      $logger = \Drupal::logger('sitenow_events');
+      Error::logException($logger, $e);
     }
 
     if (isset($request)) {
