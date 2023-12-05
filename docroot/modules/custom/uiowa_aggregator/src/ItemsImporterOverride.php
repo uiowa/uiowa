@@ -10,7 +10,7 @@ use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- *
+ * Modify the Aggregator ItemsImporter with a custom refresh.
  */
 class ItemsImporterOverride extends ItemsImporter {
 
@@ -22,7 +22,7 @@ class ItemsImporterOverride extends ItemsImporter {
   protected $itemsImporter;
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function __construct(
     ItemsImporter $itemsImporter,
@@ -38,10 +38,10 @@ class ItemsImporterOverride extends ItemsImporter {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function refresh(FeedInterface $feed) {
-    $purgeItems = $feed->get('purge_items')?->value;
+    $purgeItems = $feed->get('field_aggregator_purge_items')?->value;
 
     if ($purgeItems) {
       $existingItems = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadByProperties(['fid' => $feed->id()]);
@@ -52,4 +52,5 @@ class ItemsImporterOverride extends ItemsImporter {
     }
     parent::refresh($feed);
   }
+
 }
