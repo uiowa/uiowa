@@ -64,6 +64,17 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: b1e1077f-dcfe-4ba7-aec7-c6459e58ee5f
+            region: content
+            configuration:
+              id: 'extra_field_block:node:alert:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_twocol_card_sidebar
@@ -167,6 +178,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_alert_category:
     type: entity_reference_label

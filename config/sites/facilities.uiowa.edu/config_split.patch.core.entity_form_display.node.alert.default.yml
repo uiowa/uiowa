@@ -113,6 +113,8 @@ adding:
       weight: 25
     sticky:
       weight: 9
+    title:
+      weight: null
     uid:
       weight: 17
     unpublish_on:
@@ -123,9 +125,10 @@ adding:
       third_party_settings: {  }
     url_redirects:
       weight: 23
-  hidden:
-    title: true
 removing:
+  dependencies:
+    config:
+      - workflows.workflow.editorial
   content:
     body:
       weight: 2
@@ -159,16 +162,11 @@ removing:
       weight: 10
     sticky:
       weight: 5
+    title:
+      weight: 0
     uid:
       weight: 1
     url_redirects:
       weight: 7
-    title:
-      type: string_textfield
-      weight: 0
-      settings:
-        size: 60
-        placeholder: ''
-      third_party_settings: {  }
   hidden:
     unpublish_on: true
