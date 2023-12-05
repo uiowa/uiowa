@@ -6136,3 +6136,9 @@ $sites['labmattes.uiowa.ddev.site'] = 'mattes.lab.uiowa.edu';
 $sites['labmattes.dev.drupal.uiowa.edu'] = 'mattes.lab.uiowa.edu';
 $sites['labmattes.stage.drupal.uiowa.edu'] = 'mattes.lab.uiowa.edu';
 $sites['labmattes.prod.drupal.uiowa.edu'] = 'mattes.lab.uiowa.edu';
+
+// Directory aliases for teachers4research.lab.uiowa.edu.
+$sites['labteachers4research.uiowa.ddev.site'] = 'teachers4research.lab.uiowa.edu';
+$sites['labteachers4research.dev.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
+$sites['labteachers4research.stage.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
+$sites['labteachers4research.prod.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
