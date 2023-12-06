@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmattes.uiowa.ddev.site
+    protocol: https
+  machine_name: labmattes
+  human_name: mattes.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmattes.prod
+drupal:
+  db:
+    database: mattes_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmattes.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Mattes Research Group'
