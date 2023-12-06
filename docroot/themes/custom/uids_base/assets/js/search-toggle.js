@@ -18,7 +18,8 @@ class SearchOverlay {
       });
     }
 
-    this.context.addEventListener('click', (event) => {
+    // This listener will close the toggle if you click off of it.
+    document.addEventListener('click', (event) => {
       if (!event.target.closest('.search-wrapper')) {
         if (this.body && this.searchButtonLabel) {
           this.body.classList.remove('search-is-open');
