@@ -986,6 +986,23 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
  */
 function uiowa_core_preprocess_views_view(&$variables) {
   // Check if the current view has a specific ID or display ID.
+  $class_exclusion_list = [
+    'student_card',
+    'student_profiles',
+    'academic_groups_taxonomy_term',
+    'people_list_block',
+    'article_list_block',
+    'related_manually_referenced_content',
+    'residence_halls',
+    'room_list',
+  ];
+
+  // Check if the current view's machine name is in the exclusion list.
+  if (!in_array($variables['view']->id(), $class_exclusion_list)) {
+    // Add list container class for list spacing.
+    $variables['attributes']['class'][] = 'list-container--list';
+  }
+
   if ($variables['view']->id() == 'related_manually_referenced_content') {
     // Attach the grid class.
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
