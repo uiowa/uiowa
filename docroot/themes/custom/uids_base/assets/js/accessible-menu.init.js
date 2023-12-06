@@ -1,8 +1,10 @@
 (function ($, AccessibleMenu) {'use strict';
   Drupal.behaviors.accessible_menu = {
+    // Initialize executed flag to false.
+    executed: false,
     attach: function (context, settings) {
       // Ensure the script runs only once.
-      if (Drupal.behaviors.accessible_menu.executed) {
+      if (this.executed) {
         return;
       }
 
@@ -67,7 +69,7 @@
       });
 
       // Set the flag to true to prevent future executions.
-      Drupal.behaviors.accessible_menu.executed = true;
+      this.executed = true;
     }
   }
 })(jQuery, AccessibleMenu);
