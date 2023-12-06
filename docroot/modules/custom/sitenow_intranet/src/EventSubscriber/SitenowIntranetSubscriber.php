@@ -59,6 +59,8 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
           'samlauth.saml_controller_login',
           'user.login',
           'user.reset.login',
+          'system.css_asset',
+          'system.js_asset',
         ])) {
           throw new UnauthorizedHttpException('Login, yo!');
         }
