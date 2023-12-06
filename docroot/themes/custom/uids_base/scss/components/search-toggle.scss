@@ -117,13 +117,11 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     }
 
     &:before {
-      padding: 7px;
+      padding: $xsm;
       content: "\f00d";
       color: $secondary;
 
       @include breakpoint(md) {
-        width: 35px;
-        margin-right: 5px;
         color: $secondary;
         border-radius: 50%;
         background: #fff;
@@ -137,7 +135,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
         color: white;
         border-radius: 50%;
         background: $secondary;
-
       }
 
       .iowa-bar--full & {
@@ -150,7 +147,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   &:before {
     padding: $xsm;
-    padding-right: 7px;
     content: "\f002";
     color: #fff;
     font-size: 1.5rem;
@@ -159,6 +155,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     @include breakpoint(md) {
       font-size: 1.2rem;
       color: $secondary;
+      height: 35px;
+      width: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
     }
   }
 }
@@ -166,6 +168,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .iowa-bar.horizontal .search-button,
 .iowa-bar.mega .search-button {
   right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-is-open .search-overlay .uids-search {
