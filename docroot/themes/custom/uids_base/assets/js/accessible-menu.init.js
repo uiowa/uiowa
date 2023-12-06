@@ -1,6 +1,7 @@
 (function ($, AccessibleMenu) {'use strict';
   Drupal.behaviors.accessible_menu = {
     attach: function (context, settings) {
+      // Ensure the script runs only once.
       if (Drupal.behaviors.accessible_menu.executed) {
         return;
       }
