@@ -44,11 +44,7 @@ class ItemsImporterOverride extends ItemsImporter {
     $purgeItems = $feed->get('field_aggregator_purge_items')?->value;
 
     if ($purgeItems) {
-      $existingItems = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadByProperties(['fid' => $feed->id()]);
-
-      foreach ($existingItems as $item) {
-        $item->delete();
-      }
+      $feed->deleteItems();
     }
     parent::refresh($feed);
   }
