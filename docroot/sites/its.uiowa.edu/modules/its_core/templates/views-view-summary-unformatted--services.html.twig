@@ -1,63 +1,25 @@
-{#
-/**
- * @file
- * Theme override for unformatted summary links.
- *
- * Available variables:
- * - rows: The rows contained in this view.
- *   - url: The URL to this row's content.
- *   - count: The number of items this summary item represents.
- *   - separator: A separator between each row.
- *   - attributes: HTML attributes for a row.
- *   - active: A flag indicating whether the row is active.
- * - options: Flags indicating how each row should be displayed. This contains:
- *   - count: A flag indicating whether the row's 'count' should be displayed.
- *   - inline: A flag indicating whether the item should be wrapped in an inline
- *     or block level HTML element.
- *
- * @see template_preprocess_views_view_summary_unformatted()
- */
-#}
-{% set break = 0 %}
-{% for number in 0..9 if break == 0 %}
-  {% set row = '' %}
-  {% for loop_row in rows  %}
-    {% if (loop_row.link == number) %}
-      {% set row = loop_row %}
-    {% endif %}
-  {% endfor %}
-
+{% for number in 0..9 %}
+  {% set row = rows|filter(row => row.link == number)|first %}
   {% if row %}
-    {{ options.inline ? '<span' : '<div' }} class="views-summary views-summary-unformatted">
-    <a href="{{ row.url[:-1] }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>#</a>
-    {% if options.count %}
-      ({{ row.count }})
-    {% endif %}
-    {{ options.inline ? '</span>' : '</div>' }}
-    {% set break = 1 %}
+    <span class="views-summary views-summary-unformatted">
+      <a href="{{ row.url[:-1] }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>#</a>
+      {% if options.count %}
+        ({{ row.count }})
+      {% endif %}
+    </span>
   {% endif %}
 {% endfor %}
 
 {% for letter in 'a'..'z' %}
-  {% set row = '' %}
-  {{ options.inline ? '<span' : '<div' }} class="views-summary views-summary-unformatted">
-  {% for loop_row in rows  %}
-    {% if (loop_row.link == letter|upper) %}
-      {% set row = loop_row %}
+  {% set row = rows|filter(row => row.link == letter|upper)|first %}
+  <span class="views-summary views-summary-unformatted">
+    {% if row %}
+      <a href="{{ row.url }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>{{ row.link }}</a>
+      {% if options.count %}
+        ({{ row.count }})
+      {% endif %}
+    {% else %}
+      {{ letter|upper }}
     {% endif %}
-  {% endfor %}
-
-  {% if row %}
-    <a href="{{ row.url }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>{{ row.link }}</a>
-    {% if options.count %}
-      ({{ row.count }})
-    {% endif %}
-  {% else %}
-    <div>{{ letter|upper }}</div>
-  {% endif %}
-
-  {{ options.inline ? '</span>' : '</div>' }}
-
+  </span>
 {% endfor %}
-
-
