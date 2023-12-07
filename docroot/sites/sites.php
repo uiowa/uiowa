@@ -6142,3 +6142,9 @@ $sites['labteachers4research.uiowa.ddev.site'] = 'teachers4research.lab.uiowa.ed
 $sites['labteachers4research.dev.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
 $sites['labteachers4research.stage.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
 $sites['labteachers4research.prod.drupal.uiowa.edu'] = 'teachers4research.lab.uiowa.edu';
+
+// Directory aliases for mls.medicine.uiowa.edu.
+$sites['medicinemls.uiowa.ddev.site'] = 'mls.medicine.uiowa.edu';
+$sites['medicinemls.dev.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
+$sites['medicinemls.stage.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
+$sites['medicinemls.prod.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
