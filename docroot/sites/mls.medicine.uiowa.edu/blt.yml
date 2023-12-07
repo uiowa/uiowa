@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinemls.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinemls
+  human_name: mls.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinemls.prod
+drupal:
+  db:
+    database: mls_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinemls.prod.drupal.uiowa.edu'
+  requester: efry
+  site-name: 'Medical Laboratory Science (MLS) Program'
