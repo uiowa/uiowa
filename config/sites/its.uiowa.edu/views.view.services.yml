@@ -407,7 +407,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: "{% set title_1 = title_1|slice(0, 1) %}\r\n{% if title_1 matches '/^\\\\d+$/' %}\r\n{% set title_1 = '#' %}\r\n{% endif %}\r\n{{ title_1 }}"
+            text: "{% set title_1 = title_1|slice(0, 1)|lower %}\r\n{% if title_1 matches '/^\\\\d+$/' %}\r\n  {% set title_1 = '#' %}\r\n{% endif %}\r\n{{ title_1 }}"
             make_link: false
             path: ''
             absolute: false
@@ -1232,6 +1232,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:core.entity_view_display.node.alert.default'
+        - 'config:core.entity_view_display.node.alert.teaser'
         - 'config:core.entity_view_display.node.article.default'
         - 'config:core.entity_view_display.node.article.teaser'
         - 'config:core.entity_view_display.node.article.token'
