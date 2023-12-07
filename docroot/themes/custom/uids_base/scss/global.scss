@@ -728,11 +728,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
     span {
       border: 1px solid $grey-light;
-      display: block;
+      display: flex;
       text-align: center;
       margin: 0 $sm $sm 0;
       color: $grey;
-      @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
+      height: 3rem;
+      width: 3rem;
+      align-items: center;
+      justify-content: center;
 
       @include breakpoint(page-container) {
         border-right: none;
@@ -741,9 +744,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
 
       a {
-        display: block;
+        display: flex;
         text-decoration: none;
         color: $secondary;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
 
         &:hover,
         &:focus,
