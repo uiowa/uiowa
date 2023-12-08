@@ -1,0 +1,36 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_nationality
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_mu5cqnt7kl575pqa:
+              uuid: d7f4dbe1-d777-4321-a836-53e74e0e2fc8
+              region: content
+              configuration:
+                id: 'field_block:node:person:field_person_nationality'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: string
+                  label: above
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 1
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_person_nationality:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 15
+      region: content
+removing: {  }
