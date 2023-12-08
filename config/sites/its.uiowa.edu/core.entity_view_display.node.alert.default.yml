@@ -197,15 +197,20 @@ third_party_settings:
             region: main
             configuration:
               id: 'field_block:node:alert:field_alert_building'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: inline
                 settings:
-                  link: true
-                third_party_settings: {  }
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: 1
             additional: {  }
             third_party_settings: {  }
