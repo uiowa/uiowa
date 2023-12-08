@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Populate Building vocabulary.
+ */
+function its_core_update_8001() {
+  // Obtain configuration from yaml files.
+  $config_path = DRUPAL_ROOT . '/../config/its.uiowa.edu/';
+  $source = new FileStorage($config_path);
+
+  // Obtain the storage manager for vocabularies.
+  // Create a new vocabulary from the yaml configuration and save.
+  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
+    ->create($source->read('taxonomy.vocabulary.building'))
+    ->save();
+
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'its_core');
+  $source = array_map('str_getcsv', file($path . '/terms/taxonomy_term_data.csv'));
+
+  // Unset the first row, which is just the header
+  // for reference.
+  unset($source[0]);
+
+  foreach ($source as $source_term) {
+    $new_term = Term::create([
+      'vid' => 'building',
+      'name' => $source_term[2],
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+}
