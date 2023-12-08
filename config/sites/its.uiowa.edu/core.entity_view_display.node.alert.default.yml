@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.alert.body
+    - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_service_affected
@@ -150,7 +151,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -166,7 +167,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 0
+            weight: -2
             additional: {  }
             third_party_settings: {  }
           -
@@ -188,7 +189,24 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 2
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ad7e630b-bfda-4814-b8dd-0aa63d3367d6
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_building'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -223,6 +241,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_alert_building:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
     region: content
   field_alert_category:
     type: entity_reference_label

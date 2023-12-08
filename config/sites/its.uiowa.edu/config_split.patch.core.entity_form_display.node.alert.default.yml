@@ -1,9 +1,20 @@
 adding:
   dependencies:
     config:
+      - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_service_affected
       - workflows.workflow.editorial
   content:
+    field_alert_building:
+      type: entity_reference_autocomplete
+      weight: 28
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
     field_alert_service_affected:
       type: entity_reference_autocomplete
       weight: 27
