@@ -1,30 +1,120 @@
 adding:
   dependencies:
     config:
+      - field.field.node.person.field_person_birth_year
+      - field.field.node.person.field_person_death_year
       - field.field.node.person.field_person_nationality
+      - views.view.artwork
   third_party_settings:
     layout_builder:
       sections:
         -
           components:
-            config_split_sequence_mu5cqnt7kl575pqa:
-              uuid: d7f4dbe1-d777-4321-a836-53e74e0e2fc8
-              region: content
+            config_split_sequence_sv2jt86aqsvlj13f:
+              uuid: 552ca5d3-6149-4cbe-bd2d-4ba560e7e7b1
+              region: main
               configuration:
-                id: 'field_block:node:person:field_person_nationality'
-                label_display: '0'
+                id: 'field_block:node:person:field_person_death_year'
+                label: null
+                label_display: null
+                provider: layout_builder
                 context_mapping:
                   entity: layout_builder.entity
+                  view_mode: view_mode
                 formatter:
-                  type: string
-                  label: above
+                  type: number_integer
+                  label: inline
                   settings:
-                    link_to_entity: false
+                    thousand_separator: ''
+                    prefix_suffix: true
+                  third_party_settings: {  }
+              weight: 2
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_3kepah123p2amml:
+              uuid: 3b111b27-f4c9-4aac-90e9-baf16cb99617
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_birth_year'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: number_integer
+                  label: inline
+                  settings:
+                    thousand_separator: ''
+                    prefix_suffix: true
                   third_party_settings: {  }
               weight: 1
               additional: {  }
               third_party_settings: {  }
+            config_split_sequence_mu5cqnt7kl575pqa:
+              uuid: d7f4dbe1-d777-4321-a836-53e74e0e2fc8
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_nationality'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: string
+                  label: inline
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 0
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_kkp3dgop3646th9d:
+              uuid: 7b940c86-c035-43e0-bbaf-a7f35e1b36c5
+              region: main
+              configuration:
+                id: 'views_block:artwork-block_1'
+                label: null
+                label_display: null
+                provider: views
+                context_mapping: {  }
+                views_label: ''
+                items_per_page: none
+                pager: some
+                headline:
+                  headline: ''
+                  hide_headline: 0
+                  heading_size: h2
+                  headline_style: default
+                  headline_alignment: default
+                  child_heading_size: h3
+                exposed_filter_values: null
+                layout_builder_styles: {  }
+              weight: 6
+              additional: {  }
+              third_party_settings: {  }
   content:
+    field_person_birth_year:
+      type: number_integer
+      label: above
+      settings:
+        thousand_separator: ''
+        prefix_suffix: true
+      third_party_settings: {  }
+      weight: 16
+      region: content
+    field_person_death_year:
+      type: number_integer
+      label: above
+      settings:
+        thousand_separator: ''
+        prefix_suffix: true
+      third_party_settings: {  }
+      weight: 17
+      region: content
     field_person_nationality:
       type: string
       label: above
