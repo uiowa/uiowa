@@ -51,18 +51,13 @@ function its_core_entity_presave(EntityInterface $entity) {
       };
 
       if ($services === 'Multiple Services' && $buildings === 'Multiple Buildings') {
-        $buildings_services = 'Multiple Services, Buildings';
+        $services_buildings = 'Multiple Services, Buildings';
       }
       else {
-        if (empty($buildings)) {
-          $buildings_services = $services;
-        }
-        else {
-          $buildings_services = (!empty($services)) ? "{$services}, {$buildings}" : "{$buildings}";
-        }
+        $services_buildings = implode(', ', array_filter([$services, $buildings]));
       }
 
-      $output = "{$category} - {$buildings_services}";
+      $output = implode(' - ', array_filter([$category, $services_buildings]));
       $entity->setTitle($output);
 
       break;
