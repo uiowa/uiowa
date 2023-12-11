@@ -722,18 +722,6 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_person_form':
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
       break;
-
-    case 'views_exposed_form':
-      $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
-
-      // Fixes a bug with BEF, details here:
-      // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
-      foreach ($form as $k => $v) {
-        if (str_contains($k, '_collapsible')) {
-          $form[$k]['#open'] = FALSE;
-        }
-      }
-      break;
   }
 }
 
