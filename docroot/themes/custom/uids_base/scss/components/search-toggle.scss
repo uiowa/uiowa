@@ -11,7 +11,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   z-index: 2;
   top: 0;
   right: 0;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: auto;
   height: 70px;
   margin: 0;
@@ -117,13 +119,11 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     }
 
     &:before {
-      padding: 7px;
+      padding: $xsm;
       content: "\f00d";
       color: $secondary;
 
       @include breakpoint(md) {
-        width: 35px;
-        margin-right: 5px;
         color: $secondary;
         border-radius: 50%;
         background: #fff;
@@ -137,7 +137,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
         color: white;
         border-radius: 50%;
         background: $secondary;
-
       }
 
       .iowa-bar--full & {
@@ -150,7 +149,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   &:before {
     padding: $xsm;
-    padding-right: 7px;
     content: "\f002";
     color: #fff;
     font-size: 1.5rem;
@@ -159,6 +157,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     @include breakpoint(md) {
       font-size: 1.2rem;
       color: $secondary;
+      height: 35px;
+      width: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
     }
   }
 }

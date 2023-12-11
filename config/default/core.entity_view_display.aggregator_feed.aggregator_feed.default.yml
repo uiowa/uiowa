@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_purge_items
   module:
     - aggregator
 _core:
@@ -50,6 +51,16 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_aggregator_purge_items:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 12
     region: content
   items:
     settings: {  }
