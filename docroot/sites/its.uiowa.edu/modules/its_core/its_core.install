@@ -13,7 +13,7 @@ use Drupal\taxonomy\Entity\Term;
  */
 function its_core_update_8001() {
   // Obtain configuration from yaml files.
-  $config_path = DRUPAL_ROOT . '/../config/its.uiowa.edu/';
+  $config_path = DRUPAL_ROOT . '/../config/sites/its.uiowa.edu/';
   $source = new FileStorage($config_path);
 
   // Obtain the storage manager for vocabularies.
