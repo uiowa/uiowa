@@ -56,7 +56,13 @@ function its_core_entity_presave(EntityInterface $entity) {
         $services_buildings = implode(', ', array_filter([$services, $buildings]));
       }
 
-      $output = implode(' - ', array_filter([$category, $services_buildings]));
+      $additional_details = $entity->field_alert_title_details?->value;
+
+      $output = implode(' - ', array_filter([
+        $category,
+        $services_buildings,
+        $additional_details,
+      ]));
       $entity->setTitle($output);
 
       break;
