@@ -32,9 +32,8 @@ function its_core_entity_presave(EntityInterface $entity) {
        * [alert type] - [service], Multiple Buildings - [additional details]
        * [alert type] - Multiple Services, Buildings - [additional details]
        */
-      $category = $entity->field_alert_category
-        ?->referencedEntities()[0]
-        ?->label();
+      $category = $entity->field_alert_category?->referencedEntities()[0] ?? NULL;
+      $category = $category?->label();
 
       $services = $entity->field_alert_service_affected;
       $services = match ($services?->count()) {
