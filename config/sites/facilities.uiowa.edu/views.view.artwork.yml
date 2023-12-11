@@ -234,9 +234,9 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_gallery_images'
-  block_1:
-    id: block_1
-    display_title: 'Artist Artwork Block'
+  block_artist_artwork:
+    id: block_artist_artwork
+    display_title: 'Artist Block'
     display_plugin: block
     position: 2
     display_options:
@@ -415,6 +415,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -425,9 +426,9 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_gallery_images'
-  block_2:
-    id: block_2
-    display_title: 'Building Artwork Block'
+  block_building_artwork:
+    id: block_building_artwork
+    display_title: 'Building Block'
     display_plugin: block
     position: 2
     display_options:
@@ -602,6 +603,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -612,9 +614,9 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_gallery_images'
-  block_artwork_search:
-    id: block_artwork_search
-    display_title: 'Artwork Search Block'
+  block_search_artwork:
+    id: block_search_artwork
+    display_title: 'Search Block'
     display_plugin: block
     position: 2
     display_options:
@@ -1218,25 +1220,4 @@ display:
       tags:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_artwork_artist'
-        - 'config:field.storage.node.field_gallery_images'
-  page_1:
-    id: page_1
-    display_title: Page
-    display_plugin: page
-    position: 1
-    display_options:
-      enabled: false
-      display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
-      path: artwork
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
         - 'config:field.storage.node.field_gallery_images'
