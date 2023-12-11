@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.building.field_meta_tags
     - node.type.building
     - views.view.alerts_building_block
+    - views.view.artwork
   module:
     - facilities_core
     - file
@@ -348,6 +349,40 @@ third_party_settings:
                     placeholder_style: ''
                     data_uri: false
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 2bf457f2-70f2-4386-bf6f-16260c1e17d8
+            region: content
+            configuration:
+              id: 'views_block:artwork-block_2'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: Artwork
+                hide_headline: 0
+                heading_size: h2
+                headline_style: headline_bold_serif_underline
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
