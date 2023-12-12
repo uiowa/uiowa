@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - link
     - smart_trim
     - telephone
     - user
@@ -99,6 +100,28 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_person_website:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_person_website_link_direct:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 8
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -119,8 +142,6 @@ hidden:
   field_person_research_areas: true
   field_person_type_status: true
   field_person_types: true
-  field_person_website: true
-  field_person_website_link_direct: true
   field_tags: true
   field_teaser: true
   search_api_excerpt: true
