@@ -640,11 +640,6 @@ function uiowa_core_page_attachments(&$page) {
       $page['#attached']['library'][] = 'uiowa_core/gtag';
     }
   }
-
-  $theme = \Drupal::theme()->getActiveTheme()->getName();
-  if ($theme === 'claro') {
-    $page['#attached']['library'][] = 'uiowa_core/claro-node-form';
-  }
 }
 
 /**
