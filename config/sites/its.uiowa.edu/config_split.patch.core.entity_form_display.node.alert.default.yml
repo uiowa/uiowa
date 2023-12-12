@@ -12,6 +12,8 @@ adding:
       region: content
       settings: {  }
       third_party_settings: {  }
+    field_alert_category:
+      type: options_select
     field_alert_date:
       weight: 12
     field_alert_service_affected:
@@ -40,6 +42,13 @@ adding:
     title: true
 removing:
   content:
+    field_alert_category:
+      type: entity_reference_autocomplete
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
     field_alert_date:
       weight: 11
     field_meta_tags:
