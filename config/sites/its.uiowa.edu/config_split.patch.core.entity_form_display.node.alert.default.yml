@@ -4,10 +4,10 @@ adding:
       - field.field.node.alert.field_alert_service_affected
   content:
     field_alert_date:
-      weight: 12
+      weight: 16
     field_alert_service_affected:
       type: entity_reference_autocomplete
-      weight: 14
+      weight: 15
       region: content
       settings:
         match_operator: CONTAINS
@@ -15,31 +15,11 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-    field_meta_tags:
-      weight: 13
-    publish_on:
-      weight: 16
-    publish_state:
-      type: options_select
-      weight: 17
-      region: content
-      settings: {  }
-      third_party_settings: {  }
     scheduler_settings:
-      weight: 15
-    simple_sitemap:
-      weight: 11
+      weight: 17
 removing:
   content:
     field_alert_date:
-      weight: 11
-    field_meta_tags:
-      weight: 12
-    publish_on:
-      weight: 14
+      weight: 15
     scheduler_settings:
-      weight: 13
-    simple_sitemap:
-      weight: 10
-  hidden:
-    publish_state: true
+      weight: 16
