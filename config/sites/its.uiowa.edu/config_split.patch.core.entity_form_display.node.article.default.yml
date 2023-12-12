@@ -13,4 +13,19 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-removing: {  }
+    unpublish_on:
+      type: datetime_timestamp_no_default
+      weight: 54
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    unpublish_state:
+      type: scheduler_moderation
+      weight: 55
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+removing:
+  hidden:
+    unpublish_on: true
+    unpublish_state: true
