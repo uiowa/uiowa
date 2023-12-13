@@ -335,6 +335,9 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:artwork:field_artwork_year':
     case 'field_block:node:artwork:field_artwork_dimension':
     case 'field_block:node:artwork:field_artwork_location':
+    case 'field_block:node:person:field_person_nationality':
+    case 'field_block:node:person:field_person_birth_year':
+    case 'field_block:node:person:field_person_death_year':
       uiowa_core_set_attributes($variables, [
         'block-margin__default--removed',
       ]);
