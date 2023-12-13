@@ -199,6 +199,52 @@ function uiowa_core_mailer_build(EmailInterface $email) {
 }
 
 /**
+ * Implements hook_entity_presave().
+ */
+function uiowa_core_entity_presave(EntityInterface $entity) {
+  // For entities with moderation and scheduler.
+  // Catching an odd situation after scheduler where it changes the node
+  // status to unpublished but doesn't change the moderation state.
+  if ($entity instanceof NodeInterface) {
+    if ($set_state = $entity->moderation_state?->value) {
+      if ($set_state == 'published' && !$entity->isPublished()) {
+        if ($entity->isNew()) {
+          $fallback_state = 'draft';
+        }
+        else {
+          $fallback_state = $entity->original->moderation_state->value;
+        }
+        // Add a user message along with changing the state.
+        $entity->moderation_state = $fallback_state;
+        $warning_text = t('Content criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+          '@label' => $entity->label(),
+          '@set_state' => $set_state,
+          '@fallback_state' => $fallback_state,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+      // Such as during bulk operations, prevent archive transition
+      // when there is a future date set.
+      if ($set_state == 'archived') {
+        if ($archive_time = $entity->unpublish_on?->value) {
+          $request_time = \Drupal::time()->getRequestTime();
+          if ($archive_time > $request_time) {
+            $entity->moderation_state = $entity->original->moderation_state->value;
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+              '@label' => $entity->label(),
+              '@set_state' => $set_state,
+              '@fallback_state' => $entity->original->moderation_state->value,
+            ]);
+            \Drupal::messenger()->addWarning($warning_text);
+          }
+        }
+      }
+    }
+  }
+
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  *
  * Invalidate related and tag view caches on content types that
@@ -238,6 +284,27 @@ function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityVi
   if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode) && !$entity instanceof BlockContent) {
     // Build the card.
     $entity->buildCard($build);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Showing a message to viewers and up about how scheduling locks
+    // editors from editing the content for content with moderation.
+    if ($user->hasPermission('view any unpublished content') === TRUE) {
+      if (isset($variables['publish_on']) && $variables['node']->moderation_state?->value) {
+        if ($variables['view_mode'] === 'full') {
+          \Drupal::messenger()
+            ->addStatus(t('This content has been scheduled for publishing and editors are restricted from editing until published.'));
+        }
+      }
+    }
   }
 }
 
@@ -620,6 +687,53 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
       // Removes the "This action cannot be undone" text.
       $form['description'] = ['#markup' => ''];
+    }
+  }
+
+  if ($route_name === 'entity.node.edit_form') {
+    $node = $form_state->getFormObject()->getEntity();
+    // Print a message on the form is scheduling options are set.
+    if ($node->get('publish_on')?->value) {
+      $state = 'published';
+    }
+    elseif ($node->get('unpublish_on')?->value) {
+      $state = 'archived';
+    }
+
+    if (!empty($state)) {
+      $message = 'This content is currently scheduled to be ' . $state . '.';
+      if ($node->moderation_state?->value) {
+        $message .= ' Editors are restricted from editing until published.';
+      }
+      \Drupal::messenger()
+        ->addStatus($message);
+    }
+  }
+
+  if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
+    // Update help text for scheduler on content types and if moderation
+    // is enabled, hide the publish/unpublish state fields.
+    $hide_classes = ['js', 'js-hide'];
+    if (isset($form['publish_on'])) {
+      $additional_published_help_text = t('Note: this content will transition to a published state within a one-hour window of the selected date and time.');
+      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
+      $form['publish_state']['#attributes']['class'] = (!empty($form['publish_state']['#attributes']['class']) ? array_merge($form['publish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+    }
+    if (isset($form['unpublish_on'])) {
+      if (isset($form['unpublish_state'])) {
+        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
+        $state = 'archived';
+        $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+      }
+      else {
+        $state = 'unpublished';
+      }
+
+      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
+        '@state' => $state,
+      ]);
+      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
+
     }
   }
 
