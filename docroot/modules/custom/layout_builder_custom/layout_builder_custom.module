@@ -1159,23 +1159,30 @@ function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
   if (isset($variables['attributes']['class'])) {
 
-    // If this is a views block...
-    // @todo This check is faulty because it is too broad and
-    //   catches some examples that we don't want.
-    //   See https://github.com/uiowa/uiowa/issues/6341
+    $allowlist = [
+      'views_block:article_list_block-list_article',
+      'views_block:events-card_list',
+      'views_block:events_list_block-card_list',
+      'views_block:people_list_block-list_card',
+    ];
+
     if ($variables['base_plugin_id'] === 'views_block') {
+      // Check if the current block plugin ID is in the allowlist.
+      $current_plugin_id = $variables['plugin_id'];
+      if (in_array($current_plugin_id, $allowlist)) {
 
-      // Filter out any card styles.
-      $card_styles = Card::filterCardStyles($variables['attributes']['class']);
-      $variables['attributes']['class'] = array_diff($variables['attributes']['class'], $card_styles);
+        // Filter out any card styles.
+        $card_styles = Card::filterCardStyles($variables['attributes']['class']);
+        $variables['attributes']['class'] = array_diff($variables['attributes']['class'], $card_styles);
 
-      // Get a list of formatting styles that will be displayed
-      // on the view instead of the block and remove them.
-      $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
-        LayoutBuilderStylesHelper::LIST_PREFIX,
-        LayoutBuilderStylesHelper::GRID_PREFIX,
-      ]);
-      LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
+        // Get a list of formatting styles that will be displayed
+        // on the view instead of the block and remove them.
+        $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
+          LayoutBuilderStylesHelper::LIST_PREFIX,
+          LayoutBuilderStylesHelper::GRID_PREFIX,
+        ]);
+        LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
+      }
     }
   }
 }
