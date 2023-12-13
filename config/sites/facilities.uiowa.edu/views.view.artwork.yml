@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.storage.node.body
-    - field.storage.node.field_artwork_artist
     - field.storage.node.field_gallery_images
     - node.type.artwork
     - taxonomy.vocabulary.artwork_medium
@@ -616,7 +615,7 @@ display:
         - 'config:field.storage.node.field_gallery_images'
   block_search_artwork:
     id: block_search_artwork
-    display_title: 'Search Block'
+    display_title: 'Artwork list'
     display_plugin: block
     position: 2
     display_options:
@@ -731,13 +730,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_artwork_artist:
-          id: field_artwork_artist
-          table: node__field_artwork_artist
-          field: field_artwork_artist
-          relationship: none
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
+          relationship: field_artwork_artist
           group_type: group
-          admin_label: ''
+          admin_label: 'Artist title'
+          entity_type: node
+          entity_field: title
           plugin_id: field
           label: ''
           exclude: true
@@ -780,11 +781,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
+          click_sort_column: value
+          type: string
           settings:
-            link: false
-          group_column: target_id
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -961,7 +962,7 @@ display:
             group_items: {  }
           fields:
             title: title
-            field_artwork_artist: field_artwork_artist
+            title_1: title_1
             body: body
         field_artwork_status_value:
           id: field_artwork_status_value
@@ -1063,7 +1064,7 @@ display:
             target_bundles:
               building: building
             sort:
-              field: _none
+              field: title
               direction: ASC
             auto_create: false
             auto_create_bundle: ''
@@ -1120,7 +1121,7 @@ display:
             target_bundles:
               person: person
             sort:
-              field: _none
+              field: title
               direction: ASC
             auto_create: false
             auto_create_bundle: ''
@@ -1198,7 +1199,16 @@ display:
         arguments: false
         filters: false
         filter_groups: false
-      relationships: {  }
+      relationships:
+        field_artwork_artist:
+          id: field_artwork_artist
+          table: node__field_artwork_artist
+          field: field_artwork_artist
+          relationship: none
+          group_type: group
+          admin_label: 'field_artwork_artist: Content'
+          plugin_id: standard
+          required: false
       css_class: 'views-form--stacked views-grid--twocol--25-75 grid--twocol--50-50'
       use_ajax: true
       display_description: ''
@@ -1206,7 +1216,25 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_description: 'Artwork list'
       block_category: 'Site custom'
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        title: 0
+        field_gallery_images: 0
+        field_artwork_artist: 0
+        body: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -1219,5 +1247,4 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.body'
-        - 'config:field.storage.node.field_artwork_artist'
         - 'config:field.storage.node.field_gallery_images'
