@@ -4,11 +4,6 @@
  * Custom CKEditor configuration.
  */
 
-// Update default body text font to UIDS typeface.
-CKEDITOR.addCss( 'body { font-family: Roboto,sans-serif } ' );
-
-
-
 // If our document has 'text--serif' set on the body class.
 // Set in uids_base_preprocess_html() of docroot/themes/custom/uids_base/uids_base.theme.
 if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) {
