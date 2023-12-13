@@ -5,7 +5,6 @@
  * Primary module hooks for SiteNow Alerts module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_alerts\Entity\Alert;
 
 /**
@@ -14,21 +13,6 @@ use Drupal\sitenow_alerts\Entity\Alert;
 function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['alert'])) {
     $bundles['node']['alert']['class'] = Alert::class;
-  }
-}
-
-/**
- * Implements hook_form_alter().
- */
-function sitenow_alerts_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    // Update help text for scheduler on alert content type.
-    case 'node_alert_edit_form':
-    case 'node_alert_form':
-      $additional_published_help_text = t('Note: this alert will be published within a one-hour window of the selected date and time.');
-      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
-      $form["status"]["widget"]["value"]["#description"] = t('Optional: Use <em><a href="#edit-scheduler-settings">Scheduling options</a></em> to publish this content');
-      break;
   }
 }
 

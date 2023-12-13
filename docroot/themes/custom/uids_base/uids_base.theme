@@ -53,6 +53,15 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   // For all views with exposed filters.
   if ($form_id === 'views_exposed_form') {
     $form['#attributes']['class'][] = 'uids-content bg--gray';
+    $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
+
+    // Fixes a bug with BEF, details here:
+    // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
+    foreach ($form as $k => $v) {
+      if (str_contains($k, '_collapsible')) {
+        $form[$k]['#open'] = FALSE;
+      }
+    }
   }
   // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
