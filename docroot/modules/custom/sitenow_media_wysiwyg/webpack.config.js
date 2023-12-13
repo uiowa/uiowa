@@ -41,7 +41,7 @@ getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
       ),
     },
     output: {
-      path: path.resolve(__dirname, './js/build'),
+      path: path.resolve(__dirname, './assets/js/build'),
       filename: `${dir}.js`,
       library: ['CKEditor5', dir],
       libraryTarget: 'umd',
@@ -53,7 +53,7 @@ getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
       // However, that requires knowing the location of that file relative to
       // where your module code is located.
       new webpack.DllReferencePlugin({
-        manifest: require('./node_modules/ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
+        manifest: require('../../../../node_modules/ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
         scope: 'ckeditor5/src',
         name: 'CKEditor5.dll',
       }),
