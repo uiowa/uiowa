@@ -4,10 +4,6 @@
  * Custom CKEditor configuration.
  */
 
-console.log('asdfasdf');
-// Allow empty spans for FontAwesome icons.
-CKEDITOR.dtd.$removeEmpty['span'] = false;
-
 // Update default body text font to UIDS typeface.
 CKEDITOR.addCss( 'body { font-family: Roboto,sans-serif } ' );
 
