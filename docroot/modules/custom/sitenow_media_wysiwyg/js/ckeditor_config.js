@@ -4,37 +4,14 @@
  * Custom CKEditor configuration.
  */
 
+console.log('asdfasdf');
 // Allow empty spans for FontAwesome icons.
 CKEDITOR.dtd.$removeEmpty['span'] = false;
 
 // Update default body text font to UIDS typeface.
 CKEDITOR.addCss( 'body { font-family: Roboto,sans-serif } ' );
 
-// Remove table and cell properties that can make them unusable/inaccessible.
-CKEDITOR.on('dialogDefinition', function (ev) {
-  var dialogName = ev.data.name;
-  var dialogDefinition = ev.data.definition;
 
-  if (dialogName == 'table' || 'tableProperties') {
-    var infoTab = dialogDefinition.getContents('info');
-
-    infoTab.remove('txtBorder');
-    infoTab.remove('cmbAlign');
-    infoTab.remove('txtWidth');
-    infoTab.remove('txtHeight');
-    infoTab.remove('txtCellSpace');
-    infoTab.remove('txtCellPad');
-  }
-  if (dialogName == 'cellProperties') {
-    var infoTab = dialogDefinition.getContents('info');
-
-    infoTab.remove('borderColor');
-    infoTab.remove('bgColor');
-    infoTab.remove('vAlign');
-    infoTab.remove('hAlign');
-    infoTab.remove('wordWrap');
-  }
-});
 
 // If our document has 'text--serif' set on the body class.
 // Set in uids_base_preprocess_html() of docroot/themes/custom/uids_base/uids_base.theme.
@@ -63,8 +40,5 @@ if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) 
   });
 }
 
-// This was not working properly when a user first added a table.
-// Removed and functionality duplicated for all CKE tables in docroot/themes/custom/uids_base/scss/components/tables.scss .
-CKEDITOR.config.removePlugins = 'showborders';
 
 
