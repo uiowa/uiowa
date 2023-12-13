@@ -5,6 +5,7 @@
  * Primary module hooks for Now Core module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -206,6 +207,30 @@ function now_core_node_presave($entity) {
         ])
     );
   }
+}
+
+/**
+ * Implements hook_scheduler_publishing_allowed().
+ */
+function now_core_scheduler_publishing_allowed(EntityInterface $entity) {
+  $allowed = empty($entity->field_embargo_information->value);
+  // Prevent the article from being published if there is an
+  // embargo message and then tell the user why.
+  if (!$allowed) {
+    \Drupal::messenger()->addMessage(t('The content will only be published after the content embargo has been lifted.'), 'status');
+    // If the time is in the past it means that the action has been prevented,
+    // so write a log message to show this.
+    if ($entity->publish_on->value <= \Drupal::time()->getRequestTime()) {
+      if ($entity->id() && $entity->hasLinkTemplate('canonical')) {
+        $link = $entity->toLink(t('View'))->toString();
+      }
+      \Drupal::logger('now_core')->warning('Publishing of "%title" is prevented until after the content embargo has been lifted.', [
+        '%title' => $entity->label(),
+        'link' => $link ?? NULL,
+      ]);
+    }
+  }
+  return $allowed;
 }
 
 /**

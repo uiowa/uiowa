@@ -2,11 +2,12 @@ adding:
   dependencies:
     config:
       - field.field.node.alert.field_alert_service_affected
-      - workflows.workflow.editorial
   content:
+    field_alert_date:
+      weight: 16
     field_alert_service_affected:
       type: entity_reference_autocomplete
-      weight: 27
+      weight: 15
       region: content
       settings:
         match_operator: CONTAINS
@@ -14,4 +15,11 @@ adding:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-removing: {  }
+    scheduler_settings:
+      weight: 17
+removing:
+  content:
+    field_alert_date:
+      weight: 15
+    scheduler_settings:
+      weight: 16
