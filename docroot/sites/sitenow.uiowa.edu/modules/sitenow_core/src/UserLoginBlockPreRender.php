@@ -37,10 +37,17 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       /** @var \Drupal\Core\Url $url */
       $url = $build['content']['hawkid']['link']['#url'];
 
+      $params = [];
+      $qs = \Drupal::request()->getQueryString();
+      $exploded_params = explode('&', $qs);
+      foreach ($exploded_params as $param) {
+        $exploded_param = explode('=', $param);
+        $params[$exploded_param[0]] = $exploded_param[1];
+      }
       unset($build['content']['hawkid']['link']);
 
       $url->setOptions([
-        'query' => [
+        'query' => $params + [
           'destination' => $path,
         ],
       ]);
@@ -53,6 +60,8 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
         ]),
       ];
     }
+
+    $build['#cache']['max-age'] = 0;
 
     return $build;
   }
