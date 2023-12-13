@@ -6148,3 +6148,9 @@ $sites['medicinemls.uiowa.ddev.site'] = 'mls.medicine.uiowa.edu';
 $sites['medicinemls.dev.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
 $sites['medicinemls.stage.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
 $sites['medicinemls.prod.drupal.uiowa.edu'] = 'mls.medicine.uiowa.edu';
+
+// Directory aliases for blackwell.lab.uiowa.edu.
+$sites['labblackwell.uiowa.ddev.site'] = 'blackwell.lab.uiowa.edu';
+$sites['labblackwell.dev.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
+$sites['labblackwell.stage.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
+$sites['labblackwell.prod.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
