@@ -691,22 +691,27 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   if ($route_name === 'entity.node.edit_form') {
-    $node = $form_state->getFormObject()->getEntity();
-    // Print a message on the form is scheduling options are set.
-    if ($node->get('publish_on')?->value) {
-      $state = 'published';
-    }
-    elseif ($node->get('unpublish_on')?->value) {
-      $state = 'archived';
-    }
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      /** @var Drupal\Core\Entity\EntityInterface $node */
+      $node = $form_object->getEntity();
 
-    if (!empty($state)) {
-      $message = 'This content is currently scheduled to be ' . $state . '.';
-      if ($node->moderation_state?->value) {
-        $message .= ' Editors are restricted from editing until published.';
+      // Print a message on the form is scheduling options are set.
+      if ($node->get('publish_on')?->value) {
+        $state = 'published';
       }
-      \Drupal::messenger()
-        ->addStatus($message);
+      elseif ($node->get('unpublish_on')?->value) {
+        $state = 'archived';
+      }
+
+      if (!empty($state)) {
+        $message = 'This content is currently scheduled to be ' . $state . '.';
+        if ($node->moderation_state?->value) {
+          $message .= ' Editors are restricted from editing until published.';
+        }
+        \Drupal::messenger()
+          ->addStatus($message);
+      }
     }
   }
 
@@ -835,18 +840,6 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_person_edit_form':
     case 'node_person_form':
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
-      break;
-
-    case 'views_exposed_form':
-      $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
-
-      // Fixes a bug with BEF, details here:
-      // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
-      foreach ($form as $k => $v) {
-        if (str_contains($k, '_collapsible')) {
-          $form[$k]['#open'] = FALSE;
-        }
-      }
       break;
   }
 }

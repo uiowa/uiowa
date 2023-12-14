@@ -16,11 +16,15 @@ theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_view_display.node.alert.default
+  - core.entity_view_display.node.person.default
   - core.entity_view_mode.node.dispatch
   - field.field.node.alert.field_alert_override_building
   - field.field.node.alert.field_alert_project_number
   - field.field.node.alert.field_alert_short_work_desc
   - field.field.node.artwork.field_gallery_images
+  - field.field.node.person.field_person_birth_year
+  - field.field.node.person.field_person_death_year
+  - field.field.node.person.field_person_nationality
   - field.storage.node.field_alert_accessible_route
   - field.storage.node.field_alert_affected_bus_routes
   - field.storage.node.field_alert_alternate_route
@@ -31,6 +35,9 @@ complete_list:
   - field.storage.node.field_alert_short_work_desc
   - field.storage.node.field_alert_traffic_control
   - field.storage.node.field_alert_traffic_control_plan
+  - field.storage.node.field_person_birth_year
+  - field.storage.node.field_person_death_year
+  - field.storage.node.field_person_nationality
   - metatag.metatag_defaults.node__artwork
   - metatag.metatag_defaults.node__named_building
   - metatag.metatag_defaults.node__project
@@ -45,9 +52,11 @@ complete_list:
   - simple_sitemap.bundle_settings.default.node.building
   - simple_sitemap.bundle_settings.default.node.named_building
   - simple_sitemap.bundle_settings.default.node.project
+  - sitenow_people.person_type.artist
   - taxonomy.vocabulary.artwork_medium
   - user.role.collaborator
   - views.view.alerts_building_block
+  - views.view.artwork
   - views.view.building_list
   - views.view.named_building_details
   - views.view.named_building_list
