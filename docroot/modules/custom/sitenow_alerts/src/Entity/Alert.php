@@ -9,7 +9,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 /**
  * Provides an interface for alert entries.
  */
-class Alert extends NodeBundleBase implements RendersAsCardInterface {
+class Alert extends NodeBundleBase implements ClosableInterface, RendersAsCardInterface {
 
   /**
    * {@inheritdoc}
@@ -36,9 +36,12 @@ class Alert extends NodeBundleBase implements RendersAsCardInterface {
   }
 
   /**
-   * Check whether the alert window has passed.
+   * {@inheritdoc}
    */
-  public function isClosed() {
+  public function isClosed(): ?bool {
+    if (!$this->hasField('field_alert_date')) {
+      return NULL;
+    }
     $start_time = $this->field_alert_date?->value;
     $end_time = $this->field_alert_date?->end_value;
     $current_time = (new DrupalDateTime())->getTimestamp();
