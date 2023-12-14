@@ -152,7 +152,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: -1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -168,7 +168,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -2
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -190,7 +190,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -212,7 +212,39 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 1
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: d79824dd-9177-437f-b0b8-71c04eb44120
+            region: main
+            configuration:
+              id: 'field_block:node:alert:changed'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: timestamp
+                label: inline
+                settings:
+                  date_format: long
+                  custom_date_format: ''
+                  timezone: ''
+                  tooltip:
+                    date_format: long
+                    custom_date_format: ''
+                  time_diff:
+                    enabled: false
+                    future_format: '@interval hence'
+                    past_format: '@interval ago'
+                    granularity: 2
+                    refresh: 60
+                    description: ''
+                third_party_settings: {  }
+            weight: -2
             additional: {  }
             third_party_settings: {  }
         third_party_settings:

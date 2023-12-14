@@ -5,6 +5,7 @@
  * Primary module hooks for ITS Core module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\its_core\Entity\Service;
@@ -123,6 +124,14 @@ function its_core_preprocess_block(&$variables) {
     case 'field_block:node:article:field_article_related_service':
       $variables['attributes']['class'][] = 'article--meta';
       break;
+
+    case 'field_block:node:alert:changed':
+      // Update the display label for the "changed" field.
+      if (isset($variables['content'][0]['#title'])) {
+        $variables['content'][0]['#title'] = t('Last updated');
+      }
+      break;
+
   }
 }
 
