@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.alert.body
+    - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_service_affected
+    - field.field.node.alert.field_alert_title_details
     - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
@@ -150,7 +152,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -166,7 +168,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 0
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -187,8 +189,62 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ad7e630b-bfda-4814-b8dd-0aa63d3367d6
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_building'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: d79824dd-9177-437f-b0b8-71c04eb44120
+            region: main
+            configuration:
+              id: 'field_block:node:alert:changed'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: timestamp
+                label: inline
+                settings:
+                  date_format: long
+                  custom_date_format: ''
+                  timezone: ''
+                  tooltip:
+                    date_format: long
+                    custom_date_format: ''
+                  time_diff:
+                    enabled: false
+                    future_format: '@interval hence'
+                    past_format: '@interval ago'
+                    granularity: 2
+                    refresh: 60
+                    description: ''
+                third_party_settings: {  }
+            weight: -2
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -224,6 +280,14 @@ content:
     third_party_settings: {  }
     weight: -20
     region: content
+  field_alert_building:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
+    region: content
   field_alert_category:
     type: entity_reference_label
     label: above
@@ -253,6 +317,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 107
+    region: content
+  field_alert_title_details:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 109
     region: content
   field_meta_tags:
     type: metatag_empty_formatter

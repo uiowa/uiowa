@@ -1,25 +1,96 @@
 adding:
   dependencies:
     config:
+      - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_service_affected
+      - field.field.node.alert.field_alert_title_details
   content:
-    field_alert_date:
+    body:
+      weight: 11
+    created:
+      weight: 2
+    field_alert_building:
+      type: options_select
       weight: 16
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_category:
+      type: options_select
+      weight: 13
+    field_alert_date:
+      weight: 14
     field_alert_service_affected:
-      type: entity_reference_autocomplete
+      type: options_select
       weight: 15
       region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_title_details:
+      type: string_textfield
+      weight: 1
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_meta_tags:
+      weight: 12
+    moderation_state:
+      weight: 3
+    path:
+      weight: 8
+    promote:
+      weight: 4
+    publish_on:
+      weight: 18
+    scheduler_settings:
+      weight: 17
+    simple_sitemap:
+      weight: 10
+    sticky:
+      weight: 7
+    url_redirects:
+      weight: 9
+  hidden:
+    title: true
+removing:
+  content:
+    body:
+      weight: 13
+    created:
+      weight: 1
+    field_alert_category:
+      type: entity_reference_autocomplete
+      weight: 14
       settings:
         match_operator: CONTAINS
         match_limit: 10
         size: 60
         placeholder: ''
-      third_party_settings: {  }
-    scheduler_settings:
-      weight: 17
-removing:
-  content:
     field_alert_date:
       weight: 15
+    field_meta_tags:
+      weight: 7
+    moderation_state:
+      weight: 2
+    path:
+      weight: 10
+    promote:
+      weight: 3
+    publish_on:
+      weight: 4
     scheduler_settings:
       weight: 16
+    simple_sitemap:
+      weight: 8
+    sticky:
+      weight: 9
+    title:
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
+      weight: 12
+    url_redirects:
+      weight: 11
