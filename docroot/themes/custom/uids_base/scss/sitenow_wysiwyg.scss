@@ -1,17 +1,18 @@
-@import "../uids/assets/scss/_base.scss";
-@import "../uids/assets/scss/local-fonts";
-@import "components/tables";
-@import "components/typography/paragraph";
-@import "../uids/components/alert/alert";
-@import "../uids3/components/blockquote/blockquote";
-@import "../uids3/components/typography/lists/lists";
-@import "../uids/components/button/button";
-@import "sitenow";
-@import "components/typography/global-serif";
-@import "../uids/components/callout/callout";
-@import "../uids/components/inline/inline";
-
 .ck-content {
+  // Added here to prevent ckeditor from leaking styles to outside the editor.
+  @import "../uids/assets/scss/_base.scss";
+  @import "../uids/assets/scss/local-fonts";
+  @import "components/tables";
+  @import "components/typography/paragraph";
+  @import "../uids/components/alert/alert";
+  @import "../uids3/components/blockquote/blockquote";
+  @import "../uids3/components/typography/lists/lists";
+  @import "../uids/components/button/button";
+  @import "sitenow";
+  @import "components/typography/global-serif";
+  @import "../uids/components/callout/callout";
+  @import "../uids/components/inline/inline";
+
   font-family: Roboto, sans-serif;
 
   .table {
