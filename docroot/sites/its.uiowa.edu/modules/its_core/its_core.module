@@ -65,11 +65,16 @@ function its_core_entity_presave(EntityInterface $entity) {
       ]));
       $entity->setTitle($output);
 
-      if ($entity->field_alert_date?->duration !== 0) {
-        $state_key = 'outages_degradations_next_clear';
-        $next_clear = \Drupal::state()->get($state_key);
-        if ($next_clear < $entity->field_alert_date?->end_value) {
-          \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+      if (in_array($category, [
+        'Outage',
+        'Degradation of Service',
+      ])) {
+        if ($entity->field_alert_date?->duration !== 0) {
+          $state_key = 'outages_degradations_next_clear';
+          $next_clear = \Drupal::state()->get($state_key);
+          if ($next_clear < $entity->field_alert_date?->end_value) {
+            \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+          }
         }
       }
 
@@ -380,7 +385,7 @@ function its_core_alert_type_tag_map(string $alert_type = '') {
 /**
  * Implements hook_cron().
  */
-function its_cron() {
+function its_core_cron() {
   // Invalidate the public events block cache tag if we haven't done so today.
   // This is done so that the events list always shows the proper "start"
   // date of today when it's rendered. If we didn't do this, then it's possible
