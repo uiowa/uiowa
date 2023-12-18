@@ -1,0 +1,311 @@
+adding:
+  dependencies:
+    content:
+      - 'taxonomy_term:alert_categories:90d30d5c-fc45-46c8-a7f7-63fb03456a5c'
+      - 'taxonomy_term:alert_categories:cdc70262-0b08-46a0-abd3-030b7a583128'
+  display:
+    outages_degradations:
+      id: outages_degradations
+      display_title: 'Outages and Degradations'
+      display_plugin: block
+      position: 2
+      display_options:
+        cache:
+          type: custom_tag
+          options:
+            custom_tag: outages-degradations
+        sorts:
+          sticky:
+            id: sticky
+            table: node_field_data
+            field: sticky
+            relationship: none
+            group_type: group
+            admin_label: ''
+            entity_type: node
+            entity_field: sticky
+            plugin_id: standard
+            order: DESC
+            expose:
+              label: ''
+              field_identifier: sticky
+            exposed: false
+          field_alert_category_target_id:
+            id: field_alert_category_target_id
+            table: node__field_alert_category
+            field: field_alert_category_target_id
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: standard
+            order: ASC
+            expose:
+              label: ''
+              field_identifier: ''
+            exposed: false
+          field_alert_date_value:
+            id: field_alert_date_value
+            table: node__field_alert_date
+            field: field_alert_date_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            order: ASC
+            expose:
+              label: ''
+              field_identifier: ''
+            exposed: false
+            granularity: second
+          created:
+            id: created
+            table: node_field_data
+            field: created
+            relationship: none
+            group_type: group
+            admin_label: ''
+            entity_type: node
+            entity_field: created
+            plugin_id: date
+            order: DESC
+            expose:
+              label: ''
+              field_identifier: created
+            exposed: false
+            granularity: second
+        filters:
+          status:
+            id: status
+            table: node_field_data
+            field: status
+            entity_type: node
+            entity_field: status
+            plugin_id: boolean
+            value: '1'
+            group: 1
+            expose:
+              operator: ''
+              operator_limit_selection: false
+              operator_list: {  }
+          type:
+            id: type
+            table: node_field_data
+            field: type
+            relationship: none
+            group_type: group
+            admin_label: ''
+            entity_type: node
+            entity_field: type
+            plugin_id: bundle
+            operator: in
+            value:
+              alert: alert
+            group: 1
+            exposed: false
+            expose:
+              operator_id: ''
+              label: ''
+              description: ''
+              use_operator: false
+              operator: ''
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: ''
+              required: false
+              remember: false
+              multiple: false
+              remember_roles:
+                authenticated: authenticated
+              reduce: false
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+          field_alert_category_target_id:
+            id: field_alert_category_target_id
+            table: node__field_alert_category
+            field: field_alert_category_target_id
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: taxonomy_index_tid
+            operator: or
+            value:
+              - 416
+              - 406
+            group: 1
+            exposed: false
+            expose:
+              operator_id: field_alert_category_target_id_op
+              label: 'Alert categories'
+              description: ''
+              use_operator: false
+              operator: field_alert_category_target_id_op
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: field_alert_category_target_id
+              required: false
+              remember: false
+              multiple: true
+              remember_roles:
+                authenticated: authenticated
+                anonymous: '0'
+                viewer: '0'
+                editor: '0'
+                publisher: '0'
+                webmaster: '0'
+                administrator: '0'
+              reduce: false
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+            reduce_duplicates: true
+            vid: alert_categories
+            type: textfield
+            hierarchy: false
+            limit: true
+            error_message: true
+            save_lineage: false
+            force_deepest: false
+            parent: null
+            level_labels: ''
+            hierarchy_depth: 0
+            required_depth: 0
+            none_label: '- Please select -'
+          field_alert_date_duration:
+            id: field_alert_date_duration
+            table: node__field_alert_date
+            field: field_alert_date_duration
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: numeric
+            operator: '='
+            value:
+              min: ''
+              max: ''
+              value: '0'
+            group: 2
+            exposed: false
+            expose:
+              operator_id: ''
+              label: ''
+              description: ''
+              use_operator: false
+              operator: ''
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: ''
+              required: false
+              remember: false
+              multiple: false
+              remember_roles:
+                authenticated: authenticated
+              min_placeholder: ''
+              max_placeholder: ''
+              placeholder: ''
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+          field_alert_date_end_value:
+            id: field_alert_date_end_value
+            table: node__field_alert_date
+            field: field_alert_date_end_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            operator: '>='
+            value:
+              min: ''
+              max: ''
+              value: now
+              type: date
+              granularity: second
+            group: 2
+            exposed: false
+            expose:
+              operator_id: ''
+              label: ''
+              description: ''
+              use_operator: false
+              operator: ''
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: ''
+              required: false
+              remember: false
+              multiple: false
+              remember_roles:
+                authenticated: authenticated
+              min_placeholder: ''
+              max_placeholder: ''
+              placeholder: ''
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+        filter_groups:
+          operator: AND
+          groups:
+            1: AND
+            2: OR
+        defaults:
+          cache: false
+          sorts: false
+          filters: false
+          filter_groups: false
+        display_description: ''
+        display_extenders:
+          metatag_display_extender:
+            metatags: {  }
+            tokenize: false
+        block_description: 'Outages and Degradations'
+      cache_metadata:
+        max-age: -1
+        contexts:
+          - 'languages:language_content'
+          - 'languages:language_interface'
+          - url.query_args
+          - user
+          - 'user.node_grants:view'
+          - user.permissions
+        tags:
+          - 'config:field.storage.node.body'
+          - 'config:field.storage.node.field_alert_category'
+          - 'config:field.storage.node.field_alert_date'
+removing: {  }
