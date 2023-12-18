@@ -303,3 +303,68 @@ function its_core_preprocess_breadcrumb(&$variables): void {
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  // Check/prevent tags from being deleted on single delete
+  // if they are in our list of tags used to associate
+  // alert types.
+  // Only need to alter the delete operation form.
+  if ($form_state->getFormObject()->getOperation() !== 'delete') {
+    return;
+  }
+  $tag = $form_state
+    ->getFormObject()
+    ->getEntity();
+
+  // Certain tags are required for alert category functionality.
+  // Grab our associative TID map, and the array_values
+  // will be the list of tag ids that can't be deleted.
+  $required_tids = array_values(its_core_alert_type_tag_map());
+  if (in_array($tag->id(), $required_tids)) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    // @todo Update this so it works. Currently the description
+    //   is not displaying.
+    $form['description'] = its_core_prevent_tag_delete_message($tag->getName());
+  }
+}
+
+/**
+ * Custom warning message for alert category deletion detection.
+ *
+ * @param string $name
+ *   The associated tag's name.
+ *
+ * @see its_core_form_taxonomy_tag_confirm_form_alter()
+ */
+function its_core_prevent_tag_delete_message($name) {
+  return t('The tag <em>"@name"</em> is currently required for alert category selection. It cannot be deleted.', [
+    '@name' => $name,
+  ]);
+}
+
+/**
+ * Mapping for alert types to their associated tags.
+ *
+ * @param string $alert_type
+ *   The alert type as a machine name, or empty to fetch TIDs array.
+ *
+ * @return string|bool|array
+ *   The associated TID or FALSE, or an associative array of TIDs.
+ */
+function its_core_alert_type_tag_map(string $alert_type = '') {
+  $map = [
+    'degradation-service' => '416',
+    'outage' => '406',
+    'planned-maintenance' => '411',
+    'service-announcement' => '421',
+  ];
+  // If we aren't getting a specific TID,
+  // then return the full map.
+  if (empty($alert_type)) {
+    return $map;
+  }
+  return $map[$alert_type] ?? FALSE;
+}
