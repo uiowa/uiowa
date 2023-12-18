@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\its_core\Entity\Service;
+use Drupal\sitenow_alerts\Entity\ClosableInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -65,14 +66,17 @@ function its_core_entity_presave(EntityInterface $entity) {
       ]));
       $entity->setTitle($output);
 
+      // If we're saving an outage or service degradation,
+      // we also want to check and set our views cache invalidation date.
       if (in_array($category, [
         'Outage',
         'Degradation of Service',
       ])) {
         if ($entity->field_alert_date?->duration !== 0) {
+          if ($entity instanceof ClosableInterface && !$entity->isClosed())
           $state_key = 'outages_degradations_next_clear';
           $next_clear = \Drupal::state()->get($state_key);
-          if ($next_clear < $entity->field_alert_date?->end_value) {
+          if ($entity->field_alert_date?->end_value < $next_clear) {
             \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
           }
         }
@@ -386,17 +390,34 @@ function its_core_alert_type_tag_map(string $alert_type = '') {
  * Implements hook_cron().
  */
 function its_core_cron() {
-  // Invalidate the public events block cache tag if we haven't done so today.
-  // This is done so that the events list always shows the proper "start"
-  // date of today when it's rendered. If we didn't do this, then it's possible
-  // that events from previous days could be shown.
-  // This relies on us setting a custom cache tag "public_events_block" on the
-  // view that lists the events via the views_custom_cache_tag module.
+  // Fetch our defined "next clear" which corresponds
+  // to the next-most upcoming alert closure and
+  // compare it to the current time.
   $state_key = 'outages_degradations_next_clear';
   $next_clear = \Drupal::state()->get($state_key);
+  // If we don't have a defined next clear,
+  // then exit early.
+  if (!$next_clear) {
+    return;
+  }
+
   $now = time();
   if ($next_clear !== -1 && $next_clear < $now) {
+    // Invalidate the current tags.
+    $tag = 'outages-degradations';
+    \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
+    // Check if we should be concerned with
+    // purging as well, and if so, get it set up.
+    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [$purgeInvalidationFactory->get('tag', $tag)];
+      $purgeQueue->add($queuer, $invalidations);
+    }
+    // @todo Get the next-most end time and set new expiration to it.
     \Drupal::state()->set($state_key, -1);
-    \Drupal::service('cache_tags.invalidator')->invalidateTags(['outages-degradations']);
   }
 }
