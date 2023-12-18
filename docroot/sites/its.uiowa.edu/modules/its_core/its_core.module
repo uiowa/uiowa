@@ -72,15 +72,12 @@ function its_core_entity_presave(EntityInterface $entity) {
         'Outage',
         'Degradation of Service',
       ])) {
-        // @todo Clean this up.
-        if ($entity->field_alert_date?->duration !== 0) {
-          if ($entity instanceof ClosableInterface) {
-            if ($entity->isClosed()) {
-              $state_key = 'outages_degradations_next_clear';
-              $next_clear = \Drupal::state()->get($state_key);
-              if ($entity->field_alert_date?->end_value < $next_clear) {
-                \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
-              }
+        if ($entity instanceof ClosableInterface) {
+          if (!$entity->isClosed()) {
+            $state_key = 'outages_degradations_next_clear';
+            $next_clear = \Drupal::state()->get($state_key);
+            if ($entity->field_alert_date?->end_value < $next_clear) {
+              \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
             }
           }
         }
