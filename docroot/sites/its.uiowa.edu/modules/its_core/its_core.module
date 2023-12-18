@@ -72,12 +72,16 @@ function its_core_entity_presave(EntityInterface $entity) {
         'Outage',
         'Degradation of Service',
       ])) {
+        // @todo Clean this up.
         if ($entity->field_alert_date?->duration !== 0) {
-          if ($entity instanceof ClosableInterface && !$entity->isClosed())
-          $state_key = 'outages_degradations_next_clear';
-          $next_clear = \Drupal::state()->get($state_key);
-          if ($entity->field_alert_date?->end_value < $next_clear) {
-            \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+          if ($entity instanceof ClosableInterface) {
+            if ($entity->isClosed()) {
+              $state_key = 'outages_degradations_next_clear';
+              $next_clear = \Drupal::state()->get($state_key);
+              if ($entity->field_alert_date?->end_value < $next_clear) {
+                \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+              }
+            }
           }
         }
       }
@@ -408,7 +412,7 @@ function its_core_cron() {
     \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
     // Check if we should be concerned with
     // purging as well, and if so, get it set up.
-    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
       $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
       $purgeQueuers = \Drupal::service('purge.queuers');
       $purgeQueue = \Drupal::service('purge.queue');
@@ -418,6 +422,28 @@ function its_core_cron() {
       $purgeQueue->add($queuer, $invalidations);
     }
     // @todo Get the next-most end time and set new expiration to it.
-    \Drupal::state()->set($state_key, -1);
+    \Drupal::state()->set($state_key, its_core_next_alert_close());
+  }
+}
+
+/**
+ * Fetches the next alert close timestamp.
+ *
+ * @return int
+ *   The next closest alert close timestamp or -1 if non exists.
+ */
+function its_core_next_alert_close() {
+  $next = \Drupal::database()->select('node__field_alert_date')
+    ->fields('node__field_alert_date', ['field_alert_date_end_value'])
+    ->condition('bundle', 'alert', '=')
+    ->condition('field_alert_date_end_value', time(), '>')
+    ->orderBy('field_alert_date_end_value', 'ASC')
+    ->execute()
+    ->fetch();
+  if ($next) {
+    return $next->field_alert_date_end_value;
+  }
+  else {
+    return -1;
   }
 }
