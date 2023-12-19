@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
 
@@ -16,6 +17,9 @@ use Drupal\sitenow_alerts\Entity\ClosableInterface;
 function its_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['service'])) {
     $bundles['node']['service']['class'] = Service::class;
+  }
+  if (isset($bundles['node']['alert'])) {
+    $bundles['node']['alert']['class'] = ItsAlert::class;
   }
 }
 
@@ -74,7 +78,7 @@ function its_core_entity_presave(EntityInterface $entity) {
       ])) {
         if ($entity instanceof ClosableInterface) {
           if (!$entity->isClosed()) {
-            $state_key = 'outages_degradations_next_clear';
+            $state_key = 'its_core_alerts_next_clear';
             $next_clear = \Drupal::state()->get($state_key);
             if ($entity->field_alert_date?->end_value < $next_clear) {
               \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
@@ -394,7 +398,7 @@ function its_core_cron() {
   // Fetch our defined "next clear" which corresponds
   // to the next-most upcoming alert closure and
   // compare it to the current time.
-  $state_key = 'outages_degradations_next_clear';
+  $state_key = 'its_core_alerts_next_clear';
   $next_clear = \Drupal::state()->get($state_key);
   // If we don't have a defined next clear,
   // then exit early.
@@ -405,7 +409,7 @@ function its_core_cron() {
   $now = time();
   if ($next_clear !== -1 && $next_clear < $now) {
     // Invalidate the current tags.
-    $tag = 'outages-degradations';
+    $tag = 'its-core-alerts';
     \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
     // Check if we should be concerned with
     // purging as well, and if so, get it set up.
