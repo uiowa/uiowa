@@ -85,6 +85,11 @@ function its_core_entity_presave(EntityInterface $entity) {
             if ($entity->field_alert_date?->end_value < $next_clear) {
               \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
             }
+            // And if it's a new alert that is not closed,
+            // immediately invalidate the associated caches.
+            if ($entity->isNew()) {
+              its_core_clear_custom_cache_tag('its-core-alerts');
+            }
           }
         }
       }
@@ -412,19 +417,8 @@ function its_core_cron() {
   if ($next_clear !== -1 && $next_clear < $now) {
     // Invalidate the current tags.
     $tag = 'its-core-alerts';
-    \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
-    // Check if we should be concerned with
-    // purging as well, and if so, get it set up.
-    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
-      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
-      $purgeQueuers = \Drupal::service('purge.queuers');
-      $purgeQueue = \Drupal::service('purge.queue');
-      $queuer = $purgeQueuers->get('coretags');
-
-      $invalidations = [$purgeInvalidationFactory->get('tag', $tag)];
-      $purgeQueue->add($queuer, $invalidations);
-    }
-    // @todo Get the next-most end time and set new expiration to it.
+    its_core_clear_custom_cache_tag($tag);
+    // Get the next-most end time and set new expiration to it.
     \Drupal::state()->set($state_key, its_core_next_alert_close());
   }
 }
@@ -448,5 +442,20 @@ function its_core_next_alert_close() {
   }
   else {
     return -1;
+  }
+}
+
+function its_core_clear_custom_cache_tag($tag) {
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
+  // Check if we should be concerned with
+  // purging as well, and if so, get it set up.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+
+    $invalidations = [$purgeInvalidationFactory->get('tag', $tag)];
+    $purgeQueue->add($queuer, $invalidations);
   }
 }
