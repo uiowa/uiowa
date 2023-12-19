@@ -69,16 +69,19 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   $build['#title'] = $entity->label();
 
   // Move author field to #meta and add an icon.
-  if (!$entity->get('author')->isEmpty()) {
+  if (!$entity->get('author')->isEmpty() && isset($build['author'])) {
     $build['#meta']['author'] = [
-      ...$build['author'],
+      ...(is_array($build['author']) ? $build['author'] : []),
       '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
     ];
   }
+
   unset($build['author']);
 
   // Move description field to #content.
-  $build['#content'] = $build['description'];
+  if (isset($build['description'])) {
+    $build['#content'] = $build['description'];
+  }
   unset($build['description']);
 
   // Move timestamp to #subtitle. Since this is just a string, set it as
