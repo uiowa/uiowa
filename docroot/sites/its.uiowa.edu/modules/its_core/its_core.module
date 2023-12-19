@@ -73,6 +73,8 @@ function its_core_entity_presave(EntityInterface $entity) {
       // If we're saving an outage or service degradation,
       // we also want to check and set our views cache invalidation date.
       if (in_array($category, [
+        // @todo Update these to use the actual IDs,
+        //   rather than names.
         'Outage',
         'Degradation of Service',
       ])) {
