@@ -728,9 +728,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
     span {
       border: 1px solid $grey-light;
-      display: block;
+      display: flex;
       text-align: center;
       margin: 0 $sm $sm 0;
+      color: $grey;
+      height: 3rem;
+      width: 3rem;
+      align-items: center;
+      justify-content: center;
 
       @include breakpoint(page-container) {
         border-right: none;
@@ -739,11 +744,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
 
       a {
-        display: block;
+        display: flex;
         text-decoration: none;
         color: $secondary;
-        line-height: 1;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
 
         &:hover,
         &:focus,
@@ -751,20 +758,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
           background: $light;
         }
       }
-      // Not-linked.
-      div {
-        display: block;
-        text-decoration: none;
-        color: $grey;
-        line-height: 1;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
-      }
 
       &:last-child {
-        a, div {
           @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
-          }
         }
       }
     }
@@ -889,4 +886,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .js .js-hide {
   display: none !important;
+}
+
+img.lazyload {
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+
+img.lazyload.loaded {
+  opacity: 1;
 }

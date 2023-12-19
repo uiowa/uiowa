@@ -1,6 +1,13 @@
 (function ($, AccessibleMenu) {'use strict';
   Drupal.behaviors.accessible_menu = {
+    // Initialize executed flag to false.
+    executed: false,
     attach: function (context, settings) {
+      // Ensure the script runs only once.
+      if (this.executed) {
+        return;
+      }
+
       const menus = context.querySelectorAll('.menu-wrapper--horizontal > .menu');
 
       // Bail early if this isn't relevant.
@@ -60,8 +67,9 @@
           hoverType: 'off',
         });
       });
+
+      // Set the flag to true to prevent future executions.
+      this.executed = true;
     }
   }
 })(jQuery, AccessibleMenu);
-
-

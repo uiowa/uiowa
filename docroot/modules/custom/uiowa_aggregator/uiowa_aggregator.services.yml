@@ -11,3 +11,10 @@ services:
     arguments: ['@config.factory', '@date.formatter']
     tags:
       - { name: event_subscriber }
+
+  uiowa_aggregator.custom_items_import:
+    class: Drupal\uiowa_aggregator\ItemsImporterOverride
+    decorates: aggregator.items.importer
+    decoration_priority: 9
+    public: false
+    arguments: ['@uiowa_aggregator.custom_items_import.inner', '@config.factory', '@plugin.manager.aggregator.fetcher', '@plugin.manager.aggregator.parser', '@plugin.manager.aggregator.processor', '@logger.channel.aggregator', '@keyvalue.aggregator']

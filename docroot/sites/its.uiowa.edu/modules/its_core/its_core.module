@@ -5,6 +5,7 @@
  * Primary module hooks for ITS Core module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\its_core\Entity\Service;
 
@@ -14,6 +15,58 @@ use Drupal\its_core\Entity\Service;
 function its_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['service'])) {
     $bundles['node']['service']['class'] = Service::class;
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function its_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'alert':
+      /*
+       * Update the title based on several fields,
+       * in one of the following formats.
+       * [alert type] - [service], [building] - [additional details]
+       * [alert type] - Multiple Services, [building] - [additional details]
+       * [alert type] - [service], Multiple Buildings - [additional details]
+       * [alert type] - Multiple Services, Buildings - [additional details]
+       */
+      $category = $entity->field_alert_category?->referencedEntities()[0] ?? NULL;
+      $category = $category?->label();
+
+      $services = $entity->field_alert_service_affected;
+      $services = match ($services?->count()) {
+        0, NULL => '',
+        1 => $services->referencedEntities()[0]->label(),
+        default => 'Multiple Services',
+      };
+
+      $buildings = $entity->field_alert_building;
+      $buildings = match ($buildings?->count()) {
+        0, NULL => '',
+        1 => $buildings->referencedEntities()[0]->label(),
+        default => 'Multiple Buildings',
+      };
+
+      if ($services === 'Multiple Services' && $buildings === 'Multiple Buildings') {
+        $services_buildings = 'Multiple Services, Buildings';
+      }
+      else {
+        $services_buildings = implode(', ', array_filter([$services, $buildings]));
+      }
+
+      $additional_details = $entity->field_alert_title_details?->value;
+
+      $output = implode(' - ', array_filter([
+        $category,
+        $services_buildings,
+        $additional_details,
+      ]));
+      $entity->setTitle($output);
+
+      break;
+
   }
 }
 
@@ -56,7 +109,7 @@ function its_core_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
   $view = $form_state->get('view');
   if ($view->id() === 'services') {
     if ($form_id === 'views_exposed_form') {
-      $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community';
+      $form['#attributes']['class'][] = 'block--edge-to-edge bg--gray--pattern--community block-margin__top';
     }
   }
 }
@@ -70,6 +123,14 @@ function its_core_preprocess_block(&$variables) {
     case 'field_block:node:article:field_article_related_service':
       $variables['attributes']['class'][] = 'article--meta';
       break;
+
+    case 'field_block:node:alert:changed':
+      // Update the display label for the "changed" field.
+      if (isset($variables['content'][0]['#title'])) {
+        $variables['content'][0]['#title'] = t('Last updated');
+      }
+      break;
+
   }
 }
 

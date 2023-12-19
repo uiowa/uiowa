@@ -9,6 +9,7 @@ dependencies:
     - node.type.contact
   module:
     - layout_builder
+    - layout_builder_restrictions
     - system
     - telephone
     - user
@@ -96,6 +97,15 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.contact.default
 targetEntityType: node
 bundle: contact

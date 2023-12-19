@@ -1,13 +1,11 @@
 adding:
   dependencies:
     config:
+      - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_service_affected
+      - field.field.node.alert.field_alert_title_details
   hidden:
+    field_alert_building: true
     field_alert_service_affected: true
-removing:
-  content:
-    content_moderation_control:
-      settings: {  }
-      third_party_settings: {  }
-      weight: -20
-      region: content
+    field_alert_title_details: true
+removing: {  }

@@ -16,6 +16,7 @@ dependencies:
     - content_moderation
     - link
     - path
+    - private_content
     - text
 id: node.opportunity.default
 targetEntityType: node
@@ -100,12 +101,23 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  private:
+    type: private
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   promote:
     type: boolean_checkbox
     weight: 11
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
@@ -144,4 +156,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true

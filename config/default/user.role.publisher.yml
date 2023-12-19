@@ -7,7 +7,6 @@ dependencies:
     - filter.format.filtered_html
     - filter.format.minimal
     - filter.format.minimal_plus
-    - filter.format.webform_default
     - media.type.audio
     - media.type.facebook
     - media.type.file
@@ -44,6 +43,7 @@ dependencies:
     - path
     - rabbit_hole
     - replicate_ui
+    - scheduler
     - system
     - taxonomy
     - toolbar
@@ -135,6 +135,7 @@ permissions:
   - 'delete own audio media'
   - 'delete own facebook media'
   - 'delete own file media'
+  - 'delete own files'
   - 'delete own image media'
   - 'delete own instagram media'
   - 'delete own page content'
@@ -193,6 +194,7 @@ permissions:
   - 'replicate entities'
   - 'revert article revisions'
   - 'revert page revisions'
+  - 'schedule publishing of nodes'
   - 'skip antibot'
   - 'update own region_item fragments'
   - 'update own region_item_after_content fragments'

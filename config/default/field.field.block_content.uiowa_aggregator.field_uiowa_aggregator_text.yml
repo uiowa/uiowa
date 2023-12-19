@@ -5,13 +5,10 @@ dependencies:
   config:
     - block_content.type.uiowa_aggregator
     - field.storage.block_content.field_uiowa_aggregator_text
+    - filter.format.minimal
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: block_content.uiowa_aggregator.field_uiowa_aggregator_text
 field_name: field_uiowa_aggregator_text
 entity_type: block_content
@@ -25,5 +22,7 @@ default_value:
     value: "<p>There are no results at this time.</p>\r\n"
     format: minimal
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

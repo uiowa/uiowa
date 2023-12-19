@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labteachers4research.uiowa.ddev.site
+  paths:
+    files: sites/teachers4research.lab.uiowa.edu/files
+dev:
+  uri: labteachers4research.dev.drupal.uiowa.edu
+  host: uiowa05dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/teachers4research.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.dev/docroot
+  user: uiowa05.dev
+prod:
+  uri: teachers4research.lab.uiowa.edu
+  host: uiowa05.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/teachers4research.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.prod/docroot
+  user: uiowa05.prod
+test:
+  uri: labteachers4research.stage.drupal.uiowa.edu
+  host: uiowa05stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/teachers4research.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.test/docroot
+  user: uiowa05.test

@@ -7,10 +7,10 @@ dependencies:
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_meta_tags
-    - field.field.node.alert.layout_builder__layout
     - node.type.alert
   module:
     - layout_builder
+    - layout_builder_restrictions
     - metatag
     - smart_date
     - system
@@ -21,7 +21,7 @@ dependencies:
 third_party_settings:
   layout_builder:
     enabled: true
-    allow_custom: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_onecol
@@ -62,6 +62,17 @@ third_party_settings:
               provider: system
               context_mapping: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b1e1077f-dcfe-4ba7-aec7-c6459e58ee5f
+            region: content
+            configuration:
+              id: 'extra_field_block:node:alert:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -147,6 +158,15 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.alert.default
 targetEntityType: node
 bundle: alert
@@ -158,6 +178,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_alert_category:
     type: entity_reference_label
@@ -197,5 +222,4 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  layout_builder__layout: true
   search_api_excerpt: true

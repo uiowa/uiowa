@@ -1,5 +1,127 @@
 adding:
-  hidden:
-    publish_on: true
-    unpublish_on: true
-removing: {  }
+  dependencies:
+    config:
+      - field.field.node.person.field_person_birth_year
+      - field.field.node.person.field_person_death_year
+      - field.field.node.person.field_person_nationality
+  content:
+    body:
+      weight: 8
+    created:
+      weight: 20
+    field_image:
+      weight: 11
+    field_meta_tags:
+      weight: 30
+    field_person_birth_year:
+      type: number
+      weight: 5
+      region: content
+      settings:
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_contact_information:
+      weight: 29
+    field_person_credential:
+      weight: 10
+    field_person_death_year:
+      type: number
+      weight: 6
+      region: content
+      settings:
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_education:
+      weight: 15
+    field_person_email:
+      weight: 13
+    field_person_hide:
+      weight: 28
+    field_person_nationality:
+      type: string_textfield
+      weight: 4
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_phone:
+      weight: 14
+    field_person_position:
+      weight: 12
+    field_person_research_areas:
+      weight: 17
+    field_person_website:
+      weight: 7
+    field_person_website_link_direct:
+      weight: 18
+    field_tags:
+      weight: 21
+    field_teaser:
+      weight: 9
+    moderation_state:
+      weight: 27
+    path:
+      weight: 24
+    promote:
+      weight: 22
+    simple_sitemap:
+      weight: 16
+    status:
+      weight: 26
+    sticky:
+      weight: 23
+    uid:
+      weight: 19
+    url_redirects:
+      weight: 25
+removing:
+  content:
+    body:
+      weight: 10
+    created:
+      weight: 17
+    field_image:
+      weight: 5
+    field_meta_tags:
+      weight: 28
+    field_person_contact_information:
+      weight: 27
+    field_person_credential:
+      weight: 4
+    field_person_education:
+      weight: 11
+    field_person_email:
+      weight: 7
+    field_person_hide:
+      weight: 26
+    field_person_phone:
+      weight: 8
+    field_person_position:
+      weight: 6
+    field_person_research_areas:
+      weight: 13
+    field_person_website:
+      weight: 14
+    field_person_website_link_direct:
+      weight: 15
+    field_tags:
+      weight: 18
+    field_teaser:
+      weight: 25
+    moderation_state:
+      weight: 24
+    path:
+      weight: 21
+    promote:
+      weight: 19
+    simple_sitemap:
+      weight: 12
+    status:
+      weight: 23
+    sticky:
+      weight: 20
+    uid:
+      weight: 16
+    url_redirects:
+      weight: 22

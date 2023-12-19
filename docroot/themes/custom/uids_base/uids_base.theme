@@ -53,6 +53,15 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   // For all views with exposed filters.
   if ($form_id === 'views_exposed_form') {
     $form['#attributes']['class'][] = 'uids-content bg--gray';
+    $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
+
+    // Fixes a bug with BEF, details here:
+    // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
+    foreach ($form as $k => $v) {
+      if (str_contains($k, '_collapsible')) {
+        $form[$k]['#open'] = FALSE;
+      }
+    }
   }
   // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
@@ -853,8 +862,9 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // Check if the hover effect should be applied on the stat block.
-  if ($variables['derivative_plugin_id'] === 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
-    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
+  if ($variables['derivative_plugin_id'] === 'uiowa_statistic') {
+    $class_array = $variables['elements']['#attributes']['class'] ?? [];
+    $variables['has_hover_effect'] = !in_array('stat--static', $class_array);
   }
 
   // Check for blockquote image placement.
@@ -1079,6 +1089,24 @@ function uids_base_preprocess_form(&$variables) {
   // Add 'uids-content' and 'uids-search' classes to search-block-form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] === 'search-block-form') {
     $variables['attributes']['class'][] = 'uids-content uids-search';
+  }
+}
+
+/**
+ * Implements hook_preprocess_image().
+ */
+function uids_base_preprocess_image(&$variables) {
+  if (isset($variables['attributes']) && isset($variables['attributes']['loading'])) {
+    $loading_attributes = $variables['attributes']['loading'];
+    if ($loading_attributes === "lazy") {
+      // Ensure $variables['attributes']['class'] is an array.
+      if (!isset($variables['attributes']['class']) || !is_array($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [];
+      }
+
+      $variables['attributes']['class'][] = 'lazyload';
+      $variables['#attached']['library'][] = 'uids_base/lazy-load-animation';
+    }
   }
 }
 

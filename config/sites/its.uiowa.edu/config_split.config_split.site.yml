@@ -11,12 +11,18 @@ storage: folder
 folder: ../config/sites/its.uiowa.edu
 module:
   its_core: 0
+  rh_taxonomy: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.alert.default
   - core.entity_view_display.node.article.default
+  - field.field.node.alert.field_alert_building
   - field.field.node.alert.field_alert_service_affected
+  - field.field.node.alert.field_alert_title_details
+  - field.storage.node.field_alert_building
   - field.storage.node.field_alert_service_affected
+  - field.storage.node.field_alert_title_details
   - field.storage.node.field_article_related_service
   - metatag.metatag_defaults.node__service
   - node.type.service
@@ -24,6 +30,7 @@ complete_list:
   - pathauto.pattern.service_category
   - simple_sitemap.bundle_settings.default.node.service
   - taxonomy.vocabulary.audience
+  - taxonomy.vocabulary.building
   - taxonomy.vocabulary.service_category
   - views.view.services
   - views.view.service_related_articles
@@ -31,12 +38,14 @@ complete_list:
 partial_list:
   - core.entity_form_display.node.alert.default
   - core.entity_form_display.node.article.default
-  - core.entity_view_display.node.alert.default
   - core.entity_view_display.node.alert.teaser
   - core.entity_view_display.node.article.teaser
   - core.entity_view_display.node.article.token
   - field.field.block_content.featured_content.field_featured_content_item
+  - field.field.node.alert.field_alert_category
   - field.field.node.alert.field_alert_date
+  - field.storage.node.field_alert_category
   - metatag.settings
+  - node.type.article
   - workflows.workflow.editorial
   - 'user.role.*'
