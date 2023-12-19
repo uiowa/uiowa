@@ -445,7 +445,13 @@ function its_core_next_alert_close() {
   }
 }
 
-function its_core_clear_custom_cache_tag($tag) {
+/**
+ * Helper function to invalidate and purge a given cache tag.
+ *
+ * @param string $tag
+ *   The custom cache tag's name.
+ */
+function its_core_clear_custom_cache_tag(string $tag): void {
   \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
   // Check if we should be concerned with
   // purging as well, and if so, get it set up.
