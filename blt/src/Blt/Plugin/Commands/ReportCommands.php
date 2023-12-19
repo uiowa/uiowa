@@ -8,6 +8,7 @@ use AcquiaCloudApi\Endpoints\Environments;
 use Symfony\Component\Console\Helper\Table;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
+use Uiowa\Multisite;
 
 /**
  * Global multisite commands.
@@ -316,6 +317,126 @@ class ReportCommands extends BltTasks {
   }
 
   /**
+   * Generate a list of users/websites for sending a EOL communication.
+   *
+   * @command uiowa:report:v1-standard-list
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  public function v1StandardCommsList($options = ['export' => FALSE, 'debug' => FALSE]) {
+    $site_data = [];
+
+    $headers = [
+      'email',
+      'domain',
+    ];
+
+    $debug = $options['debug'];
+
+    $user_table = 'users';
+
+    $application_data = $this->getDomainsKeyedByApplication([
+      'uiowa701',
+    ]);
+
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    if (!empty($application_data)) {
+      // Create the file for exporting.
+      if ($options['export']) {
+        $now = date('Ymd-His');
+        $filename = "SiteNow-v1-standard-user-list-$now.csv";
+        $root = $this->getConfigValue('repo.root');
+        $filepath = "$root/$filename";
+
+        if (file_exists($filepath)) {
+          unlink($filepath);
+        }
+        $this->say("Created export file $filepath");
+        $fp = fopen($filepath, 'w+');
+        fputcsv($fp, $headers);
+        fclose($fp);
+      }
+
+      $this->say('Starting to check domains.');
+      foreach ($application_data as $machine_name => $data) {
+        $this->say("Processing domains for $machine_name...");
+        foreach ($data['domains'] as $domain) {
+          if (in_array($domain, $sites)) {
+            $this->say("Skipping $domain because a site has been requested.");
+            continue;
+          }
+          $this->say("Processing $domain");
+
+          // Run 'drush status' to see if the site exists.
+          $result = $this->getDrushTask($debug)
+            ->interactive(FALSE)
+            ->alias("$machine_name.prod")
+            ->ansi(FALSE)
+            ->drush('status')
+            ->option('uri', $domain)
+            ->run();
+
+          $status_message = $result->getMessage();
+
+          // If the site doesn't exist, skip to the next record.
+          if (str_contains($status_message, 'Drupal Settings File   :  MISSING')
+            || str_contains($status_message, 'Fatal error')) {
+            continue;
+          }
+          else {
+            if (!str_contains($status_message, 'sitenow_standard_profile')) {
+              continue;
+            }
+
+            // Get the last login.
+            $result = $this->taskDrush()
+              ->alias("$machine_name.prod")
+              ->ansi(FALSE)
+              ->drush('sqlq')
+              ->args("SELECT DISTINCT(mail) from `users` JOIN `users_roles` ON users.uid = users_roles.uid WHERE users_roles.rid IN (4, 5)")
+              ->option('uri', $domain)
+              ->run();
+
+            $emails_message = trim($result->getMessage());
+
+            if ($emails_message !== '') {
+              $emails = explode("\n", $emails_message);
+              foreach ($emails as $email) {
+                $record = [$email, $domain];
+                if ($options['export']) {
+                  // Output to CSV file and copy to filesystem.
+                  $fp = fopen($filepath, 'a');
+                  fputcsv($fp, $record);
+                  fclose($fp);
+                  $this->say("Updated $filepath");
+                }
+                else {
+                  $site_data[] = $record;
+                }
+              }
+            }
+          }
+        }
+      }
+      $this->say('Done');
+
+      if (!$options['export']) {
+        $this->say('Here are your results.');
+        $table = new Table($this->output);
+
+        $table->setHeaders($headers);
+        $table->setRows($site_data);
+        $table->render();
+      }
+    }
+    else {
+      $this->say('No domains were found for the supplied application.');
+    }
+  }
+
+  /**
    * Helper method to provide a drush task with suppressed output or not.
    *
    * @param bool $debug
@@ -338,7 +459,7 @@ class ReportCommands extends BltTasks {
   /**
    * Helper method to retrieve a list of domains keyed by application.
    */
-  protected function getDomainsKeyedByApplication(): array {
+  protected function getDomainsKeyedByApplication($list = [], $exclude = FALSE): array {
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
@@ -358,6 +479,19 @@ class ReportCommands extends BltTasks {
       }
 
       $app_name = str_replace('prod:', '', $application->hosting->id);
+
+      if (!empty($list)) {
+        if ($exclude) {
+          if (in_array($app_name, $list)) {
+            continue;
+          }
+        }
+        else {
+          if (!in_array($app_name, $list)) {
+            continue;
+          }
+        }
+      }
 
       // Use the application machine name for reporting.
       $this->say("Getting domains for $app_name...");
