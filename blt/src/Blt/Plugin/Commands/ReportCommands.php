@@ -333,10 +333,10 @@ class ReportCommands extends BltTasks {
 
     $debug = $options['debug'];
 
-    $user_table = 'users';
-
     $application_data = $this->getDomainsKeyedByApplication([
       'uiowa701',
+      'uiowa702',
+      'uiowa703',
     ]);
 
     $root = $this->getConfigValue('repo.root');
@@ -395,7 +395,7 @@ class ReportCommands extends BltTasks {
               ->alias("$machine_name.prod")
               ->ansi(FALSE)
               ->drush('sqlq')
-              ->args("SELECT DISTINCT(mail) from `users` JOIN `users_roles` ON users.uid = users_roles.uid WHERE users_roles.rid IN (4, 5)")
+              ->args("SELECT DISTINCT(mail) from `users` JOIN `users_roles` ON users.uid = users_roles.uid JOIN `role` ON users_roles.rid = role.rid WHERE role.name IN ('editor', 'webmaster')")
               ->option('uri', $domain)
               ->run();
 
