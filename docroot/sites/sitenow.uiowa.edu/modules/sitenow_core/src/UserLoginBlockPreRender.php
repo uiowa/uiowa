@@ -36,9 +36,9 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
       /** @var \Drupal\Core\Url $url */
       $url = $build['content']['hawkid']['link']['#url'];
+      unset($build['content']['hawkid']['link']);
 
       $qs = \Drupal::request()->getQueryString();
-      unset($build['content']['hawkid']['link']);
 
       if ($qs !== '') {
         $path .= '?' . $qs;
