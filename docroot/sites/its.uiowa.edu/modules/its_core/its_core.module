@@ -89,13 +89,9 @@ function its_core_entity_presave(EntityInterface $entity) {
               if (is_null($next_clear) || $entity->field_alert_date?->end_value < $next_clear) {
                 \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
               }
-              // And if it's a new alert that is not closed,
-              // or if it is an ongoing alert
-              // which won't be covered by the next clear
-              // immediately invalidate the associated caches.
-              if ($entity->isNew() || $entity->field_alert_date?->duration === 0) {
-                its_core_clear_custom_cache_tag('its-core-alerts');
-              }
+              // And invalidate the current cache to make sure
+              // any updates are reflected.
+              its_core_clear_custom_cache_tag('its-core-alerts');
             }
           }
         }
