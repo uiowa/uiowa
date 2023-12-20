@@ -1,5 +1,7 @@
 @import "../uids/assets/scss/_base.scss";
 @import "../uids/assets/scss/local-fonts";
+
+.ck.ck-content,
 .ck-content {
   // Added here to prevent ckeditor from leaking styles to outside the editor.
   @import "components/tables";
@@ -30,7 +32,48 @@
     }
   }
 
-  drupal-media {
+  // CKEditor uses figcaption for table captions, but renders as caption..
+  table {
+    figcaption {
+      width: 100%;
+      padding: 1.05rem;
+      text-align: center;
+      font-size: 1rem;
+      color: #fff;
+      text-transform: uppercase;
+      background-color: #333;
+      font-weight: bold;
+      a,
+      :where(p) a:not(.bttn) {
+        color: $primary;
+        [class*="bg--"] &,
+        [class*="bg--"] [class*="bg--"] & {
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  .table-responsive {
+    figcaption {
+      text-align: left;
+      @include breakpoint(sm) {
+        text-align: center;
+      }
+    }
+  }
+
+  table.table--gray-borders {
+    & > figcaption {
+      & > td,
+      & > th {
+        border: #7c7c7c 1px solid;
+      }
+    }
+  }
+
+
+  .drupal-media {
     max-width: 100%;
   }
 
