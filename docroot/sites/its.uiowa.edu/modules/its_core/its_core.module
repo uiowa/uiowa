@@ -357,9 +357,7 @@ function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
   $required_tids = array_values(its_core_alert_type_tag_map());
   if (in_array($tag->id(), $required_tids)) {
     $form['actions']['submit']['#disabled'] = TRUE;
-    // @todo Update this so it works. Currently the description
-    //   is not displaying.
-    $form['description'] = its_core_prevent_tag_delete_message($tag->getName());
+    $form['description']['#markup'] = its_core_prevent_tag_delete_message($tag->getName());
   }
 }
 
