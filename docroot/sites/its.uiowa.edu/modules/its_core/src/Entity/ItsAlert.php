@@ -35,15 +35,15 @@ class ItsAlert extends Alert {
     // @todo Update this.
     $build['#link_text'] = 'View more';
 
-    switch ($this->field_alert_category->referencedEntities()[0]->label()) {
-      // @todo The terms are protected, but not the labels.
-      //   these should be updated to use the actual IDs.
-      case 'Outage':
+    switch ($this->field_alert_category->target_id) {
+      // Outage.
+      case '406':
         $build['#prefix'] = '<div aria-label="warning message" class="alert alert--icon  alert--danger" role="region"><div class="alert__icon"><span class="fa-stack fa-1x"> <span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-exclamation" role="presentation"></span> </span></div><div>';
         $build['#suffix'] = '</div></div>';
         break;
 
-      case 'Service Degradation':
+      // Service Degradation.
+      case '416':
         $build['#prefix'] = '<div aria-label="warning message" class="alert alert--icon  alert--warning" role="region"><div class="alert__icon"><span class="fa-stack fa-1x"> <span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-triangle-exclamation" role="presentation"></span> </span></div><div>';
         $build['#suffix'] = '</div></div>';
         break;
