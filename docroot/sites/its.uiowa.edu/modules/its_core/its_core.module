@@ -433,6 +433,8 @@ function its_core_cron() {
  *   The next closest alert close timestamp or -1 if non exists.
  */
 function its_core_next_alert_close() {
+  // @todo Update this to look for the next close
+  //   OR open date.
   $next = \Drupal::database()->select('node__field_alert_date')
     ->fields('node__field_alert_date', ['field_alert_date_end_value'])
     ->condition('bundle', 'alert', '=')
