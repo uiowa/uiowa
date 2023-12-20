@@ -72,23 +72,30 @@ function its_core_entity_presave(EntityInterface $entity) {
 
       // If we're saving an outage or service degradation,
       // we also want to check and set our views cache invalidation date.
-      if (in_array($category, [
-        // @todo Update these to use the actual IDs,
-        //   rather than names.
-        'Outage',
-        'Degradation of Service',
-      ])) {
-        if ($entity instanceof ClosableInterface) {
-          if (!$entity->isClosed()) {
-            $state_key = 'its_core_alerts_next_clear';
-            $next_clear = \Drupal::state()->get($state_key);
-            if ($entity->field_alert_date?->end_value < $next_clear) {
-              \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
-            }
-            // And if it's a new alert that is not closed,
-            // immediately invalidate the associated caches.
-            if ($entity->isNew()) {
-              its_core_clear_custom_cache_tag('its-core-alerts');
+      if ($entity->isPublished()) {
+        $cache_affected_targets = [];
+        foreach (['service-degradation', 'outage'] as $target) {
+          $cache_affected_targets[] = its_core_alert_type_tag_map($target);
+        }
+        if (in_array($entity->field_alert_category->target_id, $cache_affected_targets)) {
+          if ($entity instanceof ClosableInterface) {
+            // If the alert is already closed, we're not concerned
+            // with invalidating caches.
+            if (!$entity->isClosed()) {
+              $state_key = 'its_core_alerts_next_clear';
+              $next_clear = \Drupal::state()->get($state_key);
+              // If we don't have a current next clear time,
+              // or we need a sooner time, set it now.
+              if (is_null($next_clear) || $entity->field_alert_date?->end_value < $next_clear) {
+                \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+              }
+              // And if it's a new alert that is not closed,
+              // or if it is an ongoing alert
+              // which won't be covered by the next clear
+              // immediately invalidate the associated caches.
+              if ($entity->isNew() || $entity->field_alert_date?->duration === 0) {
+                its_core_clear_custom_cache_tag('its-core-alerts');
+              }
             }
           }
         }
@@ -385,7 +392,7 @@ function its_core_prevent_tag_delete_message($name) {
  */
 function its_core_alert_type_tag_map(string $alert_type = '') {
   $map = [
-    'degradation-service' => '416',
+    'service-degradation' => '416',
     'outage' => '406',
     'planned-maintenance' => '411',
     'service-announcement' => '421',
