@@ -26,7 +26,8 @@
 
           let justCreated = true;
 
-          if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 1) {
+          // Removed $element.find('.layout-selection').length check.
+          if (Drupal.offCanvas.isOffCanvas($element)) {
             let offCanvasWidth;
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
             if (offCanvasCookie === undefined) {
@@ -35,16 +36,22 @@
               offCanvasWidth = adjustedWidth(offCanvasCookie);
             }
 
+            console.log(offCanvasCookie);
+
             body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
 
             let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
             $element.parent().on('dialogContentResize.off-canvas', eventData, function() {
+              console.log('checking if enter this section');
               if (!justCreated) {
                 // Cookie that expires in 99 years.
+                console.log('not just created');
                 const width = offCanvas.getBoundingClientRect().width;
-                cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: 'drupalSettings.layoutBuilderCustom.cookieDomain' });
+                cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: drupalSettings.layoutBuilderCustom.cookieDomain });
+                console.log(width);
               }
               justCreated = false;
+              console.log(cookies.get('ui_off_canvas_width'));
             });
           }
           dragHandleBehaviorStopgap(true);
