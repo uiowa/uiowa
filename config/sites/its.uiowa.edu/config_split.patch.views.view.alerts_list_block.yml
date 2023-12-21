@@ -842,6 +842,20 @@ adding:
           type: custom_tag
           options:
             custom_tag: its-core-alerts
+        empty:
+          area:
+            id: area
+            table: views
+            field: area
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: text
+            empty: true
+            content:
+              value: '<p>There are currently no services scheduled for maintenance over the next 7 days.</p>'
+              format: filtered_html
+            tokenize: false
         sorts:
           sticky:
             id: sticky
@@ -1158,12 +1172,28 @@ adding:
             1: AND
             2: OR
         defaults:
+          empty: false
           cache: false
           fields: false
           sorts: false
           filters: false
           filter_groups: false
+          header: false
         display_description: ''
+        header:
+          area:
+            id: area
+            table: views
+            field: area
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: text
+            empty: false
+            content:
+              value: '<p>Services scheduled for maintenance over the next 7 days.</p>'
+              format: filtered_html
+            tokenize: false
         display_extenders:
           metatag_display_extender:
             metatags: {  }
