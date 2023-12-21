@@ -277,6 +277,20 @@ adding:
           type: custom_tag
           options:
             custom_tag: its-core-alerts
+        empty:
+          area:
+            id: area
+            table: views
+            field: area
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: text
+            empty: true
+            content:
+              value: "<div aria-label=\"success message\" class=\"alert alert--icon  alert--success\" role=\"region\">\r\n<div class=\"alert__icon\"><span class=\"fa-stack fa-1x\"> <span class=\"fas fa-circle fa-stack-2x\" role=\"presentation\"></span> <span class=\"fas fa-stack-1x fa-inverse fa-check\" role=\"presentation\"></span> </span></div>\r\n\r\n<div>\r\n\r\n<p>There are currently no alerts</p>\r\n\r\n</div>\r\n</div>\r\n"
+              format: filtered_html
+            tokenize: false
         sorts:
           sticky:
             id: sticky
@@ -548,6 +562,7 @@ adding:
             1: AND
             2: OR
         defaults:
+          empty: false
           cache: false
           fields: false
           sorts: false
