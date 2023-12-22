@@ -395,7 +395,7 @@ class ReportCommands extends BltTasks {
               ->alias("$machine_name.prod")
               ->ansi(FALSE)
               ->drush('sqlq')
-              ->args("SELECT DISTINCT(mail) from `users` JOIN `users_roles` ON users.uid = users_roles.uid JOIN `role` ON users_roles.rid = role.rid WHERE role.name IN ('editor', 'webmaster')")
+              ->args("SELECT DISTINCT(mail) from `users` JOIN `users_roles` ON users.uid = users_roles.uid JOIN `role` ON users_roles.rid = role.rid WHERE users.status = 1 AND users.access > 0 AND users.mail <> '' AND role.name IN ('editor', 'webmaster')")
               ->option('uri', $domain)
               ->run();
 
