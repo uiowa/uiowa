@@ -6154,3 +6154,15 @@ $sites['labblackwell.uiowa.ddev.site'] = 'blackwell.lab.uiowa.edu';
 $sites['labblackwell.dev.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
 $sites['labblackwell.stage.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
 $sites['labblackwell.prod.drupal.uiowa.edu'] = 'blackwell.lab.uiowa.edu';
+
+// Directory aliases for iip.lab.uiowa.edu.
+$sites['labiip.uiowa.ddev.site'] = 'iip.lab.uiowa.edu';
+$sites['labiip.dev.drupal.uiowa.edu'] = 'iip.lab.uiowa.edu';
+$sites['labiip.stage.drupal.uiowa.edu'] = 'iip.lab.uiowa.edu';
+$sites['labiip.prod.drupal.uiowa.edu'] = 'iip.lab.uiowa.edu';
+
+// Directory aliases for msap2024.conference.uiowa.edu.
+$sites['conferencemsap2024.uiowa.ddev.site'] = 'msap2024.conference.uiowa.edu';
+$sites['conferencemsap2024.dev.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
+$sites['conferencemsap2024.stage.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
+$sites['conferencemsap2024.prod.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
