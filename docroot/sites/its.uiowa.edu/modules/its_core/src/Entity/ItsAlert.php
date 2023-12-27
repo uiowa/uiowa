@@ -32,24 +32,18 @@ class ItsAlert extends Alert {
     }
     $build['#meta'] = implode(', ', $labels);
     $build['#url'] = $this->getNodeUrl();
-    // @todo Update this.
-    $build['#link_text'] = 'View more';
-
-    switch ($this->field_alert_category->target_id) {
-      // Outage.
-      case '406':
-        // @todo Update this.
-        $build['#media']['#prefix'] = '<div class="alert__icon">';
-        $build['#media']['#suffix'] = '</div>';
-        $build['#media']['#markup'] = '<span class="fa-stack fa-1x"> <span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-exclamation" role="presentation"></span></span>';
-        break;
-
-      // Service Degradation.
-      case '416':
-        $build['#media']['#prefix'] = '<div class="alert__icon">';
-        $build['#media']['#suffix'] = '</div>';
-        $build['#media']['#markup'] = '<span class="fa-stack fa-1x"> <span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-triangle-exclamation" role="presentation"></span> </span>';
-        break;
+    $category_id = $this->field_alert_category?->target_id;
+    if (in_array($category_id, ['406', '416'])) {
+      $build['#link_text'] = 'View more';
+      $build['#media']['#prefix'] = '<div class="alert__icon">';
+      $build['#media']['#suffix'] = '</div>';
+      $build['#media']['#markup'] = match ($category_id) {
+        // Outage.
+        '406' => '<span class="fa-stack fa-1x"><span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-exclamation" role="presentation"></span></span>',
+        // Degradation.
+        '416' => '<span class="fa-stack fa-1x"><span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-triangle-exclamation" role="presentation"></span></span>',
+        default => '',
+      };
     }
 
   }
@@ -58,30 +52,24 @@ class ItsAlert extends Alert {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    switch ($this->field_alert_category->target_id) {
-      // Outage.
-      case '406':
-        return [
-          'styles' => 'alert alert--icon  alert--danger',
-          'card--layout-left' => 'card--layout-left',
-          'media_size' => 'media--small',
-          'media_shape' => 'media--circle',
-        ];
-
-      case '416':
-        return [
-          'styles' => 'alert alert--icon  alert--warning',
-          'card--layout-left' => 'card--layout-left',
-          'media_size' => 'media--small',
-          'media_shape' => 'media--circle',
-        ];
-
-      default:
-        return [
-          ...parent::getDefaultCardStyles(),
-          'styles' => '',
-        ];
+    $category_id = $this->field_alert_category?->target_id;
+    if (in_array($category_id, ['406', '416'])) {
+      $alert_level = match($category_id) {
+        // Outage.
+        '406' => 'danger',
+          // Degradation.
+        '416' => 'warning',
+      };
+      return [
+        'styles' => "alert alert--icon  alert--{$alert_level}",
+        'card--layout-left' => 'card--layout-left',
+        'media_size' => 'media--small',
+        'media_shape' => 'media--circle',
+      ];
     }
+    return [
+      ...parent::getDefaultCardStyles(),
+    ];
   }
 
 }
