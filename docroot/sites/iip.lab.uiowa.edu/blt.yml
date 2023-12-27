@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labiip.uiowa.ddev.site
+    protocol: https
+  machine_name: labiip
+  human_name: iip.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labiip.prod
+drupal:
+  db:
+    database: iip_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labiip.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Intelligent Information Processing Lab'
