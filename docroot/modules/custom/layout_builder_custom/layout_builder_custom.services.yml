@@ -4,6 +4,11 @@ services:
     arguments: ['@entity_type.manager', '@config.factory']
     tags:
     - { name: event_subscriber }
+  layout_builder_custom.replicate_subscriber:
+    class: Drupal\layout_builder_custom\EventSubscriber\ReplicateSubscriber
+    arguments: [ '@entity_type.manager', '@uuid', '@path.current', '@current_user', '@datetime.time' ]
+    tags:
+      - { name: event_subscriber }
   cache.layout_builder_custom_views_pager_elements:
     class: Drupal\Core\Cache\CacheBackendInterface
     tags:
