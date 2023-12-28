@@ -6172,3 +6172,9 @@ $sites['orgsinfonia.uiowa.ddev.site'] = 'sinfonia.org.uiowa.edu';
 $sites['orgsinfonia.dev.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
 $sites['orgsinfonia.stage.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
 $sites['orgsinfonia.prod.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
+
+// Directory aliases for victorianfboos.studio.uiowa.edu.
+$sites['studiovictorianfboos.uiowa.ddev.site'] = 'victorianfboos.studio.uiowa.edu';
+$sites['studiovictorianfboos.dev.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
+$sites['studiovictorianfboos.stage.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
+$sites['studiovictorianfboos.prod.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
