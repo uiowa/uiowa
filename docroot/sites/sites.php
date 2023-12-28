@@ -6166,3 +6166,9 @@ $sites['conferencemsap2024.uiowa.ddev.site'] = 'msap2024.conference.uiowa.edu';
 $sites['conferencemsap2024.dev.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
 $sites['conferencemsap2024.stage.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
 $sites['conferencemsap2024.prod.drupal.uiowa.edu'] = 'msap2024.conference.uiowa.edu';
+
+// Directory aliases for sinfonia.org.uiowa.edu.
+$sites['orgsinfonia.uiowa.ddev.site'] = 'sinfonia.org.uiowa.edu';
+$sites['orgsinfonia.dev.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
+$sites['orgsinfonia.stage.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
+$sites['orgsinfonia.prod.drupal.uiowa.edu'] = 'sinfonia.org.uiowa.edu';
