@@ -10,6 +10,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
+use Drupal\layout_builder\SectionComponent;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
@@ -130,10 +131,21 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The replicated entity.
    */
   protected function additionalHandling(FieldableEntityInterface $entity) {
+    $replicant_field_item_list = $this->entityTypeManager
+      ->getStorage('node')
+      ?->load($this->getClonedNid())
+      ?->get(OverridesSectionStorage::FIELD_NAME);
+
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
-    foreach ($field_item_list as $field_item) {
-      foreach ($field_item->section->getComponents() as $component) {
+    foreach ($field_item_list->getSections() as $section_delta => $section) {
+      $components = $section->getComponents();
+      foreach ($components as $component) {
+        $replicant_components = $replicant_field_item_list?->getSection($section_delta)?->getComponents();
+        uasort($replicant_components, function (SectionComponent $a, SectionComponent $b) {
+          return $a->getWeight() <=> $b->getWeight();
+        });
+
         $plugin = $component->getPlugin();
         if ($plugin instanceof ViewsBlock) {
           // Create a copy of the original component, and generate
@@ -141,11 +153,18 @@ class ReplicateSubscriber implements EventSubscriberInterface {
           $new_component = clone $component;
           $new_component->set('uuid', $this->uuid->generate());
           $old_uuid = $component->getUuid();
+          // Find the delta of the component in our sorted copy of the
+          // original entity's components array, to see in which place it should sit.
+          // Since we know the old uuid is in there, we can do a
+          // keys, flip, direct index instead of a full search.
+          $index = array_flip(array_keys($replicant_components))[$old_uuid];
+          // Remove the original component.
+          $section->removeComponent($old_uuid);
+          // Get the uuid of the component at the adjusted index.
+          $uuid = array_keys($components)[$index];
           // Add the new component to the section, directly after
           // the existing component so that it will be in the right order.
-          $field_item->section->insertAfterComponent($old_uuid, $new_component);
-          // Remove the original component.
-          $field_item->section->removeComponent($old_uuid);
+          $section->insertAfterComponent($uuid, $new_component);
         }
       }
     }
