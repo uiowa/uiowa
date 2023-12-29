@@ -6178,3 +6178,9 @@ $sites['studiovictorianfboos.uiowa.ddev.site'] = 'victorianfboos.studio.uiowa.ed
 $sites['studiovictorianfboos.dev.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
 $sites['studiovictorianfboos.stage.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
 $sites['studiovictorianfboos.prod.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
+
+// Directory aliases for colearn.public-health.uiowa.edu.
+$sites['public-healthcolearn.uiowa.ddev.site'] = 'colearn.public-health.uiowa.edu';
+$sites['public-healthcolearn.dev.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
+$sites['public-healthcolearn.stage.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
+$sites['public-healthcolearn.prod.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
