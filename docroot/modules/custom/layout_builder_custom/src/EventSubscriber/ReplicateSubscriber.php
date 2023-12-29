@@ -131,6 +131,10 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The replicated entity.
    */
   protected function additionalHandling(FieldableEntityInterface $entity) {
+    // The original entity's weight information is lost
+    // during replication, so we need to re-load it
+    // in order to retrieve this information.
+    /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $replicant_field_item_list */
     $replicant_field_item_list = $this->entityTypeManager
       ->getStorage('node')
       ?->load($this->getClonedNid())
@@ -140,31 +144,49 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
     foreach ($field_item_list->getSections() as $section_delta => $section) {
       $components = $section->getComponents();
-      foreach ($components as $component) {
-        $replicant_components = $replicant_field_item_list?->getSection($section_delta)?->getComponents();
+      $replicant_components = $replicant_field_item_list
+        ?->getSection($section_delta)
+        ?->getComponents();
+      if (is_array($replicant_components)) {
+        // Sort the components array by the components' weights
+        // so that we can use it for proper ordering.
         uasort($replicant_components, function (SectionComponent $a, SectionComponent $b) {
           return $a->getWeight() <=> $b->getWeight();
         });
+      }
 
+      foreach ($components as $component) {
         $plugin = $component->getPlugin();
         if ($plugin instanceof ViewsBlock) {
           // Create a copy of the original component, and generate
-          // a new uuid.
-          $new_component = clone $component;
-          $new_component->set('uuid', $this->uuid->generate());
+          // a new uuid. Non-thirdparty settings are protected,
+          // so we'll copy it as an array, update it, and create
+          // from an array in order to set the unique identifier.
+          $new_component = $component->toArray();
+          $new_component['uuid'] = $this->uuid->generate();
+          $new_component = $component->fromArray($new_component);
+
           $old_uuid = $component->getUuid();
-          // Find the delta of the component in our sorted copy of the
-          // original entity's components array, to see in which place it should sit.
-          // Since we know the old uuid is in there, we can do a
-          // keys, flip, direct index instead of a full search.
-          $index = array_flip(array_keys($replicant_components))[$old_uuid];
-          // Remove the original component.
-          $section->removeComponent($old_uuid);
-          // Get the uuid of the component at the adjusted index.
-          $uuid = array_keys($components)[$index];
-          // Add the new component to the section, directly after
-          // the existing component so that it will be in the right order.
-          $section->insertAfterComponent($uuid, $new_component);
+          // If the view block is the only component,
+          // we can just set the new block and remove the old.
+          if (count($components) === 1) {
+            $section->insertAfterComponent($old_uuid, $new_component);
+            $section->removeComponent($old_uuid);
+          }
+          else {
+            // Find the delta of the component in our sorted copy of the
+            // original entity's components array, to see in which place it should sit.
+            // Since we know the old uuid is in there, we can do a
+            // keys, flip, direct index instead of a full search.
+            $index = array_flip(array_keys($replicant_components))[$old_uuid];
+            // Remove the original component.
+            $section->removeComponent($old_uuid);
+            // Get the uuid of the component at the adjusted index.
+            $uuid = array_keys($components)[$index];
+            // Add the new component to the section, directly after
+            // the existing component so that it will be in the right order.
+            $section->insertAfterComponent($uuid, $new_component);
+          }
         }
       }
     }
