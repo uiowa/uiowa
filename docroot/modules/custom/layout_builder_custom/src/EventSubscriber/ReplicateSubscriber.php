@@ -175,9 +175,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
           }
           else {
             // Find the delta of the component in our sorted copy of the
-            // original entity's components array, to see in which place it should sit.
-            // Since we know the old uuid is in there, we can do a
-            // keys, flip, direct index instead of a full search.
+            // original entity's components array, to see in which place
+            // it should sit. Since we know the old uuid is in there,
+            // we can do a keys, flip, direct index instead of a full search.
             $index = array_flip(array_keys($replicant_components))[$old_uuid];
             // Remove the original component.
             $section->removeComponent($old_uuid);
