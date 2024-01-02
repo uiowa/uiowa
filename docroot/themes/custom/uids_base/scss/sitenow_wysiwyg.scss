@@ -78,7 +78,13 @@
 
 
   .drupal-media {
-    max-width: 100%;
+    max-width: max-content;
+    figcaption {
+      display: block;
+    }
+    img {
+      min-width: initial;
+    }
   }
 
   // Deal with drupal-media wysiwyg issue for align none originals.
