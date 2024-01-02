@@ -6190,3 +6190,9 @@ $sites['label-shanti.uiowa.ddev.site'] = 'el-shanti.lab.uiowa.edu';
 $sites['label-shanti.dev.drupal.uiowa.edu'] = 'el-shanti.lab.uiowa.edu';
 $sites['label-shanti.stage.drupal.uiowa.edu'] = 'el-shanti.lab.uiowa.edu';
 $sites['label-shanti.prod.drupal.uiowa.edu'] = 'el-shanti.lab.uiowa.edu';
+
+// Directory aliases for petersen.lab.uiowa.edu.
+$sites['labpetersen.uiowa.ddev.site'] = 'petersen.lab.uiowa.edu';
+$sites['labpetersen.dev.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
+$sites['labpetersen.stage.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
+$sites['labpetersen.prod.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
