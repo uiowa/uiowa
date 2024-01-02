@@ -30,15 +30,18 @@
     table > tfoot > tr > th {
       border: #d3d3d3 1px dotted;
     }
+    table th {
+      padding: 1.05rem;
+    }
   }
 
   // CKEditor uses figcaption for table captions, but renders as caption..
   figure.table {
     table {
-      display: table-footer-group;
+      display: table;
     }
     figcaption {
-      display: table-header-group;
+      display: table;
       width: 100%;
       padding: 1.05rem;
       text-align: center;
