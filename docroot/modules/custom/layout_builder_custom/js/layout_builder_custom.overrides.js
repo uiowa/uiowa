@@ -26,7 +26,6 @@
 
           let justCreated = true;
 
-          // Removed $element.find('.layout-selection').length check.
           if (Drupal.offCanvas.isOffCanvas($element)) {
             let offCanvasWidth;
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
