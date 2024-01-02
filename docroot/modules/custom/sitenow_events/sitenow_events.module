@@ -654,44 +654,10 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_geolocation':
-      uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
 
       // Modify the field label.
       $variables['label'] = t('Map');
-
-      // Check if the field exists.
-      if (isset($variables['element']['#items'])) {
-
-        // Retrieve the first item of the field values.
-        $geolocation = $variables['element']['#items']->first();
-
-        // Check if the field has a value.
-        if ($geolocation) {
-          // Access the 'latlon' value;.
-          $latlonValue = $geolocation->get('latlon')->getValue();
-
-          // Check if the 'latlon' value is available.
-          if (!empty($latlonValue)) {
-
-            // Construct the Google Maps link.
-            $googleMapsLink = 'https://www.google.com/maps?q=' . $latlonValue;
-
-            // Create the link element.
-            $link = [
-              '#type' => 'link',
-              '#title' => 'View on Google Maps',
-              '#url' => Url::fromUri($googleMapsLink),
-            ];
-
-            // Render the link.
-            $link_render_array = \Drupal::service('renderer')->render($link);
-
-            // Modify the field value to include the link.
-            $variables['items'][0]['content']['#markup'] = $link_render_array;
-          }
-        }
-      }
 
       break;
 
