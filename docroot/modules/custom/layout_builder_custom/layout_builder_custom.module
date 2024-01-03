@@ -311,6 +311,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['items_per_page']['#default_value'] = 10;
+                  $form['settings']['override']['hide_fields']['order_fields']['field_person_website']['hide']['#default_value'] = 1;
                   break;
               }
             }
