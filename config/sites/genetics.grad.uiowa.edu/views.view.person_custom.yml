@@ -18,7 +18,6 @@ dependencies:
     - field.storage.node.field_pt_student_program_start
     - field.storage.node.pt_student_dissertation_title
     - node.type.person
-    - system.menu.main
     - taxonomy.vocabulary.research_areas
   module:
     - datetime
@@ -1061,14 +1060,15 @@ display:
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/faculty
       menu:
-        type: normal
+        type: none
         title: Faculty
         description: ''
         weight: -50
-        enabled: true
         expanded: true
         menu_name: main
         parent: 'menu_link_content:4b98092f-9ced-4b14-969e-560701ec6134'
@@ -1803,14 +1803,15 @@ display:
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/students/former
       menu:
-        type: normal
+        type: none
         title: 'Past Students'
         description: ''
         weight: 0
-        enabled: true
         expanded: false
         menu_name: main
         parent: 'menu_link_content:4b98092f-9ced-4b14-969e-560701ec6134'
@@ -2487,14 +2488,15 @@ display:
           required: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/students
       menu:
-        type: normal
+        type: none
         title: Students
         description: ''
         weight: -49
-        enabled: true
         expanded: false
         menu_name: main
         parent: 'menu_link_content:4b98092f-9ced-4b14-969e-560701ec6134'
