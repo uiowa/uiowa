@@ -6196,3 +6196,9 @@ $sites['labpetersen.uiowa.ddev.site'] = 'petersen.lab.uiowa.edu';
 $sites['labpetersen.dev.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
 $sites['labpetersen.stage.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
 $sites['labpetersen.prod.drupal.uiowa.edu'] = 'petersen.lab.uiowa.edu';
+
+// Directory aliases for acm.org.uiowa.edu.
+$sites['orgacm.uiowa.ddev.site'] = 'acm.org.uiowa.edu';
+$sites['orgacm.dev.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
+$sites['orgacm.stage.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
+$sites['orgacm.prod.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
