@@ -26,11 +26,11 @@
 
           let justCreated = true;
 
-          if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 1) {
+          if (Drupal.offCanvas.isOffCanvas($element)) {
             let offCanvasWidth;
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
             if (offCanvasCookie === undefined) {
-              offCanvasWidth = adjustedWidth(500)
+              offCanvasWidth = adjustedWidth(500);
             } else {
               offCanvasWidth = adjustedWidth(offCanvasCookie);
             }
@@ -41,8 +41,8 @@
             $element.parent().on('dialogContentResize.off-canvas', eventData, function() {
               if (!justCreated) {
                 // Cookie that expires in 99 years.
-                const width = offCanvas.getBoundingClientRect().width
-                cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: 'drupalSettings.layoutBuilderCustom.cookieDomain' });
+                const width = offCanvas.getBoundingClientRect().width;
+                cookies.set('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: drupalSettings.layoutBuilderCustom.cookieDomain });
               }
               justCreated = false;
             });
@@ -67,7 +67,7 @@
         formValues.forEach(formField => {
           // Get field name from the id in the editor so that it covers all
           // fields using ckeditor.
-          let element = document.querySelector(`#${editor.name}`)
+          let element = document.querySelector(`#${editor.name}`);
           if (element) {
             let fieldName = element.getAttribute('name');
             if (formField.name === fieldName && editor.mode === 'source') {
@@ -83,7 +83,7 @@
   // Wait for the mouse-up and reset the width of the main content.
   function dragHandleBehaviorStopgapAwait(event) {
     if (interacting) {
-      return
+      return;
     }
     interacting = true;
     document.addEventListener('mousemove', function(event) {
