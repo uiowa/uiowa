@@ -654,8 +654,6 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_geolocation':
-      uiowa_core_set_attributes($variables, 'fa-ul');
-
       // Modify the field label.
       $variables['label'] = t('Map');
 
