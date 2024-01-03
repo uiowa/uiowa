@@ -1128,7 +1128,7 @@ EOD;
       ->run();
 
     if (!$result->wasSuccessful()) {
-      throw \Exception("Unable to delete multisite files for $site on $app.$env.");
+      throw new \Exception("Unable to delete multisite files for $site on $app.$env.");
     }
   }
 
