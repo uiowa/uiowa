@@ -6226,3 +6226,9 @@ $sites['advisingcenterprehealth.uiowa.ddev.site'] = 'prehealth.advisingcenter.ui
 $sites['advisingcenterprehealth.dev.drupal.uiowa.edu'] = 'prehealth.advisingcenter.uiowa.edu';
 $sites['advisingcenterprehealth.stage.drupal.uiowa.edu'] = 'prehealth.advisingcenter.uiowa.edu';
 $sites['advisingcenterprehealth.prod.drupal.uiowa.edu'] = 'prehealth.advisingcenter.uiowa.edu';
+
+// Directory aliases for saxophone.studio.uiowa.edu.
+$sites['studiosaxophone.uiowa.ddev.site'] = 'saxophone.studio.uiowa.edu';
+$sites['studiosaxophone.dev.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
+$sites['studiosaxophone.stage.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
+$sites['studiosaxophone.prod.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
