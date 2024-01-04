@@ -78,6 +78,8 @@ function uids_base_preprocess(&$variables, $hook) {
   $variables['base_path'] = base_path();
 }
 
+
+
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
@@ -339,6 +341,9 @@ function uids_base_preprocess_page(&$variables) {
 
   $route_name = $current_route->getRouteName();
 
+
+
+
   switch ($route_name) {
     case 'uiowa_search.search_results':
       $variables['#attached']['library'][] = 'uids_base/search-results';
@@ -415,6 +420,16 @@ function uids_base_preprocess_node(&$variables) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function uids_base_page_attachments(&$page) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $page['#attached']['library'][] = 'uids_base/fontawesome';
   }
 }
 
