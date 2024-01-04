@@ -6208,3 +6208,9 @@ $sites['labtori-forbes.uiowa.ddev.site'] = 'tori-forbes.lab.uiowa.edu';
 $sites['labtori-forbes.dev.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
 $sites['labtori-forbes.stage.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
 $sites['labtori-forbes.prod.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
+
+// Directory aliases for rahmouni.lab.uiowa.edu.
+$sites['labrahmouni.uiowa.ddev.site'] = 'rahmouni.lab.uiowa.edu';
+$sites['labrahmouni.dev.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
+$sites['labrahmouni.stage.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
+$sites['labrahmouni.prod.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
