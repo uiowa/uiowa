@@ -6202,3 +6202,9 @@ $sites['orgacm.uiowa.ddev.site'] = 'acm.org.uiowa.edu';
 $sites['orgacm.dev.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
 $sites['orgacm.stage.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
 $sites['orgacm.prod.drupal.uiowa.edu'] = 'acm.org.uiowa.edu';
+
+// Directory aliases for tori-forbes.lab.uiowa.edu.
+$sites['labtori-forbes.uiowa.ddev.site'] = 'tori-forbes.lab.uiowa.edu';
+$sites['labtori-forbes.dev.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
+$sites['labtori-forbes.stage.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
+$sites['labtori-forbes.prod.drupal.uiowa.edu'] = 'tori-forbes.lab.uiowa.edu';
