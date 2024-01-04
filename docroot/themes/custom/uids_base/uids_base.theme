@@ -78,8 +78,6 @@ function uids_base_preprocess(&$variables, $hook) {
   $variables['base_path'] = base_path();
 }
 
-
-
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
@@ -340,9 +338,6 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   $route_name = $current_route->getRouteName();
-
-
-
 
   switch ($route_name) {
     case 'uiowa_search.search_results':
