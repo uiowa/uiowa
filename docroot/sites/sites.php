@@ -6214,3 +6214,9 @@ $sites['labrahmouni.uiowa.ddev.site'] = 'rahmouni.lab.uiowa.edu';
 $sites['labrahmouni.dev.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
 $sites['labrahmouni.stage.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
 $sites['labrahmouni.prod.drupal.uiowa.edu'] = 'rahmouni.lab.uiowa.edu';
+
+// Directory aliases for narayanan.lab.uiowa.edu.
+$sites['labnarayanan.uiowa.ddev.site'] = 'narayanan.lab.uiowa.edu';
+$sites['labnarayanan.dev.drupal.uiowa.edu'] = 'narayanan.lab.uiowa.edu';
+$sites['labnarayanan.stage.drupal.uiowa.edu'] = 'narayanan.lab.uiowa.edu';
+$sites['labnarayanan.prod.drupal.uiowa.edu'] = 'narayanan.lab.uiowa.edu';
