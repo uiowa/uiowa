@@ -6232,3 +6232,9 @@ $sites['studiosaxophone.uiowa.ddev.site'] = 'saxophone.studio.uiowa.edu';
 $sites['studiosaxophone.dev.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
 $sites['studiosaxophone.stage.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
 $sites['studiosaxophone.prod.drupal.uiowa.edu'] = 'saxophone.studio.uiowa.edu';
+
+// Directory aliases for salem.lab.uiowa.edu.
+$sites['labsalem.uiowa.ddev.site'] = 'salem.lab.uiowa.edu';
+$sites['labsalem.dev.drupal.uiowa.edu'] = 'salem.lab.uiowa.edu';
+$sites['labsalem.stage.drupal.uiowa.edu'] = 'salem.lab.uiowa.edu';
+$sites['labsalem.prod.drupal.uiowa.edu'] = 'salem.lab.uiowa.edu';
