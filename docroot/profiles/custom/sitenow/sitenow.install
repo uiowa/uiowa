@@ -2979,3 +2979,22 @@ function sitenow_update_10002() {
     }
   });
 }
+
+/**
+ * Update field_person_website to be checked in block configurations.
+ */
+function sitenow_update_10003() {
+  foreach ([
+    'views_block:people_list_block-list_card',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+      $config = $component->getConfiguration();
+      if (isset($config['fields']['field_person_website'])) {
+
+        $config['fields']['field_person_website']['hide'] = 1;
+        $component->setConfiguration($config);
+      }
+
+    });
+  }
+}
