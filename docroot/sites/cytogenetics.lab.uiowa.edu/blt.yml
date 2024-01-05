@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcytogenetics.uiowa.ddev.site
+    protocol: https
+  machine_name: labcytogenetics
+  human_name: cytogenetics.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcytogenetics.prod
+drupal:
+  db:
+    database: cytogenetics_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcytogenetics.prod.drupal.uiowa.edu'
+  requester: lettsl
+  site-name: 'Shivanand R. Patil Cytogenetics & Molecular Genetics Laboratory'
