@@ -6454,3 +6454,9 @@ $sites['orgaiche.uiowa.ddev.site'] = 'aiche.org.uiowa.edu';
 $sites['orgaiche.dev.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
 $sites['orgaiche.stage.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
 $sites['orgaiche.prod.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
+
+// Directory aliases for rohlman.lab.uiowa.edu.
+$sites['labrohlman.uiowa.ddev.site'] = 'rohlman.lab.uiowa.edu';
+$sites['labrohlman.dev.drupal.uiowa.edu'] = 'rohlman.lab.uiowa.edu';
+$sites['labrohlman.stage.drupal.uiowa.edu'] = 'rohlman.lab.uiowa.edu';
+$sites['labrohlman.prod.drupal.uiowa.edu'] = 'rohlman.lab.uiowa.edu';
