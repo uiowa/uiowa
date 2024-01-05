@@ -6388,3 +6388,9 @@ $sites['sitesgel.uiowa.ddev.site'] = 'gel.sites.uiowa.edu';
 $sites['sitesgel.dev.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
 $sites['sitesgel.stage.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
 $sites['sitesgel.prod.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
+
+// Directory aliases for trihawks.org.uiowa.edu.
+$sites['orgtrihawks.uiowa.ddev.site'] = 'trihawks.org.uiowa.edu';
+$sites['orgtrihawks.dev.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
+$sites['orgtrihawks.stage.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
+$sites['orgtrihawks.prod.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
