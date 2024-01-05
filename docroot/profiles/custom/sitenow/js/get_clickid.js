@@ -1,4 +1,4 @@
-(function ($, Drupal, once) {
+(function ($, Drupal, drupalSettings, once) {
   // Attach get_clickid behavior to webform.
   Drupal.behaviors.get_clickid = {
     attach: function (context) {
@@ -10,7 +10,8 @@
       // Get the params from the address bar, so we have values to
       // populate inputs that meet our attribute criteria.
       // Prepopulate is a custom attribute added in sitenow.profile sitenow_webform_element_alter().
-      ['gclid', 'fbclid'].forEach(function (param) {
+      console.log(drupalSettings.sitenow.webformPrepopulateQueryKeys);
+      drupalSettings.sitenow.webformPrepopulateQueryKeys.forEach(function (param) {
           if (params.get(param)) {
             if (context.querySelectorAll('input[prepopulate="true"][name="' + param + '"]').length) {
               query.push('input[prepopulate="true"][name="' + param + '"]');
@@ -31,4 +32,4 @@
       }
     }
   };
-})(jQuery, Drupal, once);
+})(jQuery, Drupal, drupalSettings, once);
