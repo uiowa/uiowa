@@ -6448,3 +6448,9 @@ $sites['lawempirical.uiowa.ddev.site'] = 'empirical.law.uiowa.edu';
 $sites['lawempirical.dev.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
 $sites['lawempirical.stage.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
 $sites['lawempirical.prod.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
+
+// Directory aliases for aiche.org.uiowa.edu.
+$sites['orgaiche.uiowa.ddev.site'] = 'aiche.org.uiowa.edu';
+$sites['orgaiche.dev.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
+$sites['orgaiche.stage.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
+$sites['orgaiche.prod.drupal.uiowa.edu'] = 'aiche.org.uiowa.edu';
