@@ -619,7 +619,8 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
  */
 function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if (isset($element['#webform_key'])) {
-    // Pass query string parameters allowed for pre-populating webforms.
+    // Pass query string parameters allowed for pre-populating webforms via
+    // drupalSettings to javascript and attach a script to parse them.
     if (isset($element['#prepopulate'])) {
       $webform_prepopulate_query_keys = [
         'fbclid',
