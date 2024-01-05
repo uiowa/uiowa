@@ -6442,3 +6442,9 @@ $sites['labaldridge.uiowa.ddev.site'] = 'aldridge.lab.uiowa.edu';
 $sites['labaldridge.dev.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
 $sites['labaldridge.stage.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
 $sites['labaldridge.prod.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
+
+// Directory aliases for empirical.law.uiowa.edu.
+$sites['lawempirical.uiowa.ddev.site'] = 'empirical.law.uiowa.edu';
+$sites['lawempirical.dev.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
+$sites['lawempirical.stage.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
+$sites['lawempirical.prod.drupal.uiowa.edu'] = 'empirical.law.uiowa.edu';
