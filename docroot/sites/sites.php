@@ -6376,3 +6376,9 @@ $sites['labcytogenetics.uiowa.ddev.site'] = 'cytogenetics.lab.uiowa.edu';
 $sites['labcytogenetics.dev.drupal.uiowa.edu'] = 'cytogenetics.lab.uiowa.edu';
 $sites['labcytogenetics.stage.drupal.uiowa.edu'] = 'cytogenetics.lab.uiowa.edu';
 $sites['labcytogenetics.prod.drupal.uiowa.edu'] = 'cytogenetics.lab.uiowa.edu';
+
+// Directory aliases for williams.lab.uiowa.edu.
+$sites['labwilliams.uiowa.ddev.site'] = 'williams.lab.uiowa.edu';
+$sites['labwilliams.dev.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
+$sites['labwilliams.stage.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
+$sites['labwilliams.prod.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
