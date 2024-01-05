@@ -6430,3 +6430,9 @@ $sites['sitesiowavirologysymposium.uiowa.ddev.site'] = 'iowavirologysymposium.si
 $sites['sitesiowavirologysymposium.dev.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
 $sites['sitesiowavirologysymposium.stage.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
 $sites['sitesiowavirologysymposium.prod.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
+
+// Directory aliases for tlcp.law.uiowa.edu.
+$sites['lawtlcp.uiowa.ddev.site'] = 'tlcp.law.uiowa.edu';
+$sites['lawtlcp.dev.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
+$sites['lawtlcp.stage.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
+$sites['lawtlcp.prod.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
