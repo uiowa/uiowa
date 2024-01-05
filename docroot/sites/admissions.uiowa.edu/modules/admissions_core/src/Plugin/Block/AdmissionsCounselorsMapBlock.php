@@ -83,7 +83,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
       ],
       '#attached' => [
         'library' => [
-          'uids_base/leaflet',
+          'leaflet/leaflet',
           'admissions_core/counselors-map',
         ],
         'drupalSettings' => [
