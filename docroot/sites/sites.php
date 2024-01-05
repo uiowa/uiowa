@@ -6358,3 +6358,9 @@ $sites['org-iowateacherintern.uiowa.ddev.site'] = 'iowateacherintern.org';
 $sites['org-iowateacherintern.dev.drupal.uiowa.edu'] = 'iowateacherintern.org';
 $sites['org-iowateacherintern.stage.drupal.uiowa.edu'] = 'iowateacherintern.org';
 $sites['org-iowateacherintern.prod.drupal.uiowa.edu'] = 'iowateacherintern.org';
+
+// Directory aliases for turkish.org.uiowa.edu.
+$sites['orgturkish.uiowa.ddev.site'] = 'turkish.org.uiowa.edu';
+$sites['orgturkish.dev.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
+$sites['orgturkish.stage.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
+$sites['orgturkish.prod.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
