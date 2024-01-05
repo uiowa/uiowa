@@ -6436,3 +6436,9 @@ $sites['lawtlcp.uiowa.ddev.site'] = 'tlcp.law.uiowa.edu';
 $sites['lawtlcp.dev.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
 $sites['lawtlcp.stage.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
 $sites['lawtlcp.prod.drupal.uiowa.edu'] = 'tlcp.law.uiowa.edu';
+
+// Directory aliases for aldridge.lab.uiowa.edu.
+$sites['labaldridge.uiowa.ddev.site'] = 'aldridge.lab.uiowa.edu';
+$sites['labaldridge.dev.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
+$sites['labaldridge.stage.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
+$sites['labaldridge.prod.drupal.uiowa.edu'] = 'aldridge.lab.uiowa.edu';
