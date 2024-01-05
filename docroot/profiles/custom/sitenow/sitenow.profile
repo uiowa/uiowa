@@ -111,6 +111,18 @@ function sitenow_preprocess_select(&$variables) {
 }
 
 /**
+ * Implements hook_js_alter().
+ */
+function sitenow_js_alter(&$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets, \Drupal\Core\Language\LanguageInterface $language) {
+  // Remove fontawesome js if ckeditor5 is present.
+  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
+    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
+      unset($javascript['libraries/fontawesome/js/all.min.js']);
+    }
+  }
+}
+
+/**
  * Implements hook_module_implements_alter().
  */
 function sitenow_module_implements_alter(&$implementations, $hook) {
