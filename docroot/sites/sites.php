@@ -6244,3 +6244,9 @@ $sites['labtrapp.uiowa.ddev.site'] = 'trapp.lab.uiowa.edu';
 $sites['labtrapp.dev.drupal.uiowa.edu'] = 'trapp.lab.uiowa.edu';
 $sites['labtrapp.stage.drupal.uiowa.edu'] = 'trapp.lab.uiowa.edu';
 $sites['labtrapp.prod.drupal.uiowa.edu'] = 'trapp.lab.uiowa.edu';
+
+// Directory aliases for dodd.lab.uiowa.edu.
+$sites['labdodd.uiowa.ddev.site'] = 'dodd.lab.uiowa.edu';
+$sites['labdodd.dev.drupal.uiowa.edu'] = 'dodd.lab.uiowa.edu';
+$sites['labdodd.stage.drupal.uiowa.edu'] = 'dodd.lab.uiowa.edu';
+$sites['labdodd.prod.drupal.uiowa.edu'] = 'dodd.lab.uiowa.edu';
