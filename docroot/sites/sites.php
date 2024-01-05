@@ -6412,3 +6412,9 @@ $sites['labyoung.uiowa.ddev.site'] = 'young.lab.uiowa.edu';
 $sites['labyoung.dev.drupal.uiowa.edu'] = 'young.lab.uiowa.edu';
 $sites['labyoung.stage.drupal.uiowa.edu'] = 'young.lab.uiowa.edu';
 $sites['labyoung.prod.drupal.uiowa.edu'] = 'young.lab.uiowa.edu';
+
+// Directory aliases for geerling.lab.uiowa.edu.
+$sites['labgeerling.uiowa.ddev.site'] = 'geerling.lab.uiowa.edu';
+$sites['labgeerling.dev.drupal.uiowa.edu'] = 'geerling.lab.uiowa.edu';
+$sites['labgeerling.stage.drupal.uiowa.edu'] = 'geerling.lab.uiowa.edu';
+$sites['labgeerling.prod.drupal.uiowa.edu'] = 'geerling.lab.uiowa.edu';
