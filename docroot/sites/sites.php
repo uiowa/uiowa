@@ -6316,3 +6316,9 @@ $sites['labbishop.uiowa.ddev.site'] = 'bishop.lab.uiowa.edu';
 $sites['labbishop.dev.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
 $sites['labbishop.stage.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
 $sites['labbishop.prod.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
+
+// Directory aliases for lira.lab.uiowa.edu.
+$sites['lablira.uiowa.ddev.site'] = 'lira.lab.uiowa.edu';
+$sites['lablira.dev.drupal.uiowa.edu'] = 'lira.lab.uiowa.edu';
+$sites['lablira.stage.drupal.uiowa.edu'] = 'lira.lab.uiowa.edu';
+$sites['lablira.prod.drupal.uiowa.edu'] = 'lira.lab.uiowa.edu';
