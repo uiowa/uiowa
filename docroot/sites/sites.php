@@ -6340,3 +6340,9 @@ $sites['labcampbell.uiowa.ddev.site'] = 'campbell.lab.uiowa.edu';
 $sites['labcampbell.dev.drupal.uiowa.edu'] = 'campbell.lab.uiowa.edu';
 $sites['labcampbell.stage.drupal.uiowa.edu'] = 'campbell.lab.uiowa.edu';
 $sites['labcampbell.prod.drupal.uiowa.edu'] = 'campbell.lab.uiowa.edu';
+
+// Directory aliases for drivingassessment.uiowa.edu.
+$sites['drivingassessment.uiowa.ddev.site'] = 'drivingassessment.uiowa.edu';
+$sites['drivingassessment.dev.drupal.uiowa.edu'] = 'drivingassessment.uiowa.edu';
+$sites['drivingassessment.stage.drupal.uiowa.edu'] = 'drivingassessment.uiowa.edu';
+$sites['drivingassessment.prod.drupal.uiowa.edu'] = 'drivingassessment.uiowa.edu';
