@@ -6286,3 +6286,9 @@ $sites['orgevaluation.uiowa.ddev.site'] = 'evaluation.org.uiowa.edu';
 $sites['orgevaluation.dev.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
 $sites['orgevaluation.stage.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
 $sites['orgevaluation.prod.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
+
+// Directory aliases for buchanan.lab.uiowa.edu.
+$sites['labbuchanan.uiowa.ddev.site'] = 'buchanan.lab.uiowa.edu';
+$sites['labbuchanan.dev.drupal.uiowa.edu'] = 'buchanan.lab.uiowa.edu';
+$sites['labbuchanan.stage.drupal.uiowa.edu'] = 'buchanan.lab.uiowa.edu';
+$sites['labbuchanan.prod.drupal.uiowa.edu'] = 'buchanan.lab.uiowa.edu';
