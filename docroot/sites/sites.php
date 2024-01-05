@@ -6364,3 +6364,9 @@ $sites['orgturkish.uiowa.ddev.site'] = 'turkish.org.uiowa.edu';
 $sites['orgturkish.dev.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
 $sites['orgturkish.stage.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
 $sites['orgturkish.prod.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
+
+// Directory aliases for uisug.org.uiowa.edu.
+$sites['orguisug.uiowa.ddev.site'] = 'uisug.org.uiowa.edu';
+$sites['orguisug.dev.drupal.uiowa.edu'] = 'uisug.org.uiowa.edu';
+$sites['orguisug.stage.drupal.uiowa.edu'] = 'uisug.org.uiowa.edu';
+$sites['orguisug.prod.drupal.uiowa.edu'] = 'uisug.org.uiowa.edu';
