@@ -30,22 +30,6 @@ class ItsAlert extends Alert {
         }
       }
     }
-    $build['#meta'] = implode(', ', $labels);
-    $build['#url'] = $this->getNodeUrl();
-    $category_id = $this->field_alert_category?->target_id;
-    if (in_array($category_id, ['406', '416'])) {
-      $build['#link_text'] = 'View more';
-      $build['#media']['#prefix'] = '<div class="alert__icon">';
-      $build['#media']['#suffix'] = '</div>';
-      $build['#media']['#markup'] = match ($category_id) {
-        // Outage.
-        '406' => '<span class="fa-stack fa-1x"><span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-exclamation" role="presentation"></span></span>',
-        // Degradation.
-        '416' => '<span class="fa-stack fa-1x"><span class="fas fa-circle fa-stack-2x" role="presentation"></span> <span class="fas fa-stack-1x fa-inverse fa-triangle-exclamation" role="presentation"></span></span>',
-        default => '',
-      };
-    }
-
     $build['#content'] = implode(', ', $labels);
 
   }
