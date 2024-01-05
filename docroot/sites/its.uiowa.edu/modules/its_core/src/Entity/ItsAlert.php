@@ -15,9 +15,9 @@ class ItsAlert extends Alert {
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
-    // Replace the meta display with the affected services and buildings,
-    // if there are multiple,
-    // rather than the core Alert meta of alert categories.
+    // Fill the content with the affected services and buildings,
+    // if there are multiple. If there is only one,
+    // it will already be displayed in the title.
     $labels = [];
     foreach ([
       'field_alert_service_affected',
@@ -46,6 +46,8 @@ class ItsAlert extends Alert {
       };
     }
 
+    $build['#content'] = implode(', ', $labels);
+
   }
 
   /**
@@ -54,17 +56,11 @@ class ItsAlert extends Alert {
   public function getDefaultCardStyles(): array {
     $category_id = $this->field_alert_category?->target_id;
     if (in_array($category_id, ['406', '416'])) {
-      $alert_level = match($category_id) {
-        // Outage.
-        '406' => 'danger',
-          // Degradation.
-        '416' => 'warning',
-      };
       return [
-        'styles' => "alert alert--icon  alert--{$alert_level}",
         'card--layout-left' => 'card--layout-left',
         'media_size' => 'media--small',
         'media_shape' => 'media--circle',
+        'borderless' => 'borderless',
       ];
     }
     return [

@@ -309,11 +309,6 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       }
       break;
 
-    case 'alerts_list_block':
-      if ($view->current_display === 'outages_degradations') {
-        $variables['#attached']['library'][] = 'its_core/its_core';
-      }
-
   }
 }
 
