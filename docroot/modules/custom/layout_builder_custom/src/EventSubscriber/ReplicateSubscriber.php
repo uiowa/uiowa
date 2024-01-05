@@ -174,13 +174,21 @@ class ReplicateSubscriber implements EventSubscriberInterface {
             // it should sit. Since we know the old uuid is in there,
             // we can do a keys, flip, direct index instead of a full search.
             $index = array_flip(array_keys($replicant_components))[$old_uuid];
-            // Remove the original component.
-            $section->removeComponent($old_uuid);
-            // Get the uuid of the component at the adjusted index.
-            $uuid = array_keys($components)[$index];
-            // Add the new component to the section, directly after
-            // the existing component so that it will be in the right order.
-            $section->insertAfterComponent($uuid, $new_component);
+            // If it's the first component, then insert the new
+            // and remove the old, similar to if it was alone.
+            if ($index === 0) {
+              $section->insertAfterComponent($old_uuid, $new_component);
+              $section->removeComponent($old_uuid);
+            }
+            else {
+              // Remove the original component.
+              $section->removeComponent($old_uuid);
+              // Get the uuid of the component at the adjusted index.
+              $uuid = array_keys($components)[$index];
+              // Add the new component to the section, directly after
+              // the existing component so that it will be in the right order.
+              $section->insertAfterComponent($uuid, $new_component);
+            }
           }
         }
       }
