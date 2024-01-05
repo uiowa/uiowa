@@ -6304,3 +6304,9 @@ $sites['labrobert-weiss.uiowa.ddev.site'] = 'robert-weiss.lab.uiowa.edu';
 $sites['labrobert-weiss.dev.drupal.uiowa.edu'] = 'robert-weiss.lab.uiowa.edu';
 $sites['labrobert-weiss.stage.drupal.uiowa.edu'] = 'robert-weiss.lab.uiowa.edu';
 $sites['labrobert-weiss.prod.drupal.uiowa.edu'] = 'robert-weiss.lab.uiowa.edu';
+
+// Directory aliases for transparency.uiowa.edu.
+$sites['transparency.uiowa.ddev.site'] = 'transparency.uiowa.edu';
+$sites['transparency.dev.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
+$sites['transparency.stage.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
+$sites['transparency.prod.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
