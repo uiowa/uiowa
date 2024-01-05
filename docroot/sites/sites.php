@@ -6268,3 +6268,9 @@ $sites['labbanfi.uiowa.ddev.site'] = 'banfi.lab.uiowa.edu';
 $sites['labbanfi.dev.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
 $sites['labbanfi.stage.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
 $sites['labbanfi.prod.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
+
+// Directory aliases for iaapt.us.
+$sites['us-iaapt.uiowa.ddev.site'] = 'iaapt.us';
+$sites['us-iaapt.dev.drupal.uiowa.edu'] = 'iaapt.us';
+$sites['us-iaapt.stage.drupal.uiowa.edu'] = 'iaapt.us';
+$sites['us-iaapt.prod.drupal.uiowa.edu'] = 'iaapt.us';
