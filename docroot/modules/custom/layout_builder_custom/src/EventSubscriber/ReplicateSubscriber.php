@@ -9,6 +9,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\replicate\Events\AfterSaveEvent;
@@ -55,6 +56,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @var \Drupal\Component\Datetime\TimeInterface
    */
   protected $time;
+
+  /**
+   * The replicant node's field item list.
+   *
+   * @var \Drupal\layout_builder\Field\LayoutSectionItemList
+   */
+  protected $replicantFieldItemList = NULL;
 
   /**
    * ReplicateSubscriber constructor.
@@ -131,30 +139,11 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The replicated entity.
    */
   protected function additionalHandling(FieldableEntityInterface $entity) {
-    // The original entity's weight information is lost
-    // during replication, so we need to re-load it
-    // in order to retrieve this information.
-    /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $replicant_field_item_list */
-    $replicant_field_item_list = $this->entityTypeManager
-      ->getStorage('node')
-      ?->load($this->getClonedNid())
-      ?->get(OverridesSectionStorage::FIELD_NAME);
-
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
     foreach ($field_item_list->getSections() as $section_delta => $section) {
       $components = $section->getComponents();
-      $replicant_components = $replicant_field_item_list
-        ?->getSection($section_delta)
-        ?->getComponents();
-      if (is_array($replicant_components)) {
-        // Sort the components array by the components' weights
-        // so that we can use it for proper ordering.
-        uasort($replicant_components, function (SectionComponent $a, SectionComponent $b) {
-          return $a->getWeight() <=> $b->getWeight();
-        });
-      }
-
+      $replicant_components = FALSE;
       foreach ($components as $component) {
         $plugin = $component->getPlugin();
         if ($plugin instanceof ViewsBlock) {
@@ -174,6 +163,12 @@ class ReplicateSubscriber implements EventSubscriberInterface {
             $section->removeComponent($old_uuid);
           }
           else {
+            // The original entity's weight information is lost
+            // during replication, so if the component was not on its own,
+            // we need to re-load it to retrieve this information.
+            if (!$replicant_components) {
+              $replicant_components = $this->getSortedReplicantSectionComponents($section_delta);
+            }
             // Find the delta of the component in our sorted copy of the
             // original entity's components array, to see in which place
             // it should sit. Since we know the old uuid is in there,
@@ -245,6 +240,50 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         $node_storage_manager->deleteRevision($vid);
       }
     }
+  }
+
+  /**
+   * Fetch the replicant node's field item list.
+   *
+   * @return \Drupal\layout_builder\Field\LayoutSectionItemList|false
+   *   The replicant's section list or false if it could not be retrieved.
+   */
+  protected function getReplicantFieldItemList(): bool|LayoutSectionItemList {
+    /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $replicant_field_item_list */
+    $replicant_field_item_list = $this->entityTypeManager
+      ->getStorage('node')
+      ?->load($this->getClonedNid())
+      ?->get(OverridesSectionStorage::FIELD_NAME);
+    return $replicant_field_item_list ?? FALSE;
+  }
+
+  /**
+   * Get a replicant's section's components, sorted by their designated weight.
+   *
+   * @param int $section_delta
+   *   The specific section to retrieve.
+   *
+   * @return array|SectionComponent[]
+   *   A sorted array of the section's components.
+   */
+  protected function getSortedReplicantSectionComponents(int $section_delta): array {
+    if (is_null($this->replicantFieldItemList)) {
+      $this->replicantFieldItemList = $this->getReplicantFieldItemList();
+    }
+    if ($this->replicantFieldItemList === FALSE) {
+      return [];
+    }
+    $replicant_components = $this->replicantFieldItemList
+      ?->getSection($section_delta)
+      ?->getComponents();
+    if (is_array($replicant_components)) {
+      // Sort the components array by the components' weights
+      // so that we can use it for proper ordering.
+      uasort($replicant_components, function (SectionComponent $a, SectionComponent $b) {
+        return $a->getWeight() <=> $b->getWeight();
+      });
+    }
+    return $replicant_components ?? [];
   }
 
 }
