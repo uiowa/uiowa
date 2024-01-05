@@ -6424,3 +6424,9 @@ $sites['labbutler.uiowa.ddev.site'] = 'butler.lab.uiowa.edu';
 $sites['labbutler.dev.drupal.uiowa.edu'] = 'butler.lab.uiowa.edu';
 $sites['labbutler.stage.drupal.uiowa.edu'] = 'butler.lab.uiowa.edu';
 $sites['labbutler.prod.drupal.uiowa.edu'] = 'butler.lab.uiowa.edu';
+
+// Directory aliases for iowavirologysymposium.sites.uiowa.edu.
+$sites['sitesiowavirologysymposium.uiowa.ddev.site'] = 'iowavirologysymposium.sites.uiowa.edu';
+$sites['sitesiowavirologysymposium.dev.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
+$sites['sitesiowavirologysymposium.stage.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
+$sites['sitesiowavirologysymposium.prod.drupal.uiowa.edu'] = 'iowavirologysymposium.sites.uiowa.edu';
