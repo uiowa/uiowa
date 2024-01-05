@@ -6394,3 +6394,9 @@ $sites['orgtrihawks.uiowa.ddev.site'] = 'trihawks.org.uiowa.edu';
 $sites['orgtrihawks.dev.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
 $sites['orgtrihawks.stage.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
 $sites['orgtrihawks.prod.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
+
+// Directory aliases for radley.lab.uiowa.edu.
+$sites['labradley.uiowa.ddev.site'] = 'radley.lab.uiowa.edu';
+$sites['labradley.dev.drupal.uiowa.edu'] = 'radley.lab.uiowa.edu';
+$sites['labradley.stage.drupal.uiowa.edu'] = 'radley.lab.uiowa.edu';
+$sites['labradley.prod.drupal.uiowa.edu'] = 'radley.lab.uiowa.edu';
