@@ -6262,3 +6262,9 @@ $sites['sitesuisrmsymposium.uiowa.ddev.site'] = 'uisrmsymposium.sites.uiowa.edu'
 $sites['sitesuisrmsymposium.dev.drupal.uiowa.edu'] = 'uisrmsymposium.sites.uiowa.edu';
 $sites['sitesuisrmsymposium.stage.drupal.uiowa.edu'] = 'uisrmsymposium.sites.uiowa.edu';
 $sites['sitesuisrmsymposium.prod.drupal.uiowa.edu'] = 'uisrmsymposium.sites.uiowa.edu';
+
+// Directory aliases for banfi.lab.uiowa.edu.
+$sites['labbanfi.uiowa.ddev.site'] = 'banfi.lab.uiowa.edu';
+$sites['labbanfi.dev.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
+$sites['labbanfi.stage.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
+$sites['labbanfi.prod.drupal.uiowa.edu'] = 'banfi.lab.uiowa.edu';
