@@ -6310,3 +6310,9 @@ $sites['transparency.uiowa.ddev.site'] = 'transparency.uiowa.edu';
 $sites['transparency.dev.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
 $sites['transparency.stage.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
 $sites['transparency.prod.drupal.uiowa.edu'] = 'transparency.uiowa.edu';
+
+// Directory aliases for bishop.lab.uiowa.edu.
+$sites['labbishop.uiowa.ddev.site'] = 'bishop.lab.uiowa.edu';
+$sites['labbishop.dev.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
+$sites['labbishop.stage.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
+$sites['labbishop.prod.drupal.uiowa.edu'] = 'bishop.lab.uiowa.edu';
