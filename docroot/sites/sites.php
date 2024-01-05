@@ -6274,3 +6274,9 @@ $sites['us-iaapt.uiowa.ddev.site'] = 'iaapt.us';
 $sites['us-iaapt.dev.drupal.uiowa.edu'] = 'iaapt.us';
 $sites['us-iaapt.stage.drupal.uiowa.edu'] = 'iaapt.us';
 $sites['us-iaapt.prod.drupal.uiowa.edu'] = 'iaapt.us';
+
+// Directory aliases for growingwords.lab.uiowa.edu.
+$sites['labgrowingwords.uiowa.ddev.site'] = 'growingwords.lab.uiowa.edu';
+$sites['labgrowingwords.dev.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
+$sites['labgrowingwords.stage.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
+$sites['labgrowingwords.prod.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
