@@ -83,7 +83,7 @@ class PalliativeGradMapBlock extends BlockBase implements ContainerFactoryPlugin
       ],
       '#attached' => [
         'library' => [
-          'uids_base/leaflet',
+          'leaflet/leaflet',
           'pharmacy_core/palliative-grad-map',
         ],
         'drupalSettings' => [
