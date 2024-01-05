@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: drivingassessment.uiowa.ddev.site
+    protocol: https
+  machine_name: drivingassessment
+  human_name: drivingassessment.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: drivingassessment.prod
+drupal:
+  db:
+    database: drivingassessment_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://drivingassessment.prod.drupal.uiowa.edu'
+  requester: scable
+  site-name: 'Driving Assessment Conference'

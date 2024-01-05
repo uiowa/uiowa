@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtrapp.uiowa.ddev.site
+    protocol: https
+  machine_name: labtrapp
+  human_name: trapp.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtrapp.prod
+drupal:
+  db:
+    database: trapp_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtrapp.prod.drupal.uiowa.edu'
+  requester: bdpace
+  site-name: trapp.lab.uiowa.edu
