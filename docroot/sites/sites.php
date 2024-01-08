@@ -6478,3 +6478,9 @@ $sites['sitesbrainworkshop.uiowa.ddev.site'] = 'brainworkshop.sites.uiowa.edu';
 $sites['sitesbrainworkshop.dev.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
 $sites['sitesbrainworkshop.stage.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
 $sites['sitesbrainworkshop.prod.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+
+// Directory aliases for i3hsa.org..uiowa.edu.
+$sites['orgi3hsa.uiowa.ddev.site'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.dev.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.stage.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.prod.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
