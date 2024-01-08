@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labengelhardt.uiowa.ddev.site
+    protocol: https
+  machine_name: labengelhardt
+  human_name: engelhardt.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labengelhardt.prod
+drupal:
+  db:
+    database: engelhardt_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labengelhardt.prod.drupal.uiowa.edu'
+  requester: dunnwaldd
+  site-name: Elab
