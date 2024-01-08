@@ -6472,3 +6472,9 @@ $sites['labamendt.uiowa.ddev.site'] = 'amendt.lab.uiowa.edu';
 $sites['labamendt.dev.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
 $sites['labamendt.stage.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
 $sites['labamendt.prod.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+
+// Directory aliases for brainworkshop.sites.uiowa.edu.
+$sites['sitesbrainworkshop.uiowa.ddev.site'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.dev.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.stage.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.prod.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
