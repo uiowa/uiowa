@@ -6466,3 +6466,9 @@ $sites['labpotthoff.uiowa.ddev.site'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.dev.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.stage.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.prod.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
+
+// Directory aliases for amendt.lab.uiowa.edu.
+$sites['labamendt.uiowa.ddev.site'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.dev.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.stage.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.prod.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
