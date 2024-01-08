@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: advisingcenterprehealth.uiowa.ddev.site
+    protocol: https
+  machine_name: advisingcenterprehealth
+  human_name: prehealth.advisingcenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: advisingcenterprehealth.prod
+drupal:
+  db:
+    database: prehealth_advisingcenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://advisingcenterprehealth.prod.drupal.uiowa.edu'
+  requester: pcox
+  site-name: prehealth.advisingcenter.uiowa.edu
