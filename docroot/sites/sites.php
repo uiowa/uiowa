@@ -6466,3 +6466,33 @@ $sites['labpotthoff.uiowa.ddev.site'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.dev.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.stage.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
 $sites['labpotthoff.prod.drupal.uiowa.edu'] = 'potthoff.lab.uiowa.edu';
+
+// Directory aliases for amendt.lab.uiowa.edu.
+$sites['labamendt.uiowa.ddev.site'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.dev.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.stage.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+$sites['labamendt.prod.drupal.uiowa.edu'] = 'amendt.lab.uiowa.edu';
+
+// Directory aliases for brainworkshop.sites.uiowa.edu.
+$sites['sitesbrainworkshop.uiowa.ddev.site'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.dev.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.stage.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+$sites['sitesbrainworkshop.prod.drupal.uiowa.edu'] = 'brainworkshop.sites.uiowa.edu';
+
+// Directory aliases for i3hsa.org..uiowa.edu.
+$sites['orgi3hsa.uiowa.ddev.site'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.dev.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.stage.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
+$sites['orgi3hsa.prod.drupal.uiowa.edu'] = 'i3hsa.org..uiowa.edu';
+
+// Directory aliases for anthony.lab.uiowa.edu.
+$sites['labanthony.uiowa.ddev.site'] = 'anthony.lab.uiowa.edu';
+$sites['labanthony.dev.drupal.uiowa.edu'] = 'anthony.lab.uiowa.edu';
+$sites['labanthony.stage.drupal.uiowa.edu'] = 'anthony.lab.uiowa.edu';
+$sites['labanthony.prod.drupal.uiowa.edu'] = 'anthony.lab.uiowa.edu';
+
+// Directory aliases for engelhardt.lab.uiowa.edu.
+$sites['labengelhardt.uiowa.ddev.site'] = 'engelhardt.lab.uiowa.edu';
+$sites['labengelhardt.dev.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
+$sites['labengelhardt.stage.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
+$sites['labengelhardt.prod.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
