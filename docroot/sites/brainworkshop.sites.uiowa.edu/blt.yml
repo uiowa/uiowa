@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesbrainworkshop.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesbrainworkshop
+  human_name: brainworkshop.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesbrainworkshop.prod
+drupal:
+  db:
+    database: brainworkshop_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesbrainworkshop.prod.drupal.uiowa.edu'
+  requester: nchalkley
+  site-name: 'https://brainworkshop.sites.uiowa.edu/'

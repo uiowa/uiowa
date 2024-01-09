@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lababboud.uiowa.ddev.site
+    protocol: https
+  machine_name: lababboud
+  human_name: abboud.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lababboud.prod
+drupal:
+  db:
+    database: abboud_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lababboud.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'François Abboud Lab'
