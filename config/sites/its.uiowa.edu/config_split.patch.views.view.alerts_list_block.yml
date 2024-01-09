@@ -1498,20 +1498,7 @@ adding:
           type: custom_tag
           options:
             custom_tag: its-core-alerts
-        empty:
-          area:
-            id: area
-            table: views
-            field: area
-            relationship: none
-            group_type: group
-            admin_label: ''
-            plugin_id: text
-            empty: true
-            content:
-              value: '<p>There are currently no service announcements.</p>'
-              format: filtered_html
-            tokenize: false
+        empty: {  }
         sorts:
           sticky:
             id: sticky
@@ -1797,6 +1784,7 @@ adding:
             tokenize: false
         block_description: 'Service Announcements'
         block_category: 'Site custom'
+        block_hide_empty: true
       cache_metadata:
         max-age: -1
         contexts:
