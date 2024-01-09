@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcui.uiowa.ddev.site
+    protocol: https
+  machine_name: labcui
+  human_name: cui.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcui.prod
+drupal:
+  db:
+    database: cui_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcui.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Cui Lab'

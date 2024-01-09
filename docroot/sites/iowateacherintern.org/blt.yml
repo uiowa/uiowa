@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-iowateacherintern.uiowa.ddev.site
+    protocol: https
+  machine_name: org-iowateacherintern
+  human_name: iowateacherintern.org
+drush:
+  aliases:
+    local: self
+    remote: org-iowateacherintern.prod
+drupal:
+  db:
+    database: iowateacherintern_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-iowateacherintern.prod.drupal.uiowa.edu'
+  requester: jfinley
+  site-name: 'Regents Alternative Pathway to Iowa Licensure (RAPIL)'
