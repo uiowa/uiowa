@@ -6496,3 +6496,9 @@ $sites['labengelhardt.uiowa.ddev.site'] = 'engelhardt.lab.uiowa.edu';
 $sites['labengelhardt.dev.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
 $sites['labengelhardt.stage.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
 $sites['labengelhardt.prod.drupal.uiowa.edu'] = 'engelhardt.lab.uiowa.edu';
+
+// Directory aliases for i3hsa.org.uiowa.edu.
+$sites['orgi3hsa.uiowa.ddev.site'] = 'i3hsa.org.uiowa.edu';
+$sites['orgi3hsa.dev.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
+$sites['orgi3hsa.stage.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
+$sites['orgi3hsa.prod.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
