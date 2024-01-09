@@ -6532,3 +6532,9 @@ $sites['labquelle.uiowa.ddev.site'] = 'quelle.lab.uiowa.edu';
 $sites['labquelle.dev.drupal.uiowa.edu'] = 'quelle.lab.uiowa.edu';
 $sites['labquelle.stage.drupal.uiowa.edu'] = 'quelle.lab.uiowa.edu';
 $sites['labquelle.prod.drupal.uiowa.edu'] = 'quelle.lab.uiowa.edu';
+
+// Directory aliases for strack.lab.uiowa.edu.
+$sites['labstrack.uiowa.ddev.site'] = 'strack.lab.uiowa.edu';
+$sites['labstrack.dev.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
+$sites['labstrack.stage.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
+$sites['labstrack.prod.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
