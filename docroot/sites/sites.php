@@ -6502,3 +6502,9 @@ $sites['labhoth.uiowa.ddev.site'] = 'hoth.lab.uiowa.edu';
 $sites['labhoth.dev.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
 $sites['labhoth.stage.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
 $sites['labhoth.prod.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
+
+// Directory aliases for richerson.lab.uiowa.edu.
+$sites['labricherson.uiowa.ddev.site'] = 'richerson.lab.uiowa.edu';
+$sites['labricherson.dev.drupal.uiowa.edu'] = 'richerson.lab.uiowa.edu';
+$sites['labricherson.stage.drupal.uiowa.edu'] = 'richerson.lab.uiowa.edu';
+$sites['labricherson.prod.drupal.uiowa.edu'] = 'richerson.lab.uiowa.edu';
