@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labanthony.uiowa.ddev.site
+    protocol: https
+  machine_name: labanthony
+  human_name: anthony.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labanthony.prod
+drupal:
+  db:
+    database: anthony_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labanthony.prod.drupal.uiowa.edu'
+  requester: tanthny
+  site-name: anthony.lab.uiowa.edu

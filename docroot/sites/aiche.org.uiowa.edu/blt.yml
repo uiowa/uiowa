@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgaiche.uiowa.ddev.site
+    protocol: https
+  machine_name: orgaiche
+  human_name: aiche.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgaiche.prod
+drupal:
+  db:
+    database: aiche_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgaiche.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'AIChE at the University of Iowa'

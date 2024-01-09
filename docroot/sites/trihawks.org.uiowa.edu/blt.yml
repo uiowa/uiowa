@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgtrihawks.uiowa.ddev.site
+    protocol: https
+  machine_name: orgtrihawks
+  human_name: trihawks.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgtrihawks.prod
+drupal:
+  db:
+    database: trihawks_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgtrihawks.prod.drupal.uiowa.edu'
+  requester: zwilliston
+  site-name: trihawks

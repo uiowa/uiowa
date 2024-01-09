@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgrowingwords.uiowa.ddev.site
+    protocol: https
+  machine_name: labgrowingwords
+  human_name: growingwords.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgrowingwords.prod
+drupal:
+  db:
+    database: growingwords_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgrowingwords.prod.drupal.uiowa.edu'
+  requester: rmmcmurr
+  site-name: 'The Growing Words Project'

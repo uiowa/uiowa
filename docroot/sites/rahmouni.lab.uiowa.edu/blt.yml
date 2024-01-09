@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrahmouni.uiowa.ddev.site
+    protocol: https
+  machine_name: labrahmouni
+  human_name: rahmouni.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrahmouni.prod
+drupal:
+  db:
+    database: rahmouni_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrahmouni.prod.drupal.uiowa.edu'
+  requester: rahmounik
+  site-name: rahmounilab
