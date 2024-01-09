@@ -6538,3 +6538,9 @@ $sites['labstrack.uiowa.ddev.site'] = 'strack.lab.uiowa.edu';
 $sites['labstrack.dev.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
 $sites['labstrack.stage.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
 $sites['labstrack.prod.drupal.uiowa.edu'] = 'strack.lab.uiowa.edu';
+
+// Directory aliases for cui.lab.uiowa.edu.
+$sites['labcui.uiowa.ddev.site'] = 'cui.lab.uiowa.edu';
+$sites['labcui.dev.drupal.uiowa.edu'] = 'cui.lab.uiowa.edu';
+$sites['labcui.stage.drupal.uiowa.edu'] = 'cui.lab.uiowa.edu';
+$sites['labcui.prod.drupal.uiowa.edu'] = 'cui.lab.uiowa.edu';
