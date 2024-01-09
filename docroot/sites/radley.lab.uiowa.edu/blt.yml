@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labradley.uiowa.ddev.site
+    protocol: https
+  machine_name: labradley
+  human_name: radley.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labradley.prod
+drupal:
+  db:
+    database: radley_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labradley.prod.drupal.uiowa.edu'
+  requester: jradley
+  site-name: 'same as current site'

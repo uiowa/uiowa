@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgturkish.uiowa.ddev.site
+    protocol: https
+  machine_name: orgturkish
+  human_name: turkish.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgturkish.prod
+drupal:
+  db:
+    database: turkish_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgturkish.prod.drupal.uiowa.edu'
+  requester: cikmz
+  site-name: 'Turkish Student Organization (TSA)'
