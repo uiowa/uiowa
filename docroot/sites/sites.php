@@ -6496,3 +6496,9 @@ $sites['orgi3hsa.uiowa.ddev.site'] = 'i3hsa.org.uiowa.edu';
 $sites['orgi3hsa.dev.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
 $sites['orgi3hsa.stage.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
 $sites['orgi3hsa.prod.drupal.uiowa.edu'] = 'i3hsa.org.uiowa.edu';
+
+// Directory aliases for hoth.lab.uiowa.edu.
+$sites['labhoth.uiowa.ddev.site'] = 'hoth.lab.uiowa.edu';
+$sites['labhoth.dev.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
+$sites['labhoth.stage.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
+$sites['labhoth.prod.drupal.uiowa.edu'] = 'hoth.lab.uiowa.edu';
