@@ -74,7 +74,7 @@ function its_core_entity_presave(EntityInterface $entity) {
       // we also want to check and set our views cache invalidation date.
       if ($entity->isPublished()) {
         $cache_affected_targets = [];
-        foreach (['service-degradation', 'outage', 'planned-maintenance'] as $target) {
+        foreach (['service-degradation', 'outage', 'planned-maintenance', 'service-announcement'] as $target) {
           $cache_affected_targets[] = its_core_alert_type_tag_map($target);
         }
         if (in_array($entity->field_alert_category->target_id, $cache_affected_targets)) {
