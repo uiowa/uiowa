@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labchen.uiowa.ddev.site
+    protocol: https
+  machine_name: labchen
+  human_name: chen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchen.prod
+drupal:
+  db:
+    database: chen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labchen.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Chen Lab'

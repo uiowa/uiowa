@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfisher.uiowa.ddev.site
+    protocol: https
+  machine_name: labfisher
+  human_name: fisher.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfisher.prod
+drupal:
+  db:
+    database: fisher_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfisher.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Fisher Lab'
