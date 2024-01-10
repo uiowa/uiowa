@@ -333,11 +333,12 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
         $row_build['content']['#override_styles']['border'] = '';
       }
       break;
+
     case 'alerts_list_block':
       if ($view->current_display === 'service_announcements') {
         foreach ($variables['rows'] as &$row_build) {
           $row_build['content']['#override_styles'] = [
-            'border' => ''
+            'border' => '',
           ];
         }
       }
