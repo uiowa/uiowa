@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labatasoy.uiowa.ddev.site
+    protocol: https
+  machine_name: labatasoy
+  human_name: atasoy.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labatasoy.prod
+drupal:
+  db:
+    database: atasoy_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labatasoy.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Atasoy Lab'

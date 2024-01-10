@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgeerling.uiowa.ddev.site
+    protocol: https
+  machine_name: labgeerling
+  human_name: geerling.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgeerling.prod
+drupal:
+  db:
+    database: geerling_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgeerling.prod.drupal.uiowa.edu'
+  requester: fgrady
+  site-name: 'Geerling Lab Website'
