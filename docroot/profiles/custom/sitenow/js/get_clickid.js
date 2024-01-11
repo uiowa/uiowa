@@ -10,7 +10,6 @@
       // Get the params from the address bar, so we have values to
       // populate inputs that meet our attribute criteria.
       // Prepopulate is a custom attribute added in sitenow.profile sitenow_webform_element_alter().
-      console.log(drupalSettings.sitenow.webformPrepopulateQueryKeys);
       drupalSettings.sitenow.webformPrepopulateQueryKeys.forEach(function (param) {
           if (params.get(param)) {
             if (context.querySelectorAll('input[prepopulate="true"][name="' + param + '"]').length) {
