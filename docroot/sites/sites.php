@@ -6556,3 +6556,27 @@ $sites['labchen.uiowa.ddev.site'] = 'chen.lab.uiowa.edu';
 $sites['labchen.dev.drupal.uiowa.edu'] = 'chen.lab.uiowa.edu';
 $sites['labchen.stage.drupal.uiowa.edu'] = 'chen.lab.uiowa.edu';
 $sites['labchen.prod.drupal.uiowa.edu'] = 'chen.lab.uiowa.edu';
+
+// Directory aliases for geyer.lab.uiowa.edu.
+$sites['labgeyer.uiowa.ddev.site'] = 'geyer.lab.uiowa.edu';
+$sites['labgeyer.dev.drupal.uiowa.edu'] = 'geyer.lab.uiowa.edu';
+$sites['labgeyer.stage.drupal.uiowa.edu'] = 'geyer.lab.uiowa.edu';
+$sites['labgeyer.prod.drupal.uiowa.edu'] = 'geyer.lab.uiowa.edu';
+
+// Directory aliases for price.lab.uiowa.edu.
+$sites['labprice.uiowa.ddev.site'] = 'price.lab.uiowa.edu';
+$sites['labprice.dev.drupal.uiowa.edu'] = 'price.lab.uiowa.edu';
+$sites['labprice.stage.drupal.uiowa.edu'] = 'price.lab.uiowa.edu';
+$sites['labprice.prod.drupal.uiowa.edu'] = 'price.lab.uiowa.edu';
+
+// Directory aliases for shea.lab.uiowa.edu.
+$sites['labshea.uiowa.ddev.site'] = 'shea.lab.uiowa.edu';
+$sites['labshea.dev.drupal.uiowa.edu'] = 'shea.lab.uiowa.edu';
+$sites['labshea.stage.drupal.uiowa.edu'] = 'shea.lab.uiowa.edu';
+$sites['labshea.prod.drupal.uiowa.edu'] = 'shea.lab.uiowa.edu';
+
+// Directory aliases for wold.lab.uiowa.edu.
+$sites['labwold.uiowa.ddev.site'] = 'wold.lab.uiowa.edu';
+$sites['labwold.dev.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
+$sites['labwold.stage.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
+$sites['labwold.prod.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
