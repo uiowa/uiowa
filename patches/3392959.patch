@@ -1,0 +1,30 @@
+diff --git a/src/EventSubscriber/ReplicateLayoutBuilderSubscriber.php b/src/EventSubscriber/ReplicateLayoutBuilderSubscriber.php
+index 0286b1847ea180a02e2c1a84c40c61fccf439bf7..99877c84c52ab6a91480b6aa975925bbd663eaa5 100644
+--- a/src/EventSubscriber/ReplicateLayoutBuilderSubscriber.php
++++ b/src/EventSubscriber/ReplicateLayoutBuilderSubscriber.php
+@@ -8,6 +8,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
+ use Drupal\Core\Entity\TranslatableInterface;
+ use Drupal\layout_builder\Plugin\Block\InlineBlock;
+ use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
++use Drupal\layout_builder\SectionComponent;
+ use Drupal\replicate\Events\AfterSaveEvent;
+ use Drupal\replicate\Events\ReplicatorEvents;
+ use Drupal\replicate\Replicator;
+@@ -112,7 +113,16 @@ class ReplicateLayoutBuilderSubscriber implements EventSubscriberInterface {
+     $block_content_storage = $this->entityTypeManager->getStorage('block_content');
+
+     foreach ($field_item_list->getSections() as $section) {
+-      foreach ($section->getComponents() as $component) {
++      // Sort the components by their weight before replicating them, otherwise
++      // when we remove and reappend them to the section, their original order
++      // will be lost because Section::appendComponent resets the component
++      // weight.
++      $components = $section->getComponents();
++      uasort($components, function (SectionComponent $a, SectionComponent $b) {
++        return $a->getWeight() <=> $b->getWeight();
++      });
++
++      foreach ($components as $component) {
+         $plugin = $component->getPlugin();
+         if (!$plugin instanceof InlineBlock) {
+           continue;
