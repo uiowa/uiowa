@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orguisug.uiowa.ddev.site
+    protocol: https
+  machine_name: orguisug
+  human_name: uisug.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orguisug.prod
+drupal:
+  db:
+    database: uisug_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orguisug.prod.drupal.uiowa.edu'
+  requester: smott
+  site-name: 'University of Iowa SAS Users Group'
