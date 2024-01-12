@@ -6125,12 +6125,6 @@ $sites['labhultman.dev.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
 $sites['labhultman.stage.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
 $sites['labhultman.prod.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
 
-// Directory aliases for sandboxnext.sites.uiowa.edu.
-$sites['sitessandboxnext.uiowa.ddev.site'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.dev.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.stage.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.prod.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
-
 // Directory aliases for mattes.lab.uiowa.edu.
 $sites['labmattes.uiowa.ddev.site'] = 'mattes.lab.uiowa.edu';
 $sites['labmattes.dev.drupal.uiowa.edu'] = 'mattes.lab.uiowa.edu';
