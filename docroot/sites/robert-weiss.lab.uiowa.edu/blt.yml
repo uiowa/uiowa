@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrobert-weiss.uiowa.ddev.site
+    protocol: https
+  machine_name: labrobert-weiss
+  human_name: robert-weiss.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrobert-weiss.prod
+drupal:
+  db:
+    database: robert_weiss_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrobert-weiss.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Robert Weiss Lab'
