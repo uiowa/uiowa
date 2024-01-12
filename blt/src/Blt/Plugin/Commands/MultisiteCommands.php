@@ -1100,8 +1100,8 @@ EOD;
   /**
    * Delete files on application environment.
    *
-   * Note that we CD into the file system first and THEN delete the site files
-   * directory. If we just rm -rf the directory and $site is ever empty, the
+   * Note that we CD into the file system first and THEN delete the site file
+   * directories. If we just rm -rf the directory and $site is ever empty, the
    * entire sites directory would be deleted.
    *
    * @param string $id
@@ -1120,15 +1120,22 @@ EOD;
       throw new \Exception('Deleting current directory or wildcard is not allowed.');
     }
 
-    $result = $this->taskDrush()
-      ->alias("$id.$env")
-      ->drush('ssh')
-      ->arg("rm -rf $site")
-      ->option('cd', "/mnt/gfs/$app.$env/sites/")
-      ->run();
+    $file_directories = [
+      'files',
+      'files-private',
+    ];
 
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to delete multisite files for $site on $app.$env.");
+    foreach ($file_directories as $directory) {
+      $result = $this->taskDrush()
+        ->alias("$id.$env")
+        ->drush('ssh')
+        ->arg("rm -rf $site/$directory/*")
+        ->option('cd', "/mnt/gfs/$app.$env/sites/")
+        ->run();
+
+      if (!$result->wasSuccessful()) {
+        throw new \Exception("Unable to delete multisite $directory for $site on $app.$env.");
+      }
     }
   }
 
