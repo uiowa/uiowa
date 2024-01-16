@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use Symfony\Component\Console\Helper\Table;
@@ -324,6 +325,14 @@ class ReportCommands extends BltTasks {
    * @throws \Robo\Exception\TaskException
    */
   public function v1StandardCommsList($options = ['export' => FALSE, 'debug' => FALSE]) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+
+    if($env !== 'local') {
+      $this->say('Ope! We shouldn\'t run this command remotely.');
+      $this->say('Do whatever you need to, and run it locally mmkay?');
+      return;
+    }
+
     $site_data = [];
 
     $headers = [
