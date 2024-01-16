@@ -6586,3 +6586,9 @@ $sites['labroghair.uiowa.ddev.site'] = 'roghair.lab.uiowa.edu';
 $sites['labroghair.dev.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
 $sites['labroghair.stage.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
 $sites['labroghair.prod.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+
+// Directory aliases for kletzig.physics.uiowa.edu.
+$sites['physicskletzig.uiowa.ddev.site'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.dev.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.stage.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.prod.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
