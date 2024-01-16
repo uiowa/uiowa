@@ -6610,3 +6610,9 @@ $sites['orguitransalliance.uiowa.ddev.site'] = 'uitransalliance.org.uiowa.edu';
 $sites['orguitransalliance.dev.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
 $sites['orguitransalliance.stage.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
 $sites['orguitransalliance.prod.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
+
+// Directory aliases for nasa.org.uiowa.edu.
+$sites['orgnasa.uiowa.ddev.site'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.dev.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.stage.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.prod.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
