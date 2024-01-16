@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orguitransalliance.uiowa.ddev.site
+    protocol: https
+  machine_name: orguitransalliance
+  human_name: uitransalliance.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orguitransalliance.prod
+drupal:
+  db:
+    database: uitransalliance_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orguitransalliance.prod.drupal.uiowa.edu'
+  requester: mmmnn
+  site-name: 'Trans Alliance'
