@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpeters.uiowa.ddev.site
+    protocol: https
+  machine_name: labpeters
+  human_name: peters.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpeters.prod
+drupal:
+  db:
+    database: peters_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpeters.prod.drupal.uiowa.edu'
+  requester: tpeters
+  site-name: 'https://peters.lab.uiowa.edu/'
