@@ -6598,3 +6598,9 @@ $sites['org-iowahumanrights.uiowa.ddev.site'] = 'iowahumanrights.org';
 $sites['org-iowahumanrights.dev.drupal.uiowa.edu'] = 'iowahumanrights.org';
 $sites['org-iowahumanrights.stage.drupal.uiowa.edu'] = 'iowahumanrights.org';
 $sites['org-iowahumanrights.prod.drupal.uiowa.edu'] = 'iowahumanrights.org';
+
+// Directory aliases for clp.law.uiowa.edu.
+$sites['lawclp.uiowa.ddev.site'] = 'clp.law.uiowa.edu';
+$sites['lawclp.dev.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
+$sites['lawclp.stage.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
+$sites['lawclp.prod.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
