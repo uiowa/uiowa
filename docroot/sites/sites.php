@@ -6616,3 +6616,9 @@ $sites['orgnasa.uiowa.ddev.site'] = 'nasa.org.uiowa.edu';
 $sites['orgnasa.dev.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
 $sites['orgnasa.stage.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
 $sites['orgnasa.prod.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+
+// Directory aliases for peters.lab.uiowa.edu.
+$sites['labpeters.uiowa.ddev.site'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.dev.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.stage.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.prod.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
