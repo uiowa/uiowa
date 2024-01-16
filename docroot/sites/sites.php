@@ -6592,3 +6592,9 @@ $sites['physicskletzig.uiowa.ddev.site'] = 'kletzig.physics.uiowa.edu';
 $sites['physicskletzig.dev.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
 $sites['physicskletzig.stage.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
 $sites['physicskletzig.prod.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+
+// Directory aliases for iowahumanrights.org.
+$sites['org-iowahumanrights.uiowa.ddev.site'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.dev.drupal.uiowa.edu'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.stage.drupal.uiowa.edu'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.prod.drupal.uiowa.edu'] = 'iowahumanrights.org';
