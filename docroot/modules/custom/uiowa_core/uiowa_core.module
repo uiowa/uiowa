@@ -646,7 +646,7 @@ function uiowa_core_page_attachments(&$page) {
  * Implements hook_preprocess_fieldset().
  */
 function uiowa_core_preprocess_fieldset(&$variables) {
-  if(isset($variables['element']['#type']) && $variables['element']['#type'] === 'radios') {
+  if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'radios') {
     $variables['description_display'] = 'before';
   }
 }
