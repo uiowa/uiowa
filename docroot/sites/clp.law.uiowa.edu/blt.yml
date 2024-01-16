@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawclp.uiowa.ddev.site
+    protocol: https
+  machine_name: lawclp
+  human_name: clp.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawclp.prod
+drupal:
+  db:
+    database: clp_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawclp.prod.drupal.uiowa.edu'
+  requester: bfarrell
+  site-name: 'Citizen Lawyer Program'

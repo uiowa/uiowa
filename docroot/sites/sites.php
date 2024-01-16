@@ -6580,3 +6580,45 @@ $sites['labwold.uiowa.ddev.site'] = 'wold.lab.uiowa.edu';
 $sites['labwold.dev.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
 $sites['labwold.stage.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
 $sites['labwold.prod.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
+
+// Directory aliases for roghair.lab.uiowa.edu.
+$sites['labroghair.uiowa.ddev.site'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.dev.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.stage.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.prod.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+
+// Directory aliases for kletzig.physics.uiowa.edu.
+$sites['physicskletzig.uiowa.ddev.site'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.dev.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.stage.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+$sites['physicskletzig.prod.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
+
+// Directory aliases for iowahumanrights.org.
+$sites['org-iowahumanrights.uiowa.ddev.site'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.dev.drupal.uiowa.edu'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.stage.drupal.uiowa.edu'] = 'iowahumanrights.org';
+$sites['org-iowahumanrights.prod.drupal.uiowa.edu'] = 'iowahumanrights.org';
+
+// Directory aliases for clp.law.uiowa.edu.
+$sites['lawclp.uiowa.ddev.site'] = 'clp.law.uiowa.edu';
+$sites['lawclp.dev.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
+$sites['lawclp.stage.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
+$sites['lawclp.prod.drupal.uiowa.edu'] = 'clp.law.uiowa.edu';
+
+// Directory aliases for uitransalliance.org.uiowa.edu.
+$sites['orguitransalliance.uiowa.ddev.site'] = 'uitransalliance.org.uiowa.edu';
+$sites['orguitransalliance.dev.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
+$sites['orguitransalliance.stage.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
+$sites['orguitransalliance.prod.drupal.uiowa.edu'] = 'uitransalliance.org.uiowa.edu';
+
+// Directory aliases for nasa.org.uiowa.edu.
+$sites['orgnasa.uiowa.ddev.site'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.dev.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.stage.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+$sites['orgnasa.prod.drupal.uiowa.edu'] = 'nasa.org.uiowa.edu';
+
+// Directory aliases for peters.lab.uiowa.edu.
+$sites['labpeters.uiowa.ddev.site'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.dev.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.stage.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
+$sites['labpeters.prod.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
