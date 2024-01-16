@@ -259,9 +259,7 @@ function its_core_preprocess_field(&$variables, $hook) {
             //   or remove if we want the same icon for each.
             $icon = match ($category_id) {
               // Outage.
-              '406' => '<span class="fas fa-exclamation"></span>',
-              // Service Degradation.
-              '416' => '<span class="fas fa-exclamation-triangle"></span>',
+              '406' => '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>',
               default => ''
             };
             $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
