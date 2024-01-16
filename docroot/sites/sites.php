@@ -6580,3 +6580,9 @@ $sites['labwold.uiowa.ddev.site'] = 'wold.lab.uiowa.edu';
 $sites['labwold.dev.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
 $sites['labwold.stage.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
 $sites['labwold.prod.drupal.uiowa.edu'] = 'wold.lab.uiowa.edu';
+
+// Directory aliases for roghair.lab.uiowa.edu.
+$sites['labroghair.uiowa.ddev.site'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.dev.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.stage.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
+$sites['labroghair.prod.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
