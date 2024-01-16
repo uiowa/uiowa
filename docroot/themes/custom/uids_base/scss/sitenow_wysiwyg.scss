@@ -54,6 +54,9 @@
       text-transform: uppercase;
       background-color: #333;
       font-weight: bold;
+      em, strong, sup, sub {
+        color: inherit!important;
+      }
       a,
       :where(p) a:not(.bttn) {
         color: $primary;
@@ -183,3 +186,4 @@
 .ck.ck-toolbar.ck-toolbar_grouping > .ck-toolbar__items {
   flex-wrap: wrap!important;
 }
+
