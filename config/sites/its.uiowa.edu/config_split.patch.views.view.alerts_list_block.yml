@@ -11,6 +11,20 @@ adding:
   display:
     default:
       display_options:
+        pager:
+          type: full
+          options:
+            items_per_page: 3
+            tags:
+              next: »
+              previous: «
+              first: '« First'
+              last: 'Last »'
+            expose:
+              items_per_page: false
+              items_per_page_options_all: false
+              offset: false
+            quantity: 9
         empty:
           area:
             content:
@@ -1822,6 +1836,17 @@ removing:
   display:
     default:
       display_options:
+        pager:
+          type: mini
+          options:
+            items_per_page: 0
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+            expose:
+              items_per_page: true
+              items_per_page_options_all: true
+              offset: true
         empty:
           area:
             content:
