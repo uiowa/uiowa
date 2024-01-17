@@ -11,6 +11,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facilities_core\Entity\Artwork;
+use Drupal\facilities_core\Entity\NamedBuilding;
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -87,7 +88,6 @@ function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCa
  * Implements hook_form_alter().
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
   switch ($form_id) {
     case 'node_alert_form':
     case 'node_alert_edit_form':
@@ -134,6 +134,7 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       \Drupal::messenger()->addWarning('This content type is managed through an automated process.
       Any projects created or modified that are not in the source data will be overwritten.');
       break;
+
   }
 }
 
