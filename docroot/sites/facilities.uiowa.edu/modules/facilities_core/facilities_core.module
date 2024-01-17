@@ -11,8 +11,8 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facilities_core\Entity\Artwork;
-use Drupal\facilities_core\Entity\NamedBuilding;
 use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -87,6 +87,7 @@ function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCa
  * Implements hook_form_alter().
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
   switch ($form_id) {
     case 'node_alert_form':
     case 'node_alert_edit_form':
@@ -133,7 +134,37 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       \Drupal::messenger()->addWarning('This content type is managed through an automated process.
       Any projects created or modified that are not in the source data will be overwritten.');
       break;
+  }
+}
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'artwork') {
+    if ($view->current_display === 'block_search_artwork') {
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'person')
+        ->condition('status', 1)
+        ->condition('field_person_types', 'artist')
+        ->accessCheck(FALSE);
+
+      $entity_ids = $query->execute();
+
+      // Include an "Any" option.
+      $options = ['All' => '- Any -'];
+
+      foreach ($entity_ids as $entity_id) {
+        $person = Node::load($entity_id);
+
+        if ($person) {
+          $options[$entity_id] = $person->label();
+        }
+      }
+
+      $form['field_artwork_artist_target_id']['#options'] = $options;
+    }
   }
 }
 
