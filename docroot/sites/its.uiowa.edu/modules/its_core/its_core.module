@@ -112,13 +112,19 @@ function its_core_preprocess_fieldset(&$variables) {
     isset($variables['element']['#title']) &&
     $variables['element']['#title'] === 'Category'
   ) {
-    $node_type = \Drupal::request()->attributes->get('node')->getType();
-    $current_path = \Drupal::service('path.current')->getPath();
+    $node_type_edit = \Drupal::request()?->attributes?->get('node')?->getType();
+    $node_type_add = \Drupal::request()?->attributes?->get('node_type')?->get('originalId');
+    $is_alert = $node_type_edit === 'alert' || $node_type_add === 'alert';
+    $current_path = \Drupal::service('path.current')?->getPath();
     $current_path_parts = preg_split('/\//', $current_path, -1, PREG_SPLIT_NO_EMPTY);
+
     if (
-      $node_type === 'alert' &&
+      $is_alert &&
       isset($current_path_parts[2]) &&
-      $current_path_parts[2] === 'edit'
+      (
+        $current_path_parts[2] === 'edit' ||
+        $current_path_parts[1] === 'add'
+      )
     ) {
       $variables['description_display'] = 'before';
     }
