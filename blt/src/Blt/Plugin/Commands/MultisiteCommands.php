@@ -202,7 +202,8 @@ class MultisiteCommands extends BltTasks {
               $this->invokeCommand('drupal:install', [
                 '--site' => $multisite,
               ]);
-            } catch (BltException $e) {
+            }
+            catch (BltException $e) {
               $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
             }
           }
@@ -803,7 +804,8 @@ EOD;
       if ($notification->status != 'completed') {
         return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
       }
-    } catch (ApiErrorException $e) {
+    }
+    catch (ApiErrorException $e) {
       if ($mode == 'prod') {
         return new CommandError("Unable to create database on $new application.");
       }
@@ -927,10 +929,12 @@ EOD;
         try {
           $domains->create($target_env->id, $domain);
           $this->logger->notice("Created domain $domain on $new $mode.");
-        } catch (ApiErrorException $e) {
+        }
+        catch (ApiErrorException $e) {
           $this->logger->warning("Could not create domain $domain on $new $mode.");
         }
-      } catch (ApiErrorException $e) {
+      }
+      catch (ApiErrorException $e) {
         $this->logger->warning("Domain $domain does not exist on $old $mode.");
       }
     }
@@ -1025,7 +1029,8 @@ EOD;
         $client->post($webhook_url, [
           'body' => json_encode($data),
         ]);
-      } catch (ClientException $e) {
+      }
+      catch (ClientException $e) {
         $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
       }
     }
