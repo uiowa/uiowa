@@ -123,10 +123,10 @@ class MultisiteCommands extends BltTasks {
    *
    * @aliases umi
    *
-   * @throws \Exception
-   *
    * @return mixed
    *   CommandError, list of uninstalled sites or the output from installation.
+   *
+   * @throws \Exception
    *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
@@ -202,8 +202,7 @@ class MultisiteCommands extends BltTasks {
               $this->invokeCommand('drupal:install', [
                 '--site' => $multisite,
               ]);
-            }
-            catch (BltException $e) {
+            } catch (BltException $e) {
               $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
             }
           }
@@ -275,7 +274,7 @@ class MultisiteCommands extends BltTasks {
     ];
 
     $this->printArrayAsTable($properties);
-    if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
+    if (!$this->confirm('The cloud properties above will be deleted. Are you sure?', FALSE)) {
       throw new \Exception('Aborted.');
     }
     else {
@@ -360,7 +359,7 @@ EOD
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
-      $this->say("Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.");
+      $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
     }
   }
 
@@ -636,7 +635,8 @@ EOD
 
     // Switch site context before expanding file properties.
     $this->switchSiteContext($host);
-    $this->getConfig()->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
+    $this->getConfig()
+      ->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
 
     $this->say("Wrote <comment>docroot/sites/{$host}/blt.yml</comment> file.");
 
@@ -700,7 +700,7 @@ EOD;
     }
 
     $this->say("Committed site <comment>{$host}</comment> code.");
-    $this->say("Continue initializing additional multisites or follow the next steps below.");
+    $this->say('Continue initializing additional multisites or follow the next steps below.');
 
     $steps += [
       1 => 'Deploy a release to production as per usual.',
@@ -803,8 +803,7 @@ EOD;
       if ($notification->status != 'completed') {
         return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
       }
-    }
-    catch (ApiErrorException $e) {
+    } catch (ApiErrorException $e) {
       if ($mode == 'prod') {
         return new CommandError("Unable to create database on $new application.");
       }
@@ -928,12 +927,10 @@ EOD;
         try {
           $domains->create($target_env->id, $domain);
           $this->logger->notice("Created domain $domain on $new $mode.");
-        }
-        catch (ApiErrorException $e) {
+        } catch (ApiErrorException $e) {
           $this->logger->warning("Could not create domain $domain on $new $mode.");
         }
-      }
-      catch (ApiErrorException $e) {
+      } catch (ApiErrorException $e) {
         $this->logger->warning("Domain $domain does not exist on $old $mode.");
       }
     }
@@ -946,7 +943,7 @@ EOD;
         $databases->delete($applications[$old], $db);
       }
       else {
-        $this->logger->warning("Test mode. Skipping database deletion.");
+        $this->logger->warning('Test mode. Skipping database deletion.');
       }
 
       $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site);
@@ -1028,8 +1025,7 @@ EOD;
         $client->post($webhook_url, [
           'body' => json_encode($data),
         ]);
-      }
-      catch (ClientException $e) {
+      } catch (ClientException $e) {
         $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
       }
     }
@@ -1120,6 +1116,20 @@ EOD;
       throw new \Exception('Deleting current directory or wildcard is not allowed.');
     }
 
+    $app_env = "$app.$env";
+
+    // Use ssh user information for proper directory location.
+    $whoami_result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('ssh')
+      ->arg('whoami')
+      ->printOutput(TRUE)
+      ->run();
+
+    if (str_contains($whoami_result->getMessage(), 'stage')) {
+      $app_env = trim($whoami_result->getMessage());
+    }
+
     $file_directories = [
       'files',
       'files-private',
@@ -1130,11 +1140,11 @@ EOD;
         ->alias("$id.$env")
         ->drush('ssh')
         ->arg("rm -rf $site/$directory/*")
-        ->option('cd', "/mnt/gfs/$app.$env/sites/")
+        ->option('cd', "/mnt/gfs/$app_env/sites/")
         ->run();
 
       if (!$result->wasSuccessful()) {
-        throw new \Exception("Unable to delete multisite $directory for $site on $app.$env.");
+        throw new \Exception("Unable to delete multisite $directory for $site on $app_env.");
       }
     }
   }
