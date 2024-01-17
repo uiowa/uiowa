@@ -4,8 +4,16 @@ adding:
       - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_title_details
+  content:
+    field_alert_date:
+      settings:
+        format: compact
   hidden:
     field_alert_building: true
     field_alert_service_affected: true
     field_alert_title_details: true
-removing: {  }
+removing:
+  content:
+    field_alert_date:
+      settings:
+        format: default
