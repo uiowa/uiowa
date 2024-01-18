@@ -283,14 +283,23 @@ function its_core_preprocess_field(&$variables, $hook) {
           $category_id = $item['content']['#entity']?->id();
           if (in_array($category_id, ['406', '416'])) {
             $content = $item['content']['#markup'];
-            $content = str_replace('badge--light', 'badge--orange', $content);
             // @todo Update this to the preferred icon(s),
-            //   or remove if we want the same icon for each.
-            $icon = match ($category_id) {
+            //   or remove if we want the same icon for each.d
+            switch ($category_id) {
               // Outage.
-              '406' => '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>',
-              default => ''
-            };
+              case '406':
+                $content = str_replace('badge--light', 'badge--orange', $content);
+                $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
+                break;
+              // Service Degradation.
+              case '416':
+                $content = str_replace('badge--light', 'badge--blue', $content);
+                $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
+                break;
+              default:
+                $icon = '';
+                break;
+            }
             $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
             $item['content']['#markup'] = $content;
           }
