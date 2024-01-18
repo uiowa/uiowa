@@ -39,21 +39,8 @@ removing:
     module:
       - smart_trim
   content:
-    field_alert_category:
-      weight: 2
-    field_alert_date:
-      weight: 3
-    links:
-      weight: 1
     body:
-      type: smart_trim
-      label: hidden
       settings:
-        trim_length: 300
-        trim_type: chars
-        trim_suffix: ...
-        wrap_output: false
-        wrap_class: trimmed
         more:
           display_link: false
           target_blank: false
@@ -62,11 +49,22 @@ removing:
           text: More
           aria_label: 'Read more about [node:title]'
           token_browser: ''
-        summary_handler: full
         trim_options:
           text: false
           trim_zero: false
           replace_tokens: false
-      third_party_settings: {  }
+        trim_length: 300
+        trim_type: chars
+        trim_suffix: ...
+        wrap_output: false
+        wrap_class: trimmed
+        summary_handler: full
+      type: smart_trim
+      label: hidden
       weight: 0
-      region: content
+    field_alert_category:
+      weight: 2
+    field_alert_date:
+      weight: 3
+    links:
+      weight: 1
