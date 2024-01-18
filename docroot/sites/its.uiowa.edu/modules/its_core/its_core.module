@@ -313,11 +313,13 @@ function its_core_preprocess_field(&$variables, $hook) {
                 $content = str_replace('badge--light', 'badge--orange', $content);
                 $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
                 break;
+
               // Service Degradation.
               case '416':
                 $content = str_replace('badge--light', 'badge--blue', $content);
                 $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
                 break;
+
               default:
                 $icon = '';
                 break;
