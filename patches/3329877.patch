@@ -1,58 +1,127 @@
-From fec60b77165c65222246e08c7951b9acecae828e Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 21 Nov 2023 11:49:55 -0600
-Subject: [PATCH 01/17] Getting some of the scaffolding out of the way.
-
----
- .gitignore                                    |    1 +
- js/build/linkitMediaLibrary.js                |    1 +
- .../linkitMediaLibrary/src/index.js           |   21 +
- js/linkitMediaLibrary.js                      |    0
- linkit_media_library.ckeditor5.yml            |    9 +
- linkit_media_library.libraries.yml            |    8 +
- package.json                                  |   21 +
- webpack.config.js                             |   66 +
- yarn.lock                                     | 2712 +++++++++++++++++
- 9 files changed, 2839 insertions(+)
- create mode 100644 .gitignore
- create mode 100644 js/build/linkitMediaLibrary.js
- create mode 100644 js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
- create mode 100644 js/linkitMediaLibrary.js
- create mode 100644 linkit_media_library.ckeditor5.yml
- create mode 100644 linkit_media_library.libraries.yml
- create mode 100644 package.json
- create mode 100644 webpack.config.js
- create mode 100644 yarn.lock
-
 diff --git a/.gitignore b/.gitignore
 new file mode 100644
-index 0000000..3c3629e
+index 0000000000000000000000000000000000000000..3c3629e647f5ddf82548912e337bea9826b434af
 --- /dev/null
 +++ b/.gitignore
 @@ -0,0 +1 @@
 +node_modules
+diff --git a/css/linkit-media-library.css b/css/linkit-media-library.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..fa02e69ba324b62683dc21ef6e579c2fe7ce4879
+--- /dev/null
++++ b/css/linkit-media-library.css
+@@ -0,0 +1,16 @@
++.ck.ck-link-form.ck-link-form_layout-vertical button.ck-media-library {
++  width: 100%;
++  border-top: unset;
++  padding: var(--ck-spacing-small) var(--ck-spacing-large);
++  display: block;
++}
++
++.ui-dialog.ui-dialog-off-canvas ~ .ck-body-wrapper .ck-balloon-panel {
++  --ck-z-modal: calc(var(--ck-z-default) + 999);
++}
++
++.ui-dialog.media-library-widget-modal ~ .ck-body-wrapper .ck-balloon-panel,
++.ui-dialog.webform-off-canvas ~ .ck-body-wrapper .ck-balloon-panel {
++  --ck-z-modal: inherit;
++}
++
 diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
 new file mode 100644
-index 0000000..36799ab
+index 0000000000000000000000000000000000000000..edc36b9c702f3fe35ab32ee02923865821c2678b
 --- /dev/null
 +++ b/js/build/linkitMediaLibrary.js
 @@ -0,0 +1 @@
-+!function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.CKEditor5=r():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=r())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,r,t)=>{e.exports=t("dll-reference CKEditor5.dll")("./src/core.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},r={};function t(o){var i=r[o];if(void 0!==i)return i.exports;var d=r[o]={exports:{}};return e[o](d,d.exports,t),d.exports}t.d=(e,r)=>{for(var o in r)t.o(r,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:r[o]})},t.o=(e,r)=>Object.prototype.hasOwnProperty.call(e,r);var o={};return(()=>{"use strict";t.d(o,{default:()=>i});var e=t("ckeditor5/src/core.js");class r extends e.Plugin{static get requires(){return[]}static get pluginName(){return"LinkitMediaLibrary"}}const i={LinkitMediaLibrary:r}})(),o=o.default})()));
++!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function i(r){var o=t[r];if(void 0!==o)return o.exports;var d=t[r]={exports:{}};return e[r](d,d.exports,i),d.exports}i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return(()=>{"use strict";i.d(r,{default:()=>d});var e=i("ckeditor5/src/core.js"),t=i("ckeditor5/src/ui.js");class o extends e.Plugin{buttonAdded=!1;static get requires(){return[]}init(){const{editor:e}=this;this._addMediaLibraryButton()}_addMediaLibraryButton(){const{editor:e}=this,{locale:i}=e,r=e.plugins.get("LinkUI"),o=e.plugins.get("Linkit"),d=r._hideUI,n=e.config.get("linkitMediaLibrary"),s=r.formView,l=new t.ButtonView(i),{libraryURL:a,openDialog:u,dialogSettings:c={}}=n;a&&"function"==typeof u&&(l.set({label:e.t("Media Library"),withText:!0}),l.set("class","ck-media-library"),this.listenTo(l,"execute",(()=>{u(a,(({attributes:e})=>{o.set("entityType",e["data-entity-type"]),o.set("entityUuid",e["data-entity-uuid"]),o.set("entitySubstitution",e["data-entity-substitution"]),s.urlInputView.fieldView.element.value=e.href,setTimeout((()=>{s.urlInputView.fieldView.element.focus()}),100)}),c)})),e.plugins.get("ContextualBalloon").on("set:visibleView",((e,t,i,r)=>{this.buttonAdded||i===r||i!==s||(s.children.add(l,1),this.buttonAdded=!0)})),r._hideUI=()=>{0===document.querySelectorAll("#drupal-modal.ui-dialog-content").length&&d.bind(r).call()})}static get pluginName(){return"LinkitMediaLibrary"}}const d={LinkitMediaLibrary:o}})(),r=r.default})()));
 \ No newline at end of file
 diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
 new file mode 100644
-index 0000000..36e808e
+index 0000000000000000000000000000000000000000..877b11b909f993e107335e05b8ba1770b7eb58f9
 --- /dev/null
 +++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,93 @@
 +import { Plugin } from 'ckeditor5/src/core';
++import { ButtonView } from 'ckeditor5/src/ui';
++
 +
 +class LinkitMediaLibrary extends Plugin {
++
++  buttonAdded = false;
++
 +  /**
 +   * @inheritdoc
 +   */
 +  static get requires() {
 +    return [];
++  }
++
++  init() {
++    const { editor } = this;
++
++    this._addMediaLibraryButton();
++  }
++
++  _addMediaLibraryButton() {
++    const { editor } = this;
++    const { locale } = editor;
++    const linkUI = editor.plugins.get('LinkUI');
++    const linkit = editor.plugins.get("Linkit");
++    const _hideUIOriginal = linkUI._hideUI;
++    const options = editor.config.get('linkitMediaLibrary');
++    const linkFormView = linkUI.formView;
++    const buttonView = new ButtonView(locale);
++
++    const { libraryURL, openDialog, dialogSettings = {} } = options;
++    if (!libraryURL || typeof openDialog !== 'function') {
++      return;
++    }
++
++    // Create the toolbar button.
++    buttonView.set({
++      label: editor.t('Media Library'),
++      withText: true,
++    });
++    buttonView.set( 'class', 'ck-media-library' );
++    this.listenTo(buttonView, 'execute', () => {
++      openDialog(
++        libraryURL,
++        ({ attributes }) => {
++          // Add the media attributes into the Linkit plugin.
++          linkit.set('entityType', attributes['data-entity-type']);
++          linkit.set('entityUuid', attributes['data-entity-uuid']);
++          linkit.set('entitySubstitution', attributes['data-entity-substitution']);
++          linkFormView.urlInputView.fieldView.element.value = attributes['href'];
++          setTimeout(() => {
++            linkFormView.urlInputView.fieldView.element.focus();
++          }, 100)
++        },
++
++        dialogSettings,
++      );
++    });
++
++    // For now, we are adding the button inside this event because Editor
++    // Advanced Link is adding its form element so the Link UI form view in the
++    // same way and if we don't do it like this, our changes get overridden.
++    editor.plugins
++      .get('ContextualBalloon')
++      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
++          if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {
++            linkFormView.children.add(buttonView, 1);
++            this.buttonAdded = true;
++          }
++        }
++      )
++
++    // Here's the issue
++    linkUI._hideUI = () => {
++      const modal = document.querySelectorAll('#drupal-modal.ui-dialog-content');
++      if (modal.length === 0) {
++        _hideUIOriginal.bind(linkUI).call();
++      }
++    };
++
 +  }
 +
 +  /**
@@ -62,45 +131,58 @@ index 0000000..36e808e
 +    return 'LinkitMediaLibrary';
 +  }
 +}
-+
 +export default {
 +  LinkitMediaLibrary,
 +};
-diff --git a/js/linkitMediaLibrary.js b/js/linkitMediaLibrary.js
-new file mode 100644
-index 0000000..e69de29
 diff --git a/linkit_media_library.ckeditor5.yml b/linkit_media_library.ckeditor5.yml
 new file mode 100644
-index 0000000..0f96f64
+index 0000000000000000000000000000000000000000..9fc7c58c738ca8970af8fdcccf06e35ba1ce48cd
 --- /dev/null
 +++ b/linkit_media_library.ckeditor5.yml
-@@ -0,0 +1,9 @@
-+linkit_media_library:
+@@ -0,0 +1,22 @@
++linkit_media_library_link:
++  ckeditor5:
++    plugins:
++      - linkitMediaLibrary.LinkitMediaLibrary
++    config:
++      linkitMediaLibrary:
++        openDialog:
++          func:
++            name: Drupal.ckeditor5.openDialog
++            invoke: false
++        dialogSettings:
++          height: 75%
++          dialogClass: media-library-widget-modal
 +  drupal:
 +    label: LinkIt media library
++    class: Drupal\linkit_media_library\Plugin\CKEditor5Plugin\LinkitMediaLibrary
 +    library: linkit_media_library/ckeditor5
 +    elements:
 +      - <a aria-label title class id target="_blank" rel>
 +    conditions:
 +      plugins:
-+        - ckeditor5_link
++        - linkit_extension
 diff --git a/linkit_media_library.libraries.yml b/linkit_media_library.libraries.yml
 new file mode 100644
-index 0000000..81c961d
+index 0000000000000000000000000000000000000000..f552348dc97c7e2b93bb8889b21e4e473fe8fddc
 --- /dev/null
 +++ b/linkit_media_library.libraries.yml
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,12 @@
 +ckeditor5:
 +  version: VERSION
 +  js:
 +    js/build/linkitMediaLibrary.js: { preprocess: false, minified: true }
++  css:
++    component:
++      css/linkit-media-library.css: {}
 +  dependencies:
 +    - core/drupal
 +    - ckeditor5/ckeditor5
 +    - ckeditor5/ckeditor5.link
++    - editor/drupal.editor.dialog
 diff --git a/package.json b/package.json
 new file mode 100644
-index 0000000..bb2f888
+index 0000000000000000000000000000000000000000..bb2f88831a077345f83324142cbce4c74a3ca890
 --- /dev/null
 +++ b/package.json
 @@ -0,0 +1,21 @@
@@ -125,9 +207,145 @@ index 0000000..bb2f888
 +    "webpack-cli": "^4.4.0"
 +  }
 +}
+diff --git a/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..738439b8c703c4797fdee946cbee7f1cee8b31c0
+--- /dev/null
++++ b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
+@@ -0,0 +1,130 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\linkit_media_library\Plugin\CKEditor5Plugin;
++
++use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
++use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\StringTranslation\StringTranslationTrait;
++use Drupal\Core\Url;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\editor\EditorInterface;
++use Drupal\media_library\MediaLibraryState;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++
++/**
++ * CKEditor 5 Media Library plugin.
++ *
++ * Provides media library support and options for the CKEditor 5 build.
++ *
++ * @internal
++ *   Plugin classes are internal.
++ */
++class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
++
++  use StringTranslationTrait;
++
++  /**
++   * The media type entity storage.
++   *
++   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
++   */
++  protected $mediaTypeStorage;
++
++  /**
++   * MediaLibrary constructor.
++   *
++   * @param array $configuration
++   *   A configuration array containing information about the plugin instance.
++   * @param string $plugin_id
++   *   The plugin_id for the plugin instance.
++   * @param \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition $plugin_definition
++   *   The plugin implementation definition.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
++   *   The entity type manager.
++   */
++  public function __construct(array $configuration, string $plugin_id, CKEditor5PluginDefinition $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++    $this->mediaTypeStorage = $entity_type_manager->getStorage('media_type');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $configuration,
++      $plugin_id,
++      $plugin_definition,
++      $container->get('entity_type.manager'),
++    );
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
++
++    if (!$editor->hasAssociatedFilterFormat()) {
++      return $static_plugin_config;
++    }
++
++    /** @var \Drupal\filter\FilterFormatInterface $filter_format */
++    $filter_format = $editor->getFilterFormat();
++
++    /** @var \Drupal\filter\FilterPluginCollection $filters */
++    $filters = $filter_format->filters();
++    if (!$filters->has('linkit') || !$filters->get('linkit')->status === TRUE) {
++      return $static_plugin_config;
++    }
++
++    // Get the profile ID from the editor settings.
++    $profile_id = $editor->getSettings()['plugins']['linkit_extension']['linkit_profile'];
++
++    /** @var \Drupal\Linkit\ProfileInterface $linkit_profile */
++    $profile = \Drupal::entityTypeManager()
++      ->getStorage('linkit_profile')
++      ->load($profile_id);
++
++    $has_media = FALSE;
++    $bundles = [];
++    foreach ($profile->getMatchers() as $matcher) {
++      if ($matcher->getPluginId() != 'entity:media') {
++        continue;
++      }
++      $has_media = TRUE;
++      $configuration = $matcher->getConfiguration();
++      $bundles = $configuration['settings']['bundles'];
++    }
++
++    if (!$has_media) {
++      return $static_plugin_config;
++    }
++
++    // If the types are not limited, we must load all media types.
++    if (empty($bundles)) {
++      $bundles = $this->mediaTypeStorage->getQuery()->execute();
++    }
++
++    /** @var \Drupal\media_library\MediaLibraryState $state */
++    $state = MediaLibraryState::create(
++      'linkit_media_library.opener.editor',
++      $bundles,
++      reset($bundles),
++      1,
++      ['filter_format_id' => $editor->getFilterFormat()->id()]
++    );
++
++    $library_url = Url::fromRoute('media_library.ui')
++      ->setOption('query', $state->all())
++      ->toString(TRUE)
++      ->getGeneratedUrl();
++
++    $dynamic_plugin_config = $static_plugin_config;
++    $dynamic_plugin_config['linkitMediaLibrary']['libraryURL'] = $library_url;
++    return $dynamic_plugin_config;
++  }
++
++}
 diff --git a/webpack.config.js b/webpack.config.js
 new file mode 100644
-index 0000000..a4c073e
+index 0000000000000000000000000000000000000000..a4c073ecd99170c329ef577322f162673e6fd166
 --- /dev/null
 +++ b/webpack.config.js
 @@ -0,0 +1,66 @@
@@ -199,7 +417,7 @@ index 0000000..a4c073e
 +});
 diff --git a/yarn.lock b/yarn.lock
 new file mode 100644
-index 0000000..f1de48e
+index 0000000000000000000000000000000000000000..f1de48eb205cf849d77b2d60b1cbb7c7213d7674
 --- /dev/null
 +++ b/yarn.lock
 @@ -0,0 +1,2712 @@
@@ -2915,1323 +3133,3 @@ index 0000000..f1de48e
 +  version "0.1.0"
 +  resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
 +  integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
---
-GitLab
-
-
-From 38283609416448e8e90c7d447ea8d8d54f172775 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 21 Nov 2023 13:56:55 -0600
-Subject: [PATCH 02/17] This is necessary.
-
----
- linkit_media_library.ckeditor5.yml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/linkit_media_library.ckeditor5.yml b/linkit_media_library.ckeditor5.yml
-index 0f96f64..0442284 100644
---- a/linkit_media_library.ckeditor5.yml
-+++ b/linkit_media_library.ckeditor5.yml
-@@ -1,4 +1,7 @@
--linkit_media_library:
-+linkit_media_library_link:
-+  ckeditor5:
-+    plugins:
-+      - linkitMediaLibrary.LinkitMediaLibrary
-   drupal:
-     label: LinkIt media library
-     library: linkit_media_library/ckeditor5
---
-GitLab
-
-
-From 24780d9679981f2b767b537264ecd9c7a7f12825 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 21 Nov 2023 16:45:46 -0600
-Subject: [PATCH 03/17] Got the button to show up.
-
----
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           | 32 +++++++++++++++++++
- 2 files changed, 33 insertions(+), 1 deletion(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 36799ab..fd5345d 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.CKEditor5=r():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=r())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,r,t)=>{e.exports=t("dll-reference CKEditor5.dll")("./src/core.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},r={};function t(o){var i=r[o];if(void 0!==i)return i.exports;var d=r[o]={exports:{}};return e[o](d,d.exports,t),d.exports}t.d=(e,r)=>{for(var o in r)t.o(r,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:r[o]})},t.o=(e,r)=>Object.prototype.hasOwnProperty.call(e,r);var o={};return(()=>{"use strict";t.d(o,{default:()=>i});var e=t("ckeditor5/src/core.js");class r extends e.Plugin{static get requires(){return[]}static get pluginName(){return"LinkitMediaLibrary"}}const i={LinkitMediaLibrary:r}})(),o=o.default})()));
-\ No newline at end of file
-+!function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.CKEditor5=r():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=r())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [];\n  }\n\n  init() {\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('_addMediaLibraryButton()');\n    const { editor } = this;\n    const { locale } = editor;\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n\n    linkFormView.children.add(buttonView);\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var r=__webpack_module_cache__[e];if(void 0!==r)return r.exports;var _=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](_,_.exports,__webpack_require__),_.exports}__webpack_require__.d=(e,r)=>{for(var _ in r)__webpack_require__.o(r,_)&&!__webpack_require__.o(e,_)&&Object.defineProperty(e,_,{enumerable:!0,get:r[_]})},__webpack_require__.o=(e,r)=>Object.prototype.hasOwnProperty.call(e,r),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 36e808e..6ebc4a3 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -1,4 +1,6 @@
- import { Plugin } from 'ckeditor5/src/core';
-+import { ButtonView } from 'ckeditor5/src/ui';
-+
-
- class LinkitMediaLibrary extends Plugin {
-   /**
-@@ -8,6 +10,36 @@ class LinkitMediaLibrary extends Plugin {
-     return [];
-   }
-
-+  init() {
-+    const { editor } = this;
-+
-+    // TRICKY: Work-around until the CKEditor team offers a better solution:
-+    // force the ContextualBalloon to get instantiated early thanks to
-+    // DrupalImage not yet being optimized like
-+    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.
-+    if (editor.plugins.get('LinkUI')._createViews) {
-+      editor.plugins.get('LinkUI')._createViews();
-+    }
-+
-+    this._addMediaLibraryButton();
-+  }
-+
-+  _addMediaLibraryButton() {
-+    console.log('_addMediaLibraryButton()');
-+    const { editor } = this;
-+    const { locale } = editor;
-+    const linkFormView = editor.plugins.get('LinkUI').formView;
-+    const buttonView = new ButtonView(locale);
-+
-+    // Create the toolbar button.
-+    buttonView.set({
-+      label: editor.t('Media Library'),
-+      withText: true,
-+    });
-+
-+    linkFormView.children.add(buttonView);
-+  }
-+
-   /**
-    * @inheritdoc
-    */
---
-GitLab
-
-
-From 193a5b5850f0fa2a828b54927a4be309dfbf3ae7 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 28 Nov 2023 11:28:25 -0600
-Subject: [PATCH 04/17] Attached an existing command to get something to
- happen.
-
----
- js/build/linkitMediaLibrary.js                  |  2 +-
- .../linkitMediaLibrary/src/index.js             | 17 +++++++++++++++++
- js/linkitMediaLibrary.js                        |  0
- 3 files changed, 18 insertions(+), 1 deletion(-)
- delete mode 100644 js/linkitMediaLibrary.js
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index fd5345d..f73c0f5 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports.CKEditor5=r():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=r())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [];\n  }\n\n  init() {\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('_addMediaLibraryButton()');\n    const { editor } = this;\n    const { locale } = editor;\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n\n    linkFormView.children.add(buttonView);\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var r=__webpack_module_cache__[e];if(void 0!==r)return r.exports;var _=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](_,_.exports,__webpack_require__),_.exports}__webpack_require__.d=(e,r)=>{for(var _ in r)__webpack_require__.o(r,_)&&!__webpack_require__.o(e,_)&&Object.defineProperty(e,_,{enumerable:!0,get:r[_]})},__webpack_require__.o=(e,r)=>Object.prototype.hasOwnProperty.call(e,r),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function r(i){var o=t[i];if(void 0!==o)return o.exports;var d=t[i]={exports:{}};return e[i](d,d.exports,r),d.exports}r.d=(e,t)=>{for(var i in t)r.o(t,i)&&!r.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:t[i]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var i={};return(()=>{"use strict";r.d(i,{default:()=>d});var e=r("ckeditor5/src/core.js"),t=r("ckeditor5/src/ui.js");class o extends e.Plugin{static get requires(){return[]}init(){const{editor:e}=this;e.plugins.get("LinkUI")._createViews&&e.plugins.get("LinkUI")._createViews(),this._addMediaLibraryButton()}_addMediaLibraryButton(){console.log("_addMediaLibraryButton()");const{editor:e}=this,{locale:r}=e,i=e.config.get("drupalMedia"),o=e.commands.get("insertDrupalMedia"),d=e.plugins.get("LinkUI").formView,s=new t.ButtonView(r),{libraryURL:n,openDialog:a,dialogSettings:l={}}=i;n&&"function"==typeof a&&(s.bind("isOn","isEnabled").to(o,"value","isEnabled"),s.set({label:e.t("Media Library"),withText:!0}),this.listenTo(s,"execute",(()=>{a(n,(({attributes:t})=>{e.execute("insertDrupalMedia",t)}),l)})),d.children.add(s))}static get pluginName(){return"LinkitMediaLibrary"}}const d={LinkitMediaLibrary:o}})(),i=i.default})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 6ebc4a3..dda18a4 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -28,14 +28,31 @@ class LinkitMediaLibrary extends Plugin {
-     console.log('_addMediaLibraryButton()');
-     const { editor } = this;
-     const { locale } = editor;
-+    const options = editor.config.get('drupalMedia');
-+    const command = editor.commands.get('insertDrupalMedia');
-     const linkFormView = editor.plugins.get('LinkUI').formView;
-     const buttonView = new ButtonView(locale);
-
-+    const { libraryURL, openDialog, dialogSettings = {} } = options;
-+    if (!libraryURL || typeof openDialog !== 'function') {
-+      return;
-+    }
-+
-+    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-     // Create the toolbar button.
-     buttonView.set({
-       label: editor.t('Media Library'),
-       withText: true,
-     });
-+    this.listenTo(buttonView, 'execute', () => {
-+      openDialog(
-+        libraryURL,
-+        ({ attributes }) => {
-+          editor.execute('insertDrupalMedia', attributes);
-+        },
-+        dialogSettings,
-+      );
-+    });
-
-     linkFormView.children.add(buttonView);
-   }
-diff --git a/js/linkitMediaLibrary.js b/js/linkitMediaLibrary.js
-deleted file mode 100644
-index e69de29..0000000
---
-GitLab
-
-
-From 8215d7a3d38beb137e5350d3da9cb4b8c69d4a7b Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 28 Nov 2023 14:48:17 -0600
-Subject: [PATCH 05/17] Added CKEditor5Plugin class and started moving logic
- over from existing location.
-
----
- linkit_media_library.ckeditor5.yml            |   9 ++
- .../CKEditor5Plugin/LinkitMediaLibrary.php    | 129 ++++++++++++++++++
- 2 files changed, 138 insertions(+)
- create mode 100644 src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-
-diff --git a/linkit_media_library.ckeditor5.yml b/linkit_media_library.ckeditor5.yml
-index 0442284..56a7353 100644
---- a/linkit_media_library.ckeditor5.yml
-+++ b/linkit_media_library.ckeditor5.yml
-@@ -2,6 +2,15 @@ linkit_media_library_link:
-   ckeditor5:
-     plugins:
-       - linkitMediaLibrary.LinkitMediaLibrary
-+    config:
-+      drupalMedia:
-+        openDialog:
-+          func:
-+            name: Drupal.ckeditor5.openDialog
-+            invoke: false
-+        dialogSettings:
-+          height: 75%
-+          dialogClass: media-library-widget-modal
-   drupal:
-     label: LinkIt media library
-     library: linkit_media_library/ckeditor5
-diff --git a/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-new file mode 100644
-index 0000000..3798e87
---- /dev/null
-+++ b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-@@ -0,0 +1,129 @@
-+<?php
-+
-+declare(strict_types = 1);
-+
-+namespace Drupal\linkit_media_library\Plugin\CKEditor5Plugin;
-+
-+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
-+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
-+use Drupal\Core\Entity\EntityTypeManagerInterface;
-+use Drupal\Core\StringTranslation\StringTranslationTrait;
-+use Drupal\Core\Url;
-+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-+use Drupal\editor\EditorInterface;
-+use Drupal\media_library\MediaLibraryState;
-+use Symfony\Component\DependencyInjection\ContainerInterface;
-+
-+/**
-+ * CKEditor 5 Media Library plugin.
-+ *
-+ * Provides media library support and options for the CKEditor 5 build.
-+ *
-+ * @internal
-+ *   Plugin classes are internal.
-+ */
-+class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
-+
-+  use StringTranslationTrait;
-+
-+  /**
-+   * The media type entity storage.
-+   *
-+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
-+   */
-+  protected $mediaTypeStorage;
-+
-+  /**
-+   * MediaLibrary constructor.
-+   *
-+   * @param array $configuration
-+   *   A configuration array containing information about the plugin instance.
-+   * @param string $plugin_id
-+   *   The plugin_id for the plugin instance.
-+   * @param \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition $plugin_definition
-+   *   The plugin implementation definition.
-+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-+   *   The entity type manager.
-+   */
-+  public function __construct(array $configuration, string $plugin_id, CKEditor5PluginDefinition $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
-+    parent::__construct($configuration, $plugin_id, $plugin_definition);
-+    $this->mediaTypeStorage = $entity_type_manager->getStorage('media_type');
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-+    return new static(
-+      $configuration,
-+      $plugin_id,
-+      $plugin_definition,
-+      $container->get('entity_type.manager'),
-+    );
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
-+    if (!$editor->hasAssociatedFilterFormat()) {
-+      return;
-+    }
-+
-+    /** @var \Drupal\filter\FilterFormatInterface $filter_format */
-+    $filter_format = $editor->getFilterFormat();
-+
-+    /** @var \Drupal\filter\FilterPluginCollection $filters */
-+    $filters = $filter_format->filters();
-+    if (!$filters->has('linkit') || !$filters->get('linkit')->status === TRUE) {
-+      return;
-+    }
-+
-+    // Get the profile ID from the editor settings.
-+    $profile_id = $editor->getSettings()['plugins']['drupallink']['linkit_profile'];
-+
-+    /** @var \Drupal\Linkit\ProfileInterface $linkit_profile */
-+    $profile = \Drupal::entityTypeManager()
-+      ->getStorage('linkit_profile')
-+      ->load($profile_id);
-+
-+    $has_media = FALSE;
-+    $bundles = [];
-+    foreach ($profile->getMatchers() as $matcher) {
-+      if ($matcher->getPluginId() != 'entity:media') {
-+        continue;
-+      }
-+      $has_media = TRUE;
-+      $configuration = $matcher->getConfiguration();
-+      $bundles = $configuration['settings']['bundles'];
-+    }
-+
-+    if (!$has_media) {
-+      return;
-+    }
-+
-+    // If the types are not limited, we must load all media types.
-+    if (empty($bundles)) {
-+      $bundles = $this->mediaTypeStorage->getQuery()->execute();
-+    }
-+
-+    /** @var \Drupal\media_library\MediaLibraryState $state */
-+    $state = MediaLibraryState::create(
-+      'linkit_media_library.opener.editor',
-+      $bundles,
-+      reset($bundles),
-+      1,
-+      ['filter_format_id' => $editor->getFilterFormat()->id()]
-+    );
-+
-+    $library_url = Url::fromRoute('media_library.ui')
-+      ->setOption('query', $state->all())
-+      ->toString(TRUE)
-+      ->getGeneratedUrl();
-+
-+    $dynamic_plugin_config = $static_plugin_config;
-+    $dynamic_plugin_config['drupalMedia']['libraryURL'] = $library_url;
-+    return $dynamic_plugin_config;
-+  }
-+
-+}
---
-GitLab
-
-
-From 64f7b79204f5974b5522285b3dba94d5c0df3c01 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 28 Nov 2023 15:55:41 -0600
-Subject: [PATCH 06/17] Figured out how to get the correct dialog settings
- populated.
-
----
- js/build/linkitMediaLibrary.js                       |  2 +-
- js/ckeditor5_plugins/linkitMediaLibrary/src/index.js |  4 +++-
- linkit_media_library.ckeditor5.yml                   |  3 ++-
- src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php    | 11 ++++++-----
- 4 files changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index f73c0f5..5afde80 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function r(i){var o=t[i];if(void 0!==o)return o.exports;var d=t[i]={exports:{}};return e[i](d,d.exports,r),d.exports}r.d=(e,t)=>{for(var i in t)r.o(t,i)&&!r.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:t[i]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var i={};return(()=>{"use strict";r.d(i,{default:()=>d});var e=r("ckeditor5/src/core.js"),t=r("ckeditor5/src/ui.js");class o extends e.Plugin{static get requires(){return[]}init(){const{editor:e}=this;e.plugins.get("LinkUI")._createViews&&e.plugins.get("LinkUI")._createViews(),this._addMediaLibraryButton()}_addMediaLibraryButton(){console.log("_addMediaLibraryButton()");const{editor:e}=this,{locale:r}=e,i=e.config.get("drupalMedia"),o=e.commands.get("insertDrupalMedia"),d=e.plugins.get("LinkUI").formView,s=new t.ButtonView(r),{libraryURL:n,openDialog:a,dialogSettings:l={}}=i;n&&"function"==typeof a&&(s.bind("isOn","isEnabled").to(o,"value","isEnabled"),s.set({label:e.t("Media Library"),withText:!0}),this.listenTo(s,"execute",(()=>{a(n,(({attributes:t})=>{e.execute("insertDrupalMedia",t)}),l)})),d.children.add(s))}static get pluginName(){return"LinkitMediaLibrary"}}const d={LinkitMediaLibrary:o}})(),i=i.default})()));
-\ No newline at end of file
-+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function r(i){var o=t[i];if(void 0!==o)return o.exports;var n=t[i]={exports:{}};return e[i](n,n.exports,r),n.exports}r.d=(e,t)=>{for(var i in t)r.o(t,i)&&!r.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:t[i]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var i={};return(()=>{"use strict";r.d(i,{default:()=>n});var e=r("ckeditor5/src/core.js"),t=r("ckeditor5/src/ui.js");class o extends e.Plugin{static get requires(){return[]}init(){const{editor:e}=this;e.plugins.get("LinkUI")._createViews&&e.plugins.get("LinkUI")._createViews(),this._addMediaLibraryButton()}_addMediaLibraryButton(){console.log("_addMediaLibraryButton()");const{editor:e}=this,{locale:r}=e,i=e.config.get("linkitMediaLibrary");console.log("options",i);const o=e.commands.get("insertDrupalMedia"),n=e.plugins.get("LinkUI").formView,s=new t.ButtonView(r),{libraryURL:d,openDialog:a,dialogSettings:l={}}=i;console.log("libraryURL",d),d&&"function"==typeof a&&(s.bind("isOn","isEnabled").to(o,"value","isEnabled"),s.set({label:e.t("Media Library"),withText:!0}),this.listenTo(s,"execute",(()=>{a(d,(({attributes:t})=>{e.execute("insertDrupalMedia",t)}),l)})),n.children.add(s))}static get pluginName(){return"LinkitMediaLibrary"}}const n={LinkitMediaLibrary:o}})(),i=i.default})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index dda18a4..1755e33 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -28,12 +28,14 @@ class LinkitMediaLibrary extends Plugin {
-     console.log('_addMediaLibraryButton()');
-     const { editor } = this;
-     const { locale } = editor;
--    const options = editor.config.get('drupalMedia');
-+    const options = editor.config.get('linkitMediaLibrary');
-+    console.log('options', options);
-     const command = editor.commands.get('insertDrupalMedia');
-     const linkFormView = editor.plugins.get('LinkUI').formView;
-     const buttonView = new ButtonView(locale);
-
-     const { libraryURL, openDialog, dialogSettings = {} } = options;
-+    console.log('libraryURL', libraryURL);
-     if (!libraryURL || typeof openDialog !== 'function') {
-       return;
-     }
-diff --git a/linkit_media_library.ckeditor5.yml b/linkit_media_library.ckeditor5.yml
-index 56a7353..68c45ae 100644
---- a/linkit_media_library.ckeditor5.yml
-+++ b/linkit_media_library.ckeditor5.yml
-@@ -3,7 +3,7 @@ linkit_media_library_link:
-     plugins:
-       - linkitMediaLibrary.LinkitMediaLibrary
-     config:
--      drupalMedia:
-+      linkitMediaLibrary:
-         openDialog:
-           func:
-             name: Drupal.ckeditor5.openDialog
-@@ -13,6 +13,7 @@ linkit_media_library_link:
-           dialogClass: media-library-widget-modal
-   drupal:
-     label: LinkIt media library
-+    class: Drupal\linkit_media_library\Plugin\CKEditor5Plugin\LinkitMediaLibrary
-     library: linkit_media_library/ckeditor5
-     elements:
-       - <a aria-label title class id target="_blank" rel>
-diff --git a/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-index 3798e87..738439b 100644
---- a/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-+++ b/src/Plugin/CKEditor5Plugin/LinkitMediaLibrary.php
-@@ -66,8 +66,9 @@ class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFact
-    * {@inheritdoc}
-    */
-   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
-+
-     if (!$editor->hasAssociatedFilterFormat()) {
--      return;
-+      return $static_plugin_config;
-     }
-
-     /** @var \Drupal\filter\FilterFormatInterface $filter_format */
-@@ -76,11 +77,11 @@ class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFact
-     /** @var \Drupal\filter\FilterPluginCollection $filters */
-     $filters = $filter_format->filters();
-     if (!$filters->has('linkit') || !$filters->get('linkit')->status === TRUE) {
--      return;
-+      return $static_plugin_config;
-     }
-
-     // Get the profile ID from the editor settings.
--    $profile_id = $editor->getSettings()['plugins']['drupallink']['linkit_profile'];
-+    $profile_id = $editor->getSettings()['plugins']['linkit_extension']['linkit_profile'];
-
-     /** @var \Drupal\Linkit\ProfileInterface $linkit_profile */
-     $profile = \Drupal::entityTypeManager()
-@@ -99,7 +100,7 @@ class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFact
-     }
-
-     if (!$has_media) {
--      return;
-+      return $static_plugin_config;
-     }
-
-     // If the types are not limited, we must load all media types.
-@@ -122,7 +123,7 @@ class LinkitMediaLibrary extends CKEditor5PluginDefault implements ContainerFact
-       ->getGeneratedUrl();
-
-     $dynamic_plugin_config = $static_plugin_config;
--    $dynamic_plugin_config['drupalMedia']['libraryURL'] = $library_url;
-+    $dynamic_plugin_config['linkitMediaLibrary']['libraryURL'] = $library_url;
-     return $dynamic_plugin_config;
-   }
-
---
-GitLab
-
-
-From 12cae34544da476ddb1f4abde65b8a76d05bde23 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 28 Nov 2023 16:35:06 -0600
-Subject: [PATCH 07/17] Added a command to trigger when the dialog is closed. A
- little refactoring to make things work, follow established practices.
-
----
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           |  7 ++---
- .../src/insertmedialibrarylink.js             | 20 ++++++++++++++
- .../src/linkitmedialibraryediting.js          | 27 +++++++++++++++++++
- 4 files changed, 52 insertions(+), 4 deletions(-)
- create mode 100644 js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
- create mode 100644 js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 5afde80..3276892 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,r)=>{e.exports=r("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function r(i){var o=t[i];if(void 0!==o)return o.exports;var n=t[i]={exports:{}};return e[i](n,n.exports,r),n.exports}r.d=(e,t)=>{for(var i in t)r.o(t,i)&&!r.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:t[i]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var i={};return(()=>{"use strict";r.d(i,{default:()=>n});var e=r("ckeditor5/src/core.js"),t=r("ckeditor5/src/ui.js");class o extends e.Plugin{static get requires(){return[]}init(){const{editor:e}=this;e.plugins.get("LinkUI")._createViews&&e.plugins.get("LinkUI")._createViews(),this._addMediaLibraryButton()}_addMediaLibraryButton(){console.log("_addMediaLibraryButton()");const{editor:e}=this,{locale:r}=e,i=e.config.get("linkitMediaLibrary");console.log("options",i);const o=e.commands.get("insertDrupalMedia"),n=e.plugins.get("LinkUI").formView,s=new t.ButtonView(r),{libraryURL:d,openDialog:a,dialogSettings:l={}}=i;console.log("libraryURL",d),d&&"function"==typeof a&&(s.bind("isOn","isEnabled").to(o,"value","isEnabled"),s.set({label:e.t("Media Library"),withText:!0}),this.listenTo(s,"execute",(()=>{a(d,(({attributes:t})=>{e.execute("insertDrupalMedia",t)}),l)})),n.children.add(s))}static get pluginName(){return"LinkitMediaLibrary"}}const n={LinkitMediaLibrary:o}})(),i=i.default})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('_addMediaLibraryButton()');\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    linkFormView.children.add(buttonView);\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 1755e33..602a368 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -1,5 +1,6 @@
- import { Plugin } from 'ckeditor5/src/core';
- import { ButtonView } from 'ckeditor5/src/ui';
-+import LinkitMediaLibraryEditing from './linkitmedialibraryediting';
-
-
- class LinkitMediaLibrary extends Plugin {
-@@ -7,7 +8,7 @@ class LinkitMediaLibrary extends Plugin {
-    * @inheritdoc
-    */
-   static get requires() {
--    return [];
-+    return [LinkitMediaLibraryEditing];
-   }
-
-   init() {
-@@ -30,7 +31,7 @@ class LinkitMediaLibrary extends Plugin {
-     const { locale } = editor;
-     const options = editor.config.get('linkitMediaLibrary');
-     console.log('options', options);
--    const command = editor.commands.get('insertDrupalMedia');
-+    const command = editor.commands.get('insertMediaLibraryLink');
-     const linkFormView = editor.plugins.get('LinkUI').formView;
-     const buttonView = new ButtonView(locale);
-
-@@ -50,7 +51,7 @@ class LinkitMediaLibrary extends Plugin {
-       openDialog(
-         libraryURL,
-         ({ attributes }) => {
--          editor.execute('insertDrupalMedia', attributes);
-+          editor.execute('insertMediaLibraryLink', attributes);
-         },
-         dialogSettings,
-       );
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-new file mode 100644
-index 0000000..658082a
---- /dev/null
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-@@ -0,0 +1,20 @@
-+/* eslint-disable import/no-extraneous-dependencies */
-+// cspell:ignore insertmedialibrarylink
-+import { Command } from 'ckeditor5/src/core';
-+
-+/**
-+ * @module linkitMediaLibrary/insertmedialibrarylink
-+ */
-+
-+/**
-+ * The insert media library link command.
-+ *
-+ * The command is registered by the `LinkitMediaLibraryEditing` plugin as
-+ * `insertMediaLibraryLink`.
-+ */
-+export default class InsertMediaLibraryLink extends Command {
-+  execute(attributes) {
-+    // @todo Insert the media path into the link URL box.
-+    console.log("Executed InsertMediaLibraryLink command.")
-+  }
-+}
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-new file mode 100644
-index 0000000..110c56f
---- /dev/null
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-@@ -0,0 +1,27 @@
-+import { Plugin } from 'ckeditor5/src/core';
-+import InsertMediaLibraryLink from './insertmedialibrarylink';
-+
-+/**
-+ * @module linkitMediaLibrary/linkitmedialibraryediting
-+ */
-+
-+/**
-+ * The Drupal Media Editing plugin.
-+ *
-+ * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.
-+ *
-+ * @private
-+ */
-+export default class LinkitMediaLibraryEditing extends Plugin {
-+
-+
-+  /**
-+   * @inheritdoc
-+   */
-+  init() {
-+    this.editor.commands.add(
-+      'insertMediaLibraryLink',
-+      new InsertMediaLibraryLink(this.editor),
-+    );
-+  }
-+}
---
-GitLab
-
-
-From dc6391bba65d58f2d1dbbbc121f73abf76b1a62c Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Wed, 29 Nov 2023 16:33:04 -0600
-Subject: [PATCH 08/17] Moving this logic into an event so it happens in the
- same way as Editor Advanced Link.
-
----
- js/build/linkitMediaLibrary.js                 |  2 +-
- .../linkitMediaLibrary/src/index.js            | 18 ++++++++++++++++--
- 2 files changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 3276892..0e9e86f 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('_addMediaLibraryButton()');\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    linkFormView.children.add(buttonView);\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // Copy the same solution from LinkUI as pointed out on\n    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and\n    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n        linkFormView.children.add(buttonView, 1);\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 602a368..04ba4ae 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -12,6 +12,7 @@ class LinkitMediaLibrary extends Plugin {
-   }
-
-   init() {
-+    console.log('LinkitMediaLibrary.init')
-     const { editor } = this;
-
-     // TRICKY: Work-around until the CKEditor team offers a better solution:
-@@ -26,7 +27,8 @@ class LinkitMediaLibrary extends Plugin {
-   }
-
-   _addMediaLibraryButton() {
--    console.log('_addMediaLibraryButton()');
-+    console.log('LinkitMediaLibrary._addMediaLibraryButton()');
-+
-     const { editor } = this;
-     const { locale } = editor;
-     const options = editor.config.get('linkitMediaLibrary');
-@@ -57,7 +59,19 @@ class LinkitMediaLibrary extends Plugin {
-       );
-     });
-
--    linkFormView.children.add(buttonView);
-+    // Copy the same solution from LinkUI as pointed out on
-+    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
-+    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
-+    editor.plugins
-+      .get('ContextualBalloon')
-+      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
-+        const linkFormView = editor.plugins.get('LinkUI').formView;
-+        if (newValue === oldValue || newValue !== linkFormView) {
-+          return;
-+        }
-+        linkFormView.children.add(buttonView, 1);
-+      }
-+    )
-   }
-
-   /**
---
-GitLab
-
-
-From 0f76b4d85b74d35290732884eec72de83f87c401 Mon Sep 17 00:00:00 2001
-From: Gary Ridgway <gary-ridgway@uiowa.edu>
-Date: Thu, 30 Nov 2023 13:39:12 -0600
-Subject: [PATCH 09/17] Only add the button once.
-
----
- js/build/linkitMediaLibrary.js                       | 2 +-
- js/ckeditor5_plugins/linkitMediaLibrary/src/index.js | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 0e9e86f..9a0da50 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // Copy the same solution from LinkUI as pointed out on\n    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and\n    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n        linkFormView.children.add(buttonView, 1);\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // Copy the same solution from LinkUI as pointed out on\n    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and\n    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 04ba4ae..c6fdb8a 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -11,6 +11,8 @@ class LinkitMediaLibrary extends Plugin {
-     return [LinkitMediaLibraryEditing];
-   }
-
-+  buttonAdded = false;
-+
-   init() {
-     console.log('LinkitMediaLibrary.init')
-     const { editor } = this;
-@@ -49,6 +51,7 @@ class LinkitMediaLibrary extends Plugin {
-       label: editor.t('Media Library'),
-       withText: true,
-     });
-+    buttonView.set( 'class', 'ck-media-library' );
-     this.listenTo(buttonView, 'execute', () => {
-       openDialog(
-         libraryURL,
-@@ -66,10 +69,12 @@ class LinkitMediaLibrary extends Plugin {
-       .get('ContextualBalloon')
-       .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
-         const linkFormView = editor.plugins.get('LinkUI').formView;
--        if (newValue === oldValue || newValue !== linkFormView) {
-+        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {
-           return;
-         }
-+
-         linkFormView.children.add(buttonView, 1);
-+        this.buttonAdded = true;
-       }
-     )
-   }
---
-GitLab
-
-
-From a6715f3764932bea7afe0863ebe764ee6d2ccce1 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Fri, 1 Dec 2023 10:43:22 -0600
-Subject: [PATCH 10/17] Updated a comment to reflect how we are working around
- the EAL plugin currently. Some non-working code that I thought might work.
-
----
- js/build/linkitMediaLibrary.js                         |  2 +-
- js/ckeditor5_plugins/linkitMediaLibrary/src/index.js   |  6 +++---
- .../linkitMediaLibrary/src/insertmedialibrarylink.js   | 10 +++++++++-
- 3 files changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 9a0da50..0451d33 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // Copy the same solution from LinkUI as pointed out on\n    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and\n    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.")\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log(\"Executed InsertMediaLibraryLink command.\");\n    console.log(\"attributes\", attributes);\n    console.log(\"this\", this);\n    const { editor } = this;\n    const linkit = editor.plugins.get(\"Linkit\")\n\n    linkit.set('entityType', attributes['data-entity-type']);\n    linkit.set('entityUuid', attributes['data-entity-uuid']);\n    linkit.set('entitySubstitution', attributes['data-entity-substitution']);\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index c6fdb8a..6ddebf7 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -62,9 +62,9 @@ class LinkitMediaLibrary extends Plugin {
-       );
-     });
-
--    // Copy the same solution from LinkUI as pointed out on
--    // https://www.drupal.org/project/drupal/issues/3317769#comment-14985648 and
--    // https://git.drupalcode.org/project/drupal/-/merge_requests/2909/diffs?commit_id=cc2cece3be1a9513b02a53d8a6862a6841ef4d5a.
-+    // For now, we are adding the button inside this event because Editor
-+    // Advanced Link is adding its form element so the Link UI form view in the
-+    // same way and if we don't do it like this, our changes get overridden.
-     editor.plugins
-       .get('ContextualBalloon')
-       .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-index 658082a..b7e80b0 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-@@ -15,6 +15,14 @@ import { Command } from 'ckeditor5/src/core';
- export default class InsertMediaLibraryLink extends Command {
-   execute(attributes) {
-     // @todo Insert the media path into the link URL box.
--    console.log("Executed InsertMediaLibraryLink command.")
-+    console.log("Executed InsertMediaLibraryLink command.");
-+    console.log("attributes", attributes);
-+    console.log("this", this);
-+    const { editor } = this;
-+    const linkit = editor.plugins.get("Linkit")
-+
-+    linkit.set('entityType', attributes['data-entity-type']);
-+    linkit.set('entityUuid', attributes['data-entity-uuid']);
-+    linkit.set('entitySubstitution', attributes['data-entity-substitution']);
-   }
- }
---
-GitLab
-
-
-From e635d4727b669cb3d08551032227b911f5f5db86 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Fri, 1 Dec 2023 13:25:54 -0600
-Subject: [PATCH 11/17] Some cleanup to remove debugging code and stuff that
- does not seem to actually be necessary.
-
----
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           | 22 ++++---------------
- .../src/insertmedialibrarylink.js             |  9 ++++----
- 3 files changed, 9 insertions(+), 24 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 0451d33..685772b 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    if (editor.plugins.get('LinkUI')._createViews) {\n      editor.plugins.get('LinkUI')._createViews();\n    }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        const linkFormView = editor.plugins.get('LinkUI').formView;\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log(\"Executed InsertMediaLibraryLink command.\");\n    console.log(\"attributes\", attributes);\n    console.log(\"this\", this);\n    const { editor } = this;\n    const linkit = editor.plugins.get(\"Linkit\")\n\n    linkit.set('entityType', attributes['data-entity-type']);\n    linkit.set('entityUuid', attributes['data-entity-uuid']);\n    linkit.set('entitySubstitution', attributes['data-entity-substitution']);\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    // if (editor.plugins.get('LinkUI')._createViews) {\n    //   editor.plugins.get('LinkUI')._createViews();\n    // }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    // buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.");\n    console.log("attributes", attributes);\n    const { editor } = this;\n    const linkit = editor.plugins.get("Linkit");\n    console.log("linkit", linkit);\n\n    linkit.set(\'entityType\', attributes[\'data-entity-type\']);\n    linkit.set(\'entityUuid\', attributes[\'data-entity-uuid\']);\n    linkit.set(\'entitySubstitution\', attributes[\'data-entity-substitution\']);\n    console.log("linkit", linkit);\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 6ddebf7..4b349d6 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -4,6 +4,9 @@ import LinkitMediaLibraryEditing from './linkitmedialibraryediting';
-
-
- class LinkitMediaLibrary extends Plugin {
-+
-+  buttonAdded = false;
-+
-   /**
-    * @inheritdoc
-    */
-@@ -11,41 +14,25 @@ class LinkitMediaLibrary extends Plugin {
-     return [LinkitMediaLibraryEditing];
-   }
-
--  buttonAdded = false;
--
-   init() {
--    console.log('LinkitMediaLibrary.init')
-     const { editor } = this;
-
--    // TRICKY: Work-around until the CKEditor team offers a better solution:
--    // force the ContextualBalloon to get instantiated early thanks to
--    // DrupalImage not yet being optimized like
--    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.
--    if (editor.plugins.get('LinkUI')._createViews) {
--      editor.plugins.get('LinkUI')._createViews();
--    }
--
-     this._addMediaLibraryButton();
-   }
-
-   _addMediaLibraryButton() {
--    console.log('LinkitMediaLibrary._addMediaLibraryButton()');
--
-     const { editor } = this;
-     const { locale } = editor;
-     const options = editor.config.get('linkitMediaLibrary');
--    console.log('options', options);
--    const command = editor.commands.get('insertMediaLibraryLink');
-     const linkFormView = editor.plugins.get('LinkUI').formView;
-     const buttonView = new ButtonView(locale);
-
-     const { libraryURL, openDialog, dialogSettings = {} } = options;
--    console.log('libraryURL', libraryURL);
-     if (!libraryURL || typeof openDialog !== 'function') {
-       return;
-     }
-
--    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-+    // buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-     // Create the toolbar button.
-     buttonView.set({
-       label: editor.t('Media Library'),
-@@ -68,7 +55,6 @@ class LinkitMediaLibrary extends Plugin {
-     editor.plugins
-       .get('ContextualBalloon')
-       .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
--        const linkFormView = editor.plugins.get('LinkUI').formView;
-         if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {
-           return;
-         }
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-index b7e80b0..17395ac 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-@@ -14,15 +14,14 @@ import { Command } from 'ckeditor5/src/core';
-  */
- export default class InsertMediaLibraryLink extends Command {
-   execute(attributes) {
--    // @todo Insert the media path into the link URL box.
--    console.log("Executed InsertMediaLibraryLink command.");
--    console.log("attributes", attributes);
--    console.log("this", this);
-     const { editor } = this;
--    const linkit = editor.plugins.get("Linkit")
-+    const linkit = editor.plugins.get("Linkit");
-
-+    // Add the media attributes into the Linkit plugin.
-     linkit.set('entityType', attributes['data-entity-type']);
-     linkit.set('entityUuid', attributes['data-entity-uuid']);
-     linkit.set('entitySubstitution', attributes['data-entity-substitution']);
-+
-+    // @todo Either insert a link or just re-open the link UI balloon.
-   }
- }
---
-GitLab
-
-
-From 8927ed17e4a802b875ccc0a28881858c970c41fd Mon Sep 17 00:00:00 2001
-From: Gary Ridgway <gary-ridgway@uiowa.edu>
-Date: Mon, 4 Dec 2023 11:58:27 -0600
-Subject: [PATCH 12/17] Fixing merge conflicts.
-
----
- css/mediaLibrary.css                          |  5 +++
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           | 31 ++++++++++++++++---
- linkit_media_library.libraries.yml            |  3 ++
- 4 files changed, 35 insertions(+), 6 deletions(-)
- create mode 100644 css/mediaLibrary.css
-
-diff --git a/css/mediaLibrary.css b/css/mediaLibrary.css
-new file mode 100644
-index 0000000..4626587
---- /dev/null
-+++ b/css/mediaLibrary.css
-@@ -0,0 +1,5 @@
-+.ck.ck-link-form.ck-link-form_layout-vertical button.ck-media-library {
-+  width: 100%;
-+  border-top: unset;
-+  padding: var(--ck-spacing-small) var(--ck-spacing-large);
-+}
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 685772b..d92efe6 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  buttonAdded = false;\n\n  init() {\n    console.log('LinkitMediaLibrary.init')\n    const { editor } = this;\n\n    // TRICKY: Work-around until the CKEditor team offers a better solution:\n    // force the ContextualBalloon to get instantiated early thanks to\n    // DrupalImage not yet being optimized like\n    // https://github.com/ckeditor/ckeditor5/commit/c276c45a934e4ad7c2a8ccd0bd9a01f6442d4cd3#diff-1753317a1a0b947ca8b66581b533616a5309f6d4236a527b9d21ba03e13a78d8.\n    // if (editor.plugins.get('LinkUI')._createViews) {\n    //   editor.plugins.get('LinkUI')._createViews();\n    // }\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    console.log('LinkitMediaLibrary._addMediaLibraryButton()');\n\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    console.log('options', options);\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    console.log('libraryURL', libraryURL);\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    // buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {\n          return;\n        }\n\n        linkFormView.children.add(buttonView, 1);\n        this.buttonAdded = true;\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    // @todo Insert the media path into the link URL box.\n    console.log("Executed InsertMediaLibraryLink command.");\n    console.log("attributes", attributes);\n    const { editor } = this;\n    const linkit = editor.plugins.get("Linkit");\n    console.log("linkit", linkit);\n\n    linkit.set(\'entityType\', attributes[\'data-entity-type\']);\n    linkit.set(\'entityUuid\', attributes[\'data-entity-uuid\']);\n    linkit.set(\'entitySubstitution\', attributes[\'data-entity-substitution\']);\n    console.log("linkit", linkit);\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?')},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n  buttonAdded = false;\n\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    const { editor } = this;\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {\n          linkFormView.children.add(buttonView, 1);\n          this.buttonAdded = true;\n        }\n\n        // Every time we trigger the menu, we need to put the\n        //     save and close buttons at the bottom because of the\n        //     way that editorAdvancedLink rearranges things.\n        const buttons = [\n          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-save') > -1),\n          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-cancel') > -1),\n        ];\n\n        buttons.forEach((item, i) => {\n          linkFormView.children.remove(item);\n          linkFormView.children.add(item);\n\n          if (linkFormView._focusables.has(item)) {\n\n            linkFormView._focusables.remove(item);\n            linkFormView._focusables.add(item);\n\n            linkFormView.focusTracker.remove(item);\n            linkFormView.focusTracker.add(item);\n          }\n        });\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    const { editor } = this;\n    const linkit = editor.plugins.get(\"Linkit\");\n\n    // Add the media attributes into the Linkit plugin.\n    linkit.set('entityType', attributes['data-entity-type']);\n    linkit.set('entityUuid', attributes['data-entity-uuid']);\n    linkit.set('entitySubstitution', attributes['data-entity-substitution']);\n\n    // @todo Either insert a link or just re-open the link UI balloon.\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 4b349d6..5d2e499 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -25,6 +25,7 @@ class LinkitMediaLibrary extends Plugin {
-     const { locale } = editor;
-     const options = editor.config.get('linkitMediaLibrary');
-     const linkFormView = editor.plugins.get('LinkUI').formView;
-+    const command = editor.commands.get('insertMediaLibraryLink');
-     const buttonView = new ButtonView(locale);
-
-     const { libraryURL, openDialog, dialogSettings = {} } = options;
-@@ -32,7 +33,7 @@ class LinkitMediaLibrary extends Plugin {
-       return;
-     }
-
--    // buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-+    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-     // Create the toolbar button.
-     buttonView.set({
-       label: editor.t('Media Library'),
-@@ -55,12 +56,32 @@ class LinkitMediaLibrary extends Plugin {
-     editor.plugins
-       .get('ContextualBalloon')
-       .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
--        if (this.buttonAdded || newValue === oldValue || newValue !== linkFormView) {
--          return;
-+        if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {
-+          linkFormView.children.add(buttonView, 1);
-+          this.buttonAdded = true;
-         }
-
--        linkFormView.children.add(buttonView, 1);
--        this.buttonAdded = true;
-+        // Every time we trigger the menu, we need to put the
-+        //     save and close buttons at the bottom because of the
-+        //     way that editorAdvancedLink rearranges things.
-+        const buttons = [
-+          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-save') > -1),
-+          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-cancel') > -1),
-+        ];
-+
-+        buttons.forEach((item, i) => {
-+          linkFormView.children.remove(item);
-+          linkFormView.children.add(item);
-+
-+          if (linkFormView._focusables.has(item)) {
-+
-+            linkFormView._focusables.remove(item);
-+            linkFormView._focusables.add(item);
-+
-+            linkFormView.focusTracker.remove(item);
-+            linkFormView.focusTracker.add(item);
-+          }
-+        });
-       }
-     )
-   }
-diff --git a/linkit_media_library.libraries.yml b/linkit_media_library.libraries.yml
-index 81c961d..551db49 100644
---- a/linkit_media_library.libraries.yml
-+++ b/linkit_media_library.libraries.yml
-@@ -2,6 +2,9 @@ ckeditor5:
-   version: VERSION
-   js:
-     js/build/linkitMediaLibrary.js: { preprocess: false, minified: true }
-+  css:
-+    component:
-+      css/mediaLibrary.css: {}
-   dependencies:
-     - core/drupal
-     - ckeditor5/ckeditor5
---
-GitLab
-
-
-From 4b901d4df17c69ee3080596f575bac4a9d963799 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 5 Dec 2023 12:29:42 -0600
-Subject: [PATCH 13/17] Renamed CSS file to be inline with core naming
- convention.
-
----
- css/{mediaLibrary.css => linkit-media-library.css} | 0
- linkit_media_library.libraries.yml                 | 2 +-
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename css/{mediaLibrary.css => linkit-media-library.css} (100%)
-
-diff --git a/css/mediaLibrary.css b/css/linkit-media-library.css
-similarity index 100%
-rename from css/mediaLibrary.css
-rename to css/linkit-media-library.css
-diff --git a/linkit_media_library.libraries.yml b/linkit_media_library.libraries.yml
-index 551db49..7b4ce75 100644
---- a/linkit_media_library.libraries.yml
-+++ b/linkit_media_library.libraries.yml
-@@ -4,7 +4,7 @@ ckeditor5:
-     js/build/linkitMediaLibrary.js: { preprocess: false, minified: true }
-   css:
-     component:
--      css/mediaLibrary.css: {}
-+      css/linkit-media-library.css: {}
-   dependencies:
-     - core/drupal
-     - ckeditor5/ckeditor5
---
-GitLab
-
-
-From fbc42620d915ca6d9b695c95ac229ade58a22ab8 Mon Sep 17 00:00:00 2001
-From: Sean Adams-Hiett <sean-adams-hiett@uiowa.edu>
-Date: Tue, 5 Dec 2023 14:23:30 -0600
-Subject: [PATCH 14/17] Got the basic functionality working. Cleaned up some
- stuff that appears to be unnecessary.
-
----
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           | 28 +++++++++++++++----
- .../src/insertmedialibrarylink.js             | 27 ------------------
- .../src/linkitmedialibraryediting.js          | 27 ------------------
- 4 files changed, 23 insertions(+), 61 deletions(-)
- delete mode 100644 js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
- delete mode 100644 js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index d92efe6..9b2f437 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,i){"object"==typeof exports&&"object"==typeof module?module.exports=i():"function"==typeof define&&define.amd?define([],i):"object"==typeof exports?exports.CKEditor5=i():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=i())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n/* harmony import */ var _linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./linkitmedialibraryediting */ \"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js\");\n\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n  buttonAdded = false;\n\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [_linkitmedialibraryediting__WEBPACK_IMPORTED_MODULE_2__[\"default\"]];\n  }\n\n  init() {\n    const { editor } = this;\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    const { editor } = this;\n    const { locale } = editor;\n    const options = editor.config.get('linkitMediaLibrary');\n    const linkFormView = editor.plugins.get('LinkUI').formView;\n    const command = editor.commands.get('insertMediaLibraryLink');\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          editor.execute('insertMediaLibraryLink', attributes);\n        },\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n        if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {\n          linkFormView.children.add(buttonView, 1);\n          this.buttonAdded = true;\n        }\n\n        // Every time we trigger the menu, we need to put the\n        //     save and close buttons at the bottom because of the\n        //     way that editorAdvancedLink rearranges things.\n        const buttons = [\n          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-save') > -1),\n          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-cancel') > -1),\n        ];\n\n        buttons.forEach((item, i) => {\n          linkFormView.children.remove(item);\n          linkFormView.children.add(item);\n\n          if (linkFormView._focusables.has(item)) {\n\n            linkFormView._focusables.remove(item);\n            linkFormView._focusables.add(item);\n\n            linkFormView.focusTracker.remove(item);\n            linkFormView.focusTracker.add(item);\n          }\n        });\n      }\n    )\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ InsertMediaLibraryLink)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* eslint-disable import/no-extraneous-dependencies */\n// cspell:ignore insertmedialibrarylink\n\n\n/**\n * @module linkitMediaLibrary/insertmedialibrarylink\n */\n\n/**\n * The insert media library link command.\n *\n * The command is registered by the `LinkitMediaLibraryEditing` plugin as\n * `insertMediaLibraryLink`.\n */\nclass InsertMediaLibraryLink extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Command {\n  execute(attributes) {\n    const { editor } = this;\n    const linkit = editor.plugins.get(\"Linkit\");\n\n    // Add the media attributes into the Linkit plugin.\n    linkit.set('entityType', attributes['data-entity-type']);\n    linkit.set('entityUuid', attributes['data-entity-uuid']);\n    linkit.set('entitySubstitution', attributes['data-entity-substitution']);\n\n    // @todo Either insert a link or just re-open the link UI balloon.\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js?")},"./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval('__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   "default": () => (/* binding */ LinkitMediaLibraryEditing)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ "ckeditor5/src/core.js");\n/* harmony import */ var _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./insertmedialibrarylink */ "./js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js");\n\n\n\n/**\n * @module linkitMediaLibrary/linkitmedialibraryediting\n */\n\n/**\n * The Drupal Media Editing plugin.\n *\n * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.\n *\n * @private\n */\nclass LinkitMediaLibraryEditing extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n\n  /**\n   * @inheritdoc\n   */\n  init() {\n    this.editor.commands.add(\n      \'insertMediaLibraryLink\',\n      new _insertmedialibrarylink__WEBPACK_IMPORTED_MODULE_1__["default"](this.editor),\n    );\n  }\n}\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js?')},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var i=__webpack_module_cache__[e];if(void 0!==i)return i.exports;var r=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](r,r.exports,__webpack_require__),r.exports}__webpack_require__.d=(e,i)=>{for(var r in i)__webpack_require__.o(i,r)&&!__webpack_require__.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:i[r]})},__webpack_require__.o=(e,i)=>Object.prototype.hasOwnProperty.call(e,i),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function i(r){var o=t[r];if(void 0!==o)return o.exports;var d=t[r]={exports:{}};return e[r](d,d.exports,i),d.exports}i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return(()=>{"use strict";i.d(r,{default:()=>d});var e=i("ckeditor5/src/core.js"),t=i("ckeditor5/src/ui.js");class o extends e.Plugin{buttonAdded=!1;static get requires(){return[]}init(){const{editor:e}=this;this._addMediaLibraryButton()}_addMediaLibraryButton(){const{editor:e}=this,{locale:i}=e,r=e.plugins.get("LinkUI"),o=e.plugins.get("Linkit"),d=r._hideUI,n=e.config.get("linkitMediaLibrary"),s=r.formView,a=new t.ButtonView(i),{libraryURL:l,openDialog:c,dialogSettings:u={}}=n;l&&"function"==typeof c&&(a.set({label:e.t("Media Library"),withText:!0}),a.set("class","ck-media-library"),this.listenTo(a,"execute",(()=>{c(l,(({attributes:e})=>{o.set("entityType",e["data-entity-type"]),o.set("entityUuid",e["data-entity-uuid"]),o.set("entitySubstitution",e["data-entity-substitution"]),s.urlInputView.fieldView.element.value=e.href,setTimeout((()=>{s.urlInputView.fieldView.element.focus()}),100)}),u)})),e.plugins.get("ContextualBalloon").on("set:visibleView",((e,t,i,r)=>{this.buttonAdded||i===r||i!==s||(s.children.add(a,1),this.buttonAdded=!0);[s.children.find((e=>e.template.attributes.class.indexOf("ck-button-save")>-1)),s.children.find((e=>e.template.attributes.class.indexOf("ck-button-cancel")>-1))].forEach(((e,t)=>{s.children.remove(e),s.children.add(e),s._focusables.has(e)&&(s._focusables.remove(e),s._focusables.add(e),s.focusTracker.remove(e),s.focusTracker.add(e))}))})),r._hideUI=()=>{0===document.querySelectorAll(".ui-dialog-content").length&&d.bind(r).call()})}static get pluginName(){return"LinkitMediaLibrary"}}const d={LinkitMediaLibrary:o}})(),r=r.default})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 5d2e499..0b932b5 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -1,6 +1,5 @@
- import { Plugin } from 'ckeditor5/src/core';
- import { ButtonView } from 'ckeditor5/src/ui';
--import LinkitMediaLibraryEditing from './linkitmedialibraryediting';
-
-
- class LinkitMediaLibrary extends Plugin {
-@@ -11,7 +10,7 @@ class LinkitMediaLibrary extends Plugin {
-    * @inheritdoc
-    */
-   static get requires() {
--    return [LinkitMediaLibraryEditing];
-+    return [];
-   }
-
-   init() {
-@@ -23,9 +22,11 @@ class LinkitMediaLibrary extends Plugin {
-   _addMediaLibraryButton() {
-     const { editor } = this;
-     const { locale } = editor;
-+    const linkUI = editor.plugins.get('LinkUI');
-+    const linkit = editor.plugins.get("Linkit");
-+    const _hideUIOriginal = linkUI._hideUI;
-     const options = editor.config.get('linkitMediaLibrary');
--    const linkFormView = editor.plugins.get('LinkUI').formView;
--    const command = editor.commands.get('insertMediaLibraryLink');
-+    const linkFormView = linkUI.formView;
-     const buttonView = new ButtonView(locale);
-
-     const { libraryURL, openDialog, dialogSettings = {} } = options;
-@@ -33,7 +34,6 @@ class LinkitMediaLibrary extends Plugin {
-       return;
-     }
-
--    buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
-     // Create the toolbar button.
-     buttonView.set({
-       label: editor.t('Media Library'),
-@@ -44,8 +44,16 @@ class LinkitMediaLibrary extends Plugin {
-       openDialog(
-         libraryURL,
-         ({ attributes }) => {
--          editor.execute('insertMediaLibraryLink', attributes);
-+          // Add the media attributes into the Linkit plugin.
-+          linkit.set('entityType', attributes['data-entity-type']);
-+          linkit.set('entityUuid', attributes['data-entity-uuid']);
-+          linkit.set('entitySubstitution', attributes['data-entity-substitution']);
-+          linkFormView.urlInputView.fieldView.element.value = attributes['href'];
-+          setTimeout(() => {
-+            linkFormView.urlInputView.fieldView.element.focus();
-+          }, 100)
-         },
-+
-         dialogSettings,
-       );
-     });
-@@ -84,6 +92,14 @@ class LinkitMediaLibrary extends Plugin {
-         });
-       }
-     )
-+
-+    linkUI._hideUI = () => {
-+      const modal = document.querySelectorAll('.ui-dialog-content');
-+      if (modal.length === 0) {
-+        _hideUIOriginal.bind(linkUI).call();
-+      }
-+    };
-+
-   }
-
-   /**
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-deleted file mode 100644
-index 17395ac..0000000
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/insertmedialibrarylink.js
-+++ /dev/null
-@@ -1,27 +0,0 @@
--/* eslint-disable import/no-extraneous-dependencies */
--// cspell:ignore insertmedialibrarylink
--import { Command } from 'ckeditor5/src/core';
--
--/**
-- * @module linkitMediaLibrary/insertmedialibrarylink
-- */
--
--/**
-- * The insert media library link command.
-- *
-- * The command is registered by the `LinkitMediaLibraryEditing` plugin as
-- * `insertMediaLibraryLink`.
-- */
--export default class InsertMediaLibraryLink extends Command {
--  execute(attributes) {
--    const { editor } = this;
--    const linkit = editor.plugins.get("Linkit");
--
--    // Add the media attributes into the Linkit plugin.
--    linkit.set('entityType', attributes['data-entity-type']);
--    linkit.set('entityUuid', attributes['data-entity-uuid']);
--    linkit.set('entitySubstitution', attributes['data-entity-substitution']);
--
--    // @todo Either insert a link or just re-open the link UI balloon.
--  }
--}
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-deleted file mode 100644
-index 110c56f..0000000
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/linkitmedialibraryediting.js
-+++ /dev/null
-@@ -1,27 +0,0 @@
--import { Plugin } from 'ckeditor5/src/core';
--import InsertMediaLibraryLink from './insertmedialibrarylink';
--
--/**
-- * @module linkitMediaLibrary/linkitmedialibraryediting
-- */
--
--/**
-- * The Drupal Media Editing plugin.
-- *
-- * Handles the transformation from the CKEditor 5 UI to Drupal-specific markup.
-- *
-- * @private
-- */
--export default class LinkitMediaLibraryEditing extends Plugin {
--
--
--  /**
--   * @inheritdoc
--   */
--  init() {
--    this.editor.commands.add(
--      'insertMediaLibraryLink',
--      new InsertMediaLibraryLink(this.editor),
--    );
--  }
--}
---
-GitLab
-
-
-From be6a66dd5c00c8459452b503b084efb9ca9013d4 Mon Sep 17 00:00:00 2001
-From: Rodrigo Aguilera <hi@rodrigoaguilera.net>
-Date: Tue, 12 Dec 2023 16:21:07 +0100
-Subject: [PATCH 15/17] Depend on the linkit plugin.
-
----
- linkit_media_library.ckeditor5.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/linkit_media_library.ckeditor5.yml b/linkit_media_library.ckeditor5.yml
-index 68c45ae..9fc7c58 100644
---- a/linkit_media_library.ckeditor5.yml
-+++ b/linkit_media_library.ckeditor5.yml
-@@ -19,4 +19,4 @@ linkit_media_library_link:
-       - <a aria-label title class id target="_blank" rel>
-     conditions:
-       plugins:
--        - ckeditor5_link
-+        - linkit_extension
---
-GitLab
-
-
-From fc138be523e591481795b37bf927b47cc398e282 Mon Sep 17 00:00:00 2001
-From: Alan Ridgway <gary-ridgway@uiowa.edu>
-Date: Thu, 11 Jan 2024 10:13:20 -0600
-Subject: [PATCH 16/17] Scoping z-index for off canvas tray
-
----
- css/linkit-media-library.css | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/css/linkit-media-library.css b/css/linkit-media-library.css
-index 4626587..514ab5a 100644
---- a/css/linkit-media-library.css
-+++ b/css/linkit-media-library.css
-@@ -3,3 +3,12 @@
-   border-top: unset;
-   padding: var(--ck-spacing-small) var(--ck-spacing-large);
- }
-+
-+.ui-dialog.ui-dialog-off-canvas ~ .ck-body-wrapper .ck-balloon-panel {
-+  --ck-z-modal: calc(var(--ck-z-default) + 999);
-+}
-+
-+.ui-dialog.media-library-widget-modal ~ .ck-body-wrapper .ck-balloon-panel {
-+  --ck-z-modal: inherit;
-+}
-+
---
-GitLab
-
-
-From 6496453e55e8d40ed388a032326cb54bf9efaf5b Mon Sep 17 00:00:00 2001
-From: Alan Ridgway <gary-ridgway@uiowa.edu>
-Date: Thu, 11 Jan 2024 10:13:59 -0600
-Subject: [PATCH 17/17] Fixing JS to be scoped properly for off-canvas.
- Removing excess code.
-
----
- js/build/linkitMediaLibrary.js                |  2 +-
- .../linkitMediaLibrary/src/index.js           | 36 ++++---------------
- 2 files changed, 8 insertions(+), 30 deletions(-)
-
-diff --git a/js/build/linkitMediaLibrary.js b/js/build/linkitMediaLibrary.js
-index 9b2f437..f7ab6bc 100644
---- a/js/build/linkitMediaLibrary.js
-+++ b/js/build/linkitMediaLibrary.js
-@@ -1 +1 @@
--!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var e={"ckeditor5/src/core.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,i)=>{e.exports=i("dll-reference CKEditor5.dll")("./src/ui.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},t={};function i(r){var o=t[r];if(void 0!==o)return o.exports;var d=t[r]={exports:{}};return e[r](d,d.exports,i),d.exports}i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return(()=>{"use strict";i.d(r,{default:()=>d});var e=i("ckeditor5/src/core.js"),t=i("ckeditor5/src/ui.js");class o extends e.Plugin{buttonAdded=!1;static get requires(){return[]}init(){const{editor:e}=this;this._addMediaLibraryButton()}_addMediaLibraryButton(){const{editor:e}=this,{locale:i}=e,r=e.plugins.get("LinkUI"),o=e.plugins.get("Linkit"),d=r._hideUI,n=e.config.get("linkitMediaLibrary"),s=r.formView,a=new t.ButtonView(i),{libraryURL:l,openDialog:c,dialogSettings:u={}}=n;l&&"function"==typeof c&&(a.set({label:e.t("Media Library"),withText:!0}),a.set("class","ck-media-library"),this.listenTo(a,"execute",(()=>{c(l,(({attributes:e})=>{o.set("entityType",e["data-entity-type"]),o.set("entityUuid",e["data-entity-uuid"]),o.set("entitySubstitution",e["data-entity-substitution"]),s.urlInputView.fieldView.element.value=e.href,setTimeout((()=>{s.urlInputView.fieldView.element.focus()}),100)}),u)})),e.plugins.get("ContextualBalloon").on("set:visibleView",((e,t,i,r)=>{this.buttonAdded||i===r||i!==s||(s.children.add(a,1),this.buttonAdded=!0);[s.children.find((e=>e.template.attributes.class.indexOf("ck-button-save")>-1)),s.children.find((e=>e.template.attributes.class.indexOf("ck-button-cancel")>-1))].forEach(((e,t)=>{s.children.remove(e),s.children.add(e),s._focusables.has(e)&&(s._focusables.remove(e),s._focusables.add(e),s.focusTracker.remove(e),s.focusTracker.add(e))}))})),r._hideUI=()=>{0===document.querySelectorAll(".ui-dialog-content").length&&d.bind(r).call()})}static get pluginName(){return"LinkitMediaLibrary"}}const d={LinkitMediaLibrary:o}})(),r=r.default})()));
-\ No newline at end of file
-+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.CKEditor5=t():(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.linkitMediaLibrary=t())}(self,(()=>(()=>{var __webpack_modules__={"./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{"use strict";eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ckeditor5/src/core */ \"ckeditor5/src/core.js\");\n/* harmony import */ var ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ckeditor5/src/ui */ \"ckeditor5/src/ui.js\");\n\n\n\n\nclass LinkitMediaLibrary extends ckeditor5_src_core__WEBPACK_IMPORTED_MODULE_0__.Plugin {\n\n  buttonAdded = false;\n\n  /**\n   * @inheritdoc\n   */\n  static get requires() {\n    return [];\n  }\n\n  init() {\n    const { editor } = this;\n\n    this._addMediaLibraryButton();\n  }\n\n  _addMediaLibraryButton() {\n    const { editor } = this;\n    const { locale } = editor;\n    const linkUI = editor.plugins.get('LinkUI');\n    const linkit = editor.plugins.get(\"Linkit\");\n    const _hideUIOriginal = linkUI._hideUI;\n    const options = editor.config.get('linkitMediaLibrary');\n    const linkFormView = linkUI.formView;\n    const buttonView = new ckeditor5_src_ui__WEBPACK_IMPORTED_MODULE_1__.ButtonView(locale);\n\n    const { libraryURL, openDialog, dialogSettings = {} } = options;\n    if (!libraryURL || typeof openDialog !== 'function') {\n      return;\n    }\n\n    // Create the toolbar button.\n    buttonView.set({\n      label: editor.t('Media Library'),\n      withText: true,\n    });\n    buttonView.set( 'class', 'ck-media-library' );\n    this.listenTo(buttonView, 'execute', () => {\n      openDialog(\n        libraryURL,\n        ({ attributes }) => {\n          // Add the media attributes into the Linkit plugin.\n          linkit.set('entityType', attributes['data-entity-type']);\n          linkit.set('entityUuid', attributes['data-entity-uuid']);\n          linkit.set('entitySubstitution', attributes['data-entity-substitution']);\n          linkFormView.urlInputView.fieldView.element.value = attributes['href'];\n          setTimeout(() => {\n            linkFormView.urlInputView.fieldView.element.focus();\n          }, 100)\n        },\n\n        dialogSettings,\n      );\n    });\n\n    // For now, we are adding the button inside this event because Editor\n    // Advanced Link is adding its form element so the Link UI form view in the\n    // same way and if we don't do it like this, our changes get overridden.\n    editor.plugins\n      .get('ContextualBalloon')\n      .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {\n          if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {\n            linkFormView.children.add(buttonView, 1);\n            this.buttonAdded = true;\n          }\n        }\n      )\n\n    // Here's the issue\n    linkUI._hideUI = () => {\n      const modal = document.querySelectorAll('#drupal-modal.ui-dialog-content');\n      if (modal.length === 0) {\n        _hideUIOriginal.bind(linkUI).call();\n      }\n    };\n\n  }\n\n  /**\n   * @inheritdoc\n   */\n  static get pluginName() {\n    return 'LinkitMediaLibrary';\n  }\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n  LinkitMediaLibrary,\n});\n\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js?")},"ckeditor5/src/core.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/core.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./core.js_from_dll-reference_CKEditor5.dll?')},"ckeditor5/src/ui.js":(module,__unused_webpack_exports,__webpack_require__)=>{eval('module.exports = (__webpack_require__(/*! dll-reference CKEditor5.dll */ "dll-reference CKEditor5.dll"))("./src/ui.js");\n\n//# sourceURL=webpack://CKEditor5.linkitMediaLibrary/delegated_./ui.js_from_dll-reference_CKEditor5.dll?')},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},__webpack_module_cache__={};function __webpack_require__(e){var t=__webpack_module_cache__[e];if(void 0!==t)return t.exports;var i=__webpack_module_cache__[e]={exports:{}};return __webpack_modules__[e](i,i.exports,__webpack_require__),i.exports}__webpack_require__.d=(e,t)=>{for(var i in t)__webpack_require__.o(t,i)&&!__webpack_require__.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:t[i]})},__webpack_require__.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),__webpack_require__.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var __webpack_exports__=__webpack_require__("./js/ckeditor5_plugins/linkitMediaLibrary/src/index.js");return __webpack_exports__=__webpack_exports__.default,__webpack_exports__})()));
-\ No newline at end of file
-diff --git a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-index 0b932b5..877b11b 100644
---- a/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-+++ b/js/ckeditor5_plugins/linkitMediaLibrary/src/index.js
-@@ -64,37 +64,16 @@ class LinkitMediaLibrary extends Plugin {
-     editor.plugins
-       .get('ContextualBalloon')
-       .on('set:visibleView', (evt, propertyName, newValue, oldValue) => {
--        if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {
--          linkFormView.children.add(buttonView, 1);
--          this.buttonAdded = true;
--        }
--
--        // Every time we trigger the menu, we need to put the
--        //     save and close buttons at the bottom because of the
--        //     way that editorAdvancedLink rearranges things.
--        const buttons = [
--          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-save') > -1),
--          linkFormView.children.find((child) => child.template.attributes.class.indexOf('ck-button-cancel') > -1),
--        ];
--
--        buttons.forEach((item, i) => {
--          linkFormView.children.remove(item);
--          linkFormView.children.add(item);
--
--          if (linkFormView._focusables.has(item)) {
--
--            linkFormView._focusables.remove(item);
--            linkFormView._focusables.add(item);
--
--            linkFormView.focusTracker.remove(item);
--            linkFormView.focusTracker.add(item);
-+          if (!this.buttonAdded && newValue !== oldValue && newValue === linkFormView) {
-+            linkFormView.children.add(buttonView, 1);
-+            this.buttonAdded = true;
-           }
--        });
--      }
--    )
-+        }
-+      )
-
-+    // Here's the issue
-     linkUI._hideUI = () => {
--      const modal = document.querySelectorAll('.ui-dialog-content');
-+      const modal = document.querySelectorAll('#drupal-modal.ui-dialog-content');
-       if (modal.length === 0) {
-         _hideUIOriginal.bind(linkUI).call();
-       }
-@@ -109,7 +88,6 @@ class LinkitMediaLibrary extends Plugin {
-     return 'LinkitMediaLibrary';
-   }
- }
--
- export default {
-   LinkitMediaLibrary,
- };
---
-GitLab
