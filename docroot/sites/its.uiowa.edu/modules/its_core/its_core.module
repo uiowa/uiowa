@@ -275,6 +275,28 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['label'] = 'Available to';
       break;
 
+    case 'field_alert_service_affected':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
+        if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline field--separator');
+        }
+        elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+        }
+      }
+      break;
+
+    case 'field_alert_building':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
+          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+        }
+      }
+      break;
+
     case 'field_alert_category':
       $view_mode = $variables['element']['#view_mode'];
       if ($view_mode === 'teaser') {

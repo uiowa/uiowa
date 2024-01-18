@@ -5,15 +5,68 @@ adding:
       - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_title_details
   content:
-    field_alert_date:
+    field_alert_building:
+      type: entity_reference_label
+      label: visually_hidden
       settings:
-        format: compact
+        link: false
+      third_party_settings:
+        field_delimiter:
+          delimiter: ','
+      weight: 3
+      region: content
+    field_alert_category:
+      weight: 4
+    field_alert_date:
+      weight: 1
+    field_alert_service_affected:
+      type: entity_reference_label
+      label: visually_hidden
+      settings:
+        link: false
+      third_party_settings:
+        field_delimiter:
+          delimiter: ','
+      weight: 2
+      region: content
+    links:
+      weight: 0
   hidden:
-    field_alert_building: true
-    field_alert_service_affected: true
+    body: true
     field_alert_title_details: true
 removing:
+  dependencies:
+    module:
+      - smart_trim
   content:
+    field_alert_category:
+      weight: 2
     field_alert_date:
+      weight: 3
+    links:
+      weight: 1
+    body:
+      type: smart_trim
+      label: hidden
       settings:
-        format: default
+        trim_length: 300
+        trim_type: chars
+        trim_suffix: ...
+        wrap_output: false
+        wrap_class: trimmed
+        more:
+          display_link: false
+          target_blank: false
+          link_trim_only: false
+          class: more-link
+          text: More
+          aria_label: 'Read more about [node:title]'
+          token_browser: ''
+        summary_handler: full
+        trim_options:
+          text: false
+          trim_zero: false
+          replace_tokens: false
+      third_party_settings: {  }
+      weight: 0
+      region: content
