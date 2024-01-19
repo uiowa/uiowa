@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facilities_core\Entity\Artwork;
 use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -133,6 +134,40 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       Any projects created or modified that are not in the source data will be overwritten.');
       break;
 
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'artwork') {
+    if ($view->current_display === 'block_search_artwork') {
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'person')
+        ->condition('status', 1)
+        ->condition('field_person_types', 'artist')
+        ->accessCheck(FALSE);
+
+      $entity_ids = $query->execute();
+
+      // Check if $entity_ids is not empty.
+      if (!empty($entity_ids)) {
+        // Include an "Any" option.
+        $options = ['All' => '- Any -'];
+
+        foreach ($entity_ids as $entity_id) {
+          $person = Node::load($entity_id);
+
+          if ($person) {
+            $options[$entity_id] = $person->label();
+          }
+        }
+
+        $form['field_artwork_artist_target_id']['#options'] = $options;
+      }
+    }
   }
 }
 
