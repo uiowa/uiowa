@@ -106,27 +106,17 @@ function its_core_entity_presave(EntityInterface $entity) {
  * Implements hook_preprocess_fieldset().
  */
 function its_core_preprocess_fieldset(&$variables) {
-  if (
-    isset($variables['element']['#type']) &&
-    $variables['element']['#type'] === 'radios' &&
-    isset($variables['element']['#title']) &&
-    $variables['element']['#title'] === 'Category'
-  ) {
-    $node_type_edit = \Drupal::request()?->attributes?->get('node')?->getType();
-    $node_type_add = \Drupal::request()?->attributes?->get('node_type')?->get('originalId');
-    $is_alert = $node_type_edit === 'alert' || $node_type_add === 'alert';
-    $current_path = \Drupal::service('path.current')?->getPath();
-    $current_path_parts = preg_split('/\//', $current_path, -1, PREG_SPLIT_NO_EMPTY);
+  if (isset($variables['element']['#type']) &&
+    $variables['element']['#type'] === 'radios') {
+    $admin_context = \Drupal::service('router.admin_context');
+    if ($admin_context->isAdminRoute()) {
+      $current_route = \Drupal::routeMatch();
+      $node_type_data = $current_route?->getParameter('node_type');
+      $node_type = $node_type_data?->get('type');
 
-    if (
-      $is_alert &&
-      isset($current_path_parts[2]) &&
-      (
-        $current_path_parts[2] === 'edit' ||
-        $current_path_parts[1] === 'add'
-      )
-    ) {
-      $variables['description_display'] = 'before';
+      if (isset($node_type) && $node_type === 'alert') {
+        $variables['description_display'] = 'before';
+      }
     }
   }
 }
