@@ -7,7 +7,9 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
+use Drupal\sitenow_alerts\Entity\ClosableInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -15,6 +17,9 @@ use Drupal\its_core\Entity\Service;
 function its_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['service'])) {
     $bundles['node']['service']['class'] = Service::class;
+  }
+  if (isset($bundles['node']['alert'])) {
+    $bundles['node']['alert']['class'] = ItsAlert::class;
   }
 }
 
@@ -65,8 +70,54 @@ function its_core_entity_presave(EntityInterface $entity) {
       ]));
       $entity->setTitle($output);
 
+      // If we're saving an outage or service degradation,
+      // we also want to check and set our views cache invalidation date.
+      if ($entity->isPublished()) {
+        $cache_affected_targets = [];
+        foreach (['service-degradation', 'outage', 'planned-maintenance', 'service-announcement'] as $target) {
+          $cache_affected_targets[] = its_core_alert_type_tag_map($target);
+        }
+        if (in_array($entity->field_alert_category->target_id, $cache_affected_targets)) {
+          if ($entity instanceof ClosableInterface) {
+            // If the alert is already closed, we're not concerned
+            // with invalidating caches.
+            if (!$entity->isClosed()) {
+              $state_key = 'its_core_alerts_next_clear';
+              $next_clear = \Drupal::state()->get($state_key);
+              // If we don't have a current next clear time,
+              // or we need a sooner time, set it now.
+              if (is_null($next_clear) || $entity->field_alert_date?->end_value < $next_clear) {
+                \Drupal::state()->set($state_key, $entity->field_alert_date?->end_value);
+              }
+              // And invalidate the current cache to make sure
+              // any updates are reflected.
+              its_core_clear_custom_cache_tag('its-core-alerts');
+            }
+          }
+        }
+      }
+
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_fieldset().
+ */
+function its_core_preprocess_fieldset(&$variables) {
+  if (isset($variables['element']['#type']) &&
+    $variables['element']['#type'] === 'radios') {
+    $admin_context = \Drupal::service('router.admin_context');
+    if ($admin_context->isAdminRoute()) {
+      $current_route = \Drupal::routeMatch();
+      $node_type_data = $current_route?->getParameter('node_type');
+      $node_type = $node_type_data?->get('type');
+
+      if (isset($node_type) && $node_type === 'alert') {
+        $variables['description_display'] = 'before';
+      }
+    }
   }
 }
 
@@ -214,6 +265,62 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['label'] = 'Available to';
       break;
 
+    case 'field_alert_service_affected':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
+        if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline field--separator');
+        }
+        elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+        }
+      }
+      break;
+
+    case 'field_alert_building':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
+          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
+          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+        }
+      }
+      break;
+
+    case 'field_alert_category':
+      $view_mode = $variables['element']['#view_mode'];
+      if ($view_mode === 'teaser') {
+        // Make categories badges.
+        foreach ($variables['items'] as &$item) {
+          $category_id = $item['content']['#entity']?->id();
+          if (in_array($category_id, ['406', '416'])) {
+            $content = $item['content']['#markup'];
+            // @todo Update this to the preferred icon(s),
+            //   or remove if we want the same icon for each.d
+            switch ($category_id) {
+              // Outage.
+              case '406':
+                $content = str_replace('badge--light', 'badge--orange', $content);
+                $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
+                break;
+
+              // Service Degradation.
+              case '416':
+                $content = str_replace('badge--light', 'badge--blue', $content);
+                $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
+                break;
+
+              default:
+                $icon = '';
+                break;
+            }
+            $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
+            $item['content']['#markup'] = $content;
+          }
+        }
+      }
+      break;
+
   }
 }
 
@@ -277,6 +384,16 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       }
       break;
 
+    case 'alerts_list_block':
+      if ($view->current_display === 'service_announcements') {
+        foreach ($variables['rows'] as &$row_build) {
+          $row_build['content']['#override_styles'] = [
+            'border' => '',
+          ];
+        }
+      }
+      break;
+
   }
 }
 
@@ -301,5 +418,136 @@ function its_core_preprocess_breadcrumb(&$variables): void {
         'url' => $category_path,
       ];
     }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  // Check/prevent tags from being deleted on single delete
+  // if they are in our list of tags used to associate
+  // alert types.
+  // Only need to alter the delete operation form.
+  if ($form_state->getFormObject()->getOperation() !== 'delete') {
+    return;
+  }
+  $tag = $form_state
+    ->getFormObject()
+    ->getEntity();
+
+  // Certain tags are required for alert category functionality.
+  // Grab our associative TID map, and the array_values
+  // will be the list of tag ids that can't be deleted.
+  $required_tids = array_values(its_core_alert_type_tag_map());
+  if (in_array($tag->id(), $required_tids)) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    $form['description']['#markup'] = its_core_prevent_tag_delete_message($tag->getName());
+  }
+}
+
+/**
+ * Custom warning message for alert category deletion detection.
+ *
+ * @param string $name
+ *   The associated tag's name.
+ *
+ * @see its_core_form_taxonomy_tag_confirm_form_alter()
+ */
+function its_core_prevent_tag_delete_message($name) {
+  return t('The tag <em>"@name"</em> is currently required for alert category selection. It cannot be deleted.', [
+    '@name' => $name,
+  ]);
+}
+
+/**
+ * Mapping for alert types to their associated tags.
+ *
+ * @param string $alert_type
+ *   The alert type as a machine name, or empty to fetch TIDs array.
+ *
+ * @return string|bool|array
+ *   The associated TID or FALSE, or an associative array of TIDs.
+ */
+function its_core_alert_type_tag_map(string $alert_type = '') {
+  $map = [
+    'service-degradation' => '416',
+    'outage' => '406',
+    'planned-maintenance' => '411',
+    'service-announcement' => '421',
+  ];
+  // If we aren't getting a specific TID,
+  // then return the full map.
+  if (empty($alert_type)) {
+    return $map;
+  }
+  return $map[$alert_type] ?? FALSE;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function its_core_cron() {
+  // Fetch our defined "next clear" which corresponds
+  // to the next-most upcoming alert closure and
+  // compare it to the current time.
+  $state_key = 'its_core_alerts_next_clear';
+  $next_clear = \Drupal::state()->get($state_key);
+  // If we don't have a defined next clear,
+  // then exit early.
+  if (!$next_clear) {
+    return;
+  }
+
+  $now = time();
+  if ($next_clear !== -1 && $next_clear < $now) {
+    // Invalidate the current tags.
+    $tag = 'its-core-alerts';
+    its_core_clear_custom_cache_tag($tag);
+    // Get the next-most end time and set new expiration to it.
+    \Drupal::state()->set($state_key, its_core_next_alert_close());
+  }
+}
+
+/**
+ * Fetches the next alert close timestamp.
+ *
+ * @return int
+ *   The next closest alert close timestamp or -1 if non exists.
+ */
+function its_core_next_alert_close() {
+  $next = \Drupal::database()->select('node__field_alert_date')
+    ->fields('node__field_alert_date', ['field_alert_date_end_value'])
+    ->condition('bundle', 'alert', '=')
+    ->condition('field_alert_date_end_value', time(), '>')
+    ->orderBy('field_alert_date_end_value', 'ASC')
+    ->execute()
+    ->fetch();
+  if ($next) {
+    return $next->field_alert_date_end_value;
+  }
+  else {
+    return -1;
+  }
+}
+
+/**
+ * Helper function to invalidate and purge a given cache tag.
+ *
+ * @param string $tag
+ *   The custom cache tag's name.
+ */
+function its_core_clear_custom_cache_tag(string $tag): void {
+  \Drupal::service('cache_tags.invalidator')->invalidateTags([$tag]);
+  // Check if we should be concerned with
+  // purging as well, and if so, get it set up.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+
+    $invalidations = [$purgeInvalidationFactory->get('tag', $tag)];
+    $purgeQueue->add($queuer, $invalidations);
   }
 }
