@@ -11,7 +11,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facilities_core\Entity\Artwork;
-use Drupal\facilities_core\Entity\NamedBuilding;
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -153,18 +152,21 @@ function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 
       $entity_ids = $query->execute();
 
-      // Include an "Any" option.
-      $options = ['All' => '- Any -'];
+      // Check if $entity_ids is not empty.
+      if (!empty($entity_ids)) {
+        // Include an "Any" option.
+        $options = ['All' => '- Any -'];
 
-      foreach ($entity_ids as $entity_id) {
-        $person = Node::load($entity_id);
+        foreach ($entity_ids as $entity_id) {
+          $person = Node::load($entity_id);
 
-        if ($person) {
-          $options[$entity_id] = $person->label();
+          if ($person) {
+            $options[$entity_id] = $person->label();
+          }
         }
-      }
 
-      $form['field_artwork_artist_target_id']['#options'] = $options;
+        $form['field_artwork_artist_target_id']['#options'] = $options;
+      }
     }
   }
 }
