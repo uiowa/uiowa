@@ -20,8 +20,10 @@ class Alert extends NodeBundleBase implements ClosableInterface, RendersAsCardIn
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => 'body',
-      '#subtitle' => 'field_alert_date',
-      '#meta' => 'field_alert_category',
+      '#meta' => [
+        'field_alert_date',
+        'field_alert_category',
+      ],
     ]);
   }
 
@@ -32,6 +34,7 @@ class Alert extends NodeBundleBase implements ClosableInterface, RendersAsCardIn
     return [
       ...parent::getDefaultCardStyles(),
       'styles' => '',
+      'card_headline_style' => 'headline--serif',
     ];
   }
 

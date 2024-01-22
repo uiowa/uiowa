@@ -1181,12 +1181,6 @@ $sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 
-// Directory aliases for covidresponse.research.uiowa.edu.
-$sites['researchcovidresponse.uiowa.ddev.site'] = 'covidresponse.research.uiowa.edu';
-$sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
-$sites['researchcovidresponse.stage.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
-$sites['researchcovidresponse.prod.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
-
 // Directory aliases for iwp.uiowa.edu.
 $sites['iwp.uiowa.ddev.site'] = 'iwp.uiowa.edu';
 $sites['iwp.dev.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
@@ -2680,12 +2674,6 @@ $sites['labstoltz.uiowa.ddev.site'] = 'stoltz.lab.uiowa.edu';
 $sites['labstoltz.dev.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
 $sites['labstoltz.stage.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
 $sites['labstoltz.prod.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
-
-// Directory aliases for halosat.physics.uiowa.edu.
-$sites['physicshalosat.uiowa.ddev.site'] = 'halosat.physics.uiowa.edu';
-$sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
-$sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
-$sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 
 // Directory aliases for humanimmunology.sites.uiowa.edu.
 $sites['siteshumanimmunology.uiowa.ddev.site'] = 'humanimmunology.sites.uiowa.edu';
@@ -6124,12 +6112,6 @@ $sites['labhultman.uiowa.ddev.site'] = 'hultman.lab.uiowa.edu';
 $sites['labhultman.dev.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
 $sites['labhultman.stage.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
 $sites['labhultman.prod.drupal.uiowa.edu'] = 'hultman.lab.uiowa.edu';
-
-// Directory aliases for sandboxnext.sites.uiowa.edu.
-$sites['sitessandboxnext.uiowa.ddev.site'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.dev.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.stage.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
-$sites['sitessandboxnext.prod.drupal.uiowa.edu'] = 'sandboxnext.sites.uiowa.edu';
 
 // Directory aliases for mattes.lab.uiowa.edu.
 $sites['labmattes.uiowa.ddev.site'] = 'mattes.lab.uiowa.edu';
