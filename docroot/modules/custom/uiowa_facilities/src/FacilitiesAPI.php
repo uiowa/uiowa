@@ -151,7 +151,7 @@ class FacilitiesAPI {
    * Get all featured projects.
    *
    * @return array
-   *   The projects object.
+   *   The featured projects object.
    */
   public function getFeaturedProjects() {
     return $this->request('GET', 'featuredprojects', [], [], self::BASE_URL_2);
@@ -161,7 +161,7 @@ class FacilitiesAPI {
    * Get all capital projects.
    *
    * @return array
-   *   The projects object.
+   *   The capital projects object.
    */
   public function getCapitalProjects() {
     return $this->request('GET', 'capitalprojects', [], [], self::BASE_URL_2);
@@ -177,7 +177,6 @@ class FacilitiesAPI {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'building')
-      // Add this line.
       ->accessCheck(FALSE);
     $nids = $query->execute();
 
