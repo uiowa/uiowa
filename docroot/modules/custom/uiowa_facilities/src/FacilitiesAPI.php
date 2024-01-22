@@ -148,6 +148,26 @@ class FacilitiesAPI {
   }
 
   /**
+   * Get all featured projects.
+   *
+   * @return array
+   *   The projects object.
+   */
+  public function getFeaturedProjects() {
+    return $this->request('GET', 'featuredprojects', [], [], self::BASE_URL_2);
+  }
+
+  /**
+   * Get all capital projects.
+   *
+   * @return array
+   *   The projects object.
+   */
+  public function getCapitalProjects() {
+    return $this->request('GET', 'capitalprojects', [], [], self::BASE_URL_2);
+  }
+
+  /**
    * Get all 'field_building_number' from the 'building' content type.
    *
    * @return array
@@ -157,7 +177,7 @@ class FacilitiesAPI {
     $query = \Drupal::entityQuery('node')
       ->condition('status', 1)
       ->condition('type', 'building')
-    // Add this line.
+      // Add this line.
       ->accessCheck(FALSE);
     $nids = $query->execute();
 
@@ -194,6 +214,23 @@ class FacilitiesAPI {
         }
       }
     }
+
+    // Get all featured projects.
+    $featured_projects = $this->getFeaturedProjects();
+    foreach ($featured_projects as $project) {
+      // Add the project to the projects array.
+      $projects[] = $project;
+    }
+
+    // Get all capital projects.
+    $capital_projects = $this->getCapitalProjects();
+    foreach ($capital_projects as $project) {
+      // Add the project to the projects array.
+      $projects[] = $project;
+    }
+
+    // Filter out duplicates.
+    $projects = array_unique($projects, SORT_REGULAR);
 
     // Return the array of projects.
     return $projects;
