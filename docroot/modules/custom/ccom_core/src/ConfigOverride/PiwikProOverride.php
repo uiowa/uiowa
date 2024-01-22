@@ -32,7 +32,7 @@ class PiwikProOverride implements ConfigFactoryOverrideInterface {
    * {@inheritdoc}
    */
   public function getCacheSuffix() {
-    return 'GoogleAnalyticsOverride';
+    return 'PiwikProOverride';
   }
 
   /**
