@@ -41,17 +41,6 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   protected ?array $entityIds;
 
   /**
-   * Constructs an EntityProcessorBase instance.
-   *
-   * @param string $bundle
-   *   The entity bundle.
-   */
-  public function __construct(string $bundle) {
-    $this->entityTypeManager = \Drupal::entityTypeManager();
-    $this->bundle = $bundle;
-  }
-
-  /**
    * The number of created entities.
    *
    * @var int
@@ -114,6 +103,17 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    */
   protected $existingEntities = [];
 
+  /**
+   * Constructs an EntityProcessorBase instance.
+   *
+   * @param string $bundle
+   *   The entity bundle.
+   */
+  public function __construct(string $bundle) {
+    $this->entityTypeManager = \Drupal::entityTypeManager();
+    $this->bundle = $bundle;
+  }
+  
   /**
    * Get the list of entity ID's, querying them if necessary.
    *
