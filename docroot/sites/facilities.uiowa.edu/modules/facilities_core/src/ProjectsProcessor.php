@@ -50,6 +50,13 @@ class ProjectsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
+  public function __construct() {
+    parent::__construct($this->bundle);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected $fieldSyncKey = 'field_project_number';
 
   /**
