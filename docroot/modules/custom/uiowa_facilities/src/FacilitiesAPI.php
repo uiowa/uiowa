@@ -161,14 +161,14 @@ class FacilitiesAPI {
       ->accessCheck(FALSE);
     $nids = $query->execute();
 
-    $buildingNumbers = [];
+    $building_numbers = [];
     foreach ($nids as $nid) {
       $node = Node::load($nid);
-      $fieldBuildingNumber = $node->get('field_building_number')->value;
-      $buildingNumbers[] = $fieldBuildingNumber;
+      $field_building_number = $node->get('field_building_number')->value;
+      $building_numbers[] = $field_building_number;
     }
 
-    return $buildingNumbers;
+    return $building_numbers;
   }
 
   /**
@@ -178,10 +178,10 @@ class FacilitiesAPI {
    *   The projects object.
    */
   public function getProjects() {
-    $buildingNumbers = $this->getAllBuildingNumbers();
+    $building_numbers = $this->getAllBuildingNumbers();
 
     $projects = [];
-    foreach ($buildingNumbers as $number) {
+    foreach ($building_numbers as $number) {
       // Use each number to make a query.
       $response = $this->request('GET', 'projects', ['bldgnumber' => $number], [], self::BASE_URL_2);
 
