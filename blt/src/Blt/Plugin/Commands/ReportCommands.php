@@ -32,6 +32,8 @@ class ReportCommands extends BltTasks {
    * @throws \Robo\Exception\TaskException
    */
   public function analytics($options = ['export' => FALSE, 'debug' => FALSE]) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+
     $site_data = [];
 
     $headers = [
@@ -48,8 +50,8 @@ class ReportCommands extends BltTasks {
     $application_data = $this->getDomainsKeyedByApplication();
 
     if (!empty($application_data)) {
-      // Create the file for exporting.
-      if ($options['export']) {
+      // Create the file for exporting locally.
+      if ($options['export'] && $env == 'local') {
         $now = date('Ymd-His');
         $filename = "SiteNow-Report-Analytics-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -162,8 +164,8 @@ class ReportCommands extends BltTasks {
               }
             }
           }
-          if ($options['export']) {
-            // Output to CSV file and copy to filesystem.
+          if ($options['export'] && $env == 'local') {
+            // Output to CSV file and copy to local filesystem.
             $fp = fopen($filepath, 'a');
             fputcsv($fp, $site);
             fclose($fp);
@@ -200,6 +202,8 @@ class ReportCommands extends BltTasks {
    * @throws \Robo\Exception\TaskException
    */
   public function lastLogin($options = ['export' => FALSE, 'debug' => FALSE]) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+
     $site_data = [];
 
     $headers = [
@@ -217,8 +221,8 @@ class ReportCommands extends BltTasks {
     $application_data = $this->getDomainsKeyedByApplication();
 
     if (!empty($application_data)) {
-      // Create the file for exporting.
-      if ($options['export']) {
+      // Create the file for exporting locally.
+      if ($options['export'] && $env == 'local') {
         $now = date('Ymd-His');
         $filename = "SiteNow-Report-Login-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -289,8 +293,8 @@ class ReportCommands extends BltTasks {
 
             $site['last_login'] = date('m/d/Y', (int) trim($result->getMessage()));
           }
-          if ($options['export']) {
-            // Output to CSV file and copy to filesystem.
+          if ($options['export'] && $env == 'local') {
+            // Output to CSV file and copy to local filesystem.
             $fp = fopen($filepath, 'a');
             fputcsv($fp, $site);
             fclose($fp);
@@ -327,12 +331,6 @@ class ReportCommands extends BltTasks {
   public function v1StandardCommsList($options = ['export' => FALSE, 'debug' => FALSE]) {
     $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
-    if($env !== 'local') {
-      $this->say('Ope! We shouldn\'t run this command remotely.');
-      $this->say('Do whatever you need to, and run it locally mmkay?');
-      return;
-    }
-
     $site_data = [];
 
     $headers = [
@@ -352,8 +350,8 @@ class ReportCommands extends BltTasks {
     $sites = Multisite::getAllSites($root);
 
     if (!empty($application_data)) {
-      // Create the file for exporting.
-      if ($options['export']) {
+      // Create the file for exporting locally.
+      if ($options['export'] && $env == 'local') {
         $now = date('Ymd-His');
         $filename = "SiteNow-v1-standard-user-list-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -414,8 +412,8 @@ class ReportCommands extends BltTasks {
               $emails = explode("\n", $emails_message);
               foreach ($emails as $email) {
                 $record = [$email, $domain];
-                if ($options['export']) {
-                  // Output to CSV file and copy to filesystem.
+                if ($options['export'] && $env == 'local') {
+                  // Output to CSV file and copy to local filesystem.
                   $fp = fopen($filepath, 'a');
                   fputcsv($fp, $record);
                   fclose($fp);
