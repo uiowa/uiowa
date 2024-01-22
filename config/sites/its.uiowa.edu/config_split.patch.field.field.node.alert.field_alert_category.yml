@@ -1,4 +1,5 @@
 adding:
+  description: 'Select a category for the alert.'
   required: true
   settings:
     handler: views
@@ -11,6 +12,7 @@ removing:
   dependencies:
     config:
       - taxonomy.vocabulary.alert_categories
+  description: 'Select categories for the alert.'
   required: false
   settings:
     handler: 'default:taxonomy_term'

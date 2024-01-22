@@ -123,10 +123,10 @@ class MultisiteCommands extends BltTasks {
    *
    * @aliases umi
    *
-   * @throws \Exception
-   *
    * @return mixed
    *   CommandError, list of uninstalled sites or the output from installation.
+   *
+   * @throws \Exception
    *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
@@ -275,7 +275,7 @@ class MultisiteCommands extends BltTasks {
     ];
 
     $this->printArrayAsTable($properties);
-    if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
+    if (!$this->confirm('The cloud properties above will be deleted. Are you sure?', FALSE)) {
       throw new \Exception('Aborted.');
     }
     else {
@@ -360,7 +360,7 @@ EOD
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
-      $this->say("Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.");
+      $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
     }
   }
 
@@ -636,7 +636,8 @@ EOD
 
     // Switch site context before expanding file properties.
     $this->switchSiteContext($host);
-    $this->getConfig()->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
+    $this->getConfig()
+      ->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
 
     $this->say("Wrote <comment>docroot/sites/{$host}/blt.yml</comment> file.");
 
@@ -700,7 +701,7 @@ EOD;
     }
 
     $this->say("Committed site <comment>{$host}</comment> code.");
-    $this->say("Continue initializing additional multisites or follow the next steps below.");
+    $this->say('Continue initializing additional multisites or follow the next steps below.');
 
     $steps += [
       1 => 'Deploy a release to production as per usual.',
@@ -946,7 +947,7 @@ EOD;
         $databases->delete($applications[$old], $db);
       }
       else {
-        $this->logger->warning("Test mode. Skipping database deletion.");
+        $this->logger->warning('Test mode. Skipping database deletion.');
       }
 
       $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site);
@@ -1100,8 +1101,8 @@ EOD;
   /**
    * Delete files on application environment.
    *
-   * Note that we CD into the file system first and THEN delete the site files
-   * directory. If we just rm -rf the directory and $site is ever empty, the
+   * Note that we CD into the file system first and THEN delete the site file
+   * directories. If we just rm -rf the directory and $site is ever empty, the
    * entire sites directory would be deleted.
    *
    * @param string $id
@@ -1120,15 +1121,36 @@ EOD;
       throw new \Exception('Deleting current directory or wildcard is not allowed.');
     }
 
-    $result = $this->taskDrush()
+    $app_env = "$app.$env";
+
+    // Use ssh user information for proper directory location.
+    $whoami_result = $this->taskDrush()
       ->alias("$id.$env")
       ->drush('ssh')
-      ->arg("rm -rf $site")
-      ->option('cd', "/mnt/gfs/$app.$env/sites/")
+      ->arg('whoami')
+      ->printOutput(TRUE)
       ->run();
 
-    if (!$result->wasSuccessful()) {
-      throw \Exception("Unable to delete multisite files for $site on $app.$env.");
+    if (str_contains($whoami_result->getMessage(), 'stage')) {
+      $app_env = trim($whoami_result->getMessage());
+    }
+
+    $file_directories = [
+      'files',
+      'files-private',
+    ];
+
+    foreach ($file_directories as $directory) {
+      $result = $this->taskDrush()
+        ->alias("$id.$env")
+        ->drush('ssh')
+        ->arg("rm -rf $site/$directory/*")
+        ->option('cd', "/mnt/gfs/$app_env/sites/")
+        ->run();
+
+      if (!$result->wasSuccessful()) {
+        throw new \Exception("Unable to delete multisite $directory for $site on $app_env.");
+      }
     }
   }
 
