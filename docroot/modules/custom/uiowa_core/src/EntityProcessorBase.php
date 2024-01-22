@@ -175,7 +175,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       else {
         // If not, create new.
         $entity = $storage->create([
-          'type' => 'building',
+          'type' => 'project',
         ]);
       }
 

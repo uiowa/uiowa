@@ -4,6 +4,7 @@ namespace Drupal\uiowa_facilities;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\node\Entity\Node;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -14,7 +15,8 @@ use Psr\Log\LoggerInterface;
  */
 class FacilitiesAPI {
 
-  const BASE = 'https://bizhub.facilities.uiowa.edu/bizhub/ext/';
+  const BASE_URL_1 = 'https://bizhub.facilities.uiowa.edu/bizhub/ext/';
+  const BASE_URL_2 = 'https://buildui.facilities.uiowa.edu/buildui/ext/';
 
   /**
    * The uiowa_facilities logger channel.
@@ -64,14 +66,16 @@ class FacilitiesAPI {
    *   Optional request parameters.
    * @param array $options
    *   Optional request options. All requests expect JSON response data.
+   * @param string $base
+   *   The base URL to use for the request. Defaults to self::BASE_URL_1.
    *
    * @return mixed
    *   The API response data.
    */
-  public function request($method, $path, array $params = [], array $options = []) {
+  public function request($method, $path, array $params = [], array $options = [], $base = self::BASE_URL_1) {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
-    $uri = self::BASE . ltrim($path, '/');
+    $uri = $base . ltrim($path, '/');
 
     // Append any query string parameters.
     if (!empty($params)) {
@@ -141,6 +145,58 @@ class FacilitiesAPI {
     return $this->request('GET', 'building', [
       'bldgnumber' => $building_number,
     ]);
+  }
+
+  /**
+   * Get all 'field_building_number' from the 'building' content type.
+   *
+   * @return array
+   *   The array of building numbers.
+   */
+  public function getAllBuildingNumbers() {
+    $query = \Drupal::entityQuery('node')
+      ->condition('status', 1)
+      ->condition('type', 'building')
+    // Add this line.
+      ->accessCheck(FALSE);
+    $nids = $query->execute();
+
+    $buildingNumbers = [];
+    foreach ($nids as $nid) {
+      $node = Node::load($nid);
+      $fieldBuildingNumber = $node->get('field_building_number')->value;
+      $buildingNumbers[] = $fieldBuildingNumber;
+    }
+
+    return $buildingNumbers;
+  }
+
+  /**
+   * Get all projects.
+   *
+   * @return array
+   *   The projects object.
+   */
+  public function getProjects() {
+    $buildingNumbers = $this->getAllBuildingNumbers();
+
+    $projects = [];
+    foreach ($buildingNumbers as $number) {
+      // Use each number to make a query.
+      $response = $this->request('GET', 'projects', ['bldgnumber' => $number], [], self::BASE_URL_2);
+
+      // Check if the response array is not empty.
+      if (!empty($response)) {
+        // If the response contains multiple arrays, loop through each of them.
+        foreach ($response as $project) {
+          // Add the project to the projects array.
+          $projects[] = $project;
+        }
+      }
+    }
+
+    // Return the array of projects.
+    return $projects;
   }
 
   /**
