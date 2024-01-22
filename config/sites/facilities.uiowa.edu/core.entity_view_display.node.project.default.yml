@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_description
+    - field.field.node.project.field_project_number
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
@@ -32,6 +33,17 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_project_number:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
     region: content
   field_project_webcam:
     type: link
