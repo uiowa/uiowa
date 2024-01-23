@@ -210,10 +210,7 @@ class FacilitiesAPI {
         // If the response contains multiple arrays, loop through each of them.
         foreach ($response as $project) {
           $project->projectType = $project->projectType ?? NULL;
-          // Set the projectBuilding value to the node id.
-          if (isset($project->projectBuilding)) {
-            $project->projectBuilding = $nid;
-          }
+
           // Add the project to the projects array.
           $projects[] = $project;
         }
@@ -234,14 +231,32 @@ class FacilitiesAPI {
       $projects[] = $project;
     }
 
+    // Grab additional fields listed at projectinfo and add them to the array.
+    foreach ($projects as &$project) {
+      $projectinfo_request = $this->request('GET', 'projectinfo', ['projnumber' => $project->buiProjectId], [], self::BASE_URL_2);
+
+      if (!empty($projectinfo_request)) {
+        // Merge the additional fields into the project.
+        $project = (object) array_merge((array) $project, (array) $projectinfo_request);
+
+        // Compare $field_building_number with $project->buildingNumber
+        // and set the projectBuilding value to the node id.
+        foreach ($building_numbers as $field_building_number => $nid) {
+          if ($field_building_number == $project->buildingNumber) {
+            $project->projectBuilding = $nid;
+          }
+        }
+      }
+    }
+
     // Create an array with the buiProjectId values.
-    $projectsById = [];
+    $projects_by_id = [];
     foreach ($projects as $project) {
-      $projectsById[$project->buiProjectId] = $project;
+      $projects_by_id[$project->buiProjectId] = $project;
     }
 
     // Return the array of unique projects.
-    return array_values($projectsById);
+    return array_values($projects_by_id);
   }
 
   /**
