@@ -5,9 +5,15 @@ dependencies:
   config:
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_architect
+    - field.field.node.project.field_project_awarded_to
     - field.field.node.project.field_project_building
+    - field.field.node.project.field_project_building_alt
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_pre_bid_location
+    - field.field.node.project.field_project_square_footage
+    - field.field.node.project.field_project_status
     - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
@@ -29,6 +35,22 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
+  field_project_architect:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  field_project_awarded_to:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_project_building:
     type: entity_reference_label
     label: above
@@ -36,6 +58,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 11
+    region: content
+  field_project_building_alt:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 12
     region: content
   field_project_description:
     type: text_default
@@ -51,6 +81,31 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_project_pre_bid_location:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_project_square_footage:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_project_status:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 13
     region: content
   field_project_type:
     type: string

@@ -5,9 +5,15 @@ dependencies:
   config:
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_architect
+    - field.field.node.project.field_project_awarded_to
     - field.field.node.project.field_project_building
+    - field.field.node.project.field_project_building_alt
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_pre_bid_location
+    - field.field.node.project.field_project_square_footage
+    - field.field.node.project.field_project_status
     - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
@@ -45,6 +51,22 @@ content:
       sidebar: true
       use_details: true
     third_party_settings: {  }
+  field_project_architect:
+    type: string_textfield
+    weight: 135
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_awarded_to:
+    type: string_textfield
+    weight: 134
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_project_building:
     type: entity_reference_autocomplete
     weight: 129
@@ -52,6 +74,14 @@ content:
     settings:
       match_operator: CONTAINS
       match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_building_alt:
+    type: string_textfield
+    weight: 130
+    region: content
+    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -66,6 +96,29 @@ content:
   field_project_number:
     type: string_textfield
     weight: 128
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_pre_bid_location:
+    type: string_textfield
+    weight: 133
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_square_footage:
+    type: number
+    weight: 132
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_status:
+    type: string_textfield
+    weight: 131
     region: content
     settings:
       size: 60
