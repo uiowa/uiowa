@@ -208,6 +208,7 @@ class FacilitiesAPI {
       if (!empty($response)) {
         // If the response contains multiple arrays, loop through each of them.
         foreach ($response as $project) {
+          $project->projectType = $project->projectType ?? NULL;
           // Add the project to the projects array.
           $projects[] = $project;
         }
@@ -217,22 +218,25 @@ class FacilitiesAPI {
     // Get all featured projects.
     $featured_projects = $this->getFeaturedProjects();
     foreach ($featured_projects as $project) {
-      // Add the project to the projects array.
+      $project->projectType = 'Featured';
       $projects[] = $project;
     }
 
     // Get all capital projects.
     $capital_projects = $this->getCapitalProjects();
     foreach ($capital_projects as $project) {
-      // Add the project to the projects array.
+      $project->projectType = 'Capital';
       $projects[] = $project;
     }
 
-    // Filter out duplicates.
-    $projects = array_unique($projects, SORT_REGULAR);
+    // Create an array with the buiProjectId values.
+    $projectsById = [];
+    foreach ($projects as $project) {
+      $projectsById[$project->buiProjectId] = $project;
+    }
 
-    // Return the array of projects.
-    return $projects;
+    // Return the array of unique projects.
+    return array_values($projectsById);
   }
 
   /**

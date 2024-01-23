@@ -1,4 +1,4 @@
-uuid: b2b6fd73-7fb1-46da-bf7a-aa40481a9012
+uuid: 7081682e-5e0a-4e74-a2fb-78cb1ef13736
 langcode: en
 status: true
 dependencies:
@@ -7,10 +7,11 @@ dependencies:
 id: node.field_project_number
 field_name: field_project_number
 entity_type: node
-type: decimal
+type: string
 settings:
-  precision: 10
-  scale: 0
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1

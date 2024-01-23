@@ -113,7 +113,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     $this->entityTypeManager = \Drupal::entityTypeManager();
     $this->bundle = $bundle;
   }
-  
+
   /**
    * Get the list of entity ID's, querying them if necessary.
    *

@@ -69,7 +69,6 @@ class ProjectsProcessor extends EntityProcessorBase {
    */
   protected function getData() {
     if (!isset($this->data)) {
-      // Request from Facilities API to get projects.
       $facilities_api = \Drupal::service('uiowa_facilities.api');
       $this->data = $facilities_api->getProjects();
     }
@@ -97,7 +96,6 @@ class ProjectsProcessor extends EntityProcessorBase {
     $this->client = \Drupal::service('http_client');
     $this->fs = \Drupal::service('file_system');
     $this->configFactory = \Drupal::service('config.factory');
-    // $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
   }
 
   /**

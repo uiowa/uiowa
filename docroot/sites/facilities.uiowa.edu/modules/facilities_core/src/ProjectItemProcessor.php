@@ -15,6 +15,7 @@ class ProjectItemProcessor extends EntityItemProcessorBase {
   protected static $fieldMap = [
     'title' => 'projectTitle',
     'field_project_number' => 'buiProjectId',
+    'field_project_type' => 'projectType',
   ];
 
 }
