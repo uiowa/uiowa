@@ -184,7 +184,8 @@ class FacilitiesAPI {
     foreach ($nids as $nid) {
       $node = Node::load($nid);
       $field_building_number = $node->get('field_building_number')->value;
-      $building_numbers[] = $field_building_number;
+      // Map the building number to the node id.
+      $building_numbers[$field_building_number] = $nid;
     }
 
     return $building_numbers;
@@ -200,7 +201,7 @@ class FacilitiesAPI {
     $building_numbers = $this->getAllBuildingNumbers();
 
     $projects = [];
-    foreach ($building_numbers as $number) {
+    foreach ($building_numbers as $number => $nid) {
       // Use each number to make a query.
       $response = $this->request('GET', 'projects', ['bldgnumber' => $number], [], self::BASE_URL_2);
 
@@ -209,6 +210,10 @@ class FacilitiesAPI {
         // If the response contains multiple arrays, loop through each of them.
         foreach ($response as $project) {
           $project->projectType = $project->projectType ?? NULL;
+          // Set the projectBuilding value to the node id.
+          if (isset($project->projectBuilding)) {
+            $project->projectBuilding = $nid;
+          }
           // Add the project to the projects array.
           $projects[] = $project;
         }
@@ -218,14 +223,14 @@ class FacilitiesAPI {
     // Get all featured projects.
     $featured_projects = $this->getFeaturedProjects();
     foreach ($featured_projects as $project) {
-      $project->projectType = 'Featured';
+      $project->projectType = 'featured';
       $projects[] = $project;
     }
 
     // Get all capital projects.
     $capital_projects = $this->getCapitalProjects();
     foreach ($capital_projects as $project) {
-      $project->projectType = 'Capital';
+      $project->projectType = 'capital';
       $projects[] = $project;
     }
 

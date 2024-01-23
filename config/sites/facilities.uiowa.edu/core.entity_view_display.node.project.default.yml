@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_building
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_number
     - field.field.node.project.field_project_type
@@ -27,6 +28,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 7
+    region: content
+  field_project_building:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 11
     region: content
   field_project_description:
     type: text_default

@@ -4,15 +4,15 @@ status: true
 dependencies:
   module:
     - node
+    - options
 id: node.field_project_type
 field_name: field_project_type
 entity_type: node
-type: string
+type: list_string
 settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
-module: core
+  allowed_values: {  }
+  allowed_values_function: facilities_core_project_type_options
+module: options
 locked: false
 cardinality: 1
 translatable: true

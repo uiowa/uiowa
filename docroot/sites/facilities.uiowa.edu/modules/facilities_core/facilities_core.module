@@ -6,11 +6,13 @@
  */
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facilities_core\Entity\Artwork;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -462,4 +464,15 @@ function facilities_core_preprocess_textarea(&$variables) {
       $variables['attributes']['spellcheck'] = 'true';
     }
   }
+}
+
+/**
+ * Added allowed values function for project type.
+ */
+function facilities_core_project_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'featured' => 'Featured',
+    'capital' => 'Capital',
+  ];
+  return $options;
 }

@@ -16,6 +16,7 @@ class ProjectItemProcessor extends EntityItemProcessorBase {
     'title' => 'projectTitle',
     'field_project_number' => 'buiProjectId',
     'field_project_type' => 'projectType',
+    'field_project_building' => 'projectBuilding',
   ];
 
 }
