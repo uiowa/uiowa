@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
@@ -44,6 +45,14 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     weight: 8
+    region: content
+  field_project_type:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_project_webcam:
     type: link
