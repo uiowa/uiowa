@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: idcard.uiowa.ddev.site
+    protocol: https
+  machine_name: idcard
+  human_name: idcard.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: idcard.prod
+drupal:
+  db:
+    database: idcard_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://idcard.prod.drupal.uiowa.edu'
+  requester: llentz
+  site-name: 'University ID Card Programs'
