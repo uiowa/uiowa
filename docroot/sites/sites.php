@@ -6610,3 +6610,9 @@ $sites['labrusso.uiowa.ddev.site'] = 'russo.lab.uiowa.edu';
 $sites['labrusso.dev.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
 $sites['labrusso.stage.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
 $sites['labrusso.prod.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
+
+// Directory aliases for idcard.uiowa.edu.
+$sites['idcard.uiowa.ddev.site'] = 'idcard.uiowa.edu';
+$sites['idcard.dev.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
+$sites['idcard.stage.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
+$sites['idcard.prod.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
