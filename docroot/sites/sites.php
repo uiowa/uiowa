@@ -6604,3 +6604,21 @@ $sites['labpeters.uiowa.ddev.site'] = 'peters.lab.uiowa.edu';
 $sites['labpeters.dev.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
 $sites['labpeters.stage.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
 $sites['labpeters.prod.drupal.uiowa.edu'] = 'peters.lab.uiowa.edu';
+
+// Directory aliases for russo.lab.uiowa.edu.
+$sites['labrusso.uiowa.ddev.site'] = 'russo.lab.uiowa.edu';
+$sites['labrusso.dev.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
+$sites['labrusso.stage.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
+$sites['labrusso.prod.drupal.uiowa.edu'] = 'russo.lab.uiowa.edu';
+
+// Directory aliases for idcard.uiowa.edu.
+$sites['idcard.uiowa.ddev.site'] = 'idcard.uiowa.edu';
+$sites['idcard.dev.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
+$sites['idcard.stage.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
+$sites['idcard.prod.drupal.uiowa.edu'] = 'idcard.uiowa.edu';
+
+// Directory aliases for nopoulos.lab.uiowa.edu.
+$sites['labnopoulos.uiowa.ddev.site'] = 'nopoulos.lab.uiowa.edu';
+$sites['labnopoulos.dev.drupal.uiowa.edu'] = 'nopoulos.lab.uiowa.edu';
+$sites['labnopoulos.stage.drupal.uiowa.edu'] = 'nopoulos.lab.uiowa.edu';
+$sites['labnopoulos.prod.drupal.uiowa.edu'] = 'nopoulos.lab.uiowa.edu';
