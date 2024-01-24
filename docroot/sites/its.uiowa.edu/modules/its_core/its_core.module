@@ -392,6 +392,10 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
           ];
         }
       }
+      else if ($view->current_display === 'alert_status_history') {
+        // Attach the library using the #attached property.
+        $variables['#attached']['library'][] = 'uids_base/view-bef';
+      }
       break;
 
   }
