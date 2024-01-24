@@ -3104,3 +3104,15 @@ function sitenow_update_10004() {
     }
   }
 }
+
+/**
+ * Set new config value on existing sites.
+ */
+function sitenow_update_10005() {
+  // Set the uiowa_core setting so that the campus-wide
+  // gtm will be included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.campus_gtm', 1)
+    ->save();
+}

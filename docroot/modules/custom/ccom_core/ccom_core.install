@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Install update uninstall functions for the CCOM Core module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function ccom_core_install() {
+  // Set the uiowa_core setting so that the campus-wide
+  // gtm does not get included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.campus_gtm', 0)
+    ->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ccom_core_uninstall() {
+  // Set the uiowa_core setting so that the campus-wide
+  // gtm will again be included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.campus_gtm', 1)
+    ->save();
+}

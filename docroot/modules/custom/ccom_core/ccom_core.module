@@ -19,31 +19,3 @@ function ccom_core_preprocess_block(&$variables) {
     ];
   }
 }
-
-/**
- * Implements hook_module_implements_alter().
- */
-function ccom_core_module_implements_alter(&$implementations, $hook) {
-  switch ($hook) {
-
-    // Move our hook_page_attachments() implementation to the end of the list,
-    // so that we know it will fire after uiowa_core's implementation.
-    case 'page_attachments':
-      $group = $implementations['ccom_core'];
-      unset($implementations['ccom_core']);
-      $implementations['ccom_core'] = $group;
-      break;
-
-  }
-}
-
-/**
- * Implements hook_page_attachments().
- */
-function ccom_core_page_attachments(&$page) {
-  // Remove the universal GTM container,
-  // which is added through the 'uiowa_core/gtag' library attachment.
-  $library = $page['#attached']['library'];
-  $to_remove = 'uiowa_core/gtag';
-  $page['#attached']['library'] = array_values(array_filter($library, fn ($x) => $x != $to_remove));
-}
