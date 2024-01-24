@@ -122,6 +122,24 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_project_form':
     case 'node_project_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['title']['#disabled'] = TRUE;
+      $form['field_project_number']['#disabled'] = TRUE;
+      $form['field_project_type']['#disabled'] = TRUE;
+      $form['field_project_building']['#disabled'] = TRUE;
+      $form['field_project_building_alt']['#disabled'] = TRUE;
+      $form['field_project_scope']['#disabled'] = TRUE;
+      $form['field_project_status']['#disabled'] = TRUE;
+      $form['field_project_square_footage']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_location']['#disabled'] = TRUE;
+      $form['field_project_awarded_to']['#disabled'] = TRUE;
+      $form['field_project_architect']['#disabled'] = TRUE;
+      $form['field_project_bid_date']['#disabled'] = TRUE;
+      $form['field_project_constr_start_date']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_date']['#disabled'] = TRUE;
+      $form['field_project_sub_complete_date']['#disabled'] = TRUE;
+      $form['field_project_estimated_cost']['#disabled'] = TRUE;
+
       _sitenow_node_form_defaults($form, $form_state);
       // Set a placeholder text, and add a submit handler
       // for if we have a webcam link but no title.
