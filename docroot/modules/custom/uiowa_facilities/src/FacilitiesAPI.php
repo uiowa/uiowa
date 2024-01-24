@@ -211,7 +211,7 @@ class FacilitiesAPI {
         foreach ($response as $project) {
           $project->projectType = $project->projectType ?? NULL;
 
-          // Explicitly cast buiProjectId to a string.
+          // Set buiProjectId to a string.
           $project->buiProjectId = (string) $project->buiProjectId;
 
           // Add the project to the projects array.
@@ -240,11 +240,16 @@ class FacilitiesAPI {
         // and set the projectBuilding value to the node id.
         foreach ($building_numbers as $field_building_number => $nid) {
           if ($field_building_number == $project->buildingNumber) {
+            // Set node id for building reference.
             $project->projectBuilding = $nid;
-
-            $project->grossSqFeet = strval($project->grossSqFeet);
+            // Adjust square ft and estimated amount numbers.
+            if ($project->grossSqFeet == 0) {
+              $project->grossSqFeet = NULL;
+            }
+            else {
+              $project->grossSqFeet = strval($project->grossSqFeet);
+            }
             $project->estimatedAmount = floatval($project->estimatedAmount);
-
             // Transform date if it exists.
             $this->transformDate($project, 'bidOpeningDate');
             $this->transformDate($project, 'constructionStartDate');
@@ -283,7 +288,7 @@ class FacilitiesAPI {
    *   The transformed projects.
    */
   private function transformProjects($projects, $projectType) {
-    foreach ($projects as &$project) {
+    foreach ($projects as $project) {
       $project->projectType = $projectType;
     }
     return $projects;
