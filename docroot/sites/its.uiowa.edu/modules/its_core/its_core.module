@@ -392,7 +392,7 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
           ];
         }
       }
-      elseif ($view->current_display === 'alert_status_history') {
+      elseif ($view->current_display === 'alert_status') {
         // Attach the library using the #attached property.
         $variables['#attached']['library'][] = 'uids_base/view-bef';
       }
