@@ -7,19 +7,26 @@ dependencies:
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_architect
     - field.field.node.project.field_project_awarded_to
+    - field.field.node.project.field_project_bid_date
     - field.field.node.project.field_project_building
     - field.field.node.project.field_project_building_alt
+    - field.field.node.project.field_project_constr_start_date
     - field.field.node.project.field_project_description
+    - field.field.node.project.field_project_estimated_cost
     - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_pre_bid_date
     - field.field.node.project.field_project_pre_bid_location
+    - field.field.node.project.field_project_scope
     - field.field.node.project.field_project_square_footage
     - field.field.node.project.field_project_status
+    - field.field.node.project.field_project_sub_complete_date
     - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
   module:
     - content_moderation
+    - datetime
     - link
     - media_library
     - metatag
@@ -67,6 +74,12 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_project_bid_date:
+    type: datetime_default
+    weight: 137
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_project_building:
     type: entity_reference_autocomplete
     weight: 129
@@ -85,12 +98,25 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_project_constr_start_date:
+    type: datetime_default
+    weight: 140
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_project_description:
     type: text_textarea
     weight: 4
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_estimated_cost:
+    type: number
+    weight: 141
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_project_number:
@@ -101,12 +127,26 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_project_pre_bid_date:
+    type: datetime_default
+    weight: 138
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_project_pre_bid_location:
     type: string_textfield
     weight: 133
     region: content
     settings:
       size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_scope:
+    type: string_textarea
+    weight: 136
+    region: content
+    settings:
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_project_square_footage:
@@ -123,6 +163,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_project_sub_complete_date:
+    type: datetime_default
+    weight: 139
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_project_type:
     type: string_textfield

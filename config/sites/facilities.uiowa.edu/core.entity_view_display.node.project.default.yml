@@ -7,19 +7,27 @@ dependencies:
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_architect
     - field.field.node.project.field_project_awarded_to
+    - field.field.node.project.field_project_bid_date
     - field.field.node.project.field_project_building
     - field.field.node.project.field_project_building_alt
+    - field.field.node.project.field_project_constr_start_date
     - field.field.node.project.field_project_description
+    - field.field.node.project.field_project_estimated_cost
     - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_pre_bid_date
     - field.field.node.project.field_project_pre_bid_location
+    - field.field.node.project.field_project_scope
     - field.field.node.project.field_project_square_footage
     - field.field.node.project.field_project_status
+    - field.field.node.project.field_project_sub_complete_date
     - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
   module:
+    - datetime
     - link
+    - options
     - text
     - user
 id: node.project.default
@@ -51,6 +59,15 @@ content:
     third_party_settings: {  }
     weight: 16
     region: content
+  field_project_bid_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 19
+    region: content
   field_project_building:
     type: entity_reference_label
     label: above
@@ -67,12 +84,32 @@ content:
     third_party_settings: {  }
     weight: 12
     region: content
+  field_project_constr_start_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 22
+    region: content
   field_project_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_project_estimated_cost:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ','
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 23
     region: content
   field_project_number:
     type: string
@@ -82,6 +119,15 @@ content:
     third_party_settings: {  }
     weight: 10
     region: content
+  field_project_pre_bid_date:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 20
+    region: content
   field_project_pre_bid_location:
     type: string
     label: above
@@ -90,11 +136,18 @@ content:
     third_party_settings: {  }
     weight: 15
     region: content
+  field_project_scope:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
   field_project_square_footage:
     type: number_integer
     label: above
     settings:
-      thousand_separator: ''
+      thousand_separator: ','
       prefix_suffix: true
     third_party_settings: {  }
     weight: 14
@@ -107,11 +160,19 @@ content:
     third_party_settings: {  }
     weight: 13
     region: content
-  field_project_type:
-    type: string
+  field_project_sub_complete_date:
+    type: datetime_default
     label: above
     settings:
-      link_to_entity: false
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  field_project_type:
+    type: list_key
+    label: above
+    settings: {  }
     third_party_settings: {  }
     weight: 9
     region: content
