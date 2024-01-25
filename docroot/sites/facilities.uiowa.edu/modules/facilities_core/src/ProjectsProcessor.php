@@ -2,10 +2,7 @@
 
 namespace Drupal\facilities_core;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
 
@@ -20,27 +17,6 @@ class ProjectsProcessor extends EntityProcessorBase {
    * @var \GuzzleHttp\Client
    */
   protected Client $client;
-
-  /**
-   * The file_system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected FileSystemInterface $fs;
-
-  /**
-   * The file_system service.
-   *
-   * @var \Drupal\field\FieldConfigInterface|null
-   */
-  protected ?FieldConfigInterface $imageFieldConfig;
-
-  /**
-   * The file_system service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected ConfigFactoryInterface $configFactory;
 
   /**
    * {@inheritdoc}
@@ -80,7 +56,7 @@ class ProjectsProcessor extends EntityProcessorBase {
    */
   protected function processRecord(&$record) {
     if (!is_null($project_number = $record?->{$this->apiRecordSyncKey})) {
-      // Request from Facilities API to get buildings.
+      // Request from Facilities API to get projects.
       $facilities_api = \Drupal::service('uiowa_facilities.api');
       $result = $facilities_api->getProjects($project_number);
       foreach ((array) $result as $key => $value) {
@@ -94,8 +70,6 @@ class ProjectsProcessor extends EntityProcessorBase {
    */
   public function init() {
     $this->client = \Drupal::service('http_client');
-    $this->fs = \Drupal::service('file_system');
-    $this->configFactory = \Drupal::service('config.factory');
   }
 
   /**
