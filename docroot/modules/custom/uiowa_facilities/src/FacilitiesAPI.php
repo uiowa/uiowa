@@ -226,14 +226,35 @@ class FacilitiesAPI {
       }
     }
 
-    // Get all featured and capital projects.
-    $project_types = ['featured', 'capital'];
-    foreach ($project_types as $project_type) {
-      $featured_projects = $this->{'get' . ucfirst($project_type) . 'Projects'}();
-      foreach ($featured_projects as $project) {
-        $project->projectType = $project_type;
-        $projects[] = $project;
+    // Get all featured projects.
+    $featured_projects = $this->getFeaturedProjects();
+    foreach ($featured_projects as $project) {
+      $project->projectType = ['featured'];
+      $projects[] = $project;
+    }
+
+    // Get all capital projects.
+    $capital_projects = $this->getCapitalProjects();
+    foreach ($capital_projects as $project) {
+      // Check if the project is already in the featured projects array.
+      $is_featured = FALSE;
+      foreach ($featured_projects as $featured_project) {
+        if ($project->buiProjectId === $featured_project->buiProjectId) {
+          $is_featured = TRUE;
+          break;
+        }
       }
+
+      if ($is_featured) {
+        // If it's featured, add 'capital' in addition to 'featured'.
+        $project->projectType = ['capital', 'featured'];
+      }
+      else {
+        // If it's not featured, set 'capital'.
+        $project->projectType = ['capital'];
+      }
+
+      $projects[] = $project;
     }
 
     // Grab additional fields listed at projectinfo and add them to the array.
