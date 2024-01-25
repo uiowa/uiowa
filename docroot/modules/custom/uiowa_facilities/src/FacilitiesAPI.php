@@ -299,6 +299,7 @@ class FacilitiesAPI {
     }
 
     $projects_by_id = [];
+    unset($project);
     foreach ($projects as $project) {
       $projects_by_id[$project->buiProjectId] = $project;
     }
