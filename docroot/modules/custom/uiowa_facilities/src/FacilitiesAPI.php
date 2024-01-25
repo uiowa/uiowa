@@ -199,8 +199,17 @@ class FacilitiesAPI {
    */
   public function getProjects() {
     $building_numbers = $this->getAllBuildingNumbers();
-
     $projects = [];
+
+    // Function to transform dates.
+    $transform_date = function ($timestamp) {
+      if (!is_null($timestamp)) {
+        $date_formatter = \Drupal::service('date.formatter');
+        return $date_formatter->format($timestamp / 1000, 'custom', 'Y-m-d');
+      }
+      return NULL;
+    };
+
     foreach ($building_numbers as $number => $nid) {
       // Use each number to make a query.
       $response = $this->request('GET', 'projects', ['bldgnumber' => $number], [], self::BASE_URL_2);
@@ -211,22 +220,21 @@ class FacilitiesAPI {
         foreach ($response as $project) {
           $project->projectType = $project->projectType ?? NULL;
 
-          // Set buiProjectId to a string.
-          $project->buiProjectId = (string) $project->buiProjectId;
-
           // Add the project to the projects array.
           $projects[] = $project;
         }
       }
     }
 
-    // Get all featured projects.
-    $featured_projects = $this->getFeaturedProjects();
-    $projects = array_merge($projects, $this->transformProjects($featured_projects, 'featured'));
-
-    // Get all capital projects.
-    $capital_projects = $this->getCapitalProjects();
-    $projects = array_merge($projects, $this->transformProjects($capital_projects, 'capital'));
+    // Get all featured and capital projects.
+    $project_types = ['featured', 'capital'];
+    foreach ($project_types as $project_type) {
+      $featured_projects = $this->{'get' . ucfirst($project_type) . 'Projects'}();
+      foreach ($featured_projects as $project) {
+        $project->projectType = $project_type;
+        $projects[] = $project;
+      }
+    }
 
     // Grab additional fields listed at projectinfo and add them to the array.
     foreach ($projects as &$project) {
@@ -242,90 +250,40 @@ class FacilitiesAPI {
           if ($field_building_number == $project->buildingNumber) {
             // Set node id for building reference.
             $project->projectBuilding = $nid;
+
             // Adjust square ft and estimated amount numbers.
-            if ($project->grossSqFeet == 0) {
-              $project->grossSqFeet = NULL;
-            }
-            else {
-              $project->grossSqFeet = strval($project->grossSqFeet);
-            }
+            $project->grossSqFeet = $project->grossSqFeet == 0 ? NULL : strval($project->grossSqFeet);
             $project->estimatedAmount = floatval($project->estimatedAmount);
-            // Transform date if it exists.
-            $this->transformDate($project, 'bidOpeningDate');
-            $this->transformDate($project, 'constructionStartDate');
-            $this->transformDate($project, 'preBidDate');
-            $this->transformDate($project, 'substantialCompletionDate');
+
+            // Transform dates if they exist.
+            $date_fields = ['bidOpeningDate', 'constructionStartDate', 'preBidDate', 'substantialCompletionDate'];
+            foreach ($date_fields as $date_field) {
+              $project->{$date_field} = $transform_date($project->{$date_field});
+            }
           }
         }
       }
+
       // Provide default values for common undefined properties.
-      $project->projectBuilding = $project->projectBuilding ?? NULL;
-      $project->grossSqFeet = $project->grossSqFeet ?? NULL;
-      $project->preBidLocation = $project->preBidLocation ?? NULL;
-      $project->vendorName = $project->vendorName ?? NULL;
-      $project->primaryConsultant = $project->primaryConsultant ?? NULL;
-      $project->bidOpeningDate = $project->bidOpeningDate ?? NULL;
-      $project->constructionStartDate = $project->constructionStartDate ?? NULL;
-      $project->preBidDate = $project->preBidDate ?? NULL;
-      $project->substantialCompletionDate = $project->substantialCompletionDate ?? NULL;
-      $project->estimatedAmount = $project->estimatedAmount ?? NULL;
+      $default_properties = [
+        'projectBuilding', 'grossSqFeet', 'preBidLocation',
+        'vendorName', 'primaryConsultant', 'bidOpeningDate',
+        'constructionStartDate', 'preBidDate', 'substantialCompletionDate',
+        'estimatedAmount',
+      ];
 
+      foreach ($default_properties as $property) {
+        $project->{$property} = $project->{$property} ?? NULL;
+      }
     }
 
-    // Return the array of unique projects.
-    return array_values($this->indexProjectsById($projects));
-  }
-
-  /**
-   * Transform project types for a given set of projects.
-   *
-   * @param array $projects
-   *   The projects to transform.
-   * @param string $projectType
-   *   The project type to set.
-   *
-   * @return array
-   *   The transformed projects.
-   */
-  private function transformProjects($projects, $projectType) {
-    foreach ($projects as $project) {
-      $project->projectType = $projectType;
-    }
-    return $projects;
-  }
-
-  /**
-   * Transform a date field for a given project.
-   *
-   * @param object $project
-   *   The project object.
-   * @param string $dateField
-   *   The date field to transform.
-   */
-  private function transformDate($project, $dateField) {
-    if (!is_null($project->$dateField)) {
-      $timestamp = $project->$dateField;
-      $date_formatter = \Drupal::service('date.formatter');
-      $formatted_date = $date_formatter->format($timestamp / 1000, 'custom', 'Y-m-d');
-      $project->$dateField = $formatted_date;
-    }
-  }
-
-  /**
-   * Index projects by their buiProjectId.
-   *
-   * @param array $projects
-   *   The projects to index.
-   *
-   * @return array
-   *   The indexed projects.
-   */
-  private function indexProjectsById($projects) {
     $projects_by_id = [];
     foreach ($projects as $project) {
       $projects_by_id[$project->buiProjectId] = $project;
     }
-    return $projects_by_id;
+
+    // Return the array of unique projects.
+    return array_values($projects_by_id);
   }
 
   /**
