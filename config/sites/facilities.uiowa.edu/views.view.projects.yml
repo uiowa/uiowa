@@ -1060,22 +1060,19 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
+        field_project_building_alt_value:
+          id: field_project_building_alt_value
+          table: node__field_project_building_alt
+          field: field_project_building_alt_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-          order: DESC
+          plugin_id: standard
+          order: ASC
           expose:
             label: ''
             field_identifier: ''
           exposed: false
-          granularity: second
       arguments: {  }
       filters:
         status:
@@ -1098,16 +1095,119 @@ display:
           plugin_id: bundle
           value:
             project: project
+        field_project_type_value:
+          id: field_project_type_value
+          table: node__field_project_type
+          field: field_project_type_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_project_type_value_op
+            label: 'Project type'
+            description: ''
+            use_operator: false
+            operator: field_project_type_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_project_type_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              collaborator: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_project_building_target_id:
+          id: field_project_building_target_id
+          table: node__field_project_building
+          field: field_project_building_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: entity_reference
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_project_building_target_id_op
+            label: 'Project building'
+            description: ''
+            use_operator: false
+            operator: field_project_building_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_project_building_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              collaborator: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          handler: 'default:node'
+          widget: select
+          handler_settings:
+            target_bundles:
+              building: building
+            sort:
+              field: _none
+              direction: ASC
+            auto_create: false
+            auto_create_bundle: ''
       style:
-        type: default
+        type: html_list
         options:
-          grouping:
-            -
-              field: field_project_number
-              rendered: true
-              rendered_strip: false
+          grouping: {  }
           row_class: ''
           default_row_class: true
+          type: ol
+          wrapper_class: item-list
+          class: ''
       row:
         type: fields
         options:
@@ -1135,6 +1235,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1169,6 +1270,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - 'user.node_grants:view'
         - user.permissions
       tags:
