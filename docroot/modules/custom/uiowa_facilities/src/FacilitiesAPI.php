@@ -265,22 +265,22 @@ class FacilitiesAPI {
         // Merge the additional fields into the project.
         $project = (object) array_merge((array) $project, (array) $projectinfo_request);
 
+        // Adjust square ft and estimated amount numbers.
+        $project->grossSqFeet = $project->grossSqFeet == 0 ? NULL : strval($project->grossSqFeet);
+        $project->estimatedAmount = floatval($project->estimatedAmount);
+
+        // Transform dates if they exist.
+        $date_fields = ['bidOpeningDate', 'constructionStartDate', 'preBidDate', 'substantialCompletionDate'];
+        foreach ($date_fields as $date_field) {
+          $project->{$date_field} = $transform_date($project->{$date_field});
+        }
+
         // Compare $field_building_number with $project->buildingNumber
         // and set the projectBuilding value to the node id.
         foreach ($building_numbers as $field_building_number => $nid) {
           if ($field_building_number == $project->buildingNumber) {
             // Set node id for building reference.
             $project->projectBuilding = $nid;
-
-            // Adjust square ft and estimated amount numbers.
-            $project->grossSqFeet = $project->grossSqFeet == 0 ? NULL : strval($project->grossSqFeet);
-            $project->estimatedAmount = floatval($project->estimatedAmount);
-
-            // Transform dates if they exist.
-            $date_fields = ['bidOpeningDate', 'constructionStartDate', 'preBidDate', 'substantialCompletionDate'];
-            foreach ($date_fields as $date_field) {
-              $project->{$date_field} = $transform_date($project->{$date_field});
-            }
           }
         }
       }
