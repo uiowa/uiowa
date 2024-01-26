@@ -6634,3 +6634,9 @@ $sites['labmil.uiowa.ddev.site'] = 'mil.lab.uiowa.edu';
 $sites['labmil.dev.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
 $sites['labmil.stage.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
 $sites['labmil.prod.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
+
+// Directory aliases for gumusoglu.lab.uiowa.edu.
+$sites['labgumusoglu.uiowa.ddev.site'] = 'gumusoglu.lab.uiowa.edu';
+$sites['labgumusoglu.dev.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
+$sites['labgumusoglu.stage.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
+$sites['labgumusoglu.prod.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
