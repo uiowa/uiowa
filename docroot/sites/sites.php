@@ -6640,3 +6640,9 @@ $sites['labgumusoglu.uiowa.ddev.site'] = 'gumusoglu.lab.uiowa.edu';
 $sites['labgumusoglu.dev.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
 $sites['labgumusoglu.stage.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
 $sites['labgumusoglu.prod.drupal.uiowa.edu'] = 'gumusoglu.lab.uiowa.edu';
+
+// Directory aliases for radiologycore.lab.uiowa.edu.
+$sites['labradiologycore.uiowa.ddev.site'] = 'radiologycore.lab.uiowa.edu';
+$sites['labradiologycore.dev.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
+$sites['labradiologycore.stage.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
+$sites['labradiologycore.prod.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
