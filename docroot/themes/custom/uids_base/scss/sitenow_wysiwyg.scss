@@ -1,19 +1,18 @@
-@import "../uids/assets/scss/_base.scss";
-@import "../uids/assets/scss/local-fonts";
+@import "../uids/scss/uids-core.scss";
 
 .ck.ck-content,
 .ck-content {
   // Added here to prevent ckeditor from leaking styles to outside the editor.
   @import "components/tables";
   @import "components/typography/paragraph";
-  @import "../uids/components/alert/alert";
+  @import "../uids/scss/components/alert";
   @import "../uids3/components/blockquote/blockquote";
-  @import "../uids3/components/typography/lists/lists";
-  @import "../uids/components/button/button";
+  @import "../uids/scss/base/lists";
+  @import "../uids/scss/components/button";
   @import "sitenow";
   @import "components/typography/global-serif";
-  @import "../uids/components/callout/callout";
-  @import "../uids/components/inline/inline";
+  @import "../uids/scss/components/callout";
+  @import "../uids/scss/components/inline";
 
   font-family: Roboto, sans-serif;
 
