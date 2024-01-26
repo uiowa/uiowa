@@ -246,11 +246,9 @@ class FacilitiesAPI {
       }
 
       if ($is_featured) {
-        // If it's featured, add 'capital' in addition to 'featured'.
         $project->projectType = ['capital', 'featured'];
       }
       else {
-        // If it's not featured, set 'capital'.
         $project->projectType = ['capital'];
       }
 
