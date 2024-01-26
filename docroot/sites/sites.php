@@ -6628,3 +6628,9 @@ $sites['labperception.uiowa.ddev.site'] = 'perception.lab.uiowa.edu';
 $sites['labperception.dev.drupal.uiowa.edu'] = 'perception.lab.uiowa.edu';
 $sites['labperception.stage.drupal.uiowa.edu'] = 'perception.lab.uiowa.edu';
 $sites['labperception.prod.drupal.uiowa.edu'] = 'perception.lab.uiowa.edu';
+
+// Directory aliases for mil.lab.uiowa.edu.
+$sites['labmil.uiowa.ddev.site'] = 'mil.lab.uiowa.edu';
+$sites['labmil.dev.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
+$sites['labmil.stage.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
+$sites['labmil.prod.drupal.uiowa.edu'] = 'mil.lab.uiowa.edu';
