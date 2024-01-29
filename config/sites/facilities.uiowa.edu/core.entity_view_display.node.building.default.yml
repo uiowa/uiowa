@@ -24,6 +24,7 @@ dependencies:
     - node.type.building
     - views.view.alerts_building_block
     - views.view.artwork
+    - views.view.projects_building_block
   module:
     - facilities_core
     - file
@@ -350,6 +351,31 @@ third_party_settings:
                     data_uri: false
             weight: 2
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: cac1a565-bf8a-403a-a46f-e5391517fdd4
+            region: content
+            configuration:
+              id: 'views_block:projects_building_block-project'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: Projects
+                hide_headline: 1
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 18
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
