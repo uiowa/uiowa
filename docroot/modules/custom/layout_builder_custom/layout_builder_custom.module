@@ -1452,6 +1452,15 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
     }
     $view->display_handler->setOption('pager', $pager);
   }
+
+  // https://drupal.stackexchange.com/questions/120798/programmatically-remove-exposed-filter-in-a-view
+  foreach ($view->getExposedInput() as $key => $input) {
+    $contains = str_ends_with($key, '_enable');
+    if ($contains && $input === 0) {
+      $filter_key = str_replace('_enable', '', $key);
+      unset($view->filter[$filter_key]);
+    }
+  }
 }
 
 /**

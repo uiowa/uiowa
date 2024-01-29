@@ -245,6 +245,12 @@ class ListBlock extends CoreBlock {
           else {
             $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
           }
+
+          $exposed_filters[$handler_id . '_enable'] = [
+            '#type' => 'checkbox',
+            '#title' => t('Expose the ' . $exposed_filters[$handler_id]['#title'] . ' filter.'),
+            '#default_value' => $exposed_filter_values[$handler_id . '_enable'] ?? FALSE,
+          ];
         }
       }
 
@@ -674,6 +680,22 @@ class ListBlock extends CoreBlock {
     // exposed filters.
     if (empty($this->options['allow']['configure_filters'])) {
       return parent::displaysExposed();
+    }
+
+    $exposed_config = $this->view->getExposedInput();
+    $exposed_keys = array_keys($exposed_config);
+    foreach ($exposed_keys as $index => $key) {
+      if (!str_ends_with($key, '_enable')) {
+        unset($exposed_keys[$index]);
+      }
+    }
+
+    if(count($exposed_keys) > 0) {
+      foreach ($exposed_keys as $index => $key) {
+        if ($exposed_config[$key] === 1) {
+          return parent::displaysExposed();
+        }
+      }
     }
     return FALSE;
   }
