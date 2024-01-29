@@ -294,7 +294,9 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_project_estimated_cost':
-      $variables['items'][0]['content']['#markup'] = ($variables['items'][0]['content']['#markup'] == '$0.00') ? t('TBD') : $variables['items'][0]['content']['#markup'];
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] = ($variables['items'][0]['content']['#markup'] == '$0.00') ? t('TBD') : $variables['items'][0]['content']['#markup'];
+      }
       break;
   }
 }
