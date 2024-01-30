@@ -89,18 +89,18 @@ third_party_settings:
         layout_settings:
           label: ''
           context_mapping: {  }
-          column_widths: 67-33
+          column_widths: 50-50
           layout_builder_styles_style:
-            0: ''
+            0: section_background_white_pattern_community
             1: section_margin_fixed_width_container
             section_order_reversed: section_order_reversed
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 57b19f45-0e4f-42e3-9c5a-73d27ea34cbd
-            region: second
+            uuid: 3df38de1-01a3-4655-9095-cc58893bfe13
+            region: first
             configuration:
-              id: 'field_block:node:project:field_image'
+              id: 'field_block:node:project:field_project_webcam'
               label: null
               label_display: null
               provider: layout_builder
@@ -108,35 +108,18 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: medium__widescreen
-                third_party_settings: {  }
-            weight: 6
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 3df38de1-01a3-4655-9095-cc58893bfe13
-            region: first
-            configuration:
-              id: 'field_block:node:project:field_project_webcam'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
                 type: link
-                label: above
+                label: visually_hidden
                 settings:
                   trim_length: 80
                   url_only: false
                   url_plain: false
-                  rel: ''
-                  target: ''
+                  rel: '0'
+                  target: '0'
                 third_party_settings: {  }
-            weight: 0
-            additional: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 79bdbc8a-a63a-42b6-b978-43b3f8e27281
@@ -154,7 +137,28 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 57b19f45-0e4f-42e3-9c5a-73d27ea34cbd
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: large__widescreen
+                third_party_settings: {  }
+            weight: 0
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -163,18 +167,40 @@ third_party_settings:
             region: first
             configuration:
               id: 'field_block:node:project:field_project_number'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: string
-                label: above
+                label: inline
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
-            additional: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 75-25
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+        components:
           -
             uuid: 378f7649-9f6d-4220-8399-9c4459eb051a
             region: first

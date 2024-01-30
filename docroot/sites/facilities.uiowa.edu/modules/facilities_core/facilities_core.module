@@ -293,6 +293,22 @@ function facilities_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_project_number':
+      uiowa_core_set_attributes($variables, [
+        'bg--gold',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
+    case 'field_project_webcam':
+      uiowa_core_set_field_icon($variables, 'fa-video');
+      uiowa_core_set_attributes($variables, [
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
     case 'field_project_estimated_cost':
       if (isset($variables['items'][0]['content']['#markup'])) {
         $variables['items'][0]['content']['#markup'] = ($variables['items'][0]['content']['#markup'] == '$0.00') ? t('TBD') : $variables['items'][0]['content']['#markup'];
@@ -351,6 +367,15 @@ function facilities_core_preprocess_block(&$variables) {
         'block-padding__all',
         'border',
       ]);
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:project:field_project_number':
+    case 'field_block:node:project:field_project_webcam':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
       break;
 
     case 'field_block:node:project:field_project_pre_bid_location':
