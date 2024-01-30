@@ -358,8 +358,8 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:project:field_project_bid_date':
       $node = \Drupal::routeMatch()->getParameter('node');
       // Get the pre_bid_date field value.
-      $pre_bid_date = $node->get('field_project_pre_bid_date')->value;
       if ($node instanceof NodeInterface) {
+        $pre_bid_date = $node->get('field_project_pre_bid_date')->value;
         if (!empty($pre_bid_date) && strtotime($pre_bid_date) <= strtotime('today')) {
           // Unset the entire block content.
           $variables['content'] = [];
