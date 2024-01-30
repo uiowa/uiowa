@@ -76,8 +76,7 @@ class ProjectsProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function processEntity(ContentEntityInterface &$entity, $record): bool {
-    // Compare the record to the entity, but skip over projectType.
-    return ProjectItemProcessor::process($entity, $record, ['projectType']);
+    return ProjectItemProcessor::process($entity, $record);
   }
 
 }

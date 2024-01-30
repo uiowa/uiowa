@@ -21,7 +21,7 @@ abstract class EntityItemProcessorBase {
   /**
    * Process an individual entity.
    */
-  public static function process($entity, $record, $ignored = NULL): bool {
+  public static function process($entity, $record): bool {
     $updated = FALSE;
     foreach (static::$fieldMap as $to => $from) {
       if (!$entity->hasField($to)) {
@@ -32,15 +32,11 @@ abstract class EntityItemProcessorBase {
         ]);
         continue;
       }
-      if ($ignored && in_array($from, $ignored)) {
-        continue;
-      }
-      else {
-        // If the value is different, update it.
-        if ($entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
-          $entity->set($to, $record->{$from});
-          $updated = TRUE;
-        }
+
+      // If the value is different, update it.
+      if ($entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
+        $entity->set($to, $record->{$from});
+        $updated = TRUE;
       }
     }
 
