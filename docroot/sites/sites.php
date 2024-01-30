@@ -6646,3 +6646,9 @@ $sites['labradiologycore.uiowa.ddev.site'] = 'radiologycore.lab.uiowa.edu';
 $sites['labradiologycore.dev.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
 $sites['labradiologycore.stage.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
 $sites['labradiologycore.prod.drupal.uiowa.edu'] = 'radiologycore.lab.uiowa.edu';
+
+// Directory aliases for fluids.lab.uiowa.edu.
+$sites['labfluids.uiowa.ddev.site'] = 'fluids.lab.uiowa.edu';
+$sites['labfluids.dev.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
+$sites['labfluids.stage.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
+$sites['labfluids.prod.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
