@@ -1320,64 +1320,6 @@ display:
               direction: ASC
             auto_create: false
             auto_create_bundle: ''
-        field_alert_building_target_id:
-          id: field_alert_building_target_id
-          table: node__field_alert_building
-          field: field_alert_building_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_alert_building_target_id_op
-            label: 'Building(s) affected'
-            description: ''
-            use_operator: false
-            operator: field_alert_building_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_alert_building_target_id
-            required: false
-            remember: true
-            multiple: true
-            remember_roles:
-              anonymous: anonymous
-              authenticated: authenticated
-              viewer: viewer
-              editor: editor
-              publisher: publisher
-              webmaster: webmaster
-              administrator: administrator
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: building
-          type: textfield
-          hierarchy: false
-          limit: true
-          error_message: true
-          save_lineage: false
-          force_deepest: false
-          parent: null
-          level_labels: ''
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
         field_alert_category_target_id:
           id: field_alert_category_target_id
           table: node__field_alert_category
@@ -1436,11 +1378,68 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+        field_alert_building_target_id:
+          id: field_alert_building_target_id
+          table: node__field_alert_building
+          field: field_alert_building_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_alert_building_target_id_op
+            label: 'Building(s) affected'
+            description: ''
+            use_operator: false
+            operator: field_alert_building_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_alert_building_target_id
+            required: false
+            remember: true
+            multiple: true
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+              viewer: viewer
+              editor: editor
+              publisher: publisher
+              webmaster: webmaster
+              administrator: administrator
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: building
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
       filter_groups:
         operator: AND
         groups:
-          1: OR
-          0: AND
+          1: AND
       defaults:
         empty: false
         cache: false
@@ -1459,7 +1458,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      block_description: 'Alert status history'
+      block_description: 'Alert status'
       block_category: 'Site custom'
       block_hide_empty: true
     cache_metadata:
@@ -1871,7 +1870,7 @@ display:
           entity_field: status
           plugin_id: boolean
           value: '1'
-          group: 1
+          group: 2
           expose:
             operator: ''
             operator_limit_selection: false
@@ -1889,7 +1888,7 @@ display:
           operator: in
           value:
             alert: alert
-          group: 1
+          group: 2
           exposed: false
           expose:
             operator_id: ''
@@ -1930,7 +1929,7 @@ display:
           value:
             - 416
             - 406
-          group: 1
+          group: 2
           exposed: false
           expose:
             operator_id: field_alert_category_target_id_op
@@ -1991,7 +1990,7 @@ display:
             min: ''
             max: ''
             value: '0'
-          group: 2
+          group: 1
           exposed: false
           expose:
             operator_id: ''
@@ -2037,7 +2036,7 @@ display:
             value: now
             type: date
             granularity: second
-          group: 2
+          group: 1
           exposed: false
           expose:
             operator_id: ''
@@ -2072,7 +2071,7 @@ display:
         operator: AND
         groups:
           1: OR
-          0: AND
+          2: AND
       defaults:
         empty: false
         cache: false
@@ -2557,6 +2556,52 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+        field_alert_date_value:
+          id: field_alert_date_value
+          table: node__field_alert_date
+          field: field_alert_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          operator: '<='
+          value:
+            min: ''
+            max: ''
+            value: '+7 day'
+            type: date
+            granularity: day
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         field_alert_date_duration:
           id: field_alert_date_duration
           table: node__field_alert_date
@@ -2647,57 +2692,11 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_alert_date_value:
-          id: field_alert_date_value
-          table: node__field_alert_date
-          field: field_alert_date_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: date
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: '+7 day'
-            type: date
-            granularity: day
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       filter_groups:
         operator: AND
         groups:
-          1: OR
-          0: AND
+          1: AND
+          2: OR
       defaults:
         empty: false
         cache: false
@@ -3290,8 +3289,8 @@ display:
       filter_groups:
         operator: AND
         groups:
-          1: OR
-          0: AND
+          1: AND
+          2: OR
       defaults:
         empty: false
         cache: false
