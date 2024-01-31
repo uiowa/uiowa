@@ -229,7 +229,7 @@ class FacilitiesAPI {
     // Get all featured projects.
     $featured_projects = $this->getFeaturedProjects();
     foreach ($featured_projects as $project) {
-      $project->projectType = ['featured'];
+      $project->isFeatured = true;
       $projects[] = $project;
     }
 
@@ -245,15 +245,10 @@ class FacilitiesAPI {
         }
       }
 
-      // Set isCapital flag.
-      $project->isCapital = TRUE;
+      $project->isCapital = true;
 
-      // Set isFeatured flag if it's featured.
       if ($is_featured) {
-        $project->isFeatured = TRUE;
-      }
-      else {
-        $project->isFeatured = FALSE;
+        $project->isFeatured = true;
       }
 
       $projects[] = $project;
