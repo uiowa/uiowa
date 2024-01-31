@@ -123,7 +123,8 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       // These are imported fields that editors should not interact with.
       $form['title']['#disabled'] = TRUE;
       $form['field_project_number']['#disabled'] = TRUE;
-      $form['field_project_type']['#disabled'] = TRUE;
+      $form['field_project_is_capital']['#disabled'] = TRUE;
+      $form['field_project_is_featured']['#disabled'] = TRUE;
       $form['field_project_building']['#disabled'] = TRUE;
       $form['field_project_building_alt']['#disabled'] = TRUE;
       $form['field_project_scope']['#disabled'] = TRUE;
