@@ -6664,3 +6664,9 @@ $sites['sitesorsc-colloquium.uiowa.ddev.site'] = 'orsc-colloquium.sites.uiowa.ed
 $sites['sitesorsc-colloquium.dev.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
 $sites['sitesorsc-colloquium.stage.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
 $sites['sitesorsc-colloquium.prod.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
+
+// Directory aliases for parker.lab.uiowa.edu.
+$sites['labparker.uiowa.ddev.site'] = 'parker.lab.uiowa.edu';
+$sites['labparker.dev.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
+$sites['labparker.stage.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
+$sites['labparker.prod.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
