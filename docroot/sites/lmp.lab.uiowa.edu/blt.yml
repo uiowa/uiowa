@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablmp.uiowa.ddev.site
+    protocol: https
+  machine_name: lablmp
+  human_name: lmp.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablmp.prod
+drupal:
+  db:
+    database: lmp_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablmp.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Laser Materials Processing Lab'

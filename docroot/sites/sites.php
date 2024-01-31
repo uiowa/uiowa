@@ -6646,3 +6646,9 @@ $sites['labfluids.uiowa.ddev.site'] = 'fluids.lab.uiowa.edu';
 $sites['labfluids.dev.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
 $sites['labfluids.stage.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
 $sites['labfluids.prod.drupal.uiowa.edu'] = 'fluids.lab.uiowa.edu';
+
+// Directory aliases for lmp.lab.uiowa.edu.
+$sites['lablmp.uiowa.ddev.site'] = 'lmp.lab.uiowa.edu';
+$sites['lablmp.dev.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
+$sites['lablmp.stage.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
+$sites['lablmp.prod.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
