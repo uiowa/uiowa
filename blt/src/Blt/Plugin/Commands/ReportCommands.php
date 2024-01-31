@@ -6,6 +6,8 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
+use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Console\Helper\Table;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
@@ -326,11 +328,11 @@ class ReportCommands extends BltTasks {
    *
    * @command uiowa:report:v1-standard-list
    *
+   * @requireLocalForExport
+   *
    * @throws \Robo\Exception\TaskException
    */
   public function v1StandardCommsList($options = ['export' => FALSE, 'debug' => FALSE]) {
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-
     $site_data = [];
 
     $headers = [
@@ -351,7 +353,7 @@ class ReportCommands extends BltTasks {
 
     if (!empty($application_data)) {
       // Create the file for exporting locally.
-      if ($options['export'] && $env == 'local') {
+      if ($options['export']) {
         $now = date('Ymd-His');
         $filename = "SiteNow-v1-standard-user-list-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -412,7 +414,7 @@ class ReportCommands extends BltTasks {
               $emails = explode("\n", $emails_message);
               foreach ($emails as $email) {
                 $record = [$email, $domain];
-                if ($options['export'] && $env == 'local') {
+                if ($options['export']) {
                   // Output to CSV file and copy to local filesystem.
                   $fp = fopen($filepath, 'a');
                   fputcsv($fp, $record);
@@ -523,6 +525,18 @@ class ReportCommands extends BltTasks {
     ksort($application_data);
 
     return $application_data;
+  }
+
+  /**
+   * Validate necessary credentials are set.
+   *
+   * @hook validate @requireLocalForExport
+   */
+  public function validateLocalForExport(CommandData $commandData) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+    if ($commandData->options()['export'] && $env !== 'local') {
+      return new CommandError('Exporting a file is not allowed for non-local environments.');
+    }
   }
 
   /**
