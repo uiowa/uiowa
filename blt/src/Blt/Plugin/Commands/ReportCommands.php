@@ -31,11 +31,11 @@ class ReportCommands extends BltTasks {
    *
    * @aliases ura
    *
+   * @requireLocalForExport
+   *
    * @throws \Robo\Exception\TaskException
    */
   public function analytics($options = ['export' => FALSE, 'debug' => FALSE]) {
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-
     $site_data = [];
 
     $headers = [
@@ -53,7 +53,7 @@ class ReportCommands extends BltTasks {
 
     if (!empty($application_data)) {
       // Create the file for exporting locally.
-      if ($options['export'] && $env == 'local') {
+      if ($options['export']) {
         $now = date('Ymd-His');
         $filename = "SiteNow-Report-Analytics-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -166,7 +166,7 @@ class ReportCommands extends BltTasks {
               }
             }
           }
-          if ($options['export'] && $env == 'local') {
+          if ($options['export']) {
             // Output to CSV file and copy to local filesystem.
             $fp = fopen($filepath, 'a');
             fputcsv($fp, $site);
@@ -201,11 +201,11 @@ class ReportCommands extends BltTasks {
    *
    * @aliases urll
    *
+   * @requireLocalForExport
+   *
    * @throws \Robo\Exception\TaskException
    */
   public function lastLogin($options = ['export' => FALSE, 'debug' => FALSE]) {
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-
     $site_data = [];
 
     $headers = [
@@ -224,7 +224,7 @@ class ReportCommands extends BltTasks {
 
     if (!empty($application_data)) {
       // Create the file for exporting locally.
-      if ($options['export'] && $env == 'local') {
+      if ($options['export']) {
         $now = date('Ymd-His');
         $filename = "SiteNow-Report-Login-$now.csv";
         $root = $this->getConfigValue('repo.root');
@@ -295,7 +295,7 @@ class ReportCommands extends BltTasks {
 
             $site['last_login'] = date('m/d/Y', (int) trim($result->getMessage()));
           }
-          if ($options['export'] && $env == 'local') {
+          if ($options['export']) {
             // Output to CSV file and copy to local filesystem.
             $fp = fopen($filepath, 'a');
             fputcsv($fp, $site);
