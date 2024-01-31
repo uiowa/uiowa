@@ -162,6 +162,12 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
  */
 function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
+  if ($view->id() === 'projects') {
+    if ($view->current_display === 'block_search_projects') {
+      // Alphabetize field_project_building.
+      asort($form['field_project_building_target_id']['#options']);
+    }
+  }
   if ($view->id() === 'artwork') {
     if ($view->current_display === 'block_search_artwork') {
       $query = \Drupal::entityQuery('node')
