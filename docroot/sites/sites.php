@@ -6658,3 +6658,9 @@ $sites['orgieee.uiowa.ddev.site'] = 'ieee.org.uiowa.edu';
 $sites['orgieee.dev.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
 $sites['orgieee.stage.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
 $sites['orgieee.prod.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
+
+// Directory aliases for orsc-colloquium.sites.uiowa.edu.
+$sites['sitesorsc-colloquium.uiowa.ddev.site'] = 'orsc-colloquium.sites.uiowa.edu';
+$sites['sitesorsc-colloquium.dev.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
+$sites['sitesorsc-colloquium.stage.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
+$sites['sitesorsc-colloquium.prod.drupal.uiowa.edu'] = 'orsc-colloquium.sites.uiowa.edu';
