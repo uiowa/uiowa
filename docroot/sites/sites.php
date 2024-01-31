@@ -6652,3 +6652,9 @@ $sites['lablmp.uiowa.ddev.site'] = 'lmp.lab.uiowa.edu';
 $sites['lablmp.dev.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
 $sites['lablmp.stage.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
 $sites['lablmp.prod.drupal.uiowa.edu'] = 'lmp.lab.uiowa.edu';
+
+// Directory aliases for ieee.org.uiowa.edu.
+$sites['orgieee.uiowa.ddev.site'] = 'ieee.org.uiowa.edu';
+$sites['orgieee.dev.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
+$sites['orgieee.stage.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
+$sites['orgieee.prod.drupal.uiowa.edu'] = 'ieee.org.uiowa.edu';
