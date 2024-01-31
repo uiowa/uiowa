@@ -56,6 +56,21 @@ hr {
   clear: both;
 }
 
+/**
+* Temporary workaround for https://www.drupal.org/project/drupal/issues/3398223.
+* 1. Add the correct box sizing in Firefox.
+* 2. Show the overflow in Edge and IE.
+*/
+div.hr {
+  clear: both;
+  box-sizing: content-box;
+  /* 1 */
+  height: 0;
+  /* 1 */
+  overflow: visible;
+  /* 2 */
+}
+
 [class*=bg-] .element--spacer-separator,
 [class*=bg-] [class*=bg-] .element--spacer-separator {
   border: 1px solid transparent;
