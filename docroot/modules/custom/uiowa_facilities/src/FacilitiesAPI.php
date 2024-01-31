@@ -245,11 +245,15 @@ class FacilitiesAPI {
         }
       }
 
+      // Set isCapital flag.
+      $project->isCapital = TRUE;
+
+      // Set isFeatured flag if it's featured.
       if ($is_featured) {
-        $project->projectType = ['capital', 'featured'];
+        $project->isFeatured = TRUE;
       }
       else {
-        $project->projectType = ['capital'];
+        $project->isFeatured = FALSE;
       }
 
       $projects[] = $project;
@@ -288,7 +292,7 @@ class FacilitiesAPI {
         'projectBuilding', 'grossSqFeet', 'preBidLocation',
         'vendorName', 'primaryConsultant', 'bidOpeningDate',
         'constructionStartDate', 'preBidDate', 'substantialCompletionDate',
-        'estimatedAmount',
+        'estimatedAmount', 'isFeatured', 'isCapital',
       ];
 
       foreach ($default_properties as $property) {

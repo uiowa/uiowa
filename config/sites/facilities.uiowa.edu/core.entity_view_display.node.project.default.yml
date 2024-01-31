@@ -14,6 +14,8 @@ dependencies:
     - field.field.node.project.field_project_constr_start_date
     - field.field.node.project.field_project_description
     - field.field.node.project.field_project_estimated_cost
+    - field.field.node.project.field_project_is_capital
+    - field.field.node.project.field_project_is_featured
     - field.field.node.project.field_project_number
     - field.field.node.project.field_project_pre_bid_date
     - field.field.node.project.field_project_pre_bid_location
@@ -21,7 +23,6 @@ dependencies:
     - field.field.node.project.field_project_square_footage
     - field.field.node.project.field_project_status
     - field.field.node.project.field_project_sub_complete_date
-    - field.field.node.project.field_project_type
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
@@ -29,7 +30,6 @@ dependencies:
     - datetime
     - layout_builder
     - link
-    - options
     - system
     - text
     - user
@@ -520,6 +520,26 @@ content:
     third_party_settings: {  }
     weight: 23
     region: content
+  field_project_is_capital:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 25
+    region: content
+  field_project_is_featured:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 24
+    region: content
   field_project_number:
     type: string
     label: above
@@ -577,13 +597,6 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 21
-    region: content
-  field_project_type:
-    type: list_key
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
     region: content
   field_project_webcam:
     type: link

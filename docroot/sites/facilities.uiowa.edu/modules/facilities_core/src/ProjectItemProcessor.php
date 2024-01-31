@@ -15,7 +15,6 @@ class ProjectItemProcessor extends EntityItemProcessorBase {
   protected static $fieldMap = [
     'title' => 'projectTitle',
     'field_project_number' => 'buiProjectId',
-    'field_project_type' => 'projectType',
     'field_project_building' => 'projectBuilding',
     'field_project_building_alt' => 'buildingName',
     'field_project_scope' => 'projectScope',
@@ -29,6 +28,8 @@ class ProjectItemProcessor extends EntityItemProcessorBase {
     'field_project_pre_bid_date' => 'preBidDate',
     'field_project_sub_complete_date' => 'substantialCompletionDate',
     'field_project_estimated_cost' => 'estimatedAmount',
+    'field_project_is_featured' => 'isFeatured',
+    'field_project_is_capital' => 'isCapital',
   ];
 
 }

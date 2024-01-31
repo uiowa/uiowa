@@ -15,12 +15,10 @@ dependencies:
     - field.storage.node.field_project_square_footage
     - field.storage.node.field_project_status
     - field.storage.node.field_project_sub_complete_date
-    - field.storage.node.field_project_type
     - node.type.project
   module:
     - datetime
     - node
-    - options
     - user
 id: projects
 label: Projects
@@ -74,68 +72,6 @@ display:
           type: string
           settings:
             link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_project_type:
-          id: field_project_type
-          table: node__field_project_type
-          field: field_project_type
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: 'Project type'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: strong
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: list_key
-          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -964,53 +900,6 @@ display:
           plugin_id: bundle
           value:
             project: project
-        field_project_type_value:
-          id: field_project_type_value
-          table: node__field_project_type
-          field: field_project_type_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: list_field
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_project_type_value_op
-            label: 'Project type'
-            description: ''
-            use_operator: false
-            operator: field_project_type_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_project_type_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              collaborator: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
         field_project_building_target_id:
           id: field_project_building_target_id
           table: node__field_project_building
@@ -1068,6 +957,44 @@ display:
               direction: ASC
             auto_create: false
             auto_create_bundle: ''
+        field_project_is_capital_value:
+          id: field_project_is_capital_value
+          table: node__field_project_is_capital
+          field: field_project_is_capital_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: html_list
         options:
@@ -1120,7 +1047,6 @@ display:
         - 'config:field.storage.node.field_project_square_footage'
         - 'config:field.storage.node.field_project_status'
         - 'config:field.storage.node.field_project_sub_complete_date'
-        - 'config:field.storage.node.field_project_type'
   block_search_projects:
     id: block_search_projects
     display_title: Block
@@ -1653,4 +1579,3 @@ display:
         - 'config:field.storage.node.field_project_square_footage'
         - 'config:field.storage.node.field_project_status'
         - 'config:field.storage.node.field_project_sub_complete_date'
-        - 'config:field.storage.node.field_project_type'

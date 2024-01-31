@@ -536,14 +536,3 @@ function facilities_core_preprocess_textarea(&$variables) {
     }
   }
 }
-
-/**
- * Added allowed values function for project type.
- */
-function facilities_core_project_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $options = [
-    'featured' => 'Featured',
-    'capital' => 'Capital',
-  ];
-  return $options;
-}
