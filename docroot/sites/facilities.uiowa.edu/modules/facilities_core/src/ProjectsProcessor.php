@@ -52,20 +52,6 @@ class ProjectsProcessor extends EntityProcessorBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function processRecord(&$record) {
-    if (!is_null($project_number = $record?->{$this->apiRecordSyncKey})) {
-      // Request from Facilities API to get projects.
-      $facilities_api = \Drupal::service('uiowa_facilities.api');
-      $result = $facilities_api->getProjects($project_number);
-      foreach ((array) $result as $key => $value) {
-        $record->{$key} = $value;
-      }
-    }
-  }
-
-  /**
    * Initialize relevant services.
    */
   public function init() {
