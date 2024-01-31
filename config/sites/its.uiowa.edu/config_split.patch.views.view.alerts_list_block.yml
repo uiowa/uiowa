@@ -310,7 +310,7 @@ adding:
             text_input_required_format: filtered_html
             bef:
               general:
-                autosubmit: false
+                autosubmit: true
                 autosubmit_exclude_textfield: false
                 autosubmit_textfield_delay: 500
                 autosubmit_hide: false
@@ -346,18 +346,18 @@ adding:
                       filter_rewrite_values: ''
                     collapsible: false
                     is_secondary: true
-                field_alert_building_target_id:
-                  plugin_id: default
-                  advanced:
-                    placeholder_text: 'Building(s) affected'
-                    rewrite:
-                      filter_rewrite_values: ''
-                    collapsible: false
-                    is_secondary: true
                 field_alert_category_target_id:
                   plugin_id: default
                   advanced:
                     placeholder_text: 'Alert categories'
+                    rewrite:
+                      filter_rewrite_values: ''
+                    collapsible: false
+                    is_secondary: true
+                field_alert_building_target_id:
+                  plugin_id: default
+                  advanced:
+                    placeholder_text: 'Building(s) affected'
                     rewrite:
                       filter_rewrite_values: ''
                     collapsible: false
