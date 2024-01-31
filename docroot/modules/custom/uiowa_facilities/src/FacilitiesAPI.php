@@ -229,7 +229,7 @@ class FacilitiesAPI {
     // Get all featured projects.
     $featured_projects = $this->getFeaturedProjects();
     foreach ($featured_projects as $project) {
-      $project->isFeatured = true;
+      $project->isFeatured = TRUE;
       $projects[] = $project;
     }
 
@@ -245,10 +245,10 @@ class FacilitiesAPI {
         }
       }
 
-      $project->isCapital = true;
+      $project->isCapital = TRUE;
 
       if ($is_featured) {
-        $project->isFeatured = true;
+        $project->isFeatured = TRUE;
       }
 
       $projects[] = $project;
@@ -264,7 +264,9 @@ class FacilitiesAPI {
 
         // Adjust square ft and estimated amount numbers.
         $project->grossSqFeet = $project->grossSqFeet == 0 ? NULL : strval($project->grossSqFeet);
-        $project->estimatedAmount = floatval($project->estimatedAmount);
+        if ($project->estimatedAmount !== NULL) {
+          $project->estimatedAmount = floatval($project->estimatedAmount);
+        }
 
         // Transform dates if they exist.
         $date_fields = ['bidOpeningDate', 'constructionStartDate', 'preBidDate', 'substantialCompletionDate'];
