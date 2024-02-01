@@ -105,9 +105,13 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * Constructs an EntityProcessorBase instance.
+   *
+   * @param string $bundle
+   *   The entity bundle.
    */
-  public function __construct() {
+  public function __construct(string $bundle) {
     $this->entityTypeManager = \Drupal::entityTypeManager();
+    $this->bundle = $bundle;
   }
 
   /**
@@ -175,7 +179,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       else {
         // If not, create new.
         $entity = $storage->create([
-          'type' => 'building',
+          'type' => $this->bundle,
         ]);
       }
 
