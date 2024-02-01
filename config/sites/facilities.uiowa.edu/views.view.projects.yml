@@ -1428,7 +1428,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Project building'
+          label: Building
           exclude: false
           alter:
             alter_text: false
@@ -1491,7 +1491,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Project number'
+          label: Number
           exclude: false
           alter:
             alter_text: false
@@ -1601,7 +1601,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: ''
+            placeholder: 'Search by project name or number'
           is_grouped: false
           group_info:
             label: ''
@@ -1748,35 +1748,3 @@ display:
       tags:
         - 'config:field.storage.node.field_project_building'
         - 'config:field.storage.node.field_project_number'
-  page_1:
-    id: page_1
-    display_title: Page
-    display_plugin: page
-    position: 2
-    display_options:
-      display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
-      path: all-projects
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_project_architect'
-        - 'config:field.storage.node.field_project_awarded_to'
-        - 'config:field.storage.node.field_project_bid_date'
-        - 'config:field.storage.node.field_project_building'
-        - 'config:field.storage.node.field_project_constr_start_date'
-        - 'config:field.storage.node.field_project_number'
-        - 'config:field.storage.node.field_project_pre_bid_date'
-        - 'config:field.storage.node.field_project_pre_bid_location'
-        - 'config:field.storage.node.field_project_scope'
-        - 'config:field.storage.node.field_project_square_footage'
-        - 'config:field.storage.node.field_project_status'
-        - 'config:field.storage.node.field_project_sub_complete_date'
