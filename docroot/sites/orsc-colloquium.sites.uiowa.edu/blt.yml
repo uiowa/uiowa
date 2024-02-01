@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesorsc-colloquium.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesorsc-colloquium
+  human_name: orsc-colloquium.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesorsc-colloquium.prod
+drupal:
+  db:
+    database: orsc_colloquium_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesorsc-colloquium.prod.drupal.uiowa.edu'
+  requester: jlinahon
+  site-name: orsc-colloquium
