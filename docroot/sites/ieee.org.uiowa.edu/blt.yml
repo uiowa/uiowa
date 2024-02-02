@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgieee.uiowa.ddev.site
+    protocol: https
+  machine_name: orgieee
+  human_name: ieee.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgieee.prod
+drupal:
+  db:
+    database: ieee_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgieee.prod.drupal.uiowa.edu'
+  requester: gleach
+  site-name: 'IEEE STUDENT BRANCH'
