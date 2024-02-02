@@ -1,0 +1,70 @@
+uuid: e48768a2-b830-4c37-92bd-4837d597cfa8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_department
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_email
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_is_primary
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_job_title
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_name
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_phone_number
+    - paragraphs.paragraphs_type.uiowa_building_coordinators
+id: paragraph.uiowa_building_coordinators.default
+targetEntityType: paragraph
+bundle: uiowa_building_coordinators
+mode: default
+content:
+  field_b_coordinator_department:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_b_coordinator_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_b_coordinator_is_primary:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_b_coordinator_job_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_b_coordinator_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_b_coordinator_phone_number:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

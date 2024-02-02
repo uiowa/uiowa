@@ -15,8 +15,10 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.paragraph.uiowa_building_coordinators.default
   - core.entity_view_display.node.alert.default
   - core.entity_view_display.node.person.default
+  - core.entity_view_display.paragraph.uiowa_building_coordinators.default
   - core.entity_view_mode.node.dispatch
   - field.field.node.alert.field_alert_override_building
   - field.field.node.alert.field_alert_project_number
@@ -25,6 +27,12 @@ complete_list:
   - field.field.node.person.field_person_birth_year
   - field.field.node.person.field_person_death_year
   - field.field.node.person.field_person_nationality
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_department
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_email
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_is_primary
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_job_title
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_name
+  - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_phone_number
   - field.storage.node.field_alert_accessible_route
   - field.storage.node.field_alert_affected_bus_routes
   - field.storage.node.field_alert_alternate_route
@@ -45,6 +53,7 @@ complete_list:
   - node.type.building
   - node.type.named_building
   - node.type.project
+  - paragraphs.paragraphs_type.uiowa_building_coordinators
   - pathauto.pattern.artwork
   - pathauto.pattern.building
   - pathauto.pattern.named_building
@@ -66,6 +75,7 @@ complete_list:
   - 'field.storage.node.field_building_*'
   - 'field.storage.node.field_project_*'
   - 'field.storage.node.field_artwork_*'
+  - 'field.storage.paragraph.field_b_coordinator_*'
 partial_list:
   - administerusersbyrole.settings
   - core.entity_view_display.node.alert.teaser

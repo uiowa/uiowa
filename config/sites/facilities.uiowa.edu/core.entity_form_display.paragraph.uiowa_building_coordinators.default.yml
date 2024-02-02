@@ -1,0 +1,68 @@
+uuid: 0e2f4e8d-ff87-4836-9c0f-a4ba77c85502
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_department
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_email
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_is_primary
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_job_title
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_name
+    - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_phone_number
+    - paragraphs.paragraphs_type.uiowa_building_coordinators
+  module:
+    - telephone
+id: paragraph.uiowa_building_coordinators.default
+targetEntityType: paragraph
+bundle: uiowa_building_coordinators
+mode: default
+content:
+  field_b_coordinator_department:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_b_coordinator_email:
+    type: email_default
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_b_coordinator_is_primary:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_b_coordinator_job_title:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_b_coordinator_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_b_coordinator_phone_number:
+    type: telephone_default
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
