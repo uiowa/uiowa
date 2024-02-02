@@ -15,11 +15,14 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.paragraph.alert_update.default
   - core.entity_view_display.node.alert.default
   - core.entity_view_display.node.article.default
+  - core.entity_view_display.paragraph.alert_update.default
   - field.field.node.alert.field_alert_building
   - field.field.node.alert.field_alert_service_affected
   - field.field.node.alert.field_alert_title_details
+  - field.field.node.alert.field_alert_updates
   - field.storage.node.field_alert_building
   - field.storage.node.field_alert_service_affected
   - field.storage.node.field_alert_title_details
@@ -36,6 +39,7 @@ complete_list:
   - views.view.services
   - views.view.service_related_articles
   - 'field.storage.node.field_service_*'
+  - 'field.storage.paragraph.field_alert_*'
 partial_list:
   - core.entity_form_display.node.alert.default
   - core.entity_form_display.node.article.default

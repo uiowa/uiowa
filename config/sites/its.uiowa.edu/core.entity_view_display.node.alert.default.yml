@@ -9,9 +9,11 @@ dependencies:
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_service_affected
     - field.field.node.alert.field_alert_title_details
+    - field.field.node.alert.field_alert_updates
     - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
+    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
     - metatag
@@ -93,6 +95,24 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b5f43d32-aa8a-40ab-9cb0-29e206e8c18a
+            region: content
+            configuration:
+              id: 'field_block:node:alert:field_alert_updates'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -325,6 +345,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 109
+    region: content
+  field_alert_updates:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_meta_tags:
     type: metatag_empty_formatter
