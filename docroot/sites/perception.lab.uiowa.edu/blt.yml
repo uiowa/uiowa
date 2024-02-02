@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labperception.uiowa.ddev.site
+    protocol: https
+  machine_name: labperception
+  human_name: perception.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labperception.prod
+drupal:
+  db:
+    database: perception_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labperception.prod.drupal.uiowa.edu'
+  requester: jenkinsn
+  site-name: 'Medical Image Perception Laboratory'
