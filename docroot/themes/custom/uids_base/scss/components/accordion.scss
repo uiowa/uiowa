@@ -4,6 +4,9 @@
 
 .collection--accordion .accordion__content {
   background-color: $white;
+  &:not([hidden]) {
+    display: flow-root;
+  }
 
   blockquote {
     border-color: $primary;
