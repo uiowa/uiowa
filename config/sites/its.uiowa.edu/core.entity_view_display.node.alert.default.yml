@@ -154,7 +154,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -192,7 +192,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -214,8 +214,31 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 3
+            weight: 4
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b5f43d32-aa8a-40ab-9cb0-29e206e8c18a
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_updates'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: d79824dd-9177-437f-b0b8-71c04eb44120
@@ -246,31 +269,8 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
-            weight: -1
+            weight: 5
             additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: b5f43d32-aa8a-40ab-9cb0-29e206e8c18a
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_updates'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: -2
-            additional:
-              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
