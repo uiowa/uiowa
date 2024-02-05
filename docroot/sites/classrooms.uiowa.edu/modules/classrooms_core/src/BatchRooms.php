@@ -22,8 +22,7 @@ class BatchRooms {
    * @param array $context
    *   Context for operations.
    */
-  public static function processNode(int $batch_id, array $nodes, object $room_processor, array &$context): void
-  {
+  public static function processNode(int $batch_id, array $nodes, object $room_processor, array &$context): void {
     // Optional message displayed under the progressbar.
     $context['message'] = t('Running Batch "@id"', [
       '@id' => $batch_id,
