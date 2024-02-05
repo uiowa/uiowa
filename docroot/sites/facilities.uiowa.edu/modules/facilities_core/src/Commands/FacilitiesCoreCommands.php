@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\ProjectsProcessor;
+use Drupal\facilities_core\CoordinatorsProcessor;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -73,7 +74,7 @@ class FacilitiesCoreCommands extends DrushCommands {
   }
 
   /**
-   * Triggers the building import.
+   * Triggers the project import.
    *
    * @command facilities_core:projects_import
    * @aliases fm-projects
@@ -96,6 +97,35 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@skipped' => $sync_service->getSkipped(),
     ];
     $this->getLogger('facilities_core')->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+
+    // Switch user back.
+    $this->accountSwitcher->switchBack();
+  }
+
+  /**
+   * Triggers the coordinator import.
+   *
+   * @command facilities_core:coordinators_import
+   * @aliases fm-coordinators
+   * @usage facilities_core:coordinators_import
+   *  Ideally this is done as a crontab that is only run once a day.
+   */
+  public function importCoordinators() {
+    // Switch to the admin user to pass access check.
+    $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
+
+    $this->getLogger('facilities_core')->notice("Starting the facilities coordinators sync. This may take a little time if the information isn't cached.");
+    $sync_service = new CoordinatorsProcessor();
+    $sync_service->init();
+    $sync_service->process();
+
+    $arguments = [
+      '@created' => $sync_service->getCreated(),
+      '@updated' => $sync_service->getUpdated(),
+      '@deleted' => $sync_service->getDeleted(),
+      '@skipped' => $sync_service->getSkipped(),
+    ];
+    $this->getLogger('facilities_core')->notice('Facilities coordinators content sync completed. @created coordinators were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
