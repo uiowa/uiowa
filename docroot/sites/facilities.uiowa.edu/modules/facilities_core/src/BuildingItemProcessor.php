@@ -30,6 +30,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_lactation_rooms' => 'lactationRooms',
     'field_building_latitude' => 'latitude',
     'field_building_longitude' => 'longitude',
+    'field_building_coordinators' => '',
   ];
 
 }
