@@ -6,8 +6,8 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\facilities_core\BuildingsProcessor;
-use Drupal\facilities_core\ProjectsProcessor;
 use Drupal\facilities_core\CoordinatorsProcessor;
+use Drupal\facilities_core\ProjectsProcessor;
 use Drush\Commands\DrushCommands;
 
 /**

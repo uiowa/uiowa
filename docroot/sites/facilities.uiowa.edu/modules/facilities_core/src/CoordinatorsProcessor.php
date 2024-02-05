@@ -57,7 +57,7 @@ class CoordinatorsProcessor extends EntityProcessorBase {
    */
   public function init() {
     $this->client = \Drupal::service('http_client');
- }
+  }
 
   /**
    * {@inheritdoc}

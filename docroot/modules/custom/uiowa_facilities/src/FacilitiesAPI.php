@@ -308,7 +308,7 @@ class FacilitiesAPI {
   }
 
   /**
-   * Get building coordinators
+   * Get building coordinators.
    *
    * @return array
    *   The building coordinators object.
