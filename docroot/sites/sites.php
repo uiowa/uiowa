@@ -6682,3 +6682,9 @@ $sites['lawnhlp.uiowa.ddev.site'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.dev.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.stage.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.prod.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
+
+// Directory aliases for wemmie.lab.uiowa.edu.
+$sites['labwemmie.uiowa.ddev.site'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.dev.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.stage.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.prod.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';

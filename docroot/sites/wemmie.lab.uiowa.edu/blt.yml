@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwemmie.uiowa.ddev.site
+    protocol: https
+  machine_name: labwemmie
+  human_name: wemmie.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwemmie.prod
+drupal:
+  db:
+    database: wemmie_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwemmie.prod.drupal.uiowa.edu'
+  requester: cronbaughtm
+  site-name: 'John Wemmie Laboratory'
