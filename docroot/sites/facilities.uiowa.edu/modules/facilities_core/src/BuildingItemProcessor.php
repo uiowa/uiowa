@@ -30,14 +30,6 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_lactation_rooms' => 'lactationRooms',
     'field_building_latitude' => 'latitude',
     'field_building_longitude' => 'longitude',
-    'field_building_coordinators' => [
-      'field_b_coordinator_department' => 'mainDepartment',
-      'field_b_coordinator_email' => 'mainCampusEmail',
-      'field_b_coordinator_is_primary' => TRUE,
-      'field_b_coordinator_job_title' => 'mainJobTitle',
-      'field_b_coordinator_name' => 'mainFullName',
-      'field_b_coordinator_phone_number' => 'mainCampusPhone',
-    ],
   ];
 
 }

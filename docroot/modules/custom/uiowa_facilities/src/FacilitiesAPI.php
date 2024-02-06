@@ -185,31 +185,7 @@ class FacilitiesAPI {
    *   The buildings object.
    */
   public function getBuildings() {
-    $building_numbers = $this->getAllBuildingNumbers();
-    $buildings = [];
-
-    foreach ($building_numbers as $number => $nid) {
-      // Use each number to make a query.
-      $building = $this->getBuilding($number);
-
-      // Check if the array is not empty. If not, add to building array.
-      if (!empty($building)) {
-        $buildings[] = $building;
-
-        // Grab coordinator info and add to array.
-        foreach ($buildings as &$building) {
-          $coordinator_request = $this->getBuildingCoordinators($number);
-
-          if (!empty($coordinator_request)) {
-            // Merge the additional fields into the project.
-            $building = (object) array_merge((array) $building, (array) $coordinator_request);
-
-          }
-        }
-      }
-    }
-
-    return array_values($buildings);
+    return $this->request('GET', 'buildings');
   }
 
   /**
