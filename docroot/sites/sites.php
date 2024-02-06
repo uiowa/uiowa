@@ -6700,3 +6700,9 @@ $sites['labtroutman.uiowa.ddev.site'] = 'troutman.lab.uiowa.edu';
 $sites['labtroutman.dev.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
 $sites['labtroutman.stage.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
 $sites['labtroutman.prod.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+
+// Directory aliases for celp.org.uiowa.edu.
+$sites['orgcelp.uiowa.ddev.site'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.dev.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.stage.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.prod.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
