@@ -6688,3 +6688,9 @@ $sites['labwemmie.uiowa.ddev.site'] = 'wemmie.lab.uiowa.edu';
 $sites['labwemmie.dev.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
 $sites['labwemmie.stage.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
 $sites['labwemmie.prod.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+
+// Directory aliases for econsent.lab.uiowa.edu.
+$sites['labeconsent.uiowa.ddev.site'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.dev.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.stage.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.prod.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
