@@ -1,7 +1,5 @@
-'use strict';
-
 (function ($, Drupal) {
-
+  'use strict';
   Drupal.behaviors.nativeLazyLoadAnimation = {
     attach: function (context) {
       $(once('lazy-load-animation','img.lazyload')).on('load', function () {
