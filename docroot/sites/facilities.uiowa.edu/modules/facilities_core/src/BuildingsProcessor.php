@@ -92,6 +92,13 @@ class BuildingsProcessor extends EntityProcessorBase {
       foreach ((array) $result as $key => $value) {
         $record->{$key} = $value;
       }
+
+      // API call for building coordinator information.
+      $results = $facilities_api->getBuildingCoordinators($building_number);
+      // Add buildingCoordinator array to record.
+      $record->buildingCoordinators = [];
+      $record->buildingCoordinators[] = $results;
+
     }
 
     // There is at least one building with a blank space instead of
