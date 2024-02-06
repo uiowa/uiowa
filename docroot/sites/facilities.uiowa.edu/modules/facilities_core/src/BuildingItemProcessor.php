@@ -3,6 +3,7 @@
 namespace Drupal\facilities_core;
 
 use Drupal\uiowa_core\EntityItemProcessorBase;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * A processor for syncing building nodes.
@@ -33,4 +34,30 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_coordinators' => 'buildingCoordinators',
   ];
 
+  /**
+   * Process the field_building_coordinators array and add as paragraphs.
+   */
+  public static function process($entity, $record): bool {
+    $updated = FALSE;
+    parent::process($entity, $record);
+    $coordinator = Paragraph::Create();
+    $coordinator->set('buildingCoordinators', [
+      'field_b_coordinator_department' =>  $record->buidingCoordinators->mainDepartment,
+      'field_b_coordinator_email' =>  $record->buidingCoordinators->mainCampusEmail,
+      'field_b_coordinator_is_primary' => TRUE,
+      'field_b_coordinator_job_title' => $record->buidingCoordinators->mainJobTitle,
+      'field_b_coordinator_name' => $record->buidingCoordinators->mainFullName,
+      'field_b_coordinator_phone_number' => $record->buidingCoordinators->mainCampusPhone,
+    ]);
+    $coordinator->save();
+
+    $entity->set('field_building_coordinators', [
+      'target_id' => $coordinator->id(),
+      'target_revision_id' => $coordinator->getRevisionId(),
+    ]);
+    $entity->save();
+    $updated = TRUE;
+
+    return $updated;
+  }
 }
