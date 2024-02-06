@@ -100,4 +100,5 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch user back.
     $this->accountSwitcher->switchBack();
   }
+
 }
