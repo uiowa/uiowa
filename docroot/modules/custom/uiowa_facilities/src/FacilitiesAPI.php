@@ -192,13 +192,20 @@ class FacilitiesAPI {
       // Use each number to make a query.
       $building = $this->getBuilding($number);
 
-      // Check if the array is not empty.
+      // Check if the array is not empty. If not, add to building array.
       if (!empty($building)) {
         $buildings[] = $building;
-        $coordinators = $this->getBuildingCoordinators($number);
-          foreach ($coordinators as $coordinator) {
-            $building->buildingCoordinator = $coordinator;
+
+        // Grab coordinator info and add to array.
+        foreach ($buildings as &$building) {
+          $coordinator_request = $this->getBuildingCoordinators($number);
+
+          if (!empty($coordinator_request)) {
+            // Merge the additional fields into the project.
+            $building = (object) array_merge((array) $building, (array) $coordinator_request);
+
           }
+        }
       }
     }
 
@@ -340,7 +347,5 @@ class FacilitiesAPI {
     // Return the array of unique projects.
     return array_values($projects_by_id);
   }
-
-
 
 }
