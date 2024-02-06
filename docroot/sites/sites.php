@@ -6694,3 +6694,9 @@ $sites['labeconsent.uiowa.ddev.site'] = 'econsent.lab.uiowa.edu';
 $sites['labeconsent.dev.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
 $sites['labeconsent.stage.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
 $sites['labeconsent.prod.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+
+// Directory aliases for troutman.lab.uiowa.edu.
+$sites['labtroutman.uiowa.ddev.site'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.dev.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.stage.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.prod.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
