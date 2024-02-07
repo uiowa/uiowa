@@ -1,5 +1,6 @@
 # Functionality
 * Enables the `ccom_core` module which is used on all CCOM websites.
+* Unlike other feature splits, this is a module enable first setup:
 
 # Setup
 
