@@ -6700,3 +6700,9 @@ $sites['religiousstudies.uiowa.ddev.site'] = 'religiousstudies.uiowa.edu';
 $sites['religiousstudies.dev.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
 $sites['religiousstudies.stage.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
 $sites['religiousstudies.prod.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
+
+// Directory aliases for policy.uiowa.edu.
+$sites['policy.uiowa.ddev.site'] = 'policy.uiowa.edu';
+$sites['policy.dev.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+$sites['policy.stage.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+$sites['policy.prod.drupal.uiowa.edu'] = 'policy.uiowa.edu';
