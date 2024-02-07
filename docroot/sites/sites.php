@@ -4829,12 +4829,6 @@ $sites['sitesidream.dev.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.stage.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.prod.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
 
-// Directory aliases for engineering-dean.jobs.uiowa.edu.
-$sites['jobsengineering-dean.uiowa.ddev.site'] = 'engineering-dean.jobs.uiowa.edu';
-$sites['jobsengineering-dean.dev.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
-$sites['jobsengineering-dean.stage.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
-$sites['jobsengineering-dean.prod.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
-
 // Directory aliases for sowers.lab.uiowa.edu.
 $sites['labsowers.uiowa.ddev.site'] = 'sowers.lab.uiowa.edu';
 $sites['labsowers.dev.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
@@ -6563,12 +6557,6 @@ $sites['labroghair.dev.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
 $sites['labroghair.stage.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
 $sites['labroghair.prod.drupal.uiowa.edu'] = 'roghair.lab.uiowa.edu';
 
-// Directory aliases for kletzig.physics.uiowa.edu.
-$sites['physicskletzig.uiowa.ddev.site'] = 'kletzig.physics.uiowa.edu';
-$sites['physicskletzig.dev.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
-$sites['physicskletzig.stage.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
-$sites['physicskletzig.prod.drupal.uiowa.edu'] = 'kletzig.physics.uiowa.edu';
-
 // Directory aliases for iowahumanrights.org.
 $sites['org-iowahumanrights.uiowa.ddev.site'] = 'iowahumanrights.org';
 $sites['org-iowahumanrights.dev.drupal.uiowa.edu'] = 'iowahumanrights.org';
@@ -6682,3 +6670,45 @@ $sites['lawnhlp.uiowa.ddev.site'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.dev.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.stage.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.prod.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
+
+// Directory aliases for wemmie.lab.uiowa.edu.
+$sites['labwemmie.uiowa.ddev.site'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.dev.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.stage.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+$sites['labwemmie.prod.drupal.uiowa.edu'] = 'wemmie.lab.uiowa.edu';
+
+// Directory aliases for econsent.lab.uiowa.edu.
+$sites['labeconsent.uiowa.ddev.site'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.dev.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.stage.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+$sites['labeconsent.prod.drupal.uiowa.edu'] = 'econsent.lab.uiowa.edu';
+
+// Directory aliases for troutman.lab.uiowa.edu.
+$sites['labtroutman.uiowa.ddev.site'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.dev.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.stage.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+$sites['labtroutman.prod.drupal.uiowa.edu'] = 'troutman.lab.uiowa.edu';
+
+// Directory aliases for celp.org.uiowa.edu.
+$sites['orgcelp.uiowa.ddev.site'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.dev.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.stage.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
+$sites['orgcelp.prod.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
+
+// Directory aliases for religiousstudies.uiowa.edu.
+$sites['religiousstudies.uiowa.ddev.site'] = 'religiousstudies.uiowa.edu';
+$sites['religiousstudies.dev.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
+$sites['religiousstudies.stage.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
+$sites['religiousstudies.prod.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
+
+// Directory aliases for policy.uiowa.edu.
+$sites['policy.uiowa.ddev.site'] = 'policy.uiowa.edu';
+$sites['policy.dev.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+$sites['policy.stage.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+$sites['policy.prod.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+
+// Directory aliases for kletzing.physics.uiowa.edu.
+$sites['physicskletzing.uiowa.ddev.site'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.dev.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.stage.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.prod.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
