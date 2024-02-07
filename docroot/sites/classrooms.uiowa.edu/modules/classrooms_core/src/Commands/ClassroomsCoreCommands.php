@@ -13,7 +13,6 @@ use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
-use Psr\Log\LoggerInterface;
 
 /**
  * A Drush commandfile.
