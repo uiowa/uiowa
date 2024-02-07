@@ -15,6 +15,12 @@ function ccom_core_install() {
   $config = $config_factory->getEditable('uiowa_core.settings');
   $config->set('uiowa_core.campus_gtm', 0)
     ->save();
+
+  // Enable the 'ccom' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.ccom');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
 }
 
 /**
@@ -27,4 +33,6 @@ function ccom_core_uninstall() {
   $config = $config_factory->getEditable('uiowa_core.settings');
   $config->set('uiowa_core.campus_gtm', 1)
     ->save();
+
+  \Drupal::messenger()->addStatus(__FUNCTION__);
 }
