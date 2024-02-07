@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: physicskletzing.uiowa.ddev.site
+    protocol: https
+  machine_name: physicskletzing
+  human_name: kletzing.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicskletzing.prod
+drupal:
+  db:
+    database: kletzing_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://physicskletzing.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Craig A. Kletzing'
