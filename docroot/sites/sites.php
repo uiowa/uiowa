@@ -6706,3 +6706,9 @@ $sites['policy.uiowa.ddev.site'] = 'policy.uiowa.edu';
 $sites['policy.dev.drupal.uiowa.edu'] = 'policy.uiowa.edu';
 $sites['policy.stage.drupal.uiowa.edu'] = 'policy.uiowa.edu';
 $sites['policy.prod.drupal.uiowa.edu'] = 'policy.uiowa.edu';
+
+// Directory aliases for kletzing.physics.uiowa.edu.
+$sites['physicskletzing.uiowa.ddev.site'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.dev.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.stage.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+$sites['physicskletzing.prod.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
