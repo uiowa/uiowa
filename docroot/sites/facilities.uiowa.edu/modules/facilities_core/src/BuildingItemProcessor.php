@@ -40,23 +40,25 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
   public static function process($entity, $record): bool {
     $updated = FALSE;
     // parent::process($entity, $record);
-    // Create paragraph.
     $coordinator_array = [];
-    $main_coordinator = Paragraph::create([
-      'type' => 'uiowa_building_coordinators',
-      'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
-      'field_b_coordinator_email' => $record->buildingCoordinators[0]->mainCampusEmail,
-      'field_b_coordinator_is_primary' => TRUE,
-      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->mainJobTitle,
-      'field_b_coordinator_name' => $record->buildingCoordinators[0]->mainFullName,
-      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->mainCampusPhone,
-    ]);
-    $main_coordinator->save();
-    $main_array = [
-      'target_id' => $main_coordinator->id(),
-      'target_revision_id' => $main_coordinator->getRevisionId(),
-    ];
-    $coordinator_array[] = $main_array;
+
+    if ($record->buildingCoordinators[0]->mainFullName != NULL) {
+      $main_coordinator = Paragraph::create([
+        'type' => 'uiowa_building_coordinators',
+        'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
+        'field_b_coordinator_email' => $record->buildingCoordinators[0]->mainCampusEmail,
+        'field_b_coordinator_is_primary' => TRUE,
+        'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->mainJobTitle,
+        'field_b_coordinator_name' => $record->buildingCoordinators[0]->mainFullName,
+        'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->mainCampusPhone,
+      ]);
+      $main_coordinator->save();
+      $main_array = [
+        'target_id' => $main_coordinator->id(),
+        'target_revision_id' => $main_coordinator->getRevisionId(),
+      ];
+      $coordinator_array[] = $main_array;
+    }
 
     if ($record->buildingCoordinators[0]->alternateFullName1 != NULL) {
       $alternate_coordinator_1 = Paragraph::create([
