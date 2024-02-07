@@ -38,10 +38,9 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
    * Process the field_building_coordinators array and add as paragraphs.
    */
   public static function process($entity, $record): bool {
-    $updated = FALSE;
-    // parent::process($entity, $record);
     $coordinator_array = [];
 
+    // Check if coordinator(s) exist, if so create Paragraph(s) and save.
     if ($record->buildingCoordinators[0]->mainFullName != NULL) {
       $main_coordinator = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
@@ -132,11 +131,11 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $coordinator_array[] = $alt_4_array;
     }
 
+    // Update building entity with new coordinator paragraph(s).
     $entity->set('field_building_coordinators', $coordinator_array);
     $entity->save();
-    $updated = TRUE;
 
-    return $updated;
+    return TRUE;
   }
 
 }
