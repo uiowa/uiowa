@@ -39,21 +39,23 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
    */
   public static function process($entity, $record): bool {
     $updated = FALSE;
-    parent::process($entity, $record);
-    $coordinator = Paragraph::Create();
-    $coordinator->set('buildingCoordinators', [
-      'field_b_coordinator_department' => $record->buidingCoordinators->mainDepartment,
-      'field_b_coordinator_email' => $record->buidingCoordinators->mainCampusEmail,
+//    parent::process($entity, $record);
+
+    // Create paragraph
+    $main_coordinator = Paragraph::create([
+      'type' => 'uiowa_building_coordinators',
+      'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
+      'field_b_coordinator_email' => $record->buildingCoordinators[0]->mainCampusEmail,
       'field_b_coordinator_is_primary' => TRUE,
-      'field_b_coordinator_job_title' => $record->buidingCoordinators->mainJobTitle,
-      'field_b_coordinator_name' => $record->buidingCoordinators->mainFullName,
-      'field_b_coordinator_phone_number' => $record->buidingCoordinators->mainCampusPhone,
+      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->mainJobTitle,
+      'field_b_coordinator_name' => $record->buildingCoordinators[0]->mainFullName,
+      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->mainCampusPhone,
     ]);
-    $coordinator->save();
+    $main_coordinator->save();
 
     $entity->set('field_building_coordinators', [
-      'target_id' => $coordinator->id(),
-      'target_revision_id' => $coordinator->getRevisionId(),
+      'target_id' => $main_coordinator->id(),
+      'target_revision_id' => $main_coordinator->getRevisionId(),
     ]);
     $entity->save();
     $updated = TRUE;
