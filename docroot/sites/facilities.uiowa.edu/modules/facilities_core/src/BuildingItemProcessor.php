@@ -41,6 +41,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     $updated = FALSE;
     // parent::process($entity, $record);
     // Create paragraph.
+    $coordinator_array = [];
     $main_coordinator = Paragraph::create([
       'type' => 'uiowa_building_coordinators',
       'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
@@ -51,93 +52,85 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->mainCampusPhone,
     ]);
     $main_coordinator->save();
+    $main_array = [
+      'target_id' => $main_coordinator->id(),
+      'target_revision_id' => $main_coordinator->getRevisionId(),
+    ];
+    $coordinator_array[] = $main_array;
 
     if ($record->buildingCoordinators[0]->alternateFullName1 != NULL) {
-      $alt_1_primary = FALSE;
-    }
-    else {
-      $alt_1_primary = NULL;
-    }
-    $alternate_coordinator_1 = Paragraph::create([
-      'type' => 'uiowa_building_coordinators',
-      'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment1,
-      'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail1,
-      'field_b_coordinator_is_primary' => $alt_1_primary,
-      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle1,
-      'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName1,
-      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone1,
-    ]);
-    $alternate_coordinator_1->save();
-
-    if ($record->buildingCoordinators[0]->alternateFullName2 != NULL) {
-      $alt_2_primary = FALSE;
-    }
-    else {
-      $alt_2_primary = NULL;
-    }
-    $alternate_coordinator_2 = Paragraph::create([
-      'type' => 'uiowa_building_coordinators',
-      'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment2,
-      'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail2,
-      'field_b_coordinator_is_primary' => $alt_2_primary,
-      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle2,
-      'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName2,
-      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone2,
-    ]);
-    $alternate_coordinator_2->save();
-
-    if ($record->buildingCoordinators[0]->alternateFullName3 != NULL) {
-      $alt_3_primary = FALSE;
-    }
-    else {
-      $alt_3_primary = NULL;
-    }
-    $alternate_coordinator_3 = Paragraph::create([
-      'type' => 'uiowa_building_coordinators',
-      'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment3,
-      'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail3,
-      'field_b_coordinator_is_primary' => $alt_3_primary,
-      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle3,
-      'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName3,
-      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone3,
-    ]);
-    $alternate_coordinator_3->save();
-
-    if ($record->buildingCoordinators[0]->alternateFullName4 != NULL) {
-      $alt_4_primary = FALSE;
-    }
-    else {
-      $alt_4_primary = NULL;
-    }
-    $alternate_coordinator_4 = Paragraph::create([
-      'type' => 'uiowa_building_coordinators',
-      'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment4,
-      'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail4,
-      'field_b_coordinator_is_primary' => $alt_4_primary,
-      'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle4,
-      'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName4,
-      'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone4,
-    ]);
-    $alternate_coordinator_4->save();
-
-    $entity->set('field_building_coordinators', [
-      [
-        'target_id' => $main_coordinator->id(),
-        'target_revision_id' => $main_coordinator->getRevisionId(),
-      ], [
+      $alternate_coordinator_1 = Paragraph::create([
+        'type' => 'uiowa_building_coordinators',
+        'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment1,
+        'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail1,
+        'field_b_coordinator_is_primary' => FALSE,
+        'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle1,
+        'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName1,
+        'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone1,
+      ]);
+      $alternate_coordinator_1->save();
+      $alt_1_array = [
         'target_id' => $alternate_coordinator_1->id(),
         'target_revision_id' => $alternate_coordinator_1->getRevisionId(),
-      ], [
+      ];
+      $coordinator_array[] = $alt_1_array;
+    }
+
+    if ($record->buildingCoordinators[0]->alternateFullName2 != NULL) {
+      $alternate_coordinator_2 = Paragraph::create([
+        'type' => 'uiowa_building_coordinators',
+        'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment2,
+        'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail2,
+        'field_b_coordinator_is_primary' => FALSE,
+        'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle2,
+        'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName2,
+        'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone2,
+      ]);
+      $alternate_coordinator_2->save();
+      $alt_2_array = [
         'target_id' => $alternate_coordinator_2->id(),
         'target_revision_id' => $alternate_coordinator_2->getRevisionId(),
-      ], [
+      ];
+      $coordinator_array[] = $alt_2_array;
+    }
+
+    if ($record->buildingCoordinators[0]->alternateFullName3 != NULL) {
+      $alternate_coordinator_3 = Paragraph::create([
+        'type' => 'uiowa_building_coordinators',
+        'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment3,
+        'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail3,
+        'field_b_coordinator_is_primary' => FALSE,
+        'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle3,
+        'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName3,
+        'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone3,
+      ]);
+      $alternate_coordinator_3->save();
+      $alt_3_array = [
         'target_id' => $alternate_coordinator_3->id(),
         'target_revision_id' => $alternate_coordinator_3->getRevisionId(),
-      ], [
+      ];
+      $coordinator_array[] = $alt_3_array;
+    }
+
+    if ($record->buildingCoordinators[0]->alternateFullName4 != NULL) {
+      $alternate_coordinator_4 = Paragraph::create([
+        'type' => 'uiowa_building_coordinators',
+        'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment4,
+        'field_b_coordinator_email' => $record->buildingCoordinators[0]->alternateCampusEmail4,
+        'field_b_coordinator_is_primary' => FALSE,
+        'field_b_coordinator_job_title' => $record->buildingCoordinators[0]->alternateJobTitle4,
+        'field_b_coordinator_name' => $record->buildingCoordinators[0]->alternateFullName4,
+        'field_b_coordinator_phone_number' => $record->buildingCoordinators[0]->alternateCampusPhone4,
+      ]);
+      $alternate_coordinator_4->save();
+      $alt_4_array = [
         'target_id' => $alternate_coordinator_4->id(),
         'target_revision_id' => $alternate_coordinator_4->getRevisionId(),
-      ],
-    ]);
+      ];
+      $coordinator_array[] = $alt_4_array;
+    }
+
+    $entity->set('field_building_coordinators', $coordinator_array);
     $entity->save();
     $updated = TRUE;
 
