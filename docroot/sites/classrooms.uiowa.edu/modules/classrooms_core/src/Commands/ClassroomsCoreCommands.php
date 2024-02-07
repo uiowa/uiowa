@@ -34,13 +34,6 @@ class ClassroomsCoreCommands extends DrushCommands {
   protected $accountSwitcher;
 
   /**
-   * The classrooms_core logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected ?LoggerInterface $logger;
-
-  /**
    * The uiowa_maui.api service.
    *
    * @var \Drupal\uiowa_maui\MauiApi
@@ -73,8 +66,6 @@ class ClassroomsCoreCommands extends DrushCommands {
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
-   * @param \Psr\Log\LoggerInterface $logger;
-   *   The classrooms_core logger channel.
    * @param \Drupal\uiowa_maui\MauiApi $mauiApi
    *   The uiowa_maui.api service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $mauiCache
@@ -84,9 +75,8 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime.time service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
-    $this->logger = $logger;
     $this->mauiApi = $mauiApi;
     $this->mauiCache = $mauiCache;
     $this->entityTypeManager = $entityTypeManager;
