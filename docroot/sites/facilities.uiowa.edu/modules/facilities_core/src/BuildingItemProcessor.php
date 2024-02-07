@@ -52,7 +52,6 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     ]);
     $main_coordinator->save();
 
-
     if ($record->buildingCoordinators[0]->alternateFullName1 != NULL) {
       $alt_1_primary = FALSE;
     }
