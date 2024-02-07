@@ -39,9 +39,8 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
    */
   public static function process($entity, $record): bool {
     $updated = FALSE;
-//    parent::process($entity, $record);
-
-    // Create paragraph
+    // parent::process($entity, $record);
+    // Create paragraph.
     $main_coordinator = Paragraph::create([
       'type' => 'uiowa_building_coordinators',
       'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
