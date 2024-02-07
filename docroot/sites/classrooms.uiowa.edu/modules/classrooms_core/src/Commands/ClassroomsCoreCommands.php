@@ -13,6 +13,7 @@ use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
+use Psr\Log\LoggerInterface;
 
 /**
  * A Drush commandfile.
@@ -31,6 +32,13 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @var \Drupal\Core\Session\AccountSwitcherInterface
    */
   protected $accountSwitcher;
+
+  /**
+   * The classrooms_core logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected ?LoggerInterface $logger;
 
   /**
    * The uiowa_maui.api service.
@@ -65,6 +73,8 @@ class ClassroomsCoreCommands extends DrushCommands {
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
+   * @param \Psr\Log\LoggerInterface $logger;
+   *   The classrooms_core logger channel.
    * @param \Drupal\uiowa_maui\MauiApi $mauiApi
    *   The uiowa_maui.api service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $mauiCache
@@ -74,8 +84,9 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime.time service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
+    $this->logger = $logger;
     $this->mauiApi = $mauiApi;
     $this->mauiCache = $mauiCache;
     $this->entityTypeManager = $entityTypeManager;
@@ -143,10 +154,10 @@ class ClassroomsCoreCommands extends DrushCommands {
       $arguments = [
         '@count' => $entities_created,
       ];
-      $this->getLogger('classrooms_core')->notice('@count buildings were created. That is neat.', $arguments);
+      $this->logger()->notice('@count buildings were created. That is neat.', $arguments);
     }
     else {
-      $this->getLogger('classrooms_core')->notice('Bummer. No new buildings were created. Maybe next time.');
+      $this->logger()->notice('Bummer. No new buildings were created. Maybe next time.');
     }
 
     // Switch user back.
@@ -183,7 +194,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // If we don't have any entities, send a message
     // and we're done.
     if (empty($entities)) {
-      $this->getLogger('classrooms_core')->notice('No rooms available to update.');
+      $this->logger()->notice('No rooms available to update.');
 
       // Switch user back.
       $this->accountSwitcher->switchBack();
@@ -236,7 +247,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // 6. Process the batch sets.
     drush_backend_batch_process();
     // 7. Log some information.
-    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
+    $this->logger()->notice('Update batch operations ended.');
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
