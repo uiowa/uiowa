@@ -37,10 +37,10 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
   ];
 
   /**
-   * Process the field_building_coordinators array and add as paragraphs and fields.
+   * Process the field_building_coordinators array.
    */
   public static function process($entity, $record): bool {
-    // Mapping manager fields from coordinators array
+    // Mapping manager fields from coordinators array.
     if ($entity->hasField('field_building_ca_manager') && isset($record->buildingCoordinators[0]->custodialAssistantManagerFullName)) {
       if ($entity->get('field_building_ca_manager')->value !== $record->buildingCoordinators[0]->custodialAssistantManagerFullName) {
         $entity->set('field_building_ca_manager', $record->buildingCoordinators[0]->custodialAssistantManagerFullName);
