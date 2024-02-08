@@ -6700,3 +6700,9 @@ $sites['physicskletzing.uiowa.ddev.site'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.dev.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.stage.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.prod.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+
+// Directory aliases for enterpriseleadership.clas.uiowa.edu.
+$sites['clasenterpriseleadership.uiowa.ddev.site'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.dev.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.stage.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.prod.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
