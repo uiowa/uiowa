@@ -6,11 +6,13 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_coordinators
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_m_manager
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
@@ -62,6 +64,14 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_building_ca_manager:
+    type: string_textfield
+    weight: 46
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_coordinators:
     type: paragraphs
     weight: 44
@@ -106,6 +116,14 @@ content:
   field_building_longitude:
     type: string_textfield
     weight: 40
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_m_manager:
+    type: string_textfield
+    weight: 45
     region: content
     settings:
       size: 60

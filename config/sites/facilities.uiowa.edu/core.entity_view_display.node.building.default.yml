@@ -7,11 +7,13 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_coordinators
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_m_manager
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
@@ -397,6 +399,40 @@ third_party_settings:
             weight: 22
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 19a143ca-9906-4222-b41e-bec1c6d6ee18
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_m_manager'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 23
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9f7e7a93-6e9d-483f-b890-5f1e7a28fef4
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_ca_manager'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 24
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -473,6 +509,14 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_building_ca_manager:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 19
+    region: content
   field_building_coordinators:
     type: entity_reference_revisions_entity_view
     label: above
@@ -497,6 +541,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 8
+    region: content
+  field_building_m_manager:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 18
     region: content
   field_building_named_building:
     type: entity_reference_label
