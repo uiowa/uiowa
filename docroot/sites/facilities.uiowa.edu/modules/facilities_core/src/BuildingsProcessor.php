@@ -95,9 +95,11 @@ class BuildingsProcessor extends EntityProcessorBase {
 
       // API call for building coordinator information.
       $results = $facilities_api->getBuildingCoordinators($building_number);
-      // Add buildingCoordinator array to record.
-      $record->buildingCoordinators = [];
-      $record->buildingCoordinators[] = $results;
+      // Add buildingCoordinator array to record, if it exists.
+      if ($results) {
+        $record->buildingCoordinators = [];
+        $record->buildingCoordinators[] = $results;
+      }
 
     }
 
