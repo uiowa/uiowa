@@ -54,7 +54,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
 
     $coordinator_array = [];
     // Check if coordinator(s) exist, if so create Paragraph(s) and save.
-    if ($record->buildingCoordinators[0]->mainFullName != NULL) {
+    if (isset($record->buildingCoordinators[0]->mainFullName)) {
       $main_coordinator = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
         'field_b_coordinator_department' => $record->buildingCoordinators[0]->mainDepartment,
@@ -72,7 +72,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $coordinator_array[] = $main_array;
     }
 
-    if ($record->buildingCoordinators[0]->alternateFullName1 != NULL) {
+    if (isset($record->buildingCoordinators[0]->alternateFullName1)) {
       $alternate_coordinator_1 = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
         'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment1,
@@ -90,7 +90,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $coordinator_array[] = $alt_1_array;
     }
 
-    if ($record->buildingCoordinators[0]->alternateFullName2 != NULL) {
+    if (isset($record->buildingCoordinators[0]->alternateFullName2)) {
       $alternate_coordinator_2 = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
         'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment2,
@@ -108,7 +108,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $coordinator_array[] = $alt_2_array;
     }
 
-    if ($record->buildingCoordinators[0]->alternateFullName3 != NULL) {
+    if (isset($record->buildingCoordinators[0]->alternateFullName3)) {
       $alternate_coordinator_3 = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
         'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment3,
@@ -126,7 +126,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $coordinator_array[] = $alt_3_array;
     }
 
-    if ($record->buildingCoordinators[0]->alternateFullName4 != NULL) {
+    if (isset($record->buildingCoordinators[0]->alternateFullName4)) {
       $alternate_coordinator_4 = Paragraph::create([
         'type' => 'uiowa_building_coordinators',
         'field_b_coordinator_department' => $record->buildingCoordinators[0]->alternateDepartment4,
