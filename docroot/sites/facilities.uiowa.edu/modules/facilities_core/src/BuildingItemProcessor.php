@@ -32,14 +32,27 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_latitude' => 'latitude',
     'field_building_longitude' => 'longitude',
     'field_building_coordinators' => 'buildingCoordinators',
+    'field_building_ca_manager' => 'custodialAssistantManagerFullName',
+    'field_building_m_manager' => 'maintenanceManagerFullName',
   ];
 
   /**
-   * Process the field_building_coordinators array and add as paragraphs.
+   * Process the field_building_coordinators array and add as paragraphs and fields.
    */
   public static function process($entity, $record): bool {
-    $coordinator_array = [];
+    // Mapping manager fields from coordinators array
+    if ($entity->hasField('field_building_ca_manager') && isset($record->buildingCoordinators[0]->custodialAssistantManagerFullName)) {
+      if ($entity->get('field_building_ca_manager')->value !== $record->buildingCoordinators[0]->custodialAssistantManagerFullName) {
+        $entity->set('field_building_ca_manager', $record->buildingCoordinators[0]->custodialAssistantManagerFullName);
+      }
+    }
+    if ($entity->hasField('field_building_m_manager') && isset($record->buildingCoordinators[0]->maintenanceManagerFullName)) {
+      if ($entity->get('field_building_m_manager')->value !== $record->buildingCoordinators[0]->maintenanceManagerFullName) {
+        $entity->set('field_building_m_manager', $record->buildingCoordinators[0]->maintenanceManagerFullName);
+      }
+    }
 
+    $coordinator_array = [];
     // Check if coordinator(s) exist, if so create Paragraph(s) and save.
     if ($record->buildingCoordinators[0]->mainFullName != NULL) {
       $main_coordinator = Paragraph::create([
