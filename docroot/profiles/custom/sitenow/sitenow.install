@@ -3104,3 +3104,21 @@ function sitenow_update_10004() {
     }
   }
 }
+
+/**
+ * Set new config value on existing sites.
+ */
+function sitenow_update_10005() {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $ccom_config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.ccom');
+  // Set to 1 if the ccom config doesn't exist or isn't set,
+  // otherwise set to 0.
+  $value = (int) (!isset($ccom_config) || !$ccom_config->get('status'));
+
+  // Set the uiowa_core setting so that the campus-wide
+  // gtm will be included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.campus_gtm', $value)
+    ->save();
+}

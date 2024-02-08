@@ -1,0 +1,6 @@
+services:
+  ccom_core.piwik_pro_override:
+    class: Drupal\ccom_core\ConfigOverride\PiwikProOverride
+    arguments: [ '@request_stack' ]
+    tags:
+      - { name: config.factory.override }
