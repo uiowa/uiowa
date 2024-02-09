@@ -50,6 +50,14 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
+    $form['gtag']['uiowa_core_campus_gtm'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include Campus-Wide GTM Container'),
+      '#default_value' => $config->get('uiowa_core.campus_gtm'),
+      '#description' => $this->t('If checked, the campus-wide UI GTM container snippet will be inserted and loaded on the website.'),
+      '#size' => 60,
+    ];
+
     return $form;
   }
 
@@ -59,6 +67,7 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('uiowa_core.settings')
       ->set('uiowa_core.gtag', $form_state->getValue('uiowa_core_gtag'))
+      ->set('uiowa_core.campus_gtm', $form_state->getValue('uiowa_core_campus_gtm'))
       ->save();
     parent::submitForm($form, $form_state);
 

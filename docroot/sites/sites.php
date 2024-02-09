@@ -4523,12 +4523,6 @@ $sites['politicalscience.dev.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 $sites['politicalscience.stage.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 $sites['politicalscience.prod.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 
-// Directory aliases for religion.uiowa.edu.
-$sites['religion.uiowa.ddev.site'] = 'religion.uiowa.edu';
-$sites['religion.dev.drupal.uiowa.edu'] = 'religion.uiowa.edu';
-$sites['religion.stage.drupal.uiowa.edu'] = 'religion.uiowa.edu';
-$sites['religion.prod.drupal.uiowa.edu'] = 'religion.uiowa.edu';
-
 // Directory aliases for rhetoric.uiowa.edu.
 $sites['rhetoric.uiowa.ddev.site'] = 'rhetoric.uiowa.edu';
 $sites['rhetoric.dev.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
@@ -4582,12 +4576,6 @@ $sites['physicsinstructional-resources.uiowa.ddev.site'] = 'instructional-resour
 $sites['physicsinstructional-resources.dev.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
 $sites['physicsinstructional-resources.stage.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
 $sites['physicsinstructional-resources.prod.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
-
-// Directory aliases for iowamommoodbooster.org.
-$sites['org-iowamommoodbooster.uiowa.ddev.site'] = 'iowamommoodbooster.org';
-$sites['org-iowamommoodbooster.dev.drupal.uiowa.edu'] = 'iowamommoodbooster.org';
-$sites['org-iowamommoodbooster.stage.drupal.uiowa.edu'] = 'iowamommoodbooster.org';
-$sites['org-iowamommoodbooster.prod.drupal.uiowa.edu'] = 'iowamommoodbooster.org';
 
 // Directory aliases for math.uiowa.edu.
 $sites['math.uiowa.ddev.site'] = 'math.uiowa.edu';
@@ -6712,3 +6700,9 @@ $sites['physicskletzing.uiowa.ddev.site'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.dev.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.stage.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
 $sites['physicskletzing.prod.drupal.uiowa.edu'] = 'kletzing.physics.uiowa.edu';
+
+// Directory aliases for enterpriseleadership.clas.uiowa.edu.
+$sites['clasenterpriseleadership.uiowa.ddev.site'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.dev.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.stage.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
+$sites['clasenterpriseleadership.prod.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
