@@ -94,6 +94,8 @@ class BuildingsProcessor extends EntityProcessorBase {
       }
     }
 
+    // Assign the rendered HTML back to the record.
+    //  $record->combinedHours = $html;.
     // There is at least one building with a blank space instead of
     // NULL for this value.
     // @todo Remove if FM can clean up their source.
