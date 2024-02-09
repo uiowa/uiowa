@@ -37,19 +37,19 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
    */
   public static function process($entity, $record): bool {
     $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    $combinedHours = '';
+    $combined_hours = '';
 
     foreach ($days as $day) {
-      $hoursProperty = $day . 'Hours';
+      $hours_property = $day . 'Hours';
       if (isset($record->{$hoursProperty})) {
-        $formatted_hours = "<strong>" . ucfirst($day) . "</strong>: " . $record->{$hoursProperty};
-        $combinedHours .= $formatted_hours . '<br />';
+        $formatted_hours = "<strong>" . ucfirst($day) . "</strong>: " . $record->{$hours_property};
+        $combined_hours .= $formatted_hours . '<br />';
       }
     }
 
     // Assign the combined hours as processed text.
     $entity->set('field_building_hours', [
-      'value' => $combinedHours,
+      'value' => $combined_hours,
       'format' => 'filtered_html',
     ]);
 
