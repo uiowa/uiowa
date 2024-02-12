@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
  * Returns responses for APR routes.
  */
 class SitemapController extends ControllerBase {
-  use LoggerChannelTrait;
 
   /**
    * The APR service.
@@ -31,13 +29,6 @@ class SitemapController extends ControllerBase {
   protected $httpClient;
 
   /**
-   * The uiowa_profiles logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * The controller constructor.
    *
    * @param \Drupal\uiowa_profiles\Client $profiles
@@ -48,7 +39,6 @@ class SitemapController extends ControllerBase {
   public function __construct(Client $profiles, ClientInterface $httpClient) {
     $this->profiles = $profiles;
     $this->httpClient = $httpClient;
-    $this->logger = $this->getLogger('uiowa_profiles');
   }
 
   /**

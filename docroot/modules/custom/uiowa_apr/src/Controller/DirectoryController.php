@@ -43,13 +43,6 @@ class DirectoryController extends ControllerBase {
   protected $client;
 
   /**
-   * The uiowa_apr logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * DirectoryController constructor.
    *
    * @param \Drupal\uiowa_apr\Apr $apr
@@ -63,7 +56,6 @@ class DirectoryController extends ControllerBase {
     $this->apr = $apr;
     $this->config = $config->get('uiowa_apr.settings');
     $this->client = $client;
-    $this->logger = $this->getLogger('uiowa_apr');
   }
 
   /**
@@ -192,7 +184,7 @@ class DirectoryController extends ControllerBase {
       }
       catch (RequestException | GuzzleException $e) {
         // If we can't set the page title, throw a 404.
-        $this->logger->error($e->getMessage());
+        $this->logger()->error($e->getMessage());
         throw new NotFoundHttpException();
       }
 
