@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtroutman.uiowa.ddev.site
+    protocol: https
+  machine_name: labtroutman
+  human_name: troutman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtroutman.prod
+drupal:
+  db:
+    database: troutman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtroutman.prod.drupal.uiowa.edu'
+  requester: troutmanb
+  site-name: IoWA-PCIT
