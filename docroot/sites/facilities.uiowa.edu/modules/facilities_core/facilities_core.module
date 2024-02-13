@@ -112,10 +112,11 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
     case 'node_building_edit_form':
       // Disabling imported coordinators fields, as any changes will only be
       // overwritten if the updated date is also changed.
-//      $form['field_building_coordinators']['#disabled'] = TRUE;
-//      $form['field_building_ca_manager']['#disabled'] = TRUE;
-//      $form['field_building_date_updated']['#disabled'] = TRUE;
-//      $form['field_building_m_manager']['#disabled'] = TRUE;
+      // $form['field_building_coordinators']['#disabled'] = TRUE;
+      // $form['field_building_ca_manager']['#disabled'] = TRUE;
+      // $form['field_building_date_updated']['#disabled'] = TRUE;
+      // $form['field_building_m_manager']['#disabled'] = TRUE;
+      // $form['field_building_date_updated']['#access'] = FALSE;.
       _sitenow_node_form_defaults($form, $form_state);
       // Display a message to admins that this content type is not available
       // to site roles other than admins and is managed by a drush command
