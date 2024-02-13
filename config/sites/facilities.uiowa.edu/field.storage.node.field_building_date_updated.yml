@@ -1,4 +1,4 @@
-uuid: 68ba1d20-4769-4aa8-8991-dd7d2b960820
+uuid: f3315c98-48e9-40c8-94b9-f9b85f656f9e
 langcode: en
 status: true
 dependencies:
@@ -7,10 +7,11 @@ dependencies:
 id: node.field_building_date_updated
 field_name: field_building_date_updated
 entity_type: node
-type: integer
+type: string
 settings:
-  unsigned: false
-  size: normal
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1
