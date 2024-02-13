@@ -7,8 +7,10 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
+use Drupal\node\NodeInterface;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
 
 /**
@@ -20,6 +22,9 @@ function its_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['node']['alert'])) {
     $bundles['node']['alert']['class'] = ItsAlert::class;
+  }
+  if (isset($bundles['paragraph']['alert_update'])) {
+    $bundles['paragraph']['alert_update']['class'] = AlertUpdate::class;
   }
 }
 
@@ -175,6 +180,10 @@ function its_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'article--meta';
       break;
 
+    case 'field_block:node:alert:field_alert_updates':
+      uiowa_core_set_attributes($variables, 'list-container list-container--list');
+      break;
+
     case 'field_block:node:alert:changed':
       // Update the display label for the "changed" field.
       if (isset($variables['content'][0]['#title'])) {
@@ -192,15 +201,17 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   // Directly specify a none-background
   // so it won't default to bg--white
   // in uids_base_preprocess_layout__twocol__card_sidebar().
-  $variables['attributes']['class'][] = 'bg--none';
-
-  // We will always have card content, since
-  // we have fees or a default "No fees..." text,
-  // so add our static card title.
-  $variables['content']['card_title'] = [
-    '#type' => 'markup',
-    '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
-  ];
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'service') {
+    $variables['attributes']['class'][] = 'bg--none';
+    // We will always have card content, since
+    // we have fees or a default "No fees..." text,
+    // so add our static card title.
+    $variables['content']['card_title'] = [
+      '#type' => 'markup',
+      '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
+    ];
+  }
 }
 
 /**
@@ -285,6 +296,15 @@ function its_core_preprocess_field(&$variables, $hook) {
           uiowa_core_set_attributes($variables, 'fa-ul element--inline');
         }
       }
+      break;
+
+    case 'field_alert_update_date':
+      uiowa_core_set_field_icon($variables, 'fa-clock fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_alert_updates':
+      uiowa_core_set_attributes($variables, 'list-container__inner');
       break;
 
     case 'field_alert_category':
