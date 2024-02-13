@@ -66,7 +66,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@deleted' => $sync_service->getDeleted(),
       '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->logger()->notice('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    $this->logger()->notice(t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments));
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
