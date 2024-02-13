@@ -234,13 +234,37 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_building_year_built':
-    case 'field_building_address':
     case 'field_building_additional_info':
       // Assumes these are being called in
       // views_block:named_buildings-block_building using Views field api.
       if ($variables['element']['#view_mode'] === '_custom') {
         $variables['label_display'] = 'inline';
       }
+      break;
+
+    case 'field_building_address':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($node instanceof NodeInterface) {
+        // Get the content type of the current node.
+        $node = $node->bundle();
+        if ($node == 'named_building') {
+          $variables['label_display'] = 'inline';
+        }
+        else {
+          uiowa_core_set_field_icon($variables, 'fa-compass');
+          uiowa_core_set_attributes($variables, 'banner__text');
+        }
+      }
+      break;
+
+    case 'field_building_number':
+      uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, 'banner__text');
+      break;
+
+    case 'field_building_abbreviation':
+      uiowa_core_set_field_label_icon($variables, 'fa-building');
+      uiowa_core_set_attributes($variables, 'banner__text');
       break;
 
     case 'field_artwork_building':
@@ -357,7 +381,7 @@ function facilities_core_preprocess_layout(&$variables) {
           if ($node->hasField('field_building_image') && !$node->get('field_building_image')->isEmpty()) {
 
             // Set the featured image display.
-            $variables['featured_image_display'] = 'medium';
+            $variables['featured_image_display'] = 'large';
           }
           break;
 
@@ -384,6 +408,16 @@ function facilities_core_preprocess_block(&$variables) {
         'block-padding__all',
         'border',
       ]);
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:building:field_building_address':
+    case 'field_block:node:building:field_building_number':
+    case 'field_block:node:building:field_building_abbreviation':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
       break;
 
     // Add inline class for blocks to appear inline.

@@ -82,7 +82,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -103,6 +103,48 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8a0dcacd-e306-420e-a795-86efd1a81760
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_address'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 999d055a-5be7-4bed-a180-9ba9d2bbf840
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_abbreviation'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -349,40 +391,6 @@ third_party_settings:
                   prefix_suffix: true
                 third_party_settings: {  }
             weight: 23
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 8a0dcacd-e306-420e-a795-86efd1a81760
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_address'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 22
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: c21db039-d8a7-47e3-b9ad-562d5823b844
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_abbreviation'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 21
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
