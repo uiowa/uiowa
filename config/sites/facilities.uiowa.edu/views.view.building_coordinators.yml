@@ -337,7 +337,7 @@ display:
           click_sort_column: value
           type: string
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -556,7 +556,18 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'There are currently no results to display.'
+          tokenize: false
       sorts: {  }
       arguments: {  }
       filters:
@@ -728,6 +739,7 @@ display:
           admin_label: 'field_building_coordinators: Paragraph'
           plugin_id: standard
           required: true
+      css_class: 'table-responsive table-sticky table--hover-highlight table--gray-border'
       group_by: true
       header: {  }
       footer: {  }
@@ -735,6 +747,57 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_building_abbreviation'
+        - 'config:field.storage.node.field_building_ca_manager'
+        - 'config:field.storage.node.field_building_coordinators'
+        - 'config:field.storage.node.field_building_m_manager'
+        - 'config:field.storage.node.field_building_number'
+        - 'config:field.storage.paragraph.field_b_coordinator_department'
+        - 'config:field.storage.paragraph.field_b_coordinator_name'
+  block_building_coordinators:
+    id: block_building_coordinators
+    display_title: 'Building Coordinators List'
+    display_plugin: block
+    position: 1
+    display_options:
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      block_description: 'Building Coordinators List'
+      block_category: 'Site custom'
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        field_building_number: 0
+        field_building_abbreviation: 0
+        title: 0
+        field_building_coordinators: 0
+        field_b_coordinator_department: 0
+        field_building_m_manager: 0
+        field_building_ca_manager: 0
+        field_b_coordinator_name: 0
     cache_metadata:
       max-age: -1
       contexts:
