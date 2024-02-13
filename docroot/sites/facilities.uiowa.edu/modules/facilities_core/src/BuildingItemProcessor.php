@@ -45,7 +45,6 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     if ($entity->hasField('field_building_date_updated') && isset($record->buildingCoordinators[0]->updatedDate)) {
       $coordinator_array = [];
 
-
       // Comparing string to int as date int too large to store in db.
       if ($entity->get('field_building_date_updated')->value != ($record->buildingCoordinators[0]->updatedDate)) {
         $entity->set('field_building_date_updated', $record->buildingCoordinators[0]->updatedDate);
