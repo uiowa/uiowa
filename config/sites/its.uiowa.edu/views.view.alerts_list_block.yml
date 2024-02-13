@@ -18,6 +18,7 @@ dependencies:
     - 'taxonomy_term:alert_categories:cdc70262-0b08-46a0-abd3-030b7a583128'
   module:
     - better_exposed_filters
+    - fullcalendar_view
     - node
     - smart_date
     - taxonomy
@@ -642,6 +643,165 @@ display:
         - url
         - url.query_args
         - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.body'
+        - 'config:field.storage.node.field_alert_category'
+        - 'config:field.storage.node.field_alert_date'
+  alert_calendar:
+    id: alert_calendar
+    display_title: 'Alert calendar'
+    display_plugin: block
+    position: 1
+    display_options:
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          operator: in
+          value:
+            alert: alert
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: fullcalendar_view_display
+        options:
+          uses_fields: true
+          default_date_source: now
+          defaultDate: ''
+          start: field_alert_date
+          end: field_alert_date
+          title: title
+          left_buttons: 'prev,next today'
+          right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+          default_view: dayGridMonth
+          firstDay: '0'
+          nav_links: 1
+          timeFormat: 'hh:mm a'
+          allowEventOverlap: 1
+          updateAllowed: 0
+          updateConfirm: 0
+          defaultLanguage: en
+          languageSelector: 0
+          dialogWindow: 0
+          openEntityInNewTab: 1
+          createEventLink: 0
+          eventLimit: '6'
+          tax_field: field_alert_category
+          vocabularies: alert_categories
+          color_bundle:
+            alert: '#3a87ad'
+            article: '#3a87ad'
+            page: '#3a87ad'
+            person: '#3a87ad'
+            service: '#3a87ad'
+          rrule: ''
+          duration: ''
+          bundle_type: ''
+          classes: ''
+          default_mobile_view: listMonth
+          mobile_width: '768'
+          minTime: '00:00:00'
+          maxTime: '23:59:59'
+          dialogModal: 0
+          slotDuration: '00:30:00'
+          color_taxonomies:
+            406: '#bd472a'
+            411: '#00558c'
+            421: '#00558c'
+            416: '#00558c'
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
+      defaults:
+        style: false
+        row: false
+        filters: false
+        filter_groups: false
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      block_description: Alerts
+      block_category: Lists
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters: 0
+        use_more: 0
+      more_link_help_text: "Check to include a 'display more' link. Defaults to the front page. Alternatively, a custom URL path can be provided in the ‘Path’ text box below."
+      restrict_fields:
+        title: title
+        field_alert_category: 0
+        body: 0
+        field_alert_date: 0
+      general_help_text: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:
