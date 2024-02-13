@@ -41,7 +41,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
 
     foreach ($days as $day) {
       $hours_property = $day . 'Hours';
-      if (isset($record->{$hoursProperty})) {
+      if (isset($record->{$hours_property})) {
         $formatted_hours = "<strong>" . ucfirst($day) . "</strong>: " . $record->{$hours_property};
         $combined_hours .= $formatted_hours . '<br />';
       }
