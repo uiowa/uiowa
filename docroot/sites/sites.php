@@ -6706,3 +6706,9 @@ $sites['clasenterpriseleadership.uiowa.ddev.site'] = 'enterpriseleadership.clas.
 $sites['clasenterpriseleadership.dev.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
 $sites['clasenterpriseleadership.stage.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
 $sites['clasenterpriseleadership.prod.drupal.uiowa.edu'] = 'enterpriseleadership.clas.uiowa.edu';
+
+// Directory aliases for whtr.lab.uiowa.edu.
+$sites['labwhtr.uiowa.ddev.site'] = 'whtr.lab.uiowa.edu';
+$sites['labwhtr.dev.drupal.uiowa.edu'] = 'whtr.lab.uiowa.edu';
+$sites['labwhtr.stage.drupal.uiowa.edu'] = 'whtr.lab.uiowa.edu';
+$sites['labwhtr.prod.drupal.uiowa.edu'] = 'whtr.lab.uiowa.edu';
