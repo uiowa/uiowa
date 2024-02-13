@@ -43,13 +43,6 @@ class SitemapController extends ControllerBase {
   protected $httpClient;
 
   /**
-   * The uiowa_apr logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * The controller constructor.
    *
    * @param \Drupal\uiowa_apr\Apr $apr
@@ -63,7 +56,6 @@ class SitemapController extends ControllerBase {
     $this->apr = $apr;
     $this->config = $config->get('uiowa_apr.settings');
     $this->httpClient = $httpClient;
-    $this->logger = $this->getLogger('uiowa_apr');
   }
 
   /**
@@ -105,7 +97,7 @@ class SitemapController extends ControllerBase {
     }
     catch (RequestException | GuzzleException $e) {
       // Just throw a 404 here since the Acquia error page is ugly.
-      $this->logger->error($e->getMessage());
+      $this->logger()->error($e->getMessage());
       throw new NotFoundHttpException();
     }
 

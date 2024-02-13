@@ -155,7 +155,7 @@ class StaticMap extends MediaSourceBase {
           }
         }
         catch (ClientException $e) {
-          $this->getLogger('sitenow_media_wysiwyg')->warning($this->t('Unable to get thumbnail image for @media.', [
+          $this->logger()->warning($this->t('Unable to get thumbnail image for @media.', [
             '@media' => $media->uuid(),
           ]));
 
