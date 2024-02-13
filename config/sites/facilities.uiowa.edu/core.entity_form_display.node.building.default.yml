@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_coordinators
+    - field.field.node.building.field_building_date_updated
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
@@ -51,7 +52,7 @@ content:
     third_party_settings: {  }
   field_building_address:
     type: string_textfield
-    weight: 27
+    weight: 13
     region: content
     settings:
       size: 60
@@ -59,14 +60,14 @@ content:
     third_party_settings: {  }
   field_building_area:
     type: number
-    weight: 28
+    weight: 14
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_building_ca_manager:
     type: string_textfield
-    weight: 46
+    weight: 29
     region: content
     settings:
       size: 60
@@ -74,7 +75,7 @@ content:
     third_party_settings: {  }
   field_building_coordinators:
     type: paragraphs
-    weight: 44
+    weight: 27
     region: content
     settings:
       title: Paragraph
@@ -90,16 +91,23 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
+  field_building_date_updated:
+    type: number
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_building_image:
     type: file_generic
-    weight: 41
+    weight: 26
     region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
   field_building_lactation_rooms:
     type: string_textfield
-    weight: 32
+    weight: 18
     region: content
     settings:
       size: 60
@@ -107,7 +115,7 @@ content:
     third_party_settings: {  }
   field_building_latitude:
     type: string_textfield
-    weight: 39
+    weight: 24
     region: content
     settings:
       size: 60
@@ -115,7 +123,7 @@ content:
     third_party_settings: {  }
   field_building_longitude:
     type: string_textfield
-    weight: 40
+    weight: 25
     region: content
     settings:
       size: 60
@@ -123,7 +131,7 @@ content:
     third_party_settings: {  }
   field_building_m_manager:
     type: string_textfield
-    weight: 45
+    weight: 28
     region: content
     settings:
       size: 60
@@ -131,7 +139,7 @@ content:
     third_party_settings: {  }
   field_building_named_building:
     type: entity_reference_autocomplete
-    weight: 31
+    weight: 17
     region: content
     settings:
       match_operator: CONTAINS
@@ -149,7 +157,7 @@ content:
     third_party_settings: {  }
   field_building_ownership:
     type: string_textfield
-    weight: 30
+    weight: 16
     region: content
     settings:
       size: 60
@@ -157,7 +165,7 @@ content:
     third_party_settings: {  }
   field_building_rr_multi_men:
     type: string_textfield
-    weight: 35
+    weight: 21
     region: content
     settings:
       size: 60
@@ -165,7 +173,7 @@ content:
     third_party_settings: {  }
   field_building_rr_multi_women:
     type: string_textfield
-    weight: 36
+    weight: 22
     region: content
     settings:
       size: 60
@@ -173,7 +181,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_men:
     type: string_textfield
-    weight: 33
+    weight: 19
     region: content
     settings:
       size: 60
@@ -181,7 +189,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_neutral:
     type: string_textfield
-    weight: 37
+    weight: 23
     region: content
     settings:
       size: 60
@@ -189,7 +197,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_women:
     type: string_textfield
-    weight: 34
+    weight: 20
     region: content
     settings:
       size: 60
@@ -197,7 +205,7 @@ content:
     third_party_settings: {  }
   field_building_year_built:
     type: string_textfield
-    weight: 29
+    weight: 15
     region: content
     settings:
       size: 60
@@ -205,7 +213,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 26
+    weight: 12
     region: content
     settings:
       sidebar: true
@@ -231,7 +239,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

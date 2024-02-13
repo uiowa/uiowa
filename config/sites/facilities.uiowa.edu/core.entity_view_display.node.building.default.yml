@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_coordinators
+    - field.field.node.building.field_building_date_updated
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
@@ -525,6 +526,15 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 17
+    region: content
+  field_building_date_updated:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 20
     region: content
   field_building_image:
     type: file_default
