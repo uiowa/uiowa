@@ -6718,3 +6718,9 @@ $sites['labsantillan.uiowa.ddev.site'] = 'santillan.lab.uiowa.edu';
 $sites['labsantillan.dev.drupal.uiowa.edu'] = 'santillan.lab.uiowa.edu';
 $sites['labsantillan.stage.drupal.uiowa.edu'] = 'santillan.lab.uiowa.edu';
 $sites['labsantillan.prod.drupal.uiowa.edu'] = 'santillan.lab.uiowa.edu';
+
+// Directory aliases for tivanskigroup.lab.uiowa.edu.
+$sites['labtivanskigroup.uiowa.ddev.site'] = 'tivanskigroup.lab.uiowa.edu';
+$sites['labtivanskigroup.dev.drupal.uiowa.edu'] = 'tivanskigroup.lab.uiowa.edu';
+$sites['labtivanskigroup.stage.drupal.uiowa.edu'] = 'tivanskigroup.lab.uiowa.edu';
+$sites['labtivanskigroup.prod.drupal.uiowa.edu'] = 'tivanskigroup.lab.uiowa.edu';
