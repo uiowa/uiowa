@@ -53,8 +53,6 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       'format' => 'filtered_html',
     ]);
 
-    $entity->save(TRUE);
-
     return TRUE;
   }
 
