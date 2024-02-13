@@ -39,7 +39,7 @@ adding:
       third_party_settings: {  }
     field_alert_updates:
       type: paragraphs
-      weight: 26
+      weight: 19
       region: content
       settings:
         title: Paragraph
@@ -71,10 +71,10 @@ adding:
       weight: 10
     sticky:
       weight: 7
-    title:
-      weight: null
     url_redirects:
       weight: 9
+  hidden:
+    title: true
 removing:
   content:
     body:
@@ -107,7 +107,13 @@ removing:
       weight: 8
     sticky:
       weight: 9
-    title:
-      weight: 12
     url_redirects:
       weight: 11
+    title:
+      type: string_textfield
+      weight: 12
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
