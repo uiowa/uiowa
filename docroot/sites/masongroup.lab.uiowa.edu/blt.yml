@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmasongroup.uiowa.ddev.site
+    protocol: https
+  machine_name: labmasongroup
+  human_name: masongroup.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmasongroup.prod
+drupal:
+  db:
+    database: masongroup_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmasongroup.prod.drupal.uiowa.edu'
+  requester: semason
+  site-name: 'Mason Research Group'
