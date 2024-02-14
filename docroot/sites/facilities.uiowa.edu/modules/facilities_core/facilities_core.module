@@ -391,6 +391,16 @@ function facilities_core_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function facilities_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'building') {
+    $variables['attributes']['class'][] = 'bg--white';
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function facilities_core_preprocess_block(&$variables) {

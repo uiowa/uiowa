@@ -163,6 +163,8 @@ third_party_settings:
             1: section_margin_fixed_width_container
             2: section_card_media_size_medium
             3: section_card_media_format_square
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
             section_alignment_start: section_alignment_start
         components:
           -
@@ -322,6 +324,8 @@ third_party_settings:
             1: section_margin_fixed_width_container
             2: section_card_media_size_medium
             3: section_card_media_format_widescreen
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
             section_alignment_start: section_alignment_start
         components:
           -
@@ -338,7 +342,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -355,7 +359,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -372,7 +376,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -389,7 +393,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -406,7 +410,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -423,7 +427,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -436,6 +440,19 @@ third_party_settings:
               provider: facilities_core
               context_mapping:
                 node: layout_builder.entity
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 7db46d29-0b5f-4716-90ae-d0dd5b5ec077
+            region: main
+            configuration:
+              id: services_headline_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping: {  }
             weight: 0
             additional:
               layout_builder_styles_style: {  }
@@ -478,8 +495,10 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
         components:
           -
             uuid: ae38e1a0-333a-4c93-972e-b01b98dc5f03
@@ -505,7 +524,13 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
@@ -514,6 +539,7 @@ third_party_settings:
           layout_builder_styles_style:
             0: ''
             1: section_margin_edge_to_edge
+            remove_default_top_padding: remove_default_top_padding
             remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -

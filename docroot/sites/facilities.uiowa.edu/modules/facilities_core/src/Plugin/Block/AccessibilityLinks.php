@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "a11y_block",
  *   admin_label = @Translation("A11yLinks Block"),
- *   category = @Translation("Site custom"),
+ *   category = @Translation("Restricted"),
  *   context_definitions = {
  *     "node" = @ContextDefinition("entity:node", label = @Translation("Node"))
  *   }
@@ -40,7 +40,7 @@ class AccessibilityLinks extends BlockBase {
       ],
       'lactation_room' => [
         'label' => 'Lactation Rooms',
-        'icon' => 'map-marker',
+        'icon' => 'map-marker-alt',
         'id' => '72c9109323954a58abbde5dae8e6ee03',
       ],
       'hearing_loop' => [
@@ -55,7 +55,7 @@ class AccessibilityLinks extends BlockBase {
       ],
     ];
 
-    $markup = '<ul class="fa-ul">';
+    $markup = '<h2 class="headline headline--serif h5">Accessibility Links</h2><ul class="fa-ul">';
     foreach ($links as $link) {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
       $markup .= '<li><span class="fa-li">
