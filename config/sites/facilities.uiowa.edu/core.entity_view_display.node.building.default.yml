@@ -313,64 +313,20 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_white_pattern_community
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_medium
+            3: section_card_media_format_widescreen
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 2b29041c-1f1a-49b9-9d3e-35f93a6f695e
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_neutral'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 21
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: f13c2cc5-4be0-4be0-bb31-d343f80f399b
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_women'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 26
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1d8de912-39a0-415f-baf8-46c9e4aa2a37
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_men'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 25
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 0c388577-09ae-4a7e-a741-1b7d5c031a17
-            region: content
+            region: main
             configuration:
               id: 'field_block:node:building:field_building_rr_single_women'
               label_display: '0'
@@ -382,14 +338,14 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 20
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 99761099-9593-4034-ab41-bfdd48ecce59
-            region: content
+            uuid: 2b29041c-1f1a-49b9-9d3e-35f93a6f695e
+            region: main
             configuration:
-              id: 'field_block:node:building:field_building_rr_single_men'
+              id: 'field_block:node:building:field_building_rr_single_neutral'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -399,12 +355,46 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 23
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1d8de912-39a0-415f-baf8-46c9e4aa2a37
+            region: main
+            configuration:
+              id: 'field_block:node:building:field_building_rr_multi_men'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f13c2cc5-4be0-4be0-bb31-d343f80f399b
+            region: main
+            configuration:
+              id: 'field_block:node:building:field_building_rr_multi_women'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 6907be69-1cec-4eea-af48-a1ca64f96e26
-            region: content
+            region: main
             configuration:
               id: 'field_block:node:building:field_building_lactation_rooms'
               label_display: '0'
@@ -416,9 +406,67 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 22
+            weight: 5
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 99761099-9593-4034-ab41-bfdd48ecce59
+            region: main
+            configuration:
+              id: 'field_block:node:building:field_building_rr_single_men'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f5463510-5b0c-4c2a-b2b6-89148948b3f7
+            region: card_content
+            configuration:
+              id: a11y_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping:
+                node: layout_builder.entity
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            - section_background_white_pattern_community
+            - section_margin_fixed_width_container
+        components: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
@@ -464,8 +512,9 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
+            0: ''
+            1: section_margin_edge_to_edge
+            remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -
             uuid: 13d21e72-fdf6-4cd0-abd6-66f5a3d2731a
@@ -480,7 +529,13 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:

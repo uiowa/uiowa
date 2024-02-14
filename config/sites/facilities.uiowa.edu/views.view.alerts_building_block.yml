@@ -318,7 +318,20 @@ display:
           plugin_id: standard
           required: true
       header: {  }
-      footer: {  }
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<div><br /></div>'
+            format: filtered_html
+          tokenize: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1
