@@ -10,35 +10,19 @@ dependencies:
     - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_name
     - field.field.paragraph.uiowa_building_coordinators.field_b_coordinator_phone_number
     - paragraphs.paragraphs_type.uiowa_building_coordinators
+  module:
+    - telephone
 id: paragraph.uiowa_building_coordinators.default
 targetEntityType: paragraph
 bundle: uiowa_building_coordinators
 mode: default
 content:
-  field_b_coordinator_department:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 3
-    region: content
   field_b_coordinator_email:
-    type: basic_string
+    type: email_mailto
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 4
-    region: content
-  field_b_coordinator_is_primary:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 6
+    weight: 2
     region: content
   field_b_coordinator_job_title:
     type: string
@@ -46,7 +30,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   field_b_coordinator_name:
     type: string
@@ -54,17 +38,20 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   field_b_coordinator_phone_number:
-    type: basic_string
+    type: telephone_link
     label: above
-    settings: {  }
+    settings:
+      title: ''
     third_party_settings: {  }
-    weight: 5
+    weight: 3
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_b_coordinator_department: true
+  field_b_coordinator_is_primary: true
   search_api_excerpt: true
