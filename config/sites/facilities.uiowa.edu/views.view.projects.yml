@@ -1297,11 +1297,14 @@ display:
         groups:
           1: AND
       style:
-        type: default
+        type: html_list
         options:
           grouping: {  }
           row_class: ''
           default_row_class: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
       row:
         type: fields
         options:
@@ -1329,7 +1332,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h2>Projects</h2>'
+            value: '<h2 class="headline headline--serif h4">Projects</h2>'
             format: filtered_html
           tokenize: false
       display_extenders:
@@ -1338,6 +1341,7 @@ display:
           tokenize: false
       block_description: 'Projects building'
       block_category: 'Site custom'
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
