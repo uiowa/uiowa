@@ -267,6 +267,10 @@ function facilities_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
       break;
 
+    case 'field_building_hours':
+      $variables['items'][0]['content']['#text'] .= '<div><small>* Disclaimer text here.</small></div>';
+      break;
+
     case 'field_artwork_building':
       uiowa_core_set_field_icon($variables, 'fa-building fa-li');
       uiowa_core_set_attributes($variables, 'is-medium');

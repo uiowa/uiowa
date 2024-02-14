@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
@@ -26,6 +27,7 @@ dependencies:
     - file
     - metatag
     - path
+    - text
 id: node.building.default
 targetEntityType: node
 bundle: building
@@ -58,6 +60,14 @@ content:
     weight: 28
     region: content
     settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_hours:
+    type: text_textarea
+    weight: 42
+    region: content
+    settings:
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_building_image:
