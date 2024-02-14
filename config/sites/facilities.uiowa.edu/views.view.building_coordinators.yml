@@ -659,6 +659,7 @@ display:
             field_b_coordinator_department: field_b_coordinator_department
             field_building_m_manager: field_building_m_manager
             field_building_ca_manager: field_building_ca_manager
+            field_b_coordinator_name: field_b_coordinator_name
           default: field_building_number
           info:
             field_building_number:
@@ -708,8 +709,15 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            field_b_coordinator_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
           override: true
-          sticky: false
+          sticky: true
           summary: ''
           empty_table: false
           caption: ''
@@ -739,7 +747,7 @@ display:
           admin_label: 'field_building_coordinators: Paragraph'
           plugin_id: standard
           required: true
-      css_class: 'table-responsive table-sticky table--hover-highlight table--gray-border'
+      css_class: table-responsive
       use_ajax: true
       group_by: true
       header: {  }

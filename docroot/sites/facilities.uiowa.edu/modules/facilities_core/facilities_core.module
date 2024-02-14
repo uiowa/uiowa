@@ -450,6 +450,73 @@ function facilities_core_preprocess_file_link(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+
+  // Need to alter the display, separating primary from alternates.
+  if ($view->id() === 'building_coordinators' && $view->current_display === 'block_building_coordinators') {
+    if ($variables['field']->field == 'field_building_coordinators') {
+      $paragraphs = $variables['row']->_entity->get('field_building_coordinators')->referencedEntities();
+      if ($paragraphs) {
+        // Establish a wrapper render array.
+        $render_array = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['contacts-wrapper'],
+          ],
+        ];
+        $alternates = [];
+        foreach ($paragraphs as $paragraph) {
+          $paragraph_item = \Drupal::entityTypeManager()
+            ->getViewBuilder('paragraph')
+            ->view($paragraph);
+          // Check if it is primary and separate it out.
+          // There should only be one.
+          // Put the rest together in an alternates array.
+          if ($paragraph->field_b_coordinator_is_primary->value == 1) {
+            // Need to render this before sticking it into another render array.
+            $primary = \Drupal::service('renderer')->render($paragraph_item);
+            $render_array['primary'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => $primary,
+              '#attributes' => [
+                'class' => ['primary-contact'],
+              ],
+            ];
+          }
+          else {
+            $alternates[] = $paragraph_item;
+          }
+        }
+        // If there are alternates, place them in a collapsed details element.
+        if (!empty($alternates)) {
+          $render_array['alternates_details'] = [
+            '#type' => 'details',
+            '#title' => 'Alternates',
+            '#attributes' => [
+              'class' => ['alternate-contacts'],
+            ],
+          ];
+          // Need to render these before sticking it into another render array.
+          $render = \Drupal::service('renderer')->render($alternates);
+          $render_array['alternates_details']['content'] = [
+            '#type' => 'markup',
+            '#markup' => $render,
+          ];
+        }
+        // Replace the existing output.
+        $variables['output'] = [
+          '#markup' => \Drupal::service('renderer')->renderRoot($render_array),
+        ];
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function facilities_core_node_presave(EntityInterface $entity) {
