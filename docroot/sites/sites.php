@@ -6742,3 +6742,9 @@ $sites['labnewell.uiowa.ddev.site'] = 'newell.lab.uiowa.edu';
 $sites['labnewell.dev.drupal.uiowa.edu'] = 'newell.lab.uiowa.edu';
 $sites['labnewell.stage.drupal.uiowa.edu'] = 'newell.lab.uiowa.edu';
 $sites['labnewell.prod.drupal.uiowa.edu'] = 'newell.lab.uiowa.edu';
+
+// Directory aliases for cannabisandolderpersonsstudy.lab.uiowa.edu.
+$sites['labcannabisandolderpersonsstudy.uiowa.ddev.site'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
+$sites['labcannabisandolderpersonsstudy.dev.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
+$sites['labcannabisandolderpersonsstudy.stage.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
+$sites['labcannabisandolderpersonsstudy.prod.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
