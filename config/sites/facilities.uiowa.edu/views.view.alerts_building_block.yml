@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - node.type.alert
   module:
     - node
@@ -292,13 +293,15 @@ display:
             group_items: {  }
       style:
         type: default
-      row:
-        type: fields
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          row_class: 'bg--gray element--padding__all--minimal'
+          default_row_class: true
+          uses_fields: false
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -317,6 +320,7 @@ display:
           admin_label: 'field_alert_building: Content'
           plugin_id: standard
           required: true
+      css_class: ''
       header: {  }
       footer:
         area:
