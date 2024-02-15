@@ -25,6 +25,7 @@ dependencies:
     - node.type.building
     - views.view.alerts_building_block
     - views.view.artwork
+    - views.view.building_services
     - views.view.projects
   module:
     - facilities_core
@@ -335,138 +336,18 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_twocol_card_sidebar
+        layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
             0: section_background_white_pattern_community
             1: section_margin_fixed_width_container
-            2: section_card_media_size_medium
-            3: section_card_media_format_widescreen
-            section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
-            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 0c388577-09ae-4a7e-a741-1b7d5c031a17
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_women'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2b29041c-1f1a-49b9-9d3e-35f93a6f695e
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_neutral'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1d8de912-39a0-415f-baf8-46c9e4aa2a37
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_men'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: f13c2cc5-4be0-4be0-bb31-d343f80f399b
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_women'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 6907be69-1cec-4eea-af48-a1ca64f96e26
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_lactation_rooms'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 99761099-9593-4034-ab41-bfdd48ecce59
-            region: main
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_men'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: f5463510-5b0c-4c2a-b2b6-89148948b3f7
-            region: card_content
-            configuration:
-              id: a11y_block
-              label: null
-              label_display: null
-              provider: facilities_core
-              context_mapping:
-                node: layout_builder.entity
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: 7db46d29-0b5f-4716-90ae-d0dd5b5ec077
-            region: main
+            region: content
             configuration:
               id: services_headline_block
               label: null
@@ -477,6 +358,79 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 33-67
+          layout_builder_styles_style:
+            0: section_background_white_pattern_community
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            remove_default_top_padding: remove_default_top_padding
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: f5463510-5b0c-4c2a-b2b6-89148948b3f7
+            region: first
+            configuration:
+              id: a11y_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping:
+                node: layout_builder.entity
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5a0472e0-1532-4353-bd20-e278252cd5f9
+            region: second
+            configuration:
+              id: 'views_block:building_services-block_1'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h3
+                headline_style: headline_bold_serif_underline
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 33-67
+          layout_builder_styles_style:
+            0: section_background_white_pattern_community
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+            section_alignment_start: section_alignment_start
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }

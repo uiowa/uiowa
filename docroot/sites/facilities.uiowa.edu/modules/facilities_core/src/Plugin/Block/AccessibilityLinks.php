@@ -55,16 +55,39 @@ class AccessibilityLinks extends BlockBase {
       ],
     ];
 
-    $markup = '<h2 class="headline headline--serif h5">Accessibility Links</h2><ul class="fa-ul">';
+    $list_markup = '<ul class="fa-ul">';
     foreach ($links as $link) {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
-      $markup .= '<li><span class="fa-li">
+      $list_markup .= '<li><span class="fa-li">
         <i class="fa-solid fa-' . $link['icon'] . ' "></i>
       </span> ' . '<a href="' . $url . '">' . $link['label'] . '</a></li>';
     }
-    $markup .= '</ul>';
+    $list_markup .= '</ul>';
 
-    return ['#markup' => $markup];
+    $build = [];
+
+    $attributes = [];
+    $attributes['class'] = [
+      'bg--white',
+      'headline--serif',
+      'media--medium',
+    ];
+
+    $build['container']['services'][] = [
+      '#type' => 'card',
+      '#attributes' => $attributes,
+      '#title' => 'Accessibility Links',
+      '#media' => [
+        '#theme' => 'image',
+        '#uri' => 'https://uiowa.edu/sites/uiowa.edu/files/styles/ultrawide__2592_x_1111/public/2020-05/2019_07_22-Campus%20in%20July%20jatorner%20-0111-min.jpg',
+        '#alt' => 'Architectural blocks',
+      ],
+      '#content' => [
+        '#markup' => $list_markup,
+      ],
+    ];
+
+    return $build;
 
   }
 
