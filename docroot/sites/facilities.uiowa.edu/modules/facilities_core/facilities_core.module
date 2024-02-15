@@ -414,7 +414,6 @@ function facilities_core_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function facilities_core_preprocess_block(&$variables) {
-  $variables['headline_attributes']['class'][] = 'h6';
   switch ($variables['plugin_id']) {
     case 'views_block:named_building_details-block_honoree':
       uiowa_core_set_attributes($variables, [
