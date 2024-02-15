@@ -32,6 +32,9 @@ class AccessibilityLinks extends BlockBase {
     $node = $this->getContextValue('node');
     $building_number = $node->get('field_building_number')->getString();
 
+    $building_image = $node->get('field_building_image')->first()->get('entity')->getValue()->getFileUri();
+    $building_image_alt = $node->get('field_building_image')->first()->alt;
+
     $links = [
       'accessibility' => [
         'label' => 'Accessibility Map',
@@ -71,6 +74,7 @@ class AccessibilityLinks extends BlockBase {
       'bg--white',
       'headline--serif',
       'media--medium',
+      'media--widescreen',
     ];
 
     $build['container']['services'][] = [
@@ -79,8 +83,8 @@ class AccessibilityLinks extends BlockBase {
       '#title' => 'Accessibility Links',
       '#media' => [
         '#theme' => 'image',
-        '#uri' => 'https://uiowa.edu/sites/uiowa.edu/files/styles/ultrawide__2592_x_1111/public/2020-05/2019_07_22-Campus%20in%20July%20jatorner%20-0111-min.jpg',
-        '#alt' => 'Architectural blocks',
+        '#uri' => $building_image,
+        '#alt' => $building_image_alt,
       ],
       '#content' => [
         '#markup' => $list_markup,
