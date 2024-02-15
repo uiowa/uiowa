@@ -191,6 +191,10 @@ function its_core_preprocess_block(&$variables) {
       }
       break;
 
+    case 'views_block:alerts_list_block-alerts_calendar':
+      $variables['#attached']['library'][] = 'its_core/alerts-calendar';
+      break;
+
   }
 }
 
