@@ -40,8 +40,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: "<h3 class=\"headline headline--serif headline--underline block__headline headline--left h5\">\r\n    <span class=\"headline__heading\">\r\n       Lactation rooms\r\n      </span>\r\n    </h3>\r\n{{ field_building_lactation_rooms }}"
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -73,7 +73,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: true
           empty_zero: false
@@ -91,7 +91,7 @@ display:
           delta_first_last: false
           multi_type: separator
           separator: ', '
-          field_api_classes: false
+          field_api_classes: true
         field_building_rr_single_neutral:
           id: field_building_rr_single_neutral
           table: node__field_building_rr_single_neutral
@@ -138,9 +138,9 @@ display:
           element_wrapper_class: ''
           element_default_classes: false
           empty: ''
-          hide_empty: false
+          hide_empty: true
           empty_zero: false
-          hide_alter_empty: false
+          hide_alter_empty: true
           click_sort_column: value
           type: string
           settings:
@@ -201,9 +201,9 @@ display:
           element_wrapper_class: ''
           element_default_classes: false
           empty: ''
-          hide_empty: false
+          hide_empty: true
           empty_zero: false
-          hide_alter_empty: false
+          hide_alter_empty: true
           click_sort_column: value
           type: string
           settings:
@@ -230,7 +230,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3 class=\"headline headline--serif headline--underline block__headline headline--left h5\">\r\n    <span class=\"headline__heading\">\r\n        Single-User Restrooms\r\n      </span>\r\n    </h3>\r\n{{ field_building_rr_single_neutral }} \r\n{{ field_building_rr_single_men }} \r\n{{ field_building_rr_single_women }} \r\n{{ field_building_lactation_rooms }} "
+            text: "{% if field_building_rr_single_neutral is not empty or\r\n      field_building_rr_single_men is not empty or\r\n      field_building_rr_single_women is not empty %}\r\n    <h3 class=\"headline headline--serif headline--underline block__headline headline--left h5\">\r\n        <span class=\"headline__heading\">\r\n            Single-User Restrooms\r\n        </span>\r\n    </h3>\r\n\r\n    {{ field_building_rr_single_neutral }} \r\n    {{ field_building_rr_single_men }} \r\n    {{ field_building_rr_single_women }} \r\n    <br />\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -264,9 +264,9 @@ display:
           element_wrapper_class: ''
           element_default_classes: false
           empty: ''
-          hide_empty: false
-          empty_zero: true
-          hide_alter_empty: false
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
           click_sort_column: value
           type: string
           settings:
@@ -356,7 +356,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<h3 class=\"headline headline--serif headline--underline block__headline headline--left h5\">\r\n    <span class=\"headline__heading\">\r\n        Multi-User Restrooms\r\n      </span>\r\n    </h3>\r\n{{ field_building_rr_multi_men }} \r\n{{ field_building_rr_multi_women }} "
+            text: "{% if field_building_rr_multi_men is not empty or field_building_rr_multi_women is not empty %}\r\n    <h3 class=\"headline headline--serif headline--underline block__headline headline--left h5\">\r\n        <span class=\"headline__heading\">\r\n            Multi-User Restrooms\r\n        </span>\r\n    </h3>\r\n\r\n    {{ field_building_rr_multi_men }} \r\n    {{ field_building_rr_multi_women }} \r\n<br />\r\n{% endif %}\r\n    {{ field_building_lactation_rooms }} \r\n"
             make_link: false
             path: ''
             absolute: false
@@ -381,8 +381,8 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: div
-          element_class: element--padding__left
+          element_type: ''
+          element_class: ''
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -392,7 +392,7 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: false
+          hide_alter_empty: true
           click_sort_column: value
           type: string
           settings:
