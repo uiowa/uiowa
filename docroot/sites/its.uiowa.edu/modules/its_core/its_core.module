@@ -317,10 +317,8 @@ function its_core_preprocess_field(&$variables, $hook) {
         // Make categories badges.
         foreach ($variables['items'] as &$item) {
           $category_id = $item['content']['#entity']?->id();
-          if (in_array($category_id, ['406', '416'])) {
+          if (in_array($category_id, ['406', '416', '411', '421'])) {
             $content = $item['content']['#markup'];
-            // @todo Update this to the preferred icon(s),
-            //   or remove if we want the same icon for each.d
             switch ($category_id) {
               // Outage.
               case '406':
@@ -332,6 +330,18 @@ function its_core_preprocess_field(&$variables, $hook) {
               case '416':
                 $content = str_replace('badge--light', 'badge--blue', $content);
                 $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
+                break;
+
+                // Planned Maintenance.
+              case '411':
+                $content = str_replace('badge--light', 'badge--green', $content);
+                $icon = '';
+                break;
+
+                // Service Announcement.
+              case '421':
+                $content = str_replace('badge--light', 'badge--cool-gray', $content);
+                $icon = '';
                 break;
 
               default:
