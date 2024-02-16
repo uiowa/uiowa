@@ -39,7 +39,7 @@ adding:
       third_party_settings: {  }
     field_alert_updates:
       type: paragraphs
-      weight: 26
+      weight: 19
       region: content
       settings:
         title: Paragraph
@@ -50,8 +50,9 @@ adding:
         closed_mode_threshold: 0
         add_mode: dropdown
         form_display_mode: default
-        default_paragraph_type: ''
+        default_paragraph_type: _none
         features:
+          add_above: '0'
           collapse_edit_all: collapse_edit_all
           duplicate: duplicate
       third_party_settings: {  }
@@ -71,10 +72,10 @@ adding:
       weight: 10
     sticky:
       weight: 7
-    title:
-      weight: null
     url_redirects:
       weight: 9
+  hidden:
+    title: true
 removing:
   content:
     body:
@@ -108,6 +109,10 @@ removing:
     sticky:
       weight: 9
     title:
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
       weight: 12
     url_redirects:
       weight: 11
