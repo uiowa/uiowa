@@ -4,14 +4,36 @@ status: true
 dependencies:
   config:
     - core.base_field_override.node.building.title
+    - field.field.node.building.field_alt1_coordinator_dept
+    - field.field.node.building.field_alt1_coordinator_email
+    - field.field.node.building.field_alt1_coordinator_name
+    - field.field.node.building.field_alt1_coordinator_phone
+    - field.field.node.building.field_alt1_coordinator_title
+    - field.field.node.building.field_alt2_coordinator_dept
+    - field.field.node.building.field_alt2_coordinator_email
+    - field.field.node.building.field_alt2_coordinator_name
+    - field.field.node.building.field_alt2_coordinator_phone
+    - field.field.node.building.field_alt2_coordinator_title
+    - field.field.node.building.field_alt3_coordinator_dept
+    - field.field.node.building.field_alt3_coordinator_email
+    - field.field.node.building.field_alt3_coordinator_name
+    - field.field.node.building.field_alt3_coordinator_phone
+    - field.field.node.building.field_alt3_coordinator_title
+    - field.field.node.building.field_alt4_coordinator_dept
+    - field.field.node.building.field_alt4_coordinator_email
+    - field.field.node.building.field_alt4_coordinator_name
+    - field.field.node.building.field_alt4_coordinator_phone
+    - field.field.node.building.field_alt4_coordinator_title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_m_manager
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
@@ -21,6 +43,11 @@ dependencies:
     - field.field.node.building.field_building_rr_single_neutral
     - field.field.node.building.field_building_rr_single_women
     - field.field.node.building.field_building_year_built
+    - field.field.node.building.field_main_coordinator_dept
+    - field.field.node.building.field_main_coordinator_email
+    - field.field.node.building.field_main_coordinator_name
+    - field.field.node.building.field_main_coordinator_phone
+    - field.field.node.building.field_main_coordinator_title
     - field.field.node.building.field_meta_tags
     - node.type.building
     - views.view.alerts_building_block
@@ -471,6 +498,14 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_building_ca_manager:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 17
+    region: content
   field_building_hours:
     type: text_default
     label: above
@@ -570,8 +605,35 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_alt1_coordinator_dept: true
+  field_alt1_coordinator_email: true
+  field_alt1_coordinator_name: true
+  field_alt1_coordinator_phone: true
+  field_alt1_coordinator_title: true
+  field_alt2_coordinator_dept: true
+  field_alt2_coordinator_email: true
+  field_alt2_coordinator_name: true
+  field_alt2_coordinator_phone: true
+  field_alt2_coordinator_title: true
+  field_alt3_coordinator_dept: true
+  field_alt3_coordinator_email: true
+  field_alt3_coordinator_name: true
+  field_alt3_coordinator_phone: true
+  field_alt3_coordinator_title: true
+  field_alt4_coordinator_dept: true
+  field_alt4_coordinator_email: true
+  field_alt4_coordinator_name: true
+  field_alt4_coordinator_phone: true
+  field_alt4_coordinator_title: true
+  field_building_ca_manager: true
   field_building_latitude: true
   field_building_longitude: true
+  field_building_m_manager: true
+  field_main_coordinator_dept: true
+  field_main_coordinator_email: true
+  field_main_coordinator_name: true
+  field_main_coordinator_phone: true
+  field_main_coordinator_title: true
   field_meta_tags: true
   links: true
   search_api_excerpt: true

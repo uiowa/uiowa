@@ -93,6 +93,26 @@ class BuildingsProcessor extends EntityProcessorBase {
         $record->{$key} = $value;
       }
     }
+    // API call for building coordinator information.
+    $coordinators = $facilities_api->getBuildingCoordinators($building_number);
+
+    // Merge building coordinators data into the building record for processing.
+    $coordinator_properties = [
+      'mainFullName', 'mainJobTitle', 'mainDepartment',
+      'mainCampusEmail', 'mainCampusPhone', 'alternateFullName1',
+      'alternateJobTitle1', 'alternateDepartment1', 'alternateCampusEmail1',
+      'alternateCampusPhone1', 'alternateFullName2',
+      'alternateJobTitle2', 'alternateDepartment2', 'alternateCampusEmail2',
+      'alternateCampusPhone2', 'alternateFullName3',
+      'alternateJobTitle3', 'alternateDepartment3', 'alternateCampusEmail3',
+      'alternateCampusPhone3', 'alternateFullName4',
+      'alternateJobTitle4', 'alternateDepartment4', 'alternateCampusEmail4',
+      'alternateCampusPhone4', 'maintenanceManagerFullName', 'custodialAssistantManagerFullName',
+    ];
+
+    foreach ($coordinator_properties as $property) {
+      $record->{$property} = $coordinators->{$property} ?? NULL;
+    }
 
     // There is at least one building with a blank space instead of
     // NULL for this value.
