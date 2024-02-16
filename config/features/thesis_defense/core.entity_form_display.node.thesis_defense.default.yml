@@ -63,7 +63,6 @@ content:
     weight: 11
     region: content
     settings:
-      hide_date: '1'
       modal: false
       default_duration: 60
       default_duration_increments: |-
@@ -73,6 +72,8 @@ content:
         120|2 hours
         custom
       show_extra: true
+      hide_date: true
+      separator: to
     third_party_settings: {  }
   field_thesis_defense_file:
     type: media_library_widget
@@ -116,6 +117,11 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 7
@@ -146,4 +152,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  publish_on: true
+  publish_state: true
   title: true
+  unpublish_on: true
+  unpublish_state: true

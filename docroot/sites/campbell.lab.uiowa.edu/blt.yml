@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcampbell.uiowa.ddev.site
+    protocol: https
+  machine_name: labcampbell
+  human_name: campbell.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcampbell.prod
+drupal:
+  db:
+    database: campbell_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcampbell.prod.drupal.uiowa.edu'
+  requester: amower
+  site-name: 'Campbell Laboratory'

@@ -60,6 +60,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
 
       $tids = \Drupal::entityQuery('taxonomy_term')
         ->condition($query)
+        ->accessCheck()
         ->execute();
       if ($tids) {
         $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
@@ -155,8 +156,8 @@ class RoomItemProcessor extends EntityItemProcessorBase {
       /** @var \Drupal\uiowa_maui\MauiApi $maui_api */
       $maui_api = \Drupal::service('uiowa_maui.api');
       $results = $maui_api->getRoomData($building_id, $room_id);
-      // The record is returned inside the first entry of the $data array. Return
-      // this if it exists, or an empty array.
+      // The record is returned inside the first entry
+      // of the $data array. Return this if it exists, or an empty array.
       return $results[0] ?? [];
     }
 
@@ -184,6 +185,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     if (isset($record->regionList)) {
       $query = \Drupal::entityQuery('taxonomy_term')
         ->condition('vid', 'scheduling_regions')
+        ->accessCheck()
         ->execute();
 
       if ($query) {
@@ -191,14 +193,13 @@ class RoomItemProcessor extends EntityItemProcessorBase {
         $terms = $storage->loadMultiple($query);
         // If we weren't able to map it, we have scheduling regions
         // that we don't want to display, so we'll want to set the
-        // regionList to null.
-        $region = NULL;
+        // regionList to an empty array.
+        $region = [];
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->regionList)) {
               // If we found a mappable region, set it.
-              $region = $term->id();
-              break;
+              $region[] = $term->id();
             }
           }
         }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineoscep.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineoscep
+  human_name: oscep.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineoscep.prod
+drupal:
+  db:
+    database: oscep_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineoscep.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Office of Statewide Clinical Education Programs'

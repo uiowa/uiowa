@@ -32,6 +32,7 @@ abstract class EntityItemProcessorBase {
         ]);
         continue;
       }
+
       // If the value is different, update it.
       if ($entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
         $entity->set($to, $record->{$from});
@@ -53,7 +54,7 @@ abstract class EntityItemProcessorBase {
    */
   protected static function resolveFieldValuePropName(FieldDefinitionInterface $definition) {
     return match ($definition->getType()) {
-      'entity_reference' => 'target_id',
+      'entity_reference', 'image' => 'target_id',
       'link' => 'uri',
       default => 'value',
     };

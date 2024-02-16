@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablin.uiowa.ddev.site
+    protocol: https
+  machine_name: lablin
+  human_name: lin.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablin.prod
+drupal:
+  db:
+    database: lin_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablin.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Computational Physics Laboratory'

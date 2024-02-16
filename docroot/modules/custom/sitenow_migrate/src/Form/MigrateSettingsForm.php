@@ -161,6 +161,13 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('shared_configuration.source.constants.source_base_path'),
     ];
 
+    $form['constants']['public_file_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Public Files Path'),
+      '#description' => $this->t('The public files system path, if not set as <em>file_public_path</em> in the database <em>variables</em> table. Eg. <em>sites/default/files</em>. In particular, this is needed for CCOM migrations (Eg.<em>sites/medicine.uiowa.edu.pathology/files</em>).'),
+      '#default_value' => $config->get('shared_configuration.source.constants.public_file_path'),
+    ];
+
     return $form;
   }
 
@@ -173,6 +180,7 @@ class MigrateSettingsForm extends ConfigFormBase {
         'key' => 'drupal_7',
         'constants' => [
           'source_base_path' => $form_state->getValue('source_base_path'),
+          'public_file_path' => $form_state->getValue('public_file_path'),
           'drupal_file_directory' => 'public://' . date('Y-m'),
         ],
         'database' => [

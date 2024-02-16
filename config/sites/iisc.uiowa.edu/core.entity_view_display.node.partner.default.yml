@@ -13,6 +13,7 @@ dependencies:
     - views.view.iisc_projects
   module:
     - layout_builder
+    - layout_builder_restrictions
     - link
     - metatag
     - options
@@ -248,6 +249,15 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.partner.default
 targetEntityType: node
 bundle: partner
@@ -313,4 +323,7 @@ content:
     weight: 100
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

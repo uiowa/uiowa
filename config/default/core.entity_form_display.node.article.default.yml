@@ -23,6 +23,7 @@ dependencies:
     - node.type.article
     - workflows.workflow.editorial
   module:
+    - allowed_formats
     - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
@@ -30,6 +31,8 @@ dependencies:
     - media_library
     - metatag
     - path
+    - scheduler
+    - scheduler_content_moderation_integration
     - text
 id: node.article.default
 targetEntityType: node
@@ -44,8 +47,11 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
+      show_summary: true
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
   created:
     type: datetime_timestamp
     weight: 11
@@ -68,6 +74,7 @@ content:
       collapsible: true
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
@@ -106,7 +113,7 @@ content:
     weight: 1
     region: content
     settings:
-      size: 255
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_contact_reference:
@@ -125,6 +132,7 @@ content:
       collapsible: true
       collapsed: true
       revision: false
+      removed_reference: optional
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
@@ -211,6 +219,28 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  publish_on:
+    type: datetime_timestamp_no_default
+    weight: 52
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  publish_state:
+    type: scheduler_moderation
+    weight: 53
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  scheduler_settings:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 17
@@ -248,4 +278,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  unpublish_on: true
+  unpublish_state: true

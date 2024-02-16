@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbeckermann.uiowa.ddev.site
+    protocol: https
+  machine_name: labbeckermann
+  human_name: beckermann.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbeckermann.prod
+drupal:
+  db:
+    database: beckermann_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbeckermann.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Solidification Laboratory'

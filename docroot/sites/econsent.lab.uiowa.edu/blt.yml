@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labeconsent.uiowa.ddev.site
+    protocol: https
+  machine_name: labeconsent
+  human_name: econsent.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labeconsent.prod
+drupal:
+  db:
+    database: econsent_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labeconsent.prod.drupal.uiowa.edu'
+  requester: dklein
+  site-name: 'Interactive Multimedia Consent for Biobanking'

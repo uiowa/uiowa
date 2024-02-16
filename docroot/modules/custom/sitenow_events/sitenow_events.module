@@ -13,6 +13,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -107,6 +108,18 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
 
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function sitenow_events_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'events') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+    $variables['#attached']['library'][] = 'uids_base/view-calendar';
   }
 }
 
@@ -256,6 +269,8 @@ function sitenow_events_preprocess_block(&$variables) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_virtual':
     case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_geolocation':
+    case 'field_block:node:event:field_event_directions':
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
@@ -601,7 +616,12 @@ function sitenow_events_preprocess_field(&$variables) {
       $field_label = $variables['element']['#title'];
       uiowa_core_set_attributes($variables, 'element--inline');
       if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
-        $variables['items'][0]['content']['#markup'] = '<span class="badge badge--secondary">' . $field_label . '</span>';
+        if ($variables['element']['#view_mode'] == 'teaser') {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
+        }
+        else {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--cool-gray">' . $field_label . '</span>';
+        }
       }
       else {
         uiowa_core_set_attributes($variables, 'sr-only');
@@ -614,6 +634,29 @@ function sitenow_events_preprocess_field(&$variables) {
       foreach ($variables["items"] as &$item) {
         $item['attributes']['class'] = 'tags-list__tag';
       }
+      break;
+
+    case 'field_event_directions':
+      // Wrap the field output in a <details> tag.
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
+      break;
+
+    case 'field_event_geolocation':
+      // Modify the field label.
+      $variables['label'] = t('Map');
+
       break;
 
     case 'field_event_location':
@@ -700,7 +743,8 @@ function sitenow_events_load(array $params = [
       $request = \Drupal::httpClient()->get($endpoint);
     }
     catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
+      $logger = \Drupal::logger('sitenow_events');
+      Error::logException($logger, $e);
     }
 
     if (isset($request)) {
@@ -808,11 +852,11 @@ function sitenow_events_format_instance(array $event_instance) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  *
  * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
-function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_events_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -1027,55 +1071,4 @@ function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $def
     'EventCancelled' => 'Cancelled',
     'EventRescheduled' => 'Rescheduled',
   ];
-}
-
-/**
- * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
- */
-function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
-  if ($entity instanceof FieldableEntityInterface) {
-    $type = $entity->bundle();
-    if ($type == 'event') {
-
-      // Bring in children events if any.
-      $parent_id = $entity->id();
-      $sub_event_nids = \Drupal::entityQuery('node')
-        ->accessCheck(FALSE)
-        ->condition('type', 'event')
-        ->condition('status', 1)
-        ->condition('field_event_parent', $parent_id, '=')
-        ->execute();
-
-      if ($sub_event_nids) {
-        $sub_events = [];
-        foreach ($sub_event_nids as $nid) {
-          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
-          $sub_events[] = [
-            '@type' => 'Event',
-            'name' => $sub_event->label(),
-            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
-          ];
-        }
-        $data['subEvent'] = $sub_events;
-      }
-
-      // Add virtual location data to the schema if it's present.
-      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
-        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
-        $virtual = [
-          '@type' => 'VirtualLocation',
-          'url' => $uri,
-        ];
-        if (isset($data['location'])) {
-          $data['location'] = [
-            $data['location'],
-            $virtual,
-          ];
-        }
-        else {
-          $data['location'] = $virtual;
-        }
-      }
-    }
-  }
 }

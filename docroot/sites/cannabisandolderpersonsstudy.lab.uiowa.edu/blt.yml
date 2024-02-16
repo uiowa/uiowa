@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcannabisandolderpersonsstudy.uiowa.ddev.site
+    protocol: https
+  machine_name: labcannabisandolderpersonsstudy
+  human_name: cannabisandolderpersonsstudy.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcannabisandolderpersonsstudy.prod
+drupal:
+  db:
+    database: cannabisandolderpersonsstudy_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcannabisandolderpersonsstudy.prod.drupal.uiowa.edu'
+  requester: bkaskie
+  site-name: cannabisandolderpersonsstudy.lab.uiowa.edu

@@ -21,6 +21,7 @@ dependencies:
     - smart_date
     - taxonomy
     - user
+    - views_custom_cache_tag
 _core:
   default_config_hash: MpdI7MwVh_vkZ2S1hpubCByqty9K8tTetJOMul3ppFI
 id: events
@@ -122,8 +123,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:event\r\ntime:hourly"
       empty:
         area_text_custom:
           id: area_text_custom
@@ -1992,7 +1994,7 @@ display:
         sorts: false
         filters: false
         filter_groups: false
-      css_class: 'views-form--stacked grid--twocol--25-75 '
+      css_class: 'views-form--stacked views-grid--twocol--25-75 '
       group_by: false
       display_description: ''
       display_extenders:
@@ -2794,7 +2796,7 @@ display:
           entity_type: node
           plugin_id: entity_reverse
           required: false
-      css_class: bef-form
+      css_class: 'bef-form bef-form--label-hidden '
       use_ajax: true
       display_description: ''
       display_extenders:

@@ -4,12 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.body
     - field.storage.node.field_event_location
     - field.storage.node.field_event_performer
     - field.storage.node.field_event_virtual
     - field.storage.node.field_event_when
     - field.storage.node.field_image
-    - field.storage.node.field_teaser
     - node.type.event
     - taxonomy.vocabulary.event_categories
     - taxonomy.vocabulary.tags
@@ -18,8 +18,10 @@ dependencies:
     - link
     - node
     - smart_date
+    - smart_trim
     - taxonomy
     - user
+    - views_custom_cache_tag
 id: events_list_block
 label: Events
 module: views
@@ -229,13 +231,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
-          admin_label: 'Short description'
+          admin_label: Summary
           plugin_id: field
           label: ''
           exclude: false
@@ -279,8 +281,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: false
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -516,8 +536,9 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
-        options: {  }
+        type: custom_tag
+        options:
+          custom_tag: "node_list:event\r\ntime:hourly"
       empty:
         area:
           id: area
@@ -884,12 +905,12 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_event_location'
         - 'config:field.storage.node.field_event_performer'
         - 'config:field.storage.node.field_event_virtual'
         - 'config:field.storage.node.field_event_when'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'
   card_list:
     id: card_list
     display_title: Block
@@ -932,9 +953,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_event_location'
         - 'config:field.storage.node.field_event_performer'
         - 'config:field.storage.node.field_event_virtual'
         - 'config:field.storage.node.field_event_when'
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_teaser'

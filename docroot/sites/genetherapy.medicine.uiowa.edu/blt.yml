@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinegenetherapy.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinegenetherapy
+  human_name: genetherapy.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinegenetherapy.prod
+drupal:
+  db:
+    database: genetherapy_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinegenetherapy.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Center for Gene Therapy'

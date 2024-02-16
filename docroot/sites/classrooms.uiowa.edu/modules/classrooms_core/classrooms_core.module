@@ -65,6 +65,9 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
     case 'node_room_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
 
+      // Computed field for use in views. No access needed.
+      $form['field_room_combined_id']['#access'] = FALSE;
+
       // These are imported fields that editors should not interact with.
       $form['field_room_name']['#disabled'] = TRUE;
       $form['field_room_accessibility_feature']['#disabled'] = TRUE;
@@ -108,7 +111,7 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
     if ($display->getComponent('field_room_section_heading')) {
       $build['field_room_section_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 class="headline headline--serif headline--underline">' . t("Additional Information") . '</h2>',
+        '#markup' => '<h2 class="h4 headline headline--serif headline--underline">' . t("Additional Information") . '</h2>',
       ];
     }
     if (!$node->get('field_room_map')->isEmpty()) {
@@ -128,12 +131,15 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
     // Building link.
     $building_id = $node->get('field_room_building_id')->target_id;
     $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-    $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-    $build['field_room_building_link'] = [
-      '#theme' => 'building_link',
-      '#building_link' => $url,
-      '#building_name' => $building->label(),
-    ];
+    if ($building) {
+      $number = $building->get('number');
+      $url = "https://www.facilities.uiowa.edu/building/{$number}";
+      $build['field_room_building_link'] = [
+        '#theme' => 'building_link',
+        '#building_link' => $url,
+        '#building_name' => $building->label(),
+      ];
+    }
   }
 }
 
@@ -184,7 +190,7 @@ function classrooms_core_preprocess_block(&$variables) {
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
       uiowa_core_set_attributes($variables, [
-        'grid--threecol--33-34-33',
+        'media--widescreen',
         'photoswipe-gallery',
       ]);
       break;
@@ -286,6 +292,19 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       ]);
       break;
 
+    case 'field_gallery_images':
+      if ($variables['element']['#bundle'] === 'room') {
+        $variables['field_container_classes'] = 'uiowa-image-gallery';
+        uiowa_core_set_title_attributes($variables, [
+          'h2',
+          'block__headline',
+          'headline',
+          'headline--serif',
+          'headline--underline',
+        ]);
+      }
+      break;
+
     case 'field_room_type':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_label_icon($variables, 'fa-building fa-li');
@@ -303,7 +322,21 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_room_scheduling_regions':
-      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+      foreach ($variables['items'] as &$item) {
+        // The Level 1 scheduling region shouldn't be linked.
+        // Grab the cache info and then create a plaintext
+        // field value to render.
+        if ($item['content']['#title'] === 'Level 1') {
+          $cache = $item['content']['#cache'];
+          unset($item['content']);
+          $item['content']['#plain_text'] = 'Level 1';
+          $item['content']['#cache'] = $cache;
+        }
+        // Otherwise, link to the overall scheduling region page.
+        else {
+          $item['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+        }
+      }
       break;
 
     case 'field_room_tile_details':
@@ -311,7 +344,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_classroom_furniture':
     case 'field_room_accessibility_feature':
       uiowa_core_set_title_attributes($variables, [
-        'h6',
+        'h5',
         'headline',
         'headline--serif',
         'headline--underline',
@@ -321,7 +354,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_technology_features':
       $variables['field_container_classes'] = 'element--three-column';
       uiowa_core_set_title_attributes($variables, [
-        'h6',
+        'h5',
         'headline',
         'headline--serif',
         'headline--underline',
@@ -337,7 +370,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       else {
         uiowa_core_set_title_attributes($variables, [
-          'h6',
+          'h5',
           'headline',
           'headline--serif',
           'headline--underline',
@@ -452,6 +485,10 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     // Set title programmatically based on building and room id.
     $title = "{$building->label()} $room_id";
     $entity->set('title', $title);
+
+    // Set a combined building id and room id value for use in views.
+    $combined_id = "{$building->id()} $room_id";
+    $entity->set('field_room_combined_id', $combined_id);
   }
 
   RoomItemProcessor::process($entity, RoomItemProcessor::getRecord($entity));
@@ -611,32 +648,13 @@ function classrooms_core_preprocess_rooms_list(&$variables, ...$fields_to_hide) 
 }
 
 /**
- * Implements hook_views_pre_render().
- *
- * Move the "results" block (with the "record N of N of NNN" verbiage) out of
- * the header and into the space between the exposed filters and the query
- * results.
+ * Implements template_preprocess_views_view().
  */
-function classrooms_core_views_pre_render(ViewExecutable $view) {
-  if (
-  // Check if the view name is "room_list".
-    $view->id() === 'room_list'
-  // Check if the handler for the header display and result plugin exists.
-    && !!($handler = $view->display_handler->getHandler('header', 'result'))
-  ) {
-    // Render the "result" block content with a custom wrapper around it (as it
-    // renders without a wrapper by default).
-    $handler->options['content'] =
-      '<div class="results-header"><p><small>'
-      . $handler->options['content']
-      . '<hr class="element--spacer-separator" /></small></p></div>';
-    $render = $handler->render();
-    $view->attachment_before[] = $render;
-
-    // re-render the "result" block so that it will display nothing in the
-    // header area.
-    $handler->options['content'] = '';
-    $handler->render();
+function classrooms_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'room_list') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
   }
 }
 

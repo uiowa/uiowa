@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpksaha.uiowa.ddev.site
+    protocol: https
+  machine_name: labpksaha
+  human_name: pksaha.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpksaha.prod
+drupal:
+  db:
+    database: pksaha_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpksaha.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Structural Imaging Laboratory'

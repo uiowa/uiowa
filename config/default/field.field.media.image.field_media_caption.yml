@@ -4,14 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.media.field_media_caption
+    - filter.format.minimal
     - media.type.image
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: media.image.field_media_caption
 field_name: field_media_caption
 entity_type: media
@@ -22,5 +19,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

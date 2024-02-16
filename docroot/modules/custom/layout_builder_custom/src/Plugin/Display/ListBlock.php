@@ -168,6 +168,7 @@ class ListBlock extends CoreBlock {
     // Provide "Pager offset" block settings form.
     if (!empty($allow_settings['offset'])) {
       $form['override']['pager_offset']['#title'] = $this->t('Offset');
+      $form['override']['pager_offset']['#min'] = 0;
     }
 
     // Provide "Show pager" block setting.

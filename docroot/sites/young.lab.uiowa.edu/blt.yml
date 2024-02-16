@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labyoung.uiowa.ddev.site
+    protocol: https
+  machine_name: labyoung
+  human_name: young.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labyoung.prod
+drupal:
+  db:
+    database: young_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labyoung.prod.drupal.uiowa.edu'
+  requester: smyoung
+  site-name: 'https://young.lab.uiowa.edu/people/samuel-m-young-jr'

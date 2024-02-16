@@ -137,6 +137,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
           $ids = $query
             ->condition($condition, $bundle)
+            ->accessCheck()
             ->execute();
 
           if ($ids) {

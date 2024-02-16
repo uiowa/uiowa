@@ -6,7 +6,8 @@ dependencies:
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
-    - field.field.node.building.field_building_image_url
+    - field.field.node.building.field_building_hours
+    - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
@@ -23,9 +24,10 @@ dependencies:
     - node.type.building
   module:
     - content_moderation
-    - link
+    - file
     - metatag
     - path
+    - text
 id: node.building.default
 targetEntityType: node
 bundle: building
@@ -60,13 +62,20 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
-  field_building_image_url:
-    type: link_default
-    weight: 38
+  field_building_hours:
+    type: text_textarea
+    weight: 42
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_image:
+    type: file_generic
+    weight: 41
+    region: content
+    settings:
+      progress_indicator: throbber
     third_party_settings: {  }
   field_building_lactation_rooms:
     type: string_textfield
@@ -193,6 +202,11 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 10
@@ -230,4 +244,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true

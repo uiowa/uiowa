@@ -17,100 +17,22 @@ adding:
           title:
             element_label_colon: true
         filters:
-          field_event_when_end_value:
-            operator: '>'
-            value:
-              value: now
-              type: offset
-            exposed: false
-            expose:
-              operator_id: ''
-              label: ''
-              operator: ''
-              identifier: ''
-            group_info:
-              label: ''
-              description: ''
-              identifier: ''
-              group_items:
-                - {  }
           field_event_category_target_id:
-            id: field_event_category_target_id
-            table: node__field_event_category
-            field: field_event_category_target_id
-            relationship: none
-            group_type: group
-            admin_label: ''
-            plugin_id: taxonomy_index_tid
-            operator: or
-            value: {  }
-            group: 1
-            exposed: true
             expose:
-              operator_id: field_event_category_target_id_op
               label: 'Event Category'
-              description: ''
-              use_operator: false
-              operator: field_event_category_target_id_op
-              operator_limit_selection: false
-              operator_list: {  }
               identifier: category
-              required: false
-              remember: false
-              multiple: false
-              remember_roles:
-                authenticated: authenticated
-                anonymous: '0'
-                viewer: '0'
-                editor: '0'
-                publisher: '0'
-                webmaster: '0'
-                administrator: '0'
-              reduce: false
-            is_grouped: false
-            group_info:
-              label: ''
-              description: ''
-              identifier: ''
-              optional: true
-              widget: select
-              multiple: false
-              remember: false
-              default_group: All
-              default_group_multiple: {  }
-              group_items: {  }
-            reduce_duplicates: false
-            vid: event_categories
-            type: select
-            hierarchy: false
-            limit: true
-            error_message: true
-            save_lineage: false
-            force_deepest: false
             parent: 0
-            level_labels: ''
-            hierarchy_depth: 0
-            required_depth: 0
             none_label: '- Please select -'
-          field_event_when_value:
-            operator: '>='
-            value:
-              value: now
-              type: offset
-            exposed: false
           field_event_performer_target_id_1:
             operator: empty
             exposed: false
         defaults:
           sorts: true
-        css_class: 'views-form--stacked grid--twocol--25-75 '
+        css_class: 'views-form--stacked views-grid--twocol--25-75 '
         path: events/upcoming
         menu:
           type: 'default tab'
           title: Upcoming
-      cache_metadata:
-        contexts:
-          - user
 removing:
   dependencies:
     module:
@@ -179,18 +101,6 @@ removing:
                     placeholder_text: Search
                     collapsible: false
                     is_secondary: false
-                field_event_when_end_value:
-                  plugin_id: bef_datepicker
-                  advanced:
-                    placeholder_text: 'Starts on or after'
-                    collapsible: false
-                    is_secondary: true
-                field_event_when_value:
-                  plugin_id: bef_datepicker
-                  advanced:
-                    placeholder_text: 'Ends on or before'
-                    collapsible: false
-                    is_secondary: true
                 field_event_performer_target_id_1:
                   plugin_id: default
                   advanced:
@@ -200,35 +110,20 @@ removing:
                     collapsible: false
                     is_secondary: true
         filters:
-          field_event_when_end_value:
-            operator: '>='
-            value:
-              value: ''
-              type: date
-            exposed: true
-            expose:
-              operator_id: field_event_when_end_value_op
-              label: Ends
-              operator: field_event_when_end_value_op
-              identifier: field_event_when_end_value
-            group_info:
-              label: 'When - End'
-              description: null
-              identifier: field_event_when_end_value
-          field_event_when_value:
-            operator: '<='
-            value:
-              value: ''
-              type: date
-            exposed: true
           field_event_performer_target_id_1:
             operator: or
             exposed: true
+          field_event_category_target_id:
+            expose:
+              label: 'Event Categories'
+              identifier: field_event_category_target_id
+            parent: null
+            none_label: Category
         defaults:
           use_ajax: false
           exposed_form: false
           arguments: false
-        css_class: bef-form
+        css_class: 'bef-form bef-form--label-hidden '
         use_ajax: true
         path: events
         menu:

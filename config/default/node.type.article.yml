@@ -5,6 +5,7 @@ dependencies:
   module:
     - menu_ui
     - node_revision_delete
+    - scheduler
 third_party_settings:
   menu_ui:
     available_menus: {  }
@@ -22,6 +23,19 @@ third_party_settings:
       status: false
       settings:
         age: 1
+  scheduler:
+    expand_fieldset: always
+    fields_display_mode: fieldset
+    publish_enable: true
+    publish_past_date: error
+    publish_past_date_created: false
+    publish_required: false
+    publish_revision: true
+    publish_touch: false
+    show_message_after_update: true
+    unpublish_enable: false
+    unpublish_required: false
+    unpublish_revision: false
 name: Article
 type: article
 description: 'Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'

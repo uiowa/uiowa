@@ -45,14 +45,11 @@ class Card extends BlockContent implements RendersAsCardInterface {
 
     // Pull the button display value from the entity.
     $link_indicator = $this->field_uiowa_card_button_display
-      ?->value;
+      ?->value
+      ?? 'Use site default';
 
     // Check if it is site default.
-    // Covering default_content with `Use site default` check.
-    // @todo https://github.com/uiowa/uiowa/issues/5416
-    // Consider removing additional check if default_content field null is
-    // captured or the field is refactored to not repurpose null as option.
-    if ($link_indicator === NULL || $link_indicator === 'Use site default') {
+    if ($link_indicator === 'Use site default') {
       // Set boolean to site default value.
       $link_indicator = \Drupal::config('sitenow_pages.settings')
         ->get('card_link_indicator_display');

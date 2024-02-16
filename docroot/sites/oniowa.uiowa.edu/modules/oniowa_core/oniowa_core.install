@@ -5,6 +5,9 @@
  * Install, update and uninstall functions for the Oniowa Core module.
  */
 
+use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+
 /**
  * Implements hook_install().
  */
@@ -27,6 +30,62 @@ function oniowa_core_update_9001() {
       'category' => 1,
     ]);
     $config->save();
+  }
+}
+
+/**
+ * Import path config and bulk save events to update path.
+ */
+function oniowa_core_update_9002(&$sandbox) {
+  // Initialize if we haven't started the bulk
+  // operations yet.
+  if (!isset($sandbox['total'])) {
+    // Import the updated pathauto config.
+    $config_storage = \Drupal::service('config.storage');
+    $config_path = DRUPAL_ROOT . '/../config/features/event';
+    $source = new FileStorage($config_path);
+    $config_name = 'pathauto.pattern.event';
+    $config = $source->read($config_name);
+    if ($config) {
+      $config_storage->write($config_name, $config);
+    }
+
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'event')
+      ->accessCheck()
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the nodes in batches.
+  $nodes_per_batch = 20;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $nodes = Node::loadMultiple($batch);
+  foreach ($nodes as $node) {
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
 

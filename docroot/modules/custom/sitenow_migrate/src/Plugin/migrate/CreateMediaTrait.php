@@ -228,6 +228,9 @@ trait CreateMediaTrait {
       if ($files_dir = $this->getSourceFilePath($row)) {
         return "{$base_url}/{$files_dir}/";
       }
+      elseif ($files_dir = $this->sourcePublicFilePath) {
+        return "{$base_url}/{$files_dir}/";
+      }
       else {
         throw new MigrateException('Cannot process media. No public files path variable set.');
       }
@@ -263,6 +266,7 @@ trait CreateMediaTrait {
       ->getStorage('file')
       ->getQuery()
       ->condition('filename', $filename)
+      ->accessCheck(TRUE)
       ->execute();
 
     if (empty($files)) {

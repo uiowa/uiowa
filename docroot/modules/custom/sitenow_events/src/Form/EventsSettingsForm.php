@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_events\Form;
 
+use Drupal\config_split\ConfigSplitManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,6 +30,13 @@ class EventsSettingsForm extends ConfigFormBase {
   protected $aliasRepository;
 
   /**
+   * The config split manager.
+   *
+   * @var \Drupal\config_split\ConfigSplitManager
+   */
+  protected $configSplitManager;
+
+  /**
    * The Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -37,11 +45,14 @@ class EventsSettingsForm extends ConfigFormBase {
    *   The alias cleaner.
    * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
    *   The alias checker.
+   * @param \Drupal\config_split\ConfigSplitManager $configSplitManager
+   *   The config split manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, ConfigSplitManager $configSplitManager) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $pathauto_alias_cleaner;
     $this->aliasRepository = $aliasRepository;
+    $this->configSplitManager = $configSplitManager;
   }
 
   /**
@@ -51,7 +62,8 @@ class EventsSettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path_alias.repository')
+      $container->get('path_alias.repository'),
+      $container->get('config_split.manager'),
     );
   }
 
@@ -106,8 +118,7 @@ class EventsSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    $config_split = \Drupal::service('config_split.manager')
-      ->getSplitConfig('config_split.config_split.event');
+    $config_split = $this->configSplitManager->getSplitConfig('config_split.config_split.event');
     if (isset($config_split) && $config_split->get('status')) {
       $form['sitenow_events_filter'] = [
         '#type' => 'fieldset',
@@ -184,8 +195,7 @@ class EventsSettingsForm extends ConfigFormBase {
       ->set('single_event_path', $path)
       ->save();
 
-    $config_split = \Drupal::service('config_split.manager')
-      ->getSplitConfig('config_split.config_split.event');
+    $config_split = $this->configSplitManager->getSplitConfig('config_split.config_split.event');
     if (isset($config_split) && $config_split->get('status')) {
       $filters = [];
       foreach ([

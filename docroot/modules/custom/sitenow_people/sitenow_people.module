@@ -825,9 +825,9 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'people') {
     if (!empty($element['subform']['field_people_more'])) {
       $parents_array = $element['subform']['#parents'];

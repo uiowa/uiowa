@@ -1,70 +1,208 @@
-uuid: 2ef7adf4-c72a-48ed-80f7-5ac4d0146d44
+uuid: b000cb6c-d486-4d61-927a-0103083d1f07
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.filtered_html
   module:
-    - ckeditor
-_core:
-  default_config_hash: evKB8SoK0lat2aPC2lic5Q6fesi19-ObF3dMWC5j3ME
+    - ckeditor5
 format: filtered_html
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - JustifyLeft
-            - JustifyCenter
-            - JustifyRight
-            - Superscript
-            - Subscript
-            - RemoveFormat
-            - SpecialChar
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-            - Outdent
-            - Indent
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Media
-          items:
-            - Blockquote
-            - Table
-            - DrupalMediaLibrary
-        -
-          name: Format
-          items:
-            - Styles
-            - Format
-        -
-          name: Tools
-          items:
-            - Source
-            - ShowBlocks
-            - Undo
-            - Redo
-            - HorizontalRule
-            - Maximize
+    items:
+      - bold
+      - italic
+      - strikethrough
+      - alignment
+      - superscript
+      - subscript
+      - removeFormat
+      - specialCharacters
+      - '|'
+      - bulletedList
+      - numberedList
+      - outdent
+      - indent
+      - '|'
+      - link
+      - '|'
+      - blockQuote
+      - insertTable
+      - drupalMedia
+      - '|'
+      - style
+      - heading
+      - '|'
+      - sourceEditing
+      - undo
+      - redo
+      - horizontalLine
+      - '|'
+      - code
+      - codeBlock
   plugins:
-    drupallink:
+    ckeditor5_alignment:
+      enabled_alignments:
+        - center
+        - justify
+        - left
+        - right
+    ckeditor5_codeBlock:
+      languages:
+        -
+          label: 'Plain text'
+          language: plaintext
+        -
+          label: C
+          language: c
+        -
+          label: 'C#'
+          language: cs
+        -
+          label: C++
+          language: cpp
+        -
+          label: CSS
+          language: css
+        -
+          label: Diff
+          language: diff
+        -
+          label: HTML
+          language: html
+        -
+          label: Java
+          language: java
+        -
+          label: JavaScript
+          language: javascript
+        -
+          label: PHP
+          language: php
+        -
+          label: Python
+          language: python
+        -
+          label: Ruby
+          language: ruby
+        -
+          label: TypeScript
+          language: typescript
+        -
+          label: XML
+          language: xml
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<mark>'
+        - '<pre class>'
+        - '<span class role>'
+        - '<small class>'
+        - '<iframe src width height allowfullscreen title loading seamless sandbox="allow-same-origin allow-scripts allow-popups">'
+        - '<div class>'
+        - '<blockquote cite class>'
+        - '<ul type class>'
+        - '<ol start type reversed class>'
+        - '<hr class>'
+        - '<table border summary id role="presentation grid" aria-label aria-labelledby class>'
+        - '<caption id>'
+        - '<tbody class>'
+        - '<thead class>'
+        - '<tfoot class>'
+        - '<th id align valign colspan rowspan scope class>'
+        - '<td align valign colspan rowspan headers class>'
+        - '<tr align valign class>'
+        - '<drupal-media title>'
+        - '<a href hreflang title id target aria-label rel data-* class>'
+        - '<p class>'
+        - '<h2 id class>'
+        - '<h3 id class>'
+        - '<h4 id class>'
+        - '<h5 id class>'
+        - '<h6 id class>'
+    ckeditor5_style:
+      styles:
+        -
+          label: 'Intro Bold'
+          element: '<p class="uids-component--bold-intro">'
+        -
+          label: 'Intro Light'
+          element: '<p class="uids-component--light-intro">'
+        -
+          label: 'H2 Serif'
+          element: '<h2 class="headline headline--serif">'
+        -
+          label: 'H2 Serif Underline'
+          element: '<h2 class="headline headline--serif headline--underline">'
+        -
+          label: 'H3 Serif'
+          element: '<h3 class="headline headline--serif">'
+        -
+          label: 'H3 Serif Underline'
+          element: '<h3 class="headline headline--serif headline--underline">'
+        -
+          label: 'H4 Serif'
+          element: '<h4 class="headline headline--serif">'
+        -
+          label: 'H4 Serif Underline'
+          element: '<h4 class="headline headline--serif headline--underline">'
+        -
+          label: 'H5 Serif'
+          element: '<h5 class="headline headline--serif">'
+        -
+          label: 'H5 Serif Underline'
+          element: '<h5 class="headline headline--serif headline--underline">'
+        -
+          label: 'H6 Serif'
+          element: '<h6 class="headline headline--serif">'
+        -
+          label: 'H6 Serif Underline'
+          element: '<h6 class="headline headline--serif headline--underline">'
+        -
+          label: 'Alert Success'
+          element: '<div class="alert alert--success">'
+        -
+          label: 'Alert Info'
+          element: '<div class="alert alert--info">'
+        -
+          label: 'Alert Warning'
+          element: '<div class="alert alert--warning">'
+        -
+          label: 'Alert Danger'
+          element: '<div class="alert alert--danger">'
+        -
+          label: 'Button Primary'
+          element: '<a class="bttn bttn--primary">'
+        -
+          label: 'Button Secondary'
+          element: '<a class="bttn bttn--secondary">'
+    editor_advanced_link_link:
+      enabled_attributes:
+        - aria-label
+        - class
+        - id
+        - rel
+        - target
+        - title
+    linkit_extension:
       linkit_enabled: true
       linkit_profile: default
-    stylescombo:
-      styles: "p.uids-component--bold-intro|Intro Bold\r\np.uids-component--light-intro|Intro Light\r\nh2.headline.headline--serif|H2 Serif\r\nh2.headline.headline--serif.headline--underline|H2 Serif Underline\r\nh3.headline.headline--serif|H3 Serif\r\nh3.headline.headline--serif.headline--underline|H3 Serif Underline\r\nh4.headline.headline--serif|H4 Serif\r\nh4.headline.headline--serif.headline--underline|H4 Serif Underline\r\nh5.headline.headline--serif|H5 Serif\r\nh5.headline.headline--serif.headline--underline|H5 Serif Underline\r\nh6.headline.headline--serif|H6 Serif\r\nh6.headline.headline--serif.headline--underline|H6 Serif Underline\r\ndiv.alert.alert-success|Alert Success\r\ndiv.alert.alert-info|Alert Info\r\ndiv.alert.alert-warning|Alert Warning\r\ndiv.alert.alert-danger|Alert Danger\r\na.bttn.bttn--primary|Button Primary\r\na.bttn.bttn--secondary|Button Secondary"
+    media_media:
+      allow_view_mode_override: true
 image_upload:
   status: false
   scheme: public

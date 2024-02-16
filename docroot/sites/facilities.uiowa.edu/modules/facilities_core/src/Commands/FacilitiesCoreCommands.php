@@ -6,6 +6,7 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\facilities_core\BuildingsProcessor;
+use Drupal\facilities_core\ProjectsProcessor;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -54,9 +55,9 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $this->getLogger('facilities_core')->notice("Starting the facilities building content sync. This may take a little time if the information isn't cached.");
+    $this->logger()->notice('Starting the facilities building content sync. This may take a little time if the information isn\'t cached.');
     $sync_service = new BuildingsProcessor();
-
+    $sync_service->init();
     $sync_service->process();
 
     $arguments = [
@@ -65,7 +66,36 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@deleted' => $sync_service->getDeleted(),
       '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->getLogger('facilities_core')->notice('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    $this->logger()->notice(t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments));
+
+    // Switch user back.
+    $this->accountSwitcher->switchBack();
+  }
+
+  /**
+   * Triggers the building import.
+   *
+   * @command facilities_core:projects_import
+   * @aliases fm-projects
+   * @usage facilities_core:projects_import
+   *  Ideally this is done as a crontab that is only run once a day.
+   */
+  public function importProjects() {
+    // Switch to the admin user to pass access check.
+    $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
+
+    $this->logger()->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
+    $sync_service = new ProjectsProcessor();
+    $sync_service->init();
+    $sync_service->process();
+
+    $arguments = [
+      '@created' => $sync_service->getCreated(),
+      '@updated' => $sync_service->getUpdated(),
+      '@deleted' => $sync_service->getDeleted(),
+      '@skipped' => $sync_service->getSkipped(),
+    ];
+    $this->logger()->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();

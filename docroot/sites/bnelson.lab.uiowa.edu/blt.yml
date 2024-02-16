@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbnelson.uiowa.ddev.site
+    protocol: https
+  machine_name: labbnelson
+  human_name: bnelson.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbnelson.prod
+drupal:
+  db:
+    database: bnelson_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbnelson.prod.drupal.uiowa.edu'
+  requester: bnelson3
+  site-name: bnelson3

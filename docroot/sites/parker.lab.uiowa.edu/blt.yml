@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labparker.uiowa.ddev.site
+    protocol: https
+  machine_name: labparker
+  human_name: parker.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labparker.prod
+drupal:
+  db:
+    database: parker_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labparker.prod.drupal.uiowa.edu'
+  requester: klparkr
+  site-name: 'Parker Lab'

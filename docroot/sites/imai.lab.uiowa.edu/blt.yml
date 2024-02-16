@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labimai.uiowa.ddev.site
+    protocol: https
+  machine_name: labimai
+  human_name: imai.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labimai.prod
+drupal:
+  db:
+    database: imai_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labimai.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Imai Lab'

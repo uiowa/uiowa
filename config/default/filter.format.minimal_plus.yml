@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - editor
-    - entity_embed
     - linkit
     - uiowa_core
 name: 'Minimal HTML +'
@@ -16,12 +15,6 @@ filters:
     provider: editor
     status: false
     weight: -47
-    settings: {  }
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: false
-    weight: -40
     settings: {  }
   filter_align:
     id: filter_align
@@ -47,7 +40,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <a href hreflang data-entity-substitution data-entity-type data-entity-uuid title id target aria-label rel data-*> <u> <s> <sup> <sub> <div class="lead alert alert-success alert-info alert-warning alert-danger"> <p> <span role class="fa*"> <hr class=""> <br> <small class=""> <ul> <li> <ol>'
+      allowed_html: '<br> <p class="text-align-left text-align-center text-align-right text-align-justify"> <h2 id class="text-align-left text-align-center text-align-right text-align-justify"> <h3 id class="text-align-left text-align-center text-align-right text-align-justify"> <h4 id class="text-align-left text-align-center text-align-right text-align-justify"> <h5 id class="text-align-left text-align-center text-align-right text-align-justify"> <h6 id class="text-align-left text-align-center text-align-right text-align-justify"> <cite> <div class="lead alert alert--success alert--info alert--warning alert--danger text-align-left text-align-center text-align-right text-align-justify"> <span role="presentation" class="fa*"> <hr class> <small class> <blockquote cite> <a href hreflang title id target aria-label rel data-* class> <strong> <em> <u> <code> <s> <sub> <sup> <ul> <ol> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -95,3 +88,9 @@ filters:
     weight: -50
     settings:
       title: true
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -46
+    settings: {  }

@@ -1,0 +1,25 @@
+{% for number in 0..9 %}
+  {% set row = rows|filter(row => row.link == number)|first %}
+  {% if row %}
+    <span class="views-summary views-summary-unformatted">
+      <a href="{{ row.url[:-1] }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>#</a>
+      {% if options.count %}
+        ({{ row.count }})
+      {% endif %}
+    </span>
+  {% endif %}
+{% endfor %}
+
+{% for letter in 'a'..'z' %}
+  {% set row = rows|filter(row => row.link == letter|upper)|first %}
+  <span class="views-summary views-summary-unformatted">
+    {% if row %}
+      <a href="{{ row.url }}"{{ row.attributes.addClass(row.active ? 'is-active')|without('href') }}>{{ row.link }}</a>
+      {% if options.count %}
+        ({{ row.count }})
+      {% endif %}
+    {% else %}
+      {{ letter|upper }}
+    {% endif %}
+  </span>
+{% endfor %}

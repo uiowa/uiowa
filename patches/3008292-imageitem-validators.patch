@@ -1,0 +1,697 @@
+diff --git a/core/modules/file/src/Plugin/rest/resource/FileUploadResource.php b/core/modules/file/src/Plugin/rest/resource/FileUploadResource.php
+index d8c383d6e12fd4aa176e2fbef69f82a0fb7bc715..3fdc66c2550bbaf73712807c801ee390612f04e7 100644
+--- a/core/modules/file/src/Plugin/rest/resource/FileUploadResource.php
++++ b/core/modules/file/src/Plugin/rest/resource/FileUploadResource.php
+@@ -2,9 +2,7 @@
+ 
+ namespace Drupal\file\Plugin\rest\resource;
+ 
+-use Drupal\Component\Utility\Bytes;
+ use Drupal\Component\Utility\Crypt;
+-use Drupal\Component\Utility\Environment;
+ use Drupal\Core\Config\Config;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+@@ -525,9 +523,6 @@ protected function getUploadLocation(array $settings) {
+   /**
+    * Retrieves the upload validators for a field definition.
+    *
+-   * This is copied from \Drupal\file\Plugin\Field\FieldType\FileItem as there
+-   * is no entity instance available here that a FileItem would exist for.
+-   *
+    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+    *   The field definition for which to get validators.
+    *
+@@ -536,25 +531,14 @@ protected function getUploadLocation(array $settings) {
+    *   element's '#upload_validators' property.
+    */
+   protected function getUploadValidators(FieldDefinitionInterface $field_definition) {
+-    $validators = [
+-      // Add in our check of the file name length.
+-      'file_validate_name_length' => [],
+-    ];
+-    $settings = $field_definition->getSettings();
+-
+-    // Cap the upload size according to the PHP limit.
+-    $max_filesize = Bytes::toNumber(Environment::getUploadMaxSize());
+-    if (!empty($settings['max_filesize'])) {
+-      $max_filesize = min($max_filesize, Bytes::toNumber($settings['max_filesize']));
+-    }
+-
+-    // There is always a file size limit due to the PHP server limit.
+-    $validators['file_validate_size'] = [$max_filesize];
+-
+-    // Add the extension check if necessary.
+-    if (!empty($settings['file_extensions'])) {
+-      $validators['file_validate_extensions'] = [$settings['file_extensions']];
+-    }
++    $item_definition = $field_definition->getItemDefinition();
++    $class = $item_definition->getClass();
++    /** @var \Drupal\file\Plugin\Field\FieldType\FileItem $item */
++    $item = new $class($item_definition);
++
++    $validators = $item->getUploadValidators();
++    // Add in our check of the file name length.
++    $validators['file_validate_name_length'] = [];
+ 
+     return $validators;
+   }
+diff --git a/core/modules/file/tests/src/Kernel/FileItemValidationTest.php b/core/modules/file/tests/src/Kernel/FileItemValidationTest.php
+index b9a9bd574c618722bbf41a3159a47d01b4716e2a..c0ba3c56b1467c7d4ff4bfb180fe102e4f57e807 100644
+--- a/core/modules/file/tests/src/Kernel/FileItemValidationTest.php
++++ b/core/modules/file/tests/src/Kernel/FileItemValidationTest.php
+@@ -8,7 +8,6 @@
+ use Drupal\file\Entity\File;
+ use Drupal\KernelTests\KernelTestBase;
+ use Drupal\user\Entity\User;
+-use org\bovigo\vfs\vfsStream;
+ 
+ /**
+  * Tests that files referenced in file and image fields are always validated.
+@@ -75,25 +74,20 @@ public function testFileValidationConstraint($file_type) {
+       'bundle' => 'entity_test',
+       'settings' => [
+         'max_filesize' => '2k',
+-        'file_extensions' => 'jpg|png',
++        'file_extensions' => 'jpg',
+       ],
+     ]);
+     $field->save();
+ 
+-    vfsStream::setup('drupal_root');
+-    vfsStream::create([
+-      'sites' => [
+-        'default' => [
+-          'files' => [
+-            'test.txt' => str_repeat('a', 3000),
+-          ],
+-        ],
+-      ],
+-    ]);
++    $image_uri = uniqid('public://') . '.png';
++    $resolution = '1024x768';
++    $image_uri = $this->getRandomGenerator()->image($image_uri, $resolution, $resolution);
++    // The file needs to be bigger than 2 KB for the test to pass.
++    $this->assertGreaterThan(2048, filesize($image_uri));
+ 
+     // Test for max filesize.
+     $file = File::create([
+-      'uri' => 'vfs://drupal_root/sites/default/files/test.txt',
++      'uri' => $image_uri,
+       'uid' => $this->user->id(),
+     ]);
+     $file->setPermanent();
+@@ -109,9 +103,9 @@ public function testFileValidationConstraint($file_type) {
+     $this->assertCount(2, $result);
+ 
+     $this->assertEquals('field_test_file.0', $result->get(0)->getPropertyPath());
+-    $this->assertEquals('The file is <em class="placeholder">2.93 KB</em> exceeding the maximum file size of <em class="placeholder">2 KB</em>.', (string) $result->get(0)->getMessage());
++    $this->assertStringEndsWith('exceeding the maximum file size of <em class="placeholder">2 KB</em>.', (string) $result->get(0)->getMessage());
+     $this->assertEquals('field_test_file.0', $result->get(1)->getPropertyPath());
+-    $this->assertEquals('Only files with the following extensions are allowed: <em class="placeholder">jpg|png</em>.', (string) $result->get(1)->getMessage());
++    $this->assertEquals('Only files with the following extensions are allowed: <em class="placeholder">jpg</em>.', (string) $result->get(1)->getMessage());
+ 
+     // Refer to a file that does not exist.
+     $entity_test = EntityTest::create([
+diff --git a/core/modules/image/src/Plugin/Field/FieldType/ImageItem.php b/core/modules/image/src/Plugin/Field/FieldType/ImageItem.php
+index 56ff84006f885199e3ce9fd7fe1a9de40719391d..88c57fcbf5a4ad782ac9edef4d41384ff26725ea 100644
+--- a/core/modules/image/src/Plugin/Field/FieldType/ImageItem.php
++++ b/core/modules/image/src/Plugin/Field/FieldType/ImageItem.php
+@@ -502,4 +502,36 @@ public function isDisplayed() {
+     return TRUE;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getUploadValidators() {
++    $upload_validators = parent::getUploadValidators();
++    // Always validate that the uploaded file is an image.
++    $upload_validators['file_validate_is_image'] = [];
++
++    // If the image's resolution is constrained by the field settings, validate
++    // that too.
++    $min_resolution = $this->getSetting('min_resolution') ?: 0;
++    $max_resolution = $this->getSetting('max_resolution') ?: 0;
++    if ($min_resolution || $max_resolution) {
++      $upload_validators['file_validate_image_resolution'] = [
++        $max_resolution,
++        $min_resolution,
++      ];
++    }
++
++    if (isset($upload_validators['file_validate_extensions'])) {
++      $extensions = $this->getSetting('file_extensions');
++      $supported_extensions = \Drupal::service('image.factory')->getSupportedExtensions();
++
++      // If using custom extension validation, ensure that the extensions are
++      // supported by the current image toolkit. Otherwise, validate against all
++      // toolkit supported extensions.
++      $extensions = !empty($extensions) ? array_intersect(explode(' ', $extensions), $supported_extensions) : $supported_extensions;
++      $upload_validators['file_validate_extensions'][0] = implode(' ', $extensions);
++    }
++    return $upload_validators;
++  }
++
+ }
+diff --git a/core/modules/image/src/Plugin/Field/FieldWidget/ImageWidget.php b/core/modules/image/src/Plugin/Field/FieldWidget/ImageWidget.php
+index 3037615d8aed938a535eb3cc4f98573b9ff5aa22..299f6b24ac54fd00bd0ff0190e5e6c14e9a708b4 100644
+--- a/core/modules/image/src/Plugin/Field/FieldWidget/ImageWidget.php
++++ b/core/modules/image/src/Plugin/Field/FieldWidget/ImageWidget.php
+@@ -142,26 +142,10 @@ protected function formMultipleElements(FieldItemListInterface $items, array &$f
+    */
+   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+     $element = parent::formElement($items, $delta, $element, $form, $form_state);
++    $element['#upload_validators'] = $items[$delta]->getUploadValidators();
+ 
+     $field_settings = $this->getFieldSettings();
+ 
+-    // Add image validation.
+-    $element['#upload_validators']['file_validate_is_image'] = [];
+-
+-    // Add upload resolution validation.
+-    if ($field_settings['max_resolution'] || $field_settings['min_resolution']) {
+-      $element['#upload_validators']['file_validate_image_resolution'] = [$field_settings['max_resolution'], $field_settings['min_resolution']];
+-    }
+-
+-    $extensions = $field_settings['file_extensions'];
+-    $supported_extensions = $this->imageFactory->getSupportedExtensions();
+-
+-    // If using custom extension validation, ensure that the extensions are
+-    // supported by the current image toolkit. Otherwise, validate against all
+-    // toolkit supported extensions.
+-    $extensions = !empty($extensions) ? array_intersect(explode(' ', $extensions), $supported_extensions) : $supported_extensions;
+-    $element['#upload_validators']['file_validate_extensions'][0] = implode(' ', $extensions);
+-
+     // Add mobile device image capture acceptance.
+     $element['#accept'] = 'image/*';
+ 
+diff --git a/core/modules/image/tests/src/Kernel/ImageItemTest.php b/core/modules/image/tests/src/Kernel/ImageItemTest.php
+index 8c2de5d0cb3cf19ec4571e9fca7822a142dd3c5e..59babd9e2b3b54bab51d5f216a4f8d1068b87620 100644
+--- a/core/modules/image/tests/src/Kernel/ImageItemTest.php
++++ b/core/modules/image/tests/src/Kernel/ImageItemTest.php
+@@ -162,7 +162,37 @@ public function testImageItemMalformed() {
+       $this->assertEmpty($entity->image_test->width);
+       $this->assertEmpty($entity->image_test->height);
+     }
++  }
+ 
++  /**
++   * Tests that image items register appropriate upload validators.
++   */
++  public function testUploadValidators() {
++    $entity = EntityTest::create();
++    $items = $entity->get('image_test');
++    $item = $items->appendItem();
++    $field_definition = $items->getFieldDefinition();
++
++    $validators = $item->getUploadValidators();
++    $this->assertArrayHasKey('file_validate_is_image', $validators);
++    $this->assertArrayNotHasKey('file_validate_image_resolution', $validators);
++
++    $field_definition->setSetting('min_resolution', '32x32')->save();
++    $validators = $item->getUploadValidators();
++    $this->assertArrayHasKey('file_validate_is_image', $validators);
++    $this->assertSame([0, '32x32'], $validators['file_validate_image_resolution']);
++
++    $field_definition->setSetting('min_resolution', NULL)
++      ->setSetting('max_resolution', '1024x768')
++      ->save();
++    $validators = $item->getUploadValidators();
++    $this->assertArrayHasKey('file_validate_is_image', $validators);
++    $this->assertSame(['1024x768', 0], $validators['file_validate_image_resolution']);
++
++    $field_definition->setSetting('min_resolution', '32x32')->save();
++    $validators = $item->getUploadValidators();
++    $this->assertArrayHasKey('file_validate_is_image', $validators);
++    $this->assertSame(['1024x768', '32x32'], $validators['file_validate_image_resolution']);
+   }
+ 
+ }
+diff --git a/core/modules/jsonapi/src/Controller/TemporaryJsonapiFileFieldUploader.php b/core/modules/jsonapi/src/Controller/TemporaryJsonapiFileFieldUploader.php
+index 0551812fa848c348d314c8a91e22f7c9e58f4e24..03fcafb5754cc20f0cdb033e2c2628c144466b19 100644
+--- a/core/modules/jsonapi/src/Controller/TemporaryJsonapiFileFieldUploader.php
++++ b/core/modules/jsonapi/src/Controller/TemporaryJsonapiFileFieldUploader.php
+@@ -2,9 +2,7 @@
+ 
+ namespace Drupal\jsonapi\Controller;
+ 
+-use Drupal\Component\Utility\Bytes;
+ use Drupal\Component\Utility\Crypt;
+-use Drupal\Component\Utility\Environment;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+@@ -467,9 +465,6 @@ protected function getUploadLocation(array $settings) {
+   /**
+    * Retrieves the upload validators for a field definition.
+    *
+-   * This is copied from \Drupal\file\Plugin\Field\FieldType\FileItem as there
+-   * is no entity instance available here that a FileItem would exist for.
+-   *
+    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+    *   The field definition for which to get validators.
+    *
+@@ -478,25 +473,14 @@ protected function getUploadLocation(array $settings) {
+    *   element's '#upload_validators' property.
+    */
+   protected function getUploadValidators(FieldDefinitionInterface $field_definition) {
+-    $validators = [
+-      // Add in our check of the file name length.
+-      'file_validate_name_length' => [],
+-    ];
+-    $settings = $field_definition->getSettings();
+-
+-    // Cap the upload size according to the PHP limit.
+-    $max_filesize = Bytes::toNumber(Environment::getUploadMaxSize());
+-    if (!empty($settings['max_filesize'])) {
+-      $max_filesize = min($max_filesize, Bytes::toNumber($settings['max_filesize']));
+-    }
+-
+-    // There is always a file size limit due to the PHP server limit.
+-    $validators['file_validate_size'] = [$max_filesize];
+-
+-    // Add the extension check if necessary.
+-    if (!empty($settings['file_extensions'])) {
+-      $validators['file_validate_extensions'] = [$settings['file_extensions']];
+-    }
++    $item_definition = $field_definition->getItemDefinition();
++    $class = $item_definition->getClass();
++    /** @var \Drupal\file\Plugin\Field\FieldType\FileItem $item */
++    $item = new $class($item_definition);
++
++    $validators = $item->getUploadValidators();
++    // Add in our check of the file name length.
++    $validators['file_validate_name_length'] = [];
+ 
+     return $validators;
+   }
+diff --git a/core/modules/media_library/src/Form/FileUploadForm.php b/core/modules/media_library/src/Form/FileUploadForm.php
+index b7cbe7c6a6be22bff5796b4ed1401e10abdae253..225dd914704359fb55bffef7847bc1690216f60d 100644
+--- a/core/modules/media_library/src/Form/FileUploadForm.php
++++ b/core/modules/media_library/src/Form/FileUploadForm.php
+@@ -5,7 +5,6 @@
+ use Drupal\Core\Entity\EntityStorageInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Field\FieldStorageDefinitionInterface;
+-use Drupal\Core\Field\TypedData\FieldItemDataDefinition;
+ use Drupal\Core\File\Exception\FileWriteException;
+ use Drupal\Core\File\FileSystemInterface;
+ use Drupal\Core\Form\FormBuilderInterface;
+@@ -17,7 +16,6 @@
+ use Drupal\file\FileInterface;
+ use Drupal\file\FileUsage\FileUsageInterface;
+ use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
+-use Drupal\file\Plugin\Field\FieldType\FileItem;
+ use Drupal\media\MediaInterface;
+ use Drupal\media\MediaTypeInterface;
+ use Drupal\media_library\MediaLibraryUiBuilder;
+@@ -345,9 +343,10 @@ protected function createMediaFromValue(MediaTypeInterface $media_type, EntitySt
+    *   A created file item.
+    */
+   protected function createFileItem(MediaTypeInterface $media_type) {
+-    $field_definition = $media_type->getSource()->getSourceFieldDefinition($media_type);
+-    $data_definition = FieldItemDataDefinition::create($field_definition);
+-    return new FileItem($data_definition);
++    $data_definition = $media_type->getSource()->getSourceFieldDefinition($media_type)
++      ->getItemDefinition();
++    $class = $data_definition->getClass();
++    return new $class($data_definition);
+   }
+ 
+   /**
+diff --git a/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryImageUploadTest.php b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryImageUploadTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..7dceef13517e5b1cbc43403fb233b7edc0a6ead3
+--- /dev/null
++++ b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryImageUploadTest.php
+@@ -0,0 +1,56 @@
++<?php
++
++namespace Drupal\Tests\media_library\FunctionalJavascript;
++
++use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
++use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
++
++/**
++ * Tests the handling of images uploaded to the media library.
++ *
++ * @group media_library
++ */
++class MediaLibraryImageUploadTest extends MediaLibraryTestBase {
++
++  use EntityReferenceTestTrait;
++  use MediaTypeCreationTrait;
++
++  /**
++   * Tests that oversized images are automatically resized on upload.
++   */
++  public function testImageResizing() {
++    // Create a media type that only accepts images up to 16x16 in size.
++    $media_type = $this->createMediaType('image');
++    $media_type->getSource()
++      ->getSourceFieldDefinition($media_type)
++      ->setSetting('max_resolution', '16x16')
++      ->save();
++
++    $node_type = $this->drupalCreateContentType()->id();
++    $this->createEntityReferenceField('node', $node_type, 'field_icon', 'Icon', 'media');
++    $this->container->get('entity_display.repository')
++      ->getFormDisplay('node', $node_type)
++      ->setComponent('field_icon', [
++        'type' => 'media_library_widget',
++      ])
++      ->save();
++
++    $account = $this->drupalCreateUser([
++      "create $node_type content",
++      'create ' . $media_type->id() . ' media',
++    ]);
++    $this->drupalLogin($account);
++    $this->drupalGet("/node/add/$node_type");
++    $this->openMediaLibraryForField('field_icon');
++
++    $image_uri = uniqid('public://') . '.png';
++    $image_uri = $this->getRandomGenerator()->image($image_uri, '16x16', '32x32');
++    $image_path = $this->container->get('file_system')->realpath($image_uri);
++    $this->assertNotEmpty($image_path);
++    $this->assertFileExists($image_path);
++
++    $this->waitForFieldExists('Add file')->attachFile($image_path);
++    $this->waitForText('The image was resized to fit within the maximum allowed dimensions of 16x16 pixels.');
++  }
++
++}
+diff --git a/core/modules/rest/tests/src/Functional/FileUploadResourceTestBase.php b/core/modules/rest/tests/src/Functional/FileUploadResourceTestBase.php
+index 56bceaf366bf42b9abcb76bfb66b11b3c815fb00..50107db82021789dc0afdd2df5c263fabb769e4a 100644
+--- a/core/modules/rest/tests/src/Functional/FileUploadResourceTestBase.php
++++ b/core/modules/rest/tests/src/Functional/FileUploadResourceTestBase.php
+@@ -87,6 +87,20 @@ abstract class FileUploadResourceTestBase extends ResourceTestBase {
+    */
+   protected $fileStorage;
+ 
++  /**
++   * The type of field in which to store the uploaded file.
++   *
++   * @var string
++   */
++  protected $fieldType = 'file';
++
++  /**
++   * The extension of the uploaded file.
++   *
++   * @var string
++   */
++  protected $fileExtension = 'txt';
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -100,7 +114,7 @@ protected function setUp(): void {
+     $this->fieldStorage = FieldStorageConfig::create([
+       'entity_type' => 'entity_test',
+       'field_name' => 'field_rest_file_test',
+-      'type' => 'file',
++      'type' => $this->fieldType,
+       'settings' => [
+         'uri_scheme' => 'public',
+       ],
+@@ -114,7 +128,7 @@ protected function setUp(): void {
+       'bundle' => 'entity_test',
+       'settings' => [
+         'file_directory' => 'foobar',
+-        'file_extensions' => 'txt',
++        'file_extensions' => $this->fileExtension,
+         'max_filesize' => '',
+       ],
+     ])
+@@ -187,17 +201,20 @@ public function testPostFileUpload() {
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data.
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example.txt'));
++    $expected_filename = 'example.' . $this->fileExtension;
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/' . $expected_filename));
+ 
+     // Test the file again but using 'filename' in the Content-Disposition
+     // header with no 'file' prefix.
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename="example.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename="' . $expected_filename . '"']);
+     $this->assertSame(201, $response->getStatusCode());
+-    $expected = $this->getExpectedNormalizedEntity(2, 'example_0.txt');
++    // _0 should be appended to the uploaded filename.
++    $expected_filename = str_replace('.' . $this->fileExtension, '_0.' . $this->fileExtension, $expected_filename);
++    $expected = $this->getExpectedNormalizedEntity(2, $expected_filename);
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data.
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example_0.txt'));
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/' . $expected_filename));
+     $this->assertTrue($this->fileStorage->loadUnchanged(1)->isTemporary());
+ 
+     // Verify that we can create an entity that references the uploaded file.
+@@ -281,11 +298,11 @@ public function testPostFileUploadInvalidHeaders() {
+ 
+     // An invalid key-value pair in the Content-Disposition header should return
+     // a 400.
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'not_a_filename="example.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'not_a_filename="example.' . $this->fileExtension . '"']);
+     $this->assertResourceErrorResponse(400, 'No filename found in "Content-Disposition" header. A file name in the format "filename=FILENAME" must be provided', $response);
+ 
+     // Using filename* extended format is not currently supported.
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename*="UTF-8 \' \' example.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename*="UTF-8 \' \' example.' . $this->fileExtension . '"']);
+     $this->assertResourceErrorResponse(400, 'The extended "filename*" format is currently not supported in the "Content-Disposition" header', $response);
+   }
+ 
+@@ -315,11 +332,11 @@ public function testPostFileUploadDuplicateFile() {
+     $this->assertSame(201, $response->getStatusCode());
+ 
+     // Loading expected normalized data for file 2, the duplicate file.
+-    $expected = $this->getExpectedNormalizedEntity(2, 'example_0.txt');
++    $expected = $this->getExpectedNormalizedEntity(2, 'example_0.' . $this->fileExtension);
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data.
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example_0.txt'));
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example_0.' . $this->fileExtension));
+   }
+ 
+   /**
+@@ -346,11 +363,11 @@ public function testPostFileUploadDuplicateFileRaceCondition() {
+     // time, by removing the first uploaded file from disk (leaving the entry in
+     // the file_managed table) before trying to upload another file with the
+     // same name.
+-    unlink(\Drupal::service('file_system')->realpath('public://foobar/example.txt'));
++    unlink(\Drupal::service('file_system')->realpath('public://foobar/example.' . $this->fileExtension));
+ 
+     // Make the same request again. The upload should fail validation.
+     $response = $this->fileRequest($uri, $this->testFileData);
+-    $this->assertResourceErrorResponse(422, PlainTextOutput::renderFromHtml("Unprocessable Entity: validation failed.\nuri: The file public://foobar/example.txt already exists. Enter a unique file URI.\n"), $response);
++    $this->assertResourceErrorResponse(422, PlainTextOutput::renderFromHtml("Unprocessable Entity: validation failed.\nuri: The file public://foobar/example.$this->fileExtension already exists. Enter a unique file URI.\n"), $response);
+   }
+ 
+   /**
+@@ -367,24 +384,24 @@ public function testFileUploadStrippedFilePath() {
+ 
+     $uri = Url::fromUri('base:' . static::$postUri);
+ 
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="directory/example.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="directory/example.' . $this->fileExtension . '"']);
+     $this->assertSame(201, $response->getStatusCode());
+     $expected = $this->getExpectedNormalizedEntity();
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data. It should have been written to the configured
+-    // directory, not /foobar/directory/example.txt.
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example.txt'));
++    // directory, not /foobar/directory/example.EXTENSION.
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example.' . $this->fileExtension));
+ 
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="../../example_2.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="../../example_2.' . $this->fileExtension . '"']);
+     $this->assertSame(201, $response->getStatusCode());
+-    $expected = $this->getExpectedNormalizedEntity(2, 'example_2.txt', TRUE);
++    $expected = $this->getExpectedNormalizedEntity(2, 'example_2.' . $this->fileExtension, TRUE);
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data. It should have been written to the configured
+-    // directory, not /foobar/directory/example.txt.
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example_2.txt'));
+-    $this->assertFileDoesNotExist('../../example_2.txt');
++    // directory, not /foobar/directory/example.EXTENSION.
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/example_2.' . $this->fileExtension));
++    $this->assertFileDoesNotExist('../../example_2.' . $this->fileExtension);
+ 
+     // Check a path from the root. Extensions have to be empty to allow a file
+     // with no extension to pass validation.
+@@ -400,7 +417,7 @@ public function testFileUploadStrippedFilePath() {
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data. It should have been written to the configured
+-    // directory, not /foobar/directory/example.txt.
++    // directory, not /foobar/directory/example.EXTENSION.
+     $this->assertSame($this->testFileData, file_get_contents('public://foobar/passwd'));
+   }
+ 
+@@ -418,11 +435,11 @@ public function testFileUploadUnicodeFilename() {
+ 
+     // It is important that the filename starts with a unicode character. See
+     // https://bugs.php.net/bug.php?id=77239.
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="Èxample-✓.txt"']);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'file; filename="Èxample-✓.' . $this->fileExtension . '"']);
+     $this->assertSame(201, $response->getStatusCode());
+-    $expected = $this->getExpectedNormalizedEntity(1, 'Èxample-✓.txt', TRUE);
++    $expected = $this->getExpectedNormalizedEntity(1, 'Èxample-✓.' . $this->fileExtension, TRUE);
+     $this->assertResponseData($expected, $response);
+-    $this->assertSame($this->testFileData, file_get_contents('public://foobar/Èxample-✓.txt'));
++    $this->assertSame($this->testFileData, file_get_contents('public://foobar/Èxample-✓.' . $this->fileExtension));
+   }
+ 
+   /**
+@@ -446,7 +463,7 @@ public function testFileUploadZeroByteFile() {
+     $this->assertResponseData($expected, $response);
+ 
+     // Check the actual file data.
+-    $this->assertSame('', file_get_contents('public://foobar/example.txt'));
++    $this->assertSame('', file_get_contents('public://foobar/example.' . $this->fileExtension));
+   }
+ 
+   /**
+@@ -463,11 +480,11 @@ public function testFileUploadInvalidFileType() {
+ 
+     // Test with a JSON file.
+     $response = $this->fileRequest($uri, '{"test":123}', ['Content-Disposition' => 'filename="example.json"']);
+-    $this->assertResourceErrorResponse(422, PlainTextOutput::renderFromHtml("Unprocessable Entity: file validation failed.\nOnly files with the following extensions are allowed: <em class=\"placeholder\">txt</em>."), $response);
++    $this->assertResourceErrorResponse(422, PlainTextOutput::renderFromHtml("Unprocessable Entity: file validation failed.\nOnly files with the following extensions are allowed: <em class=\"placeholder\">$this->fileExtension</em>."), $response);
+ 
+     // Make sure that no file was saved.
+     $this->assertEmpty(File::load(1));
+-    $this->assertFileDoesNotExist('public://foobar/example.txt');
++    $this->assertFileDoesNotExist('public://foobar/example.' . $this->fileExtension);
+   }
+ 
+   /**
+@@ -493,7 +510,7 @@ public function testFileUploadLargerFileSize() {
+ 
+     // Make sure that no file was saved.
+     $this->assertEmpty(File::load(1));
+-    $this->assertFileDoesNotExist('public://foobar/example.txt');
++    $this->assertFileDoesNotExist('public://foobar/example.' . $this->fileExtension);
+   }
+ 
+   /**
+@@ -516,25 +533,26 @@ public function testFileUploadMaliciousExtension() {
+ 
+     // Test using a masked exploit file.
+     $response = $this->fileRequest($uri, $php_string, ['Content-Disposition' => 'filename="example.php"']);
+-    // The filename is not munged because .txt is added and it is a known
+-    // extension to apache.
+-    $expected = $this->getExpectedNormalizedEntity(1, 'example.php_.txt', TRUE);
++    // The filename is not munged because the extension is added and it is a
++    // known extension to apache.
++    $expected = $this->getExpectedNormalizedEntity(1, 'example.php_.' . $this->fileExtension, TRUE);
+     // Override the expected filesize.
+     $expected['filesize'][0]['value'] = strlen($php_string);
+     $this->assertResponseData($expected, $response);
+-    $this->assertFileExists('public://foobar/example.php_.txt');
++    $this->assertFileExists('public://foobar/example.php_.' . $this->fileExtension);
+ 
+-    // Add .php and .txt as allowed extensions. Since 'allow_insecure_uploads'
+-    // is FALSE, .php files should be renamed to have a .txt extension.
+-    $this->field->setSetting('file_extensions', 'php txt')->save();
++    // Add .php and $this->fileExtension as allowed extensions. Since
++    // 'allow_insecure_uploads' is FALSE, .php files should be renamed to have
++    // $this->fileExtension.
++    $this->field->setSetting('file_extensions', 'php ' . $this->fileExtension)->save();
+     $this->refreshTestStateAfterRestConfigChange();
+ 
+     $response = $this->fileRequest($uri, $php_string, ['Content-Disposition' => 'filename="example_2.php"']);
+-    $expected = $this->getExpectedNormalizedEntity(2, 'example_2.php_.txt', TRUE);
++    $expected = $this->getExpectedNormalizedEntity(2, 'example_2.php_.' . $this->fileExtension, TRUE);
+     // Override the expected filesize.
+     $expected['filesize'][0]['value'] = strlen($php_string);
+     $this->assertResponseData($expected, $response);
+-    $this->assertFileExists('public://foobar/example_2.php_.txt');
++    $this->assertFileExists('public://foobar/example_2.php_.' . $this->fileExtension);
+     $this->assertFileDoesNotExist('public://foobar/example_2.php');
+ 
+     // Allow .doc file uploads and ensure even a mis-configured apache will not
+@@ -583,18 +601,18 @@ public function testFileUploadMaliciousExtension() {
+     $this->assertResponseData($expected, $response);
+     $this->assertFileExists('public://foobar/example_5.php_.png');
+ 
+-    // Dangerous extensions are munged if is renamed to end in .txt.
+-    $response = $this->fileRequest($uri, $php_string, ['Content-Disposition' => 'filename="example_6.cgi.png.txt"']);
+-    $expected = $this->getExpectedNormalizedEntity(6, 'example_6.cgi_.png_.txt', TRUE);
++    // Dangerous extensions are munged if is renamed to end in .EXTENSION.
++    $response = $this->fileRequest($uri, $php_string, ['Content-Disposition' => 'filename="example_6.cgi.png.' . $this->fileExtension . '"']);
++    $expected = $this->getExpectedNormalizedEntity(6, 'example_6.cgi_.png_.' . $this->fileExtension, TRUE);
+     // Override the expected filesize.
+     $expected['filesize'][0]['value'] = strlen($php_string);
+     // The file mime should also now be text.
+     $expected['filemime'][0]['value'] = 'text/plain';
+     $this->assertResponseData($expected, $response);
+-    $this->assertFileExists('public://foobar/example_6.cgi_.png_.txt');
++    $this->assertFileExists('public://foobar/example_6.cgi_.png_.' . $this->fileExtension);
+ 
+-    // Add .php as an allowed extension without .txt. Since insecure uploads are
+-    // not allowed, .php files will be rejected.
++    // Add .php as an allowed extension without .EXTENSION. Since insecure
++    // uploads are not allowed, .php files will be rejected.
+     $this->field->setSetting('file_extensions', 'php')->save();
+     $this->refreshTestStateAfterRestConfigChange();
+ 
+@@ -603,7 +621,7 @@ public function testFileUploadMaliciousExtension() {
+ 
+     // Make sure that no file was saved.
+     $this->assertFileDoesNotExist('public://foobar/example_7.php');
+-    $this->assertFileDoesNotExist('public://foobar/example_7.php.txt');
++    $this->assertFileDoesNotExist('public://foobar/example_7.php.' . $this->fileExtension);
+ 
+     // Now allow insecure uploads.
+     \Drupal::configFactory()
+@@ -640,11 +658,11 @@ public function testFileUploadNoExtensionSetting() {
+       ->save();
+     $this->refreshTestStateAfterRestConfigChange();
+ 
+-    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename="example.txt"']);
+-    $expected = $this->getExpectedNormalizedEntity(1, 'example.txt', TRUE);
++    $response = $this->fileRequest($uri, $this->testFileData, ['Content-Disposition' => 'filename="example.' . $this->fileExtension . '"']);
++    $expected = $this->getExpectedNormalizedEntity(1, 'example.' . $this->fileExtension, TRUE);
+ 
+     $this->assertResponseData($expected, $response);
+-    $this->assertFileExists('public://foobar/example.txt');
++    $this->assertFileExists('public://foobar/example.' . $this->fileExtension);
+   }
+ 
+   /**
+@@ -676,7 +694,9 @@ protected function getExpectedUnauthorizedAccessMessage($method) {
+    * @return array
+    *   The expected normalized data array.
+    */
+-  protected function getExpectedNormalizedEntity($fid = 1, $expected_filename = 'example.txt', $expected_as_filename = FALSE) {
++  protected function getExpectedNormalizedEntity($fid = 1, $expected_filename = 'example.EXTENSION', $expected_as_filename = FALSE) {
++    $expected_filename = str_replace('.EXTENSION', '.' . $this->fileExtension, $expected_filename);
++
+     $author = User::load(static::$auth ? $this->account->id() : 0);
+     $file = File::load($fid);
+ 
+@@ -706,7 +726,7 @@ protected function getExpectedNormalizedEntity($fid = 1, $expected_filename = 'e
+       ],
+       'filename' => [
+         [
+-          'value' => $expected_as_filename ? $expected_filename : 'example.txt',
++          'value' => $expected_as_filename ? $expected_filename : 'example.' . $this->fileExtension,
+         ],
+       ],
+       'uri' => [
+@@ -772,7 +792,7 @@ protected function fileRequest(Url $url, $file_contents, array $headers = []) {
+       // Set the required (and only accepted) content type for the request.
+       'Content-Type' => 'application/octet-stream',
+       // Set the required Content-Disposition header for the file name.
+-      'Content-Disposition' => 'file; filename="example.txt"',
++      'Content-Disposition' => 'file; filename="example.' . $this->fileExtension . '"',
+     ];
+     $request_options[RequestOptions::HEADERS] = array_filter($headers, function ($value) {
+       return $value !== FALSE;

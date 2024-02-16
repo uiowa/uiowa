@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.page.layout_builder__layout
     - node.type.page
   module:
+    - smart_trim
     - user
 _core:
   default_config_hash: oWYzz5zPkfwfLVY9mzbyCf3TaCHY1_tOVH9b1--bVTo
@@ -24,6 +25,31 @@ targetEntityType: node
 bundle: page
 mode: teaser
 content:
+  body:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 0
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: true
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
@@ -33,20 +59,12 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  field_teaser:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
 hidden:
-  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -57,5 +75,6 @@ hidden:
   field_pre_footer_override: true
   field_publish_options: true
   field_tags: true
+  field_teaser: true
   layout_builder__layout: true
   search_api_excerpt: true

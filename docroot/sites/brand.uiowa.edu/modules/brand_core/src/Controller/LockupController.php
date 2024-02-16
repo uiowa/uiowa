@@ -68,7 +68,10 @@ class LockupController extends ControllerBase {
    * Generate Lockup.
    */
   public function generate($nid) {
-    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()->condition('nid', $nid)->execute();
+    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('nid', $nid)
+      ->accessCheck()
+      ->execute();
 
     if ($is_node) {
       $this->entityTypeManager->getStorage('node')->resetCache([$nid]);
@@ -674,7 +677,10 @@ class LockupController extends ControllerBase {
    * Download Lockup.
    */
   public function download($nid) {
-    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()->condition('nid', $nid)->execute();
+    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->condition('nid', $nid)
+      ->accessCheck()
+      ->execute();
 
     if ($is_node) {
       $node = $this->entityTypeManager->getStorage('node')->load($nid);

@@ -4,23 +4,21 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_project_whats_new
+    - filter.format.filtered_html
     - node.type.project
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - filtered_html
 id: node.project.field_project_whats_new
 field_name: field_project_whats_new
 entity_type: node
 bundle: project
-label: 'What''s New'
+label: "What's New"
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - filtered_html
 field_type: text_long

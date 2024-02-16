@@ -2,7 +2,7 @@
  * @file
  * Lockup Preview.
  */
-(function ($, Drupal) {
+(function ($, Drupal, once) {
     Drupal.behaviors.lockupPreview = {
         attach: function () {
             /*
@@ -107,7 +107,7 @@
                             </div>\
                         </div>\
                     ';
-                $('#edit-actions').once().append(emptyRequired);
+                $(once('required-attached', '#edit-actions')).append(emptyRequired);
             }
 
             // Add a warning in case any required fields are empty
@@ -556,4 +556,4 @@
             }
         }
     };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

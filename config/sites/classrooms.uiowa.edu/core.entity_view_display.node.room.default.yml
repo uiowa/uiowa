@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.room.field_room_accessibility_feature
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_classroom_furniture
+    - field.field.node.room.field_room_combined_id
     - field.field.node.room.field_room_design_details
     - field.field.node.room.field_room_features
     - field.field.node.room.field_room_guide
@@ -461,7 +462,7 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 50-50
           layout_builder_styles_style:
-            0: ''
+            0: section_background_style_gray
             1: section_margin_edge_to_edge
             remove_default_top_padding: remove_default_top_padding
             remove_default_bottom_padding: remove_default_bottom_padding
@@ -484,7 +485,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: 2
             additional: {  }
             third_party_settings: {  }
@@ -699,6 +700,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 20
+    region: content
+  field_room_combined_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 23
     region: content
   field_room_design_details:
     type: string

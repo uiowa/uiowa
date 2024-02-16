@@ -19,6 +19,13 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
   protected $innerService;
 
   /**
+   * The transliteration service.
+   *
+   * @var \Drupal\Component\Transliteration\TransliterationInterface
+   */
+  protected $transliteration;
+
+  /**
    * The constructor.
    *
    * @param \Drupal\entity_print\FilenameGeneratorInterface $filenameGenerator
@@ -28,7 +35,7 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
    */
   public function __construct(FilenameGeneratorInterface $filenameGenerator, TransliterationInterface $transliteration) {
     $this->innerService = $filenameGenerator;
-    parent::__construct($transliteration);
+    $this->transliteration = $transliteration;
   }
 
   /**

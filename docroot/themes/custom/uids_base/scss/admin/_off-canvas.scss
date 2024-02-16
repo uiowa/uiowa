@@ -1,5 +1,6 @@
 // Fix for off-canvas dialog update button being hidden.
-.ui-dialog-off-canvas #drupal-off-canvas {
+.ui-dialog-off-canvas #drupal-off-canvas:not(.drupal-off-canvas-reset),
+.ui-dialog-off-canvas #drupal-off-canvas-wrapper {
   overflow-y: scroll!important;
   &::after {
     float: left;
@@ -12,7 +13,8 @@
 }
 
 // Grid for image gallery block.
-#drupal-off-canvas  {
+#drupal-off-canvas:not(.drupal-off-canvas-reset),
+#drupal-off-canvas-wrapper  {
   .media-library-selection {
     @include grid-base;
     @include breakpoint(sm) {
@@ -21,7 +23,8 @@
   }
 }
 // Responsive images within drupal-off-canvas and cursor move for media library grid.
-#drupal-off-canvas {
+#drupal-off-canvas:not(.drupal-off-canvas-reset),
+#drupal-off-canvas-wrapper {
   img {
     width: 100%;
   }
@@ -35,8 +38,10 @@
 /*
  * Off-canvas overrides
  */
-#drupal-off-canvas .search-choice span,
-#drupal-off-canvas .search-field .chosen-search-input {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-choice span,
+#drupal-off-canvas-wrapper .search-choice span,
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-field .chosen-search-input,
+#drupal-off-canvas-wrapper .search-field .chosen-search-input {
   color: #000 !important;
   background: #fff !important;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
@@ -46,18 +51,21 @@
 }
 
 // Override classy negative bottom margin.
-#drupal-off-canvas table {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) table,
+#drupal-off-canvas-wrapper table {
   margin: 0 -20px 0 -20px;
 }
 
-#drupal-off-canvas .layout-builder-style-heading {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .layout-builder-style-heading,
+#drupal-off-canvas-wrapper .layout-builder-style-heading {
   border-bottom: 1px solid #999;
   font-size: 15px;
   padding-bottom: 10px;
   padding-top: 10px;
 }
 
-#drupal-off-canvas .ui-autocomplete {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .ui-autocomplete,
+#drupal-off-canvas-wrapper .ui-autocomplete {
   li {
     background: #fff !important;
 
@@ -69,11 +77,13 @@
   }
 }
 
-#drupal-off-canvas .search-choice span {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .search-choice span,
+#drupal-off-canvas-wrapper .search-choice span {
   background: transparent !important;
 }
 
-#drupal-off-canvas .field--type-entity-reference-revisions>div>fieldset {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .field--type-entity-reference-revisions>div>fieldset,
+#drupal-off-canvas-wrapper .field--type-entity-reference-revisions>div>fieldset {
   border: 1px solid #999;
   padding: 15px;
 
@@ -90,23 +100,36 @@
   }
 }
 
-#drupal-off-canvas th.ief-tabledrag-header,
-#drupal-off-canvas td.ief-tabledrag-handle {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) th.ief-tabledrag-header,
+#drupal-off-canvas-wrapper th.ief-tabledrag-header,
+#drupal-off-canvas:not(.drupal-off-canvas-reset) td.ief-tabledrag-handle,
+#drupal-off-canvas-wrapper td.ief-tabledrag-handle {
   width: 20px
 }
 
-#drupal-off-canvas select[multiple] option {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) select[multiple] option,
+#drupal-off-canvas-wrapper select[multiple] option {
   color: #000;
   background: #fff;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
 }
 
-#drupal-off-canvas form {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) form,
+#drupal-off-canvas-wrapper form {
   padding-top: 10px;
 }
 
+#drupal-off-canvas-wrapper label {
+  margin-bottom: 0.3rem;
+}
+
+#drupal-off-canvas-wrapper .select-wrapper + .select-wrapper {
+  margin-block-start: 0.75rem;
+}
+
 // Statistic admin UX.
-#drupal-off-canvas {
+#drupal-off-canvas:not(.drupal-off-canvas-reset),
+#drupal-off-canvas-wrapper {
   [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
 
     .fieldset-legend {
@@ -122,15 +145,18 @@
 }
 
 // Allow the details summary open/close marker to appear.
-#drupal-off-canvas details,
-#drupal-off-canvas summary {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) details,
+#drupal-off-canvas-wrapper details,
+#drupal-off-canvas:not(.drupal-off-canvas-reset) summary,
+#drupal-off-canvas-wrapper summary {
   list-style-position:revert;
   list-style-image: none;
   list-style-type: revert;
 }
 
 // Styles for smart date date range.
-#drupal-off-canvas .smartdate--time-inline {
+#drupal-off-canvas:not(.drupal-off-canvas-reset) .smartdate--time-inline,
+#drupal-off-canvas-wrapper .smartdate--time-inline {
   @include breakpoint(sm) {
     display: flex !important;
     align-items: center !important;
@@ -138,3 +164,173 @@
     width: 25rem !important;
   }
 }
+
+// https://www.drupal.org/project/drupal/issues/3070375.
+.js #drupal-off-canvas-wrapper {
+  .js-hide {
+  display: none !important;
+  }
+}
+
+
+// Alerts.
+#drupal-off-canvas-wrapper .alert span,
+#drupal-off-canvas-wrapper .alert svg.fa-stack-2x {
+  position: relative!important;
+}
+
+#drupal-off-canvas-wrapper .alert svg {
+  margin: 0;
+  height: 1.2rem;
+}
+
+#drupal-off-canvas-wrapper .alert  {
+  display: flex;
+  background: $danger-light;
+  border-color: rgba(0,0,0,.125);
+  border-radius: 2px;
+  padding: 1.5rem!important;
+  line-height: 1.3;
+  font-size: 1.2rem;
+  position: relative;
+  align-items: center;
+}
+
+#drupal-off-canvas-wrapper .alert__icon  {
+  padding-right: 1.5rem!important;
+}
+
+#drupal-off-canvas-wrapper .alert__icon .svg-inline--fa.fa-stack-1x {
+  margin: 0;
+  left: -3px;
+  top: -1px;
+}
+
+#drupal-off-canvas-wrapper .alert__icon .svg-inline--fa.fa-stack-2x {
+  height: 2rem;
+  width: 2rem;
+}
+
+#drupal-off-canvas-wrapper .alert a {
+  color: $link-color;
+}
+
+#drupal-off-canvas-wrapper .alert button  {
+  color: $secondary;
+  position: absolute;
+  right: 1.2rem;
+  top: 1rem;
+  background: none;
+  border: none;
+}
+
+#drupal-off-canvas-wrapper form .alert div {
+  color: $secondary;
+}
+
+#drupal-off-canvas-wrapper .alert ul.item-list__comma-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  li {
+    display: inline-block;
+    border-bottom: none;
+
+    + li {
+      &:before {
+        content: ",";
+        padding: 0 .2rem 0 .1rem;
+      }
+    }
+  }
+}
+
+// Accessible off-canvas form item error color.
+#drupal-off-canvas .uids-content .form-item--error-message * {
+  color: #E8A392 !important;
+}
+
+// Paragraphs widget admin UX. Collections and Slider.
+#drupal-off-canvas-wrapper {
+  .paragraphs-tabs-wrapper {
+    .field-multiple-drag {
+      padding: 6px 8px !important;
+    }
+
+    [id*="settings-block-form-field-uiowa-"][id*="-item-wrapper-"] {
+      padding: 12px !important;
+      margin: 6px !important;
+    }
+
+    .paragraph-top {
+      display: grid !important;
+      grid-template-columns: auto 10px auto 100px !important;
+      font-size: 12px !important;
+    }
+
+    .summary-content {
+      display: inline-block !important;
+    }
+
+    .paragraphs-actions {
+      display: flex !important;
+      align-items: center !important;
+      min-width: 110px;
+
+      .button {
+        margin-bottom: 0;
+      }
+    }
+
+    button.paragraphs-dropdown-toggle {
+      width: 26px;
+      height: 26px;
+      border: none;
+      background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
+    }
+
+    .paragraphs-dropdown {
+      position: relative;
+
+      .paragraphs-dropdown-actions {
+        display: none;
+        border: none;
+        box-shadow: none;
+        background: inherit;
+      }
+
+      &.open .paragraphs-dropdown-actions {
+        display: inline-block;
+        position: absolute;
+        right: 26px;
+        top: -1px;
+
+        .button {
+          font-size: var(--off-canvas-button-font-size);
+          padding: var(--off-canvas-button-padding);
+        }
+      }
+    }
+  }
+
+  // Slide preview
+  .paragraph--view-mode--preview {
+
+    &.paragraph--type--uiowa-slide,
+    &.paragraph--type--uiowa-timeline-item {
+      display: flex;
+
+      .field--name-field-uiowa-slide-content p {
+        margin-top: 0;
+        line-height: 1.4;
+      }
+
+      .field--name-field-uiowa-slide-image,
+      .field--name-field-timeline-icon,
+      .field--name-field-timeline-media {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+

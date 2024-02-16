@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrusso.uiowa.ddev.site
+    protocol: https
+  machine_name: labrusso
+  human_name: russo.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrusso.prod
+drupal:
+  db:
+    database: russo_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrusso.prod.drupal.uiowa.edu'
+  requester: kuburasa
+  site-name: 'Russo Lab'

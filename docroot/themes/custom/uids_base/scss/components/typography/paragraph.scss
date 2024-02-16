@@ -52,6 +52,25 @@ a:not([href]) {
   line-height: inherit;
 }
 
+hr {
+  clear: both;
+}
+
+/**
+* Temporary workaround for https://www.drupal.org/project/drupal/issues/3398223.
+* 1. Add the correct box sizing in Firefox.
+* 2. Show the overflow in Edge and IE.
+*/
+div.hr {
+  clear: both;
+  box-sizing: content-box;
+  /* 1 */
+  height: 0;
+  /* 1 */
+  overflow: visible;
+  /* 2 */
+}
+
 [class*=bg-] .element--spacer-separator,
 [class*=bg-] [class*=bg-] .element--spacer-separator {
   border: 1px solid transparent;
@@ -69,6 +88,6 @@ iframe {max-width: 100%;}
 .block-field-blocknodepagebody p:last-child,
 .block-inline-blockuiowa-collection p:last-child,
 .block-field-blocknodearticlebody p:last-child,
-.block-field-blocknodepersonfield-person-bio p:last-child {
+.block-field-blocknodepersonbody p:last-child {
   margin-bottom: 0;
 }

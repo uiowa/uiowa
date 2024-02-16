@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labchristensen.uiowa.ddev.site
+    protocol: https
+  machine_name: labchristensen
+  human_name: christensen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchristensen.prod
+drupal:
+  db:
+    database: christensen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labchristensen.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Gary Christensen Research Group'

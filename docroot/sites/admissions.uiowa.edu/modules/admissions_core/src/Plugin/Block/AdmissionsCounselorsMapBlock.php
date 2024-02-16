@@ -55,7 +55,8 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
     $query = $node_storage->getQuery()
       ->condition('type', 'person')
       ->condition('status', 1)
-      ->condition('field_person_types', 'counselor');
+      ->condition('field_person_types', 'counselor')
+      ->accessCheck();
 
     $nids = $query->execute();
     if (!empty($nids)) {
@@ -82,7 +83,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
       ],
       '#attached' => [
         'library' => [
-          'uids_base/leaflet',
+          'leaflet/leaflet',
           'admissions_core/counselors-map',
         ],
         'drupalSettings' => [

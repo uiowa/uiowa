@@ -1,0 +1,369 @@
+uuid: 7a8827b9-1ccc-48a9-bb1c-bcc35afadfa6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.service.body
+    - field.field.node.service.field_meta_tags
+    - field.field.node.service.field_service_alias
+    - field.field.node.service.field_service_audience
+    - field.field.node.service.field_service_category
+    - field.field.node.service.field_service_contact
+    - field.field.node.service.field_service_fees
+    - field.field.node.service.field_service_fees_info
+    - field.field.node.service.field_service_quick_links
+    - field.field.node.service.field_service_related_service
+    - field.field.node.service.field_service_website
+    - node.type.service
+    - views.view.service_related_articles
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - options
+    - system
+    - text
+    - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_container_narrow
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+        components:
+          -
+            uuid: a8aa26f1-3b4b-477a-96ba-a2f21a524dc7
+            region: content
+            configuration:
+              id: 'extra_field_block:node:service:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_black_pattern_community
+            1: section_margin_fixed_width_container
+            restore_default_spacing: restore_default_spacing
+        components:
+          -
+            uuid: 6eced04f-8ad2-4f0b-8c74-39dc9d58709b
+            region: content
+            configuration:
+              id: 'field_block:node:service:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2d8ed27d-c6eb-4551-b195-5c757fcc4314
+            region: content
+            configuration:
+              id: 'field_block:node:service:field_service_audience'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 448f2f39-d9d8-4a73-bf82-3dd1bae80437
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol_card_sidebar
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_large
+            3: section_card_media_format_widescreen
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 53d732fa-a435-4be6-814d-80a36105fa4e
+            region: main
+            configuration:
+              id: 'field_block:node:service:body'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 106c04ef-4df6-44cc-ba5f-9430b0fc1605
+            region: main
+            configuration:
+              id: 'field_block:node:service:field_service_contact'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 69b3b122-d180-4794-b05b-2f99e84d6fc3
+            region: main
+            configuration:
+              id: 'field_block:node:service:field_service_related_service'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ed94a75b-3916-4f46-83b9-ae611442901a
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 120
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 75f95ee5-eb90-4526-8127-53ce60ce905f
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_quick_links'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 120
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 79dcfeaf-e068-4eb7-a03a-d27167e6fbaa
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_fees'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          -
+            uuid: 11042c37-ef84-419b-b9b9-0976e593373c
+            region: content
+            configuration:
+              id: 'views_block:service_related_articles-service_articles_block'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: News
+                hide_headline: 0
+                heading_size: h3
+                headline_style: headline_bold_serif_underline
+                headline_alignment: headline_alignment_center
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: node.service.default
+targetEntityType: node
+bundle: service
+mode: default
+content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_service_fees:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 202
+    region: content
+  field_service_fees_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 203
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 200
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_meta_tags: true
+  field_service_alias: true
+  field_service_audience: true
+  field_service_category: true
+  field_service_contact: true
+  field_service_quick_links: true
+  field_service_related_service: true
+  field_service_website: true
+  search_api_excerpt: true
