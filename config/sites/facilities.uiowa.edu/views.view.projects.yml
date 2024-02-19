@@ -1227,7 +1227,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -1297,11 +1297,14 @@ display:
         groups:
           1: AND
       style:
-        type: default
+        type: html_list
         options:
           grouping: {  }
           row_class: ''
           default_row_class: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
       row:
         type: fields
         options:
@@ -1329,7 +1332,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h2>Projects</h2>'
+            value: '<h2 class="headline headline--serif h5">Projects</h2>'
             format: filtered_html
           tokenize: false
       display_extenders:
@@ -1338,6 +1341,7 @@ display:
           tokenize: false
       block_description: 'Projects building'
       block_category: 'Site custom'
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
