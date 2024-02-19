@@ -74,16 +74,14 @@ adding:
       weight: 10
     sticky:
       weight: 7
-    title:
-      weight: null
     url_redirects:
       weight: 9
+  hidden:
+    title: true
 removing:
   content:
     body:
       weight: 13
-      settings:
-        show_summary: true
     created:
       weight: 1
     field_alert_category:
@@ -113,6 +111,10 @@ removing:
     sticky:
       weight: 9
     title:
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
       weight: 12
     url_redirects:
       weight: 11
