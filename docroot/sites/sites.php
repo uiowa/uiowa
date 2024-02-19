@@ -6748,3 +6748,9 @@ $sites['labcannabisandolderpersonsstudy.uiowa.ddev.site'] = 'cannabisandolderper
 $sites['labcannabisandolderpersonsstudy.dev.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
 $sites['labcannabisandolderpersonsstudy.stage.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
 $sites['labcannabisandolderpersonsstudy.prod.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
+
+// Directory aliases for humangenetics.medicine.uiowa.edu.
+$sites['medicinehumangenetics.uiowa.ddev.site'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.dev.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.stage.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.prod.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
