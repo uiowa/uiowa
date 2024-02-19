@@ -55,7 +55,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $this->getLogger('facilities_core')->notice("Starting the facilities building content sync. This may take a little time if the information isn't cached.");
+    $this->logger()->notice('Starting the facilities building content sync. This may take a little time if the information isn\'t cached.');
     $sync_service = new BuildingsProcessor();
     $sync_service->init();
     $sync_service->process();
@@ -66,7 +66,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@deleted' => $sync_service->getDeleted(),
       '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->getLogger('facilities_core')->notice('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    $this->logger()->notice(t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments));
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
@@ -84,7 +84,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $this->getLogger('facilities_core')->notice("Starting the facilities projects sync. This may take a little time if the information isn't cached.");
+    $this->logger()->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
     $sync_service = new ProjectsProcessor();
     $sync_service->init();
     $sync_service->process();
@@ -95,7 +95,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@deleted' => $sync_service->getDeleted(),
       '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->getLogger('facilities_core')->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    $this->logger()->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
