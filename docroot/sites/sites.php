@@ -6754,3 +6754,9 @@ $sites['medicinehumangenetics.uiowa.ddev.site'] = 'humangenetics.medicine.uiowa.
 $sites['medicinehumangenetics.dev.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
 $sites['medicinehumangenetics.stage.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
 $sites['medicinehumangenetics.prod.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+
+// Directory aliases for obesity.medicine.uiowa.edu.
+$sites['medicineobesity.uiowa.ddev.site'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.dev.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.stage.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.prod.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
