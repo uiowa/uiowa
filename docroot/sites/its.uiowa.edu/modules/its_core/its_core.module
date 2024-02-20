@@ -124,7 +124,12 @@ function its_core_field_widget_complete_paragraphs_form_alter(&$element, &$form_
     // Don't allow the editor to rearrange the updates,
     // because they will be sorted chronologically
     // by the node presave.
+    // Disable the draghandles by disallowing the reference changes,
+    // and also remove the dragdrop mode from the dropdown actions.
     $element['widget']['#allow_reference_changes'] = FALSE;
+    if (isset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode'])) {
+      unset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode']);
+    }
   }
 }
 
