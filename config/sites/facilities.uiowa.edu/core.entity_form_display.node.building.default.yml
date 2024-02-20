@@ -3,14 +3,36 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.building.field_alt1_coordinator_dept
+    - field.field.node.building.field_alt1_coordinator_email
+    - field.field.node.building.field_alt1_coordinator_name
+    - field.field.node.building.field_alt1_coordinator_phone
+    - field.field.node.building.field_alt1_coordinator_title
+    - field.field.node.building.field_alt2_coordinator_dept
+    - field.field.node.building.field_alt2_coordinator_email
+    - field.field.node.building.field_alt2_coordinator_name
+    - field.field.node.building.field_alt2_coordinator_phone
+    - field.field.node.building.field_alt2_coordinator_title
+    - field.field.node.building.field_alt3_coordinator_dept
+    - field.field.node.building.field_alt3_coordinator_email
+    - field.field.node.building.field_alt3_coordinator_name
+    - field.field.node.building.field_alt3_coordinator_phone
+    - field.field.node.building.field_alt3_coordinator_title
+    - field.field.node.building.field_alt4_coordinator_dept
+    - field.field.node.building.field_alt4_coordinator_email
+    - field.field.node.building.field_alt4_coordinator_name
+    - field.field.node.building.field_alt4_coordinator_phone
+    - field.field.node.building.field_alt4_coordinator_title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
+    - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
     - field.field.node.building.field_building_latitude
     - field.field.node.building.field_building_longitude
+    - field.field.node.building.field_building_m_manager
     - field.field.node.building.field_building_named_building
     - field.field.node.building.field_building_number
     - field.field.node.building.field_building_ownership
@@ -20,14 +42,62 @@ dependencies:
     - field.field.node.building.field_building_rr_single_neutral
     - field.field.node.building.field_building_rr_single_women
     - field.field.node.building.field_building_year_built
+    - field.field.node.building.field_main_coordinator_dept
+    - field.field.node.building.field_main_coordinator_email
+    - field.field.node.building.field_main_coordinator_name
+    - field.field.node.building.field_main_coordinator_phone
+    - field.field.node.building.field_main_coordinator_title
     - field.field.node.building.field_meta_tags
     - node.type.building
   module:
     - content_moderation
-    - file
+    - entity_browser
+    - field_group
     - metatag
     - path
+    - telephone
     - text
+third_party_settings:
+  field_group:
+    group_building_coordinator_info:
+      children:
+        - field_main_coordinator_name
+        - field_main_coordinator_title
+        - field_main_coordinator_dept
+        - field_main_coordinator_email
+        - field_main_coordinator_phone
+        - field_alt1_coordinator_name
+        - field_alt1_coordinator_title
+        - field_alt1_coordinator_dept
+        - field_alt1_coordinator_email
+        - field_alt1_coordinator_phone
+        - field_alt2_coordinator_name
+        - field_alt2_coordinator_title
+        - field_alt2_coordinator_dept
+        - field_alt2_coordinator_email
+        - field_alt2_coordinator_phone
+        - field_alt3_coordinator_name
+        - field_alt3_coordinator_title
+        - field_alt3_coordinator_dept
+        - field_alt3_coordinator_email
+        - field_alt3_coordinator_phone
+        - field_alt4_coordinator_name
+        - field_alt4_coordinator_title
+        - field_alt4_coordinator_dept
+        - field_alt4_coordinator_email
+        - field_alt4_coordinator_phone
+      label: 'Building Coordinator Information'
+      region: content
+      parent_name: ''
+      weight: 40
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
 id: node.building.default
 targetEntityType: node
 bundle: building
@@ -39,6 +109,162 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_alt1_coordinator_dept:
+    type: string_textfield
+    weight: 37
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt1_coordinator_email:
+    type: email_default
+    weight: 38
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_alt1_coordinator_name:
+    type: string_textfield
+    weight: 35
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt1_coordinator_phone:
+    type: telephone_default
+    weight: 39
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt1_coordinator_title:
+    type: string_textfield
+    weight: 36
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt2_coordinator_dept:
+    type: string_textfield
+    weight: 42
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt2_coordinator_email:
+    type: email_default
+    weight: 43
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_alt2_coordinator_name:
+    type: string_textfield
+    weight: 40
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt2_coordinator_phone:
+    type: telephone_default
+    weight: 44
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt2_coordinator_title:
+    type: string_textfield
+    weight: 41
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt3_coordinator_dept:
+    type: string_textfield
+    weight: 47
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt3_coordinator_email:
+    type: email_default
+    weight: 48
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_alt3_coordinator_name:
+    type: string_textfield
+    weight: 45
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt3_coordinator_phone:
+    type: telephone_default
+    weight: 49
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt3_coordinator_title:
+    type: string_textfield
+    weight: 46
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt4_coordinator_dept:
+    type: string_textfield
+    weight: 52
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt4_coordinator_email:
+    type: email_default
+    weight: 53
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_alt4_coordinator_name:
+    type: string_textfield
+    weight: 50
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt4_coordinator_phone:
+    type: telephone_default
+    weight: 54
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_alt4_coordinator_title:
+    type: string_textfield
+    weight: 51
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_abbreviation:
     type: string_textfield
     weight: 2
@@ -49,7 +275,7 @@ content:
     third_party_settings: {  }
   field_building_address:
     type: string_textfield
-    weight: 27
+    weight: 13
     region: content
     settings:
       size: 60
@@ -57,29 +283,44 @@ content:
     third_party_settings: {  }
   field_building_area:
     type: number
-    weight: 28
+    weight: 14
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_building_ca_manager:
+    type: string_textfield
+    weight: 29
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_hours:
     type: text_textarea
-    weight: 42
+    weight: 27
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_building_image:
-    type: file_generic
-    weight: 41
+    type: entity_browser_file
+    weight: 26
     region: content
     settings:
-      progress_indicator: throbber
+      entity_browser: null
+      field_widget_edit: true
+      field_widget_remove: true
+      field_widget_replace: false
+      open: false
+      selection_mode: selection_append
+      view_mode: default
+      preview_image_style: thumbnail
     third_party_settings: {  }
   field_building_lactation_rooms:
     type: string_textfield
-    weight: 32
+    weight: 18
     region: content
     settings:
       size: 60
@@ -87,7 +328,7 @@ content:
     third_party_settings: {  }
   field_building_latitude:
     type: string_textfield
-    weight: 39
+    weight: 24
     region: content
     settings:
       size: 60
@@ -95,7 +336,15 @@ content:
     third_party_settings: {  }
   field_building_longitude:
     type: string_textfield
-    weight: 40
+    weight: 25
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_building_m_manager:
+    type: string_textfield
+    weight: 28
     region: content
     settings:
       size: 60
@@ -103,7 +352,7 @@ content:
     third_party_settings: {  }
   field_building_named_building:
     type: entity_reference_autocomplete
-    weight: 31
+    weight: 17
     region: content
     settings:
       match_operator: CONTAINS
@@ -121,7 +370,7 @@ content:
     third_party_settings: {  }
   field_building_ownership:
     type: string_textfield
-    weight: 30
+    weight: 16
     region: content
     settings:
       size: 60
@@ -129,7 +378,7 @@ content:
     third_party_settings: {  }
   field_building_rr_multi_men:
     type: string_textfield
-    weight: 35
+    weight: 21
     region: content
     settings:
       size: 60
@@ -137,7 +386,7 @@ content:
     third_party_settings: {  }
   field_building_rr_multi_women:
     type: string_textfield
-    weight: 36
+    weight: 22
     region: content
     settings:
       size: 60
@@ -145,7 +394,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_men:
     type: string_textfield
-    weight: 33
+    weight: 19
     region: content
     settings:
       size: 60
@@ -153,7 +402,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_neutral:
     type: string_textfield
-    weight: 37
+    weight: 23
     region: content
     settings:
       size: 60
@@ -161,7 +410,7 @@ content:
     third_party_settings: {  }
   field_building_rr_single_women:
     type: string_textfield
-    weight: 34
+    weight: 20
     region: content
     settings:
       size: 60
@@ -169,7 +418,46 @@ content:
     third_party_settings: {  }
   field_building_year_built:
     type: string_textfield
-    weight: 29
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_main_coordinator_dept:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_main_coordinator_email:
+    type: email_default
+    weight: 33
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_main_coordinator_name:
+    type: string_textfield
+    weight: 30
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_main_coordinator_phone:
+    type: telephone_default
+    weight: 34
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_main_coordinator_title:
+    type: string_textfield
+    weight: 31
     region: content
     settings:
       size: 60
@@ -177,7 +465,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 26
+    weight: 12
     region: content
     settings:
       sidebar: true
@@ -203,7 +491,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
