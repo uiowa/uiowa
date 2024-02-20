@@ -73,7 +73,7 @@ class FacilitiesCoreCommands extends DrushCommands {
   }
 
   /**
-   * Triggers the building import.
+   * Triggers the projects import.
    *
    * @command facilities_core:projects_import
    * @aliases fm-projects
