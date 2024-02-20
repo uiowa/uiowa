@@ -75,6 +75,15 @@ function its_core_entity_presave(EntityInterface $entity) {
       ]));
       $entity->setTitle($output);
 
+      // Reorder the Updates to chronological.
+      if ($entity->field_alert_updates?->count() > 1) {
+        $entities = $entity->field_alert_updates->referencedEntities();
+        usort($entities, function ($a, $b) {
+          return $b->field_alert_update_date->value <=> $a->field_alert_update_date->value;
+        });
+        $entity->set('field_alert_updates', $entities);
+      }
+
       // If we're saving an outage or service degradation,
       // we also want to check and set our views cache invalidation date.
       if ($entity->isPublished()) {
