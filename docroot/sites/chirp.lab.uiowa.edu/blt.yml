@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labchirp.uiowa.ddev.site
+    protocol: https
+  machine_name: labchirp
+  human_name: chirp.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchirp.prod
+drupal:
+  db:
+    database: chirp_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labchirp.prod.drupal.uiowa.edu'
+  requester: eeoneal
+  site-name: 'ChIRP Lab'
