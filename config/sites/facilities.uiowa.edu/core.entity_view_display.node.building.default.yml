@@ -52,6 +52,7 @@ dependencies:
     - node.type.building
     - views.view.alerts_building_block
     - views.view.artwork
+    - views.view.building_coordinators
     - views.view.building_services
     - views.view.projects
   module:
@@ -331,7 +332,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 0
+            weight: 1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -352,6 +353,31 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 5
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3c1a0037-fed8-4698-b686-7f31a82aa57c
+            region: card_meta
+            configuration:
+              id: 'views_block:building_coordinators-block_coordinators'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
