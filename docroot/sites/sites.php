@@ -6772,3 +6772,9 @@ $sites['orgenglish-society.uiowa.ddev.site'] = 'english-society.org.uiowa.edu';
 $sites['orgenglish-society.dev.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
 $sites['orgenglish-society.stage.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
 $sites['orgenglish-society.prod.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
+
+// Directory aliases for chirp.lab.uiowa.edu.
+$sites['labchirp.uiowa.ddev.site'] = 'chirp.lab.uiowa.edu';
+$sites['labchirp.dev.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
+$sites['labchirp.stage.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
+$sites['labchirp.prod.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
