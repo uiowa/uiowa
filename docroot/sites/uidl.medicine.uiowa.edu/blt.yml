@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineuidl.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineuidl
+  human_name: uidl.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineuidl.prod
+drupal:
+  db:
+    database: uidl_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineuidl.prod.drupal.uiowa.edu'
+  requester: efry
+  site-name: 'University of Iowa Diagnostic Laboratories (UIDL)'
