@@ -6748,3 +6748,27 @@ $sites['labcannabisandolderpersonsstudy.uiowa.ddev.site'] = 'cannabisandolderper
 $sites['labcannabisandolderpersonsstudy.dev.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
 $sites['labcannabisandolderpersonsstudy.stage.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
 $sites['labcannabisandolderpersonsstudy.prod.drupal.uiowa.edu'] = 'cannabisandolderpersonsstudy.lab.uiowa.edu';
+
+// Directory aliases for humangenetics.medicine.uiowa.edu.
+$sites['medicinehumangenetics.uiowa.ddev.site'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.dev.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.stage.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+$sites['medicinehumangenetics.prod.drupal.uiowa.edu'] = 'humangenetics.medicine.uiowa.edu';
+
+// Directory aliases for obesity.medicine.uiowa.edu.
+$sites['medicineobesity.uiowa.ddev.site'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.dev.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.stage.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
+$sites['medicineobesity.prod.drupal.uiowa.edu'] = 'obesity.medicine.uiowa.edu';
+
+// Directory aliases for uidl.medicine.uiowa.edu.
+$sites['medicineuidl.uiowa.ddev.site'] = 'uidl.medicine.uiowa.edu';
+$sites['medicineuidl.dev.drupal.uiowa.edu'] = 'uidl.medicine.uiowa.edu';
+$sites['medicineuidl.stage.drupal.uiowa.edu'] = 'uidl.medicine.uiowa.edu';
+$sites['medicineuidl.prod.drupal.uiowa.edu'] = 'uidl.medicine.uiowa.edu';
+
+// Directory aliases for english-society.org.uiowa.edu.
+$sites['orgenglish-society.uiowa.ddev.site'] = 'english-society.org.uiowa.edu';
+$sites['orgenglish-society.dev.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
+$sites['orgenglish-society.stage.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
+$sites['orgenglish-society.prod.drupal.uiowa.edu'] = 'english-society.org.uiowa.edu';
