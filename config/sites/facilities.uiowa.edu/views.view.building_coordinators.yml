@@ -711,11 +711,16 @@ display:
             sort_order: asc
             number_of_records: 0
             format: default_summary
-          specify_validation: false
+          specify_validation: true
           validate:
-            type: none
+            type: 'entity:node'
             fail: 'not found'
-          validate_options: {  }
+          validate_options:
+            bundles:
+              building: building
+            access: false
+            operation: view
+            multiple: 0
           break_phrase: false
           not: false
       filters:
