@@ -3719,12 +3719,6 @@ $sites['labeberl.dev.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
 $sites['labeberl.stage.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
 $sites['labeberl.prod.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
 
-// Directory aliases for fritzsch.lab.uiowa.edu.
-$sites['labfritzsch.uiowa.ddev.site'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.dev.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.stage.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.prod.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
-
 // Directory aliases for futureofficework.sites.uiowa.edu.
 $sites['sitesfutureofficework.uiowa.ddev.site'] = 'futureofficework.sites.uiowa.edu';
 $sites['sitesfutureofficework.dev.drupal.uiowa.edu'] = 'futureofficework.sites.uiowa.edu';
