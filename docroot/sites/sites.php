@@ -6778,3 +6778,9 @@ $sites['labchirp.uiowa.ddev.site'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.dev.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.stage.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.prod.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
+
+// Directory aliases for mri.medicine.uiowa.edu.
+$sites['medicinemri.uiowa.ddev.site'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.dev.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.stage.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.prod.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
