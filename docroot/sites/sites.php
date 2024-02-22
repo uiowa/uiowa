@@ -6754,3 +6754,15 @@ $sites['labchirp.uiowa.ddev.site'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.dev.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.stage.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
 $sites['labchirp.prod.drupal.uiowa.edu'] = 'chirp.lab.uiowa.edu';
+
+// Directory aliases for mri.medicine.uiowa.edu.
+$sites['medicinemri.uiowa.ddev.site'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.dev.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.stage.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
+$sites['medicinemri.prod.drupal.uiowa.edu'] = 'mri.medicine.uiowa.edu';
+
+// Directory aliases for bioethics.medicine.uiowa.edu.
+$sites['medicinebioethics.uiowa.ddev.site'] = 'bioethics.medicine.uiowa.edu';
+$sites['medicinebioethics.dev.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
+$sites['medicinebioethics.stage.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
+$sites['medicinebioethics.prod.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
