@@ -2771,12 +2771,6 @@ $sites['labneiman.dev.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.stage.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.prod.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
 
-// Directory aliases for prahlad.lab.uiowa.edu.
-$sites['labprahlad.uiowa.ddev.site'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.dev.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.stage.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.prod.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
-
 // Directory aliases for forbes.lab.uiowa.edu.
 $sites['labforbes.uiowa.ddev.site'] = 'forbes.lab.uiowa.edu';
 $sites['labforbes.dev.drupal.uiowa.edu'] = 'forbes.lab.uiowa.edu';
