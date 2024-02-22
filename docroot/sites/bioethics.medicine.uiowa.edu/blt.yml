@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinebioethics.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinebioethics
+  human_name: bioethics.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinebioethics.prod
+drupal:
+  db:
+    database: bioethics_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinebioethics.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Program in Bioethics and Humanities'
