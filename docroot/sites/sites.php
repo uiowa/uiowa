@@ -2759,23 +2759,11 @@ $sites['labcerebralvascular.dev.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa
 $sites['labcerebralvascular.stage.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
 $sites['labcerebralvascular.prod.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
 
-// Directory aliases for mcallister.lab.uiowa.edu.
-$sites['labmcallister.uiowa.ddev.site'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.dev.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.stage.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.prod.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-
 // Directory aliases for neiman.lab.uiowa.edu.
 $sites['labneiman.uiowa.ddev.site'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.dev.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.stage.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.prod.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
-
-// Directory aliases for prahlad.lab.uiowa.edu.
-$sites['labprahlad.uiowa.ddev.site'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.dev.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.stage.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
-$sites['labprahlad.prod.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
 
 // Directory aliases for forbes.lab.uiowa.edu.
 $sites['labforbes.uiowa.ddev.site'] = 'forbes.lab.uiowa.edu';
@@ -3718,18 +3706,6 @@ $sites['labeberl.uiowa.ddev.site'] = 'eberl.lab.uiowa.edu';
 $sites['labeberl.dev.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
 $sites['labeberl.stage.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
 $sites['labeberl.prod.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
-
-// Directory aliases for slusarski.lab.uiowa.edu.
-$sites['labslusarski.uiowa.ddev.site'] = 'slusarski.lab.uiowa.edu';
-$sites['labslusarski.dev.drupal.uiowa.edu'] = 'slusarski.lab.uiowa.edu';
-$sites['labslusarski.stage.drupal.uiowa.edu'] = 'slusarski.lab.uiowa.edu';
-$sites['labslusarski.prod.drupal.uiowa.edu'] = 'slusarski.lab.uiowa.edu';
-
-// Directory aliases for fritzsch.lab.uiowa.edu.
-$sites['labfritzsch.uiowa.ddev.site'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.dev.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.stage.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
-$sites['labfritzsch.prod.drupal.uiowa.edu'] = 'fritzsch.lab.uiowa.edu';
 
 // Directory aliases for futureofficework.sites.uiowa.edu.
 $sites['sitesfutureofficework.uiowa.ddev.site'] = 'futureofficework.sites.uiowa.edu';
