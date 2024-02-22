@@ -2759,12 +2759,6 @@ $sites['labcerebralvascular.dev.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa
 $sites['labcerebralvascular.stage.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
 $sites['labcerebralvascular.prod.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
 
-// Directory aliases for mcallister.lab.uiowa.edu.
-$sites['labmcallister.uiowa.ddev.site'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.dev.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.stage.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-$sites['labmcallister.prod.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
-
 // Directory aliases for neiman.lab.uiowa.edu.
 $sites['labneiman.uiowa.ddev.site'] = 'neiman.lab.uiowa.edu';
 $sites['labneiman.dev.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
