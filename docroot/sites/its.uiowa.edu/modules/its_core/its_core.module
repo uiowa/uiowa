@@ -115,6 +115,7 @@ function its_core_entity_presave(EntityInterface $entity) {
         if ($send_email) {
 
           // @todo construct body of email. change string param to render array?
+          // @todo alter subject line with alert title, closed status.
           $emailFactory = \Drupal::service('email_factory');
           $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', 'my alert');
           $email->send();
@@ -177,6 +178,14 @@ function its_core_preprocess_fieldset(&$variables) {
  */
 function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+
+    case 'node_alert_edit_form':
+    case 'node_alert_form':
+      // Prevent users that can't publish from sending an email.
+      if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
+        $form['field_alert_email']['#access'] = FALSE;
+      }
+      break;
 
     // Node form modifications.
     case 'node_service_edit_form':
