@@ -2,6 +2,7 @@ adding:
   dependencies:
     config:
       - field.field.node.alert.field_alert_building
+      - field.field.node.alert.field_alert_email
       - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_title_details
       - field.field.node.alert.field_alert_updates
@@ -23,6 +24,13 @@ adding:
     field_alert_category:
       type: options_buttons
       weight: 13
+    field_alert_email:
+      type: boolean_checkbox
+      weight: 19
+      region: content
+      settings:
+        display_label: true
+      third_party_settings: {  }
     field_alert_date:
       weight: 14
     field_alert_service_affected:
@@ -41,7 +49,7 @@ adding:
       third_party_settings: {  }
     field_alert_updates:
       type: paragraphs
-      weight: 19
+      weight: 18
       region: content
       settings:
         title: Paragraph
@@ -67,9 +75,11 @@ adding:
     promote:
       weight: 4
     publish_on:
-      weight: 18
+      weight: 21
+    publish_state:
+      weight: 6
     scheduler_settings:
-      weight: 17
+      weight: 20
     simple_sitemap:
       weight: 10
     sticky:
@@ -82,6 +92,8 @@ removing:
   content:
     body:
       weight: 13
+      settings:
+        show_summary: true
     created:
       weight: 1
     field_alert_category:
@@ -104,10 +116,14 @@ removing:
       weight: 3
     publish_on:
       weight: 4
+    publish_state:
+      weight: 5
     scheduler_settings:
       weight: 16
     simple_sitemap:
       weight: 8
+    status:
+      weight: 6
     sticky:
       weight: 9
     title:
