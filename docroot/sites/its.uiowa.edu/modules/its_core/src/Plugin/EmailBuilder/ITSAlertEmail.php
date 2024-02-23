@@ -47,7 +47,6 @@ class ITSAlertEmail extends EmailBuilderBase {
     }
 
     if ($email->getSubType() == 'its_alert_email') {
-      $email->setSubject($this->t('Alert'));
 
       $body = [];
 

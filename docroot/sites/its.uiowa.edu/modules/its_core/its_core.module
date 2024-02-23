@@ -115,9 +115,12 @@ function its_core_entity_presave(EntityInterface $entity) {
         if ($send_email) {
 
           // @todo construct body of email. change string param to render array?
-          // @todo alter subject line with alert title, closed status.
           $emailFactory = \Drupal::service('email_factory');
-          $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', 'my alert');
+          if ($entity->isClosed()) {
+            $output = '[CLOSED]' . $output;
+          }
+          $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', 'my alert')
+            ->setSubject($output);
           $email->send();
 
           // @todo log errors?
