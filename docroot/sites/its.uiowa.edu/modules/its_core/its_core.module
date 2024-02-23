@@ -8,7 +8,9 @@
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
@@ -131,10 +133,10 @@ function its_core_entity_presave(EntityInterface $entity) {
           $date = $date_formatter->format($date, 'custom', 'M d h:i a');
           $date = str_replace(['am', 'pm'], ['a.m', 'p.m'], $date);
 
-          // @todo link to node.
+          $linked_alert_title = Link::fromTextAndUrl($alert_title, Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
           $alert['title'] = [
             '#type' => 'markup',
-            '#markup' => $date . ': ' . $alert_title,
+            '#markup' => $date . ': ' . $linked_alert_title,
           ];
 
           // @todo Include updates.
@@ -148,7 +150,18 @@ function its_core_entity_presave(EntityInterface $entity) {
             ];
           }
 
-          // @todo Include related links.
+          // Include related links.
+          $links = [
+            Link::fromTextAndUrl('IT Service Alerts page', Url::fromUri('https://its.uiowa.edu/alerts')),
+            Link::fromTextAndUrl('Calendar view of alerts', Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
+          ];
+          $alert['related'] = [
+            '#theme' => 'item_list',
+            '#type' => 'ul',
+            '#title' => 'Related Links:',
+            '#items' => $links,
+          ];
+
           $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
             ->setSubject($alert_title);
           $email->send();
