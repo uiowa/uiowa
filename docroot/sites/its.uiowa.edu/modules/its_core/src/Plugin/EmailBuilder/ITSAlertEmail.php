@@ -24,7 +24,7 @@ class ITSAlertEmail extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, string $alert = NULL) {
+  public function createParams(EmailInterface $email, array $alert = NULL) {
     $email->setParam('alert', $alert);
   }
 
@@ -32,26 +32,28 @@ class ITSAlertEmail extends EmailBuilderBase {
    * {@inheritdoc}
    */
   public function build(EmailInterface $email) {
-    $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
-    $email->setFrom($from);
-    $email->setReplyTo($from);
-    $env = getenv('AH_PRODUCTION');
-    if ((int) $env === 1) {
-      // @todo After testing, should be
-      // "e7199078.iowa.onmicrosoft.com@amer.teams.ms".
-      $email->setBcc('its-web@uiowa.edu');
-    }
-    else {
-      // @todo After testing, use site email to avoid unintentional emails?
-      $email->setBcc('joe-whitsitt@uiowa.edu');
-    }
-
     if ($email->getSubType() == 'its_alert_email') {
 
+      $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
+      $email->setFrom($from);
+      $email->setReplyTo($from);
+      $env = getenv('AH_PRODUCTION');
+      if ((int) $env === 1) {
+        // @todo After testing, should be
+        // "e7199078.iowa.onmicrosoft.com@amer.teams.ms,
+        // IT-Service-Alerts-Members@iowa.uiowa.edu".
+        $email->setBcc('its-web@uiowa.edu');
+      }
+      else {
+        // @todo After testing, use site email to avoid unintentional emails?
+        $email->setBcc('joe-whitsitt@uiowa.edu');
+      }
+
       $body = [];
+      $markup = $email->getParam('alert');
 
       $body[] = [
-        '#markup' => $email->getParam('alert'),
+        '#markup' => \Drupal::service('renderer')->render($markup),
       ];
 
       $email->setBody(['body' => $body]);

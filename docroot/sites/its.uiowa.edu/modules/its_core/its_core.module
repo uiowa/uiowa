@@ -5,8 +5,10 @@
  * Primary module hooks for ITS Core module.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
@@ -114,21 +116,51 @@ function its_core_entity_presave(EntityInterface $entity) {
         $send_email = $entity->get('field_alert_email')?->value;
         if ($send_email) {
 
-          // @todo construct body of email. change string param to render array?
+          $alert = [];
+
           $emailFactory = \Drupal::service('email_factory');
           if ($entity->isClosed()) {
             $output = '[CLOSED]' . $output;
           }
-          $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', 'my alert')
+
+          // Construct date for output.
+          $date_formatter = \Drupal::service('date.formatter');
+          $date = $entity->get('field_alert_date')->value;
+
+          // On-brand date format.
+          $date = $date_formatter->format($date, 'custom', 'M d h:i a');
+          $date = str_replace(['am', 'pm'], ['a.m', 'p.m'], $date);
+
+          $alert['title'] = [
+            '#type' => 'markup',
+            '#markup' => $date . ': ' . $output,
+          ];
+
+          // @todo Include updates.
+          $body = Markup::create(Html::transformRootRelativeUrlsToAbsolute((string) $entity->get('body')?->value, \Drupal::request()
+            ->getSchemeAndHttpHost()));
+          if (!empty($body)) {
+            // @todo include "Original notice:" heading if updates exist.
+            $alert['body_container']['body'] = [
+              '#type' => 'markup',
+              '#markup' => $body,
+            ];
+          }
+
+          // @todo Include related links.
+          $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
             ->setSubject($output);
           $email->send();
 
           // @todo log errors?
-
           // Set field back.
           $entity->set('field_alert_email', FALSE);
 
-          // @todo append to revision message?
+          // @todo see about line breaks in log message?
+          // Append to the revision log if it exists, otherwise set one.
+          $revision_log = $entity->get('revision_log')?->value;
+          $revision_log = $revision_log . ' Alert marked to send email';
+          $entity->set('revision_log', $revision_log);
         }
       }
 
