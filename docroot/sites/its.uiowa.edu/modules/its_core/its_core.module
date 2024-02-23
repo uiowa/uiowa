@@ -81,11 +81,11 @@ function its_core_entity_presave(EntityInterface $entity) {
 
       // Reorder the Updates to chronological.
       if ($entity->field_alert_updates?->count() > 1) {
-        $alert_updates = $entity->field_alert_updates->referencedEntities();
-        usort($alert_updates, function ($a, $b) {
+        $entities = $entity->field_alert_updates->referencedEntities();
+        usort($entities, function ($a, $b) {
           return $b->field_alert_update_date->value <=> $a->field_alert_update_date->value;
         });
-        $entity->set('field_alert_updates', $alert_updates);
+        $entity->set('field_alert_updates', $entities);
       }
 
       // If we're saving an outage or service degradation,
@@ -135,15 +135,54 @@ function its_core_entity_presave(EntityInterface $entity) {
 
           $linked_alert_title = Link::fromTextAndUrl($alert_title, Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
           $alert['title'] = [
-            '#type' => 'markup',
-            '#markup' => $date . ': ' . $linked_alert_title,
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#value' => $date . ': ' . $linked_alert_title,
           ];
 
-          // @todo Include updates.
+          // Include alert updates if they exist.
+          $alert_updates = $entity->get('field_alert_updates')->referencedEntities();
+          if ($alert_updates) {
+            // Establish a wrapper render array.
+            $alert['updates'] = [
+              '#type' => 'container',
+            ];
+            $alert['updates']['styles'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'style',
+              '#value' => '.field--name-field-alert-update-date{font-style:italic;font-size:smaller;}',
+            ];
+            $alert['updates']['title'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h3',
+              '#value' => t('Updates:'),
+            ];
+            $updates = [];
+            foreach ($alert_updates as $update) {
+              $update_render = \Drupal::entityTypeManager()
+                ->getViewBuilder('paragraph')
+                ->view($update);
+              $updates[] = $update_render;
+            }
+
+            $updates_render = \Drupal::service('renderer')->render($updates);
+            $alert['updates']['content'] = [
+              '#markup' => $updates_render,
+            ];
+
+            $alert['body_container'] = [
+              '#type' => 'container',
+            ];
+            $alert['body_container']['title'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h3',
+              '#value' => t('Original notice:'),
+            ];
+          }
+
           $body = Markup::create(Html::transformRootRelativeUrlsToAbsolute((string) $entity->get('body')?->value, \Drupal::request()
             ->getSchemeAndHttpHost()));
           if (!empty($body)) {
-            // @todo include "Original notice:" heading if updates exist.
             $alert['body_container']['body'] = [
               '#type' => 'markup',
               '#markup' => $body,
