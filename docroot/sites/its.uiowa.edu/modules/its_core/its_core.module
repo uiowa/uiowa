@@ -109,6 +109,23 @@ function its_core_entity_presave(EntityInterface $entity) {
             }
           }
         }
+
+        // Send an email if field is true.
+        $send_email = $entity->get('field_alert_email')?->value;
+        if ($send_email) {
+
+          // @todo construct body of email. change string param to render array?
+          $emailFactory = \Drupal::service('email_factory');
+          $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', 'my alert');
+          $email->send();
+
+          // @todo log errors?
+
+          // Set field back.
+          $entity->set('field_alert_email', FALSE);
+
+          // @todo append to revision message?
+        }
       }
 
       break;
