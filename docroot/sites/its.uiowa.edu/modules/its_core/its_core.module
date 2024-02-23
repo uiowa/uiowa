@@ -70,20 +70,20 @@ function its_core_entity_presave(EntityInterface $entity) {
 
       $additional_details = $entity->field_alert_title_details?->value;
 
-      $output = implode(' - ', array_filter([
+      $alert_title = implode(' - ', array_filter([
         $category,
         $services_buildings,
         $additional_details,
       ]));
-      $entity->setTitle($output);
+      $entity->setTitle($alert_title);
 
       // Reorder the Updates to chronological.
       if ($entity->field_alert_updates?->count() > 1) {
-        $entities = $entity->field_alert_updates->referencedEntities();
-        usort($entities, function ($a, $b) {
+        $alert_updates = $entity->field_alert_updates->referencedEntities();
+        usort($alert_updates, function ($a, $b) {
           return $b->field_alert_update_date->value <=> $a->field_alert_update_date->value;
         });
-        $entity->set('field_alert_updates', $entities);
+        $entity->set('field_alert_updates', $alert_updates);
       }
 
       // If we're saving an outage or service degradation,
@@ -120,7 +120,7 @@ function its_core_entity_presave(EntityInterface $entity) {
 
           $emailFactory = \Drupal::service('email_factory');
           if ($entity->isClosed()) {
-            $output = '[CLOSED]' . $output;
+            $alert_title = '[CLOSED]' . $alert_title;
           }
 
           // Construct date for output.
@@ -134,7 +134,7 @@ function its_core_entity_presave(EntityInterface $entity) {
           // @todo link to node.
           $alert['title'] = [
             '#type' => 'markup',
-            '#markup' => $date . ': ' . $output,
+            '#markup' => $date . ': ' . $alert_title,
           ];
 
           // @todo Include updates.
@@ -150,7 +150,7 @@ function its_core_entity_presave(EntityInterface $entity) {
 
           // @todo Include related links.
           $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
-            ->setSubject($output);
+            ->setSubject($alert_title);
           $email->send();
 
           // Append to the revision log if it exists, otherwise set one.
