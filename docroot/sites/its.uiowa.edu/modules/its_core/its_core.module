@@ -129,9 +129,9 @@ function its_core_entity_presave(EntityInterface $entity) {
           $date_formatter = \Drupal::service('date.formatter');
           $date = $entity->get('field_alert_date')->value;
 
-          // On-brand date format.
-          $date = $date_formatter->format($date, 'custom', 'M d h:i a');
-          $date = str_replace(['am', 'pm'], ['a.m', 'p.m'], $date);
+          // Moving closer to an on-brand format,
+          // matching patched Compact smart date format.
+          $date = $date_formatter->format($date, 'custom', 'M. d h:i a');
 
           $linked_alert_title = Link::fromTextAndUrl($alert_title, Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
           $alert['title'] = [
