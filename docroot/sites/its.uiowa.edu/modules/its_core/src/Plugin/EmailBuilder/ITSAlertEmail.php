@@ -38,15 +38,14 @@ class ITSAlertEmail extends EmailBuilderBase {
       $email->setFrom($from);
       $email->setReplyTo($from);
       $env = getenv('AH_PRODUCTION');
+
+      // Only send emails if PROD, otherwise use the site email for debugging.
       if ((int) $env === 1) {
-        // @todo After testing, should be
-        // "e7199078.iowa.onmicrosoft.com@amer.teams.ms,
-        // IT-Service-Alerts-Members@iowa.uiowa.edu".
-        $email->setBcc('its-web@uiowa.edu');
+        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
+        $email->setBcc('e7199078.iowa.onmicrosoft.com@amer.teams.ms');
       }
       else {
-        // @todo After testing, use site email to avoid unintentional emails?
-        $email->setBcc('joe-whitsitt@uiowa.edu');
+        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
       }
 
       $body = [];
