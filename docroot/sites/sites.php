@@ -6766,3 +6766,9 @@ $sites['medicinebioethics.uiowa.ddev.site'] = 'bioethics.medicine.uiowa.edu';
 $sites['medicinebioethics.dev.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
 $sites['medicinebioethics.stage.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
 $sites['medicinebioethics.prod.drupal.uiowa.edu'] = 'bioethics.medicine.uiowa.edu';
+
+// Directory aliases for tan.lab.uiowa.edu.
+$sites['labtan.uiowa.ddev.site'] = 'tan.lab.uiowa.edu';
+$sites['labtan.dev.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
+$sites['labtan.stage.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
+$sites['labtan.prod.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
