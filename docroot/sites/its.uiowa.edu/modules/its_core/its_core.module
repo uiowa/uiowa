@@ -133,7 +133,8 @@ function its_core_entity_presave(EntityInterface $entity) {
           // matching patched Compact smart date format.
           $date = $date_formatter->format($date, 'custom', 'M. d h:i a');
 
-          $linked_alert_title = Link::fromTextAndUrl($alert_title, Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
+          $linked_alert_title = Link::fromTextAndUrl($alert_title,
+            Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
           $alert['title'] = [
             '#type' => 'html_tag',
             '#tag' => 'h2',
@@ -147,6 +148,7 @@ function its_core_entity_presave(EntityInterface $entity) {
             $alert['updates'] = [
               '#type' => 'container',
             ];
+            // Small set of css tweaks for updates dates.
             $alert['updates']['styles'] = [
               '#type' => 'html_tag',
               '#tag' => 'style',
@@ -180,8 +182,10 @@ function its_core_entity_presave(EntityInterface $entity) {
             ];
           }
 
-          $body = Markup::create(Html::transformRootRelativeUrlsToAbsolute((string) $entity->get('body')?->value, \Drupal::request()
-            ->getSchemeAndHttpHost()));
+          $body = Markup::create(
+            Html::transformRootRelativeUrlsToAbsolute(
+              (string) $entity->get('body')?->value, \Drupal::request()
+                ->getSchemeAndHttpHost()));
           if (!empty($body)) {
             $alert['body_container']['body'] = [
               '#type' => 'markup',
@@ -191,8 +195,10 @@ function its_core_entity_presave(EntityInterface $entity) {
 
           // Include related links.
           $links = [
-            Link::fromTextAndUrl('IT Service Alerts page', Url::fromUri('https://its.uiowa.edu/alerts')),
-            Link::fromTextAndUrl('Calendar view of alerts', Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
+            Link::fromTextAndUrl('IT Service Alerts page',
+              Url::fromUri('https://its.uiowa.edu/alerts')),
+            Link::fromTextAndUrl('Calendar view of alerts',
+              Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
           ];
           $alert['related'] = [
             '#theme' => 'item_list',
