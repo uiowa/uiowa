@@ -39,7 +39,7 @@
   function detailsData(block) {
     const context = block.element;
     let data = [];
-    let details = context.querySelectorAll('.contacts-wrapper details.alternate-contacts');
+    let details = context.querySelectorAll('.contacts-wrapper details');
 
     // Set the details data for each details element.
     details.forEach(function(detail){
