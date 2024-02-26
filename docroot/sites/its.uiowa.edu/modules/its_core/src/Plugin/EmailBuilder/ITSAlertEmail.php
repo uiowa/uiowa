@@ -9,7 +9,7 @@ use Drupal\symfony_mailer\MailerHelperTrait;
 use Drupal\symfony_mailer\Processor\EmailBuilderBase;
 
 /**
- * Defines an Email Builder for the Lockup Digest email.
+ * Defines an Email Builder for the ITS Alert emails.
  *
  * @EmailBuilder(
  *   id = "its_core",
