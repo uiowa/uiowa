@@ -124,7 +124,6 @@ function its_core_entity_presave(EntityInterface $entity) {
           $revision_log = $revision_log . ' Alert email triggered.';
           $entity->set('revision_log', $revision_log);
 
-          // @todo consider removing field api field for form api field.
           $entity->set('field_alert_email', 0);
         }
       }
