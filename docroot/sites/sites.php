@@ -6772,3 +6772,9 @@ $sites['labtan.uiowa.ddev.site'] = 'tan.lab.uiowa.edu';
 $sites['labtan.dev.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
 $sites['labtan.stage.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
 $sites['labtan.prod.drupal.uiowa.edu'] = 'tan.lab.uiowa.edu';
+
+// Directory aliases for study-hawk.org.uiowa.edu.
+$sites['orgstudy-hawk.uiowa.ddev.site'] = 'study-hawk.org.uiowa.edu';
+$sites['orgstudy-hawk.dev.drupal.uiowa.edu'] = 'study-hawk.org.uiowa.edu';
+$sites['orgstudy-hawk.stage.drupal.uiowa.edu'] = 'study-hawk.org.uiowa.edu';
+$sites['orgstudy-hawk.prod.drupal.uiowa.edu'] = 'study-hawk.org.uiowa.edu';
