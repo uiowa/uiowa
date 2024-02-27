@@ -18,10 +18,13 @@ table th {
   }
 }
 .table--sort-arrow-inline {
-  th[aria-sort] a {
+  th[aria-sort] a{
     display: flex;
     align-items: center;
-    filter: saturate(0) brightness(0.2);
     margin-left: 2px;
+
+    .tablesort {
+      filter: saturate(0) brightness(0.2);
+    }
   }
 }

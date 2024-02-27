@@ -394,11 +394,31 @@ display:
             field_alt2_coordinator_name: field_alt2_coordinator_name
             field_alt3_coordinator_name: field_alt3_coordinator_name
             field_alt4_coordinator_name: field_alt4_coordinator_name
-            nothing: nothing
             field_main_coordinator_name: field_main_coordinator_name
+            field_alt1_coordinator_email: field_alt1_coordinator_email
+            field_alt1_coordinator_title: field_alt1_coordinator_title
+            field_alt1_coordinator_name_1: field_alt1_coordinator_name_1
+            field_alt1_coordinator_phone: field_alt1_coordinator_phone
+            field_alt2_coordinator_email: field_alt2_coordinator_email
+            field_alt2_coordinator_title: field_alt2_coordinator_title
+            field_alt2_coordinator_name_1: field_alt2_coordinator_name_1
+            field_alt2_coordinator_phone: field_alt2_coordinator_phone
+            field_alt3_coordinator_email: field_alt3_coordinator_email
+            field_alt3_coordinator_title: field_alt3_coordinator_title
+            field_alt3_coordinator_name_1: field_alt3_coordinator_name_1
+            field_alt3_coordinator_phone: field_alt3_coordinator_phone
+            field_alt4_coordinator_email: field_alt4_coordinator_email
+            field_alt4_coordinator_title: field_alt4_coordinator_title
+            field_alt4_coordinator_name_1: field_alt4_coordinator_name_1
+            field_alt4_coordinator_phone: field_alt4_coordinator_phone
+            field_main_coordinator_email: field_main_coordinator_email
+            field_main_coordinator_title: field_main_coordinator_title
+            field_main_coordinator_phone: field_main_coordinator_phone
+            nothing: nothing
             field_main_coordinator_dept: field_main_coordinator_dept
             field_building_m_manager: field_building_m_manager
             field_building_ca_manager: field_building_ca_manager
+            nothing_1: nothing_1
           default: field_building_number
           info:
             field_building_number:
@@ -450,14 +470,147 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            nothing:
+            field_main_coordinator_name:
+              sortable: true
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_main_coordinator_name:
-              sortable: true
+            field_alt1_coordinator_email:
+              sortable: false
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt1_coordinator_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt1_coordinator_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt1_coordinator_phone:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt2_coordinator_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt2_coordinator_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt2_coordinator_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt2_coordinator_phone:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt3_coordinator_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt3_coordinator_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt3_coordinator_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt3_coordinator_phone:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt4_coordinator_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt4_coordinator_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt4_coordinator_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_alt4_coordinator_phone:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_main_coordinator_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_main_coordinator_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_main_coordinator_phone:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
               align: ''
               separator: ''
               empty_column: false
@@ -479,6 +632,11 @@ display:
             field_building_ca_manager:
               sortable: false
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing_1:
               align: ''
               separator: ''
               empty_column: false
@@ -2233,7 +2391,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if field_main_coordinator_name %}\r\n    <div class=\"contacts-wrapper\">\r\n        <details class=\"primary-contact\">\r\n            <summary>{{ field_main_coordinator_name }}</summary>\r\n            {% if field_main_coordinator_title %}{{ field_main_coordinator_title }}{% endif %}\r\n            {% if field_main_coordinator_email %}<br />{{ field_main_coordinator_email }}{% endif %}\r\n            {% if field_main_coordinator_phone %}<br />{{ field_main_coordinator_phone }}{% endif %}\r\n            {% if field_alt1_coordinator_name %}\r\n                <br /><br />\r\n                <details class=\"alternate-contacts\">\r\n                    <summary class=\"text--gray\">Alternates</summary>\r\n                    {{ field_alt1_coordinator_name }}\r\n                    {% if field_alt1_coordinator_title %}<br />{{ field_alt1_coordinator_title }}{% endif %}\r\n                    {% if field_alt1_coordinator_email %}<br />{{ field_alt1_coordinator_email }}{% endif %}\r\n                    {% if field_alt1_coordinator_phone %}<br />{{ field_alt1_coordinator_phone }}{% endif %}\r\n                    {% if field_alt2_coordinator_name %}\r\n                        {{ field_alt2_coordinator_name }}\r\n                        {% if field_alt2_coordinator_title %}<br />{{ field_alt2_coordinator_title }}{% endif %}\r\n                        {% if field_alt2_coordinator_email %}<br />{{ field_alt2_coordinator_email }}{% endif %}\r\n                        {% if field_alt2_coordinator_phone %}<br />{{ field_alt2_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                    {% if field_alt3_coordinator_name %}\r\n                        <br /><br />\r\n                        {{ field_alt3_coordinator_name }}\r\n                        {% if field_alt3_coordinator_title %}<br />{{ field_alt3_coordinator_title }}{% endif %}\r\n                        {% if field_alt3_coordinator_email %}<br />{{ field_alt3_coordinator_email }}{% endif %}\r\n                        {% if field_alt3_coordinator_phone %}<br />{{ field_alt3_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                    {% if field_alt4_coordinator_name %}\r\n                        <br /><br />\r\n                        {{ field_alt4_coordinator_name }}\r\n                        {% if field_alt4_coordinator_title %}<br />{{ field_alt4_coordinator_title }}{% endif %}\r\n                        {% if field_alt4_coordinator_email %}<br />{{ field_alt4_coordinator_email }}{% endif %}\r\n                        {% if field_alt4_coordinator_phone %}<br />{{ field_alt4_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                </details>\r\n            {% endif %}\r\n        </details>\r\n    </div>\r\n{% endif %}"
+            text: "{% if field_main_coordinator_name %}\r\n    <div class=\"contacts-wrapper\">\r\n        <details class=\"primary-contact\">\r\n            <summary>{{ field_main_coordinator_name }}</summary>\r\n            {% if field_main_coordinator_title %}{{ field_main_coordinator_title }}{% endif %}\r\n            {% if field_main_coordinator_email %}<br />{{ field_main_coordinator_email }}{% endif %}\r\n            {% if field_main_coordinator_phone %}<br />{{ field_main_coordinator_phone }}{% endif %}\r\n            {% if field_alt1_coordinator_name %}\r\n                <br /><br />\r\n                <details class=\"alternate-contacts\">\r\n                    <summary class=\"text--gray\">Alternates</summary>\r\n                    {{ field_alt1_coordinator_name }}\r\n                    {% if field_alt1_coordinator_title %}<br />{{ field_alt1_coordinator_title }}{% endif %}\r\n                    {% if field_alt1_coordinator_email %}<br />{{ field_alt1_coordinator_email }}{% endif %}\r\n                    {% if field_alt1_coordinator_phone %}<br />{{ field_alt1_coordinator_phone }}{% endif %}\r\n                    {% if field_alt2_coordinator_name %}\r\n                        {{ field_alt2_coordinator_name }}\r\n                        {% if field_alt2_coordinator_title %}<br />{{ field_alt2_coordinator_title }}{% endif %}\r\n                        {% if field_alt2_coordinator_email %}<br />{{ field_alt2_coordinator_email }}{% endif %}\r\n                        {% if field_alt2_coordinator_phone %}<br />{{ field_alt2_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                    {% if field_alt3_coordinator_name %}\r\n                        <br /><br />\r\n                        {{ field_alt3_coordinator_name }}\r\n                        {% if field_alt3_coordinator_title %}<br />{{ field_alt3_coordinator_title }}{% endif %}\r\n                        {% if field_alt3_coordinator_email %}<br />{{ field_alt3_coordinator_email }}{% endif %}\r\n                        {% if field_alt3_coordinator_phone %}<br />{{ field_alt3_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                    {% if field_alt4_coordinator_name %}\r\n                        <br /><br />\r\n                        {{ field_alt4_coordinator_name }}\r\n                        {% if field_alt4_coordinator_title %}<br />{{ field_alt4_coordinator_title }}{% endif %}\r\n                        {% if field_alt4_coordinator_email %}<br />{{ field_alt4_coordinator_email }}{% endif %}\r\n                        {% if field_alt4_coordinator_phone %}<br />{{ field_alt4_coordinator_phone }}{% endif %}\r\n                    {% endif %}\r\n                </details>\r\n            {% endif %}\r\n        </details>\r\n    </div>\r\n    <div class=\"width-measurer\" aria-hidden=\"true\">\r\n        {{ field_main_coordinator_name }}\r\n        {% if field_main_coordinator_title %}{{ field_main_coordinator_title }}{% endif %}\r\n        {% if field_main_coordinator_email %}<br />{{ field_main_coordinator_email }}{% endif %}\r\n        {% if field_main_coordinator_phone %}<br />{{ field_main_coordinator_phone }}{% endif %}\r\n        {% if field_alt1_coordinator_name %}\r\n            <br /><br />\r\n            {{ field_alt1_coordinator_name }}\r\n            {% if field_alt1_coordinator_title %}<br />{{ field_alt1_coordinator_title }}{% endif %}\r\n            {% if field_alt1_coordinator_email %}<br />{{ field_alt1_coordinator_email }}{% endif %}\r\n            {% if field_alt1_coordinator_phone %}<br />{{ field_alt1_coordinator_phone }}{% endif %}\r\n            {% if field_alt2_coordinator_name %}\r\n                {{ field_alt2_coordinator_name }}\r\n                {% if field_alt2_coordinator_title %}<br />{{ field_alt2_coordinator_title }}{% endif %}\r\n                {% if field_alt2_coordinator_email %}<br />{{ field_alt2_coordinator_email }}{% endif %}\r\n                {% if field_alt2_coordinator_phone %}<br />{{ field_alt2_coordinator_phone }}{% endif %}\r\n            {% endif %}\r\n            {% if field_alt3_coordinator_name %}\r\n                <br /><br />\r\n                {{ field_alt3_coordinator_name }}\r\n                {% if field_alt3_coordinator_title %}<br />{{ field_alt3_coordinator_title }}{% endif %}\r\n                {% if field_alt3_coordinator_email %}<br />{{ field_alt3_coordinator_email }}{% endif %}\r\n                {% if field_alt3_coordinator_phone %}<br />{{ field_alt3_coordinator_phone }}{% endif %}\r\n            {% endif %}\r\n            {% if field_alt4_coordinator_name %}\r\n                <br /><br />\r\n                {{ field_alt4_coordinator_name }}\r\n                {% if field_alt4_coordinator_title %}<br />{{ field_alt4_coordinator_title }}{% endif %}\r\n                {% if field_alt4_coordinator_email %}<br />{{ field_alt4_coordinator_email }}{% endif %}\r\n                {% if field_alt4_coordinator_phone %}<br />{{ field_alt4_coordinator_phone }}{% endif %}\r\n            {% endif %}\r\n        {% endif %}\r\n    </div>\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -2341,8 +2499,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Maintenance Mgr.'
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -2404,8 +2562,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Custodial Asst Mgr.'
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -2459,6 +2617,55 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        nothing_1:
+          id: nothing_1
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: custom
+          label: Managers
+          exclude: false
+          alter:
+            alter_text: true
+            text: "{% if ( field_building_m_manager or field_building_ca_manager ) %}\r\n    <div class=\"contacts-wrapper\">\r\n        {%  if field_building_m_manager %}\r\n            <details class=\"maintenance-manager\">\r\n                <summary>Maintenance</summary>\r\n                {{ field_building_m_manager }}\r\n            </details>\r\n        {% endif %}\r\n        {%  if field_building_ca_manager %}\r\n            <details class=\"custodial-assistant-manager\">\r\n                <summary>Custodial</summary>\r\n                {{ field_building_ca_manager }}\r\n            </details>\r\n        {% endif %}\r\n    </div>\r\n    <div class=\"width-measurer\" aria-hidden=\"true\">\r\n        {%  if field_building_m_manager %}\r\n            Maintenance<br />\r\n            {{ field_building_m_manager }}\r\n        {% endif %}\r\n        {%  if field_building_ca_manager %}\r\n            <br />\r\n            Custodial<br />\r\n            {{ field_building_ca_manager }}\r\n        {% endif %}\r\n    </div>\r\n{% endif %}"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
       filters:
         status:
           id: status
