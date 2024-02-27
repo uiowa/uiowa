@@ -6784,3 +6784,9 @@ $sites['labwest.uiowa.ddev.site'] = 'west.lab.uiowa.edu';
 $sites['labwest.dev.drupal.uiowa.edu'] = 'west.lab.uiowa.edu';
 $sites['labwest.stage.drupal.uiowa.edu'] = 'west.lab.uiowa.edu';
 $sites['labwest.prod.drupal.uiowa.edu'] = 'west.lab.uiowa.edu';
+
+// Directory aliases for testiowa.com.
+$sites['com-testiowa.uiowa.ddev.site'] = 'testiowa.com';
+$sites['com-testiowa.dev.drupal.uiowa.edu'] = 'testiowa.com';
+$sites['com-testiowa.stage.drupal.uiowa.edu'] = 'testiowa.com';
+$sites['com-testiowa.prod.drupal.uiowa.edu'] = 'testiowa.com';
