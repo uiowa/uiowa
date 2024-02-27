@@ -115,7 +115,7 @@ function its_core_entity_presave(EntityInterface $entity) {
         }
 
         // Mark node using temporary property for sending an alert email.
-        $entity->send_email = \Drupal::request()->request->get('send_email');
+        $entity->send_email = $entity->get('field_alert_email')?->value;
         if ($entity->send_email) {
           // Append to the revision log if it exists, otherwise set one.
           // @todo see about line breaks in log message?
@@ -348,14 +348,8 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_alert_edit_form':
     case 'node_alert_form':
       // Prevent users that can't publish from sending an email.
-      if (\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
-        // Form field to capture intent but not save to the database.
-        $form['send_email'] = [
-          '#type' => 'checkbox',
-          '#title' => t('Send alert email'),
-          '#description' => t('Checking this box will send an email to alert subscribers immediately on save if alert is published or transitioning to published.'),
-          '#weight' => 99,
-        ];
+      if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
+        $form['field_alert_email']['#access'] = FALSE;
       }
       break;
 

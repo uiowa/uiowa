@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_email
     - field.field.node.alert.field_alert_service_affected
     - field.field.node.alert.field_alert_title_details
     - field.field.node.alert.field_alert_updates
@@ -334,6 +335,16 @@ content:
       localize: false
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_alert_email:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 111
     region: content
   field_alert_service_affected:
     type: entity_reference_label
