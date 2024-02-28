@@ -863,7 +863,12 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
       sorts:
         field_project_building_alt_value:
           id: field_project_building_alt_value
@@ -1235,6 +1240,20 @@ display:
           text: ''
           output_url_as_text: false
           absolute: false
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: "<h2 class=\"headline headline--underline headline--serif h5\">Projects</h2>\r\n<p>There are no projects for this location.</p>"
+            format: filtered_html
+          tokenize: false
       sorts: {  }
       arguments:
         field_project_building_target_id:
@@ -1313,6 +1332,7 @@ display:
           separator: ''
           hide_empty: false
       defaults:
+        empty: false
         style: false
         row: false
         fields: false

@@ -239,7 +239,31 @@ function facilities_core_preprocess_field(&$variables) {
       // views_block:named_buildings-block_building using Views field api.
       if ($variables['element']['#view_mode'] === '_custom') {
         $variables['label_display'] = 'inline';
+        uiowa_core_set_attributes($variables, 'padding--inline-end--md');
       }
+      break;
+
+    case 'field_building_lactation_rooms':
+    case 'field_building_rr_single_neutral':
+    case 'field_building_rr_single_men':
+    case 'field_building_rr_single_women':
+    case 'field_building_rr_multi_men':
+    case 'field_building_rr_multi_women':
+      // Wrap the field output in a <details> tag.
+      $variables['label_display'] = 'visually_hidden';
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
       break;
 
     case 'field_building_address':
@@ -267,17 +291,14 @@ function facilities_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
       break;
 
-    case 'field_building_hours':
-      $variables['items'][0]['content']['#text'] .= '<div><small>* Disclaimer text here.</small></div>';
-      uiowa_core_set_title_attributes($variables, [
-        'headline',
-        'headline--serif',
-        'headline--underline',
-        'h5',
-      ]);
+    case 'field_building_area':
+    case 'field_building_named_building':
+    case 'field_building_ownership':
+      uiowa_core_set_attributes($variables, 'padding--inline-end--md');
       break;
 
-    case 'field_building_lactation_rooms':
+    case 'field_building_hours':
+      $variables['items'][0]['content']['#text'] .= '<div><br /><small>Public operating hours for campus buildings are displayed, excluding holidays and special events. These hours do not represent office business hours. Access to buildings during closed hours is permitted via the Iowa One Card for approved faculty, staff, and students. For Hospital 24/7 entrances, visitor guidelines, and information, please visit the <a href="https://uihc.org/visitor-guidelines-ui-health-care">UI Health Care website</a>.</small>';
       uiowa_core_set_title_attributes($variables, [
         'headline',
         'headline--serif',
@@ -396,7 +417,6 @@ function facilities_core_preprocess_layout(&$variables) {
           break;
 
         case 'building':
-
           if ($node->hasField('field_building_image') && !$node->get('field_building_image')->isEmpty()) {
 
             // Set the featured image display.
@@ -406,16 +426,6 @@ function facilities_core_preprocess_layout(&$variables) {
 
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
- */
-function facilities_core_preprocess_layout__twocol__card_sidebar(&$variables) {
-  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
-  if ($node instanceof NodeInterface && $node->getType() === 'building') {
-    $variables['attributes']['class'][] = 'bg--white';
   }
 }
 
@@ -443,6 +453,10 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:building:field_building_address':
     case 'field_block:node:building:field_building_number':
     case 'field_block:node:building:field_building_abbreviation':
+    case 'field_block:node:building:field_building_area':
+    case 'field_block:node:building:field_building_named_building':
+    case 'field_block:node:building:field_building_year_built':
+    case 'field_block:node:building:field_building_ownership':
       uiowa_core_set_attributes($variables, [
         'element--inline',
       ]);
