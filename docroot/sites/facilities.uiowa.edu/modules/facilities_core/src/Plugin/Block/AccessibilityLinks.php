@@ -32,9 +32,6 @@ class AccessibilityLinks extends BlockBase {
     $node = $this->getContextValue('node');
     $building_number = $node->get('field_building_number')->getString();
 
-    $building_image = $node->get('field_building_image')->first()->get('entity')->getValue()->getFileUri();
-    $building_image_alt = $node->get('field_building_image')->first()->alt;
-
     $links = [
       'accessibility' => [
         'label' => 'Accessibility Map',
@@ -72,20 +69,14 @@ class AccessibilityLinks extends BlockBase {
     $attributes = [];
     $attributes['class'] = [
       'bg--white',
-      'headline--serif',
       'media--medium',
       'media--widescreen',
+      'borderless',
     ];
 
     $build['container']['services'][] = [
       '#type' => 'card',
       '#attributes' => $attributes,
-      '#title' => 'Accessibility Links',
-      '#media' => [
-        '#theme' => 'image',
-        '#uri' => $building_image,
-        '#alt' => $building_image_alt,
-      ],
       '#content' => [
         '#markup' => $list_markup,
       ],

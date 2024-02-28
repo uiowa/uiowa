@@ -26,7 +26,7 @@ class ServicesHeadline extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $markup = '<h2 class="headline headline--serif headline--underline">Building Services</h2>';
+    $markup = '<h2 class="headline headline--serif headline--underline h5">Building Services</h2>';
 
     return ['#markup' => $markup];
   }
