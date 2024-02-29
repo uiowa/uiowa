@@ -81,4 +81,4 @@
       callback(detailsDataPoint)
     });
   }
-})(Drupal, drupalSettings, once);
+})(Drupal, once);
