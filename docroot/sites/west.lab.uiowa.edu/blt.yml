@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwest.uiowa.ddev.site
+    protocol: https
+  machine_name: labwest
+  human_name: west.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwest.prod
+drupal:
+  db:
+    database: west_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwest.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Williams Erosion and Sediment Transport Laboratory'
