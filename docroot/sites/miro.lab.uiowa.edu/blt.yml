@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmiro.uiowa.ddev.site
+    protocol: https
+  machine_name: labmiro
+  human_name: miro.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmiro.prod
+drupal:
+  db:
+    database: miro_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmiro.prod.drupal.uiowa.edu'
+  requester: pmiro
+  site-name: 'Miro Research Group'
