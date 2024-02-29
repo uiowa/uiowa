@@ -222,8 +222,9 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - section_background_white_pattern_community
+            - ''
             - section_margin_fixed_width_container
+          layout_builder_custom_unique_id: building-details
         components:
           -
             uuid: c0f341fa-4141-4a8f-9f52-04bab2d0b156
@@ -324,17 +325,6 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_threecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          column_widths: 25-25-50
-          layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
-        components: {  }
-        third_party_settings: {  }
-      -
         layout_id: layout_fourcol
         layout_settings:
           label: ''
@@ -343,6 +333,7 @@ third_party_settings:
             0: ''
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
+          layout_builder_custom_unique_id: building-services
         components:
           -
             uuid: 7db46d29-0b5f-4716-90ae-d0dd5b5ec077
@@ -376,8 +367,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 2
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 49db3c30-2d68-410b-b7b0-d3cf9a9ed486
@@ -559,9 +549,25 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
           -
             uuid: f5463510-5b0c-4c2a-b2b6-89148948b3f7
-            region: third
+            region: content
             configuration:
               id: a11y_block
               label: null
@@ -574,24 +580,6 @@ third_party_settings:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
-      -
-        layout_id: layout_threecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          column_widths: 33-34-33
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            section_alignment_start: section_alignment_start
-        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }

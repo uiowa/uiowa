@@ -39,30 +39,28 @@ class AccessibilityLinks extends BlockBase {
         'id' => 'b4389a15836343e2bd07899a67560a9f',
       ],
       'lactation_room' => [
-        'label' => 'Lactation Rooms Map',
+        'label' => 'Lactation Rooms',
         'icon' => 'map-marker-alt',
         'id' => '72c9109323954a58abbde5dae8e6ee03',
       ],
       'hearing_loop' => [
-        'label' => 'Hearing Loop Systems Map',
+        'label' => 'Hearing Loop Systems',
         'icon' => 'ear-deaf',
         'id' => '7c639bd4000b4d34979a3a3a628d7180',
       ],
       'gender_inclusive_restroom' => [
-        'label' => 'Gender Inclusive Restrooms Map',
+        'label' => 'Gender Inclusive Restrooms',
         'icon' => 'person-half-dress',
         'id' => 'a787689a1da843018156b2f2e97da119',
       ],
     ];
 
-    $list_markup = '<ul class="fa-ul">';
+    $list_markup = '<div class="element--center block bttn--full bttn--row">';
     foreach ($links as $link) {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
-      $list_markup .= '<li><span class="fa-li">
-        <i class="fa-solid fa-' . $link['icon'] . ' "></i>
-      </span> ' . '<a href="' . $url . '">' . $link['label'] . '</a></li>';
+      $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $url . '">' . $link['label'] . '<i class="fa-solid fa-' . $link['icon'] . ' "></i></a>';
     }
-    $list_markup .= '</ul>';
+    $list_markup .= '</div>';
 
     $build = [];
 
