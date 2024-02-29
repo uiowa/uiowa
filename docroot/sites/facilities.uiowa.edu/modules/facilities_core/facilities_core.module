@@ -399,7 +399,7 @@ function facilities_core_preprocess_layout(&$variables) {
   if ($node instanceof NodeInterface && $node->getType() === 'building') {
     switch ($layout->id()) {
       case 'layout_onecol':
-        if (isset($variables['region_attributes']['content'], $variables["content"]["#settings"]["layout_builder_custom_unique_id"]) && $variables["content"]["#settings"]["layout_builder_custom_unique_id"] === 'building-details') {
+        if (isset($variables['region_attributes']['content'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'building-details') {
           $variables['region_attributes']['content']->addClass('border--bottom element--padding__bottom');
         }
         break;
