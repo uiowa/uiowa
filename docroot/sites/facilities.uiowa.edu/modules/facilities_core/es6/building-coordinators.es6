@@ -1,4 +1,4 @@
-(function (Drupal, drupalSettings, once) {
+(function (Drupal, once) {
   // Attach building_coordinators_block behavior.
   Drupal.behaviors.building_coordinators_block = {
     attach: function () {
