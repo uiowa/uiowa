@@ -1,0 +1,21 @@
+uuid: 40deb31c-132c-4cf8-9b4c-d0f2091a66b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_email
+    - node.type.alert
+id: node.alert.field_alert_email
+field_name: field_alert_email
+entity_type: node
+bundle: alert
+label: 'Send alert email on save'
+description: 'Checking this box will send an email to alert subscribers immediately if alert is published or transitioning to published.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
