@@ -26,6 +26,16 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+details {
+  summary {
+    // So we don't wrap the arrow away from the label.
+    white-space: nowrap;
+
+    // Ensure users get pointer cursor for details.
+    cursor: pointer;
+  }
+}
+
 // Set an element to display inline.
 .element--inline-breakpoint {
   @include breakpoint(sm) {
@@ -778,6 +788,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
+}
+
+// Measurer class useful for ensuring tables do not reflow
+//     while interacting with a cell's contents.
+// NOTE: Should only be used with 'aria-hidden="true"'.
+.width-measurer {
+  height: 0px;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
 }
 
 // @todo remove
