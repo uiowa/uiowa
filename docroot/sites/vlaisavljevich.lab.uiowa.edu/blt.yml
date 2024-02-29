@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labvlaisavljevich.uiowa.ddev.site
+    protocol: https
+  machine_name: labvlaisavljevich
+  human_name: vlaisavljevich.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labvlaisavljevich.prod
+drupal:
+  db:
+    database: vlaisavljevich_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labvlaisavljevich.prod.drupal.uiowa.edu'
+  requester: bvlaisavljevich
+  site-name: 'Vlaisavljevich Research Group'
