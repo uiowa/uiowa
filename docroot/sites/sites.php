@@ -6796,3 +6796,9 @@ $sites['orgmuhs.uiowa.ddev.site'] = 'muhs.org.uiowa.edu';
 $sites['orgmuhs.dev.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
 $sites['orgmuhs.stage.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
 $sites['orgmuhs.prod.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+
+// Directory aliases for vlaisavljevich.lab.uiowa.edu.
+$sites['labvlaisavljevich.uiowa.ddev.site'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.dev.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.stage.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.prod.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
