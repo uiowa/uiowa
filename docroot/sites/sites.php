@@ -6802,3 +6802,9 @@ $sites['labvlaisavljevich.uiowa.ddev.site'] = 'vlaisavljevich.lab.uiowa.edu';
 $sites['labvlaisavljevich.dev.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
 $sites['labvlaisavljevich.stage.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
 $sites['labvlaisavljevich.prod.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+
+// Directory aliases for miro.lab.uiowa.edu.
+$sites['labmiro.uiowa.ddev.site'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.dev.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.stage.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.prod.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
