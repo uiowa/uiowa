@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: com-testiowa.uiowa.ddev.site
+    protocol: https
+  machine_name: com-testiowa
+  human_name: testiowa.com
+drush:
+  aliases:
+    local: self
+    remote: com-testiowa.prod
+drupal:
+  db:
+    database: testiowa_com
+uiowa:
+  stage_file_proxy:
+    origin: 'https://com-testiowa.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Test Iowa'
