@@ -6808,3 +6808,9 @@ $sites['labmiro.uiowa.ddev.site'] = 'miro.lab.uiowa.edu';
 $sites['labmiro.dev.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
 $sites['labmiro.stage.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
 $sites['labmiro.prod.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+
+// Directory aliases for pubhealtheval.org.uiowa.edu.
+$sites['orgpubhealtheval.uiowa.ddev.site'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.dev.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.stage.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.prod.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
