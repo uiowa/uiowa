@@ -35,10 +35,11 @@ class ListBlock extends CoreBlock {
       'pager' => $this->t('Pager type'),
       'hide_fields' => $this->t('Hide fields'),
       'sort_fields' => $this->t('Reorder fields'),
+      'configure_filters' => $this->t('Configure filters'),
       'disable_filters' => $this->t('Disable filters'),
       'configure_sorts' => $this->t('Configure sorts'),
-      // Add configure_filters option summary.
-      'configure_filters' => $this->t('Customize filters in block'),
+      // Add configure_filters_custom option summary.
+      'configure_filters_custom' => $this->t('Customize filters in block'),
       // Add use_more option summary.
       'use_more' => $this->t('Display more link'),
       // Add general_help_text field.
@@ -72,7 +73,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Add configure filters in block option.
-    $form['allow']['#options']['configure_filters'] = $this->t('Customize filters in block');
+    $form['allow']['#options']['configure_filters_custom'] = $this->t('Customize filters in block');
     // Add use_more option to allow displaying a link.
     $form['allow']['#options']['use_more'] = $this->t('Display more link');
 
@@ -206,7 +207,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Add exposed filters to be customized in the block.
-    if (!empty($allow_settings['configure_filters'])) {
+    if (!empty($allow_settings['configure_filters_custom'])) {
 
       $exposed_filters = [];
 
@@ -672,7 +673,7 @@ class ListBlock extends CoreBlock {
     // If we are not utilizing the filter in block option,
     // then use the default behavior. Otherwise, do not display
     // exposed filters.
-    if (empty($this->options['allow']['configure_filters'])) {
+    if (empty($this->options['allow']['configure_filters_custom'])) {
       return parent::displaysExposed();
     }
     return FALSE;

@@ -862,7 +862,9 @@ display:
     display_options:
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       block_description: Articles
       block_category: Lists
       allow:
@@ -871,9 +873,10 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: configure_sorts
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: use_more
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/sitenow/uiowa-articles" target="_blank" rel="noopener">articles path set within SiteNow Articles</a>, make sure the ‘Enable articles listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'
       restrict_fields:
@@ -885,7 +888,7 @@ display:
         field_article_author: 0
         field_article_source_org: 0
         field_article_source_link: 0
-        field_teaser: 0
+        body: 0
       general_help_text: '<a href="/admin/content?title=&type=article&status=1" target="_blank" rel="noopener">Manage existing articles on this site</a> or <a href="/node/add/article" target="_blank" rel="noopener">add an article here</a>.'
     cache_metadata:
       max-age: -1
