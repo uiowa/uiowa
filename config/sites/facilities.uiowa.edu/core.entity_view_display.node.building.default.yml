@@ -246,28 +246,6 @@ third_party_settings:
                   scale: 2
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 17720171-0651-47b8-911e-3b0db99f7fca
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_named_building'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings: {  }
             weight: 1
             additional:
               layout_builder_styles_style:
@@ -313,6 +291,28 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 17720171-0651-47b8-911e-3b0db99f7fca
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_named_building'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
