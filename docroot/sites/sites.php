@@ -6790,3 +6790,9 @@ $sites['com-testiowa.uiowa.ddev.site'] = 'testiowa.com';
 $sites['com-testiowa.dev.drupal.uiowa.edu'] = 'testiowa.com';
 $sites['com-testiowa.stage.drupal.uiowa.edu'] = 'testiowa.com';
 $sites['com-testiowa.prod.drupal.uiowa.edu'] = 'testiowa.com';
+
+// Directory aliases for muhs.org.uiowa.edu.
+$sites['orgmuhs.uiowa.ddev.site'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.dev.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.stage.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.prod.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
