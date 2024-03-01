@@ -13,7 +13,10 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *
  * @EmailBuilder(
  *   id = "its_core",
- *   sub_types = {"its_alert_email" = @Translation("ITS Alert Email")},
+ *   sub_types = {
+ *    "its_alert_email" = @Translation("ITS Alert Email"),
+ *    "its_alerts_digest" = @Translation('ITS Alerts Digest Email'),
+ *   },
  * )
  */
 class ITSAlertEmail extends EmailBuilderBase {
@@ -24,20 +27,45 @@ class ITSAlertEmail extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, array $alert = NULL) {
-    $email->setParam('alert', $alert);
+  public function createParams(EmailInterface $email, array $message = NULL) {
+    $email->setParam('message', $message);
   }
 
   /**
    * {@inheritdoc}
    */
   public function build(EmailInterface $email) {
-    if ($email->getSubType() == 'its_alert_email') {
+    $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
+    $email->setFrom($from);
+    $email->setReplyTo($from);
+    $env = getenv('AH_PRODUCTION');
 
-      $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
-      $email->setFrom($from);
-      $email->setReplyTo($from);
-      $env = getenv('AH_PRODUCTION');
+    // Send the alerts digest.
+    if ($email->getSubType() == 'its_alerts_digest') {
+      $email->setSubject('IT Service Alerts Daily Digest');
+      // Only send emails if PROD, otherwise use the site email for debugging.
+      if ((int) $env === 1) {
+        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
+      }
+      else {
+        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
+      }
+
+      $body = [];
+      $data = $email->getParam('message');
+
+      foreach ($data as $items) {
+        $items = \Drupal::entityTypeManager()->getViewBuilder('node')->viewMultiple($items, 'teaser');
+        $body[] = [
+          '#markup' => \Drupal::service('renderer')->render($items),
+        ];
+      }
+
+      $email->setBody(['body' => $body]);
+    }
+
+    // Send an individual alert.
+    if ($email->getSubType() == 'its_alert_email') {
 
       // Only send emails if PROD, otherwise use the site email for debugging.
       if ((int) $env === 1) {
@@ -49,7 +77,7 @@ class ITSAlertEmail extends EmailBuilderBase {
       }
 
       $body = [];
-      $markup = $email->getParam('alert');
+      $markup = $email->getParam('message');
 
       $body[] = [
         '#markup' => \Drupal::service('renderer')->render($markup),
