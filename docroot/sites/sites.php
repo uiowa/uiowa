@@ -6791,8 +6791,26 @@ $sites['com-testiowa.dev.drupal.uiowa.edu'] = 'testiowa.com';
 $sites['com-testiowa.stage.drupal.uiowa.edu'] = 'testiowa.com';
 $sites['com-testiowa.prod.drupal.uiowa.edu'] = 'testiowa.com';
 
-// Directory aliases for stuorg-muhs.org.uiowa.edu.
-$sites['orgstuorg-muhs.uiowa.ddev.site'] = 'stuorg-muhs.org.uiowa.edu';
-$sites['orgstuorg-muhs.dev.drupal.uiowa.edu'] = 'stuorg-muhs.org.uiowa.edu';
-$sites['orgstuorg-muhs.stage.drupal.uiowa.edu'] = 'stuorg-muhs.org.uiowa.edu';
-$sites['orgstuorg-muhs.prod.drupal.uiowa.edu'] = 'stuorg-muhs.org.uiowa.edu';
+// Directory aliases for muhs.org.uiowa.edu.
+$sites['orgmuhs.uiowa.ddev.site'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.dev.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.stage.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+$sites['orgmuhs.prod.drupal.uiowa.edu'] = 'muhs.org.uiowa.edu';
+
+// Directory aliases for vlaisavljevich.lab.uiowa.edu.
+$sites['labvlaisavljevich.uiowa.ddev.site'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.dev.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.stage.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+$sites['labvlaisavljevich.prod.drupal.uiowa.edu'] = 'vlaisavljevich.lab.uiowa.edu';
+
+// Directory aliases for miro.lab.uiowa.edu.
+$sites['labmiro.uiowa.ddev.site'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.dev.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.stage.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+$sites['labmiro.prod.drupal.uiowa.edu'] = 'miro.lab.uiowa.edu';
+
+// Directory aliases for pubhealtheval.org.uiowa.edu.
+$sites['orgpubhealtheval.uiowa.ddev.site'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.dev.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.stage.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
+$sites['orgpubhealtheval.prod.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';

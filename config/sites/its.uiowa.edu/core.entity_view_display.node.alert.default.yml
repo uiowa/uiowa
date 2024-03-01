@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_email
     - field.field.node.alert.field_alert_service_affected
     - field.field.node.alert.field_alert_title_details
     - field.field.node.alert.field_alert_updates
@@ -136,28 +137,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_category'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
             region: main
             configuration:
@@ -269,6 +248,28 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 5
             additional: {  }
             third_party_settings: {  }
@@ -334,6 +335,16 @@ content:
       localize: false
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_alert_email:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 111
     region: content
   field_alert_service_affected:
     type: entity_reference_label
