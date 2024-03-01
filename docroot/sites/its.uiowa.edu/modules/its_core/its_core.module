@@ -599,6 +599,14 @@ function its_core_preprocess_field__node__title(&$variables) {
  */
 function its_core_theme($existing, $type, $theme, $path) {
   return [
+    'paragraph__support_article_faqs__default' => [
+      'template' => 'paragraph--support-article-faqs--default',
+      'base hook' => 'paragraph',
+    ],
+    'field__node__field_support_article_faqs' => [
+      'template' => 'field--node--field-support-article-faqs',
+      'base hook' => 'field',
+    ],
     'field__node__field_service_related_service__service__default' => [
       'template' => 'field--node--field-service-related-service--service--default',
       'base hook' => 'field',
