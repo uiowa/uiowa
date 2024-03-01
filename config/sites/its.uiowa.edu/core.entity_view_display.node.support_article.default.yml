@@ -1,0 +1,196 @@
+uuid: 1c47f128-98af-4a37-85e2-3767326927a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.support_article.body
+    - field.field.node.support_article.field_support_article_category
+    - field.field.node.support_article.field_support_article_faqs
+    - field.field.node.support_article.field_support_article_service
+    - field.field.node.support_article.field_support_article_short_desc
+    - node.type.support_article
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 67c1f7ae-b670-482b-8f84-869ce21d68d8
+            region: content
+            configuration:
+              id: 'extra_field_block:node:support_article:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 09191f46-6d06-4e85-8d7d-aa7b2860c3ec
+            region: content
+            configuration:
+              id: 'extra_field_block:node:support_article:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 66a38a87-e47a-4dee-b647-6c49e22be601
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: edf2b001-bcd5-4b50-87e0-93d855205bef
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_short_desc'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a3dfe39a-a3c4-4b25-a428-c781d272ed1c
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_service'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1b46bfcd-aab0-4920-a2d9-025f446f7106
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_category'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1e36ebc4-7879-4350-afea-82ed3ba546e3
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_faqs'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+id: node.support_article.default
+targetEntityType: node
+bundle: support_article
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_support_article_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_support_article_faqs:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_support_article_service:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_support_article_short_desc:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

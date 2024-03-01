@@ -1,0 +1,29 @@
+uuid: 7ee80b9f-b7df-4496-a044-65ce567a1f88
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_support_article_category
+    - node.type.support_article
+    - taxonomy.vocabulary.support_article_categories
+id: node.support_article.field_support_article_category
+field_name: field_support_article_category
+entity_type: node
+bundle: support_article
+label: 'Support Article Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      support_article_categories: support_article_categories
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

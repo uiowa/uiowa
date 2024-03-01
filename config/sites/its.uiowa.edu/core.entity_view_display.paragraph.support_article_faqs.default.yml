@@ -1,0 +1,35 @@
+uuid: 8559c470-035a-426f-9969-ff1380a58145
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.support_article_faqs.field_support_faqs_answer
+    - field.field.paragraph.support_article_faqs.field_support_faqs_question
+    - paragraphs.paragraphs_type.support_article_faqs
+  module:
+    - text
+id: paragraph.support_article_faqs.default
+targetEntityType: paragraph
+bundle: support_article_faqs
+mode: default
+content:
+  field_support_faqs_answer:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_support_faqs_question:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
