@@ -965,13 +965,16 @@ display:
                   collapsible: false
                   is_secondary: true
               field_alert_category_target_id:
-                plugin_id: default
+                plugin_id: bef
                 advanced:
-                  placeholder_text: 'Alert categories'
+                  sort_options: false
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: false
+                  collapsible: true
                   is_secondary: true
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
               field_alert_building_target_id:
                 plugin_id: default
                 advanced:
@@ -1368,7 +1371,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: alert_categories
-          type: textfield
+          type: select
           hierarchy: false
           limit: true
           error_message: true
@@ -1468,9 +1471,9 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
@@ -1905,9 +1908,9 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: 0
         use_more: 0
       more_link_help_text: "Check to include a 'display more' link. Defaults to the front page. Alternatively, a custom URL path can be provided in the ‘Path’ text box below."
@@ -1948,9 +1951,9 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: configure_filters_custom
         use_more: use_more
       more_link_help_text: "Check to include a 'display more' link. Defaults to the front page. Alternatively, a custom URL path can be provided in the ‘Path’ text box below."
@@ -2547,9 +2550,9 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
@@ -3205,9 +3208,9 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
@@ -3805,9 +3808,9 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
-        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
+        configure_filters: '0'
         configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
