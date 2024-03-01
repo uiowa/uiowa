@@ -15,7 +15,7 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *   id = "its_core",
  *   sub_types = {
  *    "its_alert_email" = @Translation("ITS Alert Email"),
- *    "its_alerts_digest" = @Translation('ITS Alerts Digest Email'),
+ *    "its_alerts_digest" = @Translation("ITS Alerts Digest Email"),
  *   },
  * )
  */
