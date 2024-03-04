@@ -123,40 +123,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: a3dfe39a-a3c4-4b25-a428-c781d272ed1c
-            region: second
-            configuration:
-              id: 'field_block:node:support_article:field_support_article_service'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1b46bfcd-aab0-4920-a2d9-025f446f7106
-            region: second
-            configuration:
-              id: 'field_block:node:support_article:field_support_article_category'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 66a38a87-e47a-4dee-b647-6c49e22be601
             region: first
             configuration:
@@ -190,7 +156,7 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: false
                 third_party_settings: {  }
-            weight: 2
+            weight: -2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -209,7 +175,7 @@ third_party_settings:
                 type: timestamp
                 label: above
                 settings:
-                  date_format: long
+                  date_format: medium
                   custom_date_format: ''
                   timezone: ''
                   tooltip:
@@ -223,7 +189,53 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
-            weight: 3
+            weight: -1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: a3dfe39a-a3c4-4b25-a428-c781d272ed1c
+            region: second
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_service'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1b46bfcd-aab0-4920-a2d9-025f446f7106
+            region: second
+            configuration:
+              id: 'field_block:node:support_article:field_support_article_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }

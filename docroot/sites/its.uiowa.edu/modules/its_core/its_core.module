@@ -419,6 +419,10 @@ function its_core_preprocess_block(&$variables) {
       uiowa_core_set_attributes($variables, 'element--light-intro h2');
       break;
 
+    case 'field_block:node:support_article:nid':
+      $variables['#attached']['library'][] = 'uids_base/node-type-article';
+      break;
+
   }
 }
 
@@ -434,7 +438,7 @@ function its_core_preprocess_layout(&$variables) {
     switch ($layout->id()) {
       case 'layout_twocol':
         if (isset($variables['region_attributes']['second'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'support-layout') {
-          $variables['region_attributes']['second']->addClass('border--left element--padding__left');
+          $variables['region_attributes']['second']->addClass('border--left element--padding__left article--meta');
         }
         break;
 
