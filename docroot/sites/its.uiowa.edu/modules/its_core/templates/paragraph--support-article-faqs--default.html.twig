@@ -38,16 +38,14 @@
  * @ingroup themeable
  */
 #}
-{% set node = elements['#node'] %}
 {% set accordion_item = {
   'accordion_h_size' : 'h2',
-  'accordion_item_id': 'accordion-item-' ~ 'support-faq' ~ '-' ~ node.id,
-  'accordion_type' : 'single',
-  'accordion_parent_id': 'accordion-' ~ 'support-faq',
-  'accordion_hash': label|clean_class,
+  'accordion_item_id': 'accordion-item-' ~ parent_id ~ '-' ~ delta,
+  'accordion_parent_id': 'accordion-faq',
   'accordion_item_label': content.field_support_faqs_question,
   'accordion_item_content': content.field_support_faqs_answer,
   'attributes': attributes,
 } %}
 
-{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+{% endembed %}

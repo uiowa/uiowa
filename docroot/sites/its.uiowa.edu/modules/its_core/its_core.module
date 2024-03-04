@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -615,6 +616,47 @@ function its_core_preprocess_field(&$variables, $hook) {
       }
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $collection_types = [
+      'support_article_faqs' => 'field_support_article_faqs',
+    ];
+
+    if (in_array($paragraph->bundle(), array_keys($collection_types))) {
+      $items_field = $collection_types[$paragraph->bundle()];
+      $variables['delta'] = 0;
+
+      $parent = $paragraph->getParentEntity();
+      if ($parent instanceof ContentEntityInterface) {
+        $variables['parent_id'] = $parent->id();
+        if ($parent->hasField($items_field)) {
+          $id = $paragraph->id();
+          /**
+           * @var integer $delta
+           * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+           */
+          foreach ($parent->get($items_field)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['delta'] = $delta;
+              break;
+            }
+          }
+        }
+      }
+
+    }
   }
 }
 

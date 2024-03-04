@@ -109,6 +109,7 @@ third_party_settings:
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
+            remove_default_bottom_padding: remove_default_bottom_padding
             section_alignment_start: section_alignment_start
         components:
           -
@@ -211,7 +212,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: 0
             additional:
               layout_builder_styles_style: {  }
@@ -234,7 +235,7 @@ third_party_settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ''
+                    delimiter: ','
             weight: 1
             additional:
               layout_builder_styles_style: {  }
@@ -250,6 +251,13 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            remove_default_top_padding: remove_default_top_padding
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 1e36ebc4-7879-4350-afea-82ed3ba546e3
@@ -274,6 +282,8 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
 id: node.support_article.default
 targetEntityType: node
 bundle: support_article
