@@ -863,7 +863,12 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
       sorts:
         field_project_building_alt_value:
           id: field_project_building_alt_value
@@ -1235,6 +1240,7 @@ display:
           text: ''
           output_url_as_text: false
           absolute: false
+      empty: {  }
       sorts: {  }
       arguments:
         field_project_building_target_id:
@@ -1313,6 +1319,7 @@ display:
           separator: ''
           hide_empty: false
       defaults:
+        empty: false
         style: false
         row: false
         fields: false
@@ -1332,7 +1339,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h2 class="headline headline--serif h5">Projects</h2>'
+            value: '<h2 class="headline headline--underline headline--serif h5">Projects</h2>'
             format: filtered_html
           tokenize: false
       display_extenders:
