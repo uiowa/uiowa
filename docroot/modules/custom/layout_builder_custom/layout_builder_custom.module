@@ -531,10 +531,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
       $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
       break;
+
     case 'views_exposed_form':
-      $fields = array_filter($form, function($key ){
-        // Keep only keys that begins by 'field_'
-        return substr($key, 0, 6) == 'field_' ;
+      $fields = array_filter($form, function ($key) {
+        // Keep only keys that begins by 'field_'.
+        return substr($key, 0, 6) == 'field_';
       }, ARRAY_FILTER_USE_KEY);
       foreach ($fields as $key => $field) {
         // https://www.reddit.com/r/drupal/comments/o6il5l/using_an_exposed_filter_scrolls_the_window_back/
