@@ -32,9 +32,6 @@ class AccessibilityLinks extends BlockBase {
     $node = $this->getContextValue('node');
     $building_number = $node->get('field_building_number')->getString();
 
-    $building_image = $node->get('field_building_image')->first()->get('entity')->getValue()->getFileUri();
-    $building_image_alt = $node->get('field_building_image')->first()->alt;
-
     $links = [
       'accessibility' => [
         'label' => 'Accessibility Map',
@@ -58,37 +55,18 @@ class AccessibilityLinks extends BlockBase {
       ],
     ];
 
-    $list_markup = '<ul class="fa-ul">';
+    $list_markup = '<div class="element--center block bttn--full bttn--row">';
     foreach ($links as $link) {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
-      $list_markup .= '<li><span class="fa-li">
-        <i class="fa-solid fa-' . $link['icon'] . ' "></i>
-      </span> ' . '<a href="' . $url . '">' . $link['label'] . '</a></li>';
+      $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $url . '">' . $link['label'] . '<i class="fa-solid fa-' . $link['icon'] . ' "></i></a>';
     }
-    $list_markup .= '</ul>';
+    $list_markup .= '</div>';
 
     $build = [];
 
-    $attributes = [];
-    $attributes['class'] = [
-      'bg--white',
-      'headline--serif',
-      'media--medium',
-      'media--widescreen',
-    ];
-
     $build['container']['services'][] = [
-      '#type' => 'card',
-      '#attributes' => $attributes,
-      '#title' => 'Accessibility Links',
-      '#media' => [
-        '#theme' => 'image',
-        '#uri' => $building_image,
-        '#alt' => $building_image_alt,
-      ],
-      '#content' => [
-        '#markup' => $list_markup,
-      ],
+      '#type' => 'markup',
+      '#markup' => $list_markup,
     ];
 
     return $build;

@@ -258,14 +258,14 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: p
+          element_type: ''
           element_class: ''
           element_label_type: strong
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: true
           empty_zero: false
@@ -383,14 +383,14 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: p
+          element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: true
           empty_zero: false
@@ -515,7 +515,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: true
           empty_zero: false
@@ -640,7 +640,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: true
           empty_zero: false
@@ -679,18 +679,7 @@ display:
       cache:
         type: tag
         options: {  }
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text_custom
-          empty: true
-          content: "<h2 class=\"headline headline--serif h5\">Contact Information</h2>\r\nThere are currently no building coordinator contacts for this location."
-          tokenize: false
+      empty: {  }
       sorts: {  }
       arguments:
         nid:
@@ -827,7 +816,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<h2 class="headline headline--serif h5">Contact Information</h2>'
+            value: '<h2 class="headline headline--underline headline--serif h5">Contact</h2>'
             format: filtered_html
           tokenize: false
       footer: {  }
