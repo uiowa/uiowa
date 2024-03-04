@@ -42,24 +42,47 @@ class ITSCoreCommands extends DrushCommands {
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
     $views = [];
-    $views['outages_degradations'] = views_get_view_result('alerts_list_block', 'outages_degradations');
-    $views['planned_maintenance'] = views_get_view_result('alerts_list_block', 'planned_maintenance');
-    $views['service_announcements'] = views_get_view_result('alerts_list_block', 'service_announcements');
-    // $views['ongoing'] = '';
+    $views['outages_degradations'] = [
+      'title' => 'Alerts',
+      'view' => views_get_view_result('alerts_list_block', 'outages_degradations'),
+    ];
+    $views['planned_maintenance'] = [
+      'title' => 'Planned Maintenance',
+      'view' => views_get_view_result('alerts_list_block', 'planned_maintenance'),
+    ];
+    $views['service_announcements'] = [
+      'title' => 'Service Announcements',
+      'view' => views_get_view_result('alerts_list_block', 'service_announcements'),
+    ];
+    $views['ongoing'] = [
+      'title' => 'Ongoing Maintenance',
+      'view' => views_get_view_result('alerts_list_block', 'ongoing'),
+    ];
     $alerts = [];
 
     if (!empty($views)) {
       foreach ($views as $key => $view) {
-        if (!empty($view)) {
-          foreach ($view as $row) {
+        if (!empty($view['view'])) {
+          foreach ($view['view'] as $row) {
             $entity = $row->_entity;
-            $alerts[$key][] = $entity;
+            $alerts[$key] = [
+              '#type' => 'container',
+            ];
+            $alerts[$key]['title'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h2',
+              '#value' => $view['title'],
+            ];
+
+            $alert = its_core_alert_email_build($entity, FALSE);
+            $alerts[$key]['alerts'][] = $alert;
           }
         }
       }
 
       $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $alerts);
 
+      // @todo Add logging.
       if ($email->getError()) {
         $this->output()->writeln('Alerts Digest not sent.');
       }

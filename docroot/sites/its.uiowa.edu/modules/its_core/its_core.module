@@ -140,7 +140,8 @@ function its_core_node_insert(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity, TRUE);
+    its_core_send_alert_email($entity, $alert);
   }
 
 }
@@ -152,18 +153,18 @@ function its_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity, TRUE);
+    its_core_send_alert_email($entity, $alert);
   }
 }
 
 /**
- * Custom function to send an alert email.
+ * Construct alert render array for emails.
  */
-function its_core_alert_email($entity) {
+function its_core_alert_email_build($entity, $updates = FALSE) {
   $alert = [];
   $alert_title = $entity->label();
 
-  $emailFactory = \Drupal::service('email_factory');
   if ($entity->isClosed()) {
     $alert_title = '[CLOSED] ' . $alert_title;
   }
@@ -180,13 +181,13 @@ function its_core_alert_email($entity) {
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
   $alert['title'] = [
     '#type' => 'html_tag',
-    '#tag' => 'h2',
+    '#tag' => 'h3',
     '#value' => $date . ': ' . $linked_alert_title,
   ];
 
-  // Include alert updates if they exist.
+  // Include alert updates if they exist and $updates is TRUE.
   $alert_updates = $entity->get('field_alert_updates')->referencedEntities();
-  if ($alert_updates) {
+  if ($alert_updates && $updates) {
     // Establish a wrapper render array.
     $alert['updates'] = [
       '#type' => 'container',
@@ -199,7 +200,7 @@ function its_core_alert_email($entity) {
     ];
     $alert['updates']['title'] = [
       '#type' => 'html_tag',
-      '#tag' => 'h3',
+      '#tag' => 'h4',
       '#value' => t('Updates:'),
     ];
     $updates = [];
@@ -220,7 +221,7 @@ function its_core_alert_email($entity) {
     ];
     $alert['body_container']['title'] = [
       '#type' => 'html_tag',
-      '#tag' => 'h3',
+      '#tag' => 'h4',
       '#value' => t('Original notice:'),
     ];
   }
@@ -267,6 +268,22 @@ function its_core_alert_email($entity) {
       '#items' => $items,
     ];
   }
+
+  return $alert;
+}
+
+/**
+ * Custom function to send an alert email.
+ */
+function its_core_send_alert_email($entity, $alert) {
+
+  $alert_title = $entity->label();
+
+  if ($entity->isClosed()) {
+    $alert_title = '[CLOSED] ' . $alert_title;
+  }
+
+  $emailFactory = \Drupal::service('email_factory');
 
   // Include related links.
   $links = [

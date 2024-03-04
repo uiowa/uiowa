@@ -50,18 +50,6 @@ class ITSAlertEmail extends EmailBuilderBase {
       else {
         $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
       }
-
-      $body = [];
-      $data = $email->getParam('message');
-
-      foreach ($data as $items) {
-        $items = \Drupal::entityTypeManager()->getViewBuilder('node')->viewMultiple($items, 'teaser');
-        $body[] = [
-          '#markup' => \Drupal::service('renderer')->render($items),
-        ];
-      }
-
-      $email->setBody(['body' => $body]);
     }
 
     // Send an individual alert.
@@ -75,16 +63,17 @@ class ITSAlertEmail extends EmailBuilderBase {
       else {
         $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
       }
-
-      $body = [];
-      $markup = $email->getParam('message');
-
-      $body[] = [
-        '#markup' => \Drupal::service('renderer')->render($markup),
-      ];
-
-      $email->setBody(['body' => $body]);
     }
+
+    // Set body with message.
+    $body = [];
+    $markup = $email->getParam('message');
+
+    $body[] = [
+      '#markup' => \Drupal::service('renderer')->render($markup),
+    ];
+
+    $email->setBody(['body' => $body]);
   }
 
 }
