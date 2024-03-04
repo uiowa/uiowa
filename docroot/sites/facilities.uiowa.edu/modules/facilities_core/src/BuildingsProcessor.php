@@ -125,7 +125,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     // If the namedBuilding field is not NULL, it needs to be converted to a
     // entity ID for an existing named building.
     if (isset($record->namedBuilding)) {
-      $record->namedBuilding = $this->findNamedBuildingNid($record->{$this->apiRecordSyncKey});
+      $record->namedBuilding = $this->findNamedBuildingNid($record->id);
     }
   }
 
