@@ -253,6 +253,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'views_block:article_list_block-list_article':
           case 'views_block:events-card_list':
           case 'views_block:events_list_block-card_list':
+          case 'views_block:page_list_block-list_block_1':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
             $form['layout_builder_style_media_size']['#states'] = [
@@ -747,6 +748,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       case 'inline_block:uiowa_card':
       case 'inline_block:uiowa_events':
       case 'views_block:article_list_block-list_article':
+      case 'views_block:page_list_block-list_block_1':
       case 'views_block:events-card_list':
       case 'views_block:events_list_block-card_list':
       case 'views_block:people_list_block-list_card':
@@ -1164,6 +1166,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
       'views_block:article_list_block-list_article',
       'views_block:events-card_list',
       'views_block:events_list_block-card_list',
+      'views_block:page_list_block-list_block_1',
       'views_block:people_list_block-list_card',
       'views_block:student_card-block_student_card',
     ];
