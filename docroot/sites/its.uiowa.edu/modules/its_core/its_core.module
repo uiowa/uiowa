@@ -140,7 +140,7 @@ function its_core_node_insert(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    $alert = its_core_alert_email_build($entity, TRUE);
+    $alert = its_core_alert_email_build($entity);
     its_core_send_alert_email($entity, $alert);
   }
 
@@ -153,7 +153,7 @@ function its_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    $alert = its_core_alert_email_build($entity, TRUE);
+    $alert = its_core_alert_email_build($entity);
     its_core_send_alert_email($entity, $alert);
   }
 }
@@ -161,7 +161,7 @@ function its_core_node_update(EntityInterface $entity) {
 /**
  * Construct alert render array for emails.
  */
-function its_core_alert_email_build($entity, $updates = FALSE) {
+function its_core_alert_email_build($entity) {
   $alert = [];
   $alert_title = $entity->label();
 
@@ -185,9 +185,9 @@ function its_core_alert_email_build($entity, $updates = FALSE) {
     '#value' => $date . ': ' . $linked_alert_title,
   ];
 
-  // Include alert updates if they exist and $updates is TRUE.
+  // Include alert updates if they exist.
   $alert_updates = $entity->get('field_alert_updates')->referencedEntities();
-  if ($alert_updates && $updates) {
+  if ($alert_updates) {
     // Establish a wrapper render array.
     $alert['updates'] = [
       '#type' => 'container',
@@ -211,7 +211,7 @@ function its_core_alert_email_build($entity, $updates = FALSE) {
       $updates[] = $update_render;
     }
 
-    $updates_render = \Drupal::service('renderer')->render($updates);
+    $updates_render = \Drupal::service('renderer')->renderRoot($updates);
     $alert['updates']['content'] = [
       '#markup' => $updates_render,
     ];

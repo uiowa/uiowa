@@ -78,7 +78,7 @@ class ITSCoreCommands extends DrushCommands {
               '#value' => $view['title'],
             ];
 
-            $alert = its_core_alert_email_build($entity, FALSE);
+            $alert = its_core_alert_email_build($entity);
             $alerts[$key]['alerts'][] = $alert;
           }
         }
