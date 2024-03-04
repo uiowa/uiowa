@@ -59,6 +59,10 @@ class ListBlock extends CoreBlock {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
 
+    parent::buildOptionsForm($form, $form_state);
+    if ($form_state->get('section') !== 'allow') {
+      return;
+    }
     // Show a text area to add general help text to the list block.
     $general_help_text = $this->getOption('general_help_text');
     $form['general_help_text'] = [
@@ -67,10 +71,6 @@ class ListBlock extends CoreBlock {
       '#description' => $this->t('Set help text to display below the block title.'),
       '#default_value' => $general_help_text ?: '',
     ];
-    parent::buildOptionsForm($form, $form_state);
-    if ($form_state->get('section') !== 'allow') {
-      return;
-    }
 
     // Add configure filters in block option.
     $form['allow']['#options']['configure_filters_custom'] = $this->t('Customize filters in block');
@@ -204,6 +204,11 @@ class ListBlock extends CoreBlock {
         }
         $form['override']['hide_fields']['order_fields'] = array_diff_key($form['override']['hide_fields']['order_fields'], $fields_to_remove);
       }
+    }
+
+    if (!empty($allow_settings['configure_filters'])) {
+      $form['exposed']['#title'] = $this->t('Filters');
+      $form['exposed']['#weight'] = 10;
     }
 
     // Add exposed filters to be customized in the block.
