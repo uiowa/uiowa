@@ -62,25 +62,27 @@ class ITSCoreCommands extends DrushCommands {
       'title' => 'Ongoing Maintenance',
       'view' => views_get_view_result('alerts_list_block', 'ongoing'),
     ];
-    $alerts = [];
+    $content = [];
 
     if (!empty($views)) {
-      foreach ($views as $key => $view) {
+      foreach ($views as $group => $view) {
         if (!empty($view['view'])) {
+          $alerts = [];
           foreach ($view['view'] as $row) {
             $entity = $row->_entity;
-            $alerts[$key] = [
+            $content[$group] = [
               '#type' => 'container',
             ];
-            $alerts[$key]['title'] = [
+            $content[$group]['title'] = [
               '#type' => 'html_tag',
               '#tag' => 'h1',
               '#value' => $view['title'],
             ];
 
-            $alert = its_core_alert_email_build($entity);
-            $alerts[$key]['alerts'][] = $alert;
+            $alerts[] = its_core_alert_email_build($entity);
+
           }
+          $content[$group]['alerts'] = $alerts;
         }
       }
 
@@ -94,18 +96,18 @@ class ITSCoreCommands extends DrushCommands {
           Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
       ];
 
-      $alerts['related']['title'] = [
+      $content['related']['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'h1',
         '#value' => 'Related links',
       ];
-      $alerts['related']['list'] = [
+      $content['related']['list'] = [
         '#theme' => 'item_list',
         '#type' => 'ul',
         '#items' => $links,
       ];
 
-      $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $alerts);
+      $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
 
       if ($email->getError()) {
         $message = t('Alerts Digest no sent');
