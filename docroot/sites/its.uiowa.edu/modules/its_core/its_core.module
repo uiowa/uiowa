@@ -415,6 +415,30 @@ function its_core_preprocess_block(&$variables) {
       $variables['#attached']['library'][] = 'uids_base/view-calendar';
       break;
 
+    case 'field_block:node:support_article:field_support_article_short_desc':
+      uiowa_core_set_attributes($variables, 'element--light-intro h2');
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'support_article') {
+    switch ($layout->id()) {
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'support-layout') {
+          $variables['region_attributes']['second']->addClass('border--left element--padding__left');
+        }
+        break;
+
+    }
   }
 }
 
@@ -572,6 +596,18 @@ function its_core_preprocess_field(&$variables, $hook) {
             $item['content']['#markup'] = $content;
           }
         }
+      }
+      break;
+
+    case 'nid':
+      if ($variables['element']['#bundle'] === 'support_article') {
+        $variables['label'] = 'Article number';
+      }
+      break;
+
+    case 'changed':
+      if ($variables['element']['#bundle'] === 'support_article') {
+        $variables['label'] = 'Last updated';
       }
       break;
 
