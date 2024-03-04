@@ -16,6 +16,7 @@ use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
+use Drupal\smart_date\Entity\SmartDateFormat;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -170,12 +171,11 @@ function its_core_alert_email_build($entity) {
   }
 
   // Construct date for output.
-  $date_formatter = \Drupal::service('date.formatter');
-  $date = $entity->get('field_alert_date')->value;
-
-  // Moving closer to an on-brand format,
-  // matching patched Compact smart date format.
-  $date = $date_formatter->format($date, 'custom', 'M. d h:i a');
+  $format = SmartDateFormat::load('compact');
+  $settings = $format->getOptions();
+  $start = $entity->get('field_alert_date')->value;
+  $end = $entity->get('field_alert_date')->end_value;
+  $date = \Drupal::service('smart_date.manager')->formatSmartDate($start, $end, $settings, NULL, 'string');
 
   $linked_alert_title = Link::fromTextAndUrl($alert_title,
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
