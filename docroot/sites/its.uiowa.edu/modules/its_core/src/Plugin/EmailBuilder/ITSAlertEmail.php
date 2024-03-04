@@ -69,6 +69,13 @@ class ITSAlertEmail extends EmailBuilderBase {
     $body = [];
     $markup = $email->getParam('message');
 
+    // Sprinkle in some small CSS tweaks.
+    $markup['styles'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'style',
+      '#value' => 'h1{font-size:18pt;}h2{font-size:16pt;}h3{font-size:14pt;}div{font-size:11pt;}',
+    ];
+
     $body[] = [
       '#markup' => \Drupal::service('renderer')->render($markup),
     ];

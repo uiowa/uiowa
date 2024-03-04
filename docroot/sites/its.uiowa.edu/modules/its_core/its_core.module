@@ -181,7 +181,7 @@ function its_core_alert_email_build($entity, $updates = FALSE) {
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
   $alert['title'] = [
     '#type' => 'html_tag',
-    '#tag' => 'h3',
+    '#tag' => 'h2',
     '#value' => $date . ': ' . $linked_alert_title,
   ];
 
@@ -200,7 +200,7 @@ function its_core_alert_email_build($entity, $updates = FALSE) {
     ];
     $alert['updates']['title'] = [
       '#type' => 'html_tag',
-      '#tag' => 'h4',
+      '#tag' => 'h3',
       '#value' => t('Updates:'),
     ];
     $updates = [];
@@ -221,7 +221,7 @@ function its_core_alert_email_build($entity, $updates = FALSE) {
     ];
     $alert['body_container']['title'] = [
       '#type' => 'html_tag',
-      '#tag' => 'h4',
+      '#tag' => 'h3',
       '#value' => t('Original notice:'),
     ];
   }
@@ -292,10 +292,15 @@ function its_core_send_alert_email($entity, $alert) {
     Link::fromTextAndUrl('Calendar view of alerts',
       Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
   ];
-  $alert['related'] = [
+
+  $alert['related']['title'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('Related links'),
+  ];
+  $alert['related']['list'] = [
     '#theme' => 'item_list',
     '#type' => 'ul',
-    '#title' => 'Related Links:',
     '#items' => $links,
   ];
 

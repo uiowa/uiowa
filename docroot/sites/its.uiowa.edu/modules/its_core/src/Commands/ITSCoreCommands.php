@@ -2,8 +2,10 @@
 
 namespace Drupal\its_core\Commands;
 
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\Url;
 use Drupal\symfony_mailer\EmailFactoryInterface;
 use Drush\Commands\DrushCommands;
 
@@ -70,7 +72,7 @@ class ITSCoreCommands extends DrushCommands {
             ];
             $alerts[$key]['title'] = [
               '#type' => 'html_tag',
-              '#tag' => 'h2',
+              '#tag' => 'h1',
               '#value' => $view['title'],
             ];
 
@@ -79,6 +81,27 @@ class ITSCoreCommands extends DrushCommands {
           }
         }
       }
+
+      // Include related links.
+      $links = [
+        Link::fromTextAndUrl('Why am I receiving this email?',
+          Url::fromUri('https://its.uiowa.edu/support/article/127441')),
+        Link::fromTextAndUrl('IT Service Alerts page',
+          Url::fromUri('https://its.uiowa.edu/alerts')),
+        Link::fromTextAndUrl('Calendar view of alerts',
+          Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
+      ];
+
+      $alerts['related']['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h1',
+        '#value' => 'Related links',
+      ];
+      $alerts['related']['list'] = [
+        '#theme' => 'item_list',
+        '#type' => 'ul',
+        '#items' => $links,
+      ];
 
       $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $alerts);
 
