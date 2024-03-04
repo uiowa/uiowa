@@ -3,6 +3,7 @@
 namespace Drupal\its_core\Commands;
 
 use Drupal\Core\Link;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\Url;
@@ -18,6 +19,8 @@ use Drush\Commands\DrushCommands;
  */
 class ITSCoreCommands extends DrushCommands {
 
+  use LoggerChannelTrait;
+
   /**
    * Drush command constructor.
    *
@@ -28,7 +31,6 @@ class ITSCoreCommands extends DrushCommands {
    */
   public function __construct(protected AccountSwitcherInterface $accountSwitcher, protected EmailFactoryInterface $emailFactory) {
     parent::__construct();
-    $this->accountSwitcher = $accountSwitcher;
   }
 
   /**
@@ -105,16 +107,20 @@ class ITSCoreCommands extends DrushCommands {
 
       $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $alerts);
 
-      // @todo Add logging.
       if ($email->getError()) {
-        $this->output()->writeln('Alerts Digest not sent.');
+        $message = t('Alerts Digest no sent');
       }
       else {
-        $this->output()->writeln('Alerts Digest sent.');
+        $message = t('Alerts Digest sent');
       }
+
+      $this->getLogger('its_core')->notice($message);
+      $this->logger->notice($message);
     }
     else {
-      $this->output()->writeln('Alerts Digest - No items to send.');
+      $message = t('Alerts Digest - No items to send');
+      $this->getLogger('its_core')->notice($message);
+      $this->logger->notice($message);
       return;
     }
 
