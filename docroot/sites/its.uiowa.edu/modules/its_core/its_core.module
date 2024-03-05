@@ -17,6 +17,7 @@ use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
+use Drupal\smart_date\Entity\SmartDateFormat;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -141,7 +142,8 @@ function its_core_node_insert(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity);
+    its_core_send_alert_email($entity, $alert);
   }
 
 }
@@ -153,29 +155,28 @@ function its_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity);
+    its_core_send_alert_email($entity, $alert);
   }
 }
 
 /**
- * Custom function to send an alert email.
+ * Construct alert render array for emails.
  */
-function its_core_alert_email($entity) {
+function its_core_alert_email_build($entity) {
   $alert = [];
   $alert_title = $entity->label();
 
-  $emailFactory = \Drupal::service('email_factory');
   if ($entity->isClosed()) {
     $alert_title = '[CLOSED] ' . $alert_title;
   }
 
   // Construct date for output.
-  $date_formatter = \Drupal::service('date.formatter');
-  $date = $entity->get('field_alert_date')->value;
-
-  // Moving closer to an on-brand format,
-  // matching patched Compact smart date format.
-  $date = $date_formatter->format($date, 'custom', 'M. d h:i a');
+  $format = SmartDateFormat::load('compact');
+  $settings = $format->getOptions();
+  $start = $entity->get('field_alert_date')->value;
+  $end = $entity->get('field_alert_date')->end_value;
+  $date = \Drupal::service('smart_date.manager')->formatSmartDate($start, $end, $settings, NULL, 'string');
 
   $linked_alert_title = Link::fromTextAndUrl($alert_title,
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
@@ -211,7 +212,7 @@ function its_core_alert_email($entity) {
       $updates[] = $update_render;
     }
 
-    $updates_render = \Drupal::service('renderer')->render($updates);
+    $updates_render = \Drupal::service('renderer')->renderRoot($updates);
     $alert['updates']['content'] = [
       '#markup' => $updates_render,
     ];
@@ -269,6 +270,22 @@ function its_core_alert_email($entity) {
     ];
   }
 
+  return $alert;
+}
+
+/**
+ * Custom function to send an alert email.
+ */
+function its_core_send_alert_email($entity, $alert) {
+
+  $alert_title = $entity->label();
+
+  if ($entity->isClosed()) {
+    $alert_title = '[CLOSED] ' . $alert_title;
+  }
+
+  $emailFactory = \Drupal::service('email_factory');
+
   // Include related links.
   $links = [
     Link::fromTextAndUrl('IT Service Alerts page',
@@ -276,10 +293,15 @@ function its_core_alert_email($entity) {
     Link::fromTextAndUrl('Calendar view of alerts',
       Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
   ];
-  $alert['related'] = [
+
+  $alert['related']['title'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('Related links'),
+  ];
+  $alert['related']['list'] = [
     '#theme' => 'item_list',
     '#type' => 'ul',
-    '#title' => 'Related Links:',
     '#items' => $links,
   ];
 
