@@ -539,7 +539,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       }, ARRAY_FILTER_USE_KEY);
       foreach ($fields as $key => $field) {
         // https://www.reddit.com/r/drupal/comments/o6il5l/using_an_exposed_filter_scrolls_the_window_back/
-        $form[$key]['#ajax']['disable-refocus'] = TRUE;
+        $form[$key]['#ajax']['disable-refocus'] = FALSE;
       }
       break;
   }
