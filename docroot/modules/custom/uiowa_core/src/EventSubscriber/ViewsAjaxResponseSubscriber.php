@@ -3,6 +3,8 @@ namespace Drupal\uiowa_core\EventSubscriber;
 
 use Drupal\views\Ajax\ViewAjaxResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Drupal\uiowa_core\Ajax\AfterViewsAjaxCommand;
@@ -36,39 +38,41 @@ class ViewsAjaxResponseSubscriber implements EventSubscriberInterface {
     // Only act on a Views Ajax Response.
     if ($response instanceof ViewAjaxResponse) {
       $view = $response->getView();
-      $view_id = $view->storage->id();
+      $view_name = $view->storage->id();
       $view_display_id = $view->getDisplay()->display['id'];
 
       // Only act on the view to tweak.
       if (
-        $view_id === 'alerts_list_block' &&
+        $view_name === 'alerts_list_block' &&
         $view_display_id === 'alert_status'
       ) {
         $response->addCommand(new AfterViewsAjaxCommand());
       }
     }
   }
+
   /**
-   * Allows us to alter the Ajax response from a view.
+   * Allows us to alter the Ajax request from a view.
    *
    * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
    *   The event process.
    */
   public function onRequest(RequestEvent $event) {
-    $request = $event->getResponse();
+    $request = $event->getRequest();
 
     // Only act on a Views Ajax Response.
-    if ($response instanceof ViewAjaxResponse) {
-      $view = $response->getView();
-      $view_id = $view->storage->id();
-      $view_display_id = $view->getDisplay()->display['id'];
+    if ($request instanceof Request) {
+      $query = $request->query;
+      $view_name = $query->get('view_name');
+      $view_display_id = $query->get('view_display_id');
 
       // Only act on the view to tweak.
       if (
-        $view_id === 'alerts_list_block' &&
+        $view_name === 'alerts_list_block' &&
         $view_display_id === 'alert_status'
       ) {
-        $response->addCommand(new AfterViewsAjaxCommand());
+        // Unsure of how to hook in to this...
+        // $request->addCommand(new BeforeViewsAjaxCommand());
       }
     }
   }
