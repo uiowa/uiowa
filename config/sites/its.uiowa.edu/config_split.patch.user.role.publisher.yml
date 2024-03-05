@@ -2,10 +2,14 @@ adding:
   dependencies:
     config:
       - node.type.service
+      - node.type.support_article
   permissions:
     - 'delete service revisions'
+    - 'delete support_article revisions'
     - 'edit any service content'
+    - 'edit any support_article content'
     - 'edit own service content'
+    - 'edit own support_article content'
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
     - 'override alert authored by option'
@@ -13,7 +17,9 @@ adding:
     - 'override service published option'
     - 'revert alert revisions'
     - 'revert service revisions'
+    - 'revert support_article revisions'
     - 'view service revisions'
+    - 'view support_article revisions'
 removing:
   dependencies:
     config:

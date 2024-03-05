@@ -2,22 +2,29 @@ adding:
   dependencies:
     config:
       - node.type.service
+      - node.type.support_article
       - taxonomy.vocabulary.audience
       - taxonomy.vocabulary.building
       - taxonomy.vocabulary.service_category
   permissions:
     - 'create service content'
+    - 'create support_article content'
     - 'create terms in audience'
     - 'create terms in building'
     - 'create terms in service_category'
     - 'delete any service content'
+    - 'delete any support_article content'
     - 'delete own service content'
+    - 'delete own support_article content'
     - 'delete service revisions'
+    - 'delete support_article revisions'
     - 'delete terms in audience'
     - 'delete terms in building'
     - 'delete terms in service_category'
     - 'edit any service content'
+    - 'edit any support_article content'
     - 'edit own service content'
+    - 'edit own support_article content'
     - 'edit terms in audience'
     - 'edit terms in building'
     - 'edit terms in service_category'
@@ -31,5 +38,7 @@ adding:
     - 'override service published option'
     - 'override service revision option'
     - 'revert service revisions'
+    - 'revert support_article revisions'
     - 'view service revisions'
+    - 'view support_article revisions'
 removing: {  }
