@@ -28,6 +28,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
+use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
@@ -1119,6 +1120,16 @@ function uiowa_core_preprocess_views_view(&$variables) {
   if ($variables['view']->id() == 'related_manually_referenced_content') {
     // Attach the grid class.
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function uiowa_core_views_pre_render(ViewExecutable $view) {
+  if (isset($view) && ($view->storage->id() === 'alert_status')) {
+    // Throw in our js that helps with the focus of the autosubmit.
+    $view->element['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
   }
 }
 

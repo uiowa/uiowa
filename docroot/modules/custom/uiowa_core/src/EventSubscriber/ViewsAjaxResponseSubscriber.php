@@ -34,7 +34,7 @@ class ViewsAjaxResponseSubscriber implements EventSubscriberInterface {
       $view = $response->getView();
 
       // Only act on the view to tweak.
-      if ($view->storage->id() === 'MY_VIEW') {
+      if ($view->storage->id() === 'alert_status') {
         $response->addCommand(new AfterViewsAjaxCommand());
       }
     }

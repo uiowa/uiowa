@@ -26,3 +26,21 @@ function change_select_color_by_index(element, index) {
     change_select_color_by_index(value, value.selectedIndex);
   }
 }(Drupal, once));
+
+(function (Drupal) {
+  Drupal.behaviors.exposedFormFilterEnhancements = {
+    attach(context) {
+      // const elements = once('exposedFormFilterEnhancements', 'select', context);
+      // `elements` is always an Array.
+      // elements.forEach(processingCallback);
+      console.log('Behavior attached.');
+    }
+  };
+
+  /**
+   * Proper input mirroring after AJAX is finished.
+   */
+  Drupal.AjaxCommands.prototype.afterViewsAjaxCall = function (ajax, response) {
+    console.log('Neat plants you got there.');
+  };
+}(Drupal));
