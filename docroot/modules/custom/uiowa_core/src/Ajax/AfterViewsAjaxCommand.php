@@ -12,8 +12,7 @@ class AfterViewsAjaxCommand implements CommandInterface {
     /**
      * @inheritDoc
      */
-    public function render()
-    {
+    public function render() {
       return [
         'command' => 'afterViewsAjaxCall',
 //        'clicked' => $_COOKIE["STYXKEY_Checkbox_Clicked"] ?? NULL,

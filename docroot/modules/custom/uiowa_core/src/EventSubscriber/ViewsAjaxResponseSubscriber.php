@@ -8,9 +8,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Drupal\uiowa_core\Ajax\AfterViewsAjaxCommand;
 
 /**
- * Alter a Views Ajax Response.
+ * Class EntityTypeSubscriber.
+ *
+ * @package Drupal\uiowa_core\EventSubscriber
  */
 class ViewsAjaxResponseSubscriber implements EventSubscriberInterface {
+
 
   /**
    * {@inheritdoc}
@@ -32,9 +35,14 @@ class ViewsAjaxResponseSubscriber implements EventSubscriberInterface {
     // Only act on a Views Ajax Response.
     if ($response instanceof ViewAjaxResponse) {
       $view = $response->getView();
+      $view_id = $view->storage->id();
+      $view_display_id = $view->getDisplay()->display['id'];
 
       // Only act on the view to tweak.
-      if ($view->storage->id() === 'alert_status') {
+      if (
+        $view_id === 'alerts_list_block' &&
+        $view_display_id === 'alert_status'
+      ) {
         $response->addCommand(new AfterViewsAjaxCommand());
       }
     }
