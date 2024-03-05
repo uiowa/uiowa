@@ -13,7 +13,10 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *
  * @EmailBuilder(
  *   id = "its_core",
- *   sub_types = {"its_alert_email" = @Translation("ITS Alert Email")},
+ *   sub_types = {
+ *    "its_alert_email" = @Translation("ITS Alert Email"),
+ *    "its_alerts_digest" = @Translation("ITS Alerts Digest Email"),
+ *   },
  * )
  */
 class ITSAlertEmail extends EmailBuilderBase {
@@ -24,20 +27,33 @@ class ITSAlertEmail extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, array $alert = NULL) {
-    $email->setParam('alert', $alert);
+  public function createParams(EmailInterface $email, array $message = NULL) {
+    $email->setParam('message', $message);
   }
 
   /**
    * {@inheritdoc}
    */
   public function build(EmailInterface $email) {
-    if ($email->getSubType() == 'its_alert_email') {
+    $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
+    $email->setFrom($from);
+    $email->setReplyTo($from);
+    $env = getenv('AH_PRODUCTION');
 
-      $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
-      $email->setFrom($from);
-      $email->setReplyTo($from);
-      $env = getenv('AH_PRODUCTION');
+    // Send the alerts digest.
+    if ($email->getSubType() == 'its_alerts_digest') {
+      $email->setSubject('IT Service Alerts Daily Digest');
+      // Only send emails if PROD, otherwise use the site email for debugging.
+      if ((int) $env === 1) {
+        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
+      }
+      else {
+        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
+      }
+    }
+
+    // Send an individual alert.
+    if ($email->getSubType() == 'its_alert_email') {
 
       // Only send emails if PROD, otherwise use the site email for debugging.
       if ((int) $env === 1) {
@@ -47,16 +63,24 @@ class ITSAlertEmail extends EmailBuilderBase {
       else {
         $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
       }
-
-      $body = [];
-      $markup = $email->getParam('alert');
-
-      $body[] = [
-        '#markup' => \Drupal::service('renderer')->render($markup),
-      ];
-
-      $email->setBody(['body' => $body]);
     }
+
+    // Set body with message.
+    $body = [];
+    $markup = $email->getParam('message');
+
+    // Sprinkle in some small CSS tweaks.
+    $markup['styles'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'style',
+      '#value' => 'h1{font-size:18pt;}h2{font-size:16pt;}h3{font-size:14pt;}div{font-size:11pt;}',
+    ];
+
+    $body[] = [
+      '#markup' => \Drupal::service('renderer')->render($markup),
+    ];
+
+    $email->setBody(['body' => $body]);
   }
 
 }

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -16,6 +17,7 @@ use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
+use Drupal\smart_date\Entity\SmartDateFormat;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -140,7 +142,8 @@ function its_core_node_insert(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity);
+    its_core_send_alert_email($entity, $alert);
   }
 
 }
@@ -152,29 +155,28 @@ function its_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   // Send an alert email if marked.
   if ($type === 'alert' && $entity->send_email) {
-    its_core_alert_email($entity);
+    $alert = its_core_alert_email_build($entity);
+    its_core_send_alert_email($entity, $alert);
   }
 }
 
 /**
- * Custom function to send an alert email.
+ * Construct alert render array for emails.
  */
-function its_core_alert_email($entity) {
+function its_core_alert_email_build($entity) {
   $alert = [];
   $alert_title = $entity->label();
 
-  $emailFactory = \Drupal::service('email_factory');
   if ($entity->isClosed()) {
     $alert_title = '[CLOSED] ' . $alert_title;
   }
 
   // Construct date for output.
-  $date_formatter = \Drupal::service('date.formatter');
-  $date = $entity->get('field_alert_date')->value;
-
-  // Moving closer to an on-brand format,
-  // matching patched Compact smart date format.
-  $date = $date_formatter->format($date, 'custom', 'M. d h:i a');
+  $format = SmartDateFormat::load('compact');
+  $settings = $format->getOptions();
+  $start = $entity->get('field_alert_date')->value;
+  $end = $entity->get('field_alert_date')->end_value;
+  $date = \Drupal::service('smart_date.manager')->formatSmartDate($start, $end, $settings, NULL, 'string');
 
   $linked_alert_title = Link::fromTextAndUrl($alert_title,
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
@@ -210,7 +212,7 @@ function its_core_alert_email($entity) {
       $updates[] = $update_render;
     }
 
-    $updates_render = \Drupal::service('renderer')->render($updates);
+    $updates_render = \Drupal::service('renderer')->renderRoot($updates);
     $alert['updates']['content'] = [
       '#markup' => $updates_render,
     ];
@@ -268,6 +270,22 @@ function its_core_alert_email($entity) {
     ];
   }
 
+  return $alert;
+}
+
+/**
+ * Custom function to send an alert email.
+ */
+function its_core_send_alert_email($entity, $alert) {
+
+  $alert_title = $entity->label();
+
+  if ($entity->isClosed()) {
+    $alert_title = '[CLOSED] ' . $alert_title;
+  }
+
+  $emailFactory = \Drupal::service('email_factory');
+
   // Include related links.
   $links = [
     Link::fromTextAndUrl('IT Service Alerts page',
@@ -275,10 +293,15 @@ function its_core_alert_email($entity) {
     Link::fromTextAndUrl('Calendar view of alerts',
       Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
   ];
-  $alert['related'] = [
+
+  $alert['related']['title'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('Related links'),
+  ];
+  $alert['related']['list'] = [
     '#theme' => 'item_list',
     '#type' => 'ul',
-    '#title' => 'Related Links:',
     '#items' => $links,
   ];
 
@@ -415,6 +438,34 @@ function its_core_preprocess_block(&$variables) {
       $variables['#attached']['library'][] = 'uids_base/view-calendar';
       break;
 
+    case 'field_block:node:support_article:field_support_article_short_desc':
+      uiowa_core_set_attributes($variables, 'element--light-intro');
+      break;
+
+    case 'field_block:node:support_article:nid':
+      $variables['#attached']['library'][] = 'uids_base/node-type-article';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'support_article') {
+    switch ($layout->id()) {
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'support-layout') {
+          $variables['region_attributes']['second']->addClass('border--left element--padding__left article--meta');
+        }
+        break;
+
+    }
   }
 }
 
@@ -575,6 +626,59 @@ function its_core_preprocess_field(&$variables, $hook) {
       }
       break;
 
+    case 'nid':
+      if ($variables['element']['#bundle'] === 'support_article') {
+        $variables['label'] = 'Article number';
+      }
+      break;
+
+    case 'changed':
+      if ($variables['element']['#bundle'] === 'support_article') {
+        $variables['label'] = 'Last updated';
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function its_core_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $collection_types = [
+      'support_article_faqs' => 'field_support_article_faqs',
+    ];
+
+    if (in_array($paragraph->bundle(), array_keys($collection_types))) {
+      $items_field = $collection_types[$paragraph->bundle()];
+      $variables['delta'] = 0;
+
+      $parent = $paragraph->getParentEntity();
+      if ($parent instanceof ContentEntityInterface) {
+        $variables['parent_id'] = $parent->id();
+        if ($parent->hasField($items_field)) {
+          $id = $paragraph->id();
+          /**
+           * @var integer $delta
+           * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+           */
+          foreach ($parent->get($items_field)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['delta'] = $delta;
+              break;
+            }
+          }
+        }
+      }
+
+    }
   }
 }
 
@@ -599,6 +703,14 @@ function its_core_preprocess_field__node__title(&$variables) {
  */
 function its_core_theme($existing, $type, $theme, $path) {
   return [
+    'paragraph__support_article_faqs__default' => [
+      'template' => 'paragraph--support-article-faqs--default',
+      'base hook' => 'paragraph',
+    ],
+    'field__node__field_support_article_faqs' => [
+      'template' => 'field--node--field-support-article-faqs',
+      'base hook' => 'field',
+    ],
     'field__node__field_service_related_service__service__default' => [
       'template' => 'field--node--field-service-related-service--service--default',
       'base hook' => 'field',
