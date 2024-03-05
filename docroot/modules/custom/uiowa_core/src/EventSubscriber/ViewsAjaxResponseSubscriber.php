@@ -50,30 +50,4 @@ class ViewsAjaxResponseSubscriber implements EventSubscriberInterface {
       }
     }
   }
-
-  /**
-   * Allows us to alter the Ajax request from a view.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
-   *   The event process.
-   */
-  public function onRequest(RequestEvent $event) {
-    $request = $event->getRequest();
-
-    // Only act on a Views Ajax Response.
-    if ($request instanceof Request) {
-      $query = $request->query;
-      $view_name = $query->get('view_name');
-      $view_display_id = $query->get('view_display_id');
-
-      // Only act on the view to tweak.
-      if (
-        $view_name === 'alerts_list_block' &&
-        $view_display_id === 'alert_status'
-      ) {
-        // Unsure of how to hook in to this...
-        // $request->addCommand(new BeforeViewsAjaxCommand());
-      }
-    }
-  }
 }

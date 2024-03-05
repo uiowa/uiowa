@@ -43,8 +43,4 @@ function change_select_color_by_index(element, index) {
   Drupal.AjaxCommands.prototype.afterViewsAjaxCall = function (ajax, response) {
     console.log('Neat plants you got there.');
   };
-
-  Drupal.AjaxCommands.prototype.beforeViewsAjaxCall = function (ajax, request) {
-    console.log('I have not seen your plants!');
-  };
 }(Drupal));
