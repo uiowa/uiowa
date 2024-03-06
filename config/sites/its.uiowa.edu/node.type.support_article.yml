@@ -1,0 +1,45 @@
+uuid: f1da4c68-c6e5-4d1a-8c02-2c3882ddeef2
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+    - scheduler
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+  node_revision_delete:
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
+  scheduler:
+    expand_fieldset: when_required
+    fields_display_mode: vertical_tab
+    publish_enable: false
+    publish_past_date: error
+    publish_past_date_created: false
+    publish_required: false
+    publish_revision: false
+    publish_touch: false
+    show_message_after_update: true
+    unpublish_enable: false
+    unpublish_required: false
+    unpublish_revision: false
+name: 'Support Article'
+type: support_article
+description: 'Short, single topic articles containing actual how-to information, FAQs, setup steps and troubleshooting and fix descriptions about a particular service or application.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false
