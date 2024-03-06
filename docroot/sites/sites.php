@@ -6820,3 +6820,9 @@ $sites['labnest.uiowa.ddev.site'] = 'nest.lab.uiowa.edu';
 $sites['labnest.dev.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
 $sites['labnest.stage.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
 $sites['labnest.prod.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
+
+// Directory aliases for lcn.lab.uiowa.edu.
+$sites['lablcn.uiowa.ddev.site'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.dev.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.stage.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.prod.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
