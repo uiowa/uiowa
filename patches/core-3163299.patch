@@ -1,0 +1,431 @@
+diff --git a/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php b/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
+index a79a8ccfdbb00c16af4e44457a0c6563916c021a..c750e989f7b2f4ed8220675f0b3450deef5f679e 100644
+--- a/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
++++ b/core/modules/media_library/tests/src/FunctionalJavascript/MediaOverviewTest.php
+@@ -107,7 +107,7 @@ public function testAdministrationPage() {
+ 
+     // Test that selecting elements as a part of bulk operations works.
+     $page->selectFieldOption('Media type', '- Any -');
+-    $assert_session->elementExists('css', '#views-exposed-form-media-library-page')->submit();
++    $assert_session->elementExists('css', 'form[id^=views-exposed-form-media-library-page]')->submit();
+     $this->waitForText('Dog');
+ 
+     // Select the "Delete media" action.
+diff --git a/core/modules/views/js/ajax_view.js b/core/modules/views/js/ajax_view.js
+index c76e7073f5701a49b8ca50c3048a4ed3d875eca3..31013177ae92eb25847dee5aee7493392c10f488 100644
+--- a/core/modules/views/js/ajax_view.js
++++ b/core/modules/views/js/ajax_view.js
+@@ -101,10 +101,7 @@
+ 
+     // Add the ajax to exposed forms.
+     this.$exposed_form = $(
+-      `form#views-exposed-form-${settings.view_name.replace(
+-        /_/g,
+-        '-',
+-      )}-${settings.view_display_id.replace(/_/g, '-')}`,
++      `form.views-exposed-form[data-drupal-target-view="${settings.view_dom_id}"], form.views-exposed-form[data-drupal-target-view="${settings.view_name}-${settings.view_display_id}"]`,
+     );
+     once('exposed-form', this.$exposed_form).forEach(
+       this.attachExposedFormAjax.bind(this),
+@@ -142,18 +139,19 @@
+     this.exposedFormAjax = [];
+     // Exclude the reset buttons so no AJAX behaviors are bound. Many things
+     // break during the form reset phase if using AJAX.
+-    $(
+-      'input[type=submit], button[type=submit], input[type=image]',
+-      this.$exposed_form,
+-    )
+-      .not('[data-drupal-selector=edit-reset]')
+-      .each(function (index) {
+-        const selfSettings = $.extend({}, that.element_settings, {
+-          base: $(this).attr('id'),
+-          element: this,
+-        });
+-        that.exposedFormAjax[index] = Drupal.ajax(selfSettings);
++    once(
++      'attach-ajax',
++      $(
++        'input[type=submit], button[type=submit], input[type=image]',
++        this.$exposed_form,
++      ).not('[data-drupal-selector=edit-reset]'),
++    ).forEach(function (button, index) {
++      const selfSettings = $.extend({}, that.element_settings, {
++        base: $(button).attr('id'),
++        element: button,
+       });
++      that.exposedFormAjax[index] = Drupal.ajax(selfSettings);
++    });
+   };
+ 
+   /**
+diff --git a/core/modules/views/src/Form/ViewsExposedForm.php b/core/modules/views/src/Form/ViewsExposedForm.php
+index 417d97971e923f9aa3a9c3ae5b3068e9e9ae99d6..798534b0586923ac294987643109fedc1f4fbe65 100644
+--- a/core/modules/views/src/Form/ViewsExposedForm.php
++++ b/core/modules/views/src/Form/ViewsExposedForm.php
+@@ -136,7 +136,21 @@ public function buildForm(array $form, FormStateInterface $form_state) {
+ 
+     $form['#action'] = $form_action;
+     $form['#theme'] = $view->buildThemeFunctions('views_exposed_form');
+-    $form['#id'] = Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']);
++    // There is no way to determine the relationship between a particular view
++    // and the corresponding exposed form, because the form can be built
++    // outside of the view processing pipeline, e.g. as an exposed form block.
++
++    // If a view has the dom ID already set, rely on it.
++    if (!empty($view->dom_id)) {
++      $form['#attributes']['data-drupal-target-view'] = $view->dom_id;
++    }
++    // Otherwise, rely on the view ID + display ID combination, assuming that
++    // multiple exposed form blocks will be controlling the very same views.
++    else {
++      $form['#attributes']['data-drupal-target-view'] = $view->storage->id() . '-' . $display['id'];
++    }
++    $form['#id'] = Html::getUniqueId(Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']));
++
+     // Labels are built too late for inline form errors to work, resulting
+     // in duplicated messages.
+     $form['#disable_inline_form_errors'] = TRUE;
+diff --git a/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php b/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
+index 135c4313abad1b7b81554cd3b7592e961f7830c8..44a93449398386b1b2f2ac1fa1903ffcad90d70b 100644
+--- a/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
++++ b/core/modules/views/src/Plugin/Block/ViewsExposedFilterBlock.php
+@@ -34,15 +34,17 @@ public function getCacheContexts() {
+    *   context of current view and display ID.
+    */
+   public function build() : array {
+-    $output = $this->view->display_handler->viewExposedFormBlocks() ?? [];
++    $output = [];
++    $build = $this->view->display_handler->viewExposedFormBlocks() ?? [];
+     // Provide the context for block build and block view alter hooks.
+     // \Drupal\views\Plugin\Block\ViewsBlock::build() adds the same context in
+     // \Drupal\views\ViewExecutable::buildRenderable() using
+     // \Drupal\views\Plugin\views\display\DisplayPluginBase::buildRenderable().
+-    if (!empty($output)) {
++    if (!empty($build)) {
+       $output += [
+         '#view' => $this->view,
+         '#display_id' => $this->displayID,
++        'content' => $build,
+       ];
+     }
+ 
+diff --git a/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml b/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
+index c484c6b1389e7f4225c698245e928d4b7d191a15..56a8ddc7b51b8ee7e81e801903f978f7c8dc0c99 100644
+--- a/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
++++ b/core/modules/views/tests/modules/views_test_config/test_views/views.view.test_block_exposed_ajax_with_page.yml
+@@ -93,3 +93,20 @@ display:
+         - url.query_args
+         - 'user.node_grants:view'
+       tags: {  }
++  page_2:
++    display_plugin: page
++    id: page_2
++    display_title: Page
++    position: 2
++    display_options:
++      display_extenders: {  }
++      path: some-other-path
++      exposed_block: true
++    cache_metadata:
++      max-age: -1
++      contexts:
++        - 'languages:language_interface'
++        - url
++        - url.query_args
++        - 'user.node_grants:view'
++      tags: {  }
+diff --git a/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php b/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
+index 6c9d518dabfd8d6e47d228d0cc1cd3b4cdc9035b..df3dd8bc2eb5ae2ba4960157cbda650d93fa06bd 100644
+--- a/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
++++ b/core/modules/views/tests/src/Functional/Plugin/ExposedFormTest.php
+@@ -293,9 +293,8 @@ public function testExposedBlock($display) {
+     $this->assertSession()->elementNotExists('xpath', $xpath);
+ 
+     // Test there is only one views exposed form on the page.
+-    $xpath = '//form[@id="' . $this->getExpectedExposedFormId($view) . '"]';
++    $xpath = '//form[@class="views-exposed-form"]';
+     $this->assertSession()->elementsCount('xpath', $xpath, 1);
+-    $element = $this->assertSession()->elementExists('xpath', $xpath);
+ 
+     // Test that the correct option is selected after form submission.
+     $this->assertCacheContext('url');
+@@ -306,6 +305,7 @@ public function testExposedBlock($display) {
+       'page' => ['page'],
+     ];
+     foreach ($arguments as $argument => $bundles) {
++      $element = $this->assertSession()->elementExists('xpath', $xpath);
+       $element->find('css', 'select')->selectOption($argument);
+       $element->findButton('Apply')->click();
+       $this->assertCacheContext('url');
+diff --git a/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php b/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
+index fe2b4c85089763f8c053cda43e5394ecb24bd70f..0a084070a1c5ee154184d05468c5d0c718b5de3a 100644
+--- a/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
++++ b/core/modules/views/tests/src/FunctionalJavascript/BlockExposedFilterAJAXTest.php
+@@ -95,4 +95,253 @@ public function testExposedFilteringAndReset() {
+     $this->assertSession()->addressEquals('some-path');
+   }
+ 
++  /**
++   * Tests if exposed forms work with multiple instances of the same view.
++   */
++  public function testMultipleExposedFormsForTheSameView() {
++    $this->drupalPlaceBlock('views_exposed_filter_block:test_block_exposed_ajax_with_page-page_2', ['region' => 'content', 'weight' => -10, 'id' => 'page-exposed-form']);
++    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-one-exposed-form', 'weight' => 50]);
++    $this->drupalPlaceBlock('views_block:test_block_exposed_ajax_with_page-block_1', ['id' => 'block-two-exposed-form', 'weight' => 100]);
++
++    $assert_session = $this->assertSession();
++
++    // Go to the page and check that all 3 views are displaying the correct
++    // results.
++    $this->drupalGet('some-other-path');
++
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Ensure that page view exposed form (displayed as block) does not
++    // affect other two block views.
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-page-exposed-form .views-exposed-form');
++    // Filter by article.
++    $element->find('css', 'select')->selectOption('article');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-page-exposed-form"]/following::span[1][text()="Page A"]');
++
++    // Verify that only page view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-page-exposed-form .views-exposed-form');
++    // Filter by page.
++    $element->find('css', 'select')->selectOption('page');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-page-exposed-form"]/following::span[1][text()="Article A"]');
++
++    // Verify that only page view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringNotContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-page-exposed-form .views-exposed-form');
++    // Disable filter.
++    $element->find('css', 'select')->selectOption('All');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElement('xpath', '//div[@id="block-page-exposed-form"]/following::span[1][text()="Article A"]');
++
++    // Ensure that the first block view exposed form does not affect the page
++    // view and the other block view.
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-one-exposed-form .views-exposed-form');
++    // Filter by article.
++    $element->find('css', 'select')->selectOption('article');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-one-exposed-form"]//*[text()="Page A"]');
++
++    // Verify that only the first block view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-one-exposed-form .views-exposed-form');
++    // Filter by page.
++    $element->find('css', 'select')->selectOption('page');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-one-exposed-form"]//*[text()="Article A"]');
++
++    // Verify that only the first block view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringNotContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-one-exposed-form .views-exposed-form');
++    // Disable filter.
++    $element->find('css', 'select')->selectOption('All');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElement('xpath', '//div[@id="block-block-one-exposed-form"]//*[text()="Article A"]');
++
++    // Ensure that the second block view exposed form does not affect the page
++    // view and the other block view.
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-two-exposed-form .views-exposed-form');
++    // Filter by article.
++    $element->find('css', 'select')->selectOption('article');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-two-exposed-form"]//*[text()="Page A"]');
++
++    // Verify that only the second block view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-two-exposed-form .views-exposed-form');
++    // Filter by page.
++    $element->find('css', 'select')->selectOption('page');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-two-exposed-form"]//*[text()="Article A"]');
++
++    // Verify that only the second block view has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringNotContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-two-exposed-form .views-exposed-form');
++    // Disable filter.
++    $element->find('css', 'select')->selectOption('All');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElement('xpath', '//div[@id="block-block-two-exposed-form"]//*[text()="Article A"]');
++
++    // Ensure that the all forms works when used one by one.
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-page-exposed-form .views-exposed-form');
++    // Filter by article.
++    $element->find('css', 'select')->selectOption('article');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-page-exposed-form"]/following::span[1][text()="Page A"]');
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-one-exposed-form .views-exposed-form');
++    // Filter by page.
++    $element->find('css', 'select')->selectOption('page');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-one-exposed-form"]//*[text()="Page A"]');
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-two-exposed-form .views-exposed-form');
++    // Filter by page.
++    $element->find('css', 'select')->selectOption('article');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElementRemoved('xpath', '//div[@id="block-block-two-exposed-form"]//*[text()="Page A"]');
++
++    // Verify that all views has been filtered.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringNotContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++
++    // Find the form HTML ID.
++    $element = $assert_session->elementExists('css', '#block-block-two-exposed-form .views-exposed-form');
++    // Disable filter.
++    $element->find('css', 'select')->selectOption('All');
++    $element->findButton('Apply')->click();
++    $assert_session->waitForElement('xpath', '//div[@id="block-block-two-exposed-form"]//*[text()="Page A"]');
++
++    // Verify that all views has been filtered one more time.
++    $views = $this->getSession()->getPage()->findAll('css', '.views-element-container');
++    $content = $views[0]->getHtml();
++    $this->assertStringNotContainsString('Page A', $content);
++    $this->assertStringNotContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++    $content = $views[1]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringNotContainsString('Article A', $content);
++    $content = $views[2]->getHtml();
++    $this->assertStringContainsString('Page A', $content);
++    $this->assertStringContainsString('Page B', $content);
++    $this->assertStringContainsString('Article A', $content);
++  }
++
+ }
+diff --git a/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php b/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php
+index bc75f8f21073ac3456edf9505280651dded06b1a..c244c837db80f3b77afa2cbb87bf3c4eccfb7e01 100644
+--- a/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php
++++ b/core/modules/views/tests/src/Kernel/Plugin/ExposedFormRenderTest.php
+@@ -43,7 +43,8 @@ public function testExposedFormRender() {
+     $output = $exposed_form->renderExposedForm();
+     $this->setRawContent(\Drupal::service('renderer')->renderRoot($output));
+ 
+-    $this->assertFieldByXpath('//form/@id', Html::cleanCssIdentifier('views-exposed-form-' . $view->storage->id() . '-' . $view->current_display), 'Expected form ID found.');
++    $result = $this->xpath('//form[@data-drupal-target-view=:target]', [':target' => $view->dom_id]);
++    $this->assertCount(1, $result, 'Expected form "data-drupal-target-view" attribute found.');
+ 
+     $view->setDisplay('page_1');
+     $expected_action = $view->display_handler->getUrlInfo()->toString();

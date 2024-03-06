@@ -1,0 +1,46 @@
+uuid: bbe00049-b3af-4de3-b0bb-5bd403f94078
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_support_article_faqs
+    - node.type.support_article
+    - paragraphs.paragraphs_type.support_article_faqs
+  module:
+    - entity_reference_revisions
+id: node.support_article.field_support_article_faqs
+field_name: field_support_article_faqs
+entity_type: node
+bundle: support_article
+label: FAQs
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      support_article_faqs: support_article_faqs
+    negate: 0
+    target_bundles_drag_drop:
+      alert_update:
+        weight: 8
+        enabled: false
+      support_article_faqs:
+        weight: 7
+        enabled: true
+      uiowa_collection_item:
+        weight: 9
+        enabled: false
+      uiowa_contact:
+        weight: 10
+        enabled: false
+      uiowa_slide:
+        weight: 11
+        enabled: false
+      uiowa_timeline_item:
+        weight: 12
+        enabled: false
+field_type: entity_reference_revisions
