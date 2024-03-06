@@ -6814,3 +6814,15 @@ $sites['orgpubhealtheval.uiowa.ddev.site'] = 'pubhealtheval.org.uiowa.edu';
 $sites['orgpubhealtheval.dev.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
 $sites['orgpubhealtheval.stage.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
 $sites['orgpubhealtheval.prod.drupal.uiowa.edu'] = 'pubhealtheval.org.uiowa.edu';
+
+// Directory aliases for nest.lab.uiowa.edu.
+$sites['labnest.uiowa.ddev.site'] = 'nest.lab.uiowa.edu';
+$sites['labnest.dev.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
+$sites['labnest.stage.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
+$sites['labnest.prod.drupal.uiowa.edu'] = 'nest.lab.uiowa.edu';
+
+// Directory aliases for lcn.lab.uiowa.edu.
+$sites['lablcn.uiowa.ddev.site'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.dev.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.stage.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
+$sites['lablcn.prod.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
