@@ -7,7 +7,9 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
+use Drupal\uiowa_core\ApiClientInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
+use Drupal\uiowa_facilities\BizHubApiClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -52,13 +54,6 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct() {
-    parent::__construct($this->bundle);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $fieldSyncKey = 'field_building_number';
 
   /**
@@ -67,13 +62,31 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'buildingNumber';
 
   /**
+   *
+   * @var \Drupal\uiowa_core\ApiClientInterface
+   */
+  protected BizHubApiClient $bizhubApiClient;
+
+  /**
+   * @var \Drupal\uiowa_core\ApiClientInterface
+   */
+  protected ApiClientInterface $buildUiApiClient;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    parent::__construct();
+    $this->bizhubApiClient = \Drupal::service('uiowa_facilities.bizhub_api_client');
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function getData() {
     if (!isset($this->data)) {
-      // Request from Facilities API to get buildings.
-      $facilities_api = \Drupal::service('uiowa_facilities.api');
-      $this->data = $facilities_api->getBuildings();
+      // Request from BizHub API to get buildings.
+      $this->data = $this->bizhubApiClient->getBuildings();
     }
     return $this->data;
   }
@@ -83,9 +96,8 @@ class BuildingsProcessor extends EntityProcessorBase {
    */
   protected function processRecord(&$record) {
     if (!is_null($building_number = $record?->{$this->apiRecordSyncKey})) {
-      // Request from Facilities API to get buildings.
-      $facilities_api = \Drupal::service('uiowa_facilities.api');
-      $result = $facilities_api->getBuilding($building_number);
+      // Request from BizHub API to get building.
+      $result = $this->bizhubApiClient->getBuilding($building_number);
       // Get image
       // Use some type of caching strategy.
       $this->processResultImage($result);
@@ -94,7 +106,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       }
     }
     // API call for building coordinator information.
-    $coordinators = $facilities_api->getBuildingCoordinators($building_number);
+    $coordinators = $this->bizhubApiClient->getBuildingCoordinators($building_number);
 
     // Merge building coordinators data into the building record for processing.
     $coordinator_properties = [
