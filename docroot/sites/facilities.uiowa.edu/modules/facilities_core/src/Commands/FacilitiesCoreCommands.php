@@ -86,7 +86,6 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     $this->logger()->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
     $sync_service = new ProjectsProcessor();
-    $sync_service->init();
     $sync_service->process();
 
     $arguments = [

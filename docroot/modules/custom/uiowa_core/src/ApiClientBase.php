@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;

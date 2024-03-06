@@ -26,13 +26,6 @@ class ProjectsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct() {
-    parent::__construct($this->bundle);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $fieldSyncKey = 'field_project_number';
 
   /**
@@ -49,13 +42,6 @@ class ProjectsProcessor extends EntityProcessorBase {
       $this->data = $facilities_api->getProjects();
     }
     return $this->data;
-  }
-
-  /**
-   * Initialize relevant services.
-   */
-  public function init() {
-    $this->client = \Drupal::service('http_client');
   }
 
   /**

@@ -105,13 +105,9 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * Constructs an EntityProcessorBase instance.
-   *
-   * @param string $bundle
-   *   The entity bundle.
    */
-  public function __construct(string $bundle) {
+  public function __construct() {
     $this->entityTypeManager = \Drupal::entityTypeManager();
-    $this->bundle = $bundle;
   }
 
   /**
@@ -125,7 +121,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    */
   public function getEntityIds() {
     if (!isset($this->entityIds)) {
-      // Get existing building nodes.
+      // Get existing entity ID's.
       $this->entityIds = $this->entityTypeManager
         ->getStorage($this->entityType)
         ->getQuery()
