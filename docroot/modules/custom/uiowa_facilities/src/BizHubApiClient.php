@@ -24,22 +24,16 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   }
 
   /**
-   * Get all buildings.
-   *
-   * @return array
-   *   The buildings object.
+   * {@inheritdoc}
    */
-  public function getBuildings() {
+  public function getBuildings(): array {
     return $this->get('buildings');
   }
 
   /**
-   * Get single building by number.
-   *
-   * @return array
-   *   The building object.
+   * {@inheritdoc}
    */
-  public function getBuilding($building_number) {
+  public function getBuilding($building_number): array {
     return $this->get('building', [
       'query' => [
         'bldgnumber' => $building_number,
@@ -48,12 +42,9 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   }
 
   /**
-   * Get building coordinators by building number.
-   *
-   * @return array
-   *   The building coordinators object.
+   * {@inheritdoc}
    */
-  public function getBuildingCoordinators($building_number) {
+  public function getBuildingCoordinators($building_number): array {
     $data = $this->get('bldgCoordinators');
     $contact = [];
 
