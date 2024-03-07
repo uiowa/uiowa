@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnest.uiowa.ddev.site
+    protocol: https
+  machine_name: labnest
+  human_name: nest.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnest.prod
+drupal:
+  db:
+    database: nest_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnest.prod.drupal.uiowa.edu'
+  requester: gelarson
+  site-name: 'Neonatal Environment and Stress Team'
