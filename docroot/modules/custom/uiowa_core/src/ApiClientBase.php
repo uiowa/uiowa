@@ -109,12 +109,14 @@ abstract class ApiClientBase implements ApiClientInterface {
       $endpoint = $this->basePath() . $endpoint;
     }
 
-    // Merge additional options with default but allow overriding.
-    $options = array_merge([
-      'headers' => [
-        'x-dispatch-api-key' => $this->apiKey,
-      ],
-    ], $options);
+    if (!is_null($this->apiKey)) {
+      // Merge additional options with default but allow overriding.
+      $options = array_merge([
+        'headers' => [
+          'x-dispatch-api-key' => $this->apiKey,
+        ],
+      ], $options);
+    }
 
     // Re-set Accept header in case it was accidentally left out of $options.
     $options['headers']['Accept'] = 'application/json';
@@ -159,6 +161,13 @@ abstract class ApiClientBase implements ApiClientInterface {
     }
 
     return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getClient(): ClientInterface {
+    return $this->client;
   }
 
 }

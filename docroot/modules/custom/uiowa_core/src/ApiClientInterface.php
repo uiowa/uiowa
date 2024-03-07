@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core;
 
+use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -68,5 +69,12 @@ interface ApiClientInterface {
    *   The response object.
    */
   public function lastResponse(): ?ResponseInterface;
+
+  /**
+   * Return the API client.
+   *
+   * @return \GuzzleHttp\ClientInterface
+   */
+  public function getClient(): ClientInterface;
 
 }
