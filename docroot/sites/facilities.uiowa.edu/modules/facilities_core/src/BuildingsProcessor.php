@@ -19,13 +19,6 @@ use GuzzleHttp\Exception\ClientException;
 class BuildingsProcessor extends EntityProcessorBase {
 
   /**
-   * The http_client service.
-   *
-   * @var \GuzzleHttp\Client
-   */
-  protected Client $client;
-
-  /**
    * The file_system service.
    *
    * @var \Drupal\Core\File\FileSystemInterface
@@ -64,23 +57,16 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * The BizHub API client.
    *
-   * @var \Drupal\uiowa_core\ApiClientInterface
+   * @var \Drupal\uiowa_facilities\BizHubApiClientInterface
    */
-  protected BizHubApiClient $bizhubApiClient;
-
-  /**
-   * The BuildUI API client.
-   *
-   * @var \Drupal\uiowa_core\ApiClientInterface
-   */
-  protected ApiClientInterface $buildUiApiClient;
+  protected BizHubApiClient $apiClient;
 
   /**
    * {@inheritdoc}
    */
   public function __construct() {
     parent::__construct();
-    $this->bizhubApiClient = \Drupal::service('uiowa_facilities.bizhub_api_client');
+    $this->apiClient = \Drupal::service('uiowa_facilities.bizhub_api_client');
     $this->fs = \Drupal::service('file_system');
     $this->configFactory = \Drupal::service('config.factory');
     $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
@@ -92,7 +78,7 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected function getData() {
     if (!isset($this->data)) {
       // Request from BizHub API to get buildings.
-      $this->data = $this->bizhubApiClient->getBuildings();
+      $this->data = $this->apiClient->getBuildings();
     }
     return $this->data;
   }
@@ -103,7 +89,7 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected function processRecord(&$record) {
     if (!is_null($building_number = $record?->{$this->apiRecordSyncKey})) {
       // Request from BizHub API to get building.
-      $result = $this->bizhubApiClient->getBuilding($building_number);
+      $result = $this->apiClient->getBuilding($building_number);
       // Get image
       // Use some type of caching strategy.
       $this->processResultImage($result);
@@ -112,7 +98,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       }
     }
     // API call for building coordinator information.
-    $coordinators = $this->bizhubApiClient->getBuildingCoordinators($building_number);
+    $coordinators = $this->apiClient->getBuildingCoordinators($building_number);
 
     // Merge building coordinators data into the building record for processing.
     $coordinator_properties = [

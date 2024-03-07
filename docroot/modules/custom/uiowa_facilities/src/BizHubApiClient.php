@@ -7,7 +7,7 @@ use Drupal\uiowa_core\ApiClientBase;
 /**
  * The BizHub API service.
  */
-class BizHubApiClient extends ApiClientBase {
+class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface {
 
   /**
    * {@inheritdoc}
