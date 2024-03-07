@@ -18,7 +18,7 @@ class BizHubApiClient extends ApiClientBase {
    * @inheritDoc
    */
   protected function getCacheIdBase() {
-    return 'uiowa_facilities_bizhub_api';
+    return 'uiowa_facilities_api_bizhub';
   }
 
   /**
