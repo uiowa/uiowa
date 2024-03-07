@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_facilities;
 
 use Drupal\uiowa_core\ApiClientBase;
+use GuzzleHttp\ClientInterface;
 
 class BizHubApiClient extends ApiClientBase {
 
@@ -39,7 +40,9 @@ class BizHubApiClient extends ApiClientBase {
    */
   public function getBuilding($building_number) {
     return $this->get('building', [
-      'bldgnumber' => $building_number,
+      'query' => [
+        'bldgnumber' => $building_number,
+      ],
     ]);
   }
 

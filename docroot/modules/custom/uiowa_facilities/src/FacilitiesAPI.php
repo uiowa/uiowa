@@ -126,28 +126,6 @@ class FacilitiesAPI {
   }
 
   /**
-   * Get all buildings.
-   *
-   * @return array
-   *   The buildings object.
-   */
-  public function getBuildings() {
-    return $this->request('GET', 'buildings');
-  }
-
-  /**
-   * Get single building by number.
-   *
-   * @return array
-   *   The building object.
-   */
-  public function getBuilding($building_number) {
-    return $this->request('GET', 'building', [
-      'bldgnumber' => $building_number,
-    ]);
-  }
-
-  /**
    * Get all featured projects.
    *
    * @return array
@@ -305,25 +283,6 @@ class FacilitiesAPI {
 
     // Return the array of unique projects.
     return array_values($projects_by_id);
-  }
-
-  /**
-   * Get building coordinators by building number.
-   *
-   * @return array
-   *   The building coordinators object.
-   */
-  public function getBuildingCoordinators($building_number) {
-    $data = $this->request('GET', 'bldgCoordinators');
-    $contact = [];
-
-    foreach ($data as $d) {
-      if ($building_number === $d->buildingNumber) {
-        $contact = $d;
-      }
-    }
-
-    return $contact;
   }
 
 }

@@ -78,6 +78,9 @@ class BuildingsProcessor extends EntityProcessorBase {
   public function __construct() {
     parent::__construct();
     $this->bizhubApiClient = \Drupal::service('uiowa_facilities.bizhub_api_client');
+    $this->fs = \Drupal::service('file_system');
+    $this->configFactory = \Drupal::service('config.factory');
+    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
   }
 
   /**
@@ -142,16 +145,6 @@ class BuildingsProcessor extends EntityProcessorBase {
   }
 
   /**
-   * Initialize relevant services.
-   */
-  public function init() {
-    $this->client = \Drupal::service('http_client');
-    $this->fs = \Drupal::service('file_system');
-    $this->configFactory = \Drupal::service('config.factory');
-    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
-  }
-
-  /**
    * Cache local image from API.
    *
    * Save a local version of an image gotten from the facilities API
@@ -168,8 +161,6 @@ class BuildingsProcessor extends EntityProcessorBase {
     if (!empty($result->imageUrl)) {
       try {
         $building_image_url = $result->imageUrl;
-        $this->client->request('GET', $building_image_url);
-
         $scheme = $this->configFactory->get('system.file')->get('default_scheme');
         $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
         $building_number = $result->buildingNumber;
