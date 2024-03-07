@@ -2,7 +2,7 @@
 
 namespace Drupal\uiowa_facilities;
 
-use Drupal\sitenow_dispatch\BuildUiApiClientInterface;
+use Drupal\uiowa_facilities\BuildUiApiClientInterface;
 use Drupal\uiowa_core\ApiClientBase;
 
 /**
@@ -25,31 +25,23 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
   }
 
   /**
-   * Get all featured projects.
-   *
-   * @return array
-   *   The featured projects object.
+   * {@inheritdoc}
    */
   public function getFeaturedProjects(): array {
     return $this->get('featuredprojects');
   }
 
   /**
-   * Get all capital projects.
-   *
-   * @return array
-   *   The capital projects object.
+   * {@inheritdoc}
    */
   public function getCapitalProjects(): array {
     return $this->get('capitalprojects');
   }
 
   /**
-   * @param $project_id
-   *
-   * @return false|mixed
+   * {@inheritdoc}
    */
-  public function getProjectInfo($project_id) {
+  public function getProjectInfo($project_id): mixed {
     return $this->get('projectinfo', [
       'query' => [
         'projnumber' => $project_id,
