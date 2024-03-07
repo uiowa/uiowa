@@ -55,6 +55,13 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'buildingNumber';
 
   /**
+   * A list of building coordinators.
+   *
+   * @var array|null
+   */
+  protected $buildingCoordinators = NULL;
+
+  /**
    * The BizHub API client.
    *
    * @var \Drupal\uiowa_facilities\BizHubApiClientInterface
@@ -98,7 +105,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       }
     }
     // API call for building coordinator information.
-    $coordinators = $this->apiClient->getBuildingCoordinators($building_number);
+    $coordinators = $this->getCoordinatorsForBuilding($building_number);
 
     // Merge building coordinators data into the building record for processing.
     $coordinator_properties = [
@@ -149,14 +156,13 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected function processResultImage(&$result) {
     if (!empty($result->imageUrl)) {
       try {
-        $building_image_url = $result->imageUrl;
         $scheme = $this->configFactory->get('system.file')->get('default_scheme');
         $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
         $building_number = $result->buildingNumber;
         $realpath = $this->fs->realpath($destination);
 
         if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-          $data = file_get_contents($building_image_url);
+          $data = file_get_contents($result->imageUrl);
           $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
 
           $building_formal_name = $result?->buildingFormalName ?: '';
@@ -179,6 +185,33 @@ class BuildingsProcessor extends EntityProcessorBase {
     else {
       $result->imageUrl = NULL;
     }
+  }
+
+  /**
+   * Get the coordinator results for a building.
+   *
+   * If the results have not already been fetched from the API and processed,
+   * that happens first.
+   *
+   * @param $building_number
+   *   The building number.
+   *
+   * @return array
+   *   The list of coordinators or an empty array.
+   */
+  protected function getCoordinatorsForBuilding($building_number): array {
+    // If building coordinators have not already been fetched, fetch them and
+    // process them into an array keyed by building number.
+    if (is_null($this->buildingCoordinators)) {
+      $this->buildingCoordinators = [];
+      $results = $this->apiClient->getBuildingCoordinators();
+      foreach ($results as $result) {
+        $this->buildingCoordinators[$result->buildingNumber] = $result;
+      }
+    }
+
+    // Return the result if it exists or an empty array.
+    return $this->buildingCoordinators[$building_number] ?? [];
   }
 
   /**

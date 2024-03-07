@@ -31,6 +31,6 @@ interface BizHubApiClientInterface extends ApiClientInterface {
    * @return array
    *   The building coordinators object.
    */
-  public function getBuildingCoordinators($building_number): array;
+  public function getBuildingCoordinators(): array;
 
 }

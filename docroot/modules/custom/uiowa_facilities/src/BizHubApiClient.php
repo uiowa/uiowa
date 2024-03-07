@@ -44,17 +44,8 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getBuildingCoordinators($building_number): array {
-    $data = $this->get('bldgCoordinators');
-    $contact = [];
-
-    foreach ($data as $d) {
-      if ($building_number === $d->buildingNumber) {
-        $contact = $d;
-      }
-    }
-
-    return $contact;
+  public function getBuildingCoordinators(): array {
+    return $this->get('bldgCoordinators');
   }
 
 }
