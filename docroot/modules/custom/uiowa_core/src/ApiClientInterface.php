@@ -74,6 +74,7 @@ interface ApiClientInterface {
    * Return the API client.
    *
    * @return \GuzzleHttp\ClientInterface
+   *   The Guzzle client object.
    */
   public function getClient(): ClientInterface;
 

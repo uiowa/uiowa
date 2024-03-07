@@ -62,12 +62,15 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'buildingNumber';
 
   /**
+   * The BizHub API client.
    *
    * @var \Drupal\uiowa_core\ApiClientInterface
    */
   protected BizHubApiClient $bizhubApiClient;
 
   /**
+   * The BuildUI API client.
+   *
    * @var \Drupal\uiowa_core\ApiClientInterface
    */
   protected ApiClientInterface $buildUiApiClient;

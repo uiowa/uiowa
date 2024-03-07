@@ -5,6 +5,7 @@ namespace Drupal\facilities_core\Commands;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\ProjectsProcessor;
 use Drupal\uiowa_core\Commands\CpuTimeTrait;
@@ -20,6 +21,7 @@ use Drush\Commands\DrushCommands;
 class FacilitiesCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
   use CpuTimeTrait;
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -68,7 +70,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       '@deleted' => $sync_service->getDeleted(),
       '@skipped' => $sync_service->getSkipped(),
     ];
-    $this->logger()->notice(t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments));
+    $this->logger()->notice($this->t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments));
 
     // Switch user back.
     $this->accountSwitcher->switchBack();

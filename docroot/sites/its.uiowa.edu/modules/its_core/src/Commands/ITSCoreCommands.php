@@ -6,6 +6,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\symfony_mailer\EmailFactoryInterface;
 use Drush\Commands\DrushCommands;
@@ -20,6 +21,7 @@ use Drush\Commands\DrushCommands;
 class ITSCoreCommands extends DrushCommands {
 
   use LoggerChannelTrait;
+  use StringTranslationTrait;
 
   /**
    * Drush command constructor.
@@ -110,17 +112,17 @@ class ITSCoreCommands extends DrushCommands {
       $email = $this->emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
 
       if ($email->getError()) {
-        $message = t('Alerts Digest no sent');
+        $message = $this->t('Alerts Digest no sent');
       }
       else {
-        $message = t('Alerts Digest sent');
+        $message = $this->t('Alerts Digest sent');
       }
 
       $this->getLogger('its_core')->notice($message);
       $this->logger->notice($message);
     }
     else {
-      $message = t('Alerts Digest - No items to send');
+      $message = $this->t('Alerts Digest - No items to send');
       $this->getLogger('its_core')->notice($message);
       $this->logger->notice($message);
       return;

@@ -2,30 +2,31 @@
 
 namespace Drupal\uiowa_core\Commands;
 
-use Consolidation\AnnotatedCommand\CommandData;
-
+/**
+ * Trait for profiling CPU time usage.
+ */
 trait CpuTimeTrait {
 
+  /**
+   * Array for tracking measurements.
+   *
+   * @var array
+   */
   protected array $instrument = [];
 
   /**
    * Initializes the measurements.
-   *
-   * @return void
    */
-  public function initMeasurement()
-  {
-    $this->instrument['times'] = [microtime(true)];
+  public function initMeasurement(): void {
+    $this->instrument['times'] = [microtime(TRUE)];
   }
 
   /**
    * Collects results and prints them.
-   *
-   * @return void
    */
-  public function finishMeasurment()
-  {
-    $this->instrument['times'][] = microtime(true);
+  public function finishMeasurment(): void {
+    $this->instrument['times'][] = microtime(TRUE);
     printf("Duration: %5.2f seconds\n", $this->instrument['times'][1] - $this->instrument['times'][0]);
   }
+
 }

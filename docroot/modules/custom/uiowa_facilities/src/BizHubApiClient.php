@@ -3,19 +3,21 @@
 namespace Drupal\uiowa_facilities;
 
 use Drupal\uiowa_core\ApiClientBase;
-use GuzzleHttp\ClientInterface;
 
+/**
+ * The BizHub API service.
+ */
 class BizHubApiClient extends ApiClientBase {
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function basePath(): string {
     return $this->configFactory->get('uiowa_facilities.api_endpoints')->get('bizhub');
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   protected function getCacheIdBase() {
     return 'uiowa_facilities_api_bizhub';
@@ -28,9 +30,8 @@ class BizHubApiClient extends ApiClientBase {
    *   The buildings object.
    */
   public function getBuildings() {
-    return $this->get( 'buildings');
+    return $this->get('buildings');
   }
-
 
   /**
    * Get single building by number.
