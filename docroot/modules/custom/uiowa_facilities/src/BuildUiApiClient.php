@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_facilities;
 
-use Drupal\uiowa_facilities\BuildUiApiClientInterface;
 use Drupal\uiowa_core\ApiClientBase;
 
 /**
@@ -41,7 +40,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
   /**
    * {@inheritdoc}
    */
-  public function getProjectInfo($project_id): mixed {
+  public function getProjectInfo(string $project_id): mixed {
     return $this->get('projectinfo', [
       'query' => [
         'projnumber' => $project_id,

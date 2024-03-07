@@ -7,10 +7,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
-use Drupal\uiowa_core\ApiClientInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use Drupal\uiowa_facilities\BizHubApiClient;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 /**
@@ -193,13 +191,13 @@ class BuildingsProcessor extends EntityProcessorBase {
    * If the results have not already been fetched from the API and processed,
    * that happens first.
    *
-   * @param $building_number
+   * @param string $building_number
    *   The building number.
    *
    * @return array
    *   The list of coordinators or an empty array.
    */
-  protected function getCoordinatorsForBuilding($building_number): array {
+  protected function getCoordinatorsForBuilding(string $building_number): array {
     // If building coordinators have not already been fetched, fetch them and
     // process them into an array keyed by building number.
     if (is_null($this->buildingCoordinators)) {

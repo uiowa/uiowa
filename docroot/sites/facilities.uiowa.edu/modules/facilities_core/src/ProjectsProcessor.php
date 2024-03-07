@@ -4,8 +4,8 @@ namespace Drupal\facilities_core;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
-use Drupal\uiowa_facilities\BuildUiApiClientInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
+use Drupal\uiowa_facilities\BuildUiApiClientInterface;
 
 /**
  * Sync building information.

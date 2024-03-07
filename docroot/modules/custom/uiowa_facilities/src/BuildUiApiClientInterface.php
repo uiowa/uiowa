@@ -28,12 +28,12 @@ interface BuildUiApiClientInterface extends ApiClientInterface {
   /**
    * Return details about a project.
    *
-   * @param $project_id
+   * @param string $project_id
    *   The project ID.
    *
    * @return false|mixed
    *   The project info or false.
    */
-  public function getProjectInfo($project_id): mixed;
+  public function getProjectInfo(string $project_id): mixed;
 
 }
