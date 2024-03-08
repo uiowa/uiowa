@@ -310,20 +310,7 @@ display:
           plugin_id: standard
           required: false
       css_class: 'related col--grid-threecol--33'
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: "<h2 class=\"headline headline--serif block-margin__bottom--extra headline--underline\">\r\n    <span class=\"headline__heading\">\r\n        Support and Training\r\n      </span>\r\n    </h2>"
-            format: filtered_html
-          tokenize: false
+      header: {  }
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -345,6 +332,7 @@ display:
           metatags: {  }
           tokenize: false
       block_description: 'Services support articles'
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
