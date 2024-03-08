@@ -1,10 +1,13 @@
 adding:
   dependencies:
     config:
+      - core.entity_view_display.node.page.default
       - taxonomy.vocabulary.audience
       - taxonomy.vocabulary.topic
       - taxonomy.vocabulary.type
   permissions:
+    - 'configure all page node layout overrides'
+    - 'configure editable page node layout overrides'
     - 'create terms in audience'
     - 'create terms in topic'
     - 'create terms in type'

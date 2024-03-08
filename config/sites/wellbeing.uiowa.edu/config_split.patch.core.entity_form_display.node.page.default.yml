@@ -1,0 +1,38 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_wellbeing_audience
+      - field.field.node.page.field_wellbeing_topic
+      - field.field.node.page.field_wellbeing_type
+  content:
+    field_wellbeing_audience:
+      type: entity_reference_autocomplete
+      weight: 26
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_wellbeing_topic:
+      type: entity_reference_autocomplete
+      weight: 27
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_wellbeing_type:
+      type: entity_reference_autocomplete
+      weight: 28
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }
