@@ -6826,3 +6826,9 @@ $sites['lablcn.uiowa.ddev.site'] = 'lcn.lab.uiowa.edu';
 $sites['lablcn.dev.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
 $sites['lablcn.stage.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
 $sites['lablcn.prod.drupal.uiowa.edu'] = 'lcn.lab.uiowa.edu';
+
+// Directory aliases for iseh.conference.uiowa.edu.
+$sites['conferenceiseh.uiowa.ddev.site'] = 'iseh.conference.uiowa.edu';
+$sites['conferenceiseh.dev.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
+$sites['conferenceiseh.stage.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
+$sites['conferenceiseh.prod.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
