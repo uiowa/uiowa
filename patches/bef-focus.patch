@@ -1,0 +1,109 @@
+diff --git a/js/auto_submit.js b/js/auto_submit.js
+index e0d0cbca0cdb6b7ba574413f3eb107e67cd42b4f..14130a9681ad7c538a95890eb25bbc4fcdfc0617 100644
+--- a/js/auto_submit.js
++++ b/js/auto_submit.js
+@@ -41,23 +41,61 @@
+    * supported. We probably could use additional support for HTML5 input types.
+    */
+   Drupal.behaviors.betterExposedFiltersAutoSubmit = {
+-    attach: function (context) {
++    attach: function (context, settings) {
+       // When exposed as a block, the form #attributes are moved from the form
+       // to the block element, thus the second selector.
+       // @see \Drupal\block\BlockViewBuilder::preRender
+-      var selectors = 'form[data-bef-auto-submit-full-form], [data-bef-auto-submit-full-form] form, [data-bef-auto-submit]';
++      const selectors = 'form[data-bef-auto-submit-full-form], [data-bef-auto-submit-full-form] form, [data-bef-auto-submit]';
++      const findQuery = 'input:text:not(.hasDatepicker):not(.bef-datepicker), textarea';
++      const autoSubmitInputs = $(selectors, context).addBack(selectors).find(findQuery);
++
++      autoSubmitInputs.each(function (index, value) {
++        const $el = $(this);
++        const $valueLength = $el.val().length * 2;
++
++        $el[0].setSelectionRange($valueLength, $valueLength);
++
++        setFocus($el, $valueLength);
++      });
++
++      function setFocus($el, $valueLength) {
++        const observer = new IntersectionObserver((entries, observer) => {
++          let foundFocus = false;
++
++          entries.forEach(entry => {
++            if (entry.isIntersecting) {
++              const $lastTriggeredSelector = $(settings.bef_autosubmit_target).attr('data-drupal-selector');
++              const $isLastTriggered = $lastTriggeredSelector === $el.attr('data-drupal-selector');
++
++              if ($valueLength !== 0 || $isLastTriggered) {
++                $el.focus();
++                foundFocus = true;
++              }
++            }
++          })
++
++          // If we had a submit trigger, but it wasn't for an accepted element...
++          if (!foundFocus) {
++
++            // Focus the first element in the form.
++            autoSubmitInputs[0].focus();
++          }
++        })
++
++        observer.observe($el.get(0))
++      }
+
+       // The change event bubbles so we only need to bind it to the outer form
+       // in case of a full form, or a single element when specified explicitly.
+       $(selectors, context).addBack(selectors).each(function (i, e) {
+         // Store the current form.
+-        var $form = $(e);
++        const $form = $(e);
+
+         // Retrieve the autosubmit delay for this particular form.
+-        var autoSubmitDelay = $form.data('bef-auto-submit-delay') || 500;
++        const autoSubmitDelay = $form.data('bef-auto-submit-delay') || 500;
+
+         // Attach event listeners.
+-          $(once('bef-auto-submit', $form))
++        $(once('bef-auto-submit', $form))
+           // On change, trigger the submit immediately.
+           .on('change', triggerSubmit)
+           // On keyup, wait for a specified number of milliseconds before
+@@ -77,7 +115,7 @@
+        */
+       function triggerSubmit(e) {
+         // e.keyCode: key.
+-        var ignoredKeyCodes = [
++        const ignoredKeyCodes = [
+           16, // Shift.
+           17, // Ctrl.
+           18, // Alt.
+@@ -96,8 +134,8 @@
+         ];
+
+         // Triggering element.
+-        var $target = $(e.target);
+-        var $submit = $target.closest('form').find('[data-bef-auto-submit-click]');
++        const $target = $(e.target);
++        const $submit = $target.closest('form').find('[data-bef-auto-submit-click]');
+
+         // Don't submit on changes to excluded elements or a submit element.
+         if ($target.is('[data-bef-auto-submit-exclude], :submit') || ($target.attr('autocomplete') == 'off' && !$target.hasClass('bef-datepicker'))) {
+@@ -107,7 +145,7 @@
+         // Submit only if this is a non-datepicker textfield and if the
+         // incoming keycode is not one of the excluded values.
+         if (
+-          $target.is(':text:not(.hasDatepicker), textarea')
++          $target.is(':text:not(.hasDatepicker):not(.bef-datepicker), textarea')
+           && $.inArray(e.keyCode, ignoredKeyCodes) === -1
+         ) {
+           $submit.click();
+@@ -116,6 +154,8 @@
+         else if (e.type === 'change') {
+           $submit.click();
+         }
++
++        settings.bef_autosubmit_target = $target;
+       }
+     }
+   }
