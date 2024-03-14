@@ -3122,3 +3122,16 @@ function sitenow_update_10005() {
   $config->set('uiowa_core.campus_gtm', $value)
     ->save();
 }
+
+/**
+ * Allow alert content type to be replicated if it exists.
+ */
+function sitenow_update_10006() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
+  $replicate_allowed[] = 'alert';
+  $config
+    ->set('uiowa_core.replicate_allowed', $replicate_allowed)
+    ->save();
+}
