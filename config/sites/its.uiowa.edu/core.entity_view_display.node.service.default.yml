@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.service.field_service_website
     - node.type.service
     - views.view.service_related_articles
+    - views.view.services_support_articles
   module:
     - layout_builder
     - layout_builder_restrictions
@@ -280,6 +281,50 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          -
+            uuid: b44481e9-4da9-4ef9-b886-9dc3dc5ccef7
+            region: content
+            configuration:
+              id: 'views_block:services_support_articles-articles_block'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              exposed: {  }
+              headline:
+                headline: 'Support and Training'
+                hide_headline: 0
+                heading_size: h2
+                headline_style: headline_bold_serif_underline
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
             section_padding_top_extra: section_padding_top_extra
@@ -296,19 +341,25 @@ third_party_settings:
               views_label: ''
               items_per_page: none
               pager: some
+              exposed: {  }
               headline:
                 headline: News
                 hide_headline: 0
-                heading_size: h3
+                heading_size: h2
                 headline_style: headline_bold_serif_underline
-                headline_alignment: headline_alignment_center
+                headline_alignment: default
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
             weight: 1
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
