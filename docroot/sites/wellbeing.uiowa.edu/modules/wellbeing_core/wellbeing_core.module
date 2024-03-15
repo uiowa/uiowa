@@ -11,10 +11,13 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function wellbeing_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'node_page_edit_form') {
-    _sitenow_node_form_defaults($form, $form_state);
-    $form['field_wellbeing_audience']['#group'] = 'node_relations';
-    $form['field_wellbeing_topic']['#group'] = 'node_relations';
-    $form['field_wellbeing_type']['#group'] = 'node_relations';
+  switch ($form_id) {
+    case 'node_page_edit_form':
+    case 'node_page_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      $form['field_wellbeing_audience']['#group'] = 'node_relations';
+      $form['field_wellbeing_topic']['#group'] = 'node_relations';
+      $form['field_wellbeing_type']['#group'] = 'node_relations';
+      break;
   }
 }
