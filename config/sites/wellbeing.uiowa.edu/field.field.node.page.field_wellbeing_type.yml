@@ -1,0 +1,29 @@
+uuid: 5d9f05b9-ec02-47a1-b478-03580be2ad57
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_wellbeing_type
+    - node.type.page
+    - taxonomy.vocabulary.type
+id: node.page.field_wellbeing_type
+field_name: field_wellbeing_type
+entity_type: node
+bundle: page
+label: Type
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      type: type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
