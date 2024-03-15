@@ -143,9 +143,11 @@ class ClassroomsCoreCommands extends DrushCommands {
       $arguments = [
         '@count' => $entities_created,
       ];
+      $this->getLogger('classrooms_core')->notice('@count buildings were created. That is neat.', $arguments);
       $this->logger()->notice('@count buildings were created. That is neat.', $arguments);
     }
     else {
+      $this->getLogger('classrooms_core')->notice('Bummer. No new buildings were created. Maybe next time.');
       $this->logger()->notice('Bummer. No new buildings were created. Maybe next time.');
     }
 
@@ -183,6 +185,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // If we don't have any entities, send a message
     // and we're done.
     if (empty($entities)) {
+      $this->getLogger('classrooms_core')->notice('No rooms available to update.');
       $this->logger()->notice('No rooms available to update.');
 
       // Switch user back.
@@ -236,6 +239,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // 6. Process the batch sets.
     drush_backend_batch_process();
     // 7. Log some information.
+    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
     $this->logger()->notice('Update batch operations ended.');
 
     // Switch user back.

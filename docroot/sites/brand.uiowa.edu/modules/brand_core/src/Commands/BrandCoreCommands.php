@@ -75,15 +75,18 @@ class BrandCoreCommands extends DrushCommands {
       $email = $this->emailFactory->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
 
       if ($email->getError()) {
+        $this->getLogger('brand_core')->error('Lockup Review Digest not sent. Error: @error');
         $this->logger()->error('Lockup Review Digest not sent. Error: @error');
         $this->output()->writeln('Lockup Review Digest not sent');
       }
       else {
+        $this->getLogger('brand_core')->notice('Lockup Review Digest sent');
         $this->logger()->notice('Lockup Review Digest sent');
         $this->output()->writeln('Lockup Review Digest sent');
       }
     }
     else {
+      $this->getLogger('brand_core')->notice('Lockup Review Digest - No items to review');
       $this->logger()->notice('Lockup Review Digest - No items to review');
       $this->output()->writeln('Lockup Review Digest - No items to review');
       return;
