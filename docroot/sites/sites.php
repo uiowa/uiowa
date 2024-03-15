@@ -6832,3 +6832,9 @@ $sites['conferenceiseh.uiowa.ddev.site'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.dev.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.stage.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.prod.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
+
+// Directory aliases for hhpeim-oc.org.uiowa.edu.
+$sites['orghhpeim-oc.uiowa.ddev.site'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.dev.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.stage.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.prod.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
