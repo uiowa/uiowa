@@ -3,12 +3,12 @@
 @import "uids3/components/headline/_headline-mixins.scss";
 
 .related {
-  :is(h1, h2, h3, h4, h5, h6) a {
+  :is(h1, h2, h3, h4, h5, h6) a,
+  :is(h1, h2, h3, h4, h5, h6) {
     text-decoration: none;
     font-family: $font-family-serif;
-    font-weight: $font-weight-medium-bold;
   }
-  &.col--threecol--33 {
+  &.col--grid-threecol--33 {
     .list-container__inner {
       gap: $desktop-width-gutter;
       @include breakpoint(sm) {
@@ -21,6 +21,7 @@
         break-inside: avoid;
         display: inline-block;
         width: 100%;
+        margin-bottom: $md;
         ul {
           break-inside: avoid;
         }
