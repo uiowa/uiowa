@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orglearningspaces.uiowa.ddev.site
+    protocol: https
+  machine_name: orglearningspaces
+  human_name: learningspaces.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orglearningspaces.prod
+drupal:
+  db:
+    database: learningspaces_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orglearningspaces.prod.drupal.uiowa.edu'
+  requester: rhbutler
+  site-name: 'Learning Spaces'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecraniofacial.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecraniofacial
+  human_name: craniofacial.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecraniofacial.prod
+drupal:
+  db:
+    database: craniofacial_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecraniofacial.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Craniofacial Anomalies Research Center'

@@ -5,14 +5,11 @@ dependencies:
   config:
     - block_content.type.uiowa_card
     - field.storage.block_content.field_uiowa_card_excerpt
+    - filter.format.minimal_plus
+    - filter.format.plain_text
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal_plus
-      - plain_text
 _core:
   default_config_hash: d7-oWkJwADXKLY9QldFK28pif5n_srH-0UsqsZrZFrA
 id: block_content.uiowa_card.field_uiowa_card_excerpt
@@ -25,5 +22,8 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal_plus
+    - plain_text
 field_type: text_long

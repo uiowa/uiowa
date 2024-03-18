@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.field_major_responsibilities
     - node.type.major
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.major.field_major_responsibilities
 field_name: field_major_responsibilities
 entity_type: node
@@ -24,5 +20,6 @@ default_value:
     value: "<p>Review the responsibilities required to become and remain eligible for the 2 Plus 2 Guaranteed Graduation Plan.</p>\r\n\r\n<p><a data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"2a5c72cc-c518-4458-a298-4b667ca58f0d\" href=\"/node/5326\" media_library=\"Media Library\">Student Responsibilities</a></p>\r\n"
     format: filtered_html
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

@@ -49,8 +49,10 @@ function sppa_core_node_grants(AccountInterface $account, $op) {
   $grants = [];
 
   if ($op === 'view') {
-    // Assign grants for nodes that are unpublished. Drupal has three permissions related to viewing unpublished content.
-    // The "view any unpublished content" permissions is actually part of the content moderation module, but there
+    // Assign grants for nodes that are unpublished.
+    // Drupal has three permissions related to viewing unpublished content.
+    // The "view any unpublished content" permissions is actually part
+    // of the content moderation module, but there
     // is an effort to migrate it to core: https://drupal.org/i/273595
     if ($account->hasPermission('view any unpublished content') || $account->hasPermission('bypass node access')) {
       $grants['unpublished_all'] = [1];

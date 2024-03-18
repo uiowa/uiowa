@@ -9,7 +9,9 @@ use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
+use Drush\Boot\DrupalBootLevels;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
+use Drush\Drush;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
@@ -53,16 +55,13 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @hook init core:status
    */
   public function initStatus(InputInterface $input, AnnotationData $annotationData) {
-    $fields = explode(',', $input->getOption('fields'));
-    $defaults = $annotationData->getList('default-fields');
+    $field_labels = $annotationData->getList('field-labels');
+    $field_labels['application'] = 'Application';
+    $annotationData->set('field-labels', $field_labels);
 
-    // If no specific fields were requested, add ours to the defaults.
-    if ($fields == $defaults) {
-      $annotationData->append('field-labels', "\n application: Application");
-      array_unshift($defaults, 'application');
-      $annotationData->set('default-fields', $defaults);
-      $input->setOption('fields', $defaults);
-    }
+    $defaults = $annotationData->getList('default-table-fields');
+    array_unshift($defaults, 'application');
+    $annotationData->set('default-table-fields', $defaults);
   }
 
   /**
@@ -291,6 +290,35 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     // Sanitize SQL.
     $process = $this->processManager()->drush($selfRecord, 'sql-sanitize', [], $options);
     $process->mustRun($process->showRealtime());
+  }
+
+  /**
+   * Query a site for information needed for compliance reporting.
+   *
+   * @command uiowa:get:gtm-containers
+   *
+   * @aliases ugetgtm
+   *
+   * @throws \Exception
+   */
+  public function getGtmContainerIds() {
+    // Bootstrap Drupal so that we can query entities.
+    if (!Drush::bootstrapManager()->doBootstrap(DrupalBootLevels::FULL)) {
+      throw new \Exception(dt('Unable to bootstrap Drupal.'));
+    }
+
+    // Get a list of container ID's for GTM.
+    $container_ids = [];
+
+    $containers = \Drupal::entityTypeManager()
+      ?->getStorage('google_tag_container')
+      ?->loadMultiple();
+
+    foreach ($containers as $container) {
+      $container_ids[] = $container->container_id;
+    }
+
+    return implode(', ', $container_ids);
   }
 
 }

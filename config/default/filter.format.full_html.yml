@@ -24,7 +24,6 @@ dependencies:
     - core.entity_view_mode.media.small__widescreen
   module:
     - editor
-    - entity_embed
     - linkit
     - media
     - responsive_table_filter
@@ -38,12 +37,6 @@ filters:
     provider: editor
     status: true
     weight: -43
-    settings: {  }
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: true
-    weight: -45
     settings: {  }
   filter_align:
     id: filter_align
@@ -69,7 +62,7 @@ filters:
     status: false
     weight: -49
     settings:
-      allowed_html: ''
+      allowed_html: '<p class="uids-component--bold-intro uids-component--light-intro"> <h2 class="headline headline--serif headline--underline"> <h3 class="headline headline--serif headline--underline"> <h4 class="headline headline--serif headline--underline"> <h5 class="headline headline--serif headline--underline"> <h6 class="headline headline--serif headline--underline"> <div class="alert alert--success alert--info alert--warning alert--danger"> <a class="bttn bttn--primary bttn--secondary">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -147,3 +140,16 @@ filters:
         small__ultrawide: small__ultrawide
         small__widescreen: small__widescreen
       allowed_media_types: {  }
+  filter_iframe:
+    id: filter_iframe
+    provider: uiowa_core
+    status: false
+    weight: -40
+    settings:
+      allowed_sources: ''
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -42
+    settings: {  }

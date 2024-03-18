@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.field_major_uiowa_checkpoints
     - node.type.major
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.major.field_major_uiowa_checkpoints
 field_name: field_major_uiowa_checkpoints
 entity_type: node
@@ -21,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

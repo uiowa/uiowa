@@ -36,8 +36,13 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
       /** @var \Drupal\Core\Url $url */
       $url = $build['content']['hawkid']['link']['#url'];
-
       unset($build['content']['hawkid']['link']);
+
+      $qs = \Drupal::request()->getQueryString();
+
+      if ($qs !== '') {
+        $path .= '?' . $qs;
+      }
 
       $url->setOptions([
         'query' => [
@@ -46,13 +51,15 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       ]);
 
       $build['content']['hawkid']['message'] = [
-        '#prefix' => '<div class="alert alert-warning">',
-        '#suffix' => '</div>',
+        '#prefix' => '<div class="page__container"><div class="alert alert--warning">',
+        '#suffix' => '</div></div>',
         '#markup' => t('The SiteNow service is restricted to current University of Iowa members. You must <a href="@link">log in</a> first to access the request form.', [
           '@link' => $url->toString(),
         ]),
       ];
     }
+
+    $build['#cache']['max-age'] = 0;
 
     return $build;
   }

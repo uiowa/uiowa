@@ -40,63 +40,63 @@
 
     {% if content.card_media or content.card_title or content.card_subtitle or content.card_meta or content.card_content or content.card_button %}
       {% set card = {
-        attributes: create_attribute().addClass('card', 'bg--white', 'layout__region-container'),
+        attributes: create_attribute().addClass('card', card_background, 'layout__region-container'),
         region_attributes: region_attributes,
         content: content,
         subtitle: content.card_subtitle,
         meta: content.card_meta,
       } %}
       {% embed '@uids_base/uids/card.html.twig' with card only %}
-        {% if content.card_media is not empty %}
-          {% block media %}
+        {% block media %}
+          {% if content.card_media is not empty %}
             {{ attach_library('uids_base/media') }}
             <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
               <div class="media__inner">
                 {{ content.card_media }}
               </div>
             </div>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
 
-        {% if content.card_title %}
-          {% block heading %}
+        {% block heading %}
+          {% if content.card_title %}
             <header {{ region_attributes.card_title.addClass('layout__region', 'layout__region--card-title') }}>
               {{ content.card_title }}
             </header>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
 
-        {% if content.card_content %}
-          {% block content %}
+        {% block content %}
+          {% if content.card_content %}
             <div {{ region_attributes.card_content.addClass('layout__region', 'layout__region--card-content') }}>
               {{ content.card_content }}
             </div>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
 
-        {% if content.card_subtitle %}
-          {% block subtitle %}
+        {% block subtitle %}
+          {% if content.card_subtitle %}
             <div {{ region_attributes.card_subtitle.addClass('layout__region', 'layout__region--card-subtitle', 'card__subtitle') }}>
               {{ content.card_subtitle }}
             </div>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
 
-        {% if content.card_meta %}
-          {% block meta %}
+        {% block meta %}
+          {% if content.card_meta %}
             <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta') }}>
               {{ content.card_meta }}
             </div>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
 
-        {% if content.card_button %}
-          {% block button %}
+        {% block button %}
+          {% if content.card_button %}
             <footer {{ region_attributes.card_button.addClass('layout__region', 'layout__region--card-button') }}>
               {{ content.card_button }}
             </footer>
-          {% endblock %}
-        {% endif %}
+          {% endif %}
+        {% endblock %}
       {% endembed %}
     {% endif %}
   </div>

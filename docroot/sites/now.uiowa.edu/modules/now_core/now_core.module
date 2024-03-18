@@ -5,6 +5,7 @@
  * Primary module hooks for Now Core module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -209,6 +210,30 @@ function now_core_node_presave($entity) {
 }
 
 /**
+ * Implements hook_scheduler_publishing_allowed().
+ */
+function now_core_scheduler_publishing_allowed(EntityInterface $entity) {
+  $allowed = empty($entity->field_embargo_information->value);
+  // Prevent the article from being published if there is an
+  // embargo message and then tell the user why.
+  if (!$allowed) {
+    \Drupal::messenger()->addMessage(t('The content will only be published after the content embargo has been lifted.'), 'status');
+    // If the time is in the past it means that the action has been prevented,
+    // so write a log message to show this.
+    if ($entity->publish_on->value <= \Drupal::time()->getRequestTime()) {
+      if ($entity->id() && $entity->hasLinkTemplate('canonical')) {
+        $link = $entity->toLink(t('View'))->toString();
+      }
+      \Drupal::logger('now_core')->warning('Publishing of "%title" is prevented until after the content embargo has been lifted.', [
+        '%title' => $entity->label(),
+        'link' => $link ?? NULL,
+      ]);
+    }
+  }
+  return $allowed;
+}
+
+/**
  * Implements hook_preprocess_views_view_unformatted().
  */
 function now_core_preprocess_views_view_unformatted(&$variables) {
@@ -251,7 +276,7 @@ function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
   $required_tids = array_values(now_core_article_type_tag_map());
   if (in_array($tag->id(), $required_tids)) {
     $form['actions']['submit']['#disabled'] = TRUE;
-    now_core_prevent_tag_delete_message($tag->getName());
+    $form['description']['#markup'] = now_core_prevent_tag_delete_message($tag->getName());
   }
 }
 
@@ -264,10 +289,9 @@ function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
  * @see now_core_form_taxonomy_tag_confirm_form_alter()
  */
 function now_core_prevent_tag_delete_message($name) {
-  $warning_text = t('The tag <em>"@name"</em> is currently used for filter functionality of article types. It cannot be deleted.', [
+  return t('The tag <em>"@name"</em> is currently used for filter functionality of article types. It cannot be deleted.', [
     '@name' => $name,
   ]);
-  \Drupal::messenger()->addWarning($warning_text);
 }
 
 /**

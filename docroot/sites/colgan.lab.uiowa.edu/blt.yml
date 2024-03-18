@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcolgan.uiowa.ddev.site
+    protocol: https
+  machine_name: labcolgan
+  human_name: colgan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcolgan.prod
+drupal:
+  db:
+    database: colgan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcolgan.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Colgan Lab'

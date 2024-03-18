@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsantillan.uiowa.ddev.site
+    protocol: https
+  machine_name: labsantillan
+  human_name: santillan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsantillan.prod
+drupal:
+  db:
+    database: santillan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsantillan.prod.drupal.uiowa.edu'
+  requester: ewhitehead
+  site-name: 'Santillan Lab'

@@ -69,16 +69,19 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   $build['#title'] = $entity->label();
 
   // Move author field to #meta and add an icon.
-  if (!$entity->get('author')->isEmpty()) {
+  if (!$entity->get('author')->isEmpty() && isset($build['author'])) {
     $build['#meta']['author'] = [
-      ...$build['author'],
+      ...(is_array($build['author']) ? $build['author'] : []),
       '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
     ];
   }
+
   unset($build['author']);
 
   // Move description field to #content.
-  $build['#content'] = $build['description'];
+  if (isset($build['description'])) {
+    $build['#content'] = $build['description'];
+  }
   unset($build['description']);
 
   // Move timestamp to #subtitle. Since this is just a string, set it as
@@ -171,6 +174,7 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
   $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
 
   $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+    ->accessCheck(TRUE)
     ->condition('fid', $feeds, 'IN')
     ->sort('timestamp', 'DESC')
     ->sort('iid', 'DESC');

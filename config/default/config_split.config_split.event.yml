@@ -11,19 +11,26 @@ storage: folder
 folder: ../config/features/event
 module:
   better_exposed_filters: 0
+  fullcalendar_view: 0
+  geofield: 0
   jquery_ui: 0
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
+  leaflet: 0
   schema_event: 0
   smart_date_recur: 0
+  views_custom_cache_tag: 0
 theme: {  }
 complete_list:
+  - core.entity_view_display.node.event.default
   - core.entity_view_display.node.person.default
+  - field.storage.node.field_event_category
   - metatag.metatag_defaults.node__event
   - node.type.event
   - pathauto.pattern.event
   - simple_sitemap.bundle_settings.default.node.event
+  - taxonomy.vocabulary.event_categories
   - views.view.events
   - views.view.events_list_block
   - views.view.event_presenters

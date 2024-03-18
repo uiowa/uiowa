@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgophthalmologyinterestgroup.uiowa.ddev.site
+    protocol: https
+  machine_name: orgophthalmologyinterestgroup
+  human_name: ophthalmologyinterestgroup.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgophthalmologyinterestgroup.prod
+drupal:
+  db:
+    database: ophthalmologyinterestgroup_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgophthalmologyinterestgroup.prod.drupal.uiowa.edu'
+  requester: ajjarapu
+  site-name: 'Ophthalmology Interest Group at the University of Iowa Carver College of Medicine'

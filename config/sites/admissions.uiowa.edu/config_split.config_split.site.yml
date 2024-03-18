@@ -11,12 +11,15 @@ storage: folder
 folder: ../config/sites/admissions.uiowa.edu
 module:
   better_exposed_filters: 0
+  captcha: 0
   entity_print_views: 0
-  fullcalendar_view: 0
+  geofield: 0
+  hcaptcha: 0
   jquery_ui: 0
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
+  leaflet: 0
   taxonomy_path_breadcrumb: 0
   weight: 0
   admissions_core: 10
@@ -31,7 +34,6 @@ complete_list:
   - core.entity_view_display.node.page.default
   - core.entity_view_display.node.person.default
   - core.entity_view_mode.node.pdf
-  - field.storage.node.field_event_category
   - field.storage.node.field_event_series_button_link
   - field.storage.node.field_event_series_summary
   - field.storage.taxonomy_term.field_academic_groups_media
@@ -63,7 +65,6 @@ complete_list:
   - taxonomy.vocabulary.academic_groups
   - taxonomy.vocabulary.colleges
   - taxonomy.vocabulary.community_colleges
-  - taxonomy.vocabulary.event_categories
   - views.view.academic_groups_block
   - views.view.academic_groups_taxonomy_term
   - views.view.areas_of_study
@@ -113,11 +114,13 @@ partial_list:
   - metatag.metatag_defaults.node__event
   - metatag.settings
   - sitenow_people.person_type.student
+  - views.view.events
   - views.view.scholarships
   - views.view.student_card
   - workflows.workflow.editorial
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_form_display.taxonomy_term.tags.*'
+  - 'core.entity_form_display.taxonomy_term.event_categories.*'
   - 'core.entity_view_display.node.person.*'
   - 'user.role.*'

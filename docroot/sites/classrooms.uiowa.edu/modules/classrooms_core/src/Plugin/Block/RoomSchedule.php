@@ -4,6 +4,11 @@ namespace Drupal\classrooms_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Pager\PagerManager;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\CurrentRouteMatch;
+use Drupal\uiowa_maui\MauiApi;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A 'Room Schedule' block.
@@ -14,7 +19,65 @@ use Drupal\Core\Cache\CacheableMetadata;
  *   category = @Translation("Room"),
  * )
  */
-class RoomSchedule extends BlockBase {
+class RoomSchedule extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The current route match service.
+   *
+   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   */
+  protected $currentRouteMatch;
+
+  /**
+   * The current pager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManager
+   */
+  protected $pagerManager;
+
+  /**
+   * The uiowa_maui.api service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
+   */
+  protected $mauiApi;
+
+  /**
+   * Constructs a new ThemeTestSubscriber.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
+   *   The current route match handler.
+   * @param \Drupal\Core\Pager\PagerManager $pagerManager
+   *   The pager manager service.
+   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
+   *   The uiowa_maui.api service.
+   */
+  public function __construct(array $configuration, string $plugin_id, mixed $plugin_definition, CurrentRouteMatch $currentRouteMatch, PagerManager $pagerManager, MauiApi $mauiApi) {
+    $this->currentRouteMatch = $currentRouteMatch;
+    $this->pagerManager = $pagerManager;
+    $this->mauiApi = $mauiApi;
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match'),
+      $container->get('pager.manager'),
+      $container->get('uiowa_maui.api'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -28,7 +91,7 @@ class RoomSchedule extends BlockBase {
    */
   public function build() {
     $build = [];
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $this->currentRouteMatch->getParameter('node');
 
     if (!is_null($node)) {
       $building_id = $node
@@ -40,10 +103,18 @@ class RoomSchedule extends BlockBase {
 
       if (!is_null($building_id) && !is_null($room_id)) {
         // Grab MAUI room data.
-        $maui_api = \Drupal::service('uiowa_maui.api');
-        $data = $maui_api->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
+        $data = $this->mauiApi->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
+        static $element = 0;
 
         if (!empty($data)) {
+
+          $count = count($data);
+          $element++;
+          $length = 4;
+          $current = $this->pagerManager->createPager($count, $length, $element)->getCurrentPage();
+          $offset = $current * $length;
+          $data = array_slice($data, $offset, $length);
+
           $items = [];
 
           // Iterate through the data and push the values to the $items array.
@@ -83,6 +154,11 @@ class RoomSchedule extends BlockBase {
               '#title_heading_size' => 'h3',
             ];
           }
+          $build['content']['pager'] = [
+            '#type' => 'pager',
+            '#element' => $element,
+            '#quantity' => 3,
+          ];
         }
         else {
           $build = [

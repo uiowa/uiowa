@@ -17,7 +17,8 @@ git:
     - 'uiowa03@svn-37631.prod.hosting.acquia.com:uiowa03.git'
     - 'uiowa04@svn-37631.prod.hosting.acquia.com:uiowa04.git'
     - 'uiowa05@svn-45062.prod.hosting.acquia.com:uiowa05.git'
-    - 'uihcsn01@svn-45062.prod.hosting.acquia.com:uihcsn01.git'
+    - 'uiowa06@svn-45062.prod.hosting.acquia.com:uiowa06.git'
+    - 'uiowa07@svn-45062.prod.hosting.acquia.com:uiowa07.git'
   hooks:
     commit-msg: false
     pre-commit: false
@@ -27,6 +28,9 @@ drush:
   aliases:
     ci: self
   default_alias: self
+disable-targets:
+  tests:
+    security-drupal: true
 tests:
   phpunit:
     - config: '${repo.root}'
@@ -44,6 +48,7 @@ validate:
       - drupal_entity
     filters:
       - image_style
+      - smart_date_format
 drupal:
   db:
     host: ddev-uiowa-db
@@ -79,6 +84,8 @@ uiowa:
     uiowa03: 3d87eca7-89d1-47e2-84db-bc7ad52a9363
     uiowa04: bf806a95-49a1-4bfe-9eed-6b91a89e694a
     uiowa05: c87bbab2-34fe-475b-a30b-6414b83e0c69
+    uiowa06: efb3347a-e483-48a6-bb6f-c48b72fa86ea
+    uiowa07: 25f49632-0a90-4134-bcc3-bb64fd5a0f67
   run_first:
     - 'emergency.uiowa.edu'
     - 'police.uiowa.edu'
@@ -97,3 +104,11 @@ uiowa:
     - 'public-health.uiowa.edu'
     - 'tippie.uiowa.edu'
     - 'uc.uiowa.edu'
+  # Helper for running config split exports.
+  development:
+    config_split:
+      splits:
+        p2lb:
+          dependencies:
+            - sitenow_v2
+

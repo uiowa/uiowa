@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbeichel.uiowa.ddev.site
+    protocol: https
+  machine_name: labbeichel
+  human_name: beichel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbeichel.prod
+drupal:
+  db:
+    database: beichel_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbeichel.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Medical Computer Vision & Graphics Lab'

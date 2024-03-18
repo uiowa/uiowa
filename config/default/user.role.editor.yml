@@ -3,6 +3,22 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.featured_content
+    - block_content.type.uiowa_aggregator
+    - block_content.type.uiowa_banner
+    - block_content.type.uiowa_button
+    - block_content.type.uiowa_card
+    - block_content.type.uiowa_collection
+    - block_content.type.uiowa_cta
+    - block_content.type.uiowa_event
+    - block_content.type.uiowa_events
+    - block_content.type.uiowa_image
+    - block_content.type.uiowa_image_gallery
+    - block_content.type.uiowa_quote
+    - block_content.type.uiowa_slider
+    - block_content.type.uiowa_statistic
+    - block_content.type.uiowa_text_area
+    - block_content.type.uiowa_timeline
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
     - core.entity_view_display.node.page.default
@@ -28,13 +44,14 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
-    - block_content_permissions
+    - block_content
     - content_moderation
     - contextual
     - entity_browser
     - entity_usage
     - file
     - filter
+    - find_text
     - fragments
     - google_analytics
     - layout_builder
@@ -56,12 +73,14 @@ weight: -6
 is_admin: false
 permissions:
   - 'access administration pages'
+  - 'access block library'
   - 'access content'
   - 'access content overview'
   - 'access contextual links'
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
   - 'access files overview'
+  - 'access find text'
   - 'access fragments overview'
   - 'access media overview'
   - 'access media_wysiwyg_browser entity browser pages'
@@ -124,6 +143,7 @@ permissions:
   - 'create twitter media'
   - 'create uiowa_aggregator block content'
   - 'create uiowa_banner block content'
+  - 'create uiowa_button block content'
   - 'create uiowa_card block content'
   - 'create uiowa_collection block content'
   - 'create uiowa_cta block content'
@@ -148,18 +168,16 @@ permissions:
   - 'delete any twitter media'
   - 'delete any uiowa_aggregator block content'
   - 'delete any uiowa_banner block content'
+  - 'delete any uiowa_button block content'
   - 'delete any uiowa_card block content'
   - 'delete any uiowa_collection block content'
   - 'delete any uiowa_cta block content'
   - 'delete any uiowa_event block content'
   - 'delete any uiowa_events block content'
-  - 'delete any uiowa_hero block content'
   - 'delete any uiowa_image block content'
   - 'delete any uiowa_image_gallery block content'
-  - 'delete any uiowa_page_title_hero block content'
   - 'delete any uiowa_quote block content'
   - 'delete any uiowa_slider block content'
-  - 'delete any uiowa_spacer_separator block content'
   - 'delete any uiowa_statistic block content'
   - 'delete any uiowa_text_area block content'
   - 'delete any uiowa_timeline block content'
@@ -168,6 +186,7 @@ permissions:
   - 'delete own audio media'
   - 'delete own facebook media'
   - 'delete own file media'
+  - 'delete own files'
   - 'delete own image media'
   - 'delete own instagram media'
   - 'delete own page content'
@@ -181,6 +200,7 @@ permissions:
   - 'edit any article content'
   - 'edit any audio media'
   - 'edit any facebook media'
+  - 'edit any featured_content block content'
   - 'edit any file media'
   - 'edit any image media'
   - 'edit any instagram media'
@@ -190,6 +210,21 @@ permissions:
   - 'edit any remote_video media'
   - 'edit any static_map media'
   - 'edit any twitter media'
+  - 'edit any uiowa_aggregator block content'
+  - 'edit any uiowa_banner block content'
+  - 'edit any uiowa_button block content'
+  - 'edit any uiowa_card block content'
+  - 'edit any uiowa_collection block content'
+  - 'edit any uiowa_cta block content'
+  - 'edit any uiowa_event block content'
+  - 'edit any uiowa_events block content'
+  - 'edit any uiowa_image block content'
+  - 'edit any uiowa_image_gallery block content'
+  - 'edit any uiowa_quote block content'
+  - 'edit any uiowa_slider block content'
+  - 'edit any uiowa_statistic block content'
+  - 'edit any uiowa_text_area block content'
+  - 'edit any uiowa_timeline block content'
   - 'edit own article content'
   - 'edit own audio media'
   - 'edit own facebook media'
@@ -215,24 +250,6 @@ permissions:
   - 'revert article revisions'
   - 'revert page revisions'
   - 'skip antibot'
-  - 'update any featured_content block content'
-  - 'update any uiowa_aggregator block content'
-  - 'update any uiowa_banner block content'
-  - 'update any uiowa_card block content'
-  - 'update any uiowa_collection block content'
-  - 'update any uiowa_cta block content'
-  - 'update any uiowa_event block content'
-  - 'update any uiowa_events block content'
-  - 'update any uiowa_hero block content'
-  - 'update any uiowa_image block content'
-  - 'update any uiowa_image_gallery block content'
-  - 'update any uiowa_page_title_hero block content'
-  - 'update any uiowa_quote block content'
-  - 'update any uiowa_slider block content'
-  - 'update any uiowa_spacer_separator block content'
-  - 'update any uiowa_statistic block content'
-  - 'update any uiowa_text_area block content'
-  - 'update any uiowa_timeline block content'
   - 'update own region_item fragments'
   - 'update own region_item_after_content fragments'
   - 'update region_item fragments'

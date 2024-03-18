@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.body
     - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_department
@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.person.field_teaser
     - field.field.node.person.pt_student_dissertation_title
     - node.type.person
+    - views.view.articles_author
   module:
     - entity_reference_revisions
     - layout_builder
@@ -44,6 +45,7 @@ dependencies:
     - telephone
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -244,7 +246,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ','
+                    delimiter: ''
             weight: 4
             additional: {  }
             third_party_settings: {  }
@@ -274,7 +276,7 @@ third_party_settings:
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
             region: main
             configuration:
-              id: 'field_block:node:person:field_person_bio'
+              id: 'field_block:node:person:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -441,6 +443,30 @@ third_party_settings:
             weight: -9
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 30a66d77-70b8-440c-9d33-3ddd976ed79a
+            region: main
+            configuration:
+              id: 'views_block:articles_author-articles_author'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -460,6 +486,13 @@ targetEntityType: node
 bundle: person
 mode: default
 content:
+  body:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
@@ -480,13 +513,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 12
-    region: content
-  field_person_bio:
-    type: text_default
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view

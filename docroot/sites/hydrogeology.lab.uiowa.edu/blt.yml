@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhydrogeology.uiowa.ddev.site
+    protocol: https
+  machine_name: labhydrogeology
+  human_name: hydrogeology.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhydrogeology.prod
+drupal:
+  db:
+    database: hydrogeology_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhydrogeology.prod.drupal.uiowa.edu'
+  requester: jrmyr
+  site-name: Hydrogeology

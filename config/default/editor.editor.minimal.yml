@@ -1,52 +1,73 @@
-uuid: ab1abd12-d7ec-4a19-a5e9-5f8cf610fde9
+uuid: 1a4fee98-d850-4b84-9722-ae7bb5a797ce
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.minimal
   module:
-    - ckeditor
+    - ckeditor5
 format: minimal
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Underline
-            - Italic
-            - Strike
-            - JustifyLeft
-            - JustifyRight
-            - JustifyCenter
-            - JustifyBlock
-            - Superscript
-            - Subscript
-            - SpecialChar
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Media
-          items:
-            - Blockquote
-        -
-          name: Tools
-          items:
-            - Source
-            - Undo
-            - Redo
-        -
-          name: Format
-          items:
-            - Format
+    items:
+      - bold
+      - underline
+      - italic
+      - strikethrough
+      - alignment
+      - superscript
+      - subscript
+      - specialCharacters
+      - '|'
+      - link
+      - '|'
+      - blockQuote
+      - '|'
+      - sourceEditing
+      - undo
+      - redo
+      - '|'
+      - heading
+      - '|'
+      - code
+      - horizontalLine
   plugins:
-    drupallink:
+    ckeditor5_alignment:
+      enabled_alignments:
+        - center
+        - justify
+        - left
+        - right
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<div class="lead alert alert--success alert--info alert--warning alert--danger">'
+        - '<span role class="fa*">'
+        - '<hr class>'
+        - '<small class>'
+        - '<blockquote cite>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<a href hreflang title id target aria-label rel data-* class>'
+    editor_advanced_link_link:
+      enabled_attributes:
+        - aria-label
+        - id
+        - rel
+        - target
+        - title
+    linkit_extension:
       linkit_enabled: true
       linkit_profile: default
 image_upload:

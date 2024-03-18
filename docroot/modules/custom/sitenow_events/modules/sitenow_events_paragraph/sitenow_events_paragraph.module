@@ -108,6 +108,9 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           'items_per_page' => $paragraph->get('field_events_results')->getString(),
         ]);
 
+        // Get site-wide configuration for use with constructing event link.
+        $config = \Drupal::config('sitenow_events.settings');
+
         if (!empty($data['events'])) {
           foreach ($data['events'] as $key => $value) {
             // The API nests each event as an array.
@@ -123,6 +126,8 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
               'media--border',
               'media--small',
             ];
+
+            $event['sitenow_events_config'] = $config;
 
             $event['attributes']['class'] = $styles;
             $event['heading_size'] = 'h2';

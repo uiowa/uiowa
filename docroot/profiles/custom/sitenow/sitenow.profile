@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -15,8 +16,8 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\layout_builder\InlineBlockUsage;
@@ -107,6 +108,18 @@ function sitenow_preprocess_select(&$variables) {
           unset($variables['options'][0]);
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function sitenow_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
+  // Remove fontawesome js if ckeditor5 is present.
+  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
+    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
+      unset($javascript['libraries/fontawesome/js/all.min.js']);
     }
   }
 }
@@ -364,6 +377,8 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
  * Custom node content type form defaults.
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
+  // @todo Remove this after the transition to body summary
+  //   has been completed.
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
@@ -382,6 +397,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     ];
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
+
+    // If we're in v3 or a non-page content type in v2 (article, person),
+    // then disable the field_teaser and add help text.
+    if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
+      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
+      $form['field_teaser']['#disabled'] = TRUE;
+    }
   }
 
   if (isset($form['field_image'])) {
@@ -479,14 +501,24 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
-  // Hide revision information on media entity add/edit forms
-  // to prevent new revisions from being created. This aids our
-  // file replace functionality.
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
+      // Hide revision information on media entity add/edit forms
+      // to prevent new revisions from being created. This aids our
+      // file replace functionality.
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
+      }
+
+      // Prevent deletion if there is entity usage.
+      // This is accompanied by a message from the entity_usage module.
+      if ($form_object->getOperation() == 'delete') {
+        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
+        if (!empty($usage_data)) {
+          $form['actions']['submit']['#disabled'] = TRUE;
+        }
       }
     }
   }
@@ -611,11 +643,20 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
  */
 function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if (isset($element['#webform_key'])) {
-    // With Acquia varnish, Webform can't pre-populate
-    // Google/Facebook Click IDs (gclid, fbclid).
+    // Pass query string parameters allowed for pre-populating webforms via
+    // drupalSettings to javascript and attach a script to parse them.
     if (isset($element['#prepopulate'])) {
-      $element['#attributes']['prepopulate'] = 'true';
-      if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+      $webform_prepopulate_query_keys = [
+        'fbclid',
+        'gclid',
+        'utm_campaign',
+        'utm_source',
+        'utm_medium',
+        'utm_content',
+      ];
+      if (in_array($element['#webform_key'], $webform_prepopulate_query_keys)) {
+        $element['#attributes']['prepopulate'] = 'true';
+        $element['#attached']['drupalSettings']['sitenow']['webformPrepopulateQueryKeys'] = $webform_prepopulate_query_keys;
         $element['#attached']['library'][] = 'sitenow/get_clickid';
       }
     }
@@ -633,9 +674,9 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
       $type = $node->getType();
       $config = \Drupal::config("node.type.{$type}");
 
-      if ($nrd = $config->get('third_party_settings.node_revision_delete')) {
+      if ($nrd_limit = $config->get('third_party_settings.node_revision_delete.amount.settings.amount')) {
         \Drupal::messenger()->addWarning(t('There is a @limit revision limit for this content type. The oldest revisions in excess of @limit are deleted during system background processes.', [
-          '@limit' => $nrd['minimum_revisions_to_keep'],
+          '@limit' => $nrd_limit,
         ]));
       }
     }
@@ -890,20 +931,49 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
         $menu_link_options = $first_item->get('options')->getValue() ?: [];
         $menu = $menu_link->getMenuName();
         if ($menu === 'social') {
+          $option = [
+            'theme' => 'default',
+            'iconSource' => [
+              [
+                "key" => "fa6-brands",
+                "prefix" => "fa-brands fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-brands.json",
+              ],
+              [
+                "key" => "fa6-regular",
+                "prefix" => "fa-regular fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-regular.json",
+              ],
+              [
+                "key" => "fa6-solid",
+                "prefix" => "fa-solid fa-",
+                "url" => "https://raw.githubusercontent.com/iconify/icon-sets/master/json/fa6-solid.json",
+              ],
+            ],
+            'closeOnSelect' => TRUE,
+            'i18n' => [
+              'input:placeholder' => t('Search icon…'),
+              'text:title' => t('Select icon'),
+              'text:empty' => t('No results found…'),
+              'btn:save' => t('Save'),
+            ],
+          ];
+
           $form['fa_icon'] = [
             '#type' => 'textfield',
             '#title' => t('FontAwesome Icon'),
             '#default_value' => !empty($menu_link_options['fa_icon']) ? $menu_link_options['fa_icon'] : '',
             '#attributes' => [
-              'autocomplete' => 'off',
+              'data-option' => json_encode($option),
+              'data-theme' => 'default',
               'class' => [
-                'fa-iconpicker',
+                'fontawesomeIconPickerVanillaIconPicker',
               ],
             ],
             '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
             '#attached' => [
               'library' => [
-                'sitenow/fontawesome-iconpicker',
+                'sitenow/vanilla-icon-picker',
               ],
             ],
           ];
@@ -1105,48 +1175,4 @@ function featured_image_size_values(FieldStorageDefinitionInterface $definition,
   ];
 
   return $options;
-}
-
-/**
- * Implements hook_tokens().
- */
-function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $replacements = [];
-  if (!empty($data['node'])) {
-    // Limit this to content types that have 'field_teaser' field.
-    if ($data['node']->hasField('field_teaser')) {
-      foreach ($tokens as $name => $original) {
-        switch ($name) {
-          // Not consistent across content types which
-          // token is used for meta description.
-          case 'field_teaser':
-          case 'field_teaser:value':
-            $field_teaser = $data['node']->get('field_teaser')->value;
-            if (empty($field_teaser)) {
-              // Person content type.
-              if ($data['node']->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
-                $replacement_value = $data['node']->get('field_person_bio')->value;
-              }
-              // Article content type, v3 Page content type.
-              if ($data['node']->hasField('body') && !empty($data['node']->get('body')->value)) {
-                $replacement_value = $data['node']->get('body')->value;
-              }
-              if (!empty($replacement_value)) {
-                // Plain text doesn't do faulty html correction, and don't
-                // want tags counting towards limit.
-                $replacement_value = trim(strip_tags($replacement_value));
-                // Using text.module text_summary().
-                // @todo Make length a configuration setting.
-                //   See https://github.com/uiowa/uiowa/issues/5024
-                $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
-              }
-            }
-            break;
-
-        }
-      }
-    }
-  }
-
-  return $replacements;
 }

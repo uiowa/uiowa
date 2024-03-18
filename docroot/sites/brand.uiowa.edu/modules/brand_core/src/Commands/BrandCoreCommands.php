@@ -2,13 +2,12 @@
 
 namespace Drupal\brand_core\Commands;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\Url;
+use Drupal\symfony_mailer\EmailFactoryInterface;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -19,35 +18,8 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class BrandCoreCommands extends DrushCommands {
+
   use LoggerChannelTrait;
-
-  /**
-   * The account_switcher service.
-   *
-   * @var \Drupal\Core\Session\AccountSwitcherInterface
-   */
-  protected $accountSwitcher;
-
-  /**
-   * The date_formatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected $dateFormatter;
-
-  /**
-   * The plugin.manager.mail service.
-   *
-   * @var \Drupal\Core\Mail\MailManagerInterface
-   */
-  protected $mailManager;
-
-  /**
-   * The config.factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
 
   /**
    * Drush command constructor.
@@ -56,16 +28,12 @@ class BrandCoreCommands extends DrushCommands {
    *   The account_switcher service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date_formatter service.
-   * @param \Drupal\Core\Mail\MailManagerInterface $mailManager
+   * @param \Drupal\symfony_mailer\EmailFactoryInterface $emailFactory
    *   The plugin.manager.mail service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config.factory service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(protected AccountSwitcherInterface $accountSwitcher, protected DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
-    $this->mailManager = $mailManager;
-    $this->configFactory = $configFactory;
   }
 
   /**
@@ -85,40 +53,38 @@ class BrandCoreCommands extends DrushCommands {
 
     if (!empty($view)) {
       $results = count($view);
-      $params['lockups'] = [];
+      $lockups = [];
       // Access field data from the view results.
       foreach ($view as $row) {
         $entity = $row->_entity;
         $timestamp = $entity->get('revision_timestamp');
         $date = $this->dateFormatter->format($timestamp->value, 'short', NULL, 'America/Chicago');
-        $params['lockups'][] = $entity->getTitle() . ' - Last updated: ' . $date;
+        $lockups[] = $entity->getTitle() . ' - Last updated: ' . $date;
       }
 
       $label = $results > 1 ? 'lockups' : 'lockup';
 
       // Prepare params for digest email.
-      $params['label'] = $label;
-      $params['results'] = (string) $results;
+      $results = (string) $results;
       global $base_url;
       $url_options = [
         'query' => ['destination' => '/admin/content/lockups'],
       ];
 
-      $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $site_email = $this->configFactory->get('system.site')->get('mail');
-      $result = $this->mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
+      $login_url = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
+      $email = $this->emailFactory->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
 
-      if ($result['result'] !== TRUE) {
-        $this->getLogger('brand_core')->error('Lockup Review Digest Not Sent');
-        $this->output()->writeln('Lockup Review Digest Not Sent');
+      if ($email->getError()) {
+        $this->logger()->error('Lockup Review Digest not sent. Error: @error');
+        $this->output()->writeln('Lockup Review Digest not sent');
       }
       else {
-        $this->getLogger('brand_core')->notice('Lockup Review Digest Sent');
-        $this->output()->writeln('Lockup Review Digest Sent');
+        $this->logger()->notice('Lockup Review Digest sent');
+        $this->output()->writeln('Lockup Review Digest sent');
       }
     }
     else {
-      $this->getLogger('brand_core')->notice('Lockup Review Digest - No items to review');
+      $this->logger()->notice('Lockup Review Digest - No items to review');
       $this->output()->writeln('Lockup Review Digest - No items to review');
       return;
     }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labinfant-communication-development.uiowa.ddev.site
+    protocol: https
+  machine_name: labinfant-communication-development
+  human_name: infant-communication-development.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labinfant-communication-development.prod
+drupal:
+  db:
+    database: infant_communication_development_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labinfant-communication-development.prod.drupal.uiowa.edu'
+  requester: jgroslou
+  site-name: 'Infant Communication Development Lab'

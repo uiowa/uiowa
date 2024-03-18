@@ -102,3 +102,14 @@ function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 
   }
 }
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function iisc_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'iisc_projects') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}

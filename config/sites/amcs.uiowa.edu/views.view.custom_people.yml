@@ -14,7 +14,6 @@ dependencies:
     - field.storage.node.field_pt_student_defense_date
     - field.storage.node.pt_student_dissertation_title
     - node.type.person
-    - system.menu.main
     - taxonomy.vocabulary.research_areas
   module:
     - datetime
@@ -935,13 +934,13 @@ display:
         metatag_display_extender: {  }
       path: faculty-research
       menu:
-        type: normal
+        type: none
         title: Faculty/Research
         description: ''
-        weight: 0
+        weight: -48
         expanded: false
         menu_name: main
-        parent: 'menu_link_content:aa514bff-9dfa-4589-855e-80715a5b8316'
+        parent: ''
         context: '0'
     cache_metadata:
       max-age: -1
@@ -1873,13 +1872,13 @@ display:
         metatag_display_extender: {  }
       path: graduates
       menu:
-        type: normal
+        type: none
         title: Graduates
         description: ''
-        weight: 0
+        weight: -46
         expanded: false
         menu_name: main
-        parent: 'menu_link_content:596997c3-082e-4ee1-9c9c-5df92965b802'
+        parent: ''
         context: '0'
     cache_metadata:
       max-age: -1

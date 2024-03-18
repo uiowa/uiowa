@@ -11,7 +11,6 @@ dependencies:
     - responsive_image.styles.large__widescreen
   module:
     - layout_builder
-    - lazy
     - responsive_image
 third_party_settings:
   layout_builder:
@@ -30,9 +29,9 @@ content:
     settings:
       responsive_image_style: large__widescreen
       image_link: ''
-    third_party_settings:
-      lazy:
-        lazy_image: '1'
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:

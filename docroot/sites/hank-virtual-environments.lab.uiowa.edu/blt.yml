@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhank-virtual-environments.uiowa.ddev.site
+    protocol: https
+  machine_name: labhank-virtual-environments
+  human_name: hank-virtual-environments.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhank-virtual-environments.prod
+drupal:
+  db:
+    database: hank_virtual_environments_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhank-virtual-environments.prod.drupal.uiowa.edu'
+  requester: jplumert
+  site-name: 'Hank Virtual Environments Laboratory'

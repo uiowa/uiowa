@@ -31,19 +31,21 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
     // Old preprocess function turned into method.
     $card_details = $this->getDetails();
 
-    // Label based on parent field.
-    $build['#title'] = $card_details['label'];
+    if (isset($card_details['label'])) {
+      // Label based on parent field.
+      $build['#title'] = $card_details['label'];
+
+      // Render icon as image.
+      $build['#media']['icon'] = [
+        '#type' => 'markup',
+        '#markup' => '<img src="/themes/custom/uids_base/assets/images/' . strtolower($card_details['label']) . '.png" alt="' . $card_details['label'] . '" />',
+      ];
+    }
 
     // Custom list of links.
     if (isset($card_details['card_list'])) {
       $build['#content']['card_list'] = $card_details['card_list'];
     }
-
-    // Render icon as image.
-    $build['#media']['icon'] = [
-      '#type' => 'markup',
-      '#markup' => '<img src="/themes/custom/uids_base/assets/images/' . strtolower($card_details['label']) . '.png" alt="' . $card_details['label'] . '" />',
-    ];
   }
 
   /**
@@ -85,7 +87,8 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                   $query = \Drupal::entityQuery('node')
                     ->condition('status', 1)
                     ->condition('type', 'transfer_tips')
-                    ->condition('field_transfer_tips_aos', $parent->id());
+                    ->condition('field_transfer_tips_aos', $parent->id())
+                    ->accessCheck();
                   $nids = $query->execute();
 
                   if (!empty($nids)) {
@@ -102,7 +105,8 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                   $query = \Drupal::entityQuery('node')
                     ->condition('type', 'major')
                     ->condition('status', 1)
-                    ->condition('field_major_area_of_study', $parent->id(), '=');
+                    ->condition('field_major_area_of_study', $parent->id(), '=')
+                    ->accessCheck();
                   // We only really need to know if there are areas of study,
                   // and not which or how many, because the link will just be
                   // based on the aos id.

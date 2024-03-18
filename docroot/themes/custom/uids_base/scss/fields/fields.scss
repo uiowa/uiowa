@@ -17,6 +17,14 @@
   }
 }
 
+.field--separator {
+  &:after {
+    content: '-';
+    color: $grey;
+    margin: 0 $xsm 0 $sm;
+  }
+}
+
 .field.field--label-above {
   line-height: 1.5;
 }
@@ -35,6 +43,18 @@
     line-height: 1;
   }
 
+  &.badge,
+  .badge & {
+    font-size: 1.1rem;
+    + .field__items {
+      margin-left: $sm;
+      font-weight: normal;
+      .field__item {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
   [class*="card__"] &,
   [class*="bttn"] & {
     font-size: inherit;
@@ -44,7 +64,8 @@
 
 .field--label-inline {
   margin-bottom: $sm;
-  [class*="card__"] & {
+  [class*="card__"] &,
+  .block-margin__default--removed & {
     margin-bottom: 0;
   }
 
@@ -114,6 +135,9 @@
 
   .field__items {
     display: inline;
+    &.uiowa-image-gallery {
+      display: grid;
+    }
   }
 
   .field__item {

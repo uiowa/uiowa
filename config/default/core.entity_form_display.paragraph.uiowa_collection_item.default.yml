@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.uiowa_collection_item.field_automatically_open
     - field.field.paragraph.uiowa_collection_item.field_collection_body
     - field.field.paragraph.uiowa_collection_item.field_collection_headline
+    - field.field.paragraph.uiowa_collection_item.field_unique_id
     - paragraphs.paragraphs_type.uiowa_collection_item
   module:
     - text
@@ -32,6 +33,14 @@ content:
   field_collection_headline:
     type: string_textfield
     weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unique_id:
+    type: string_textfield
+    weight: 4
     region: content
     settings:
       size: 60

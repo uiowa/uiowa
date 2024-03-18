@@ -4,9 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -26,6 +26,8 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - link
+    - smart_trim
     - telephone
     - user
 id: node.person.teaser
@@ -33,6 +35,31 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
+  body:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 0
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: true
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
@@ -73,12 +100,17 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_teaser:
-    type: basic_string
+  field_person_website:
+    type: link
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 7
     region: content
   links:
     settings: {  }
@@ -91,7 +123,6 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_meta_tags: true
-  field_person_bio: true
   field_person_contact_information: true
   field_person_education: true
   field_person_first_name: true
@@ -101,7 +132,7 @@ hidden:
   field_person_research_areas: true
   field_person_type_status: true
   field_person_types: true
-  field_person_website: true
   field_person_website_link_direct: true
   field_tags: true
+  field_teaser: true
   search_api_excerpt: true

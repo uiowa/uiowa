@@ -8,13 +8,12 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
-use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  */
-function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+function sitenow_media_wysiwyg_field_widget_single_element_panopto_url_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
   // There is a second help message that adds more confusion to the link field.
   // @see: LinkWidget::formElement().
   // Extra checking due to "Cannot use object of type
@@ -22,52 +21,6 @@ function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$elem
   // error when editing field.
   if (isset($element['uri']['#description']) && is_array($element['uri']['#description']) && isset($element['uri']['#description']['#items'][1])) {
     unset($element['uri']['#description']['#items'][1]);
-  }
-}
-
-/**
- * Implements hook_editor_js_settings_alter().
- */
-function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
-  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
-  $path_resolver = \Drupal::service('extension.path.resolver');
-
-  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . $path_resolver->getPath('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
-    }
-  }
-}
-
-/**
- * Implements hook_form_FORMID_alter().
- */
-function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Hide the selected entities link.
-  $form['entity']['#access'] = FALSE;
-  // Get the user input.
-  $input = $form_state->getUserInput();
-  // If we are uploading new or selecting from the library.
-  if (isset($input, $input['entity_browser'], $input['entity_browser']['entity_ids'])) {
-    $parts = explode(':', $input['entity_browser']['entity_ids']);
-    $entity_type = $parts[0];
-    $id = $parts[1];
-    $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($id);
-  }
-  // If we are modifying an existing media editor object.
-  elseif (isset($input, $input['editor_object'], $input['editor_object']['data-entity-type'], $input['editor_object']['data-entity-uuid'])) {
-    $entity_type = $input['editor_object']['data-entity-type'];
-    $uuid = $input['editor_object']['data-entity-uuid'];
-    $entity = \Drupal::service('entity.repository')->loadEntityByUuid($entity_type, $uuid);
-  }
-  if (isset($entity, $entity_type) && $entity_type === 'media') {
-    $bundle = $entity->bundle();
-    switch ($bundle) {
-      case 'image':
-        $form['attributes']['data-entity-embed-display']['#options']['view_mode:media.full'] = 'Original';
-        break;
-    }
   }
 }
 
@@ -96,61 +49,6 @@ function sitenow_media_wysiwyg_form_editor_media_dialog_alter(&$form, FormStateI
  */
 function sitenow_media_wysiwyg_form_media_library_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'sitenow_media_wysiwyg/media_overrides';
-}
-
-/**
- * Implements hook_entity_presave().
- */
-function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
-  // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
-  // should see very few TIFF orientation issues.
-  if ($file->isNew() && $file->getMimeType() === 'image/jpeg') {
-    /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
-    $fmdm = \Drupal::service('file_metadata_manager');
-
-    if ($metadata = $fmdm->uri($file->getFileUri())) {
-      if ($orientation = $metadata->getMetaData('exif', 'Orientation')) {
-        // EXIF: 1 is standard.
-        // 6 and 8 are rotated 90, cw and ccw respectively
-        // 5 and 7 are 6 and 8, but then flipped over the x-axis
-        // 3 is rotated 180
-        // 2 and 4 are 1 and 3, but then flipped over the x-axis
-        // Currently not addressing any flipping.
-        switch ($orientation['value']) {
-          case 5:
-          case 6:
-            $degrees = 90;
-            break;
-
-          case 7:
-          case 8:
-            $degrees = 270;
-            break;
-
-          case 3:
-          case 4:
-            $degrees = 180;
-            break;
-
-          default:
-            $degrees = 0;
-        }
-
-        if ($degrees != 0) {
-          $image = \Drupal::service('image.factory')->get($file->getFileUri());
-
-          // Replace the old EXIF data, so that downloaded images or other
-          // render methods won't overcorrect.
-          $metadata->setMetadata('exif', 'Orientation', 1);
-          $metadata->saveMetadataToFile('exif');
-          // Save only if rotate() completed successfully.
-          if ($image->rotate($degrees)) {
-            $image->save();
-          }
-        }
-      }
-    }
-  }
 }
 
 /**

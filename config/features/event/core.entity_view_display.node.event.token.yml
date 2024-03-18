@@ -5,6 +5,11 @@ dependencies:
   config:
     - core.entity_view_mode.node.token
     - field.field.node.event.body
+    - field.field.node.event.field_event_attendance
+    - field.field.node.event.field_event_attendance_mode
+    - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_directions
+    - field.field.node.event.field_event_geolocation
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -61,7 +66,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 6
+    weight: 4
     region: content
   field_event_when:
     type: smartdate_default
@@ -73,6 +78,7 @@ content:
       force_chronological: false
       add_classes: false
       time_wrapper: true
+      localize: false
     third_party_settings: {  }
     weight: 0
     region: content
@@ -83,7 +89,7 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 7
+    weight: 5
     region: content
   field_tags:
     type: entity_reference_label
@@ -91,25 +97,23 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
-    region: content
-  field_teaser:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
+    weight: 3
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 6
     region: content
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_attendance: true
+  field_event_attendance_mode: true
+  field_event_category: true
+  field_event_directions: true
+  field_event_geolocation: true
   field_event_hide: true
   field_event_parent: true
   field_event_performer: true
@@ -117,4 +121,5 @@ hidden:
   field_event_series_link_direct: true
   field_event_status: true
   field_meta_tags: true
+  field_teaser: true
   search_api_excerpt: true

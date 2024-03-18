@@ -43,6 +43,16 @@
     width: inherit;
   }
 
+  .webform-element-help {
+    background: $brand-cool-gray;
+    border: 2px solid $brand-cool-gray;
+    &:hover,
+    &:focus {
+      border: 2px solid $info;
+      background: $info;
+    }
+  }
+
   // --------------------------------
   // Help/Description
   // --------------------------------
@@ -52,6 +62,7 @@
   .field-suffix {
     font-size: 0.9rem;
     line-height: 1.4;
+    clear: both;
   }
   .description {
     margin: $xsm 0;
@@ -83,7 +94,7 @@
   // --------------------------------
   [type=checkbox], [type=radio] {
     height: 1.2rem;
-    width: 1.2rem;
+    min-width: 1.2rem;
     margin: 0 .35rem 0 .25rem;
     -webkit-transform: scale(1.3, 1.3);
   }
@@ -93,12 +104,6 @@
     flex-wrap: wrap;
     align-items: center;
   }
-  .webform-options-display-side-by-side {
-    .form-type-checkbox,
-    .form-type-radio {
-      display: inline-flex;
-    }
-  }
   [type='checkbox']+label,
   [type='radio']+label {
     font-weight: $font-weight-normal;
@@ -107,12 +112,31 @@
   .webform-checkboxes-other,
   .webform-type-radios,
   .webform-type-webform-radios-other {
+    .form-type-checkbox,
+    .form-type-radio:not(.form-item-radios-buttons) {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      label {
+        flex: 1;
+      }
+    }
     & legend {
       margin-bottom: $xsm;
     }
     & .fieldset-wrapper {
       margin-left: 0;
       margin-inline-start: 0;
+    }
+  }
+  .webform-options-display-side-by-side {
+    .form-type-checkbox,
+    .form-type-radio {
+      display: inline-flex;
+      flex-wrap: wrap;
+      label {
+        flex: 1;
+      }
     }
   }
 
@@ -264,23 +288,12 @@
 // Preview
 // --------------------------------
 .node-preview-container {
-  //@extend .alert;
-  //@extend .alert-warning;
   margin-bottom: 0;
-
-  a {
-    //@extend .alert-link;
-  }
 
   form {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .node-preview-backlink {
-    //@extend .btn;
-    //@extend .btn-warning;
   }
 }
 
@@ -306,69 +319,9 @@
 // --------------------------------
 .webform-message {
   margin: 0.625rem 0;
-
-  div[role="alert"].alert {
-    background: $info-light;
-    padding: $md 0;
-    padding-block: $md;
-    padding-inline: 0;
-    border: 1px solid;
-    border-color: rgba($info, 0.03);
-    border-bottom: 2px solid rgba($info, 0.8);
-    border-block-end: 2px solid rgba($info, 0.8);
-
-    .close:before {
-      background: rgba($info, 0.8);
-    }
-
-    &.alert-danger {
-      background: $danger-light;
-      border-color: rgba($danger, 0.03);
-      border-bottom: 2px solid rgba($danger, 0.8);
-      border-block-end: 2px solid rgba($danger, 0.8);
-
-      .close:before {
-        background: rgba($danger, 0.8);
-      }
-    }
-
-    &.alert-success {
-      background: $success-light;
-      border-color: rgba($success, 0.03);
-      border-bottom: 2px solid rgba($success, 0.8);
-      border-block-end: 2px solid rgba($success, 0.8);
-
-      .close:before {
-        background: rgba($success, 0.8);
-      }
-    }
-
-    &.alert-warning {
-      background: $warning-light;
-      border-color: rgba($warning, 0.09);
-      border-bottom: 2px solid rgba($warning, 0.8);
-      border-block-end: 2px solid rgba($warning, 0.8);
-
-      .close:before {
-        background: rgba(#000000, 0.7);
-      }
-    }
-  }
-
-  button {
-    padding: 0 0 0 0.625rem;
-    padding-block-end: 0.625rem;
-    margin-right: 0;
-    margin-inline-end: 0;
-
-    &.close:before {
-      width: 26px;
-      height: 26px;
-      margin-right: 5px;
-      margin-inline-end: 5px;
-      padding: 5px;
-      font-size: 1rem;
-    }
+  // Hide the close link in favor of the close button provided by alert component.
+  .webform-message__link {
+    display: none!important;
   }
 }
 

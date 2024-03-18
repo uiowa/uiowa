@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labprice.uiowa.ddev.site
+    protocol: https
+  machine_name: labprice
+  human_name: price.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labprice.prod
+drupal:
+  db:
+    database: price_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labprice.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Price Lab'

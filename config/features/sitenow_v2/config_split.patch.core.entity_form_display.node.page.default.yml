@@ -7,7 +7,7 @@ adding:
   content:
     field_page_content_block:
       type: paragraphs
-      weight: 2
+      weight: 18
       region: content
       settings:
         title: Section
@@ -24,17 +24,12 @@ adding:
           collapse_edit_all: '0'
           duplicate: duplicate
       third_party_settings: {  }
-    field_publish_options:
-      weight: 14
-    field_teaser:
-      weight: 1
-    moderation_state:
-      weight: 15
   hidden:
     body: true
 removing:
   dependencies:
     module:
+      - allowed_formats
       - text
   content:
     body:
@@ -42,12 +37,10 @@ removing:
         rows: 9
         summary_rows: 3
         placeholder: ''
-        show_summary: false
+        show_summary: true
+      third_party_settings:
+        allowed_formats:
+          hide_help: '0'
+          hide_guidelines: '0'
       type: text_textarea_with_summary
-      weight: 1
-    field_publish_options:
-      weight: 15
-    field_teaser:
-      weight: 2
-    moderation_state:
-      weight: 16
+      weight: 18

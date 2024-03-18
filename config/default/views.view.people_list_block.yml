@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.body
     - field.storage.node.field_image
     - field.storage.node.field_person_credential
     - field.storage.node.field_person_email
@@ -11,7 +12,6 @@ dependencies:
     - field.storage.node.field_person_position
     - field.storage.node.field_person_website
     - field.storage.node.field_person_website_link_direct
-    - field.storage.node.field_teaser
     - node.type.person
     - taxonomy.vocabulary.research_areas
     - taxonomy.vocabulary.tags
@@ -19,6 +19,7 @@ dependencies:
     - link
     - node
     - options
+    - smart_trim
     - taxonomy
     - telephone
     - user
@@ -166,13 +167,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_teaser:
-          id: field_teaser
-          table: node__field_teaser
-          field: field_teaser
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
-          admin_label: 'Short Bio'
+          admin_label: ''
           plugin_id: field
           label: ''
           exclude: false
@@ -216,8 +217,26 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: smart_trim
+          settings:
+            trim_length: 300
+            trim_type: chars
+            trim_suffix: ...
+            wrap_output: false
+            wrap_class: trimmed
+            more:
+              display_link: false
+              target_blank: false
+              link_trim_only: false
+              class: more-link
+              text: More
+              aria_label: 'Read more about [node:title]'
+              token_browser: ''
+            summary_handler: full
+            trim_options:
+              text: true
+              trim_zero: false
+              replace_tokens: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1076,6 +1095,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_person_credential'
         - 'config:field.storage.node.field_person_email'
@@ -1083,7 +1103,6 @@ display:
         - 'config:field.storage.node.field_person_position'
         - 'config:field.storage.node.field_person_website'
         - 'config:field.storage.node.field_person_website_link_direct'
-        - 'config:field.storage.node.field_teaser'
   list_card:
     id: list_card
     display_title: 'People list'
@@ -1106,9 +1125,10 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: configure_sorts
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: use_more
       filter_in_block:
         - field_tags_target_id
@@ -1119,12 +1139,14 @@ display:
       restrict_fields:
         title: title
         view_node: view_node
+        field_person_website_link_direct: field_person_website_link_direct
         field_person_credential: 0
-        field_teaser: 0
+        body: 0
         field_person_email: 0
         field_image: 0
         field_person_phone: 0
         field_person_position: 0
+        field_person_website: 0
       general_help_text: '<a href="/admin/content?title=&type=person&status=1" target="_blank" rel="noopener">Manage existing people on this site</a> or <a href="/node/add/person" target="_blank" rel="noopener">add a person here</a>.'
     cache_metadata:
       max-age: -1
@@ -1137,6 +1159,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_person_credential'
         - 'config:field.storage.node.field_person_email'
@@ -1144,4 +1167,3 @@ display:
         - 'config:field.storage.node.field_person_position'
         - 'config:field.storage.node.field_person_website'
         - 'config:field.storage.node.field_person_website_link_direct'
-        - 'config:field.storage.node.field_teaser'

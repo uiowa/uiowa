@@ -10,9 +10,18 @@ third_party_settings:
     available_menus: {  }
     parent: ''
   node_revision_delete:
-    minimum_revisions_to_keep: 10
-    minimum_age_to_delete: 0
-    when_to_delete: 0
+    amount:
+      status: true
+      settings:
+        amount: 10
+    created:
+      status: false
+      settings:
+        age: 1
+    drafts:
+      status: false
+      settings:
+        age: 1
 name: 'Transfer Tips'
 type: transfer_tips
 description: 'Use <em>transfer tips</em> to provide transfer information for prospective students.'

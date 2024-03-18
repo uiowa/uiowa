@@ -4,9 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.token
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -28,7 +28,7 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
-    - text
+    - smart_trim
     - user
 third_party_settings:
   layout_builder:
@@ -49,6 +49,31 @@ targetEntityType: node
 bundle: person
 mode: token
 content:
+  body:
+    type: smart_trim
+    label: above
+    settings:
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ...
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+        replace_tokens: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
@@ -57,20 +82,6 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_person_bio:
-    type: text_default
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_teaser:
-    type: basic_string
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden:
   content_moderation_control: true
@@ -94,5 +105,6 @@ hidden:
   field_person_website: true
   field_person_website_link_direct: true
   field_tags: true
+  field_teaser: true
   links: true
   search_api_excerpt: true

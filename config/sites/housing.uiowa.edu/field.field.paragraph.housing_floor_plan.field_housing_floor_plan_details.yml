@@ -6,11 +6,7 @@ dependencies:
     - field.storage.paragraph.field_housing_floor_plan_details
     - paragraphs.paragraphs_type.housing_floor_plan
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: paragraph.housing_floor_plan.field_housing_floor_plan_details
 field_name: field_housing_floor_plan_details
 entity_type: paragraph
@@ -21,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

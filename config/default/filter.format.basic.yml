@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - editor
-    - entity_embed
     - linkit
     - uiowa_core
 name: 'Basic HTML'
@@ -16,12 +15,6 @@ filters:
     provider: editor
     status: false
     weight: -47
-    settings: {  }
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: false
-    weight: -40
     settings: {  }
   filter_align:
     id: filter_align
@@ -47,7 +40,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong>'
+      allowed_html: '<br> <p> <strong> <em>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -95,3 +88,9 @@ filters:
     weight: -50
     settings:
       title: true
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -46
+    settings: {  }

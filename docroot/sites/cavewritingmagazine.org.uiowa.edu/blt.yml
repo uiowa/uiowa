@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgcavewritingmagazine.uiowa.ddev.site
+    protocol: https
+  machine_name: orgcavewritingmagazine
+  human_name: cavewritingmagazine.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcavewritingmagazine.prod
+drupal:
+  db:
+    database: cavewritingmagazine_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgcavewritingmagazine.prod.drupal.uiowa.edu'
+  requester: margkeller
+  site-name: 'Cave Writing Magazine'

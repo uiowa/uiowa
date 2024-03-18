@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: writersworkshopfictionawards.uiowa.ddev.site
+    protocol: https
+  machine_name: writersworkshopfictionawards
+  human_name: fictionawards.writersworkshop.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writersworkshopfictionawards.prod
+drupal:
+  db:
+    database: fictionawards_writersworkshop_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writersworkshopfictionawards.prod.drupal.uiowa.edu'
+  requester: aleksandra
+  site-name: 'The Iowa Short Fiction Awards'

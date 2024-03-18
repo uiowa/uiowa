@@ -39,5 +39,12 @@
  */
 #}
 
-<dt>{{ content.field_collection_headline }}</dt>
+{% set unique_id = content.field_unique_id.0 %}
+{% if unique_id %}
+<dt id="{{ unique_id }}">
+{% else %}
+<dt>
+{% endif %}
+{{ content.field_collection_headline }}
+</dt>
 <dd>{{ content.field_collection_body }}</dd>

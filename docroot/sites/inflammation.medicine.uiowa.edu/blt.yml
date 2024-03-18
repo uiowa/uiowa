@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineinflammation.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineinflammation
+  human_name: inflammation.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineinflammation.prod
+drupal:
+  db:
+    database: inflammation_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineinflammation.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Iowa Inflammation Program'

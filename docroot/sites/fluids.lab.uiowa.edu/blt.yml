@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfluids.uiowa.ddev.site
+    protocol: https
+  machine_name: labfluids
+  human_name: fluids.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfluids.prod
+drupal:
+  db:
+    database: fluids_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfluids.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Engineering Fluids Laboratories'

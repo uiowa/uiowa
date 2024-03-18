@@ -5,6 +5,10 @@
  * SiteNow Dispatch module hooks.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\field\Entity\FieldConfig;
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -14,4 +18,50 @@ function sitenow_dispatch_preprocess_block(&$variables) {
     && $variables['configuration']['provider'] === 'sitenow_dispatch') {
     $variables['attributes']['class'][] = 'block-webform';
   }
+}
+
+/**
+ * Helper function to get content type fields as placeholders.
+ *
+ * @param string $bundle
+ *   Machine name of a node bundle.
+ *
+ * @return array
+ *   The array of placeholders keyed by field name.
+ */
+function _sitenow_dispatch_get_placeholders(string $bundle): array {
+  $placeholders = [
+    'alert_subject' => 'AlertSubject',
+  ];
+  $skip = [
+    'layout_builder__layout',
+    'field_meta_tags',
+  ];
+  $entity_field_manager = Drupal::service('entity_field.manager');
+  $fields = $entity_field_manager->getFieldDefinitions('node', $bundle);
+  foreach ($fields as $field_name => $field) {
+    if (!$field instanceof FieldConfig || in_array($field_name, $skip)) {
+      continue;
+    }
+    $n = $field_name;
+    $n = str_replace('field_', '', $n);
+    $n = ucwords($n, '_');
+    $n = str_replace('_', '', $n);
+    $placeholders[$field_name] = $n;
+  }
+
+  return $placeholders;
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function sitenow_dispatch_entity_delete(EntityInterface $entity) {
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
+  // Delete any log messages related to this entity.
+  /** @var Drupal\sitenow_dispatch\MessageLogRepository $repository */
+  $repository = \Drupal::service('sitenow_dispatch.message_log_repository');
+  $repository->delete(['entity_id' => $entity->id()]);
 }

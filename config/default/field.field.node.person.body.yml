@@ -1,0 +1,25 @@
+uuid: 3315695e-9b65-4828-afc5-5bc9726b7aa0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+id: node.person.body
+field_name: body
+entity_type: node
+bundle: person
+label: Biography
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+  allowed_formats: {  }
+field_type: text_with_summary

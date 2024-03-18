@@ -1,0 +1,21 @@
+uuid: 4763fdc5-5c8d-4123-8bea-8015049c8584
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_alert_affected_bus_routes
+field_name: field_alert_affected_bus_routes
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'facilities_core_get_affected_bus_routes_options'
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

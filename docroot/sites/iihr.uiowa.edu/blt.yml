@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: iihr.uiowa.ddev.site
+    protocol: https
+  machine_name: iihr
+  human_name: iihr.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iihr.prod
+drupal:
+  db:
+    database: iihr_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://iihr.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'IIHR—Hydroscience and Engineering'

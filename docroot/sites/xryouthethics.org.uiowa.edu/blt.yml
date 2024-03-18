@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgxryouthethics.uiowa.ddev.site
+    protocol: https
+  machine_name: orgxryouthethics
+  human_name: xryouthethics.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgxryouthethics.prod
+drupal:
+  db:
+    database: xryouthethics_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgxryouthethics.prod.drupal.uiowa.edu'
+  requester: hourcade
+  site-name: 'XR for Youth Ethics Consortium'

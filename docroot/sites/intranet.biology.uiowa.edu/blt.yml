@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: biologyintranet.uiowa.ddev.site
+    protocol: https
+  machine_name: biologyintranet
+  human_name: intranet.biology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: biologyintranet.prod
+drupal:
+  db:
+    database: intranet_biology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://biologyintranet.prod.drupal.uiowa.edu'
+  requester: scottb
+  site-name: 'Department of Biology Intranet'

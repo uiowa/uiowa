@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdemir-lira.uiowa.ddev.site
+    protocol: https
+  machine_name: labdemir-lira
+  human_name: demir-lira.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdemir-lira.prod
+drupal:
+  db:
+    database: demir_lira_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdemir-lira.prod.drupal.uiowa.edu'
+  requester: odemirlira
+  site-name: 'Development, Experience and Neurocognition Lab'

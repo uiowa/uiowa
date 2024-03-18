@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labflippo.uiowa.ddev.site
+    protocol: https
+  machine_name: labflippo
+  human_name: flippo.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labflippo.prod
+drupal:
+  db:
+    database: flippo_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labflippo.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Flippo Lab'

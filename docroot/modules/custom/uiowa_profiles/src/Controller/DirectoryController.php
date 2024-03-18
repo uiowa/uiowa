@@ -5,7 +5,6 @@ namespace Drupal\uiowa_profiles\Controller;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Breadcrumb\BreadcrumbManager;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\uiowa_profiles\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
  * Returns responses for Profiles routes.
  */
 class DirectoryController extends ControllerBase {
-  use LoggerChannelTrait;
 
   /**
    * The Profiles service.
@@ -30,13 +28,6 @@ class DirectoryController extends ControllerBase {
    * @var \Drupal\Core\Breadcrumb\BreadcrumbManager
    */
   protected $breadcrumb;
-
-  /**
-   * The uiowa_profiles logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
 
   /**
    * The current route match.
@@ -58,7 +49,6 @@ class DirectoryController extends ControllerBase {
   public function __construct(Client $profiles, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch) {
     $this->profiles = $profiles;
     $this->breadcrumb = $breadcrumb;
-    $this->logger = $this->getLogger('uiowa_profiles');
     $this->routeMatch = $routeMatch;
   }
 

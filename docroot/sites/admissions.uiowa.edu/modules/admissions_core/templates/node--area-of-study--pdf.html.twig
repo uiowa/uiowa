@@ -97,46 +97,47 @@
       </div>
 
       <div class="print__sidebar--right">
-        {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
-        {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
-        {{ content.field_area_of_study_subprogram|render|striptags('<p><ul><li><strong><div>')|t }}
-        {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
-        {{ content.field_area_of_study_preprof|render|striptags('<p><ul><li><strong><div>')|t }}
-        {{ content.field_area_of_study_online|render|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_majors|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
+        {{ content.field_area_of_study_minors|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_subprogram|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_certificates|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_preprof|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_online|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
 
-        {% if content.field_area_of_study_teaching|render|striptags is not empty %}
+        {% if content.field_area_of_study_teaching|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_teaching|render|striptags('<p><ul><li><strong><div>')|t }}
-          {{ content.field_area_of_study_teaching_txt|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_teaching|render|replace({'\xc2\xa0': ' '})|striptags('<p><ul><li><strong><div>')|t }}
+          {{ content.field_area_of_study_teaching_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if content.field_area_of_study_honors|render|striptags is not empty %}
+        {% if content.field_area_of_study_honors|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_honors|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_honors|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if content.field_area_of_study_four_year|render|striptags is not empty %}
+        {% if content.field_area_of_study_four_year|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_four_year|render|striptags('<p><strong><div>')|t }}
-          {{ content.field_area_of_study_four_txt|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_four_year|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_four_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if content.field_area_of_study_selective|render|striptags is not empty %}
+        {% if content.field_area_of_study_selective|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_selective|render|striptags('<p><strong><div>')|t }}
-          {{ content.field_area_of_study_select_txt|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_selective|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_select_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if field_area_of_study_competitive|render|striptags is not empty %}
+        {% if field_area_of_study_competitive|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_competitive|render|striptags('<p><strong><div>')|t }}
-          {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_competitive|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_comp_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_scholarship|render|striptags('<p><strong><div>')|t }}
+        {{ content.field_area_of_study_scholarship|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
       </div>
 
-      {{ content.body.0|render }}
-      {{ content.field_area_of_study_why|render }}
-      {{ content.field_area_of_study_requirement|render }}
-      {{ content.field_area_of_study_career|render }}
-      {{ content.field_area_of_study_course_work|render }}
-      {{ content.field_area_of_study_opportunity|render }}
+      {{ content.field_area_of_study_subtitle|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.body.0|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.field_area_of_study_why|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.field_area_of_study_requirement|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.field_area_of_study_career|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.field_area_of_study_course_work|render|replace({'\xc2\xa0': ' '})|t }}
+      {{ content.field_area_of_study_opportunity|render|replace({'\xc2\xa0': ' '})|t }}
     </div>
   </div>
 

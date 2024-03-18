@@ -3,7 +3,7 @@
 @import "uids/components/grid/grid.scss";
 
 // List container spacing.
-.list-container:not([class*="grid"]) {
+.list-container.list-container--list:not([class*="grid-"]) {
   .list-container__inner {
     > div + div {
       margin-top: 1.6rem;
@@ -56,6 +56,7 @@
   margin-top: $mobile-height-gutter;
 }
 
+.grid--threecol--33-34-33 .list-container__inner,
 .grid--twocol--50-50 .list-container__inner {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;
@@ -71,29 +72,6 @@
     @include grid-base;
     @include breakpoint(md) {
       @include fourcol-grid;
-    }
-  }
-}
-
-// For use only for images.
-.grid--fivecol--20.photoswipe-gallery {
-  .list-container__inner {
-    @include breakpoint(sm) {
-      @include threecol-grid;
-    }
-    @include breakpoint(md) {
-      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
-    }
-  }
-}
-
-.grid--fivecol--20.photoswipe-gallery,
-.grid--threecol--33-34-33.photoswipe-gallery {
-  .list-container__inner {
-    display: grid;
-    gap: 1rem;
-    @include breakpoint(md) {
-      gap: 1.5rem;
     }
   }
 }

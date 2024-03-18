@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labblount.uiowa.ddev.site
+    protocol: https
+  machine_name: labblount
+  human_name: blount.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labblount.prod
+drupal:
+  db:
+    database: blount_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labblount.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Blount Lab'

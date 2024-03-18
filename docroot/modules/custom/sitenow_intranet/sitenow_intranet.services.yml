@@ -5,5 +5,6 @@ services:
       - { name: config.factory.override, priority: 100 }
   sitenow_intranet.event_subscriber:
     class: Drupal\sitenow_intranet\EventSubscriber\SitenowIntranetSubscriber
+    arguments: [ '@current_user' ]
     tags:
       - { name: event_subscriber }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: shlintranet.uiowa.ddev.site
+    protocol: https
+  machine_name: shlintranet
+  human_name: intranet.shl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: shlintranet.prod
+drupal:
+  db:
+    database: intranet_shl_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://shlintranet.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'State Hygienic Laboratory intranet'

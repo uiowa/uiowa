@@ -5,16 +5,106 @@
  * Custom functionality the Facilities website.
  */
 
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\facilities_core\Entity\Artwork;
+use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+
+/**
+ * Set dynamic allowed values bus routes status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'cambus' => 'Cambus',
+    'coralville' => 'Coralville',
+    'iowaCity' => 'Iowa City',
+  ];
+}
+
+/**
+ * Set dynamic allowed values artwork status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  return [
+    'uninstalled' => 'Uninstalled',
+    'active' => 'Active',
+    'notOnView' => 'Not Currently On View',
+  ];
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function facilities_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['artwork'])) {
+    $bundles['node']['artwork']['class'] = Artwork::class;
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  if (isset($data['tabs'][0]['facilities_core.node.dispatch'])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $data['cacheability']->addCacheTags(['dispatch:message']);
+    $repository = \Drupal::service('sitenow_dispatch.message_log_repository');
+    $count = count($repository->load(['entity_id' => $node->id()]));
+    $data['tabs'][0]['facilities_core.node.dispatch']['#link']['title'] = 'Notifications (' . $count . ')';
+  }
+}
 
 /**
  * Implements hook_form_alter().
  */
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_alert_form':
+    case 'node_alert_edit_form':
+
+      // Show or hide the field_alert_buildings_locations field based on the
+      // checkbox value.
+      $form['field_alert_buildings_locations']['#states'] = [
+        'visible' => [
+          ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      break;
+
     case 'node_named_building_form':
     case 'node_named_building_edit_form':
+    case 'node_artwork_form':
+    case 'node_artwork_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
@@ -30,6 +120,25 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_project_form':
     case 'node_project_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['title']['#disabled'] = TRUE;
+      $form['field_project_number']['#disabled'] = TRUE;
+      $form['field_project_is_capital']['#disabled'] = TRUE;
+      $form['field_project_is_featured']['#disabled'] = TRUE;
+      $form['field_project_building']['#disabled'] = TRUE;
+      $form['field_project_building_alt']['#disabled'] = TRUE;
+      $form['field_project_scope']['#disabled'] = TRUE;
+      $form['field_project_status']['#disabled'] = TRUE;
+      $form['field_project_square_footage']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_location']['#disabled'] = TRUE;
+      $form['field_project_awarded_to']['#disabled'] = TRUE;
+      $form['field_project_architect']['#disabled'] = TRUE;
+      $form['field_project_bid_date']['#disabled'] = TRUE;
+      $form['field_project_constr_start_date']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_date']['#disabled'] = TRUE;
+      $form['field_project_sub_complete_date']['#disabled'] = TRUE;
+      $form['field_project_estimated_cost']['#disabled'] = TRUE;
+
       _sitenow_node_form_defaults($form, $form_state);
       // Set a placeholder text, and add a submit handler
       // for if we have a webcam link but no title.
@@ -44,6 +153,46 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       Any projects created or modified that are not in the source data will be overwritten.');
       break;
 
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'projects') {
+    if ($view->current_display === 'block_project_search') {
+      // Alphabetize field_project_building.
+      asort($form['field_project_building_target_id']['#options']);
+    }
+  }
+  if ($view->id() === 'artwork') {
+    if ($view->current_display === 'block_search_artwork') {
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'person')
+        ->condition('status', 1)
+        ->condition('field_person_types', 'artist')
+        ->accessCheck(FALSE);
+
+      $entity_ids = $query->execute();
+
+      // Check if $entity_ids is not empty.
+      if (!empty($entity_ids)) {
+        // Include an "Any" option.
+        $options = ['All' => '- Any -'];
+
+        foreach ($entity_ids as $entity_id) {
+          $person = Node::load($entity_id);
+
+          if ($person) {
+            $options[$entity_id] = $person->label();
+          }
+        }
+
+        $form['field_artwork_artist_target_id']['#options'] = $options;
+      }
+    }
   }
 }
 
@@ -85,12 +234,159 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_building_year_built':
-    case 'field_building_address':
     case 'field_building_additional_info':
       // Assumes these are being called in
       // views_block:named_buildings-block_building using Views field api.
       if ($variables['element']['#view_mode'] === '_custom') {
         $variables['label_display'] = 'inline';
+        uiowa_core_set_attributes($variables, 'padding--inline-end--md');
+      }
+      break;
+
+    case 'field_building_lactation_rooms':
+    case 'field_building_rr_single_neutral':
+    case 'field_building_rr_single_men':
+    case 'field_building_rr_single_women':
+    case 'field_building_rr_multi_men':
+    case 'field_building_rr_multi_women':
+      // Set up the details element.
+      $variables['label_display'] = 'visually_hidden';
+      $details = [
+        '#type' => 'details',
+        '#title' => $variables['label'],
+      ];
+
+      // Wrap the field output in the details element.
+      $details['#children'] = $variables['items'][0]['content'];
+      $variables['items'][0]['content'] = $details;
+      break;
+
+    case 'field_building_address':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($node instanceof NodeInterface) {
+        // Get the content type of the current node.
+        $node = $node->bundle();
+        if ($node == 'named_building') {
+          $variables['label_display'] = 'inline';
+        }
+        else {
+          uiowa_core_set_field_icon($variables, 'fa-compass');
+          uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+        }
+      }
+      break;
+
+    case 'field_building_number':
+      uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+      break;
+
+    case 'field_building_abbreviation':
+      uiowa_core_set_field_label_icon($variables, 'fa-building');
+      uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+      break;
+
+    case 'field_building_area':
+    case 'field_building_named_building':
+    case 'field_building_ownership':
+      uiowa_core_set_attributes($variables, 'padding--inline-end--md');
+      break;
+
+    case 'field_building_hours':
+      // Set up the details element.
+      $details = [
+        '#type' => 'details',
+        '#title' => 'Disclaimer Statement',
+        '#markup' => '<small>Public operating hours for campus buildings are displayed, excluding holidays and special events. These hours do not represent office business hours. Access to buildings during closed hours is permitted via the Iowa One Card for approved faculty, staff, and students. For Hospital 24/7 entrances, visitor guidelines, and information, please visit the <a href="https://uihc.org/visitor-guidelines-ui-health-care">UI Health Care website</a>.</small>',
+      ];
+
+      // Append the details element to the field content.
+      $variables['items'][0]['content']['#suffix'] = '<br />' . \Drupal::service('renderer')->render($details);
+
+      uiowa_core_set_title_attributes($variables, [
+        'headline',
+        'headline--serif',
+        'headline--underline',
+        'h5',
+      ]);
+      break;
+
+    case 'field_artwork_building':
+      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
+      break;
+
+    case 'field_artwork_artist':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
+        uiowa_core_set_attributes($variables, 'is-medium');
+      }
+      break;
+
+    case 'field_gallery_images':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        $variables['field_container_classes'] = 'uiowa-image-gallery--single';
+      }
+      if ($variables['element']['#view_mode'] === 'teaser') {
+        if (!empty($variables['items'])) {
+          // Access the first item in the array.
+          $first_item = reset($variables['items']);
+          $variables['items'] = [$first_item];
+        }
+      }
+      break;
+
+    case 'field_artwork_artist_website':
+      uiowa_core_set_field_icon($variables, 'fa-link fa-li');
+      uiowa_core_set_attributes($variables, 'is-medium');
+
+      $url = $variables['items'][0]['content']['#url'];
+      $link_text = t("Artist's website");
+
+      $link = [
+        '#type' => 'link',
+        '#title' => $link_text,
+        '#url' => $url,
+      ];
+
+      $variables['items'][0]['content'] = $link;
+      break;
+
+    case 'field_artwork_status':
+      if (isset($variables['element'][0]['#markup'])) {
+        if ($variables['element'][0]['#markup'] === 'Uninstalled') {
+          uiowa_core_set_attributes($variables, 'badge badge--blue');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Active') {
+          uiowa_core_set_attributes($variables, 'badge badge--green');
+        }
+        elseif ($variables['element'][0]['#markup'] === 'Not Currently On View') {
+          uiowa_core_set_attributes($variables, 'badge badge--orange');
+        }
+      }
+      break;
+
+    case 'field_project_number':
+      uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, [
+        'bg--white',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
+    case 'field_project_webcam':
+      uiowa_core_set_field_icon($variables, 'fa-video');
+      uiowa_core_set_attributes($variables, [
+        'bg--gold',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
+    case 'field_project_estimated_cost':
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] = ($variables['items'][0]['content']['#markup'] == '$0.00') ? t('TBD') : $variables['items'][0]['content']['#markup'];
       }
       break;
   }
@@ -103,12 +399,25 @@ function facilities_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
 
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'building') {
+    switch ($layout->id()) {
+      case 'layout_onecol':
+        if (isset($variables['region_attributes']['content'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'building-details') {
+          $variables['region_attributes']['content']->addClass('border--bottom element--padding__bottom');
+        }
+        break;
+
+    }
+  }
+
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'named_building',
+        'building',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -117,6 +426,14 @@ function facilities_core_preprocess_layout(&$variables) {
       switch ($node->getType()) {
         case 'named_building':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
+          }
+          break;
+
+        case 'building':
+          if ($node->hasField('field_building_image') && !$node->get('field_building_image')->isEmpty()) {
 
             // Set the featured image display.
             $variables['featured_image_display'] = 'medium';
@@ -133,19 +450,223 @@ function facilities_core_preprocess_layout(&$variables) {
  */
 function facilities_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'views_block:named_building_details-block_honoree':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+    case 'services_headline_block':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_building_lactation_rooms->value) &&
+        empty($node->field_building_rr_single_neutral->value) &&
+        empty($node->field_building_rr_single_men->value) &&
+        empty($node->field_building_rr_single_women->value) &&
+        empty($node->field_building_rr_multi_men->value) &&
+        empty($node->field_building_rr_multi_women->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
       }
-      $variables['attributes']['class'][] .= 'bg--gray block-padding__all block-margin__default--removed';
+
+      break;
+
+    case 'views_block:named_building_details-block_honoree':
+      uiowa_core_set_attributes($variables, [
+        'bg--gray',
+        'block-padding__all',
+      ]);
       break;
 
     case 'views_block:named_building_details-block_building':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
-      }
-      $variables['attributes']['class'][] .= 'bg--white block-padding__all border';
+      uiowa_core_set_attributes($variables, [
+        'bg--white',
+        'block-padding__all',
+        'border',
+      ]);
       break;
 
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:building:field_building_address':
+    case 'field_block:node:building:field_building_number':
+    case 'field_block:node:building:field_building_abbreviation':
+    case 'field_block:node:building:field_building_area':
+    case 'field_block:node:building:field_building_named_building':
+    case 'field_block:node:building:field_building_year_built':
+    case 'field_block:node:building:field_building_ownership':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:project:field_project_number':
+    case 'field_block:node:project:field_project_webcam':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
+      break;
+
+    case 'field_block:node:project:field_project_pre_bid_location':
+    case 'field_block:node:project:field_project_pre_bid_date':
+    case 'field_block:node:project:field_project_bid_date':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      // Get the pre_bid_date field value.
+      if ($node instanceof NodeInterface) {
+        $pre_bid_date = $node->get('field_project_pre_bid_date')->value;
+        if (!empty($pre_bid_date) && strtotime($pre_bid_date) <= strtotime('today')) {
+          // Unset the entire block content.
+          $variables['content'] = [];
+        }
+      }
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:alert:field_alert_traffic_control_plan':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+        'block-margin__right',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_gallery_images':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_artist':
+      uiowa_core_set_attributes($variables, [
+        'fa-ul',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:title':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+      ]);
+      break;
+
+    case 'artworkmaplink_block':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top--extra',
+      ]);
+      break;
+
+    case 'field_block:node:artwork:field_artwork_building':
+    case 'field_block:node:artwork:field_artwork_artist_website':
+      uiowa_core_set_attributes($variables, [
+        'fa-ul',
+      ]);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_file_link().
+ */
+function facilities_core_preprocess_file_link(&$variables) {
+  // Remove pdf class.
+  unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'building') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function facilities_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'alert') {
+    // Load the referenced entity from the entity reference field.
+    $building_reference = $entity->get('field_alert_building')->entity;
+    $building_locations = $entity->get('field_alert_buildings_locations')->value;
+    $short_work_desc = $entity->get('field_alert_short_work_desc')->value;
+
+    // Determine the building title based on conditions.
+    $building_title = $building_reference ? $building_reference->get('title')->value : '';
+    $output = $building_locations ?: $building_title;
+
+    // Combine the output with the short work description
+    // adding a hyphen if there's content.
+    if (!empty($output) && !empty($short_work_desc)) {
+      $output .= ' - ' . $short_work_desc;
+    }
+    else {
+      $output .= $short_work_desc;
+    }
+
+    // Set the combined output as the node title.
+    $entity->setTitle($output);
+
+    $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
+    if (!empty($traffic_plan)) {
+      // Media will still display the file name when
+      // displayed as a rendered entity, so set that on save.
+      // The Media name will still be unique, and the filename
+      // will remain the same.
+      $media = reset($traffic_plan);
+      $fid = $media->getSource()->getSourceFieldValue($media);
+      $file = File::load($fid);
+      $file->setFilename('Traffic Plan');
+      $file->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook().
+ */
+function facilities_core_preprocess_input(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $current_route = \Drupal::routeMatch();
+    $node_type_data = $current_route?->getParameter('node_type');
+    $node_type = $node_type_data?->get('type');
+
+    if (isset($node_type) && $node_type === 'alert') {
+      if ($variables['element']['#type'] == 'textfield') {
+        $variables['attributes']['spellcheck'] = 'true';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook().
+ */
+function facilities_core_preprocess_textarea(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $current_route = \Drupal::routeMatch();
+    $node_type_data = $current_route?->getParameter('node_type');
+    $node_type = $node_type_data?->get('type');
+
+    if (isset($node_type) && $node_type === 'alert') {
+      $variables['attributes']['spellcheck'] = 'true';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function facilities_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $display_id = $view->getDisplay()->display['id'];
+  if ($display_id === 'block_building_coordinators') {
+    $variables['#attached']['library'][] = 'facilities_core/block_building_coordinators';
   }
 }

@@ -1,0 +1,23 @@
+uuid: cbda5acb-2b8b-45b4-9531-4d614a3548bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_attendance
+    - node.type.event
+id: node.event.field_event_attendance
+field_name: field_event_attendance
+entity_type: node
+bundle: event
+label: 'Attendance Required'
+description: 'Check if attendance is mandatory for this event.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

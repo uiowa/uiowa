@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labspeak.uiowa.ddev.site
+    protocol: https
+  machine_name: labspeak
+  human_name: speak.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labspeak.prod
+drupal:
+  db:
+    database: speak_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labspeak.prod.drupal.uiowa.edu'
+  requester: ostrem
+  site-name: 'Speech Perception and Kinematics Lab'

@@ -10,6 +10,8 @@ stackable: true
 storage: folder
 folder: ../config/sites/pharmacy.uiowa.edu
 module:
+  geofield: 0
+  leaflet: 0
   pharmacy_core: 0
 theme: {  }
 complete_list:
@@ -17,6 +19,7 @@ complete_list:
   - field.field.node.person.field_person_territory
   - field.storage.node.field_person_territory
   - sitenow_people.person_type.palliative_grad
+  - views.view.alumni
   - views.view.palliative_grad
 partial_list:
   - core.entity_view_display.node.person.default

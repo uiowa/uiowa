@@ -1,0 +1,136 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.alert.field_alert_accessible_route
+      - field.field.node.alert.field_alert_affected_bus_routes
+      - field.field.node.alert.field_alert_alternate_route
+      - field.field.node.alert.field_alert_building
+      - field.field.node.alert.field_alert_buildings_locations
+      - field.field.node.alert.field_alert_override_building
+      - field.field.node.alert.field_alert_project_number
+      - field.field.node.alert.field_alert_short_work_desc
+      - field.field.node.alert.field_alert_traffic_control
+      - field.field.node.alert.field_alert_traffic_control_plan
+    module:
+      - media_library
+  content:
+    body:
+      weight: 20
+    field_alert_accessible_route:
+      type: string_textarea
+      weight: 24
+      region: content
+      settings:
+        rows: 5
+        placeholder: ''
+      third_party_settings: {  }
+    field_alert_affected_bus_routes:
+      type: options_buttons
+      weight: 23
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_alternate_route:
+      type: string_textarea
+      weight: 25
+      region: content
+      settings:
+        rows: 5
+        placeholder: ''
+      third_party_settings: {  }
+    field_alert_building:
+      type: options_select
+      weight: 15
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_buildings_locations:
+      type: string_textfield
+      weight: 17
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_alert_category:
+      type: options_buttons
+      weight: 18
+    field_alert_date:
+      weight: 19
+    field_alert_override_building:
+      type: boolean_checkbox
+      weight: 16
+      region: content
+      settings:
+        display_label: true
+      third_party_settings: {  }
+    field_alert_project_number:
+      type: string_textfield
+      weight: 13
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_alert_short_work_desc:
+      type: string_textfield
+      weight: 14
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_alert_traffic_control:
+      type: options_buttons
+      weight: 21
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_alert_traffic_control_plan:
+      type: media_library_widget
+      weight: 22
+      region: content
+      settings:
+        media_types: {  }
+      third_party_settings: {  }
+    scheduler_settings:
+      weight: 26
+    unpublish_on:
+      type: datetime_timestamp_no_default
+      weight: 11
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    url_redirects:
+      weight: 12
+  hidden:
+    title: true
+removing:
+  dependencies:
+    config:
+      - workflows.workflow.editorial
+  content:
+    body:
+      weight: 13
+    field_alert_category:
+      type: entity_reference_autocomplete
+      weight: 14
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+    field_alert_date:
+      weight: 15
+    scheduler_settings:
+      weight: 16
+    title:
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
+      weight: 12
+    url_redirects:
+      weight: 11
+  hidden:
+    unpublish_on: true

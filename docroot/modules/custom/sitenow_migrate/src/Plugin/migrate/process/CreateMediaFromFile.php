@@ -41,11 +41,20 @@ class CreateMediaFromFile extends FileCopy {
   protected $sourceBaseUrl;
 
   /**
+   * The source public file path.
+   *
+   * @var string
+   */
+  protected $sourcePublicFilePath;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, StreamWrapperManagerInterface $stream_wrappers, FileSystemInterface $file_system, MigrateProcessInterface $download_plugin) {
     $this->entityTypeManager = \Drupal::entityTypeManager();
     $this->sourceBaseUrl = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
+      ->get('shared_configuration.source.constants.source_base_path');
+    $this->sourcePublicFilePath = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
       ->get('shared_configuration.source.constants.source_base_path');
     parent::__construct($configuration, $plugin_id, $plugin_definition, $stream_wrappers, $file_system, $download_plugin);
   }

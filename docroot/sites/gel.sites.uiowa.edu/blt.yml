@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesgel.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesgel
+  human_name: gel.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesgel.prod
+drupal:
+  db:
+    database: gel_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesgel.prod.drupal.uiowa.edu'
+  requester: bgretema
+  site-name: 'https://gel.sites.uiowa.edu'

@@ -13,6 +13,7 @@ dependencies:
     - field.storage.node.field_room_room_id
     - field.storage.node.field_room_type
     - node.type.room
+    - taxonomy.vocabulary.accessibility_features
     - taxonomy.vocabulary.room_features
     - taxonomy.vocabulary.room_types
     - taxonomy.vocabulary.scheduling_regions
@@ -385,8 +386,8 @@ display:
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Ascending
+          sort_desc_label: Descending
           text_input_required: 'Select any filter and click on Search to see results'
           text_input_required_format: filtered_html
           bef:
@@ -400,49 +401,27 @@ display:
               secondary_label: Filters
               secondary_open: true
               reset_button_always_show: false
+            sort:
+              plugin_id: default
+              advanced:
+                combine: true
+                combine_rewrite: "Combined ID Ascending|Sort by: A - Z\r\nCombined ID Descending|Sort by: Z - A\r\nMax Occupancy Ascending|Sort by: Occupancy (Low to High)\r\nMax Occupancy Descending|Sort by: Occupancy (High to Low)\r\n"
+                reset: false
+                reset_label: ''
+                collapsible: false
+                collapsible_label: 'Sort options'
+                is_secondary: false
             filter:
               combine:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  placeholder_text: Search
                   collapsible: false
                   is_secondary: false
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
                   placeholder_text: ''
-                  collapsible: false
-                  is_secondary: true
-              field_room_features_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Room features'
-                  collapsible: false
-                  is_secondary: true
-              field_room_type_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Type'
-                  collapsible: false
-                  is_secondary: true
-              field_room_scheduling_regions_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Region'
-                  collapsible: false
-                  is_secondary: true
-              field_room_technology_features_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Technology'
                   collapsible: false
                   is_secondary: true
               field_room_max_occupancy_value:
@@ -453,6 +432,58 @@ display:
                     filter_rewrite_values: '- Any -|Occupancy'
                   collapsible: false
                   is_secondary: true
+              field_room_type_target_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: true
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Type'
+                  collapsible: true
+                  is_secondary: true
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
+              field_room_technology_features_target_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: true
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Technology'
+                  collapsible: true
+                  is_secondary: true
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
+              field_room_features_target_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: true
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Room features'
+                  collapsible: true
+                  is_secondary: true
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
+              field_room_scheduling_regions_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Region'
+                  collapsible: false
+                  is_secondary: true
+              field_room_accessibility_feature_target_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: true
+                  is_secondary: true
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
       access:
         type: perm
         options:
@@ -1012,9 +1043,19 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: 'bef-form grid--threecol--33-34-33'
+      css_class: 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75 grid--twocol--50-50'
       use_ajax: true
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: '<p class="text-align-right"><small>Displaying <strong>@start</strong> - <strong>@end</strong> of <strong>@total</strong></small></p>'
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -1714,9 +1755,13 @@ display:
         groups:
           1: AND
       defaults:
+        css_class: false
         fields: false
         filters: false
         filter_groups: false
+        header: false
+      css_class: 'bef-form bef-form--label-hidden grid--threecol--33-34-33 '
+      header: {  }
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -1729,9 +1774,10 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: 0
+        configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
       more_link_help_text: ''
@@ -1740,7 +1786,10 @@ display:
         field_room_building_id: 0
         field_room_name: 0
         field_room_room_id: 0
-        rendered_entity: 0
+        field_room_max_occupancy: 0
+        field_room_name_1: 0
+        field_room_responsible_unit: 0
+        field_room_features: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -2208,8 +2257,588 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      sorts:
+        field_room_combined_id_value:
+          id: field_room_combined_id_value
+          table: node__field_room_combined_id
+          field: field_room_combined_id_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: 'Combined ID'
+            field_identifier: field_room_combined_id_value
+          exposed: true
+        field_room_max_occupancy_value:
+          id: field_room_max_occupancy_value
+          table: node__field_room_max_occupancy
+          field: field_room_max_occupancy_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: 'Max Occupancy'
+            field_identifier: field_room_max_occupancy_value
+          exposed: true
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            room: room
+          group: 1
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: combine
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: Filter
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            title: title
+            field_room_building_id: field_room_building_id
+            field_room_name: field_room_name
+            field_room_room_id: field_room_room_id
+        field_room_building_id_target_id:
+          id: field_room_building_id_target_id
+          table: node__field_room_building_id
+          field: field_room_building_id_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_building_id_target_id_op
+            label: Building
+            description: ''
+            use_operator: false
+            operator: field_room_building_id_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_building_id_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_room_max_occupancy_value:
+          id: field_room_max_occupancy_value
+          table: node__field_room_max_occupancy
+          field: field_room_max_occupancy_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_max_occupancy_value_op
+            label: 'Max Occupancy (field_room_max_occupancy)'
+            description: null
+            use_operator: false
+            operator: field_room_max_occupancy_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_max_occupancy_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: null
+            max_placeholder: null
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: 'Max Occupancy'
+            description: ''
+            identifier: field_room_max_occupancy_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: '25 or fewer'
+                operator: between
+                value:
+                  min: ''
+                  max: '25'
+                  value: '25'
+              2:
+                title: 26-50
+                operator: between
+                value:
+                  min: '26'
+                  max: '50'
+                  value: 26-50
+              3:
+                title: 51-75
+                operator: between
+                value:
+                  min: '51'
+                  max: '75'
+                  value: '75'
+              4:
+                title: 76-100
+                operator: between
+                value:
+                  min: '76'
+                  max: '100'
+                  value: '100'
+              5:
+                title: 101-150
+                operator: between
+                value:
+                  min: '101'
+                  max: '150'
+                  value: '150'
+              6:
+                title: 151-200
+                operator: between
+                value:
+                  min: '151'
+                  max: '200'
+                  value: '200'
+              7:
+                title: '201 or more'
+                operator: '>='
+                value:
+                  min: '201'
+                  max: ''
+                  value: '201'
+        field_room_type_target_id:
+          id: field_room_type_target_id
+          table: node__field_room_type
+          field: field_room_type_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_type_target_id_op
+            label: Type
+            description: ''
+            use_operator: false
+            operator: field_room_type_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_type_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: room_types
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_room_technology_features_target_id:
+          id: field_room_technology_features_target_id
+          table: node__field_room_technology_features
+          field: field_room_technology_features_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_technology_features_target_id_op
+            label: Technology
+            description: ''
+            use_operator: false
+            operator: field_room_technology_features_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_technology_features_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: technology_features
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_room_features_target_id:
+          id: field_room_features_target_id
+          table: node__field_room_features
+          field: field_room_features_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_features_target_id_op
+            label: Features
+            description: ''
+            use_operator: false
+            operator: field_room_features_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_features_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: room_features
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_room_scheduling_regions_target_id:
+          id: field_room_scheduling_regions_target_id
+          table: node__field_room_scheduling_regions
+          field: field_room_scheduling_regions_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_scheduling_regions_target_id_op
+            label: 'Scheduling Region'
+            description: ''
+            use_operator: false
+            operator: field_room_scheduling_regions_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_scheduling_regions_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: scheduling_regions
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_room_instruction_category_value:
+          id: field_room_instruction_category_value
+          table: node__field_room_instruction_category
+          field: field_room_instruction_category_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: not
+          value:
+            PROGRAMMED_CLASSROOM: PROGRAMMED_CLASSROOM
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        field_room_accessibility_feature_target_id:
+          id: field_room_accessibility_feature_target_id
+          table: node__field_room_accessibility_feature
+          field: field_room_accessibility_feature_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_accessibility_feature_target_id_op
+            label: Accessibility
+            description: ''
+            use_operator: false
+            operator: field_room_accessibility_feature_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_accessibility_feature_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: accessibility_features
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       defaults:
         fields: false
+        sorts: false
+        filters: false
+        filter_groups: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -2222,9 +2851,10 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: 0
+        configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
       more_link_help_text: ''
@@ -2233,7 +2863,9 @@ display:
         field_room_building_id: 0
         field_room_name: 0
         field_room_room_id: 0
-        rendered_entity: 0
+        field_room_max_occupancy: 0
+        field_room_type: 0
+        field_image: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -2241,6 +2873,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - user
         - 'user.node_grants:view'
         - user.permissions

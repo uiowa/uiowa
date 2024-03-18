@@ -29,22 +29,38 @@
 }
 
 .block.bttn--row {
+  flex-direction: column;
+  display: flex;
+  gap: 1.5rem;
+
+  @include breakpoint(sm) {
+    display: block;
+  }
+
   &.bttn--full {
-    flex-direction: column;
-    display: flex;
-    gap: 1.5rem;
 
     @include breakpoint(sm) {
       flex-direction: row;
+      display: flex;
+      gap: 1.5rem;
     }
 
     a.bttn {
       width: 100%;
     }
+    .bttn {
+      margin: 0;
+      & + .bttn {
+        margin: 0;
+      }
+    }
   }
 
   .bttn {
-    margin: 0 1.5rem 1.5rem 0;
+
+    @include breakpoint(sm) {
+      margin: 0 1.5rem 1.5rem 0;
+    }
 
     +.bttn {
       @include breakpoint(sm) {

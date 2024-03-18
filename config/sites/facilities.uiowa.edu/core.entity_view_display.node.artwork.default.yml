@@ -1,0 +1,507 @@
+uuid: 3566d8d6-bf2a-4922-89a8-df069ab4a257
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.artwork.body
+    - field.field.node.artwork.field_artwork_artist
+    - field.field.node.artwork.field_artwork_artist_website
+    - field.field.node.artwork.field_artwork_building
+    - field.field.node.artwork.field_artwork_dimension
+    - field.field.node.artwork.field_artwork_location
+    - field.field.node.artwork.field_artwork_medium
+    - field.field.node.artwork.field_artwork_status
+    - field.field.node.artwork.field_artwork_video
+    - field.field.node.artwork.field_artwork_year
+    - field.field.node.artwork.field_gallery_images
+    - field.field.node.artwork.field_meta_tags
+    - node.type.artwork
+  module:
+    - facilities_core
+    - layout_builder
+    - link
+    - metatag
+    - options
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            restore_default_spacing: restore_default_spacing
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 9e654c4d-b4fa-4515-9783-4848dbbf9f6c
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 18e8155f-fcda-4054-8e9f-32f7f9afee1a
+            region: first
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 91896151-09c9-4117-a49b-8c83c38cf71c
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_building'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 9
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 937e9e10-b691-43e8-b051-eb3355e25fae
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_status'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5f972b8b-4f1a-4fdd-8e28-96ae5465f472
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_artist_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 10
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 4288a45e-4505-43f1-96a0-a6f022b844d4
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_year'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: a896ea4b-626b-4c44-b954-7e49d149deea
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_medium'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 2ccbe3ed-7775-4c46-b5c1-5caad455b3d4
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_dimension'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 523a2a8a-d2e1-4d00-b114-ade650ae5a85
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_artist'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1ddc97ee-a349-460d-aca6-8918863f1dd4
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_location'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 5a3c005d-08e6-4431-9d98-277fb41732c0
+            region: second
+            configuration:
+              id: 'field_block:node:artwork:field_gallery_images'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: photoswipe_field_formatter
+                label: hidden
+                settings:
+                  photoswipe_node_style_first: ''
+                  photoswipe_node_style: widescreen__1920_x_1080
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_caption: custom
+                  photoswipe_caption_custom: "[node:title] \r\n [node:field_artwork_artist] \r\n[node:field_artwork_year]"
+                  photoswipe_view_mode: _custom
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: ad095f4e-1317-4580-8090-142afbda148c
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bcfde2ec-9010-464f-8144-077ebb97981d
+            region: first
+            configuration:
+              id: 'field_block:node:artwork:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b30f07b2-892c-4527-b83c-16afdf877c12
+            region: first
+            configuration:
+              id: 'extra_field_block:node:artwork:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 15
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2ad0a584-31b7-483a-b596-404dd6bf2ebf
+            region: second
+            configuration:
+              id: artworkmaplink_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 098d617e-77da-4a95-a682-4cf74026daa6
+            region: second
+            configuration:
+              id: 'field_block:node:artwork:field_artwork_video'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+id: node.artwork.default
+targetEntityType: node
+bundle: artwork
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_artwork_artist:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_artwork_artist_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_artwork_building:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_artwork_dimension:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_artwork_location:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_artwork_medium:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_artwork_status:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  field_artwork_video:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 111
+    region: content
+  field_artwork_year:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_gallery_images:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 113
+    region: first
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 112
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

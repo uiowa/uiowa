@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgcelp.uiowa.ddev.site
+    protocol: https
+  machine_name: orgcelp
+  human_name: celp.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcelp.prod
+drupal:
+  db:
+    database: celp_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgcelp.prod.drupal.uiowa.edu'
+  requester: dfisherpage
+  site-name: 'Community Empowerment Law Project'

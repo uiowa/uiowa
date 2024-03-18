@@ -2,8 +2,12 @@ gtag:
   version: 1.x
   js:
     js/tag-manager.js: {}
-claro-node-form:
-  version: 1.x
+exposedFormEnhancements:
   css:
     theme:
-      css/claro-node-form.css: {}
+      css/exposedFormEnhancements.css: {}
+  js:
+    js/exposedFormEnhancements.js: { }
+  dependencies:
+    - core/drupal
+    - core/once

@@ -1,0 +1,43 @@
+uuid: 5eaf4795-e382-428a-9a09-d3b9f341e26e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_updates
+    - node.type.alert
+    - paragraphs.paragraphs_type.alert_update
+  module:
+    - entity_reference_revisions
+id: node.alert.field_alert_updates
+field_name: field_alert_updates
+entity_type: node
+bundle: alert
+label: Update
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      alert_update: alert_update
+    negate: 0
+    target_bundles_drag_drop:
+      alert_update:
+        weight: 6
+        enabled: true
+      uiowa_collection_item:
+        weight: 7
+        enabled: false
+      uiowa_contact:
+        weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,29 @@
+uuid: 8a1c9f82-a017-413b-a58e-e710af9a01a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_building
+    - node.type.alert
+    - node.type.building
+id: node.alert.field_alert_building
+field_name: field_alert_building
+entity_type: node
+bundle: alert
+label: Building
+description: 'Selecting a building will display the alert on the related building page.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      building: building
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

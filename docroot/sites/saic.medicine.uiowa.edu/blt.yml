@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinesaic.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinesaic
+  human_name: saic.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinesaic.prod
+drupal:
+  db:
+    database: saic_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinesaic.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Small Animal Imaging Core Facility'

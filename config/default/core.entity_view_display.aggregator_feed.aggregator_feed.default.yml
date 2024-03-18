@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_purge_items
   module:
     - aggregator
 _core:
@@ -20,6 +21,15 @@ content:
       date_format: medium
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: ''
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
     weight: 2
     region: content
@@ -41,6 +51,16 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_aggregator_purge_items:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 12
     region: content
   items:
     settings: {  }

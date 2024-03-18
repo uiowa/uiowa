@@ -10,10 +10,12 @@ stackable: true
 storage: folder
 folder: ../config/features/periodical
 module:
+  easy_breadcrumb: 0
   sitenow_periodical: 0
 theme: {  }
 complete_list:
   - core.entity_view_display.node.article.default
+  - easy_breadcrumb.settings
   - field.field.node.article.field_article_author_bio
   - field.field.node.article.field_article_issue
   - field.storage.node.field_article_author_bio
@@ -27,6 +29,5 @@ partial_list:
   - core.entity_form_display.node.article.default
   - metatag.settings
   - node.type.article
-  - schemadotorg.schemadotorg_mapping.node.article
   - views.view.article_list_block
   - workflows.workflow.editorial

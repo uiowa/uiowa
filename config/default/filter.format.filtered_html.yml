@@ -24,9 +24,7 @@ dependencies:
     - core.entity_view_mode.media.small__widescreen
   module:
     - editor
-    - entity_embed
     - iframe_title_filter
-    - lazy
     - linkit
     - media
     - responsive_table_filter
@@ -42,12 +40,6 @@ filters:
     provider: editor
     status: true
     weight: -44
-    settings: {  }
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: true
-    weight: -46
     settings: {  }
   filter_align:
     id: filter_align
@@ -73,7 +65,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite class=""> <code> <ul type class=""> <ol start type class=""> <li> <dl> <dt> <dd> <s> <sup> <sub> <pre class=""> <span class=""> <hr class=""> <table border summary id role="presentation, grid" aria-label aria-labelledby class=""> <caption id> <tbody class=""> <thead class=""> <tfoot class=""> <th id align valign colspan rowspan scope class=""> <td align valign colspan rowspan headers class=""> <tr align valign class=""> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class=""> <iframe src width height allowfullscreen title loading="lazy" seamless sandbox="allow-same-origin allow-scripts allow-popups"> <a href hreflang title id target aria-label rel data-* class=""> <p class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id class=""> <div class="">'
+      allowed_html: '<br> <p class> <h2 class id> <h3 class id> <h4 class id> <h5 class id> <h6 class id> <div class> <a class href hreflang title id target aria-label rel data-*> <cite> <dl> <dt> <dd> <mark> <pre class> <span class role> <small class> <iframe src width height allowfullscreen title loading seamless sandbox="allow-same-origin allow-scripts allow-popups"> <blockquote cite class> <ul type class> <ol start type class> <hr class> <table border summary id role="presentation grid" aria-label aria-labelledby class> <caption id> <tbody class> <thead class> <tfoot class> <th id align valign colspan rowspan scope class> <td align valign colspan rowspan headers class> <tr align valign class> <drupal-media title data-entity-type data-entity-uuid alt data-view-mode data-caption data-align> <strong> <em> <code class="language-*"> <s> <sub> <sup> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -128,14 +120,6 @@ filters:
     weight: -36
     settings:
       filter_url_length: 72
-  lazy_filter:
-    id: lazy_filter
-    provider: lazy
-    status: false
-    weight: -34
-    settings:
-      image: true
-      iframe: true
   linkit:
     id: linkit
     provider: linkit
@@ -180,3 +164,9 @@ filters:
         remote_video: remote_video
         static_map: static_map
         twitter: twitter
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -43
+    settings: {  }

@@ -169,11 +169,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
-    case 'node_event_form':
-    case 'node_event_edit_form':
-      $form['field_event_category']['#group'] = 'node_relations';
-      break;
-
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -262,6 +257,12 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       ];
       break;
 
+    case 'webform_ui_element_form':
+      // Disable captcha type field as it should always be the default
+      // (hcaptcha) at this time.
+      $form['properties']['captcha']['captcha_type']['#disabled'] = TRUE;
+      $form['properties']['captcha']['captcha_container']['#disabled'] = TRUE;
+      break;
   }
 }
 
@@ -668,6 +669,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--transfer-tips--teaser',
       'base hook' => 'node',
     ],
+    'views_view_unformatted__slideshow__block_slideshow' => [
+      'template' => 'views-view-unformatted--slideshow--block-slideshow',
+      'base hook' => 'view',
+    ],
     'views_view_unformatted__scholarships__block_scholarships' => [
       'template' => 'views-view-unformatted--scholarships--block-scholarships',
       'base hook' => 'view',
@@ -710,6 +715,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'node__area_of_study__pdf' => [
       'template' => 'node--area-of-study--pdf',
+      'base hook' => 'node',
+    ],
+    'node__area_of_study__banner' => [
+      'template' => 'node--page--banner-aos',
       'base hook' => 'node',
     ],
     'node__page__pdf' => [
@@ -788,6 +797,9 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         break;
     }
   }
+  if ($view->id() === 'slideshow') {
+    $view->element['#attached']['library'][] = 'admissions_core/slideshow';
+  }
   if ($view->id() === 'areas_of_study') {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
@@ -832,7 +844,8 @@ function admissions_core_preprocess_node(&$variables) {
         $query = \Drupal::entityQuery('node')
           ->condition('type', 'major')
           ->condition('status', 1)
-          ->condition('field_major_area_of_study', $area_of_study_id, '=');
+          ->condition('field_major_area_of_study', $area_of_study_id, '=')
+          ->accessCheck();
         // We only really need to know if there areas of study,
         // and not which or how many, because the link will just be
         // based on the aos id.
@@ -871,15 +884,12 @@ function admissions_core_preprocess_views_view(&$variables) {
 
     case 'areas_of_study':
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+      $variables['#attached']['library'][] = 'uids_base/view-bef';
       break;
 
     case 'areas_of_study_kiosk':
       $variables['#attached']['library'][] = 'admissions_core/print_js';
       $variables['#attached']['library'][] = 'admissions_core/area_of_study_kiosk';
-      break;
-
-    case 'events':
-      $variables['#attached']['library'][] = 'admissions_core/events';
       break;
 
     case 'colleges_taxonomy_term':

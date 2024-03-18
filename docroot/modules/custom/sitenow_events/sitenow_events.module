@@ -11,10 +11,13 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\ViewExecutable;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -47,6 +50,25 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
 
+      // Show/hide the location and virtual info fields
+      // based on the attendance mode. Hybrid should display both.
+      $form['field_event_location']['#states'] = [
+        'visible' => [
+          ':input[name="field_event_attendance_mode"]' => [
+            ['value' => 'OfflineEventAttendanceMode'],
+            ['value' => 'MixedEventAttendanceMode'],
+          ],
+        ],
+      ];
+      $form['field_event_virtual']['#states'] = [
+        'visible' => [
+          ':input[name="field_event_attendance_mode"]' => [
+            ['value' => 'OnlineEventAttendanceMode'],
+            ['value' => 'MixedEventAttendanceMode'],
+          ],
+        ],
+      ];
+
       // Because person titles are constructed
       // in sitenow_people_entity_presave, there is no title for this
       // IEF widget to display. This changes the label using
@@ -75,8 +97,106 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         }
       }
 
+      if (isset($form['field_event_category'])) {
+        $form['field_event_category']['#group'] = 'node_relations';
+      }
+
+      // Customize address field labels.
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['widget'][0]['address']['#after_build'][] = 'sitenow_events_customize_address';
+      }
+
       break;
 
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function sitenow_events_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'events') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+    $variables['#attached']['library'][] = 'uids_base/view-calendar';
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function sitenow_events_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'events' && $view->current_display == 'page_upcoming') {
+    // Go through each of our filter display options
+    // and change the exposed option to false if
+    // it has not been selected to be displayed.
+    $config = \Drupal::config('sitenow_events.settings');
+    foreach ([
+      'date_range' => 'field_event_when',
+      'presenters' => 'field_event_performer_target_id_1',
+      'attendance_required' => 'field_event_attendance_value',
+      'attendance_mode' => 'field_event_attendance_mode_value',
+      'category' => 'field_event_category_target_id',
+    ] as $filter_option => $field_label) {
+      if ($config->get("filter_display.{$filter_option}") == FALSE) {
+        if ($filter_option === 'date_range') {
+          $timestamp = strtotime('now');
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_value");
+          $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', strtotime('+10 year', $timestamp));
+          $filter = $view->display_handler->getHandler('filter', "{$field_label}_end_value");
+          $filter->options['exposed'] = FALSE;
+          // Needs a value if not exposed.
+          $filter->value["value"] = date('m/d/Y', $timestamp);
+          continue;
+        }
+        $filter = $view->display_handler->getHandler('filter', $field_label);
+        $filter->options['exposed'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Modify event addressfield company (organization) label.
+ */
+function sitenow_events_customize_address($element, $form_state) {
+  $element['organization']['#title'] = t('Location name');
+  return $element;
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_events_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'event':
+      // Check the selected attendance mode,
+      // and if it is either in-person or online (not hybrid),
+      // then remove the opposite location/virtual information.
+      $attendance_mode = $entity->field_event_attendance_mode?->value;
+      switch ($attendance_mode) {
+        case 'OnlineEventAttendanceMode':
+          foreach ($entity->field_event_location as $delta => $location) {
+            // Set the country code to a blank string
+            // to unset the full address.
+            $entity->field_event_location->get($delta)?->set('country_code', '');
+          }
+          break;
+
+        case 'OfflineEventAttendanceMode':
+          foreach ($entity->field_event_virtual as $delta => $virtual) {
+            $entity->field_event_virtual->get($delta)?->setValue([
+              'title' => '',
+              'uri' => '',
+            ]);
+          }
+          break;
+
+      }
+      break;
   }
 }
 
@@ -121,15 +241,57 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_events_preprocess_page(&$variables) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if ($route_name === 'view.events.page_upcoming') {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Check for permission.
+    if ($user->hasPermission('administer sitenow events') === TRUE) {
+      $url = Url::fromRoute('sitenow_events.settings_form');
+      $settings_link = Link::fromTextAndUrl(t('SiteNow Events'), $url)
+        ->toString();
+      $message_text = t('This upcoming events page can be configured here: @settings_link', [
+        '@settings_link' => $settings_link,
+      ]);
+      \Drupal::messenger()->addStatus($message_text);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_virtual':
     case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_geolocation':
+    case 'field_block:node:event:field_event_directions':
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
       ]);
+      break;
+
+    case 'field_block:node:event:field_event_status':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'Scheduled') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
+      break;
+
+    case 'field_block:node:event:field_event_attendance':
+      if (isset($variables['elements']['content'][0]['#markup'])) {
+        uiowa_core_set_attributes($variables, 'element--inline');
+        if ($variables['elements']['content'][0]['#markup'] === 'No') {
+          uiowa_core_set_attributes($variables, 'sr-only');
+        }
+      }
       break;
 
     case 'inline_block:uiowa_events':
@@ -255,24 +417,7 @@ function sitenow_events_preprocess_block(&$variables) {
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = $heading_size ?? 'h3';
 
-          // Construct event link based on site-wide configuration.
-          $external_link = ($config->get('event_link') === 'event-link-external');
-          if ($external_link) {
-            $event['url'] = $event['events_site_url'];
-          }
-          else {
-            $single_event_path = $config->get('single_event_path');
-
-            // Add a parameter on the URL for event instances.
-            foreach ($event['event_instances'] as $instance_key => $instance) {
-              if ($event['instance_start'] === $instance['event_instance']['start']) {
-                $instance_id = $instance_key;
-              }
-            }
-
-            $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
-            $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
-          }
+          $event['sitenow_events_config'] = $config;
 
           // Pass off to helper function to build card render.
           $variables['content'][$key] = sitenow_events_build_card($event);
@@ -316,9 +461,36 @@ function sitenow_events_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_events_preprocess_node__event(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/tags';
+}
+
+/**
  * Helper function to build out card renders from event data.
  */
 function sitenow_events_build_card(array $event): array {
+
+  // Construct event link based on site-wide configuration.
+  $external_link = ($event['sitenow_events_config']->get('event_link') === 'event-link-external');
+  if ($external_link) {
+    $event['url'] = $event['events_site_url'];
+  }
+  else {
+    $single_event_path = $event['sitenow_events_config']->get('single_event_path');
+
+    // Add a parameter on the URL for event instances.
+    foreach ($event['event_instances'] as $instance_key => $instance) {
+      if ($event['instance_start'] === $instance['event_instance']['start']) {
+        $instance_id = $instance_key;
+      }
+    }
+
+    $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
+    $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
+  }
+
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
@@ -440,6 +612,53 @@ function sitenow_events_build_card(array $event): array {
  */
 function sitenow_events_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_event_attendance':
+      $field_label = $variables['element']['#title'];
+      uiowa_core_set_attributes($variables, 'element--inline');
+      if (isset($variables['items'][0]['content']['#markup']) && $variables['items'][0]['content']['#markup'] === 'Yes') {
+        if ($variables['element']['#view_mode'] == 'teaser') {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
+        }
+        else {
+          $variables['items'][0]['content']['#markup'] = '<span class="badge badge--cool-gray">' . $field_label . '</span>';
+        }
+      }
+      else {
+        uiowa_core_set_attributes($variables, 'sr-only');
+      }
+      break;
+
+    case 'field_event_category':
+      uiowa_core_set_attributes($variables, 'tags-list');
+
+      foreach ($variables["items"] as &$item) {
+        $item['attributes']['class'] = 'tags-list__tag';
+      }
+      break;
+
+    case 'field_event_directions':
+      // Wrap the field output in a <details> tag.
+      $details_open = '<details>';
+      $details_close = '</details>';
+
+      // Get the field label and wrap it in a <summary> tag.
+      $field_label = '<summary>' . $variables['label'] . '</summary>';
+      $summary = [
+        '#type' => 'markup',
+        '#markup' => $field_label,
+      ];
+
+      // Wrap the field output in <details> tags and append the summary.
+      $variables['items'][0]['content']['#prefix'] = $details_open . \Drupal::service('renderer')->render($summary);
+      $variables['items'][0]['content']['#suffix'] = $details_close;
+      break;
+
+    case 'field_event_geolocation':
+      // Modify the field label.
+      $variables['label'] = t('Map');
+
+      break;
+
     case 'field_event_location':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
       uiowa_core_set_attributes($variables, 'fa-ul');
@@ -463,10 +682,10 @@ function sitenow_events_preprocess_field(&$variables) {
           uiowa_core_set_attributes($variables, 'sr-only');
         }
         elseif ($variables['element'][0]['#markup'] === 'Cancelled') {
-          uiowa_core_set_attributes($variables, 'badge badge--orange');
+          uiowa_core_set_attributes($variables, 'badge badge--orange element--inline');
         }
         elseif ($variables['element'][0]['#markup'] === 'Rescheduled') {
-          uiowa_core_set_attributes($variables, 'badge badge--green');
+          uiowa_core_set_attributes($variables, 'badge badge--green element--inline');
         }
       }
       break;
@@ -524,7 +743,8 @@ function sitenow_events_load(array $params = [
       $request = \Drupal::httpClient()->get($endpoint);
     }
     catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
+      $logger = \Drupal::logger('sitenow_events');
+      Error::logException($logger, $e);
     }
 
     if (isset($request)) {
@@ -632,11 +852,11 @@ function sitenow_events_format_instance(array $event_instance) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  *
  * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
-function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_events_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -851,55 +1071,4 @@ function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $def
     'EventCancelled' => 'Cancelled',
     'EventRescheduled' => 'Rescheduled',
   ];
-}
-
-/**
- * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
- */
-function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
-  if ($entity instanceof FieldableEntityInterface) {
-    $type = $entity->bundle();
-    if ($type == 'event') {
-
-      // Bring in children events if any.
-      $parent_id = $entity->id();
-      $sub_event_nids = \Drupal::entityQuery('node')
-        ->accessCheck(FALSE)
-        ->condition('type', 'event')
-        ->condition('status', 1)
-        ->condition('field_event_parent', $parent_id, '=')
-        ->execute();
-
-      if ($sub_event_nids) {
-        $sub_events = [];
-        foreach ($sub_event_nids as $nid) {
-          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
-          $sub_events[] = [
-            '@type' => 'Event',
-            'name' => $sub_event->label(),
-            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
-          ];
-        }
-        $data['subEvent'] = $sub_events;
-      }
-
-      // Add virtual location data to the schema if it's present.
-      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
-        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
-        $virtual = [
-          '@type' => 'VirtualLocation',
-          'url' => $uri,
-        ];
-        if (isset($data['location'])) {
-          $data['location'] = [
-            $data['location'],
-            $virtual,
-          ];
-        }
-        else {
-          $data['location'] = $virtual;
-        }
-      }
-    }
-  }
 }

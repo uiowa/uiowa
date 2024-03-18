@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
+    - views.view.articles_author
   module:
     - entity_reference_revisions
     - layout_builder
@@ -36,6 +37,7 @@ dependencies:
     - telephone
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -115,7 +117,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -236,7 +238,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings:
                   field_delimiter:
-                    delimiter: ','
+                    delimiter: ''
             weight: 4
             additional: {  }
             third_party_settings: {  }
@@ -263,22 +265,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
-            region: main
-            configuration:
-              id: 'field_block:node:person:field_person_bio'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: main
             configuration:
@@ -292,7 +278,7 @@ third_party_settings:
                 settings:
                   link: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -327,7 +313,50 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: cffdc25c-6a58-44e1-a73a-0a9b1afca8fb
+            region: main
+            configuration:
+              id: 'views_block:articles_author-articles_author'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 93fc826a-e899-4a60-81ce-75f8b5826197
+            region: main
+            configuration:
+              id: 'field_block:node:person:body'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -353,6 +382,13 @@ targetEntityType: node
 bundle: person
 mode: default
 content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
@@ -373,13 +409,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 12
-    region: content
-  field_person_bio:
-    type: text_default
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view

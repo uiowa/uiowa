@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.body
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
-    - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -60,6 +60,14 @@ targetEntityType: node
 bundle: person
 mode: default
 content:
+  body:
+    type: text_textarea
+    weight: 6
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 9
@@ -80,14 +88,6 @@ content:
     settings:
       sidebar: true
       use_details: true
-    third_party_settings: {  }
-  field_person_bio:
-    type: text_textarea
-    weight: 6
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
     third_party_settings: {  }
   field_person_contact_information:
     type: entity_reference_paragraphs
@@ -203,6 +203,11 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 16
@@ -238,4 +243,8 @@ hidden:
   field_person_hometown: true
   field_person_research_areas: true
   field_teaser: true
+  publish_on: true
+  publish_state: true
   title: true
+  unpublish_on: true
+  unpublish_state: true

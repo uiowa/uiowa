@@ -20,7 +20,6 @@ dependencies:
     - layout_builder_restrictions
     - menu_block
     - system
-    - text
     - user
   theme:
     - uids_base
@@ -65,7 +64,6 @@ third_party_settings:
           label: Header
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
             - section_margin_edge_to_edge
         components:
           -
@@ -135,6 +133,7 @@ third_party_settings:
         layout_settings:
           label: Content
           context_mapping: {  }
+          layout_builder_styles_style: {  }
         components:
           -
             uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
@@ -158,7 +157,6 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 - block_menu_vertical
-                - null
             third_party_settings: {  }
           -
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
@@ -215,6 +213,7 @@ third_party_settings:
           - webform_block
         core: {  }
       restricted_categories:
+        - 'Entity Print'
         - 'Purge UI'
       allowed_blocks: {  }
     allowed_block_categories:
@@ -222,6 +221,7 @@ third_party_settings:
       - 'Content fields'
       - 'Custom block types'
       - 'Custom blocks'
+      - 'Entity Print'
       - Forms
       - 'Inline blocks'
       - Lists
@@ -285,25 +285,10 @@ targetEntityType: node
 bundle: page
 mode: default
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_after_content_override:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 4
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -314,25 +299,20 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_pre_footer_override:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 5
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
     weight: 3
     region: content
 hidden:
+  body: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_after_content_override: true
   field_featured_image_display: true
   field_meta_tags: true
+  field_pre_footer_override: true
   field_publish_options: true
   field_tags: true
   field_teaser: true

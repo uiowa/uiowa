@@ -55,3 +55,14 @@ function grad_thesis_defense_preprocess_field(&$variables, $hook) {
       break;
   }
 }
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function grad_thesis_defense_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() == 'thesis_defenses') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-calendar';
+  }
+}

@@ -15,26 +15,70 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.alert.default
+  - core.entity_view_display.node.person.default
+  - core.entity_view_mode.node.dispatch
+  - field.field.node.alert.field_alert_override_building
+  - field.field.node.alert.field_alert_project_number
+  - field.field.node.alert.field_alert_short_work_desc
+  - field.field.node.artwork.field_gallery_images
+  - field.field.node.person.field_person_birth_year
+  - field.field.node.person.field_person_death_year
+  - field.field.node.person.field_person_nationality
+  - field.storage.node.field_alert_accessible_route
+  - field.storage.node.field_alert_affected_bus_routes
+  - field.storage.node.field_alert_alternate_route
+  - field.storage.node.field_alert_building
+  - field.storage.node.field_alert_buildings_locations
+  - field.storage.node.field_alert_override_building
+  - field.storage.node.field_alert_project_number
+  - field.storage.node.field_alert_short_work_desc
+  - field.storage.node.field_alert_traffic_control
+  - field.storage.node.field_alert_traffic_control_plan
+  - field.storage.node.field_person_birth_year
+  - field.storage.node.field_person_death_year
+  - field.storage.node.field_person_nationality
+  - metatag.metatag_defaults.node__artwork
   - metatag.metatag_defaults.node__named_building
   - metatag.metatag_defaults.node__project
+  - node.type.artwork
   - node.type.building
   - node.type.named_building
   - node.type.project
+  - pathauto.pattern.artwork
   - pathauto.pattern.building
   - pathauto.pattern.named_building
   - pathauto.pattern.project
-  - schemadotorg.schemadotorg_mapping.node.building
-  - schemadotorg.schemadotorg_mapping.node.named_building
-  - schemadotorg.schemadotorg_mapping.node.project
   - simple_sitemap.bundle_settings.default.node.building
   - simple_sitemap.bundle_settings.default.node.named_building
   - simple_sitemap.bundle_settings.default.node.project
+  - sitenow_people.person_type.artist
+  - taxonomy.vocabulary.artwork_medium
+  - user.role.collaborator
+  - views.view.alerts_building_block
+  - views.view.artwork
   - views.view.building_list
   - views.view.named_building_details
   - views.view.named_building_list
+  - views.view.projects
+  - views.view.projects_building_block
+  - field.storage.node.field_alert_publish_on
   - 'field.storage.node.field_building_*'
+  - 'field.storage.node.field_main_*'
+  - 'field.storage.node.field_alt1_*'
+  - 'field.storage.node.field_alt2_*'
+  - 'field.storage.node.field_alt3_*'
+  - 'field.storage.node.field_alt4_*'
   - 'field.storage.node.field_project_*'
+  - 'field.storage.node.field_artwork_*'
 partial_list:
+  - administerusersbyrole.settings
+  - core.entity_view_display.node.alert.teaser
+  - field.field.block_content.featured_content.field_featured_content_item
+  - field.field.node.alert.body
+  - field.field.node.alert.field_alert_category
+  - field.field.node.alert.field_alert_date
   - metatag.settings
   - workflows.workflow.editorial
   - 'user.role.*'
+  - 'core.entity_form_display.node.*'

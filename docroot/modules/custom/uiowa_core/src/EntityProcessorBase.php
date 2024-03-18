@@ -105,9 +105,13 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
 
   /**
    * Constructs an EntityProcessorBase instance.
+   *
+   * @param string $bundle
+   *   The entity bundle.
    */
-  public function __construct() {
+  public function __construct(string $bundle) {
     $this->entityTypeManager = \Drupal::entityTypeManager();
+    $this->bundle = $bundle;
   }
 
   /**
@@ -125,6 +129,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       $this->entityIds = $this->entityTypeManager
         ->getStorage($this->entityType)
         ->getQuery()
+        ->accessCheck(TRUE)
         ->condition('type', $this->bundle)
         ->execute();
     }
@@ -169,24 +174,23 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
         // If existing, update values if different.
-        $entity = $this->existingNodes[$existing_nid] ?? $storage->load($existing_nid);
+        $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
       }
       else {
         // If not, create new.
         $entity = $storage->create([
-          'type' => 'building',
+          'type' => $this->bundle,
         ]);
       }
 
       if ($entity instanceof ContentEntityInterface) {
-
         $changed = $this->processEntity($entity, $record);
 
         if (!is_null($existing_nid)) {
           if ($changed) {
             $entity->setNewRevision();
             $entity->revision_log = 'Updated from source';
-            $entity->setRevisionCreationTime(REQUEST_TIME);
+            $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
             $entity->setRevisionUserId(1);
             $entity->save();
             $this->updated++;

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centerteaching.uiowa.ddev.site
+    protocol: https
+  machine_name: centerteaching
+  human_name: teaching.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centerteaching.prod
+drupal:
+  db:
+    database: teaching_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centerteaching.prod.drupal.uiowa.edu'
+  requester: kjhughes
+  site-name: teaching.uiowa.edu
