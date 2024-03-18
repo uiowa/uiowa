@@ -73,26 +73,9 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: full
+        type: none
         options:
           offset: 0
-          items_per_page: 10
-          total_pages: null
-          id: 0
-          tags:
-            next: »
-            previous: «
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -306,6 +289,11 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      use_more: true
+      use_more_always: true
+      use_more_text: 'View all alerts'
+      link_display: custom_url
+      link_url: /alerts
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -315,7 +303,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -337,7 +324,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
