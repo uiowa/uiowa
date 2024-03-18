@@ -44,6 +44,11 @@ abstract class ApiClientBase implements ApiClientInterface {
   public function __construct(protected ClientInterface $client, protected LoggerChannelFactoryInterface $loggerFactory, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {}
 
   /**
+   * The last response object that was returned with the API.
+   */
+  protected ?ResponseInterface $lastResponse;
+
+  /**
    * {@inheritdoc}
    */
   abstract public function basePath(): string;

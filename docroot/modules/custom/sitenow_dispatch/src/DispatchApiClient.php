@@ -20,11 +20,6 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   use ApiAuthKeyTrait;
 
   /**
-   * The last response object that was returned with the API.
-   */
-  protected ?ResponseInterface $lastResponse;
-
-  /**
    * Constructs a DispatchApiClient object.
    *
    * @param \GuzzleHttp\ClientInterface $client
