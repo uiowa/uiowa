@@ -140,7 +140,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     if (!$this->getData()) {
       // Log a message that data was not returned.
       static::getLogger('uiowa_core')->notice('No data returned for EntityProcessorBase::getData().');
-      return;
+      return FALSE;
     }
 
     $storage = $this->entityTypeManager

@@ -4,6 +4,8 @@ namespace Drupal\sitenow_dispatch;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -15,6 +17,7 @@ use Psr\Log\LoggerInterface;
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
 class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterface {
+  use ApiAuthKeyTrait;
 
   /**
    * The last response object that was returned with the API.
@@ -26,16 +29,16 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Psr\Log\LoggerInterface $logger
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
    *   The logger.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The cache backend service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
    */
-  public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
-    parent::__construct($client, $logger, $cache, $configFactory);
-    $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL;
+  public function __construct(protected ClientInterface $client, protected LoggerChannelFactoryInterface $loggerFactory, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
+    parent::__construct($client, $loggerFactory, $cache, $configFactory);
+    $this->setKey($this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL);
   }
 
   /**
@@ -49,6 +52,13 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * {@inheritdoc}
    */
   protected function getCacheIdBase(): string {
+    return 'sitenow_dispatch';
+  }
+
+  /**
+   * @inheritDoc
+   */
+  protected function loggerChannel(): string {
     return 'sitenow_dispatch';
   }
 

@@ -55,10 +55,20 @@ class ProjectsProcessor extends EntityProcessorBase {
   /**
    * Get all projects.
    *
-   * @return array
+   * @return array|false
    *   The projects object.
    */
-  public function getProjects(): array {
+  public function getProjects(): bool|array {
+
+    // Get all capital projects.
+    if (FALSE === $capital_projects = $this->apiClient->getCapitalProjects()) {
+      return FALSE;
+    }
+    // Get all featured projects.
+    if (FALSE === $featured_projects = $this->apiClient->getFeaturedProjects()) {
+      return FALSE;
+    }
+
     $building_numbers = $this->getAllBuildingNumbers();
     $projects = [];
 
@@ -73,16 +83,14 @@ class ProjectsProcessor extends EntityProcessorBase {
 
     foreach ($building_numbers as $number => $nid) {
       // Use each number to make a query.
-      $response = $this->apiClient->get('projects', [
-        'query' => [
-          'bldgnumber' => $number,
-        ],
-      ]);
+      if (FALSE === $building_projects = $this->apiClient->getProjectsByBuilding($number)) {
+        return FALSE;
+      }
 
       // Check if the response array is not empty.
-      if (!empty($response)) {
+      if (!empty($building_projects)) {
         // If the response contains multiple arrays, loop through each of them.
-        foreach ($response as $project) {
+        foreach ($building_projects as $project) {
           $project->projectType = $project->projectType ?? NULL;
 
           // Add the project to the projects array.
@@ -91,15 +99,11 @@ class ProjectsProcessor extends EntityProcessorBase {
       }
     }
 
-    // Get all featured projects.
-    $featured_projects = $this->apiClient->getFeaturedProjects();
     foreach ($featured_projects as $project) {
       $project->isFeatured = TRUE;
       $projects[] = $project;
     }
 
-    // Get all capital projects.
-    $capital_projects = $this->apiClient->getCapitalProjects();
     foreach ($capital_projects as $project) {
       // Check if the project is already in the featured projects array.
       $is_featured = FALSE;

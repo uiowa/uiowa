@@ -13,7 +13,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
    * {@inheritdoc}
    */
   public function basePath(): string {
-    return $this->configFactory->get('uiowa_facilities.api_endpoints')->get('buildui');
+    return $this->configFactory->get('uiowa_facilities.apis')->get('buildui.endpoint');
   }
 
   /**
@@ -26,14 +26,34 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
   /**
    * {@inheritdoc}
    */
-  public function getFeaturedProjects(): array {
+  protected function loggerChannel(): string {
+    return 'uiowa_facilities';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getProjectsByBuilding($building_number): mixed {
+    return $this->get('projects', [
+      'query' => [
+        'bldgnumber' => $building_number,
+      ],
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFeaturedProjects(): array|bool {
+    static::getLogger($this->loggerChannel())->info('Retrieving featured projects');
     return $this->get('featuredprojects');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCapitalProjects(): array {
+  public function getCapitalProjects(): array|bool {
+    static::getLogger($this->loggerChannel())->info('Retrieving capital projects');
     return $this->get('capitalprojects');
   }
 

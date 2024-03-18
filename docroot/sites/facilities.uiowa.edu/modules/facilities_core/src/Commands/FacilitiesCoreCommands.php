@@ -92,15 +92,20 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     $this->logger()->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
     $sync_service = new ProjectsProcessor();
-    $sync_service->process();
+    $success = $sync_service->process();
 
-    $arguments = [
-      '@created' => $sync_service->getCreated(),
-      '@updated' => $sync_service->getUpdated(),
-      '@deleted' => $sync_service->getDeleted(),
-      '@skipped' => $sync_service->getSkipped(),
-    ];
-    $this->logger()->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    if ($success) {
+      $arguments = [
+        '@created' => $sync_service->getCreated(),
+        '@updated' => $sync_service->getUpdated(),
+        '@deleted' => $sync_service->getDeleted(),
+        '@skipped' => $sync_service->getSkipped(),
+      ];
+      $this->logger()->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    }
+    else {
+      $this->logger()->warning('There was an error while processing the import for Facilities projects.');
+    }
 
     // Switch user back.
     $this->accountSwitcher->switchBack();

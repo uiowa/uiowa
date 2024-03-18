@@ -13,7 +13,7 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
    * {@inheritdoc}
    */
   public function basePath(): string {
-    return $this->configFactory->get('uiowa_facilities.api_endpoints')->get('bizhub');
+    return $this->configFactory->get('uiowa_facilities.apis')->get('bizhub.endpoint');
   }
 
   /**

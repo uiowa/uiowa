@@ -78,4 +78,15 @@ interface ApiClientInterface {
    */
   public function getClient(): ClientInterface;
 
+  /**
+   * Adds authentication to the options array.
+   *
+   * @param $options
+   *   The options array.
+   *
+   * @return void
+   *   The options array.
+   */
+  public function addAuthToOptions(&$options): void;
+
 }
