@@ -499,6 +499,10 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
 function its_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_date':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        unset($variables['field_icon']);
+        unset($variables['attributes']['class']);
+      }
       // If we don't have an "end" time or a specified start/text/time
       // in our start time, it means we have an "ongoing" event,
       // and we should alter the label.

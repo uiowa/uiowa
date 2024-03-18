@@ -112,31 +112,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 4cb09feb-1691-4d46-8b4d-c757d4e11c1a
-            region: card_meta
-            configuration:
-              id: 'field_block:node:alert:field_alert_date'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: smartdate_dailyrange
-                label: above
-                settings:
-                  timezone_override: ''
-                  format: default
-                  force_chronological: true
-                  add_classes: true
-                  time_wrapper: true
-                  localize: 0
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
             region: main
             configuration:
@@ -171,7 +146,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 3
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -193,7 +168,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 4
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -215,7 +190,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: -2
+            weight: -1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -248,7 +223,7 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
-            weight: 6
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -270,8 +245,34 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 5
+            weight: 3
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4cb09feb-1691-4d46-8b4d-c757d4e11c1a
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_date'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_dailyrange
+                label: inline
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: true
+                  add_classes: true
+                  time_wrapper: true
+                  localize: 0
+                third_party_settings: {  }
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
