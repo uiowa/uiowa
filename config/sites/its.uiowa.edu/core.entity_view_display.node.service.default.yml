@@ -156,25 +156,6 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 106c04ef-4df6-44cc-ba5f-9430b0fc1605
-            region: main
-            configuration:
-              id: 'field_block:node:service:field_service_contact'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
@@ -197,7 +178,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -270,8 +251,27 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
+            uuid: 106c04ef-4df6-44cc-ba5f-9430b0fc1605
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_contact'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: a20b6ab0-2b00-4c10-aa9d-e55966fb8512
-            region: card_button
+            region: main
             configuration:
               id: 'views_block:services_related_alerts-block_1'
               label: null
@@ -291,7 +291,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 0
+            weight: 2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -339,7 +339,11 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
