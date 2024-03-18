@@ -251,3 +251,16 @@
     }
   }
 }
+
+// Set container query to force cards to stack at smallest column size.
+// @todo move back to UIDS.
+@supports (contain: inline-size) {
+  @container column (max-width: #{$break-xxsm}) {
+    .card {
+      display: block;
+      .media__inner {
+        margin: -2rem -2rem 2rem;
+      }
+    }
+  }
+}

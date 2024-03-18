@@ -10,6 +10,14 @@ $imgpath: '../../uids/assets/images';
   container-type: unset;
 }
 
+// This chooses the proper container for rendered content vs building in layout builder.
+.fragment .layout__region,
+.node__content .layout__region,
+.layout-builder .layout-builder-block {
+  container-type: inline-size;
+  container-name: column;
+}
+
 // Word break classes.
 .block--word-break,
 .block-inline-blockuiowa-text-area,
