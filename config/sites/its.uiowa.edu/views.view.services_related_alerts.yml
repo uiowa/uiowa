@@ -125,15 +125,13 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
+        field_alert_date_value:
+          id: field_alert_date_value
+          table: node__field_alert_date
+          field: field_alert_date_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: created
           plugin_id: date
           order: DESC
           expose:
