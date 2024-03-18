@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: lablcn.uiowa.ddev.site
+  paths:
+    files: sites/lcn.lab.uiowa.edu/files
+dev:
+  uri: lablcn.dev.drupal.uiowa.edu
+  host: uiowa07dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/lcn.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.dev/docroot
+  user: uiowa07.dev
+prod:
+  uri: lcn.lab.uiowa.edu
+  host: uiowa07prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/lcn.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.prod/docroot
+  user: uiowa07.prod
+test:
+  uri: lablcn.stage.drupal.uiowa.edu
+  host: uiowa07stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/lcn.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.stage/docroot
+  user: uiowa07.stage

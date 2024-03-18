@@ -5,17 +5,67 @@ dependencies:
   config:
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_architect
+    - field.field.node.project.field_project_awarded_to
+    - field.field.node.project.field_project_bid_date
+    - field.field.node.project.field_project_building
+    - field.field.node.project.field_project_building_alt
+    - field.field.node.project.field_project_constr_start_date
     - field.field.node.project.field_project_description
+    - field.field.node.project.field_project_estimated_cost
+    - field.field.node.project.field_project_is_capital
+    - field.field.node.project.field_project_is_featured
+    - field.field.node.project.field_project_number
+    - field.field.node.project.field_project_pre_bid_date
+    - field.field.node.project.field_project_pre_bid_location
+    - field.field.node.project.field_project_scope
+    - field.field.node.project.field_project_square_footage
+    - field.field.node.project.field_project_status
+    - field.field.node.project.field_project_sub_complete_date
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
     - node.type.project
   module:
     - content_moderation
+    - datetime
+    - field_group
     - link
     - media_library
     - metatag
     - path
     - text
+third_party_settings:
+  field_group:
+    group_imported:
+      children:
+        - field_project_number
+        - field_project_building
+        - field_project_building_alt
+        - field_project_status
+        - field_project_square_footage
+        - field_project_pre_bid_location
+        - field_project_awarded_to
+        - field_project_architect
+        - field_project_scope
+        - field_project_bid_date
+        - field_project_pre_bid_date
+        - field_project_sub_complete_date
+        - field_project_constr_start_date
+        - field_project_estimated_cost
+        - field_project_is_featured
+        - field_project_is_capital
+      label: Imported
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: 'These fields are imported from buildui.facilities.uiowa.edu.'
+        required_fields: true
 id: node.project.default
 targetEntityType: node
 bundle: project
@@ -23,36 +73,154 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 7
+    weight: 4
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 125
+    weight: 17
     region: content
     settings:
       sidebar: true
       use_details: true
     third_party_settings: {  }
+  field_project_architect:
+    type: string_textfield
+    weight: 23
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_awarded_to:
+    type: string_textfield
+    weight: 22
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_bid_date:
+    type: datetime_default
+    weight: 25
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_project_building:
+    type: entity_reference_autocomplete
+    weight: 17
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_building_alt:
+    type: string_textfield
+    weight: 18
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_constr_start_date:
+    type: datetime_default
+    weight: 28
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_project_description:
     type: text_textarea
-    weight: 4
+    weight: 2
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_project_estimated_cost:
+    type: number
+    weight: 29
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_is_capital:
+    type: boolean_checkbox
+    weight: 31
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_project_is_featured:
+    type: boolean_checkbox
+    weight: 30
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_project_number:
+    type: string_textfield
+    weight: 16
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_pre_bid_date:
+    type: datetime_default
+    weight: 26
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_project_pre_bid_location:
+    type: string_textfield
+    weight: 21
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_scope:
+    type: string_textarea
+    weight: 24
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_square_footage:
+    type: number
+    weight: 20
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_status:
+    type: string_textfield
+    weight: 19
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_sub_complete_date:
+    type: datetime_default
+    weight: 27
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_project_webcam:
     type: link_default
-    weight: 124
+    weight: 16
     region: content
     settings:
       placeholder_url: ''
@@ -60,7 +228,7 @@ content:
     third_party_settings: {  }
   field_project_whats_new:
     type: text_textarea
-    weight: 122
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -68,45 +236,45 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 15
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 120
+    weight: 14
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 16
+    weight: 9
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 1
+    weight: 0
     region: content
     settings:
       size: 60
@@ -114,7 +282,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
@@ -123,7 +291,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

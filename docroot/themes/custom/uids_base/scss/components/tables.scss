@@ -5,3 +5,26 @@
 .lb__container .table-responsive {
   margin-right: auto;
 }
+
+table th {
+  a[href]::after {
+    content: none !important;
+  }
+}
+
+.table--align-top {
+  thead, tbody {
+    vertical-align: top;
+  }
+}
+.table--sort-arrow-inline {
+  th[aria-sort] a{
+    display: flex;
+    align-items: center;
+    margin-left: 2px;
+
+    .tablesort {
+      filter: saturate(0) brightness(0.2);
+    }
+  }
+}

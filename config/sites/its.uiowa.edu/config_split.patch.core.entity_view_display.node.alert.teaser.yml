@@ -2,9 +2,16 @@ adding:
   dependencies:
     config:
       - field.field.node.alert.field_alert_building
+      - field.field.node.alert.field_alert_email
       - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_title_details
+      - field.field.node.alert.field_alert_updates
   content:
+    body:
+      settings:
+        trim_length: 600
+        trim_suffix: ''
+      weight: null
     field_alert_building:
       type: entity_reference_label
       label: visually_hidden
@@ -32,15 +39,15 @@ adding:
     links:
       weight: 0
   hidden:
-    body: true
+    field_alert_email: true
     field_alert_title_details: true
+    field_alert_updates: true
 removing:
-  dependencies:
-    module:
-      - smart_trim
   content:
     body:
       settings:
+        trim_length: 300
+        trim_suffix: ...
         more:
           display_link: false
           target_blank: false
@@ -53,14 +60,6 @@ removing:
           text: false
           trim_zero: false
           replace_tokens: false
-        trim_length: 300
-        trim_type: chars
-        trim_suffix: ...
-        wrap_output: false
-        wrap_class: trimmed
-        summary_handler: full
-      type: smart_trim
-      label: hidden
       weight: 0
     field_alert_category:
       weight: 3

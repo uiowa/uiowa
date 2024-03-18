@@ -46,6 +46,9 @@
         }
     },
     "config": {
+        "audit": {
+            "abandoned": "ignore"
+        },
         "sort-packages": true,
         "platform": {
             "php": "8.1"
@@ -64,7 +67,7 @@
     },
     "require": {
         "ext-json": "*",
-        "acquia/blt": "^13.3.0",
+        "acquia/blt": "^13.7.4",
         "acquia/blt-drupal-test": "dev-main#bb2103f",
         "acquia/blt-multisite": "dev-master",
         "acquia/blt-travis": "^1.1.0",
@@ -86,7 +89,7 @@
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/bigmenu": "^2.0@RC",
         "drupal/block_content_permissions": "^1.9",
-        "drupal/ckeditor": "^1.0",
+        "drupal/captcha": "^2.0",
         "drupal/classy": "^1.0",
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "3.0.0-beta2",
@@ -97,7 +100,7 @@
         "drupal/core-recommended": "10.1.8",
         "drupal/crop": "^2.2",
         "drupal/cshs": "^4.0",
-        "drupal/ctools": "3.11",
+        "drupal/ctools": "^4.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/devel": "^5.1",
         "drupal/diff": "^1.1",
@@ -120,6 +123,7 @@
         "drupal/geofield": "^1.53",
         "drupal/google_analytics": "^4.0",
         "drupal/google_tag": "^1.6",
+        "drupal/hcaptcha": "^1.2",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "^2.1",
         "drupal/iframe_title_filter": "^2.0",
@@ -162,7 +166,8 @@
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
         "drupal/photoswipe": "^4.0",
-        "drupal/private_content": "^2.0@RC",
+        "drupal/piwik_pro": "^1.0",
+        "drupal/private_content": "^2.1",
         "drupal/purge": "^3.4",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "^1.8",
@@ -192,7 +197,7 @@
         "drupal/webform": "^6.2@beta",
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^2.2",
-        "drush/drush": "^11.6",
+        "drush/drush": "^12.4.0",
         "kartsims/easysvg": "2.5",
         "npm-asset/accessible-menu": "4.x-dev#2481e91",
         "npm-asset/jquery-collapse": "^1.1",
@@ -200,7 +205,7 @@
         "npm-asset/slick-carousel": "^1.8",
         "npm-asset/vanilla-icon-picker": "^1.2",
         "oomphinc/composer-installers-extender": "^2.0",
-        "richardbporter/drush-users-commands": "3.2.1",
+        "richardbporter/drush-users-commands": "^4.0.0",
         "uiowa/uiowa_auth": "^2.0"
     },
     "require-dev": {
@@ -235,7 +240,9 @@
                 "layout_builder__layout_section column hitting database limit": "https://www.drupal.org/files/issues/2021-10-11/3030154-44.patch",
                 "Node form layout looks squeezed": "https://www.drupal.org/files/issues/2023-09-29/3326339-14.patch",
                 "Layout builder off-canvas positioning problem when resizing browser ": "https://www.drupal.org/files/issues/2023-07-19/3359465-8.patch",
-                "Responsive image width/height values are not used from fallback image style": "https://www.drupal.org/files/issues/2023-08-04/3377420-responsive-image-dimension-fallback-style-9.patch"
+                "Responsive image width/height values are not used from fallback image style": "https://www.drupal.org/files/issues/2023-08-04/3377420-responsive-image-dimension-fallback-style-9.patch",
+                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-01-09/2230909-292.patch",
+                "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"

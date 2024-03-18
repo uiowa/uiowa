@@ -52,6 +52,13 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
+  public function __construct() {
+    parent::__construct($this->bundle);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected $fieldSyncKey = 'field_building_number';
 
   /**
@@ -86,6 +93,26 @@ class BuildingsProcessor extends EntityProcessorBase {
         $record->{$key} = $value;
       }
     }
+    // API call for building coordinator information.
+    $coordinators = $facilities_api->getBuildingCoordinators($building_number);
+
+    // Merge building coordinators data into the building record for processing.
+    $coordinator_properties = [
+      'mainFullName', 'mainJobTitle', 'mainDepartment',
+      'mainCampusEmail', 'mainCampusPhone', 'alternateFullName1',
+      'alternateJobTitle1', 'alternateDepartment1', 'alternateCampusEmail1',
+      'alternateCampusPhone1', 'alternateFullName2',
+      'alternateJobTitle2', 'alternateDepartment2', 'alternateCampusEmail2',
+      'alternateCampusPhone2', 'alternateFullName3',
+      'alternateJobTitle3', 'alternateDepartment3', 'alternateCampusEmail3',
+      'alternateCampusPhone3', 'alternateFullName4',
+      'alternateJobTitle4', 'alternateDepartment4', 'alternateCampusEmail4',
+      'alternateCampusPhone4', 'maintenanceManagerFullName', 'custodialAssistantManagerFullName',
+    ];
+
+    foreach ($coordinator_properties as $property) {
+      $record->{$property} = $coordinators->{$property} ?? NULL;
+    }
 
     // There is at least one building with a blank space instead of
     // NULL for this value.
@@ -98,7 +125,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     // If the namedBuilding field is not NULL, it needs to be converted to a
     // entity ID for an existing named building.
     if (isset($record->namedBuilding)) {
-      $record->namedBuilding = $this->findNamedBuildingNid($record->{$this->apiRecordSyncKey});
+      $record->namedBuilding = $this->findNamedBuildingNid($record->id);
     }
   }
 
@@ -149,7 +176,7 @@ class BuildingsProcessor extends EntityProcessorBase {
         }
       }
       catch (ClientException $e) {
-        $this->getLogger('facilities_core')->warning($this->t('Unable to get image for @building.', [
+        $this->logger()->warning($this->t('Unable to get image for @building.', [
           '@building' => $result?->buildingNumber . ' : ' . $result?->buildingFormalName,
         ]));
 

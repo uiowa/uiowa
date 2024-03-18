@@ -7,11 +7,14 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_email
     - field.field.node.alert.field_alert_service_affected
     - field.field.node.alert.field_alert_title_details
+    - field.field.node.alert.field_alert_updates
     - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
+    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
     - metatag
@@ -134,28 +137,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_category'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
             region: main
             configuration:
@@ -168,7 +149,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -190,7 +171,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 1
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -212,8 +193,31 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 2
+            weight: 4
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b5f43d32-aa8a-40ab-9cb0-29e206e8c18a
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_updates'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: d79824dd-9177-437f-b0b8-71c04eb44120
@@ -244,7 +248,29 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
-            weight: -2
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
+            region: main
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 5
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -310,6 +336,16 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
+  field_alert_email:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 111
+    region: content
   field_alert_service_affected:
     type: entity_reference_label
     label: above
@@ -325,6 +361,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 109
+    region: content
+  field_alert_updates:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_meta_tags:
     type: metatag_empty_formatter

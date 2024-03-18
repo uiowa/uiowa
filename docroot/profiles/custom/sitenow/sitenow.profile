@@ -501,14 +501,24 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
-  // Hide revision information on media entity add/edit forms
-  // to prevent new revisions from being created. This aids our
-  // file replace functionality.
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
+      // Hide revision information on media entity add/edit forms
+      // to prevent new revisions from being created. This aids our
+      // file replace functionality.
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
+      }
+
+      // Prevent deletion if there is entity usage.
+      // This is accompanied by a message from the entity_usage module.
+      if ($form_object->getOperation() == 'delete') {
+        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
+        if (!empty($usage_data)) {
+          $form['actions']['submit']['#disabled'] = TRUE;
+        }
       }
     }
   }

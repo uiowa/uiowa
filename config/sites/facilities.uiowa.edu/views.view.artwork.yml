@@ -163,22 +163,21 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        created:
-          id: created
+        title:
+          id: title
           table: node_field_data
-          field: created
+          field: title
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: node
-          entity_field: created
-          plugin_id: date
-          order: DESC
+          entity_field: title
+          plugin_id: standard
+          order: ASC
           expose:
             label: ''
             field_identifier: ''
           exposed: false
-          granularity: second
       arguments: {  }
       filters:
         status:
@@ -415,6 +414,22 @@ display:
           metatags: {  }
           tokenize: false
       block_hide_empty: true
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        configure_filters: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters_custom: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        title: 0
+        field_gallery_images: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -603,6 +618,22 @@ display:
           metatags: {  }
           tokenize: false
       block_hide_empty: true
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        configure_filters: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters_custom: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        title: 0
+        field_gallery_images: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -861,7 +892,7 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 8
+          items_per_page: 9
           total_pages: null
           id: 0
           tags:
@@ -1209,7 +1240,7 @@ display:
           admin_label: 'field_artwork_artist: Content'
           plugin_id: standard
           required: false
-      css_class: 'views-form--stacked views-grid--twocol--25-75 grid--twocol--50-50'
+      css_class: 'views-form--stacked views--twocol--25-75 grid--threecol--33-34-33'
       use_ajax: true
       display_description: ''
       display_extenders:
@@ -1224,16 +1255,17 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: 0
+        configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
       more_link_help_text: ''
       restrict_fields:
         title: 0
         field_gallery_images: 0
-        field_artwork_artist: 0
+        title_1: 0
         body: 0
     cache_metadata:
       max-age: -1

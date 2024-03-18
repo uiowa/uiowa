@@ -1,0 +1,42 @@
+uuid: f526a9fd-1aa2-46b0-99fc-3ac301f9b1fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.support_article.body
+    - field.field.node.support_article.field_support_article_category
+    - field.field.node.support_article.field_support_article_faqs
+    - field.field.node.support_article.field_support_article_service
+    - field.field.node.support_article.field_support_article_short_desc
+    - node.type.support_article
+  module:
+    - text
+    - user
+id: node.support_article.teaser
+targetEntityType: node
+bundle: support_article
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_support_article_category: true
+  field_support_article_faqs: true
+  field_support_article_service: true
+  field_support_article_short_desc: true
+  search_api_excerpt: true

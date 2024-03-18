@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: policy.uiowa.ddev.site
+    protocol: https
+  machine_name: policy
+  human_name: policy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: policy.prod
+drupal:
+  db:
+    database: policy_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://policy.prod.drupal.uiowa.edu'
+  requester: bartos
+  site-name: 'Policy Manual'

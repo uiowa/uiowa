@@ -23,6 +23,16 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+details {
+  summary {
+    // So we don't wrap the arrow away from the label.
+    white-space: nowrap;
+
+    // Ensure users get pointer cursor for details.
+    cursor: pointer;
+  }
+}
+
 // Set an element to display inline.
 .element--inline-breakpoint {
   @include breakpoint(sm) {
@@ -246,6 +256,18 @@ $imgpath: '../../uids/assets/images';
 // @todo remove when https://github.com/uiowa/uids/issues/714 is complete.
 .border {
   border: 1px solid rgba(0, 0, 0, 0.25);
+  &--top {
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  &--right {
+    border-right: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  &--bottom {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  &--left {
+    border-left: 1px solid rgba(0, 0, 0, 0.25);
+  }
 }
 
 // For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
@@ -550,6 +572,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   padding-inline-start: 0.5rem;
 }
 
+.padding--inline-start--md {
+  padding-inline-start: 1rem;
+}
+
+.padding--inline-end--sm  {
+  padding-inline-end: 0.5rem;
+}
+
+.padding--inline-end--md  {
+  padding-inline-end: 1rem;
+}
+
 .padding--inline--md {
   padding-inline: 1rem;
 }
@@ -763,6 +797,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
+}
+
+// Measurer class useful for ensuring tables do not reflow
+//     while interacting with a cell's contents.
+// NOTE: Should only be used with 'aria-hidden="true"'.
+.width-measurer {
+  height: 0px;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
 }
 
 // @todo remove

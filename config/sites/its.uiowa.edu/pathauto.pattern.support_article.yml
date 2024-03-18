@@ -1,0 +1,22 @@
+uuid: 4030af07-ee34-44ad-a2d1-92de2f00c450
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: support_article
+label: 'Support Article'
+type: 'canonical_entities:node'
+pattern: 'article/[node:nid]'
+selection_criteria:
+  07ee3c5e-f350-4426-add0-3475a3fcf31c:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 07ee3c5e-f350-4426-add0-3475a3fcf31c
+    context_mapping:
+      node: node
+    bundles:
+      support_article: support_article
+selection_logic: and
+weight: -5
+relationships: {  }
