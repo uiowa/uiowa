@@ -5,6 +5,7 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 // Unset container queries if a section contains the menu block.
+// @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
 .has-menu-block .column-container,
 .layout-builder .column-container {
   container-type: unset;
