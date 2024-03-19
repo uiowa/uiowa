@@ -160,28 +160,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 69b3b122-d180-4794-b05b-2f99e84d6fc3
-            region: main
-            configuration:
-              id: 'field_block:node:service:field_service_related_service'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: ed94a75b-3916-4f46-83b9-ae611442901a
             region: card_content
             configuration:
@@ -294,6 +272,28 @@ third_party_settings:
             weight: 2
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 69b3b122-d180-4794-b05b-2f99e84d6fc3
+            region: card_content
+            configuration:
+              id: 'field_block:node:service:field_service_related_service'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 8
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
