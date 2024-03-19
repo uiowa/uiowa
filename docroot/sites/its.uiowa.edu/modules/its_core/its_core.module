@@ -596,45 +596,42 @@ function its_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_alert_category':
-      $view_mode = $variables['element']['#view_mode'];
-      if ($view_mode === 'teaser') {
-        // Make categories badges.
-        foreach ($variables['items'] as &$item) {
-          $category_id = $item['content']['#entity']?->id();
-          if (in_array($category_id, ['406', '416', '411', '421'])) {
-            $content = $item['content']['#markup'];
-            switch ($category_id) {
-              // Outage.
-              case '406':
-                $content = str_replace('badge--light', 'badge--orange', $content);
-                $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
-                break;
+      // Make categories badges.
+      foreach ($variables['items'] as &$item) {
+        $category_id = $item['content']['#entity']?->id();
+        if (in_array($category_id, ['406', '416', '411', '421'])) {
+          $content = $item['content']['#markup'];
+          switch ($category_id) {
+            // Outage.
+            case '406':
+              $content = str_replace('badge--light', 'badge--orange', $content);
+              $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
+              break;
 
-              // Service Degradation.
-              case '416':
-                $content = str_replace('badge--light', 'badge--blue', $content);
-                $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
-                break;
+            // Service Degradation.
+            case '416':
+              $content = str_replace('badge--light', 'badge--blue', $content);
+              $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
+              break;
 
-              // Planned Maintenance.
-              case '411':
-                $content = str_replace('badge--light', 'badge--green', $content);
-                $icon = '';
-                break;
+            // Planned Maintenance.
+            case '411':
+              $content = str_replace('badge--light', 'badge--green', $content);
+              $icon = '';
+              break;
 
-              // Service Announcement.
-              case '421':
-                $content = str_replace('badge--light', 'badge--cool-gray', $content);
-                $icon = '';
-                break;
+            // Service Announcement.
+            case '421':
+              $content = str_replace('badge--light', 'badge--cool-gray', $content);
+              $icon = '';
+              break;
 
-              default:
-                $icon = '';
-                break;
-            }
-            $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
-            $item['content']['#markup'] = $content;
+            default:
+              $icon = '';
+              break;
           }
+          $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
+          $item['content']['#markup'] = $content;
         }
       }
       break;
