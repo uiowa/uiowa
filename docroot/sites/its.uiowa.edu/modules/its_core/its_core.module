@@ -79,6 +79,11 @@ function its_core_entity_presave(EntityInterface $entity) {
         $services_buildings,
         $additional_details,
       ]));
+
+      if ($entity->isClosed()) {
+        $alert_title = '[Closed] ' . $alert_title;
+      }
+
       $entity->setTitle($alert_title);
 
       // Reorder the Updates to chronological.
