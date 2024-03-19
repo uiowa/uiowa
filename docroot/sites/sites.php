@@ -6838,3 +6838,9 @@ $sites['orghhpeim-oc.uiowa.ddev.site'] = 'hhpeim-oc.org.uiowa.edu';
 $sites['orghhpeim-oc.dev.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
 $sites['orghhpeim-oc.stage.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
 $sites['orghhpeim-oc.prod.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+
+// Directory aliases for nsbe.org.uiowa.edu.
+$sites['orgnsbe.uiowa.ddev.site'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.dev.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.stage.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.prod.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';

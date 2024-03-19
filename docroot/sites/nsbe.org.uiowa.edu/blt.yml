@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgnsbe.uiowa.ddev.site
+    protocol: https
+  machine_name: orgnsbe
+  human_name: nsbe.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgnsbe.prod
+drupal:
+  db:
+    database: nsbe_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgnsbe.prod.drupal.uiowa.edu'
+  requester: mmohamednour
+  site-name: Uiowa_NSBE
