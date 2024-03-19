@@ -6844,3 +6844,9 @@ $sites['orgnsbe.uiowa.ddev.site'] = 'nsbe.org.uiowa.edu';
 $sites['orgnsbe.dev.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
 $sites['orgnsbe.stage.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
 $sites['orgnsbe.prod.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+
+// Directory aliases for emergency.uiowa.edu.
+$sites['emergency.uiowa.ddev.site'] = 'emergency.uiowa.edu';
+$sites['emergency.dev.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+$sites['emergency.stage.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+$sites['emergency.prod.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
