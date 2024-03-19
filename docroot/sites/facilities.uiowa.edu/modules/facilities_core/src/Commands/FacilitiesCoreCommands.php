@@ -5,8 +5,6 @@ namespace Drupal\facilities_core\Commands;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drupal\facilities_core\BuildingsProcessor;
-use Drupal\facilities_core\ProjectsProcessor;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -17,7 +15,6 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class FacilitiesCoreCommands extends DrushCommands {
-  use LoggerChannelTrait;
 
   /**
    * The account_switcher service.
@@ -54,7 +51,7 @@ class FacilitiesCoreCommands extends DrushCommands {
   public function importBuildings() {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice('Starting the facilities building content sync. This may take a little time if the information isn\'t cached.');
+    $this->logger()->notice('Starting the facilities building content sync from drush. This may take a little time if the information isn\'t cached.');
 
     facilities_core_import_buildings();
 
@@ -73,21 +70,9 @@ class FacilitiesCoreCommands extends DrushCommands {
   public function importProjects() {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
+    $this->logger()->notice('Starting the facilities projects sync from drush. This may take a little time if the information isn\'t cached.');
 
-    $this->getLogger('facilities_core')->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
-    $this->logger()->notice('Starting the facilities projects sync. This may take a little time if the information isn\'t cached.');
-    $sync_service = new ProjectsProcessor();
-    $sync_service->init();
-    $sync_service->process();
-
-    $arguments = [
-      '@created' => $sync_service->getCreated(),
-      '@updated' => $sync_service->getUpdated(),
-      '@deleted' => $sync_service->getDeleted(),
-      '@skipped' => $sync_service->getSkipped(),
-    ];
-    $this->getLogger('facilities_core')->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
-    $this->logger()->notice('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    facilities_core_import_projects();
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
