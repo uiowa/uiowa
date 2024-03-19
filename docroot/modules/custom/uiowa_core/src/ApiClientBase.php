@@ -34,14 +34,14 @@ abstract class ApiClientBase implements ApiClientInterface {
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+   * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The cache backend.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
    */
-  public function __construct(protected ClientInterface $client, protected LoggerChannelFactoryInterface $loggerFactory, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {}
+  public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {}
 
   /**
    * The last response object that was returned with the API.
@@ -62,14 +62,6 @@ abstract class ApiClientBase implements ApiClientInterface {
   abstract protected function getCacheIdBase();
 
   /**
-   * Returns a string identifying the logging channel.
-   *
-   * @return string
-   *   The logging channel.
-   */
-  abstract protected function loggerChannel(): string;
-
-  /**
    * Get a cache ID for a request.
    *
    * @param string $endpoint
@@ -85,16 +77,6 @@ abstract class ApiClientBase implements ApiClientInterface {
     $hash = base64_encode($endpoint . serialize($options));
 
     return "{$this->getCacheIdBase()}:request:$hash";
-  }
-
-  /**
-   * Returns the logger using the defined channel.
-   *
-   * @return \Drupal\Core\Logger\LoggerChannelInterface
-   *   The logger set to the channel.
-   */
-  protected function logger(): LoggerChannelInterface {
-    return $this->loggerFactory->get($this->loggerChannel());
   }
 
   /**
@@ -123,7 +105,7 @@ abstract class ApiClientBase implements ApiClientInterface {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
     }
     catch (ConnectException $e) {
-      $this->logger()->error('Unable to connect to the endpoint @endpoint: @code @error', [
+      $this->logger->error('Unable to connect to the endpoint @endpoint: @code @error', [
         '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
         '@error' => $e->getMessage(),
@@ -132,7 +114,7 @@ abstract class ApiClientBase implements ApiClientInterface {
       return FALSE;
     }
     catch (ClientException $e) {
-      $this->logger()->error('Error encountered getting data from @endpoint: @code @error', [
+      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
         '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
         '@error' => $e->getResponse()->getBody()->getContents(),
@@ -141,7 +123,7 @@ abstract class ApiClientBase implements ApiClientInterface {
       return FALSE;
     }
     catch (RequestException $e) {
-      $this->logger()->error('Error encountered getting data from @endpoint: @code @error', [
+      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
         '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
         '@error' => $e->getResponse()->getBody()->getContents(),
@@ -149,11 +131,19 @@ abstract class ApiClientBase implements ApiClientInterface {
 
       return FALSE;
     }
+    catch (GuzzleException $e) {
+      $this->logger->error('Unable to connect to the endpoint @endpoint: @code @error', [
+        '@endpoint' => $endpoint,
+        '@code' => $e->getCode(),
+        '@error' => $e->getMessage(),
+      ]);
 
+      return FALSE;
+    }
 
     $data = json_decode($this->lastResponse->getBody()->getContents());
 
-    $this->logger()->notice('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+    $this->logger->notice('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
       '@endpoint' => $endpoint,
       '@code' => $this->lastResponse->getStatusCode(),
     ]);

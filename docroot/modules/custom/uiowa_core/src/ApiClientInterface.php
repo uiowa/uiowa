@@ -11,22 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 interface ApiClientInterface {
 
   /**
-   * Get the API key.
-   */
-  public function getKey(): string|NULL;
-
-  /**
-   * Set the API key.
-   *
-   * @param string $key
-   *   The API key being set.
-   *
-   * @return \Drupal\uiowa_core\ApiClientInterface
-   *   The DispatchApiClientInterface object.
-   */
-  public function setKey(string $key): static;
-
-  /**
    * Returns the base path for the API with a trailing slash.
    *
    * @return string

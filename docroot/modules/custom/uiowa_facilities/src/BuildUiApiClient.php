@@ -2,12 +2,34 @@
 
 namespace Drupal\uiowa_facilities;
 
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\uiowa_core\ApiAuthBasicTrait;
 use Drupal\uiowa_core\ApiClientBase;
+use GuzzleHttp\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * The BuildUI API service.
  */
 class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterface {
+
+  use ApiAuthBasicTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    ClientInterface $client,
+    LoggerInterface $logger,
+    CacheBackendInterface $cache,
+    ConfigFactoryInterface $configFactory
+  ) {
+    parent::__construct($client, $logger, $cache, $configFactory);
+    $auth = $this->configFactory->get('uiowa_facilities.apis')->get('buildui.auth');
+    $this->username = $auth['user'] ?? NULL;
+    $this->password = $auth['pass'] ?? NULL;
+  }
 
   /**
    * {@inheritdoc}
@@ -26,13 +48,6 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
   /**
    * {@inheritdoc}
    */
-  protected function loggerChannel(): string {
-    return 'uiowa_facilities';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getProjectsByBuilding($building_number): mixed {
     return $this->get('projects', [
       'query' => [
@@ -45,7 +60,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
    * {@inheritdoc}
    */
   public function getFeaturedProjects(): array|bool {
-    static::getLogger($this->loggerChannel())->info('Retrieving featured projects');
+    $this->logger->info('Retrieving featured projects');
     return $this->get('featuredprojects');
   }
 
@@ -53,7 +68,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
    * {@inheritdoc}
    */
   public function getCapitalProjects(): array|bool {
-    static::getLogger($this->loggerChannel())->info('Retrieving capital projects');
+    $this->logger->info('Retrieving capital projects');
     return $this->get('capitalprojects');
   }
 

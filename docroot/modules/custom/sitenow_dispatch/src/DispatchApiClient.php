@@ -24,15 +24,15 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+   * @param \Psr\Log\LoggerInterface $logger
    *   The logger.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The cache backend service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The Config Factory object.
    */
-  public function __construct(protected ClientInterface $client, protected LoggerChannelFactoryInterface $loggerFactory, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
-    parent::__construct($client, $loggerFactory, $cache, $configFactory);
+  public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
+    parent::__construct($client, $logger, $cache, $configFactory);
     $this->setKey($this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL);
   }
 

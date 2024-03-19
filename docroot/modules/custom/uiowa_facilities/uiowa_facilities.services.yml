@@ -4,10 +4,10 @@ services:
     arguments: ['@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@http_client']
   uiowa_facilities.bizhub_api_client:
     class: Drupal\uiowa_facilities\BizHubApiClient
-    arguments: ['@http_client', '@logger.channel.sitenow_dispatch', '@cache.sitenow_dispatch', '@config.factory']
+    arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']
   uiowa_facilities.buildui_api_client:
     class: Drupal\uiowa_facilities\BuildUiApiClient
-    arguments: ['@http_client', '@logger.channel.sitenow_dispatch', '@cache.sitenow_dispatch', '@config.factory']
+    arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']
   logger.channel.uiowa_facilities:
     parent: logger.channel_base
     arguments: [ 'uiowa_facilities' ]
