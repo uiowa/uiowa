@@ -1164,110 +1164,6 @@ display:
           fields:
             title: title
             body: body
-        field_alert_date_value:
-          id: field_alert_date_value
-          table: node__field_alert_date
-          field: field_alert_date_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: date
-          operator: '>='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-            granularity: day
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_alert_date_value_op
-            label: 'Dates affected - Start'
-            description: ''
-            use_operator: false
-            operator: field_alert_date_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_alert_date_value
-            required: false
-            remember: true
-            multiple: false
-            remember_roles:
-              anonymous: anonymous
-              authenticated: authenticated
-              viewer: viewer
-              editor: editor
-              publisher: publisher
-              webmaster: webmaster
-              administrator: administrator
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_alert_date_end_value:
-          id: field_alert_date_end_value
-          table: node__field_alert_date
-          field: field_alert_date_end_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: date
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-            granularity: day
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_alert_date_end_value_op
-            label: 'Dates affected - End'
-            description: ''
-            use_operator: false
-            operator: field_alert_date_end_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_alert_date_end_value
-            required: false
-            remember: true
-            multiple: false
-            remember_roles:
-              anonymous: anonymous
-              authenticated: authenticated
-              viewer: viewer
-              editor: editor
-              publisher: publisher
-              webmaster: webmaster
-              administrator: administrator
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         field_alert_service_affected_target_id:
           id: field_alert_service_affected_target_id
           table: node__field_alert_service_affected
@@ -1440,6 +1336,110 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+        field_alert_date_value:
+          id: field_alert_date_value
+          table: node__field_alert_date
+          field: field_alert_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          operator: '>='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+            granularity: day
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_alert_date_value_op
+            label: 'Dates affected - Start'
+            description: ''
+            use_operator: false
+            operator: field_alert_date_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_alert_date_value
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+              viewer: viewer
+              editor: editor
+              publisher: publisher
+              webmaster: webmaster
+              administrator: administrator
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_alert_date_end_value:
+          id: field_alert_date_end_value
+          table: node__field_alert_date
+          field: field_alert_date_end_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          operator: '<='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+            granularity: day
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_alert_date_end_value_op
+            label: 'Dates affected - End'
+            description: ''
+            use_operator: false
+            operator: field_alert_date_end_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_alert_date_end_value
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+              viewer: viewer
+              editor: editor
+              publisher: publisher
+              webmaster: webmaster
+              administrator: administrator
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
