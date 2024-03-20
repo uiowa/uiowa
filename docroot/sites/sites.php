@@ -6862,3 +6862,9 @@ $sites['medicineocrme.uiowa.ddev.site'] = 'ocrme.medicine.uiowa.edu';
 $sites['medicineocrme.dev.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
 $sites['medicineocrme.stage.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
 $sites['medicineocrme.prod.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
+
+// Directory aliases for radsci.medicine.uiowa.edu.
+$sites['medicineradsci.uiowa.ddev.site'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.dev.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.stage.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.prod.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
