@@ -6832,3 +6832,21 @@ $sites['conferenceiseh.uiowa.ddev.site'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.dev.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.stage.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
 $sites['conferenceiseh.prod.drupal.uiowa.edu'] = 'iseh.conference.uiowa.edu';
+
+// Directory aliases for hhpeim-oc.org.uiowa.edu.
+$sites['orghhpeim-oc.uiowa.ddev.site'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.dev.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.stage.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+$sites['orghhpeim-oc.prod.drupal.uiowa.edu'] = 'hhpeim-oc.org.uiowa.edu';
+
+// Directory aliases for nsbe.org.uiowa.edu.
+$sites['orgnsbe.uiowa.ddev.site'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.dev.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.stage.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+$sites['orgnsbe.prod.drupal.uiowa.edu'] = 'nsbe.org.uiowa.edu';
+
+// Directory aliases for emergency.uiowa.edu.
+$sites['emergency.uiowa.ddev.site'] = 'emergency.uiowa.edu';
+$sites['emergency.dev.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+$sites['emergency.stage.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+$sites['emergency.prod.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
