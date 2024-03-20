@@ -1,7 +1,16 @@
+@import "components/typography/sitenow-wysiwyg-local-fonts";
+@import '../uids/scss/base/reset';
+
 .ck.ck-content,
 .ck-content {
+  // Colors
+  --brand-primary: #FFCD00;
+  --brand-secondary: #000000;
+  // Margin/Padding
+  --space-lg-width-gutter: 3rem;
+  --space-md-width-gutter: 2rem;
+  --space-sm-width-gutter: 1.25rem;
   // Added here to prevent ckeditor from leaking styles to outside the editor.
-  @import "components/typography/sitenow-wysiwyg-local-fonts";
   @import "../uids/scss/uids-core.scss";
   @import "components/tables";
   @import "components/typography/paragraph";
@@ -13,6 +22,7 @@
   @import "components/typography/global-serif";
   @import "../uids/scss/components/callout";
   @import "../uids/scss/components/inline";
+
 
   font-family: Roboto, sans-serif;
 
