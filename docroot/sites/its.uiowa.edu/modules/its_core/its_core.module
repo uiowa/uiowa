@@ -172,10 +172,6 @@ function its_core_alert_email_build($entity) {
   $alert = [];
   $alert_title = $entity->label();
 
-  if ($entity->isClosed()) {
-    $alert_title = '[CLOSED] ' . $alert_title;
-  }
-
   // Construct date for output.
   $format = SmartDateFormat::load('compact');
   $settings = $format->getOptions();
