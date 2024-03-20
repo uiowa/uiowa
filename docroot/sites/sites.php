@@ -6958,3 +6958,9 @@ $sites['medicinemicrobiology.uiowa.ddev.site'] = 'microbiology.medicine.uiowa.ed
 $sites['medicinemicrobiology.dev.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
 $sites['medicinemicrobiology.stage.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
 $sites['medicinemicrobiology.prod.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
+
+// Directory aliases for neurology.medicine.uiowa.edu.
+$sites['medicineneurology.uiowa.ddev.site'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.dev.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.stage.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.prod.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
