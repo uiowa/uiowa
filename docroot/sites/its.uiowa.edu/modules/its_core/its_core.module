@@ -401,6 +401,20 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       $form['field_service_audience']['#attributes']['class'][] = 'multi--column';
       break;
 
+    // Node form modifications.
+    case 'node_support_article_edit_form':
+    case 'node_support_article_form':
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
+        unset($form["path"]);
+      }
+
+      break;
   }
 }
 
@@ -491,7 +505,7 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
     // so add our static card title.
     $variables['content']['card_title'] = [
       '#type' => 'markup',
-      '#markup' => '<h2 class="headline headline--serif default"><span class="headline__heading">Overview</span></h2>',
+      '#markup' => '<h2 class="headline headline--serif default block-margin__bottom"><span class="headline__heading">Overview</span></h2>',
     ];
   }
 }
