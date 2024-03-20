@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: emergency.uiowa.ddev.site
+    protocol: https
+  machine_name: emergency
+  human_name: emergency.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: emergency.prod
+drupal:
+  db:
+    database: emergency_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://emergency.prod.drupal.uiowa.edu'
+  requester: hbruce
+  site-name: emergency.uiowa.edu
