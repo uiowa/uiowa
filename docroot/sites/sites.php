@@ -6898,3 +6898,9 @@ $sites['medicinemd.uiowa.ddev.site'] = 'md.medicine.uiowa.edu';
 $sites['medicinemd.dev.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
 $sites['medicinemd.stage.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
 $sites['medicinemd.prod.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
+
+// Directory aliases for mstp.medicine.uiowa.edu.
+$sites['medicinemstp.uiowa.ddev.site'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.dev.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.stage.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.prod.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
