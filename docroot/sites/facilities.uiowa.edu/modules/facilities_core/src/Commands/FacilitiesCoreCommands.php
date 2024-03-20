@@ -2,7 +2,6 @@
 
 namespace Drupal\facilities_core\Commands;
 
-use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drush\Commands\DrushCommands;
@@ -53,7 +52,8 @@ class FacilitiesCoreCommands extends DrushCommands {
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
     $this->logger()->notice('Starting the facilities building content sync from drush. This may take a little time if the information isn\'t cached.');
 
-    facilities_core_import_buildings();
+    $message = facilities_core_import_buildings();
+    $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
@@ -72,7 +72,8 @@ class FacilitiesCoreCommands extends DrushCommands {
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
     $this->logger()->notice('Starting the facilities projects sync from drush. This may take a little time if the information isn\'t cached.');
 
-    facilities_core_import_projects();
+    $message = facilities_core_import_projects();
+    $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
