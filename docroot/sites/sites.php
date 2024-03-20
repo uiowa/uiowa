@@ -7000,3 +7000,9 @@ $sites['medicinepediatrics.uiowa.ddev.site'] = 'pediatrics.medicine.uiowa.edu';
 $sites['medicinepediatrics.dev.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
 $sites['medicinepediatrics.stage.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
 $sites['medicinepediatrics.prod.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
+
+// Directory aliases for psychiatry.medicine.uiowa.edu.
+$sites['medicinepsychiatry.uiowa.ddev.site'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.dev.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.stage.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.prod.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
