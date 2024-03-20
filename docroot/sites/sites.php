@@ -7036,3 +7036,9 @@ $sites['medicinephysiology.uiowa.ddev.site'] = 'physiology.medicine.uiowa.edu';
 $sites['medicinephysiology.dev.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
 $sites['medicinephysiology.stage.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
 $sites['medicinephysiology.prod.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
+
+// Directory aliases for levittcenter.medicine.uiowa.edu.
+$sites['medicinelevittcenter.uiowa.ddev.site'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.dev.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.stage.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.prod.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
