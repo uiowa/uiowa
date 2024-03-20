@@ -7012,3 +7012,9 @@ $sites['medicineradiationoncology.uiowa.ddev.site'] = 'radiationoncology.medicin
 $sites['medicineradiationoncology.dev.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
 $sites['medicineradiationoncology.stage.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
 $sites['medicineradiationoncology.prod.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
+
+// Directory aliases for radiology.medicine.uiowa.edu.
+$sites['medicineradiology.uiowa.ddev.site'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.dev.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.stage.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.prod.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
