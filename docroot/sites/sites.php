@@ -6928,3 +6928,9 @@ $sites['medicinect-surgery.uiowa.ddev.site'] = 'ct-surgery.medicine.uiowa.edu';
 $sites['medicinect-surgery.dev.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
 $sites['medicinect-surgery.stage.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
 $sites['medicinect-surgery.prod.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+
+// Directory aliases for dermatology.medicine.uiowa.edu.
+$sites['medicinedermatology.uiowa.ddev.site'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.dev.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.stage.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.prod.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
