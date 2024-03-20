@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\classrooms_core\Entity\Building;
 use Drupal\classrooms_core\Entity\ClassroomsRoom;
 use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -674,4 +675,158 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       classrooms_core_preprocess_rooms_list($variables, 'field_room_responsible_unit', 'field_room_features');
       break;
   }
+}
+
+function classrooms_core_import_buildings() {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
+  }
+
+  $entities_created = 0;
+  /** @var Drupal\Core\Cache\CacheBackendInterface $maui_cache */
+  $maui_cache = \Drupal::service('cache.uiowa_maui');
+  /** @var Drupal\uiowa_maui\MauiApi $maui_api */
+  $maui_api = \Drupal::service('uiowa_maui.api');
+
+  $cid = 'uiowa_maui:request:buildings_filtered';
+  if ($cached = $maui_cache->get($cid)) {
+    $buildings = $cached->data;
+  }
+  else {
+    // Request from MAUI API. We're interested
+    // in both university and programmed classrooms.
+    $buildings = [];
+    foreach (['UNIVERSITY_CLASSROOM', 'PROGRAMMED_CLASSROOM'] as $filter) {
+      $data = $maui_api->getClassroomsData($filter);
+      foreach ($data as $room) {
+        $buildings[strtolower($room->facilityBuilding?->building)] = [
+          'name' => $room->facilityBuilding?->buildingDescr,
+          'number' => $room->facilityBuilding?->buildingNumber,
+        ];
+      }
+    }
+    // Create a cache item set to 6 hours.
+    $request_time = \Drupal::time()->getRequestTime();
+    $maui_cache->set($cid, $buildings, $request_time + 21600);
+  }
+
+  if (!empty($buildings)) {
+    // Check for existing building config entities before creating.
+    $query = \Drupal::service('entity_type.manager')
+      ->getStorage('building')
+      ->getQuery()
+      ->accessCheck(TRUE);
+    $entities = $query->execute();
+
+    foreach ($buildings as $building_id => $building_info) {
+      if (!in_array($building_id, $entities)) {
+        $building = Building::create([
+          'id' => $building_id,
+          'label' => $building_info['name'],
+          'status' => 1,
+          'number' => $building_info['number'],
+        ]);
+        $building->save();
+        $entities_created++;
+      }
+    }
+  }
+
+  if ($entities_created > 0) {
+    $arguments = [
+      '@count' => $entities_created,
+    ];
+    $message = t('@count buildings were created. That is neat.', $arguments);
+    \Drupal::logger('classrooms_core')->notice($message);
+  }
+  else {
+    $message = 'Bummer. No new buildings were created. Maybe next time.';
+    \Drupal::logger('classrooms_core')->notice($message);
+  }
+  return $message;
+}
+
+function classrooms_core_import_rooms($batch) {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
+  }
+
+  $entity_type_manager = \Drupal::service('entity_type.manager');
+  // Get existing room nodes.
+  $query = $entity_type_manager
+    ->getStorage('node')
+    ->getQuery()
+    ->condition('type', 'room')
+    ->accessCheck(TRUE);
+  $entities = $query->execute();
+
+  $logger = \Drupal::logger('classrooms_core');
+
+  // If we don't have any entities, send a message
+  // and we're done.
+  if (empty($entities)) {
+    return 'No rooms available to update.';
+  }
+
+  // Retrieve building and room number values from existing nodes.
+  $storage = $entity_type_manager->getStorage('node');
+  $room_processor = new RoomItemProcessor();
+
+  // Batch them up.
+  // Create the operations array for the batch.
+  $operations = [];
+  $num_operations = 0;
+  $batch_id = 1;
+  // Quick manipulate to ensure we have a positve
+  // integer to use for the batch size.
+  $batch_size = max(1, abs($batch));
+  for ($i = 0; $i < count($entities);) {
+    $nids = $storage
+      ->getQuery()
+      ->condition('type', 'room')
+      ->range($i, $batch_size)
+      ->accessCheck()
+      ->execute();
+    $nodes = $storage->loadMultiple($nids);
+
+    $operations[] = [
+      '\Drupal\classrooms_core\BatchRooms::processNode',
+      [
+        $batch_id,
+        $nodes,
+        $room_processor,
+      ],
+    ];
+    $batch_id++;
+    $num_operations++;
+    $i += $batch_size;
+  }
+  $batch = [
+    'title' => t('Checking @num node(s) for updates.', [
+      '@num' => $num_operations,
+    ]),
+    'operations' => $operations,
+    'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
+  ];
+
+  // 5. Add batch operations as new batch sets.
+  batch_set($batch);
+  // 6. Process the batch sets.
+  drush_backend_batch_process();
+  // 7. Log some information.
+  $message = 'Update batch operations ended.';
+  $logger->notice($message);
+  return $message;
 }

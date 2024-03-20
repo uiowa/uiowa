@@ -91,65 +91,11 @@ class ClassroomsCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function getBuildings() {
-    $entities_created = 0;
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $cid = 'uiowa_maui:request:buildings_filtered';
-    if ($cached = $this->mauiCache->get($cid)) {
-      $buildings = $cached->data;
-    }
-    else {
-      // Request from MAUI API. We're interested
-      // in both university and programmed classrooms.
-      $buildings = [];
-      foreach (['UNIVERSITY_CLASSROOM', 'PROGRAMMED_CLASSROOM'] as $filter) {
-        $data = $this->mauiApi->getClassroomsData($filter);
-        foreach ($data as $room) {
-          $buildings[strtolower($room->facilityBuilding?->building)] = [
-            'name' => $room->facilityBuilding?->buildingDescr,
-            'number' => $room->facilityBuilding?->buildingNumber,
-          ];
-        }
-      }
-      // Create a cache item set to 6 hours.
-      $request_time = $this->time->getRequestTime();
-      $this->mauiCache->set($cid, $buildings, $request_time + 21600);
-    }
-
-    if (!empty($buildings)) {
-      // Check for existing building config entities before creating.
-      $query = $this->entityTypeManager
-        ->getStorage('building')
-        ->getQuery()
-        ->accessCheck(TRUE);
-      $entities = $query->execute();
-
-      foreach ($buildings as $building_id => $building_info) {
-        if (!in_array($building_id, $entities)) {
-          $building = Building::create([
-            'id' => $building_id,
-            'label' => $building_info['name'],
-            'status' => 1,
-            'number' => $building_info['number'],
-          ]);
-          $building->save();
-          $entities_created++;
-        }
-      }
-    }
-
-    if ($entities_created > 0) {
-      $arguments = [
-        '@count' => $entities_created,
-      ];
-      $this->getLogger('classrooms_core')->notice('@count buildings were created. That is neat.', $arguments);
-      $this->logger()->notice('@count buildings were created. That is neat.', $arguments);
-    }
-    else {
-      $this->getLogger('classrooms_core')->notice('Bummer. No new buildings were created. Maybe next time.');
-      $this->logger()->notice('Bummer. No new buildings were created. Maybe next time.');
-    }
+    $message = classrooms_core_import_buildings();
+    $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
@@ -174,73 +120,8 @@ class ClassroomsCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    // Get existing room nodes.
-    $query = $this->entityTypeManager
-      ->getStorage('node')
-      ->getQuery()
-      ->condition('type', 'room')
-      ->accessCheck(TRUE);
-    $entities = $query->execute();
-
-    // If we don't have any entities, send a message
-    // and we're done.
-    if (empty($entities)) {
-      $this->getLogger('classrooms_core')->notice('No rooms available to update.');
-      $this->logger()->notice('No rooms available to update.');
-
-      // Switch user back.
-      $this->accountSwitcher->switchBack();
-      return;
-    }
-
-    // Retrieve building and room number values from existing nodes.
-    $storage = $this->entityTypeManager->getStorage('node');
-    $room_processor = new RoomItemProcessor();
-
-    // Batch them up.
-    // Create the operations array for the batch.
-    $operations = [];
-    $num_operations = 0;
-    $batch_id = 1;
-    // Quick manipulate to ensure we have a positve
-    // integer to use for the batch size.
-    $batch_size = max(1, abs((int) $options['batch']));
-    for ($i = 0; $i < count($entities);) {
-      $nids = $storage
-        ->getQuery()
-        ->condition('type', 'room')
-        ->range($i, $batch_size)
-        ->accessCheck()
-        ->execute();
-      $nodes = $storage->loadMultiple($nids);
-
-      $operations[] = [
-        '\Drupal\classrooms_core\BatchRooms::processNode',
-        [
-          $batch_id,
-          $nodes,
-          $room_processor,
-        ],
-      ];
-      $batch_id++;
-      $num_operations++;
-      $i += $batch_size;
-    }
-    $batch = [
-      'title' => $this->t('Checking @num node(s) for updates.', [
-        '@num' => $num_operations,
-      ]),
-      'operations' => $operations,
-      'finished' => '\Drupal\classrooms_core\BatchRooms::processNodeFinished',
-    ];
-
-    // 5. Add batch operations as new batch sets.
-    batch_set($batch);
-    // 6. Process the batch sets.
-    drush_backend_batch_process();
-    // 7. Log some information.
-    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
-    $this->logger()->notice('Update batch operations ended.');
+    $message = classrooms_core_import_rooms($options['batch']);
+    $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
