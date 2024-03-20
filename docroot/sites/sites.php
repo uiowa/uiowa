@@ -6946,3 +6946,9 @@ $sites['medicinefamilymedicine.uiowa.ddev.site'] = 'familymedicine.medicine.uiow
 $sites['medicinefamilymedicine.dev.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
 $sites['medicinefamilymedicine.stage.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
 $sites['medicinefamilymedicine.prod.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
+
+// Directory aliases for internalmedicine.medicine.uiowa.edu.
+$sites['medicineinternalmedicine.uiowa.ddev.site'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.dev.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.stage.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.prod.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
