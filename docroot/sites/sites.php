@@ -6215,12 +6215,6 @@ $sites['labgrowingwords.dev.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
 $sites['labgrowingwords.stage.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
 $sites['labgrowingwords.prod.drupal.uiowa.edu'] = 'growingwords.lab.uiowa.edu';
 
-// Directory aliases for evaluation.org.uiowa.edu.
-$sites['orgevaluation.uiowa.ddev.site'] = 'evaluation.org.uiowa.edu';
-$sites['orgevaluation.dev.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
-$sites['orgevaluation.stage.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
-$sites['orgevaluation.prod.drupal.uiowa.edu'] = 'evaluation.org.uiowa.edu';
-
 // Directory aliases for buchanan.lab.uiowa.edu.
 $sites['labbuchanan.uiowa.ddev.site'] = 'buchanan.lab.uiowa.edu';
 $sites['labbuchanan.dev.drupal.uiowa.edu'] = 'buchanan.lab.uiowa.edu';
@@ -6850,3 +6844,195 @@ $sites['emergency.uiowa.ddev.site'] = 'emergency.uiowa.edu';
 $sites['emergency.dev.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
 $sites['emergency.stage.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
 $sites['emergency.prod.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+
+// Directory aliases for pbi.medicine.uiowa.edu.
+$sites['medicinepbi.uiowa.ddev.site'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.dev.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.stage.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.prod.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
+
+// Directory aliases for ocrme.medicine.uiowa.edu.
+$sites['medicineocrme.uiowa.ddev.site'] = 'ocrme.medicine.uiowa.edu';
+$sites['medicineocrme.dev.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
+$sites['medicineocrme.stage.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
+$sites['medicineocrme.prod.drupal.uiowa.edu'] = 'ocrme.medicine.uiowa.edu';
+
+// Directory aliases for radsci.medicine.uiowa.edu.
+$sites['medicineradsci.uiowa.ddev.site'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.dev.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.stage.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
+$sites['medicineradsci.prod.drupal.uiowa.edu'] = 'radsci.medicine.uiowa.edu';
+
+// Directory aliases for pstp.medicine.uiowa.edu.
+$sites['medicinepstp.uiowa.ddev.site'] = 'pstp.medicine.uiowa.edu';
+$sites['medicinepstp.dev.drupal.uiowa.edu'] = 'pstp.medicine.uiowa.edu';
+$sites['medicinepstp.stage.drupal.uiowa.edu'] = 'pstp.medicine.uiowa.edu';
+$sites['medicinepstp.prod.drupal.uiowa.edu'] = 'pstp.medicine.uiowa.edu';
+
+// Directory aliases for mmed.medicine.uiowa.edu.
+$sites['medicinemmed.uiowa.ddev.site'] = 'mmed.medicine.uiowa.edu';
+$sites['medicinemmed.dev.drupal.uiowa.edu'] = 'mmed.medicine.uiowa.edu';
+$sites['medicinemmed.stage.drupal.uiowa.edu'] = 'mmed.medicine.uiowa.edu';
+$sites['medicinemmed.prod.drupal.uiowa.edu'] = 'mmed.medicine.uiowa.edu';
+
+// Directory aliases for diabetes.medicine.uiowa.edu.
+$sites['medicinediabetes.uiowa.ddev.site'] = 'diabetes.medicine.uiowa.edu';
+$sites['medicinediabetes.dev.drupal.uiowa.edu'] = 'diabetes.medicine.uiowa.edu';
+$sites['medicinediabetes.stage.drupal.uiowa.edu'] = 'diabetes.medicine.uiowa.edu';
+$sites['medicinediabetes.prod.drupal.uiowa.edu'] = 'diabetes.medicine.uiowa.edu';
+
+// Directory aliases for cardiovascular.medicine.uiowa.edu.
+$sites['medicinecardiovascular.uiowa.ddev.site'] = 'cardiovascular.medicine.uiowa.edu';
+$sites['medicinecardiovascular.dev.drupal.uiowa.edu'] = 'cardiovascular.medicine.uiowa.edu';
+$sites['medicinecardiovascular.stage.drupal.uiowa.edu'] = 'cardiovascular.medicine.uiowa.edu';
+$sites['medicinecardiovascular.prod.drupal.uiowa.edu'] = 'cardiovascular.medicine.uiowa.edu';
+
+// Directory aliases for md.medicine.uiowa.edu.
+$sites['medicinemd.uiowa.ddev.site'] = 'md.medicine.uiowa.edu';
+$sites['medicinemd.dev.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
+$sites['medicinemd.stage.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
+$sites['medicinemd.prod.drupal.uiowa.edu'] = 'md.medicine.uiowa.edu';
+
+// Directory aliases for mstp.medicine.uiowa.edu.
+$sites['medicinemstp.uiowa.ddev.site'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.dev.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.stage.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
+$sites['medicinemstp.prod.drupal.uiowa.edu'] = 'mstp.medicine.uiowa.edu';
+
+// Directory aliases for acb.medicine.uiowa.edu.
+$sites['medicineacb.uiowa.ddev.site'] = 'acb.medicine.uiowa.edu';
+$sites['medicineacb.dev.drupal.uiowa.edu'] = 'acb.medicine.uiowa.edu';
+$sites['medicineacb.stage.drupal.uiowa.edu'] = 'acb.medicine.uiowa.edu';
+$sites['medicineacb.prod.drupal.uiowa.edu'] = 'acb.medicine.uiowa.edu';
+
+// Directory aliases for anesthesia.medicine.uiowa.edu.
+$sites['medicineanesthesia.uiowa.ddev.site'] = 'anesthesia.medicine.uiowa.edu';
+$sites['medicineanesthesia.dev.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
+$sites['medicineanesthesia.stage.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
+$sites['medicineanesthesia.prod.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
+
+// Directory aliases for biochemistry-molecular-biology.medicine.uiowa.edu.
+$sites['medicinebiochemistry-molecular-biology.uiowa.ddev.site'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.dev.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.stage.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.prod.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+
+// Directory aliases for ct-surgery.medicine.uiowa.edu.
+$sites['medicinect-surgery.uiowa.ddev.site'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.dev.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.stage.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.prod.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+
+// Directory aliases for dermatology.medicine.uiowa.edu.
+$sites['medicinedermatology.uiowa.ddev.site'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.dev.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.stage.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
+$sites['medicinedermatology.prod.drupal.uiowa.edu'] = 'dermatology.medicine.uiowa.edu';
+
+// Directory aliases for emergencymedicine.medicine.uiowa.edu.
+$sites['medicineemergencymedicine.uiowa.ddev.site'] = 'emergencymedicine.medicine.uiowa.edu';
+$sites['medicineemergencymedicine.dev.drupal.uiowa.edu'] = 'emergencymedicine.medicine.uiowa.edu';
+$sites['medicineemergencymedicine.stage.drupal.uiowa.edu'] = 'emergencymedicine.medicine.uiowa.edu';
+$sites['medicineemergencymedicine.prod.drupal.uiowa.edu'] = 'emergencymedicine.medicine.uiowa.edu';
+
+// Directory aliases for familymedicine.medicine.uiowa.edu.
+$sites['medicinefamilymedicine.uiowa.ddev.site'] = 'familymedicine.medicine.uiowa.edu';
+$sites['medicinefamilymedicine.dev.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
+$sites['medicinefamilymedicine.stage.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
+$sites['medicinefamilymedicine.prod.drupal.uiowa.edu'] = 'familymedicine.medicine.uiowa.edu';
+
+// Directory aliases for internalmedicine.medicine.uiowa.edu.
+$sites['medicineinternalmedicine.uiowa.ddev.site'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.dev.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.stage.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
+$sites['medicineinternalmedicine.prod.drupal.uiowa.edu'] = 'internalmedicine.medicine.uiowa.edu';
+
+// Directory aliases for microbiology.medicine.uiowa.edu.
+$sites['medicinemicrobiology.uiowa.ddev.site'] = 'microbiology.medicine.uiowa.edu';
+$sites['medicinemicrobiology.dev.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
+$sites['medicinemicrobiology.stage.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
+$sites['medicinemicrobiology.prod.drupal.uiowa.edu'] = 'microbiology.medicine.uiowa.edu';
+
+// Directory aliases for neurology.medicine.uiowa.edu.
+$sites['medicineneurology.uiowa.ddev.site'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.dev.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.stage.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
+$sites['medicineneurology.prod.drupal.uiowa.edu'] = 'neurology.medicine.uiowa.edu';
+
+// Directory aliases for neuroscience-pharmacology.medicine.uiowa.edu.
+$sites['medicineneuroscience-pharmacology.uiowa.ddev.site'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
+$sites['medicineneuroscience-pharmacology.dev.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
+$sites['medicineneuroscience-pharmacology.stage.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
+$sites['medicineneuroscience-pharmacology.prod.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
+
+// Directory aliases for neurosurgery.medicine.uiowa.edu.
+$sites['medicineneurosurgery.uiowa.ddev.site'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.dev.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.stage.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.prod.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+
+// Directory aliases for obgyn.medicine.uiowa.edu.
+$sites['medicineobgyn.uiowa.ddev.site'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.dev.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.stage.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.prod.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
+
+// Directory aliases for orthopedics.medicine.uiowa.edu.
+$sites['medicineorthopedics.uiowa.ddev.site'] = 'orthopedics.medicine.uiowa.edu';
+$sites['medicineorthopedics.dev.drupal.uiowa.edu'] = 'orthopedics.medicine.uiowa.edu';
+$sites['medicineorthopedics.stage.drupal.uiowa.edu'] = 'orthopedics.medicine.uiowa.edu';
+$sites['medicineorthopedics.prod.drupal.uiowa.edu'] = 'orthopedics.medicine.uiowa.edu';
+
+// Directory aliases for pathology.medicine.uiowa.edu.
+$sites['medicinepathology.uiowa.ddev.site'] = 'pathology.medicine.uiowa.edu';
+$sites['medicinepathology.dev.drupal.uiowa.edu'] = 'pathology.medicine.uiowa.edu';
+$sites['medicinepathology.stage.drupal.uiowa.edu'] = 'pathology.medicine.uiowa.edu';
+$sites['medicinepathology.prod.drupal.uiowa.edu'] = 'pathology.medicine.uiowa.edu';
+
+// Directory aliases for pediatrics.medicine.uiowa.edu.
+$sites['medicinepediatrics.uiowa.ddev.site'] = 'pediatrics.medicine.uiowa.edu';
+$sites['medicinepediatrics.dev.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
+$sites['medicinepediatrics.stage.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
+$sites['medicinepediatrics.prod.drupal.uiowa.edu'] = 'pediatrics.medicine.uiowa.edu';
+
+// Directory aliases for psychiatry.medicine.uiowa.edu.
+$sites['medicinepsychiatry.uiowa.ddev.site'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.dev.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.stage.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
+$sites['medicinepsychiatry.prod.drupal.uiowa.edu'] = 'psychiatry.medicine.uiowa.edu';
+
+// Directory aliases for radiationoncology.medicine.uiowa.edu.
+$sites['medicineradiationoncology.uiowa.ddev.site'] = 'radiationoncology.medicine.uiowa.edu';
+$sites['medicineradiationoncology.dev.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
+$sites['medicineradiationoncology.stage.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
+$sites['medicineradiationoncology.prod.drupal.uiowa.edu'] = 'radiationoncology.medicine.uiowa.edu';
+
+// Directory aliases for radiology.medicine.uiowa.edu.
+$sites['medicineradiology.uiowa.ddev.site'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.dev.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.stage.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
+$sites['medicineradiology.prod.drupal.uiowa.edu'] = 'radiology.medicine.uiowa.edu';
+
+// Directory aliases for surgery.medicine.uiowa.edu.
+$sites['medicinesurgery.uiowa.ddev.site'] = 'surgery.medicine.uiowa.edu';
+$sites['medicinesurgery.dev.drupal.uiowa.edu'] = 'surgery.medicine.uiowa.edu';
+$sites['medicinesurgery.stage.drupal.uiowa.edu'] = 'surgery.medicine.uiowa.edu';
+$sites['medicinesurgery.prod.drupal.uiowa.edu'] = 'surgery.medicine.uiowa.edu';
+
+// Directory aliases for urology.medicine.uiowa.edu.
+$sites['medicineurology.uiowa.ddev.site'] = 'urology.medicine.uiowa.edu';
+$sites['medicineurology.dev.drupal.uiowa.edu'] = 'urology.medicine.uiowa.edu';
+$sites['medicineurology.stage.drupal.uiowa.edu'] = 'urology.medicine.uiowa.edu';
+$sites['medicineurology.prod.drupal.uiowa.edu'] = 'urology.medicine.uiowa.edu';
+
+// Directory aliases for physiology.medicine.uiowa.edu.
+$sites['medicinephysiology.uiowa.ddev.site'] = 'physiology.medicine.uiowa.edu';
+$sites['medicinephysiology.dev.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
+$sites['medicinephysiology.stage.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
+$sites['medicinephysiology.prod.drupal.uiowa.edu'] = 'physiology.medicine.uiowa.edu';
+
+// Directory aliases for levittcenter.medicine.uiowa.edu.
+$sites['medicinelevittcenter.uiowa.ddev.site'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.dev.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.stage.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
+$sites['medicinelevittcenter.prod.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
