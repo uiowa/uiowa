@@ -374,6 +374,8 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     case 'node_alert_edit_form':
     case 'node_alert_form':
+      // Attach smart_date override js.
+      $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
       if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
