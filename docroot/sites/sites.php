@@ -6850,3 +6850,9 @@ $sites['emergency.uiowa.ddev.site'] = 'emergency.uiowa.edu';
 $sites['emergency.dev.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
 $sites['emergency.stage.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
 $sites['emergency.prod.drupal.uiowa.edu'] = 'emergency.uiowa.edu';
+
+// Directory aliases for pbi.medicine.uiowa.edu.
+$sites['medicinepbi.uiowa.ddev.site'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.dev.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.stage.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
+$sites['medicinepbi.prod.drupal.uiowa.edu'] = 'pbi.medicine.uiowa.edu';
