@@ -6976,3 +6976,9 @@ $sites['medicineneurosurgery.uiowa.ddev.site'] = 'neurosurgery.medicine.uiowa.ed
 $sites['medicineneurosurgery.dev.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
 $sites['medicineneurosurgery.stage.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
 $sites['medicineneurosurgery.prod.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+
+// Directory aliases for obgyn.medicine.uiowa.edu.
+$sites['medicineobgyn.uiowa.ddev.site'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.dev.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.stage.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
+$sites['medicineobgyn.prod.drupal.uiowa.edu'] = 'obgyn.medicine.uiowa.edu';
