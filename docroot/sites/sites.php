@@ -6922,3 +6922,9 @@ $sites['medicinebiochemistry-molecular-biology.uiowa.ddev.site'] = 'biochemistry
 $sites['medicinebiochemistry-molecular-biology.dev.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
 $sites['medicinebiochemistry-molecular-biology.stage.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
 $sites['medicinebiochemistry-molecular-biology.prod.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+
+// Directory aliases for ct-surgery.medicine.uiowa.edu.
+$sites['medicinect-surgery.uiowa.ddev.site'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.dev.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.stage.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
+$sites['medicinect-surgery.prod.drupal.uiowa.edu'] = 'ct-surgery.medicine.uiowa.edu';
