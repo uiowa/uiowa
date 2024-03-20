@@ -6970,3 +6970,9 @@ $sites['medicineneuroscience-pharmacology.uiowa.ddev.site'] = 'neuroscience-phar
 $sites['medicineneuroscience-pharmacology.dev.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
 $sites['medicineneuroscience-pharmacology.stage.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
 $sites['medicineneuroscience-pharmacology.prod.drupal.uiowa.edu'] = 'neuroscience-pharmacology.medicine.uiowa.edu';
+
+// Directory aliases for neurosurgery.medicine.uiowa.edu.
+$sites['medicineneurosurgery.uiowa.ddev.site'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.dev.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.stage.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
+$sites['medicineneurosurgery.prod.drupal.uiowa.edu'] = 'neurosurgery.medicine.uiowa.edu';
