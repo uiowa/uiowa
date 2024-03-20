@@ -6916,3 +6916,9 @@ $sites['medicineanesthesia.uiowa.ddev.site'] = 'anesthesia.medicine.uiowa.edu';
 $sites['medicineanesthesia.dev.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
 $sites['medicineanesthesia.stage.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
 $sites['medicineanesthesia.prod.drupal.uiowa.edu'] = 'anesthesia.medicine.uiowa.edu';
+
+// Directory aliases for biochemistry-molecular-biology.medicine.uiowa.edu.
+$sites['medicinebiochemistry-molecular-biology.uiowa.ddev.site'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.dev.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.stage.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
+$sites['medicinebiochemistry-molecular-biology.prod.drupal.uiowa.edu'] = 'biochemistry-molecular-biology.medicine.uiowa.edu';
