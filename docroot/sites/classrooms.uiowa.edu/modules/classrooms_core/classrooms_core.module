@@ -677,7 +677,15 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
   }
 }
 
-function classrooms_core_import_buildings() {
+/**
+ * Import and update buildings.
+ *
+ * @return string
+ *   The process completion message.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function classrooms_core_import_buildings(): string {
   // Check that this process is being called with
   // admin permissions.
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
@@ -743,16 +751,24 @@ function classrooms_core_import_buildings() {
       '@count' => $entities_created,
     ];
     $message = t('@count buildings were created. That is neat.', $arguments);
-    \Drupal::logger('classrooms_core')->notice($message);
   }
   else {
     $message = 'Bummer. No new buildings were created. Maybe next time.';
-    \Drupal::logger('classrooms_core')->notice($message);
   }
+  \Drupal::logger('classrooms_core')->notice($message);
   return $message;
 }
 
-function classrooms_core_import_rooms($batch) {
+/**
+ * Import and update rooms.
+ *
+ * @param int $batch
+ *   The rooms to be processed in each batch.
+ *
+ * @return string
+ *   The process completion message.
+ */
+function classrooms_core_import_rooms(int $batch): string {
   // Check that this process is being called with
   // admin permissions.
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
