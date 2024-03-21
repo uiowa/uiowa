@@ -7030,3 +7030,9 @@ $sites['medicinelevittcenter.uiowa.ddev.site'] = 'levittcenter.medicine.uiowa.ed
 $sites['medicinelevittcenter.dev.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
 $sites['medicinelevittcenter.stage.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
 $sites['medicinelevittcenter.prod.drupal.uiowa.edu'] = 'levittcenter.medicine.uiowa.edu';
+
+// Directory aliases for bmb.medicine.uiowa.edu.
+$sites['medicinebmb.uiowa.ddev.site'] = 'bmb.medicine.uiowa.edu';
+$sites['medicinebmb.dev.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
+$sites['medicinebmb.stage.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
+$sites['medicinebmb.prod.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
