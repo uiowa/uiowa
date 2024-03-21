@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinelevittcenter.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinelevittcenter
+  human_name: levittcenter.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinelevittcenter.prod
+drupal:
+  db:
+    database: levittcenter_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinelevittcenter.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Levitt Center'

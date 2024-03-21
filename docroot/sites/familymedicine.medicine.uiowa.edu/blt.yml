@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinefamilymedicine.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinefamilymedicine
+  human_name: familymedicine.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinefamilymedicine.prod
+drupal:
+  db:
+    database: familymedicine_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinefamilymedicine.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Family Medicine'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineanesthesia.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineanesthesia
+  human_name: anesthesia.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineanesthesia.prod
+drupal:
+  db:
+    database: anesthesia_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineanesthesia.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Anesthesia'
