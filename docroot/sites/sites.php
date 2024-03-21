@@ -7102,3 +7102,9 @@ $sites['labsmall.uiowa.ddev.site'] = 'small.lab.uiowa.edu';
 $sites['labsmall.dev.drupal.uiowa.edu'] = 'small.lab.uiowa.edu';
 $sites['labsmall.stage.drupal.uiowa.edu'] = 'small.lab.uiowa.edu';
 $sites['labsmall.prod.drupal.uiowa.edu'] = 'small.lab.uiowa.edu';
+
+// Directory aliases for wiemer.lab.uiowa.edu.
+$sites['labwiemer.uiowa.ddev.site'] = 'wiemer.lab.uiowa.edu';
+$sites['labwiemer.dev.drupal.uiowa.edu'] = 'wiemer.lab.uiowa.edu';
+$sites['labwiemer.stage.drupal.uiowa.edu'] = 'wiemer.lab.uiowa.edu';
+$sites['labwiemer.prod.drupal.uiowa.edu'] = 'wiemer.lab.uiowa.edu';
