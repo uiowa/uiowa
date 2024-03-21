@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinect-surgery.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinect-surgery
+  human_name: ct-surgery.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinect-surgery.prod
+drupal:
+  db:
+    database: ct_surgery_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinect-surgery.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Cardiothoracic Surgery'

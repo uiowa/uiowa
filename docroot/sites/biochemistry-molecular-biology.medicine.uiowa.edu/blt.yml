@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinebiochemistry-molecular-biology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinebiochemistry-molecular-biology
+  human_name: biochemistry-molecular-biology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinebiochemistry-molecular-biology.prod
+drupal:
+  db:
+    database: biochemistry_molecular_biology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinebiochemistry-molecular-biology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Biochemistry and Molecular Biology'

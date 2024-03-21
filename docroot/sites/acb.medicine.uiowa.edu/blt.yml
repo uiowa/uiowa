@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineacb.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineacb
+  human_name: acb.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineacb.prod
+drupal:
+  db:
+    database: acb_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineacb.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Anatomy and Cell Biology'
