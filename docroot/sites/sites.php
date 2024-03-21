@@ -7084,3 +7084,9 @@ $sites['labmargulis.uiowa.ddev.site'] = 'margulis.lab.uiowa.edu';
 $sites['labmargulis.dev.drupal.uiowa.edu'] = 'margulis.lab.uiowa.edu';
 $sites['labmargulis.stage.drupal.uiowa.edu'] = 'margulis.lab.uiowa.edu';
 $sites['labmargulis.prod.drupal.uiowa.edu'] = 'margulis.lab.uiowa.edu';
+
+// Directory aliases for messerle.lab.uiowa.edu.
+$sites['labmesserle.uiowa.ddev.site'] = 'messerle.lab.uiowa.edu';
+$sites['labmesserle.dev.drupal.uiowa.edu'] = 'messerle.lab.uiowa.edu';
+$sites['labmesserle.stage.drupal.uiowa.edu'] = 'messerle.lab.uiowa.edu';
+$sites['labmesserle.prod.drupal.uiowa.edu'] = 'messerle.lab.uiowa.edu';
