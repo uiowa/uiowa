@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineorthopedics.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineorthopedics
+  human_name: orthopedics.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineorthopedics.prod
+drupal:
+  db:
+    database: orthopedics_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineorthopedics.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Orthopedics and Rehabilitation'

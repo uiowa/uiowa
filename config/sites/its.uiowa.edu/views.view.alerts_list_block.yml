@@ -928,7 +928,7 @@ display:
           text_input_required_format: filtered_html
           bef:
             general:
-              autosubmit: true
+              autosubmit: false
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_hide: false
@@ -1762,6 +1762,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: none
+        options:
+          offset: 0
       filters:
         status:
           id: status
@@ -1875,6 +1879,7 @@ display:
           relationship: none
           view_mode: teaser
       defaults:
+        pager: false
         style: false
         row: false
         fields: false
@@ -1925,7 +1930,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -2942,7 +2946,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: date
-          order: ASC
+          order: DESC
           expose:
             label: ''
             field_identifier: ''
