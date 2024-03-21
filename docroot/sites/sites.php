@@ -7042,3 +7042,9 @@ $sites['labarnold.uiowa.ddev.site'] = 'arnold.lab.uiowa.edu';
 $sites['labarnold.dev.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
 $sites['labarnold.stage.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
 $sites['labarnold.prod.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
+
+// Directory aliases for bowden.lab.uiowa.edu.
+$sites['labbowden.uiowa.ddev.site'] = 'bowden.lab.uiowa.edu';
+$sites['labbowden.dev.drupal.uiowa.edu'] = 'bowden.lab.uiowa.edu';
+$sites['labbowden.stage.drupal.uiowa.edu'] = 'bowden.lab.uiowa.edu';
+$sites['labbowden.prod.drupal.uiowa.edu'] = 'bowden.lab.uiowa.edu';
