@@ -7060,3 +7060,9 @@ $sites['labgeng.uiowa.ddev.site'] = 'geng.lab.uiowa.edu';
 $sites['labgeng.dev.drupal.uiowa.edu'] = 'geng.lab.uiowa.edu';
 $sites['labgeng.stage.drupal.uiowa.edu'] = 'geng.lab.uiowa.edu';
 $sites['labgeng.prod.drupal.uiowa.edu'] = 'geng.lab.uiowa.edu';
+
+// Directory aliases for gillan.lab.uiowa.edu.
+$sites['labgillan.uiowa.ddev.site'] = 'gillan.lab.uiowa.edu';
+$sites['labgillan.dev.drupal.uiowa.edu'] = 'gillan.lab.uiowa.edu';
+$sites['labgillan.stage.drupal.uiowa.edu'] = 'gillan.lab.uiowa.edu';
+$sites['labgillan.prod.drupal.uiowa.edu'] = 'gillan.lab.uiowa.edu';
