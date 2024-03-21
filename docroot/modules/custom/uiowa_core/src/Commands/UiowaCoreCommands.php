@@ -5,9 +5,6 @@ namespace Drupal\uiowa_core\Commands;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleHandler;
-use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService;
-use Drupal\purge\Plugin\Purge\Queue\QueueService;
-use Drupal\purge\Plugin\Purge\Queuer\QueuersService;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -42,36 +39,12 @@ class UiowaCoreCommands extends DrushCommands {
   protected $moduleHandler;
 
   /**
-   * The purge invalidations service.
-   *
-   * @var \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService
-   */
-  protected $purgeInvalidations;
-
-  /**
-   * The purge queuer service.
-   *
-   * @var \Drupal\purge\Plugin\Purge\Queuer\QueuersService
-   */
-  protected $purgeQueuer;
-
-  /**
-   * The purge queue service.
-   *
-   * @var \Drupal\purge\Plugin\Purge\Queue\QueueService
-   */
-  protected $purgeQueue;
-
-  /**
    * Command constructor.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler, InvalidationsService $purgeInvalidations, QueuersService $purgeQueuer, QueueService $purgeQueue) {
+  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler) {
     $this->logger = $logger;
     $this->configFactory = $configFactory;
     $this->moduleHandler = $moduleHandler;
-    $this->purgeInvalidations = $purgeInvalidations;
-    $this->purgeQueuer = $purgeQueuer;
-    $this->purgeQueue = $purgeQueue;
   }
 
   /**
