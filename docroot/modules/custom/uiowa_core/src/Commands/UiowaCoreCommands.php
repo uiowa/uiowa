@@ -81,34 +81,8 @@ class UiowaCoreCommands extends DrushCommands {
    * @aliases uicore-gtag
    */
   public function toggleGtag() {
-    $config = $this->configFactory->getEditable('uiowa_core.settings');
-    $uiowa_core_gtag = $config->get('uiowa_core.gtag');
-
-    if ((int) $uiowa_core_gtag === 1) {
-      $this->logger->notice('Site-specific Google Tag Manager Disabled');
-      $config
-        ->set('uiowa_core.gtag', '0')
-        ->save();
-    }
-    else {
-      $this->logger->notice('Site-specific Google Tag Manager Enabled');
-      $config
-        ->set('uiowa_core.gtag', '1')
-        ->save();
-    }
-    // Flush site cache.
-    drupal_flush_all_caches();
-
-    // If available (not Local), try to clear the varnish cache for the files.
-    if ($this->moduleHandler->moduleExists('purge')) {
-      $queuer = $this->purgeQueuer->get('coretags');
-
-      $invalidations = [
-        $this->purgeInvalidations->get('everything'),
-      ];
-
-      $this->purgeQueue->add($queuer, $invalidations);
-    }
+    $message = uiowa_core_toggle_gtag();
+    $this->logger()->notice($message);
   }
 
   /**
