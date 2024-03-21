@@ -392,3 +392,61 @@ function brand_core_node_update(EntityInterface $entity) {
     }
   }
 }
+
+/**
+ * Send the lockup digest email if lockups need review.
+ *
+ * @return string
+ *   The process completion message.
+ */
+function brand_core_lockup_digest(): string {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
+  }
+
+  $view = views_get_view_result('lockup_moderation', 'block_review');
+
+  if (!empty($view)) {
+    $results = count($view);
+    $lockups = [];
+    // Access field data from the view results.
+    foreach ($view as $row) {
+      $entity = $row->_entity;
+      $timestamp = $entity->get('revision_timestamp');
+      $date = \Drupal::service('date.formatter')->format($timestamp->value, 'short', NULL, 'America/Chicago');
+      $lockups[] = $entity->getTitle() . ' - Last updated: ' . $date;
+    }
+
+    $label = $results > 1 ? 'lockups' : 'lockup';
+
+    // Prepare params for digest email.
+    $results = (string) $results;
+    global $base_url;
+    $url_options = [
+      'query' => ['destination' => '/admin/content/lockups'],
+    ];
+
+    $login_url = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
+    $email = \Drupal::service('plugin.manager.mail')->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
+
+    if ($email->getError()) {
+      $message = t('Lockup Review Digest not sent. Error: @error');
+      \Drupal::logger('brand_core')->error($message);
+    }
+    else {
+      $message = 'Lockup Review Digest sent';
+      \Drupal::logger('brand_core')->notice($message);
+    }
+  }
+  else {
+    $message = 'Lockup Review Digest - No items to review';
+    \Drupal::logger('brand_core')->notice($message);
+  }
+  return $message;
+}
