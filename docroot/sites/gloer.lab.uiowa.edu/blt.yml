@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgloer.uiowa.ddev.site
+    protocol: https
+  machine_name: labgloer
+  human_name: gloer.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgloer.prod
+drupal:
+  db:
+    database: gloer_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgloer.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Gloer Research Group'
