@@ -7036,3 +7036,9 @@ $sites['medicinebmb.uiowa.ddev.site'] = 'bmb.medicine.uiowa.edu';
 $sites['medicinebmb.dev.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
 $sites['medicinebmb.stage.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
 $sites['medicinebmb.prod.drupal.uiowa.edu'] = 'bmb.medicine.uiowa.edu';
+
+// Directory aliases for arnold.lab.uiowa.edu.
+$sites['labarnold.uiowa.ddev.site'] = 'arnold.lab.uiowa.edu';
+$sites['labarnold.dev.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
+$sites['labarnold.stage.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
+$sites['labarnold.prod.drupal.uiowa.edu'] = 'arnold.lab.uiowa.edu';
