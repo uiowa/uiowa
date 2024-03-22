@@ -1,0 +1,23 @@
+uuid: 4041eef0-fdf7-45bf-b0d0-5e828ca7deda
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.alert
+id: alert_created
+label: 'Alert created'
+format: html
+subject: '[node:title] alert has been created.'
+recipient_types:
+  fixed_email:
+    id: fixed_email
+    provider: workbench_email
+    status: true
+    settings:
+      recipients: HelpDesk-Notify@uiowa.edu
+bundles:
+  'node:alert': 'node:alert'
+body:
+  value: '<p>[node:title] alert has been created by [node:author]. <a href="[node.url]">Please review and publish the alert</a></p>'
+  format: filtered_html
+replyTo: '[site:mail]'
