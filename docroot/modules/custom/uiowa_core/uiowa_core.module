@@ -1127,10 +1127,24 @@ function uiowa_core_preprocess_views_view(&$variables) {
  * Implements hook_form_views_exposed_form_alter().
  */
 function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $view = $form_state->getStorage('view');
-  if ($form_id == 'views_exposed_form' && $view['view']->id() == 'content') {
-    $form['field_tags_target_id']['#size'] = 20;
-    $form['uid']['#size'] = 20;
+  if ($form_id == 'views_exposed_form') {
+    $view = $form_state->getStorage('view');
+    $view_id = $view['view']->id();
+
+    switch ($view_id) {
+      case 'content':
+        $form['field_tags_target_id']['#size'] = 20;
+        $form['uid']['#size'] = 20;
+        break;
+
+      case 'media':
+        $form['field_tags_target_id']['#size'] = 20;
+        break;
+
+      case 'fragments':
+        $form['uid']['#size'] = 20;
+        break;
+    }
   }
 }
 
