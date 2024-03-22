@@ -121,31 +121,17 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_twocol
+        layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
-          column_widths: 67-33
-          layout_builder_custom_unique_id: support-layout
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_fixed_width_container
         components:
           -
-            uuid: 09191f46-6d06-4e85-8d7d-aa7b2860c3ec
-            region: first
-            configuration:
-              id: 'extra_field_block:node:support_article:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 66a38a87-e47a-4dee-b647-6c49e22be601
-            region: first
+            region: content
             configuration:
               id: 'field_block:node:support_article:body'
               label_display: '0'
@@ -156,117 +142,21 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 827c0f70-c7bf-4d93-813f-5b46964e738d
-            region: second
+            uuid: 09191f46-6d06-4e85-8d7d-aa7b2860c3ec
+            region: content
             configuration:
-              id: 'field_block:node:support_article:nid'
-              label: null
-              label_display: null
-              provider: layout_builder
+              id: 'extra_field_block:node:support_article:links'
+              label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: false
-                third_party_settings: {  }
-            weight: -2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 7b2379f4-a515-43db-9ed1-f713bfa75a79
-            region: second
-            configuration:
-              id: 'field_block:node:support_article:changed'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: timestamp
-                label: above
-                settings:
-                  date_format: medium
-                  custom_date_format: ''
-                  timezone: ''
-                  tooltip:
-                    date_format: long
-                    custom_date_format: ''
-                  time_diff:
-                    enabled: false
-                    future_format: '@interval hence'
-                    past_format: '@interval ago'
-                    granularity: 2
-                    refresh: 60
-                    description: ''
-                third_party_settings: {  }
-            weight: -1
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: a3dfe39a-a3c4-4b25-a428-c781d272ed1c
-            region: second
-            configuration:
-              id: 'field_block:node:support_article:field_support_article_service'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1b46bfcd-aab0-4920-a2d9-025f446f7106
-            region: second
-            configuration:
-              id: 'field_block:node:support_article:field_support_article_category'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
             weight: 1
-            additional:
-              layout_builder_styles_style: {  }
+            additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
+        third_party_settings: {  }
       -
         layout_id: layout_onecol
         layout_settings:
@@ -304,6 +194,80 @@ third_party_settings:
               scope_update: 'Update scope'
           layout_builder_lock:
             lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 7b2379f4-a515-43db-9ed1-f713bfa75a79
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:changed'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: timestamp
+                label: inline
+                settings:
+                  date_format: medium
+                  custom_date_format: ''
+                  timezone: ''
+                  tooltip:
+                    date_format: long
+                    custom_date_format: ''
+                  time_diff:
+                    enabled: false
+                    future_format: '@interval hence'
+                    past_format: '@interval ago'
+                    granularity: 2
+                    refresh: 60
+                    description: ''
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: ae3559cc-2903-4188-b7fc-9a46fbdd50c9
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:nid'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.support_article.default
 targetEntityType: node
 bundle: support_article

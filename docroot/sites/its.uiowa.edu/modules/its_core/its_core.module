@@ -79,6 +79,11 @@ function its_core_entity_presave(EntityInterface $entity) {
         $services_buildings,
         $additional_details,
       ]));
+
+      if ($entity->isClosed()) {
+        $alert_title = '[Closed] ' . $alert_title;
+      }
+
       $entity->setTitle($alert_title);
 
       // Reorder the Updates to chronological.
@@ -166,10 +171,6 @@ function its_core_node_update(EntityInterface $entity) {
 function its_core_alert_email_build($entity) {
   $alert = [];
   $alert_title = $entity->label();
-
-  if ($entity->isClosed()) {
-    $alert_title = '[CLOSED] ' . $alert_title;
-  }
 
   // Construct date for output.
   $format = SmartDateFormat::load('compact');
@@ -369,6 +370,8 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     case 'node_alert_edit_form':
     case 'node_alert_form':
+      // Attach smart_date override js.
+      $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
       if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
@@ -398,6 +401,20 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       $form['field_service_audience']['#attributes']['class'][] = 'multi--column';
       break;
 
+    // Node form modifications.
+    case 'node_support_article_edit_form':
+    case 'node_support_article_form':
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
+        unset($form["path"]);
+      }
+
+      break;
   }
 }
 
@@ -499,6 +516,10 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
 function its_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_date':
+      if ($variables['element']['#view_mode'] === '_custom') {
+        unset($variables['field_icon']);
+        unset($variables['attributes']['class']);
+      }
       // If we don't have an "end" time or a specified start/text/time
       // in our start time, it means we have an "ongoing" event,
       // and we should alter the label.
@@ -587,45 +608,42 @@ function its_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_alert_category':
-      $view_mode = $variables['element']['#view_mode'];
-      if ($view_mode === 'teaser') {
-        // Make categories badges.
-        foreach ($variables['items'] as &$item) {
-          $category_id = $item['content']['#entity']?->id();
-          if (in_array($category_id, ['406', '416', '411', '421'])) {
-            $content = $item['content']['#markup'];
-            switch ($category_id) {
-              // Outage.
-              case '406':
-                $content = str_replace('badge--light', 'badge--orange', $content);
-                $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
-                break;
+      // Make categories badges.
+      foreach ($variables['items'] as &$item) {
+        $category_id = $item['content']['#entity']?->id();
+        if (in_array($category_id, ['406', '416', '411', '421'])) {
+          $content = $item['content']['#markup'];
+          switch ($category_id) {
+            // Outage.
+            case '406':
+              $content = str_replace('badge--light', 'badge--orange', $content);
+              $icon = '<span class="svg-inline--fa fas fa-exclamation-triangle"></span>';
+              break;
 
-              // Service Degradation.
-              case '416':
-                $content = str_replace('badge--light', 'badge--blue', $content);
-                $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
-                break;
+            // Service Degradation.
+            case '416':
+              $content = str_replace('badge--light', 'badge--blue', $content);
+              $icon = '<span class="svg-inline--fa fas fa-arrow-trend-down"></span>';
+              break;
 
-              // Planned Maintenance.
-              case '411':
-                $content = str_replace('badge--light', 'badge--green', $content);
-                $icon = '';
-                break;
+            // Planned Maintenance.
+            case '411':
+              $content = str_replace('badge--light', 'badge--green', $content);
+              $icon = '';
+              break;
 
-              // Service Announcement.
-              case '421':
-                $content = str_replace('badge--light', 'badge--cool-gray', $content);
-                $icon = '';
-                break;
+            // Service Announcement.
+            case '421':
+              $content = str_replace('badge--light', 'badge--cool-gray', $content);
+              $icon = '';
+              break;
 
-              default:
-                $icon = '';
-                break;
-            }
-            $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
-            $item['content']['#markup'] = $content;
+            default:
+              $icon = '';
+              break;
           }
+          $content = substr_replace($content, "{$icon}", strpos($content, '>') + 1, 0);
+          $item['content']['#markup'] = $content;
         }
       }
       break;
