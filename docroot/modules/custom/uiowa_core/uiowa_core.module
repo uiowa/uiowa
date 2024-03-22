@@ -24,7 +24,6 @@ use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
 use Drupal\uiowa_core\Entity\Card;
 use Drupal\uiowa_core\Entity\Event;
-use Drupal\uiowa_core\Entity\Page;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -102,9 +101,6 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['block_content']['uiowa_event'])) {
     $bundles['block_content']['uiowa_event']['class'] = Event::class;
-  }
-  if (isset($bundles['node']['page'])) {
-    $bundles['node']['page']['class'] = Page::class;
   }
   if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
     $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
