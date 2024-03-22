@@ -943,3 +943,100 @@ function its_core_clear_custom_cache_tag(string $tag): void {
     $purgeQueue->add($queuer, $invalidations);
   }
 }
+
+/**
+ * Create and send the alerts digest email.
+ *
+ * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+ *   The process completion message.
+ */
+function its_core_alerts_digest() {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return t('This is a restricted process.');
+  }
+
+  $views = [];
+  $views['outages_degradations'] = [
+    'title' => 'Alerts',
+    'view' => views_get_view_result('alerts_list_block', 'outages_degradations'),
+  ];
+  $views['planned_maintenance'] = [
+    'title' => 'Planned Maintenance',
+    'view' => views_get_view_result('alerts_list_block', 'planned_maintenance'),
+  ];
+  $views['service_announcements'] = [
+    'title' => 'Service Announcements',
+    'view' => views_get_view_result('alerts_list_block', 'service_announcements'),
+  ];
+  $views['ongoing'] = [
+    'title' => 'Ongoing Maintenance',
+    'view' => views_get_view_result('alerts_list_block', 'ongoing'),
+  ];
+  $content = [];
+
+  if (!empty($views)) {
+    foreach ($views as $group => $view) {
+      if (!empty($view['view'])) {
+        $alerts = [];
+        foreach ($view['view'] as $row) {
+          $entity = $row->_entity;
+          $content[$group] = [
+            '#type' => 'container',
+          ];
+          $content[$group]['title'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'h1',
+            '#value' => $view['title'],
+          ];
+
+          $alerts[] = its_core_alert_email_build($entity);
+
+        }
+        $content[$group]['alerts'] = $alerts;
+      }
+    }
+
+    // Include related links.
+    $links = [
+      Link::fromTextAndUrl('Why am I receiving this email?',
+        Url::fromUri('https://its.uiowa.edu/support/article/127441')),
+      Link::fromTextAndUrl('IT Service Alerts page',
+        Url::fromUri('https://its.uiowa.edu/alerts')),
+      Link::fromTextAndUrl('Calendar view of alerts',
+        Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
+    ];
+
+    $content['related']['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h1',
+      '#value' => 'Related links',
+    ];
+    $content['related']['list'] = [
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#items' => $links,
+    ];
+
+    $email = \Drupal::service('plugin.manager.mail')->sendTypedEmail('its_core', 'its_alerts_digest', $content);
+
+    if ($email->getError()) {
+      $message = t('Alerts Digest no sent');
+    }
+    else {
+      $message = t('Alerts Digest sent');
+    }
+
+  }
+  else {
+    $message = t('Alerts Digest - No items to send');
+  }
+
+  \Drupal::logger('its_core')->notice($message);
+  return $message;
+}
