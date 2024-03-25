@@ -6,7 +6,9 @@ adding:
       - field.field.node.alert.field_alert_service_affected
       - field.field.node.alert.field_alert_title_details
       - field.field.node.alert.field_alert_updates
+      - workflows.workflow.alert
     module:
+      - content_moderation
       - paragraphs
   content:
     body:
@@ -66,7 +68,9 @@ adding:
     field_meta_tags:
       weight: 13
     moderation_state:
+      type: moderation_state_default
       weight: 5
+      region: content
     path:
       weight: 9
     promote:
@@ -90,6 +94,9 @@ adding:
   hidden:
     title: true
 removing:
+  dependencies:
+    config:
+      - workflows.workflow.editorial
   content:
     body:
       weight: 13
@@ -132,3 +139,5 @@ removing:
       type: string_textfield
     uid:
       weight: 0
+  hidden:
+    moderation_state: true

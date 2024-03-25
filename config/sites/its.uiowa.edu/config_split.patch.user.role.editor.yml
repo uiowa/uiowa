@@ -4,6 +4,7 @@ adding:
       - node.type.alert
       - node.type.service
       - node.type.support_article
+      - workflows.workflow.alert
   permissions:
     - 'create alert content'
     - 'create support_article content'
@@ -24,6 +25,8 @@ adding:
     - 'revert alert revisions'
     - 'revert service revisions'
     - 'revert support_article revisions'
+    - 'use alert transition create_new_draft'
+    - 'use alert transition needs_review'
     - 'view alert revisions'
     - 'view service revisions'
     - 'view support_article revisions'
