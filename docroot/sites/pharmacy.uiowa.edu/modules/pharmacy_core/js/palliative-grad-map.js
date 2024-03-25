@@ -74,7 +74,7 @@
           }
 
           // Update Graduates' view filters based on map selection.
-          let graduatesFilters = document.getElementById("views-exposed-form-palliative-grad-block-palliative-grad");
+          let graduatesFilters = document.querySelector("[id^='views-exposed-form-palliative-grad-block-palliative-grad']");
           if (typeof(graduatesFilters) != 'undefined' && graduatesFilters != null){
             let graduatesTerritory = graduatesFilters.querySelector('.form-select');
             let graduatesSubmit = graduatesFilters.querySelector('.form-submit');

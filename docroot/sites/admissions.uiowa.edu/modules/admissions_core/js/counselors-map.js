@@ -69,7 +69,7 @@
           map.fitBounds(e.target.getBounds());
 
           // Update Counselors' view filters based on map selection.
-          let counselorsFilters = document.getElementById("views-exposed-form-counselors-block-counselors");
+          let counselorsFilters = document.querySelector("[id^='views-exposed-form-counselors-block-counselors']");
           if (typeof(counselorsFilters) != 'undefined' && counselorsFilters != null){
             let counselorsTerritory = counselorsFilters.querySelector('.form-select');
             let counselorsSubmit = counselorsFilters.querySelector('.form-submit');
