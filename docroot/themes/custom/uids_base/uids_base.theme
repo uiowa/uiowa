@@ -72,6 +72,32 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
 }
 
 /**
+ * Implements hook_page_attachments_alter().
+ */
+function uids_base_page_attachments_alter(array &$page) {
+  $font = [
+    '#tag' => 'link',
+    '#attributes' => [
+      'rel' => 'preconnect',
+      'href' => 'https://fonts.googleapis.com',
+    ],
+    '#weight' => -888,
+  ];
+  $page['#attached']['html_head'][] = [$font, 'Preconnect'];
+  $font_crossorigin = [
+    '#tag' => 'link',
+    '#attributes' => [
+      'rel' => 'preconnect',
+      'href' => 'https://fonts.googleapis.com',
+      'crossorigin' => 'anonymous',
+    ],
+    '#weight' => -888,
+  ];
+  $page['#attached']['html_head'][] = [$font_crossorigin, 'Crossorigin'];
+
+}
+
+/**
  * Implements hook_preprocess().
  */
 function uids_base_preprocess(&$variables, $hook) {
