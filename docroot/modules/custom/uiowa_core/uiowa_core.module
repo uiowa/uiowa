@@ -1498,3 +1498,46 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
     }
   }
 }
+
+/**
+ * Toggles Site-Specific Google Tag inserts.
+ *
+ * @return string
+ *   The process completion message.
+ */
+function uiowa_core_toggle_gtag() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_core.settings');
+  $uiowa_core_gtag = $config->get('uiowa_core.gtag');
+
+  if ((int) $uiowa_core_gtag === 1) {
+    $message = 'Site-specific Google Tag Manager Disabled';
+    $config
+      ->set('uiowa_core.gtag', '0')
+      ->save();
+  }
+  else {
+    $message = 'Site-specific Google Tag Manager Enabled';
+    $config
+      ->set('uiowa_core.gtag', '1')
+      ->save();
+  }
+  \Drupal::logger('uiowa_core')->notice($message);
+
+  // Flush site cache.
+  drupal_flush_all_caches();
+
+  // If available (not Local), try to clear the varnish cache for the files.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+
+    $invalidations = [
+      $purgeInvalidationFactory->get('everything'),
+    ];
+
+    $purgeQueue->add($queuer, $invalidations);
+  }
+  return $message;
+}
