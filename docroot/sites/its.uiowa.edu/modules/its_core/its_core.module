@@ -1023,7 +1023,9 @@ function its_core_alerts_digest() {
       '#items' => $links,
     ];
 
-    $email = \Drupal::service('plugin.manager.mail')->sendTypedEmail('its_core', 'its_alerts_digest', $content);
+    $emailFactory = \Drupal::service('email_factory');
+
+    $email = $emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
 
     if ($email->getError()) {
       $message = t('Alerts Digest no sent');
