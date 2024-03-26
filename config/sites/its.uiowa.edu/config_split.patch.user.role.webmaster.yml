@@ -6,6 +6,7 @@ adding:
       - taxonomy.vocabulary.audience
       - taxonomy.vocabulary.building
       - taxonomy.vocabulary.service_category
+      - workflows.workflow.alert
   permissions:
     - 'create service content'
     - 'create support_article content'
@@ -30,6 +31,7 @@ adding:
     - 'edit terms in service_category'
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
+    - 'enter support_article revision log entry'
     - 'override alert authored by option'
     - 'override alert authored on option'
     - 'override alert sticky option'
@@ -37,8 +39,16 @@ adding:
     - 'override service authored on option'
     - 'override service published option'
     - 'override service revision option'
+    - 'override support_article authored by option'
+    - 'override support_article published option'
+    - 'override support_article revision option'
     - 'revert service revisions'
     - 'revert support_article revisions'
+    - 'use alert transition archive'
+    - 'use alert transition archived_published'
+    - 'use alert transition create_new_draft'
+    - 'use alert transition needs_review'
+    - 'use alert transition publish'
     - 'view service revisions'
     - 'view support_article revisions'
 removing: {  }
