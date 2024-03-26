@@ -247,6 +247,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
           case 'inline_block:uiowa_card':
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
+            $form['layout_builder_style_card_media_position']['#description'] = t('description.');
+
 
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
