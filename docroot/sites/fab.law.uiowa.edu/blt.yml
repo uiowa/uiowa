@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawfab.uiowa.ddev.site
+    protocol: https
+  machine_name: lawfab
+  human_name: fab.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawfab.prod
+drupal:
+  db:
+    database: fab_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawfab.prod.drupal.uiowa.edu'
+  requester: estin
+  site-name: 'Families Across Borders'

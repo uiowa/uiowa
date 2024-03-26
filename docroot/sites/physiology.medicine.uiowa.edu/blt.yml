@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinephysiology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinephysiology
+  human_name: physiology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinephysiology.prod
+drupal:
+  db:
+    database: physiology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinephysiology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Molecular Physiology and Biophysics'

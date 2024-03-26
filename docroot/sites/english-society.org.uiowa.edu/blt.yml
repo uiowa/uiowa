@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgenglish-society.uiowa.ddev.site
+    protocol: https
+  machine_name: orgenglish-society
+  human_name: english-society.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgenglish-society.prod
+drupal:
+  db:
+    database: english_society_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgenglish-society.prod.drupal.uiowa.edu'
+  requester: aewebster
+  site-name: 'The English Society'

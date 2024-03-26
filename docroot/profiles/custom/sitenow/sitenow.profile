@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -15,6 +16,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -106,6 +108,18 @@ function sitenow_preprocess_select(&$variables) {
           unset($variables['options'][0]);
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function sitenow_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
+  // Remove fontawesome js if ckeditor5 is present.
+  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
+    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
+      unset($javascript['libraries/fontawesome/js/all.min.js']);
     }
   }
 }
@@ -487,14 +501,24 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
-  // Hide revision information on media entity add/edit forms
-  // to prevent new revisions from being created. This aids our
-  // file replace functionality.
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
+      // Hide revision information on media entity add/edit forms
+      // to prevent new revisions from being created. This aids our
+      // file replace functionality.
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
+      }
+
+      // Prevent deletion if there is entity usage.
+      // This is accompanied by a message from the entity_usage module.
+      if ($form_object->getOperation() == 'delete') {
+        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
+        if (!empty($usage_data)) {
+          $form['actions']['submit']['#disabled'] = TRUE;
+        }
       }
     }
   }
@@ -619,11 +643,20 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
  */
 function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if (isset($element['#webform_key'])) {
-    // With Acquia varnish, Webform can't pre-populate
-    // Google/Facebook Click IDs (gclid, fbclid).
+    // Pass query string parameters allowed for pre-populating webforms via
+    // drupalSettings to javascript and attach a script to parse them.
     if (isset($element['#prepopulate'])) {
-      $element['#attributes']['prepopulate'] = 'true';
-      if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+      $webform_prepopulate_query_keys = [
+        'fbclid',
+        'gclid',
+        'utm_campaign',
+        'utm_source',
+        'utm_medium',
+        'utm_content',
+      ];
+      if (in_array($element['#webform_key'], $webform_prepopulate_query_keys)) {
+        $element['#attributes']['prepopulate'] = 'true';
+        $element['#attached']['drupalSettings']['sitenow']['webformPrepopulateQueryKeys'] = $webform_prepopulate_query_keys;
         $element['#attached']['library'][] = 'sitenow/get_clickid';
       }
     }

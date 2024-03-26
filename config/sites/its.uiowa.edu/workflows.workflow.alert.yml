@@ -1,0 +1,83 @@
+uuid: 141eaaa7-2876-453d-9a8f-c340b1f50b07
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.alert
+  module:
+    - content_moderation
+    - workbench_email
+  enforced:
+    config:
+      - workbench_email.workbench_email_template.alert_created
+third_party_settings:
+  workbench_email:
+    workbench_email_templates:
+      needs_review:
+        alert_created: alert_created
+id: alert
+label: Alert
+type: content_moderation
+type_settings:
+  states:
+    archived:
+      label: Archived
+      weight: 1
+      published: false
+      default_revision: true
+    draft:
+      label: Draft
+      weight: -2
+      published: false
+      default_revision: false
+    published:
+      label: Published
+      weight: 0
+      published: true
+      default_revision: true
+    review:
+      label: Review
+      weight: -1
+      published: false
+      default_revision: false
+  transitions:
+    archive:
+      label: Archive
+      from:
+        - published
+      to: archived
+      weight: 1
+    archived_published:
+      label: 'Restore from archive'
+      from:
+        - archived
+      to: published
+      weight: 2
+    create_new_draft:
+      label: 'Create New Draft'
+      from:
+        - archived
+        - draft
+        - published
+        - review
+      to: draft
+      weight: -2
+    needs_review:
+      label: 'Needs Review'
+      from:
+        - draft
+        - review
+      to: review
+      weight: -1
+    publish:
+      label: Publish
+      from:
+        - draft
+        - published
+        - review
+      to: published
+      weight: 0
+  entity_types:
+    node:
+      - alert
+  default_moderation_state: draft

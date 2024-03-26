@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineobgyn.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineobgyn
+  human_name: obgyn.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineobgyn.prod
+drupal:
+  db:
+    database: obgyn_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineobgyn.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Obstetrics and Gynecology'

@@ -2,27 +2,36 @@ adding:
   dependencies:
     config:
       - node.type.service
+      - node.type.support_article
       - taxonomy.vocabulary.audience
       - taxonomy.vocabulary.building
       - taxonomy.vocabulary.service_category
+      - workflows.workflow.alert
   permissions:
     - 'create service content'
+    - 'create support_article content'
     - 'create terms in audience'
     - 'create terms in building'
     - 'create terms in service_category'
     - 'delete any service content'
+    - 'delete any support_article content'
     - 'delete own service content'
+    - 'delete own support_article content'
     - 'delete service revisions'
+    - 'delete support_article revisions'
     - 'delete terms in audience'
     - 'delete terms in building'
     - 'delete terms in service_category'
     - 'edit any service content'
+    - 'edit any support_article content'
     - 'edit own service content'
+    - 'edit own support_article content'
     - 'edit terms in audience'
     - 'edit terms in building'
     - 'edit terms in service_category'
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
+    - 'enter support_article revision log entry'
     - 'override alert authored by option'
     - 'override alert authored on option'
     - 'override alert sticky option'
@@ -30,6 +39,16 @@ adding:
     - 'override service authored on option'
     - 'override service published option'
     - 'override service revision option'
+    - 'override support_article authored by option'
+    - 'override support_article published option'
+    - 'override support_article revision option'
     - 'revert service revisions'
+    - 'revert support_article revisions'
+    - 'use alert transition archive'
+    - 'use alert transition archived_published'
+    - 'use alert transition create_new_draft'
+    - 'use alert transition needs_review'
+    - 'use alert transition publish'
     - 'view service revisions'
+    - 'view support_article revisions'
 removing: {  }

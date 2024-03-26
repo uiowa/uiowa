@@ -1,4 +1,26 @@
 adding:
+  description: 'Select a category for the alert.'
   required: true
+  settings:
+    handler: views
+    handler_settings:
+      view:
+        view_name: alert_categories
+        display_name: alert_categories_radios
+        arguments: {  }
 removing:
+  dependencies:
+    config:
+      - taxonomy.vocabulary.alert_categories
+  description: 'Select categories for the alert.'
   required: false
+  settings:
+    handler: 'default:taxonomy_term'
+    handler_settings:
+      target_bundles:
+        alert_categories: alert_categories
+      sort:
+        field: name
+        direction: asc
+      auto_create: true
+      auto_create_bundle: ''

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencemsap2024.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencemsap2024
+  human_name: msap2024.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemsap2024.prod
+drupal:
+  db:
+    database: msap2024_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencemsap2024.prod.drupal.uiowa.edu'
+  requester: slnighswonger
+  site-name: MSAP2024.conference.uiowa.edu

@@ -52,9 +52,9 @@
 <div{{ attributes.addClass(classes) }}>
   <div{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>
     {{ label }}</div>
-  <ul class="tags-list">
+  <ul>
     {% for item in items %}
-      <li {{ item.attributes.addClass('tags-list__tag', 'field__item') }}>{{ item.content }}</li>
+      <li>{{ item.content }}</li>
     {% endfor %}
   </ul>
 </div>

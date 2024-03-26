@@ -2,18 +2,36 @@ adding:
   dependencies:
     config:
       - node.type.service
+      - node.type.support_article
+      - workflows.workflow.alert
   permissions:
+    - 'create support_article content'
+    - 'delete any support_article content'
+    - 'delete own support_article content'
     - 'delete service revisions'
+    - 'delete support_article revisions'
     - 'edit any service content'
+    - 'edit any support_article content'
     - 'edit own service content'
+    - 'edit own support_article content'
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
+    - 'enter support_article revision log entry'
     - 'override alert authored by option'
     - 'override alert authored on option'
     - 'override service published option'
+    - 'override support_article authored by option'
+    - 'override support_article published option'
     - 'revert alert revisions'
     - 'revert service revisions'
+    - 'revert support_article revisions'
+    - 'use alert transition archive'
+    - 'use alert transition archived_published'
+    - 'use alert transition create_new_draft'
+    - 'use alert transition needs_review'
+    - 'use alert transition publish'
     - 'view service revisions'
+    - 'view support_article revisions'
 removing:
   dependencies:
     config:

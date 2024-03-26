@@ -1,0 +1,24 @@
+uuid: de347b01-410f-4984-b96d-fb5b88a22fbf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_alert_update_date
+    - paragraphs.paragraphs_type.alert_update
+  module:
+    - datetime
+id: paragraph.alert_update.field_alert_update_date
+field_name: field_alert_update_date
+entity_type: paragraph
+bundle: alert_update
+label: Date
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

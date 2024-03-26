@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labwemmie.uiowa.ddev.site
+  paths:
+    files: sites/wemmie.lab.uiowa.edu/files
+dev:
+  uri: labwemmie.dev.drupal.uiowa.edu
+  host: uiowa07dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wemmie.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.dev/docroot
+  user: uiowa07.dev
+prod:
+  uri: wemmie.lab.uiowa.edu
+  host: uiowa07prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wemmie.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.prod/docroot
+  user: uiowa07.prod
+test:
+  uri: labwemmie.stage.drupal.uiowa.edu
+  host: uiowa07stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wemmie.lab.uiowa.edu/files
+  root: /var/www/html/uiowa07.stage/docroot
+  user: uiowa07.stage

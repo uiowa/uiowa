@@ -58,6 +58,7 @@ class Artwork extends NodeBundleBase implements RendersAsCardInterface {
       'card_headline_style' => '',
       'media_size' => 'media--large',
       'border' => '',
+      'styles' => 'bg--white',
     ];
   }
 

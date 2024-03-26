@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "uids/components/button/button.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/components/button.scss";
 
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
@@ -47,6 +47,12 @@
 
     a.bttn {
       width: 100%;
+    }
+    .bttn {
+      margin: 0;
+      & + .bttn {
+        margin: 0;
+      }
     }
   }
 

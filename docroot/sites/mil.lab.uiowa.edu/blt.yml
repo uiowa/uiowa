@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmil.uiowa.ddev.site
+    protocol: https
+  machine_name: labmil
+  human_name: mil.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmil.prod
+drupal:
+  db:
+    database: mil_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmil.prod.drupal.uiowa.edu'
+  requester: mman
+  site-name: 'Microstructure Imaging Lab'

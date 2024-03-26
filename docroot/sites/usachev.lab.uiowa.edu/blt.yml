@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labusachev.uiowa.ddev.site
+    protocol: https
+  machine_name: labusachev
+  human_name: usachev.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labusachev.prod
+drupal:
+  db:
+    database: usachev_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labusachev.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Usachev Lab'

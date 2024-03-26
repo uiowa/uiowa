@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrohlman.uiowa.ddev.site
+    protocol: https
+  machine_name: labrohlman
+  human_name: rohlman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrohlman.prod
+drupal:
+  db:
+    database: rohlman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrohlman.prod.drupal.uiowa.edu'
+  requester: asena
+  site-name: 'Dr. Diane Rohlman Lab '

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: label-shanti.uiowa.ddev.site
+    protocol: https
+  machine_name: label-shanti
+  human_name: el-shanti.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: label-shanti.prod
+drupal:
+  db:
+    database: el_shanti_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://label-shanti.prod.drupal.uiowa.edu'
+  requester: phllippi
+  site-name: 'The El-Shanti Lab'

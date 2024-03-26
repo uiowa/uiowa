@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labniciu.uiowa.ddev.site
+    protocol: https
+  machine_name: labniciu
+  human_name: niciu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labniciu.prod
+drupal:
+  db:
+    database: niciu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labniciu.prod.drupal.uiowa.edu'
+  requester: mniciu
+  site-name: 'Niciu Lab'

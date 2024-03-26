@@ -1,0 +1,42 @@
+uuid: 73790846-4b38-4b6c-b1b2-a4d6a8897b3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.alert_update.field_alert_update_date
+    - field.field.paragraph.alert_update.field_alert_update_description
+    - paragraphs.paragraphs_type.alert_update
+  module:
+    - smart_date
+    - text
+id: paragraph.alert_update.default
+targetEntityType: paragraph
+bundle: alert_update
+mode: default
+content:
+  field_alert_update_date:
+    type: smartdate_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: compact
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      localize: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_alert_update_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

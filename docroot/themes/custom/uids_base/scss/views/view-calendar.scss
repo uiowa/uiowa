@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 // Full Calendar styles
 a.fc-event {
@@ -35,4 +35,19 @@ a.fc-event {
 .fc-button-primary:not(:disabled).fc-button-active,
 .fc-button-primary:not(:disabled):active {
   background-color: $brand-cool-gray;
+}
+
+.fc-day-grid-event {
+  padding: .5rem !important;
+}
+.fc-day-header {
+  padding: .5rem !important;
+}
+.fc-day-number {
+  padding: .5rem !important;
+}
+
+// Adjustment to allow for text wrapping.
+.fc-day-grid-event .fc-content {
+  white-space: normal;
 }

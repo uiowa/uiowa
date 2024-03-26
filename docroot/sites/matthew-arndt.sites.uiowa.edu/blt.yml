@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmatthew-arndt.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmatthew-arndt
+  human_name: matthew-arndt.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmatthew-arndt.prod
+drupal:
+  db:
+    database: matthew_arndt_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmatthew-arndt.prod.drupal.uiowa.edu'
+  requester: mrndt
+  site-name: 'Matthew Arndt'

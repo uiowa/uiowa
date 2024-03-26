@@ -2979,3 +2979,159 @@ function sitenow_update_10002() {
     }
   });
 }
+
+/**
+ * Update field_person_website to be checked in block configurations.
+ */
+function sitenow_update_10003() {
+  foreach ([
+    'views_block:people_list_block-list_card',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+      $config = $component->getConfiguration();
+      if (isset($config['fields']['field_person_website'])) {
+
+        $config['fields']['field_person_website']['hide'] = 1;
+        $component->setConfiguration($config);
+      }
+
+    });
+  }
+}
+
+/**
+ * Convert <hr> with classes to <div> for CKEditor5 compatibility.
+ *
+ * For https://www.drupal.org/project/drupal/issues/3398223.
+ */
+function sitenow_update_10004() {
+  $search_replace = [
+    '<hr class=',
+  ];
+
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge($text_long, $text_with_summary);
+
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!($entity_storage instanceof SqlContentEntityStorage)) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      $tables = [];
+      $field_name = $field_storage_definition->getName();
+      try {
+        $tables[] = $table_mapping->getFieldTableName($field_name);
+        $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+      // See if the field has a revision table.
+      $revision_table = NULL;
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+          $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+        $tables[] = $revision_table;
+      }
+      if (!empty($tables)) {
+        $db = \Drupal::database();
+
+        foreach ($tables as $table) {
+          $update_count = 0;
+          $query = $db->select($table, 't')
+            ->fields('t');
+
+          // Build a condition group from our search strings.
+          $or_group = $query->orConditionGroup();
+
+          foreach ($search_replace as $string) {
+            $or_group->condition($value_column, '%' . $db->escapeLike($string) . '%', 'LIKE');
+          }
+
+          $results = $query->condition($or_group)
+            ->execute();
+
+          foreach ($results as $record) {
+
+            // Load the HTML fragment as a DOMDocument object.
+            $document = Html::load($record->{$value_column});
+
+            // Loop through <hr> elements in dom and
+            // replace with <div> if they have classes.
+            $elements = $document->getElementsByTagName('hr');
+            for ($i = $elements->length - 1; $i >= 0; $i--) {
+              $hr = $elements->item($i);
+              $class = $hr->getAttribute('class');
+              if ($class) {
+                $div = $document->createElement('div', $hr->nodeValue);
+                $class = 'hr ' . $class;
+                $div->setAttribute('class', $class);
+                $hr->parentNode->replaceChild($div, $hr);
+              }
+            }
+
+            // Run database update to store updated $value_column as
+            // Html::serialize($document).
+            $db->update($table)
+              ->fields([
+                $value_column => Html::serialize($document),
+              ])
+              ->condition('entity_id', $record->entity_id)
+              ->condition('revision_id', $record->revision_id)
+              ->execute();
+
+            $update_count++;
+          }
+
+          if ($update_count) {
+            \Drupal::messenger()
+              ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Set new config value on existing sites.
+ */
+function sitenow_update_10005() {
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $ccom_config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.ccom');
+  // Set to 1 if the ccom config doesn't exist or isn't set,
+  // otherwise set to 0.
+  $value = (int) (!isset($ccom_config) || !$ccom_config->get('status'));
+
+  // Set the uiowa_core setting so that the campus-wide
+  // gtm will be included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.campus_gtm', $value)
+    ->save();
+}
+
+/**
+ * Allow alert content type to be replicated if it exists.
+ */
+function sitenow_update_10006() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $replicate_allowed = $config->get('uiowa_core.replicate_allowed');
+  $replicate_allowed[] = 'alert';
+  $config
+    ->set('uiowa_core.replicate_allowed', $replicate_allowed)
+    ->save();
+}
