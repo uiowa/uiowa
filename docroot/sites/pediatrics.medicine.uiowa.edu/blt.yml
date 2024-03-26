@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepediatrics.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepediatrics
+  human_name: pediatrics.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepediatrics.prod
+drupal:
+  db:
+    database: pediatrics_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepediatrics.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Stead Family Department of Pediatrics'

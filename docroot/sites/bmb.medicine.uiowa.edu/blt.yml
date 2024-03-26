@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinebmb.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinebmb
+  human_name: bmb.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinebmb.prod
+drupal:
+  db:
+    database: bmb_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinebmb.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Biochemistry and Molecular Biology'
