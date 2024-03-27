@@ -3,15 +3,12 @@ $imgpath: '../../uids/assets/images';
 
 // Unset container queries if a section contains the menu block.
 // @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
-.node__content .layout__region--unset-type .column-container,
+.layout__region--unset-type .column-container,
 .layout-builder .column-container {
   container-type: unset;
 }
 
 // This chooses the proper container for rendered content vs building in layout builder.
-.fragment .layout__region,
-.node__content .layout__region,
-.layout-builder .layout-builder-block,
 .list-container__inner .views-row {
   container-type: inline-size;
   container-name: column;
