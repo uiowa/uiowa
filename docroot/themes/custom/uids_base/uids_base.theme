@@ -577,14 +577,14 @@ function uids_base_preprocess_layout(&$variables) {
               && isset($variables['content'][$region][$block_uuid])
               && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
             ) {
-              // Check if this block plugin_id matches the pattern for a
-              // main_menu block.
               $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
-              $menu_block_name = 'menu_block:main';
-              if (str_starts_with($plugin_id, $menu_block_name)) {
-                // Add a menu-block class here.
-                $variables['attributes']['class'][] = 'has-menu-block';
-                break;
+              $unset_container_type_blocks = ['menu_block:main', 'inline_block:uiowa_timeline'];
+              foreach ($unset_container_type_blocks as $unset_container_type_block) {
+                if (str_starts_with($plugin_id, $unset_container_type_block)) {
+                  // Add unset class.
+                  $variables['attributes']['class'][] = 'layout__region--unset-type';
+                  break;
+                }
               }
             }
           }
