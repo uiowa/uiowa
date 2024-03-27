@@ -606,18 +606,24 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_rr_suite'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: above
                 settings:
                   view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 3
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 5fe9ca49-41ea-48ee-acf9-ade7e86ec62d
@@ -642,36 +648,48 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_rr_private'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: above
                 settings:
                   view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 4
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 209da6ed-94d7-4492-aaf5-e6d2f2f50343
             region: second
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_rr_single'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: above
                 settings:
                   view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 2
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
