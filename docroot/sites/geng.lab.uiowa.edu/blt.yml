@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgeng.uiowa.ddev.site
+    protocol: https
+  machine_name: labgeng
+  human_name: geng.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgeng.prod
+drupal:
+  db:
+    database: geng_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgeng.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Geng Research Group'

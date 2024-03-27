@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labarnold.uiowa.ddev.site
+    protocol: https
+  machine_name: labarnold
+  human_name: arnold.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labarnold.prod
+drupal:
+  db:
+    database: arnold_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labarnold.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Arnold Research Group'
