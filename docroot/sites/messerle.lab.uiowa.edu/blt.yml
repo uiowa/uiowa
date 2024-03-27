@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmesserle.uiowa.ddev.site
+    protocol: https
+  machine_name: labmesserle
+  human_name: messerle.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmesserle.prod
+drupal:
+  db:
+    database: messerle_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmesserle.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Messerle Research Group'
