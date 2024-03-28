@@ -3167,14 +3167,14 @@ function sitenow_update_10007() {
     foreach ($results as $record) {
 
       // Directly manipulating the string because we can't serialize this because the class doesn't exist anymore.
-      $record->value = str_replace('Drupal\uiowa_core\Entity\Page', 'Drupal\sitenow_pages\Entity\Page', $record->value);
+      $record->value = str_replace('O:29:"Drupal\uiowa_core\Entity\Page', 'O:32:"Drupal\sitenow_pages\Entity\Page', $record->value);
 
       // Insert the updated tempstore.
       $db->update('key_value_expire')
         ->condition('name', $record->name, '=')
         ->condition('expire', $record->expire, '=')
         ->fields([
-          'value' => serialize($record->value),
+          'value' => $record->value,
         ])
         ->execute();
     }
