@@ -35,10 +35,11 @@ class ListBlock extends CoreBlock {
       'pager' => $this->t('Pager type'),
       'hide_fields' => $this->t('Hide fields'),
       'sort_fields' => $this->t('Reorder fields'),
+      'configure_filters' => $this->t('Configure filters'),
       'disable_filters' => $this->t('Disable filters'),
       'configure_sorts' => $this->t('Configure sorts'),
-      // Add configure_filters option summary.
-      'configure_filters' => $this->t('Customize filters in block'),
+      // Add configure_filters_custom option summary.
+      'configure_filters_custom' => $this->t('Customize filters in block'),
       // Add use_more option summary.
       'use_more' => $this->t('Display more link'),
       // Add general_help_text field.
@@ -58,6 +59,10 @@ class ListBlock extends CoreBlock {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
 
+    parent::buildOptionsForm($form, $form_state);
+    if ($form_state->get('section') !== 'allow') {
+      return;
+    }
     // Show a text area to add general help text to the list block.
     $general_help_text = $this->getOption('general_help_text');
     $form['general_help_text'] = [
@@ -66,13 +71,9 @@ class ListBlock extends CoreBlock {
       '#description' => $this->t('Set help text to display below the block title.'),
       '#default_value' => $general_help_text ?: '',
     ];
-    parent::buildOptionsForm($form, $form_state);
-    if ($form_state->get('section') !== 'allow') {
-      return;
-    }
 
     // Add configure filters in block option.
-    $form['allow']['#options']['configure_filters'] = $this->t('Customize filters in block');
+    $form['allow']['#options']['configure_filters_custom'] = $this->t('Customize filters in block');
     // Add use_more option to allow displaying a link.
     $form['allow']['#options']['use_more'] = $this->t('Display more link');
 
@@ -205,8 +206,13 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Add exposed filters to be customized in the block.
     if (!empty($allow_settings['configure_filters'])) {
+      $form['exposed']['#title'] = $this->t('Filters');
+      $form['exposed']['#weight'] = 10;
+    }
+
+    // Add exposed filters to be customized in the block.
+    if (!empty($allow_settings['configure_filters_custom'])) {
 
       $exposed_filters = [];
 
@@ -607,8 +613,10 @@ class ListBlock extends CoreBlock {
     }
 
     // Set view filter based on "Filter" setting.
-    $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
-    $this->view->setExposedInput($exposed_filter_values);
+    if (!empty($allow_settings['configure_filters_custom'])) {
+      $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
+      $this->view->setExposedInput($exposed_filter_values);
+    }
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
@@ -672,7 +680,7 @@ class ListBlock extends CoreBlock {
     // If we are not utilizing the filter in block option,
     // then use the default behavior. Otherwise, do not display
     // exposed filters.
-    if (empty($this->options['allow']['configure_filters'])) {
+    if (empty($this->options['allow']['configure_filters_custom'])) {
       return parent::displaysExposed();
     }
     return FALSE;

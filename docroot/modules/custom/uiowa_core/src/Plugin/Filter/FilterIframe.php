@@ -14,7 +14,7 @@ use Drupal\filter\Plugin\FilterBase;
  * @Filter(
  *   id = "filter_iframe",
  *   title = @Translation("Validate iframe elements"),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_HTML_RESTRICTOR,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  *   description = @Translation("Limits &lt;iframe&gt; tag sources to those specified in the configuration."),
  *   settings = {
  *    "allowed_sources" = NULL

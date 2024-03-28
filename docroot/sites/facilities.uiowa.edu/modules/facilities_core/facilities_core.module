@@ -10,8 +10,11 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\Entity\Artwork;
+use Drupal\facilities_core\ProjectsProcessor;
 use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -119,6 +122,25 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_project_form':
     case 'node_project_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['title']['#disabled'] = TRUE;
+      $form['field_project_number']['#disabled'] = TRUE;
+      $form['field_project_is_capital']['#disabled'] = TRUE;
+      $form['field_project_is_featured']['#disabled'] = TRUE;
+      $form['field_project_building']['#disabled'] = TRUE;
+      $form['field_project_building_alt']['#disabled'] = TRUE;
+      $form['field_project_scope']['#disabled'] = TRUE;
+      $form['field_project_status']['#disabled'] = TRUE;
+      $form['field_project_square_footage']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_location']['#disabled'] = TRUE;
+      $form['field_project_awarded_to']['#disabled'] = TRUE;
+      $form['field_project_architect']['#disabled'] = TRUE;
+      $form['field_project_bid_date']['#disabled'] = TRUE;
+      $form['field_project_constr_start_date']['#disabled'] = TRUE;
+      $form['field_project_pre_bid_date']['#disabled'] = TRUE;
+      $form['field_project_sub_complete_date']['#disabled'] = TRUE;
+      $form['field_project_estimated_cost']['#disabled'] = TRUE;
+
       _sitenow_node_form_defaults($form, $form_state);
       // Set a placeholder text, and add a submit handler
       // for if we have a webcam link but no title.
@@ -133,6 +155,46 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       Any projects created or modified that are not in the source data will be overwritten.');
       break;
 
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'projects') {
+    if ($view->current_display === 'block_project_search') {
+      // Alphabetize field_project_building.
+      asort($form['field_project_building_target_id']['#options']);
+    }
+  }
+  if ($view->id() === 'artwork') {
+    if ($view->current_display === 'block_search_artwork') {
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'person')
+        ->condition('status', 1)
+        ->condition('field_person_types', 'artist')
+        ->accessCheck(FALSE);
+
+      $entity_ids = $query->execute();
+
+      // Check if $entity_ids is not empty.
+      if (!empty($entity_ids)) {
+        // Include an "Any" option.
+        $options = ['All' => '- Any -'];
+
+        foreach ($entity_ids as $entity_id) {
+          $person = Node::load($entity_id);
+
+          if ($person) {
+            $options[$entity_id] = $person->label();
+          }
+        }
+
+        $form['field_artwork_artist_target_id']['#options'] = $options;
+      }
+    }
   }
 }
 
@@ -174,13 +236,81 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_building_year_built':
-    case 'field_building_address':
     case 'field_building_additional_info':
       // Assumes these are being called in
       // views_block:named_buildings-block_building using Views field api.
       if ($variables['element']['#view_mode'] === '_custom') {
         $variables['label_display'] = 'inline';
+        uiowa_core_set_attributes($variables, 'padding--inline-end--md');
       }
+      break;
+
+    case 'field_building_lactation_rooms':
+    case 'field_building_rr_single_neutral':
+    case 'field_building_rr_single_men':
+    case 'field_building_rr_single_women':
+    case 'field_building_rr_multi_men':
+    case 'field_building_rr_multi_women':
+      // Set up the details element.
+      $variables['label_display'] = 'visually_hidden';
+      $details = [
+        '#type' => 'details',
+        '#title' => $variables['label'],
+      ];
+
+      // Wrap the field output in the details element.
+      $details['#children'] = $variables['items'][0]['content'];
+      $variables['items'][0]['content'] = $details;
+      break;
+
+    case 'field_building_address':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($node instanceof NodeInterface) {
+        // Get the content type of the current node.
+        $node = $node->bundle();
+        if ($node == 'named_building') {
+          $variables['label_display'] = 'inline';
+        }
+        else {
+          uiowa_core_set_field_icon($variables, 'fa-compass');
+          uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+        }
+      }
+      break;
+
+    case 'field_building_number':
+      uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+      break;
+
+    case 'field_building_abbreviation':
+      uiowa_core_set_field_label_icon($variables, 'fa-building');
+      uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+      break;
+
+    case 'field_building_area':
+    case 'field_building_named_building':
+    case 'field_building_ownership':
+      uiowa_core_set_attributes($variables, 'padding--inline-end--md');
+      break;
+
+    case 'field_building_hours':
+      // Set up the details element.
+      $details = [
+        '#type' => 'details',
+        '#title' => 'Disclaimer Statement',
+        '#markup' => '<small>Public operating hours for campus buildings are displayed, excluding holidays and special events. These hours do not represent office business hours. Access to buildings during closed hours is permitted via the Iowa One Card for approved faculty, staff, and students. For Hospital 24/7 entrances, visitor guidelines, and information, please visit the <a href="https://uihc.org/visitor-guidelines-ui-health-care">UI Health Care website</a>.</small>',
+      ];
+
+      // Append the details element to the field content.
+      $variables['items'][0]['content']['#suffix'] = '<br />' . \Drupal::service('renderer')->render($details);
+
+      uiowa_core_set_title_attributes($variables, [
+        'headline',
+        'headline--serif',
+        'headline--underline',
+        'h5',
+      ]);
       break;
 
     case 'field_artwork_building':
@@ -237,6 +367,30 @@ function facilities_core_preprocess_field(&$variables) {
         }
       }
       break;
+
+    case 'field_project_number':
+      uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, [
+        'bg--white',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
+    case 'field_project_webcam':
+      uiowa_core_set_field_icon($variables, 'fa-video');
+      uiowa_core_set_attributes($variables, [
+        'bg--gold',
+        'padding--block--sm',
+        'padding--inline--md',
+      ]);
+      break;
+
+    case 'field_project_estimated_cost':
+      if (isset($variables['items'][0]['content']['#markup'])) {
+        $variables['items'][0]['content']['#markup'] = ($variables['items'][0]['content']['#markup'] == '$0.00') ? t('TBD') : $variables['items'][0]['content']['#markup'];
+      }
+      break;
   }
 }
 
@@ -247,12 +401,25 @@ function facilities_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
 
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'building') {
+    switch ($layout->id()) {
+      case 'layout_onecol':
+        if (isset($variables['region_attributes']['content'], $variables['content']['#settings']['layout_builder_custom_unique_id']) && $variables['content']['#settings']['layout_builder_custom_unique_id'] === 'building-details') {
+          $variables['region_attributes']['content']->addClass('border--bottom element--padding__bottom');
+        }
+        break;
+
+    }
+  }
+
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'named_building',
+        'building',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -261,6 +428,14 @@ function facilities_core_preprocess_layout(&$variables) {
       switch ($node->getType()) {
         case 'named_building':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
+          }
+          break;
+
+        case 'building':
+          if ($node->hasField('field_building_image') && !$node->get('field_building_image')->isEmpty()) {
 
             // Set the featured image display.
             $variables['featured_image_display'] = 'medium';
@@ -277,18 +452,74 @@ function facilities_core_preprocess_layout(&$variables) {
  */
 function facilities_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'views_block:named_building_details-block_honoree':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+    case 'services_headline_block':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_building_lactation_rooms->value) &&
+        empty($node->field_building_rr_single_neutral->value) &&
+        empty($node->field_building_rr_single_men->value) &&
+        empty($node->field_building_rr_single_women->value) &&
+        empty($node->field_building_rr_multi_men->value) &&
+        empty($node->field_building_rr_multi_women->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
       }
-      $variables['attributes']['class'][] .= 'bg--gray block-padding__all block-margin__default--removed';
+
+      break;
+
+    case 'views_block:named_building_details-block_honoree':
+      uiowa_core_set_attributes($variables, [
+        'bg--gray',
+        'block-padding__all',
+      ]);
       break;
 
     case 'views_block:named_building_details-block_building':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+      uiowa_core_set_attributes($variables, [
+        'bg--white',
+        'block-padding__all',
+        'border',
+      ]);
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:building:field_building_address':
+    case 'field_block:node:building:field_building_number':
+    case 'field_block:node:building:field_building_abbreviation':
+    case 'field_block:node:building:field_building_area':
+    case 'field_block:node:building:field_building_named_building':
+    case 'field_block:node:building:field_building_year_built':
+    case 'field_block:node:building:field_building_ownership':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:project:field_project_number':
+    case 'field_block:node:project:field_project_webcam':
+      uiowa_core_set_attributes($variables, [
+        'element--inline',
+      ]);
+
+      break;
+
+    case 'field_block:node:project:field_project_pre_bid_location':
+    case 'field_block:node:project:field_project_pre_bid_date':
+    case 'field_block:node:project:field_project_bid_date':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      // Get the pre_bid_date field value.
+      if ($node instanceof NodeInterface) {
+        $pre_bid_date = $node->get('field_project_pre_bid_date')->value;
+        if (!empty($pre_bid_date) && strtotime($pre_bid_date) <= strtotime('today')) {
+          // Unset the entire block content.
+          $variables['content'] = [];
+        }
       }
-      $variables['attributes']['class'][] .= 'bg--white block-padding__all border';
       break;
 
     // Add inline class for blocks to appear inline.
@@ -326,20 +557,7 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:artwork:field_artwork_building':
     case 'field_block:node:artwork:field_artwork_artist_website':
       uiowa_core_set_attributes($variables, [
-        'block-margin__default--removed',
         'fa-ul',
-      ]);
-      break;
-
-    case 'field_block:node:artwork:field_artwork_medium':
-    case 'field_block:node:artwork:field_artwork_year':
-    case 'field_block:node:artwork:field_artwork_dimension':
-    case 'field_block:node:artwork:field_artwork_location':
-    case 'field_block:node:person:field_person_nationality':
-    case 'field_block:node:person:field_person_birth_year':
-    case 'field_block:node:person:field_person_death_year':
-      uiowa_core_set_attributes($variables, [
-        'block-margin__default--removed',
       ]);
       break;
 
@@ -352,6 +570,21 @@ function facilities_core_preprocess_block(&$variables) {
 function facilities_core_preprocess_file_link(&$variables) {
   // Remove pdf class.
   unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'building') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
+  }
 }
 
 /**
@@ -396,18 +629,6 @@ function facilities_core_node_presave(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_theme().
- */
-function facilities_core_theme($existing, $type, $theme, $path) {
-  return [
-    'views_view_unformatted__alerts_building_block__alert' => [
-      'template' => 'views-view-unformatted--alerts-building-block--alert',
-      'base hook' => 'view',
-    ],
-  ];
-}
-
-/**
  * Implements hook_preprocess_hook().
  */
 function facilities_core_preprocess_input(&$variables) {
@@ -439,4 +660,80 @@ function facilities_core_preprocess_textarea(&$variables) {
       $variables['attributes']['spellcheck'] = 'true';
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function facilities_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $display_id = $view->getDisplay()->display['id'];
+  if ($display_id === 'block_building_coordinators') {
+    $variables['#attached']['library'][] = 'facilities_core/block_building_coordinators';
+  }
+}
+
+/**
+ * Import and update buildings.
+ */
+function facilities_core_import_buildings() {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
+  }
+
+  $logger = \Drupal::logger('facilities_core');
+  $logger->notice('Starting the facilities building content sync.');
+
+  $sync_service = new BuildingsProcessor();
+  $sync_service->init();
+  $sync_service->process();
+
+  $arguments = [
+    '@created' => $sync_service->getCreated(),
+    '@updated' => $sync_service->getUpdated(),
+    '@deleted' => $sync_service->getDeleted(),
+    '@skipped' => $sync_service->getSkipped(),
+  ];
+  $message = t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+  $logger->notice($message);
+  return $message;
+}
+
+/**
+ * Import and update projects.
+ */
+function facilities_core_import_projects() {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
+  }
+
+  $logger = \Drupal::logger('facilities_core');
+  $logger->notice('Starting the facilities projects sync.');
+
+  $sync_service = new ProjectsProcessor();
+  $sync_service->init();
+  $sync_service->process();
+
+  $arguments = [
+    '@created' => $sync_service->getCreated(),
+    '@updated' => $sync_service->getUpdated(),
+    '@deleted' => $sync_service->getDeleted(),
+    '@skipped' => $sync_service->getSkipped(),
+  ];
+  $message = t('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+  $logger->notice($message);
+
+  return $message;
 }

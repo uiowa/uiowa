@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstrack.uiowa.ddev.site
+    protocol: https
+  machine_name: labstrack
+  human_name: strack.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstrack.prod
+drupal:
+  db:
+    database: strack_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstrack.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Strack Lab'

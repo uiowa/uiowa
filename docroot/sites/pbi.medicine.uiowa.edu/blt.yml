@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepbi.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepbi
+  human_name: pbi.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepbi.prod
+drupal:
+  db:
+    database: pbi_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepbi.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Pappjohn Biomedical Institute'

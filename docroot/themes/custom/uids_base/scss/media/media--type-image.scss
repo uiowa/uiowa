@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 // Media alignment
 
@@ -36,6 +36,12 @@
 
 // Full width images
 .media--type-image {
+  // Add fade-in for lazy images.
+  img {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+  }
+
   &--full {
     img {
       width: 100%;

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsalem.uiowa.ddev.site
+    protocol: https
+  machine_name: labsalem
+  human_name: salem.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsalem.prod
+drupal:
+  db:
+    database: salem_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsalem.prod.drupal.uiowa.edu'
+  requester: aksalem
+  site-name: 'Salem Advanced Drug and Gene Delivery Research Group'

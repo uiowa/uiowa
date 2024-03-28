@@ -7,11 +7,14 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_category
     - field.field.node.alert.field_alert_date
+    - field.field.node.alert.field_alert_email
     - field.field.node.alert.field_alert_service_affected
     - field.field.node.alert.field_alert_title_details
+    - field.field.node.alert.field_alert_updates
     - field.field.node.alert.field_meta_tags
     - node.type.alert
   module:
+    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
     - metatag
@@ -27,13 +30,14 @@ third_party_settings:
     allow_custom: false
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: layout_header
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_edge_to_edge
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: b3e65666-a6fc-426c-a324-4d2aab8c575a
@@ -52,7 +56,18 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b04a7a65-26cb-40d7-a79d-5a6352bb237e
+            region: content
+            configuration:
+              id: 'extra_field_block:node:alert:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -64,53 +79,28 @@ third_party_settings:
               label_display: null
               provider: system
               context_mapping: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: c3c366b0-61e1-485a-a74d-89dc2e282847
-            region: main
-            configuration:
-              id: 'field_block:node:alert:field_alert_service_affected'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: b04a7a65-26cb-40d7-a79d-5a6352bb237e
-            region: content
-            configuration:
-              id: 'extra_field_block:node:alert:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
-        layout_id: layout_twocol_card_sidebar
+        layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            2: section_card_media_size_large
-            3: section_card_media_format_square
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_fixed_width_container
         components:
           -
             uuid: 4cb09feb-1691-4d46-8b4d-c757d4e11c1a
-            region: card_meta
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_date'
               label: null
@@ -121,7 +111,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: smartdate_dailyrange
-                label: above
+                label: inline
                 settings:
                   timezone_override: ''
                   format: default
@@ -131,13 +121,14 @@ third_party_settings:
                   localize: 0
                 third_party_settings: {  }
             weight: 1
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
-            region: main
+            uuid: b5f43d32-aa8a-40ab-9cb0-29e206e8c18a
+            region: content
             configuration:
-              id: 'field_block:node:alert:field_alert_category'
+              id: 'field_block:node:alert:field_alert_updates'
               label: null
               label_display: null
               provider: layout_builder
@@ -145,35 +136,20 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_label
-                label: inline
+                type: entity_reference_revisions_entity_view
+                label: above
                 settings:
-                  link: false
+                  view_mode: default
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
-            region: main
-            configuration:
-              id: 'field_block:node:alert:body'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: -1
-            additional: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 92e69073-c326-4ac8-92bd-8e152d082316
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_service_affected'
               label: null
@@ -190,12 +166,12 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 1
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
             uuid: ad7e630b-bfda-4814-b8dd-0aa63d3367d6
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:field_alert_building'
               label: null
@@ -212,12 +188,12 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 2
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
             uuid: d79824dd-9177-437f-b0b8-71c04eb44120
-            region: main
+            region: content
             configuration:
               id: 'field_block:node:alert:changed'
               label: null
@@ -244,12 +220,47 @@ third_party_settings:
                     refresh: 60
                     description: ''
                 third_party_settings: {  }
-            weight: -2
+            weight: 10
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
+            region: content
+            configuration:
+              id: 'field_block:node:alert:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 798d59fb-554b-4678-a4a9-d57241400f06
+            region: content
+            configuration:
+              id: 'field_block:node:alert:field_alert_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: false
+                third_party_settings: {  }
+            weight: 9
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
         third_party_settings:
-          layout_builder_lock:
-            lock: {  }
           layout_builder_limit:
             limit:
               scope: disabled
@@ -310,6 +321,16 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
+  field_alert_email:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 111
+    region: content
   field_alert_service_affected:
     type: entity_reference_label
     label: above
@@ -325,6 +346,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 109
+    region: content
+  field_alert_updates:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_meta_tags:
     type: metatag_empty_formatter

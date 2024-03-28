@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnopoulos.uiowa.ddev.site
+    protocol: https
+  machine_name: labnopoulos
+  human_name: nopoulos.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnopoulos.prod
+drupal:
+  db:
+    database: nopoulos_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnopoulos.prod.drupal.uiowa.edu'
+  requester: sslevins
+  site-name: 'Peg Nopoulos Laboratory'

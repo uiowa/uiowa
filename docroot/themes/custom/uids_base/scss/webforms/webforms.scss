@@ -1,6 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .webform-submission-form {
   label {
@@ -41,6 +40,16 @@
   // Make fields respect field width settings
   input[size]:not([size='60']) {
     width: inherit;
+  }
+
+  .webform-element-help {
+    background: $brand-cool-gray;
+    border: 2px solid $brand-cool-gray;
+    &:hover,
+    &:focus {
+      border: 2px solid $info;
+      background: $info;
+    }
   }
 
   // --------------------------------

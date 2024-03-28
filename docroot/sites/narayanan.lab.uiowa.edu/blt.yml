@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnarayanan.uiowa.ddev.site
+    protocol: https
+  machine_name: labnarayanan
+  human_name: narayanan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnarayanan.prod
+drupal:
+  db:
+    database: narayanan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnarayanan.prod.drupal.uiowa.edu'
+  requester: nnarayanan
+  site-name: 'https://narayanan.lab.uiowa.edu'

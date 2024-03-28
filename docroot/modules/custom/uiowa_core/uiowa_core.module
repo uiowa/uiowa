@@ -637,7 +637,13 @@ function uiowa_core_page_attachments(&$page) {
     // Load campus-wide Google Tag in PROD.
     $env = getenv('AH_PRODUCTION');
     if ((int) $env === 1) {
-      $page['#attached']['library'][] = 'uiowa_core/gtag';
+      // Check that the campus-wide container should be included.
+      // If the config isn't set, err on the side of inclusion.
+      $include_gtag = \Drupal::config('uiowa_core.settings')
+        ?->get('uiowa_core.campus_gtm');
+      if ($include_gtag !== 0) {
+        $page['#attached']['library'][] = 'uiowa_core/gtag';
+      }
     }
   }
 }
@@ -1099,6 +1105,7 @@ function uiowa_core_preprocess_views_view(&$variables) {
     'academic_groups_taxonomy_term',
     'people_list_block',
     'article_list_block',
+    'page_list_block',
     'related_manually_referenced_content',
     'residence_halls',
     'room_list',
@@ -1113,6 +1120,34 @@ function uiowa_core_preprocess_views_view(&$variables) {
   if ($variables['view']->id() == 'related_manually_referenced_content') {
     // Attach the grid class.
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $view = $form_state->getStorage('view');
+    $view_id = $view['view']->id();
+
+    switch ($view_id) {
+      case 'content':
+        $form['field_tags_target_id']['#size'] = "15";
+        $form['uid']['#size'] = "15";
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+
+      case 'media':
+        $form['field_tags_target_id']['#size'] = 20;
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+
+      case 'fragments':
+        $form['uid']['#size'] = 20;
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+    }
   }
 }
 
@@ -1490,4 +1525,47 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
       $row_build['content']['#hide_fields'][] = $field_to_hide;
     }
   }
+}
+
+/**
+ * Toggles Site-Specific Google Tag inserts.
+ *
+ * @return string
+ *   The process completion message.
+ */
+function uiowa_core_toggle_gtag() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_core.settings');
+  $uiowa_core_gtag = $config->get('uiowa_core.gtag');
+
+  if ((int) $uiowa_core_gtag === 1) {
+    $message = 'Site-specific Google Tag Manager Disabled';
+    $config
+      ->set('uiowa_core.gtag', '0')
+      ->save();
+  }
+  else {
+    $message = 'Site-specific Google Tag Manager Enabled';
+    $config
+      ->set('uiowa_core.gtag', '1')
+      ->save();
+  }
+  \Drupal::logger('uiowa_core')->notice($message);
+
+  // Flush site cache.
+  drupal_flush_all_caches();
+
+  // If available (not Local), try to clear the varnish cache for the files.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+
+    $invalidations = [
+      $purgeInvalidationFactory->get('everything'),
+    ];
+
+    $purgeQueue->add($queuer, $invalidations);
+  }
+  return $message;
 }

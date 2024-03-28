@@ -1,9 +1,9 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
   Drupal.behaviors.galleryBlock = {
     attach: function (context, settings) {
 
       // Listen for changes to the condition that triggers visibility.
-      $('.media-library-widget', context).once('media-form-attach').each(function () {
+      $(once('media-form-attach', '.media-library-widget', context)).each(function () {
         const $form_wrapper = $(this).parent().parent().parent();
         const $image_format_field = $form_wrapper.find('select[name="layout_builder_style_media_format"]');
         const $image_masonry = $form_wrapper.find('select[name="layout_builder_style_default[]"]');
@@ -24,4 +24,4 @@
       });
     }
   };
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);

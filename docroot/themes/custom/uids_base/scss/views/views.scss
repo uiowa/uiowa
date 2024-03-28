@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 // Use "views-form--stacked" class for exposed forms in a sidebar column.
 .views-exposed-form {
@@ -226,7 +226,8 @@
 // feed icons
 .feed-icons {
   .bttn {
-    svg {
+    svg,
+    span {
       margin-left: 0;
       margin-right: $xsm;
     }
@@ -243,7 +244,7 @@
 }
 
 // Layout
-.views-grid--twocol--25-75 {
+.views--twocol--25-75 {
   @include grid-base;
   @include breakpoint(sm) {
     display: grid;

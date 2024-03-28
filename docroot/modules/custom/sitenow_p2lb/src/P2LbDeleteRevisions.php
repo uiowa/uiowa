@@ -12,7 +12,7 @@ class P2LbDeleteRevisions {
   /**
    * Delete v2 Page revisions.
    */
-  public static function deleteRevisions(int $batch_id, array $nids, object &$context) {
+  public static function deleteRevisions(int $batch_id, array $nids, array &$context) {
     $context['message'] = t('Batch @batch_id', [
       '@batch_id' => $batch_id,
     ]);

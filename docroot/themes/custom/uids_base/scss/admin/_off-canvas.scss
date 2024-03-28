@@ -127,6 +127,14 @@
   margin-block-start: 0.75rem;
 }
 
+// Ensure CKEditor's wrapper div is position: relative to prevent it from attaching 
+// itself to the bottom of ui-dialog. 
+// See: https://github.com/uiowa/uiowa/issues/7300
+
+#drupal-off-canvas-wrapper .form-textarea-wrapper{
+    position: relative;
+}
+
 // Statistic admin UX.
 #drupal-off-canvas:not(.drupal-off-canvas-reset),
 #drupal-off-canvas-wrapper {
@@ -164,6 +172,14 @@
     width: 25rem !important;
   }
 }
+
+// https://www.drupal.org/project/drupal/issues/3070375.
+.js #drupal-off-canvas-wrapper {
+  .js-hide {
+  display: none !important;
+  }
+}
+
 
 // Alerts.
 #drupal-off-canvas-wrapper .alert span,

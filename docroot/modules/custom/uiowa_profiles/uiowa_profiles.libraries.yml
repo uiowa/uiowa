@@ -5,9 +5,12 @@ styles:
 
 client.test:
   remote: https://profiles-test.uiowa.edu
-  license: MIT
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
+    gpl-compatible: true
   js:
-    js/uiowa-profiles.js: { preprocess: false }
+    js/uiowa-profiles.js: { preprocess: true }
     https://cdn.jsdelivr.net/npm/vue@3.3/dist/vue.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-router@4.2/dist/vue-router.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/index.iife.min.js: { type: external, minified: true }
@@ -23,9 +26,12 @@ client.test:
 
 client.prod:
   remote: https://profiles.uiowa.edu
-  license: MIT
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
+    gpl-compatible: true
   js:
-    js/uiowa-profiles.js: { preprocess: false }
+    js/uiowa-profiles.js: { preprocess: true }
     https://cdn.jsdelivr.net/npm/vue@3.3/dist/vue.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-router@4.2/dist/vue-router.global.min.js: { type: external, minified: true }
     https://cdn.jsdelivr.net/npm/vue-demi@0.14/lib/index.iife.min.js: { type: external, minified: true }

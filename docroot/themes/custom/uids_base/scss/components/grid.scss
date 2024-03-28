@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "uids/components/grid/grid.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/layout/grid.scss";
 
 // List container spacing.
 .list-container.list-container--list:not([class*="grid-"]) {
@@ -56,6 +56,7 @@
   margin-top: $mobile-height-gutter;
 }
 
+.grid--threecol--33-34-33 .list-container__inner,
 .grid--twocol--50-50 .list-container__inner {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;

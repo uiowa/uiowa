@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiosaxophone.uiowa.ddev.site
+    protocol: https
+  machine_name: studiosaxophone
+  human_name: saxophone.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiosaxophone.prod
+drupal:
+  db:
+    database: saxophone_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiosaxophone.prod.drupal.uiowa.edu'
+  requester: ketse
+  site-name: 'Iowa Saxophonists’ Workshop'

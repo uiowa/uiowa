@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnauseef.uiowa.ddev.site
+    protocol: https
+  machine_name: labnauseef
+  human_name: nauseef.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnauseef.prod
+drupal:
+  db:
+    database: nauseef_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnauseef.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Nauseef Lab'
