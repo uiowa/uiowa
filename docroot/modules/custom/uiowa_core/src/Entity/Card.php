@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Render\Element;
 
 /**
@@ -26,12 +27,44 @@ class Card extends BlockContent implements RendersAsCardInterface {
     ]);
 
     // Capture the parts of the URL.
-    foreach ([
-      'url' => 'url',
-      'title' => 'link_text',
-    ] as $field_link_prop => $link_prop) {
-      if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
-        $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
+    $path = $build['field_uiowa_card_link'][0]["#url"]->toString();
+    $text = $build['field_uiowa_card_link'][0]["#title"];
+    // Check if the URL is external.
+    if (UrlHelper::isExternal($path)) {
+      // If it's external, set the link text and URL to the path itself.
+      if (str_starts_with($path, 'http') && str_starts_with($text, 'http')) {
+        // Assign $path, not $alias.
+        $build["#url"] = $path;
+        unset($build["#link_text"]);
+      }
+      else {
+        // If neither $path nor $text starts with 'https', set the link text and URL to the path itself.
+        $build["#url"] = $path;
+        $build["#link_text"] = $text;
+      }
+    }
+    else {
+      // If it's an internal URL, attempt to resolve the alias.
+      $alias = \Drupal::service('path_alias.manager')->getAliasByPath($path);
+
+      if ($alias) {
+        // If an alias exists, set the alias as the link text and URL.
+        // If $alias starts with "/", then set the URL and unset the link_text.
+        if (str_starts_with($alias, '/') && str_starts_with($text, '/')) {
+          $build["#url"] = $alias;
+          unset($build["#link_text"]);
+        }
+        else {
+          // If $alias doesn't start with "/", set the URL and link_text normally.
+          $build["#url"] = $alias;
+          $build["#link_text"] = $text;
+        }
+      }
+
+      else {
+        // If no alias exists, set the link text and URL to the path itself.
+        $build["#url"] = $path;
+        $build["#link_text"] = $text;
       }
     }
     unset($build['field_uiowa_card_link']);
