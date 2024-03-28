@@ -3147,18 +3147,8 @@ function sitenow_update_10007() {
   // Only continue with this section if we have a key_value_expire
   // table to work with.
   if ($db->schema()->tableExists('key_value_expire')) {
-    // Check if we have a tempstore of this node.
-    // Temp store is saved in the db in the key_value_expire,
-    // And holds a serialized blob with the unsaved changes.
-    // Might be a better method of accessing this through the Layout
-    // Builder API and layoutTempstoreRepository, but have not found it yet.
+    // Directly accessing KVE record.
     $query = $db->select('key_value_expire', 'kve');
-
-    // Match against any record that has a block matching our $block_plugin_id.
-    $or_group = $query->orConditionGroup();
-    foreach ($block_plugin_ids as $block_plugin_id) {
-      $or_group = $or_group->condition('value', "%$block_plugin_id%", 'LIKE');
-    }
 
     $query = $query->condition('collection',
       'tempstore.shared.layout_builder.section_storage.overrides', '=')
@@ -3168,7 +3158,7 @@ function sitenow_update_10007() {
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Tempstore records for sections with blocks of @types records found: @count',
+      ->addMessage(t('Tempstore records for layouts containing reference to incorrect page bundle class: @count',
         [
           '@types' => implode(', ', $block_plugin_ids),
           '@count' => $count,
@@ -3179,6 +3169,7 @@ function sitenow_update_10007() {
 
     foreach ($results as $record) {
 
+      // Directly manipulating the string because we can't serialize this because the class doesn't exist anymore.
       $record->value = str_replace('Drupal\uiowa_core\Entity\Page', 'Drupal\sitenow_pages\Entity\Page', $record->value);
 
       // Insert the updated tempstore.
