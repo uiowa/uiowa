@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.support_article.body
+    - field.field.node.support_article.field_meta_tags
     - field.field.node.support_article.field_support_article_category
     - field.field.node.support_article.field_support_article_faqs
     - field.field.node.support_article.field_support_article_service
@@ -12,6 +13,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - metatag
     - system
     - text
     - user
@@ -87,6 +89,22 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: d3b92c3b-5dd4-41e2-b26d-2ef26fe9b85f
+            region: content
+            configuration:
+              id: 'field_block:node:support_article:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -284,6 +302,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 105
     region: content
   field_support_article_category:
     type: entity_reference_label
