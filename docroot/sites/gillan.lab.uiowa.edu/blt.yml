@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgillan.uiowa.ddev.site
+    protocol: https
+  machine_name: labgillan
+  human_name: gillan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgillan.prod
+drupal:
+  db:
+    database: gillan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgillan.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Gillan Research Group'
