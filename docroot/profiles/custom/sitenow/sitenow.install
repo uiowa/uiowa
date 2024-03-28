@@ -3140,8 +3140,6 @@ function sitenow_update_10006() {
  * Fix block references that stored the wrong bundle class for pages.
  */
 function sitenow_update_10007() {
-
-  $block_plugin_ids = ['views_block:page_list_block-list_page'];
   $db = \Drupal::database();
 
   // Only continue with this section if we have a key_value_expire
@@ -3160,7 +3158,6 @@ function sitenow_update_10007() {
     \Drupal::messenger()
       ->addMessage(t('Tempstore records for layouts containing reference to incorrect page bundle class: @count',
         [
-          '@types' => implode(', ', $block_plugin_ids),
           '@count' => $count,
         ]));
 
