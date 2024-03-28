@@ -4,6 +4,7 @@ namespace Drupal\its_core\Commands;
 
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -14,6 +15,8 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class ITSCoreCommands extends DrushCommands {
+
+  use StringTranslationTrait;
 
   /**
    * Drush command constructor.
@@ -37,7 +40,7 @@ class ITSCoreCommands extends DrushCommands {
     // Switch to the admin user to get hidden view result.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $this->logger()->notice('Alerts digest triggered via drush.');
+    $this->logger()->notice($this->t('Alerts digest triggered via drush.'));
     $message = its_core_alerts_digest();
     $this->logger()->notice($message);
 

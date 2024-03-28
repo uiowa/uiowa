@@ -691,7 +691,6 @@ function facilities_core_import_buildings() {
   $logger->notice('Starting the facilities building content sync.');
 
   $sync_service = new BuildingsProcessor();
-  $sync_service->init();
   $sync_service->process();
 
   $arguments = [
@@ -723,17 +722,21 @@ function facilities_core_import_projects() {
   $logger->notice('Starting the facilities projects sync.');
 
   $sync_service = new ProjectsProcessor();
-  $sync_service->init();
-  $sync_service->process();
-
-  $arguments = [
-    '@created' => $sync_service->getCreated(),
-    '@updated' => $sync_service->getUpdated(),
-    '@deleted' => $sync_service->getDeleted(),
-    '@skipped' => $sync_service->getSkipped(),
-  ];
-  $message = t('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
-  $logger->notice($message);
+  $success = $sync_service->process();
+  if ($success) {
+    $arguments = [
+      '@created' => $sync_service->getCreated(),
+      '@updated' => $sync_service->getUpdated(),
+      '@deleted' => $sync_service->getDeleted(),
+      '@skipped' => $sync_service->getSkipped(),
+    ];
+    $message = t('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+    $logger->notice($message);
+  }
+  else {
+    $message = t('There was an error while processing the import for Facilities projects.');
+    $logger->warning($message);
+  }
 
   return $message;
 }

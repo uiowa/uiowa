@@ -4,6 +4,8 @@ namespace Drupal\facilities_core\Commands;
 
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -14,6 +16,8 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class FacilitiesCoreCommands extends DrushCommands {
+  use CpuTimeTrait;
+  use StringTranslationTrait;
 
   /**
    * The account_switcher service.
@@ -48,15 +52,17 @@ class FacilitiesCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function importBuildings() {
+    $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice('Starting the facilities building content sync from drush. This may take a little time if the information isn\'t cached.');
+    $this->logger()->notice($this->t('Starting the facilities building content sync from drush. This may take a little time if the information isn\'t cached.'));
 
     $message = facilities_core_import_buildings();
     $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
   /**
@@ -68,15 +74,18 @@ class FacilitiesCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function importProjects() {
+    $this->initMeasurement();
+
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice('Starting the facilities projects sync from drush. This may take a little time if the information isn\'t cached.');
+    $this->logger()->notice($this->t('Starting the facilities projects sync from drush. This may take a little time if the information isn\'t cached.'));
 
     $message = facilities_core_import_projects();
     $this->logger()->notice($message);
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
 }

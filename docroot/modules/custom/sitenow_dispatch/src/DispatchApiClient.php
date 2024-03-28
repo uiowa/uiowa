@@ -4,6 +4,8 @@ namespace Drupal\sitenow_dispatch;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -15,11 +17,7 @@ use Psr\Log\LoggerInterface;
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
 class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterface {
-
-  /**
-   * The last response object that was returned with the API.
-   */
-  protected ?ResponseInterface $lastResponse;
+  use ApiAuthKeyTrait;
 
   /**
    * Constructs a DispatchApiClient object.
@@ -35,7 +33,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    */
   public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
     parent::__construct($client, $logger, $cache, $configFactory);
-    $this->apiKey = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL;
+    $this->setKey($this->configFactory->get('sitenow_dispatch.settings')->get('api_key') ?? NULL);
   }
 
   /**
@@ -49,6 +47,13 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
    * {@inheritdoc}
    */
   protected function getCacheIdBase(): string {
+    return 'sitenow_dispatch';
+  }
+
+  /**
+   * @inheritDoc
+   */
+  protected function loggerChannel(): string {
     return 'sitenow_dispatch';
   }
 

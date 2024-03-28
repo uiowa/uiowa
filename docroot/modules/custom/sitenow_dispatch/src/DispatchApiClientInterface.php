@@ -2,10 +2,12 @@
 
 namespace Drupal\sitenow_dispatch;
 
+use Drupal\uiowa_core\ApiClientInterface;
+
 /**
  * A Dispatch API client interface.
  */
-interface DispatchApiClientInterface {
+interface DispatchApiClientInterface extends ApiClientInterface {
 
   /**
    * Return a list of campaigns keyed by endpoint.
