@@ -1859,12 +1859,6 @@ $sites['stanleymuseum.dev.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.stage.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.prod.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 
-// Directory aliases for waldschmidt.lab.uiowa.edu.
-$sites['labwaldschmidt.uiowa.ddev.site'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.dev.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.stage.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.prod.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-
 // Directory aliases for isba.law.uiowa.edu.
 $sites['lawisba.uiowa.ddev.site'] = 'isba.law.uiowa.edu';
 $sites['lawisba.dev.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
