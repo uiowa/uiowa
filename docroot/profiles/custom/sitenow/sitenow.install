@@ -3135,3 +3135,49 @@ function sitenow_update_10006() {
     ->set('uiowa_core.replicate_allowed', $replicate_allowed)
     ->save();
 }
+
+/**
+ * Fix block references that stored the wrong bundle class for pages.
+ */
+function sitenow_update_10007() {
+  $db = \Drupal::database();
+
+  // Only continue with this section if we have a key_value_expire
+  // table to work with.
+  if ($db->schema()->tableExists('key_value_expire')) {
+    // Directly accessing KVE record.
+    $query = $db->select('key_value_expire', 'kve');
+
+    $query = $query->condition('collection',
+      'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', '%uiowa_core%', 'LIKE')
+      ->fields('kve');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for layouts containing reference to incorrect page bundle class: @count',
+        [
+          '@count' => $count,
+        ]));
+
+    $results = $query
+      ->execute();
+
+    foreach ($results as $record) {
+
+      // Directly manipulating the string because we can't serialize this because the class doesn't exist anymore.
+      $record->value = str_replace('O:29:"Drupal\uiowa_core\Entity\Page', 'O:32:"Drupal\sitenow_pages\Entity\Page', $record->value);
+
+      // Insert the updated tempstore.
+      $db->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => $record->value,
+        ])
+        ->execute();
+    }
+  }
+
+}

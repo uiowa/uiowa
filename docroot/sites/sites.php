@@ -1859,12 +1859,6 @@ $sites['stanleymuseum.dev.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.stage.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.prod.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 
-// Directory aliases for waldschmidt.lab.uiowa.edu.
-$sites['labwaldschmidt.uiowa.ddev.site'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.dev.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.stage.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-$sites['labwaldschmidt.prod.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
-
 // Directory aliases for isba.law.uiowa.edu.
 $sites['lawisba.uiowa.ddev.site'] = 'isba.law.uiowa.edu';
 $sites['lawisba.dev.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
@@ -3202,12 +3196,6 @@ $sites['basicneeds.uiowa.ddev.site'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
-
-// Directory aliases for limoli.lab.uiowa.edu.
-$sites['lablimoli.uiowa.ddev.site'] = 'limoli.lab.uiowa.edu';
-$sites['lablimoli.dev.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
-$sites['lablimoli.stage.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
-$sites['lablimoli.prod.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
 
 // Directory aliases for iisicca.uiowa.edu.
 $sites['iisicca.uiowa.ddev.site'] = 'iisicca.uiowa.edu';
