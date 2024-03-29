@@ -8,38 +8,10 @@
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function wellbeing_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'node_page_edit_form':
-    case 'node_page_form':
-      _sitenow_node_form_defaults($form, $form_state);
-      $form['field_wellbeing_audience']['#group'] = 'node_relations';
-      $form['field_wellbeing_topic']['#group'] = 'node_relations';
-      $form['field_wellbeing_type']['#group'] = 'node_relations';
-      break;
-
-    // Case 'views_exposed_form':
-    // $view = $form_state->get('view');
-    // if ($view->id() == 'page_list_block') {
-    // $form['field_wellbeing_audience_target_id']['#type'] = 'details';
-    // $form['field_wellbeing_audience_target_id']['#options']['#type'] = 'checkboxes';
-    // $form['field_wellbeing_audience_target_id']['#theme'] = 'details';
-    // $form['field_wellbeing_audience_target_id']['#theme_wrappers'] = 'details';
-    // }
-    // break;.
+function wellbeing_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] === 'views-exposed-form-page-list-block-list-page') {
+    $form['#attached']['library'][] = 'sitenow/chosen';
   }
 }
-
-// Function wellbeing_core_preprocess_views_view(&$variables) {
-// if ($variables['view']->id() == 'page_list_block') {
-// Attach the library using the #attached property.
-// $variables['#attached']['library'][] = 'uids_base/view-bef';
-// $variables['exposed']['field_wellbeing_audience_target_id']['#type'] = 'details';
-// $variables['exposed']['field_wellbeing_audience_target_id']['#theme'] = 'details';
-// $variables['exposed']['field_wellbeing_audience_target_id']['#theme_wrappers'] = 'details';
-// $variables['exposed']['field_wellbeing_audience_target_id']['#summary_attributes'] = [];
-// $variables['exposed']['field_wellbeing_audience_target_id']['#options']['#type'] = 'checkboxes';
-// }
-// }.

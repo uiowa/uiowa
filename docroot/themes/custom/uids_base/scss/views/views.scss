@@ -3,6 +3,37 @@
 
 // Use "views-form--stacked" class for exposed forms in a sidebar column.
 .views-exposed-form {
+  .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+    height: 3.5rem;
+    background-image:none;
+  }
+  .chosen-container-multi .chosen-choices {
+    display: flex;
+    gap: 0.5rem;
+    border: 1px solid #cacaca;
+    background-color: #fefefe;
+    box-shadow: inset 0 1px 2px rgba(10,10,10,.1);
+    font-family: inherit;
+    padding: 0 5px 0 7px;
+  }
+  .chosen-container-multi .chosen-choices li.search-choice {
+    background: none;
+    height: 2.6rem;
+    line-height: 1;
+    font-size: .8rem;
+    border-radius: 34px;
+    display: flex;
+    padding: 0 30px 0 15px;
+    align-items: center;
+    margin: .5rem 0;
+    border-color: #cccccc8c;
+  }
+  .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+    position: absolute;
+    top: 37%;
+    right: 11px;
+  }
+
   min-height: 20px;
   padding: 19px;
   margin-bottom: 2rem;
