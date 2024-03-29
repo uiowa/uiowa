@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.hawk_alert.body
+    - field.field.node.hawk_alert.field_meta_tags
     - node.type.hawk_alert
   module:
     - content_moderation
@@ -83,6 +84,7 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_meta_tags: true
   publish_on: true
   publish_state: true
   scheduler_settings: true
