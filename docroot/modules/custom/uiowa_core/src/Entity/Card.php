@@ -27,44 +27,46 @@ class Card extends BlockContent implements RendersAsCardInterface {
     ]);
 
     // Capture the parts of the URL.
-    $path = $build['field_uiowa_card_link'][0]["#url"]->toString();
-    $text = $build['field_uiowa_card_link'][0]["#title"];
-    // Check if the URL is external.
-    if (UrlHelper::isExternal($path)) {
-      // If it's external, set the link text and URL to the path itself.
-      if (str_starts_with($path, 'http') && str_starts_with($text, 'http')) {
-        // Assign $path, not $alias.
-        $build["#url"] = $path;
-        unset($build["#link_text"]);
-      }
-      else {
-        // If neither $path nor $text starts with 'https', set the link text and URL to the path itself.
-        $build["#url"] = $path;
-        $build["#link_text"] = $text;
-      }
+    $path = isset($build['field_uiowa_card_link'][0]['#url']) ? $build['field_uiowa_card_link'][0]['#url']->toString() : NULL;
+    $text = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
+
+    if ($path === NULL || $text === NULL) {
+      $build['#url'] = '';
+      $build['#link_text'] = '';
     }
     else {
-      // If it's an internal URL, attempt to resolve the alias.
-      $alias = \Drupal::service('path_alias.manager')->getAliasByPath($path);
+      $is_nolink = str_starts_with($path, 'route:<nolink>');
+      $is_front = str_starts_with($path, '<front>');
+      $is_external = UrlHelper::isExternal($path);
 
-      if ($alias) {
-        // If an alias exists, set the alias as the link text and URL.
-        // If $alias starts with "/", then set the URL and unset the link_text.
-        if (str_starts_with($alias, '/') && str_starts_with($text, '/')) {
-          $build["#url"] = $alias;
-          unset($build["#link_text"]);
-        }
-        else {
-          // If $alias doesn't start with "/", set the URL and link_text normally.
-          $build["#url"] = $alias;
-          $build["#link_text"] = $text;
-        }
-      }
+      switch (TRUE) {
+        case $is_nolink:
+          $build['#url'] = '';
+          $build['#link_text'] = $text;
+          break;
 
-      else {
-        // If no alias exists, set the link text and URL to the path itself.
-        $build["#url"] = $path;
-        $build["#link_text"] = $text;
+        case $is_front:
+          $build['#url'] = '/' . substr($path, strlen('<front>'));
+          $build['#link_text'] = $text;
+          break;
+
+        case $is_external:
+          $build['#url'] = $path;
+          $build['#link_text'] = str_starts_with($text, 'http') ? NULL : $text;
+          break;
+
+        default:
+          $internal_path = str_starts_with($path, '/') ? $path : '/' . $path;
+          $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+
+          if ($alias) {
+            $build['#url'] = $alias;
+            $build['#link_text'] = str_starts_with($text, '/') ? NULL : $text;
+          }
+          else {
+            $build['#url'] = $path;
+            $build['#link_text'] = $text;
+          }
       }
     }
     unset($build['field_uiowa_card_link']);
