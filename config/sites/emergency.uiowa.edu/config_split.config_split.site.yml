@@ -1,0 +1,20 @@
+uuid: ce603880-33a0-47af-89cb-3d069d4452cd
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The emergency.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/emergency.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - node.type.hawk_alert
+  - 'core.entity_view_display.node.hawk_alert.*'
+  - 'core.entity_form_display.node.hawk_alert.*'
+partial_list:
+  - 'user.role.*'
