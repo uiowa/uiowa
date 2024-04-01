@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Installation functions for uipress_migrate module.
+ * Installation functions for its_service module.
  */
 
 use Drupal\Core\Config\FileStorage;
@@ -10,10 +10,10 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function its_migrate_install() {
+function its_service_install() {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
-  $config_path = $path_resolver->getPath('module', 'uipress_migrate') . '/config/split';
+  $config_path = $path_resolver->getPath('module', 'its_service') . '/config/split';
   $source = new FileStorage($config_path);
 
   $config_storage = \Drupal::service('config.storage');
@@ -23,7 +23,7 @@ function its_migrate_install() {
   }
 
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('config_split.config_split.uipress_migrate');
+  $config = $config_factory->getEditable('config_split.config_split.its_service');
   $config->set('status', TRUE);
   $config->save(TRUE);
 }
@@ -31,10 +31,10 @@ function its_migrate_install() {
 /**
  * Implements hook_uninstall().
  */
-function its_migrate_uninstall() {
+function its_service_uninstall() {
   // Disable the split.
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('config_split.config_split.uipress_migrate');
+  $config = $config_factory->getEditable('config_split.config_split.its_service');
   $config->set('status', FALSE);
   $config->save(TRUE);
 

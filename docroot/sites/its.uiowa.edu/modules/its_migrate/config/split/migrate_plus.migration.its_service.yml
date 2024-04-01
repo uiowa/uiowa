@@ -1,0 +1,32 @@
+id: its_service
+label: Service
+dependencies:
+  enforced:
+    module:
+      - its_migrate
+migration_tags:
+  - its
+migration_group: sitenow_migrate
+source:
+  plugin: its_service
+  node_type: info_center
+destination:
+  plugin: 'entity:node'
+  default_bundle: service
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+migration_dependencies: null
