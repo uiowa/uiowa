@@ -94,35 +94,35 @@ class Service extends BaseNodeSource {
 //
     // Replace inline files and images in the body,
     // and set for placement in the body and teaser fields.
-    $body = $row->getSourceProperty('body');
-    if (!empty($body)) {
-      $this->viewMode = 'medium__no_crop';
-      $this->align = 'left';
-      // Search for D7 inline embeds and replace with D8 inline entities.
-      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
-      // Set the format to filtered_html while we have it.
-      $body[0]['format'] = 'filtered_html';
-
-      // Check for captions in the old format, and if found,
-      // manually insert them into the drupal-media element.
-      $body[0]['value'] = preg_replace_callback('%<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>%is', [
-        $this,
-        'captionReplace',
-      ], $body[0]['value']);
-      // Check for callouts in the source,
-      // and construct the proper format for the destination.
-      $body[0]['value'] = preg_replace_callback('|<div class=\"(.*?)-callout\">(.*?)<\/div>|is', [
-        $this,
-        'calloutReplace',
-      ], $body[0]['value']);
-
-      // Remove empty <p> tags as well.
-      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
-
-      $row->setSourceProperty('body', $body);
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
-    }
+//    $body = $row->getSourceProperty('body');
+//    if (!empty($body)) {
+//      $this->viewMode = 'medium__no_crop';
+//      $this->align = 'left';
+//      // Search for D7 inline embeds and replace with D8 inline entities.
+//      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+//      // Set the format to filtered_html while we have it.
+//      $body[0]['format'] = 'filtered_html';
+//
+//      // Check for captions in the old format, and if found,
+//      // manually insert them into the drupal-media element.
+//      $body[0]['value'] = preg_replace_callback('%<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>%is', [
+//        $this,
+//        'captionReplace',
+//      ], $body[0]['value']);
+//      // Check for callouts in the source,
+//      // and construct the proper format for the destination.
+//      $body[0]['value'] = preg_replace_callback('|<div class=\"(.*?)-callout\">(.*?)<\/div>|is', [
+//        $this,
+//        'calloutReplace',
+//      ], $body[0]['value']);
+//
+//      // Remove empty <p> tags as well.
+//      $body[0]['value'] = preg_replace('@<p>(\s?|&nbsp;)<\/p>@is', '', $body[0]['value']);
+//
+//      $row->setSourceProperty('body', $body);
+//      // Extract the summary.
+//      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
+//    }
 //
 //    // Truncate the featured image caption, if needed,
 //    // and add a message to the migrate table for future followup.
