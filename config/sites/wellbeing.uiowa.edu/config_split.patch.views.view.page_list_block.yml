@@ -7,6 +7,9 @@ adding:
   display:
     default:
       display_options:
+        exposed_form:
+          options:
+            reset_button: true
         filters:
           field_wellbeing_audience_target_id:
             id: field_wellbeing_audience_target_id
@@ -182,4 +185,10 @@ adding:
             hierarchy_depth: 0
             required_depth: 0
             none_label: '- Please select -'
-removing: {  }
+removing:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button: false
