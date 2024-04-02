@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgshrai.uiowa.ddev.site
+    protocol: https
+  machine_name: orgshrai
+  human_name: shrai.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgshrai.prod
+drupal:
+  db:
+    database: shrai_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgshrai.prod.drupal.uiowa.edu'
+  requester: megheil
+  site-name: 'Students for Human Rights At Iowa'
