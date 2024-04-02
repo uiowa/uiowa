@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: educationunbound.uiowa.ddev.site
+    protocol: https
+  machine_name: educationunbound
+  human_name: unbound.education.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: educationunbound.prod
+drupal:
+  db:
+    database: unbound_education_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://educationunbound.prod.drupal.uiowa.edu'
+  requester: kschuh
+  site-name: Unbound-LearningWithoutLimits
