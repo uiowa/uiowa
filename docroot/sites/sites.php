@@ -7108,3 +7108,9 @@ $sites['orgshrai.uiowa.ddev.site'] = 'shrai.org.uiowa.edu';
 $sites['orgshrai.dev.drupal.uiowa.edu'] = 'shrai.org.uiowa.edu';
 $sites['orgshrai.stage.drupal.uiowa.edu'] = 'shrai.org.uiowa.edu';
 $sites['orgshrai.prod.drupal.uiowa.edu'] = 'shrai.org.uiowa.edu';
+
+// Directory aliases for unbound.education.uiowa.edu.
+$sites['educationunbound.uiowa.ddev.site'] = 'unbound.education.uiowa.edu';
+$sites['educationunbound.dev.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
+$sites['educationunbound.stage.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
+$sites['educationunbound.prod.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
