@@ -213,6 +213,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
         }
       }
     }
+    return TRUE;
   }
 
   /**
