@@ -34,6 +34,13 @@ class Service extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+
+    $fee_info = $row->getSourceProperty('field_ic_fees');
+    if (isset($fee_info)) {
+      $fee_info[0]['format'] = 'minimal_plus';
+      $row->setSourceProperty('field_ic_fees', $fee_info);
+    }
+
 //    // Process the primary media field.
 //    $media = $row->getSourceProperty('field_primary_media');
 //    if (!empty($media)) {
@@ -157,7 +164,9 @@ class Service extends BaseNodeSource {
 //      $row->setSourceProperty('field_by_line', $byline);
 //    }
 
-    $foo = 'bar';
+    if($row->getSourceProperty('title') === 'Wiki') {
+      $foo = 'bar';
+    }
     return TRUE;
   }
 
