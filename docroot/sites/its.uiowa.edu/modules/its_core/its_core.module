@@ -80,10 +80,6 @@ function its_core_entity_presave(EntityInterface $entity) {
         $additional_details,
       ]));
 
-      if ($entity->isClosed()) {
-        $alert_title = '[Closed] ' . $alert_title;
-      }
-
       $entity->setTitle($alert_title);
 
       // Reorder the Updates to chronological.
@@ -282,7 +278,7 @@ function its_core_send_alert_email($entity, $alert) {
   $alert_title = $entity->label();
 
   if ($entity->isClosed()) {
-    $alert_title = '[CLOSED] ' . $alert_title;
+    $alert_title = '[Closed] ' . $alert_title;
   }
 
   $emailFactory = \Drupal::service('email_factory');
@@ -696,6 +692,19 @@ function its_core_preprocess_paragraph(&$variables) {
         }
       }
 
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function its_core_node_load($entities) {
+  foreach ($entities as $entity) {
+    // Override the alert title if the alert is closed.
+    if ($entity->bundle() === 'alert' && $entity->isClosed() && $entity->hasField('title')) {
+      $title = '[Closed] ' . $entity->getTitle();
+      $entity->set('title', $title);
     }
   }
 }
