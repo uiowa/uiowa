@@ -1,0 +1,13 @@
+services:
+  uiowa_rave.api:
+    class: Drupal\uiowa_rave\RaveAPI
+    arguments: ['@logger.channel.uiowa_rave', '@cache.uiowa_rave', '@http_client']
+  logger.channel.uiowa_rave:
+    parent: logger.channel_base
+    arguments: [ 'uiowa_rave' ]
+  cache.uiowa_rave:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['uiowa_rave']
