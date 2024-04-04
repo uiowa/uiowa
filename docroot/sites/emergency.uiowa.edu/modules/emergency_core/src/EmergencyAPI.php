@@ -96,33 +96,38 @@ class EmergencyAPI {
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
 
-    if ($cache = $this->cache->get($cid)) {
-      $data = $cache->data;
-    }
-    else {
-      try {
-        $response = $this->client->request($method, $uri, $options);
-      }
-      catch (RequestException | GuzzleException $e) {
-        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-          '@endpoint' => $uri,
-          '@code' => $e->getCode(),
-          '@error' => $e->getMessage(),
-        ]);
-      }
+    $response = $this->client->request($method, $uri, $options);
+    $contents = $response->getBody()->getContents();
+    $data = simplexml_load_string($contents);
 
-      if (isset($response)) {
-        $contents = $response->getBody()->getContents();
 
-        /** @var object $data */
-        $data = json_decode($contents);
+//    if ($cache = $this->cache->get($cid)) {
+//      $data = $cache->data;
+//    }
+//    else {
+//      try {
+//        $response = $this->client->request($method, $uri, $options);
+//      }
+//      catch (RequestException | GuzzleException $e) {
+//        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+//          '@endpoint' => $uri,
+//          '@code' => $e->getCode(),
+//          '@error' => $e->getMessage(),
+//        ]);
+//      }
+//
+//      if (isset($response)) {
+//        $contents = $response->getBody()->getContents();
+//
+//        /** @var object $data */
+//        $data = json_decode($contents);
+//
+//        // Cache for a minute (for testing purposes).
+//        $this->cache->set($cid, $data, time() + 60);
+//      }
+//    }
 
-        // Cache for 15 minutes.
-        $this->cache->set($cid, $data, time() + 900);
-      }
-    }
-
-    return $contents;
+    return $data;
   }
 
   /**
