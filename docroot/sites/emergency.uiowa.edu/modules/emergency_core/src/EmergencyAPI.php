@@ -2,7 +2,6 @@
 
 namespace Drupal\emergency_core;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -82,7 +81,6 @@ class EmergencyAPI {
     $cid = "emergency_core:request:{$hash}";
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
-
 
     if ($cache = $this->cache->get($cid)) {
       $data = $cache->data;
