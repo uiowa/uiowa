@@ -55,7 +55,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice($this->t('Starting the facilities building content sync from drush. This may take a little time if the information isn\'t cached.'));
+    $this->logger()->notice($this->t("Starting the facilities building content sync from drush. This may take a little time if the information isn't cached."));
 
     $message = facilities_core_import_buildings();
     $this->logger()->notice($message);
@@ -78,7 +78,7 @@ class FacilitiesCoreCommands extends DrushCommands {
 
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice($this->t('Starting the facilities projects sync from drush. This may take a little time if the information isn\'t cached.'));
+    $this->logger()->notice($this->t("Starting the facilities projects sync from drush. This may take a little time if the information isn't cached."));
 
     $message = facilities_core_import_projects();
     $this->logger()->notice($message);

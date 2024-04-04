@@ -2,6 +2,9 @@
 
 namespace Drupal\uiowa_core;
 
+/**
+ * An interface for API key authentication.
+ */
 interface ApiAuthKeyInterface {
 
   /**

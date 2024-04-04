@@ -4,11 +4,9 @@ namespace Drupal\sitenow_dispatch;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -51,7 +49,7 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   protected function loggerChannel(): string {
     return 'sitenow_dispatch';

@@ -42,4 +42,5 @@ trait ApiAuthKeyTrait {
       ], $options);
     }
   }
+
 }

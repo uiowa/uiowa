@@ -4,6 +4,7 @@ namespace Drupal\uiowa_facilities;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\uiowa_core\ApiAuthBasicTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
@@ -60,7 +61,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
    * {@inheritdoc}
    */
   public function getFeaturedProjects(): array|bool {
-    $this->logger->info('Retrieving featured projects');
+    uiowa_core_logger_log('Retrieving featured projects', 'uiowa_facilities', RfcLogLevel::INFO);
     return $this->get('featuredprojects');
   }
 

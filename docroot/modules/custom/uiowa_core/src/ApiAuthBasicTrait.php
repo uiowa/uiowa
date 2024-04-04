@@ -24,9 +24,10 @@ trait ApiAuthBasicTrait {
   /**
    * {@inheritdoc}
    */
-  public function addAuthToOptions(&$options): void {
+  public function addAuthToOptions(array &$options = []): void {
     if (!is_null($this->username) && !is_null($this->password)) {
       $options['auth'] = [$this->username, $this->password];
     }
   }
+
 }

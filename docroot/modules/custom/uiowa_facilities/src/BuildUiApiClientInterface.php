@@ -12,8 +12,8 @@ interface BuildUiApiClientInterface extends ApiClientInterface {
   /**
    * Returns a list of project related to the building.
    *
-   * @param $building_number
-   *   The building number
+   * @param string $building_number
+   *   The building number.
    *
    * @return false|mixed
    *   The data or false.
