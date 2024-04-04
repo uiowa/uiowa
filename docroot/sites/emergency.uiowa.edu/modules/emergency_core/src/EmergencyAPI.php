@@ -1,33 +1,32 @@
 <?php
 
-namespace Drupal\uiowa_rave;
+namespace Drupal\emergency_core\EmergencyAPI;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\node\Entity\Node;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Rave API service.
+ * Emergency API service.
  */
-class RaveAPI {
+class EmergencyAPI {
 
   const BASE_URL_1 = 'https://content.getrave.com/cap/uiowatest/channel1';
 
   const BASE_URL_2 = 'https://content.getrave.com/cap/uiowa/channel1';
 
   /**
-   * The uiowa_rave logger channel.
+   * The emergency_core logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
   /**
-   * The uiowa_rave cache.
+   * The emergency_core cache.
    *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
@@ -41,12 +40,12 @@ class RaveAPI {
   protected $client;
 
   /**
-   * Constructs a Rave object.
+   * Constructs an alert object.
    *
    * @param \Psr\Log\LoggerInterface $logger
-   *   The uiowa_rave logger channel.
+   *   The emergency_core logger channel.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *   The uiowa_rave cache.
+   *   The emergency_core cache.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
@@ -57,7 +56,7 @@ class RaveAPI {
   }
 
   /**
-   * Make a Rave API request and return data.
+   * Make an Emergency API request and return data.
    *
    * @param string $method
    *   The HTTP method to use.
@@ -93,7 +92,7 @@ class RaveAPI {
 
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));
-    $cid = "uiowa_rave:request:{$hash}";
+    $cid = "emergency_core:request:{$hash}";
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
 
@@ -103,7 +102,8 @@ class RaveAPI {
     else {
       try {
         $response = $this->client->request($method, $uri, $options);
-      } catch (RequestException|GuzzleException $e) {
+      }
+      catch (RequestException | GuzzleException $e) {
         $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
           '@endpoint' => $uri,
           '@code' => $e->getCode(),
@@ -125,12 +125,12 @@ class RaveAPI {
     return $data;
   }
 
-  /** Get all Hawk Alerts
+  /**
+   * Get all Hawk Alerts.
    *
    * @return array
-   *  The alerts object
+   *   The alerts object
    */
-
   public function getHawkAlerts() {
     return $this->request('GET', '');
   }

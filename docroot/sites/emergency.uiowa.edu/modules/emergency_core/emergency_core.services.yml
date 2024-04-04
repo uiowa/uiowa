@@ -1,0 +1,13 @@
+services:
+  emergency_core.api:
+    class: Drupal\emergency_core\EmergencyAPI
+    arguments: ['@logger.channel.emergency_core', '@cache.emergency_core', '@http_client']
+  logger.channel.emergency_core:
+    parent: logger.channel_base
+    arguments: [ 'emergency_core' ]
+  cache.emergency_core:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['emergency_core']
