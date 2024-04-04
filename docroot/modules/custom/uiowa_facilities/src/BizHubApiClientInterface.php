@@ -12,25 +12,25 @@ interface BizHubApiClientInterface extends ApiClientInterface {
   /**
    * Get all buildings.
    *
-   * @return array
+   * @return array|bool
    *   The buildings object.
    */
-  public function getBuildings(): array;
+  public function getBuildings(): array|bool;
 
   /**
    * Get single building by number.
    *
-   * @return array
+   * @return array|null
    *   The building object.
    */
-  public function getBuilding($building_number): array;
+  public function getBuilding($building_number): array|bool;
 
   /**
    * Get building coordinators by building number.
    *
-   * @return array
+   * @return array|null
    *   The building coordinators object.
    */
-  public function getBuildingCoordinators(): array;
+  public function getBuildingCoordinators(): array|bool;
 
 }

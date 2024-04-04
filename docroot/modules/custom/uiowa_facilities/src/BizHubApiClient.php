@@ -48,14 +48,14 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getBuildings(): array {
+  public function getBuildings(): array|bool {
     return $this->get('buildings');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getBuilding($building_number): array {
+  public function getBuilding($building_number): array|bool {
     return $this->get('building', [
       'query' => [
         'bldgnumber' => $building_number,
@@ -66,7 +66,7 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getBuildingCoordinators(): array {
+  public function getBuildingCoordinators(): array|bool {
     return $this->get('bldgCoordinators');
   }
 

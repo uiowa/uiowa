@@ -61,7 +61,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
    * {@inheritdoc}
    */
   public function getFeaturedProjects(): array|bool {
-    uiowa_core_logger_log('Retrieving featured projects', 'uiowa_facilities', RfcLogLevel::INFO);
+    $this->logger->notice('Retrieving featured projects');
     return $this->get('featuredprojects');
   }
 

@@ -140,7 +140,7 @@ abstract class ApiClientBase implements ApiClientInterface {
 
     $data = json_decode($this->lastResponse->getBody()->getContents());
 
-    $this->logger->notice('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+    $this->logger->info('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
       '@endpoint' => $endpoint,
       '@code' => $this->lastResponse->getStatusCode(),
     ]);
@@ -177,6 +177,6 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function addAuthToOptions(&$options): void {}
+  public function addAuthToOptions(array &$options = []): void {}
 
 }
