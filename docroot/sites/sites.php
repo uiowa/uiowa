@@ -7114,3 +7114,9 @@ $sites['educationunbound.uiowa.ddev.site'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.dev.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.stage.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.prod.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
+
+// Directory aliases for iowatc.org.uiowa.edu.
+$sites['orgiowatc.uiowa.ddev.site'] = 'iowatc.org.uiowa.edu';
+$sites['orgiowatc.dev.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
+$sites['orgiowatc.stage.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
+$sites['orgiowatc.prod.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
