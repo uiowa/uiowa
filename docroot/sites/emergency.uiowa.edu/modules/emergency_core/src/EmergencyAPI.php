@@ -86,7 +86,7 @@ class EmergencyAPI {
     // Merge additional options with default but allow overriding.
     $options = array_merge([
       'headers' => [
-        'Accept' => 'application/json',
+        'Accept' => 'application/xml',
       ],
     ], $options);
 
@@ -122,7 +122,7 @@ class EmergencyAPI {
       }
     }
 
-    return $data;
+    return $contents;
   }
 
   /**
