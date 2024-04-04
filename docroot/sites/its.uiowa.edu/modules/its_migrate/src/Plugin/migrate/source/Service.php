@@ -267,6 +267,8 @@ class Service extends BaseNodeSource {
     $result = \Drupal::database()
       ->select('taxonomy_term_field_data', 't')
       ->fields('t', ['tid'])
+      // @todo Add another conditional to match the proper vocabulary,
+      //   in case there are duplicate terms across different vocabs.
       ->condition('t.name', $tag_name, '=')
       ->execute()
       ->fetchField();
