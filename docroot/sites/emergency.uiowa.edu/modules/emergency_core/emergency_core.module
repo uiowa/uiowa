@@ -12,7 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
  * Implements hook_ENTITY_TYPE_view().
  */
 function emergency_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  // Grab Buildings.
+  // Grab alerts.
   $emergency_api = \Drupal::service('emergency_core.api');
   $data = $emergency_api->getHawkAlerts();
   if ($data) {

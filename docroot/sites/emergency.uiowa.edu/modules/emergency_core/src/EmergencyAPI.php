@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\emergency_core\EmergencyAPI;
+namespace Drupal\emergency_core;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
