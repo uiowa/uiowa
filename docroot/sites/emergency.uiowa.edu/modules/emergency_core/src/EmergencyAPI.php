@@ -60,10 +60,6 @@ class EmergencyAPI {
    *
    * @param string $method
    *   The HTTP method to use.
-   * @param string $path
-   *   The API path to use. Do not include the base URL.
-   * @param array $params
-   *   Optional request parameters.
    * @param array $options
    *   Optional request options. All requests expect JSON response data.
    * @param string $base
@@ -72,16 +68,7 @@ class EmergencyAPI {
    * @return mixed
    *   The API response data.
    */
-  public function request($method, $path, array $params = [], array $options = [], $base = self::BASE_URL_1) {
-    // Encode any special characters and trim duplicate slash.
-    $path = UrlHelper::encodePath($path);
-    $uri = $base . ltrim($path, '/');
-
-    // Append any query string parameters.
-    if (!empty($params)) {
-      $query = UrlHelper::buildQuery($params);
-      $uri .= "?{$query}";
-    }
+  public function request($method, array $options = [], $base = self::BASE_URL_1) {
 
     // Merge additional options with default but allow overriding.
     $options = array_merge([
@@ -91,12 +78,12 @@ class EmergencyAPI {
     ], $options);
 
     // Create a hash for the CID. Can always be decoded for debugging purposes.
-    $hash = base64_encode($uri . serialize($options));
+    $hash = base64_encode($base . serialize($options));
     $cid = "emergency_core:request:{$hash}";
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
 
-    $response = $this->client->request($method, $uri, $options);
+    $response = $this->client->request($method, $base, $options);
     $contents = $response->getBody()->getContents();
     $data = json_encode(simplexml_load_string($contents));
 
@@ -137,7 +124,7 @@ class EmergencyAPI {
    *   The alerts object
    */
   public function getHawkAlerts() {
-    return $this->request('GET', '');
+    return $this->request('GET');
   }
 
 }
