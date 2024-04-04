@@ -41,6 +41,32 @@ class Service extends BaseNodeSource {
       $row->setSourceProperty('field_ic_fees', $fee_info);
     }
 
+    foreach ([
+      'field_ic_category',
+      'field_audience',
+    ] as $source_field) {
+      if ($values = $row->getSourceProperty($source_field)) {
+        if (!isset($values)) {
+          continue;
+        }
+        $tids = [];
+        foreach ($values as $tid_array) {
+          $tids[] = $tid_array['tid'];
+        }
+        // Fetch tag names based on TIDs from our old site.
+        $tag_results = $this->select('taxonomy_term_data', 't')
+          ->fields('t', ['name'])
+          ->condition('t.tid', $tids, 'IN')
+          ->execute();
+        $new_tids = [];
+        foreach ($tag_results as $result) {
+          $tag_name = $result['name'];
+          $new_tids[] = $this->fetchTag($tag_name, $row);
+        }
+        $row->setSourceProperty("{$source_field}_processed", $new_tids);
+      }
+    }
+
 //    // Process the primary media field.
 //    $media = $row->getSourceProperty('field_primary_media');
 //    if (!empty($media)) {
@@ -60,43 +86,6 @@ class Service extends BaseNodeSource {
 //        $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
 //        $row->setSourceProperty('body', $body);
 //      }
-//    }
-//
-//    // Map various old fields into Tags.
-//    $tag_tids = [];
-//    foreach ([
-//      'field_achievement_category',
-//      'field_news_from',
-//      'field_news_about',
-//      'field_news_for',
-//    ] as $field_name) {
-//      $values = $row->getSourceProperty($field_name);
-//      if (!isset($values)) {
-//        continue;
-//      }
-//      foreach ($values as $tid_array) {
-//        $tag_tids[] = $tid_array['tid'];
-//      }
-//    }
-//
-//    if (!empty($tag_tids)) {
-//      // Fetch tag names based on TIDs from our old site.
-//      $tag_results = $this->select('taxonomy_term_data', 't')
-//        ->fields('t', ['name'])
-//        ->condition('t.tid', $tag_tids, 'IN')
-//        ->execute();
-//      $tags = [];
-//      foreach ($tag_results as $result) {
-//        $tag_name = $result['name'];
-//        $tid = $this->createTag($tag_name, $row);
-//
-//        // Add the mapped TID to match our tag name.
-//        if ($tid) {
-//          $tags[] = $tid;
-//        }
-//
-//      }
-//      $row->setSourceProperty('tags', $tags);
 //    }
 //
     // Replace inline files and images in the body,
@@ -271,14 +260,13 @@ class Service extends BaseNodeSource {
   }
 
   /**
-   * Helper function to check for existing tags and create if they don't exist.
+   * Helper function to fetch existing tags.
    */
-  private function createTag($tag_name, $row) {
+  private function fetchTag($tag_name, $row) {
     // Check if we already have the tag in the destination.
     $result = \Drupal::database()
       ->select('taxonomy_term_field_data', 't')
       ->fields('t', ['tid'])
-      ->condition('t.vid', 'tags', '=')
       ->condition('t.name', $tag_name, '=')
       ->execute()
       ->fetchField();
@@ -286,17 +274,7 @@ class Service extends BaseNodeSource {
       return $result;
     }
     // If we didn't have the tag already,
-    // then create a new tag and return its id.
-    $term = Term::create([
-      'name' => $tag_name,
-      'vid' => 'tags',
-    ]);
-    if ($term->save()) {
-      return $term->id();
-    }
-
-    // If we didn't save for some reason, add a notice
-    // to the migration, and return a null.
+    // add a notice to the migration, and return a null.
     $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
     $this->migration
       ->getIdMap()
