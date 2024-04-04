@@ -98,7 +98,7 @@ class EmergencyAPI {
 
     $response = $this->client->request($method, $uri, $options);
     $contents = $response->getBody()->getContents();
-    $data = simplexml_load_string($contents);
+    $data = json_encode(simplexml_load_string($contents));
 
 
 //    if ($cache = $this->cache->get($cid)) {

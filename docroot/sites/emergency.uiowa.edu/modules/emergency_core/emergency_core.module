@@ -16,6 +16,6 @@ function emergency_core_node_view(array &$build, EntityInterface $entity, Entity
   $emergency_api = \Drupal::service('emergency_core.api');
   $data = $emergency_api->getHawkAlerts();
   if ($data) {
-    print_r(json_encode($data));
+    print_r($data);
   }
 }
