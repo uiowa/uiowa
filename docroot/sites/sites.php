@@ -7114,3 +7114,9 @@ $sites['educationunbound.uiowa.ddev.site'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.dev.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.stage.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
 $sites['educationunbound.prod.drupal.uiowa.edu'] = 'unbound.education.uiowa.edu';
+
+// Directory aliases for miller.lab.uiowa.edu.
+$sites['labmiller.uiowa.ddev.site'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.dev.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.stage.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.prod.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
