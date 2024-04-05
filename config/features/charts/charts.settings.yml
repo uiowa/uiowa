@@ -1,7 +1,7 @@
 _core:
   default_config_hash: wZ5T1cqvSG3zUPxdtz_BgdBiNjgy1K1Al-L3iT7sPh8
 charts_default_settings:
-  library: ''
+  library: highcharts
   type: line
   display:
     title: ''
@@ -9,7 +9,6 @@ charts_default_settings:
     subtitle: ''
     data_labels: false
     data_markers: false
-    legend: false
     legend_position: right
     background: ''
     three_dimensional: 0
@@ -41,7 +40,6 @@ charts_default_settings:
       - '#ff7581'
     polar: 0
     tooltips: true
-    tooltips_use_html: false
     dimensions:
       width: ''
       width_units: '%'
@@ -68,8 +66,97 @@ charts_default_settings:
     suffix: ''
     decimal_count: ''
     labels_rotation: '0'
+  library_config:
+    legend:
+      layout: vertical
+      background_color: ''
+      border_width: '0'
+      item_style:
+        color: ''
+        overflow: ''
+      shadow: false
+    exporting_library: false
+    texture_library: false
+    global_options:
+      lang:
+        download_CSV: 'Download CSV'
+        download_JPEG: 'Download JPEG image'
+        download_PDF: 'Download PDF document'
+        download_PNG: 'Download PNG image '
+        download_SVG: 'Download SVG vector image'
+        download_XLS: 'Download XLS'
+        exit_fullscreen: 'Exit from full screen'
+        hide_data: 'Hide data table'
+        loading: Loading...
+        main_breadcrumb: Main
+        thousands_sep: ' '
+        decimal_point: .
+        no_data: 'No data to display'
+        print_chart: 'Print chart'
+        reset_zoom: 'Reset zoom'
+        reset_zoom_title: 'Reset zoom level 1:1'
+        view_data: 'View data table'
+        view_fullscreen: 'View in full screen'
+        context_button_title: 'Chart context menu'
+        drill_up_text: 'Back to {series.name}'
+        invalid_date: 'Invalid date'
+        months:
+          - January
+          - February
+          - March
+          - April
+          - May
+          - June
+          - July
+          - August
+          - September
+          - October
+          - November
+          - December
+        short_months:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+          - Jul
+          - Aug
+          - Sept
+          - Oct
+          - Nov
+          - Dec
+        weekdays:
+          - Sunday
+          - Monday
+          - Tuesday
+          - Wednesday
+          - Thursday
+          - Friday
+          - Saturday
+        short_weekdays:
+          - Sun
+          - Mon
+          - Tue
+          - Wed
+          - Thurs
+          - Frid
+          - Sat
+        export_data:
+          annotation_header: Annotations
+          category_datetime_header: DateTime
+          category_header: Category
+        numeric_symbols:
+          - k
+          - M
+          - G
+          - T
+          - P
+          - E
 advanced:
   debug: false
   requirements:
     cdn: true
-dependencies: {  }
+dependencies:
+  module:
+    - charts_highcharts
