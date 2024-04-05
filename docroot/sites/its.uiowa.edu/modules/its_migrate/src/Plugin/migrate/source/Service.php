@@ -84,6 +84,11 @@ class Service extends BaseNodeSource {
 
     $row->setSourceProperty('quick_links', $quick_links);
 
+    $ic_aliases = $row->getSourceProperty('field_ic_commonactions');
+    if (count($ic_aliases) > 0) {
+      $foo = 'bar';
+    }
+
     return TRUE;
   }
 
