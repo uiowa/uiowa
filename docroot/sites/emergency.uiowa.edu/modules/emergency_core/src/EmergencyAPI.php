@@ -108,7 +108,7 @@ class EmergencyAPI {
       }
     }
 
-    return $data;
+    return json_decode($data);
   }
 
   /**

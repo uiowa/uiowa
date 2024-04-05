@@ -5,17 +5,36 @@
  * Custom functionality the Emergency website.
  */
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\emergency_core\AlertsProcessor;
 
 /**
- * Implements hook_ENTITY_TYPE_view().
+ * Import and update buildings.
  */
-function emergency_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  // Grab alerts.
-  $emergency_api = \Drupal::service('emergency_core.api');
-  $data = $emergency_api->getHawkAlerts();
-  if ($data) {
-    print_r($data);
+function emergency_core_import_alerts() {
+  // Check that this process is being called with
+  // admin permissions.
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+  if (!$access) {
+    return 'This is a restricted process.';
   }
+
+  $logger = \Drupal::logger('emergency_core');
+  $logger->notice('Starting the hawk alert content sync.');
+
+  $sync_service = new AlertsProcessor();
+  $sync_service->init();
+  $sync_service->process();
+
+  $arguments = [
+    '@created' => $sync_service->getCreated(),
+    '@updated' => $sync_service->getUpdated(),
+    '@deleted' => $sync_service->getDeleted(),
+    '@skipped' => $sync_service->getSkipped(),
+  ];
+  $message = t('Hawk alerts content sync completed. @created alerts were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+  $logger->notice($message);
+  return $message;
 }
