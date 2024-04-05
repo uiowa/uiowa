@@ -160,35 +160,15 @@ class Service extends BaseNodeSource {
 
     $ic_obtain = $row->getSourceProperty('field_ic_obtain');
     if(count($ic_obtain) > 0) {
-//      foreach ($ic_obtain as $key => $link) {
-//        $ic_obtain[$key]['uri'] = $link['url'];
-//        unset($ic_obtain[$key]['url']);
-//        $ic_obtain[$key]['options'] = $link['attributes'];
-//        unset($ic_obtain[$key]['attributes']);
-//      }
-
       $quick_links = array_merge($quick_links, $ic_obtain);
     }
 
     $ic_commonactions = $row->getSourceProperty('field_ic_commonactions');
     if(count($ic_commonactions) > 0) {
-//      foreach ($ic_commonactions as $key => $link) {
-//        $ic_commonactions[$key]['uri'] = $link['url'];
-//        unset($ic_commonactions[$key]['url']);
-//        $ic_commonactions[$key]['options'] = $link['attributes'];
-//        unset($ic_commonactions[$key]['attributes']);
-//      }
-
       $quick_links = array_merge($quick_links, $ic_commonactions);
     }
 
     $row->setSourceProperty('quick_links', $quick_links);
-
-//    if (count($quick_links) > 0) {
-    if ($row->getSourceProperty('title') === 'Wiki') {
-        $foo = 'bar';
-    }
-
 
     return TRUE;
   }
