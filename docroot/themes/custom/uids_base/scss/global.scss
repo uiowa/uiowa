@@ -1,14 +1,17 @@
 @import "uids/scss/uids-core.scss";
 $imgpath: '../../uids/assets/images';
 
-// Unset container queries if a section contains the menu block.
 // @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block, lb-direct-add.
 .layout__region--unset-type .column-container,
 .layout-builder .column-container {
   container-type: unset;
 }
 
-// This chooses the proper container for rendered content vs building in layout builder.
+// Specify container-type for cards in layout builder.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
+// Specify container-type for list blocks using views-row class.
 .list-container__inner .views-row {
   container-type: inline-size;
   container-name: column;
