@@ -11,6 +11,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\Entity\Artwork;
 use Drupal\facilities_core\ProjectsProcessor;
@@ -241,6 +242,21 @@ function facilities_core_preprocess_field(&$variables) {
             '#markup' => Markup::create($link_html),
           ];
         }
+      }
+      break;
+
+    case 'field_alert_building':
+      $node = $variables["element"]["#object"];
+      if (!empty($node->field_alert_building->entity)) {
+        $alert_building_node = $node->field_alert_building->entity;
+        $alert_building_url = Url::fromRoute('entity.node.canonical', ['node' => $alert_building_node->id()])
+          ->setAbsolute()
+          ->toString();
+        $link_html = '<a href="' . $alert_building_url . '">' . $alert_building_node->getTitle() . '</a>';
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => Markup::create($link_html),
+        ];
       }
       break;
 
