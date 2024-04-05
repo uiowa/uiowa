@@ -76,39 +76,46 @@ class EmergencyAPI {
       ],
     ], $options);
 
-    // Create a hash for the CID. Can always be decoded for debugging purposes.
-    $hash = base64_encode($base . serialize($options));
-    $cid = "emergency_core:request:{$hash}";
-    // Default $data to FALSE in case of API fetch failure.
-    $data = FALSE;
+    $response = $this->client->request($method, $base, $options);
+    $contents = $response->getBody()->getContents();
+    $alert = simplexml_load_string($contents);
+    $info = $alert->info;
+    $json = json_encode($info);
+    $data = json_decode($json, TRUE);
 
-    if ($cache = $this->cache->get($cid)) {
-      $data = $cache->data;
-    }
-    else {
-      try {
-        $response = $this->client->request($method, $base, $options);
-      }
-      catch (RequestException | GuzzleException $e) {
-        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-          '@endpoint' => $base,
-          '@code' => $e->getCode(),
-          '@error' => $e->getMessage(),
-        ]);
-      }
+//    // Create a hash for the CID. Can always be decoded for debugging purposes.
+//    $hash = base64_encode($base . serialize($options));
+//    $cid = "emergency_core:request:{$hash}";
+//    // Default $data to FALSE in case of API fetch failure.
+//    $data = FALSE;
+//
+//    if ($cache = $this->cache->get($cid)) {
+//      $data = $cache->data;
+//    }
+//    else {
+//      try {
+//        $response = $this->client->request($method, $base, $options);
+//      }
+//      catch (RequestException | GuzzleException $e) {
+//        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+//          '@endpoint' => $base,
+//          '@code' => $e->getCode(),
+//          '@error' => $e->getMessage(),
+//        ]);
+//      }
+//
+//      if (isset($response)) {
+//        $contents = $response->getBody()->getContents();
+//
+//        /** @var object $data */
+//        $data = json_encode(simplexml_load_string($contents));
+//
+//        // Cache for 15 minutes.
+//        $this->cache->set($cid, $data, time() + 60);
+//      }
+//    }
 
-      if (isset($response)) {
-        $contents = $response->getBody()->getContents();
-
-        /** @var object $data */
-        $data = json_encode(simplexml_load_string($contents));
-
-        // Cache for 15 minutes.
-        $this->cache->set($cid, $data, time() + 900);
-      }
-    }
-
-    return json_decode($data);
+    return ($data);
   }
 
   /**
