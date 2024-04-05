@@ -7120,3 +7120,9 @@ $sites['orgiowatc.uiowa.ddev.site'] = 'iowatc.org.uiowa.edu';
 $sites['orgiowatc.dev.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
 $sites['orgiowatc.stage.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
 $sites['orgiowatc.prod.drupal.uiowa.edu'] = 'iowatc.org.uiowa.edu';
+
+// Directory aliases for miller.lab.uiowa.edu.
+$sites['labmiller.uiowa.ddev.site'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.dev.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.stage.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
+$sites['labmiller.prod.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
