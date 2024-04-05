@@ -2,14 +2,9 @@
 
 namespace Drupal\emergency_core;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Sync alert information.
