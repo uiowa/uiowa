@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\Entity\Artwork;
 use Drupal\facilities_core\ProjectsProcessor;
@@ -220,6 +221,26 @@ function facilities_core_project_submit($form, FormStateInterface $form_state): 
  */
 function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_alert_traffic_control_plan':
+      $node = $variables["element"]["#object"];
+      if (!empty($node->field_alert_traffic_control_plan->entity)) {
+        if (!empty($node->field_alert_traffic_control_plan->entity->field_media_image->entity)) {
+          $image_uri = $node->field_alert_traffic_control_plan
+            ->entity
+            ->field_media_image
+            ->entity
+            ->getFileUri();
+          $image_url = \Drupal::service('file_url_generator')->generateAbsoluteString($image_uri);
+          // Output the image URL as a link.
+          $link_html = '<a href="' . $image_url . '">Download Traffic Plan</a>';
+          $variables['items'][0]['content'] = [
+            '#type' => 'markup',
+            '#markup' => Markup::create($link_html),
+          ];
+        }
+      }
+      break;
+
     case 'field_building_honoree_name':
       // Change label for output.
       $variables['element']['#title'] = 'Honoree';
@@ -631,7 +652,7 @@ function facilities_core_node_presave(EntityInterface $entity) {
       $media = reset($traffic_plan);
       $fid = $media->getSource()->getSourceFieldValue($media);
       $file = File::load($fid);
-      $file->setFilename('Traffic Plan');
+      $file->setFilename('Download Traffic Plan');
       $file->save();
     }
   }
