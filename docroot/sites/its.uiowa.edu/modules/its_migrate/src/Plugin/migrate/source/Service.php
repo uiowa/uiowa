@@ -61,7 +61,10 @@ class Service extends BaseNodeSource {
         $new_tids = [];
         foreach ($tag_results as $result) {
           $tag_name = $result['name'];
-          $new_tids[] = $this->fetchTag($tag_name, $row);
+          $tag = $this->fetchTag($tag_name, $row);
+          if ($tag !== FALSE) {
+            $new_tids[] = $tag;
+          }
         }
         $row->setSourceProperty("{$source_field}_processed", $new_tids);
       }
