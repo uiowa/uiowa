@@ -7144,3 +7144,9 @@ $sites['medicinepa.uiowa.ddev.site'] = 'pa.medicine.uiowa.edu';
 $sites['medicinepa.dev.drupal.uiowa.edu'] = 'pa.medicine.uiowa.edu';
 $sites['medicinepa.stage.drupal.uiowa.edu'] = 'pa.medicine.uiowa.edu';
 $sites['medicinepa.prod.drupal.uiowa.edu'] = 'pa.medicine.uiowa.edu';
+
+// Directory aliases for eye.medicine.uiowa.edu.
+$sites['medicineeye.uiowa.ddev.site'] = 'eye.medicine.uiowa.edu';
+$sites['medicineeye.dev.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
+$sites['medicineeye.stage.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
+$sites['medicineeye.prod.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
