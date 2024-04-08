@@ -7127,8 +7127,8 @@ $sites['labmiller.dev.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
 $sites['labmiller.stage.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
 $sites['labmiller.prod.drupal.uiowa.edu'] = 'miller.lab.uiowa.edu';
 
-// Directory aliases for cp3.org.uiowa.edu.
-$sites['orgcp3.uiowa.ddev.site'] = 'cp3.org.uiowa.edu';
-$sites['orgcp3.dev.drupal.uiowa.edu'] = 'cp3.org.uiowa.edu';
-$sites['orgcp3.stage.drupal.uiowa.edu'] = 'cp3.org.uiowa.edu';
-$sites['orgcp3.prod.drupal.uiowa.edu'] = 'cp3.org.uiowa.edu';
+// Directory aliases for otolaryngology.medicine.uiowa.edu.
+$sites['medicineotolaryngology.uiowa.ddev.site'] = 'otolaryngology.medicine.uiowa.edu';
+$sites['medicineotolaryngology.dev.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
+$sites['medicineotolaryngology.stage.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
+$sites['medicineotolaryngology.prod.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
