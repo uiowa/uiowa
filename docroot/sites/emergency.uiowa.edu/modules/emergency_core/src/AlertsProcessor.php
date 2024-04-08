@@ -115,20 +115,8 @@ class AlertsProcessor extends EntityProcessorBase {
     }
 
     if ($entity instanceof ContentEntityInterface) {
-      $changed = $this->processEntity($entity, $record);
-
       if (!is_null($existing_nid)) {
-        if ($changed) {
-          $entity->setNewRevision();
-          $entity->revision_log = 'Updated from source';
-          $entity->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-          $entity->setRevisionUserId(1);
-          $entity->save();
-          $this->updated++;
-        }
-        else {
-          $this->skipped++;
-        }
+        $this->skipped++;
       }
       else {
         $entity->enforceIsNew();
