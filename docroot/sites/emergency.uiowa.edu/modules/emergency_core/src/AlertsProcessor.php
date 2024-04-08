@@ -80,13 +80,12 @@ class AlertsProcessor extends EntityProcessorBase {
     $storage = $this->entityTypeManager
       ->getStorage($this->entityType);
 
-    // Retrieve values from existing hawk alerts.
+    // Retrieve headline values from existing hawk alerts.
     if ($this->getEntityIds()) {
       $entities = $storage->loadMultiple($this->getEntityIds());
       foreach ($entities as $entity_id => $entity) {
         if ($entity instanceof FieldableEntityInterface) {
-          if ($entity->hasField($this->fieldSyncKey) && !$entity->get($this->fieldSyncKey)
-              ->isEmpty()) {
+          if ($entity->hasField($this->fieldSyncKey) && !$entity->get($this->fieldSyncKey)->isEmpty()) {
             $this->existingEntities[$entity_id] = $entity;
             $this->keyMap[$entity->get($this->fieldSyncKey)->value] = $entity_id;
           }
@@ -102,7 +101,7 @@ class AlertsProcessor extends EntityProcessorBase {
 
     $existing_nid = $this->keyMap[$recordSyncKey] ?? NULL;
 
-    // Get building number and check to see if existing node exists.
+    // Get alert headline and check to see if existing node exists.
     if (!is_null($existing_nid)) {
       // If existing, update values if different.
       $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
