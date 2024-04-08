@@ -9,13 +9,15 @@ weight: 70
 stackable: true
 storage: folder
 folder: ../config/sites/emergency.uiowa.edu
-module: {  }
+module:
+  rh_taxonomy: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_form_display.taxonomy_term.hawk_alert_status.default
   - metatag.metatag_defaults.node__hawk_alert
   - node.type.hawk_alert
+  - rabbit_hole.behavior_settings.taxonomy_vocabulary_hawk_alert_status
   - simple_sitemap.bundle_settings.default.node.hawk_alert
   - taxonomy.vocabulary.hawk_alert_status
   - 'core.entity_view_display.node.hawk_alert.*'
