@@ -86,10 +86,26 @@ class Service extends BaseNodeSource {
 
     $ic_aliases = $row->getSourceProperty('field_ic_aliases');
     if (count($ic_aliases) > 0) {
-      $foo = 'bar';
+      $row->getSourceProperty('aliases', prepareAliases($ic_aliases));
     }
 
     return TRUE;
+  }
+
+  /**
+   * Helper function to Prepare service aliases.
+   */
+  private function prepareAliases($aliases) {
+    $aliases_string = '';
+    foreach ($aliases as $index => $alias) {
+      if ($index !== 0) {
+        $aliases_string .= ', ';
+      }
+
+      $aliases_string .= $alias["value"];
+    }
+
+    return $aliases_string;
   }
 
   /**
