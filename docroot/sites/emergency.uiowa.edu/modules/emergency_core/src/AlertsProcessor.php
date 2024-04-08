@@ -114,6 +114,8 @@ class AlertsProcessor extends EntityProcessorBase {
     }
 
     if ($entity instanceof ContentEntityInterface) {
+      $changed = $this->processEntity($entity, $record);
+
       if (!is_null($existing_nid)) {
         $this->skipped++;
       }
