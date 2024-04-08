@@ -118,8 +118,8 @@ class SupportArticle extends BaseNodeSource {
       $fc_faqs_content = $this->processFieldCollection($fc_faqs, ['sa_question', 'sa_answer']);
       if (!empty($fc_faqs_content)) {
         foreach ($fc_faqs_content as $faq) {
-          $this->viewMode = 'medium__no_crop';
-          $this->align = 'left';
+          $this->viewMode = 'small__no_crop';
+          $this->align = 'center';
           // Search for D7 inline embeds and replace with D8+ inline entities.
           $faq[0]['field_sa_answer_value'] = $this->replaceInlineFiles($faq[0]['field_sa_answer_value']);
           $paragraph = Paragraph::create([
