@@ -84,60 +84,6 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: c86b3bf0-ed4f-46f1-8b2f-0b66d26c3ded
-            region: content
-            configuration:
-              id: 'field_block:node:hawk_alert:field_hawk_alert_status'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9e70d8f7-21cc-4225-bedd-1a3c3b4ff851
-            region: content
-            configuration:
-              id: 'field_block:node:hawk_alert:field_hawk_alert_complete'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: boolean
-                label: above
-                settings:
-                  format: default
-                  format_custom_false: ''
-                  format_custom_true: ''
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 6c7b4940-65b9-4852-b800-1aa1ef5f5a17
-            region: content
-            configuration:
-              id: 'field_block:node:hawk_alert:field_hawk_alert_situation'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -161,7 +107,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 0
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -177,7 +123,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -193,8 +139,47 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 5
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6c7b4940-65b9-4852-b800-1aa1ef5f5a17
+            region: content
+            configuration:
+              id: 'field_block:node:hawk_alert:field_hawk_alert_situation'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c86b3bf0-ed4f-46f1-8b2f-0b66d26c3ded
+            region: content
+            configuration:
+              id: 'field_block:node:hawk_alert:field_hawk_alert_status'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
 id: node.hawk_alert.default
