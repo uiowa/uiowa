@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.hawk_alert.body
+    - field.field.node.hawk_alert.field_hawk_alert_complete
+    - field.field.node.hawk_alert.field_hawk_alert_status
     - field.field.node.hawk_alert.field_meta_tags
     - node.type.hawk_alert
   module:
@@ -84,6 +86,8 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_hawk_alert_complete: true
+  field_hawk_alert_status: true
   field_meta_tags: true
   publish_on: true
   publish_state: true

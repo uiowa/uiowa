@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.hawk_alert.body
+    - field.field.node.hawk_alert.field_hawk_alert_complete
+    - field.field.node.hawk_alert.field_hawk_alert_status
     - field.field.node.hawk_alert.field_meta_tags
     - node.type.hawk_alert
   module:
@@ -33,6 +35,19 @@ content:
   created:
     type: datetime_timestamp
     weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_hawk_alert_complete:
+    type: boolean_checkbox
+    weight: 27
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_hawk_alert_status:
+    type: options_buttons
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
