@@ -4,6 +4,7 @@ namespace Drupal\its_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -111,7 +112,63 @@ class SupportArticle extends BaseNodeSource {
     }
     $row->setSourceProperty('category', $category);
 
+    $fc_faqs = $row->getSourceProperty('field_sa_faq');
+    $faqs_paragraphs = [];
+    if (!empty($fc_faqs)) {
+      $fc_faqs_content = $this->processFieldCollection($fc_faqs, ['sa_question', 'sa_answer']);
+      if (!empty($fc_faqs_content)) {
+        foreach ($fc_faqs_content as $faq) {
+          $this->viewMode = 'medium__no_crop';
+          $this->align = 'left';
+          // Search for D7 inline embeds and replace with D8+ inline entities.
+          $faq[0]['field_sa_answer_value'] = $this->replaceInlineFiles($faq[0]['field_sa_answer_value']);
+          $paragraph = Paragraph::create([
+            'type' => 'support_article_faqs',
+            'field_support_faqs_question' => $faq[0]['field_sa_question_value'],
+            'field_support_faqs_answer' => [
+              'value' => $faq[0]['field_sa_answer_value'],
+              'format' => 'filtered_html',
+            ],
+          ]);
+
+          $paragraph->save();
+
+          $paragraph_item = [
+            'target_id' => $paragraph->id(),
+            'target_revision_id' => $paragraph->getRevisionId(),
+          ];
+          $faqs_paragraphs[] = $paragraph_item;
+        }
+      }
+
+    }
+    $row->setSourceProperty('faqs', $faqs_paragraphs);
     return TRUE;
+  }
+
+  /**
+   * Helper function to snag field collection data and concatenate it.
+   *
+   * @return array
+   *   Array of concatenated field collection details.
+   */
+  private function processFieldCollection($items, $collection_fields): array {
+    $faqs = [];
+    $first_field = array_shift($collection_fields);
+    foreach ($items as $item) {
+      $query = $this->select("field_data_field_{$first_field}", $first_field)
+        ->fields($first_field, ["field_{$first_field}_value"]);
+      foreach ($collection_fields as $additional_field) {
+        $query->join("field_data_field_{$additional_field}", $additional_field, "{$first_field}.revision_id = {$additional_field}.revision_id");
+        $query->fields($additional_field, ["field_{$additional_field}_value"]);
+      }
+      $results = $query->condition("{$first_field}.revision_id", $item['revision_id'], '=')
+        ->execute()
+        ->fetchAll();
+      $faqs[] = $results;
+    }
+
+    return $faqs;
   }
 
   /**
