@@ -27,8 +27,8 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   ) {
     parent::__construct($client, $logger, $cache, $configFactory);
     $auth = $this->configFactory->get('uiowa_facilities.apis')->get('bizhub.auth');
-    $this->username = $auth['username'] ?? NULL;
-    $this->password = $auth['password'] ?? NULL;
+    $this->username = $auth['user'] ?? NULL;
+    $this->password = $auth['pass'] ?? NULL;
   }
 
   /**
@@ -55,7 +55,7 @@ class BizHubApiClient extends ApiClientBase implements BizHubApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getBuilding($building_number): array|bool {
+  public function getBuilding($building_number): \stdClass|bool {
     return $this->get('building', [
       'query' => [
         'bldgnumber' => $building_number,

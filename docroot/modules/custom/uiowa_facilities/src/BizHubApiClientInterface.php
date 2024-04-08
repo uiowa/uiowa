@@ -20,10 +20,10 @@ interface BizHubApiClientInterface extends ApiClientInterface {
   /**
    * Get single building by number.
    *
-   * @return array|null
+   * @return \stdClass|null
    *   The building object.
    */
-  public function getBuilding($building_number): array|bool;
+  public function getBuilding($building_number): \stdClass|bool;
 
   /**
    * Get building coordinators by building number.

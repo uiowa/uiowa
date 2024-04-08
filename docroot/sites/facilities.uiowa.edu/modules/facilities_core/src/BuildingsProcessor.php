@@ -204,7 +204,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       $this->buildingCoordinators = [];
       $results = $this->apiClient->getBuildingCoordinators();
       foreach ($results as $result) {
-        $this->buildingCoordinators[$result->buildingNumber] = $result;
+        $this->buildingCoordinators[$result->buildingNumber] = (array) $result;
       }
     }
 
