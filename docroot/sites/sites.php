@@ -7150,3 +7150,9 @@ $sites['medicineeye.uiowa.ddev.site'] = 'eye.medicine.uiowa.edu';
 $sites['medicineeye.dev.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
 $sites['medicineeye.stage.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
 $sites['medicineeye.prod.drupal.uiowa.edu'] = 'eye.medicine.uiowa.edu';
+
+// Directory aliases for iowaneuroscience.medicine.uiowa.edu.
+$sites['medicineiowaneuroscience.uiowa.ddev.site'] = 'iowaneuroscience.medicine.uiowa.edu';
+$sites['medicineiowaneuroscience.dev.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
+$sites['medicineiowaneuroscience.stage.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
+$sites['medicineiowaneuroscience.prod.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
