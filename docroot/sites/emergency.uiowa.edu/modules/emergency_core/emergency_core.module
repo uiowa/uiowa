@@ -15,3 +15,23 @@ function emergency_core_entity_bundle_info_alter(array &$bundles) {
     $bundles['paragraph']['hawk_alert_situation_updates']['class'] = SituationUpdate::class;
   }
 }
+
+/**
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ */
+function emergency_core_field_widget_complete_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['widget']['#field_name'] === 'field_hawk_alert_situation') {
+    // Don't allow the editor to rearrange the updates,
+    // because they will be sorted chronologically
+    // by the node presave.
+    // Disable the draghandles by disallowing the reference changes,
+    // and also remove the dragdrop mode from the dropdown actions.
+    // Based on https://www.drupal.org/project/paragraphs/issues/3036020#comment-12989072.
+    // @todo Remove when Paragraphs updates to have
+    //   a no-dragging setting option.
+    $element['widget']['#allow_reference_changes'] = FALSE;
+    if (isset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode'])) {
+      unset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode']);
+    }
+  }
+}
