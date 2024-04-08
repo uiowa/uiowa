@@ -100,8 +100,7 @@ class EmergencyAPI {
       if (isset($response)) {
         $contents = $response->getBody()->getContents();
         $alert = simplexml_load_string($contents);
-        $info = $alert->info;
-        $json = json_encode($info);
+        $json = json_encode($alert);
 
         /** @var object $data */
         $data = json_decode($json, TRUE);

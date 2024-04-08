@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.hawk_alert.body
+    - field.field.node.hawk_alert.field_alert_identifier
     - field.field.node.hawk_alert.field_meta_tags
     - node.type.hawk_alert
   module:
@@ -35,6 +36,14 @@ content:
     weight: 2
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_alert_identifier:
+    type: string_textfield
+    weight: 26
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose

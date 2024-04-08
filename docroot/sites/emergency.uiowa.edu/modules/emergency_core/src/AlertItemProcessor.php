@@ -15,6 +15,7 @@ class AlertItemProcessor extends EntityItemProcessorBase {
   protected static $fieldMap = [
     'title' => 'headline',
     'body' => 'description',
+    'field_alert_identifier' => 'identifier',
   ];
 
   /**

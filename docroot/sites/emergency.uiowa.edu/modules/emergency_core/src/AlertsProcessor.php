@@ -34,12 +34,12 @@ class AlertsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  protected $fieldSyncKey = 'title';
+  protected $fieldSyncKey = 'field_alert_identifier';
 
   /**
    * {@inheritdoc}
    */
-  protected $apiRecordSyncKey = 'headline';
+  protected $apiRecordSyncKey = 'identifier';
 
   /**
    * {@inheritdoc}
@@ -97,11 +97,14 @@ class AlertsProcessor extends EntityProcessorBase {
     $recordSyncKey = $record[$this->apiRecordSyncKey];
     $this->processedRecords[] = $recordSyncKey;
 
+    $info = $record['info'];
+    $info['identifier'] = $record['identifier'];
+    $record = $info;
     $this->processRecord($record);
 
     $existing_nid = $this->keyMap[$recordSyncKey] ?? NULL;
 
-    // Get alert headline and check to see if existing node exists.
+    // Get alert identifier and check to see if existing node exists.
     if (!is_null($existing_nid)) {
       // If existing, update values if different.
       $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
