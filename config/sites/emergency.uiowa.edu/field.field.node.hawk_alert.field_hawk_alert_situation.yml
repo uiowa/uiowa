@@ -1,0 +1,43 @@
+uuid: 06029a26-2ca7-4449-8f58-6f35f634c9b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hawk_alert_situation
+    - node.type.hawk_alert
+    - paragraphs.paragraphs_type.hawk_alert_situation_updates
+  module:
+    - entity_reference_revisions
+id: node.hawk_alert.field_hawk_alert_situation
+field_name: field_hawk_alert_situation
+entity_type: node
+bundle: hawk_alert
+label: 'Hawk Alert Situation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      hawk_alert_situation_updates: hawk_alert_situation_updates
+    negate: 0
+    target_bundles_drag_drop:
+      hawk_alert_situation_updates:
+        weight: 6
+        enabled: true
+      uiowa_collection_item:
+        weight: 7
+        enabled: false
+      uiowa_contact:
+        weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

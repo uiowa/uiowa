@@ -1,0 +1,33 @@
+uuid: 9cdb045d-4777-41ec-92de-f5fa6fbfa7a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_date
+    - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_detai
+    - paragraphs.paragraphs_type.hawk_alert_situation_updates
+  module:
+    - datetime
+    - text
+id: paragraph.hawk_alert_situation_updates.default
+targetEntityType: paragraph
+bundle: hawk_alert_situation_updates
+mode: default
+content:
+  field_hawk_alert_situation_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_hawk_alert_situation_detai:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
