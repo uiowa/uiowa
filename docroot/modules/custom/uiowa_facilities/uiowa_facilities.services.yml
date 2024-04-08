@@ -1,7 +1,4 @@
 services:
-  uiowa_facilities.api:
-    class: Drupal\uiowa_facilities\FacilitiesAPI
-    arguments: ['@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@http_client']
   uiowa_facilities.bizhub_api_client:
     class: Drupal\uiowa_facilities\BizHubApiClient
     arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']
