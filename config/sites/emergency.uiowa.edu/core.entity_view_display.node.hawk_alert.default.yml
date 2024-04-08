@@ -107,7 +107,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 3
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -123,23 +123,21 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 6c7b4940-65b9-4852-b800-1aa1ef5f5a17
+            uuid: 23853ab8-6537-42a5-b1f2-081c867adedd
             region: content
             configuration:
-              id: 'field_block:node:hawk_alert:field_hawk_alert_situation'
+              id: 'field_block:node:hawk_alert:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
+                type: text_default
+                label: hidden
+                settings: {  }
                 third_party_settings: {  }
             weight: 2
             additional: {  }
@@ -161,24 +159,26 @@ third_party_settings:
                 settings:
                   link: false
                 third_party_settings: {  }
-            weight: 0
+            weight: 4
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 23853ab8-6537-42a5-b1f2-081c867adedd
+            uuid: 6c7b4940-65b9-4852-b800-1aa1ef5f5a17
             region: content
             configuration:
-              id: 'field_block:node:hawk_alert:body'
+              id: 'field_block:node:hawk_alert:field_hawk_alert_situation'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
