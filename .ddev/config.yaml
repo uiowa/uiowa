@@ -142,7 +142,7 @@ disable_settings_management: true
 # The mailhog port is not normally bound on the host at all, instead being routed
 # through ddev-router, but it can be bound directly to localhost if specified here.
 
-webimage_extra_packages: [python, build-essential, inetutils-syslogd]
+webimage_extra_packages: [python, build-essential]
 # Extra Debian packages that are needed in the webimage can be added here
 
 # dbimage_extra_packages: [telnet,netcat]
@@ -196,7 +196,3 @@ webimage_extra_packages: [python, build-essential, inetutils-syslogd]
 # post-import-db:
 #   - exec: drush cr
 #   - exec: drush updb
-hooks:
-  post-start:
-    - exec: sudo syslogd
-    - exec: printf "\n\n#Drupal logs\n#local0.* /var/log/drupal.log\n" | sudo tee -a /etc/syslog.conf
