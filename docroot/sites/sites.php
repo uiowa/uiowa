@@ -7162,3 +7162,9 @@ $sites['medicineiowaneuroscience.uiowa.ddev.site'] = 'iowaneuroscience.medicine.
 $sites['medicineiowaneuroscience.dev.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
 $sites['medicineiowaneuroscience.stage.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
 $sites['medicineiowaneuroscience.prod.drupal.uiowa.edu'] = 'iowaneuroscience.medicine.uiowa.edu';
+
+// Directory aliases for amomentofmagic.sites.uiowa.edu.
+$sites['sitesamomentofmagic.uiowa.ddev.site'] = 'amomentofmagic.sites.uiowa.edu';
+$sites['sitesamomentofmagic.dev.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
+$sites['sitesamomentofmagic.stage.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
+$sites['sitesamomentofmagic.prod.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
