@@ -7132,3 +7132,9 @@ $sites['medicineotolaryngology.uiowa.ddev.site'] = 'otolaryngology.medicine.uiow
 $sites['medicineotolaryngology.dev.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
 $sites['medicineotolaryngology.stage.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
 $sites['medicineotolaryngology.prod.drupal.uiowa.edu'] = 'otolaryngology.medicine.uiowa.edu';
+
+// Directory aliases for pt.medicine.uiowa.edu.
+$sites['medicinept.uiowa.ddev.site'] = 'pt.medicine.uiowa.edu';
+$sites['medicinept.dev.drupal.uiowa.edu'] = 'pt.medicine.uiowa.edu';
+$sites['medicinept.stage.drupal.uiowa.edu'] = 'pt.medicine.uiowa.edu';
+$sites['medicinept.prod.drupal.uiowa.edu'] = 'pt.medicine.uiowa.edu';
