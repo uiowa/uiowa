@@ -117,9 +117,6 @@ class Service extends BaseNodeSource {
     // Update a reporter for new node ids based on old entity ids.
     $reporter = [];
     foreach ($this->reporter as $sid => $did) {
-      if ($sid === '7831' || $did === '7831') {
-        $foo = 'UH SIR????????';
-      }
       $reporter[$mapper[$sid]] = $did;
     }
 
