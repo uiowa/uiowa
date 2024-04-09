@@ -68,6 +68,7 @@ class SupportArticle extends BaseNodeSource {
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
+    // Capture support article category by comparing old term name to existing.
     $tables = [
       'field_data_field_sa_category' => ['field_sa_category_target_id'],
     ];
@@ -112,6 +113,7 @@ class SupportArticle extends BaseNodeSource {
     }
     $row->setSourceProperty('category', $category);
 
+    // Capture field collection items and turn them into paragraphs items.
     $fc_faqs = $row->getSourceProperty('field_sa_faq');
     $faqs_paragraphs = [];
     if (!empty($fc_faqs)) {
@@ -147,10 +149,10 @@ class SupportArticle extends BaseNodeSource {
   }
 
   /**
-   * Helper function to snag field collection data and concatenate it.
+   * Helper function to snag field collection data.
    *
    * @return array
-   *   Array of concatenated field collection details.
+   *   Array of field collection faqs.
    */
   private function processFieldCollection($items, $collection_fields): array {
     $faqs = [];
