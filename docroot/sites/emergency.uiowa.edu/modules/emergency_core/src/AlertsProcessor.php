@@ -106,7 +106,7 @@ class AlertsProcessor extends EntityProcessorBase {
 
     // Get alert identifier and check to see if existing node exists.
     if (!is_null($existing_nid)) {
-      // If existing, update values if different.
+      // If existing, load node.
       $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
     }
     else {

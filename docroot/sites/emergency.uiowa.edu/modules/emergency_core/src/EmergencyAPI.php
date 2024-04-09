@@ -12,9 +12,9 @@ use Psr\Log\LoggerInterface;
  * Emergency API service.
  */
 class EmergencyAPI {
-
+  // Stage endpoint with test data.
   const BASE_URL_1 = 'https://content.getrave.com/cap/uiowatest/channel1';
-
+  // Prod endpoint with real data.
   const BASE_URL_2 = 'https://content.getrave.com/cap/uiowa/channel1';
 
   /**
