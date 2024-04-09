@@ -30,8 +30,6 @@ class HawkAlert extends NodeBundleBase implements RendersAsCardInterface {
     return [
       ...parent::getDefaultCardStyles(),
       'card_headline_style' => 'headline--serif',
-      'media_size' => 'media--small',
-      'media_shape' => 'media--circle',
       'borderless' => 'borderless',
     ];
   }
