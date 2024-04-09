@@ -99,6 +99,12 @@ class Service extends BaseNodeSource {
   public function postImport(MigrateImportEvent $event) {
     parent::postImport($event);
 
+    // If nothing to report, then we're done.
+    if (empty($this->reporter)) {
+      return;
+    }
+
+    // Grab our migration map.
     $db = \Drupal::database();
     if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
       return;
@@ -111,6 +117,9 @@ class Service extends BaseNodeSource {
     // Update a reporter for new node ids based on old entity ids.
     $reporter = [];
     foreach ($this->reporter as $sid => $did) {
+      if ($sid === '7831' || $did === '7831') {
+        $foo = 'UH SIR????????';
+      }
       $reporter[$mapper[$sid]] = $did;
     }
 
