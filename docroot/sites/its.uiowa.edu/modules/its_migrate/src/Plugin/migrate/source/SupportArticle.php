@@ -58,7 +58,6 @@ class SupportArticle extends BaseNodeSource {
 
     if (!empty($body)) {
       $this->viewMode = 'medium__no_crop';
-      $this->align = 'left';
       // Search for D7 inline embeds and replace with D8+ inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
       $row->setSourceProperty('body', $body);
@@ -108,26 +107,27 @@ class SupportArticle extends BaseNodeSource {
       $fc_faqs_content = $this->processFieldCollection($fc_faqs, ['sa_question', 'sa_answer']);
       if (!empty($fc_faqs_content)) {
         foreach ($fc_faqs_content as $faq) {
-          $this->viewMode = 'small__no_crop';
-          $this->align = 'center';
-          // Search for D7 inline embeds and replace with D8+ inline entities.
-          $faq[0]['field_sa_answer_value'] = $this->replaceInlineFiles($faq[0]['field_sa_answer_value']);
-          $paragraph = Paragraph::create([
-            'type' => 'support_article_faqs',
-            'field_support_faqs_question' => $faq[0]['field_sa_question_value'],
-            'field_support_faqs_answer' => [
-              'value' => $faq[0]['field_sa_answer_value'],
-              'format' => 'filtered_html',
-            ],
-          ]);
+          if (!empty($faq)) {
+            $this->viewMode = 'small__no_crop';
+            // Search for D7 inline embeds and replace with D8+ inline entities.
+            $faq[0]['field_sa_answer_value'] = $this->replaceInlineFiles($faq[0]['field_sa_answer_value']);
+            $paragraph = Paragraph::create([
+              'type' => 'support_article_faqs',
+              'field_support_faqs_question' => $faq[0]['field_sa_question_value'],
+              'field_support_faqs_answer' => [
+                'value' => $faq[0]['field_sa_answer_value'],
+                'format' => 'filtered_html',
+              ],
+            ]);
 
-          $paragraph->save();
+            $paragraph->save();
 
-          $paragraph_item = [
-            'target_id' => $paragraph->id(),
-            'target_revision_id' => $paragraph->getRevisionId(),
-          ];
-          $faqs_paragraphs[] = $paragraph_item;
+            $paragraph_item = [
+              'target_id' => $paragraph->id(),
+              'target_revision_id' => $paragraph->getRevisionId(),
+            ];
+            $faqs_paragraphs[] = $paragraph_item;
+          }
         }
       }
 
