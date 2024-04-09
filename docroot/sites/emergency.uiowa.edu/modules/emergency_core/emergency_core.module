@@ -5,7 +5,18 @@
  * Custom functionality the Emergency website.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\emergency_core\AlertsProcessor;
+
+/**
+ * Implements hook_form_alter().
+ */
+function emergency_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // To prevent duplicate alerts, identifier field is not editable.
+  if ($form_id == 'node_hawk_alert_edit_form') {
+    $form['field_alert_identifier']['#disabled'] = TRUE;
+  }
+}
 
 /**
  * Import alerts.
