@@ -6,7 +6,6 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -74,12 +73,12 @@ class Service extends BaseNodeSource {
     $quick_links = [];
 
     $ic_obtain = $row->getSourceProperty('field_ic_obtain');
-    if(count($ic_obtain) > 0) {
+    if (count($ic_obtain) > 0) {
       $quick_links = array_merge($quick_links, $ic_obtain);
     }
 
     $ic_commonactions = $row->getSourceProperty('field_ic_commonactions');
-    if(count($ic_commonactions) > 0) {
+    if (count($ic_commonactions) > 0) {
       $quick_links = array_merge($quick_links, $ic_commonactions);
     }
 
@@ -148,10 +147,9 @@ class Service extends BaseNodeSource {
 
     return [
       'value' => $aliases_string,
-      'format' => 'plain_text'
+      'format' => 'plain_text',
     ];
   }
-
 
   /**
    * Helper function to fetch existing tags.
@@ -177,4 +175,5 @@ class Service extends BaseNodeSource {
       ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
     return FALSE;
   }
+
 }
