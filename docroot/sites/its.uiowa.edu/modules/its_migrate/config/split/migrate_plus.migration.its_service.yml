@@ -48,4 +48,12 @@ process:
     plugin: field_link
     source: quick_links
   field_service_alias: aliases
+  field_service_related_service:
+    plugin: sub_process
+    source: field_related_info_centers
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: its_service
+        source: target_id
 migration_dependencies: null

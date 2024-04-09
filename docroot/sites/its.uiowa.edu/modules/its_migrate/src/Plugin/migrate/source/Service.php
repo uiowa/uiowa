@@ -2,6 +2,7 @@
 
 namespace Drupal\its_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -93,6 +94,40 @@ class Service extends BaseNodeSource {
   }
 
   /**
+   * Helper function to fetch existing tags.
+   */
+  public function postImport(MigrateImportEvent $event) {
+    parent::postImport($event);
+
+    $db = \Drupal::database();
+    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
+      return;
+    }
+    $mapper = $db->select('migrate_map_' . $this->migration->id(), 'm')
+      ->fields('m', ['sourceid1', 'destid1'])
+      ->execute()
+      ->fetchAllKeyed();
+
+    // Update a reporter for new node ids based on old entity ids.
+    $reporter = [];
+    foreach ($this->reporter as $sid => $did) {
+      $reporter[$mapper[$sid]] = $did;
+    }
+
+    // Empty it out so it doesn't keep repeating if the postImport
+    // runs multiple times, as it sometimes does.
+    $this->reporter = [];
+
+    // Spit out a report in the logs/cli.
+    foreach ($reporter as $sid => $did) {
+      $this->logger->notice('Node: @nid, Image: @filename', [
+        '@nid' => $sid,
+        '@filename' => $did,
+      ]);
+    }
+  }
+
+  /**
    * Helper function to Prepare service aliases.
    */
   private function prepareAliases($aliases) {
@@ -111,105 +146,6 @@ class Service extends BaseNodeSource {
     ];
   }
 
-  /**
-   * Helper function to add an image caption during a preg_replace.
-   */
-  private function captionReplace($match) {
-
-    // Match[1] denotes whether it is an image or video.
-    // Match[2] is the alignment in the source.
-    // Match[3] is the pixel-width in the source.
-    // Match[4] is most of the drupal-media element,
-    // and match[5] is the image caption.
-    // Here we're adding the caption and then re-closing
-    // the drupal-media element.
-    // First, remove extra breaks that were used in source for
-    // visual spacing.
-    $match[5] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[5]);
-    // Then remove any extraneous spaces.
-    $match[5] = trim(preg_replace('/\s\s+/', ' ', $match[5]));
-
-    // Process the alignment and size in here as well.
-    // Because they are part of a wrapper div, it has to be processed
-    // here, as our base tooling can't currently handle wrappers.
-    switch ($match[1]) {
-      case 'video':
-        $size = match ($match[3]) {
-          '320' => 'small',
-          // 640 or default should go to medium.
-          default => 'medium',
-        };
-        break;
-
-      case 'image':
-      default:
-        $size = match ($match[3]) {
-          '150' => 'small__no_crop',
-          '640' => 'large__no_crop',
-          // 320 or default should go to medium.
-          default => 'medium__no_crop',
-        };
-    }
-    $match[4] = preg_replace('%(data-align=\")(.*?)(\")%is', '$1' . $match[2] . '$3', $match[4]);
-    $match[4] = preg_replace('%(data-view-mode=\")(.*?)(\")%is', '$1' . $size . '$3', $match[4]);
-
-    return $match[4] . ' data-caption="' . $match[5] . '"></drupal-media>';
-  }
-
-  /**
-   * Helper function to update a callout during a preg_replace.
-   */
-  private function calloutReplace($match) {
-    // Match[1] is the "left" or "right" of the callout
-    // alignment. Match[2] is the interior content of the <div>.
-    // Extra spacings have been added in various places
-    // for visual spacing. Remove them, or they'll throw
-    // things off in the new callout component.
-    $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
-
-    // Remove anything after the first '<br>',
-    // as it is not in the same '<strong>' group
-    // as the ones on the first line.
-    $headline_match_string = preg_replace('%(<br>|<br \/>|<br\/>|<ul>).*%is', '', $match[2]);
-
-    // Look for a headline to use in the callout, which are bolded strings
-    // at the start of the callout. Also look for any additional
-    // line breaks. Like before, here they are unnecessary.
-    $headline = '';
-    if (preg_match_all("|<strong>(.*?)<\/strong>(<br>)*|is", $headline_match_string, $headline_matches)) {
-      // Build the headline if we found one.
-      $headline_classes = implode(' ', [
-        'headline',
-        'block__headline',
-        'headline--serif',
-        'headline--underline',
-        'headline--center',
-      ]);
-
-      // If there are multiple <strong>'s, then we need to concatenate them.
-      $headline_text = '';
-      foreach ($headline_matches[1] as $value) {
-        $headline_text .= $value;
-        // If we're adding the headline separately,
-        // remove it from the rest of the text, so we don't duplicate.
-        $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
-      };
-      $headline = '<h4 class="' . $headline_classes . '">';
-      $headline .= '<span class="headline__heading">';
-      $headline .= $headline_text;
-      $headline .= '</span></h4>';
-    }
-
-    // Remove all leading and trailing 'br' tags.
-    $match[2] = preg_replace("%^(<br>|<br \/>|<br\/>\s)*%is", '', $match[2], 1);
-    $match[2] = preg_replace("%(<br>|<br \/>|<br\/>$|\s)*%is", '', $match[2], 1);
-
-    // Build the callout wrapper and return.
-    // We're defaulting to medium size, but taking the
-    // alignment from the source.
-    $wrapper_classes = 'block--word-break callout bg--gray inline--size-small inline--align-' . $match[1];
-    return '<div class="' . $wrapper_classes . '">' . $headline . $match[2] . '</div>';
-  }
 
   /**
    * Helper function to fetch existing tags.
