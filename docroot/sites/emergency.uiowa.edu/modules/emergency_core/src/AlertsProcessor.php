@@ -34,7 +34,7 @@ class AlertsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  protected $fieldSyncKey = 'field_alert_identifier';
+  protected $fieldSyncKey = 'field_hawk_alert_identifier';
 
   /**
    * {@inheritdoc}
