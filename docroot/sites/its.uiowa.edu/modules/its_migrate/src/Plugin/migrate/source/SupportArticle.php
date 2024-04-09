@@ -62,9 +62,6 @@ class SupportArticle extends BaseNodeSource {
       // Search for D7 inline embeds and replace with D8+ inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
       $row->setSourceProperty('body', $body);
-
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
     // Capture support article category by comparing old term name to existing.
