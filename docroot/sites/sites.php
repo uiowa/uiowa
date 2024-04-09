@@ -7168,3 +7168,9 @@ $sites['sitesamomentofmagic.uiowa.ddev.site'] = 'amomentofmagic.sites.uiowa.edu'
 $sites['sitesamomentofmagic.dev.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
 $sites['sitesamomentofmagic.stage.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
 $sites['sitesamomentofmagic.prod.drupal.uiowa.edu'] = 'amomentofmagic.sites.uiowa.edu';
+
+// Directory aliases for gconstantinescu.lab.uiowa.edu.
+$sites['labgconstantinescu.uiowa.ddev.site'] = 'gconstantinescu.lab.uiowa.edu';
+$sites['labgconstantinescu.dev.drupal.uiowa.edu'] = 'gconstantinescu.lab.uiowa.edu';
+$sites['labgconstantinescu.stage.drupal.uiowa.edu'] = 'gconstantinescu.lab.uiowa.edu';
+$sites['labgconstantinescu.prod.drupal.uiowa.edu'] = 'gconstantinescu.lab.uiowa.edu';
