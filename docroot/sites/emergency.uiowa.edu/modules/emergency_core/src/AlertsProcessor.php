@@ -124,6 +124,7 @@ class AlertsProcessor extends EntityProcessorBase {
       }
       else {
         $entity->enforceIsNew();
+        $entity->setPublished();
         $entity->save();
         $this->created++;
       }

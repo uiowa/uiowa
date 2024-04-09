@@ -105,8 +105,8 @@ class EmergencyAPI {
         /** @var object $data */
         $data = json_decode($json, TRUE);
 
-        // Cache for 5 minutes.
-        $this->cache->set($cid, $data, time() + 300);
+        // Cache for 1 minute.
+        $this->cache->set($cid, $data, time() + 60);
       }
     }
 
