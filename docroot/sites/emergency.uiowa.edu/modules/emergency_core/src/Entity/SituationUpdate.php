@@ -33,7 +33,8 @@ class SituationUpdate extends Paragraph implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       'card_headline_style' => 'headline--serif',
-      'styles' => 'block-margin__top--extra',
+      'styles' => 'block-margin__bottom--extra',
+      'border' => 'borderless',
     ];
   }
 
