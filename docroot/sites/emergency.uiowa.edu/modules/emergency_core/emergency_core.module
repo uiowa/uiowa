@@ -5,12 +5,16 @@
  * Custom functionality the Emergency website.
  */
 
+use Drupal\emergency_core\Entity\HawkAlert;
 use Drupal\emergency_core\Entity\SituationUpdate;
 
 /**
  * Implements hook_entity_bundle_info_alter().
  */
 function emergency_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['hawk_alert'])) {
+    $bundles['node']['hawk_alert']['class'] = HawkAlert::class;
+  }
   if (isset($bundles['paragraph']['hawk_alert_situation_updates'])) {
     $bundles['paragraph']['hawk_alert_situation_updates']['class'] = SituationUpdate::class;
   }

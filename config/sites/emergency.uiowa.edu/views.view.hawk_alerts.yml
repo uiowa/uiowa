@@ -178,7 +178,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"alert alert--danger alert--icon\">\r\n  <div class=\"alert__icon\">\r\n    <span class=\"fa-stack fa-1x\">\r\n      <span role=\"presentation\" class=\"fas fa-circle fa-stack-2x\"></span>\r\n      <span\r\n        role=\"presentation\"\r\n        class=\"fas fa-stack-1x fa-inverse fa-exclamation\"\r\n      ></span>\r\n    </span>\r\n  </div>\r\n  <div>\r\n    <h2 class=\"headline\">{{ title }}</h2>\r\n    <p><em>{{ created }}</em></p>\r\n  {% if field_hawk_alert_situation %}\r\n<p><strong>Situation update(s):</strong></p>\r\n{{ field_hawk_alert_situation }} \r\n{% endif %}\r\n  </div>\r\n</div>"
+            text: "<div class=\"alert alert--danger alert--icon\">\r\n  <div class=\"alert__icon\">\r\n    <span class=\"fa-stack fa-1x\">\r\n      <span role=\"presentation\" class=\"fas fa-circle fa-stack-2x\"></span>\r\n      <span\r\n        role=\"presentation\"\r\n        class=\"fas fa-stack-1x fa-inverse fa-exclamation\"\r\n      ></span>\r\n    </span>\r\n  </div>\r\n  <div>\r\n    <h2 class=\"headline\">{{ title }}</h2>\r\n    <p><em>{{ created }}</em></p>\r\n  {% if field_hawk_alert_situation %}\r\n<p><small><strong>Situation update(s):</strong></small></p>\r\n{{ field_hawk_alert_situation }} \r\n{% endif %}\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -376,6 +376,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_description: 'Hawk Alerts - active'
       block_category: 'Site custom'
     cache_metadata:
       max-age: -1
@@ -495,6 +496,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_description: 'Hawk Alerts - recent'
       block_category: 'Site custom'
     cache_metadata:
       max-age: -1

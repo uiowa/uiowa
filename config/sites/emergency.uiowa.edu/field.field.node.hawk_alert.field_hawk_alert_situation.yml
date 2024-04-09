@@ -19,13 +19,25 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: inline_entity_form
+  handler: 'default:paragraph'
   handler_settings:
     target_bundles:
       hawk_alert_situation_updates: hawk_alert_situation_updates
-    sort:
-      field: _none
-      direction: ASC
-    auto_create: 0
-    auto_create_bundle: ''
+    negate: 0
+    target_bundles_drag_drop:
+      hawk_alert_situation_updates:
+        weight: 6
+        enabled: true
+      uiowa_collection_item:
+        weight: 7
+        enabled: false
+      uiowa_contact:
+        weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
+        enabled: false
 field_type: entity_reference_revisions
