@@ -8,7 +8,6 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -96,19 +95,11 @@ class SupportArticle extends BaseNodeSource {
         ->fetchAll();
       // Take the first value if multiple.
       $tag_name = $tag_results[0]['name'];
-      // Check if we have a mapping. If we don't yet,
-      // then create a new tag and add it to our map.
-      if (!isset($this->tagMapping[$tag_name])) {
-        $term = Term::create([
-          'name' => $tag_name,
-          'vid' => 'support_article_categories',
-        ]);
-        if ($term->save()) {
-          $this->tagMapping[$tag_name] = $term->id();
-        }
+      // Check if we have a mapping.
+      if (isset($this->tagMapping[$tag_name])) {
+        // Add the mapped TID to match our tag name.
+        $category[] = $this->tagMapping[$tag_name];
       }
-      // Add the mapped TID to match our tag name.
-      $category[] = $this->tagMapping[$tag_name];
 
     }
     $row->setSourceProperty('category', $category);
