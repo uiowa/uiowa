@@ -37,7 +37,7 @@ trait ApiAuthKeyTrait {
       // Merge additional options with default but allow overriding.
       $options = array_merge([
         'headers' => [
-          'x-dispatch-api-key' => $this->apiKey,
+          'x-auth-token' => $this->apiKey,
         ],
       ], $options);
     }

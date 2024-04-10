@@ -43,7 +43,7 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * The last response object that was returned with the API.
    */
-  protected ?ResponseInterface $lastResponse;
+  protected ?ResponseInterface $lastResponse = NULL;
 
   /**
    * {@inheritdoc}

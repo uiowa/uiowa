@@ -51,8 +51,15 @@ class DispatchApiClient extends ApiClientBase implements DispatchApiClientInterf
   /**
    * {@inheritdoc}
    */
-  protected function loggerChannel(): string {
-    return 'sitenow_dispatch';
+  public function addAuthToOptions(array &$options = []): void {
+    if (!is_null($this->apiKey)) {
+      // Merge additional options with default but allow overriding.
+      $options = array_merge([
+        'headers' => [
+          'x-dispatch-api-key' => $this->apiKey,
+        ],
+      ], $options);
+    }
   }
 
   /**
