@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\facilities_core\BuildingsProcessor;
@@ -223,8 +224,10 @@ function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_traffic_control_plan':
       $node = $variables["element"]["#object"];
+
       if (!empty($node->field_alert_traffic_control_plan->entity)) {
         $file_entity = NULL;
+
         // Check if the field has a media image.
         if (!empty($node->field_alert_traffic_control_plan->entity->field_media_image->entity)) {
           $file_entity = $node->field_alert_traffic_control_plan->entity->field_media_image->entity;
@@ -236,14 +239,13 @@ function facilities_core_preprocess_field(&$variables) {
 
         if ($file_entity) {
           $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
-          $link_html = '<a href="' . $file_url . '">Download Traffic Plan</a>';
-          $variables['items'][0]['content'] = [
-            '#type' => 'markup',
-            '#markup' => Markup::create($link_html),
-          ];
+          $link = Link::fromTextAndUrl('Download Traffic Plan', Url::fromUri($file_url));
+          $variables['items'][0]['content'] = $link->toRenderable();
         }
       }
       break;
+
+    break;
 
     case 'field_alert_building':
       $node = $variables["element"]["#object"];
