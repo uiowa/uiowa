@@ -16,11 +16,9 @@ class HawkAlert extends NodeBundleBase implements RendersAsCardInterface {
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
-    // Process additional card mappings.
-    $this->mapFieldsToCardBuild($build, [
-      '#content' => 'body',
-      '#subtitle' => 'created',
-    ]);
+    $created = $this->get('created')->value;
+    $date = \Drupal::service('date.formatter')->format($created, 'short');
+    $build['#subtitle'] = $date;
   }
 
   /**
