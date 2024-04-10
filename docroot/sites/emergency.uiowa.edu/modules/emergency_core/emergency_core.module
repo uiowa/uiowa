@@ -45,11 +45,9 @@ function emergency_core_import_alerts() {
 
   $arguments = [
     '@created' => $sync_service->getCreated(),
-    '@updated' => $sync_service->getUpdated(),
-    '@deleted' => $sync_service->getDeleted(),
     '@skipped' => $sync_service->getSkipped(),
   ];
-  $message = t('Hawk alerts content sync completed. @created alerts were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
+  $message = t('Hawk alerts content sync completed. @created alerts were created and @skipped skipped. That is neat.', $arguments);
   $logger->notice($message);
   return $message;
 }
