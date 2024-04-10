@@ -240,7 +240,7 @@ function facilities_core_preprocess_field(&$variables) {
         if ($file_entity) {
           $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
           $link = Link::fromTextAndUrl('Download Traffic Plan', Url::fromUri($file_url));
-          $variables['items'][0]['content'] = $link->toRenderable();
+          $variables['items'][0]['content'] = $link->toString();
         }
       }
       break;
@@ -253,7 +253,7 @@ function facilities_core_preprocess_field(&$variables) {
           ->setAbsolute()
           ->toString();
         $link = Link::fromTextAndUrl($alert_building_node->getTitle(), Url::fromUri($alert_building_url));
-        $variables['items'][0]['content'] = $link->toRenderable();
+        $variables['items'][0]['content'] = $link->toString();
       }
       break;
 
