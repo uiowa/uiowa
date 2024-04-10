@@ -26,7 +26,7 @@ interface BuildUiApiClientInterface extends ApiClientInterface {
    * @return array|false
    *   The featured projects object.
    */
-  public function getFeaturedProjects(): array|bool;
+  public function getFeaturedProjects(): array|false;
 
   /**
    * Get all capital projects.
@@ -34,7 +34,7 @@ interface BuildUiApiClientInterface extends ApiClientInterface {
    * @return array|false
    *   The capital projects object.
    */
-  public function getCapitalProjects(): array|bool;
+  public function getCapitalProjects(): array|false;
 
   /**
    * Return details about a project.
@@ -42,9 +42,9 @@ interface BuildUiApiClientInterface extends ApiClientInterface {
    * @param string $project_id
    *   The project ID.
    *
-   * @return false|mixed
+   * @return \stdClass[]|false|null
    *   The project info or false.
    */
-  public function getProjectInfo(string $project_id): mixed;
+  public function getProjectInfo(string $project_id): \stdClass|null|false;
 
 }

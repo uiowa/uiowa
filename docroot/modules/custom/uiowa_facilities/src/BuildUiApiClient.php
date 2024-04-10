@@ -60,23 +60,21 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
   /**
    * {@inheritdoc}
    */
-  public function getFeaturedProjects(): array|bool {
-    $this->logger->notice('Retrieving featured projects');
+  public function getFeaturedProjects(): array|false {
     return $this->get('featuredprojects');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCapitalProjects(): array|bool {
-    $this->logger->info('Retrieving capital projects');
+  public function getCapitalProjects(): array|false {
     return $this->get('capitalprojects');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getProjectInfo(string $project_id): mixed {
+  public function getProjectInfo(string $project_id): \stdClass|false|null {
     return $this->get('projectinfo', [
       'query' => [
         'projnumber' => $project_id,

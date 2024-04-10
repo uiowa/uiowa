@@ -12,7 +12,7 @@ interface BizHubApiClientInterface extends ApiClientInterface {
   /**
    * Get all buildings.
    *
-   * @return array|bool
+   * @return \stdClass[]|bool
    *   The buildings object.
    */
   public function getBuildings(): array|bool;
@@ -28,7 +28,7 @@ interface BizHubApiClientInterface extends ApiClientInterface {
   /**
    * Get building coordinators by building number.
    *
-   * @return array|null
+   * @return \stdClass[]|null
    *   The building coordinators object.
    */
   public function getBuildingCoordinators(): array|bool;
