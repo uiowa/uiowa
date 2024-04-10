@@ -116,8 +116,8 @@ class Service extends BaseNodeSource {
   private function fetchTag($tag_name, $source_field, $row) {
 
     $taxonomy_name = NULL;
-    //field_ic_category
-    //field_audience
+    // field_ic_category
+    // field_audience.
     if ($source_field === 'field_audience') {
       $taxonomy_name = 'audience';
     }
@@ -126,7 +126,7 @@ class Service extends BaseNodeSource {
       $taxonomy_name = 'alert_categories';
     }
 
-    if ($taxonomy_name !== NULL ) {
+    if ($taxonomy_name !== NULL) {
       // Check if we already have the tag in the destination.
       $result = \Drupal::database()
         ->select('taxonomy_term_field_data', 't')
@@ -147,4 +147,5 @@ class Service extends BaseNodeSource {
       return FALSE;
     }
   }
+
 }
