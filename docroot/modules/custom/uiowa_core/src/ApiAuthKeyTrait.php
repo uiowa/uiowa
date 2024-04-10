@@ -32,7 +32,7 @@ trait ApiAuthKeyTrait {
   /**
    * {@inheritdoc}
    */
-  public function addAuthToOptions(&$options): void {
+  public function addAuthToOptions(array &$options = []): void {
     if (!is_null($this->apiKey)) {
       // Merge additional options with default but allow overriding.
       $options = array_merge([
