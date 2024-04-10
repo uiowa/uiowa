@@ -2,7 +2,6 @@
 
 namespace Drupal\its_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -90,46 +89,6 @@ class Service extends BaseNodeSource {
     }
 
     return TRUE;
-  }
-
-  /**
-   * Helper function to fetch existing tags.
-   */
-  public function postImport(MigrateImportEvent $event) {
-    parent::postImport($event);
-
-    // If nothing to report, then we're done.
-    if (empty($this->reporter)) {
-      return;
-    }
-
-    // Grab our migration map.
-    $db = \Drupal::database();
-    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
-      return;
-    }
-    $mapper = $db->select('migrate_map_' . $this->migration->id(), 'm')
-      ->fields('m', ['sourceid1', 'destid1'])
-      ->execute()
-      ->fetchAllKeyed();
-
-    // Update a reporter for new node ids based on old entity ids.
-    $reporter = [];
-    foreach ($this->reporter as $sid => $did) {
-      $reporter[$mapper[$sid]] = $did;
-    }
-
-    // Empty it out so it doesn't keep repeating if the postImport
-    // runs multiple times, as it sometimes does.
-    $this->reporter = [];
-
-    // Spit out a report in the logs/cli.
-    foreach ($reporter as $sid => $did) {
-      $this->logger->notice('Node: @nid, Image: @filename', [
-        '@nid' => $sid,
-        '@filename' => $did,
-      ]);
-    }
   }
 
   /**
