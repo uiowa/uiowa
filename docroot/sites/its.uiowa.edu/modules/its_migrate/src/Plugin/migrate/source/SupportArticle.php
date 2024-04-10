@@ -86,6 +86,7 @@ class SupportArticle extends BaseNodeSource {
       // Fetch tag names based on TIDs from our old site.
       $tag_results = $this->select('taxonomy_term_data', 't')
         ->fields('t', ['name'])
+        ->condition('t.vid', '21', '=')
         ->condition('t.tid', $tag_name, 'IN')
         ->execute()
         ->fetchAll();
@@ -176,6 +177,7 @@ class SupportArticle extends BaseNodeSource {
     // Report possible broken links after our known high water mark
     // of articles in which we fixed links.
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+    $this->postLinkReplace('node', ['node__body' => ['body_value']]);
   }
 
 }
