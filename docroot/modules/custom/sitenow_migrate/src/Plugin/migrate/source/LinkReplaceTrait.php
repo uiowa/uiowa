@@ -147,6 +147,7 @@ trait LinkReplaceTrait {
             $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
             if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
               $nid = explode('node/', $href)[1];
+              $nid = explode('#', $nid)[0];
 
               if ($lookup = $this->manualLookup($nid)) {
                 $link->setAttribute('href', '/node/' . $lookup);
