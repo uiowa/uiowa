@@ -177,7 +177,6 @@ class SupportArticle extends BaseNodeSource {
     // Report possible broken links after our known high water mark
     // of articles in which we fixed links.
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
-    $this->postLinkReplace('node', ['node__body' => ['body_value']]);
   }
 
 }
