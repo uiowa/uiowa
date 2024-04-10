@@ -252,11 +252,8 @@ function facilities_core_preprocess_field(&$variables) {
         $alert_building_url = Url::fromRoute('entity.node.canonical', ['node' => $alert_building_node->id()])
           ->setAbsolute()
           ->toString();
-        $link_html = '<a href="' . $alert_building_url . '">' . $alert_building_node->getTitle() . '</a>';
-        $variables['items'][0]['content'] = [
-          '#type' => 'markup',
-          '#markup' => Markup::create($link_html),
-        ];
+        $link = Link::fromTextAndUrl($alert_building_node->getTitle(), Url::fromUri($alert_building_url));
+        $variables['items'][0]['content'] = $link->toRenderable();
       }
       break;
 
