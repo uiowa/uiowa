@@ -165,6 +165,7 @@ class SupportArticle extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
+    parent::postImport($event);
     // If we haven't finished our migration, or
     // if we're doing the redirects migration,
     // don't proceed with the following.
