@@ -60,7 +60,7 @@ class Service extends BaseNodeSource {
         $new_tids = [];
         foreach ($tag_results as $result) {
           $tag_name = $result['name'];
-          $tag = $this->fetchTag($tag_name, $row);
+          $tag = $this->fetchTag($tag_name, $source_field, $row);
           if ($tag !== FALSE) {
             $new_tids[] = $tag;
           }
@@ -113,26 +113,38 @@ class Service extends BaseNodeSource {
   /**
    * Helper function to fetch existing tags.
    */
-  private function fetchTag($tag_name, $row) {
-    // Check if we already have the tag in the destination.
-    $result = \Drupal::database()
-      ->select('taxonomy_term_field_data', 't')
-      ->fields('t', ['tid'])
-      // @todo Add another conditional to match the proper vocabulary,
-      //   in case there are duplicate terms across different vocabs.
-      ->condition('t.name', $tag_name, '=')
-      ->execute()
-      ->fetchField();
-    if ($result) {
-      return $result;
-    }
-    // If we didn't have the tag already,
-    // add a notice to the migration, and return a null.
-    $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
-    $this->migration
-      ->getIdMap()
-      ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
-    return FALSE;
-  }
+  private function fetchTag($tag_name, $source_field, $row) {
 
+    $taxonomy_name = NULL;
+    //field_ic_category
+    //field_audience
+    if ($source_field === 'field_audience') {
+      $taxonomy_name = 'audience';
+    }
+
+    if ($source_field === 'field_ic_category') {
+      $taxonomy_name = 'alert_categories';
+    }
+
+    if ($taxonomy_name !== NULL ) {
+      // Check if we already have the tag in the destination.
+      $result = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['tid'])
+        ->condition('t.name', $tag_name, '=')
+        ->condition('t.vid', $taxonomy_name, '=')
+        ->execute()
+        ->fetchField();
+      if ($result) {
+        return $result;
+      }
+      // If we didn't have the tag already,
+      // add a notice to the migration, and return a null.
+      $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+      return FALSE;
+    }
+  }
 }
