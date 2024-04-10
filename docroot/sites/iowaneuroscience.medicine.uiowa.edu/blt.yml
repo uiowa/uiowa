@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineiowaneuroscience.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineiowaneuroscience
+  human_name: iowaneuroscience.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineiowaneuroscience.prod
+drupal:
+  db:
+    database: iowaneuroscience_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineiowaneuroscience.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Iowa Neuroscience Institute'
