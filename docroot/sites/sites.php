@@ -7180,3 +7180,9 @@ $sites['labefre.uiowa.ddev.site'] = 'efre.lab.uiowa.edu';
 $sites['labefre.dev.drupal.uiowa.edu'] = 'efre.lab.uiowa.edu';
 $sites['labefre.stage.drupal.uiowa.edu'] = 'efre.lab.uiowa.edu';
 $sites['labefre.prod.drupal.uiowa.edu'] = 'efre.lab.uiowa.edu';
+
+// Directory aliases for living.lab.uiowa.edu.
+$sites['labliving.uiowa.ddev.site'] = 'living.lab.uiowa.edu';
+$sites['labliving.dev.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
+$sites['labliving.stage.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
+$sites['labliving.prod.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
