@@ -76,38 +76,28 @@ class EmergencyAPI {
       ],
     ], $options);
 
-    // Create a hash for the CID. Can always be decoded for debugging purposes.
-    $hash = base64_encode($base . serialize($options));
-    $cid = "emergency_core:request:{$hash}";
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
 
-    if ($cache = $this->cache->get($cid)) {
-      $data = $cache->data;
+    try {
+      $response = $this->client->request($method, $base, $options);
     }
-    else {
-      try {
-        $response = $this->client->request($method, $base, $options);
-      }
-      catch (RequestException | GuzzleException $e) {
-        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-          '@endpoint' => $base,
-          '@code' => $e->getCode(),
-          '@error' => $e->getMessage(),
-        ]);
-      }
+    catch (RequestException | GuzzleException $e) {
+      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+        '@endpoint' => $base,
+        '@code' => $e->getCode(),
+        '@error' => $e->getMessage(),
+      ]);
+    }
 
-      if (isset($response)) {
-        $contents = $response->getBody()->getContents();
-        $alert = simplexml_load_string($contents);
-        $json = json_encode($alert);
+    if (isset($response)) {
+      $contents = $response->getBody()->getContents();
+      $alert = simplexml_load_string($contents);
+      $json = json_encode($alert);
 
-        /** @var object $data */
-        $data = json_decode($json, TRUE);
+      /** @var object $data */
+      $data = json_decode($json, TRUE);
 
-        // Cache for 1 minute.
-        $this->cache->set($cid, $data, time() + 60);
-      }
     }
 
     return ($data);

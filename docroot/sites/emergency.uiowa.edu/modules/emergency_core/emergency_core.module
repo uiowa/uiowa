@@ -47,6 +47,5 @@ function emergency_core_import_alerts() {
     '@skipped' => $sync_service->getSkipped(),
   ];
   $message = t('Hawk alerts content sync completed. @created alerts were created and @skipped skipped. That is neat.', $arguments);
-  $logger->notice($message);
   return $message;
 }
