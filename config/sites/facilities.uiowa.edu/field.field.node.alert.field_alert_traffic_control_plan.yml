@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_alert_traffic_control_plan
     - media.type.file
+    - media.type.image
     - node.type.alert
 id: node.alert.field_alert_traffic_control_plan
 field_name: field_alert_traffic_control_plan
@@ -21,9 +22,10 @@ settings:
   handler_settings:
     target_bundles:
       file: file
+      image: image
     sort:
       field: _none
       direction: ASC
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: file
 field_type: entity_reference
