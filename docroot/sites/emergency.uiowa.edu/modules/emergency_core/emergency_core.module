@@ -36,7 +36,7 @@ function emergency_core_import_alerts() {
   }
 
   $logger = \Drupal::logger('emergency_core');
-  $logger->notice('Starting the hawk alert content sync.');
+  $logger->notice('Checking for alerts.');
 
   $sync_service = new AlertsProcessor();
   $sync_service->init();
