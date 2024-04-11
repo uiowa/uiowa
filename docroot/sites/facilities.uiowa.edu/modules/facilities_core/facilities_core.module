@@ -10,10 +10,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 use Drupal\facilities_core\BuildingsProcessor;
 use Drupal\facilities_core\Entity\Artwork;
 use Drupal\facilities_core\ProjectsProcessor;
-use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
@@ -220,6 +222,41 @@ function facilities_core_project_submit($form, FormStateInterface $form_state): 
  */
 function facilities_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_alert_traffic_control_plan':
+      $node = $variables["element"]["#object"];
+
+      if (!empty($node->field_alert_traffic_control_plan->entity)) {
+        $file_entity = NULL;
+
+        // Check if the field has a media image.
+        if (!empty($node->field_alert_traffic_control_plan->entity->field_media_image->entity)) {
+          $file_entity = $node->field_alert_traffic_control_plan->entity->field_media_image->entity;
+        }
+        // Check if the field has a media file.
+        elseif (!empty($node->field_alert_traffic_control_plan->entity->field_media_file->entity)) {
+          $file_entity = $node->field_alert_traffic_control_plan->entity->field_media_file->entity;
+        }
+
+        if ($file_entity) {
+          $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
+          $link = Link::fromTextAndUrl('Download Traffic Plan', Url::fromUri($file_url));
+          $variables['items'][0]['content'] = $link->toString();
+        }
+      }
+      break;
+
+    case 'field_alert_building':
+      $node = $variables["element"]["#object"];
+      if (!empty($node->field_alert_building->entity)) {
+        $alert_building_node = $node->field_alert_building->entity;
+        $alert_building_url = Url::fromRoute('entity.node.canonical', ['node' => $alert_building_node->id()])
+          ->setAbsolute()
+          ->toString();
+        $link = Link::fromTextAndUrl($alert_building_node->getTitle(), Url::fromUri($alert_building_url));
+        $variables['items'][0]['content'] = $link->toString();
+      }
+      break;
+
     case 'field_building_honoree_name':
       // Change label for output.
       $variables['element']['#title'] = 'Honoree';
@@ -622,19 +659,6 @@ function facilities_core_node_presave(EntityInterface $entity) {
 
     // Set the combined output as the node title.
     $entity->setTitle($output);
-
-    $traffic_plan = $entity->get('field_alert_traffic_control_plan')->referencedEntities();
-    if (!empty($traffic_plan)) {
-      // Media will still display the file name when
-      // displayed as a rendered entity, so set that on save.
-      // The Media name will still be unique, and the filename
-      // will remain the same.
-      $media = reset($traffic_plan);
-      $fid = $media->getSource()->getSourceFieldValue($media);
-      $file = File::load($fid);
-      $file->setFilename('Traffic Plan');
-      $file->save();
-    }
   }
 }
 
@@ -701,7 +725,6 @@ function facilities_core_import_buildings() {
   $logger->notice('Starting the facilities building content sync.');
 
   $sync_service = new BuildingsProcessor();
-  $sync_service->init();
   $sync_service->process();
 
   $arguments = [
@@ -712,38 +735,5 @@ function facilities_core_import_buildings() {
   ];
   $message = t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
   $logger->notice($message);
-  return $message;
-}
-
-/**
- * Import and update projects.
- */
-function facilities_core_import_projects() {
-  // Check that this process is being called with
-  // admin permissions.
-  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-  $check = \Drupal::service('uiowa_core.access_checker');
-  /** @var Drupal\Core\Access\AccessResultInterface $access */
-  $access = $check->access(\Drupal::currentUser()->getAccount());
-  if (!$access) {
-    return 'This is a restricted process.';
-  }
-
-  $logger = \Drupal::logger('facilities_core');
-  $logger->notice('Starting the facilities projects sync.');
-
-  $sync_service = new ProjectsProcessor();
-  $sync_service->init();
-  $sync_service->process();
-
-  $arguments = [
-    '@created' => $sync_service->getCreated(),
-    '@updated' => $sync_service->getUpdated(),
-    '@deleted' => $sync_service->getDeleted(),
-    '@skipped' => $sync_service->getSkipped(),
-  ];
-  $message = t('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
-  $logger->notice($message);
-
   return $message;
 }

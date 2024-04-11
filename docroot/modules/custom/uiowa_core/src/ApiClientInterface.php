@@ -2,28 +2,13 @@
 
 namespace Drupal\uiowa_core;
 
+use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * An interface for API client services.
  */
 interface ApiClientInterface {
-
-  /**
-   * Get the API key.
-   */
-  public function getKey(): string|NULL;
-
-  /**
-   * Set the API key.
-   *
-   * @param string $key
-   *   The API key being set.
-   *
-   * @return \Drupal\uiowa_core\ApiClientInterface
-   *   The DispatchApiClientInterface object.
-   */
-  public function setKey(string $key): static;
 
   /**
    * Returns the base path for the API with a trailing slash.
@@ -68,5 +53,24 @@ interface ApiClientInterface {
    *   The response object.
    */
   public function lastResponse(): ?ResponseInterface;
+
+  /**
+   * Return the API client.
+   *
+   * @return \GuzzleHttp\ClientInterface
+   *   The Guzzle client object.
+   */
+  public function getClient(): ClientInterface;
+
+  /**
+   * Adds authentication to the options array.
+   *
+   * @param array $options
+   *   The options array.
+   *
+   * @return void
+   *   The options array.
+   */
+  public function addAuthToOptions(array &$options = []): void;
 
 }
