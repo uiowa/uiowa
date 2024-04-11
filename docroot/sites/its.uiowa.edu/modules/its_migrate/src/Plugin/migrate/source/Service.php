@@ -107,24 +107,6 @@ class Service extends BaseNodeSource {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function postImport(MigrateImportEvent $event) {
-    parent::postImport($event);
-
-    // If we haven't finished our migration, or
-    // if we're doing the redirects migration,
-    // don't proceed with the following.
-    $migration = $event->getMigration();
-    if (!$migration->allRowsProcessed() || $migration->id() === 'its_service_redirects') {
-      return;
-    }
-    // Report possible broken links after our known high water mark
-    // of services.
-    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
-  }
-
-  /**
    * Helper function to Prepare service aliases.
    */
   private function prepareAliases($aliases) {
