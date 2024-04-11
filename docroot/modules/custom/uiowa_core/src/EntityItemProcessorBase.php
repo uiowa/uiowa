@@ -34,7 +34,7 @@ abstract class EntityItemProcessorBase {
       }
 
       // If the value is different, update it.
-      if ($entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
+      if (property_exists($record, $from) && $entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
         $entity->set($to, $record->{$from});
         $updated = TRUE;
       }

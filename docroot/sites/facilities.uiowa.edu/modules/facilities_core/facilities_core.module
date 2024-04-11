@@ -725,7 +725,6 @@ function facilities_core_import_buildings() {
   $logger->notice('Starting the facilities building content sync.');
 
   $sync_service = new BuildingsProcessor();
-  $sync_service->init();
   $sync_service->process();
 
   $arguments = [
@@ -736,38 +735,5 @@ function facilities_core_import_buildings() {
   ];
   $message = t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
   $logger->notice($message);
-  return $message;
-}
-
-/**
- * Import and update projects.
- */
-function facilities_core_import_projects() {
-  // Check that this process is being called with
-  // admin permissions.
-  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-  $check = \Drupal::service('uiowa_core.access_checker');
-  /** @var Drupal\Core\Access\AccessResultInterface $access */
-  $access = $check->access(\Drupal::currentUser()->getAccount());
-  if (!$access) {
-    return 'This is a restricted process.';
-  }
-
-  $logger = \Drupal::logger('facilities_core');
-  $logger->notice('Starting the facilities projects sync.');
-
-  $sync_service = new ProjectsProcessor();
-  $sync_service->init();
-  $sync_service->process();
-
-  $arguments = [
-    '@created' => $sync_service->getCreated(),
-    '@updated' => $sync_service->getUpdated(),
-    '@deleted' => $sync_service->getDeleted(),
-    '@skipped' => $sync_service->getSkipped(),
-  ];
-  $message = t('Facilities projects content sync completed. @created projects were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.', $arguments);
-  $logger->notice($message);
-
   return $message;
 }
