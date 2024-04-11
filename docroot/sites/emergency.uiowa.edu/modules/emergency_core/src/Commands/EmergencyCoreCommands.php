@@ -49,7 +49,7 @@ class EmergencyCoreCommands extends DrushCommands {
   public function importAlerts() {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice('Starting the hawk alert content sync from drush. This may take a little time if the information isn\'t cached.');
+    $this->logger()->notice('Starting the hawk alert content sync from drush. This may take a little time.');
 
     $message = emergency_core_import_alerts();
     $this->logger()->notice($message);

@@ -2,7 +2,6 @@
 
 namespace Drupal\emergency_core;
 
-use Drupal\Core\Cache\CacheBackendInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -25,13 +24,6 @@ class EmergencyAPI {
   protected $logger;
 
   /**
-   * The emergency_core cache.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
-   */
-  protected $cache;
-
-  /**
    * The HTTP client.
    *
    * @var \GuzzleHttp\ClientInterface
@@ -43,14 +35,11 @@ class EmergencyAPI {
    *
    * @param \Psr\Log\LoggerInterface $logger
    *   The emergency_core logger channel.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *   The emergency_core cache.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
-  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, ClientInterface $http_client) {
+  public function __construct(LoggerInterface $logger, ClientInterface $http_client) {
     $this->logger = $logger;
-    $this->cache = $cache;
     $this->client = $http_client;
   }
 
