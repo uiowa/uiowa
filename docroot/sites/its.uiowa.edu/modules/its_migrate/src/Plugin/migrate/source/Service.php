@@ -35,11 +35,6 @@ class Service extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    // Skip this node if it comes after our last migrated.
-    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
-      return FALSE;
-    }
-
     parent::prepareRow($row);
 
     // Skip over the rest of the preprocessing, as it's not needed
