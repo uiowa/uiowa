@@ -1243,7 +1243,20 @@ display:
           output_url_as_text: false
           absolute: false
       empty: {  }
-      sorts: {  }
+      sorts:
+        field_project_number_value:
+          id: field_project_number_value
+          table: node__field_project_number
+          field: field_project_number_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments:
         field_project_building_target_id:
           id: field_project_building_target_id
@@ -1450,13 +1463,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_project_building:
-          id: field_project_building
-          table: node__field_project_building
-          field: field_project_building
-          relationship: none
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
+          relationship: field_project_building
           group_type: group
-          admin_label: ''
+          admin_label: 'Project building'
+          entity_type: node
+          entity_field: title
           plugin_id: field
           label: 'Project building'
           exclude: false
@@ -1491,7 +1506,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1499,11 +1514,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
+          click_sort_column: value
+          type: string
           settings:
-            link: true
-          group_column: target_id
+            link_to_entity: true
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1576,6 +1591,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      sorts: {  }
       filters:
         status:
           id: status
@@ -1648,9 +1664,9 @@ display:
           default_row_class: true
           columns:
             title: title
-            field_project_building: field_project_building
+            title_1: title_1
             field_project_number: field_project_number
-          default: '-1'
+          default: title
           info:
             title:
               sortable: true
@@ -1659,7 +1675,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_project_building:
+            title_1:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -1668,7 +1684,7 @@ display:
               responsive: ''
             field_project_number:
               sortable: true
-              default_sort_order: asc
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
@@ -1689,9 +1705,21 @@ display:
       defaults:
         style: false
         row: false
+        relationships: false
         fields: false
+        sorts: false
         filters: false
         filter_groups: false
+      relationships:
+        field_project_building:
+          id: field_project_building
+          table: node__field_project_building
+          field: field_project_building
+          relationship: none
+          group_type: group
+          admin_label: 'field_project_building: Content'
+          plugin_id: standard
+          required: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -1723,7 +1751,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_project_building'
         - 'config:field.storage.node.field_project_number'
   block_project_featured:
     id: block_project_featured
@@ -1797,13 +1824,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_project_building:
-          id: field_project_building
-          table: node__field_project_building
-          field: field_project_building
-          relationship: none
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
+          relationship: field_project_building
           group_type: group
-          admin_label: ''
+          admin_label: 'Project building'
+          entity_type: node
+          entity_field: title
           plugin_id: field
           label: 'Project building'
           exclude: false
@@ -1846,11 +1875,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
+          click_sort_column: value
+          type: string
           settings:
-            link: true
-          group_column: target_id
+            link_to_entity: true
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1923,6 +1952,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      sorts: {  }
       filters:
         status:
           id: status
@@ -1995,9 +2025,9 @@ display:
           default_row_class: true
           columns:
             title: title
-            field_project_building: field_project_building
+            title_1: title_1
             field_project_number: field_project_number
-          default: '-1'
+          default: title
           info:
             title:
               sortable: true
@@ -2006,7 +2036,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_project_building:
+            title_1:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -2036,9 +2066,21 @@ display:
       defaults:
         style: false
         row: false
+        relationships: false
         fields: false
+        sorts: false
         filters: false
         filter_groups: false
+      relationships:
+        field_project_building:
+          id: field_project_building
+          table: node__field_project_building
+          field: field_project_building
+          relationship: none
+          group_type: group
+          admin_label: 'field_project_building: Content'
+          plugin_id: standard
+          required: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -2070,7 +2112,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_project_building'
         - 'config:field.storage.node.field_project_number'
   block_project_search:
     id: block_project_search
@@ -2144,13 +2185,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_project_building:
-          id: field_project_building
-          table: node__field_project_building
-          field: field_project_building
-          relationship: none
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
+          relationship: field_project_building
           group_type: group
-          admin_label: ''
+          admin_label: 'Project building'
+          entity_type: node
+          entity_field: title
           plugin_id: field
           label: Building
           exclude: false
@@ -2183,7 +2226,7 @@ display:
             html: false
           element_type: ''
           element_class: ''
-          element_label_type: strong
+          element_label_type: ''
           element_label_class: ''
           element_label_colon: true
           element_wrapper_type: ''
@@ -2193,11 +2236,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
+          click_sort_column: value
+          type: string
           settings:
-            link: true
-          group_column: target_id
+            link_to_entity: true
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2333,6 +2376,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      sorts: {  }
       filters:
         status:
           id: status
@@ -2474,9 +2518,10 @@ display:
           default_row_class: true
           columns:
             title: title
-            field_project_building: field_project_building
+            title_1: title_1
             field_project_number: field_project_number
-          default: '-1'
+            field_project_building_alt: field_project_building_alt
+          default: title
           info:
             title:
               sortable: true
@@ -2485,7 +2530,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_project_building:
+            title_1:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -2494,6 +2539,13 @@ display:
               responsive: ''
             field_project_number:
               sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_project_building_alt:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -2516,9 +2568,21 @@ display:
         use_ajax: true
         style: false
         row: false
+        relationships: false
         fields: false
+        sorts: false
         filters: false
         filter_groups: false
+      relationships:
+        field_project_building:
+          id: field_project_building
+          table: node__field_project_building
+          field: field_project_building
+          relationship: none
+          group_type: group
+          admin_label: 'field_project_building: Content'
+          plugin_id: standard
+          required: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -2552,6 +2616,5 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_project_building'
         - 'config:field.storage.node.field_project_building_alt'
         - 'config:field.storage.node.field_project_number'
