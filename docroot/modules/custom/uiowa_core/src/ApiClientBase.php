@@ -8,6 +8,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -18,13 +20,6 @@ use Psr\Log\LoggerInterface;
 abstract class ApiClientBase implements ApiClientInterface {
 
   use StringTranslationTrait;
-
-  /**
-   * The API key for accessing the API.
-   *
-   * @var string|null
-   */
-  protected ?string $apiKey = NULL;
 
   /**
    * The length of time the cache.
@@ -44,6 +39,11 @@ abstract class ApiClientBase implements ApiClientInterface {
    *   The Config Factory object.
    */
   public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {}
+
+  /**
+   * The last response object that was returned with the API.
+   */
+  protected ?ResponseInterface $lastResponse = NULL;
 
   /**
    * {@inheritdoc}
@@ -79,21 +79,6 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function getKey(): string|null {
-    return $this->apiKey;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setKey($key): static {
-    $this->apiKey = $key;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function lastResponse(): ?ResponseInterface {
     return $this->lastResponse;
   }
@@ -108,12 +93,7 @@ abstract class ApiClientBase implements ApiClientInterface {
       $endpoint = $this->basePath() . $endpoint;
     }
 
-    // Merge additional options with default but allow overriding.
-    $options = array_merge([
-      'headers' => [
-        'x-dispatch-api-key' => $this->apiKey,
-      ],
-    ], $options);
+    $this->addAuthToOptions($options);
 
     // Re-set Accept header in case it was accidentally left out of $options.
     $options['headers']['Accept'] = 'application/json';
@@ -121,7 +101,16 @@ abstract class ApiClientBase implements ApiClientInterface {
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
     }
-    catch (RequestException | GuzzleException | ClientException $e) {
+    catch (ConnectException $e) {
+      $this->logger->error('Unable to connect to the endpoint @endpoint: @code @error', [
+        '@endpoint' => $endpoint,
+        '@code' => $e->getCode(),
+        '@error' => $e->getMessage(),
+      ]);
+
+      return FALSE;
+    }
+    catch (ClientException $e) {
       $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
         '@endpoint' => $endpoint,
         '@code' => $e->getCode(),
@@ -130,10 +119,28 @@ abstract class ApiClientBase implements ApiClientInterface {
 
       return FALSE;
     }
+    catch (RequestException $e) {
+      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+        '@endpoint' => $endpoint,
+        '@code' => $e->getCode(),
+        '@error' => $e->getResponse()->getBody()->getContents(),
+      ]);
+
+      return FALSE;
+    }
+    catch (GuzzleException $e) {
+      $this->logger->error('Unable to connect to the endpoint @endpoint: @code @error', [
+        '@endpoint' => $endpoint,
+        '@code' => $e->getCode(),
+        '@error' => $e->getMessage(),
+      ]);
+
+      return FALSE;
+    }
 
     $data = json_decode($this->lastResponse->getBody()->getContents());
 
-    $this->logger->notice('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+    $this->logger->info('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
       '@endpoint' => $endpoint,
       '@code' => $this->lastResponse->getStatusCode(),
     ]);
@@ -159,5 +166,17 @@ abstract class ApiClientBase implements ApiClientInterface {
 
     return $data;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getClient(): ClientInterface {
+    return $this->client;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addAuthToOptions(array &$options = []): void {}
 
 }
