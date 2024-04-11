@@ -3,9 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.minimal_plus
+    - media.type.file
+    - media.type.image
     - node.type.alert
   module:
     - content_moderation
+    - filter
+    - media
     - node
     - override_node_options
     - scheduler
@@ -17,13 +22,22 @@ weight: -7
 is_admin: null
 permissions:
   - 'access content overview'
+  - 'access media overview'
   - 'access toolbar'
   - 'create alert content'
+  - 'create file media'
+  - 'create image media'
   - 'delete own alert content'
+  - 'delete own file media'
+  - 'delete own image media'
+  - 'edit any file media'
+  - 'edit any image media'
   - 'edit own alert content'
   - 'enter alert revision log entry'
   - 'override alert published option'
   - 'schedule publishing of nodes'
+  - 'use text format minimal_plus'
   - 'view latest version'
   - 'view own unpublished content'
+  - 'view own unpublished media'
   - 'view the administration theme'
