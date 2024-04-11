@@ -56,7 +56,7 @@ class EmergencyAPI {
    * @return mixed
    *   The API response data.
    */
-  public function request($method, array $options = [], $base = self::BASE_URL_1) {
+  public function request($method, array $options = [], $base = self::BASE_URL_2) {
 
     // Merge additional options with default but allow overriding.
     $options = array_merge([
