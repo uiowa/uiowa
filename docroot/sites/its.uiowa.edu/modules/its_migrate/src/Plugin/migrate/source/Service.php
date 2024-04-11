@@ -35,7 +35,19 @@ class Service extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
+    }
+
     parent::prepareRow($row);
+
+    // Skip over the rest of the preprocessing, as it's not needed
+    // for redirects. Also avoids duplicating the notices.
+    // Return TRUE because the row should be created.
+    if ($this->migration->id() === 'its_service_redirects') {
+      return TRUE;
+    }
 
     $fee_info = $row->getSourceProperty('field_ic_fees');
     if (isset($fee_info)) {
@@ -99,6 +111,7 @@ class Service extends BaseNodeSource {
    */
   public function postImport(MigrateImportEvent $event) {
     parent::postImport($event);
+
     // If we haven't finished our migration, or
     // if we're doing the redirects migration,
     // don't proceed with the following.
