@@ -9,11 +9,13 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
+    - field.field.node.event.field_event_department
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
     - field.field.node.event.field_event_livestream_caption
     - field.field.node.event.field_event_order_of_events
+    - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_start_date
@@ -84,6 +86,14 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
+  field_event_department:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 116
+    region: content
   field_event_end_date:
     type: datetime_default
     label: above
@@ -129,6 +139,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 111
+    region: content
+  field_event_other_celebrations:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 117
     region: content
   field_event_room:
     type: string
