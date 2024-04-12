@@ -1,0 +1,24 @@
+uuid: 5fd06e2b-fc58-42c3-9a25-e7ec5c464ad6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_livestream_caption
+    - filter.format.filtered_html
+    - node.type.event
+  module:
+    - text
+id: node.event.field_event_livestream_caption
+field_name: field_event_livestream_caption
+entity_type: node
+bundle: event
+label: 'Livestream caption'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text
