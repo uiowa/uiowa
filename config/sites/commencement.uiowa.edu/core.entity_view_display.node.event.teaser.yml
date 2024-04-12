@@ -1,0 +1,75 @@
+uuid: cf023a09-52c2-4950-bf5a-5f2c2919b28f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event.body
+    - field.field.node.event.field_event_additional_info
+    - field.field.node.event.field_event_ceremony_information
+    - field.field.node.event.field_event_college
+    - field.field.node.event.field_event_contact
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_contact_phone
+    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_link
+    - field.field.node.event.field_event_livestream
+    - field.field.node.event.field_event_livestream_caption
+    - field.field.node.event.field_event_order_of_events
+    - field.field.node.event.field_event_other_celebrations
+    - field.field.node.event.field_event_room
+    - field.field.node.event.field_event_session
+    - field.field.node.event.field_event_start_date
+    - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_website
+    - field.field.node.event.field_meta_tags
+    - node.type.event
+  module:
+    - text
+    - user
+id: node.event.teaser
+targetEntityType: node
+bundle: event
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_event_additional_info: true
+  field_event_ceremony_information: true
+  field_event_college: true
+  field_event_contact: true
+  field_event_contact_email: true
+  field_event_contact_phone: true
+  field_event_end_date: true
+  field_event_link: true
+  field_event_livestream: true
+  field_event_livestream_caption: true
+  field_event_order_of_events: true
+  field_event_other_celebrations: true
+  field_event_room: true
+  field_event_session: true
+  field_event_start_date: true
+  field_event_venue: true
+  field_event_website: true
+  field_meta_tags: true
+  search_api_excerpt: true
