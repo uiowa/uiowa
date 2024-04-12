@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_phone
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_link
+    - field.field.node.event.field_event_order_of_events
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_start_date
@@ -33,6 +34,11 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -48,6 +54,7 @@ hidden:
   field_event_contact_phone: true
   field_event_end_date: true
   field_event_link: true
+  field_event_order_of_events: true
   field_event_room: true
   field_event_session: true
   field_event_start_date: true
