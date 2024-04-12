@@ -22,7 +22,7 @@ class SituationUpdate extends Paragraph implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#subtitle' => 'field_hawk_alert_situation_date',
-      '#content' => 'field_hawk_alert_situation_detai',
+      '#content' => 'field_hawk_alert_situation_descr',
     ]);
 
   }

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.hawk_alert.body
     - field.field.node.hawk_alert.field_hawk_alert_complete
+    - field.field.node.hawk_alert.field_hawk_alert_identifier
     - field.field.node.hawk_alert.field_hawk_alert_situation
     - field.field.node.hawk_alert.field_hawk_alert_status
     - field.field.node.hawk_alert.field_meta_tags
@@ -203,6 +204,14 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_hawk_alert_identifier:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
     region: content
   field_hawk_alert_situation:
     type: entity_reference_revisions_entity_view
