@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_phone
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_link
+    - field.field.node.event.field_event_livestream
     - field.field.node.event.field_event_order_of_events
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
@@ -113,6 +114,13 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_event_livestream:
+    type: media_library_widget
+    weight: 134
+    region: content
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   field_event_order_of_events:
     type: media_library_widget
