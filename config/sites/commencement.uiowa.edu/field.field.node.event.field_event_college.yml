@@ -1,16 +1,16 @@
-uuid: 6e4d0748-d175-4a19-8bc0-26c8574aa11d
+uuid: cb8623bf-692f-4d7e-b4c7-756c1e2780db
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_event_department
+    - field.storage.node.field_event_college
     - node.type.event
-    - taxonomy.vocabulary.department
-id: node.event.field_event_department
-field_name: field_event_department
+    - taxonomy.vocabulary.college
+id: node.event.field_event_college
+field_name: field_event_college
 entity_type: node
 bundle: event
-label: Department
+label: College
 description: ''
 required: false
 translatable: false
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      department: department
+      college: college
     sort:
       field: name
       direction: asc

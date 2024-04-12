@@ -6,10 +6,10 @@ dependencies:
     - field.field.node.event.body
     - field.field.node.event.field_event_additional_info
     - field.field.node.event.field_event_ceremony_information
+    - field.field.node.event.field_event_college
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
-    - field.field.node.event.field_event_department
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
@@ -81,6 +81,16 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
+  field_event_college:
+    type: entity_reference_autocomplete
+    weight: 29
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_event_contact:
     type: string_textfield
     weight: 16
@@ -102,16 +112,6 @@ content:
     weight: 18
     region: content
     settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_event_department:
-    type: entity_reference_autocomplete
-    weight: 27
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_event_end_date:
