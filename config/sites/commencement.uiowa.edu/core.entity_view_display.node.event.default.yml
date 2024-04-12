@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.event.body
     - field.field.node.event.field_event_additional_info
+    - field.field.node.event.field_event_ceremony_information
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
@@ -20,6 +21,7 @@ dependencies:
     - node.type.event
   module:
     - datetime
+    - entity_reference_revisions
     - link
     - telephone
     - text
@@ -47,6 +49,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 110
+    region: content
+  field_event_ceremony_information:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 113
     region: content
   field_event_contact:
     type: string
