@@ -1,19 +1,18 @@
-uuid: 80025c1b-f65e-48db-89e8-f04da7dbe73a
+uuid: 5defe24e-9a0f-4cf7-83f7-e448ecbe51a7
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.hawk_alert.body
-    - field.field.node.hawk_alert.field_hawk_alert_identifier
-    - field.field.node.hawk_alert.field_meta_tags
-    - node.type.hawk_alert
+    - field.field.node.venue.body
+    - field.field.node.venue.field_meta_tags
+    - node.type.venue
   module:
     - text
     - user
-id: node.hawk_alert.teaser
+id: node.venue.teaser
 targetEntityType: node
-bundle: hawk_alert
+bundle: venue
 mode: teaser
 content:
   body:
@@ -24,6 +23,11 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -33,6 +37,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_hawk_alert_identifier: true
   field_meta_tags: true
   search_api_excerpt: true
