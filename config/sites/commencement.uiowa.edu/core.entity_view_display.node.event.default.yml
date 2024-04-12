@@ -1,0 +1,32 @@
+uuid: 436b97c1-8cb6-4825-8706-60d8ea6ad6df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.event.body
+    - node.type.event
+  module:
+    - text
+    - user
+id: node.event.default
+targetEntityType: node
+bundle: event
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
