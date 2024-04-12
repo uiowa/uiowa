@@ -4,10 +4,20 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_contact
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_contact_phone
+    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_link
+    - field.field.node.event.field_event_start_date
+    - field.field.node.event.field_event_website
     - node.type.event
   module:
     - content_moderation
+    - datetime
+    - link
     - path
+    - telephone
     - text
 id: node.event.default
 targetEntityType: node
@@ -29,6 +39,57 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_event_contact:
+    type: string_textfield
+    weight: 125
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_contact_email:
+    type: email_default
+    weight: 126
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_event_contact_phone:
+    type: telephone_default
+    weight: 127
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_end_date:
+    type: datetime_default
+    weight: 123
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_link:
+    type: link_default
+    weight: 128
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_event_start_date:
+    type: datetime_default
+    weight: 122
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_event_website:
+    type: link_default
+    weight: 124
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
