@@ -14,10 +14,12 @@ dependencies:
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_meta_tags
     - node.type.event
   module:
     - datetime
     - link
+    - telephone
     - text
     - user
 id: node.event.default
@@ -30,7 +32,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 1
     region: content
   field_event_additional_info:
     type: text_default
@@ -45,21 +47,22 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 105
+    weight: 5
     region: content
   field_event_contact_email:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 106
+    weight: 6
     region: content
   field_event_contact_phone:
-    type: basic_string
+    type: telephone_link
     label: above
-    settings: {  }
+    settings:
+      title: ''
     third_party_settings: {  }
-    weight: 107
+    weight: 7
     region: content
   field_event_end_date:
     type: datetime_default
@@ -68,7 +71,7 @@ content:
       timezone_override: ''
       format_type: medium
     third_party_settings: {  }
-    weight: 103
+    weight: 3
     region: content
   field_event_link:
     type: link
@@ -80,7 +83,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 108
+    weight: 8
     region: content
   field_event_room:
     type: string
@@ -97,7 +100,7 @@ content:
       timezone_override: ''
       format_type: medium
     third_party_settings: {  }
-    weight: 102
+    weight: 2
     region: content
   field_event_website:
     type: link
@@ -109,17 +112,17 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 4
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_event_session: true
-  links: true
+  field_meta_tags: true
   search_api_excerpt: true

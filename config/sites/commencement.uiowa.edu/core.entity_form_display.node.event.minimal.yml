@@ -5,7 +5,15 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.event.body
+    - field.field.node.event.field_event_contact
+    - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_contact_phone
+    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_link
     - field.field.node.event.field_event_session
+    - field.field.node.event.field_event_start_date
+    - field.field.node.event.field_event_website
+    - field.field.node.event.field_meta_tags
     - node.type.event
   module:
     - content_moderation
@@ -84,7 +92,15 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_event_contact: true
+  field_event_contact_email: true
+  field_event_contact_phone: true
+  field_event_end_date: true
+  field_event_link: true
   field_event_session: true
+  field_event_start_date: true
+  field_event_website: true
+  field_meta_tags: true
   publish_on: true
   publish_state: true
   scheduler_settings: true

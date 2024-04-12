@@ -14,11 +14,13 @@ dependencies:
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_meta_tags
     - node.type.event
   module:
     - content_moderation
     - datetime
     - link
+    - metatag
     - path
     - telephone
     - text
@@ -116,6 +118,14 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 8
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
