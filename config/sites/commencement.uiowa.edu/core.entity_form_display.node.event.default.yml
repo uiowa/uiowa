@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_event_contact_phone
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_link
+    - field.field.node.event.field_event_session
     - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_website
     - node.type.event
@@ -76,6 +77,16 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_event_session:
+    type: entity_reference_autocomplete
+    weight: 122
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_event_start_date:
     type: datetime_default
