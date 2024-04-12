@@ -1,0 +1,29 @@
+uuid: faa9c519-2d33-4d92-8589-2e26cea8bdda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_session_program
+    - media.type.file
+    - taxonomy.vocabulary.session
+id: taxonomy_term.session.field_session_program
+field_name: field_session_program
+entity_type: taxonomy_term
+bundle: session
+label: Program
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
