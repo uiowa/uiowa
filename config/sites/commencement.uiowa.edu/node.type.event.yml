@@ -8,14 +8,13 @@ dependencies:
     - scheduler
 third_party_settings:
   menu_ui:
-    available_menus:
-      - main
-    parent: 'main:'
+    available_menus: {  }
+    parent: ''
   node_revision_delete:
     amount:
-      status: false
+      status: true
       settings:
-        amount: 0
+        amount: 10
     created:
       status: false
       settings:
@@ -39,8 +38,8 @@ third_party_settings:
     unpublish_revision: false
 name: Event
 type: event
-description: ''
+description: 'Use <em>event</em> for commencement ceremonies.'
 help: ''
 new_revision: true
 preview_mode: 1
-display_submitted: true
+display_submitted: false
