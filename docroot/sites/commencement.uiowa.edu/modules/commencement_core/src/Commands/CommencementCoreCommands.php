@@ -6,8 +6,6 @@ use Drupal\commencement_core\EventsProcessor;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\facilities_core\BuildingsProcessor;
-use Drupal\facilities_core\ProjectsProcessor;
 use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drush\Commands\DrushCommands;
 
