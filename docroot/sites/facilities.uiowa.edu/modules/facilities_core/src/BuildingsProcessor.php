@@ -120,7 +120,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     ];
 
     foreach ($coordinator_properties as $property) {
-      $record->{$property} = $coordinators->{$property} ?? NULL;
+      $record->{$property} = $coordinators[$property] ?? NULL;
     }
 
     // There is at least one building with a blank space instead of
