@@ -4,7 +4,6 @@ namespace Drupal\uiowa_facilities;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\uiowa_core\ApiAuthBasicTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
