@@ -3,7 +3,7 @@
 namespace Drupal\commencement_core;
 
 use Drupal\uiowa_core\EntityProcessorBase;
-use Drupal\uiowa_facilities\BizHubApiClient;
+use Drupal\uiowa_events\ContentHubApiClient;
 
 /**
  * Sync event information.
@@ -26,18 +26,18 @@ class EventsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'id';
 
   /**
-   * The BizHub API client.
+   * The Content Hub API client.
    *
-   * @var \Drupal\uiowa_facilities\BizHubApiClientInterface
+   * @var \Drupal\uiowa_events\ContentHubApiClientInterface
    */
-  protected BizHubApiClient $apiClient;
+  protected ContentHubApiClient $apiClient;
 
   /**
    * {@inheritdoc}
    */
   public function __construct() {
     parent::__construct();
-    $this->apiClient = \Drupal::service('uiowa_events.content_hub_client');
+    $this->apiClient = \Drupal::service('uiowa_events.content_hub_api_client');
   }
 
   /**
@@ -45,7 +45,7 @@ class EventsProcessor extends EntityProcessorBase {
    */
   protected function getData() {
     if (!isset($this->data)) {
-      // Request from BizHub API to get buildings.
+      // Request from Content Hub API to get buildings.
       $this->data = $this->apiClient->getEvents();
     }
     return $this->data;
