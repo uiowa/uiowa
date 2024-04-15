@@ -5,8 +5,43 @@
  * Custom functionality the Emergency website.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\emergency_core\AlertsProcessor;
+use Drupal\emergency_core\Entity\HawkAlert;
+use Drupal\emergency_core\Entity\SituationUpdate;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function emergency_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['hawk_alert'])) {
+    $bundles['node']['hawk_alert']['class'] = HawkAlert::class;
+  }
+  if (isset($bundles['paragraph']['hawk_alert_situation_updates'])) {
+    $bundles['paragraph']['hawk_alert_situation_updates']['class'] = SituationUpdate::class;
+  }
+}
+
+/**
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ */
+function emergency_core_field_widget_complete_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['widget']['#field_name'] === 'field_hawk_alert_situation') {
+    // Don't allow the editor to rearrange the updates,
+    // because they will be sorted chronologically
+    // by the node presave.
+    // Disable the draghandles by disallowing the reference changes,
+    // and also remove the dragdrop mode from the dropdown actions.
+    // Based on https://www.drupal.org/project/paragraphs/issues/3036020#comment-12989072.
+    // @todo Remove when Paragraphs updates to have
+    //   a no-dragging setting option.
+    $element['widget']['#allow_reference_changes'] = FALSE;
+    if (isset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode'])) {
+      unset($element['widget']['header_actions']['dropdown_actions']['dragdrop_mode']);
+    }
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -19,6 +54,25 @@ function emergency_core_form_alter(&$form, FormStateInterface $form_state, $form
       $form['field_hawk_alert_identifier']['#disabled'] = TRUE;
       break;
   }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function emergency_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'hawk_alert':
+      // Reorder the Updates to chronological.
+      if ($entity->field_hawk_alert_situation?->count() > 1) {
+        $entities = $entity->field_hawk_alert_situation->referencedEntities();
+        usort($entities, function ($a, $b) {
+          return $b->field_hawk_alert_situation_date->value <=> $a->field_hawk_alert_situation_date->value;
+        });
+        $entity->set('field_hawk_alert_situation', $entities);
+      }
+      break;
+  }
+
 }
 
 /**
