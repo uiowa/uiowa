@@ -11,15 +11,26 @@ storage: folder
 folder: ../config/sites/emergency.uiowa.edu
 module:
   emergency_core: 0
+  rh_taxonomy: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.paragraph.hawk_alert_situation_updates.default
+  - core.entity_form_display.taxonomy_term.hawk_alert_status.default
+  - core.entity_view_display.paragraph.hawk_alert_situation_updates.default
+  - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_date
+  - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_descr
   - metatag.metatag_defaults.node__hawk_alert
   - node.type.hawk_alert
+  - paragraphs.paragraphs_type.hawk_alert_situation_updates
+  - rabbit_hole.behavior_settings.taxonomy_vocabulary_hawk_alert_status
   - simple_sitemap.bundle_settings.default.node.hawk_alert
+  - taxonomy.vocabulary.hawk_alert_status
+  - views.view.hawk_alerts
   - 'core.entity_view_display.node.hawk_alert.*'
   - 'core.entity_form_display.node.hawk_alert.*'
   - 'field.storage.node.field_hawk_alert_*'
+  - 'field.storage.paragraph.field_hawk_alert_*'
 partial_list:
   - metatag.settings
   - 'user.role.*'
