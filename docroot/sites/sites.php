@@ -7192,3 +7192,9 @@ $sites['labstewart.uiowa.ddev.site'] = 'stewart.lab.uiowa.edu';
 $sites['labstewart.dev.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
 $sites['labstewart.stage.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
 $sites['labstewart.prod.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
+
+// Directory aliases for iowaformularacing.org.uiowa.edu.
+$sites['orgiowaformularacing.uiowa.ddev.site'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.dev.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.stage.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.prod.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
