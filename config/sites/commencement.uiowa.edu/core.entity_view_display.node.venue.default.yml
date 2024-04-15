@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.venue.body
+    - field.field.node.venue.field_geolocation
     - field.field.node.venue.field_meta_tags
     - node.type.venue
   module:
+    - geofield
     - metatag
     - text
     - user
@@ -26,6 +28,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_geolocation:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 103
     region: content
   field_meta_tags:
     type: metatag_empty_formatter

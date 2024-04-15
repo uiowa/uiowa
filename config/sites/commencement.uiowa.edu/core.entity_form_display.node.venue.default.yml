@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.venue.body
+    - field.field.node.venue.field_geolocation
     - field.field.node.venue.field_meta_tags
     - node.type.venue
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - geofield
     - metatag
     - path
     - text
@@ -32,6 +34,13 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_geolocation:
+    type: geofield_latlon
+    weight: 122
+    region: content
+    settings:
+      html5_geolocation: false
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
