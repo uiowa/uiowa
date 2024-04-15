@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
+    - filter.format.minimal_plus
+    - filter.format.plain_text
     - node.type.hawk_alert
   module:
     - text
@@ -20,5 +22,7 @@ default_value_callback: ''
 settings:
   display_summary: true
   required_summary: false
-  allowed_formats: {  }
+  allowed_formats:
+    - minimal_plus
+    - plain_text
 field_type: text_with_summary
