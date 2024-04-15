@@ -105,19 +105,8 @@ class Service extends BaseNodeSource {
    * Helper function to Prepare service aliases.
    */
   private function prepareAliases($aliases) {
-    $aliases_string = '';
-    foreach ($aliases as $index => $alias) {
-      if ($index !== 0) {
-        $aliases_string .= ', ';
-      }
-
-      $aliases_string .= $alias["value"];
-    }
-
-    return [
-      'value' => $aliases_string,
-      'format' => 'plain_text',
-    ];
+    $aliases_string = implode(', ', array_column($aliases, 'value'));
+    return ['value' => $aliases_string];
   }
 
   /**
