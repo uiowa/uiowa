@@ -21,6 +21,7 @@ class EventItemProcessor extends EntityItemProcessorBase {
     'field_event_contact_phone' => 'contact_phone',
     'field_event_room' => 'room_number',
     'field_event_venue' => 'location_name',
+    'field_event_id' => 'id',
   ];
 
 }
