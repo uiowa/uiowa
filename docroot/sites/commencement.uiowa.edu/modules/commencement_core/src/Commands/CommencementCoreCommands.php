@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\facilities_core\Commands;
+namespace Drupal\commencement_core\Commands;
 
 use Drupal\commencement_core\EventsProcessor;
 use Drupal\Core\Session\AccountSwitcherInterface;
