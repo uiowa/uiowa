@@ -5,9 +5,11 @@ dependencies:
   config:
     - field.field.node.venue.body
     - field.field.node.venue.field_geolocation
+    - field.field.node.venue.field_location
     - field.field.node.venue.field_meta_tags
     - node.type.venue
   module:
+    - address
     - geofield
     - metatag
     - text
@@ -37,6 +39,13 @@ content:
       output_escape: true
     third_party_settings: {  }
     weight: 103
+    region: content
+  field_location:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
     region: content
   field_meta_tags:
     type: metatag_empty_formatter

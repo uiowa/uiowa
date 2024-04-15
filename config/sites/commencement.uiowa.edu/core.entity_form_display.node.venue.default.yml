@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.node.venue.body
     - field.field.node.venue.field_geolocation
+    - field.field.node.venue.field_location
     - field.field.node.venue.field_meta_tags
     - node.type.venue
     - workflows.workflow.editorial
   module:
+    - address
     - content_moderation
     - geofield
     - metatag
@@ -41,6 +43,12 @@ content:
     region: content
     settings:
       html5_geolocation: false
+    third_party_settings: {  }
+  field_location:
+    type: address_default
+    weight: 123
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
