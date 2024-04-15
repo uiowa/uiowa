@@ -125,4 +125,5 @@ class CommencementAPI {
   public function getEvents() {
     return $this->request('GET', '');
   }
+
 }
