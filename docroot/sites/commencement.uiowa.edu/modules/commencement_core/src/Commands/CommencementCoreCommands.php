@@ -56,7 +56,7 @@ class CommencementCoreCommands extends DrushCommands {
     $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $this->logger()->notice($this->t("Starting the facilities building content sync from drush. This may take a little time if the information isn't cached."));
+    $this->logger()->notice($this->t("Starting the commencement event content sync from drush. This may take a little time if the information isn't cached."));
 
     $sync_service = new EventsProcessor();
     $success = $sync_service->process();
@@ -68,11 +68,11 @@ class CommencementCoreCommands extends DrushCommands {
         '@deleted' => $sync_service->getDeleted(),
         '@skipped' => $sync_service->getSkipped(),
       ];
-      $this->logger->notice($this->t('Facilities building content sync completed. @created buildings were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.',
+      $this->logger->notice($this->t('Commencement event content sync completed. @created events were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.',
         $arguments));
     }
     else {
-      $this->logger->warning($this->t('There was an error while processing the import for Facilities buildings. Please check logs or command line output for additional details.'));
+      $this->logger->warning($this->t('There was an error while processing the import for Commencement events. Please check logs or command line output for additional details.'));
     }
 
     // Switch user back.
