@@ -51,7 +51,6 @@ function copyUids() {
     `${uids.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
     `${uids.src}/**/*.{jpg,png,svg}`,
-    `${uids.src}/**/*.{woff,woff2}`,
   ])
     .pipe(dest(`${uids.dest}`));
 }
@@ -60,14 +59,8 @@ function copyUids3() {
     `${uids3.src}/**/*.scss`,
     `${uids3.src}/**/*.js`,
     `${uids3.src}/**/*.{jpg,png,svg}`,
-    `${uids3.src}/**/*.{woff,woff2}`,
   ])
     .pipe(dest(`${uids3.dest}`));
-}
-
-function fontCopy() {
-  return src([`${uids3.src}/assets/fonts/*.{woff,woff2}`])
-    .pipe(dest('./assets/fonts'));
 }
 
 // SCSS bundled into CSS task.
@@ -90,7 +83,7 @@ function watchFiles() {
   watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids3, copyUids, fontCopy);
+const copy = parallel(copyUids3, copyUids);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
