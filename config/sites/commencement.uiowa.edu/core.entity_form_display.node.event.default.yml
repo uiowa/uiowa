@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
     - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
     - field.field.node.event.field_event_livestream_caption
@@ -115,6 +116,13 @@ content:
     weight: 14
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_event_id:
+    type: number
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
     third_party_settings: {  }
   field_event_link:
     type: link_default

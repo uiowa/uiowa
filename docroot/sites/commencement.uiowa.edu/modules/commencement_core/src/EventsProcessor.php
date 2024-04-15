@@ -18,7 +18,7 @@ class EventsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  protected $fieldSyncKey = 'id';
+  protected $fieldSyncKey = 'field_event_id';
 
   /**
    * {@inheritdoc}
