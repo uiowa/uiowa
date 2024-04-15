@@ -2,6 +2,9 @@
 
 namespace Drupal\commencement_core;
 
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\facilities_core\BuildingItemProcessor;
 use Drupal\uiowa_core\EntityProcessorBase;
 use Drupal\uiowa_events\ContentHubApiClient;
 
@@ -48,7 +51,13 @@ class EventsProcessor extends EntityProcessorBase {
       // Request from Content Hub API to get buildings.
       $this->data = $this->apiClient->getEvents();
     }
-    return $this->data;
+    return $this->data['events'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function processEntity(ContentEntityInterface &$entity, $record): bool {
+    return EventItemProcessor::process($entity, $record);
+  }
 }
