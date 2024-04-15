@@ -23,23 +23,20 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
     ConfigFactoryInterface $configFactory
   ) {
     parent::__construct($client, $logger, $cache, $configFactory);
-    $auth = $this->configFactory->get('uiowa_facilities.apis')->get('bizhub.auth');
-    $this->username = $auth['user'] ?? NULL;
-    $this->password = $auth['pass'] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function basePath(): string {
-    return $this->configFactory->get('uiowa_facilities.apis')->get('bizhub.endpoint');
+    return 'https://content.uiowa.edu/api/v1/views/events_api.json?display_id=events&filters[enddate][value][date]=01-01-2100&filters[types]=355&filters[department]=7266&items_per_page=100';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getCacheIdBase() {
-    return 'uiowa_facilities_api_bizhub';
+    return 'uiowa_events_api_content_hub';
   }
 
   /**
