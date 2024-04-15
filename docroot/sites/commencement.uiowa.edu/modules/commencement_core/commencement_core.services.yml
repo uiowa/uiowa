@@ -1,0 +1,14 @@
+services:
+  commencement_core.api:
+    class: Drupal\commencement_core\CommencementAPI
+    arguments: ['@logger.channel.commencement_core', '@cache.commencement_core', '@http_client']
+  logger.channel.commencement_core:
+    parent: logger.channel_base
+    arguments: [ 'commencement_core' ]
+  cache.commencement_core:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['commencement_core']
+

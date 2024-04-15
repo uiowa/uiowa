@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Custom functionality for the Commencement website.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function commencement_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Grab ceremony events.
+  $commencement_api = \Drupal::service('commencement_core.api');
+  $data = $commencement_api->getEvents();
+  if ($data) {
+    print_r(json_encode($data));
+  }
+
+}
