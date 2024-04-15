@@ -58,6 +58,6 @@ class EventsProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function processEntity(ContentEntityInterface &$entity, $record): bool {
-    return EventItemProcessor::process($entity, $record);
+    return EventItemProcessor::process($entity, $record['event']);
   }
 }
