@@ -46,17 +46,25 @@ class EventsProcessor extends EntityProcessorBase {
    */
   protected function getData() {
     if (!isset($this->data)) {
+      $this->data = [];
       // Request from Content Hub API to get buildings.
-      $this->data = $this->apiClient->getEvents();
+      $response = $this->apiClient->getEvents();
+      if (property_exists($response, 'events') && is_array($response->events)) {
+        foreach ($response->events as $record) {
+          if (property_exists($record, 'event')) {
+            $this->data[] = $record->event;
+          }
+        }
+      }
     }
-    return $this->data['events'];
+    return $this->data;
   }
 
   /**
    * {@inheritdoc}
    */
   protected function processEntity(ContentEntityInterface &$entity, $record): bool {
-    return EventItemProcessor::process($entity, $record['event']);
+    return EventItemProcessor::process($entity, $record);
   }
 
 }

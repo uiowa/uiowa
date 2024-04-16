@@ -12,9 +12,9 @@ interface ContentHubApiClientInterface extends ApiClientInterface {
   /**
    * Get all buildings.
    *
-   * @return \stdClass[]|bool
+   * @return \stdClass|bool
    *   The events object.
    */
-  public function getEvents(): array|bool;
+  public function getEvents(): \stdClass|bool;
 
 }

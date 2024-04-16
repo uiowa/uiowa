@@ -42,8 +42,8 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
   /**
    * {@inheritdoc}
    */
-  public function getEvents(): array|bool {
-    return json_decode(json_encode($this->get('events')), TRUE);
+  public function getEvents(): \stdClass|bool {
+    return $this->get('events');
   }
 
 }
