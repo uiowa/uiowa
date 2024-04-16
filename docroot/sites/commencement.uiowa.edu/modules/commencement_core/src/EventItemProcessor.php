@@ -22,6 +22,8 @@ class EventItemProcessor extends EntityItemProcessorBase {
     'field_event_room' => 'room_number',
     'field_event_venue' => 'location_name',
     'field_event_id' => 'id',
+    'field_event_start_date' => 'start',
+    'field_event_end_date' => 'end',
   ];
 
 }

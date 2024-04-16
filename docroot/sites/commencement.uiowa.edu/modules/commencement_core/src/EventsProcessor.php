@@ -67,4 +67,18 @@ class EventsProcessor extends EntityProcessorBase {
     return EventItemProcessor::process($entity, $record);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function processRecord(&$record) {
+    if (property_exists($record, 'event_instances')) {
+      if (property_exists($record->event_instances[0]->event_instance, 'start')) {
+        $record->start = $record->event_instances[0]->event_instance->start;
+      }
+      if (property_exists($record->event_instances[0]->event_instance, 'end')) {
+        $record->end = $record->event_instances[0]->event_instance->end;
+      }
+    }
+  }
+
 }
