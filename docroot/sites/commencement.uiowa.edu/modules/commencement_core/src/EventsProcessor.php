@@ -72,7 +72,7 @@ class EventsProcessor extends EntityProcessorBase {
    */
   protected function processRecord(&$record) {
     if (property_exists($record, 'event_instances')) {
-      if (property_exists($record->event_instances[0]->event_instance, 'start') && !is_null($record->event_instances[0]->event_instance->start) ) {
+      if (property_exists($record->event_instances[0]->event_instance, 'start') && !is_null($record->event_instances[0]->event_instance->start)) {
         $start_date = $record->event_instances[0]->event_instance->start;
         $record->start = date('Y-m-d\TH:i:s', strtotime($start_date));
       }
