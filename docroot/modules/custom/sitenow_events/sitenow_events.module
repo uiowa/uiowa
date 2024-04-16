@@ -24,7 +24,7 @@ use GuzzleHttp\Exception\RequestException;
  * Implements hook_entity_bundle_info_alter().
  */
 function sitenow_events_entity_bundle_info_alter(array &$bundles) {
-  if (isset($bundles['node']['event'])) {
+  if (\Drupal::config('config_split.config_split.event')->get('status') === TRUE && isset($bundles['node']['event'])) {
     $bundles['node']['event']['class'] = Event::class;
   }
 }
