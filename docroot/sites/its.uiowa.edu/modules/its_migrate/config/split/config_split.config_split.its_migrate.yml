@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: its_migrate
+label: 'ITS Migrate'
+description: 'Migrations for ITS'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/its.uiowa.edu/modules/its_migrate/config/split
+module:
+  its_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.its_migrate
+  - 'migrate_plus.migration.its_*'
+partial_list: {  }
