@@ -1,0 +1,59 @@
+id: its_service
+label: Service
+dependencies:
+  enforced:
+    module:
+      - its_migrate
+migration_tags:
+  - its
+migration_group: sitenow_migrate
+source:
+  plugin: its_service
+  node_type: info_center
+destination:
+  plugin: 'entity:node'
+  default_bundle: service
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  body_summary: body_summary
+  field_image: field_primary_media
+  field_featured_image_display:
+    plugin: default_value
+    default_value: do_not_display
+  field_image_caption: field_primary_media_caption/0/value
+  field_service_website:
+    plugin: field_link
+    source: field_ic_website
+  field_service_fees: field_ic_fee_info
+  field_service_fees_info: field_ic_fees
+  field_service_contact: field_ic_contactinfo
+  field_service_category: field_ic_category_processed
+  field_service_audience: field_audience_processed
+  field_service_quick_links:
+    plugin: field_link
+    source: quick_links
+  field_service_alias: aliases
+  field_service_related_service:
+    plugin: sub_process
+    source: field_related_info_centers
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: its_service
+        source: target_id
+migration_dependencies: {  }
