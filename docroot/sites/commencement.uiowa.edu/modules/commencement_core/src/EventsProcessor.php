@@ -5,6 +5,7 @@ namespace Drupal\commencement_core;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use Drupal\uiowa_events\ContentHubApiClient;
+use Drupal\uiowa_events\ContentHubApiClientInterface;
 
 /**
  * Sync event information.
@@ -31,7 +32,7 @@ class EventsProcessor extends EntityProcessorBase {
    *
    * @var \Drupal\uiowa_events\ContentHubApiClientInterface
    */
-  protected ContentHubApiClient $apiClient;
+  protected ContentHubApiClientInterface $apiClient;
 
   /**
    * {@inheritdoc}
