@@ -5,7 +5,9 @@
  * Custom functionality for the Commencement website.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\taxonomy\TermInterface;
 
@@ -41,4 +43,17 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
       }
     }
   }
+}
+
+function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available srop year values.
+  $thisyear = (int) date('Y');
+
+  $i = $thisyear + 10;
+  $options = [];
+  while ($i >= $thisyear - 50) :
+    $options[$i] = $i;
+    $i--;
+  endwhile;
+  return $options;
 }
