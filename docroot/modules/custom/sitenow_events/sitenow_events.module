@@ -52,8 +52,8 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ];
       }
 
-    // Show/hide the location and virtual info fields
-    // based on the attendance mode. Hybrid should display both.
+      // Show/hide the location and virtual info fields
+      // based on the attendance mode. Hybrid should display both.
       if (isset($form['field_event_location'])) {
         $form['field_event_location']['#states'] = [
           'visible' => [
