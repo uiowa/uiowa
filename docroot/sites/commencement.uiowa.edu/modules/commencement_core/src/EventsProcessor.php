@@ -113,6 +113,34 @@ class EventsProcessor extends EntityProcessorBase {
     if (property_exists($record, 'url') && !is_null($record->url)) {
       $record->url = ['uri' => $record->url];
     }
+
+    // If the location field is not NULL, it needs to be converted to an
+    // entity ID for an existing venue.
+    if (isset($record->location_name)) {
+      $record->location_name = $this->findVenueNid($record->location_name);
+    }
   }
 
+  /**
+   * Find a venue node ID.
+   *
+   * @param string $string
+   *   The string being searched.
+   *
+   * @return int|null
+   *   The entity ID of the venue, if it exists.
+   */
+  protected function findVenueNid($string) {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'venue')
+      ->condition('title', $string)
+      ->accessCheck()
+      ->execute();
+
+    foreach ($nids as $nid) {
+      return $nid;
+    }
+
+    return NULL;
+  }
 }
