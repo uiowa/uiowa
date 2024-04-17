@@ -70,16 +70,17 @@ content:
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
-      closed_mode: summary
-      autocollapse: none
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
       closed_mode_threshold: 0
-      add_mode: dropdown
+      add_mode: button
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: uiowa_collection_item
       features:
-        collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
+        add_above: '0'
+        collapse_edit_all: '0'
+        duplicate: '0'
     third_party_settings: {  }
   field_event_college:
     type: options_select
@@ -132,11 +133,11 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_event_livestream_caption:
-    type: text_textfield
-    weight: 26
+    type: text_textarea
+    weight: 30
     region: content
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_event_order_of_events:
