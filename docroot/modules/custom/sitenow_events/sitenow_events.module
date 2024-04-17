@@ -44,30 +44,36 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_hide']['#group'] = 'options';
       }
 
-      $form['field_event_series_link_direct']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
-        ],
-      ];
+      if (isset($form['field_event_series_link_direct'])) {
+        $form['field_event_series_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
 
-      // Show/hide the location and virtual info fields
-      // based on the attendance mode. Hybrid should display both.
-      $form['field_event_location']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OfflineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+    // Show/hide the location and virtual info fields
+    // based on the attendance mode. Hybrid should display both.
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OfflineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
-      $form['field_event_virtual']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OnlineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+        ];
+      }
+      if (isset($form['field_event_virtual'])) {
+        $form['field_event_virtual']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OnlineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
+        ];
+      }
 
       // Because person titles are constructed
       // in sitenow_people_entity_presave, there is no title for this

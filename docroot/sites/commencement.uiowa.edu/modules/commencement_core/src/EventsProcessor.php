@@ -2,7 +2,9 @@
 
 namespace Drupal\commencement_core;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
 use Drupal\uiowa_events\ContentHubApiClient;
 use Drupal\uiowa_events\ContentHubApiClientInterface;
@@ -28,6 +30,14 @@ class EventsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'id';
 
   /**
+   * A reusable timezone object.
+   *
+   * @var \DateTimeZone|null
+   *   The timezone.
+   */
+  protected $timezone = NULL;
+
+  /**
    * The Content Hub API client.
    *
    * @var \Drupal\uiowa_events\ContentHubApiClientInterface
@@ -40,6 +50,7 @@ class EventsProcessor extends EntityProcessorBase {
   public function __construct() {
     parent::__construct();
     $this->apiClient = \Drupal::service('uiowa_events.content_hub_api_client');
+    $this->timezone = new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE);
   }
 
   /**
@@ -72,14 +83,14 @@ class EventsProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function processRecord(&$record) {
-    if (property_exists($record, 'event_instances')) {
-      if (property_exists($record->event_instances[0]->event_instance, 'start') && !is_null($record->event_instances[0]->event_instance->start)) {
-        $start_date = $record->event_instances[0]->event_instance->start;
-        $record->start = date('Y-m-d\TH:i:s', strtotime($start_date));
-      }
-      if (property_exists($record->event_instances[0]->event_instance, 'end') && !is_null($record->event_instances[0]->event_instance->end)) {
-        $end_date = $record->event_instances[0]->event_instance->end;
-        $record->end = date('Y-m-d\TH:i:s', strtotime($end_date));
+    if (property_exists($record, 'event_instances') && !empty($record->event_instances)) {
+      foreach (['start', 'end'] as $boundary) {
+        if (property_exists($record->event_instances[0]->event_instance, $boundary) && !is_null($record->event_instances[0]->event_instance->{$boundary})) {
+          $date = DrupalDateTime::createFromFormat(DATE_ATOM, $record->event_instances[0]->event_instance->{$boundary});
+          if ($date) {
+            $record->{$boundary} = $date->setTimezone($this->timezone)->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+          }
+        }
       }
     }
   }
