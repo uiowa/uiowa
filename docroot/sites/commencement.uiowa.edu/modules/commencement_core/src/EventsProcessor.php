@@ -59,8 +59,22 @@ class EventsProcessor extends EntityProcessorBase {
   protected function getData() {
     if (!isset($this->data)) {
       $this->data = [];
-      // Request from Content Hub API to get buildings.
-      $response = $this->apiClient->getEvents();
+      // Request from Content Hub API to get events.
+      $response = $this->apiClient->getEvents([
+        'query' => [
+          'display_id' => 'events',
+          'filters' => [
+            'enddate' => [
+              'value' => [
+                'date' => '01-01-2100',
+              ],
+            ],
+            'department' => 7266,
+            'type' => 355,
+          ],
+          'items_per_page' => 100,
+        ],
+      ]);
       if (property_exists($response, 'events') && is_array($response->events)) {
         foreach ($response->events as $record) {
           if (property_exists($record, 'event')) {
