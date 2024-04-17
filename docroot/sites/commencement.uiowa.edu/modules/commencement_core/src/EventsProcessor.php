@@ -143,4 +143,5 @@ class EventsProcessor extends EntityProcessorBase {
 
     return NULL;
   }
+
 }
