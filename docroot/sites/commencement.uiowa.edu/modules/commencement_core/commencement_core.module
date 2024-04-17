@@ -45,6 +45,9 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
   }
 }
 
+/**
+ * Allowed values function to return a list of years for a session.
+ */
 function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   // Available srop year values.
   $thisyear = (int) date('Y');
