@@ -7204,3 +7204,9 @@ $sites['courseonlinepublishing.uiowa.ddev.site'] = 'onlinepublishing.course.uiow
 $sites['courseonlinepublishing.dev.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
 $sites['courseonlinepublishing.stage.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
 $sites['courseonlinepublishing.prod.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
+
+// Directory aliases for hawkeyesba.sites.uiowa.edu.
+$sites['siteshawkeyesba.uiowa.ddev.site'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.dev.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.stage.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.prod.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
