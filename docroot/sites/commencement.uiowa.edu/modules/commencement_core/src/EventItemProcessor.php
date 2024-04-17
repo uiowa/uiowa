@@ -24,6 +24,8 @@ class EventItemProcessor extends EntityItemProcessorBase {
     'field_event_id' => 'id',
     'field_event_start_date' => 'start',
     'field_event_end_date' => 'end',
+    'field_event_link' => 'events_site_url',
+    'field_event_website' => 'url',
   ];
 
 }
