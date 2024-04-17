@@ -4,8 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_hawk_alert_situation_descr
-    - filter.format.minimal_plus
-    - filter.format.plain_text
     - paragraphs.paragraphs_type.hawk_alert_situation_updates
   module:
     - text
@@ -20,7 +18,5 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats:
-    - minimal_plus
-    - plain_text
+  allowed_formats: {  }
 field_type: text_long
