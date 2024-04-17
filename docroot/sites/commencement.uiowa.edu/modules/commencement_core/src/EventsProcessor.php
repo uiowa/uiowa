@@ -107,12 +107,6 @@ class EventsProcessor extends EntityProcessorBase {
         }
       }
     }
-    if (property_exists($record, 'events_site_url') && !is_null($record->events_site_url)) {
-      $record->events_site_url = ['uri' => $record->events_site_url];
-    }
-    if (property_exists($record, 'url') && !is_null($record->url)) {
-      $record->url = ['uri' => $record->url];
-    }
 
     // If the location field exists and is not null, it needs to be converted
     // to an entity ID for an existing venue.
