@@ -154,7 +154,8 @@ class StaticMap extends MediaSourceBase {
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
             try {
-              return $this->fs->saveData($thumbnail_url, $destination_file, FileSystemInterface::EXISTS_REPLACE);
+              $data = (string) \Drupal::httpClient()->get($thumbnail_url)->getBody();
+              return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
             }
             catch (TransferException $exception) {
               \Drupal::messenger()->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
