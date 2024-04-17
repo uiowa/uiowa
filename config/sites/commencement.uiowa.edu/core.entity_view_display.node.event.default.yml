@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
     - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
     - field.field.node.event.field_event_livestream_caption
@@ -91,7 +92,7 @@ content:
     label: inline
     settings:
       timezone_override: ''
-      format_type: medium
+      format_type: long
     third_party_settings: {  }
     weight: 4
     region: content
@@ -145,7 +146,7 @@ content:
     label: inline
     settings:
       timezone_override: ''
-      format_type: medium
+      format_type: long
     third_party_settings: {  }
     weight: 3
     region: content
@@ -179,6 +180,7 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_event_college: true
+  field_event_id: true
   field_event_other_celebrations: true
   field_event_session: true
   field_meta_tags: true

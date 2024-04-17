@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality for the Commencement website.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\media\Entity\Media;
+use Drupal\taxonomy\TermInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function commencement_core_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof TermInterface) {
+    switch ($entity->bundle()) {
+      case 'session':
+        // Setting the title with the first/last name values.
+        $title = $entity->get('field_session_season')->value . ' ' . $entity->get('field_session_year')->value;
+        $entity->setName($title);
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function commencement_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_event_form':
+    case 'node_event_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['title']['#disabled'] = TRUE;
+      $form['body']['#disabled'] = TRUE;
+      $form['field_project_is_capital']['#disabled'] = TRUE;
+      $form['field_event_contact']['#disabled'] = TRUE;
+      $form['field_event_contact_email']['#disabled'] = TRUE;
+      $form['field_event_contact_phone']['#disabled'] = TRUE;
+      $form['field_event_room']['#disabled'] = TRUE;
+      $form['field_event_venue']['#disabled'] = TRUE;
+      $form['field_event_id']['#disabled'] = TRUE;
+      $form['field_event_start_date']['#disabled'] = TRUE;
+      $form['field_event_end_date']['#disabled'] = TRUE;
+      $form['field_event_link']['#disabled'] = TRUE;
+      $form['field_event_website']['#disabled'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_field__field_media_file(&$variables) {
+  // We don't want to display the file name as the link text for viewing a
+  // program PDF. This changes it to 'View program' instead.
+  if (isset($variables['element']['#object']) && $variables['element']['#object'] instanceof Media) {
+    $media = $variables['element']['#object'];
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $referring_item */
+    $referring_item = $media->_referringItem;
+    if (!is_null($referring_item)) {
+      $parent = $referring_item->getParent();
+      if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
+        $variables['items'][0]['content']['#description'] = t('View program');
+      }
+    }
+  }
+}
+
+/**
+ * Allowed values function to return a list of years for a session.
+ */
+function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available srop year values.
+  $thisyear = (int) date('Y');
+
+  $i = $thisyear + 10;
+  $options = [];
+  while ($i >= $thisyear - 50) :
+    $options[$i] = $i;
+    $i--;
+  endwhile;
+  return $options;
+}
