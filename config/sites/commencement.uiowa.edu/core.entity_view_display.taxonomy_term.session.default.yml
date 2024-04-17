@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.session.field_session_program
+    - field.field.taxonomy_term.session.field_session_season
+    - field.field.taxonomy_term.session.field_session_year
     - taxonomy.vocabulary.session
   module:
+    - options
     - text
 id: taxonomy_term.session.default
 targetEntityType: taxonomy_term
@@ -27,6 +30,20 @@ content:
       link: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_session_season:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_session_year:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true
