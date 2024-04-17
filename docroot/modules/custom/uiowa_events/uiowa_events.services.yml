@@ -1,0 +1,13 @@
+services:
+  uiowa_events.content_hub_api_client:
+    class: Drupal\uiowa_events\ContentHubApiClient
+    arguments: ['@http_client', '@logger.channel.uiowa_events', '@cache.uiowa_events', '@config.factory']
+  logger.channel.uiowa_events:
+    parent: logger.channel_base
+    arguments: [ 'uiowa_events' ]
+  cache.uiowa_events:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['uiowa_events']
