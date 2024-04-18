@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
+    - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
@@ -18,9 +19,9 @@ dependencies:
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
+    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_venue
     - field.field.node.event.field_event_website
-    - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
     - workflows.workflow.editorial
@@ -32,7 +33,6 @@ dependencies:
     - metatag
     - paragraphs
     - path
-    - smart_date
     - telephone
     - text
 third_party_settings:
@@ -45,7 +45,6 @@ third_party_settings:
         - field_event_venue
         - field_event_room
         - field_event_link
-        - field_event_when
         - field_event_start_date
         - field_event_end_date
         - field_event_contact
@@ -141,6 +140,12 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_event_end_date:
+    type: datetime_default
+    weight: 27
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_event_id:
     type: number
     weight: 20
@@ -198,6 +203,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_event_start_date:
+    type: datetime_default
+    weight: 26
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_event_venue:
     type: entity_reference_autocomplete
     weight: 23
@@ -215,25 +226,6 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
-    third_party_settings: {  }
-  field_event_when:
-    type: smartdate_inline
-    weight: 26
-    region: content
-    settings:
-      modal: false
-      default_duration: 60
-      default_duration_increments: |-
-        30
-        60|1 hour
-        90
-        120|2 hours
-        custom
-      show_extra: false
-      hide_date: true
-      allday: true
-      remove_seconds: false
-      separator: to
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
