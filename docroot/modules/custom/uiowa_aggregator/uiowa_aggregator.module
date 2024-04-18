@@ -68,7 +68,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   $build['#attached']['library'][] = 'uids_base/card';
 
   // Set the title.
-  $build['#title'] = $entity->label();
+  $build['#title'] = html_entity_decode($entity->label());
 
   // Move author field to #meta and add an icon.
   if (!$entity->get('author')->isEmpty() && isset($build['author'])) {
