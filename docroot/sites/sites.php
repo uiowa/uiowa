@@ -7186,3 +7186,27 @@ $sites['labliving.uiowa.ddev.site'] = 'living.lab.uiowa.edu';
 $sites['labliving.dev.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
 $sites['labliving.stage.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
 $sites['labliving.prod.drupal.uiowa.edu'] = 'living.lab.uiowa.edu';
+
+// Directory aliases for stewart.lab.uiowa.edu.
+$sites['labstewart.uiowa.ddev.site'] = 'stewart.lab.uiowa.edu';
+$sites['labstewart.dev.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
+$sites['labstewart.stage.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
+$sites['labstewart.prod.drupal.uiowa.edu'] = 'stewart.lab.uiowa.edu';
+
+// Directory aliases for iowaformularacing.org.uiowa.edu.
+$sites['orgiowaformularacing.uiowa.ddev.site'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.dev.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.stage.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
+$sites['orgiowaformularacing.prod.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
+
+// Directory aliases for onlinepublishing.course.uiowa.edu.
+$sites['courseonlinepublishing.uiowa.ddev.site'] = 'onlinepublishing.course.uiowa.edu';
+$sites['courseonlinepublishing.dev.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
+$sites['courseonlinepublishing.stage.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
+$sites['courseonlinepublishing.prod.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
+
+// Directory aliases for hawkeyesba.sites.uiowa.edu.
+$sites['siteshawkeyesba.uiowa.ddev.site'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.dev.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.stage.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
+$sites['siteshawkeyesba.prod.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
