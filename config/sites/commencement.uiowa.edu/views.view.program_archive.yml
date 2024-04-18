@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_session_program
+    - field.storage.taxonomy_term.field_session_session
+    - field.storage.taxonomy_term.field_session_year
     - taxonomy.vocabulary.session
   module:
+    - options
     - taxonomy
     - user
 id: program_archive
@@ -24,17 +27,15 @@ display:
     display_options:
       title: 'Program archive'
       fields:
-        name:
-          id: name
-          table: taxonomy_term_field_data
-          field: name
+        field_session_year:
+          id: field_session_year
+          table: taxonomy_term__field_session_year
+          field: field_session_year
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: term_name
-          label: ''
+          plugin_id: field
+          label: Year
           exclude: false
           alter:
             alter_text: false
@@ -54,8 +55,8 @@ display:
             target: ''
             nl2br: false
             max_length: 0
-            word_boundary: false
-            ellipsis: false
+            word_boundary: true
+            ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
@@ -67,7 +68,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -76,9 +77,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
+          type: list_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -89,7 +89,68 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          convert_spaces: false
+        field_session_session:
+          id: field_session_session
+          table: taxonomy_term__field_session_session
+          field: field_session_session
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Session
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         field_session_program:
           id: field_session_program
           table: taxonomy_term__field_session_program
@@ -222,11 +283,19 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            name: name
+            field_session_year: field_session_year
+            field_session_session: field_session_session
             field_session_program: field_session_program
-          default: '-1'
+          default: field_session_year
           info:
-            name:
+            field_session_year:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_session_session:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -269,6 +338,8 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.taxonomy_term.field_session_program'
+        - 'config:field.storage.taxonomy_term.field_session_session'
+        - 'config:field.storage.taxonomy_term.field_session_year'
   block_1:
     id: block_1
     display_title: Block
@@ -289,3 +360,5 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.taxonomy_term.field_session_program'
+        - 'config:field.storage.taxonomy_term.field_session_session'
+        - 'config:field.storage.taxonomy_term.field_session_year'
