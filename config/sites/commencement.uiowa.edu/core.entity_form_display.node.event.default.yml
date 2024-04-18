@@ -24,9 +24,9 @@ dependencies:
     - field.field.node.event.field_event_website
     - field.field.node.event.field_meta_tags
     - node.type.event
+    - workflows.workflow.editorial
   module:
     - content_moderation
-    - datetime
     - field_group
     - link
     - media_library
@@ -119,7 +119,7 @@ content:
     third_party_settings: {  }
   field_event_contact:
     type: string_textfield
-    weight: 28
+    weight: 29
     region: content
     settings:
       size: 60
@@ -127,7 +127,7 @@ content:
     third_party_settings: {  }
   field_event_contact_email:
     type: email_default
-    weight: 29
+    weight: 30
     region: content
     settings:
       placeholder: ''
@@ -135,7 +135,7 @@ content:
     third_party_settings: {  }
   field_event_contact_phone:
     type: telephone_default
-    weight: 30
+    weight: 31
     region: content
     settings:
       placeholder: ''
@@ -221,7 +221,7 @@ content:
     third_party_settings: {  }
   field_event_website:
     type: link_default
-    weight: 31
+    weight: 32
     region: content
     settings:
       placeholder_url: ''
