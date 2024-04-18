@@ -103,3 +103,16 @@ function emergency_core_import_alerts() {
   $message = t('Hawk alerts content sync completed. @created alerts were created and @skipped skipped. That is neat.', $arguments);
   return $message;
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function emergency_core_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+
+    case 'views_block:hawk_alerts-block_alerts':
+      $variables['#attached']['library'][] = 'emergency_core/emergency-hawk-alerts';
+      break;
+
+  }
+}
