@@ -20,7 +20,7 @@ function commencement_core_entity_presave(EntityInterface $entity) {
     switch ($entity->bundle()) {
       case 'session':
         // Setting the title with the first/last name values.
-        $title = $entity->get('field_session_season')->value . ' ' . $entity->get('field_session_year')->value;
+        $title = $entity->get('field_session_session')->value . ' ' . $entity->get('field_session_year')->value;
         $entity->setName($title);
         break;
     }

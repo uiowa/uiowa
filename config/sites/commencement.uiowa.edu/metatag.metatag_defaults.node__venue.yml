@@ -4,4 +4,10 @@ status: true
 dependencies: {  }
 id: node__venue
 label: 'Content: Venue'
-tags: {  }
+tags:
+  schema_place_address: 'a:6:{s:5:"@type";s:13:"PostalAddress";s:13:"streetAddress";s:35:"[node:field_location:address_line1]";s:15:"addressLocality";s:30:"[node:field_location:locality]";s:13:"addressRegion";s:41:"[node:field_location:administrative_area]";s:10:"postalCode";s:33:"[node:field_location:postal_code]";s:14:"addressCountry";s:34:"[node:field_location:country_code]";}'
+  schema_place_geo: 'a:3:{s:5:"@type";s:14:"GeoCoordinates";s:8:"latitude";s:28:"[node:field_geolocation:lat]";s:9:"longitude";s:28:"[node:field_geolocation:lon]";}'
+  schema_place_image: 'a:3:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:5:"False";s:3:"url";s:49:"[node:field_image:entity:field_media_image:large]";}'
+  schema_place_name: '[node:title]'
+  schema_place_type: Place
+  schema_place_url: '[node:url]'
