@@ -9,6 +9,7 @@ dependencies:
     - paragraphs.paragraphs_type.uiowa_collection_section
   module:
     - entity_reference_revisions
+    - heading
     - text
 id: paragraph.uiowa_collection_section.default
 targetEntityType: paragraph
@@ -17,7 +18,7 @@ mode: default
 content:
   field_coll_section_collections:
     type: entity_reference_revisions_entity_view
-    label: above
+    label: hidden
     settings:
       view_mode: default
       link: ''
@@ -26,16 +27,16 @@ content:
     region: content
   field_coll_section_content:
     type: text_default
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
   field_coll_section_title:
-    type: string
-    label: above
+    type: heading_text
+    label: hidden
     settings:
-      link_to_entity: false
+      size: h3
     third_party_settings: {  }
     weight: 3
     region: content
