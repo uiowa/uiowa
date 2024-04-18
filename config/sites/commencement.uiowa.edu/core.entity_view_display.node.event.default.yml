@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
-    - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
@@ -19,15 +18,15 @@ dependencies:
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_venue
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
   module:
-    - datetime
     - entity_reference_revisions
     - link
+    - smart_date
     - telephone
     - text
     - user
@@ -53,7 +52,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   field_event_ceremony_information:
     type: entity_reference_revisions_entity_view
@@ -62,7 +61,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   field_event_contact:
     type: string
@@ -70,14 +69,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   field_event_contact_email:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_event_contact_phone:
     type: telephone_link
@@ -85,16 +84,7 @@ content:
     settings:
       title: ''
     third_party_settings: {  }
-    weight: 8
-    region: content
-  field_event_end_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 4
+    weight: 9
     region: content
   field_event_link:
     type: link
@@ -106,7 +96,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_event_livestream:
     type: entity_reference_entity_view
@@ -115,14 +105,14 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   field_event_livestream_caption:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 17
     region: content
   field_event_order_of_events:
     type: entity_reference_entity_view
@@ -131,7 +121,7 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   field_event_room:
     type: string
@@ -139,16 +129,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 10
-    region: content
-  field_event_start_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 3
+    weight: 11
     region: content
   field_event_venue:
     type: entity_reference_label
@@ -156,7 +137,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   field_event_website:
     type: link
@@ -168,7 +149,29 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 5
+    weight: 6
+    region: content
+  field_event_when:
+    type: smartdate_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      localize: false
+      parts:
+        - start
+        - end
+      duration:
+        separator: ' | '
+        unit: ''
+        decimals: 2
+        suffix: h
+    third_party_settings: {  }
+    weight: 3
     region: content
   links:
     settings: {  }
