@@ -1,0 +1,35 @@
+id: commencement_event
+label: Event
+dependencies:
+  enforced:
+    module:
+      - commencement_migrate
+migration_tags:
+  - commencement
+migration_group: sitenow_migrate
+source:
+  plugin: commencement_event
+  node_type: event
+destination:
+  plugin: 'entity:node'
+  default_bundle: event
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  field_event_website: field_event_website
+  field_event_link: field_event_link
+migration_dependencies: {  }
