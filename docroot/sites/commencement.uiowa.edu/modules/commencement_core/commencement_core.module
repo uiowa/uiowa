@@ -95,3 +95,15 @@ function commencement_core_session_years_allowed_values(FieldStorageConfig $defi
   endwhile;
   return $options;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function commencement_core_theme($existing, $type, $theme, $path) {
+  return [
+    'taxonomy_term__session' => [
+      'template' => 'content/taxonomy-term--session',
+      'base hook' => 'taxonomy_term',
+    ],
+  ];
+}
