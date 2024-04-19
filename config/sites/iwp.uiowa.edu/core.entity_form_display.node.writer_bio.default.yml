@@ -5,11 +5,14 @@ dependencies:
   config:
     - field.field.node.writer_bio.body
     - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_writer_bio_countries
     - field.field.node.writer_bio.field_writer_bio_family_name
     - field.field.node.writer_bio.field_writer_bio_given_name
+    - field.field.node.writer_bio.field_writer_bio_languages
     - field.field.node.writer_bio.field_writer_bio_photo_credit
     - field.field.node.writer_bio.field_writer_bio_sample
     - field.field.node.writer_bio.field_writer_bio_sample_original
+    - field.field.node.writer_bio.field_writer_bio_session_status
     - node.type.writer_bio
   module:
     - content_moderation
@@ -44,6 +47,16 @@ content:
     settings:
       media_types: {  }
     third_party_settings: {  }
+  field_writer_bio_countries:
+    type: entity_reference_autocomplete
+    weight: 27
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_writer_bio_family_name:
     type: string_textfield
     weight: 13
@@ -57,6 +70,16 @@ content:
     weight: 14
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_writer_bio_languages:
+    type: entity_reference_autocomplete
+    weight: 28
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -81,6 +104,16 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_writer_bio_session_status:
+    type: entity_reference_autocomplete
+    weight: 26
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

@@ -1,9 +1,17 @@
 adding:
   dependencies:
     config:
+      - taxonomy.vocabulary.writer_bio_countries
+      - taxonomy.vocabulary.writer_bio_languages
       - taxonomy.vocabulary.writer_bio_session_status
   permissions:
+    - 'create terms in writer_bio_countries'
+    - 'create terms in writer_bio_languages'
     - 'create terms in writer_bio_session_status'
+    - 'delete terms in writer_bio_countries'
+    - 'delete terms in writer_bio_languages'
     - 'delete terms in writer_bio_session_status'
+    - 'edit terms in writer_bio_countries'
+    - 'edit terms in writer_bio_languages'
     - 'edit terms in writer_bio_session_status'
 removing: {  }
