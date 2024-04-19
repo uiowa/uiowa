@@ -15,8 +15,260 @@ dependencies:
     - field.field.node.writer_bio.field_writer_bio_session_status
     - node.type.writer_bio
   module:
+    - layout_builder
+    - system
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 5f7ba81f-09f5-423e-960a-6370e662990e
+            region: content
+            configuration:
+              id: 'field_block:node:writer_bio:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 544162b9-ae5d-4097-a434-74ca4c41d7b6
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_card_sidebar
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+            - section_card_media_size_large
+            - section_card_media_format_circle
+        components:
+          -
+            uuid: 9478d02d-2123-44aa-8971-4a87c9ace379
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: dcd48927-c74b-4123-94fb-943a6b7d4a4e
+            region: main
+            configuration:
+              id: 'extra_field_block:node:writer_bio:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: de274af6-5556-4a57-9a7d-38942dfb3900
+            region: card_media
+            configuration:
+              id: 'field_block:node:writer_bio:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                  link: false
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2ab10392-9049-4746-8e6b-d33230a38608
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_sample'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a6d257dd-6671-4e30-80f2-36679eb14b21
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_sample_original'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: fd2f8ae3-2021-414a-8848-f5efb1731bd5
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_photo_credit'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 66a9f08b-54da-4384-9b1a-bb0e157175ab
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_given_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 7c78f164-e815-4db1-9cbf-c8d17f4ff2a5
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_family_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9c06a5ae-4c1d-4603-8980-97516345c46f
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_session_status'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 949ec7ea-c3ce-4f81-bbad-6e84e53cd5b6
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_countries'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 101b43dd-d0fa-4330-b4f5-9556d8f00c7c
+            region: main
+            configuration:
+              id: 'field_block:node:writer_bio:field_writer_bio_languages'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.writer_bio.default
 targetEntityType: node
 bundle: writer_bio
