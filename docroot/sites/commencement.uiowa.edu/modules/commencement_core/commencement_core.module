@@ -101,6 +101,14 @@ function commencement_core_session_years_allowed_values(FieldStorageConfig $defi
  */
 function commencement_core_theme($existing, $type, $theme, $path) {
   return [
+    'field__paragraph__field_coll_section_collections' => [
+      'template' => 'field/field--paragraph--field-coll-section-collections',
+      'base hook' => 'field',
+    ],
+    'paragraph__uiowa_collection_item' => [
+      'template' => 'content/paragraph--uiowa-collection-item',
+      'base hook' => 'paragraph',
+    ],
     'taxonomy_term__session' => [
       'template' => 'content/taxonomy-term--session',
       'base hook' => 'taxonomy_term',
