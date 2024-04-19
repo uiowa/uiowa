@@ -4,4 +4,11 @@ status: true
 dependencies: {  }
 id: node__event
 label: 'Content: Event'
-tags: {  }
+tags:
+  schema_event_description: '[node:summary]'
+  schema_event_end_date: '[node:field_event_end_date:value-custom:Y-m-d\TH:i:s]'
+  schema_event_location: 'a:3:{s:5:"@type";s:5:"Place";s:4:"name";s:37:"[node:field_event_venue:entity:title]";s:3:"url";s:35:"[node:field_event_venue:entity:url]";}'
+  schema_event_name: '[node:title]'
+  schema_event_start_date: '[node:field_event_start_date:value-custom:Y-m-d\TH:i:s]'
+  schema_event_type: Event
+  schema_event_url: '[node:field_event_link]'

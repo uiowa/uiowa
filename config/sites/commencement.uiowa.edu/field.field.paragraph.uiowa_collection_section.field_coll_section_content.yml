@@ -1,0 +1,24 @@
+uuid: 2e0646ff-7597-4c7c-8a7f-cc48e66f89c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_coll_section_content
+    - filter.format.filtered_html
+    - paragraphs.paragraphs_type.uiowa_collection_section
+  module:
+    - text
+id: paragraph.uiowa_collection_section.field_coll_section_content
+field_name: field_coll_section_content
+entity_type: paragraph
+bundle: uiowa_collection_section
+label: Content
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

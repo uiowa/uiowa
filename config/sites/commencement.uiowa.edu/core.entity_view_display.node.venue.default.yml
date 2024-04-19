@@ -8,10 +8,12 @@ dependencies:
     - field.field.node.venue.field_image
     - field.field.node.venue.field_location
     - field.field.node.venue.field_meta_tags
+    - field.field.node.venue.field_venue_additional_info
     - node.type.venue
     - views.view.events_by_venue
   module:
     - address
+    - entity_reference_revisions
     - geofield
     - layout_builder
     - metatag
@@ -230,6 +232,29 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+          -
+            uuid: cec6bd79-fb65-4b08-8f42-227998f9d3a1
+            region: content
+            configuration:
+              id: 'field_block:node:venue:field_venue_additional_info'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: accordion
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
@@ -283,6 +308,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_venue_additional_info:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 106
     region: content
   links:
     settings: {  }
