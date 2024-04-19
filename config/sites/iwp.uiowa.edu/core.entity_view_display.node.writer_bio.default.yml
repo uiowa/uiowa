@@ -5,7 +5,11 @@ dependencies:
   config:
     - field.field.node.writer_bio.body
     - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_writer_bio_family_name
+    - field.field.node.writer_bio.field_writer_bio_given_name
+    - field.field.node.writer_bio.field_writer_bio_photo_credit
     - field.field.node.writer_bio.field_writer_bio_sample
+    - field.field.node.writer_bio.field_writer_bio_sample_original
     - node.type.writer_bio
   module:
     - text
@@ -31,6 +35,30 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
+  field_writer_bio_family_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_writer_bio_given_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_writer_bio_photo_credit:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
   field_writer_bio_sample:
     type: entity_reference_entity_view
     label: above
@@ -39,6 +67,15 @@ content:
       link: false
     third_party_settings: {  }
     weight: 103
+    region: content
+  field_writer_bio_sample_original:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 104
     region: content
   links:
     settings: {  }

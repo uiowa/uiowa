@@ -6,7 +6,11 @@ dependencies:
     - core.entity_view_mode.node.token
     - field.field.node.writer_bio.body
     - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_writer_bio_family_name
+    - field.field.node.writer_bio.field_writer_bio_given_name
+    - field.field.node.writer_bio.field_writer_bio_photo_credit
     - field.field.node.writer_bio.field_writer_bio_sample
+    - field.field.node.writer_bio.field_writer_bio_sample_original
     - node.type.writer_bio
   module:
     - user
@@ -34,5 +38,9 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_writer_bio_family_name: true
+  field_writer_bio_given_name: true
+  field_writer_bio_photo_credit: true
   field_writer_bio_sample: true
+  field_writer_bio_sample_original: true
   search_api_excerpt: true
