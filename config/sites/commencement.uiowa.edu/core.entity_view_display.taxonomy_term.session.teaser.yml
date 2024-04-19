@@ -1,16 +1,23 @@
-uuid: 3cd76ae5-8416-40a9-bb15-7b63e99abba3
+uuid: 7ff5ac79-705b-481a-8943-7945dfc9e95d
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.taxonomy_term.teaser
     - field.field.taxonomy_term.session.field_session_program
     - field.field.taxonomy_term.session.field_session_session
     - field.field.taxonomy_term.session.field_session_year
     - taxonomy.vocabulary.session
-id: taxonomy_term.session.default
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: taxonomy_term.session.teaser
 targetEntityType: taxonomy_term
 bundle: session
-mode: default
+mode: teaser
 content:
   field_session_program:
     type: entity_reference_entity_view

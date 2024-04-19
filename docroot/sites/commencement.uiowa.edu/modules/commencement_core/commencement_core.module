@@ -5,12 +5,22 @@
  * Custom functionality for the Commencement website.
  */
 
+use Drupal\commencement_core\Entity\Event;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\taxonomy\TermInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function commencement_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['event'])) {
+    $bundles['node']['event']['class'] = Event::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().

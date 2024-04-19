@@ -27,10 +27,344 @@ dependencies:
   module:
     - datetime
     - entity_reference_revisions
+    - layout_builder
     - link
     - telephone
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 3f8772f1-6b24-4af1-adf9-37f203f54425
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 483be4ac-d42c-4326-9091-de9c8470665f
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_start_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: inline
+                settings:
+                  timezone_override: ''
+                  format_type: long
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b7cd7e03-e059-445c-8ec1-52100924ab4f
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_end_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: inline
+                settings:
+                  timezone_override: ''
+                  format_type: long
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5bacb246-f7cc-4203-99a3-59a38efa26c3
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_contact'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0dbc0cb5-4de8-4b1b-ab7e-d041796c2ba6
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_contact_email'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 05b04dda-d567-45b3-a4bd-183973ebc269
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_contact_phone'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: telephone_link
+                label: above
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e824bb77-876b-431d-977d-47c8ed7359a7
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f4856cb0-db42-4287-ac9d-b6f6b45dafed
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_additional_info'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8cfa508d-f298-4f77-bddf-825ba7d58fe2
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_livestream'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 17
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: d753038d-bc55-4b26-993e-607ab74b0812
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_livestream_caption'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 18
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bde1ecca-e20e-42f2-853f-79cef1ea3f15
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_venue'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8acf66ae-a4bb-4dff-b788-55fe49fb4aba
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_ceremony_information'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 15
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 94e64d9c-fcb8-4913-9bb2-10624ea84705
+            region: content
+            configuration:
+              id: 'field_block:node:event:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bf531f87-7bcf-48d1-88fa-0a307b7d7f1c
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_room'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: fceeed12-7e45-429a-9653-70a38df6a424
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_order_of_events'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b041f094-fb53-41ae-bf0b-00f5a8d59108
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_website'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6250c2ed-ece5-4067-a2aa-b4e5576a81bd
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_session'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: teaser
+                third_party_settings: {  }
+            weight: 19
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.event.default
 targetEntityType: node
 bundle: event
