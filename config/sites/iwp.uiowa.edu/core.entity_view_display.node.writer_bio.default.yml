@@ -1,0 +1,52 @@
+uuid: 6c72e69e-ff9a-470f-8745-d7d7252a7d62
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.writer_bio.body
+    - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_writer_bio_sample
+    - node.type.writer_bio
+  module:
+    - text
+    - user
+id: node.writer_bio.default
+targetEntityType: node
+bundle: writer_bio
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_writer_bio_sample:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

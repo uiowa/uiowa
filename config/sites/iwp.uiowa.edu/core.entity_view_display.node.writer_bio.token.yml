@@ -1,0 +1,38 @@
+uuid: 6cea03ef-7c2f-4de3-82e3-154f10c7c2ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.token
+    - field.field.node.writer_bio.body
+    - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_writer_bio_sample
+    - node.type.writer_bio
+  module:
+    - user
+id: node.writer_bio.token
+targetEntityType: node
+bundle: writer_bio
+mode: token
+content:
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_writer_bio_sample: true
+  search_api_excerpt: true
