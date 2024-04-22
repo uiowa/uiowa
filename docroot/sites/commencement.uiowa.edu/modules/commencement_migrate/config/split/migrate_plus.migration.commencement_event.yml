@@ -30,15 +30,11 @@ process:
     default_value: 1
   title: title
   body: body
-  field_event_website: field_event_website
-    plugin: field_link
-    source: field_event_website
+  field_event_contact: field_event_contact_name
   field_event_link:
     plugin: field_link
     source: field_event_link
-  field_event_venue: field_event_location_ref
-  field_event_department: field_event_college
-  field_event_contact: field_event_contact_name
-  field_event_contact_email: field_event_contact_email
-  field_event_contact_phone: field_event_contact_phone
+  field_event_website:
+    plugin: field_link
+    source: field_event_website
 migration_dependencies: {  }
