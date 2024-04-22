@@ -1,0 +1,10 @@
+{# Template to implement accordion container for collection section collections. #}
+{{ attach_library('uids_base/accordion') }}
+
+<div class="collection--accordion">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-faq">
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </div>
+</div>
