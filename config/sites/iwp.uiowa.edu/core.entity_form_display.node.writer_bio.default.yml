@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.writer_bio.field_writer_bio_sample_original
     - field.field.node.writer_bio.field_writer_bio_session_status
     - node.type.writer_bio
+    - workflows.workflow.editorial
   module:
     - allowed_formats
     - content_moderation
@@ -29,7 +30,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 12
+    weight: 15
     region: content
     settings:
       rows: 9
@@ -48,28 +49,28 @@ content:
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 10
+    weight: 11
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 8
+    weight: 9
     region: content
     settings:
       sidebar: true
       use_details: true
     third_party_settings: {  }
   field_writer_bio_countries:
-    type: options_buttons
-    weight: 27
+    type: options_select
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   field_writer_bio_family_name:
     type: string_textfield
-    weight: 13
+    weight: 16
     region: content
     settings:
       size: 60
@@ -77,21 +78,21 @@ content:
     third_party_settings: {  }
   field_writer_bio_given_name:
     type: string_textfield
-    weight: 14
+    weight: 17
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_writer_bio_languages:
-    type: options_buttons
-    weight: 28
+    type: options_select
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_writer_bio_photo_credit:
     type: string_textfield
-    weight: 11
+    weight: 20
     region: content
     settings:
       size: 60
@@ -99,21 +100,21 @@ content:
     third_party_settings: {  }
   field_writer_bio_sample:
     type: media_library_widget
-    weight: 15
+    weight: 18
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_writer_bio_sample_original:
     type: media_library_widget
-    weight: 16
+    weight: 19
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_writer_bio_session_status:
     type: options_select
-    weight: 26
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -143,7 +144,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
