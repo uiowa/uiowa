@@ -10,12 +10,14 @@ stackable: true
 storage: folder
 folder: ../config/sites/iwp.uiowa.edu
 module:
-  rh_taxonomy: 0
   iwp_core: 0
+  rh_taxonomy: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.node.writer_bio.default
   - node.type.writer_bio
+  - pathauto.pattern.writer_bio
   - 'core.entity_view_display.node.writer_bio.*'
   - 'field.storage.node.field_writer_bio_*'
   - 'taxonomy.vocabulary.writer_bio_*'

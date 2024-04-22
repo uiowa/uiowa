@@ -76,10 +76,12 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
-            - section_card_media_size_large
-            - section_card_media_format_circle
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_large
+            3: section_card_media_format_circle
+            section_no_border: section_no_border
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 9478d02d-2123-44aa-8971-4a87c9ace379
@@ -269,6 +271,8 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
 id: node.writer_bio.default
 targetEntityType: node
 bundle: writer_bio
