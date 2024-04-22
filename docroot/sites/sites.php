@@ -7210,3 +7210,9 @@ $sites['siteshawkeyesba.uiowa.ddev.site'] = 'hawkeyesba.sites.uiowa.edu';
 $sites['siteshawkeyesba.dev.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
 $sites['siteshawkeyesba.stage.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
 $sites['siteshawkeyesba.prod.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
+
+// Directory aliases for ned.uiowa.edu.
+$sites['ned.uiowa.ddev.site'] = 'ned.uiowa.edu';
+$sites['ned.dev.drupal.uiowa.edu'] = 'ned.uiowa.edu';
+$sites['ned.stage.drupal.uiowa.edu'] = 'ned.uiowa.edu';
+$sites['ned.prod.drupal.uiowa.edu'] = 'ned.uiowa.edu';
