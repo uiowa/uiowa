@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.writer_bio.body
     - field.field.node.writer_bio.field_image
+    - field.field.node.writer_bio.field_meta_tags
     - field.field.node.writer_bio.field_writer_bio_countries
     - field.field.node.writer_bio.field_writer_bio_family_name
     - field.field.node.writer_bio.field_writer_bio_given_name
@@ -17,6 +18,7 @@ dependencies:
   module:
     - content_moderation
     - media_library
+    - metatag
     - path
     - text
 id: node.writer_bio.default
@@ -46,6 +48,14 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 8
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_writer_bio_countries:
     type: options_buttons
