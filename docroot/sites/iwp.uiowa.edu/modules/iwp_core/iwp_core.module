@@ -4,3 +4,14 @@
  * @file
  * Custom functionality the IWP website.
  */
+
+use Drupal\iwp_core\Entity\WriterBio;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function iwp_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['writer_bio'])) {
+    $bundles['node']['writer_bio']['class'] = WriterBio::class;
+  }
+}
