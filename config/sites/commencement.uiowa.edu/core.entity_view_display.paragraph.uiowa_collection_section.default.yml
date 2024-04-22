@@ -9,6 +9,7 @@ dependencies:
     - paragraphs.paragraphs_type.uiowa_collection_section
   module:
     - entity_reference_revisions
+    - field_delimiter
     - heading
     - text
 id: paragraph.uiowa_collection_section.default
@@ -20,9 +21,11 @@ content:
     type: entity_reference_revisions_entity_view
     label: hidden
     settings:
-      view_mode: default
+      view_mode: accordion
       link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     weight: 5
     region: content
   field_coll_section_content:
