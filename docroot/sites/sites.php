@@ -7216,3 +7216,9 @@ $sites['ned.uiowa.ddev.site'] = 'ned.uiowa.edu';
 $sites['ned.dev.drupal.uiowa.edu'] = 'ned.uiowa.edu';
 $sites['ned.stage.drupal.uiowa.edu'] = 'ned.uiowa.edu';
 $sites['ned.prod.drupal.uiowa.edu'] = 'ned.uiowa.edu';
+
+// Directory aliases for cgrer.uiowa.edu.
+$sites['cgrer.uiowa.ddev.site'] = 'cgrer.uiowa.edu';
+$sites['cgrer.dev.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
+$sites['cgrer.stage.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
+$sites['cgrer.prod.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
