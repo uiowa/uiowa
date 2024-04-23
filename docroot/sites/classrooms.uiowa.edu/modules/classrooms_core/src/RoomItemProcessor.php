@@ -33,6 +33,12 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     'technology_features' => [],
   ];
 
+  /**
+   * A map from term bundles to the field name they'll be associated with.
+   *
+   * @var array|string[]
+   *   The map.
+   */
   protected static array $termBundleToFieldMap = [
     'room_features' => 'field_room_features',
     'accessibility_features' => 'field_room_accessibility_feature',

@@ -2,11 +2,7 @@
 
 namespace Drupal\uiowa_events;
 
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\uiowa_core\ApiClientBase;
-use GuzzleHttp\ClientInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * The Content Hub API service.
