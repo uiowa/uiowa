@@ -17,9 +17,10 @@ class WriterBio extends NodeBundleBase implements RendersAsCardInterface {
     parent::buildCard($build);
 
     $this->mapFieldsToCardBuild($build, [
-      '#subtitle' => [
-        'field_writer_bio_family_name',
-        'field_writer_bio_given_name',
+      '#meta' => [
+        'field_writer_bio_session_status',
+        'field_writer_bio_languages',
+        'field_writer_bio_countries',
       ],
       '#content' => [
         'field_writer_bio_sample',

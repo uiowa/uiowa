@@ -40,6 +40,27 @@ function iwp_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function iwp_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_writer_bio_session_status':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_countries':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-globe');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_languages':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-language');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
     case 'field_writer_bio_sample':
     case 'field_writer_bio_sample_original':
       $field_name = $variables['element']['#field_name'];
