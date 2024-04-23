@@ -21,7 +21,7 @@ class AlertUpdate extends Paragraph implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#meta' => 'field_alert_update_date',
+      '#subtitle' => 'field_alert_update_date',
       '#content' => 'field_alert_update_description',
     ]);
 
@@ -33,7 +33,7 @@ class AlertUpdate extends Paragraph implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       'card_headline_style' => 'headline--serif',
-      'styles' => 'bg--gray block-margin__top',
+      'styles' => 'block-margin__bottom',
       'border' => 'borderless',
     ];
   }
