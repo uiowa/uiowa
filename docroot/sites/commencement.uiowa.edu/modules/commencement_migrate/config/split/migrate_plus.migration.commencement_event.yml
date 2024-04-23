@@ -8,7 +8,7 @@ migration_tags:
   - commencement
 migration_group: sitenow_migrate
 source:
-  plugin: sitenow_node
+  plugin: commencement_event
   node_type: event
 destination:
   plugin: 'entity:node'
@@ -63,16 +63,5 @@ process:
       76: 81
       51: 86
       196: 91
-  field_event_other_celebrations:
-    plugin: static_map
-    source: field_event_other_celebrations
-    map:
-      331: 96
-      211: 101
-      271: 106
-      341: 111
-      346: 116
-      216: 121
-      231: 126
-      291: 131
+  field_event_other_celebrations: field_event_other_celebrations_processed
 migration_dependencies: {  }
