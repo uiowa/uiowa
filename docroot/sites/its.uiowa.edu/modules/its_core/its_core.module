@@ -444,10 +444,6 @@ function its_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'article--meta';
       break;
 
-    case 'field_block:node:alert:field_alert_updates':
-      uiowa_core_set_attributes($variables, 'list-container list-container--list');
-      break;
-
     case 'field_block:node:alert:changed':
       // Update the display label for the "changed" field.
       if (isset($variables['content'][0]['#title'])) {
