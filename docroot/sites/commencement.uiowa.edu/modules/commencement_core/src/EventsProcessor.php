@@ -6,7 +6,6 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
-use Drupal\uiowa_events\ContentHubApiClient;
 use Drupal\uiowa_events\ContentHubApiClientInterface;
 
 /**
