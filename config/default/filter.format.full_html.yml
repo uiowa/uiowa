@@ -89,6 +89,19 @@ filters:
     status: true
     weight: -30
     settings: {  }
+  filter_iframe:
+    id: filter_iframe
+    provider: uiowa_core
+    status: false
+    weight: -40
+    settings:
+      allowed_sources: ''
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -42
+    settings: {  }
   filter_responsive_table:
     id: filter_responsive_table
     provider: responsive_table_filter
@@ -140,16 +153,3 @@ filters:
         small__ultrawide: small__ultrawide
         small__widescreen: small__widescreen
       allowed_media_types: {  }
-  filter_iframe:
-    id: filter_iframe
-    provider: uiowa_core
-    status: false
-    weight: -40
-    settings:
-      allowed_sources: ''
-  filter_image_lazy_load:
-    id: filter_image_lazy_load
-    provider: filter
-    status: true
-    weight: -42
-    settings: {  }

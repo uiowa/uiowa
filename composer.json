@@ -61,8 +61,7 @@
             "acquia/blt-phpcs": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
-            "phpstan/extension-installer": true,
-            "drupal/core-project-message": false
+            "phpstan/extension-installer": true
         }
     },
     "require": {
@@ -88,15 +87,14 @@
         "drupal/better_exposed_filters": "^6.0",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/bigmenu": "^2.0@RC",
-        "drupal/block_content_permissions": "^1.9",
         "drupal/captcha": "^2.0",
         "drupal/classy": "^1.0",
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "3.0.0-beta2",
         "drupal/config_inspector": "^2.0",
         "drupal/config_split": "^2.0@RC",
-        "drupal/core-composer-scaffold": "10.1.8",
-        "drupal/core-recommended": "10.1.8",
+        "drupal/core-composer-scaffold": "^10.2",
+        "drupal/core-recommended": "^10.2",
         "drupal/crop": "^2.2",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.0",
@@ -233,14 +231,13 @@
                 "Views Block Display skips preBlockBuild() call on ajax rebuild": "patches/drupal-core-2605218-10.1.x.patch",
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "Fix LB contextual links after dragging block to new section": "https://www.drupal.org/files/issues/2021-12-03/3160785-20.patch",
-                "ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "patches/3008292-imageitem-validators.patch",
-                "Support third party settings for components within a section": "https://www.drupal.org/files/issues/2023-06-15/3015152-198.patch",
+                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "patches/core-3008292-imageitem-validators-10.2.patch",
+                "[3015152] Support third party settings for components within a section": "patches/core-3015152-lb-components-third-party-settings-10.2.patch",
                 "Improve migration system performance: statically cache DrupalSqlBase::$systemData": "https://www.drupal.org/files/issues/2022-01-24/3154156-12.patch",
                 "layout_builder__layout_section column hitting database limit": "https://www.drupal.org/files/issues/2021-10-11/3030154-44.patch",
-                "Node form layout looks squeezed": "https://www.drupal.org/files/issues/2023-09-29/3326339-14.patch",
                 "Layout builder off-canvas positioning problem when resizing browser ": "https://www.drupal.org/files/issues/2023-07-19/3359465-8.patch",
                 "Responsive image width/height values are not used from fallback image style": "https://www.drupal.org/files/issues/2023-08-04/3377420-responsive-image-dimension-fallback-style-9.patch",
-                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-01-09/2230909-292.patch",
+                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-12-21/2230909-309.patch",
                 "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch"
             },
             "drupal/ckeditor": {
@@ -300,6 +297,9 @@
             },
             "drupal/scheduler_content_moderation_integration": {
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
+            },
+            "drupal/smart_date": {
+                "Drupal 10.2 Deprecation - Smart Date List Item allowed values must be passed as array": "patches/3409287.patch"
             }
         },
         "installer-types": [
