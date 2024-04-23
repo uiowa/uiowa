@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: cgrer.uiowa.ddev.site
+    protocol: https
+  machine_name: cgrer
+  human_name: cgrer.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cgrer.prod
+drupal:
+  db:
+    database: cgrer_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://cgrer.prod.drupal.uiowa.edu'
+  requester: jmoen
+  site-name: cgrer.uiowa.edu
