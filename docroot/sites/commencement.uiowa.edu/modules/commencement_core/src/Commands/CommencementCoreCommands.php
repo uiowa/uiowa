@@ -45,7 +45,7 @@ class CommencementCoreCommands extends DrushCommands {
   }
 
   /**
-   * Triggers the building import.
+   * Triggers the events import.
    *
    * @command import:events
    * @aliases import-events
