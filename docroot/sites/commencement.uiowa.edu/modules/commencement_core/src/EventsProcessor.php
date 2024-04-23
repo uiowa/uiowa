@@ -97,21 +97,41 @@ class EventsProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function processRecord(&$record) {
-    if (property_exists($record, 'event_instances') && !empty($record->event_instances)) {
-      foreach (['start', 'end'] as $boundary) {
-        if (property_exists($record->event_instances[0]->event_instance, $boundary) && !is_null($record->event_instances[0]->event_instance->{$boundary})) {
-          $date = DrupalDateTime::createFromFormat(DATE_ATOM, $record->event_instances[0]->event_instance->{$boundary});
-          if ($date) {
-            $record->{$boundary} = $date->setTimezone($this->timezone)->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
-          }
-        }
-      }
-    }
-
     // If the location field exists and is not null, it needs to be converted
     // to an entity ID for an existing venue.
     if (property_exists($record, 'location_name') && !is_null($record->location_name)) {
       $record->location_name = $this->findVenueNid($record->location_name);
+    }
+
+    // If there are event instances embedded.
+    if (property_exists($record, 'event_instances') && !empty($record->event_instances)) {
+      // Set default duration.
+      $record->duration = 0;
+      // Check for a start and an end value.
+      foreach (['start', 'end'] as $boundary) {
+        if (property_exists($record->event_instances[0]->event_instance, $boundary) && !is_null($record->event_instances[0]->event_instance->{$boundary})) {
+          $date = DrupalDateTime::createFromFormat(DATE_ATOM, $record->event_instances[0]->event_instance->{$boundary});
+          if ($date) {
+            $date = $date->setTimezone($this->timezone)->format('U');
+            $date -= $date % 60;
+            $record->{$boundary} = $date;
+          }
+        }
+      }
+
+      if (property_exists($record, 'start')) {
+        if (!property_exists($record, 'end')) {
+          $record->end = $record->start;
+        }
+        else {
+          if ($record->start < $record->end) {
+            $record->duration = round(($record->end - $record->start) / 60);
+          }
+          else {
+            $record->end = $record->start;
+          }
+        }
+      }
     }
   }
 
