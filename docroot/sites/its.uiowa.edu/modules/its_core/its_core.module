@@ -366,6 +366,8 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     case 'node_alert_edit_form':
     case 'node_alert_form':
+      $form['field_alert_date']['widget'][0]['duration']['#title'] = t('End Date');
+      $form['field_alert_updates']['widget']['add_more']['#suffix'] = t('to this alert');
       // Attach smart_date override js.
       $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
@@ -784,14 +786,7 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'alerts_list_block':
-      if ($view->current_display === 'service_announcements') {
-        foreach ($variables['rows'] as &$row_build) {
-          $row_build['content']['#override_styles'] = [
-            'border' => '',
-          ];
-        }
-      }
-      elseif ($view->current_display === 'alert_status') {
+      if ($view->current_display === 'alert_status') {
         // Attach the library using the #attached property.
         $variables['#attached']['library'][] = 'uids_base/view-bef';
       }
