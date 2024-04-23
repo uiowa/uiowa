@@ -165,10 +165,8 @@ class BuildingsProcessor extends EntityProcessorBase {
 
           $building_formal_name = $result?->buildingFormalName ?: '';
 
-          $result->imageUrl = [
-            'target_id' => $file->id(),
-            'alt' => $building_formal_name,
-          ];
+          $result->imageUrl = $file->id();
+          $result->image_alt = $building_formal_name;
         }
       }
       catch (ClientException $e) {

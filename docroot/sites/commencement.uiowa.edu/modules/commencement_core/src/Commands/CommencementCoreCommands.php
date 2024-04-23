@@ -45,11 +45,11 @@ class CommencementCoreCommands extends DrushCommands {
   }
 
   /**
-   * Triggers the building import.
+   * Triggers the events import.
    *
-   * @command commencement_core:events_import
-   * @aliases commencement-events
-   * @usage commencement_core:events_import
+   * @command import:events
+   * @aliases import-events
+   * @usage import:events
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function importEvents() {

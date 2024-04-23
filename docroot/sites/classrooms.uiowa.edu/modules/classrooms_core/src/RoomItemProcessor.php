@@ -19,7 +19,30 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     'field_room_name' => 'roomName',
     'field_room_type' => 'roomType',
     'field_room_responsible_unit' => 'acadOrgUnitName',
-    'field_room_scheduling_regions' => 'regionList',
+  ];
+
+  /**
+   * A container for a list of terms so they only need to be queried once.
+   *
+   * @var array[]
+   *   The terms.
+   */
+  protected static array $terms = [
+    'room_features' => [],
+    'accessibility_features' => [],
+    'technology_features' => [],
+  ];
+
+  /**
+   * A map from term bundles to the field name they'll be associated with.
+   *
+   * @var array|string[]
+   *   The map.
+   */
+  protected static array $termBundleToFieldMap = [
+    'room_features' => 'field_room_features',
+    'accessibility_features' => 'field_room_accessibility_feature',
+    'technology_features' => 'field_room_technology_features',
   ];
 
   /**
@@ -53,79 +76,54 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     // Mapping Room Features and Technology Features fields
     // to the featureList value from endpoint.
     if (isset($record->featureList)) {
-      $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
-        ->condition('vid', 'room_features')
-        ->condition('vid', 'accessibility_features')
-        ->condition('vid', 'technology_features');
+      foreach (array_keys(static::$termBundleToFieldMap) as $bundle) {
+        $features = [];
+        static::loadTerms($bundle);
+        foreach (static::$terms[$bundle] as $term) {
 
-      $tids = \Drupal::entityQuery('taxonomy_term')
-        ->condition($query)
-        ->accessCheck()
-        ->execute();
-      if ($tids) {
-        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-        $terms = $storage->loadMultiple($tids);
-        $accessibility_features = [];
-        $room_features = [];
-        $tech_features = [];
-        foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->featureList)) {
               if ($term->bundle() === 'room_features') {
-                $room_features[] = $term->id();
-              }
-              elseif ($term->bundle() === 'accessibility_features') {
-                $accessibility_features[] = $term->id();
-              }
-              else {
-                $tech_features[] = $term->id();
+                $features[] = $term->id();
               }
             }
           }
         }
-        if (!empty($room_features)) {
+
+        if (!empty($features)) {
           // Cheat it a bit by fetching a string and exploding it
           // to end up with a basic array of target ids.
           $entity_features = $entity->get('field_room_features')->getString();
           $entity_features = explode(', ', $entity_features);
           // Sort lists before comparing.
           sort($entity_features);
-          sort($room_features);
-          if ($entity_features !== $room_features) {
+          sort($features);
+          if ($entity_features !== $features) {
             $updated = TRUE;
-            $entity->set('field_room_features', $room_features);
-          }
-        }
-
-        if (!empty($accessibility_features)) {
-          // Cheat it a bit by fetching a string and exploding it
-          // to end up with a basic array of target ids.
-          $entity_features = $entity->get('field_room_accessibility_feature')->getString();
-          $entity_features = explode(', ', $entity_features);
-          // Sort lists before comparing.
-          sort($entity_features);
-          sort($accessibility_features);
-          if ($entity_features !== $accessibility_features) {
-            $updated = TRUE;
-            $entity->set('field_room_accessibility_feature', $accessibility_features);
-          }
-        }
-
-        if (!empty($tech_features)) {
-          // Cheat it a bit by fetching a string and exploding it
-          // to end up with a basic array of target ids.
-          $entity_features = $entity->get('field_room_technology_features')->getString();
-          $entity_features = explode(', ', $entity_features);
-          // Sort lists before comparing.
-          sort($entity_features);
-          sort($tech_features);
-          if ($entity_features !== $tech_features) {
-            $updated = TRUE;
-            $entity->set('field_room_technology_features', $tech_features);
+            $entity->set(static::$termBundleToFieldMap[$bundle], $features);
           }
         }
       }
     }
+
+    if (isset($record->regionList)) {
+      $regions = [];
+      static::loadTerms('scheduling_regions');
+      foreach (static::$terms['scheduling_regions'] as $term) {
+        if ($api_mapping = $term->get('field_api_mapping')?->value) {
+          if (in_array($api_mapping, $record->regionList)) {
+            // If we found a mappable region, set it.
+            $regions[] = $term->id();
+          }
+        }
+      }
+      if (!empty($regions)) {
+        $updated = TRUE;
+        $entity->set('field_room_scheduling_regions', $regions);
+      }
+      $record->regionList = NULL;
+    }
+
     return $updated;
   }
 
@@ -182,30 +180,6 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     if (isset($record->acadOrgUnitName)) {
       $record->acadOrgUnitName = $this->processRecordTerm($record->acadOrgUnitName, 'units', TRUE);
     }
-    if (isset($record->regionList)) {
-      $query = \Drupal::entityQuery('taxonomy_term')
-        ->condition('vid', 'scheduling_regions')
-        ->accessCheck()
-        ->execute();
-
-      if ($query) {
-        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-        $terms = $storage->loadMultiple($query);
-        // If we weren't able to map it, we have scheduling regions
-        // that we don't want to display, so we'll want to set the
-        // regionList to an empty array.
-        $region = [];
-        foreach ($terms as $term) {
-          if ($api_mapping = $term->get('field_api_mapping')?->value) {
-            if (in_array($api_mapping, $record->regionList)) {
-              // If we found a mappable region, set it.
-              $region[] = $term->id();
-            }
-          }
-        }
-        $record->regionList = $region;
-      }
-    }
   }
 
   /**
@@ -250,6 +224,23 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     // In this particular instance, we're only
     // keeping the first term.
     return array_key_first($term);
+  }
+
+  /**
+   * Helper function to load terms.
+   */
+  protected static function loadTerms(string $bundle): void {
+    if (empty(static::$terms[$bundle])) {
+      $tids = \Drupal::entityQuery('taxonomy_term')
+        ->condition('vid', $bundle)
+        ->accessCheck()
+        ->execute();
+
+      if ($tids) {
+        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+        static::$terms[$bundle] = $storage->loadMultiple($tids);
+      }
+    }
   }
 
 }
