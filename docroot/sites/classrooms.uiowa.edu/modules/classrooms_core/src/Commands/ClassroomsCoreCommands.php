@@ -52,6 +52,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
   /**
