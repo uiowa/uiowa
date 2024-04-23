@@ -24,6 +24,7 @@ class Event extends BaseNodeSource {
     // Mapping taxonomy term to taxonomy term reference field.
     foreach ([
       'field_event_other_celebrations',
+      'field_session',
     ] as $source_field) {
       if ($values = $row->getSourceProperty($source_field)) {
         if (!isset($values)) {
@@ -90,6 +91,10 @@ class Event extends BaseNodeSource {
     $taxonomy_name = NULL;
     if ($source_field === 'field_event_other_celebrations') {
       $taxonomy_name = 'celebrations';
+    }
+
+    if ($source_field === 'field_session') {
+      $taxonomy_name = 'session';
     }
 
     if ($taxonomy_name !== NULL) {
