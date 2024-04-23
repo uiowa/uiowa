@@ -45,19 +45,18 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
     case 'node_event_form':
     case 'node_event_edit_form':
       // These are imported fields that editors should not interact with.
-//      $form['title']['#disabled'] = TRUE;
-//      $form['body']['#disabled'] = TRUE;
-//      $form['field_project_is_capital']['#disabled'] = TRUE;
-//      $form['field_event_contact']['#disabled'] = TRUE;
-//      $form['field_event_contact_email']['#disabled'] = TRUE;
-//      $form['field_event_contact_phone']['#disabled'] = TRUE;
-//      $form['field_event_room']['#disabled'] = TRUE;
-//      $form['field_event_venue']['#disabled'] = TRUE;
-//      $form['field_event_id']['#disabled'] = TRUE;
-//      $form['field_event_start_date']['#disabled'] = TRUE;
-//      $form['field_event_end_date']['#disabled'] = TRUE;
-//      $form['field_event_link']['#disabled'] = TRUE;
-//      $form['field_event_website']['#disabled'] = TRUE;
+      $form['title']['#disabled'] = TRUE;
+      $form['body']['#disabled'] = TRUE;
+      $form['field_project_is_capital']['#disabled'] = TRUE;
+      $form['field_event_contact']['#disabled'] = TRUE;
+      $form['field_event_contact_email']['#disabled'] = TRUE;
+      $form['field_event_contact_phone']['#disabled'] = TRUE;
+      $form['field_event_room']['#disabled'] = TRUE;
+      $form['field_event_venue']['#disabled'] = TRUE;
+      $form['field_event_id']['#disabled'] = TRUE;
+      $form['field_event_when']['#disabled'] = TRUE;
+      $form['field_event_link']['#disabled'] = TRUE;
+      $form['field_event_website']['#disabled'] = TRUE;
   }
 }
 
