@@ -21,7 +21,7 @@ class WriterBio extends NodeBundleBase implements RendersAsCardInterface {
         'field_writer_bio_family_name',
         'field_writer_bio_given_name',
       ],
-      '#meta' => [
+      '#content' => [
         'field_writer_bio_sample',
         'field_writer_bio_sample_original',
       ],
