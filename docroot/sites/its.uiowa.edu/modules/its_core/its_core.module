@@ -372,6 +372,12 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
       }
+      // Only allow access to these fields for users
+      // with the 'administer site configuration' permission.
+      if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+        unset($form["path"]);
+        unset($form["field_meta_tags"]);
+      }
       break;
 
     // Node form modifications.
