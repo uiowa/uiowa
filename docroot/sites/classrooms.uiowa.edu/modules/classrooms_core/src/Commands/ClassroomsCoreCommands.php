@@ -4,6 +4,7 @@ namespace Drupal\classrooms_core\Commands;
 
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -14,6 +15,7 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class ClassroomsCoreCommands extends DrushCommands {
+  use CpuTimeTrait;
 
   /**
    * The account_switcher service.
@@ -41,6 +43,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function getBuildings() {
+    $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
@@ -67,6 +70,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    *  Process rooms with a specified batch size.
    */
   public function importRooms(array $options = ['batch' => 20]) {
+    $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
@@ -75,6 +79,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
 }
