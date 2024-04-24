@@ -75,6 +75,9 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
       if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
         $variables['items'][0]['content']['#description'] = t('View program');
       }
+      if (!is_null($parent) && $parent->getName() === 'field_event_order_of_events') {
+        $variables['items'][0]['content']['#description'] = t('View Order of Events');
+      }
     }
   }
 }
