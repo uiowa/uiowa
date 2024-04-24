@@ -7228,3 +7228,9 @@ $sites['worklife.uiowa.ddev.site'] = 'worklife.uiowa.edu';
 $sites['worklife.dev.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
 $sites['worklife.stage.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
 $sites['worklife.prod.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+
+// Directory aliases for rai-me.sites.uiowa.edu.
+$sites['sitesrai-me.uiowa.ddev.site'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.dev.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.stage.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.prod.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
