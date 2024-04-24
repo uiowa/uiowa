@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - node.type.event
   module:
-    - datetime
     - node
     - user
 id: events_by_venue
@@ -125,14 +124,14 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        field_event_start_date_value:
-          id: field_event_start_date_value
-          table: node__field_event_start_date
-          field: field_event_start_date_value
+        field_event_when_value:
+          id: field_event_when_value
+          table: node__field_event_when
+          field: field_event_when_value
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: datetime
+          plugin_id: date
           order: ASC
           expose:
             label: ''
@@ -159,7 +158,6 @@ display:
           title: ''
           default_argument_type: node
           default_argument_options: {  }
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true

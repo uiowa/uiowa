@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
-    - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
@@ -19,9 +18,9 @@ dependencies:
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_venue
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
     - workflows.workflow.editorial
@@ -33,6 +32,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - smart_date
     - telephone
     - text
 third_party_settings:
@@ -42,11 +42,10 @@ third_party_settings:
         - field_event_id
         - title
         - body
+        - field_event_when
         - field_event_venue
         - field_event_room
         - field_event_link
-        - field_event_start_date
-        - field_event_end_date
         - field_event_contact
         - field_event_contact_email
         - field_event_contact_phone
@@ -86,7 +85,7 @@ content:
     third_party_settings: {  }
   field_event_additional_info:
     type: text_textarea
-    weight: 11
+    weight: 15
     region: content
     settings:
       rows: 5
@@ -94,7 +93,7 @@ content:
     third_party_settings: {  }
   field_event_ceremony_information:
     type: paragraphs
-    weight: 10
+    weight: 14
     region: content
     settings:
       title: Paragraph
@@ -113,13 +112,13 @@ content:
     third_party_settings: {  }
   field_event_college:
     type: options_select
-    weight: 17
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_event_contact:
     type: string_textfield
-    weight: 29
+    weight: 27
     region: content
     settings:
       size: 60
@@ -127,7 +126,7 @@ content:
     third_party_settings: {  }
   field_event_contact_email:
     type: email_default
-    weight: 30
+    weight: 28
     region: content
     settings:
       placeholder: ''
@@ -135,16 +134,10 @@ content:
     third_party_settings: {  }
   field_event_contact_phone:
     type: telephone_default
-    weight: 31
+    weight: 29
     region: content
     settings:
       placeholder: ''
-    third_party_settings: {  }
-  field_event_end_date:
-    type: datetime_default
-    weight: 27
-    region: content
-    settings: {  }
     third_party_settings: {  }
   field_event_id:
     type: number
@@ -155,7 +148,7 @@ content:
     third_party_settings: {  }
   field_event_link:
     type: link_default
-    weight: 25
+    weight: 26
     region: content
     settings:
       placeholder_url: ''
@@ -163,14 +156,14 @@ content:
     third_party_settings: {  }
   field_event_livestream:
     type: media_library_widget
-    weight: 14
+    weight: 16
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_event_livestream_caption:
     type: text_textarea
-    weight: 15
+    weight: 17
     region: content
     settings:
       rows: 5
@@ -178,20 +171,20 @@ content:
     third_party_settings: {  }
   field_event_order_of_events:
     type: media_library_widget
-    weight: 13
+    weight: 11
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_event_other_celebrations:
     type: options_select
-    weight: 16
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   field_event_room:
     type: string_textfield
-    weight: 24
+    weight: 25
     region: content
     settings:
       size: 60
@@ -199,19 +192,13 @@ content:
     third_party_settings: {  }
   field_event_session:
     type: options_select
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_event_start_date:
-    type: datetime_default
-    weight: 26
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_event_venue:
     type: entity_reference_autocomplete
-    weight: 23
+    weight: 24
     region: content
     settings:
       match_operator: CONTAINS
@@ -221,11 +208,30 @@ content:
     third_party_settings: {  }
   field_event_website:
     type: link_default
-    weight: 32
+    weight: 30
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_event_when:
+    type: smartdate_inline
+    weight: 23
+    region: content
+    settings:
+      modal: false
+      default_duration: 60
+      default_duration_increments: |-
+        30
+        60|1 hour
+        90
+        120|2 hours
+        custom
+      show_extra: false
+      hide_date: true
+      allday: true
+      remove_seconds: false
+      separator: to
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose

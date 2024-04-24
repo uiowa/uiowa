@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
-    - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
@@ -19,13 +18,12 @@ dependencies:
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_venue
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
   module:
-    - datetime
     - entity_reference_revisions
     - layout_builder
     - link
@@ -96,42 +94,6 @@ third_party_settings:
         layout_settings:
           label: ''
         components:
-          -
-            uuid: 483be4ac-d42c-4326-9091-de9c8470665f
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_start_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: inline
-                settings:
-                  timezone_override: ''
-                  format_type: long
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: b7cd7e03-e059-445c-8ec1-52100924ab4f
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_end_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: inline
-                settings:
-                  timezone_override: ''
-                  format_type: long
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: 05b04dda-d567-45b3-a4bd-183973ebc269
             region: content
@@ -313,7 +275,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -350,7 +312,7 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -375,7 +337,42 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1dad63c4-8e3a-41d9-b6b5-7cd13541c4fe
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_when'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: false
+                  add_classes: false
+                  time_wrapper: true
+                  localize: false
+                  parts:
+                    start: start
+                    end: end
+                    duration: '0'
+                  duration:
+                    separator: ' | '
+                    unit: ''
+                    decimals: 2
+                    suffix: h
+                third_party_settings: {  }
+            weight: 7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -440,15 +437,6 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
-  field_event_end_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 4
-    region: content
   field_event_link:
     type: link
     label: above
@@ -494,15 +482,6 @@ content:
     third_party_settings: {  }
     weight: 10
     region: content
-  field_event_start_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 3
-    region: content
   field_event_venue:
     type: entity_reference_label
     label: above
@@ -536,5 +515,6 @@ hidden:
   field_event_id: true
   field_event_other_celebrations: true
   field_event_session: true
+  field_event_when: true
   field_meta_tags: true
   search_api_excerpt: true

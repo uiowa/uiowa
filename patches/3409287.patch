@@ -1,0 +1,132 @@
+From 17989ae658a07eff7239062e2745ea552a5e5768 Mon Sep 17 00:00:00 2001
+From: PCate <31855-PCate@users.noreply.drupalcode.org>
+Date: Fri, 26 Jan 2024 14:17:18 +0000
+Subject: [PATCH 1/4] 3409287: Deprecation in Drupal 10.2: Smart Date List Item
+ allowed values must be passed as array
+
+---
+ src/Plugin/Field/FieldType/SmartDateListItemBase.php | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/Plugin/Field/FieldType/SmartDateListItemBase.php b/src/Plugin/Field/FieldType/SmartDateListItemBase.php
+index 3c4c549..b5c451e 100644
+--- a/src/Plugin/Field/FieldType/SmartDateListItemBase.php
++++ b/src/Plugin/Field/FieldType/SmartDateListItemBase.php
+@@ -14,7 +14,10 @@ abstract class SmartDateListItemBase extends ListItemBase {
+    */
+   public static function parseValues($values) {
+     // Use the ListItemBase parsing function, but don't allow generated keys.
+-    $result = static::extractAllowedValues($values, 1);
++    $list = explode("\n", $values);
++    $list = array_map('trim', $list);
++    $list = array_filter($list, 'strlen');
++    $result = static::extractAllowedValues($list, 1);
+     return $result;
+   }
+
+--
+GitLab
+
+
+From 52862feca34855b4a6255b401e8d0732af8b9c8c Mon Sep 17 00:00:00 2001
+From: Martin Anderson-Clutz <46883-mandclu@users.noreply.drupalcode.org>
+Date: Sat, 9 Mar 2024 10:32:34 +0000
+Subject: [PATCH 2/4] Update smart_date.info.yml to declare dependency on
+ Drupal 10.2
+
+---
+ smart_date.info.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smart_date.info.yml b/smart_date.info.yml
+index 89674c5..b60d0b2 100644
+--- a/smart_date.info.yml
++++ b/smart_date.info.yml
+@@ -2,7 +2,7 @@ name: 'Smart Date'
+ type: module
+ description: 'Provides the ability to store start and end times, with duration. Also provides an intelligent admin UI, and a variety of formatting options.'
+ package: Field types
+-core_version_requirement: ^9 || ^10
++core_version_requirement: ^10.2
+ dependencies:
+   - drupal:datetime
+   - drupal:options
+--
+GitLab
+
+
+From 6dcb2847f8958b62b6e41b4c54bdf8586026e478 Mon Sep 17 00:00:00 2001
+From: Matt Glaman <nmd.matt@gmail.com>
+Date: Fri, 22 Mar 2024 10:03:45 -0500
+Subject: [PATCH 3/4] use DeprecationHelper
+
+---
+ .../Field/FieldType/SmartDateListItemBase.php | 20 ++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/src/Plugin/Field/FieldType/SmartDateListItemBase.php b/src/Plugin/Field/FieldType/SmartDateListItemBase.php
+index b5c451e..e44ab0c 100644
+--- a/src/Plugin/Field/FieldType/SmartDateListItemBase.php
++++ b/src/Plugin/Field/FieldType/SmartDateListItemBase.php
+@@ -2,6 +2,7 @@
+
+ namespace Drupal\smart_date\Plugin\Field\FieldType;
+
++use Drupal\Component\Utility\DeprecationHelper;
+ use Drupal\options\Plugin\Field\FieldType\ListItemBase;
+
+ /**
+@@ -14,11 +15,20 @@ abstract class SmartDateListItemBase extends ListItemBase {
+    */
+   public static function parseValues($values) {
+     // Use the ListItemBase parsing function, but don't allow generated keys.
+-    $list = explode("\n", $values);
+-    $list = array_map('trim', $list);
+-    $list = array_filter($list, 'strlen');
+-    $result = static::extractAllowedValues($list, 1);
+-    return $result;
++    if (!class_exists(DeprecationHelper::class)) {
++      return static::extractAllowedValues($values, 1);
++    }
++    return DeprecationHelper::backwardsCompatibleCall(
++      \Drupal::VERSION,
++      '10.2',
++      static function () use ($values) {
++        $list = explode("\n", $values);
++        $list = array_map('trim', $list);
++        $list = array_filter($list, 'strlen');
++        return static::extractAllowedValues($list, 1);
++      },
++      static fn () => self::extractAllowedValues($values, 1)
++    );
+   }
+
+   /**
+--
+GitLab
+
+
+From 225785ec7aac312936a9f329d4b90d3bbbb3a1d8 Mon Sep 17 00:00:00 2001
+From: Matt Glaman <nmd.matt@gmail.com>
+Date: Fri, 22 Mar 2024 10:04:30 -0500
+Subject: [PATCH 4/4] rollback core_version_requirement
+
+---
+ smart_date.info.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smart_date.info.yml b/smart_date.info.yml
+index b60d0b2..89674c5 100644
+--- a/smart_date.info.yml
++++ b/smart_date.info.yml
+@@ -2,7 +2,7 @@ name: 'Smart Date'
+ type: module
+ description: 'Provides the ability to store start and end times, with duration. Also provides an intelligent admin UI, and a variety of formatting options.'
+ package: Field types
+-core_version_requirement: ^10.2
++core_version_requirement: ^9 || ^10
+ dependencies:
+   - drupal:datetime
+   - drupal:options
+--
+GitLab
