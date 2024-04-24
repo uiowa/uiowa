@@ -1090,7 +1090,7 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
           $has_parent = $site_settings->get('has_parent');
 
           if ($ccom_site) {
-            $formatted_org = 'Carver College of Medicine' . ' | ' . $formatted_org;
+            $formatted_org = 'Carver College of Medicine';
           }
           if ($has_parent && !$ccom_site) {
             $parent_org = $site_settings->get('parent.name');
