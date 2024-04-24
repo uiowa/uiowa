@@ -2,7 +2,7 @@
 {{ attach_library('uids_base/accordion') }}
 
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-faq">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ id }}">
     {% for item in items %}
       {{ item.content }}
     {% endfor %}

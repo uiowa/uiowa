@@ -19,9 +19,8 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#meta' => [
+        'field_event_when',
         'field_event_venue',
-        'field_event_start_date',
-        'field_event_end_date',
       ],
     ]);
   }
