@@ -13,7 +13,6 @@ dependencies:
     - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
-    - field.field.node.event.field_event_livestream_caption
     - field.field.node.event.field_event_order_of_events
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
@@ -111,59 +110,9 @@ third_party_settings:
                 settings:
                   title: ''
                 third_party_settings: {  }
-            weight: 13
+            weight: 20
             additional:
               layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: f4856cb0-db42-4287-ac9d-b6f6b45dafed
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_additional_info'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 15
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 8cfa508d-f298-4f77-bddf-825ba7d58fe2
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_livestream'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: default
-                  link: false
-                third_party_settings: {  }
-            weight: 16
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: d753038d-bc55-4b26-993e-607ab74b0812
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_livestream_caption'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 17
-            additional: {  }
             third_party_settings: {  }
           -
             uuid: 8acf66ae-a4bb-4dff-b788-55fe49fb4aba
@@ -180,7 +129,7 @@ third_party_settings:
                   view_mode: default
                   link: ''
                 third_party_settings: {  }
-            weight: 14
+            weight: 22
             additional: {  }
             third_party_settings: {  }
           -
@@ -201,7 +150,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 10
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -218,7 +167,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 11
+            weight: 16
             additional: {  }
             third_party_settings: {  }
           -
@@ -237,7 +186,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 12
+            weight: 18
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -255,7 +204,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 8
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -275,7 +224,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -292,7 +241,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -312,7 +261,7 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -337,7 +286,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -372,9 +321,41 @@ third_party_settings:
                     decimals: 2
                     suffix: h
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 33ee3e9f-a03e-464d-8e88-63147b2fe3a2
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_livestream'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 26
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f4856cb0-db42-4287-ac9d-b6f6b45dafed
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_additional_info'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 25
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
@@ -450,20 +431,11 @@ content:
     weight: 10
     region: content
   field_event_livestream:
-    type: entity_reference_entity_view
-    label: visually_hidden
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 16
-    region: content
-  field_event_livestream_caption:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 17
+    weight: 16
     region: content
   field_event_order_of_events:
     type: entity_reference_entity_view

@@ -27,7 +27,9 @@ trait ProcessFieldCollectionTrait {
       $results = $query->condition("{$first_field}.revision_id", $item['revision_id'], '=')
         ->execute()
         ->fetchAssoc();
-      $item += $results;
+      if ($results) {
+        $item += $results;
+      }
     }
   }
 }
