@@ -4,6 +4,8 @@ namespace Drupal\commencement_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessFieldCollectionTrait;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Migrate Source plugin.
@@ -14,6 +16,8 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
  * )
  */
 class Event extends BaseNodeSource {
+  use ProcessMediaTrait;
+  use ProcessFieldCollectionTrait;
 
   /**
    * {@inheritdoc}
@@ -77,6 +81,17 @@ class Event extends BaseNodeSource {
           }
         }
         $row->setSourceProperty("{$source_field}_processed", $new_node);
+      }
+    }
+
+    if ($items = $row->getSourceProperty('field_snp_sections')) {
+      $this->getFieldCollectionFieldValues($items, ['snp_section_body']);
+      foreach ($items as $item) {
+        // @todo Extract video from content if it exists.
+        // @todo Create a version in current site if it doesn't already exist.
+        // @todo Handle multiple matches?
+        // @todo Set source field value for target ID of media item.
+        $test = 'thing';
       }
     }
 
