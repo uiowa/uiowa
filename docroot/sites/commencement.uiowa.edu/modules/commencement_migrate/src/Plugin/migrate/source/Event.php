@@ -107,13 +107,13 @@ class Event extends BaseNodeSource {
     $college = $row->getSourceProperty('field_event_department');
 
     if ($session && $college) {
-      // Query D7 file table
+      // Query D7 file table.
       $query = $this->select('file_managed', 'f');
       $query->join('field_data_field_document_order_of_events', 'o', 'o.entity_id = f.fid');
       $query->join('field_data_field_document_session', 's', 's.entity_id = f.fid');
       $query->join('field_data_field_document_college', 'c', 'c.entity_id = f.fid');
 
-      // Get file information
+      // Get file information.
       $file_info = $query
         ->fields('f')
         ->condition('o.field_document_order_of_events_value', TRUE)
@@ -129,7 +129,7 @@ class Event extends BaseNodeSource {
         unset($file_info['fid']);
       }
 
-      // Set source property value
+      // Set source property value.
       $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
     }
 
