@@ -114,11 +114,20 @@ third_party_settings:
                 label: inline
                 settings:
                   timezone_override: ''
-                  format: default
+                  format: compact
                   force_chronological: true
                   add_classes: true
                   time_wrapper: true
                   localize: 0
+                  parts:
+                    start: start
+                    end: end
+                    duration: 0
+                  duration:
+                    separator: ' | '
+                    unit: ''
+                    decimals: '2'
+                    suffix: h
                 third_party_settings: {  }
             weight: 1
             additional:
