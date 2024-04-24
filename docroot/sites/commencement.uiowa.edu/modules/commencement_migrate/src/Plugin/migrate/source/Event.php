@@ -84,10 +84,10 @@ class Event extends BaseNodeSource {
       }
     }
 
+    $livestream = '';
     if ($items = $row->getSourceProperty('field_snp_sections')) {
       if (!empty($items)) {
         $this->getFieldCollectionFieldValues($items, ['snp_section_body']);
-        $livestream = '';
         foreach ($items as $item) {
           if (isset($item['field_snp_section_body_value'])) {
             // Replace inline media embeds.
@@ -98,9 +98,9 @@ class Event extends BaseNodeSource {
             $livestream = '';
           }
         }
-        $row->setSourceProperty('field_livestream_processed', $livestream);
       }
     }
+    $row->setSourceProperty('livestream_processed', $livestream);
 
     // Query D7 file table
     $query = $this->select('file_managed', 'f');

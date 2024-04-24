@@ -1,18 +1,21 @@
-id: commencement_event
-label: Event
+uuid: null
+langcode: en
+status: true
 dependencies:
   enforced:
     module:
       - commencement_migrate
+id: commencement_event
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags:
   - commencement
 migration_group: sitenow_migrate
+label: Event
 source:
   plugin: commencement_event
   node_type: event
-destination:
-  plugin: 'entity:node'
-  default_bundle: event
 process:
   langcode:
     plugin: static_map
@@ -66,6 +69,9 @@ process:
   field_event_other_celebrations: field_event_other_celebrations_processed
   field_event_venue: field_event_location_ref_processed
   field_event_session: field_session_processed
-  field_event_livestream: field_livestream_processed
+  field_event_livestream: livestream_processed
   field_event_order_of_events: order_of_event_processed
+destination:
+  plugin: 'entity:node'
+  default_bundle: event
 migration_dependencies: {  }
