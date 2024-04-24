@@ -126,6 +126,7 @@ class Event extends BaseNodeSource {
       if ($file_info) {
         // Create local copy.
         $order_of_event_processed = ['target_id' => $this->processFileField($file_info['fid'], $file_info)];
+        unset($file_info['fid']);
       }
 
       // Set source property value
