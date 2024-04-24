@@ -2,16 +2,11 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\migrate\MigrateException;
-use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
-
 /**
  * Provides functions for processing field collections in source plugins.
  */
 trait ProcessFieldCollectionTrait {
+
   /**
    * Helper function to retrieve D7 field collection values.
    */
@@ -32,4 +27,5 @@ trait ProcessFieldCollectionTrait {
       }
     }
   }
+
 }

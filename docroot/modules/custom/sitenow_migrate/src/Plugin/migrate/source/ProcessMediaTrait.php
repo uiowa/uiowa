@@ -42,8 +42,6 @@ trait ProcessMediaTrait {
    */
   protected $imageSizeRestrict = [];
 
-  protected $d7InlineFilesRegexPattern = "|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|";
-
   /**
    * Get the URL of the source public files path with a trailing slash.
    *
