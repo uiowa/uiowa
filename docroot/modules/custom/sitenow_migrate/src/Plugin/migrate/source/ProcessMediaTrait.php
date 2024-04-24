@@ -13,6 +13,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
  */
 trait ProcessMediaTrait {
   use CreateMediaTrait;
+
   /**
    * The file system service.
    *
@@ -135,11 +136,7 @@ trait ProcessMediaTrait {
     $uuid = $this->getMid($filename)['uuid'];
 
     if (!$uuid) {
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      $new_fid = $this->getD8FileByFilename($filename);
 
       $meta = [
         'title' => $file_properties['attributes']['title'] ?? $filename,
@@ -200,11 +197,7 @@ trait ProcessMediaTrait {
     $id = $file_data['mid'];
 
     if (!$uuid) {
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      $new_fid = $this->getD8FileByFilename($filename);
 
       $meta = [
         'title' => $filename,
@@ -428,11 +421,7 @@ trait ProcessMediaTrait {
       $file = NULL;
       // Get a connection for the destination database
       // and retrieve the id for the newly created file.
-      return \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      return $this->getD8FileByFilename($filename);
     }
 
     return FALSE;
@@ -475,11 +464,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = \Drupal::database()->select('file_managed', 'f')
-      ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+    $new_fid = $this->getD8FileByFilename($filename);
 
     // If we don't have a title, set it as the filename.
     if (empty($title)) {
@@ -547,11 +532,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = \Drupal::database()->select('file_managed', 'f')
-      ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+    $new_fid = $this->getD8FileByFilename($filename);
 
     // If there's no fid in the D8 database,
     // then we'll need to fetch it from the source.
