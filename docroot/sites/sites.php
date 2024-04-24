@@ -7222,3 +7222,9 @@ $sites['cgrer.uiowa.ddev.site'] = 'cgrer.uiowa.edu';
 $sites['cgrer.dev.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
 $sites['cgrer.stage.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
 $sites['cgrer.prod.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
+
+// Directory aliases for worklife.uiowa.edu.
+$sites['worklife.uiowa.ddev.site'] = 'worklife.uiowa.edu';
+$sites['worklife.dev.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+$sites['worklife.stage.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+$sites['worklife.prod.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
