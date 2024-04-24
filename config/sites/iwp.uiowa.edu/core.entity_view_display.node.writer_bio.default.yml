@@ -144,18 +144,21 @@ third_party_settings:
             region: card_media
             configuration:
               id: 'field_block:node:writer_bio:field_image'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: visually_hidden
                 settings:
-                  view_mode: full__ultrawide
-                  link: false
+                  view_mode: medium__square
                 third_party_settings: {  }
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: a6d257dd-6671-4e30-80f2-36679eb14b21
