@@ -84,6 +84,7 @@ class Event extends BaseNodeSource {
       }
     }
 
+    // Handle livestream field.
     $livestream = '';
     if ($items = $row->getSourceProperty('field_snp_sections')) {
       if (!empty($items)) {
@@ -102,29 +103,34 @@ class Event extends BaseNodeSource {
     }
     $row->setSourceProperty('livestream_processed', $livestream);
 
-    // Query D7 file table
-    $query = $this->select('file_managed', 'f');
-    $query->join('field_data_field_document_order_of_events', 'o', 'o.entity_id = f.fid');
-    $query->join('field_data_field_document_session', 's', 's.entity_id = f.fid');
-    $query->join('field_data_field_document_college', 'c', 'c.entity_id = f.fid');
+    $session = $row->getSourceProperty('field_session');
+    $college = $row->getSourceProperty('field_event_department');
 
-    // Get file information
-    $file_info = $query
-      ->fields('f')
-      ->condition('o.field_document_order_of_events_value', TRUE)
-      ->condition('s.field_document_session_tid', $row->getSourceProperty('field_session')[0]['tid'])
-      ->condition('c.field_document_college_tid', $row->getSourceProperty('field_event_department')[0]['tid'])
-      ->execute()
-      ->fetchAssoc();
+    if ($session && $college) {
+      // Query D7 file table
+      $query = $this->select('file_managed', 'f');
+      $query->join('field_data_field_document_order_of_events', 'o', 'o.entity_id = f.fid');
+      $query->join('field_data_field_document_session', 's', 's.entity_id = f.fid');
+      $query->join('field_data_field_document_college', 'c', 'c.entity_id = f.fid');
 
-    $order_of_event_processed = NULL;
-    if ($file_info) {
-      // Create local copy
-      $order_of_event_processed = ['target_id' => $this->processFileField($file_info['fid'], $file_info)];
+      // Get file information
+      $file_info = $query
+        ->fields('f')
+        ->condition('o.field_document_order_of_events_value', TRUE)
+        ->condition('s.field_document_session_tid', $session[0]['tid'])
+        ->condition('c.field_document_college_tid', $college[0]['tid'])
+        ->execute()
+        ->fetchAssoc();
+
+      $order_of_event_processed = NULL;
+      if ($file_info) {
+        // Create local copy.
+        $order_of_event_processed = ['target_id' => $this->processFileField($file_info['fid'], $file_info)];
+      }
+
+      // Set source property value
+      $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
     }
-
-    // Set source property value
-    $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
 
     return TRUE;
   }
