@@ -88,6 +88,7 @@ class Event extends BaseNodeSource {
       $this->getFieldCollectionFieldValues($items, ['snp_section_body']);
       foreach ($items as $item) {
         // @todo Extract video from content if it exists.
+        $results = $this->extractInlineFiles($item['field_snp_section_body_value']);
         // @todo Create a version in current site if it doesn't already exist.
         // @todo Handle multiple matches?
         // @todo Set source field value for target ID of media item.

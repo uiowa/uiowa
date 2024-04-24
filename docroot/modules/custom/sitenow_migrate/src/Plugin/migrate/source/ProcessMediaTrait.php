@@ -42,6 +42,8 @@ trait ProcessMediaTrait {
    */
   protected $imageSizeRestrict = [];
 
+  protected $d7InlineFilesRegexPattern = "|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|";
+
   /**
    * Get the URL of the source public files path with a trailing slash.
    *
@@ -108,6 +110,75 @@ trait ProcessMediaTrait {
     ], $content);
   }
 
+  public function extractInlineFiles($content) {
+    $match = [];
+    preg_match($this->d7InlineFilesRegexPattern, $content, $match);
+    // FID is the matched subgroup.
+    $fid = $match[1];
+    // Decode to JSON associative array.
+    // The actual JSON data is surrounded by two sets of brackets,
+    // so the matched, non-bracketed JSON is in the [0][0] index
+    // of the json_decode result.
+    $file_properties = json_decode($match[0], TRUE)[0][0];
+    $align = $file_properties['fields']['alignment'] ?? '';
+    $file_data = $this->fidQuery($fid);
+
+    if (!$file_data) {
+      // Failed to find a file, so let's leave the content unchanged
+      // but log a message in the migration table.
+      $message = "Unable to locate source file with fid: $fid.";
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $this->getCurrentIds()['nid']], $message);
+      // @todo What should this actually return.
+      return NULL;
+    }
+
+    $filename = $file_data['filename'];
+    $uuid = $this->getMid($filename)['uuid'];
+
+    if (!$uuid) {
+      $new_fid = $this->getD8FileByFilename($filename);
+
+      $meta = [
+        'title' => $file_properties['attributes']['title'] ?? $filename,
+        'alt' => $file_properties['attributes']['alt'] ?? explode('.', $filename)[0],
+      ];
+
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
+      if (!$new_fid) {
+        $uri = $file_data['uri'];
+        // If it's an embedded video, divert
+        // to the oembed video creation process.
+        if (str_starts_with($uri, 'oembed')) {
+          return $this->createVideoMediaEntity($fid);
+        }
+        $filename_w_subdir = str_replace('public://', '', $uri);
+
+        // Split apart the filename from the subdirectory path.
+        $filename_w_subdir = explode('/', $filename_w_subdir);
+        $filename = array_pop($filename_w_subdir);
+        $subdir = implode('/', $filename_w_subdir) . '/';
+        $filename_w_subdir = NULL;
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+        if ($new_fid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+      else {
+        $uuid = $this->getMid($filename)['uuid'];
+
+        // And in case we had the file, but not the media entity.
+        if (!$uuid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+    }
+  }
+
   /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
@@ -150,7 +221,11 @@ trait ProcessMediaTrait {
         // If it's an embedded video, divert
         // to the oembed video creation process.
         if (str_starts_with($uri, 'oembed')) {
-          return $this->createVideo($fid, $align);
+          return $this->constructInlineEntity(
+            $this->createVideoMediaEntity($fid),
+            $align,
+            'medium'
+          );
         }
         $filename_w_subdir = str_replace('public://', '', $uri);
 
@@ -243,7 +318,7 @@ trait ProcessMediaTrait {
    * @return string
    *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
+  public function constructInlineEntity(string $uuid, string $align = '', $view_mode = '') {
     $align = !empty($align) ? $align : $this->align;
 
     $media = [
