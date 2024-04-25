@@ -84,7 +84,7 @@ class Event extends BaseNodeSource {
       }
     }
 
-    // Handle livestream field.
+    // Process the livestream field.
     $livestream = '';
     if ($items = $row->getSourceProperty('field_snp_sections')) {
       if (!empty($items)) {
@@ -103,15 +103,20 @@ class Event extends BaseNodeSource {
     }
     $row->setSourceProperty('livestream_processed', $livestream);
 
+    // Process order of events field.
+    $order_of_event_processed = NULL;
     $session = $row->getSourceProperty('field_session');
     $college = $row->getSourceProperty('field_event_department');
 
     if ($session && $college) {
       // Query D7 file table.
       $query = $this->select('file_managed', 'f');
-      $query->join('field_data_field_document_order_of_events', 'o', 'o.entity_id = f.fid');
-      $query->join('field_data_field_document_session', 's', 's.entity_id = f.fid');
-      $query->join('field_data_field_document_college', 'c', 'c.entity_id = f.fid');
+      $query->join('field_data_field_document_order_of_events', 'o',
+        'o.entity_id = f.fid');
+      $query->join('field_data_field_document_session', 's',
+        's.entity_id = f.fid');
+      $query->join('field_data_field_document_college', 'c',
+        'c.entity_id = f.fid');
 
       // Get file information.
       $file_info = $query
@@ -122,16 +127,16 @@ class Event extends BaseNodeSource {
         ->execute()
         ->fetchAssoc();
 
-      $order_of_event_processed = NULL;
       if ($file_info) {
         // Create local copy.
-        $order_of_event_processed = ['target_id' => $this->processFileField($file_info['fid'], $file_info)];
+        $order_of_event_processed = [
+          'target_id' => $this->processFileField($file_info['fid'], $file_info)
+        ];
         unset($file_info['fid']);
       }
-
-      // Set source property value.
-      $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
     }
+    // Set source property value
+    $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
 
     return TRUE;
   }
