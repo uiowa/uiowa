@@ -1,17 +1,17 @@
-uuid: 2af64461-63cf-4c52-8838-ae7bfc85bb45
+uuid: 251c9b40-01bc-4a26-bc25-88d131e73d4a
 langcode: en
 status: true
 dependencies:
   module:
-    - datetime
+    - media
     - node
-id: node.field_event_start_date
-field_name: field_event_start_date
+id: node.field_writer_bio_sample
+field_name: field_writer_bio_sample
 entity_type: node
-type: datetime
+type: entity_reference
 settings:
-  datetime_type: datetime
-module: datetime
+  target_type: media
+module: core
 locked: false
 cardinality: 1
 translatable: true

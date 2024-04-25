@@ -1,0 +1,29 @@
+uuid: cac13be3-05ec-4491-b51e-890c525bd072
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The iwp.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/iwp.uiowa.edu
+module:
+  iwp_core: 0
+  rh_taxonomy: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_form_display.node.writer_bio.default
+  - metatag.metatag_defaults.node__writer_bio
+  - node.type.writer_bio
+  - pathauto.pattern.writer_bio
+  - simple_sitemap.bundle_settings.default.node.writer_bio
+  - 'core.entity_view_display.node.writer_bio.*'
+  - 'field.storage.node.field_writer_bio_*'
+  - 'taxonomy.vocabulary.writer_bio_*'
+partial_list:
+  - workflows.workflow.editorial
+  - metatag.settings
+  - 'user.role.*'
