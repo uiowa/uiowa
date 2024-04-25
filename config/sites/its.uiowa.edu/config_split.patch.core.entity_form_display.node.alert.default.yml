@@ -12,20 +12,19 @@ adding:
       - paragraphs
   content:
     body:
-      weight: 10
+      weight: 12
       settings:
         show_summary: false
     created:
-      weight: 3
+      weight: 4
     field_alert_building:
       type: options_select
-      weight: 16
+      weight: 17
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_category:
       type: options_buttons
-      weight: 13
     field_alert_date:
       weight: 14
       settings:
@@ -33,20 +32,20 @@ adding:
         remove_seconds: false
     field_alert_email:
       type: boolean_checkbox
-      weight: 20
+      weight: 21
       region: content
       settings:
         display_label: true
       third_party_settings: {  }
     field_alert_service_affected:
       type: options_select
-      weight: 15
+      weight: 16
       region: content
       settings: {  }
       third_party_settings: {  }
     field_alert_title_details:
       type: string_textfield
-      weight: 17
+      weight: 3
       region: content
       settings:
         size: 60
@@ -72,33 +71,33 @@ adding:
           duplicate: duplicate
       third_party_settings: {  }
     field_meta_tags:
-      weight: 12
+      weight: 13
     moderation_state:
       type: moderation_state_default
-      weight: 4
+      weight: 5
       region: content
     path:
-      weight: 8
+      weight: 9
     promote:
-      weight: 5
-    publish_on:
-      weight: 19
-    publish_state:
       weight: 6
+    publish_on:
+      weight: 20
+    publish_state:
+      weight: 7
     scheduler_settings:
       weight: 19
     simple_sitemap:
-      weight: 11
+      weight: 12
     status:
       weight: 0
     sticky:
-      weight: 7
+      weight: 8
     title:
       weight: 1
     uid:
       weight: 2
-    url_redirects:
-      weight: 9
+  hidden:
+    title: true
 removing:
   dependencies:
     config:
@@ -112,7 +111,6 @@ removing:
       weight: 1
     field_alert_category:
       type: entity_reference_autocomplete
-      weight: 14
       settings:
         match_operator: CONTAINS
         match_limit: 10
@@ -142,9 +140,11 @@ removing:
       weight: 9
     title:
       weight: 12
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
     uid:
       weight: 0
-    url_redirects:
-      weight: 11
   hidden:
     moderation_state: true
