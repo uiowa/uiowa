@@ -69,7 +69,10 @@ process:
   field_event_other_celebrations: field_event_other_celebrations_processed
   field_event_venue: field_event_location_ref_processed
   field_event_session: field_session_processed
-  field_event_livestream: livestream_processed
+  field_event_livestream/value: livestream_processed
+  field_event_livestream/format:
+    plugin: default_value
+    default_value: filtered_html
   field_event_order_of_events: order_of_event_processed
   field_event_when/value: field_event_date
   field_event_when/end_value: field_event_date
