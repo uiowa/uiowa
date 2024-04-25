@@ -1422,8 +1422,10 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  *   The Font Awesome class for the field icon.
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field icon.
+ * @param string $icon_title
+ *   The title attribute value for the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '', string $icon_title = '') : void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1434,6 +1436,9 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes, stri
     ]);
   if (!empty($icon_bg_classes)) {
     $variables['field_icon_bg'] = $icon_bg_classes;
+  }
+  if (!empty($icon_title)) {
+    $variables['field_icon_title'] = $icon_title;
   }
 }
 
