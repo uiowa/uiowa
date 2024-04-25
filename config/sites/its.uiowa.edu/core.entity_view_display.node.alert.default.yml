@@ -215,11 +215,11 @@ third_party_settings:
                 type: timestamp
                 label: inline
                 settings:
-                  date_format: long
-                  custom_date_format: ''
+                  date_format: custom
+                  custom_date_format: 'M. j Y | g:i a'
                   timezone: ''
                   tooltip:
-                    date_format: long
+                    date_format: ''
                     custom_date_format: ''
                   time_diff:
                     enabled: false
@@ -230,7 +230,8 @@ third_party_settings:
                     description: ''
                 third_party_settings: {  }
             weight: 10
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: e23e6f0f-ec85-425d-97ca-8b4fb2643e5d
