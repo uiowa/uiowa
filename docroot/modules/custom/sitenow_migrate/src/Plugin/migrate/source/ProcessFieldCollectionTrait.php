@@ -28,4 +28,24 @@ trait ProcessFieldCollectionTrait {
     }
   }
 
+  /**
+   * Helper function to retrieve D7 field collection values.
+   */
+  protected function getFieldCollectionFieldReferences(&$items, string $field) {
+    foreach ($items as &$item) {
+      $query = $this->select("field_data_field_{$field}", $field)
+        ->fields($field, ["field_{$field}_value", "field_{$field}_revision_id"]);
+      $results = $query->condition("{$field}.revision_id", $item['revision_id'], '=')
+        ->execute()
+        ->fetchAssoc();
+      if ($results) {
+        foreach ($results as $key => $value) {
+          $results[str_replace("field_{$field}_", '', $key)] = $value;
+          unset($results[$key]);
+        }
+        $item["field_{$field}"] = $results;
+      }
+    }
+  }
+
 }

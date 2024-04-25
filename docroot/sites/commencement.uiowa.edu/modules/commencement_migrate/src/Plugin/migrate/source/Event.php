@@ -113,6 +113,17 @@ class Event extends BaseNodeSource {
             $livestream = '';
           }
         }
+
+        $this->getFieldCollectionFieldReferences($items, 'snp_section_content_blocks');
+        foreach ($items as $item) {
+          if (isset($item['field_snp_section_content_blocks'])) {
+            $blocks = [$item['field_snp_section_content_blocks']];
+            $this->getFieldCollectionFieldReferences($blocks, 'snp_accordion_items');
+            $accordions = [$blocks['field_snp_accordion_items']];
+            $this->getFieldCollectionFieldValues($accordions, ['snp_accordion_body', 'snp_accordion_title']);
+            $foo = 0;
+          }
+        }
       }
     }
     $row->setSourceProperty('livestream_processed', $livestream);
