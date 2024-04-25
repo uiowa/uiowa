@@ -7234,3 +7234,9 @@ $sites['sitesrai-me.uiowa.ddev.site'] = 'rai-me.sites.uiowa.edu';
 $sites['sitesrai-me.dev.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
 $sites['sitesrai-me.stage.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
 $sites['sitesrai-me.prod.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+
+// Directory aliases for colorguard.org.uiowa.edu.
+$sites['orgcolorguard.uiowa.ddev.site'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.dev.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.stage.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.prod.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
