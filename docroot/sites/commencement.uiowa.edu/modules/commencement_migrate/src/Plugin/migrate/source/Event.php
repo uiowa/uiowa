@@ -2,6 +2,7 @@
 
 namespace Drupal\commencement_migrate\Plugin\migrate\source;
 
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessFieldCollectionTrait;
@@ -19,13 +20,26 @@ class Event extends BaseNodeSource {
   use ProcessMediaTrait;
   use ProcessFieldCollectionTrait;
 
+  protected $timezone = NULL;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setup(): void {
+    $this->timezone = new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE);
+  }
+
   /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
-    // Mapping taxonomy term to taxonomy term reference field.
+    $source_date = $row->getSourceProperty('field_event_date');
+    if (isset($source_date)) {
+      $row->setSourceProperty('field_event_date', \DateTime::createFromFormat('Y-m-d H:i:s', $source_date[0]['value'], $this->timezone)->getTimestamp());
+    }
+
     foreach ([
       'field_event_other_celebrations',
       'field_session',
