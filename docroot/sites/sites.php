@@ -7240,3 +7240,9 @@ $sites['orgcolorguard.uiowa.ddev.site'] = 'colorguard.org.uiowa.edu';
 $sites['orgcolorguard.dev.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
 $sites['orgcolorguard.stage.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
 $sites['orgcolorguard.prod.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+
+// Directory aliases for treasury.fo.uiowa.edu.
+$sites['fotreasury.uiowa.ddev.site'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.dev.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.stage.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.prod.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
