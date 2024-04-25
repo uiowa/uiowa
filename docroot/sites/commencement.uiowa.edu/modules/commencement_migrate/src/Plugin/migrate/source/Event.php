@@ -119,9 +119,15 @@ class Event extends BaseNodeSource {
           if (isset($item['field_snp_section_content_blocks'])) {
             $blocks = [$item['field_snp_section_content_blocks']];
             $this->getFieldCollectionFieldReferences($blocks, 'snp_accordion_items');
-            $accordions = [$blocks['field_snp_accordion_items']];
-            $this->getFieldCollectionFieldValues($accordions, ['snp_accordion_body', 'snp_accordion_title']);
-            $foo = 0;
+            foreach ($blocks as $block) {
+              if (isset($block['field_snp_accordion_items'])) {
+                $accordions = [$block['field_snp_accordion_items']];
+                $this->getFieldCollectionFieldValues($accordions, [
+                  'snp_accordion_body',
+                  'snp_accordion_title'
+                ]);
+              }
+            }
           }
         }
       }
