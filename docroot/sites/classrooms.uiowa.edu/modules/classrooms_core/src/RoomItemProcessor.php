@@ -83,9 +83,7 @@ class RoomItemProcessor extends EntityItemProcessorBase {
 
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->featureList)) {
-              // If ($term->bundle() === 'room_features') {.
               $features[$bundle][] = $term->id();
-              // }
             }
           }
         }
