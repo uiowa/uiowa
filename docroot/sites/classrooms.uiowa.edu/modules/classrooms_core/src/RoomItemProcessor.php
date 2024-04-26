@@ -77,15 +77,15 @@ class RoomItemProcessor extends EntityItemProcessorBase {
     // to the featureList value from endpoint.
     if (isset($record->featureList)) {
       foreach (array_keys(static::$termBundleToFieldMap) as $bundle) {
-        $features = [];
+        $features[$bundle] = [];
         static::loadTerms($bundle);
         foreach (static::$terms[$bundle] as $term) {
 
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $record->featureList)) {
-              if ($term->bundle() === 'room_features') {
-                $features[] = $term->id();
-              }
+              // If ($term->bundle() === 'room_features') {.
+              $features[$bundle][] = $term->id();
+              // }
             }
           }
         }
@@ -93,14 +93,14 @@ class RoomItemProcessor extends EntityItemProcessorBase {
         if (!empty($features)) {
           // Cheat it a bit by fetching a string and exploding it
           // to end up with a basic array of target ids.
-          $entity_features = $entity->get('field_room_features')->getString();
+          $entity_features = $entity->get(static::$termBundleToFieldMap[$bundle])->getString();
           $entity_features = explode(', ', $entity_features);
           // Sort lists before comparing.
           sort($entity_features);
-          sort($features);
-          if ($entity_features !== $features) {
+          sort($features[$bundle]);
+          if ($entity_features !== $features[$bundle]) {
             $updated = TRUE;
-            $entity->set(static::$termBundleToFieldMap[$bundle], $features);
+            $entity->set(static::$termBundleToFieldMap[$bundle], $features[$bundle]);
           }
         }
       }
