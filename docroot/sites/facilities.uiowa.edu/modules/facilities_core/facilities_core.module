@@ -57,9 +57,9 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
  */
 function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
-    'uninstalled' => 'Uninstalled',
     'active' => 'Active',
     'notOnView' => 'Not Currently On View',
+    'uninstalled' => 'Uninstalled',
   ];
 }
 

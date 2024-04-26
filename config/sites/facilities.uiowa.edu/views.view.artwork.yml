@@ -1002,7 +1002,10 @@ display:
           admin_label: ''
           plugin_id: list_field
           operator: or
-          value: {  }
+          value:
+            active: active
+            notOnView: notOnView
+            uninstalled: uninstalled
           group: 1
           exposed: true
           expose:
@@ -1014,7 +1017,7 @@ display:
             operator_limit_selection: false
             operator_list: {  }
             identifier: field_artwork_status_value
-            required: false
+            required: true
             remember: false
             multiple: false
             remember_roles:
@@ -1026,7 +1029,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
