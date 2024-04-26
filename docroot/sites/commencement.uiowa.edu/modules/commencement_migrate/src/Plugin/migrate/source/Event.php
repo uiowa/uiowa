@@ -20,6 +20,11 @@ class Event extends BaseNodeSource {
   use ProcessMediaTrait;
   use ProcessFieldCollectionTrait;
 
+  /**
+   * A timezone object for use in date handling.
+   *
+   * @var null|\DateTimeZone
+   */
   protected $timezone = NULL;
 
   /**
@@ -124,7 +129,7 @@ class Event extends BaseNodeSource {
                 $accordions = [$block['field_snp_accordion_items']];
                 $this->getFieldCollectionFieldValues($accordions, [
                   'snp_accordion_body',
-                  'snp_accordion_title'
+                  'snp_accordion_title',
                 ]);
               }
             }
@@ -166,7 +171,7 @@ class Event extends BaseNodeSource {
         unset($file_info['fid']);
       }
     }
-    // Set source property value
+    // Set source property value.
     $row->setSourceProperty('order_of_event_processed', $order_of_event_processed);
 
     return TRUE;

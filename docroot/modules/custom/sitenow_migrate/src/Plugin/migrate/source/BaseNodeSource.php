@@ -118,8 +118,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
 
   /**
    * Method to allow implementing classes to run setup tasks.
-   *
-   * @return void
    */
   protected function setup(): void {}
 
