@@ -67,9 +67,9 @@ class ItsCoreSettingsForm extends ConfigFormBase {
     // Basic email validation for each email in the comma-delimited string,
     // based on https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Element%21Email.php/function/Email%3A%3AvalidateEmail.
     foreach (['single-alert-to',
-               'single-alert-bcc',
-               'alert-digest',
-      ] as $fieldname) {
+      'single-alert-bcc',
+      'alert-digest',
+    ] as $fieldname) {
       $value = trim($form_state->getValue($fieldname));
       $emails = explode(',', $value);
       $form_state->setValue($fieldname, $value);
