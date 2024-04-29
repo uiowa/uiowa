@@ -19,7 +19,7 @@ trait ProcessFieldCollectionTrait {
         $query->join("field_data_field_{$additional_field}", $additional_field, "{$first_field}.revision_id = {$additional_field}.revision_id");
         $query->fields($additional_field, ["field_{$additional_field}_value"]);
       }
-      $results = $query->condition("{$first_field}.revision_id", $item['revision_id'], '=')
+      $results = $query->condition("{$first_field}.revision_id", $item['revision_id'])
         ->execute()
         ->fetchAssoc();
       if ($results) {
@@ -48,4 +48,23 @@ trait ProcessFieldCollectionTrait {
     }
   }
 
+  /**
+   * @param $data
+   *
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function createParagraph($data) {
+    $paragraph = \Drupal::entityTypeManager()
+      ->getStorage('paragraph')
+      ->create($data);
+
+    $paragraph->save();
+
+    return [
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId()
+    ];
+  }
 }

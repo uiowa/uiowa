@@ -2,6 +2,8 @@
 
 namespace Drupal\commencement_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -105,6 +107,7 @@ class Event extends BaseNodeSource {
 
     // Process the livestream field.
     $livestream = '';
+    $ceremony_info_target_ids = [];
     if ($items = $row->getSourceProperty('field_snp_sections')) {
       if (!empty($items)) {
         $this->getFieldCollectionFieldValues($items, ['snp_section_body']);
@@ -131,6 +134,22 @@ class Event extends BaseNodeSource {
                   'snp_accordion_body',
                   'snp_accordion_title',
                 ]);
+                foreach($accordions as $accordion) {
+                  try {
+                    $ceremony_info_target_ids[] = $this->createParagraph([
+                      'type' => 'uiowa_collection_item',
+                      'field_collection_headline' => $accordion['field_snp_accordion_title_value'],
+                      'field_collection_body' => [
+                        'value' => $accordion['field_snp_accordion_body_value'],
+                        'format' => 'minimal',
+                      ],
+                    ]);
+                  }
+                  catch (InvalidPluginDefinitionException $e) {
+                  }
+                  catch (PluginNotFoundException $e) {
+                  }
+                }
               }
             }
           }
@@ -138,6 +157,7 @@ class Event extends BaseNodeSource {
       }
     }
     $row->setSourceProperty('livestream_processed', $livestream);
+    $row->setSourceProperty('ceremony_information_processed', $ceremony_info_target_ids);
 
     // Process order of events field.
     $order_of_event_processed = NULL;
