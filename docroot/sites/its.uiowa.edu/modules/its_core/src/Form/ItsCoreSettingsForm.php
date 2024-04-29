@@ -30,7 +30,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['email'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Alert email settings.'),
+      '#title' => $this->t('Alert email settings'),
       'single-alert-to' => [
         // @todo Update to a multiple email field when available.
         //   https://www.drupal.org/project/drupal/issues/3214029.
