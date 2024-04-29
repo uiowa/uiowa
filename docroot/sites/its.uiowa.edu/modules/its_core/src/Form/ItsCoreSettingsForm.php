@@ -36,7 +36,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
         //   https://www.drupal.org/project/drupal/issues/3214029.
         '#type' => 'textfield',
         '#title' => $this->t('Alert notification'),
-        '#description' => $this->t('Emails to which individual alert notifications should be sent. Multiple emails should be separated by a comma.'),
+        '#description' => $this->t('Emails to which individual alert notifications will be sent. Multiple emails should be separated by a comma.'),
         '#default_value' => $this->config('its_core.settings')->get('single-alert-to') ?? '',
       ],
       'single-alert-bcc' => [
@@ -44,15 +44,15 @@ class ItsCoreSettingsForm extends ConfigFormBase {
         //   https://www.drupal.org/project/drupal/issues/3214029.
         '#type' => 'textfield',
         '#title' => $this->t('Alert notification BCC'),
-        '#description' => $this->t('Emails to which individual alert notifications should include as BCCs. Multiple emails should be separated by a comma.'),
+        '#description' => $this->t('Emails to which individual alert notifications will include as BCCs. Multiple emails should be separated by a comma.'),
         '#default_value' => $this->config('its_core.settings')->get('single-alert-bcc') ?? '',
       ],
       'alert-digest' => [
         // @todo Update to a multiple email field when available.
         //   https://www.drupal.org/project/drupal/issues/3214029.
         '#type' => 'textfield',
-        '#title' => $this->t('Alert digest email'),
-        '#description' => $this->t('Email to which the daily alert digest email will be sent. Multiple emails should be separated by a comma.'),
+        '#title' => $this->t('Alert digest'),
+        '#description' => $this->t('Emails to which the daily alert digest email will be sent. Multiple emails should be separated by a comma.'),
         '#default_value' => $this->config('its_core.settings')->get('alert-digest') ?? '',
       ],
     ];
