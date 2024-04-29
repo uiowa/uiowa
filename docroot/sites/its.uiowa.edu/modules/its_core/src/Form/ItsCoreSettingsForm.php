@@ -32,13 +32,13 @@ class ItsCoreSettingsForm extends ConfigFormBase {
       '#type' => 'fieldset',
       '#title' => $this->t('Alert email settings.'),
       'alert-notification' => [
-        '#type' => 'textfield',
+        '#type' => 'email',
         '#title' => $this->t('Alert notification'),
         '#description' => $this->t('Notification email that is sent upon alert creation.'),
         '#default_value' => $this->config('its_core.settings')->get('alert-notification') ?? '',
       ],
       'alert-digest' => [
-        '#type' => 'textfield',
+        '#type' => 'email',
         '#title' => $this->t('Alert digest email'),
         '#description' => $this->t('The daily alert digest email.'),
         '#default_value' => $this->config('its_core.settings')->get('alert-digest') ?? '',
