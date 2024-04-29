@@ -74,6 +74,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
       $emails = explode(',', $value);
       $form_state->setValue($fieldname, $value);
       foreach ($emails as $email) {
+        // @todo Update this to use dependency injection instead.
         if ($email !== '' && !\Drupal::service('email.validator')->isValid($email)) {
           $form_state
             ->setError($form, $this->t('The email address %mail is not valid.', [
