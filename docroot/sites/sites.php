@@ -7246,3 +7246,9 @@ $sites['fotreasury.uiowa.ddev.site'] = 'treasury.fo.uiowa.edu';
 $sites['fotreasury.dev.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
 $sites['fotreasury.stage.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
 $sites['fotreasury.prod.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+
+// Directory aliases for vandervelde.studio.uiowa.edu.
+$sites['studiovandervelde.uiowa.ddev.site'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.dev.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.stage.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.prod.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
