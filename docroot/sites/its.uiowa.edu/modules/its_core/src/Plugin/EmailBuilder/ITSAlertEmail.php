@@ -38,31 +38,37 @@ class ITSAlertEmail extends EmailBuilderBase {
     $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
     $email->setFrom($from);
     $email->setReplyTo($from);
-    $env = getenv('AH_PRODUCTION');
 
     // Send the alerts digest.
     if ($email->getSubType() == 'its_alerts_digest') {
       $email->setSubject('IT Service Alerts Daily Digest');
-      // Only send emails if PROD, otherwise use the site email for debugging.
-      if ((int) $env === 1) {
-        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
+      // Grab the alerts digest email to send to. Typically,
+      // in production this would be
+      // IT-Service-Alerts-Members@iowa.uiowa.edu.
+      $to_email = $this->helper()->config()->get('its_core.settings')->get('alert-digest');
+      // If we don't have an email set,
+      // then exit here because nothing should be sent.
+      if (empty($to_email)) {
+        return;
       }
-      else {
-        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
-      }
+      $email->setTo($to_email);
     }
 
     // Send an individual alert.
     if ($email->getSubType() == 'its_alert_email') {
-
-      // Only send emails if PROD, otherwise use the site email for debugging.
-      if ((int) $env === 1) {
-        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
-        $email->setBcc('e7199078.iowa.onmicrosoft.com@amer.teams.ms');
+      // Grab the individual alerts email to send to. Typically,
+      // in production this would be
+      // IT-Service-Alerts-Members@iowa.uiowa.edu for TO and
+      // e7199078.iowa.onmicrosoft.com@amer.teams.ms as BCC.
+      $to_email = $this->helper()->config()->get('its_core.settings')->get('single-alert-to');
+      $bcc_email = $this->helper()->config()->get('its_core.settings')->get('single-alert-bcc');
+      // If we don't have an email set for either TO or BCC,
+      // then exit here because nothing should be sent.
+      if (empty($to_email) && empty($bcc_email)) {
+        return;
       }
-      else {
-        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
-      }
+      $email->setTo($to_email);
+      $email->setBcc($bcc_email);
     }
 
     // Set body with message.
