@@ -51,7 +51,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRollback(MigrateRollbackEvent $event) {
     $migration = $event->getMigration();
 
-    if ($migration->id() === 'uipress_books') {
+    if ($migration->id() === 'commencement_events') {
       $entity_types = [
         'paragraph' => [
           'uiowa_collection_item',
