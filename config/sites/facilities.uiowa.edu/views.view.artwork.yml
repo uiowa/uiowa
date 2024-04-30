@@ -943,6 +943,7 @@ display:
           plugin_id: bundle
           value:
             artwork: artwork
+          group: 1
         combine:
           id: combine
           table: views
@@ -993,56 +994,6 @@ display:
             title: title
             title_1: title_1
             body: body
-        field_artwork_status_value:
-          id: field_artwork_status_value
-          table: node__field_artwork_status
-          field: field_artwork_status_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: list_field
-          operator: or
-          value:
-            active: active
-            notOnView: notOnView
-            uninstalled: uninstalled
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_artwork_status_value_op
-            label: Status
-            description: ''
-            use_operator: false
-            operator: field_artwork_status_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_artwork_status_value
-            required: true
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              collaborator: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: true
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
         field_artwork_building_target_id:
           id: field_artwork_building_target_id
           table: node__field_artwork_building
@@ -1216,6 +1167,56 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+        field_artwork_status_value:
+          id: field_artwork_status_value
+          table: node__field_artwork_status
+          field: field_artwork_status_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: list_field
+          operator: or
+          value:
+            active: active
+            notOnView: notOnView
+            uninstalled: uninstalled
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_artwork_status_value_op
+            label: Status
+            description: ''
+            use_operator: false
+            operator: field_artwork_status_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_artwork_status_value
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              collaborator: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
       filter_groups:
         operator: AND
         groups:
