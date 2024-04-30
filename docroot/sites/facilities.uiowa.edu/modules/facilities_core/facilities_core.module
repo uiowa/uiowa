@@ -703,6 +703,11 @@ function facilities_core_preprocess_views_view(&$variables) {
   if ($display_id === 'block_building_coordinators') {
     $variables['#attached']['library'][] = 'facilities_core/block_building_coordinators';
   }
+
+  if ($display_id === 'block_buildings') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+  }
 }
 
 /**
