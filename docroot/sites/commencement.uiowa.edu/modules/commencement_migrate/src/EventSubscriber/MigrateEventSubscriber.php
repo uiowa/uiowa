@@ -51,7 +51,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRollback(MigrateRollbackEvent $event) {
     $migration = $event->getMigration();
 
-    if ($migration->id() === 'commencement_events') {
+    if ($migration->id() === 'commencement_event') {
       $entity_types = [
         'paragraph' => [
           'uiowa_collection_item',
@@ -65,6 +65,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
           $ids = $query
             ->condition($field, $bundle)
+            ->condition('parent_field_name', 'field_event_ceremony_info_detail')
             ->accessCheck()
             ->execute();
 
