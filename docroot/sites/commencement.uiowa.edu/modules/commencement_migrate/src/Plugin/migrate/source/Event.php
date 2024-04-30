@@ -4,6 +4,7 @@ namespace Drupal\commencement_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -145,9 +146,8 @@ class Event extends BaseNodeSource {
                       ],
                     ]);
                   }
-                  catch (InvalidPluginDefinitionException $e) {
-                  }
-                  catch (PluginNotFoundException $e) {
+                  catch (InvalidPluginDefinitionException|PluginNotFoundException|EntityStorageException $e) {
+
                   }
                 }
               }
