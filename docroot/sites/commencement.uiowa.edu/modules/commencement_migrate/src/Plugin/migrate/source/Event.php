@@ -106,7 +106,7 @@ class Event extends BaseNodeSource {
       }
     }
 
-    // Process the livestream field.
+    // Process the livestream and ceremony information details fields.
     $livestream = '';
     $ceremony_info_target_ids = [];
     if ($items = $row->getSourceProperty('field_snp_sections')) {
@@ -127,16 +127,20 @@ class Event extends BaseNodeSource {
         foreach ($items as $item) {
           if (isset($item['field_snp_section_content_blocks'])) {
             $blocks = [$item['field_snp_section_content_blocks']];
+            // Get the references for any accordion items.
             $this->getFieldCollectionFieldReferences($blocks, 'snp_accordion_items');
             foreach ($blocks as $block) {
               if (isset($block['field_snp_accordion_items'])) {
                 $accordions = [$block['field_snp_accordion_items']];
+                // Get the values to populate the details.
                 $this->getFieldCollectionFieldValues($accordions, [
                   'snp_accordion_body',
                   'snp_accordion_title',
                 ]);
-                foreach($accordions as $accordion) {
+
+                foreach ($accordions as $accordion) {
                   try {
+                    // Create a paragraph and assign its IDs as the value.
                     $ceremony_info_target_ids[] = $this->createParagraph([
                       'type' => 'uiowa_collection_item',
                       'field_collection_headline' => $accordion['field_snp_accordion_title_value'],
@@ -146,8 +150,10 @@ class Event extends BaseNodeSource {
                       ],
                     ]);
                   }
-                  catch (InvalidPluginDefinitionException|PluginNotFoundException|EntityStorageException $e) {
-
+                  catch (InvalidPluginDefinitionException | PluginNotFoundException | EntityStorageException $e) {
+                    $this->getLogger('commencement_migrate')->error($this->t('There was an error creating a collection item paragraph, details: @error', [
+                      '@error' => $e->getMessage(),
+                    ]));
                   }
                 }
               }
@@ -186,7 +192,7 @@ class Event extends BaseNodeSource {
       if ($file_info) {
         // Create local copy.
         $order_of_event_processed = [
-          'target_id' => $this->processFileField($file_info['fid'], $file_info)
+          'target_id' => $this->processFileField($file_info['fid'], $file_info),
         ];
         unset($file_info['fid']);
       }
