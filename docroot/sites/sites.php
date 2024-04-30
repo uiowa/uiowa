@@ -7252,3 +7252,9 @@ $sites['studiovandervelde.uiowa.ddev.site'] = 'vandervelde.studio.uiowa.edu';
 $sites['studiovandervelde.dev.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
 $sites['studiovandervelde.stage.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
 $sites['studiovandervelde.prod.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+
+// Directory aliases for resource.clas.uiowa.edu.
+$sites['clasresource.uiowa.ddev.site'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.dev.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.stage.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.prod.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
