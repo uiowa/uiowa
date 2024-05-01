@@ -2,13 +2,46 @@
 
 namespace Drupal\its_core\Form;
 
+use Drupal\Component\Utility\EmailValidator;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure ITS Core settings.
  */
 class ItsCoreSettingsForm extends ConfigFormBase {
+
+  /**
+   * The email.validator service.
+   *
+   * @var Drupal\Component\Utility\EmailValidator
+   */
+  protected $emailValidator;
+
+  /**
+   * Form constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config.factory service.
+   * @param \Drupal\Component\Utility\EmailValidator $email_validator
+   *   The email.validator service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, EmailValidator $email_validator) {
+    parent::__construct($config_factory);
+    $this->emailValidator = $email_validator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('email.validator'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -74,8 +107,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
       $emails = explode(',', $value);
       $form_state->setValue($fieldname, $value);
       foreach ($emails as $email) {
-        // @todo Update this to use dependency injection instead.
-        if ($email !== '' && !\Drupal::service('email.validator')->isValid($email)) {
+        if ($email !== '' && !$this->emailValidator->isValid($email)) {
           $form_state
             ->setError($form, $this->t('The email address %mail is not valid.', [
               '%mail' => $email,
