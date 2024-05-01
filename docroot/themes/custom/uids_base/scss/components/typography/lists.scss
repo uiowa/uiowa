@@ -3,7 +3,7 @@
 @import "uids/scss/base/lists.scss";
 
 .element--list-none {
-  svg.fa-li {
+  svg[class*="fa-"] {
     top: .4rem;
     &.h2, &.h3, &.h4, &.h5, &.h6 {
       top: 0;
@@ -23,6 +23,16 @@
  }
 }
 
-.fa-ul {
+.card .fa-field-item {
   position: relative;
+  margin-left: 2.5em;
+}
+
+svg[class*="fa-"] {
+  display: inline-block;
+  margin-right: .3rem;
+
+  & + .field__item {
+    display: inline-block;
+  }
 }
