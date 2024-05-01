@@ -960,6 +960,13 @@ function its_core_clear_custom_cache_tag(string $tag): void {
  *   The process completion message.
  */
 function its_core_alerts_digest() {
+  // If we don't have a To email set for this,
+  // exit early.
+  $to_email = \Drupal::configFactory()->get('its_core.settings')->get('alert-digest');
+  if (empty($to_email)) {
+    $message = t('Unable send alert digest email. No To set.');
+    return $message;
+  }
   // Check that this process is being called with
   // admin permissions.
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
@@ -1032,18 +1039,9 @@ function its_core_alerts_digest() {
       '#items' => $links,
     ];
 
+    /** @var \Drupal\symfony_mailer\EmailFactory $emailFactory */
     $emailFactory = \Drupal::service('email_factory');
-    $email = $emailFactory->newTypedEmail('its_core', 'its_alerts_digest', $content);
-
-    // If we didn't have a To or BCC set,
-    // exit early with a notification.
-    if (empty($email->getTo()) && empty($email->getBcc())) {
-      $message = t('Unable send alert digest email. No To set.');
-      return $message;
-    }
-
-    $email->send();
-
+    $email = $emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
     if ($email->getError()) {
       $message = t('Alerts Digest no sent');
     }
