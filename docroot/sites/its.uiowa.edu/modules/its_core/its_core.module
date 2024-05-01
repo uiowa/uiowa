@@ -304,6 +304,12 @@ function its_core_send_alert_email($entity, $alert) {
 
   $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
     ->setSubject($alert_title);
+  if (empty($email->getTo()) && empty($email->getBcc())) {
+    \Drupal::logger('its_core')->notice(t('Unable send alert email from alert @id. No To or Bcc set.', [
+      '@id' => $entity->id(),
+    ]));
+    return;
+  }
   $email->send();
 
   // Log whether the email was sent or not.
@@ -1027,8 +1033,16 @@ function its_core_alerts_digest() {
     ];
 
     $emailFactory = \Drupal::service('email_factory');
+    $email = $emailFactory->newTypedEmail('its_core', 'its_alerts_digest', $content);
 
-    $email = $emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
+    // If we didn't have a To or BCC set,
+    // exit early with a notification.
+    if (empty($email->getTo()) && empty($email->getBcc())) {
+      $message = t('Unable send alert digest email. No To set.');
+      return $message;
+    }
+
+    $email->send();
 
     if ($email->getError()) {
       $message = t('Alerts Digest no sent');
