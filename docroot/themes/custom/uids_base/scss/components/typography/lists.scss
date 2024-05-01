@@ -23,12 +23,20 @@
  }
 }
 
-.card .fa-field-item {
-  position: relative;
-  margin-left: 2.5em;
+.card {
+  .fa-field-item, .fa-ul {
+    position: relative;
+    margin-left: var(--fa-li-margin, 2em);
+    padding-left: 0;
+
+    svg[class*="fa-"] {
+      position: absolute;
+      left: calc(var(--fa-li-width, 2em)* -1);
+    }
+  }
 }
 
-svg[class*="fa-"] {
+.fa-field-item svg[class*="fa-"] {
   display: inline-block;
   margin-right: .3rem;
 
