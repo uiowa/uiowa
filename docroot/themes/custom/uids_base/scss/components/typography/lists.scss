@@ -24,13 +24,14 @@
 }
 
 .card {
-  .fa-field-item, .fa-ul {
+  .field.fa-field-item, .field.fa-ul {
     position: relative;
     margin-left: var(--fa-li-margin, 2em);
     padding-left: 0;
 
     svg[class*="fa-"] {
       position: absolute;
+      top: 0.25em;
       left: calc(var(--fa-li-width, 2em)* -1);
     }
   }
