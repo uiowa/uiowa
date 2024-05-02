@@ -106,9 +106,12 @@
     margin-left: 0;
   }
   .fa-stack {
-    display: inline-block;
+    position: absolute;
     width: 1.5rem;
     height: 1.5rem;
+    svg[class*=fa-] {
+      top: 0;
+    }
     &svg[class*="fa-"] {
       position: absolute;
       margin-left: 0.3rem;
@@ -121,7 +124,7 @@
     .svg-inline--fa.fa-stack-1x {
       height: 0.6rem;
       font-size: .8rem;
-      width: 1.3rem;
+      width: .6rem;
     }
   }
 }
