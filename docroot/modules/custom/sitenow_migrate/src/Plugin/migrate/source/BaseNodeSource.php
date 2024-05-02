@@ -113,7 +113,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
         $this->sourceMediaFields[] = $process['source'];
       }
     }
+    $this->setup();
   }
+
+  /**
+   * Method to allow implementing classes to run setup tasks.
+   */
+  protected function setup(): void {}
 
   /**
    * {@inheritdoc}
