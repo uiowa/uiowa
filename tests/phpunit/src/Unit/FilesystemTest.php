@@ -125,7 +125,7 @@ EOD;
     $sites = Multisite::getAllSites($this->root . '/..');
 
     foreach ($sites as $site) {
-      $path = "docroot/sites/{$site}";
+      $path = $this->root . "/../docroot/sites/{$site}";
 
       $this->assertFileExists("{$path}/blt.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");

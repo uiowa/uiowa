@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality the IWP website.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\iwp_core\Entity\WriterBio;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function iwp_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['writer_bio'])) {
+    $bundles['node']['writer_bio']['class'] = WriterBio::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function iwp_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_writer_bio_form':
+    case 'node_writer_bio_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_writer_bio_photo_credit'])) {
+        // Set field_writer_bio_photo_credit to node_image group.
+        $form['field_writer_bio_photo_credit']['#group'] = 'node_image';
+      }
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function iwp_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_writer_bio_session_status':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_countries':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-globe');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_languages':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-language');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_sample':
+    case 'field_writer_bio_sample_original':
+      $field_name = $variables['element']['#field_name'];
+      $node = $variables["element"]["#object"];
+      $file_entity = NULL;
+      $field_to_check = ($field_name === 'field_writer_bio_sample') ? 'field_writer_bio_sample' : 'field_writer_bio_sample_original';
+      $link_text = ($field_name === 'field_writer_bio_sample') ? 'Writing Sample' : 'Writing Sample Original Language';
+
+      // Check if the field has a file.
+      if (!empty($node->$field_to_check->entity) && !empty($node->$field_to_check->entity->field_media_file->entity)) {
+        $file_entity = $node->$field_to_check->entity->field_media_file->entity;
+      }
+
+      if ($file_entity) {
+        $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
+        $link = Link::fromTextAndUrl($link_text, Url::fromUri($file_url));
+        $variables['items'][0]['content'] = $link->toString();
+      }
+      break;
+  }
+}

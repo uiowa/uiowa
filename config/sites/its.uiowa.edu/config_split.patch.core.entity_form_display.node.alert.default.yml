@@ -25,6 +25,11 @@ adding:
       third_party_settings: {  }
     field_alert_category:
       type: options_buttons
+    field_alert_date:
+      weight: 14
+      settings:
+        allday: true
+        remove_seconds: false
     field_alert_email:
       type: boolean_checkbox
       weight: 21
@@ -40,7 +45,7 @@ adding:
       third_party_settings: {  }
     field_alert_title_details:
       type: string_textfield
-      weight: 3
+      weight: 17
       region: content
       settings:
         size: 60
@@ -111,6 +116,8 @@ removing:
         match_limit: 10
         size: 60
         placeholder: ''
+    field_alert_date:
+      weight: 15
     field_meta_tags:
       weight: 7
     moderation_state:

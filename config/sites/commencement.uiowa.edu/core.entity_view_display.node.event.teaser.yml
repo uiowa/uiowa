@@ -11,7 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_contact_phone
-    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_id
     - field.field.node.event.field_event_link
     - field.field.node.event.field_event_livestream
     - field.field.node.event.field_event_livestream_caption
@@ -19,12 +19,13 @@ dependencies:
     - field.field.node.event.field_event_other_celebrations
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_venue
     - field.field.node.event.field_event_website
+    - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
   module:
+    - smart_date
     - text
     - user
 id: node.event.teaser
@@ -38,19 +39,40 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 101
+    weight: 2
     region: content
-  content_moderation_control:
-    settings: {  }
+  field_event_venue:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: false
     third_party_settings: {  }
-    weight: -20
+    weight: 1
     region: content
-  links:
-    settings: {  }
+  field_event_when:
+    type: smartdate_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      localize: false
+      parts:
+        - start
+        - end
+      duration:
+        separator: ' | '
+        unit: ''
+        decimals: 2
+        suffix: h
     third_party_settings: {  }
-    weight: 100
+    weight: 0
     region: content
 hidden:
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
@@ -60,7 +82,7 @@ hidden:
   field_event_contact: true
   field_event_contact_email: true
   field_event_contact_phone: true
-  field_event_end_date: true
+  field_event_id: true
   field_event_link: true
   field_event_livestream: true
   field_event_livestream_caption: true
@@ -68,8 +90,7 @@ hidden:
   field_event_other_celebrations: true
   field_event_room: true
   field_event_session: true
-  field_event_start_date: true
-  field_event_venue: true
   field_event_website: true
   field_meta_tags: true
+  links: true
   search_api_excerpt: true

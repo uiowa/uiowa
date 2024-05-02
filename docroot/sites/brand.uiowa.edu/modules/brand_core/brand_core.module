@@ -433,7 +433,7 @@ function brand_core_lockup_digest(): string {
     ];
 
     $login_url = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-    $email = \Drupal::service('plugin.manager.mail')->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
+    $email = \Drupal::service('email_factory')->sendTypedEmail('brand_core', 'lockup_review_digest', $lockups, $label, $results, $login_url);
 
     if ($email->getError()) {
       $message = t('Lockup Review Digest not sent. Error: @error');

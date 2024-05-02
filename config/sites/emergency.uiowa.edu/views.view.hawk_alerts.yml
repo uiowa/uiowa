@@ -535,6 +535,20 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'There are no results.'
+            format: full_html
+          tokenize: false
       filters:
         status:
           id: status
@@ -607,6 +621,7 @@ display:
           relationship: none
           view_mode: teaser
       defaults:
+        empty: false
         title: false
         pager: false
         style: false

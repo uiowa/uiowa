@@ -1,0 +1,29 @@
+uuid: b1ca8853-a413-4720-ad04-6920c0276f69
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_writer_bio_languages
+    - node.type.writer_bio
+    - taxonomy.vocabulary.writer_bio_languages
+id: node.writer_bio.field_writer_bio_languages
+field_name: field_writer_bio_languages
+entity_type: node
+bundle: writer_bio
+label: Languages
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      writer_bio_languages: writer_bio_languages
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

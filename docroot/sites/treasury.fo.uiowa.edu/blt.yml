@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: fotreasury.uiowa.ddev.site
+    protocol: https
+  machine_name: fotreasury
+  human_name: treasury.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fotreasury.prod
+drupal:
+  db:
+    database: treasury_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://fotreasury.prod.drupal.uiowa.edu'
+  requester: llentz
+  site-name: 'Treasury Operations'

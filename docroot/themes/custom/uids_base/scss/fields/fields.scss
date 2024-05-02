@@ -157,6 +157,9 @@
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
   margin-top: $sm;
+  .card__subtitle & {
+    margin-top: 0;
+  }
   .element--three-column &,
   .element--two-column & {
     @include breakpoint(sm) {

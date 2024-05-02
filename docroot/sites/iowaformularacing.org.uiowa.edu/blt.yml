@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgiowaformularacing.uiowa.ddev.site
+    protocol: https
+  machine_name: orgiowaformularacing
+  human_name: iowaformularacing.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgiowaformularacing.prod
+drupal:
+  db:
+    database: iowaformularacing_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgiowaformularacing.prod.drupal.uiowa.edu'
+  requester: hheppe
+  site-name: 'Iowa Formula Racing'

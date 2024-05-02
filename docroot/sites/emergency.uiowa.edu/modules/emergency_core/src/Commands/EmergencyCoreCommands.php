@@ -4,6 +4,7 @@ namespace Drupal\emergency_core\Commands;
 
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -14,6 +15,7 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class EmergencyCoreCommands extends DrushCommands {
+  use CpuTimeTrait;
 
   /**
    * The account_switcher service.
@@ -47,6 +49,7 @@ class EmergencyCoreCommands extends DrushCommands {
    * @usage emergency_core:alerts_import
    */
   public function importAlerts() {
+    $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
     $this->logger()->notice('Starting the hawk alert content sync from drush. This may take a little time.');
@@ -56,6 +59,7 @@ class EmergencyCoreCommands extends DrushCommands {
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
 }
