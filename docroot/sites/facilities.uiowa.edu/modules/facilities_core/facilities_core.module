@@ -349,14 +349,12 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_artwork_building':
-      uiowa_core_set_field_icon($variables, 'fa-building fa-li');
-      uiowa_core_set_attributes($variables, 'is-medium');
+      uiowa_core_set_field_icon($variables, 'fa-building');
       break;
 
     case 'field_artwork_artist':
       if ($variables['element']['#view_mode'] === '_custom') {
-        uiowa_core_set_field_icon($variables, 'fa-user-circle fa-li');
-        uiowa_core_set_attributes($variables, 'is-medium');
+        uiowa_core_set_field_icon($variables, 'fa-user-circle');
       }
       break;
 
@@ -374,8 +372,7 @@ function facilities_core_preprocess_field(&$variables) {
       break;
 
     case 'field_artwork_artist_website':
-      uiowa_core_set_field_icon($variables, 'fa-link fa-li');
-      uiowa_core_set_attributes($variables, 'is-medium');
+      uiowa_core_set_field_icon($variables, 'fa-link');
 
       $url = $variables['items'][0]['content']['#url'];
       $link_text = t("Artist's website");
@@ -583,7 +580,7 @@ function facilities_core_preprocess_block(&$variables) {
 
     case 'field_block:node:artwork:field_artwork_artist':
       uiowa_core_set_attributes($variables, [
-        'fa-ul',
+        'fa-field-item',
       ]);
       break;
 
@@ -602,7 +599,7 @@ function facilities_core_preprocess_block(&$variables) {
     case 'field_block:node:artwork:field_artwork_building':
     case 'field_block:node:artwork:field_artwork_artist_website':
       uiowa_core_set_attributes($variables, [
-        'fa-ul',
+        'fa-field-item',
       ]);
       break;
 

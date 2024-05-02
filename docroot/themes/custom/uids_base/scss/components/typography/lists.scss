@@ -23,23 +23,18 @@
   }
 }
 
-// fa-ul fa-li replacement.
-// positions fa-icon absolutely.
+// fa-field-item class is fa-ul fa-li replacement.
+// only use if you want to position fa-icon absolutely.
   .fa-field-item {
     > li {
       position: relative;
     }
     position: relative;
-    margin-left: var(--fa-li-margin, 2em);
+    margin-left: 2.5rem;
     padding-left: 0;
-    // font awesome field.
-    .fontawesome-icons {
-      svg[class*="fa-"] {
-        top: 0.25em;
-      }
-    }
 
     svg[class*="fa-"] {
+      --fa-li-width: 2em;
       position: absolute;
       top: 0.5em;
       left: calc(var(--fa-li-width, 2em)* -1);

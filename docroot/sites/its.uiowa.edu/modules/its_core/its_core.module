@@ -575,12 +575,12 @@ function its_core_preprocess_field(&$variables, $hook) {
     case 'field_alert_service_affected':
       if ($variables['element']['#view_mode'] == 'teaser') {
         if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline field--separator');
-          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li', '', 'Services and buildings affected');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline field--separator');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services and buildings affected');
         }
         elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
-          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li', '', 'Services affected');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services affected');
         }
       }
       break;
@@ -589,15 +589,15 @@ function its_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_attributes($variables, 'element--inline');
         if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
-          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li', '', 'Buildings affected');
-          uiowa_core_set_attributes($variables, 'fa-ul');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Buildings affected');
+          uiowa_core_set_attributes($variables, 'fa-field-item');
         }
       }
       break;
 
     case 'field_alert_update_date':
-      uiowa_core_set_field_icon($variables, 'fa-clock fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-clock');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_alert_updates':
