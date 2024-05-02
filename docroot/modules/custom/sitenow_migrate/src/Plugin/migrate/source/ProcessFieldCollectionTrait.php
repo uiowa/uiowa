@@ -54,14 +54,14 @@ trait ProcessFieldCollectionTrait {
    * @param array $data
    *   The paragraph content and options.
    *
-   * @return array|null
+   * @return array
    *   The ID and revision ID of the paragraph.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createParagraph(array $data): ?array {
+  protected function createParagraph(array $data): array {
     $paragraph = \Drupal::entityTypeManager()
       ->getStorage('paragraph')
       ->create($data);

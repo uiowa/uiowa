@@ -43,6 +43,13 @@ class Event extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Skip over the rest of the preprocessing, as it's not needed
+    // for redirects. Also avoids duplicating the notices.
+    // Return TRUE because the row should be created.
+    if ($this->migration->id() === 'commencement_event_redirects') {
+      return TRUE;
+    }
+
     $source_date = $row->getSourceProperty('field_event_date');
     if (isset($source_date)) {
       $row->setSourceProperty('field_event_date', \DateTime::createFromFormat('Y-m-d H:i:s', $source_date[0]['value'], $this->timezone)->getTimestamp());
