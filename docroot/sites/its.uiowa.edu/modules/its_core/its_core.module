@@ -304,12 +304,6 @@ function its_core_send_alert_email($entity, $alert) {
 
   $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
     ->setSubject($alert_title);
-  if (empty($email->getTo()) && empty($email->getBcc())) {
-    \Drupal::logger('its_core')->notice(t('Unable send alert email from alert @id. No To or Bcc set.', [
-      '@id' => $entity->id(),
-    ]));
-    return;
-  }
   $email->send();
 
   // Log whether the email was sent or not.
@@ -960,13 +954,6 @@ function its_core_clear_custom_cache_tag(string $tag): void {
  *   The process completion message.
  */
 function its_core_alerts_digest() {
-  // If we don't have a To email set for this,
-  // exit early.
-  $to_email = \Drupal::configFactory()->get('its_core.settings')->get('alert-digest');
-  if (empty($to_email)) {
-    $message = t('Unable send alert digest email. No To set.');
-    return $message;
-  }
   // Check that this process is being called with
   // admin permissions.
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */

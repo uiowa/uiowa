@@ -60,15 +60,14 @@ class ITSAlertEmail extends EmailBuilderBase {
       // in production this would be
       // IT-Service-Alerts-Members@iowa.uiowa.edu for TO and
       // e7199078.iowa.onmicrosoft.com@amer.teams.ms as BCC.
-      $to_email = $this->helper()->config()->get('its_core.settings')->get('single-alert-to');
-      $bcc_email = $this->helper()->config()->get('its_core.settings')->get('single-alert-bcc');
-      // If we don't have an email set for either TO or BCC,
-      // then exit here because nothing should be sent.
-      if (empty($to_email) && empty($bcc_email)) {
-        return;
+      $addresses = [];
+      $addresses['setTo'] = $this->helper()->config()->get('its_core.settings')->get('single-alert-to');
+      $addresses['setBcc'] = $this->helper()->config()->get('its_core.settings')->get('single-alert-bcc');
+      foreach ($addresses as $method => $value) {
+        if (!empty($value)) {
+          $email->$method($value);
+        }
       }
-      $email->setTo($to_email);
-      $email->setBcc($bcc_email);
     }
 
     // Set body with message.
