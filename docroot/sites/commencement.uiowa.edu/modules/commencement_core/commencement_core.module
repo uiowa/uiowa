@@ -11,6 +11,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 
 /**
@@ -111,7 +113,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
 
       $variables['delta'] = 0;
       $parent = $paragraph->getParentEntity();
-      if ($parent->getType() === 'uiowa_collection_section') {
+      if ($parent instanceof ParagraphInterface && $parent->getType() === 'uiowa_collection_section') {
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
 
