@@ -280,7 +280,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -297,134 +297,6 @@ third_party_settings:
                 settings:
                   link: false
                 third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: dfd11613-e881-45c8-a14e-6415c9757359
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_email'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: email_mailto
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 268bf9dc-4953-436b-b456-f4af1db0ed10
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_phone'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: telephone_link
-                label: hidden
-                settings:
-                  title: ''
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 0c9a1a52-8ddb-4781-acdd-46c755ac7c0f
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_hometown'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 0647cbb1-5b24-4c99-82de-2c545066bb18
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_website'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 8
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: c1c3a06a-1dbc-4816-a734-1b211896e330
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_contact_information'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: '<br />'
-            weight: 9
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 54878e62-318a-45a5-8e5e-c0ab08e813ef
-            region: content
-            configuration:
-              id: 'field_block:node:person:field_person_education'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: basic_string
-                label: hidden
-                settings: {  }
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
             weight: 10
             additional: {  }
             third_party_settings: {  }
@@ -451,6 +323,139 @@ third_party_settings:
               layout_builder_styles: {  }
             weight: 11
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: dfd11613-e881-45c8-a14e-6415c9757359
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_email'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: email_mailto
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 268bf9dc-4953-436b-b456-f4af1db0ed10
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_phone'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: telephone_link
+                label: visually_hidden
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0c9a1a52-8ddb-4781-acdd-46c755ac7c0f
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_hometown'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0647cbb1-5b24-4c99-82de-2c545066bb18
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 6
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: c1c3a06a-1dbc-4816-a734-1b211896e330
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_contact_information'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: '<br />'
+            weight: 7
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 54878e62-318a-45a5-8e5e-c0ab08e813ef
+            region: content
+            configuration:
+              id: 'field_block:node:person:field_person_education'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: basic_string
+                label: visually_hidden
+                settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
