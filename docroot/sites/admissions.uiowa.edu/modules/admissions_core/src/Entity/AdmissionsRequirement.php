@@ -152,7 +152,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
           '#theme' => 'item_list',
           '#type' => 'ul',
           '#items' => $card_list,
-          '#attributes' => ['class' => 'element--list-none fa-field-item'],
+          '#attributes' => ['class' => 'element--list-none card__meta fa-field-item'],
         ];
       }
     }
