@@ -24,6 +24,7 @@
 }
 
 // fa-ul fa-li replacement.
+// positions fa-icon absolutely.
   .fa-field-item {
     > li {
       position: relative;
@@ -31,10 +32,16 @@
     position: relative;
     margin-left: var(--fa-li-margin, 2em);
     padding-left: 0;
+    // font awesome field.
+    .fontawesome-icons {
+      svg[class*="fa-"] {
+        top: 0.25em;
+      }
+    }
 
     svg[class*="fa-"] {
       position: absolute;
-      top: 0.25em;
+      top: 0.5em;
       left: calc(var(--fa-li-width, 2em)* -1);
       & + .field__item {
         display: inline-block;
