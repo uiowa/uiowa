@@ -30,6 +30,7 @@ dependencies:
     - field.storage.node.field_main_coordinator_title
     - node.type.building
   module:
+    - better_exposed_filters
     - node
     - telephone
     - user
@@ -2924,6 +2925,40 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      exposed_form:
+        type: bef
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: filtered_html
+          bef:
+            general:
+              autosubmit: true
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: true
+              secondary_label: 'Advanced options'
+              secondary_open: true
+              reset_button_always_show: false
+            filter:
+              combine:
+                plugin_id: default
+                advanced:
+                  placeholder_text: Filter
+                  collapsible: false
+                  is_secondary: false
+      defaults:
+        css_class: false
+        exposed_form: false
+      css_class: 'table-responsive bef-form bef-form--label-hidden table--align-top table--sort-arrow-inline'
       display_extenders:
         metatag_display_extender:
           metatags: {  }
