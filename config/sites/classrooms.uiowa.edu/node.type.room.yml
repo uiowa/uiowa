@@ -5,6 +5,7 @@ dependencies:
   module:
     - menu_ui
     - node_revision_delete
+    - scheduler
 third_party_settings:
   menu_ui:
     available_menus: {  }
@@ -13,7 +14,7 @@ third_party_settings:
     amount:
       status: true
       settings:
-        amount: 10
+        amount: 3
     created:
       status: false
       settings:
@@ -22,6 +23,19 @@ third_party_settings:
       status: false
       settings:
         age: 1
+  scheduler:
+    expand_fieldset: when_required
+    fields_display_mode: vertical_tab
+    publish_enable: false
+    publish_past_date: error
+    publish_past_date_created: false
+    publish_required: false
+    publish_revision: false
+    publish_touch: false
+    show_message_after_update: true
+    unpublish_enable: false
+    unpublish_required: false
+    unpublish_revision: false
 name: Room
 type: room
 description: 'Use <em>room</em> to provide MAUI room information and overrides.'
