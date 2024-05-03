@@ -34,12 +34,17 @@
     padding-left: 0;
 
     svg[class*="fa-"] {
-      --fa-li-width: 2em;
       position: absolute;
       top: 0.5em;
-      left: calc(var(--fa-li-width, 2em)* -1);
+      left: -2rem;
+      width: 1.5rem;
       & + .field__item {
         display: inline-block;
+      }
+    }
+    .field--type-fontawesome-icon {
+      svg[class*="fa-"] {
+        top: 0.3em;
       }
     }
   }
