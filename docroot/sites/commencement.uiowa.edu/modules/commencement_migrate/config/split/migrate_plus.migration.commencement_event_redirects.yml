@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies: {  }
+id: commencement_event_redirects
+migration_tags: [ ]
+migration_group: sitenow_migrate
+label: 'Event Redirects'
+source:
+  plugin: commencement_event
+  node_type: event
+  constants:
+    redirect_prefix: 'internal:/node/'
+    dash: '-'
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: commencement_event
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required:
+    - commencement_event
