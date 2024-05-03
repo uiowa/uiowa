@@ -39,13 +39,17 @@ class ITSAlertEmail extends EmailBuilderBase {
     $email->setFrom($from);
     $email->setReplyTo($from);
 
+    $its_settings = $this->helper()
+      ->config()
+      ->get('its_core.settings');
+
     // Send the alerts digest.
     if ($email->getSubType() == 'its_alerts_digest') {
       $email->setSubject('IT Service Alerts Daily Digest');
       // Grab the alerts digest email to send to. Typically,
       // in production this would be
       // IT-Service-Alerts-Members@iowa.uiowa.edu.
-      $to_email = $this->helper()->config()->get('its_core.settings')->get('alert-digest');
+      $to_email = $its_settings->get('alert-digest');
       // If we don't have an email set,
       // then exit here because nothing should be sent.
       if (empty($to_email)) {
@@ -61,8 +65,8 @@ class ITSAlertEmail extends EmailBuilderBase {
       // IT-Service-Alerts-Members@iowa.uiowa.edu for TO and
       // e7199078.iowa.onmicrosoft.com@amer.teams.ms as BCC.
       $addresses = [];
-      $addresses['setTo'] = $this->helper()->config()->get('its_core.settings')->get('single-alert-to');
-      $addresses['setBcc'] = $this->helper()->config()->get('its_core.settings')->get('single-alert-bcc');
+      $addresses['setTo'] = $its_settings->get('single-alert-to');
+      $addresses['setBcc'] = $its_settings->get('single-alert-bcc');
       foreach ($addresses as $method => $value) {
         if (!empty($value)) {
           $email->$method($value);
