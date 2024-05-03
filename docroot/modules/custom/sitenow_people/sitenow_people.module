@@ -533,35 +533,35 @@ function sitenow_people_preprocess_block(&$variables) {
 function sitenow_people_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'field_person_contact_information':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-map-marker');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_education':
-      uiowa_core_set_field_icon($variables, 'fa-university fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-university');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_email':
-      uiowa_core_set_field_icon($variables, 'fa-envelope fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-envelope');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_hometown':
       if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'person') {
-        uiowa_core_set_field_icon($variables, 'fa-globe-americas fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_icon($variables, 'fa-globe-americas');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
 
     case 'field_person_phone':
-      uiowa_core_set_field_icon($variables, 'fa-phone fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-phone');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_website':
-      uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_research_areas':

@@ -202,12 +202,13 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: telephone_link
-                label: hidden
+                label: visually_hidden
                 settings:
                   title: ''
                 third_party_settings: {  }
             weight: 1
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 0c9a1a52-8ddb-4781-acdd-46c755ac7c0f
@@ -242,7 +243,7 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: link
-                label: hidden
+                label: visually_hidden
                 settings:
                   trim_length: 80
                   url_only: false
@@ -253,7 +254,8 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ','
             weight: 3
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 54878e62-318a-45a5-8e5e-c0ab08e813ef
@@ -268,13 +270,14 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: basic_string
-                label: hidden
+                label: visually_hidden
                 settings: {  }
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
             weight: 4
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: c1c3a06a-1dbc-4816-a734-1b211896e330
@@ -289,14 +292,15 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_revisions_entity_view
-                label: hidden
+                label: visually_hidden
                 settings:
                   view_mode: default
                 third_party_settings:
                   field_delimiter:
                     delimiter: '<br />'
             weight: 5
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
@@ -344,11 +348,12 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: email_mailto
-                label: hidden
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 5372c224-abaa-4a47-8cbc-17ffeb948d8d
@@ -526,8 +531,8 @@ content:
   body:
     type: text_default
     label: visually_hidden
-    settings: { }
-    third_party_settings: { }
+    settings: {  }
+    third_party_settings: {  }
     weight: 5
     region: content
   content_moderation_control:
