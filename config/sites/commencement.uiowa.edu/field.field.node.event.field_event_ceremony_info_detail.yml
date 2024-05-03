@@ -1,18 +1,18 @@
-uuid: fe27bc81-8711-4e17-ba3f-2d7a8ef46a9b
+uuid: 5ec54290-289d-4759-8dd0-812efab8822d
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_event_ceremony_information
+    - field.storage.node.field_event_ceremony_info_detail
     - node.type.event
     - paragraphs.paragraphs_type.uiowa_collection_item
   module:
     - entity_reference_revisions
-id: node.event.field_event_ceremony_information
-field_name: field_event_ceremony_information
+id: node.event.field_event_ceremony_info_detail
+field_name: field_event_ceremony_info_detail
 entity_type: node
 bundle: event
-label: 'Ceremony information'
+label: 'Ceremony information details'
 description: ''
 required: false
 translatable: false
@@ -26,15 +26,18 @@ settings:
     negate: 0
     target_bundles_drag_drop:
       uiowa_collection_item:
-        weight: 5
-        enabled: true
-      uiowa_contact:
         weight: 6
-        enabled: false
-      uiowa_slide:
+        enabled: true
+      uiowa_collection_section:
         weight: 7
         enabled: false
-      uiowa_timeline_item:
+      uiowa_contact:
         weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
         enabled: false
 field_type: entity_reference_revisions
