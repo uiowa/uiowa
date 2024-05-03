@@ -123,10 +123,19 @@ function its_core_entity_presave(EntityInterface $entity) {
           // Append to the revision log if it exists, otherwise set one.
           // @todo see about line breaks in log message?
           $revision_log = $entity->get('revision_log')?->value;
+          if (its_core_alert_email_addresses_exist()) {
+            $message = 'Alert email triggered.';
+          }
+          else {
+            $message = 'Alert email triggered but not sent. No recipient addresses have been set.';
+            // No addresses are set, so we don't need to trigger the send.
+            $entity->send_email = 0;
+            $messenger = \Drupal::messenger();
+            $messenger->addMessage($message, $messenger::TYPE_WARNING);
+          }
           // Set field back and record revision log info.
-          $revision_log = $revision_log . ' Alert email triggered.';
+          $revision_log = "{$revision_log} {$message}";
           $entity->set('revision_log', $revision_log);
-
           $entity->set('field_alert_email', 0);
         }
       }
@@ -134,6 +143,17 @@ function its_core_entity_presave(EntityInterface $entity) {
       break;
 
   }
+}
+
+/**
+ * Helper function to check if an address is set for the alert email.
+ *
+ * @return bool
+ *   Whether To or BCC address has been set.
+ */
+function its_core_alert_email_addresses_exist() {
+  $settings = \Drupal::configFactory()->get('its_core.settings');
+  return (!empty($settings->get('single-alert-to')) || !empty($settings->get('single-alert-bcc')));
 }
 
 /**
