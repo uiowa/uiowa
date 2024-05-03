@@ -131,7 +131,7 @@ function its_core_entity_presave(EntityInterface $entity) {
             // No addresses are set, so we don't need to trigger the send.
             $entity->send_email = 0;
             $messenger = \Drupal::messenger();
-            $messenger->addMessage($message, $messenger::TYPE_WARNING);
+            $messenger->addMessage("{$message} Please contact the site administrator.", $messenger::TYPE_WARNING);
           }
           // Set field back and record revision log info.
           $revision_log = "{$revision_log} {$message}";
