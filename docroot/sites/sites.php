@@ -3857,12 +3857,6 @@ $sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 
-// Directory aliases for grantbulletin.research.uiowa.edu.
-$sites['researchgrantbulletin.uiowa.ddev.site'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.dev.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.stage.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.prod.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-
 // Directory aliases for jingjiang.lab.uiowa.edu.
 $sites['labjingjiang.uiowa.ddev.site'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.dev.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
