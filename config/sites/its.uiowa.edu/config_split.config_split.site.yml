@@ -12,8 +12,8 @@ folder: ../config/sites/its.uiowa.edu
 module:
   fullcalendar_view: 0
   rh_taxonomy: 0
-  its_core: 10
   workbench_email: 0
+  its_core: 10
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -33,6 +33,7 @@ complete_list:
   - field.storage.node.field_alert_title_details
   - field.storage.node.field_alert_updates
   - field.storage.node.field_article_related_service
+  - its_core.settings
   - metatag.metatag_defaults.node__service
   - metatag.metatag_defaults.node__support_article
   - node.type.service
@@ -57,6 +58,7 @@ complete_list:
   - 'field.storage.paragraph.field_alert_*'
   - 'field.storage.paragraph.field_support_*'
 partial_list:
+  - config_ignore.settings
   - core.entity_form_display.node.alert.default
   - core.entity_form_display.node.article.default
   - core.entity_view_display.node.alert.teaser
