@@ -1072,7 +1072,7 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
     $theme_config = $config_factory->getEditable('uids_base.settings');
-    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
+    $ccom_site = ($theme_config->get('header.branding_options') == 'uihc');
 
     foreach ($tokens as $name => $original) {
 
