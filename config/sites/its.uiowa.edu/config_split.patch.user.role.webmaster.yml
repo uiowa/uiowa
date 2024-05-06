@@ -8,7 +8,10 @@ adding:
       - taxonomy.vocabulary.service_category
       - taxonomy.vocabulary.support_article_categories
       - workflows.workflow.alert
+    module:
+      - its_core
   permissions:
+    - 'administer its core settings'
     - 'create service content'
     - 'create support_article content'
     - 'create terms in audience'

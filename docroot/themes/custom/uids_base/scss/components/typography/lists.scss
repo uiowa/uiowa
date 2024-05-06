@@ -2,8 +2,17 @@
 @import "uids/scss/abstracts/_utilities.scss";
 @import "uids/scss/base/lists.scss";
 
+// Target text areas that use list items
+.block-inline-blockuiowa-collection,
+.block-inline-blockuiowa-text-area,
+.block--wrapper {
+  ul li {
+    margin-bottom: .5rem;
+  }
+}
+
 .element--list-none {
-  svg.fa-li {
+  .fa-field-item svg[class*="fa-"] {
     top: .4rem;
     &.h2, &.h3, &.h4, &.h5, &.h6 {
       top: 0;
@@ -14,14 +23,31 @@
   }
 }
 
-// Target text areas that use list items
-.block-inline-blockuiowa-collection,
-.block-inline-blockuiowa-text-area,
-.block--wrapper {
- ul li {
-   margin-bottom: .5rem;
- }
-}
+// fa-field-item class is fa-ul fa-li replacement.
+// only use if you want to position fa-icon absolutely.
+  .fa-field-item {
+    > li {
+      position: relative;
+    }
+    position: relative;
+    margin-left: 2.5rem;
+    padding-left: 0;
+
+    svg[class*="fa-"] {
+      position: absolute;
+      top: 0.5em;
+      left: -2rem;
+      width: 1.5rem;
+      & + .field__item {
+        display: inline-block;
+      }
+    }
+    .field--type-fontawesome-icon {
+      svg[class*="fa-"] {
+        top: 0.3em;
+      }
+    }
+  }
 
 .fa-ul {
   position: relative;

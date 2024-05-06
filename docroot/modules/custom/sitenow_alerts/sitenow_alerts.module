@@ -35,8 +35,8 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
 
     case 'field_alert_date':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-calendar far fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_icon($variables, 'fa-calendar far');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
   }

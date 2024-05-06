@@ -99,7 +99,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                     $transfer_tip_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
                     $card_list['transfer_tip'] = [
                       '#type' => 'markup',
-                      '#markup' => '<a href="' . $transfer_tip_url . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a>',
+                      '#markup' => '<a href="' . $transfer_tip_url . '" class=""><span class="text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a>',
                     ];
                   }
                   $query = \Drupal::entityQuery('node')
@@ -119,7 +119,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                     $two_plus_two_url = \Drupal::service('path_alias.manager')->getAliasByPath(AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $slug);
                     $card_list['two_plus_two'] = [
                       '#type' => 'markup',
-                      '#markup' => '<a href="' . $two_plus_two_url . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-calendar-check"></i></span> 2 plus 2 plan</a>',
+                      '#markup' => '<a href="' . $two_plus_two_url . '" class=""><span class="text--black"><i role="presentation" class="fas fa-calendar-check"></i></span> 2 plus 2 plan</a>',
                     ];
                   }
                 }
@@ -133,7 +133,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
         foreach ($this->get('field_ar_requirement')->getIterator() as $key => $link) {
           $card_list['ar_requirement'][$key] = [
             '#type' => 'markup',
-            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
+            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
           ];
         }
       }
@@ -142,7 +142,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
         foreach ($this->get('field_ar_process')->getIterator() as $key => $link) {
           $card_list['ar_process'][$key] = [
             '#type' => 'markup',
-            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
+            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
           ];
         }
       }
@@ -152,7 +152,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
           '#theme' => 'item_list',
           '#type' => 'ul',
           '#items' => $card_list,
-          '#attributes' => ['class' => 'element--list-none fa-ul'],
+          '#attributes' => ['class' => 'element--list-none card__meta fa-field-item'],
         ];
       }
     }

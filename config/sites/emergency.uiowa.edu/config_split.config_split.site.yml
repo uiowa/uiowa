@@ -11,6 +11,9 @@ storage: folder
 folder: ../config/sites/emergency.uiowa.edu
 module:
   emergency_core: 0
+  jsonapi: 0
+  jsonapi_defaults: 0
+  jsonapi_extras: 0
   rh_taxonomy: 0
 theme: {  }
 complete_list:
@@ -20,6 +23,9 @@ complete_list:
   - core.entity_view_display.paragraph.hawk_alert_situation_updates.default
   - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_date
   - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_descr
+  - jsonapi.settings
+  - jsonapi_extras.jsonapi_resource_config.node--hawk_alert
+  - jsonapi_extras.settings
   - metatag.metatag_defaults.node__hawk_alert
   - node.type.hawk_alert
   - paragraphs.paragraphs_type.hawk_alert_situation_updates

@@ -1,11 +1,13 @@
-uuid: 9bc41406-55b1-4daa-83f6-eb31cb9a5cd7
+uuid: 3ff5b36e-bdd7-44d9-9c3e-6e2fbb5289aa
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_event_livestream
-    - media.type.remote_video
+    - filter.format.filtered_html
     - node.type.event
+  module:
+    - text
 id: node.event.field_event_livestream
 field_name: field_event_livestream
 entity_type: node
@@ -17,13 +19,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:media'
-  handler_settings:
-    target_bundles:
-      remote_video: remote_video
-    sort:
-      field: _none
-      direction: ASC
-    auto_create: true
-    auto_create_bundle: ''
-field_type: entity_reference
+  allowed_formats:
+    - filtered_html
+field_type: text_long
