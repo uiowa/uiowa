@@ -6,10 +6,26 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\emergency_core\AlertsProcessor;
 use Drupal\emergency_core\Entity\HawkAlert;
 use Drupal\emergency_core\Entity\SituationUpdate;
+use Drupal\emergency_core\MoreLink;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function emergency_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === "node") {
+    $fields['more_info_link'] = BaseFieldDefinition::create('string')
+      ->setName('more_info_link')
+      ->setLabel(t('More information link'))
+      ->setComputed(TRUE)
+      ->setClass(MoreLink::class);
+  }
+}
 
 /**
  * Implements hook_entity_bundle_info_alter().
