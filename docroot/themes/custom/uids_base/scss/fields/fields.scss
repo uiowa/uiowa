@@ -188,6 +188,13 @@
   word-break: break-word;
 }
 // Address styling.
+.field--type-address--inline {
+  @include breakpoint(sm) {
+    br {
+      display: none;
+    }
+  }
+}
 .field p.address {
   [class*="card__"] & {
     font-size: 1.1rem;

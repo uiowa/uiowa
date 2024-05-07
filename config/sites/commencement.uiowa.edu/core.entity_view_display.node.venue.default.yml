@@ -18,7 +18,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - metatag
-    - system
     - text
     - user
     - views
@@ -99,59 +98,41 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: fd1f990c-bb7c-4881-b3fc-706559a96230
+            uuid: e322f8a8-4ca1-4d24-9f29-f2b4fa46da0e
             region: content
             configuration:
-              id: system_breadcrumb_block
+              id: 'field_block:node:venue:field_location'
               label: null
               label_display: null
-              provider: system
-              context_mapping: {  }
-            weight: 1
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: address_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol
         layout_settings:
-          label: ''
+          label: Map
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_edge_to_edge
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -
-            uuid: 375f60ed-00a6-49f0-b575-fb85cde6299c
-            region: content
-            configuration:
-              id: 'field_block:node:venue:field_meta_tags'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: metatag_empty_formatter
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: d4c7c685-921a-4c78-88e6-ddf09ac1c180
-            region: content
-            configuration:
-              id: 'field_block:node:venue:field_location'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: address_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: a5a44d74-4189-4478-be28-b45b42195735
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:venue:field_geolocation'
               label: null
@@ -166,7 +147,7 @@ third_party_settings:
                 settings:
                   multiple_map: false
                   leaflet_map: 'OSM Mapnik'
-                  height: 400
+                  height: null
                   height_unit: px
                   hide_empty_map: true
                   disable_wheel: true
@@ -231,9 +212,67 @@ third_party_settings:
                   map_lazy_load:
                     lazy_load: true
                 third_party_settings: {  }
-            weight: 3
+            weight: 0
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: df838a8b-2375-4fe3-8ee8-b418d2def509
+            region: second
+            configuration:
+              id: 'views_block:events_by_venue-block_1'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              exposed: {  }
+              headline:
+                headline: 'Upcoming events'
+                hide_headline: 0
+                heading_size: h2
+                headline_style: headline_bold_serif_underline
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_container_narrow
+        components:
+          -
+            uuid: 375f60ed-00a6-49f0-b575-fb85cde6299c
+            region: content
+            configuration:
+              id: 'field_block:node:venue:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
             third_party_settings: {  }
           -
             uuid: 983d487f-a50f-4566-a260-6b6b273ad111
@@ -250,32 +289,6 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 5
             additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: df838a8b-2375-4fe3-8ee8-b418d2def509
-            region: content
-            configuration:
-              id: 'views_block:events_by_venue-block_1'
-              label: null
-              label_display: null
-              provider: views
-              context_mapping: {  }
-              views_label: ''
-              items_per_page: none
-              pager: some
-              exposed: {  }
-              headline:
-                headline: 'Upcoming events'
-                hide_headline: 0
-                heading_size: h2
-                headline_style: default
-                headline_alignment: default
-                child_heading_size: h3
-              exposed_filter_values: null
-              layout_builder_styles: {  }
-            weight: 8
-            additional:
-              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: cec6bd79-fb65-4b08-8f42-227998f9d3a1
@@ -296,7 +309,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 9
+            weight: 10
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -305,6 +318,8 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:

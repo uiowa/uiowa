@@ -72,6 +72,17 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
 /**
  * Implements hook_preprocess_HOOK().
  */
+function commencement_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function commencement_core_preprocess_field__field_media_file(&$variables) {
   // We don't want to display the file name as the link text for viewing a
   // program PDF. This changes it to 'View program' instead.
@@ -95,15 +106,43 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
-  if ($variables['field_name'] === 'field_coll_section_collections') {
-    if (isset($variables['element'][0]['#paragraph'])) {
-      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-      $paragraph = $variables['element'][0]['#paragraph'];
-      // Somewhat counterintuitively, the paragraph referenced is
-      // uiowa_collection_item and we actually want the parent entity.
-      $parent = $paragraph->getParentEntity();
-      $variables['id'] = $parent->id();
-    }
+  switch ($variables['element']['#field_name']) {
+    case 'field_coll_section_collections':
+      if (isset($variables['element'][0]['#paragraph'])) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $variables['element'][0]['#paragraph'];
+        // Somewhat counterintuitively, the paragraph referenced is
+        // uiowa_collection_item and we actually want the parent entity.
+        $parent = $paragraph->getParentEntity();
+        $variables['id'] = $parent->id();
+      }
+      break;
+
+    case 'field_location':
+      uiowa_core_set_field_icon($variables, 'fa-compass');
+      uiowa_core_set_attributes($variables, [
+        'banner__text',
+        'field--type-address--inline',
+        'element--inline',
+      ]);
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'venue') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+      'headline--highlight',
+    ]);
   }
 }
 
@@ -122,6 +161,14 @@ function commencement_core_preprocess_layout(&$variables) {
         }
         if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
           $variables['featured_image_display'] = 'medium';
+        }
+        $variables['banner_settings']['horizontal_align'] = 'center';
+        $variables['banner_settings']['vertical_align'] = 'center';
+        break;
+
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
+          $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
         }
         break;
     }
