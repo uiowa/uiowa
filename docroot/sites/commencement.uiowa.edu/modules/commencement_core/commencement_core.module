@@ -77,6 +77,14 @@ function commencement_core_preprocess_block(&$variables) {
     case 'field_block:node:venue:field_geolocation':
       uiowa_core_set_attributes($variables, 'element--cover');
       break;
+
+    case 'venuelinks_block':
+      uiowa_core_set_attributes($variables, 'menu-wrapper--horizontal--center');
+      break;
+
+    case 'views_block:events_by_venue-block_1':
+      uiowa_core_set_attributes($variables, 'block-margin__top');
+      break;
   }
 }
 
@@ -163,7 +171,6 @@ function commencement_core_preprocess_layout(&$variables) {
           $variables['featured_image_display'] = 'medium';
         }
         $variables['banner_settings']['horizontal_align'] = 'center';
-        $variables['banner_settings']['vertical_align'] = 'center';
         break;
 
       case 'layout_twocol':

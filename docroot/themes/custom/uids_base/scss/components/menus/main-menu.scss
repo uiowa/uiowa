@@ -5,6 +5,16 @@
 // set horizontal only if used in layout--onecol section.
 @include breakpoint(sm) {
   .layout--onecol {
+    .menu-wrapper--horizontal--center {
+      .menu-wrapper--horizontal .menu {
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@include breakpoint(sm) {
+  .layout--onecol {
     .menu-wrapper--horizontal {
       padding: 0;
       @include container-width;
