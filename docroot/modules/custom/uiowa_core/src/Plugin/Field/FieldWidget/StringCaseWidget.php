@@ -29,59 +29,50 @@ class StringCaseWidget extends StringTextfieldWidget {
 
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $element_value = $element['value'];
-    unset($element['value']);
+    // Add an AJAX callback to the form element.
     $wrapper_id = Html::getUniqueId('unique-id-wrapper');
-    $element['string_case_wrapper'] = [
-      '#type' => 'container',
-      '#weight' => 0,
-      '#attributes' => [
-        'id' => $wrapper_id,
-      ],
-    ];
-
-    $element['string_case_wrapper']['value'] = [
+    $element['value'] = $element['value'] + [
+      '#prefix' => '<div id="' . $wrapper_id . '">',
+      '#suffix' => '</div>',
       '#ajax' => [
         'callback' => [
           get_called_class(),
-          'caseConverter',
+          'ajaxConvert',
         ],
         'wrapper' => $wrapper_id,
         'disable-refocus' => TRUE,
       ],
-    ] + $element_value;
-
-    $element['string_case_wrapper']['#element_validate'][] = [
-      get_called_class(),
-      'caseValidate',
+      '#attributes' => [
+        'id' => $wrapper_id,
+      ],
     ];
 
     return $element;
   }
 
   /**
-   * {@inheritdoc}
+   * AJAX handler for in-place string conversion.
    */
-  public static function caseValidate(&$element, FormStateInterface $form_state, $form) {
-    if (isset($element['value']['#value'])) {
-      $converted_value = Html::cleanCssIdentifier($element['value']['#value']);
-      $element['value']['#value'] = $converted_value;
-      $form_state->set($element['value'], $converted_value);
-    }
-  }
-
-  public static function caseConverter(array &$form, FormStateInterface $form_state) {
+  public static function ajaxConvert(array &$form, FormStateInterface $form_state) {
     $triggering_element = $form_state->getTriggeringElement();
 
-    // Check if the trigger element is a nested field.
-    if (isset($triggering_element['#array_parents'])) {
-      static::caseValidate($triggering_element, $form_state, $form);
-      // Access the part of the form we want to return.
-      return NestedArray::getValue($form,
-        array_slice($triggering_element['#array_parents'], 0, -4));
-    }
-    return $form;
+    $triggering_element['#value'] = Html::cleanCssIdentifier($triggering_element['#value']);
+    return $triggering_element;
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(
+    array $values,
+    array $form,
+    FormStateInterface $form_state
+  ) {
+    $values = parent::massageFormValues($values, $form, $form_state);
+    foreach ($values as &$value) {
+      $value['value'] = Html::cleanCssIdentifier($value['value']);
+    }
+    return $values;
   }
 
 }
