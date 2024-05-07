@@ -7264,3 +7264,9 @@ $sites['labstrivecardio-study.uiowa.ddev.site'] = 'strivecardio-study.lab.uiowa.
 $sites['labstrivecardio-study.dev.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
 $sites['labstrivecardio-study.stage.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
 $sites['labstrivecardio-study.prod.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+
+// Directory aliases for cfap.center.uiowa.edu.
+$sites['centercfap.uiowa.ddev.site'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.dev.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.stage.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.prod.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
