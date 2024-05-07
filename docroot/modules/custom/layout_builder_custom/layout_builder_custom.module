@@ -1112,16 +1112,16 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
   }
 
   // Add unique ID ajax behavior if the unique ID field exists.
-  if (isset($element['subform']['field_unique_id'])) {
-    $element['subform']['#prefix'] = '<div id="unique-id-wrapper-child">';
-    $element['subform']['#suffix'] = '</div>';
-    $element['subform']['field_unique_id']['widget'][0]['value']['#ajax'] = [
-      'callback' => '_layout_builder_custom_unique_id',
-      'event' => 'change',
-      'wrapper' => 'unique-id-wrapper-child',
-      'disable-refocus' => TRUE,
-    ];
-  }
+//  if (isset($element['subform']['field_unique_id'])) {
+//    $element['subform']['#prefix'] = '<div id="unique-id-wrapper-child">';
+//    $element['subform']['#suffix'] = '</div>';
+//    $element['subform']['field_unique_id']['widget'][0]['value']['#ajax'] = [
+//      'callback' => '_layout_builder_custom_unique_id',
+//      'event' => 'change',
+//      'wrapper' => 'unique-id-wrapper-child',
+//      'disable-refocus' => TRUE,
+//    ];
+//  }
 }
 
 /**

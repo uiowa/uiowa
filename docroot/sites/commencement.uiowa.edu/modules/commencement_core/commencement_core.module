@@ -59,6 +59,12 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
       $form['field_event_website']['#disabled'] = TRUE;
+      break;
+    case 'node_venue_form':
+    case 'node_venue_edit_form':
+
+      // Add custom validation for certain blocks/regions to validate.
+      $form['#validate'][] = 'commencement_core_node_form_validate';
   }
 }
 
