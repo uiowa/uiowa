@@ -59,7 +59,14 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
       $form['field_event_website']['#disabled'] = TRUE;
+      break;
+
+    case 'node_venue_form':
+    case 'node_venue_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
   }
+
 }
 
 /**
@@ -96,6 +103,27 @@ function commencement_core_preprocess_field(&$variables) {
       // uiowa_collection_item and we actually want the parent entity.
       $parent = $paragraph->getParentEntity();
       $variables['id'] = $parent->id();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'venue') {
+    switch ($layout->id()) {
+      case 'layout_header':
+        if (!isset($variables['banner_settings'])) {
+          $variables['banner_settings'] = [];
+        }
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          $variables['featured_image_display'] = 'medium';
+        }
+        break;
     }
   }
 }
