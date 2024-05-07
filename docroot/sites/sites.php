@@ -7270,3 +7270,9 @@ $sites['centercfap.uiowa.ddev.site'] = 'cfap.center.uiowa.edu';
 $sites['centercfap.dev.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
 $sites['centercfap.stage.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
 $sites['centercfap.prod.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+
+// Directory aliases for psychotherapy-research.lab.uiowa.edu.
+$sites['labpsychotherapy-research.uiowa.ddev.site'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.dev.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.stage.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.prod.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
