@@ -84,3 +84,10 @@ if (extension_loaded('newrelic')) {
 if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
   ini_set('memory_limit', '256M');
 }
+
+// Under Acquia Cloud, this will override the temporary folder used by
+// the Webform module and might resolve issues around exporting.
+// See https://www.drupal.org/project/webform/issues/2980276 for more information.
+if ($ah_env !== 'local') {
+  $config['webform.settings']['export']['temp_directory'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
+}
