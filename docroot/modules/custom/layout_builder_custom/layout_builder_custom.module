@@ -38,22 +38,18 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
   $layout = $formObject->getLayout();
   $config = $layout->getConfiguration();
   // Section component unique ID is stored in third-party settings.
-  $form['unique_id_wrapper'] = [
-    '#type' => 'container',
-    '#weight' => 0,
-    '#attributes' => [
-      'id' => 'unique-id-wrapper',
-    ],
-    'unique_id' => [
-      '#type' => 'textfield',
-      '#title' => t('Unique ID'),
-      '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
-      '#default_value' => $config['layout_builder_custom_unique_id'] ?: '',
-      '#ajax' => [
-        'callback' => '_layout_builder_custom_unique_id',
-        'wrapper' => 'unique-id-wrapper',
-        'disable-refocus' => TRUE,
-      ],
+  $wrapper_id = Html::getUniqueId('unique-id-wrapper');
+  $form['unique_id'] = [
+    '#prefix' => '<div id="' . $wrapper_id . '">',
+    '#suffix' => '</div>',
+    '#type' => 'textfield',
+    '#title' => t('Unique ID'),
+    '#description' => t('Provide a unique identifier for this section. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
+    '#default_value' => $config['layout_builder_custom_unique_id'] ?: '',
+    '#ajax' => [
+      'callback' => '_layout_builder_custom_unique_id',
+      'wrapper' => $wrapper_id,
+      'disable-refocus' => TRUE,
     ],
   ];
 
@@ -76,14 +72,8 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
  */
 function _layout_builder_custom_section_form_validate(array &$form, FormStateInterface $form_state) {
   // Run unique_id clean for when the AJAX callback is not triggered.
-  if ($unique_id = $form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ])) {
-    $form_state->setValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ], Html::cleanCssIdentifier($unique_id));
+  if ($unique_id = $form_state->getValue('unique_id')) {
+    $form_state->setValue('unique_id', Html::cleanCssIdentifier($unique_id));
   }
 }
 
@@ -104,10 +94,7 @@ function _layout_builder_custom_submit_section_form(array &$form, FormStateInter
   }
 
   // Save the third-party value if set, otherwise unset it.
-  if ($unique_id = $form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ])) {
+  if ($unique_id = $form_state->getValue('unique_id')) {
     $config['layout_builder_custom_unique_id'] = $unique_id;
   }
   else {
@@ -180,22 +167,19 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
         // Section component unique ID is stored in third-party settings.
-        $form['unique_id_wrapper'] = [
-          '#type' => 'container',
-          '#weight' => 0,
-          '#attributes' => [
-            'id' => 'unique-id-wrapper',
-          ],
-          'unique_id' => [
-            '#type' => 'textfield',
-            '#title' => t('Unique ID'),
-            '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
-            '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
-            '#ajax' => [
-              'callback' => '_layout_builder_custom_unique_id',
-              'wrapper' => 'unique-id-wrapper',
-              'disable-refocus' => TRUE,
-            ],
+
+        $wrapper_id = Html::getUniqueId('unique-id-wrapper');
+        $form['unique_id'] = [
+          '#prefix' => '<div id="' . $wrapper_id . '">',
+          '#suffix' => '</div>',
+          '#type' => 'textfield',
+          '#title' => t('Unique ID'),
+          '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
+          '#ajax' => [
+            'callback' => '_layout_builder_custom_unique_id',
+            'wrapper' => $wrapper_id,
+            'disable-refocus' => TRUE,
           ],
         ];
 
@@ -554,14 +538,8 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
     $component = $form_object->getCurrentComponent();
 
     // Run unique_id clean for when the AJAX callback is not triggered.
-    if ($unique_id = $form_state->getValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ])) {
-      $form_state->setValue([
-        'unique_id_wrapper',
-        'unique_id',
-      ], Html::cleanCssIdentifier($unique_id));
+    if ($unique_id = $form_state->getValue('unique_id')) {
+      $form_state->setValue('unique_id', Html::cleanCssIdentifier($unique_id));
     }
 
     switch ($component->getPluginId()) {
@@ -702,10 +680,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     $block = $component->getPlugin();
 
     // Save the third-party value if set, otherwise unset it.
-    if ($unique_id = $form_state->getValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ])) {
+    if ($unique_id = $form_state->getValue('unique_id')) {
       $component->setThirdPartySetting('layout_builder_custom', 'unique_id', $unique_id);
     }
     else {
@@ -1480,18 +1455,6 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
  */
 function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
   $triggering_element = $form_state->getTriggeringElement();
-  $unique_id = Html::cleanCssIdentifier($triggering_element['#value']);
-
-  // Check if the trigger element is a nested field.
-  if (isset($triggering_element['#field_parents']) && isset($triggering_element['#array_parents'])) {
-    // Access the part of the form we want to return.
-    $parent = NestedArray::getValue($form, array_slice($triggering_element['#array_parents'], 0, -4));
-    $parent['field_unique_id']['widget'][0]['value']['#value'] = $unique_id;
-    return $parent;
-  }
-  else {
-    $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
-    return $form['unique_id_wrapper'];
-  }
-
+  $triggering_element['#value'] = Html::cleanCssIdentifier($triggering_element['#value']);
+  return $triggering_element;
 }
