@@ -26,7 +26,8 @@ class StaticMapUrlFormatter extends LinkFormatter {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
     foreach ($elements as $delta => $entity) {
-      $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
+      preg_match('%[!?]m\/([^?]*)%', parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
+      $location = $regex_matches[1];
       $alt = $values[0]['alt'];
       $zoom = $values[0]['zoom'];
 

@@ -132,7 +132,8 @@ class StaticMap extends MediaSourceBase {
 
     // The source is a required, single value field.
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
-    $marker = str_replace('!m/', '', $parsed['fragment']);
+    preg_match('%[!?]m\/([^?]*)%', $parsed['fragment'], $regex_matches);
+    $marker = $regex_matches[1];
 
     if (str_contains($marker, '?')) {
       $marker = strstr($marker, '?', TRUE);
