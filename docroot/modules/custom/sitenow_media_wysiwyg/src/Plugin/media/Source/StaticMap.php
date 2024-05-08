@@ -132,7 +132,8 @@ class StaticMap extends MediaSourceBase {
 
     // The source is a required, single value field.
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
-    preg_match('%[!?]m\/([^?]*)%', $parsed['fragment'], $regex_matches);
+    $regex = \Drupal::config('sitenow_media_wysiwyg.settings')->get('sitenow_media_wysiwyg.static_map_regex');
+    preg_match($regex, $parsed['fragment'], $regex_matches);
     $marker = $regex_matches[1];
 
     if (str_contains($marker, '?')) {

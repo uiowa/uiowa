@@ -82,7 +82,8 @@ class StaticMapUrlWidget extends LinkWidget {
     }
 
     // Construct URL like the formatter to test the response from Concept3D.
-    preg_match('%[!?]m\/([^?]*)%', $parsed_url['fragment'], $regex_matches);
+    $regex = \Drupal::config('sitenow_media_wysiwyg.settings')->get('sitenow_media_wysiwyg.static_map_regex');
+    preg_match($regex, $parsed_url['fragment'], $regex_matches);
     $map_location = $regex_matches[1];
     $url = StaticMap::STATIC_URL . '/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=17';
     $headers = get_headers($url, 1);

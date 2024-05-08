@@ -26,7 +26,8 @@ class StaticMapUrlFormatter extends LinkFormatter {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
     foreach ($elements as $delta => $entity) {
-      preg_match('%[!?]m\/([^?]*)%', parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
+      $regex = \Drupal::config('sitenow_media_wysiwyg.settings')->get('sitenow_media_wysiwyg.static_map_regex');
+      preg_match($regex, parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
       $location = $regex_matches[1];
       $alt = $values[0]['alt'];
       $zoom = $values[0]['zoom'];
