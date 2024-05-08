@@ -76,6 +76,7 @@ function commencement_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'field_block:node:venue:field_geolocation':
       uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
       break;
 
     case 'venuelinks_block':
@@ -84,6 +85,7 @@ function commencement_core_preprocess_block(&$variables) {
 
     case 'views_block:events_by_venue-block_1':
       uiowa_core_set_attributes($variables, 'block-margin__top');
+      $variables['attributes']['id'] = 'events';
       break;
   }
 }
@@ -124,6 +126,22 @@ function commencement_core_preprocess_field(&$variables) {
         $parent = $paragraph->getParentEntity();
         $variables['id'] = $parent->id();
       }
+      break;
+
+    case 'field_coll_section_title':
+      uiowa_core_set_attributes($variables, [
+        'unset',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+        'block-margin__bottom--extra',
+      ]);
+      break;
+
+    case 'field_coll_section_content':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
       break;
 
     case 'field_location':
@@ -179,6 +197,20 @@ function commencement_core_preprocess_layout(&$variables) {
         }
         break;
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'uiowa_collection_section':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+        'block-padding__top',
+      ]);
   }
 }
 

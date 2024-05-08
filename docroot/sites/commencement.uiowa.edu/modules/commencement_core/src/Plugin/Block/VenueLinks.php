@@ -34,17 +34,38 @@ class VenueLinks extends BlockBase {
     ];
 
     $items = [];
+
     foreach ($links as $id => $title) {
-      $url = Url::fromRoute('<current>', [], ['fragment' => $id]);
-      $link = Link::fromTextAndUrl($title, $url);
+      $options = [
+        'attributes' => [
+          'class' => [
+            'bttn',
+            'bttn--transparent',
+            'bttn--small',
+          ],
+        ],
+        'fragment' => $id,
+      ];
+      $url = Url::fromRoute('<current>', [], $options);
+      $link = Link::fromTextAndUrl($title, $url)->toString();
       $items[] = $link;
     }
 
     $list = [
       '#theme' => 'item_list',
       '#items' => $items,
-      '#wrapper_attributes' => ['class' => ['menu-wrapper', 'menu-wrapper--horizontal', 'menu--main']],
-      '#attributes' => ['class' => ['menu']],
+      '#wrapper_attributes' => ['class' => ['banner__action']],
+      '#attributes' => [
+        'class' => [
+          'element--inline',
+          'element--list-none',
+          'element--margin-none',
+          'element--center',
+          'bttn--row',
+          'bttn--full',
+          'block',
+        ],
+      ],
     ];
 
     $renderer = \Drupal::service('renderer');
