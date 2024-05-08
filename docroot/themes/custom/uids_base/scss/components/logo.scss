@@ -3,44 +3,29 @@
 @import "uids/scss/components/logo.scss";
 
 @media (max-width: 980px) {
-  .logo--tab.logo--ccom {
-    padding-top: 19px;
+  .logo--uihc .logo-icon {
+    height: 27px;
   }
-  .logo--tab.logo--ccom .logo-icon {
-    height: 30px;
-  }
-  .logo--footer.logo--ccom .logo-icon {
-    height: 40px;
+  .iowa-bar .logo--tab.logo--uihc  {
+    padding: 22px 1.25rem;
   }
 }
 
 @include breakpoint(md) {
-  .iowa-bar--narrow .logo--tab.logo--ccom {
-    width: 139px;
-    padding-top: 10px;
-    .logo-icon {
-      height: 32px;
-    }
+  .iowa-bar--narrow .logo--tab.logo--uihc .logo-icon {
+    width: 66px;
   }
-
-  .logo--footer.logo--ccom .logo-icon {
-    height: 45px;
+  .iowa-bar--full .logo--tab.logo--uihc {
+    width: 107px;
+    padding: 25px 20px 20px;
   }
-  .iowa-bar--full .logo--tab.logo--ccom {
-    padding-top: 19px;
-  }
-  .iowa-bar--full .logo--tab.logo--ccom {
-    padding-left: 15px;
-    .logo-icon {
-      height: 35px;
-    }
+  .iowa-bar--narrow .logo--tab.logo--uihc {
+    width: 95px;
   }
 }
+
 @include breakpoint(page-container) {
-  .iowa-bar--full .logo--tab.logo--ccom {
-    padding-left: 20px;
-    .logo-icon {
-      height: 43px;
-    }
+  .iowa-bar--full .logo--tab.logo--uihc {
+    width: 134px;
   }
 }
