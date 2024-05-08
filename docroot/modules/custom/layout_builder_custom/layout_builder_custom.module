@@ -6,7 +6,6 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -167,7 +166,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
         // Section component unique ID is stored in third-party settings.
-
         $wrapper_id = Html::getUniqueId('unique-id-wrapper');
         $form['unique_id'] = [
           '#prefix' => '<div id="' . $wrapper_id . '">',
