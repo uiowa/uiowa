@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centercfap.uiowa.ddev.site
+    protocol: https
+  machine_name: centercfap
+  human_name: cfap.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centercfap.prod
+drupal:
+  db:
+    database: cfap_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centercfap.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Fundamentals and Applications of Photopolymerizations'
