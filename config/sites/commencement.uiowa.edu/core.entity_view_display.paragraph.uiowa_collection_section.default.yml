@@ -10,7 +10,6 @@ dependencies:
   module:
     - entity_reference_revisions
     - field_delimiter
-    - heading
     - text
 id: paragraph.uiowa_collection_section.default
 targetEntityType: paragraph
@@ -36,10 +35,10 @@ content:
     weight: 4
     region: content
   field_coll_section_title:
-    type: heading_text
+    type: string
     label: hidden
     settings:
-      size: h3
+      link_to_entity: false
     third_party_settings: {  }
     weight: 3
     region: content

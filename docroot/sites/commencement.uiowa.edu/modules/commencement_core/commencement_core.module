@@ -129,11 +129,11 @@ function commencement_core_preprocess_field(&$variables) {
       break;
 
     case 'field_coll_section_title':
+      $variables['item_tag'] = 'h3';
       uiowa_core_set_attributes($variables, [
         'headline',
         'headline--serif',
-        'headline--underline',
-        'block-margin__bottom--extra',
+        'h3',
       ]);
       break;
 
