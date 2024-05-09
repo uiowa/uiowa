@@ -4,8 +4,10 @@ $imgpath: '../../uids/assets/images';
 // @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
 // Unset container-type for regions that use absolute positioning.
 // Horizontal navigation, timeline block, lb-direct-add.
+// Unset for v2 paragraphs.
 .layout__region--unset-type .column-container,
-.layout-builder .column-container {
+.layout-builder .column-container,
+.paragraph--type--people .list-container__inner .views-row {
   container-type: unset;
 }
 
