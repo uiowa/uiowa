@@ -166,15 +166,18 @@ class StaticMap extends MediaSourceBase {
                   ->get($thumbnail_url)
                   ->getBody();
                 return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
-              } catch (TransferException $exception) {
+              }
+              catch (TransferException $exception) {
                 \Drupal::messenger()
                   ->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
-              } catch (FileException|InvalidStreamWrapperException $e) {
+              }
+              catch (FileException | InvalidStreamWrapperException $e) {
                 \Drupal::messenger()
                   ->addError(t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
               }
             }
-          } catch (ClientException $e) {
+          }
+          catch (ClientException $e) {
             $this->logger()
               ->warning($this->t('Unable to get thumbnail image for @media.', [
                 '@media' => $media->uuid(),
