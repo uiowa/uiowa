@@ -21,7 +21,7 @@ class VenueLinks extends BlockBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return ['label_display' => FALSE];
+    return ['label_display' => TRUE];
   }
 
   /**
@@ -63,6 +63,7 @@ class VenueLinks extends BlockBase {
           'element--center',
           'bttn--row',
           'bttn--full',
+          'bttn--row--fixed',
           'block',
         ],
       ],
@@ -76,7 +77,6 @@ class VenueLinks extends BlockBase {
       '#tag' => 'nav',
       '#attributes' => [
         'role' => 'navigation',
-        'aria-labelledby' => '-menu',
       ],
       '#value' => $list_rendered,
     ];

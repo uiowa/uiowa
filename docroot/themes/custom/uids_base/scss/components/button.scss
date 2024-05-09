@@ -33,6 +33,11 @@
   display: flex;
   gap: 1.5rem;
 
+  // Fixed modifier to avoid buttons stacking on mobile.
+  &.bttn--row--fixed {
+    flex-direction: row;
+  }
+
   @include breakpoint(sm) {
     display: block;
   }
