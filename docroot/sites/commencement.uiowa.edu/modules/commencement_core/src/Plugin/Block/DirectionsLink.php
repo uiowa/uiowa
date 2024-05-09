@@ -42,14 +42,21 @@ class DirectionsLink extends BlockBase {
       if (!empty($geolocation['latlon'])) {
         $latlon_value = $geolocation['latlon'];
 
-        $google_maps_link = 'https://www.google.com/maps?q=' . $latlon_value;
+        $google_maps_link = 'https://www.google.com/maps/dir/?api=1&destination=' . $latlon_value;
 
         $link = [
           '#type' => 'link',
-          '#title' => 'View on Google Maps',
+          '#title' => [
+            '#markup' => 'Get Venue Directions <span role="presentation" class="fas fa-arrow-right"></span>',
+          ],
           '#url' => Url::fromUri($google_maps_link),
           '#attributes' => [
             'target' => '_blank',
+            'class' => [
+              'bttn',
+              'bttn--secondary',
+              'bttn--small',
+            ],
           ],
         ];
 
