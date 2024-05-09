@@ -93,9 +93,8 @@ function commencement_core_taxonomy_term_session_form_submit($form, FormStateInt
     // Set the term ID as the default session.
     $term_id = $form_state->getFormObject()->getEntity()->id();
     $config->set('default_session', $term_id)->save();
-    // Invalidate the cache for the ceremonies view.
-    $view = Views::getView('ceremonies');
-    $view->storage->invalidateCaches();
+    // Invalidate the views cache for the ceremonies view.
+    Cache::invalidateTags(['config:views.view.ceremonies']);
   }
 }
 
