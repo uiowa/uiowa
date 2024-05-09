@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
-use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 
@@ -250,6 +249,23 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_paragraph__uiowa_collection_section(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $unique_id = $paragraph->field_unique_id?->value;
+
+    if (!is_null($unique_id)) {
+      $variables['content']['field_coll_section_title']['#attributes']['id'] = $unique_id;
     }
   }
 }

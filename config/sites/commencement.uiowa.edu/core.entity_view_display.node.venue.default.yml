@@ -361,12 +361,16 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: metatag_empty_formatter
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
