@@ -63,7 +63,7 @@ class VenueLinks extends BlockBase {
           'element--center',
           'bttn--row',
           'bttn--full',
-          'bttn--row--fixed',
+          'bttn--row--horizontal',
           'block',
         ],
       ],
