@@ -147,6 +147,11 @@ function commencement_core_preprocess_field(&$variables) {
       ]);
       break;
 
+    case 'field_event_venue':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
     case 'field_location':
       uiowa_core_set_field_icon($variables, 'fa-compass');
       uiowa_core_set_attributes($variables, [
