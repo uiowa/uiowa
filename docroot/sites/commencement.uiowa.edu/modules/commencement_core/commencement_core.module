@@ -13,10 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\paragraphs\ParagraphInterface;
-use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
-use Drupal\views\Views;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -64,21 +62,21 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_website']['#disabled'] = TRUE;
       break;
 
-      case 'taxonomy_term_session_form':
-        $term_id = $form_state->getFormObject()->getEntity()->id();
-        $config = \Drupal::config('commencement_core.settings');
-        $default_session = $config->get('default_session');
-        $form['default_session'] = [
-          '#type' => 'checkbox',
-          '#title' => t('Default session'),
-          '#description' => t('Check this box to make this session the default session for the site.'),
-          // Set the default value based on whether it matches the term ID.
-          '#default_value' => $default_session == $term_id,
-        ];
+    case 'taxonomy_term_session_form':
+      $term_id = $form_state->getFormObject()->getEntity()->id();
+      $config = \Drupal::config('commencement_core.settings');
+      $default_session = $config->get('default_session');
+      $form['default_session'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Default session'),
+        '#description' => t('Check this box to make this session the default session for the site.'),
+        // Set the default value based on whether it matches the term ID.
+        '#default_value' => $default_session == $term_id,
+      ];
 
-        // Add a submit handler for processing the value of
-        $form['actions']['submit']['#submit'][] = 'commencement_core_taxonomy_term_session_form_submit';
-        break;
+      // Add a submit handler for processing the default session.
+      $form['actions']['submit']['#submit'][] = 'commencement_core_taxonomy_term_session_form_submit';
+      break;
   }
 }
 
