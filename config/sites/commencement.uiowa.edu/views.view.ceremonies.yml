@@ -9,7 +9,6 @@ dependencies:
     - taxonomy.vocabulary.college
     - taxonomy.vocabulary.session
   module:
-    - better_exposed_filters
     - node
     - taxonomy
     - user
@@ -98,7 +97,7 @@ display:
             offset_label: Offset
           quantity: 9
       exposed_form:
-        type: bef
+        type: basic
         options:
           submit_button: Apply
           reset_button: true
@@ -107,44 +106,6 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
-          text_input_required: 'Select any filter and click on Apply to see results'
-          text_input_required_format: filtered_html
-          bef:
-            general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
-              autosubmit_textfield_delay: 500
-              autosubmit_hide: false
-              input_required: false
-              allow_secondary: true
-              secondary_label: Advanced
-              secondary_open: false
-              reset_button_always_show: false
-            filter:
-              field_event_venue_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              field_event_session_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              field_event_other_celebrations_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: true
       access:
         type: perm
         options:
@@ -272,7 +233,7 @@ display:
             identifier: college
             required: false
             remember: false
-            multiple: false
+            multiple: true
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
@@ -377,7 +338,7 @@ display:
           exposed: true
           expose:
             operator_id: field_event_other_celebrations_target_id_op
-            label: 'Include other celebrations'
+            label: 'Other celebrations'
             description: ''
             use_operator: false
             operator: field_event_other_celebrations_target_id_op
