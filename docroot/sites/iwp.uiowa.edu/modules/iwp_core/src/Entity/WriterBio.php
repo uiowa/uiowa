@@ -48,7 +48,7 @@ class WriterBio extends NodeBundleBase implements RendersAsCardInterface {
       }
     }
     if (!empty($items)) {
-      $build['#content']['samples'] = [
+      $build['#content']['related_links'] = [
         '#theme' => 'item_list',
         '#type' => 'ul',
         '#items' => $items,
