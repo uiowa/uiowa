@@ -36,7 +36,7 @@ class WriterBio extends NodeBundleBase implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       ...parent::getDefaultCardStyles(),
-      'media_format' => 'media--circle media--border',
+      'media_format' => 'media--square media--border',
       'border' => 'borderless',
     ];
   }
