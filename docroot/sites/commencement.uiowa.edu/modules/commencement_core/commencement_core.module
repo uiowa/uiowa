@@ -106,7 +106,7 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
     // Check if the filter options exist.
     if (isset($form['session']['#options'])) {
       // Sort the options.
-      uasort($form['session']['#options'], function($a, $b) {
+      uasort($form['session']['#options'], function ($a, $b) {
         // Keep all at the top of the list.
         if ($a === 'All' || $b === 'All') {
           return $a === 'All' ? -1 : 1;
@@ -124,10 +124,6 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
       });
     }
   }
-}
-
-function commencement_core_session_sort(&$a, &$b) {
-
 }
 
 /**
