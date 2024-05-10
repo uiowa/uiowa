@@ -123,10 +123,19 @@ function its_core_entity_presave(EntityInterface $entity) {
           // Append to the revision log if it exists, otherwise set one.
           // @todo see about line breaks in log message?
           $revision_log = $entity->get('revision_log')?->value;
+          if (its_core_alert_email_addresses_exist()) {
+            $message = 'Alert email triggered.';
+          }
+          else {
+            $message = 'Alert email triggered but not sent. No recipient addresses have been set.';
+            // No addresses are set, so we don't need to trigger the send.
+            $entity->send_email = 0;
+            $messenger = \Drupal::messenger();
+            $messenger->addMessage("{$message} Please contact the site administrator.", $messenger::TYPE_WARNING);
+          }
           // Set field back and record revision log info.
-          $revision_log = $revision_log . ' Alert email triggered.';
+          $revision_log = "{$revision_log} {$message}";
           $entity->set('revision_log', $revision_log);
-
           $entity->set('field_alert_email', 0);
         }
       }
@@ -134,6 +143,17 @@ function its_core_entity_presave(EntityInterface $entity) {
       break;
 
   }
+}
+
+/**
+ * Helper function to check if an address is set for the alert email.
+ *
+ * @return bool
+ *   Whether To or BCC address has been set.
+ */
+function its_core_alert_email_addresses_exist() {
+  $settings = \Drupal::configFactory()->get('its_core.settings');
+  return (!empty($settings->get('single-alert-to')) || !empty($settings->get('single-alert-bcc')));
 }
 
 /**
@@ -366,11 +386,19 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     case 'node_alert_edit_form':
     case 'node_alert_form':
+      $form['field_alert_date']['widget'][0]['duration']['#title'] = t('End Date');
+      $form['field_alert_updates']['widget']['add_more']['#suffix'] = t('to this alert');
       // Attach smart_date override js.
       $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
       if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
+      }
+      // Only allow access to these fields for users
+      // with the 'administer site configuration' permission.
+      if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+        unset($form["path"]);
+        unset($form["field_meta_tags"]);
       }
       break;
 
@@ -434,10 +462,6 @@ function its_core_preprocess_block(&$variables) {
 
     case 'field_block:node:article:field_article_related_service':
       $variables['attributes']['class'][] = 'article--meta';
-      break;
-
-    case 'field_block:node:alert:field_alert_updates':
-      uiowa_core_set_attributes($variables, 'list-container list-container--list');
       break;
 
     case 'field_block:node:alert:changed':
@@ -570,12 +594,13 @@ function its_core_preprocess_field(&$variables, $hook) {
 
     case 'field_alert_service_affected':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
         if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline field--separator');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline field--separator');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services and buildings affected');
         }
         elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services affected');
         }
       }
       break;
@@ -584,15 +609,15 @@ function its_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_attributes($variables, 'element--inline');
         if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
-          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Buildings affected');
+          uiowa_core_set_attributes($variables, 'fa-field-item');
         }
       }
       break;
 
     case 'field_alert_update_date':
-      uiowa_core_set_field_icon($variables, 'fa-clock fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-clock');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_alert_updates':
@@ -778,14 +803,7 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'alerts_list_block':
-      if ($view->current_display === 'service_announcements') {
-        foreach ($variables['rows'] as &$row_build) {
-          $row_build['content']['#override_styles'] = [
-            'border' => '',
-          ];
-        }
-      }
-      elseif ($view->current_display === 'alert_status') {
+      if ($view->current_display === 'alert_status') {
         // Attach the library using the #attached property.
         $variables['#attached']['library'][] = 'uids_base/view-bef';
       }
@@ -1028,10 +1046,9 @@ function its_core_alerts_digest() {
       '#items' => $links,
     ];
 
+    /** @var \Drupal\symfony_mailer\EmailFactory $emailFactory */
     $emailFactory = \Drupal::service('email_factory');
-
     $email = $emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
-
     if ($email->getError()) {
       $message = t('Alerts Digest no sent');
     }

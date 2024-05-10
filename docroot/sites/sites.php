@@ -3857,12 +3857,6 @@ $sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 
-// Directory aliases for grantbulletin.research.uiowa.edu.
-$sites['researchgrantbulletin.uiowa.ddev.site'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.dev.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.stage.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.prod.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-
 // Directory aliases for jingjiang.lab.uiowa.edu.
 $sites['labjingjiang.uiowa.ddev.site'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.dev.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
@@ -7222,3 +7216,63 @@ $sites['cgrer.uiowa.ddev.site'] = 'cgrer.uiowa.edu';
 $sites['cgrer.dev.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
 $sites['cgrer.stage.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
 $sites['cgrer.prod.drupal.uiowa.edu'] = 'cgrer.uiowa.edu';
+
+// Directory aliases for worklife.uiowa.edu.
+$sites['worklife.uiowa.ddev.site'] = 'worklife.uiowa.edu';
+$sites['worklife.dev.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+$sites['worklife.stage.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+$sites['worklife.prod.drupal.uiowa.edu'] = 'worklife.uiowa.edu';
+
+// Directory aliases for rai-me.sites.uiowa.edu.
+$sites['sitesrai-me.uiowa.ddev.site'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.dev.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.stage.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+$sites['sitesrai-me.prod.drupal.uiowa.edu'] = 'rai-me.sites.uiowa.edu';
+
+// Directory aliases for colorguard.org.uiowa.edu.
+$sites['orgcolorguard.uiowa.ddev.site'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.dev.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.stage.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+$sites['orgcolorguard.prod.drupal.uiowa.edu'] = 'colorguard.org.uiowa.edu';
+
+// Directory aliases for treasury.fo.uiowa.edu.
+$sites['fotreasury.uiowa.ddev.site'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.dev.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.stage.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+$sites['fotreasury.prod.drupal.uiowa.edu'] = 'treasury.fo.uiowa.edu';
+
+// Directory aliases for vandervelde.studio.uiowa.edu.
+$sites['studiovandervelde.uiowa.ddev.site'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.dev.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.stage.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+$sites['studiovandervelde.prod.drupal.uiowa.edu'] = 'vandervelde.studio.uiowa.edu';
+
+// Directory aliases for resource.clas.uiowa.edu.
+$sites['clasresource.uiowa.ddev.site'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.dev.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.stage.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
+$sites['clasresource.prod.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
+
+// Directory aliases for fmb.fo.uiowa.edu.
+$sites['fofmb.uiowa.ddev.site'] = 'fmb.fo.uiowa.edu';
+$sites['fofmb.dev.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
+$sites['fofmb.stage.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
+$sites['fofmb.prod.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
+
+// Directory aliases for strivecardio-study.lab.uiowa.edu.
+$sites['labstrivecardio-study.uiowa.ddev.site'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.dev.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.stage.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.prod.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+
+// Directory aliases for cfap.center.uiowa.edu.
+$sites['centercfap.uiowa.ddev.site'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.dev.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.stage.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.prod.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+
+// Directory aliases for psychotherapy-research.lab.uiowa.edu.
+$sites['labpsychotherapy-research.uiowa.ddev.site'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.dev.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.stage.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.prod.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';

@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 
 /**
@@ -57,6 +58,7 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
       $form['field_event_website']['#disabled'] = TRUE;
+      break;
   }
 }
 
@@ -74,6 +76,9 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
       $parent = $referring_item->getParent();
       if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
         $variables['items'][0]['content']['#description'] = t('View program');
+      }
+      if (!is_null($parent) && $parent->getName() === 'field_event_order_of_events') {
+        $variables['items'][0]['content']['#description'] = t('View Order of Events');
       }
     }
   }
@@ -108,7 +113,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
 
       $variables['delta'] = 0;
       $parent = $paragraph->getParentEntity();
-      if ($parent->getType() === 'uiowa_collection_section') {
+      if ($parent instanceof ParagraphInterface && $parent->getType() === 'uiowa_collection_section') {
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
 
@@ -123,6 +128,23 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_paragraph__uiowa_collection_section(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $unique_id = $paragraph->field_unique_id?->value;
+
+    if (!is_null($unique_id)) {
+      $variables['content']['field_coll_section_title']['#attributes']['id'] = $unique_id;
     }
   }
 }

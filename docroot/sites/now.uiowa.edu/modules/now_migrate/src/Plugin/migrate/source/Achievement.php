@@ -51,7 +51,7 @@ class Achievement extends BaseNodeSource {
       }
       elseif (in_array($filemime, ['video/oembed', 'application/octet-stream'])) {
         $body = $row->getSourceProperty('body');
-        $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
+        $body[0]['value'] = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid'])) . $body[0]['value'];
         $row->setSourceProperty('body', $body);
       }
     }

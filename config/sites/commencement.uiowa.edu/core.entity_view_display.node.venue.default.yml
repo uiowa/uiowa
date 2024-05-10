@@ -16,6 +16,7 @@ dependencies:
     - entity_reference_revisions
     - geofield
     - layout_builder
+    - layout_builder_restrictions
     - metatag
     - system
     - text
@@ -312,7 +313,7 @@ third_party_settings:
                 type: entity_reference_revisions_entity_view
                 label: visually_hidden
                 settings:
-                  view_mode: accordion
+                  view_mode: default
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
@@ -325,6 +326,15 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.venue.default
 targetEntityType: node
 bundle: venue
