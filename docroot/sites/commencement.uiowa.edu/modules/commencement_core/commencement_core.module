@@ -102,7 +102,32 @@ function commencement_core_taxonomy_term_session_form_submit($form, FormStateInt
 function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form['#id'] === 'views-exposed-form-ceremonies-page-1') {
     $form['#attached']['library'][] = 'sitenow/chosen';
+
+    // Check if the filter options exist.
+    if (isset($form['session']['#options'])) {
+      // Sort the options.
+      uasort($form['session']['#options'], function($a, $b) {
+        // Keep all at the top of the list.
+        if ($a === 'All' || $b === 'All') {
+          return $a === 'All' ? -1 : 1;
+        }
+        [$a_session, $a_year] = explode(' ', $a);
+        [$b_session, $b_year] = explode(' ', $b);
+        if ((int) $a_year === (int) $b_year) {
+          $session_compare = [
+            'Spring' => 0,
+            'Fall' => 1,
+          ];
+          return $session_compare[$a_session] <=> $session_compare[$b_session];
+        }
+        return (int) $a_year <=> (int) $b_year;
+      });
+    }
   }
+}
+
+function commencement_core_session_sort(&$a, &$b) {
+
 }
 
 /**
