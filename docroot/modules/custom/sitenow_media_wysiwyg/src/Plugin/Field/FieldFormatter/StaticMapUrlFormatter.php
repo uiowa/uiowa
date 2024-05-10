@@ -28,10 +28,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
     foreach ($elements as $delta => $entity) {
       $regex = \Drupal::config('sitenow_media_wysiwyg.settings')
         ->get('sitenow_media_wysiwyg.static_map_regex');
-      if (!$regex) {
-        break;
-      }
-      else {
+      if ($regex) {
         preg_match($regex, parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
         $location = $regex_matches[1];
         $alt = $values[0]['alt'];
@@ -64,6 +61,9 @@ class StaticMapUrlFormatter extends LinkFormatter {
             ],
           ],
         ];
+      }
+      else {
+        \Drupal::messenger()->addError($this->t('Unable to process Static Map Image URL.'));
       }
     }
     return $elements;

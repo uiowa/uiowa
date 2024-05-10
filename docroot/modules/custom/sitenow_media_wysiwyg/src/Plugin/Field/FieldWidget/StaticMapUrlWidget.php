@@ -83,10 +83,7 @@ class StaticMapUrlWidget extends LinkWidget {
 
     // Construct URL like the formatter to test the response from Concept3D.
     $regex = \Drupal::config('sitenow_media_wysiwyg.settings')->get('sitenow_media_wysiwyg.static_map_regex');
-    if (!$regex) {
-      $form_state->setError($element, t('Failed to retrieve necessary settings.'));
-    }
-    else {
+    if ($regex) {
       preg_match($regex, $parsed_url['fragment'], $regex_matches);
       $map_location = $regex_matches[1];
       $url = StaticMap::STATIC_URL . '/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=17';
@@ -96,6 +93,9 @@ class StaticMapUrlWidget extends LinkWidget {
       if ($response != 'HTTP/1.1 200 OK') {
         $form_state->setError($element, t('The URL must return a valid HTTP status code.'));
       }
+    }
+    else {
+      $form_state->setError($element, t('Failed to retrieve necessary settings.'));
     }
   }
 

@@ -134,10 +134,7 @@ class StaticMap extends MediaSourceBase {
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
     $regex = \Drupal::config('sitenow_media_wysiwyg.settings')
       ->get('sitenow_media_wysiwyg.static_map_regex');
-    if (!$regex) {
-      \Drupal::messenger()->addError(t('Failed to retrieve necessary settings.'));
-    }
-    else {
+    if ($regex) {
       preg_match($regex, $parsed['fragment'], $regex_matches);
       $marker = $regex_matches[1];
 
@@ -169,11 +166,11 @@ class StaticMap extends MediaSourceBase {
               }
               catch (TransferException $exception) {
                 \Drupal::messenger()
-                  ->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
+                  ->addError($this->t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
               }
               catch (FileException | InvalidStreamWrapperException $e) {
                 \Drupal::messenger()
-                  ->addError(t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
+                  ->addError($this->t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
               }
             }
           }
@@ -187,9 +184,11 @@ class StaticMap extends MediaSourceBase {
             return NULL;
           }
       }
-
-      return NULL;
     }
+    else {
+      \Drupal::messenger()->addError($this->t('Failed to retrieve necessary settings.'));
+    }
+    return NULL;
   }
 
 }
