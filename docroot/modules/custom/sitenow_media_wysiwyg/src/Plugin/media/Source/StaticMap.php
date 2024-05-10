@@ -132,49 +132,62 @@ class StaticMap extends MediaSourceBase {
 
     // The source is a required, single value field.
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
-    $marker = str_replace('!m/', '', $parsed['fragment']);
+    $regex = \Drupal::config('sitenow_media_wysiwyg.settings')
+      ->get('sitenow_media_wysiwyg.static_map_regex');
+    if ($regex) {
+      preg_match($regex, $parsed['fragment'], $regex_matches);
+      $marker = $regex_matches[1];
 
-    if (str_contains($marker, '?')) {
-      $marker = strstr($marker, '?', TRUE);
-    }
+      if (str_contains($marker, '?')) {
+        $marker = strstr($marker, '?', TRUE);
+      }
 
-    switch ($attribute_name) {
-      case 'default_name':
-        return 'media:' . $media->bundle() . ':marker-' . $marker;
+      switch ($attribute_name) {
+        case 'default_name':
+          return 'media:' . $media->bundle() . ':marker-' . $marker;
 
-      case 'thumbnail_uri':
-        try {
-          $thumbnail_url = self::STATIC_URL . "/map/static-map/?map=1890&loc=" . $marker . "&scale=1&zoom=17";
-          $this->client->request('GET', $thumbnail_url);
+        case 'thumbnail_uri':
+          try {
+            $thumbnail_url = self::STATIC_URL . "/map/static-map/?map=1890&loc=" . $marker . "&scale=1&zoom=17";
+            $this->client->request('GET', $thumbnail_url);
 
-          $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = "$scheme://static_map_thumbnails/";
-          $realpath = $this->fs->realpath($destination);
-          $destination_file = "$destination$uuid.jpg";
+            $scheme = $this->configFactory->get('system.file')
+              ->get('default_scheme');
+            $destination = "$scheme://static_map_thumbnails/";
+            $realpath = $this->fs->realpath($destination);
+            $destination_file = "$destination$uuid.jpg";
 
-          if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-            try {
-              $data = (string) \Drupal::httpClient()->get($thumbnail_url)->getBody();
-              return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
-            }
-            catch (TransferException $exception) {
-              \Drupal::messenger()->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
-            }
-            catch (FileException | InvalidStreamWrapperException $e) {
-              \Drupal::messenger()->addError(t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
+            if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
+              try {
+                $data = (string) \Drupal::httpClient()
+                  ->get($thumbnail_url)
+                  ->getBody();
+                return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
+              }
+              catch (TransferException $exception) {
+                \Drupal::messenger()
+                  ->addError($this->t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
+              }
+              catch (FileException | InvalidStreamWrapperException $e) {
+                \Drupal::messenger()
+                  ->addError($this->t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
+              }
             }
           }
-        }
-        catch (ClientException $e) {
-          $this->logger()->warning($this->t('Unable to get thumbnail image for @media.', [
-            '@media' => $media->uuid(),
-          ]));
+          catch (ClientException $e) {
+            $this->logger()
+              ->warning($this->t('Unable to get thumbnail image for @media.', [
+                '@media' => $media->uuid(),
+              ]));
 
-          // Use the default thumbnail if we can't get one.
-          return NULL;
-        }
+            // Use the default thumbnail if we can't get one.
+            return NULL;
+          }
+      }
     }
-
+    else {
+      \Drupal::messenger()->addError($this->t('Failed to retrieve necessary settings.'));
+    }
     return NULL;
   }
 
