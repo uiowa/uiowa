@@ -23,10 +23,29 @@ class WriterBio extends NodeBundleBase implements RendersAsCardInterface {
         'field_writer_bio_countries',
       ],
       '#content' => [
-        'field_writer_bio_sample',
-        'field_writer_bio_sample_original',
+        'field_writer_bio_media_link',
       ],
     ]);
+
+    // Combine fields into an unordered list.
+    $items = [];
+    $list_fields = [
+      'field_writer_bio_sample',
+      'field_writer_bio_sample_original',
+    ];
+    foreach ($list_fields as $field) {
+      if ($this->hasField($field) && !$this->$field->isEmpty()) {
+        $items[] = $this->$field->view('teaser');
+      }
+    }
+    if (!empty($items)) {
+      $build['#content']['samples'] = [
+        '#theme' => 'item_list',
+        '#type' => 'ul',
+        '#items' => $items,
+        '#weight' => 3,
+      ];
+    }
 
   }
 
