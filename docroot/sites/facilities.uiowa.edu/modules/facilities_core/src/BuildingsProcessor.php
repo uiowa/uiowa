@@ -8,20 +8,13 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
-use GuzzleHttp\Client;
+use Drupal\uiowa_facilities\BizHubApiClient;
 use GuzzleHttp\Exception\ClientException;
 
 /**
  * Sync building information.
  */
 class BuildingsProcessor extends EntityProcessorBase {
-
-  /**
-   * The http_client service.
-   *
-   * @var \GuzzleHttp\Client
-   */
-  protected Client $client;
 
   /**
    * The file_system service.
@@ -52,13 +45,6 @@ class BuildingsProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct() {
-    parent::__construct($this->bundle);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $fieldSyncKey = 'field_building_number';
 
   /**
@@ -67,13 +53,37 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'buildingNumber';
 
   /**
+   * A list of building coordinators.
+   *
+   * @var array|null
+   */
+  protected $buildingCoordinators = NULL;
+
+  /**
+   * The BizHub API client.
+   *
+   * @var \Drupal\uiowa_facilities\BizHubApiClientInterface
+   */
+  protected BizHubApiClient $apiClient;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    parent::__construct();
+    $this->apiClient = \Drupal::service('uiowa_facilities.bizhub_api_client');
+    $this->fs = \Drupal::service('file_system');
+    $this->configFactory = \Drupal::service('config.factory');
+    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function getData() {
     if (!isset($this->data)) {
-      // Request from Facilities API to get buildings.
-      $facilities_api = \Drupal::service('uiowa_facilities.api');
-      $this->data = $facilities_api->getBuildings();
+      // Request from BizHub API to get buildings.
+      $this->data = $this->apiClient->getBuildings();
     }
     return $this->data;
   }
@@ -83,9 +93,8 @@ class BuildingsProcessor extends EntityProcessorBase {
    */
   protected function processRecord(&$record) {
     if (!is_null($building_number = $record?->{$this->apiRecordSyncKey})) {
-      // Request from Facilities API to get buildings.
-      $facilities_api = \Drupal::service('uiowa_facilities.api');
-      $result = $facilities_api->getBuilding($building_number);
+      // Request from BizHub API to get building.
+      $result = $this->apiClient->getBuilding($building_number);
       // Get image
       // Use some type of caching strategy.
       $this->processResultImage($result);
@@ -94,7 +103,7 @@ class BuildingsProcessor extends EntityProcessorBase {
       }
     }
     // API call for building coordinator information.
-    $coordinators = $facilities_api->getBuildingCoordinators($building_number);
+    $coordinators = $this->getCoordinatorsForBuilding($building_number);
 
     // Merge building coordinators data into the building record for processing.
     $coordinator_properties = [
@@ -111,7 +120,7 @@ class BuildingsProcessor extends EntityProcessorBase {
     ];
 
     foreach ($coordinator_properties as $property) {
-      $record->{$property} = $coordinators->{$property} ?? NULL;
+      $record->{$property} = $coordinators[$property] ?? NULL;
     }
 
     // There is at least one building with a blank space instead of
@@ -130,16 +139,6 @@ class BuildingsProcessor extends EntityProcessorBase {
   }
 
   /**
-   * Initialize relevant services.
-   */
-  public function init() {
-    $this->client = \Drupal::service('http_client');
-    $this->fs = \Drupal::service('file_system');
-    $this->configFactory = \Drupal::service('config.factory');
-    $this->imageFieldConfig = FieldConfig::loadByName('node', 'building', 'field_building_image');
-  }
-
-  /**
    * Cache local image from API.
    *
    * Save a local version of an image gotten from the facilities API
@@ -155,24 +154,19 @@ class BuildingsProcessor extends EntityProcessorBase {
   protected function processResultImage(&$result) {
     if (!empty($result->imageUrl)) {
       try {
-        $building_image_url = $result->imageUrl;
-        $this->client->request('GET', $building_image_url);
-
         $scheme = $this->configFactory->get('system.file')->get('default_scheme');
         $destination = $scheme . '://' . $this->imageFieldConfig->getSetting('file_directory') . '/';
         $building_number = $result->buildingNumber;
         $realpath = $this->fs->realpath($destination);
 
         if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-          $data = file_get_contents($building_image_url);
+          $data = file_get_contents($result->imageUrl);
           $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
 
           $building_formal_name = $result?->buildingFormalName ?: '';
 
-          $result->imageUrl = [
-            'target_id' => $file->id(),
-            'alt' => $building_formal_name,
-          ];
+          $result->imageUrl = $file->id();
+          $result->image_alt = $building_formal_name;
         }
       }
       catch (ClientException $e) {
@@ -187,6 +181,33 @@ class BuildingsProcessor extends EntityProcessorBase {
     else {
       $result->imageUrl = NULL;
     }
+  }
+
+  /**
+   * Get the coordinator results for a building.
+   *
+   * If the results have not already been fetched from the API and processed,
+   * that happens first.
+   *
+   * @param string $building_number
+   *   The building number.
+   *
+   * @return array
+   *   The list of coordinators or an empty array.
+   */
+  protected function getCoordinatorsForBuilding(string $building_number): array {
+    // If building coordinators have not already been fetched, fetch them and
+    // process them into an array keyed by building number.
+    if (is_null($this->buildingCoordinators)) {
+      $this->buildingCoordinators = [];
+      $results = $this->apiClient->getBuildingCoordinators();
+      foreach ($results as $result) {
+        $this->buildingCoordinators[$result->buildingNumber] = (array) $result;
+      }
+    }
+
+    // Return the result if it exists or an empty array.
+    return $this->buildingCoordinators[$building_number] ?? [];
   }
 
   /**

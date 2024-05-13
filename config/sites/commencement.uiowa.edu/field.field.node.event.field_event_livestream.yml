@@ -1,0 +1,24 @@
+uuid: 3ff5b36e-bdd7-44d9-9c3e-6e2fbb5289aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_livestream
+    - filter.format.filtered_html
+    - node.type.event
+  module:
+    - text
+id: node.event.field_event_livestream
+field_name: field_event_livestream
+entity_type: node
+bundle: event
+label: Livestream
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

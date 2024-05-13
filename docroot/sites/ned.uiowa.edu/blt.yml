@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ned.uiowa.ddev.site
+    protocol: https
+  machine_name: ned
+  human_name: ned.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ned.prod
+drupal:
+  db:
+    database: ned_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ned.prod.drupal.uiowa.edu'
+  requester: prickettk
+  site-name: NEd

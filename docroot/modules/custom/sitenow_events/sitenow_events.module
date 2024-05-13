@@ -24,7 +24,7 @@ use GuzzleHttp\Exception\RequestException;
  * Implements hook_entity_bundle_info_alter().
  */
 function sitenow_events_entity_bundle_info_alter(array &$bundles) {
-  if (isset($bundles['node']['event'])) {
+  if (\Drupal::config('config_split.config_split.event')->get('status') === TRUE && isset($bundles['node']['event'])) {
     $bundles['node']['event']['class'] = Event::class;
   }
 }
@@ -44,30 +44,36 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_hide']['#group'] = 'options';
       }
 
-      $form['field_event_series_link_direct']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
-        ],
-      ];
+      if (isset($form['field_event_series_link_direct'])) {
+        $form['field_event_series_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
 
       // Show/hide the location and virtual info fields
       // based on the attendance mode. Hybrid should display both.
-      $form['field_event_location']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OfflineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OfflineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
-      $form['field_event_virtual']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OnlineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+        ];
+      }
+      if (isset($form['field_event_virtual'])) {
+        $form['field_event_virtual']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OnlineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
+        ];
+      }
 
       // Because person titles are constructed
       // in sitenow_people_entity_presave, there is no title for this
@@ -497,6 +503,8 @@ function sitenow_events_build_card(array $event): array {
     '#title' => $event['title'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
+    '#prefix' => '<div class="column-container">',
+    '#suffix' => '</div>',
   ];
 
   // Construct date string.
@@ -541,7 +549,7 @@ function sitenow_events_build_card(array $event): array {
   if ($event['virtual'] === TRUE) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fa-li fas fa-laptop"></span>',
+      '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
@@ -551,7 +559,7 @@ function sitenow_events_build_card(array $event): array {
   elseif (!is_null($event["location_name"])) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fa-li fas fa-map-marker-alt"></span>',
+      '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
@@ -559,8 +567,8 @@ function sitenow_events_build_card(array $event): array {
     ];
   }
 
-  // Add a wrapper div with class "fa-ul".
-  $card['#meta']['#prefix'] = '<div class="fa-ul">';
+  // Add a wrapper div with class "fa-field-item".
+  $card['#meta']['#prefix'] = '<div class="fa-field-item">';
   $card['#meta']['#suffix'] = '</div>';
 
   // Limit what html is allowed.
@@ -660,20 +668,20 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_location':
-      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_performer':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fas fa-user-circle fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_icon($variables, 'fas fa-user-circle');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
 
     case 'field_event_series_link':
-      uiowa_core_set_field_icon($variables, 'fas fa-link fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-link');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_status':
@@ -691,13 +699,13 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_virtual':
-      uiowa_core_set_field_icon($variables, 'fas fa-desktop fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_when':
-      uiowa_core_set_field_icon($variables, 'fa-calendar far fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-calendar far');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
 }

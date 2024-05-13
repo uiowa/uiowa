@@ -1,0 +1,52 @@
+uuid: 19e558ea-9b9a-479b-8909-c518fa8187c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_collection_section.field_coll_section_collections
+    - field.field.paragraph.uiowa_collection_section.field_coll_section_content
+    - field.field.paragraph.uiowa_collection_section.field_coll_section_title
+    - field.field.paragraph.uiowa_collection_section.field_unique_id
+    - paragraphs.paragraphs_type.uiowa_collection_section
+  module:
+    - entity_reference_revisions
+    - field_delimiter
+    - heading
+    - text
+id: paragraph.uiowa_collection_section.default
+targetEntityType: paragraph
+bundle: uiowa_collection_section
+mode: default
+content:
+  field_coll_section_collections:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: accordion
+      link: ''
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 2
+    region: content
+  field_coll_section_content:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_coll_section_title:
+    type: heading_text
+    label: hidden
+    settings:
+      size: h3
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_unique_id: true
+  search_api_excerpt: true

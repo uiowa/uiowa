@@ -1,0 +1,46 @@
+uuid: 3bb68f4a-1a94-4833-b399-d8938b494920
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: commencement.uiowa.edu
+description: 'Site split for commencement.uiowa.edu'
+weight: 70
+stackable: false
+storage: folder
+folder: ../config/sites/commencement.uiowa.edu
+module:
+  commencement_core: 0
+  leaflet: 0
+  schema_event: 0
+  schema_place: 0
+theme: {  }
+complete_list:
+  - commencement_core.settings
+  - config_split.config_split.site
+  - core.entity_form_display.paragraph.uiowa_collection_section.default
+  - core.entity_view_display.paragraph.uiowa_collection_section.default
+  - metatag.metatag_defaults.node__event
+  - metatag.metatag_defaults.node__venue
+  - node.type.event
+  - node.type.venue
+  - paragraphs.paragraphs_type.uiowa_collection_section
+  - pathauto.pattern.event
+  - pathauto.pattern.venue
+  - simple_sitemap.bundle_settings.default.node.venue
+  - taxonomy.vocabulary.celebrations
+  - taxonomy.vocabulary.college
+  - taxonomy.vocabulary.session
+  - views.view.ceremonies
+  - views.view.events_by_venue
+  - views.view.program_archive
+  - taxonomy.vocabulary.department
+  - 'field.storage.node.field_event_*'
+  - 'field.storage.node.field_venue_*'
+  - 'field.storage.taxonomy_term.field_session_*'
+  - 'field.storage.paragraph.field_coll_section_*'
+partial_list:
+  - config_ignore.settings
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'

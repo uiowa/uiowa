@@ -1,6 +1,23 @@
 @import "uids/scss/uids-core.scss";
 $imgpath: '../../uids/assets/images';
 
+// @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block, lb-direct-add.
+.layout__region--unset-type .column-container,
+.layout-builder .column-container {
+  container-type: unset;
+}
+
+// Specify container-type for cards in layout builder.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+// Specify container-type for list blocks using views-row class.
+.list-container__inner .views-row {
+  container-type: inline-size;
+  container-name: column;
+}
+
 // Word break classes.
 .block--word-break,
 .block-inline-blockuiowa-text-area,
@@ -42,6 +59,7 @@ details {
 
 .element--inline {
   display: inline-flex;
+  align-items: baseline;
 }
 
 // Align items in a grid to the top.
@@ -813,60 +831,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .uids-component--alert {
   margin-top: 0;
-}
-
-// ie11
-
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .layout__container .block-inline-blockuiowa-text-area {
-    flex-basis: auto;
-  }
-
-  .o-canvas__group {
-    -ms-flex-preferred-size: auto !important;
-    flex-basis: auto !important;
-  }
-
-  .card__body {
-    flex: auto !important;
-  }
-
-  .card.card--horizontal .card__body {
-    flex: 1 !important;
-    flex-direction: column;
-  }
-
-  .card.card--horizontal>* {
-    flex-direction: unset;
-    display: block !important;
-  }
-
-  .paragraph--type--articles.list .card__body,
-  .paragraph--type--people.list .card__body,
-  .paragraph--type--events.list .card__body,
-  .view-display-id-page_articles .card__body,
-  .paragraph--type--featured-content.list .card__body,
-  .view-id-people .card__body,
-  .view-display-id-page_articles .view-content {
-    flex: 1 !important;
-  }
-
-  .paragraph--type--articles.list .view-content,
-  .paragraph--type--people.list .view-content,
-  .view-display-id-page_articles .view-content,
-  .paragraph--type--featured-content.list .field--name-field-featured-content {
-    display: block !important;
-  }
-
-  .view-id-people .card--list,
-  .view-id-people .node--type-article {
-    display: flex !important;
-  }
-
-  #superfish-main-accordion {
-    position: relative !important;
-  }
 }
 
 // Extra padding to help browsers with a full menu drawer
