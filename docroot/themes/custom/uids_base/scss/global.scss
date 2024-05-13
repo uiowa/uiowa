@@ -67,13 +67,28 @@ details {
   align-self: start;
 }
 
+// Position absolute.
+.element--absolute {
+  position: absolute;
+  z-index: 1;
+}
+
+.element--absolute--left {
+  left: $desktop-width-gutter;
+}
+
+.element--absolute--bottom {
+  bottom: $desktop-width-gutter;
+}
+
 // Set object to cover.
 .element--cover {
   * {
     object-fit: cover;
     height: 100%;
   }
-  .contextual-links {
+  .contextual-links,
+  .leaflet-control {
     height: auto;
   }
 }
