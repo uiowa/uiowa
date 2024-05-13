@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
@@ -60,6 +61,11 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
       $form['field_event_website']['#disabled'] = TRUE;
+      break;
+
+    case 'node_venue_form':
+    case 'node_venue_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
     case 'taxonomy_term_session_form':
@@ -129,6 +135,31 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
 /**
  * Implements hook_preprocess_HOOK().
  */
+function commencement_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
+      break;
+
+    case 'directionslink_block':
+      uiowa_core_set_attributes($variables, [
+        'element--absolute',
+        'element--absolute--left',
+        'element--absolute--bottom',
+      ]);
+      break;
+
+    case 'views_block:events_by_venue-block_1':
+      uiowa_core_set_attributes($variables, 'block-margin__top');
+      $variables['attributes']['id'] = 'events';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function commencement_core_preprocess_field__field_media_file(&$variables) {
   // We don't want to display the file name as the link text for viewing a
   // program PDF. This changes it to 'View program' instead.
@@ -152,15 +183,106 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
-  if ($variables['field_name'] === 'field_coll_section_collections') {
-    if (isset($variables['element'][0]['#paragraph'])) {
-      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-      $paragraph = $variables['element'][0]['#paragraph'];
-      // Somewhat counterintuitively, the paragraph referenced is
-      // uiowa_collection_item and we actually want the parent entity.
-      $parent = $paragraph->getParentEntity();
-      $variables['id'] = $parent->id();
+  switch ($variables['element']['#field_name']) {
+    case 'field_coll_section_collections':
+      if (isset($variables['element'][0]['#paragraph'])) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $variables['element'][0]['#paragraph'];
+        // Somewhat counterintuitively, the paragraph referenced is
+        // uiowa_collection_item and we actually want the parent entity.
+        $parent = $paragraph->getParentEntity();
+        $variables['id'] = $parent->id();
+      }
+      break;
+
+    case 'field_coll_section_title':
+      $variables['item_tag'] = 'h3';
+      uiowa_core_set_attributes($variables, [
+        'headline',
+        'headline--serif',
+        'h3',
+      ]);
+      break;
+
+    case 'field_coll_section_content':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
+      break;
+
+    case 'field_event_venue':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_location':
+      uiowa_core_set_field_icon($variables, 'fa-compass');
+      uiowa_core_set_attributes($variables, [
+        'banner__text',
+        'field--type-address--inline',
+        'element--inline',
+        'block-margin__top',
+      ]);
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'venue') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+      'headline--highlight',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'venue') {
+    switch ($layout->id()) {
+      case 'layout_header':
+        if (!isset($variables['banner_settings'])) {
+          $variables['banner_settings'] = [];
+        }
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          $variables['featured_image_display'] = 'medium';
+        }
+        $variables['banner_settings']['horizontal_align'] = 'center';
+        break;
+
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
+          $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
+        }
+        break;
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'uiowa_collection_section':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+        'block-padding__top',
+      ]);
   }
 }
 
