@@ -6,10 +6,12 @@ dependencies:
     - field.field.paragraph.uiowa_collection_section.field_coll_section_collections
     - field.field.paragraph.uiowa_collection_section.field_coll_section_content
     - field.field.paragraph.uiowa_collection_section.field_coll_section_title
+    - field.field.paragraph.uiowa_collection_section.field_unique_id
     - paragraphs.paragraphs_type.uiowa_collection_section
   module:
     - paragraphs
     - text
+    - uiowa_core
 id: paragraph.uiowa_collection_section.default
 targetEntityType: paragraph
 bundle: uiowa_collection_section
@@ -45,6 +47,14 @@ content:
   field_coll_section_title:
     type: string_textfield
     weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_unique_id:
+    type: string_case_widget
+    weight: 4
     region: content
     settings:
       size: 60

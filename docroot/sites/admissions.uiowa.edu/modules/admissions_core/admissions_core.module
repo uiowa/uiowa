@@ -257,12 +257,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       ];
       break;
 
-    case 'webform_ui_element_form':
-      // Disable captcha type field as it should always be the default
-      // (hcaptcha) at this time.
-      $form['properties']['captcha']['captcha_type']['#disabled'] = TRUE;
-      $form['properties']['captcha']['captcha_container']['#disabled'] = TRUE;
-      break;
   }
 }
 

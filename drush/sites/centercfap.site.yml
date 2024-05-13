@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: centercfap.uiowa.ddev.site
+  paths:
+    files: sites/cfap.center.uiowa.edu/files
+dev:
+  uri: centercfap.dev.drupal.uiowa.edu
+  host: uiowa07dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cfap.center.uiowa.edu/files
+  root: /var/www/html/uiowa07.dev/docroot
+  user: uiowa07.dev
+prod:
+  uri: cfap.center.uiowa.edu
+  host: uiowa07prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cfap.center.uiowa.edu/files
+  root: /var/www/html/uiowa07.prod/docroot
+  user: uiowa07.prod
+test:
+  uri: centercfap.stage.drupal.uiowa.edu
+  host: uiowa07stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cfap.center.uiowa.edu/files
+  root: /var/www/html/uiowa07.stage/docroot
+  user: uiowa07.stage

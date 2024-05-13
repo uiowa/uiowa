@@ -3857,12 +3857,6 @@ $sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 
-// Directory aliases for grantbulletin.research.uiowa.edu.
-$sites['researchgrantbulletin.uiowa.ddev.site'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.dev.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.stage.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-$sites['researchgrantbulletin.prod.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
-
 // Directory aliases for jingjiang.lab.uiowa.edu.
 $sites['labjingjiang.uiowa.ddev.site'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.dev.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
@@ -7264,3 +7258,21 @@ $sites['fofmb.uiowa.ddev.site'] = 'fmb.fo.uiowa.edu';
 $sites['fofmb.dev.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
 $sites['fofmb.stage.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
 $sites['fofmb.prod.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
+
+// Directory aliases for strivecardio-study.lab.uiowa.edu.
+$sites['labstrivecardio-study.uiowa.ddev.site'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.dev.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.stage.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+$sites['labstrivecardio-study.prod.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
+
+// Directory aliases for cfap.center.uiowa.edu.
+$sites['centercfap.uiowa.ddev.site'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.dev.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.stage.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+$sites['centercfap.prod.drupal.uiowa.edu'] = 'cfap.center.uiowa.edu';
+
+// Directory aliases for psychotherapy-research.lab.uiowa.edu.
+$sites['labpsychotherapy-research.uiowa.ddev.site'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.dev.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.stage.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+$sites['labpsychotherapy-research.prod.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';

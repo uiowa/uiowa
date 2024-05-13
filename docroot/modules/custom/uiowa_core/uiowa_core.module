@@ -1072,32 +1072,32 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
     $theme_config = $config_factory->getEditable('uids_base.settings');
-    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
+    $uihc_site = ($theme_config->get('header.branding_options') == 'uihc');
 
     foreach ($tokens as $name => $original) {
 
       // Find the desired token by name.
       switch ($name) {
         case 'favicon_assets_path':
-          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $favicon_path = $uihc_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
           $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
 
           break;
 
         case 'combined_org':
           $site_settings = $config_factory->getEditable('system.site');
-          $formatted_org = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          $combined_org = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
           $has_parent = $site_settings->get('has_parent');
 
-          if ($ccom_site) {
-            $formatted_org = 'Carver College of Medicine';
+          if ($uihc_site) {
+            $combined_org = 'University of Iowa Health Care';
           }
-          if ($has_parent && !$ccom_site) {
+          if ($has_parent) {
             $parent_org = $site_settings->get('parent.name');
-            $formatted_org = $parent_org . ' | ' . $formatted_org;
+            $combined_org = $parent_org . ' | ' . $combined_org;
           }
 
-          $replacements[$original] = $formatted_org;
+          $replacements[$original] = $combined_org;
           break;
       }
     }

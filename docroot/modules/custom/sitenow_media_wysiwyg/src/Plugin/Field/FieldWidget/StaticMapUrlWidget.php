@@ -75,20 +75,27 @@ class StaticMapUrlWidget extends LinkWidget {
       ]));
     }
 
-    if (!array_key_exists('fragment', $parsed_url) || !str_starts_with($parsed_url['fragment'], '!m/')) {
+    if (!array_key_exists('fragment', $parsed_url) || !preg_match('%[!?]m\/%', $parsed_url['fragment'])) {
       $form_state->setError($element, t('The URL must include an @marker.', [
-        '@marker' => '!m/',
+        '@marker' => '!m/ or ?m/',
       ]));
     }
 
     // Construct URL like the formatter to test the response from Concept3D.
-    $map_location = str_replace('!m/', '', $parsed_url['fragment']);
-    $url = StaticMap::STATIC_URL . '/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=17';
-    $headers = get_headers($url, 1);
-    $response = $headers[0];
+    $regex = \Drupal::config('sitenow_media_wysiwyg.settings')->get('sitenow_media_wysiwyg.static_map_regex');
+    if ($regex) {
+      preg_match($regex, $parsed_url['fragment'], $regex_matches);
+      $map_location = $regex_matches[1];
+      $url = StaticMap::STATIC_URL . '/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=17';
+      $headers = get_headers($url, 1);
+      $response = $headers[0];
 
-    if ($response != 'HTTP/1.1 200 OK') {
-      $form_state->setError($element, t('The URL must return a valid HTTP status code.'));
+      if ($response != 'HTTP/1.1 200 OK') {
+        $form_state->setError($element, t('The URL must return a valid HTTP status code.'));
+      }
+    }
+    else {
+      $form_state->setError($element, t('Failed to retrieve necessary settings.'));
     }
   }
 
