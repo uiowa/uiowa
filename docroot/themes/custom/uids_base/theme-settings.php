@@ -112,12 +112,10 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('header.branding_options'),
   ];
 
-
-
   $form['header']['footer_logo'] = [
     '#type' => 'checkbox',
     '#title' => t('Footer logo'),
-    '#description' => t('WEEEEEEEEEEEEEEEEE'),
+    '#description' => t('Display UIowa logo in the footer.'),
     '#default_value' => theme_get_setting('header.footer_logo'),
     '#states' => [
       'visible' => [
