@@ -11,7 +11,6 @@ dependencies:
   module:
     - entity_reference_revisions
     - field_delimiter
-    - heading
     - text
 id: paragraph.uiowa_collection_section.default
 targetEntityType: paragraph
@@ -31,16 +30,16 @@ content:
     region: content
   field_coll_section_content:
     type: text_default
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
   field_coll_section_title:
-    type: heading_text
+    type: string
     label: hidden
     settings:
-      size: h3
+      link_to_entity: false
     third_party_settings: {  }
     weight: 0
     region: content
