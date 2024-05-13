@@ -135,6 +135,31 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
 /**
  * Implements hook_preprocess_HOOK().
  */
+function commencement_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
+      break;
+
+    case 'directionslink_block':
+      uiowa_core_set_attributes($variables, [
+        'element--absolute',
+        'element--absolute--left',
+        'element--absolute--bottom',
+      ]);
+      break;
+
+    case 'views_block:events_by_venue-block_1':
+      uiowa_core_set_attributes($variables, 'block-margin__top');
+      $variables['attributes']['id'] = 'events';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function commencement_core_preprocess_field__field_media_file(&$variables) {
   // We don't want to display the file name as the link text for viewing a
   // program PDF. This changes it to 'View program' instead.
