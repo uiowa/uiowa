@@ -63,6 +63,11 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_website']['#disabled'] = TRUE;
       break;
 
+    case 'node_venue_form':
+    case 'node_venue_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
     case 'taxonomy_term_session_form':
       $term_id = $form_state->getFormObject()->getEntity()->id();
       $config = \Drupal::config('commencement_core.settings');
@@ -124,13 +129,7 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
         return (int) $a_year <=> (int) $b_year;
       });
     }
-
-    case 'node_venue_form':
-    case 'node_venue_edit_form':
-      _sitenow_node_form_defaults($form, $form_state);
-      break;
   }
-
 }
 
 /**
