@@ -88,11 +88,11 @@ function uipress_core_preprocess_field(&$variables, $hook) {
       $wrapped_value = '<strong>' . $field_value . '</strong>';
 
       // Prepend and append text to the field value.
-      $prefixed_value = 'Please use promo code ' . $wrapped_value . ' when prompted by shopping cart.';
-      $prefixed_value = Markup::create($prefixed_value);
+      $prefixed_and_appended_value = 'Please use promo code ' . $wrapped_value . ' when prompted by shopping cart';
+      $prefixed_and_appended_value = Markup::create($prefixed_and_appended_value);
 
       // Update the field value.
-      $variables['items'][0]['content']['#context']['value'] = $prefixed_value;
+      $variables['items'][0]['content']['#context']['value'] = $prefixed_and_appended_value;
       uiowa_core_set_attributes($variables, [
         'block-margin__top',
         'bg--gray',
