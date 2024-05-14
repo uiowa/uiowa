@@ -164,7 +164,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         }
         // If neither condition is true unset display of sale price.
         if (!$in_range) {
-          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_code']);
         }
       }
     }
