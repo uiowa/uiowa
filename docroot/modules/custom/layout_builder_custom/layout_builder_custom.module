@@ -1183,8 +1183,12 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   }
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
-    // Add grid modifier class to exclude headline for rendering in grid.
-    $variables['attributes']['class'][] = 'grid--first-item-full-width';
+
+    $lb_styles_array = $variables['elements']['#layout_builder_style'] ?? [];
+    if (!in_array('list_format_list', $lb_styles_array)) {
+      $variables['attributes']['class'][] = 'grid--first-item-full-width';
+    }
+
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
