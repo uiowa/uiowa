@@ -30,10 +30,9 @@
             logo_path_png: uihc_logo_path_png,
             logo_id: 'header',
           } %}
+        {% else %}
+          <div class="top-bar"></div>
         {% endif %}
-
-      {% else %}
-        <div class="top-bar"></div>
       {% endif %}
     {% endblock %}
 
