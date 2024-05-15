@@ -13,7 +13,7 @@
       {% if uiowa_logo is not empty %}
       {{ attach_library('uids_base/logo') }}
 
-      {% if header_branding == 'iowa' %}
+      {% if (header_branding == 'iowa' or footer_logo) %}
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
         logo_path_png: uiowa_logo_path_png,
