@@ -98,7 +98,10 @@ function commencement_core_taxonomy_term_session_form_submit($form, FormStateInt
     $term_id = $form_state->getFormObject()->getEntity()->id();
     $config->set('default_session', $term_id)->save();
     // Invalidate the views cache for the ceremonies view.
-    Cache::invalidateTags(['config:views.view.ceremonies']);
+    Cache::invalidateTags([
+      'config:views.view.ceremonies',
+      'config:views.view.events_by_venue',
+    ]);
   }
 }
 
@@ -370,13 +373,19 @@ function commencement_core_theme($existing, $type, $theme, $path) {
  * Implements hook_views_pre_build().
  */
 function commencement_core_views_pre_build(ViewExecutable $view) {
-
   if (in_array($view->id(), ['ceremonies', 'events_by_venue'])) {
     $config = \Drupal::config('commencement_core.settings');
     $default_session = $config->get('default_session');
     if ($default_session) {
       $filter = $view->display_handler->getHandler('filter', 'field_event_session_target_id');
-      $filter->value['value'] = $default_session;
+      if ($view->id() === 'ceremonies') {
+        $filter->value['value'] = $default_session;
+      }
+      else {
+        $filter->value = [];
+        $filter->value[$default_session] = $default_session;
+      }
+      $view->display_handler->overrideOption('filters', $filter);
     }
   }
 }
