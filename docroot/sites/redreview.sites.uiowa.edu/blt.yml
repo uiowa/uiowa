@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesredreview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesredreview
+  human_name: redreview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesredreview.prod
+drupal:
+  db:
+    database: redreview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesredreview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Red Review'

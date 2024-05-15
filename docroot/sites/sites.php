@@ -7288,3 +7288,9 @@ $sites['sitesbluereview.uiowa.ddev.site'] = 'bluereview.sites.uiowa.edu';
 $sites['sitesbluereview.dev.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
 $sites['sitesbluereview.stage.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
 $sites['sitesbluereview.prod.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
+
+// Directory aliases for redreview.sites.uiowa.edu.
+$sites['sitesredreview.uiowa.ddev.site'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.dev.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.stage.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.prod.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
