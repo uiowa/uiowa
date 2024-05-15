@@ -370,7 +370,8 @@ function commencement_core_theme($existing, $type, $theme, $path) {
  * Implements hook_views_pre_build().
  */
 function commencement_core_views_pre_build(ViewExecutable $view) {
-  if ($view->id() == 'ceremonies') {
+
+  if (in_array($view->id(), ['ceremonies', 'events_by_venue'])) {
     $config = \Drupal::config('commencement_core.settings');
     $default_session = $config->get('default_session');
     if ($default_session) {
