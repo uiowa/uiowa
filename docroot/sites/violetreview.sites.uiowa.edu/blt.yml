@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesvioletreview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesvioletreview
+  human_name: violetreview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesvioletreview.prod
+drupal:
+  db:
+    database: violetreview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesvioletreview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Violet Review'
