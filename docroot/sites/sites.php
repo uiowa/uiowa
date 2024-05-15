@@ -7306,3 +7306,9 @@ $sites['sitesgreenreview.uiowa.ddev.site'] = 'greenreview.sites.uiowa.edu';
 $sites['sitesgreenreview.dev.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
 $sites['sitesgreenreview.stage.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
 $sites['sitesgreenreview.prod.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
+
+// Directory aliases for orangereview.sites.uiowa.edu.
+$sites['sitesorangereview.uiowa.ddev.site'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.dev.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.stage.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.prod.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
