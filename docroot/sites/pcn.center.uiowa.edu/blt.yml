@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centerpcn.uiowa.ddev.site
+    protocol: https
+  machine_name: centerpcn
+  human_name: pcn.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centerpcn.prod
+drupal:
+  db:
+    database: pcn_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centerpcn.prod.drupal.uiowa.edu'
+  requester: dacanay
+  site-name: 'Ponseti Clubfoot Treatment and Research Center - PCTC'
