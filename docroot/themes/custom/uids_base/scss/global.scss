@@ -12,6 +12,7 @@ $imgpath: '../../uids/assets/images';
 // Specify container-type for cards in layout builder.
 .layout-builder .layout-builder-block.block-inline-blockuiowa-card,
 .layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
 // Specify container-type for list blocks using views-row class.
 .list-container__inner .views-row {
   container-type: inline-size;
@@ -67,13 +68,28 @@ details {
   align-self: start;
 }
 
+// Position absolute.
+.element--absolute {
+  position: absolute;
+  z-index: 1;
+}
+
+.element--absolute--left {
+  left: $desktop-width-gutter;
+}
+
+.element--absolute--bottom {
+  bottom: $desktop-width-gutter;
+}
+
 // Set object to cover.
 .element--cover {
   * {
     object-fit: cover;
     height: 100%;
   }
-  .contextual-links {
+  .contextual-links,
+  .leaflet-control {
     height: auto;
   }
 }
@@ -560,15 +576,27 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .element--padding {
   &__top {
     padding-top: $desktop-width-gutter;
+    &--minimal {
+      padding-top: 2rem;
+    }
   }
   &__right {
     padding-right: $desktop-width-gutter;
+    &--minimal {
+      padding-right: 2rem;
+    }
   }
   &__bottom {
     padding-bottom: $desktop-width-gutter;
+    &--minimal {
+      padding-bottom: 2rem;
+    }
   }
   &__left {
     padding-left: $desktop-width-gutter;
+    &--minimal {
+      padding-left: 2rem;
+    }
   }
   &__all {
     padding: $desktop-width-gutter;

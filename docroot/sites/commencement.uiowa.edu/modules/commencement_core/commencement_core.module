@@ -6,13 +6,16 @@
  */
 
 use Drupal\commencement_core\Entity\Event;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -59,6 +62,98 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_link']['#disabled'] = TRUE;
       $form['field_event_website']['#disabled'] = TRUE;
       break;
+
+    case 'node_venue_form':
+    case 'node_venue_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+    case 'taxonomy_term_session_form':
+      $term_id = $form_state->getFormObject()->getEntity()->id();
+      $config = \Drupal::config('commencement_core.settings');
+      $default_session = $config->get('default_session');
+      $form['default_session'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Default session'),
+        '#description' => t('Check this box to make this session the default session for the site.'),
+        // Set the default value based on whether it matches the term ID.
+        '#default_value' => $default_session == $term_id,
+      ];
+
+      // Add a submit handler for processing the default session.
+      $form['actions']['submit']['#submit'][] = 'commencement_core_taxonomy_term_session_form_submit';
+      break;
+  }
+}
+
+/**
+ * Custom submit handler for the taxonomy_term_session_form form.
+ */
+function commencement_core_taxonomy_term_session_form_submit($form, FormStateInterface $form_state) {
+  $is_default = $form_state->getValue('default_session');
+  // If a value was set for default session, update the configuration.
+  if ($is_default) {
+    $config = \Drupal::service('config.factory')->getEditable('commencement_core.settings');
+    // Set the term ID as the default session.
+    $term_id = $form_state->getFormObject()->getEntity()->id();
+    $config->set('default_session', $term_id)->save();
+    // Invalidate the views cache for the ceremonies view.
+    Cache::invalidateTags(['config:views.view.ceremonies']);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] === 'views-exposed-form-ceremonies-page-1') {
+    $form['#attached']['library'][] = 'sitenow/chosen';
+
+    // Check if the filter options exist.
+    if (isset($form['session']['#options'])) {
+      // Sort the options.
+      uasort($form['session']['#options'], function ($a, $b) {
+        // Keep all at the top of the list.
+        if ($a === 'All' || $b === 'All') {
+          return $a === 'All' ? -1 : 1;
+        }
+        [$a_session, $a_year] = explode(' ', $a);
+        [$b_session, $b_year] = explode(' ', $b);
+        if ((int) $a_year === (int) $b_year) {
+          $session_compare = [
+            'Spring' => 0,
+            'Fall' => 1,
+          ];
+          return $session_compare[$a_session] <=> $session_compare[$b_session];
+        }
+        return (int) $a_year <=> (int) $b_year;
+      });
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
+      break;
+
+    case 'directionslink_block':
+      uiowa_core_set_attributes($variables, [
+        'element--absolute',
+        'element--absolute--left',
+        'element--absolute--bottom',
+      ]);
+      break;
+
+    case 'views_block:events_by_venue-block_1':
+      uiowa_core_set_attributes($variables, 'block-margin__top');
+      $variables['attributes']['id'] = 'events';
+      break;
   }
 }
 
@@ -88,15 +183,106 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
-  if ($variables['field_name'] === 'field_coll_section_collections') {
-    if (isset($variables['element'][0]['#paragraph'])) {
-      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-      $paragraph = $variables['element'][0]['#paragraph'];
-      // Somewhat counterintuitively, the paragraph referenced is
-      // uiowa_collection_item and we actually want the parent entity.
-      $parent = $paragraph->getParentEntity();
-      $variables['id'] = $parent->id();
+  switch ($variables['element']['#field_name']) {
+    case 'field_coll_section_collections':
+      if (isset($variables['element'][0]['#paragraph'])) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $variables['element'][0]['#paragraph'];
+        // Somewhat counterintuitively, the paragraph referenced is
+        // uiowa_collection_item and we actually want the parent entity.
+        $parent = $paragraph->getParentEntity();
+        $variables['id'] = $parent->id();
+      }
+      break;
+
+    case 'field_coll_section_title':
+      $variables['item_tag'] = 'h3';
+      uiowa_core_set_attributes($variables, [
+        'headline',
+        'headline--serif',
+        'h3',
+      ]);
+      break;
+
+    case 'field_coll_section_content':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
+      break;
+
+    case 'field_event_venue':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_location':
+      uiowa_core_set_field_icon($variables, 'fa-compass');
+      uiowa_core_set_attributes($variables, [
+        'banner__text',
+        'field--type-address--inline',
+        'element--inline',
+        'block-margin__top',
+      ]);
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] === 'venue') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+      'headline--highlight',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'venue') {
+    switch ($layout->id()) {
+      case 'layout_header':
+        if (!isset($variables['banner_settings'])) {
+          $variables['banner_settings'] = [];
+        }
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          $variables['featured_image_display'] = 'medium';
+        }
+        $variables['banner_settings']['horizontal_align'] = 'center';
+        break;
+
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
+          $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
+        }
+        break;
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function commencement_core_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'uiowa_collection_section':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+        'block-padding__top',
+      ]);
   }
 }
 
@@ -178,4 +364,18 @@ function commencement_core_theme($existing, $type, $theme, $path) {
       'base hook' => 'taxonomy_term',
     ],
   ];
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function commencement_core_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'ceremonies') {
+    $config = \Drupal::config('commencement_core.settings');
+    $default_session = $config->get('default_session');
+    if ($default_session) {
+      $filter = $view->display_handler->getHandler('filter', 'field_event_session_target_id');
+      $filter->value['value'] = $default_session;
+    }
+  }
 }

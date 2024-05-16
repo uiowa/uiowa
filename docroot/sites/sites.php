@@ -7276,3 +7276,45 @@ $sites['labpsychotherapy-research.uiowa.ddev.site'] = 'psychotherapy-research.la
 $sites['labpsychotherapy-research.dev.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
 $sites['labpsychotherapy-research.stage.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
 $sites['labpsychotherapy-research.prod.drupal.uiowa.edu'] = 'psychotherapy-research.lab.uiowa.edu';
+
+// Directory aliases for pcn.center.uiowa.edu.
+$sites['centerpcn.uiowa.ddev.site'] = 'pcn.center.uiowa.edu';
+$sites['centerpcn.dev.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
+$sites['centerpcn.stage.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
+$sites['centerpcn.prod.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
+
+// Directory aliases for bluereview.sites.uiowa.edu.
+$sites['sitesbluereview.uiowa.ddev.site'] = 'bluereview.sites.uiowa.edu';
+$sites['sitesbluereview.dev.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
+$sites['sitesbluereview.stage.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
+$sites['sitesbluereview.prod.drupal.uiowa.edu'] = 'bluereview.sites.uiowa.edu';
+
+// Directory aliases for redreview.sites.uiowa.edu.
+$sites['sitesredreview.uiowa.ddev.site'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.dev.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.stage.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
+$sites['sitesredreview.prod.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
+
+// Directory aliases for yellowreview.sites.uiowa.edu.
+$sites['sitesyellowreview.uiowa.ddev.site'] = 'yellowreview.sites.uiowa.edu';
+$sites['sitesyellowreview.dev.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
+$sites['sitesyellowreview.stage.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
+$sites['sitesyellowreview.prod.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
+
+// Directory aliases for greenreview.sites.uiowa.edu.
+$sites['sitesgreenreview.uiowa.ddev.site'] = 'greenreview.sites.uiowa.edu';
+$sites['sitesgreenreview.dev.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
+$sites['sitesgreenreview.stage.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
+$sites['sitesgreenreview.prod.drupal.uiowa.edu'] = 'greenreview.sites.uiowa.edu';
+
+// Directory aliases for orangereview.sites.uiowa.edu.
+$sites['sitesorangereview.uiowa.ddev.site'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.dev.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.stage.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
+$sites['sitesorangereview.prod.drupal.uiowa.edu'] = 'orangereview.sites.uiowa.edu';
+
+// Directory aliases for violetreview.sites.uiowa.edu.
+$sites['sitesvioletreview.uiowa.ddev.site'] = 'violetreview.sites.uiowa.edu';
+$sites['sitesvioletreview.dev.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
+$sites['sitesvioletreview.stage.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
+$sites['sitesvioletreview.prod.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';

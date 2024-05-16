@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesyellowreview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesyellowreview
+  human_name: yellowreview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesyellowreview.prod
+drupal:
+  db:
+    database: yellowreview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesyellowreview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Yellow Review'
