@@ -112,6 +112,10 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('header.branding_options'),
   ];
 
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['header']['branding_options']['#access'] = FALSE;
+  }
+
   $form['header']['footer_logo'] = [
     '#type' => 'checkbox',
     '#title' => t('Footer logo'),
@@ -125,6 +129,10 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['header']['footer_logo']['#access'] = FALSE;
+  }
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
 
