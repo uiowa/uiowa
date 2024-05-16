@@ -101,8 +101,8 @@ function iwp_core_preprocess_field(&$variables) {
       $node = $variables["element"]["#object"];
       $file_entity = NULL;
       $field_to_check = ($field_name === 'field_writer_bio_sample') ? 'field_writer_bio_sample' : 'field_writer_bio_sample_original';
-      $link_text = $node->label() . "'s ";
-      $link_text .= ($field_name === 'field_writer_bio_sample') ? 'Writing Sample' : 'Writing Sample Original Language';
+      $link_text = $node->label();
+      $link_text .= ($field_name === 'field_writer_bio_sample') ? ' Writing Sample' : ' Writing Sample in Original Language';
 
       // Check if the field has a file.
       if (!empty($node->$field_to_check->entity) && !empty($node->$field_to_check->entity->field_media_file->entity)) {
