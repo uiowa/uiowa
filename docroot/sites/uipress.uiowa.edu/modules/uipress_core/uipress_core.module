@@ -7,6 +7,7 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Render\Markup;
 use Drupal\uipress_core\Entity\Book;
 
 /**
@@ -78,6 +79,42 @@ function uipress_core_preprocess_field(&$variables, $hook) {
     case 'field_book_interior_pages':
       $variables['field_container_classes'] = 'list-container__inner';
       break;
+
+    case 'field_book_sale_code':
+      // Current value of the field.
+      $field_value = $variables['items'][0]['content']['#context']['value'];
+
+      // Wrap the value in a strong tag.
+      $wrapped_value = '<strong>' . $field_value . '</strong>';
+
+      // Prepend and append text to the field value.
+      $prefixed_and_appended_value = 'Please use promo code ' . $wrapped_value . ' when prompted by shopping cart';
+      $prefixed_and_appended_value = Markup::create($prefixed_and_appended_value);
+
+      // Update the field value.
+      $variables['items'][0]['content']['#context']['value'] = $prefixed_and_appended_value;
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+        'bg--gray',
+        'block-padding__top--minimal',
+        'block-padding__left--minimal',
+        'block-padding__right--minimal',
+      ]);
+
+      break;
+
+    case 'field_book_sale_expiry_date':
+      // Get the datetime value.
+      $datetime = $variables['items'][0]['content']['#attributes']['datetime'];
+
+      // Convert datetime to m/d/Y format.
+      $formatted_date = date('m/d/Y', strtotime($datetime));
+      $variables['items'][0]['content']['#text'] = $formatted_date;
+      uiowa_core_set_attributes($variables, [
+        'bg--gray',
+        'block-padding__all--minimal',
+      ]);
+      break;
   }
 }
 
@@ -127,7 +164,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         }
         // If neither condition is true unset display of sale price.
         if (!$in_range) {
-          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_code']);
         }
       }
     }
@@ -194,10 +231,6 @@ function uipress_core_preprocess_views_view_fields(&$variables) {
  */
 function uipress_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__paragraph__field_book_sale_code__book_type__default' => [
-      'template' => 'field--paragraph--field-book-sale-code--book-type--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_book_type' => [
       'template' => 'field--node--field-book-type',
       'base hook' => 'field',
