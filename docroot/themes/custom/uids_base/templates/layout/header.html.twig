@@ -1,6 +1,7 @@
 {% set header_classes = header_classes|merge([
   'iowa-bar',
   header_nav,
+  header_branding == 'uihc' ? 'iowa-bar--uihc' : ''
 ]) %}
 
 {% if header_nav == 'toggle' %}
