@@ -421,9 +421,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   // sidebar layout
   &.layout--has-sidebar {
     .layout__spacing_container {
-      flex-direction: column-reverse;
-      @include breakpoint(md) {
-        flex-direction: unset;
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
       }
     }
   }
@@ -444,7 +446,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .layout__region--second,
       .layout__region--content,
       .layout__region-container {
-        order: 1;
+        order: 2;
         @include breakpoint(md) {
           order: inherit;
         }
