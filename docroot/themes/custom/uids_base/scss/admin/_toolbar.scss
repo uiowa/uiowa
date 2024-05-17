@@ -30,6 +30,11 @@
 // admin toolbar style for sticky header.
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
+  &.header-uihc {
+    @include breakpoint(md) {
+      padding-top: 140px !important;
+    }
+  }
   @include breakpoint(md) {
     padding-top: 120px !important;
   }
@@ -49,11 +54,21 @@
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
+  &.header-uihc {
+    @include breakpoint(md) {
+      padding-top: 180px !important;
+    }
+  }
   @include breakpoint(md) {
     padding-top: 160px !important;
   }
 
   &.below {
+    &.header-uihc {
+      @include breakpoint(md) {
+        padding-top: 230px !important;
+      }
+    }
     @include breakpoint(md) {
       padding-top: 210px !important;
     }

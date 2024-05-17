@@ -15,6 +15,13 @@
 }
 
 .iowa-bar.iowa-bar--narrow {
+  &.iowa-bar--uihc {
+    .toggle-nav__bttn {
+      @include breakpoint(page-container) {
+        top: 64px;
+      }
+    }
+  }
   .toggle-nav__bttn {
     display: flex;
     height: 60px;
