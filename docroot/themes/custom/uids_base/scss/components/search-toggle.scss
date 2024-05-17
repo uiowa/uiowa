@@ -79,6 +79,13 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     }
   }
 
+  .iowa-bar--full.iowa-bar--uihc & {
+
+    @include breakpoint(md) {
+      height: 100px;
+    }
+  }
+
   .iowa-bar--narrow & {
     height: 70px;
     background: none;
@@ -290,6 +297,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
       margin-top: 18px;
     }
   }
+
+  .iowa-bar--uihc.iowa-bar--full & {
+    @include breakpoint(md) {
+      margin-top: 30px;
+    }
+  }
 }
 
 .search-overlay .uids-search [type="submit"] {
@@ -479,16 +492,15 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 // Iowa Bar Full adjustments
 .iowa-bar--full.horizontal,
-.iowa-bar--full.mega {
-  .search-button {
-    @include breakpoint(page-container) {
-      height: 85px;
-      width: 159px;
+.iowa-bar--full.mega,
+.iowa-bar--full.toggle {
+  &.iowa-bar--uihc {
+    .search-button {
+      @include breakpoint(page-container) {
+        height: 110px;
+      }
     }
   }
-}
-
-.iowa-bar--full.toggle {
   .search-button {
     @include breakpoint(page-container) {
       height: 85px;
