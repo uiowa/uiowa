@@ -216,6 +216,13 @@ function commencement_core_preprocess_field(&$variables) {
     case 'field_event_venue':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
+      $node = $variables["element"]["#object"];
+      $room = '';
+      if ($node_value = $node?->get('field_event_room')?->getValue()) {
+        $room = ' - ' . $node_value[0]['value'];
+      }
+      $title = $variables['items'][0]['content']['#title'];
+      $variables['items'][0]['content']['#title'] = $title . $room;
       break;
 
     case 'field_location':
