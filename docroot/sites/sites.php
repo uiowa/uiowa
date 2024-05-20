@@ -7318,3 +7318,9 @@ $sites['sitesvioletreview.uiowa.ddev.site'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.dev.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.stage.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.prod.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
+
+// Directory aliases for ebsl.lab.uiowa.edu.
+$sites['labebsl.uiowa.ddev.site'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.dev.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.stage.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.prod.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
