@@ -7324,3 +7324,9 @@ $sites['labebsl.uiowa.ddev.site'] = 'ebsl.lab.uiowa.edu';
 $sites['labebsl.dev.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
 $sites['labebsl.stage.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
 $sites['labebsl.prod.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+
+// Directory aliases for rothenberg.lab.uiowa.edu.
+$sites['labrothenberg.uiowa.ddev.site'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.dev.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.stage.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.prod.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
