@@ -247,3 +247,8 @@ AddEncoding gzip svgz
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
 </IfModule>
+
+# CORS for JSON file extensions.
+<Files "*.json">
+  Header set Access-Control-Allow-Origin "*"
+</Files>

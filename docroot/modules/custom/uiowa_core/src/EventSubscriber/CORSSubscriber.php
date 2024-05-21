@@ -28,7 +28,6 @@ class CORSSubscriber implements EventSubscriberInterface {
   public function onRequest(RequestEvent $event): void {
     $request = $event->getRequest();
     $path = $request->getPathInfo();
-    $extension = pathinfo($path, PATHINFO_EXTENSION);
 
     // Define the allow list for exact paths and patterns.
     // Patterns should end with a /.
@@ -36,16 +35,10 @@ class CORSSubscriber implements EventSubscriberInterface {
       '/api/',
     ];
 
-    // Define allowed extensions.
-    $allowed_extensions = [
-      'json',
-    ];
-
-    // Check if the request path or extension is allowed.
+    // Check if the request path is allowed.
     $path_allowed = $this->isPathAllowed($path, $allowed_paths);
-    $extension_allowed = in_array($extension, $allowed_extensions);
 
-    if ($path_allowed || $extension_allowed) {
+    if ($path_allowed) {
       header('Access-Control-Allow-Origin: *');
       header('Access-Control-Allow-Methods: GET, POST, PATCH, OPTIONS');
       header('Access-Control-Allow-Headers: x-csrf-token, content-type, accept, authorization');
