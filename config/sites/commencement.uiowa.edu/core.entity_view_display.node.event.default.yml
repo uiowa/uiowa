@@ -107,7 +107,7 @@ third_party_settings:
             0: ''
             1: section_margin_fixed_width_container
             2: section_card_media_size_large
-            3: section_card_media_format_widescreen
+            3: section_card_media_format_square
             section_no_border: 0
             section_alignment_start: section_alignment_start
         components:
@@ -195,7 +195,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -230,7 +230,7 @@ third_party_settings:
                     decimals: 2
                     suffix: h
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -399,7 +399,30 @@ third_party_settings:
             weight: 10
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 508cd4a0-aa78-4db8-8bd5-7525e772658f
+            region: card_media
+            configuration:
+              id: 'extra_field_block:node:event:field_event_presidents_seal'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
@@ -416,6 +439,11 @@ bundle: event
 mode: default
 content:
   field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_event_presidents_seal:
     settings: {  }
     third_party_settings: {  }
     weight: 1
