@@ -118,8 +118,11 @@ body {
     background: #fff;
   }
 
-  .below.scroll-up & {
-    animation: fadeIn 1s;
+  .below.scroll-up &,
+  .below.scroll-down & {
+    @include breakpoint(md) {
+      animation: fadeIn 3s;
+    }
   }
 
   &.active {
