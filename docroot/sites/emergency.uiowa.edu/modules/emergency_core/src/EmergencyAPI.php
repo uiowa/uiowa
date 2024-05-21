@@ -46,8 +46,6 @@ class EmergencyAPI {
    *   The HTTP method to use.
    * @param array $options
    *   Optional request options. All requests expect JSON response data.
-   * @param string $base
-   *   The base URL to use for the request. Defaults to self::BASE_URL_1.
    *
    * @return mixed
    *   The API response data.
