@@ -30,9 +30,10 @@ class CORSSubscriber implements EventSubscriberInterface {
     $path = $request->getPathInfo();
     $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-    // Define allowed paths.
+    // Define the allow list for exact paths and patterns.
+    // Patterns should end with a /.
     $allowed_paths = [
-      '/api/active',
+      '/api/',
     ];
 
     // Define allowed extensions.
@@ -41,7 +42,7 @@ class CORSSubscriber implements EventSubscriberInterface {
     ];
 
     // Check if the request path or extension is allowed.
-    $path_allowed = in_array($path, $allowed_paths);
+    $path_allowed = $this->isPathAllowed($path, $allowed_paths);
     $extension_allowed = in_array($extension, $allowed_extensions);
 
     if ($path_allowed || $extension_allowed) {
@@ -50,6 +51,23 @@ class CORSSubscriber implements EventSubscriberInterface {
       header('Access-Control-Allow-Headers: x-csrf-token, content-type, accept, authorization');
       header('Access-Control-Allow-Credentials: true');
     }
+  }
+
+  /**
+   * Checks exact paths and path patterns starting with.
+   */
+  public function isPathAllowed($path, $allowList): bool {
+    foreach ($allowList as $allowed) {
+      // Check if it's an exact match.
+      if ($path === $allowed) {
+        return TRUE;
+      }
+      // Check if it's a pattern (starts with the allowed pattern)
+      if (str_ends_with($allowed, '/') && str_starts_with($path, $allowed)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 }
