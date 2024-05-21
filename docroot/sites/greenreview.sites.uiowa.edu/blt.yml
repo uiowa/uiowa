@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesgreenreview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesgreenreview
+  human_name: greenreview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesgreenreview.prod
+drupal:
+  db:
+    database: greenreview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesgreenreview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Green Review'

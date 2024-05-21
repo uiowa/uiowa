@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesbluereview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesbluereview
+  human_name: bluereview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesbluereview.prod
+drupal:
+  db:
+    database: bluereview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesbluereview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Blue Review'

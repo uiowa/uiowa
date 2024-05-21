@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesorangereview.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesorangereview
+  human_name: orangereview.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesorangereview.prod
+drupal:
+  db:
+    database: orangereview_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesorangereview.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Orange Review'

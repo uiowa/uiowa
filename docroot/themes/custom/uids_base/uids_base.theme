@@ -278,8 +278,13 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   $variables['header_toppage'] = theme_get_setting('header.toppage');
   $variables['header_branding'] = theme_get_setting('header.branding_options');
+  $variables['footer_logo'] = theme_get_setting('header.footer_logo');
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
+
+  if ($variables['header_branding'] === 'regents' && $variables['footer_logo']) {
+    $variables['uiowa_logo'] = TRUE;
+  }
 
   // If the site has a parent organization or the site name is more than 43
   // characters, we force the site to use the 'below' header option.

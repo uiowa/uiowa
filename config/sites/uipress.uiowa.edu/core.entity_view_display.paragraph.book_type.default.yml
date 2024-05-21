@@ -13,6 +13,7 @@ dependencies:
     - field.field.paragraph.book_type.field_book_type
     - paragraphs.paragraphs_type.book_type
   module:
+    - datetime
     - layout_builder
     - options
 third_party_settings:
@@ -58,6 +59,15 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
+  field_book_sale_expiry_date:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 6
+    region: content
   field_book_sale_price:
     type: number_decimal
     label: inline
@@ -77,6 +87,8 @@ content:
     weight: 0
     region: content
 hidden:
-  field_book_sale_expiry_date: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_book_sale_start_date: true
   search_api_excerpt: true

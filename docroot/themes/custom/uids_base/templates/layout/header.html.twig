@@ -30,10 +30,14 @@
             logo_path_png: uihc_logo_path_png,
             logo_id: 'header',
           } %}
+        {% elseif header_branding == 'regents' %}
+          <div class="top-bar"></div>
         {% endif %}
-
-      {% else %}
-        <div class="top-bar"></div>
+      {% endif %}
+      {% if uiowa_logo is empty %}
+        {% if header_branding == 'regents' %}
+          <div class="top-bar"></div>
+        {% endif %}
       {% endif %}
     {% endblock %}
 
