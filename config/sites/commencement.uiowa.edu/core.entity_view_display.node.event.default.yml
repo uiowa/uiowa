@@ -80,7 +80,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -153,7 +153,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -174,7 +174,7 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -247,7 +247,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -268,7 +268,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -285,7 +285,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -304,7 +304,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -325,7 +325,7 @@ third_party_settings:
                 settings:
                   title: ''
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -342,7 +342,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -350,16 +350,20 @@ third_party_settings:
             region: main
             configuration:
               id: 'field_block:node:event:field_event_ceremony_info'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
-            additional: {  }
+            weight: 11
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 5352a67c-0cbc-47b5-9b9f-723ade7a0dc0
@@ -380,9 +384,20 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 10
+            weight: 13
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: f700c8e5-0a3a-4844-a3c5-b83638549f1d
+            region: main
+            configuration:
+              id: 'extra_field_block:node:event:field_event_ceremony_info_heading'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 10
+            additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
@@ -399,7 +414,12 @@ id: node.event.default
 targetEntityType: node
 bundle: event
 mode: default
-content: {  }
+content:
+  field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   body: true
   content_moderation_control: true
