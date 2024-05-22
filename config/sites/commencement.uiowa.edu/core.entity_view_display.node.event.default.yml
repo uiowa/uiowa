@@ -106,36 +106,11 @@ third_party_settings:
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
-            2: section_card_media_size_large
-            3: section_card_media_format_square
+            2: section_card_media_size_medium
+            3: section_card_media_format_widescreen
             section_no_border: 0
             section_alignment_start: section_alignment_start
         components:
-          -
-            uuid: 5d2ea808-c12e-4507-bcc1-7c1808e7b3c8
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_link'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: visually_hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
           -
             uuid: fceeed12-7e45-429a-9653-70a38df6a424
             region: main
@@ -247,7 +222,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -268,66 +243,8 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 5bacb246-f7cc-4203-99a3-59a38efa26c3
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_contact'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 0dbc0cb5-4de8-4b1b-ab7e-d041796c2ba6
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_contact_email'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: email_mailto
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
             weight: 8
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 05b04dda-d567-45b3-a4bd-183973ebc269
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_contact_phone'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: telephone_link
-                label: visually_hidden
-                settings:
-                  title: ''
-                third_party_settings: {  }
-            weight: 9
-            additional:
-              layout_builder_styles_style: {  }
+            additional: {  }
             third_party_settings: {  }
           -
             uuid: 33ee3e9f-a03e-464d-8e88-63147b2fe3a2
@@ -342,7 +259,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 12
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -361,7 +278,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 11
+            weight: 10
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -384,7 +301,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 13
+            weight: 12
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -396,7 +313,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 10
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -413,6 +330,52 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5d2ea808-c12e-4507-bcc1-7c1808e7b3c8
+            region: card_button
+            configuration:
+              id: 'field_block:node:event:field_event_link'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5bacb246-f7cc-4203-99a3-59a38efa26c3
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_contact'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }

@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\node\NodeViewBuilder;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
@@ -132,7 +133,7 @@ function commencement_core_node_view (array &$build, EntityInterface $node, Enti
         '#type' => 'markup',
         '#markup' => '<img
           loading="lazy"
-          src="/themes/custom/uids_base/assets/images/IOWA-Seal.svg"
+          src="/themes/custom/uids_base/assets/images/Seal-Black-edge.svg"
           alt="The Presidential seal of the University of Iowa."
           class=""
           data-once="lazy-load-animation"
@@ -241,6 +242,8 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
+  $node = $variables["element"]["#object"];
+
   switch ($variables['element']['#field_name']) {
     case 'field_coll_section_collections':
       if (isset($variables['element'][0]['#paragraph'])) {
@@ -271,7 +274,6 @@ function commencement_core_preprocess_field(&$variables) {
     case 'field_event_venue':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
-      $node = $variables["element"]["#object"];
       if ($node->bundle() === 'event') {
         $room = '';
         if ($node?->get('field_event_room')?->getValue()) {
@@ -283,9 +285,8 @@ function commencement_core_preprocess_field(&$variables) {
       break;
 
     case 'field_event_when':
-      $node = $variables["element"]["#object"];
       if ($node->bundle() === 'event') {
-        $variables['items'][1]['content']['#markup'] = '<p>(Times listed are in central time.)</p>';
+        $variables['items'][1]['content']['#markup'] = '<p>(Times listed are in central time)</p>';
       }
       break;
 
@@ -297,6 +298,66 @@ function commencement_core_preprocess_field(&$variables) {
         'element--inline',
         'block-margin__top',
       ]);
+
+      break;
+
+    case 'field_event_contact':
+      uiowa_core_set_field_icon($variables, 'fa-user');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($node->bundle() === 'event') {
+        $contact_markup = '';
+        if ($view = $node?->field_event_contact?->view()){
+          if (isset($view[0]['#context']['value'])) {
+            $contact = $view[0]['#context']['value'];
+            $contact_markup = '<p>' . $contact . '</p>';
+          }
+        }
+
+
+        $email_markup = '';
+        if ($view = $node?->field_event_contact_email?->view()){
+          if (isset($view[0]['#context']['value'])) {
+            $email = $view[0]['#context']['value'];
+            $email_markup = '<p><a href="mailto:' . $email . '">' . $email . '</a></p>';
+          }
+        }
+
+        $phone_markup = '';
+        if ($view = $node?->field_event_contact_phone?->view()){
+          if (isset($view[0]['#context']['value'])) {
+            $phone = $view[0]['#context']['value'];
+            $phone_markup = '<p><a href="tel:' . $phone . '">' . $phone . '</a></p>';
+          }
+        }
+
+        $details_markup = '
+          <details>
+            <summary>Contact</summary>' .
+            $contact_markup .
+            $email_markup .
+            $phone_markup .
+          '</details>';
+
+        $variables['items'][0]['content'] = [];
+        $variables['items'][0]['content']['#markup'] = $details_markup;
+//        $variables['items'][2]['content'] = $node->field_event_contact_phone->view()[0];
+      }
+
+      break;
+
+    case 'field_event_link':
+      if ($node->bundle() === 'event') {
+        $link = $variables['items'][0]['content']['#title'];
+        $variables['items'][0]['content'] = [];
+        $variables['items'][0]['content']['#markup'] = '
+          <a
+            class="bttn bttn--primary bttn--small"
+            href="' . $link . '"
+          >
+            View on the events site
+            <span><i class="fas fa-arrow-right"></i></span>
+          </a>';
+      }
 
       break;
   }
