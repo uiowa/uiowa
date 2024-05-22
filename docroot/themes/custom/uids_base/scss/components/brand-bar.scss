@@ -122,3 +122,11 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
 }
+
+.parent-site-name {
+  .o-canvas--lock & {
+    @include breakpoint(md) {
+      background: transparent;
+    }
+  }
+}

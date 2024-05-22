@@ -2,15 +2,20 @@
 @import "uids/scss/abstracts/_utilities.scss";
 @import "uids/scss/components/logo.scss";
 
-.logo--tab {
-  .search-is-open & {
-    visibility: none;
+
+.search-is-open {
+  .logo--tab {
     opacity: 0;
 
     @include breakpoint(md) {
-      display: block;
       opacity: 1;
-      visibility: visible;
+    }
+  }
+  .iowa-bar__below {
+    .site-name {
+      @include breakpoint(md) {
+        display: none;
+      }
     }
   }
 }
