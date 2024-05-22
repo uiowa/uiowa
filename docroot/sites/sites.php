@@ -7318,3 +7318,21 @@ $sites['sitesvioletreview.uiowa.ddev.site'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.dev.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.stage.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
 $sites['sitesvioletreview.prod.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
+
+// Directory aliases for ebsl.lab.uiowa.edu.
+$sites['labebsl.uiowa.ddev.site'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.dev.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.stage.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+$sites['labebsl.prod.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
+
+// Directory aliases for rothenberg.lab.uiowa.edu.
+$sites['labrothenberg.uiowa.ddev.site'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.dev.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.stage.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
+$sites['labrothenberg.prod.drupal.uiowa.edu'] = 'rothenberg.lab.uiowa.edu';
+
+// Directory aliases for mclendon.lab.uiowa.edu.
+$sites['labmclendon.uiowa.ddev.site'] = 'mclendon.lab.uiowa.edu';
+$sites['labmclendon.dev.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
+$sites['labmclendon.stage.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
+$sites['labmclendon.prod.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
