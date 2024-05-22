@@ -231,6 +231,10 @@ AddEncoding gzip svgz
       # Force proxies to cache gzipped & non-gzipped css/js files separately.
       Header append Vary Accept-Encoding
     </FilesMatch>
+    # Set CORS for JSON files.
+    <FilesMatch "\.json$">
+      Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
   </IfModule>
 </IfModule>
 
