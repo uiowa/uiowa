@@ -49,8 +49,8 @@ class CORSSubscriber implements EventSubscriberInterface {
   /**
    * Checks exact paths and path patterns starting with.
    */
-  public function isPathAllowed($path, $allowList): bool {
-    foreach ($allowList as $allowed) {
+  public function isPathAllowed($path, $allowed_paths): bool {
+    foreach ($allowed_paths as $allowed) {
       // Check if it's an exact match.
       if ($path === $allowed) {
         return TRUE;
