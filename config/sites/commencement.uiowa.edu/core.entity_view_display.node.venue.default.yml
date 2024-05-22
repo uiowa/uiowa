@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.venue.field_meta_tags
     - field.field.node.venue.field_venue_additional_info
     - node.type.venue
+    - system.menu.main
     - views.view.events_by_venue
   module:
     - address
@@ -18,6 +19,7 @@ dependencies:
     - geofield
     - layout_builder
     - layout_builder_restrictions
+    - menu_block
     - metatag
     - text
     - user
@@ -118,18 +120,40 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_black
+            1: section_container_narrow
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
           -
-            uuid: 3e3ae602-b5c0-4395-9627-178d21b2e9df
+            uuid: 2b5ff073-4c96-4667-9f81-3dcf226f17c9
             region: content
             configuration:
-              id: venuelinks_block
+              id: 'menu_block:main'
               label: null
               label_display: null
-              provider: commencement_core
+              provider: menu_block
               context_mapping: {  }
+              follow: false
+              follow_parent: child
+              label_link: false
+              label_type: block
+              level: 1
+              depth: 1
+              expand_all_items: false
+              parent: 'main:menu_link_content:abeb3656-b236-48af-815b-0f6bcc65e3cb'
+              suggestion: main
             weight: 0
             additional:
-              layout_builder_styles_style: {  }
+              layout_builder_styles_style:
+                - block_menu_horizontal
             third_party_settings: {  }
         third_party_settings: {  }
       -
@@ -157,7 +181,11 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
