@@ -1,8 +1,8 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 
-$search-mobile-img-path: '../../../uids/assets/images/search-white-01.svg';
-$search-img-path: '../../../uids/assets/images/search-01.svg';
+$search-mobile-img-path: '../../images/search-white-01.svg';
+$search-img-path: '../../images/search-01.svg';
 
 // previous uids 3.x component styles.
 
@@ -323,7 +323,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   padding: 20px;
   content: ' ';
-  background: url(../images/search-white-01.svg);
+  background: url($search-mobile-img-path);
   background-repeat: repeat;
   background-repeat: no-repeat;
   background-position: center;
@@ -331,7 +331,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   @include breakpoint(md) {
     background-position: center;
-    background: url(../images/search-01.svg);
+    background: url($search-img-path);
   }
 
   .iowa-bar--narrow & {
