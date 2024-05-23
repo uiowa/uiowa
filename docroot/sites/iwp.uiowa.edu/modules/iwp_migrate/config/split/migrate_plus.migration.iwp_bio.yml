@@ -15,7 +15,7 @@ migration_group: sitenow_migrate
 label: Writers Bio
 source:
   plugin: iwp_bio
-  node_type: writer_bio
+  node_type: public_writer_bio
 process:
   langcode:
     plugin: static_map
@@ -33,53 +33,15 @@ process:
     default_value: 1
   title: title
   body: body
-  field_event_contact: field_event_contact_name
-  field_event_contact_email:
-    plugin: sub_process
-    source: field_event_contact_email
-    process:
-      value: email
-  field_event_contact_phone: field_event_contact_phone
-  field_event_link:
+  field_writer_bio_family_name: field_writer_family_name
+  field_writer_bio_given_name: field_writer_given_name
+  field_writer_bio_photo_credit: field_writer_photo_credit
+  field_writer_bio_session_status: field_writer_session_status_ref_processed
+  field_writer_bio_countries: taxonomy_vocabulary_1_processed
+  field_writer_bio_languages: field_writer_lang
+  field_writer_bio_media_link:
     plugin: field_link
-    source: field_event_link
-  field_event_website:
-    plugin: field_link
-    source: field_event_website
-  field_event_room: field_event_location/0/organisation_name
-  field_event_college:
-    plugin: static_map
-    source: field_event_department
-    map:
-      81: 21
-      206: 26
-      201: 31
-      56: 36
-      66: 41
-      26: 46
-      246: 51
-      61: 56
-      256: 61
-      71: 66
-      46: 71
-      286: 76
-      76: 81
-      51: 86
-      196: 91
-  field_event_other_celebrations: field_event_other_celebrations_processed
-  field_event_venue: field_event_location_ref_processed
-  field_event_session: field_session_processed
-  field_event_livestream/value: livestream_processed
-  field_event_livestream/format:
-    plugin: default_value
-    default_value: filtered_html
-  field_event_order_of_events: order_of_event_processed
-  field_event_when/value: field_event_date
-  field_event_when/end_value: field_event_date
-  field_event_when/duration:
-    plugin: default_value
-    default_value: 0
-  field_event_ceremony_info_detail: ceremony_information_processed
+    source: field_writer_yt_link
 destination:
   plugin: 'entity:node'
   default_bundle: writer_bio

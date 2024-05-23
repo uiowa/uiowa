@@ -12,7 +12,7 @@ use function PHPUnit\Framework\isEmpty;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "writer_bio",
+ *   id = "iwp_bio",
  *   source_module = "node"
  * )
  */
@@ -37,66 +37,72 @@ class Bio extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Create tags from field_tags source field.
-    $values = $row->getSourceProperty('field_tags');
-    $tag_tids = [];
-    foreach ($values as $tid_array) {
-      $tag_tids[] = $tid_array['tid'];
-    }
-    if (!empty($tag_tids)) {
-      // Fetch tag names based on TIDs from our old site.
-      $tag_results = $this->select('taxonomy_term_data', 't')
-        ->fields('t', ['name'])
-        ->condition('t.tid', $tag_tids, 'IN')
-        ->execute();
-      $tags = [];
-      foreach ($tag_results as $result) {
-        $tag_name = $result['name'];
-        $tid = $this->createTag($tag_name, $row);
-
-        // Add the mapped TID to match our tag name.
-        if ($tid) {
-          $tags[] = $tid;
+    foreach ([
+      'taxonomy_vocabulary_1',
+      'field_writer_session_status_ref',
+    ] as $source_field) {
+      if ($values = $row->getSourceProperty($source_field)) {
+        if (!isset($values)) {
+          continue;
         }
-
+        $tids = [];
+        foreach ($values as $tid_array) {
+          $tids[] = $tid_array['tid'];
+        }
+        // Fetch tag names based on TIDs from our old site.
+        $tag_results = $this->select('taxonomy_term_data', 't')
+          ->fields('t', ['name'])
+          ->condition('t.tid', $tids, 'IN')
+          ->execute();
+        $new_tids = [];
+        foreach ($tag_results as $result) {
+          $tag_name = $result['name'];
+          $tag = $this->fetchTag($tag_name, $source_field, $row);
+          if ($tag !== FALSE) {
+            $new_tids[] = $tag;
+          }
+        }
+        $row->setSourceProperty("{$source_field}_processed", $new_tids);
       }
-      $row->setSourceProperty('tags', $tags);
     }
 
     return TRUE;
   }
 
   /**
-   * Helper function to check for existing tags and create if they don't exist.
+   * Helper function to fetch existing tags.
    */
-  private function createTag($tag_name, $row) {
-    // Check if we already have the tag in the destination.
-    $result = \Drupal::database()
-      ->select('taxonomy_term_field_data', 't')
-      ->fields('t', ['tid'])
-      ->condition('t.vid', 'tags', '=')
-      ->condition('t.name', $tag_name, '=')
-      ->execute()
-      ->fetchField();
-    if ($result) {
-      return $result;
-    }
-    // If we didn't have the tag already,
-    // then create a new tag and return its id.
-    $term = Term::create([
-      'name' => $tag_name,
-      'vid' => 'tags',
-    ]);
-    if ($term->save()) {
-      return $term->id();
+  private function fetchTag($tag_name, $source_field, $row) {
+
+    $taxonomy_name = NULL;
+    if ($source_field === 'field_event_other_celebrations') {
+      $taxonomy_name = 'celebrations';
     }
 
-    // If we didn't save for some reason, add a notice
-    // to the migration, and return a null.
-    $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
-    $this->migration
-      ->getIdMap()
-      ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
-    return FALSE;
+    if ($source_field === 'field_session') {
+      $taxonomy_name = 'session';
+    }
+
+    if ($taxonomy_name !== NULL) {
+      // Check if we already have the tag in the destination.
+      $result = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['tid'])
+        ->condition('t.name', $tag_name, '=')
+        ->condition('t.vid', $taxonomy_name, '=')
+        ->execute()
+        ->fetchField();
+      if ($result) {
+        return $result;
+      }
+      // If we didn't have the tag already,
+      // add a notice to the migration, and return a null.
+      $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+      return FALSE;
+    }
   }
 
 }
