@@ -112,48 +112,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: fceeed12-7e45-429a-9653-70a38df6a424
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_order_of_events'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                third_party_settings: {  }
-            weight: 2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 6250c2ed-ece5-4067-a2aa-b4e5576a81bd
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_session'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: teaser
-                third_party_settings: {  }
-            weight: 3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: bde1ecca-e20e-42f2-853f-79cef1ea3f15
             region: card_meta
             configuration:
@@ -374,6 +332,48 @@ third_party_settings:
                 label: visually_hidden
                 settings:
                   link_to_entity: false
+                third_party_settings: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: fceeed12-7e45-429a-9653-70a38df6a424
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_order_of_events'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 5
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6250c2ed-ece5-4067-a2aa-b4e5576a81bd
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_session'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: teaser
                 third_party_settings: {  }
             weight: 4
             additional:
