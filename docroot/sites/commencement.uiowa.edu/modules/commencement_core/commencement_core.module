@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
-use Drupal\node\NodeViewBuilder;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
@@ -116,7 +115,7 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function commencement_core_node_view (array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+function commencement_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === 'event' && $view_mode === 'full') {
 
     // Ceremony information heading.
@@ -142,6 +141,7 @@ function commencement_core_node_view (array &$build, EntityInterface $node, Enti
     }
   }
 }
+
 /**
  * Custom submit handler for the taxonomy_term_session_form form.
  */
@@ -307,7 +307,7 @@ function commencement_core_preprocess_field(&$variables) {
       if ($node->bundle() === 'event') {
 
         $contact_markup = '';
-        if ($view = $node?->field_event_contact?->view()){
+        if ($view = $node?->field_event_contact?->view()) {
           if (isset($view[0]['#context']['value'])) {
             $contact = $view[0]['#context']['value'];
             $contact_markup = '<p>' . $contact . '</p>';
@@ -315,7 +315,7 @@ function commencement_core_preprocess_field(&$variables) {
         }
 
         $email_markup = '';
-        if ($view = $node?->field_event_contact_email?->view()){
+        if ($view = $node?->field_event_contact_email?->view()) {
           if (isset($view[0]['#context']['value'])) {
             $email = $view[0]['#context']['value'];
             $email_markup = '<p><a href="mailto:' . $email . '">' . $email . '</a></p>';
@@ -323,7 +323,7 @@ function commencement_core_preprocess_field(&$variables) {
         }
 
         $phone_markup = '';
-        if ($view = $node?->field_event_contact_phone?->view()){
+        if ($view = $node?->field_event_contact_phone?->view()) {
           if (isset($view[0]['#context']['value'])) {
             $phone = $view[0]['#context']['value'];
             $phone_markup = '<p><a href="tel:' . $phone . '">' . $phone . '</a></p>';
@@ -340,7 +340,7 @@ function commencement_core_preprocess_field(&$variables) {
 
         $variables['items'][0]['content'] = [];
         $variables['items'][0]['content']['#markup'] = $details_markup;
-//        $variables['items'][2]['content'] = $node->field_event_contact_phone->view()[0];
+        // $variables['items'][2]['content'] = $node->field_event_contact_phone->view()[0];
       }
 
       break;
