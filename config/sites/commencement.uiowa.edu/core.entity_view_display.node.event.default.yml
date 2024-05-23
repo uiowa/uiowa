@@ -301,13 +301,56 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: string
-                label: visually_hidden
+                label: above
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 9
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8ae713ac-63e5-411d-94f8-57f3d394e0ab
+            region: main
+            configuration:
+              id: 'field_block:node:event:field_event_contact_email'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: email_mailto
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 10
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: b0833736-9293-4142-91c8-14933adb716d
+            region: main
+            configuration:
+              id: 'field_block:node:event:field_event_contact_phone'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: telephone_link
+                label: hidden
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            weight: 11
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -330,14 +373,29 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:event:field_event_livestream'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: c2e0d7a2-ddd0-4c3d-ae4e-2f078c0881e1
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:field_event_livestream_heading'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
             weight: 3
             additional: {  }
             third_party_settings: {  }
@@ -418,6 +476,11 @@ bundle: event
 mode: default
 content:
   field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_event_livestream_heading:
     settings: {  }
     third_party_settings: {  }
     weight: 1

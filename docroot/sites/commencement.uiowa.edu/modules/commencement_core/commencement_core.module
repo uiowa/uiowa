@@ -49,6 +49,14 @@ function commencement_core_entity_extra_field_info() {
   $extra = [];
 
   // Ceremony information heading.
+  $extra['node']['event']['display']['field_event_livestream_heading'] = [
+    'label' => t('Livestream heading'),
+    'description' => t('A heading for the livestream section.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  // Ceremony information heading.
   $extra['node']['event']['display']['field_event_ceremony_info_heading'] = [
     'label' => t('Ceremony information heading'),
     'description' => t('A heading for the ceremony info section.'),
@@ -117,6 +125,14 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
  */
 function commencement_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === 'event' && $view_mode === 'full') {
+
+    // Ceremony information heading.
+    if ($display->getComponent('field_event_livestream_heading')) {
+      $build['field_event_livestream_heading'] = [
+        '#type' => 'markup',
+        '#markup' => '<h2 class="headline block__headline headline block__headline headline--left">' . t("Livestream") . '</h2>',
+      ];
+    }
 
     // Ceremony information heading.
     if ($display->getComponent('field_event_ceremony_info_heading')) {
@@ -298,50 +314,6 @@ function commencement_core_preprocess_field(&$variables) {
         'element--inline',
         'block-margin__top',
       ]);
-
-      break;
-
-    case 'field_event_contact':
-      uiowa_core_set_field_icon($variables, 'fa-user');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
-      if ($node->bundle() === 'event') {
-
-        $contact_markup = '';
-        if ($view = $node?->field_event_contact?->view()) {
-          if (isset($view[0]['#context']['value'])) {
-            $contact = $view[0]['#context']['value'];
-            $contact_markup = '<p>' . $contact . '</p>';
-          }
-        }
-
-        $email_markup = '';
-        if ($view = $node?->field_event_contact_email?->view()) {
-          if (isset($view[0]['#context']['value'])) {
-            $email = $view[0]['#context']['value'];
-            $email_markup = '<p><a href="mailto:' . $email . '">' . $email . '</a></p>';
-          }
-        }
-
-        $phone_markup = '';
-        if ($view = $node?->field_event_contact_phone?->view()) {
-          if (isset($view[0]['#context']['value'])) {
-            $phone = $view[0]['#context']['value'];
-            $phone_markup = '<p><a href="tel:' . $phone . '">' . $phone . '</a></p>';
-          }
-        }
-
-        $details_markup = '
-          <details>
-            <summary>Contact</summary>' .
-            $contact_markup .
-            $email_markup .
-            $phone_markup .
-          '</details>';
-
-        $variables['items'][0]['content'] = [];
-        $variables['items'][0]['content']['#markup'] = $details_markup;
-        // $variables['items'][2]['content'] = $node->field_event_contact_phone->view()[0];
-      }
 
       break;
 
