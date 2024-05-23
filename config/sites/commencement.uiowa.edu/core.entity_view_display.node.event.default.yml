@@ -128,7 +128,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -163,7 +163,7 @@ third_party_settings:
                     decimals: 2
                     suffix: h
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -180,98 +180,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: b041f094-fb53-41ae-bf0b-00f5a8d59108
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_website'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: link
-                label: above
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
-                third_party_settings: {  }
             weight: 8
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 33ee3e9f-a03e-464d-8e88-63147b2fe3a2
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_livestream'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 11
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: b0f44ec7-e1bb-4be7-821d-bf0f801f3be1
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_ceremony_info'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 10
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 5352a67c-0cbc-47b5-9b9f-723ade7a0dc0
-            region: main
-            configuration:
-              id: 'field_block:node:event:field_event_ceremony_info_detail'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 12
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: f700c8e5-0a3a-4844-a3c5-b83638549f1d
-            region: main
-            configuration:
-              id: 'extra_field_block:node:event:field_event_ceremony_info_heading'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -317,27 +226,6 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 5bacb246-f7cc-4203-99a3-59a38efa26c3
-            region: card_meta
-            configuration:
-              id: 'field_block:node:event:field_event_contact'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: visually_hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 6
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: fceeed12-7e45-429a-9653-70a38df6a424
             region: card_meta
             configuration:
@@ -354,7 +242,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -375,7 +263,49 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: b041f094-fb53-41ae-bf0b-00f5a8d59108
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_website'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5bacb246-f7cc-4203-99a3-59a38efa26c3
+            region: main
+            configuration:
+              id: 'field_block:node:event:field_event_contact'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 9
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -390,12 +320,98 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
-        components: {  }
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 33ee3e9f-a03e-464d-8e88-63147b2fe3a2
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_livestream'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: b0f44ec7-e1bb-4be7-821d-bf0f801f3be1
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_ceremony_info'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: f700c8e5-0a3a-4844-a3c5-b83638549f1d
+            region: content
+            configuration:
+              id: 'extra_field_block:node:event:field_event_ceremony_info_heading'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5352a67c-0cbc-47b5-9b9f-723ade7a0dc0
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_ceremony_info_detail'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
 id: node.event.default
 targetEntityType: node
 bundle: event
