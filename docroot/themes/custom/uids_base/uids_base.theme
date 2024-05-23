@@ -1146,6 +1146,15 @@ function uids_base_preprocess_views_view_field(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_file_link().
+ */
+function uids_base_preprocess_file_link(&$variables) {
+  // Remove file link classes.
+  unset($variables['attributes']['class']);
+}
+
+
+/**
  * Implements theme_preprocess_form().
  */
 function uids_base_preprocess_form(&$variables) {
