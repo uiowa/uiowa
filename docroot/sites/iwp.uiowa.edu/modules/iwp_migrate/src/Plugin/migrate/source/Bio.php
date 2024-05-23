@@ -5,8 +5,6 @@ namespace Drupal\iwp_migrate\Plugin\migrate\source;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
-use Drupal\taxonomy\Entity\Term;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Migrate Source plugin.
@@ -36,10 +34,14 @@ class Bio extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
-    // Create tags from field_tags source field.
+    $body = $row->getSourceProperty('body');
+    if (isset($body)) {
+      $body[0]['format'] = 'filtered_html';
+      $row->setSourceProperty('body', $body);
+    }
+
     foreach ([
       'taxonomy_vocabulary_1',
-      'field_writer_session_status_ref',
     ] as $source_field) {
       if ($values = $row->getSourceProperty($source_field)) {
         if (!isset($values)) {
@@ -75,12 +77,18 @@ class Bio extends BaseNodeSource {
   private function fetchTag($tag_name, $source_field, $row) {
 
     $taxonomy_name = NULL;
-    if ($source_field === 'field_event_other_celebrations') {
-      $taxonomy_name = 'celebrations';
+    // Source field.
+    if ($source_field === 'taxonomy_vocabulary_1') {
+      // Destination vocab.
+      $taxonomy_name = 'writer_bio_countries';
     }
 
-    if ($source_field === 'field_session') {
-      $taxonomy_name = 'session';
+    if ($source_field === 'field_writer_lang') {
+      $taxonomy_name = 'writer_bio_languages';
+    }
+
+    if ($source_field === 'field_writer_session_status_ref') {
+      $taxonomy_name = 'writer_bio_session_status';
     }
 
     if ($taxonomy_name !== NULL) {
