@@ -229,10 +229,10 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
     if (!is_null($referring_item)) {
       $parent = $referring_item->getParent();
       if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
-        $variables['items'][0]['content']['#description'] = t('View program');
+        $variables['items'][0]['content']['#description'] = t('Program');
       }
       if (!is_null($parent) && $parent->getName() === 'field_event_order_of_events') {
-        $variables['items'][0]['content']['#description'] = t('View Order of Events');
+        $variables['items'][0]['content']['#description'] = t('Order of Events');
       }
     }
   }
@@ -305,6 +305,7 @@ function commencement_core_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-user');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       if ($node->bundle() === 'event') {
+
         $contact_markup = '';
         if ($view = $node?->field_event_contact?->view()){
           if (isset($view[0]['#context']['value'])) {
@@ -312,7 +313,6 @@ function commencement_core_preprocess_field(&$variables) {
             $contact_markup = '<p>' . $contact . '</p>';
           }
         }
-
 
         $email_markup = '';
         if ($view = $node?->field_event_contact_email?->view()){
@@ -359,6 +359,21 @@ function commencement_core_preprocess_field(&$variables) {
           </a>';
       }
 
+      break;
+
+    case 'field_event_website':
+      uiowa_core_set_field_icon($variables, 'fas fa-globe');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_session_program':
+      uiowa_core_set_field_icon($variables, 'fas fa-file');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_event_order_of_events':
+      uiowa_core_set_field_icon($variables, 'fas fa-list');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
 }
