@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
@@ -325,18 +326,22 @@ function commencement_core_preprocess_field(&$variables) {
 
     case 'field_event_link':
       if ($node->bundle() === 'event') {
-        $link = $variables['items'][0]['content']['#title'];
-        $variables['items'][0]['content'] = [];
-        $variables['items'][0]['content']['#markup'] = '
-          <a
-            class="bttn bttn--primary bttn--small"
-            href="' . $link . '"
-          >
-            View on the events site
-            <span><i class="fas fa-arrow-right"></i></span>
-          </a>';
+        $link = [
+          '#type' => 'link',
+          '#title' => [
+            '#markup' => 'View on the events site <span class="fas fa-arrow-right"></span>',
+          ],
+          '#url' => Url::fromUri($variables['items'][0]['content']['#title']),
+          '#attributes' => [
+            'class' => [
+              'bttn',
+              'bttn--primary',
+              'bttn--small',
+            ],
+          ],
+        ];
+        $variables['items'][0]['content'] = $link;
       }
-
       break;
 
     case 'field_event_website':
