@@ -7336,3 +7336,9 @@ $sites['labmclendon.uiowa.ddev.site'] = 'mclendon.lab.uiowa.edu';
 $sites['labmclendon.dev.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
 $sites['labmclendon.stage.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
 $sites['labmclendon.prod.drupal.uiowa.edu'] = 'mclendon.lab.uiowa.edu';
+
+// Directory aliases for pedley.lab.uiowa.edu.
+$sites['labpedley.uiowa.ddev.site'] = 'pedley.lab.uiowa.edu';
+$sites['labpedley.dev.drupal.uiowa.edu'] = 'pedley.lab.uiowa.edu';
+$sites['labpedley.stage.drupal.uiowa.edu'] = 'pedley.lab.uiowa.edu';
+$sites['labpedley.prod.drupal.uiowa.edu'] = 'pedley.lab.uiowa.edu';
