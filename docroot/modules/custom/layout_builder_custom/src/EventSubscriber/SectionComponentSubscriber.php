@@ -204,8 +204,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'menu_block:main':
-            // Attach accessible-menu library.
-            $build['#attached']['library'][] = 'uids_base/accessible-menu';
+          // Attach accessible-menu library.
+          $build['#attached']['library'][] = 'uids_base/accessible-menu';
 
           break;
 
