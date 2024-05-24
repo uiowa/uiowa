@@ -1,0 +1,23 @@
+id: iwp_countries
+label: 'Countries taxonomy term migration.'
+dependencies:
+  enforced:
+    module:
+      - iwp_core
+migration_tags:
+  - iwp
+migration_group: sitenow_migrate
+source:
+  plugin: d7_taxonomy_term
+  bundle: vocabulary_1
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: writer_bio_countries
+process:
+  name: name
+  description:
+    plugin: callback
+    callable: strip_tags
+    source: description
+  format: format
+migration_dependencies: null
