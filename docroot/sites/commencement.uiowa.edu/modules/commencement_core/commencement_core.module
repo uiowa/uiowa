@@ -130,7 +130,7 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
     if ($display->getComponent('field_event_livestream_heading')) {
       $build['field_event_livestream_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 class="headline block__headline headline block__headline headline--left">' . t("Livestream") . '</h2>',
+        '#markup' => '<h2 id="livestream" class="headline block__headline headline block__headline headline--left">' . t("Livestream") . '</h2>',
       ];
     }
 
@@ -138,7 +138,7 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
     if ($display->getComponent('field_event_ceremony_info_heading')) {
       $build['field_event_ceremony_info_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 class="headline block__headline headline block__headline headline--left">' . t("Ceremony Information") . '</h2>',
+        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left">' . t("Ceremony Information") . '</h2>',
       ];
     }
 
@@ -212,17 +212,17 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
  */
 function commencement_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'field_block:node:venue:field_geolocation':
-      uiowa_core_set_attributes($variables, 'element--cover');
-      $variables['attributes']['id'] = 'map';
-      break;
-
     case 'directionslink_block':
       uiowa_core_set_attributes($variables, [
         'element--absolute',
         'element--absolute--left',
         'element--absolute--bottom',
       ]);
+      break;
+
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
       break;
 
     case 'views_block:events_by_venue-block_1':
