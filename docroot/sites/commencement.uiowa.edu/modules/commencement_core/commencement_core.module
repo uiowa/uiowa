@@ -225,6 +225,12 @@ function commencement_core_preprocess_block(&$variables) {
       $variables['attributes']['id'] = 'map';
       break;
 
+    case 'field_block:node:event:body':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
+      ]);
+      break;
+
     case 'views_block:events_by_venue-block_1':
       uiowa_core_set_attributes($variables, 'block-margin__top');
       $variables['attributes']['id'] = 'events';
