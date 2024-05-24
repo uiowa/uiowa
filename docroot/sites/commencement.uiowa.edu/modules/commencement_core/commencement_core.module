@@ -110,7 +110,7 @@ function commencement_core_taxonomy_term_session_form_submit($form, FormStateInt
  */
 function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form['#id'] === 'views-exposed-form-ceremonies-page-1') {
-    $form['#attached']['library'][] = 'sitenow/chosen';
+    $form['#attached']['library'][] = 'uids_base/view-bef';
 
     // Check if the filter options exist.
     if (isset($form['session']['#options'])) {
