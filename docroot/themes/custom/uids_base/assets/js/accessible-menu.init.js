@@ -8,65 +8,81 @@
         return;
       }
 
-      const menus = context.querySelectorAll('.menu-wrapper--horizontal > .menu');
+      const verticalMenus = context.querySelectorAll('.menu-wrapper--vertical > .menu');
+      const horizontalMenus = context.querySelectorAll('.menu-wrapper--horizontal > .menu');
 
-      // Bail early if this isn't relevant.
-      if (menus === null) {
-        return false;
+      // Handle vertical menus
+      if (verticalMenus !== null) {
+        verticalMenus.forEach(function(menuElement) {
+          // Add mobile toggle button
+          const menuBlock = menuElement.parentElement;
+          const toggleBtn = context.createElement('button');
+          toggleBtn.setAttribute('id', 'main-menu-toggle');
+          toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
+          let block_name = 'menu_block:main';
+          let block_title = drupalSettings.block_title[block_name];
+          const span = context.createElement('span');
+          span.textContent = block_title + ' Menu';
+          toggleBtn.appendChild(span);
+          menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
+
+          // Initialize menu
+          new AccessibleMenu.TopLinkDisclosureMenu({
+            menuElement,
+            controllerElement: context.querySelector('#main-menu-toggle'),
+            containerElement: context.querySelector('.menu-wrapper--vertical'),
+            optionalKeySupport: true,
+            hoverType: 'off',
+          });
+        });
       }
 
-      // Loop through the menus.
-      menus.forEach(function(menuElement) {
+      // Handle horizontal menus
+      if (horizontalMenus !== null) {
+        horizontalMenus.forEach(function(menuElement) {
+          // Add mobile toggle button
+          const menuBlock = context.querySelector('.menu-wrapper--horizontal');
+          const toggleBtn = context.createElement('button');
+          toggleBtn.setAttribute('id', 'main-menu-toggle');
+          toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
+          let block_name = 'menu_block:main';
+          let block_title = drupalSettings.block_title[block_name];
+          const span = context.createElement('span');
+          span.textContent = block_title + ' Menu';
+          toggleBtn.appendChild(span);
+          menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
 
-        // Add mobile toggle button
-        const menuBlock = context.querySelector('.menu-wrapper--horizontal');
-        const toggleBtn = context.createElement('button');
-        toggleBtn.setAttribute('id', 'main-menu-toggle');
-        toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
-        let block_name = 'menu_block:main';
-        let block_title = drupalSettings.block_title[block_name];
-        // Create a new span element and append the text to it
-        const span = context.createElement('span');
-        span.textContent = block_title + ' Menu';
+          // Find all menu items that can be displayed
+          const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
 
-        // Append the span element to the toggleBtn button element
-        toggleBtn.appendChild(span);
-        menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
+          // Add buttons to toggle menus
+          expandableMenuItems.forEach(function(menuItem) {
+            let btn = context.createElement('button');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.type = 'button';
+            btn.setAttribute('aria-controls', 'id_' + menuItem.innerText.toLowerCase() + '_menu');
+            btn.ariaLabel = 'More ' + menuItem.innerText + ' pages';
+            menuItem.parentNode.insertBefore(btn, menuItem.nextSibling);
+            const menuId = 'id_' + menuItem.innerText.toLowerCase() + '_menu';
+            let potentialUl = menuItem.nextElementSibling.nextElementSibling;
+            if (potentialUl.nodeName === 'UL' && potentialUl.classList.contains('menu')) {
+              potentialUl.setAttribute('id', menuId);
+            }
+          });
 
-        // Find all menu items that can be displayed.
-        const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
-
-        // Add buttons to toggle menus. Buttons are generated here to support
-        // no JS and sub-menus displayed by default.
-        expandableMenuItems.forEach(function(menuItem) {
-          let btn = context.createElement('button');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.type = 'button';
-          btn.setAttribute('aria-controls', 'id_' + menuItem.innerText.toLowerCase() + '_menu');
-          btn.ariaLabel = 'More ' + menuItem.innerText + ' pages';
-          menuItem.parentNode.insertBefore(btn, menuItem.nextSibling);
-          // Add ID to ul for aria-label.
-          const menuId = 'id_' + menuItem.innerText.toLowerCase() + '_menu';
-          // Check for 'ul.menu'.
-          let potentialUl = menuItem.nextElementSibling.nextElementSibling;
-          if (potentialUl.nodeName === 'UL' && potentialUl.classList.contains('menu')) {
-            potentialUl.setAttribute('id', menuId);
-          }
+          // Initialize menu
+          new AccessibleMenu.TopLinkDisclosureMenu({
+            menuElement,
+            menuLinkSelector: 'a, span',
+            submenuItemSelector: 'li.menu-item--expanded',
+            controllerElement: context.querySelector('#main-menu-toggle'),
+            submenuToggleSelector: 'button',
+            containerElement: context.querySelector('.menu-wrapper--horizontal'),
+            optionalKeySupport: true,
+            hoverType: 'off',
+          });
         });
-
-        // Initialize menu.
-        new AccessibleMenu.TopLinkDisclosureMenu({
-          menuElement,
-          // We have to add 'span' to handle <nolink>.
-          menuLinkSelector: 'a, span',
-          submenuItemSelector: 'li.menu-item--expanded',
-          controllerElement: context.querySelector('#main-menu-toggle'),
-          submenuToggleSelector: 'button',
-          containerElement: context.querySelector('.menu-wrapper--horizontal'),
-          optionalKeySupport: true,
-          hoverType: 'off',
-        });
-      });
+      }
 
       // Set the flag to true to prevent future executions.
       this.executed = true;
