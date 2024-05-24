@@ -40,6 +40,10 @@ class Bio extends BaseNodeSource {
       $row->setSourceProperty('body', $body);
     }
 
+    if ($image = $row->getSourceProperty('field_image_attach')) {
+      $row->setSourceProperty('field_image_attach', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+    }
+
     return TRUE;
   }
 
