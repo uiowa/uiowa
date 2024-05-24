@@ -642,6 +642,20 @@
   }
 }
 
+// Center horizontal menu.
+.menu-wrapper--horizontal.element--center {
+  > .menu {
+    @include breakpoint(sm) {
+      justify-content: center;
+    }
+  }
+}
+
+// Unset centered alignment.
+.menu-wrapper.element--center {
+  text-align: inherit;
+}
+
 button#main-menu-toggle {
   @include breakpoint(sm) {
     display: none;
