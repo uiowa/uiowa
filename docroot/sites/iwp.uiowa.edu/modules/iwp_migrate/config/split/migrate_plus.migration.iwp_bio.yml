@@ -17,7 +17,7 @@ source:
   plugin: iwp_bio
   node_type: public_writer_bio
   constants:
-    link_title: 'On the map interview'
+    link_title: 'On the Map Interview'
 process:
   langcode:
     plugin: static_map
@@ -55,9 +55,9 @@ process:
   field_writer_bio_media_link/title:
     plugin: concat
     source:
-      - constants/link_title
       - '@title'
-    delimiter: ' - '
+      - constants/link_title
+    delimiter: ' '
 destination:
   plugin: 'entity:node'
   default_bundle: writer_bio
