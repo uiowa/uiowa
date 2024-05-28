@@ -933,7 +933,7 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_hover_effect'] = !in_array('stat--static', $class_array);
   }
 
-  // Check if the hover effect should be applied on the stat block.
+  // Check if the collection view mode is accordion.
   if ($variables['derivative_plugin_id'] === 'uiowa_collection') {
     if ($variables["content"]["#view_mode"] === 'accordion') {
       $variables['is_accordion'] = TRUE;
