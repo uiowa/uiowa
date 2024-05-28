@@ -933,6 +933,13 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_hover_effect'] = !in_array('stat--static', $class_array);
   }
 
+  // Check if the hover effect should be applied on the stat block.
+  if ($variables['derivative_plugin_id'] === 'uiowa_collection') {
+    if ($variables["content"]["#view_mode"] === 'accordion') {
+      $variables['is_accordion'] = TRUE;
+    }
+  }
+
   // Check for blockquote image placement.
   if ($variables['derivative_plugin_id'] === 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_image_below'] = !in_array('blockquote--img-above', $variables['elements']['#attributes']['class']);
