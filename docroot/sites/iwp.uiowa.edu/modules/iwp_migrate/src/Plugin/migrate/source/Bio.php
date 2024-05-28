@@ -5,6 +5,7 @@ namespace Drupal\iwp_migrate\Plugin\migrate\source;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Migrate Source plugin.
@@ -34,6 +35,29 @@ class Bio extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    $source_fields = [
+      'field_writer_lang' => 'writer_bio_languages',
+      'field_writer_session_status' => 'writer_bio_session_status',
+    ];
+
+    foreach ($source_fields as $source_field => $vocabulary_machine_name) {
+      if ($values = $row->getSourceProperty($source_field)) {
+        $term_ids = [];
+
+        foreach ($values as $value) {
+          $term_id = $this->createTerm($value, $vocabulary_machine_name);
+
+          if ($term_id) {
+            $term_ids[] = $term_id;
+          }
+        }
+
+        if (!empty($term_ids)) {
+          $row->setSourceProperty("{$source_field}_processed", $term_ids);
+        }
+      }
+    }
+
     $body = $row->getSourceProperty('body');
     if (isset($body)) {
       $body[0]['format'] = 'filtered_html';
@@ -48,11 +72,52 @@ class Bio extends BaseNodeSource {
       $row->setSourceProperty('field_writer_sample', $this->processFileField($file[0]['fid']));
     }
 
-    if ($file = $row->getSourceProperty('field_writing_sample_in_original')) {
-      $row->setSourceProperty('field_writing_sample_in_original', $this->processFileField($file[0]['fid']));
+    if ($file_sample_original = $row->getSourceProperty('field_writing_sample_in_original')) {
+      $row->setSourceProperty('field_writing_sample_in_original', $this->processFileField($file_sample_original[0]['fid']));
     }
 
     return TRUE;
+  }
+
+  /**
+   * Gets the term ID for the given term name and vocabulary, or creates a new term if it doesn't exist.
+   *
+   * @param string $term_name
+   *   The term name.
+   * @param string $vocabulary_machine_name
+   *   The machine name of the vocabulary.
+   *
+   * @return int|null
+   *   The term ID, or null if the term could not be created.
+   */
+  protected function createTerm($term_name, $vocabulary_machine_name) {
+    $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+
+    // Load the vocabulary entity by its machine name.
+    $vocabulary = Vocabulary::load($vocabulary_machine_name);
+
+    if (!$vocabulary) {
+      return NULL;
+    }
+
+    // Check if the term already exists in the vocabulary.
+    $existing_term = $term_storage->loadByProperties([
+      'name' => $term_name,
+      'vid' => $vocabulary->id(),
+    ]);
+
+    if ($existing_term) {
+      return reset($existing_term)->id();
+    }
+
+    // Create a new term if it doesn't exist.
+    $term = $term_storage->create([
+      'name' => $term_name,
+      'vid' => $vocabulary->id(),
+    ]);
+
+    $term->save();
+    return $term->id();
   }
 
 }

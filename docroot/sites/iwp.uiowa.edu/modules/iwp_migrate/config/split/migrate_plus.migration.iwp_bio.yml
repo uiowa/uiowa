@@ -39,9 +39,16 @@ process:
   field_writer_bio_family_name: field_writer_family_name
   field_writer_bio_given_name: field_writer_given_name
   field_writer_bio_photo_credit: field_writer_photo_credit
-  field_writer_bio_session_status: field_writer_session_status_ref_processed
-  field_writer_bio_countries: taxonomy_vocabulary_1
-  field_writer_bio_languages: field_writer_lang
+  field_writer_bio_session_status: field_writer_session_status_processed
+  field_writer_bio_countries:
+    plugin: sub_process
+    source: taxonomy_vocabulary_1
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iwp_countries
+        source: tid
+  field_writer_bio_languages: field_writer_lang_processed
   field_writer_bio_sample: field_writer_sample
   field_writer_bio_sample_original: field_writing_sample_in_original
   field_writer_bio_media_link/uri: field_writer_yt_link/0/url
