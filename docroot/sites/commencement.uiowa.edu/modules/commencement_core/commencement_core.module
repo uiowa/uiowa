@@ -131,7 +131,7 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
     if ($display->getComponent('field_event_livestream_heading')) {
       $build['field_event_livestream_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 id="livestream" class="headline block__headline headline block__headline headline--left">' . t("Livestream") . '</h2>',
+        '#markup' => '<h2 id="livestream" class="headline block__headline headline block__headline headline--left">' . t('Livestream') . '</h2>',
       ];
     }
 
@@ -139,7 +139,7 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
     if ($display->getComponent('field_event_ceremony_info_heading')) {
       $build['field_event_ceremony_info_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left">' . t("Ceremony Information") . '</h2>',
+        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left">' . t('Ceremony Information') . '</h2>',
       ];
     }
 
@@ -265,7 +265,7 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
-  $node = $variables["element"]["#object"];
+  $node = $variables['element']['#object'];
 
   switch ($variables['element']['#field_name']) {
     case 'field_coll_section_collections':
