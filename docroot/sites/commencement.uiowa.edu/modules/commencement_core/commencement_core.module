@@ -248,9 +248,9 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
     $media = $variables['element']['#object'];
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $referring_item */
     $referring_item = $media->_referringItem;
-    if (!is_null($referring_item)) {
+    if (!is_null($referring_item) && isset($variables['items'][0]['content'])) {
       $parent = $referring_item->getParent();
-      if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
+      if (!is_null($parent) && $parent->getName() === 'field_session_program') {
         $variables['items'][0]['content']['#description'] = t('Program');
       }
       if (!is_null($parent) && $parent->getName() === 'field_event_order_of_events') {
