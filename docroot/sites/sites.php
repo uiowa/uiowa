@@ -7348,3 +7348,9 @@ $sites['labwelsh.uiowa.ddev.site'] = 'welsh.lab.uiowa.edu';
 $sites['labwelsh.dev.drupal.uiowa.edu'] = 'welsh.lab.uiowa.edu';
 $sites['labwelsh.stage.drupal.uiowa.edu'] = 'welsh.lab.uiowa.edu';
 $sites['labwelsh.prod.drupal.uiowa.edu'] = 'welsh.lab.uiowa.edu';
+
+// Directory aliases for obal.lab.uiowa.edu.
+$sites['labobal.uiowa.ddev.site'] = 'obal.lab.uiowa.edu';
+$sites['labobal.dev.drupal.uiowa.edu'] = 'obal.lab.uiowa.edu';
+$sites['labobal.stage.drupal.uiowa.edu'] = 'obal.lab.uiowa.edu';
+$sites['labobal.prod.drupal.uiowa.edu'] = 'obal.lab.uiowa.edu';
