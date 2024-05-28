@@ -80,15 +80,7 @@ class Bio extends BaseNodeSource {
   }
 
   /**
-   * Gets the term ID for the given term name and vocabulary, or creates a new term if it doesn't exist.
-   *
-   * @param string $term_name
-   *   The term name.
-   * @param string $vocabulary_machine_name
-   *   The machine name of the vocabulary.
-   *
-   * @return int|null
-   *   The term ID, or null if the term could not be created.
+   * {@inheritdoc}
    */
   protected function createTerm($term_name, $vocabulary_machine_name) {
     $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
