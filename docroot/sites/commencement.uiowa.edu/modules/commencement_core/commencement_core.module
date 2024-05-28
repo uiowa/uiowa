@@ -344,7 +344,8 @@ function commencement_core_preprocess_field(&$variables) {
       break;
 
     case 'field_event_website':
-      uiowa_core_set_field_icon($variables, 'fas fa-globe');
+      $variables['items'][0]['content']['#title'] = t('Website');
+      uiowa_core_set_field_icon($variables, 'fas fa-desktop');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
