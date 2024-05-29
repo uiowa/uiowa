@@ -309,7 +309,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -330,7 +330,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: 11
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -352,7 +352,25 @@ third_party_settings:
                 settings:
                   title: ''
                 third_party_settings: {  }
-            weight: 11
+            weight: 12
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: de2d3d33-4e3a-457a-85ec-113234bbef0f
+            region: main
+            configuration:
+              id: 'extra_field_block:node:event:field_event_jump_buttons'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                settings: {  }
+                third_party_settings: {  }
+            weight: 9
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -481,6 +499,11 @@ bundle: event
 mode: default
 content:
   field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_event_jump_buttons:
     settings: {  }
     third_party_settings: {  }
     weight: 1

@@ -49,7 +49,7 @@ function commencement_core_entity_presave(EntityInterface $entity) {
 function commencement_core_entity_extra_field_info() {
   $extra = [];
 
-  // Ceremony information heading.
+  // Livestream heading.
   $extra['node']['event']['display']['field_event_livestream_heading'] = [
     'label' => t('Livestream heading'),
     'description' => t('A heading for the livestream section.'),
@@ -69,6 +69,14 @@ function commencement_core_entity_extra_field_info() {
   $extra['node']['event']['display']['field_event_presidents_seal'] = [
     'label' => t('Presidents seal'),
     'description' => t('The presidential seal for the University of Iowa.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  // Jump link buttons.
+  $extra['node']['event']['display']['field_event_jump_buttons'] = [
+    'label' => t('Jump link buttons'),
+    'description' => t('A jump link to the livestream section.'),
     'weight' => 1,
     'visible' => TRUE,
   ];
@@ -154,6 +162,92 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
           data-once="lazy-load-animation"
         >',
       ];
+    }
+
+    // Jump link buttons.
+    if ($display?->getComponent('field_event_jump_buttons')) {
+      $icon = [
+        '#type' => 'html_tag',
+        '#tag' => 'svg',
+        '#attributes' => [
+          'role' => 'presentation',
+          'class' => 'svg-inline--fa fa-arrow-right',
+          'aria-hidden' => 'true',
+          'focusable' => 'false',
+          'data-prefix' => 'fas',
+          'data-icon' => 'arrow-right',
+          'xmlns' => 'http://www.w3.org/2000/svg',
+          'viewBox' => '0 0 448 512',
+          'data-fa-i2svg' => '',
+        ]
+      ];
+
+      $icon['path'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'path',
+        '#attributes' => [
+          'd' => 'M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z',
+          'fill' => 'currentColor',
+        ]
+      ];
+
+      $build['field_event_jump_buttons'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'block',
+            'bttn--row',
+          ],
+        ]
+      ];
+
+      $build['field_event_jump_buttons']['livestream'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#attributes' => [
+          'href' => '#livestream',
+          'class' => [
+            'bttn',
+            'bttn--primary',
+            'bttn--medium',
+          ]
+        ]
+      ];
+
+      $build['field_event_jump_buttons']['ceremony_info'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#attributes' => [
+          'href' => '#ceremony_info',
+          'class' => [
+            'bttn',
+            'bttn--primary',
+            'bttn--medium',
+          ]
+        ]
+      ];
+
+      $build['field_event_jump_buttons']['livestream']['text'] = [
+        '#type' => 'markup',
+        '#markup' => 'Watch now',
+      ];
+
+      $build['field_event_jump_buttons']['ceremony_info']['text'] = [
+        '#type' => 'markup',
+        '#markup' => 'Ceremony info',
+      ];
+
+      $build['field_event_jump_buttons']['livestream']['icon'] =
+      $build['field_event_jump_buttons']['ceremony_info']['icon'] =
+        $icon;
+
+
+
+//      uiowa_core_set_field_icon(
+//        $build['field_event_jump_buttons']['ceremony_info'],
+//        'fa-arrow-right'
+//      );
     }
   }
 }
