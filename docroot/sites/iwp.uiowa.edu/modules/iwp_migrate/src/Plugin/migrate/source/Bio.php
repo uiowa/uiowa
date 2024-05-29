@@ -35,6 +35,13 @@ class Bio extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Skip over the rest of the preprocessing, as it's not needed
+    // for redirects. Also avoids duplicating the notices.
+    // Return TRUE because the row should be created.
+    if ($this->migration->id() === 'iwp_bio_redirects') {
+      return TRUE;
+    }
+
     $source_fields = [
       'field_writer_lang' => 'writer_bio_languages',
       'field_writer_session_status' => 'writer_bio_session_status',
