@@ -23,11 +23,15 @@
                 new_alerts.push(id);
 
                 if (!messages.select(id)) {
-                  let date = new Date(item.attributes.date * 1000);
-                  let month = date.toLocaleDateString('en-us', { month: 'long' });
-                  let time = date.toLocaleTimeString('en-us', { hour: 'numeric', minute: '2-digit' })
-                    .replace(' AM', 'am')
-                    .replace(' PM', 'pm');
+                  let date = new Date(item.attributes.date); // parse the ISO 8601 timestamp
+
+                  // Create DateTimeFormat instances with the options
+                  let monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'America/Chicago' });
+                  let timeFormatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago', hour12: true });
+
+                  // Format the date and time
+                  let month = monthFormatter.format(date);
+                  let time = timeFormatter.format(date).replace(' AM', 'am').replace(' PM', 'pm');
 
                   let alert = `
 <div class="alert alert--icon alert--danger">
