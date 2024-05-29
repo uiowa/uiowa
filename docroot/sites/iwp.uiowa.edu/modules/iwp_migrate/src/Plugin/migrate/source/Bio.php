@@ -58,19 +58,6 @@ class Bio extends BaseNodeSource {
       }
     }
 
-    // Handle the field_writer_bio_countries field.
-    $country_values = $row->getSourceProperty('taxonomy_vocabulary_1') ?: [];
-
-    // Filter out empty values and then process.
-    $non_empty_country_values = array_filter($country_values, function ($value) {
-      return !empty($value);
-    });
-
-    // Check if there are non-empty country values before processing.
-    if (!empty($non_empty_country_values)) {
-      $row->setSourceProperty('taxonomy_vocabulary_1_processed', $non_empty_country_values);
-    }
-
     $body = $row->getSourceProperty('body');
     if (isset($body)) {
       $body[0]['format'] = 'filtered_html';

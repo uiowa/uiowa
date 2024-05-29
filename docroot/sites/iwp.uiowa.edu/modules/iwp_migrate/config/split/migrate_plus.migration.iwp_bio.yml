@@ -42,7 +42,7 @@ process:
   field_writer_bio_session_status: field_writer_session_status_processed
   field_writer_bio_countries:
     plugin: sub_process
-    source: taxonomy_vocabulary_1_processed
+    source: taxonomy_vocabulary_1
     process:
       target_id:
         plugin: migration_lookup
