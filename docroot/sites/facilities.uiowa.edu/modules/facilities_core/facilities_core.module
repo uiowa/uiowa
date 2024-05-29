@@ -607,14 +607,6 @@ function facilities_core_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_file_link().
- */
-function facilities_core_preprocess_file_link(&$variables) {
-  // Remove pdf class.
-  unset($variables['attributes']['class']);
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function facilities_core_preprocess_field__node__title(&$variables) {
