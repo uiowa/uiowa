@@ -8,8 +8,10 @@
 use Drupal\commencement_core\Entity\Event;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
@@ -39,6 +41,39 @@ function commencement_core_entity_presave(EntityInterface $entity) {
         break;
     }
   }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function commencement_core_entity_extra_field_info() {
+  $extra = [];
+
+  // Ceremony information heading.
+  $extra['node']['event']['display']['field_event_livestream_heading'] = [
+    'label' => t('Livestream heading'),
+    'description' => t('A heading for the livestream section.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  // Ceremony information heading.
+  $extra['node']['event']['display']['field_event_ceremony_info_heading'] = [
+    'label' => t('Ceremony information heading'),
+    'description' => t('A heading for the ceremony info section.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  // Presidential seal.
+  $extra['node']['event']['display']['field_event_presidents_seal'] = [
+    'label' => t('Presidents seal'),
+    'description' => t('The presidential seal for the University of Iowa.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
 }
 
 /**
@@ -83,6 +118,43 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       // Add a submit handler for processing the default session.
       $form['actions']['submit']['#submit'][] = 'commencement_core_taxonomy_term_session_form_submit';
       break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function commencement_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'event' && $view_mode === 'full') {
+
+    // Ceremony information heading.
+    if ($display->getComponent('field_event_livestream_heading')) {
+      $build['field_event_livestream_heading'] = [
+        '#type' => 'markup',
+        '#markup' => '<h2 id="livestream" class="headline block__headline headline block__headline headline--left">' . t('Livestream') . '</h2>',
+      ];
+    }
+
+    // Ceremony information heading.
+    if ($display->getComponent('field_event_ceremony_info_heading')) {
+      $build['field_event_ceremony_info_heading'] = [
+        '#type' => 'markup',
+        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left">' . t('Ceremony Information') . '</h2>',
+      ];
+    }
+
+    // Presidential seal.
+    if ($display->getComponent('field_event_presidents_seal')) {
+      $build['field_event_presidents_seal'] = [
+        '#type' => 'markup',
+        '#markup' => '<img
+          loading="lazy"
+          src="/themes/custom/uids_base/assets/images/Seal-Black-edge.svg"
+          alt="The Presidential seal of the University of Iowa."
+          data-once="lazy-load-animation"
+        >',
+      ];
+    }
   }
 }
 
@@ -140,16 +212,22 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
  */
 function commencement_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'field_block:node:venue:field_geolocation':
-      uiowa_core_set_attributes($variables, 'element--cover');
-      $variables['attributes']['id'] = 'map';
-      break;
-
     case 'directionslink_block':
       uiowa_core_set_attributes($variables, [
         'element--absolute',
         'element--absolute--left',
         'element--absolute--bottom',
+      ]);
+      break;
+
+    case 'field_block:node:venue:field_geolocation':
+      uiowa_core_set_attributes($variables, 'element--cover');
+      $variables['attributes']['id'] = 'map';
+      break;
+
+    case 'field_block:node:event:body':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__bottom--extra',
       ]);
       break;
 
@@ -170,13 +248,13 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
     $media = $variables['element']['#object'];
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $referring_item */
     $referring_item = $media->_referringItem;
-    if (!is_null($referring_item)) {
+    if (!is_null($referring_item) && isset($variables['items'][0]['content'])) {
       $parent = $referring_item->getParent();
-      if (!is_null($parent) && $parent->getName() === 'field_session_program' && isset($variables['element'][0]['#description'])) {
-        $variables['items'][0]['content']['#description'] = t('View program');
+      if (!is_null($parent) && $parent->getName() === 'field_session_program') {
+        $variables['items'][0]['content']['#description'] = t('Program');
       }
       if (!is_null($parent) && $parent->getName() === 'field_event_order_of_events') {
-        $variables['items'][0]['content']['#description'] = t('View Order of Events');
+        $variables['items'][0]['content']['#description'] = t('Order of Events');
       }
     }
   }
@@ -186,6 +264,8 @@ function commencement_core_preprocess_field__field_media_file(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_field(&$variables) {
+  $node = $variables['element']['#object'];
+
   switch ($variables['element']['#field_name']) {
     case 'field_coll_section_collections':
       if (isset($variables['element'][0]['#paragraph'])) {
@@ -216,6 +296,20 @@ function commencement_core_preprocess_field(&$variables) {
     case 'field_event_venue':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($node->bundle() === 'event') {
+        $room = '';
+        if ($node?->get('field_event_room')?->getValue()) {
+          $node_value = $node?->get('field_event_room')?->getValue();
+          $room = ' - ' . $node_value[0]['value'];
+        }
+        $variables['items'][0]['content']['#suffix'] = $room;
+      }
+      break;
+
+    case 'field_event_when':
+      if ($node->bundle() === 'event') {
+        $variables['items'][1]['content']['#markup'] = '<p>(Times listed are in central time)</p>';
+      }
       break;
 
     case 'field_location':
@@ -227,6 +321,42 @@ function commencement_core_preprocess_field(&$variables) {
         'block-margin__top',
       ]);
 
+      break;
+
+    case 'field_event_link':
+      if ($node->bundle() === 'event') {
+        $link = [
+          '#type' => 'link',
+          '#title' => [
+            '#markup' => 'View on the events site <span class="fas fa-arrow-right"></span>',
+          ],
+          '#url' => Url::fromUri($variables['items'][0]['content']['#title']),
+          '#attributes' => [
+            'class' => [
+              'bttn',
+              'bttn--primary',
+              'bttn--small',
+            ],
+          ],
+        ];
+        $variables['items'][0]['content'] = $link;
+      }
+      break;
+
+    case 'field_event_website':
+      $variables['items'][0]['content']['#title'] = t('Website');
+      uiowa_core_set_field_icon($variables, 'fas fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_session_program':
+      uiowa_core_set_field_icon($variables, 'fas fa-file');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_event_order_of_events':
+      uiowa_core_set_field_icon($variables, 'fas fa-list');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
 }
