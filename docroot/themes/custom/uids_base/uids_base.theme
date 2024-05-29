@@ -8,6 +8,7 @@
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -935,6 +936,14 @@ function uids_base_preprocess_block(&$variables) {
 
   // Check if the collection view mode is accordion.
   if ($variables['derivative_plugin_id'] === 'uiowa_collection') {
+    // Get the block plugin instance.
+    // Check if the block is a configured block plugin.
+    if (isset($variables['elements']['content']['#block_content'])) {
+      // If it is, get the block content entity.
+      $block_content = $variables['elements']['content']['#block_content'];
+      // Set the block ID using the block content ID.
+      $variables['id'] = $block_content->id();
+    }
     if ($variables["content"]["#view_mode"] === 'accordion') {
       $variables['is_accordion'] = TRUE;
     }
