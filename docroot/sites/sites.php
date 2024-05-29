@@ -7360,3 +7360,9 @@ $sites['docs.uiowa.ddev.site'] = 'docs.uiowa.edu';
 $sites['docs.dev.drupal.uiowa.edu'] = 'docs.uiowa.edu';
 $sites['docs.stage.drupal.uiowa.edu'] = 'docs.uiowa.edu';
 $sites['docs.prod.drupal.uiowa.edu'] = 'docs.uiowa.edu';
+
+// Directory aliases for asme.org.uiowa.edu.
+$sites['orgasme.uiowa.ddev.site'] = 'asme.org.uiowa.edu';
+$sites['orgasme.dev.drupal.uiowa.edu'] = 'asme.org.uiowa.edu';
+$sites['orgasme.stage.drupal.uiowa.edu'] = 'asme.org.uiowa.edu';
+$sites['orgasme.prod.drupal.uiowa.edu'] = 'asme.org.uiowa.edu';
