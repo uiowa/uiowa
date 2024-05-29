@@ -49,10 +49,10 @@ function commencement_core_entity_presave(EntityInterface $entity) {
 function commencement_core_entity_extra_field_info() {
   $extra = [];
 
-  // Ceremony information heading.
-  $extra['node']['event']['display']['field_event_livestream_heading'] = [
-    'label' => t('Livestream heading'),
-    'description' => t('A heading for the livestream section.'),
+  // Ceremony info button.
+  $extra['node']['event']['display']['field_event_ceremony_info_button'] = [
+    'label' => t('Ceremony info button'),
+    'description' => t('Jump link to the ceremony information section'),
     'weight' => 1,
     'visible' => TRUE,
   ];
@@ -65,10 +65,26 @@ function commencement_core_entity_extra_field_info() {
     'visible' => TRUE,
   ];
 
+  // Ceremony information heading.
+  $extra['node']['event']['display']['field_event_livestream_heading'] = [
+    'label' => t('Livestream heading'),
+    'description' => t('A heading for the livestream section.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
   // Presidential seal.
   $extra['node']['event']['display']['field_event_presidents_seal'] = [
     'label' => t('Presidents seal'),
     'description' => t('The presidential seal for the University of Iowa.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  // Watch live button.
+  $extra['node']['event']['display']['field_event_watch_live'] = [
+    'label' => t('Watch live button'),
+    'description' => t('Jump link to the livestream section'),
     'weight' => 1,
     'visible' => TRUE,
   ];
