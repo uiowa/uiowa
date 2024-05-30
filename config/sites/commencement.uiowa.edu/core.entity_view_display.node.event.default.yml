@@ -22,8 +22,10 @@ dependencies:
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - node.type.event
+    - system.menu.main
   module:
     - layout_builder
+    - menu_block
     - system
     - user
   theme:
@@ -60,7 +62,7 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
+            - section_background_black_pattern_community
             - section_margin_fixed_width_container
         components:
           -
@@ -97,7 +99,56 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: c52dfc97-a2cf-45d3-9bd6-14dba062a47a
+            region: content
+            configuration:
+              id: 'menu_block:main'
+              label: null
+              label_display: null
+              provider: menu_block
+              context_mapping: {  }
+              follow: false
+              follow_parent: child
+              label_link: false
+              label_type: block
+              level: 1
+              depth: 1
+              expand_all_items: false
+              parent: 'main:menu_link_content:abeb3656-b236-48af-815b-0f6bcc65e3cb'
+              suggestion: main
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                0: ''
+                block_margin_default_removed: block_margin_default_removed
+                1: block_menu_horizontal
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
@@ -180,7 +231,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -309,7 +360,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 11
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -330,7 +381,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: 12
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -352,7 +403,7 @@ third_party_settings:
                 settings:
                   title: ''
                 third_party_settings: {  }
-            weight: 11
+            weight: 13
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -481,6 +532,11 @@ bundle: event
 mode: default
 content:
   field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_event_jump_buttons:
     settings: {  }
     third_party_settings: {  }
     weight: 1
