@@ -7,14 +7,13 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  .media {
-    flex: 220px 1 1;
-
-    @include breakpoint(page-container) {
-      //flex: 320px 1 1;
-    }
-
     a.photoswipe {
+      flex: 220px 1 1;
+
+      img {
+        object-fit: cover;
+        height: 220px;
+      }
 
       &:hover,
       &:focus {
@@ -23,12 +22,6 @@
         }
       }
     }
-
-    img {
-      object-fit: cover;
-      height: 220px;
-    }
-  }
 }
 
 .paragraph--type--image-gallery.masonry {
@@ -44,7 +37,7 @@
     column-count: 4;
   }
 
-  .media {
+  .photoswipe {
     flex: none;
     display: inline-block;
     margin: 0 0 1.5rem;
