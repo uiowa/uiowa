@@ -10,18 +10,31 @@ dependencies:
     - field.field.paragraph.image_gallery.field_uip_id
     - field.field.paragraph.image_gallery.field_uip_title
     - paragraphs.paragraphs_type.image_gallery
+    - responsive_image.styles.medium__widescreen
+  module:
+    - field_delimiter
+    - photoswipe
+    - photoswipe_dynamic_caption
 id: paragraph.image_gallery.default
 targetEntityType: paragraph
 bundle: image_gallery
 mode: default
 content:
   field_image:
-    type: entity_reference_entity_view
+    type: photoswipe_responsive_field_formatter
     label: hidden
     settings:
-      view_mode: image_gallery
-      link: false
-    third_party_settings: {  }
+      photoswipe_thumbnail_style_first: ''
+      photoswipe_thumbnail_style: medium__widescreen
+      photoswipe_image_style: ''
+      photoswipe_reference_image_field: field_media_image
+      photoswipe_view_mode: default
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+      photoswipe_dynamic_caption:
+        photoswipe_caption: custom
+        photoswipe_caption_custom: '[media:field_media_caption]'
     weight: 1
     region: content
   field_uip_title:

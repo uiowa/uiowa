@@ -8,9 +8,9 @@ dependencies:
     - field.field.media.image.field_media_image
     - field.field.media.image.field_tags
     - media.type.image
-    - responsive_image.styles.medium__no_crop
+    - responsive_image.styles.medium__widescreen
   module:
-    - photoswipe
+    - responsive_image
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.image_gallery
@@ -19,16 +19,13 @@ bundle: image
 mode: image_gallery
 content:
   field_media_image:
-    type: photoswipe_responsive_field_formatter
+    type: responsive_image
     label: hidden
     settings:
-      photoswipe_node_style_first: ''
-      photoswipe_node_style: medium__no_crop
-      photoswipe_image_style: ''
-      photoswipe_reference_image_field: ''
-      photoswipe_caption: custom
-      photoswipe_caption_custom: '[media:field_media_caption]'
-      photoswipe_view_mode: image_gallery
+      responsive_image_style: medium__widescreen
+      image_link: ''
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
