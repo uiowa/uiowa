@@ -944,7 +944,7 @@ function uids_base_preprocess_block(&$variables) {
       // Set the block ID using the block content ID.
       $variables['id'] = $block_content->id();
     }
-    if ($variables["content"]["#view_mode"] === 'accordion') {
+    if ($variables['content']['#view_mode'] === 'accordion') {
       $variables['is_accordion'] = TRUE;
     }
   }
@@ -990,7 +990,7 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) 
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__accordion.html.twig.
  */
 function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables) {
-  $block = $variables["elements"]["content"]["#block_content"];
+  $block = $variables['elements']['content']['#block_content'];
   // If the value hasn't been set, or is set to multi-select,
   // pass "true" for use in constructing the accordion.
   // "False" designates a single-select accordion.
