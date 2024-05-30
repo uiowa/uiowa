@@ -5,6 +5,8 @@
 ] %}
 
 <div{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
   {{ content.field_uiowa_headline }}
   <div class="uiowa-events-wrapper list-container__inner">
     {{ content|without('field_uiowa_headline', 'more') }}
