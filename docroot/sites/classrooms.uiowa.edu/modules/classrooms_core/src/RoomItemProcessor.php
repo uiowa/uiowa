@@ -90,8 +90,12 @@ class RoomItemProcessor extends EntityItemProcessorBase {
 
         if (!empty($features)) {
           // Cheat it a bit by fetching a string and exploding it
-          // to end up with a basic array of target ids.
+          // to end up with a basic array of target ids, as long
+          // as it wasn't an empty string.
           $entity_features = $entity->get(static::$termBundleToFieldMap[$bundle])->getString();
+          if (empty($entity_features)) {
+            break;
+          }
           $entity_features = explode(', ', $entity_features);
           // Sort lists before comparing.
           sort($entity_features);
