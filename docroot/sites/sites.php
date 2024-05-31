@@ -7384,3 +7384,9 @@ $sites['pharmacyintranet.uiowa.ddev.site'] = 'intranet.pharmacy.uiowa.edu';
 $sites['pharmacyintranet.dev.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
 $sites['pharmacyintranet.stage.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
 $sites['pharmacyintranet.prod.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
+
+// Directory aliases for venues.uiowa.edu.
+$sites['venues.uiowa.ddev.site'] = 'venues.uiowa.edu';
+$sites['venues.dev.drupal.uiowa.edu'] = 'venues.uiowa.edu';
+$sites['venues.stage.drupal.uiowa.edu'] = 'venues.uiowa.edu';
+$sites['venues.prod.drupal.uiowa.edu'] = 'venues.uiowa.edu';
