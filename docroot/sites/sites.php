@@ -7378,3 +7378,9 @@ $sites['jobslaw-dean.uiowa.ddev.site'] = 'law-dean.jobs.uiowa.edu';
 $sites['jobslaw-dean.dev.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
 $sites['jobslaw-dean.stage.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
 $sites['jobslaw-dean.prod.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
+
+// Directory aliases for intranet.pharmacy.uiowa.edu.
+$sites['pharmacyintranet.uiowa.ddev.site'] = 'intranet.pharmacy.uiowa.edu';
+$sites['pharmacyintranet.dev.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
+$sites['pharmacyintranet.stage.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
+$sites['pharmacyintranet.prod.drupal.uiowa.edu'] = 'intranet.pharmacy.uiowa.edu';
