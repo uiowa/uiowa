@@ -7372,3 +7372,9 @@ $sites['datahub.uiowa.ddev.site'] = 'hub.data.uiowa.edu';
 $sites['datahub.dev.drupal.uiowa.edu'] = 'hub.data.uiowa.edu';
 $sites['datahub.stage.drupal.uiowa.edu'] = 'hub.data.uiowa.edu';
 $sites['datahub.prod.drupal.uiowa.edu'] = 'hub.data.uiowa.edu';
+
+// Directory aliases for law-dean.jobs.uiowa.edu.
+$sites['jobslaw-dean.uiowa.ddev.site'] = 'law-dean.jobs.uiowa.edu';
+$sites['jobslaw-dean.dev.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
+$sites['jobslaw-dean.stage.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
+$sites['jobslaw-dean.prod.drupal.uiowa.edu'] = 'law-dean.jobs.uiowa.edu';
