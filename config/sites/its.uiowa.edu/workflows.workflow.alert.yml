@@ -6,15 +6,8 @@ dependencies:
     - node.type.alert
   module:
     - content_moderation
-    - workbench_email
   enforced:
-    config:
-      - workbench_email.workbench_email_template.alert_created
-third_party_settings:
-  workbench_email:
-    workbench_email_templates:
-      needs_review:
-        alert_created: alert_created
+    config: {  }
 id: alert
 label: Alert
 type: content_moderation
