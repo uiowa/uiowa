@@ -51,7 +51,7 @@ function copyUids() {
     `${uids.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
     `${uids.src}/**/*.{jpg,png,svg}`,
-  ])
+  ], { encoding: false })
     .pipe(dest(`${uids.dest}`));
 }
 function copyUids3() {
@@ -59,7 +59,7 @@ function copyUids3() {
     `${uids3.src}/**/*.scss`,
     `${uids3.src}/**/*.js`,
     `${uids3.src}/**/*.{jpg,png,svg}`,
-  ])
+  ], { encoding: false })
     .pipe(dest(`${uids3.dest}`));
 }
 
