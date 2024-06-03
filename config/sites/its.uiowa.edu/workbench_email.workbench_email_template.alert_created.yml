@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.alert
+    - workflows.workflow.alert
+    - workflows.workflow.editorial
 id: alert_created
 label: 'Alert created'
 format: html
@@ -21,3 +23,7 @@ body:
   value: '<p>[node:title] alert has been created by [node:author]. <a href="[node:url]">Please review and publish the alert</a></p>'
   format: filtered_html
 replyTo: '[site:mail]'
+transitions:
+  alert:
+    needs_review: needs_review
+  editorial: {  }
