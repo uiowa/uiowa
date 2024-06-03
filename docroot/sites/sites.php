@@ -7390,3 +7390,9 @@ $sites['venues.uiowa.ddev.site'] = 'venues.uiowa.edu';
 $sites['venues.dev.drupal.uiowa.edu'] = 'venues.uiowa.edu';
 $sites['venues.stage.drupal.uiowa.edu'] = 'venues.uiowa.edu';
 $sites['venues.prod.drupal.uiowa.edu'] = 'venues.uiowa.edu';
+
+// Directory aliases for pgn.org.uiowa.edu.
+$sites['orgpgn.uiowa.ddev.site'] = 'pgn.org.uiowa.edu';
+$sites['orgpgn.dev.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
+$sites['orgpgn.stage.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
+$sites['orgpgn.prod.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
