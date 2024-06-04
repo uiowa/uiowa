@@ -8,6 +8,7 @@
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -933,6 +934,21 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_hover_effect'] = !in_array('stat--static', $class_array);
   }
 
+  // Check if the collection view mode is accordion.
+  if ($variables['derivative_plugin_id'] === 'uiowa_collection') {
+    // Get the block plugin instance.
+    // Check if the block is a configured block plugin.
+    if (isset($variables['elements']['content']['#block_content'])) {
+      // If it is, get the block content entity.
+      $block_content = $variables['elements']['content']['#block_content'];
+      // Set the block ID using the block content ID.
+      $variables['id'] = $block_content->id();
+    }
+    if ($variables['content']['#view_mode'] === 'accordion') {
+      $variables['is_accordion'] = TRUE;
+    }
+  }
+
   // Check for blockquote image placement.
   if ($variables['derivative_plugin_id'] === 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_image_below'] = !in_array('blockquote--img-above', $variables['elements']['#attributes']['class']);
@@ -973,8 +989,8 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) 
 /**
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__accordion.html.twig.
  */
-function uids_base_preprocess_block_content__uiowa_collection__accordion(&$variables) {
-  $block = $variables['elements']['#block_content'];
+function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables) {
+  $block = $variables['elements']['content']['#block_content'];
   // If the value hasn't been set, or is set to multi-select,
   // pass "true" for use in constructing the accordion.
   // "False" designates a single-select accordion.
