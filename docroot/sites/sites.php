@@ -7408,3 +7408,9 @@ $sites['medicinecbio.uiowa.ddev.site'] = 'cbio.medicine.uiowa.edu';
 $sites['medicinecbio.dev.drupal.uiowa.edu'] = 'cbio.medicine.uiowa.edu';
 $sites['medicinecbio.stage.drupal.uiowa.edu'] = 'cbio.medicine.uiowa.edu';
 $sites['medicinecbio.prod.drupal.uiowa.edu'] = 'cbio.medicine.uiowa.edu';
+
+// Directory aliases for inrc.law.uiowa.edu.
+$sites['lawinrc.uiowa.ddev.site'] = 'inrc.law.uiowa.edu';
+$sites['lawinrc.dev.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
+$sites['lawinrc.stage.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
+$sites['lawinrc.prod.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
