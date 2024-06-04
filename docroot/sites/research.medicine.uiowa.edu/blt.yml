@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineresearch.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineresearch
+  human_name: research.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineresearch.prod
+drupal:
+  db:
+    database: research_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineresearch.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Office of Research'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgasme.uiowa.ddev.site
+    protocol: https
+  machine_name: orgasme
+  human_name: asme.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgasme.prod
+drupal:
+  db:
+    database: asme_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgasme.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'American Society of Mechanical Engineers'

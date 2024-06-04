@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: jobslaw-dean.uiowa.ddev.site
+    protocol: https
+  machine_name: jobslaw-dean
+  human_name: law-dean.jobs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: jobslaw-dean.prod
+drupal:
+  db:
+    database: law_dean_jobs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://jobslaw-dean.prod.drupal.uiowa.edu'
+  requester: kjhughes
+  site-name: 'Law Dean Search'
