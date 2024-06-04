@@ -854,6 +854,12 @@ function uids_base_preprocess_block(&$variables) {
         break;
 
       case 'main':
+        // Set class if menu is set always render the parent item in the menu.
+        if (isset($variables['elements']['#configuration']['render_parent'])) {
+          if ($variables['configuration']['render_parent'] === 1) {
+            $variables['attributes']['class'][] = 'menu-wrapper--fixed-parent';
+          }
+        }
         // Make the block title available to pass to accessible-menu.init.js.
         if (isset($variables['elements']['content']['#title'])) {
           $block_title = $variables['elements']['content']['#title']['#markup'];
