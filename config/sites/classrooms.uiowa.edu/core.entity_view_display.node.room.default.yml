@@ -227,15 +227,23 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: visually_hidden
                 settings:
-                  view_mode: image_gallery
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: custom
+                    photoswipe_caption_custom: '[media:field_media_caption]'
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -653,17 +661,6 @@ content:
     third_party_settings: {  }
     weight: -20
     region: content
-  field_gallery_images:
-    type: entity_reference_entity_view
-    label: above
-    settings:
-      view_mode: image_gallery
-      link: false
-    third_party_settings:
-      field_delimiter:
-        delimiter: ''
-    weight: 4
-    region: content
   field_image:
     type: entity_reference_label
     label: hidden
@@ -844,6 +841,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_gallery_images: true
   field_meta_tags: true
   field_room_guide: true
   links: true
