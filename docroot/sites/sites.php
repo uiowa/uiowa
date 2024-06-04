@@ -7396,3 +7396,9 @@ $sites['orgpgn.uiowa.ddev.site'] = 'pgn.org.uiowa.edu';
 $sites['orgpgn.dev.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
 $sites['orgpgn.stage.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
 $sites['orgpgn.prod.drupal.uiowa.edu'] = 'pgn.org.uiowa.edu';
+
+// Directory aliases for research.medicine.uiowa.edu.
+$sites['medicineresearch.uiowa.ddev.site'] = 'research.medicine.uiowa.edu';
+$sites['medicineresearch.dev.drupal.uiowa.edu'] = 'research.medicine.uiowa.edu';
+$sites['medicineresearch.stage.drupal.uiowa.edu'] = 'research.medicine.uiowa.edu';
+$sites['medicineresearch.prod.drupal.uiowa.edu'] = 'research.medicine.uiowa.edu';
