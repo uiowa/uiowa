@@ -90,3 +90,59 @@ function classrooms_core_update_9002(&$sandbox) {
   }
 
 }
+
+/**
+ * Remove excess old revisions for rooms.
+ */
+function classrooms_core_update_9003(&$sandbox) {
+
+  // Process all room nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'room')
+      ->accessCheck()
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $service = \Drupal::entityTypeManager()->getStorage('node');
+  $nodes = $service->loadMultiple($batch);
+  foreach ($nodes as $node) {
+    // Grab all revisions for the room, and unless it is the
+    // default revision for the room.
+    $vids = $service->revisionIds($node);
+    foreach ($vids as $vid) {
+      if ($vid === $node->getLoadedRevisionId()) {
+        continue;
+      }
+      $service->deleteRevision($vid);
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+}
