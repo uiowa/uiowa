@@ -25,22 +25,28 @@
 * @see template_preprocess_block()
 */
 #}
-{{ content.field_uiowa_headline }}
-<div class="tabs-collection collection--tabs" id="tabs--{{ id }}">
-  <div role="tablist" aria-label="Tabs">
-    {% for delta, tab in tabs %}
-      <button class="tab__button"
-              role="tab"
-              aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
-              aria-controls="tabs--{{ id }}__panel--{{ delta }}"
-              id="tabs--{{ id }}__{{ delta }}"
-              {{ (delta == 0) ? '': 'tabindex="-1"' }}
-      >
-        {% block tab_label %}
-          {{ tab.label }}
-        {% endblock %}
-      </button>
-    {% endfor %}
-  </div>
-  {{ content|without('field_uiowa_headline') }}
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
+<div{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {% if is_accordion %}
+    {% set id = "accordion-" ~ id %}
+    <div class="collection--accordion">
+      <div class="accordion" role="tablist" aria-multiselectable="{{ multiselect }}" id="{{ id }}">
+        {{ content }}
+      </div>
+    </div>
+  {% else %}
+    <div class="collection--descriptive-list">
+      <dl>
+        {{ content }}
+      </dl>
+    </div>
+  {% endif %}
 </div>
