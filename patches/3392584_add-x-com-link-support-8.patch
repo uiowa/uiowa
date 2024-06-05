@@ -1,0 +1,52 @@
+From 7b1c88f35ad5707832c705401064d1bb5d39014c Mon Sep 17 00:00:00 2001
+From: paul <p.radyvonik@dev-branch.com>
+Date: Mon, 9 Oct 2023 14:51:15 +0300
+Subject: [PATCH 1/2] #3392584 modified RegExp check
+
+---
+ src/Plugin/media/Source/Twitter.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Plugin/media/Source/Twitter.php b/src/Plugin/media/Source/Twitter.php
+index 6f53bbe..135a7a2 100644
+--- a/src/Plugin/media/Source/Twitter.php
++++ b/src/Plugin/media/Source/Twitter.php
+@@ -89,7 +89,7 @@ class Twitter extends MediaSourceBase implements MediaSourceFieldConstraintsInte
+    * @var array
+    */
+   public static $validationRegexp = [
+-    '@((http|https):){0,1}//(www\.){0,1}twitter\.com/(?<user>[a-z0-9_-]+)/(status(es){0,1})/(?<id>[\d]+)@i' => 'id',
++    '@((http|https):){0,1}//(www\.){0,1}(twitter|x)\.com/(?<user>[a-z0-9_-]+)/(status(es){0,1})/(?<id>[\d]+)@i' => 'id',
+   ];
+ 
+   /**
+-- 
+GitLab
+
+
+From 0de6ef4137e7d62511edc33631dc8fbf1e116704 Mon Sep 17 00:00:00 2001
+From: Nikolay Grachev <53048-granik@users.noreply.drupalcode.org>
+Date: Mon, 4 Mar 2024 14:49:47 +0100
+Subject: [PATCH 2/2] Issue #3392584: Add X to allowed providers for Twitter
+ media source
+
+---
+ src/Plugin/media/Source/Twitter.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Plugin/media/Source/Twitter.php b/src/Plugin/media/Source/Twitter.php
+index 135a7a2..62ab075 100644
+--- a/src/Plugin/media/Source/Twitter.php
++++ b/src/Plugin/media/Source/Twitter.php
+@@ -485,7 +485,7 @@ class Twitter extends MediaSourceBase implements MediaSourceFieldConstraintsInte
+    * {@inheritdoc}
+    */
+   public function getProviders() {
+-    return ['Twitter'];
++    return ['Twitter', 'X'];
+   }
+ 
+ }
+-- 
+GitLab
+

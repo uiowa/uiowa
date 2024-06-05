@@ -127,7 +127,7 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            0: section_background_style_black
+            0: section_background_style_gray
             1: section_container_narrow
             remove_default_top_padding: remove_default_top_padding
             remove_default_bottom_padding: remove_default_bottom_padding
@@ -156,14 +156,20 @@ third_party_settings:
                 - block_alignment_center
                 - block_menu_horizontal
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - section_background_style_gray
+            - ''
             - section_container_narrow
         components:
           -
@@ -187,13 +193,15 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
+            - section_background_style_gray
             - section_container_narrow
         components:
           -
@@ -233,7 +241,7 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 50-50
           layout_builder_styles_style:
-            0: section_background_style_gray
+            0: ''
             1: section_margin_edge_to_edge
             remove_default_top_padding: remove_default_top_padding
             remove_default_bottom_padding: remove_default_bottom_padding
