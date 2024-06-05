@@ -6,6 +6,17 @@ adding:
     areas_of_study_block:
       display_options:
         fields:
+          body:
+            exclude: true
+            settings:
+              more:
+                display_link: false
+                target_blank: false
+                link_trim_only: false
+                class: more-link
+                text: More
+                aria_label: 'Read more about [node:title]'
+                token_browser: ''
           field_area_of_study_degree_types:
             id: field_area_of_study_degree_types
             table: node__field_area_of_study_degree_types
@@ -80,6 +91,15 @@ removing:
   display:
     areas_of_study_block:
       display_options:
+        fields:
+          body:
+            exclude: false
+            settings:
+              more_link: false
+              more_class: more-link
+              more_text: More
+              more_aria_label: 'Read more about [node:title]'
+              token_browser: ''
         filters:
           field_area_of_study_locations_target_id:
             expose:
