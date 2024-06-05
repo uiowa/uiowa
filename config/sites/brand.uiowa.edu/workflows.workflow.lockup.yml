@@ -6,16 +6,8 @@ dependencies:
     - node.type.lockup
   module:
     - content_moderation
-    - workbench_email
   enforced:
-    config:
-      0: workbench_email.workbench_email_template.approved_author
-      2: workbench_email.workbench_email_template.denied_author
-third_party_settings:
-  workbench_email:
-    workbench_email_templates:
-      publish:
-        approved_author: approved_author
+    config: {  }
 id: lockup
 label: Lockup
 type: content_moderation

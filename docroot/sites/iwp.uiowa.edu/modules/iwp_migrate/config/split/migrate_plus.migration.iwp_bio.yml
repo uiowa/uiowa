@@ -1,0 +1,64 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - iwp_migrate
+id: iwp_bio
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - iwp
+migration_group: sitenow_migrate
+label: IWP Writers Bio Migration
+source:
+  plugin: iwp_bio
+  node_type: public_writer_bio
+  constants:
+    link_title: 'On the Map Interview'
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  field_image: field_image_attach
+  field_writer_bio_family_name: field_writer_family_name
+  field_writer_bio_given_name: field_writer_given_name
+  field_writer_bio_photo_credit: field_writer_photo_credit
+  field_writer_bio_session_status: field_writer_session_status_processed
+  field_writer_bio_countries:
+    plugin: sub_process
+    source: taxonomy_vocabulary_1
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iwp_countries
+        source: tid
+  field_writer_bio_languages: field_writer_lang_processed
+  field_writer_bio_sample: field_writer_sample
+  field_writer_bio_sample_original: field_writing_sample_in_original
+  field_writer_bio_media_link/uri: field_writer_yt_link/0/url
+  field_writer_bio_media_link/title:
+    plugin: concat
+    source:
+      - '@title'
+      - constants/link_title
+    delimiter: ' '
+destination:
+  plugin: 'entity:node'
+  default_bundle: writer_bio
+migration_dependencies: {  }
