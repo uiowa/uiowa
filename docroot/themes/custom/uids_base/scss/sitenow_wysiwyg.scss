@@ -105,6 +105,16 @@
     }
   }
 
+  .media--type-remote-video {
+    iframe {
+      position: relative;
+      top: 0;
+    }
+    &.media--view-mode-vertical .field--name-field-media-oembed-video {
+      height: 100%;
+    }
+  }
+
   // Deal with drupal-media wysiwyg issue for align none originals.
   .media:not(.align-left):not(.align-right):not(.align-center) {
     &.media--type-remote-video.media--view-mode-default,

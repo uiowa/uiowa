@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwelsh.uiowa.ddev.site
+    protocol: https
+  machine_name: labwelsh
+  human_name: welsh.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwelsh.prod
+drupal:
+  db:
+    database: welsh_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwelsh.prod.drupal.uiowa.edu'
+  requester: geraghty
+  site-name: 'Welsh Lab'

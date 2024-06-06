@@ -38,6 +38,16 @@ main {
 }
 
 .header-sticky {
+  &.header--healthcare {
+    @include breakpoint(md) {
+      padding-top: 100px;
+    }
+    &.below {
+      @include breakpoint(md) {
+        padding-top: 140px;
+      }
+    }
+  }
   @include breakpoint(md) {
     padding-top: 80px;
   }

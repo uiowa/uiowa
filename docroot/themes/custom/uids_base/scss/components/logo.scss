@@ -2,30 +2,20 @@
 @import "uids/scss/abstracts/_utilities.scss";
 @import "uids/scss/components/logo.scss";
 
-@media (max-width: 980px) {
-  .logo--uihc .logo-icon {
-    height: 27px;
-  }
-  .iowa-bar .logo--tab.logo--uihc  {
-    padding: 22px 1.25rem;
-  }
-}
 
-@include breakpoint(md) {
-  .iowa-bar--narrow .logo--tab.logo--uihc .logo-icon {
-    width: 66px;
-  }
-  .iowa-bar--full .logo--tab.logo--uihc {
-    width: 107px;
-    padding: 25px 20px 20px;
-  }
-  .iowa-bar--narrow .logo--tab.logo--uihc {
-    width: 95px;
-  }
-}
+.search-is-open {
+  .logo--tab {
+    opacity: 0;
 
-@include breakpoint(page-container) {
-  .iowa-bar--full .logo--tab.logo--uihc {
-    width: 134px;
+    @include breakpoint(md) {
+      opacity: 1;
+    }
+  }
+  .iowa-bar__below {
+    .site-name {
+      @include breakpoint(md) {
+        display: none;
+      }
+    }
   }
 }

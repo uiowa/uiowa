@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpedley.uiowa.ddev.site
+    protocol: https
+  machine_name: labpedley
+  human_name: pedley.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpedley.prod
+drupal:
+  db:
+    database: pedley_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpedley.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Tony Pedley Laboratory'

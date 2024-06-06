@@ -370,6 +370,19 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 ],
               ];
 
+              // Set '#states' for menu alignment.
+              $form['layout_builder_style_alignment']['#states'] = [
+                'visible' => [
+                  // Always show alignment options if orientation.
+                  // is set to 'horizontal'.
+                  [
+                    ':input[name="layout_builder_style_menu_orientation"]' => [
+                      'value' => 'block_menu_horizontal',
+                    ],
+                  ],
+                ],
+              ];
+
               // Unset the layout builder style heading.
               unset($form['lbs_heading']);
             }

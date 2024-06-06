@@ -225,13 +225,6 @@ function classrooms_core_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_file_link().
- */
-function classrooms_core_preprocess_file_link(&$variables) {
-  unset($variables['attributes']['class']);
-}
-
-/**
  * Implements hook_entity_presave().
  */
 function classrooms_core_node_presave(EntityInterface $entity) {

@@ -106,7 +106,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#description' => t('Select an option'),
     '#options' => [
       'iowa' => t('Iowa'),
-      'uihc' => t('UIHC Healthcare'),
+      'uihc' => t('Iowa Health Care'),
       'regents' => t('Regents'),
     ],
     '#default_value' => theme_get_setting('header.branding_options'),

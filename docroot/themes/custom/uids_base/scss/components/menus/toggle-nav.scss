@@ -15,6 +15,13 @@
 }
 
 .iowa-bar.iowa-bar--narrow {
+  &.iowa-bar--healthcare {
+    .toggle-nav__bttn {
+      @include breakpoint(page-container) {
+        top: 64px;
+      }
+    }
+  }
   .toggle-nav__bttn {
     display: flex;
     height: 60px;
@@ -111,8 +118,11 @@ body {
     background: #fff;
   }
 
-  .below.scroll-up & {
-    animation: fadeIn 1s;
+  .below.scroll-up &,
+  .below.scroll-down & {
+    @include breakpoint(md) {
+      animation: fadeIn 3s;
+    }
   }
 
   &.active {
@@ -187,9 +197,12 @@ body {
 
   @include breakpoint(md) {
     height: 80px;
-    padding: 14px 35px 0;
+    padding: 14px 35px 7px;
     .iowa-bar--narrow & {
-      padding: 9px 35px 0;
+      padding: 9px 35px 7px;
+    }
+    .iowa-bar--healthcare & {
+      height: 100px;
     }
   }
 
@@ -302,7 +315,7 @@ body {
 
 .iowa-bar--full.toggle .toggle-nav__bttn {
   @include breakpoint(page-container) {
-    padding: 19px 35px 0;
+    padding: 14px 35px 0;
   }
 }
 

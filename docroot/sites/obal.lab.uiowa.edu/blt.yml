@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labobal.uiowa.ddev.site
+    protocol: https
+  machine_name: labobal
+  human_name: obal.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labobal.prod
+drupal:
+  db:
+    database: obal_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labobal.prod.drupal.uiowa.edu'
+  requester: kturner1
+  site-name: 'Obal Lab'

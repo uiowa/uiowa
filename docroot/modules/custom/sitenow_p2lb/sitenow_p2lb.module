@@ -1483,6 +1483,14 @@ function sitenow_p2lb_cleanup(int $batch_size) {
   $sitenow_p2lb->set('status', FALSE);
   $sitenow_p2lb->save(TRUE);
 
+  // Update replicate_allowed.
+  $uiowa_core_config = $config_factory->getEditable('uiowa_core.settings');
+
+  // Allow these content types to be replicated if they exist.
+  $uiowa_core_config
+    ->set('uiowa_core.replicate_allowed', ['page', 'article', 'event', 'alert'])
+    ->save();
+
   // Programmatically run `cim`.
   $alias = Drush::aliasManager()->getSelf();
   $config_import = Drush::processManager()->drush($alias, 'cim');
