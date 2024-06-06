@@ -223,16 +223,20 @@ third_party_settings:
             region: main
             configuration:
               id: 'field_block:node:event:body'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: text_default
-                label: hidden
+                label: above
                 settings: {  }
                 third_party_settings: {  }
             weight: 9
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 508cd4a0-aa78-4db8-8bd5-7525e772658f
