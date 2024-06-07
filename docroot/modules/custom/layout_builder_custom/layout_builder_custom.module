@@ -403,6 +403,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
             // Update the description on the label_type.
             $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. The title is displayed only for screen reader users. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
+            // Hide the options to set the parent to render.
+            $form['settings']['advanced']['render_parent']['#access'] = FALSE;
+            // Hide the options to hide on nonactive menu pages.
+            $form['settings']['advanced']['hide_on_nonactive']['#access'] = FALSE;
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
