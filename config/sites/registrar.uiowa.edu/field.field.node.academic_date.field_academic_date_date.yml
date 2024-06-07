@@ -1,0 +1,28 @@
+uuid: 23252568-8cdb-4962-a4ac-97ec4e0f12a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_academic_date_date
+    - node.type.academic_date
+  module:
+    - smart_date
+id: node.academic_date.field_academic_date_date
+field_name: field_academic_date_date
+entity_type: node
+bundle: academic_date
+label: Date
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_duration: 60
+    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
+    default_date_type: ''
+    default_date: ''
+    min: ''
+    max: ''
+default_value_callback: ''
+settings: {  }
+field_type: smartdate
