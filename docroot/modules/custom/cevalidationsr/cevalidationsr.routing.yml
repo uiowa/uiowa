@@ -19,11 +19,11 @@ cevalidationsr.validation:
     # _admin_route: TRUE
 
 cevalidationsr.controllerpage:
-  path: '/cecredentialsr/controller'
+  path: '/credential-validation'
   defaults:
-    _title: 'CeCredential Validation Controller'
+    _title: 'CeCredential Validation'
     _controller: '\Drupal\cevalidationsr\Controller\cevalidationsrController::content'
   requirements:
     _permission: 'access content'
   options:
-    _admin_route: TRUE
+    _admin_route: FALSE

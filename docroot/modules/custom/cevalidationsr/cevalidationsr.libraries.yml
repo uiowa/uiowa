@@ -6,34 +6,17 @@ bootstrap-cdn:
     gpl-compatible: false
   js:
     https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js: { type: external, minified: true }
-  # css:
-  #   theme:
-  #     https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css: { type: external }
   dependencies:
     - core/jquery
 
 cevalidationsr.library:
   version: 1.x
-  css:
-    theme:
-      css/cevalidationsr-theme.css : { weight: 5 }
   js:
     https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js: {type: external, minified: true}
     # js/jquery.maskedinput.min.js: { minified: true}
     js/cevalidationsr.startup.js: {}
   dependencies:
     - core/jquery
-
-font-awesome:
-  remote: https://fontawesome.com
-  version: 5.3.1
-  license:
-    name: MIT
-    url: https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
-    gpl-compatible: true
-  css:
-    theme:
-      https://use.fontawesome.com/releases/v5.3.1/css/all.css: { type: external, minified: true }
 
 validateformsr.commands:
   version: 2.x
@@ -43,8 +26,3 @@ validateformsr.commands:
     - core/drupal
     - core/jquery
     - core/once
-
-google-fonts:
-    css:
-      theme:
-        'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700': { type: external, minified: true }

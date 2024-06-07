@@ -7,12 +7,14 @@
  * This module provides a block that lists all of the
  * installed modules in our Drupal system. It illustrates coding standards,
  * practices, and API use for Drupal 8/9.
-*/
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
-* Implements hook_help().
-*/
-function cevalidationsr_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+ * Implements hook_help().
+ */
+function cevalidationsr_help($route_name, RouteMatchInterface $route_match) {
   if ($route_name == 'help.page.cevalidationsr') {
     return t('A demonstration module.');
   }
