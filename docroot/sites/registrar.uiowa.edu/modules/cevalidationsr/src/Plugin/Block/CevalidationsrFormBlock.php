@@ -19,7 +19,7 @@ class CevalidationsrFormBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\cevalidationsr\Form\CevalidationsrForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\cevalidationsr\Form\cevalidationsrForm');
     return $form;
   }
 
