@@ -109,13 +109,10 @@
   }
 
   &.media--view-mode-vertical {
-    .field--name-field-media-oembed-video {
-      aspect-ratio: 9 / 16;
-      max-width: 100%;
-      position: relative;
-      @include container-query() {
-        max-width: 50%;
-      }
+    aspect-ratio: 9 / 16;
+    max-width: 100%;
+    @include container-query() {
+      max-width: 50%;
     }
   }
 
