@@ -6,12 +6,12 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\Markup;
 
 /**
- *
+ * {@inheritdoc}
  */
-class cevalidationsrController extends ControllerBase {
+class CevalidationsrController extends ControllerBase {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function content() {
     $myForm = $this->formBuilder()->getForm('Drupal\cevalidationsr\Form\cevalidationsr');

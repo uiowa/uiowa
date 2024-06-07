@@ -2,61 +2,19 @@
 
 namespace Drupal\cevalidationsr\Form;
 
-use Drupal\cevalidationsr\cevalidationsrConnection;
+use Drupal\cevalidationsr\CevalidationsrConnection;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
-// Use Drupal\Core\Ajax\ReplaceCommand;.
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Basic CeCredential Form Validation class
- * --sample: --https://www.thirdandgrove.com/theming-form-elements-drupal-8
- * --sample: --https://www.lullabot.com/articles/drupal-8-theming-fundamentals-part-1
- * --sample: --https://www.drupal.org/docs/8/creating-custom-modules/adding-stylesheets-css-and-javascript-js-to-a-drupal-8-module
- * --sample: --https://github.com/ericski/Drupal-8-Module-Theming-Example
- * --sample: --https://github.com/acabouet/Drupal-8-Custom-Module
- * --sample: --https://github.com/cristiroma/drupal8-module-tutorial
- * --sample: --https://www.adcisolutions.com/knowledge/oop-drupal-8-and-how-use-it-create-custom-module
- * --sample: --https://opensenselabs.com/blog/tech/adding-css-fonts-and-javascript-using-library-api-drupal-8
- * --sample: --https://www.drupal.org/project/drupal/issues/2841872
- * --sample: --https://twig.symfony.com/doc/2.x/
- * --sample: --https://www.drupalexp.com/blog/creating-ajax-callback-commands-drupal-8
- * --sample: --https://www.metaltoad.com/blog/drupal-8-consumption-third-party-api
- * --sample: --https://drupalize.me/blog/201512/speak-http-drupal-httpclient
- * --sample: --https://www.sitepoint.com/using-ajax-forms-drupal-8/
- * -sample: --https://www.oreilly.com/library/view/mastering-drupal-8/9781785885976/2ebd5467-f633-4c7c-90be-930e20c14dc7.xhtml --Using Twig to attach a library
+ * Cevalidationsr Form.
  */
-class cevalidationsrForm extends FormBase {
-  /**
-   * @var \Drupal\Core\Config\Config cevalidationsr settings
-   */
-  protected $config = NULL;
-
-  /**
-   * @var array Store sensitive API info such as the private_key & password
-   */
-  protected $sensitiveConfig = [];
-
-  /**
-   * CevalidationsrConnection constructor.
-   */
-  public function __construct() {
-    $this->config = \Drupal::config('cevalidationsr.settings');
-  }
-
-  /**
-   * Get configuration or state setting for this integration module.
-   *
-   * @param string $name
-   *   this module's config or state.
-   *
-   * @return string
-   */
-  protected function getConfig($name) {
-    return $this->config->get('cevalidationsr.' . $name);
-  }
+class CevalidationsrForm extends FormBase {
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -70,10 +28,11 @@ class cevalidationsrForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Get Apostille Email.
-    $apostilleemail = $this->getConfig('apostilleemail');
+    $config = \Drupal::config('cevalidationsr.settings');
+    $apostilleemail = $config->get('cevalidationsr.apostilleemail');
 
     // Show CHEA Logo?
-    $displayCHEALogo = $this->getConfig('displayCHEALogo');
+    $displayCHEALogo = $config->get('cevalidationsr.displayCHEALogo');
 
     $form['#prefix'] = '<div class="container">';
     $form['#suffix'] = '</div>';
@@ -104,15 +63,11 @@ class cevalidationsrForm extends FormBase {
     ];
 
     // Add a button that handles the submission of the form.
-    // See: https://api.drupal.org/api/drupal/elements/8.7.x
-    // https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Element%21RenderElement.php/class/RenderElement/8.7.x
-    // https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Element%21FormElement.php/class/FormElement/8.7.x for #attributes.
     $form['actions'] = [
       '#type' => 'button',
       '#value' => $this->t('Validate'),
-      '#attributes' => ['class' => ['btn btn-primary btn-large']],
+      '#attributes' => ['class' => ['bttn bttn--primary']],
       '#ajax' => [
-    // 'Drupal\modules\custom\cevalidationsr\cevalidationsrConnection::queryEndpoint',
         'callback' => '::setMessage',
         'wrapper' => 'result_table',
         'progress' => [
@@ -165,12 +120,6 @@ class cevalidationsrForm extends FormBase {
       // Set an error for the form element with a key of "credentialId".
       $form_state->setErrorByName('credentialId', $this->t('The CeDiD must be set.'));
     }
-
-    // $nameLetter = $form_state->getValue('nameLetter');
-    // if (strlen($nameLetter) < 1) {
-    //     // Set an error for the form element with a key of "credentialId".
-    //     $form_state->setErrorByName('nameLetter', $this->t('The two-letter name must be set.'));
-    // }
   }
 
   /**
@@ -188,42 +137,12 @@ class cevalidationsrForm extends FormBase {
     $state  = \Drupal::state();
     $values = $form_state->getValues();
     $state->set('cevalidationsr.credentialId', $values['credentialId']);
-    /* $state->set('cevalidationsr.nameLetter', $values['nameLetter']); */
 
     // Call External CeCredentialTrust API.
     $connection = new cevalidationsrConnection();
     $response   = NULL;
     $json       = $connection->queryEndpoint();
-    // Get external data using Call: //'Drupal\modules\custom\cevalidationsr\cevalidationsrConnection::queryEndpoint',
-    // $result = 'Drupal\modules\custom\cevalidationsr\cevalidationsrConnection::queryEndpoint';
-    // list($response, $json) = 'Drupal\modules\custom\cevalidationsr\cevalidationsrConnection::queryEndpoint';
-    // If response data was built and returned, display it with a sample of the
-    // objects returned
-    // if (isset($response)) {
-    //   $build['response'] = [
-    //     '#theme' => 'item_list',
-    //     '#title' => t('Response: @r', [
-    //       '@r' => $response->getReasonPhrase(),
-    //     ]),
-    //     '#items' => [
-    //       'code' => t('Code: @c', ['@c' => $response->getStatusCode()]),
-    //     ],
-    //   ];
-    // }
-    // if (isset($json)) {
-    //   $build['response_data'] = [
-    //     '#theme' => 'item_list',
-    //     '#title' => t('Response Data:'),
-    //     '#items' => [
-    //       'response-type' => t('Response Type: @t', [
-    //         '@t' => $json->response_type,
-    //       ]),
-    //       'total-count' => t('Total Count: @c', [
-    //         '@c' => $json->pagination->total_count,
-    //       ]),
-    //     ],
-    //   ];
-    // }.
+
     // Retrieve values.
     $item = json_decode($json);
     $successfail = $item->successfail_result;
@@ -233,11 +152,7 @@ class cevalidationsrForm extends FormBase {
     // Display result with replace.
     $response = new AjaxResponse();
 
-    // https://drupal.stackexchange.com/questions/8529/is-it-possible-to-replace-more-than-one-form-element-wrappers-triggered-by-onl
     $response->addCommand(new InvokeCommand('#divValidationResult', 'removeClass', ['hidden']));
-    // $response->addCommand(new ReplaceCommand('#successfail_result', $successfail));
-    // $response->addCommand(new ReplaceCommand('#result_table', $result_table));
-    // https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Ajax%21HtmlCommand.php/class/HtmlCommand/8.2.x
     $response->addCommand(new HtmlCommand('#successfail_result', $successfail));
     $response->addCommand(new HtmlCommand('#result_table', $result_table));
     $response->addCommand(new HtmlCommand('#scholarrecord_result', $scholarrecord_result));

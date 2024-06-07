@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Defines a form that configures forms module settings.
  */
-class cevalidationsrConfigurationForm extends ConfigFormBase {
+class CevalidationsrConfigurationForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
