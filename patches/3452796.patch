@@ -1,0 +1,91 @@
+From 5cd33ed0faf9481647b590b85970f35c38784026 Mon Sep 17 00:00:00 2001
+From: Martin Anderson-Clutz <46883-mandclu@users.noreply.drupalcode.org>
+Date: Wed, 5 Jun 2024 20:29:50 +0000
+Subject: [PATCH 1/2] Use JS unary operator to force duration values to
+ integers
+
+---
+ js/smart_date.js | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/js/smart_date.js b/js/smart_date.js
+index 3f1d1d1..608fc22 100644
+--- a/js/smart_date.js
++++ b/js/smart_date.js
+@@ -167,7 +167,7 @@
+         if (duration === 'custom') {
+           const wrapper = element.closest('.smartdate--widget');
+           duration = calcDuration(wrapper);
+-        } else if (duration === 0) {
++        } else if (+duration === 0) {
+           // Call this to hide the end date and time.
+           durationChanged(element);
+         }
+@@ -175,7 +175,7 @@
+         element.dataset.duration = duration;
+         // Handle cases where only one non-custom value is allowed.
+         if (element.options.length === 1 && duration !== 'custom') {
+-          if (duration === 0) {
++          if (+duration === 0) {
+             // Hide the entire duration wrapper.
+             element.parentElement.style.display = 'none';
+           } else {
+@@ -229,7 +229,7 @@
+       function setDuration(element) {
+         const wrapper = element.closest('.smartdate--widget');
+         const duration = calcDuration(wrapper);
+-        if (duration === 0) {
++        if (+duration === 0) {
+           return;
+         }
+         const durationSelect = wrapper.querySelector('select.field-duration');
+@@ -285,7 +285,7 @@
+         const durationWrapper = duration.parentElement;
+
+         if (checkbox.checked === true) {
+-          if (checkbox.dataset.duration === 0) {
++          if (+checkbox.dataset.duration === 0) {
+             const endDate = wrapper.querySelector('input.time-end.form-date');
+             endDate.style.display = '';
+             const endDateLabel = wrapper.querySelector('.time-start + .label');
+@@ -331,8 +331,7 @@
+           }
+           if (
+             checkbox.dataset.duration ||
+-            checkbox.dataset.duration === 0 ||
+-            checkbox.dataset.duration === '0'
++            +checkbox.dataset.duration === 0
+           ) {
+             duration.value = checkbox.dataset.duration;
+             duration.dataset.duration = checkbox.dataset.duration;
+--
+GitLab
+
+
+From 04dcf16e4777ed7c1306ecc1a968f12c04a89955 Mon Sep 17 00:00:00 2001
+From: Martin Anderson-Clutz <46883-mandclu@users.noreply.drupalcode.org>
+Date: Wed, 5 Jun 2024 20:46:47 +0000
+Subject: [PATCH 2/2] Resolve eslint tantrum
+
+---
+ js/smart_date.js | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/js/smart_date.js b/js/smart_date.js
+index 608fc22..d4fc2c7 100644
+--- a/js/smart_date.js
++++ b/js/smart_date.js
+@@ -329,10 +329,7 @@
+           } else {
+             endTime.value = '';
+           }
+-          if (
+-            checkbox.dataset.duration ||
+-            +checkbox.dataset.duration === 0
+-          ) {
++          if (checkbox.dataset.duration || +checkbox.dataset.duration === 0) {
+             duration.value = checkbox.dataset.duration;
+             duration.dataset.duration = checkbox.dataset.duration;
+             if (!endTime.value) {
+--
+GitLab
