@@ -43,12 +43,12 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         ],
       ];
 
-      // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
-      //   is resolved.
-      // Smart_date deals with ranges, but we only need a single date,
+      // Smart_date deals with ranges, but we only need a single date, no time,
       // so unset the extra "to" in the form and hide the end date.
       // JS will update the end date to match the start date
       // without showing clutter to the end user.
+      // Smart_date's date only formatter loads a different js library and
+      // so checkEndDate in smart_date.js is not checked against.
       unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
       $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
       break;
