@@ -1,0 +1,29 @@
+cevalidationsr.configuration:
+  path: '/admin/config/services/cevalidationsr/config'
+  defaults:
+    _form: '\Drupal\cevalidationsr\Form\cevalidationsrConfigurationForm'
+    _title: 'CeCredential Validation API Configuration'
+  requirements:
+    _permission: 'cevalidationsr admin config'
+  options:
+    _admin_route: TRUE
+
+cevalidationsr.validation:
+  path: '/cecredentialsr/validation'
+  defaults:
+    _form: '\Drupal\cevalidationsr\Form\cevalidationsrForm'
+    _title: 'CeCredential Validation'
+  requirements:
+    _permission: 'access content'
+  # options:
+    # _admin_route: TRUE
+
+cevalidationsr.controllerpage:
+  path: '/cecredentialsr/controller'
+  defaults:
+    _title: 'CeCredential Validation Controller'
+    _controller: '\Drupal\cevalidationsr\Controller\cevalidationsrController::content'
+  requirements:
+    _permission: 'access content'
+  options:
+    _admin_route: TRUE
