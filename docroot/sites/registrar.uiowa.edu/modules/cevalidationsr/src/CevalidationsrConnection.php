@@ -70,11 +70,11 @@ class CevalidationsrConnection {
    *   The neutral response message.
    */
   protected function neutralResponse($neutralresponseemail) {
-    return "<div class='border bg--gray block-padding__all--minimal block-margin__top'><ul>" .
-      "<li>We cannot validate the Credential at this time.</li>" .
-      "<li>The information provided does not match the information on record, or there was a connection error.</li>" .
-      "<li>Please contact <a href='mailto:" . $neutralresponseemail . "?subject=CeDiploma Information Request' data-rel='external' target='_blank'>" . $neutralresponseemail . "</a> for assistance. When you do, please provide the student name and CeDiD.</li>" .
-      "</ul></div>";
+    return "<div class='border bg--gray block-padding__all--minimal block-margin__top'><p>" .
+      "We cannot validate the Credential at this time.&nbsp;" .
+      "The information provided does not match the information on record, or there was a connection error.&nbsp;" .
+      "Please contact <a href='mailto:" . $neutralresponseemail . "?subject=CeDiploma Information Request' data-rel='external' target='_blank'>" . $neutralresponseemail . "</a> for assistance. When you do, please provide the student name and CeDiD." .
+      "</p></div>";
   }
 
   /**

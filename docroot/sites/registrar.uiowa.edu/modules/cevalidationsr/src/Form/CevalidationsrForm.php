@@ -89,7 +89,7 @@ class CevalidationsrForm extends FormBase {
 
     $form['result_table'] = [
       '#type' => 'markup',
-      '#markup' => '<div id="divValidationResult" class="block-padding__all--minimal block-margin__top block-margin__bottom border hidden"><div><p id="successfail_result" ></p><table id="result_table" class="table--gray-borders"><tbody id="result_tbody"></tbody></table></div></div>',
+      '#markup' => '<div id="divValidationResult" class="block-margin__top block-margin__bottom hidden"><div><p id="successfail_result" ></p><table id="result_table" class="table--gray-borders"><tbody id="result_tbody"></tbody></table></div></div>',
     ];
 
     $aposttext = '<div class="block-padding__top--minimal block-padding__bottom--minimal"><div><h2 class="h4">Apostille:</h2><p>An Apostille may neither be required nor necessary. The CeDiploma has legal standing, is non-repudiating, and can be validated through the Institution&rsquo;s website to provide absolute confidence in the credential&rsquo;s authenticity. Questions should be redirected to <a href="mailto:' . $apostilleemail . '?subject=Apostille Information Request" data-rel="external" target="_blank">' . $apostilleemail . '</a>.</p></div></div>';
