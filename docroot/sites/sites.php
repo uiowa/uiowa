@@ -7426,3 +7426,9 @@ $sites['labopl.uiowa.ddev.site'] = 'opl.lab.uiowa.edu';
 $sites['labopl.dev.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
 $sites['labopl.stage.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
 $sites['labopl.prod.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+
+// Directory aliases for exchanges.org.uiowa.edu.
+$sites['orgexchanges.uiowa.ddev.site'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.dev.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.stage.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.prod.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
