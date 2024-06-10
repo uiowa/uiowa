@@ -23,7 +23,7 @@ function sitenow_p2lb_update_10000() {
   // For each of these identified nodes, set the revision id to 1.
   foreach ($query as $nid) {
     $node = Node::load($nid);
-    $node->set('field_v3_conversion_revision_id', '1');
+    $node->set('field_v3_conversion_revision_id', $node->getLoadedRevisionId());
     $node->set('field_page_content_block', NULL);
     $node->setRevisionLogMessage('Automated save.');
     $node->setRevisionUserId(1);
