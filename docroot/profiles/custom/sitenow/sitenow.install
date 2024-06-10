@@ -3237,34 +3237,3 @@ function sitenow_update_10008() {
 function sitenow_update_10009() {
   drupal_flush_all_caches();
 }
-
-/**
- * Fix v3 page nodes created during p2lb state.
- */
-function sitenow_update_10010() {
-  /** @var \Drupal\config_split\Entity\ConfigSplitEntity $config_split_entities */
-  $p2lb = \Drupal::entityTypeManager()->getStorage('config_split')->load('p2lb');
-
-  // This site has the 'p2lb' split in config,
-  // and it is enabled.
-  if ($p2lb && $p2lb->get('status')) {
-    // Check for page nodes that were created v3 but not set with a v3 revision id.
-    $query = \Drupal::entityQuery('node')
-      ->accessCheck(TRUE)
-      ->condition('type', 'page')
-      ->exists('layout_builder__layout')
-      ->condition('layout_builder__layout', '', '<>')
-      ->condition('field_v3_conversion_revision_id', NULL, "IS NULL")
-      ->execute();
-
-    // For each of these identified nodes, set the revision id to 1.
-    foreach ($query as $nid) {
-      $node = Node::load($nid);
-      $node->set('field_v3_conversion_revision_id', '1');
-      $node->setRevisionLogMessage('Automated save.');
-      $node->setRevisionUserId(1);
-      $node->save();
-    }
-
-  }
-}
