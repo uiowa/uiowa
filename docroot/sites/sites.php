@@ -7414,3 +7414,9 @@ $sites['lawinrc.uiowa.ddev.site'] = 'inrc.law.uiowa.edu';
 $sites['lawinrc.dev.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
 $sites['lawinrc.stage.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
 $sites['lawinrc.prod.drupal.uiowa.edu'] = 'inrc.law.uiowa.edu';
+
+// Directory aliases for produnit.clas.uiowa.edu.
+$sites['clasprodunit.uiowa.ddev.site'] = 'produnit.clas.uiowa.edu';
+$sites['clasprodunit.dev.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
+$sites['clasprodunit.stage.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
+$sites['clasprodunit.prod.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
