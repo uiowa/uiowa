@@ -5759,12 +5759,6 @@ $sites['medicinekidsight.dev.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 $sites['medicinekidsight.stage.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 $sites['medicinekidsight.prod.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 
-// Directory aliases for pharmacy-dean.jobs.uiowa.edu.
-$sites['jobspharmacy-dean.uiowa.ddev.site'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.dev.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.stage.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.prod.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-
 // Directory aliases for teaching.center.uiowa.edu.
 $sites['centerteaching.uiowa.ddev.site'] = 'teaching.center.uiowa.edu';
 $sites['centerteaching.dev.drupal.uiowa.edu'] = 'teaching.center.uiowa.edu';
