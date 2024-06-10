@@ -87,6 +87,16 @@ class CevalidationsrForm extends FormBase {
       '#markup' => '<div id="divValidationResult" class="row hidden"><div class="col-md-8"><p id="successfail_result" style="font-size:1.2em;"></p><table id="result_table" class="table table-bordered table-striped"><tbody id="result_tbody"></tbody></table></div></div>',
     ];
 
+    $form['error_message'] = [
+      '#type' => 'markup',
+      '#markup' => '<div id="error-message"></div>',
+    ];
+
+    $form['form_errors'] = [
+      '#type' => 'markup',
+      '#markup' => '<div id="form-errors"></div>',
+    ];
+
     $aposttext = '<div class="row"><div class="col-md-8"><hr class="hr-gray" /><h4>Apostille:</h4><p class="text-justify">An Apostille may neither be required nor necessary. The CeDiploma has legal standing, is non-repudiating, and can be validated through the Institution&rsquo;s website to provide absolute confidence in the credential&rsquo;s authenticity. Questions should be redirected to <a href="mailto:' . $apostilleemail . '?subject=Apostille Information Request" data-rel="external" target="_blank">' . $apostilleemail . '</a>.</p></div></div>';
     $form['apostille_info'] = [
       '#type' => 'markup',
@@ -109,16 +119,33 @@ class CevalidationsrForm extends FormBase {
   }
 
   /**
+   * Validate the credential ID.
+   *
+   * @param string $credentialId
+   *   The credential ID to validate.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
+   *   The error message if the credential ID is invalid, or null if it's valid.
+   */
+  protected function validateCredentialId($credentialId) {
+    if (strlen($credentialId) < 1) {
+      return $this->t('The CeDiD must be set.');
+    }
+
+    // Add any other validation rules here.
+    return NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // Validate credentialId.
     $credentialId = $form_state->getValue('credentialId');
-    if (strlen($credentialId) < 1) {
-      // Set an error for the form element with a key of "credentialId".
-      $form_state->setErrorByName('credentialId', $this->t('The CeDiD must be set.'));
+    $error = $this->validateCredentialId($credentialId);
+    if ($error) {
+      $form_state->setErrorByName('credentialId', $error);
     }
   }
 
@@ -133,6 +160,15 @@ class CevalidationsrForm extends FormBase {
    * {@inheritdoc}
    */
   public function setMessage(array &$form, FormStateInterface $form_state) {
+    $credentialId = $form_state->getValue('credentialId');
+    $error = $this->validateCredentialId($credentialId);
+    if ($error) {
+      // Handle the error in the Ajax response.
+      $response = new AjaxResponse();
+      $response->addCommand(new HtmlCommand('#error-message', $error->render()));
+      return $response;
+    }
+
     // Pass values in system state.
     $state  = \Drupal::state();
     $values = $form_state->getValues();
