@@ -7420,3 +7420,9 @@ $sites['clasprodunit.uiowa.ddev.site'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.dev.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.stage.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.prod.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
+
+// Directory aliases for opl.lab.uiowa.edu.
+$sites['labopl.uiowa.ddev.site'] = 'opl.lab.uiowa.edu';
+$sites['labopl.dev.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+$sites['labopl.stage.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+$sites['labopl.prod.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
