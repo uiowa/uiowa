@@ -70,7 +70,7 @@ class CevalidationsrConnection {
    *   The neutral response message.
    */
   protected function neutralResponse($neutralresponseemail) {
-    return "<div class='well'><ul>" .
+    return "<div class='border bg--gray block-padding__all--minimal block-margin__top'><ul>" .
       "<li>We cannot validate the Credential at this time.</li>" .
       "<li>The information provided does not match the information on record, or there was a connection error.</li>" .
       "<li>Please contact <a href='mailto:" . $neutralresponseemail . "?subject=CeDiploma Information Request' data-rel='external' target='_blank'>" . $neutralresponseemail . "</a> for assistance. When you do, please provide the student name and CeDiD.</li>" .
@@ -119,10 +119,10 @@ class CevalidationsrConnection {
           </tbody>";
           $tbodyHtml = preg_replace('/\s+/', ' ', $tbody);
           $output['result_table'] = $tbodyHtml;
-          $output['successfail_result'] = "<br /><b>This is a Valid Credential</b><br />Validated: " . $utcDateTime;
+          $output['successfail_result'] = "<b>This is a Valid Credential</b><br />Validated: " . $utcDateTime;
 
           if ($hostedvalidationurl != "") {
-            $output['scholarrecord_result'] = "<a class='btn btn-success btn-lg' href='" . $hostedvalidationurl . "' target='_blank'><b>Scholar</b>Record</a><br /><small>By selecting ScholarRecord™, you will be taken to CeCredential Trust, a trusted partner of the University, to provide you with more detail of the learner's credential.<br /><br />";
+            $output['scholarrecord_result'] = "<a class='bttn bttn--secondary' href='" . $hostedvalidationurl . "' target='_blank'><b>Scholar</b>Record</a><br /><small>By selecting ScholarRecord™, you will be taken to CeCredential Trust, a trusted partner of the University, to provide you with more detail of the learner's credential.<br /><br />";
           }
 
         }
