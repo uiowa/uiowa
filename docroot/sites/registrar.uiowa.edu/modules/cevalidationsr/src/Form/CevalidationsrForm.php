@@ -57,7 +57,7 @@ class CevalidationsrForm extends FormBase {
         'placeholder' => ["____-____-____"],
       ],
       '#maxlength' => 14,
-      '#size' => 14,
+      '#size' => 16,
     ];
 
     // Add a button that handles the submission of the form.
