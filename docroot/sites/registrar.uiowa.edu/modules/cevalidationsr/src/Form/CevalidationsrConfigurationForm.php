@@ -42,31 +42,31 @@ class CevalidationsrConfigurationForm extends ConfigFormBase {
       '#type'          => 'textfield',
       '#title'         => $this->t('CeValidation API Base URL'),
       '#default_value' => $config->get('cevalidationsr.url'),
-      '#description'   => t('https://test.secure.cecredentialtrust.com:8086/api/webapi/v3/cecredentialvalidate'),
+      '#description'   => $this->t('https://test.secure.cecredentialtrust.com:8086/api/webapi/v3/cecredentialvalidate'),
     ];
     $form['cevalidationsr']['clientid'] = [
       '#type'          => 'textfield',
       '#title'         => $this->t('Client Id'),
       '#default_value' => $config->get('cevalidationsr.clientid'),
-      '#description'   => t('80DBC6A0-6CCF-4BA3-AAD8-89B2AE22FFA9'),
+      '#description'   => $this->t('80DBC6A0-6CCF-4BA3-AAD8-89B2AE22FFA9'),
     ];
     $form['cevalidationsr']['apostilleemail'] = [
       '#type'          => 'textfield',
       '#title'         => $this->t('Apostille Email'),
       '#default_value' => $config->get('cevalidationsr.apostilleemail'),
-      '#description'   => t('graduation@sampleuniversity.edu'),
+      '#description'   => $this->t('graduation@sampleuniversity.edu'),
     ];
     $form['cevalidationsr']['neutralresponseemail'] = [
       '#type'          => 'textfield',
       '#title'         => $this->t('Neutral Response Email'),
       '#default_value' => $config->get('cevalidationsr.neutralresponseemail'),
-      '#description'   => t('helpdesk@sampleuniversity.edu'),
+      '#description'   => $this->t('helpdesk@sampleuniversity.edu'),
     ];
     $form['cevalidationsr']['displayCHEALogo'] = [
       '#type'          => 'checkbox',
       '#title'         => $this->t('Display CHEA Logo'),
       '#default_value' => $config->get('cevalidationsr.displayCHEALogo'),
-      '#description'   => t('Set if you are a member of CHEA'),
+      '#description'   => $this->t('Set if you are a member of CHEA'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -85,7 +85,6 @@ class CevalidationsrConfigurationForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $config = $this->config('cevalidationsr.settings');
-    $state  = \Drupal::state();
     $config->set('cevalidationsr.url', $values['url']);
     $config->set('cevalidationsr.clientid', $values['clientid']);
     $config->set('cevalidationsr.apostilleemail', $values['apostilleemail']);
