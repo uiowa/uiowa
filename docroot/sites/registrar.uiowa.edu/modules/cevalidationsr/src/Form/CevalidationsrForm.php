@@ -37,6 +37,8 @@ class CevalidationsrForm extends FormBase {
     $form['#prefix'] = '<div class="container">';
     $form['#suffix'] = '</div>';
 
+    $form['#attached']['library'][] = 'cevalidationsr/cevalidationsr.library';
+
     $form['credentialId'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Please enter CeDiD:'),
