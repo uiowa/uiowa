@@ -5759,12 +5759,6 @@ $sites['medicinekidsight.dev.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 $sites['medicinekidsight.stage.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 $sites['medicinekidsight.prod.drupal.uiowa.edu'] = 'kidsight.medicine.uiowa.edu';
 
-// Directory aliases for pharmacy-dean.jobs.uiowa.edu.
-$sites['jobspharmacy-dean.uiowa.ddev.site'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.dev.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.stage.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-$sites['jobspharmacy-dean.prod.drupal.uiowa.edu'] = 'pharmacy-dean.jobs.uiowa.edu';
-
 // Directory aliases for teaching.center.uiowa.edu.
 $sites['centerteaching.uiowa.ddev.site'] = 'teaching.center.uiowa.edu';
 $sites['centerteaching.dev.drupal.uiowa.edu'] = 'teaching.center.uiowa.edu';
@@ -7420,3 +7414,15 @@ $sites['clasprodunit.uiowa.ddev.site'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.dev.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.stage.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
 $sites['clasprodunit.prod.drupal.uiowa.edu'] = 'produnit.clas.uiowa.edu';
+
+// Directory aliases for opl.lab.uiowa.edu.
+$sites['labopl.uiowa.ddev.site'] = 'opl.lab.uiowa.edu';
+$sites['labopl.dev.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+$sites['labopl.stage.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+$sites['labopl.prod.drupal.uiowa.edu'] = 'opl.lab.uiowa.edu';
+
+// Directory aliases for exchanges.org.uiowa.edu.
+$sites['orgexchanges.uiowa.ddev.site'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.dev.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.stage.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
+$sites['orgexchanges.prod.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
