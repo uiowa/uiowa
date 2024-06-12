@@ -93,7 +93,7 @@ class CevalidationsrForm extends FormBase {
     $aposttext = '<div class="block-padding__top--minimal block-padding__bottom--minimal"><div><h2 class="h4">Apostille:</h2><p>An Apostille may neither be required nor necessary. The CeDiploma has legal standing, is non-repudiating, and can be validated through the Institution&rsquo;s website to provide absolute confidence in the credential&rsquo;s authenticity. Questions should be redirected to <a href="mailto:' . $apostilleemail . '?subject=Apostille Information Request" data-rel="external" target="_blank">' . $apostilleemail . '</a>.</p></div></div>';
     $form['apostille_info'] = [
       '#type' => 'markup',
-      '#markup' => $this->t($aposttext),
+      '#markup' => $aposttext,
     ];
 
     $form['scholarRecord_result'] = [
