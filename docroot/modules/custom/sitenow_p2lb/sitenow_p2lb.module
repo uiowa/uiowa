@@ -54,6 +54,9 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
         \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
         $form['field_page_content_block']['#access'] = FALSE;
       }
+      elseif ($node->field_v3_conversion_revision_id->value === 'v3_new') {
+        $form['field_page_content_block']['#access'] = FALSE;
+      }
       else {
         // If we didn't have a revision id, disable access to the body field
         // and add a message directing to the converter.
@@ -1363,6 +1366,11 @@ function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterfac
 
   // Get the protected revision id.
   $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
+  // If this is a new node, don't bother with the query.
+  if ($protected_revision_id === 'v3_new') {
+    return NULL;
+  }
 
   // Return the protected revision or NULL.
   /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
