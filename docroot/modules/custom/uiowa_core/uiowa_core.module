@@ -416,7 +416,7 @@ function template_preprocess_card(&$variables) {
 
   // Set 'aria-hidden' on the button if it is not linked.
   if ($element['#linked_element'] !== 'button') {
-    $element['#button_attributes']['aria-hidden'] = TRUE;
+    $element['#button_attributes']['aria-hidden'] = 'true';
   }
 
   // If title and link text are set, set a button id attribute for

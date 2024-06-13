@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: clasprodunit.uiowa.ddev.site
+    protocol: https
+  machine_name: clasprodunit
+  human_name: produnit.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasprodunit.prod
+drupal:
+  db:
+    database: produnit_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://clasprodunit.prod.drupal.uiowa.edu'
+  requester: mwright27
+  site-name: 'CLAS Production Unit'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labopl.uiowa.ddev.site
+    protocol: https
+  machine_name: labopl
+  human_name: opl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labopl.prod
+drupal:
+  db:
+    database: opl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labopl.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Operator Performance Laboratory'
