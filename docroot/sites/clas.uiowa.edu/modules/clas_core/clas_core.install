@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\redirect\Entity\Redirect;
+
+/**
+ * CLAS redirects.
+ */
+function clas_core_update_8001() {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'clas_core');
+  $csv = array_map('str_getcsv', file($path . '/redirects/2024_clas_redirects.csv'));
+  $header = FALSE;
+
+  if ($header === TRUE) {
+    unset($csv[0]);
+  }
+
+  foreach ($csv as $redirect) {
+    $source_path = $redirect[0];
+    $redirect_path = $redirect[1];
+    $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
+    if (empty($existing)) {
+      Redirect::create([
+        'redirect_source' => $source_path,
+        'redirect_redirect' => $redirect_path,
+        'language' => 'en',
+        'status_code' => '301',
+      ])->save();
+    }
+  }
+}
