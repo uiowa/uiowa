@@ -8,6 +8,7 @@
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -36,6 +37,19 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
 function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Disable display of the Paragraph sections for new content.
   $form['field_page_content_block']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function sitenow_p2lb_node_presave(EntityInterface $entity) {
+  // Prevent new paragraphs from being saved
+  // to the database when a new page is created.
+  if ($entity->bundle() == 'page' && $entity->isNew()) {
+    if ($entity->hasField('field_page_content_block') && !$entity->get('field_page_content_block')->isEmpty()) {
+      $entity->set('field_page_content_block', NULL);
+    }
+  }
 }
 
 /**
