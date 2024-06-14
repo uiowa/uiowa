@@ -33,10 +33,11 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  body: field_article_body
-  field_teaser: field_article_body_summary
+  body: body
   moderation_state: moderation_state
-  field_image: field_image_fid
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
 destination:
   plugin: 'entity:node'
   type: article
