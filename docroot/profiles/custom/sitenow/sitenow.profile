@@ -531,9 +531,11 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
               $query->condition('u.target_type', $type, '=');
               $result = $query->execute()
                 ->fetchField();
-              if ($result && $result === 'node') {
-                $form['actions']['submit']['#disabled'] = TRUE;
-                return;
+              if ($result) {
+                if ($result === 'node' || $result === 'fragment') {
+                  $form['actions']['submit']['#disabled'] = TRUE;
+                  return;
+                }
               }
             }
           }
