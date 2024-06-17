@@ -194,7 +194,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'list' => [
         '#theme' => 'item_list',
         '#items' => $legend_items,
-        '#attributes' => ['class' => ['legend-items']],
+        '#attributes' => ['class' => ['element--list-none element--inline element--margin-none']],
       ],
     ];
   }
