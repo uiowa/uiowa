@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.media.media_library
     - field.field.node.resource.body
     - field.field.node.resource.field_image
     - field.field.node.resource.field_resource_countries
@@ -15,9 +14,7 @@ dependencies:
   module:
     - allowed_formats
     - content_moderation
-    - entity_browser_entity_form
     - entity_reference_revisions
-    - inline_entity_form
     - link
     - media_library
     - path
@@ -65,7 +62,7 @@ content:
     third_party_settings: {  }
   field_resource_genre:
     type: entity_reference_revisions_autocomplete
-    weight: 26
+    weight: 16
     region: content
     settings:
       match_operator: CONTAINS
@@ -83,7 +80,7 @@ content:
     third_party_settings: {  }
   field_resource_media:
     type: media_library_widget
-    weight: 27
+    weight: 13
     region: content
     settings:
       media_types: {  }
