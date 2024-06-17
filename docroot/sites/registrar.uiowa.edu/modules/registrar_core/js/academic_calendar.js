@@ -1,111 +1,147 @@
-/**
- * @file
- * Academic calendar.
- */
+(function ($, Drupal, drupalSettings) {
+  'use strict';
 
-(function($) {
-  // Attach uiowaMauiAcademicCalendar behavior.
-  Drupal.behaviors.uiowaMauiAcademicCalendar = {
-    attach: function(context, settings) {
-      $('.uiowa-maui-fullcalendar', context).once('uiowaMauiAcademicCalendar', function() {
-        $(this).fullCalendar({
-          nextDayThreshold: '00:00:00',
-          eventStartEditable: false,
-          displayEventTime: false,
-          header: {
-            left: 'today prev,next',
+  Drupal.behaviors.academicCalendar = {
+    attach: function (context, settings) {
+      once('academicCalendar', '.academic-calendar', context).forEach(function (element) {
+
+        const calendar = new FullCalendar.Calendar(element, {
+          initialView: 'dayGridMonth',
+          headerToolbar: {
+            left: 'prev,next today',
             center: 'title',
-            right: 'month,listMonth'
+            right: 'dayGridMonth,listMonth'
           },
-          events: Drupal.settings.uiowaMaui.calendarDates,
-          eventRender: function (event, element, view) {
-            element.attr('role', 'button')
-              .attr('tabindex', 0)
-              .removeAttr('href')
-              .removeClass('fc-event');
-
-              // Filter logic.
-              var categories = $('#edit-category').val();
-              var showSubsessions = $('#edit-subsession').is(':checked');
-
-              if (categories == null) {
-                if (showSubsessions === true) {
-                  return true;
-                } else {
-                  return (showSubsessions === event.subSession);
-                }
-              }
-              else {
-                var match = false;
-
-                categories.forEach(function(v) {
-                  if (v in this.categories) {
-                    if (showSubsessions === true) {
-                      match = true;
-                    }
-                    else {
-                      match = (showSubsessions === this.subSession);
-                    }
-                  }
-                }, event);
-
-                return match;
-              }
+          events: {
+            url: '/api/academic-calendar',
+            method: 'GET',
+            extraParams: function() {
+              const $form = $('#academic-calendar-filter-form', context);
+              const categories = $form.find('select[name="category[]"]').val() || ['STUDENT'];
+              const steps = drupalSettings.academicCalendar.steps || 0;
+              return {
+                category: categories,
+                subsession: $form.find('input[name="subsession"]').is(':checked') ? '1' : '0',
+                steps: steps
+              };
+            },
           },
-          eventClick: function(event, jsEvent, view) {
-            if (jQuery.fn.popover) {
-              $(this).popover({
-                html: true,
-                title: event.popoverTitle,
-                content: event.popoverContent,
-                placement: 'top',
-                trigger: 'focus',
-                container: 'body'
-              }).popover('show');
-            }
+          eventDidMount: function(info) {
+            const { event, el } = info;
 
-            return false;
+            // Add tabindex to the event element
+            el.tabIndex = 0;
+
+            // Add keydown event listener to the event element
+            el.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') {
+                info.jsEvent = e;
+                calendar.trigger('eventClick', info);
+              }
+            });
+          },
+          eventClick: function(info) {
+            const { event, el } = info;
+
+            // Create popover content
+            const popoverContent = `
+              <div class="event-popover-content">
+                <h3>${event.extendedProps.popoverTitle || event.title}</h3>
+                <div>${event.extendedProps.popoverContent || ''}</div>
+              </div>
+            `;
+
+            // Generate a unique ID for the tooltip
+            const tooltipId = `tooltip-${event.id}`;
+
+            // Set the aria-describedby attribute on the clicked element
+            el.setAttribute('aria-describedby', tooltipId);
+
+            // Create popover element
+            const popover = new Tooltip(el, {
+              title: popoverContent,
+              placement: 'top',
+              trigger: 'manual',
+              container: 'body',
+              html: true,
+              template: `<div class="tooltip" role="tooltip" id="${tooltipId}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>`
+            });
+
+            popover.show();
+            // Hide the popover when clicking outside of it
+            const hidePopover = function(event) {
+              if (!el.contains(event.target)) {
+                popover.hide();
+                document.removeEventListener('click', hidePopover);
+              }
+            };
+
+            document.addEventListener('click', hidePopover);
+
+            // Hide the popover when tabbing away from it
+            document.addEventListener('keydown', function(e) {
+              if (e.key === 'Tab') {
+                popover.hide();
+                document.removeEventListener('keydown', this);
+              }
+            });
+          },
+          displayEventTime: false
+        });
+
+        calendar.render();
+
+        // Attach filter functionality
+        $('#academic-calendar-filter-form', context).on('change', 'select, input', function() {
+          calendar.refetchEvents();
+        });
+
+        // Handle form submission
+        $('#academic-calendar-filter-form', context).on('submit', function(e) {
+          e.preventDefault();
+          calendar.refetchEvents();
+        });
+
+        // Previous button functionality
+        $('.fc-prev-button').on('click', function() {
+          const currentDate = calendar.getDate();
+          const oneMonthAgo = new Date();
+          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+          if (currentDate <= oneMonthAgo) {
+            $(this).prop('disabled', true);
+          } else {
+            $(this).prop('disabled', false);
+            $('.fc-next-button').prop('disabled', false);
           }
         });
 
-        $('#edit-category').on('change', function() {
-          $('.uiowa-maui-fullcalendar').fullCalendar('rerenderEvents');
-        });
+        // Next button functionality
+        $('.fc-next-button').on('click', function() {
+          const currentDate = calendar.getDate();
+          const oneYearFromNow = new Date();
+          oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
-        $('#edit-subsession').on('change', function() {
-          $('.uiowa-maui-fullcalendar').fullCalendar('rerenderEvents');
-        });
-
-        $('.fc-prev-button').click(function(e) {
-          // getDate results in 1st of the month.
-          var currentDate = $('.uiowa-maui-fullcalendar').fullCalendar('getDate');
-          var sessionDate = moment(Drupal.settings.uiowaMaui.currentSession.startDate);
-
-          if (currentDate.isBefore(sessionDate)) {
-            $(this).attr('disabled', true);
-          }
-          else {
-            $(this).attr('disabled', false);
-          }
-        });
-
-        $('.fc-next-button').click(function(e) {
-          // getDate results in last day of the previous month. Therefore, add
-          // one month.
-          var currentDate = $('.uiowa-maui-fullcalendar').fullCalendar('getDate');
-          currentDate.add(1, 'month');
-
-          var sessionDate = moment(Drupal.settings.uiowaMaui.lastSession.endDate);
-
-          if (currentDate.isSameOrAfter(sessionDate)) {
-            $(this).attr('disabled', true);
-          }
-          else {
-            $(this).attr('disabled', false);
+          if (currentDate >= oneYearFromNow) {
+            $(this).prop('disabled', true);
+          } else {
+            $(this).prop('disabled', false);
+            $('.fc-prev-button').prop('disabled', false);
           }
         });
       });
     }
   };
 
-})(jQuery);
+  // Add updateCalendarFilters function if needed
+  // Drupal.updateCalendarFilters = function(category, subsession) {
+  //   const calendarEl = document.querySelector('.academic-calendar');
+  //   if (calendarEl) {
+  //     const calendar = FullCalendar.getCalendar(calendarEl);
+  //     if (calendar) {
+  //       calendar.refetchEvents();
+  //     }
+  //   }
+  // };
+
+})(jQuery, Drupal, drupalSettings);

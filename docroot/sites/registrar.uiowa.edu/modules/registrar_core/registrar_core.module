@@ -4,14 +4,3 @@
  * @file
  * Primary module hooks for registar_core module.
  */
-
-use Drupal\Core\Form\FormStateInterface;
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] === 'uiowa-academic-calendar-form') {
-    $form['#attached']['library'][] = 'sitenow/chosen';
-  }
-}
