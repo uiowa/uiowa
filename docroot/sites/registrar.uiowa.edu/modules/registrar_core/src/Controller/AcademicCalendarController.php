@@ -21,16 +21,16 @@ class AcademicCalendarController extends ControllerBase {
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $mauiApi;
+  protected $maui_api;
 
   /**
    * Constructs a new AcademicCalendarController.
    *
-   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
+   * @param \Drupal\uiowa_maui\MauiApi $maui_api
    *   The MAUI API service.
    */
-  public function __construct(MauiApi $mauiApi) {
-    $this->mauiApi = $mauiApi;
+  public function __construct(MauiApi $maui_api) {
+    $this->maui_api = $maui_api;
   }
 
   /**
@@ -99,18 +99,18 @@ class AcademicCalendarController extends ControllerBase {
    *   The processed calendar data.
    */
   private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps) {
-    $current = $this->mauiApi->getCurrentSession();
-    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
+    $current = $this->maui_api->getCurrentSession();
+    $sessions = $this->maui_api->getSessionsRange($current->id, max(1, $steps));
 
     $events = [];
 
-    foreach ($sessions as $sessionIndex => $session) {
-      $dates = $this->mauiApi->searchSessionDates($session->id);
+    foreach ($sessions as $session_index => $session) {
+      $dates = $this->maui_api->searchSessionDates($session->id);
       foreach ($dates as $date) {
         if (!empty($date->dateCategoryLookups) &&
           (!$start || $date->beginDate >= $start) &&
           (!$end || $date->endDate <= $end)) {
-          $event = $this->processDate($date, $session, $sessionIndex);
+          $event = $this->processDate($date, $session, $session_index);
           if ($this->filterEvent($event, $categories, $subsession)) {
             $events[] = $event;
           }
@@ -135,9 +135,9 @@ class AcademicCalendarController extends ControllerBase {
    *   TRUE if the event should be included, FALSE otherwise.
    */
   private function filterEvent($event, $categories, $subsession) {
-    $categoryMatch = empty($categories) || array_intersect(array_keys($event->categories), $categories);
-    $subsessionMatch = $subsession || !$event->subSession;
-    return $categoryMatch && $subsessionMatch;
+    $category_match = empty($categories) || array_intersect(array_keys($event->categories), $categories);
+    $subsession_match = $subsession || !$event->subSession;
+    return $category_match && $subsession_match;
   }
 
   /**
@@ -147,13 +147,13 @@ class AcademicCalendarController extends ControllerBase {
    *   The date object to process.
    * @param object $session
    *   The session object.
-   * @param int $sessionIndex
-   *   *   The session index.
+   * @param int $session_index
+   *   The session index.
    *
    * @return object
    *   The processed event object.
    */
-  private function processDate($date, $session, $sessionIndex) {
+  private function processDate($date, $session, $session_index) {
     $event = new \stdClass();
     $event->title = $this->filterXss($date->dateLookup->description);
     $event->start = $date->beginDate;
@@ -172,7 +172,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // Determine what session to display.
     if (isset($date->subSession)) {
-      $sessionDisplay = $date->subSession;
+      $session_display = $date->subSession;
       $event->subSession = TRUE;
       $parts = explode('-', $date->subSession);
       $prefix = trim($parts[1]);
@@ -180,19 +180,19 @@ class AcademicCalendarController extends ControllerBase {
       $event->title = "{$prefix}: {$event->title}";
     }
     else {
-      $sessionDisplay = $session->shortDescription;
+      $session_display = $session->shortDescription;
       $event->subSession = FALSE;
     }
 
     $event->popoverTitle = $this->filterXss($date->dateLookup->description);
 
-    $bgColor = $this->getSessionColor($sessionIndex);
+    $bg_color = $this->getSessionColor($session_index);
 
     $event->className = [
       'uiowa-maui-fc-event',
       'label',
-      'label-' . $bgColor,
-      $this->formatHtmlClass($sessionDisplay),
+      'label-' . $bg_color,
+      $this->formatHtmlClass($session_display),
     ];
 
     // Add dateCategoryLookups for filtering.
@@ -206,7 +206,7 @@ class AcademicCalendarController extends ControllerBase {
     $event->popoverContent = <<<EOD
 <div class="uiowa-maui-fc-date">{$start}</div>
 <div class="uiowa-maui-fc-description">{$description}</div>
-<div class="label label-{$bgColor} uiowa-maui-fc-session">{$sessionDisplay}</div>
+<div class="label label-{$bg_color} uiowa-maui-fc-session">{$session_display}</div>
 EOD;
 
     return $event;

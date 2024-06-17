@@ -8,7 +8,7 @@
           initialView: 'dayGridMonth',
           views: {
             listMonth: {
-              buttonText: 'list month'
+              buttonText: 'list'
             }
           },
           headerToolbar: {

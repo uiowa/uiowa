@@ -33,7 +33,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui;
+  protected $maui_api;
 
   /**
    * Constructs a new AcademicCalendarBlock instance.
@@ -44,12 +44,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\uiowa_maui\MauiApi $maui
+   * @param \Drupal\uiowa_maui\MauiApi $maui_api
    *   The MAUI API service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui_api) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->maui = $maui;
+    $this->maui_api = $maui_api;
   }
 
   /**
@@ -90,8 +90,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-      'steps' => 0,
-    ] + parent::defaultConfiguration();
+        'steps' => 0,
+      ] + parent::defaultConfiguration();
   }
 
   /**
@@ -158,18 +158,18 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   A render array for the legend.
    */
   protected function buildLegend() {
-    $current = $this->maui->getCurrentSession();
+    $current = $this->maui_api->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+    $sessions = $this->maui_api->getSessionsRange($current->id, max(1, $steps));
 
     $legend_items = [];
     foreach ($sessions as $index => $session) {
-      $bgColor = $this->getSessionColor($index);
+      $bg_color = $this->getSessionColor($index);
       $class = [
         'uiowa-maui-key',
         'uiowa-maui-key-' . $session->id,
         'label',
-        'label-' . $bgColor,
+        'label-' . $bg_color,
         Html::getClass($session->shortDescription),
       ];
 
@@ -267,15 +267,15 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   private function fetchAndFilterEvents($categories, $subsession) {
-    $allEvents = $this->maui->getAllEvents();
+    $all_events = $this->maui_api->getAllEvents();
 
-    $filteredEvents = array_filter($allEvents, function ($event) use ($categories, $subsession) {
-      $categoryMatch = empty($categories) || in_array($event['category'], $categories);
-      $subsessionMatch = $subsession ? $event['is_subsession'] : TRUE;
-      return $categoryMatch && $subsessionMatch;
+    $filtered_events = array_filter($all_events, function ($event) use ($categories, $subsession) {
+      $category_match = empty($categories) || in_array($event['category'], $categories);
+      $subsession_match = $subsession ? $event['is_subsession'] : TRUE;
+      return $category_match && $subsession_match;
     });
 
-    return $filteredEvents;
+    return $filtered_events;
   }
 
   /**
