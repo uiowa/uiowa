@@ -1,0 +1,35 @@
+uuid: 92a534c4-9235-49e0-abdd-993288d493ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_resource_media
+    - media.type.audio
+    - media.type.file
+    - media.type.video
+    - node.type.resource
+  module:
+    - entity_reference_revisions
+id: node.resource.field_resource_media
+field_name: field_resource_media
+entity_type: node
+bundle: resource
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      file: file
+      video: video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference_revisions

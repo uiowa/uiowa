@@ -15,15 +15,19 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.node.resource.default
   - core.entity_form_display.node.writer_bio.default
   - iwp_core.settings
   - metatag.metatag_defaults.node__writer_bio
+  - node.type.resource
   - node.type.writer_bio
   - pathauto.pattern.writer_bio
   - simple_sitemap.bundle_settings.default.node.writer_bio
   - views.view.writer_bio
   - 'core.entity_view_display.node.writer_bio.*'
+  - 'core.entity_view_display.node.resource.*'
   - 'field.storage.node.field_writer_bio_*'
+  - 'field.storage.node.field_resource_*'
   - 'taxonomy.vocabulary.writer_bio_*'
 partial_list:
   - config_ignore.settings
