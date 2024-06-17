@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.resource.body
     - field.field.node.resource.field_image
     - field.field.node.resource.field_resource_countries
+    - field.field.node.resource.field_resource_genre
     - field.field.node.resource.field_resource_link
     - field.field.node.resource.field_resource_media
     - field.field.node.resource.field_resource_type
@@ -52,6 +53,16 @@ content:
   field_resource_countries:
     type: entity_reference_revisions_autocomplete
     weight: 15
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_resource_genre:
+    type: entity_reference_revisions_autocomplete
+    weight: 26
     region: content
     settings:
       match_operator: CONTAINS

@@ -28,6 +28,8 @@ function iwp_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_writer_bio_form':
     case 'node_writer_bio_edit_form':
+    case 'node_resource_form':
+    case 'node_resource_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       if (isset($form['field_writer_bio_photo_credit'])) {
         // Set field_writer_bio_photo_credit to node_image group.

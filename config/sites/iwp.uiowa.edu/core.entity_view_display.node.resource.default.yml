@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.resource.body
     - field.field.node.resource.field_image
     - field.field.node.resource.field_resource_countries
+    - field.field.node.resource.field_resource_genre
     - field.field.node.resource.field_resource_link
     - field.field.node.resource.field_resource_media
     - field.field.node.resource.field_resource_type
@@ -45,6 +46,15 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 106
+    region: content
+  field_resource_genre:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 107
     region: content
   field_resource_link:
     type: link
