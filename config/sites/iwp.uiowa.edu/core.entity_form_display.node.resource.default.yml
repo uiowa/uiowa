@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.media.media_library
     - field.field.node.resource.body
     - field.field.node.resource.field_image
     - field.field.node.resource.field_resource_countries
@@ -14,7 +15,9 @@ dependencies:
   module:
     - allowed_formats
     - content_moderation
+    - entity_browser_entity_form
     - entity_reference_revisions
+    - inline_entity_form
     - link
     - media_library
     - path
@@ -79,15 +82,25 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
   field_resource_media:
-    type: entity_reference_revisions_autocomplete
+    type: inline_entity_form_complex
     weight: 13
     region: content
     settings:
+      form_mode: media_library
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: optional
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
   field_resource_type:
     type: options_select
     weight: 11
