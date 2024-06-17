@@ -4,9 +4,13 @@
   Drupal.behaviors.academicCalendar = {
     attach: function (context, settings) {
       once('academicCalendar', '.academic-calendar', context).forEach(function (element) {
-
         const calendar = new FullCalendar.Calendar(element, {
           initialView: 'dayGridMonth',
+          views: {
+            listMonth: {
+              buttonText: 'list month'
+            }
+          },
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -86,7 +90,12 @@
               }
             });
           },
-          displayEventTime: false
+          displayEventTime: false,
+          handleWindowResize: true, // Allow FullCalendar to respond to window resize
+          windowResizeDelay: 100, // Delay before handling the window resize event (in milliseconds),
+          windowResize: function(view) {
+            switchView();
+          }
         });
 
         calendar.render();
@@ -105,10 +114,9 @@
         // Previous button functionality
         $('.fc-prev-button').on('click', function() {
           const currentDate = calendar.getDate();
-          const oneMonthAgo = new Date();
-          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+          const firstSessionStart = getFirstSessionStart();
 
-          if (currentDate <= oneMonthAgo) {
+          if (currentDate <= firstSessionStart) {
             $(this).prop('disabled', true);
           } else {
             $(this).prop('disabled', false);
@@ -129,19 +137,42 @@
             $('.fc-prev-button').prop('disabled', false);
           }
         });
+
+        // Function to switch the view based on device type
+        function switchView() {
+          const isMobile = window.matchMedia('(max-width: 767px)').matches;
+          if (isMobile) {
+            calendar.changeView('listMonth');
+          } else {
+            calendar.changeView('dayGridMonth');
+          }
+        }
+
+        // Check device type on initial load
+        switchView();
+
+        // Attach event listener for window resize
+        window.addEventListener('resize', switchView);
+
+        // Function to get the start date of the first session before the current date
+        function getFirstSessionStart() {
+          const currentSession = drupalSettings.academicCalendar.currentSession;
+          const sessions = drupalSettings.academicCalendar.sessions;
+
+          const currentSessionIndex = sessions.findIndex(session => session.id === currentSession.id);
+          let firstSessionStart = new Date(currentSession.startDate);
+
+          for (let i = currentSessionIndex - 1; i >= 0; i--) {
+            const session = sessions[i];
+            const sessionStart = new Date(session.startDate);
+            if (sessionStart < firstSessionStart) {
+              firstSessionStart = sessionStart;
+            }
+          }
+
+          return firstSessionStart;
+        }
       });
     }
   };
-
-  // Add updateCalendarFilters function if needed
-  // Drupal.updateCalendarFilters = function(category, subsession) {
-  //   const calendarEl = document.querySelector('.academic-calendar');
-  //   if (calendarEl) {
-  //     const calendar = FullCalendar.getCalendar(calendarEl);
-  //     if (calendar) {
-  //       calendar.refetchEvents();
-  //     }
-  //   }
-  // };
-
 })(jQuery, Drupal, drupalSettings);
