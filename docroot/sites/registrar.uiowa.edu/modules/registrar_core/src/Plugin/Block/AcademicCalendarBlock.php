@@ -33,7 +33,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $mauiApi;
+  protected $maui;
 
   /**
    * Constructs a new AcademicCalendarBlock instance.
@@ -44,12 +44,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
+   * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $mauiApi) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->mauiApi = $mauiApi;
+    $this->maui = $maui;
   }
 
   /**
@@ -100,6 +100,11 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
+    $sessions = [];
+    foreach ($this->maui->getSessionsBounded() as $session) {
+      $sessions[$session->id] = Html::escape($session->shortDescription);
+    }
+
     $form['steps'] = [
       '#title' => $this->t('Session(s) to display'),
       '#description' => $this->t('What session(s) you wish to display academic calendar information for.'),
@@ -146,9 +151,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
 
-    $current = $this->mauiApi->getCurrentSession();
+    $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
+    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     // Get the start date of the first session.
     $first_session_start_date = $sessions[0]->startDate;
@@ -172,9 +177,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   A render array for the legend.
    */
   protected function buildLegend() {
-    $current = $this->mauiApi->getCurrentSession();
+    $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
+    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     $legend_items = [];
     foreach ($sessions as $index => $session) {
@@ -275,7 +280,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   private function fetchAndFilterEvents($categories, $subsession) {
-    $all_events = $this->mauiApi->getAllEvents();
+    $all_events = $this->maui->getAllEvents();
 
     $filtered_events = array_filter($all_events, function ($event) use ($categories, $subsession) {
       $category_match = empty($categories) || in_array($event['category'], $categories);
