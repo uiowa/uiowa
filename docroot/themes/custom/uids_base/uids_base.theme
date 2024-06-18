@@ -8,7 +8,6 @@
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -501,7 +500,9 @@ function uids_base_preprocess_field(&$variables) {
 
   switch ($variables['field_name']) {
     case 'field_image':
-      // If this is
+      // If this is a full view mode, set the page_featured_image variable, add
+      // the breadcrumb block to the variables, and add the caption to the
+      // variables.
       if ($variables['view_mode'] === '_custom') {
         $variables['page_featured_image'] = TRUE;
 
