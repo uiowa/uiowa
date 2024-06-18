@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.resource.field_resource_link
     - field.field.node.resource.field_resource_media
     - field.field.node.resource.field_resource_type
+    - field.field.node.resource.field_resource_year
     - node.type.resource
     - workflows.workflow.editorial
   module:
@@ -80,6 +81,12 @@ content:
   field_resource_type:
     type: options_select
     weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_resource_year:
+    type: options_select
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }

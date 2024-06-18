@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.resource.field_resource_link
     - field.field.node.resource.field_resource_media
     - field.field.node.resource.field_resource_type
+    - field.field.node.resource.field_resource_year
     - node.type.resource
   module:
     - entity_reference_revisions
@@ -88,6 +89,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_resource_year:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 109
     region: content
   links:
     settings: {  }

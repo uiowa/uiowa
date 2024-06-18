@@ -6,9 +6,11 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\iwp_core\Entity\Resource;
 use Drupal\iwp_core\Entity\WriterBio;
 use Drupal\views\ViewExecutable;
@@ -147,4 +149,19 @@ function iwp_core_preprocess_views_view(&$variables) {
     // Attach the library using the #attached property.
     $variables['#attached']['library'][] = 'uids_base/view-bef';
   }
+}
+
+/**
+ * Allowed values function to return a list of years for a session.
+ */
+function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $thisyear = (int) date('Y');
+
+  $i = $thisyear + 10;
+  $options = [];
+  while ($i >= $thisyear - 50) :
+    $options[$i] = $i;
+    $i--;
+  endwhile;
+  return $options;
 }
