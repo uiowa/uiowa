@@ -12,19 +12,19 @@ trait SessionColorTrait {
    *
    * @var array
    */
-  protected $session_colors = ['primary', 'success', 'info', 'warning', 'danger'];
+  protected $sessionColors = ['primary', 'success', 'info', 'warning', 'danger'];
 
   /**
    * Gets the color for a given session ID.
    *
-   * @param int $session_id
+   * @param int $sessionId
    *   The ID of the session.
    *
    * @return string
    *   The color class for the session.
    */
-  protected function getSessionColor($session_id) {
-    return $this->session_colors[$session_id % count($this->session_colors)];
+  protected function getSessionColor($sessionId) {
+    return $this->sessionColors[$sessionId % count($this->sessionColors)];
   }
 
   /**
@@ -34,7 +34,7 @@ trait SessionColorTrait {
    *   An array of all color classes.
    */
   protected function getAllSessionColors() {
-    return $this->session_colors;
+    return $this->sessionColors;
   }
 
 }

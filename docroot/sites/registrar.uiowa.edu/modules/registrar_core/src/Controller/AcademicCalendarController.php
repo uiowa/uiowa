@@ -21,16 +21,16 @@ class AcademicCalendarController extends ControllerBase {
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui_api;
+  protected $mauiApi;
 
   /**
    * Constructs a new AcademicCalendarController.
    *
-   * @param \Drupal\uiowa_maui\MauiApi $maui_api
+   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
    *   The MAUI API service.
    */
-  public function __construct(MauiApi $maui_api) {
-    $this->maui_api = $maui_api;
+  public function __construct(MauiApi $mauiApi) {
+    $this->mauiApi = $mauiApi;
   }
 
   /**
@@ -99,13 +99,13 @@ class AcademicCalendarController extends ControllerBase {
    *   The processed calendar data.
    */
   private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps) {
-    $current = $this->maui_api->getCurrentSession();
-    $sessions = $this->maui_api->getSessionsRange($current->id, max(1, $steps));
+    $current = $this->mauiApi->getCurrentSession();
+    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
 
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-      $dates = $this->maui_api->searchSessionDates($session->id);
+      $dates = $this->mauiApi->searchSessionDates($session->id);
       foreach ($dates as $date) {
         if (!empty($date->dateCategoryLookups) &&
           (!$start || $date->beginDate >= $start) &&

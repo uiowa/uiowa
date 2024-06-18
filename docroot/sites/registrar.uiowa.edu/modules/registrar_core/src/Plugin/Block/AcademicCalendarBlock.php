@@ -33,7 +33,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui_api;
+  protected $mauiApi;
 
   /**
    * Constructs a new AcademicCalendarBlock instance.
@@ -44,12 +44,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\uiowa_maui\MauiApi $maui_api
+   * @param \Drupal\uiowa_maui\MauiApi $mauiApi
    *   The MAUI API service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui_api) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $mauiApi) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->maui_api = $maui_api;
+    $this->mauiApi = $mauiApi;
   }
 
   /**
@@ -90,8 +90,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-        'steps' => 0,
-      ] + parent::defaultConfiguration();
+      'steps' => 0,
+    ] + parent::defaultConfiguration();
   }
 
   /**
@@ -110,6 +110,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         2 => $this->t('Current session, plus next two sessions'),
         3 => $this->t('Current session, plus next three sessions'),
         4 => $this->t('Current session, plus next four sessions'),
+        5 => $this->t('Current session, plus next five sessions'),
       ],
       '#default_value' => $this->configuration['steps'],
       '#required' => FALSE,
@@ -145,8 +146,21 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
 
+    $current = $this->mauiApi->getCurrentSession();
+    $steps = $this->configuration['steps'];
+    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
+
+    // Get the start date of the first session.
+    $first_session_start_date = $sessions[0]->startDate;
+
+    // Get the end date of the last session.
+    $last_session_end_date = end($sessions)->endDate;
+
     // Add the steps value to drupalSettings.
     $build['#attached']['drupalSettings']['academicCalendar']['steps'] = $this->configuration['steps'];
+    // Add the first session start date to drupalSettings.
+    $build['#attached']['drupalSettings']['academicCalendar']['firstSessionStartDate'] = $first_session_start_date;
+    $build['#attached']['drupalSettings']['academicCalendar']['lastSessionEndDate'] = $last_session_end_date;
 
     return $build;
   }
@@ -158,9 +172,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   A render array for the legend.
    */
   protected function buildLegend() {
-    $current = $this->maui_api->getCurrentSession();
+    $current = $this->mauiApi->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->maui_api->getSessionsRange($current->id, max(1, $steps));
+    $sessions = $this->mauiApi->getSessionsRange($current->id, max(1, $steps));
 
     $legend_items = [];
     foreach ($sessions as $index => $session) {
@@ -209,17 +223,11 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form['#attributes']['class'][] = 'academic-calendar-filters';
 
     $categories = uiowa_maui_category_options();
-    $flattened_options = [];
-    foreach ($categories as $group => $options) {
-      foreach ($options as $key => $value) {
-        $flattened_options[$key] = $value;
-      }
-    }
 
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
-      '#options' => $flattened_options,
+      '#options' => $categories,
       '#default_value' => \Drupal::request()->query->get('category', 'STUDENT'),
       '#multiple' => TRUE,
     ];
@@ -267,7 +275,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   private function fetchAndFilterEvents($categories, $subsession) {
-    $all_events = $this->maui_api->getAllEvents();
+    $all_events = $this->mauiApi->getAllEvents();
 
     $filtered_events = array_filter($all_events, function ($event) use ($categories, $subsession) {
       $category_match = empty($categories) || in_array($event['category'], $categories);
