@@ -92,20 +92,43 @@
 }
 
 
-.label-primary {
-  background-color: #337ab7;
+
+.fc-h-event.badge, .fc-event.badge {
+  color: inherit;
+  color: #fff!important;
 }
-.label-success {
-  background-color: #5cb85c;
+.fc-event.badge {
+  width: 100%;
 }
-.label-info {
-  background-color: #5bc0de;
+
+table tbody tr.badge--primary:not(.is-selected):nth-child(2n),
+table tbody tr.badge--primary:not(.is-selected):nth-child(2n) th {
+  background-color: #ffcd00;
 }
-.label-warning {
-  background-color: #f0ad4e;
+table tbody tr.badge--secondary:not(.is-selected):nth-child(2n),
+table tbody tr.badge--secondary:not(.is-selected):nth-child(2n) th {
+  background-color: #000;
 }
-.label-danger {
-  background-color: #d9534f;
+table tbody tr.badge--cool-gray:not(.is-selected):nth-child(2n),
+table tbody tr.badge--cool-gray:not(.is-selected):nth-child(2n) th {
+  background-color: #63666a;
+}
+table tbody tr.badge--blue:not(.is-selected):nth-child(2n),
+table tbody tr.badge--blue:not(.is-selected):nth-child(2n) th {
+  background-color: #00558c;
+}
+table tbody tr.badge--green:not(.is-selected):nth-child(2n),
+table tbody tr.badge--green:not(.is-selected):nth-child(2n) th {
+  background-color: #00664f;
+}
+table tbody tr.badge--orange:not(.is-selected):nth-child(2n),
+table tbody tr.badge--orange:not(.is-selected):nth-child(2n) th {
+  background-color: #bd472a;
 }
 
 
+
+tr.badge {
+  border-radius: unset;
+  display: block;
+}

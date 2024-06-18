@@ -12,7 +12,7 @@ trait SessionColorTrait {
    *
    * @var array
    */
-  protected $sessionColors = ['primary', 'success', 'info', 'warning', 'danger'];
+  protected $sessionColors = ['primary', 'secondary', 'cool-gray', 'blue', 'green', 'orange'];
 
   /**
    * Gets the color for a given session ID.

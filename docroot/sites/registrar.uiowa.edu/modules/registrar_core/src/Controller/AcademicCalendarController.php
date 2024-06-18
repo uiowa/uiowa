@@ -190,8 +190,8 @@ class AcademicCalendarController extends ControllerBase {
 
     $event->className = [
       'uiowa-maui-fc-event',
-      'label',
-      'label-' . $bg_color,
+      'badge',
+      'badge--' . $bg_color,
       $this->formatHtmlClass($session_display),
     ];
 
@@ -206,7 +206,7 @@ class AcademicCalendarController extends ControllerBase {
     $event->popoverContent = <<<EOD
 <div class="uiowa-maui-fc-date">{$start}</div>
 <div class="uiowa-maui-fc-description">{$description}</div>
-<div class="label label-{$bg_color} uiowa-maui-fc-session">{$session_display}</div>
+<div class="badge badge--{$bg_color} uiowa-maui-fc-session">{$session_display}</div>
 EOD;
 
     return $event;

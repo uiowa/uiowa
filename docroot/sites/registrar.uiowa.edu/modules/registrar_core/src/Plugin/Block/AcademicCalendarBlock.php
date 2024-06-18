@@ -187,8 +187,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       $class = [
         'uiowa-maui-key',
         'uiowa-maui-key-' . $session->id,
-        'label',
-        'label-' . $bg_color,
+        'badge',
+        'badge--' . $bg_color,
         Html::getClass($session->shortDescription),
       ];
 
