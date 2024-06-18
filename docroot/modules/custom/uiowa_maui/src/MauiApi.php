@@ -184,12 +184,7 @@ class MauiApi {
 
     // Sort by start date.
     usort($data, function ($a, $b) {
-      $startDateA = strtotime($a->startDate);
-      $startDateB = strtotime($b->startDate);
-      if ($startDateA == $startDateB) {
-        return 0;
-      }
-      return ($startDateA < $startDateB) ? -1 : 1;
+      return strtotime($a->startDate) <=> strtotime($b->startDate);
     });
 
     return $data;

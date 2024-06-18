@@ -13,27 +13,3 @@ function uiowa_maui_preprocess_block(&$variables) {
     $variables['attributes']['class'][] = 'list-container';
   }
 }
-
-/**
- * Helper function to return list of dateCategoryLookup select list options.
- */
-function uiowa_maui_category_options() {
-  return [
-    'Student' => [
-      'STUDENT' => 'All Student Dates',
-      'DISTANCE_ONLINE_ED' => 'Distance and Online Education',
-      'GRADUATE_STUDENTS' => 'Graduate Students',
-      'GRADUATION_COMMENCEMENT' => 'Graduation and Commencement',
-      'HOUSING_DINING' => 'Housing and Dining',
-      'NO_CLASSES' => 'No Classes',
-      'STUDENT_REGISTRATION' => 'Registration Dates and Deadlines',
-    ],
-    'Faculty/Staff' => [
-      'OFFERINGS_CLASSROOMS' => 'Course Offerings / Classroom Scheduling',
-      'DEPARTMENTAL_ADMIN' => 'Departmental Admin',
-      'GRADES_ATTENDANCE' => 'Grades and Attendance',
-      'REGISTRATION_ADMIN' => 'Registration Admin',
-      'UNIVERSITY_OFFICES_CLOSED' => 'University Offices Closed',
-    ],
-  ];
-}

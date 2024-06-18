@@ -227,12 +227,10 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form['#id'] = 'academic-calendar-filter-form';
     $form['#attributes']['class'][] = 'academic-calendar-filters';
 
-    $categories = uiowa_maui_category_options();
-
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
-      '#options' => $categories,
+      '#options' => $this->maui->getDateCategories(),
       '#default_value' => \Drupal::request()->query->get('category', 'STUDENT'),
       '#multiple' => TRUE,
     ];
