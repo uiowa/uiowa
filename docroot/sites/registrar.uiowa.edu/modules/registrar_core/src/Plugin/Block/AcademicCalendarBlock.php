@@ -3,9 +3,6 @@
 namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -13,8 +10,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides an 'Academic Calendar' block.
@@ -248,67 +243,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function formatHtmlClass($string) {
-    // Convert the string to a valid HTML class.
-    return strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $string));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCalendarEvents(Request $request) {
-    $category = $request->query->get('category', ['STUDENT']);
-    $subsession = $request->query->get('subsession', 0);
-
-    // Ensure category is always an array.
-    if (!is_array($category)) {
-      $category = [$category];
-    }
-
-    // Fetch and filter events based on category and subsession.
-    $events = $this->fetchAndFilterEvents($category, $subsession);
-
-    return new JsonResponse($events);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  private function fetchAndFilterEvents($categories, $subsession) {
-    $all_events = $this->maui->getAllEvents();
-
-    $filtered_events = array_filter($all_events, function ($event) use ($categories, $subsession) {
-      $category_match = empty($categories) || in_array($event['category'], $categories);
-      $subsession_match = $subsession ? $event['is_subsession'] : TRUE;
-      return $category_match && $subsession_match;
-    });
-
-    return $filtered_events;
-  }
-
-  /**
-   * AJAX callback to update the calendar.
-   */
-  public function updateCalendar(array &$form, FormStateInterface $form_state) {
-    $response = new AjaxResponse();
-
-    $category = $form_state->getValue('category');
-    $subsession = $form_state->getValue('subsession');
-
-    $response->addCommand(new InvokeCommand('.academic-calendar', 'fullCalendar', ['refetchEvents']));
-
-    // Pass the filter values to JavaScript.
-    $response->addCommand(new InvokeCommand(NULL, 'updateCalendarFilters', [$category, $subsession]));
-
-    $debug_message = "Filters updated - Category: " . implode(', ', $category) . ", Subsession: " . ($subsession ? 'Yes' : 'No');
-    $response->addCommand(new HtmlCommand('.form-debug', $debug_message));
-
-    return $response;
   }
 
 }

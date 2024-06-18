@@ -2,6 +2,7 @@
 
 namespace Drupal\registrar_core\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\registrar_core\SessionColorTrait;
@@ -155,7 +156,7 @@ class AcademicCalendarController extends ControllerBase {
    */
   private function processDate($date, $session, $session_index) {
     $event = new \stdClass();
-    $event->title = $this->filterXss($date->dateLookup->description);
+    $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
     // Adjust the end date.
     $event->end = date('Y-m-d', strtotime($date->endDate . ' +1 day'));
@@ -184,7 +185,7 @@ class AcademicCalendarController extends ControllerBase {
       $event->subSession = FALSE;
     }
 
-    $event->popoverTitle = $this->filterXss($date->dateLookup->description);
+    $event->popoverTitle = Xss::filterAdmin($date->dateLookup->description);
 
     $bg_color = $this->getSessionColor($session_index);
 
@@ -192,7 +193,7 @@ class AcademicCalendarController extends ControllerBase {
       'uiowa-maui-fc-event',
       'badge',
       'badge--' . $bg_color,
-      $this->formatHtmlClass($session_display),
+      Html::getClass($session_display),
     ];
 
     // Add dateCategoryLookups for filtering.
@@ -201,7 +202,7 @@ class AcademicCalendarController extends ControllerBase {
     }
 
     // Prepare the popover content.
-    $description = $this->filterXss($date->dateLookup->webDescription ?? NULL);
+    $description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
 
     $event->popoverContent = <<<EOD
 <div class="uiowa-maui-fc-date">{$start}</div>
@@ -210,35 +211,6 @@ class AcademicCalendarController extends ControllerBase {
 EOD;
 
     return $event;
-  }
-
-  /**
-   * Formats a string into an HTML class.
-   *
-   * @param string $string
-   *   The string to format.
-   *
-   * @return string
-   *   The formatted HTML class.
-   */
-  private function formatHtmlClass($string) {
-    return \Drupal::service('transliteration')->transliterate($string, 'en', '_', 100);
-  }
-
-  /**
-   * Filters a string for XSS.
-   *
-   * @param string|null $string
-   *   The string to filter.
-   *
-   * @return string|null
-   *   The filtered string, or NULL if the input was NULL.
-   */
-  private function filterXss($string) {
-    if ($string !== NULL) {
-      return Xss::filter($string);
-    }
-    return NULL;
   }
 
 }
