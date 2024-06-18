@@ -114,9 +114,9 @@
         // Previous button functionality
         $('.fc-prev-button').on('click', function() {
           const currentDate = calendar.getDate();
-          const firstSessionStart = getFirstSessionStart();
+          const firstSessionStartDate = new Date(drupalSettings.academicCalendar.firstSessionStartDate);
 
-          if (currentDate <= firstSessionStart) {
+          if (currentDate <= firstSessionStartDate) {
             $(this).prop('disabled', true);
           } else {
             $(this).prop('disabled', false);
@@ -125,17 +125,11 @@
         });
 
         // Next button functionality
-        $('.fc-next-button').on('click', function() {
+        $('.fc-next-button').click(function(e) {
           const currentDate = calendar.getDate();
-          const oneYearFromNow = new Date();
-          oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-
-          if (currentDate >= oneYearFromNow) {
-            $(this).prop('disabled', true);
-          } else {
-            $(this).prop('disabled', false);
-            $('.fc-prev-button').prop('disabled', false);
-          }
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          var sessionDate = new Date(drupalSettings.academicCalendar.lastSessionEndDate);
+          $(this).attr('disabled', currentDate >= sessionDate);
         });
 
         // Function to switch the view based on device type
@@ -153,25 +147,6 @@
 
         // Attach event listener for window resize
         window.addEventListener('resize', switchView);
-
-        // Function to get the start date of the first session before the current date
-        function getFirstSessionStart() {
-          const currentSession = drupalSettings.academicCalendar.currentSession;
-          const sessions = drupalSettings.academicCalendar.sessions;
-
-          const currentSessionIndex = sessions.findIndex(session => session.id === currentSession.id);
-          let firstSessionStart = new Date(currentSession.startDate);
-
-          for (let i = currentSessionIndex - 1; i >= 0; i--) {
-            const session = sessions[i];
-            const sessionStart = new Date(session.startDate);
-            if (sessionStart < firstSessionStart) {
-              firstSessionStart = sessionStart;
-            }
-          }
-
-          return firstSessionStart;
-        }
       });
     }
   };
