@@ -150,6 +150,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     // Attach the library for the calendar.
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
+    $build['#attached']['library'][] = 'uids_base/view-calendar';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
@@ -209,6 +210,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         '#type' => 'html_tag',
         '#tag' => 'h3',
         '#value' => $this->t('Legend'),
+        '#attributes' => ['class' => ['element-invisible']],
       ],
       'list' => [
         '#theme' => 'item_list',
