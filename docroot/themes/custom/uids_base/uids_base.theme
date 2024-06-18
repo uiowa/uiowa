@@ -501,51 +501,53 @@ function uids_base_preprocess_field(&$variables) {
 
   switch ($variables['field_name']) {
     case 'field_image':
-      $variables['page_featured_image'] = TRUE;
+      // If this is
+      if ($variables['view_mode'] === '_custom') {
+        $variables['page_featured_image'] = TRUE;
 
-      // Set the caption if this is 'field_image'.
-      $caption = NULL;
-      // If the global caption is set on the media object,
-      // use that.
-      if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+        // Add breadcrumb block to variables.
+        $block_manager = \Drupal::service('plugin.manager.block');
+        $config = [];
+        $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
+        $variables['breadcrumb'] = $plugin_block->build();
+
+        // Set the caption if this is 'field_image'.
+        $caption = NULL;
+        // If the global caption is set on the media object,
+        // use that.
+        if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+          // If the caption is not set yet, attempt to set it from
+          // the 'field_image_caption' field.
+          if ((NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+            $caption = $node->get('field_image_caption');
+          }
+          // If the global caption is set on the media object,
+          // and we didn't have a node-specific caption,
+          // use the media one.
+          /** @var \Drupal\media\Entity\Media $media */
+          $media = $variables['element'][0]['#media'];
+          if (!$caption && $media && $media->hasField('field_media_caption')) {
+            $caption = $media->get('field_media_caption');
+          }
+        }
         // If the caption is not set yet, attempt to set it from
         // the 'field_image_caption' field.
-        if ((NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+        if ((!$caption || !$caption->count()) && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
           $caption = $node->get('field_image_caption');
         }
-        // If the global caption is set on the media object,
-        // and we didn't have a node-specific caption,
-        // use the media one.
-        /** @var \Drupal\media\Entity\Media $media */
-        $media = $variables['element'][0]['#media'];
-        if (!$caption && $media && $media->hasField('field_media_caption')) {
-          $caption = $media->get('field_media_caption');
+
+        // If the caption has been set, render it
+        // and include the associated libraries.
+        if ($caption && $caption->count()) {
+          $caption = $caption->view();
         }
-      }
-      // If the caption is not set yet, attempt to set it from
-      // the 'field_image_caption' field.
-      if ((!$caption || !$caption->count()) && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
-        $caption = $node->get('field_image_caption');
+        else {
+          $caption = NULL;
+        }
+        $variables['caption'] = $caption;
       }
 
-      // If the caption has been set, render it
-      // and include the associated libraries.
-      if ($caption && $caption->count()) {
-        $caption = $caption->view();
-      }
-      else {
-        $caption = NULL;
-      }
-      $variables['caption'] = $caption;
       break;
-
-  }
-
-  if (isset($variables['page_featured_image'])) {
-    $block_manager = \Drupal::service('plugin.manager.block');
-    $config = [];
-    $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
-    $variables['breadcrumb'] = $plugin_block->build();
   }
 
   // Add an extra class variable to uiowa_headline instances.
