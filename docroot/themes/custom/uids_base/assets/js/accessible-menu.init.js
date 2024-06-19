@@ -8,7 +8,7 @@
       if (this.executed) {
         return;
       }
-      
+
       const menuWrappers = context.querySelectorAll('.menu-wrapper--horizontal');
 
       // Bail early if no menu wrappers are found.
@@ -20,26 +20,25 @@
       menuWrappers.forEach(function(menuWrapper, index) {
         const menuElement = menuWrapper.querySelector('.menu');
 
-        // Generate a unique ID for the toggle button based on the index
+        // Generate a unique ID for the toggle button based on the index.
         const toggleBtnId = `main-menu-toggle-${index}`;
 
-        // Check if the toggle button already exists for this menu
+        // Check if the toggle button already exists for this menu.
         if (!menuWrapper.querySelector(`#${toggleBtnId}`)) {
-          // Add mobile toggle button
+          // Add mobile toggle button.
           const toggleBtn = context.createElement('button');
           toggleBtn.setAttribute('id', toggleBtnId);
           toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
-          let block_name = 'menu_block:main';
-          // Get the unique block identifier from the data-block-name attribute
+          // Get the unique block identifier from the data-block-name attribute.
           let block_identifier = menuWrapper.getAttribute('data-block-name');
 
-          // Get the block title from drupalSettings using the unique identifier
+          // Get the block title from drupalSettings using the unique identifier.
           let block_title = drupalSettings.block_title[block_identifier];
-          // Create a new span element and append the text to it
+          // Create a new span element and append the text to it.
           const span = context.createElement('span');
           span.textContent = block_title + ' Menu';
 
-          // Append the span element to the toggleBtn button element
+          // Append the span element to the toggleBtn button element.
           toggleBtn.appendChild(span);
           menuWrapper.insertAdjacentElement('afterbegin', toggleBtn);
         }
