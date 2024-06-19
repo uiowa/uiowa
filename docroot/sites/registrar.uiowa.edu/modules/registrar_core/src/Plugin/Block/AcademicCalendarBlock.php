@@ -4,12 +4,14 @@ namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides an 'Academic Calendar' block.
@@ -31,6 +33,20 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   protected $maui;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * The request stack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
    * Constructs a new AcademicCalendarBlock instance.
    *
    * @param array $configuration
@@ -41,10 +57,16 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    *   The plugin implementation definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form builder service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, RequestStack $requestStack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
+    $this->formBuilder = $formBuilder;
+    $this->requestStack = $requestStack;
   }
 
   /**
@@ -55,7 +77,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('uiowa_maui.api')
+      $container->get('uiowa_maui.api'),
+      $container->get('form_builder'),
+      $container->get('request_stack')
     );
   }
 
@@ -131,7 +155,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm($this);
+    $form = $this->formBuilder->getForm($this);
 
     $build = [];
     // Add the legend.
@@ -224,18 +248,20 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form['#id'] = 'academic-calendar-filter-form';
     $form['#attributes']['class'][] = 'academic-calendar-filters';
 
+    $current_request = $this->requestStack->getCurrentRequest();
+
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
       '#options' => $this->maui->getDateCategories(),
-      '#default_value' => \Drupal::request()->query->get('category', 'STUDENT'),
+      '#default_value' => $current_request->query->get('category', 'STUDENT'),
       '#multiple' => TRUE,
     ];
 
     $form['subsession'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show subsessions'),
-      '#default_value' => \Drupal::request()->query->get('subsession', FALSE),
+      '#default_value' => $current_request->query->get('subsession', FALSE),
     ];
 
     $form['actions'] = [

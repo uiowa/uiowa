@@ -4,6 +4,7 @@ namespace Drupal\registrar_core\Controller;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
@@ -25,13 +26,23 @@ class AcademicCalendarController extends ControllerBase {
   protected $maui;
 
   /**
+   * The cache backend service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheBackend;
+
+  /**
    * Constructs a new AcademicCalendarController.
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
+   *   The cache backend service.
    */
-  public function __construct(MauiApi $maui) {
+  public function __construct(MauiApi $maui, CacheBackendInterface $cache_backend) {
     $this->maui = $maui;
+    $this->cacheBackend = $cache_backend;
   }
 
   /**
@@ -39,7 +50,8 @@ class AcademicCalendarController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_maui.api')
+      $container->get('uiowa_maui.api'),
+      $container->get('cache.default')
     );
   }
 
@@ -70,13 +82,13 @@ class AcademicCalendarController extends ControllerBase {
     $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':' . ($subsession ? '1' : '0') . ':' . $steps;
     $data = NULL;
 
-    if ($cache = \Drupal::cache()->get($cid)) {
+    if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
     }
     else {
       $data = $this->fetchAndProcessCalendarData($start, $end, $category, $subsession, $steps);
       // Cache for 24 hours.
-      \Drupal::cache()->set($cid, $data, time() + 86400);
+      $this->cacheBackend->set($cid, $data, time() + 86400);
     }
 
     return new JsonResponse($data);
