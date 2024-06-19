@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.resource.field_resource_year
     - node.type.resource
   module:
+    - options
     - text
     - user
 id: node.resource.teaser
@@ -27,12 +28,12 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 101
+    weight: 3
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -41,12 +42,19 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 6
+    weight: 1
+    region: content
+  field_resource_type:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true
@@ -56,6 +64,5 @@ hidden:
   field_resource_genre: true
   field_resource_link: true
   field_resource_media: true
-  field_resource_type: true
   field_resource_year: true
   search_api_excerpt: true
