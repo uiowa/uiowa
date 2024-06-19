@@ -7450,3 +7450,9 @@ $sites['researchehs.uiowa.ddev.site'] = 'ehs.research.uiowa.edu';
 $sites['researchehs.dev.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
 $sites['researchehs.stage.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
 $sites['researchehs.prod.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+
+// Directory aliases for animal.research.uiowa.edu.
+$sites['researchanimal.uiowa.ddev.site'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.dev.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.stage.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.prod.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
