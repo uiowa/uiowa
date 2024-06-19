@@ -8,7 +8,6 @@
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -855,24 +854,24 @@ function uids_base_preprocess_block(&$variables) {
         break;
 
       case 'main':
-        // Initialize a static counter variable
+        // Initialize a static counter variable.
         static $block_counter = 0;
         // Make the block title available to pass to accessible-menu.init.js.
         if (isset($variables['elements']['content']['#title'])) {
           $block_title = $variables['elements']['content']['#title']['#markup'];
           $block_counter++;
 
-          // Create a unique identifier for the block using the counter
+          // Create a unique identifier for the block using the counter.
           $block_identifier = 'block-' . $block_counter;
 
-          // Set the data-block-name attribute with the unique identifier
+          // Set the data-block-name attribute with the unique identifier.
           $variables['attributes']['data-block-name'] = $block_identifier;
 
           if ($variables['configuration']['label_type'] == 'block') {
             $block_title = t('Section');
           }
 
-          // Use the unique identifier as the key in the drupalSettings array
+          // Use the unique identifier as the key in the drupalSettings array.
           $variables['#attached']['drupalSettings']['block_title'][$block_identifier] = $block_title;
         }
         break;
