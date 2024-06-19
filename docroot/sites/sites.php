@@ -7444,3 +7444,9 @@ $sites['researchris.uiowa.ddev.site'] = 'ris.research.uiowa.edu';
 $sites['researchris.dev.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
 $sites['researchris.stage.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
 $sites['researchris.prod.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+
+// Directory aliases for ehs.research.uiowa.edu.
+$sites['researchehs.uiowa.ddev.site'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.dev.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.stage.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.prod.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
