@@ -7438,3 +7438,9 @@ $sites['hancherreport.uiowa.ddev.site'] = 'report.hancher.uiowa.edu';
 $sites['hancherreport.dev.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
 $sites['hancherreport.stage.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
 $sites['hancherreport.prod.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+
+// Directory aliases for ris.research.uiowa.edu.
+$sites['researchris.uiowa.ddev.site'] = 'ris.research.uiowa.edu';
+$sites['researchris.dev.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+$sites['researchris.stage.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+$sites['researchris.prod.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
