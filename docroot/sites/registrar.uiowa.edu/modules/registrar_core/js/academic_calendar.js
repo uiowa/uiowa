@@ -112,7 +112,7 @@
         });
 
         // Previous button functionality
-        $('.fc-prev-button').on('click', function() {
+        $('.fc-prev-button').click(function() {
           const currentDate = calendar.getDate();
           const firstSessionStartDate = new Date(drupalSettings.academicCalendar.firstSessionStartDate);
 
