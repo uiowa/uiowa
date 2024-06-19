@@ -7432,3 +7432,9 @@ $sites['programeventmanagement.uiowa.ddev.site'] = 'eventmanagement.program.uiow
 $sites['programeventmanagement.dev.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
 $sites['programeventmanagement.stage.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
 $sites['programeventmanagement.prod.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
+
+// Directory aliases for report.hancher.uiowa.edu.
+$sites['hancherreport.uiowa.ddev.site'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.dev.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.stage.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.prod.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
