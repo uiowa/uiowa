@@ -860,8 +860,6 @@ function uids_base_preprocess_block(&$variables) {
         // Make the block title available to pass to accessible-menu.init.js.
         if (isset($variables['elements']['content']['#title'])) {
           $block_title = $variables['elements']['content']['#title']['#markup'];
-
-          // Increment the block counter
           $block_counter++;
 
           // Create a unique identifier for the block using the counter

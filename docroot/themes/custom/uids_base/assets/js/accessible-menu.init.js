@@ -4,6 +4,11 @@
     // Initialize executed flag to false.
     executed: false,
     attach: function (context, settings) {
+      // Ensure the script runs only once.
+      if (this.executed) {
+        return;
+      }
+      
       const menuWrappers = context.querySelectorAll('.menu-wrapper--horizontal');
 
       // Bail early if no menu wrappers are found.
