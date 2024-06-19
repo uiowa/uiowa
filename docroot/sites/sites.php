@@ -7426,3 +7426,9 @@ $sites['orgexchanges.uiowa.ddev.site'] = 'exchanges.org.uiowa.edu';
 $sites['orgexchanges.dev.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
 $sites['orgexchanges.stage.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
 $sites['orgexchanges.prod.drupal.uiowa.edu'] = 'exchanges.org.uiowa.edu';
+
+// Directory aliases for eventmanagement.program.uiowa.edu.
+$sites['programeventmanagement.uiowa.ddev.site'] = 'eventmanagement.program.uiowa.edu';
+$sites['programeventmanagement.dev.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
+$sites['programeventmanagement.stage.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
+$sites['programeventmanagement.prod.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
