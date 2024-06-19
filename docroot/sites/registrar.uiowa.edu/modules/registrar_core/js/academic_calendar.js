@@ -125,11 +125,18 @@
         });
 
         // Next button functionality
-        $('.fc-next-button').click(function(e) {
+        $('.fc-next-button').click(function() {
           const currentDate = calendar.getDate();
           currentDate.setMonth(currentDate.getMonth() + 1);
           var sessionDate = new Date(drupalSettings.academicCalendar.lastSessionEndDate);
-          $(this).attr('disabled', currentDate >= sessionDate);
+
+          if (currentDate >= sessionDate) {
+            $(this).attr('disabled', true);
+            $('.fc-prev-button').attr('disabled', false);
+          } else {
+            $(this).attr('disabled', false);
+            $('.fc-prev-button').attr('disabled', false);
+          }
         });
 
         // Function to switch the view based on device type
