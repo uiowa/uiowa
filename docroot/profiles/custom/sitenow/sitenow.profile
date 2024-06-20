@@ -538,6 +538,10 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
                 }
               }
             }
+            // Unset warning message if only usage are remnants.
+            if (!$result) {
+              unset($form['entity_usage_delete_warning']);
+            }
           }
         }
       }
