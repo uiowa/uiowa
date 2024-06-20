@@ -21,6 +21,7 @@ class Resource extends NodeBundleBase implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#meta' => [
         'field_resource_type',
+        'field_resource_year',
       ]
     ]);
 
