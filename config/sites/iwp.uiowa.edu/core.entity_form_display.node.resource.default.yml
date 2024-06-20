@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.resource.body
     - field.field.node.resource.field_image
+    - field.field.node.resource.field_meta_tags
     - field.field.node.resource.field_resource_countries
     - field.field.node.resource.field_resource_genre
     - field.field.node.resource.field_resource_link
@@ -18,6 +19,7 @@ dependencies:
     - content_moderation
     - link
     - media_library
+    - metatag
     - path
     - text
 id: node.resource.default
@@ -50,6 +52,14 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 8
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_resource_countries:
     type: options_select

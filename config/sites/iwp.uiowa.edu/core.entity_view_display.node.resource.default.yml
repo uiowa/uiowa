@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.resource.body
     - field.field.node.resource.field_image
+    - field.field.node.resource.field_meta_tags
     - field.field.node.resource.field_resource_countries
     - field.field.node.resource.field_resource_genre
     - field.field.node.resource.field_resource_link
@@ -16,6 +17,7 @@ dependencies:
     - entity_reference_revisions
     - layout_builder
     - link
+    - metatag
     - options
     - text
     - user
@@ -176,6 +178,22 @@ third_party_settings:
             weight: -5
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 4eeda178-c3de-4692-8f5d-56f868f9ca15
+            region: content
+            configuration:
+              id: 'field_block:node:resource:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.resource.default
 targetEntityType: node
@@ -202,6 +220,13 @@ content:
       link: false
     third_party_settings: {  }
     weight: 105
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_resource_countries:
     type: entity_reference_revisions_entity_view
