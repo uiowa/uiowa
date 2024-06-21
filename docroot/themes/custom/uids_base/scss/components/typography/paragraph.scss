@@ -91,3 +91,11 @@ iframe {max-width: 100%;}
 .block-field-blocknodepersonbody p:last-child {
   margin-bottom: 0;
 }
+
+.element--two-column,
+.element--three-column {
+  // Avoid breaking apart the content within the field__item.
+  .field__item {
+    break-inside: avoid;
+  }
+}
