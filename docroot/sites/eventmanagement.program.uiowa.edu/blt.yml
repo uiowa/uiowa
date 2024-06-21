@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: programeventmanagement.uiowa.ddev.site
+    protocol: https
+  machine_name: programeventmanagement
+  human_name: eventmanagement.program.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: programeventmanagement.prod
+drupal:
+  db:
+    database: eventmanagement_program_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://programeventmanagement.prod.drupal.uiowa.edu'
+  requester: egoss
+  site-name: 'Event Management Certificate'

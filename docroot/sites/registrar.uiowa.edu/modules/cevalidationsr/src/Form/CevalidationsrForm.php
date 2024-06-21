@@ -38,6 +38,7 @@ class CevalidationsrForm extends FormBase {
     $form['#suffix'] = '</div>';
 
     $form['#attached']['library'][] = 'cevalidationsr/cevalidationsr.library';
+    $form['#attached']['library'][] = 'uids_base/status-messages';
 
     $form['credentialId'] = [
       '#type' => 'textfield',
