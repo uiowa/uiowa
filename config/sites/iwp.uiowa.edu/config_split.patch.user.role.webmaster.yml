@@ -3,11 +3,13 @@ adding:
     config:
       - node.type.resource
       - node.type.writer_bio
+      - taxonomy.vocabulary.resource_genre
       - taxonomy.vocabulary.writer_bio_countries
       - taxonomy.vocabulary.writer_bio_languages
       - taxonomy.vocabulary.writer_bio_session_status
   permissions:
     - 'create resource content'
+    - 'create terms in resource_genre'
     - 'create terms in writer_bio_countries'
     - 'create terms in writer_bio_languages'
     - 'create terms in writer_bio_session_status'
@@ -17,6 +19,7 @@ adding:
     - 'delete own resource content'
     - 'delete own writer_bio content'
     - 'delete resource revisions'
+    - 'delete terms in resource_genre'
     - 'delete terms in writer_bio_countries'
     - 'delete terms in writer_bio_languages'
     - 'delete terms in writer_bio_session_status'
@@ -25,6 +28,7 @@ adding:
     - 'edit any writer_bio content'
     - 'edit own resource content'
     - 'edit own writer_bio content'
+    - 'edit terms in resource_genre'
     - 'edit terms in writer_bio_countries'
     - 'edit terms in writer_bio_languages'
     - 'edit terms in writer_bio_session_status'
