@@ -4,156 +4,128 @@
   Drupal.behaviors.academicCalendar = {
     attach: function (context, settings) {
       once('academicCalendar', '.academic-calendar', context).forEach(function (element) {
-        const calendar = new FullCalendar.Calendar(element, {
-          initialView: 'dayGridMonth',
-          views: {
-            listMonth: {
-              buttonText: 'list'
-            }
-          },
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,listMonth'
-          },
-          events: {
+        const $eventList = $('<div class="list-container list-container--list"><div class="view-content list-container__inner"></div></div>');
+        $(element).append($eventList);
+
+        function fetchAndDisplayEvents() {
+          const $form = $('#academic-calendar-filter-form', context);
+          const categories = $form.find('select[name="category[]"]').val() || ['STUDENT'];
+          const subsession = $form.find('input[name="subsession"]').is(':checked') ? '1' : '0';
+          const steps = drupalSettings.academicCalendar.steps || 0;
+
+          $.ajax({
             url: '/api/academic-calendar',
             method: 'GET',
-            extraParams: function() {
-              const $form = $('#academic-calendar-filter-form', context);
-              const categories = $form.find('select[name="category[]"]').val() || ['STUDENT'];
-              const steps = drupalSettings.academicCalendar.steps || 0;
-              return {
-                category: categories,
-                subsession: $form.find('input[name="subsession"]').is(':checked') ? '1' : '0',
-                steps: steps
-              };
+            data: {
+              category: categories,
+              subsession: subsession,
+              steps: steps
             },
-          },
-          eventDidMount: function(info) {
-            const { event, el } = info;
+            success: function(events) {
+              const $container = $eventList.find('.view-content');
+              $container.empty();
 
-            // Add tabindex to the event element
-            el.tabIndex = 0;
+              // Sort events chronologically
+              events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-            // Add keydown event listener to the event element
-            el.addEventListener('keydown', function(e) {
-              if (e.key === 'Enter') {
-                info.jsEvent = e;
-                calendar.trigger('eventClick', info);
-              }
-            });
-          },
-          eventClick: function(info) {
-            const { event, el } = info;
+              // Group events by sessionDisplay
+              const groupedEvents = events.reduce((groups, event) => {
+                const group = groups[event.sessionDisplay] || [];
+                group.push(event);
+                groups[event.sessionDisplay] = group;
+                return groups;
+              }, {});
 
-            // Create popover content
-            const popoverContent = `
-              <div class="event-popover-content">
-                <h3>${event.extendedProps.popoverTitle || event.title}</h3>
-                <div>${event.extendedProps.popoverContent || ''}</div>
-              </div>
-            `;
+              // Render grouped events
+              Object.entries(groupedEvents).forEach(([sessionDisplay, events]) => {
+                $container.append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`);
+                events.forEach(renderEvent);
+              });
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching events:', error);
+              $eventList.html('<div>Error loading events. Please try again later.</div>');
+            }
+          });
+        }
 
-            // Generate a unique ID for the tooltip
-            const tooltipId = `tooltip-${event.id}`;
+        function renderEvent(event) {
+          const startDate = new Date(event.start);
+          const endDate = new Date(event.end);
+          const monthAbbr = startDate.toLocaleString('default', { month: 'short' });
+          const startDay = startDate.getDate();
+          const formattedStartDate = startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Set the aria-describedby attribute on the clicked element
-            el.setAttribute('aria-describedby', tooltipId);
-
-            // Create popover element
-            const popover = new Tooltip(el, {
-              title: popoverContent,
-              placement: 'top',
-              trigger: 'manual',
-              container: 'body',
-              html: true,
-              template: `<div class="tooltip" role="tooltip" id="${tooltipId}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>`
-            });
-
-            popover.show();
-            // Hide the popover when clicking outside of it
-            const hidePopover = function(event) {
-              if (!el.contains(event.target)) {
-                popover.hide();
-                document.removeEventListener('click', hidePopover);
-              }
-            };
-
-            document.addEventListener('click', hidePopover);
-
-            // Hide the popover when tabbing away from it
-            document.addEventListener('keydown', function(e) {
-              if (e.key === 'Tab') {
-                popover.hide();
-                document.removeEventListener('keydown', this);
-              }
-            });
-          },
-          displayEventTime: false,
-          handleWindowResize: true, // Allow FullCalendar to respond to window resize
-          windowResizeDelay: 100, // Delay before handling the window resize event (in milliseconds),
-          windowResize: function(view) {
-            switchView();
+          let dateDisplay;
+          if (startDate.toDateString() === endDate.toDateString()) {
+            dateDisplay = `<time datetime="${event.start}" class="datetime">${formattedStartDate}</time>`;
+          } else {
+            const formattedEndDate = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            dateDisplay = `
+      <time datetime="${event.start}" class="datetime">${formattedStartDate}</time>
+      -
+      <time datetime="${event.end}" class="datetime">${formattedEndDate}</time>
+    `;
           }
-        });
 
-        calendar.render();
+          const $eventItem = $(`
+    <div class="card--layout-left borderless click-container block--word-break card">
+      <div class="media--circle media--border media--small media">
+        <div class="media__inner">
+          <div class="media media--type-image media--view-mode-large__square">
+            <div class="upcoming-date">
+              <span class="upcoming-month">${monthAbbr}</span>
+              <span class="upcoming-day">${startDay}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__body">
+        <header>
+          <h3 class="headline headline--serif default">
+            <a href="#" class="click-target">
+              <span class="headline__heading">${event.title}</span>
+            </a>
+          </h3>
+        </header>
+        <div class="card__details">
+          <div class="card__meta">
+            <div class="fa-field-item field field--name-field-event-when field--type-smartdate field--label-visually_hidden">
+              <div class="field__label visually-hidden">When</div>
+              <span role="presentation" class="field__icon fas fa-calendar far"></span>
+              <div class="field__item">
+                ${dateDisplay}
+              </div>
+            </div>
+          </div>
+          <div class="card__meta">
+          <div class="field__item">${event.description}</div>
+</div>
+        </div>
+        <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-visually_hidden">
+          <div class="field__label visually-hidden">Description</div>
+
+        </div>
+      </div>
+    </div>
+  `);
+
+          $eventList.find('.view-content').append($eventItem);
+        }
+
+        // Initial fetch
+        fetchAndDisplayEvents();
 
         // Attach filter functionality
         $('#academic-calendar-filter-form', context).on('change', 'select, input', function() {
-          calendar.refetchEvents();
+          fetchAndDisplayEvents();
         });
 
         // Handle form submission
         $('#academic-calendar-filter-form', context).on('submit', function(e) {
           e.preventDefault();
-          calendar.refetchEvents();
+          fetchAndDisplayEvents();
         });
-
-        // Previous button functionality
-        $('.fc-prev-button').click(function() {
-          const currentDate = calendar.getDate();
-          const firstSessionStartDate = new Date(drupalSettings.academicCalendar.firstSessionStartDate);
-
-          if (currentDate <= firstSessionStartDate) {
-            $(this).prop('disabled', true);
-          } else {
-            $(this).prop('disabled', false);
-            $('.fc-next-button').prop('disabled', false);
-          }
-        });
-
-        // Next button functionality
-        $('.fc-next-button').click(function() {
-          const currentDate = calendar.getDate();
-          currentDate.setMonth(currentDate.getMonth() + 1);
-          var sessionDate = new Date(drupalSettings.academicCalendar.lastSessionEndDate);
-
-          if (currentDate >= sessionDate) {
-            $(this).attr('disabled', true);
-            $('.fc-prev-button').attr('disabled', false);
-          } else {
-            $(this).attr('disabled', false);
-            $('.fc-prev-button').attr('disabled', false);
-          }
-        });
-
-        // Function to switch the view based on device type
-        function switchView() {
-          const isMobile = window.matchMedia('(max-width: 767px)').matches;
-          if (isMobile) {
-            calendar.changeView('listMonth');
-          } else {
-            calendar.changeView('dayGridMonth');
-          }
-        }
-
-        // Check device type on initial load
-        switchView();
-
-        // Attach event listener for window resize
-        window.addEventListener('resize', switchView);
       });
     }
   };

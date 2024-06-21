@@ -118,11 +118,16 @@ class AcademicCalendarController extends ControllerBase {
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-      $dates = $this->maui->searchSessionDates($session->id);
+      // Modify the searchSessionDates call to include filtering
+      $dates = $this->maui->searchSessionDates($session->id, [
+        'isWebDisplay' => true,
+        'isReviewed' => true,
+        'startDate' => $start,
+        'endDate' => $end
+      ]);
+
       foreach ($dates as $date) {
-        if (!empty($date->dateCategoryLookups) &&
-          (!$start || $date->beginDate >= $start) &&
-          (!$end || $date->endDate <= $end)) {
+        if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index);
           if ($this->filterEvent($event, $categories, $subsession)) {
             $events[] = $event;
@@ -166,24 +171,24 @@ class AcademicCalendarController extends ControllerBase {
    * @return object
    *   The processed event object.
    */
+  // In the processDate() method of AcademicCalendarController
   private function processDate($date, $session, $session_index) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
-    // Adjust the end date.
     $event->end = date('Y-m-d', strtotime($date->endDate . ' +1 day'));
 
     $event->categories = [];
 
-    // Determine the date to display in the popover.
+    // Determine the date to display
     $start = date('M j, Y', strtotime($date->beginDate));
-
     if ($date->endDate != $date->beginDate) {
       $end = date('M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
+    $event->displayDate = $start;
 
-    // Determine what session to display.
+    // Determine what session to display
     if (isset($date->subSession)) {
       $session_display = $date->subSession;
       $event->subSession = TRUE;
@@ -191,15 +196,15 @@ class AcademicCalendarController extends ControllerBase {
       $prefix = trim($parts[1]);
       $prefix = str_replace(' Week', 'wk', $prefix);
       $event->title = "{$prefix}: {$event->title}";
-    }
-    else {
+    } else {
       $session_display = $session->shortDescription;
       $event->subSession = FALSE;
     }
 
-    $event->popoverTitle = Xss::filterAdmin($date->dateLookup->description);
+    $event->sessionDisplay = $session_display;
 
     $bg_color = $this->getSessionColor($session_index);
+    $event->bgColor = $bg_color;
 
     $event->className = [
       'uiowa-maui-fc-event',
@@ -208,19 +213,13 @@ class AcademicCalendarController extends ControllerBase {
       Html::getClass($session_display),
     ];
 
-    // Add dateCategoryLookups for filtering.
+    // Add dateCategoryLookups for filtering
     foreach ($date->dateCategoryLookups as $category) {
       $event->categories[$category->naturalKey] = $category->description;
     }
 
-    // Prepare the popover content.
-    $description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
-
-    $event->popoverContent = <<<EOD
-<div class="uiowa-maui-fc-date">{$start}</div>
-<div class="uiowa-maui-fc-description">{$description}</div>
-<div class="badge badge--{$bg_color} uiowa-maui-fc-session">{$session_display}</div>
-EOD;
+    // Add description
+    $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
 
     return $event;
   }

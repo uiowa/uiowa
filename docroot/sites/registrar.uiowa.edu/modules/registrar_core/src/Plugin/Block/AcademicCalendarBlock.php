@@ -159,7 +159,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $build = [];
     // Add the legend.
-    $build['legend'] = $this->buildLegend();
+    //$build['legend'] = $this->buildLegend();
     $build['form'] = $form;
     $build['calendar'] = [
       '#type' => 'container',
@@ -170,6 +170,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/view-calendar';
+    $build['#attached']['library'][] = 'uids_base/card';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
