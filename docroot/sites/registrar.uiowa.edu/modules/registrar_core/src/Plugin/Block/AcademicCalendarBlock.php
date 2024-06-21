@@ -171,6 +171,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/view-calendar';
     $build['#attached']['library'][] = 'uids_base/card';
+    $build['#attached']['library'][] = 'uids_base/views';
+    $build['#attached']['library'][] = 'uids_base/view-bef';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
@@ -247,7 +249,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters';
+    $form['#attributes']['class'][] = 'academic-calendar-filters views-exposed-form bef-exposed-form bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
