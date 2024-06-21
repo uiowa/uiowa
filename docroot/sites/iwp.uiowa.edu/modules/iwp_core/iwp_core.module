@@ -6,9 +6,12 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\iwp_core\Entity\Resource;
 use Drupal\iwp_core\Entity\WriterBio;
 use Drupal\views\ViewExecutable;
 
@@ -19,6 +22,9 @@ function iwp_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['writer_bio'])) {
     $bundles['node']['writer_bio']['class'] = WriterBio::class;
   }
+  if (isset($bundles['node']['resource'])) {
+    $bundles['node']['resource']['class'] = Resource::class;
+  }
 }
 
 /**
@@ -28,6 +34,8 @@ function iwp_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_writer_bio_form':
     case 'node_writer_bio_edit_form':
+    case 'node_resource_form':
+    case 'node_resource_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       if (isset($form['field_writer_bio_photo_credit'])) {
         // Set field_writer_bio_photo_credit to node_image group.
@@ -130,4 +138,30 @@ function iwp_core_views_pre_build(ViewExecutable $view) {
       $filter->value['value'] = $default_session;
     }
   }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function iwp_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() === 'resources') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
+ * Allowed values function to return a list of years for a session.
+ */
+function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $thisyear = (int) date('Y');
+
+  $i = $thisyear + 10;
+  $options = [];
+  while ($i >= $thisyear - 50) :
+    $options[$i] = $i;
+    $i--;
+  endwhile;
+  return $options;
 }
