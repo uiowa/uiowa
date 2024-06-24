@@ -260,8 +260,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ];
 
             // Listblock specific default.
-            if ($form['settings']['override']['items_per_page']) {
-              $form['settings']['override']['items_per_page']['#default_value'] = 10;
+            if ($form_id === 'layout_builder_add_block') {
+              if ($form['settings']['override']['items_per_page']) {
+                $form['settings']['override']['items_per_page']['#default_value'] = 10;
+              }
             }
 
             // Set defaults for blocks with card-related styles.
