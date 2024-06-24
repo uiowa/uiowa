@@ -163,7 +163,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['form'] = $form;
     $build['calendar'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['academic-calendar'], 'id' => 'academic-calendar-wrapper'],
+      '#attributes' => ['class' => ['academic-calendar view-content'], 'id' => 'academic-calendar-wrapper'],
     ];
 
     // Attach the library for the calendar.
@@ -249,7 +249,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters views-exposed-form bef-exposed-form bg--gray';
+    $form['#attributes']['class'][] = 'academic-calendar-filters view-filters views-exposed-form bef-exposed-form bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
