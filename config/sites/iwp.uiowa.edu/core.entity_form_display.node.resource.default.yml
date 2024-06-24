@@ -1,22 +1,18 @@
-uuid: 8ce15f50-c3c7-40e8-a36d-cc9a2fdffda4
+uuid: e5384e43-ddd6-48ac-acef-f3310cefcc58
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.writer_bio.body
-    - field.field.node.writer_bio.field_image
-    - field.field.node.writer_bio.field_meta_tags
-    - field.field.node.writer_bio.field_writer_bio_countries
-    - field.field.node.writer_bio.field_writer_bio_family_name
-    - field.field.node.writer_bio.field_writer_bio_given_name
-    - field.field.node.writer_bio.field_writer_bio_languages
-    - field.field.node.writer_bio.field_writer_bio_media_link
-    - field.field.node.writer_bio.field_writer_bio_photo_credit
-    - field.field.node.writer_bio.field_writer_bio_sample
-    - field.field.node.writer_bio.field_writer_bio_sample_original
-    - field.field.node.writer_bio.field_writer_bio_session_status
-    - field.field.node.writer_bio.field_writer_bio_visitor
-    - node.type.writer_bio
+    - field.field.node.resource.body
+    - field.field.node.resource.field_image
+    - field.field.node.resource.field_meta_tags
+    - field.field.node.resource.field_resource_countries
+    - field.field.node.resource.field_resource_genre
+    - field.field.node.resource.field_resource_link
+    - field.field.node.resource.field_resource_media
+    - field.field.node.resource.field_resource_type
+    - field.field.node.resource.field_resource_year
+    - node.type.resource
     - workflows.workflow.editorial
   module:
     - allowed_formats
@@ -26,14 +22,14 @@ dependencies:
     - metatag
     - path
     - text
-id: node.writer_bio.default
+id: node.resource.default
 targetEntityType: node
-bundle: writer_bio
+bundle: resource
 mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 15
+    weight: 11
     region: content
     settings:
       rows: 9
@@ -46,117 +42,85 @@ content:
         hide_guidelines: '0'
   created:
     type: datetime_timestamp
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 11
+    weight: 2
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 9
+    weight: 8
     region: content
     settings:
       sidebar: true
       use_details: true
     third_party_settings: {  }
-  field_writer_bio_countries:
+  field_resource_countries:
     type: options_select
-    weight: 13
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_writer_bio_family_name:
-    type: string_textfield
+  field_resource_genre:
+    type: options_select
     weight: 16
     region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_writer_bio_given_name:
-    type: string_textfield
-    weight: 17
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_writer_bio_languages:
-    type: options_select
-    weight: 14
-    region: content
     settings: {  }
     third_party_settings: {  }
-  field_writer_bio_media_link:
+  field_resource_link:
     type: link_default
-    weight: 22
+    weight: 14
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  field_writer_bio_photo_credit:
-    type: string_textfield
-    weight: 21
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_writer_bio_sample:
+  field_resource_media:
     type: media_library_widget
-    weight: 19
+    weight: 13
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-  field_writer_bio_sample_original:
-    type: media_library_widget
-    weight: 20
-    region: content
-    settings:
-      media_types: {  }
-    third_party_settings: {  }
-  field_writer_bio_session_status:
+  field_resource_type:
     type: options_select
     weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_writer_bio_visitor:
-    type: boolean_checkbox
-    weight: 18
+  field_resource_year:
+    type: options_select
+    weight: 17
     region: content
-    settings:
-      display_label: true
+    settings: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -169,7 +133,7 @@ content:
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 5
+    weight: 6
     region: content
     settings:
       display_label: true
@@ -193,7 +157,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

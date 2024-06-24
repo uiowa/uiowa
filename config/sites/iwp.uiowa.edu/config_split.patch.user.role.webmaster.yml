@@ -1,29 +1,42 @@
 adding:
   dependencies:
     config:
+      - node.type.resource
       - node.type.writer_bio
+      - taxonomy.vocabulary.resource_genre
       - taxonomy.vocabulary.writer_bio_countries
       - taxonomy.vocabulary.writer_bio_languages
       - taxonomy.vocabulary.writer_bio_session_status
   permissions:
+    - 'create resource content'
+    - 'create terms in resource_genre'
     - 'create terms in writer_bio_countries'
     - 'create terms in writer_bio_languages'
     - 'create terms in writer_bio_session_status'
     - 'create writer_bio content'
+    - 'delete any resource content'
     - 'delete any writer_bio content'
+    - 'delete own resource content'
     - 'delete own writer_bio content'
+    - 'delete resource revisions'
+    - 'delete terms in resource_genre'
     - 'delete terms in writer_bio_countries'
     - 'delete terms in writer_bio_languages'
     - 'delete terms in writer_bio_session_status'
     - 'delete writer_bio revisions'
+    - 'edit any resource content'
     - 'edit any writer_bio content'
+    - 'edit own resource content'
     - 'edit own writer_bio content'
+    - 'edit terms in resource_genre'
     - 'edit terms in writer_bio_countries'
     - 'edit terms in writer_bio_languages'
     - 'edit terms in writer_bio_session_status'
     - 'enter writer_bio revision log entry'
     - 'override writer_bio authored by option'
     - 'override writer_bio authored on option'
+    - 'revert resource revisions'
     - 'revert writer_bio revisions'
+    - 'view resource revisions'
     - 'view writer_bio revisions'
 removing: {  }

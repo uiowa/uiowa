@@ -1,30 +1,26 @@
-uuid: 173fb024-908a-4457-acbe-cce24b7399b7
+uuid: 26c27f0b-e0c4-4a4d-8868-ddd50d78fb3e
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
-    - field.field.node.writer_bio.body
-    - field.field.node.writer_bio.field_image
-    - field.field.node.writer_bio.field_meta_tags
-    - field.field.node.writer_bio.field_writer_bio_countries
-    - field.field.node.writer_bio.field_writer_bio_family_name
-    - field.field.node.writer_bio.field_writer_bio_given_name
-    - field.field.node.writer_bio.field_writer_bio_languages
-    - field.field.node.writer_bio.field_writer_bio_media_link
-    - field.field.node.writer_bio.field_writer_bio_photo_credit
-    - field.field.node.writer_bio.field_writer_bio_sample
-    - field.field.node.writer_bio.field_writer_bio_sample_original
-    - field.field.node.writer_bio.field_writer_bio_session_status
-    - field.field.node.writer_bio.field_writer_bio_visitor
-    - node.type.writer_bio
+    - field.field.node.resource.body
+    - field.field.node.resource.field_image
+    - field.field.node.resource.field_meta_tags
+    - field.field.node.resource.field_resource_countries
+    - field.field.node.resource.field_resource_genre
+    - field.field.node.resource.field_resource_link
+    - field.field.node.resource.field_resource_media
+    - field.field.node.resource.field_resource_type
+    - field.field.node.resource.field_resource_year
+    - node.type.resource
     - workflows.workflow.editorial
   module:
     - content_moderation
     - path
-id: node.writer_bio.minimal
+id: node.resource.minimal
 targetEntityType: node
-bundle: writer_bio
+bundle: resource
 mode: minimal
 content:
   created:
@@ -98,16 +94,12 @@ hidden:
   body: true
   field_image: true
   field_meta_tags: true
-  field_writer_bio_countries: true
-  field_writer_bio_family_name: true
-  field_writer_bio_given_name: true
-  field_writer_bio_languages: true
-  field_writer_bio_media_link: true
-  field_writer_bio_photo_credit: true
-  field_writer_bio_sample: true
-  field_writer_bio_sample_original: true
-  field_writer_bio_session_status: true
-  field_writer_bio_visitor: true
+  field_resource_countries: true
+  field_resource_genre: true
+  field_resource_link: true
+  field_resource_media: true
+  field_resource_type: true
+  field_resource_year: true
   publish_on: true
   publish_state: true
   scheduler_settings: true
