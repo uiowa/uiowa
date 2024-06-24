@@ -123,6 +123,18 @@ function iwp_core_preprocess_field(&$variables) {
         $variables['items'][0]['content'] = $link->toString();
       }
       break;
+    case 'field_image':
+      if (isset($variables['element']['#object'])) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type == 'video') {
+            $foo = 'bar';
+          }
+        }
+      }
+      break;
   }
 }
 
