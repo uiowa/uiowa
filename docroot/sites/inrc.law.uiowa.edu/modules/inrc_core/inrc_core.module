@@ -4,3 +4,27 @@
  * @file
  * Custom functionality the INRC website.
  */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\inrc_core\Entity\Grant;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function inrc_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['grant'])) {
+    $bundles['node']['grant']['class'] = Grant::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_grant_form':
+    case 'node_grant_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+  }
+}
