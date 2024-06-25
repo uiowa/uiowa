@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.grant.field_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_areas_of_interest
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
     - field.field.node.grant.field_grant_ein
@@ -14,6 +15,7 @@ dependencies:
     - field.field.node.grant.field_grant_fax
     - field.field.node.grant.field_grant_filter_friendly_name
     - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_ntee_classification
     - field.field.node.grant.field_grant_pdf_version
     - field.field.node.grant.field_grant_phone
     - field.field.node.grant.field_grant_restrictions
@@ -22,6 +24,7 @@ dependencies:
     - field.field.node.grant.field_grant_total_assets
     - field.field.node.grant.field_grant_total_grants
     - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_type_of_grant
     - field.field.node.grant.field_grant_website
     - field.field.node.grant.field_meta_tags
     - node.type.grant
@@ -412,6 +415,68 @@ third_party_settings:
             weight: 21
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 0223695d-120d-4707-bff1-62c9df9a0993
+            region: content
+            configuration:
+              id: 'extra_field_block:node:grant:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 22
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ntee_classification'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 23
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_areas_of_interest'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 24
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_type_of_grant'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 25
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.grant.default
 targetEntityType: node
@@ -424,6 +489,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_application_info:
     type: text_default
@@ -447,6 +517,14 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 118
+    region: content
+  field_grant_areas_of_interest:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 123
     region: content
   field_grant_contact_name:
     type: string
@@ -502,6 +580,14 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 120
+    region: content
+  field_grant_ntee_classification:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 122
     region: content
   field_grant_pdf_version:
     type: entity_reference_label
@@ -565,6 +651,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 113
+    region: content
+  field_grant_type_of_grant:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 124
     region: content
   field_grant_website:
     type: link

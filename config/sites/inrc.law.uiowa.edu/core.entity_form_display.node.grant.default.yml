@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.grant.field_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_areas_of_interest
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
     - field.field.node.grant.field_grant_ein
@@ -14,6 +15,7 @@ dependencies:
     - field.field.node.grant.field_grant_fax
     - field.field.node.grant.field_grant_filter_friendly_name
     - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_ntee_classification
     - field.field.node.grant.field_grant_pdf_version
     - field.field.node.grant.field_grant_phone
     - field.field.node.grant.field_grant_restrictions
@@ -22,6 +24,7 @@ dependencies:
     - field.field.node.grant.field_grant_total_assets
     - field.field.node.grant.field_grant_total_grants
     - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_type_of_grant
     - field.field.node.grant.field_grant_website
     - field.field.node.grant.field_meta_tags
     - node.type.grant
@@ -76,6 +79,9 @@ third_party_settings:
         - field_grant_trustees
         - field_grant_sample_grants
         - field_grant_website
+        - field_grant_ntee_classification
+        - field_grant_areas_of_interest
+        - field_grant_type_of_grant
         - field_grant_pdf_version
         - field_application_info
         - field_grant_application_deadline
@@ -128,7 +134,7 @@ content:
     third_party_settings: {  }
   field_application_info:
     type: text_textarea
-    weight: 18
+    weight: 21
     region: content
     settings:
       rows: 5
@@ -142,7 +148,13 @@ content:
     third_party_settings: {  }
   field_grant_application_deadline:
     type: datetime_default
-    weight: 19
+    weight: 22
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_grant_areas_of_interest:
+    type: options_select
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -199,9 +211,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_grant_ntee_classification:
+    type: options_select
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_grant_pdf_version:
     type: entity_reference_autocomplete
-    weight: 17
+    weight: 20
     region: content
     settings:
       match_operator: CONTAINS
@@ -260,6 +278,12 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  field_grant_type_of_grant:
+    type: options_select
+    weight: 19
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_grant_website:
     type: link_default
