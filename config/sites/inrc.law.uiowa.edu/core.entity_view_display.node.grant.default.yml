@@ -1,0 +1,207 @@
+uuid: ec6ae999-23f3-427d-9269-18131e22d196
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.grant.body
+    - field.field.node.grant.field_application_info
+    - field.field.node.grant.field_grant_address
+    - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_contact_name
+    - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_ein
+    - field.field.node.grant.field_grant_email
+    - field.field.node.grant.field_grant_fax
+    - field.field.node.grant.field_grant_filter_friendly_name
+    - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_pdf_version
+    - field.field.node.grant.field_grant_phone
+    - field.field.node.grant.field_grant_restrictions
+    - field.field.node.grant.field_grant_sample_grants
+    - field.field.node.grant.field_grant_sizes
+    - field.field.node.grant.field_grant_total_assets
+    - field.field.node.grant.field_grant_total_grants
+    - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_website
+    - node.type.grant
+  module:
+    - address
+    - datetime
+    - link
+    - text
+    - user
+id: node.grant.default
+targetEntityType: node
+bundle: grant
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_application_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 117
+    region: content
+  field_grant_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_grant_application_deadline:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 118
+    region: content
+  field_grant_contact_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_grant_contact_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_grant_ein:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_grant_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_grant_fax:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_grant_filter_friendly_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_grant_financial_data:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 120
+    region: content
+  field_grant_pdf_version:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 116
+    region: content
+  field_grant_phone:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_grant_restrictions:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  field_grant_sample_grants:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 114
+    region: content
+  field_grant_sizes:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 111
+    region: content
+  field_grant_total_assets:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 119
+    region: content
+  field_grant_total_grants:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 112
+    region: content
+  field_grant_trustees:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 113
+    region: content
+  field_grant_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 115
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
