@@ -241,6 +241,10 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
             $link = $media->getSource()->getSourceFieldValue($media);
           }
         }
+
+        else if ($resource_type === 'audio') {
+          $link = $node->get('field_resource_link')->getValue()[0]['uri'];
+        }
       }
 
       $build['field_resource_button'] = [
