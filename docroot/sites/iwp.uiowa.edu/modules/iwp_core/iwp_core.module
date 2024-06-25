@@ -7,13 +7,18 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
 use Drupal\iwp_core\Entity\Resource;
 use Drupal\iwp_core\Entity\WriterBio;
+use Drupal\media\Entity\Media;
 use Drupal\views\ViewExecutable;
+
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -216,9 +221,35 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
 
     // Resource button.
     if ($display->getComponent('field_resource_button')) {
+      $link = '';
+
+      $node_type = $node->bundle();
+      if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+        $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+
+        if ($resource_type === 'video' || $resource_type === 'document') {
+          $media_id = $node->get('field_resource_media')->getValue()[0]['target_id'];
+          $media = Media::load($media_id);
+
+          if ($media->bundle() === 'file') {
+            $fid = $media->getSource()->getSourceFieldValue($media);
+            $file = File::load($fid);
+
+            $link = \Drupal::service('file_system')->realpath($file->getFileUri());
+          }
+          else if ($media->bundle() === 'remote_video') {
+            $link = $media->getSource()->getSourceFieldValue($media);
+          }
+        }
+      }
+
       $build['field_resource_button'] = [
         '#type' => 'markup',
-        '#markup' => '<div>Hello World</div>',
+        '#markup' => '
+          <a class="bttn bttn--primary bttn--medium" href="' . $link . '">
+            Hello world
+            <span><i class="fas fa-arrow-right"></i></span>
+          </a>',
       ];
     }
   }
