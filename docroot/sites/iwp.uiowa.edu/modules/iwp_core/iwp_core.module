@@ -123,6 +123,7 @@ function iwp_core_preprocess_field(&$variables) {
         $variables['items'][0]['content'] = $link->toString();
       }
       break;
+
     case 'field_image':
       if (isset($variables['element']['#object'])) {
         $node = $variables['element']['#object'];

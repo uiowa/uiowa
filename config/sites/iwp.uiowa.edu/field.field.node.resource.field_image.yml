@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_image
     - media.type.image
     - node.type.resource
+  content:
+    - 'media:image:ecf6d3d8-b44e-4a5f-a860-d2a41522f6c3'
 id: node.resource.field_image
 field_name: field_image
 entity_type: node
@@ -14,7 +16,10 @@ label: 'Featured Image'
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_uuid: ecf6d3d8-b44e-4a5f-a860-d2a41522f6c3
+    weight: 0
 default_value_callback: ''
 settings:
   handler: 'default:media'
