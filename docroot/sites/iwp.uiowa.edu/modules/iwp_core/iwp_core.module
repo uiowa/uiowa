@@ -193,3 +193,33 @@ function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, 
   endwhile;
   return $options;
 }
+
+function iwp_core_entity_extra_field_info() {
+  $extra = [];
+
+  // Resource button.
+  $extra['node']['resource']['display']['field_resource_button'] = [
+    'label' => t('Resource button'),
+    'description' => t('The button to link to the designate resource.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'resource' && $view_mode === 'full') {
+
+    // Resource button.
+    if ($display->getComponent('field_resource_button')) {
+      $build['field_resource_button'] = [
+        '#type' => 'markup',
+        '#markup' => '<div>Hello World</div>',
+      ];
+    }
+  }
+}
