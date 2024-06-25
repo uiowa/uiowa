@@ -14,6 +14,8 @@ class EventItemProcessor extends EntityItemProcessorBase {
    */
   protected static $fieldMap = [
     'title' => 'title',
+    'body' => 'description',
+    'body:format' => 'format',
     'field_event_contact' => 'contact_name',
     'field_event_contact_email' => 'contact_email',
     'field_event_contact_phone' => 'contact_phone',
@@ -26,23 +28,5 @@ class EventItemProcessor extends EntityItemProcessorBase {
     'field_event_when:end_value' => 'end',
     'field_event_when:duration' => 'duration',
   ];
-
-  /**
-   * Process the body field.
-   */
-  public static function process($entity, $record): bool {
-    $updated = parent::process($entity, $record);
-
-    if (isset($record->description)) {
-      // Set both value and format for the body field.
-      $entity->set('body', [
-        'value' => $record->description,
-        'format' => 'filtered_html',
-      ]);
-      $updated = TRUE;
-    }
-
-    return $updated;
-  }
 
 }
