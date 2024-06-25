@@ -125,7 +125,8 @@ function iwp_core_preprocess_field(&$variables) {
       break;
 
     case 'field_image':
-      if (isset($variables['element']['#object'])) {
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      if (isset($variables['element']['#object']) && !$layout_context) {
         $node = $variables['element']['#object'];
         $node_type = $node->bundle();
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
@@ -136,14 +137,16 @@ function iwp_core_preprocess_field(&$variables) {
         }
       }
       break;
+
     case 'field_resource_media':
-      if (isset($variables['element']['#object'])) {
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      if (isset($variables['element']['#object']) && !$layout_context) {
         $node = $variables['element']['#object'];
         $node_type = $node->bundle();
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
           $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
           if ($resource_type !== 'video') {
-//            unset($variables["items"]);
+            unset($variables["items"]);
           }
         }
       }
