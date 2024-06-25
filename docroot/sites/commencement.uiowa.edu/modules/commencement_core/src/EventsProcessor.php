@@ -102,12 +102,6 @@ class EventsProcessor extends EntityProcessorBase {
       $record->location_name = $this->findVenueNid($record->location_name);
     }
 
-    // If the description field exists set the format to filtered_html.
-    if (property_exists($record, 'description') && !is_null($record->description)) {
-      // Set default duration.
-      $record->format = 'filtered_html';
-    }
-
     // If there are event instances embedded.
     if (property_exists($record, 'event_instances') && !empty($record->event_instances)) {
       // Set default duration.
