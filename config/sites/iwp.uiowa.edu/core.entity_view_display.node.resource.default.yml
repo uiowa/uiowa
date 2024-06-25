@@ -91,7 +91,7 @@ third_party_settings:
             0: ''
             1: section_margin_fixed_width_container
             2: section_card_media_size_medium
-            3: section_card_media_format_widescreen
+            3: section_card_media_format_square
             section_no_border: 0
             section_alignment_start: section_alignment_start
         components:
@@ -191,27 +191,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 24118750-88f1-4852-a251-f1a374a3b601
-            region: card_button
-            configuration:
-              id: 'field_block:node:resource:field_resource_media'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: visually_hidden
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: 7f96c173-bfd6-42b0-9d57-31fa70052eb2
             region: card_content
             configuration:
@@ -247,13 +226,41 @@ third_party_settings:
                 type: entity_reference_entity_view
                 label: visually_hidden
                 settings:
-                  view_mode: medium__widescreen
+                  view_mode: medium__square
                 third_party_settings: {  }
             weight: 0
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 24118750-88f1-4852-a251-f1a374a3b601
+            region: card_media
+            configuration:
+              id: 'field_block:node:resource:field_resource_media'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: medium__square
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol
         layout_settings:

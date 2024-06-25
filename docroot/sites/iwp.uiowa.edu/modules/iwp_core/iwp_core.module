@@ -130,8 +130,20 @@ function iwp_core_preprocess_field(&$variables) {
         $node_type = $node->bundle();
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
           $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
-          if ($resource_type == 'video') {
-            $foo = 'bar';
+          if ($resource_type === 'video') {
+            unset($variables["items"]);
+          }
+        }
+      }
+      break;
+    case 'field_resource_media':
+      if (isset($variables['element']['#object'])) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type !== 'video') {
+//            unset($variables["items"]);
           }
         }
       }
