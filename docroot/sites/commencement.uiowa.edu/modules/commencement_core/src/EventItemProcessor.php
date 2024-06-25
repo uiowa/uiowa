@@ -44,4 +44,5 @@ class EventItemProcessor extends EntityItemProcessorBase {
 
     return $updated;
   }
+
 }
