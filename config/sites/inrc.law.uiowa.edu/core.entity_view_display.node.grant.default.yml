@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
     - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_classification
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
     - field.field.node.grant.field_grant_ein
@@ -477,6 +478,23 @@ third_party_settings:
             weight: 25
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_classification'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 26
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.grant.default
 targetEntityType: node
@@ -525,6 +543,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 123
+    region: content
+  field_grant_classification:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 125
     region: content
   field_grant_contact_name:
     type: string

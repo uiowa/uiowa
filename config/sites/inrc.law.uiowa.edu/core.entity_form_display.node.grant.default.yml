@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
     - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_classification
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
     - field.field.node.grant.field_grant_ein
@@ -35,6 +36,7 @@ dependencies:
     - datetime
     - field_group
     - link
+    - media_library
     - metatag
     - path
     - telephone
@@ -45,7 +47,6 @@ third_party_settings:
       children:
         - title
         - field_grant_filter_friendly_name
-        - body
         - field_grant_ein
         - field_grant_contact_name
         - field_grant_contact_title
@@ -73,6 +74,8 @@ third_party_settings:
         speed: fast
     group_grant_information:
       children:
+        - field_grant_classification
+        - body
         - field_grant_restrictions
         - field_grant_sizes
         - field_grant_total_grants
@@ -88,7 +91,7 @@ third_party_settings:
       label: 'Grant Information'
       region: content
       parent_name: ''
-      weight: 10
+      weight: 12
       format_type: fieldset
       format_settings:
         classes: ''
@@ -103,7 +106,7 @@ third_party_settings:
       label: 'Financial Information'
       region: content
       parent_name: ''
-      weight: 11
+      weight: 13
       format_type: fieldset
       format_settings:
         classes: ''
@@ -118,7 +121,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 13
     region: content
     settings:
       rows: 9
@@ -134,7 +137,7 @@ content:
     third_party_settings: {  }
   field_application_info:
     type: text_textarea
-    weight: 21
+    weight: 24
     region: content
     settings:
       rows: 5
@@ -142,25 +145,31 @@ content:
     third_party_settings: {  }
   field_grant_address:
     type: address_default
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_application_deadline:
     type: datetime_default
-    weight: 22
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_areas_of_interest:
     type: options_select
-    weight: 18
+    weight: 21
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_grant_classification:
+    type: options_buttons
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_contact_name:
     type: string_textfield
-    weight: 5
+    weight: 4
     region: content
     settings:
       size: 60
@@ -168,7 +177,7 @@ content:
     third_party_settings: {  }
   field_grant_contact_title:
     type: string_textfield
-    weight: 6
+    weight: 5
     region: content
     settings:
       size: 60
@@ -176,7 +185,7 @@ content:
     third_party_settings: {  }
   field_grant_ein:
     type: string_textfield
-    weight: 4
+    weight: 3
     region: content
     settings:
       size: 60
@@ -213,30 +222,27 @@ content:
     third_party_settings: {  }
   field_grant_ntee_classification:
     type: options_select
-    weight: 17
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_pdf_version:
-    type: entity_reference_autocomplete
-    weight: 20
+    type: media_library_widget
+    weight: 23
     region: content
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
   field_grant_phone:
     type: telephone_default
-    weight: 8
+    weight: 7
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_grant_restrictions:
     type: text_textarea
-    weight: 11
+    weight: 14
     region: content
     settings:
       rows: 5
@@ -244,7 +250,7 @@ content:
     third_party_settings: {  }
   field_grant_sample_grants:
     type: text_textarea
-    weight: 15
+    weight: 18
     region: content
     settings:
       rows: 5
@@ -252,7 +258,7 @@ content:
     third_party_settings: {  }
   field_grant_sizes:
     type: number
-    weight: 12
+    weight: 15
     region: content
     settings:
       placeholder: ''
@@ -266,14 +272,14 @@ content:
     third_party_settings: {  }
   field_grant_total_grants:
     type: number
-    weight: 13
+    weight: 16
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_grant_trustees:
     type: text_textarea
-    weight: 14
+    weight: 17
     region: content
     settings:
       rows: 5
@@ -281,13 +287,13 @@ content:
     third_party_settings: {  }
   field_grant_type_of_grant:
     type: options_select
-    weight: 19
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_website:
     type: link_default
-    weight: 16
+    weight: 19
     region: content
     settings:
       placeholder_url: ''
@@ -295,7 +301,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 8
+    weight: 9
     region: content
     settings:
       sidebar: true
@@ -327,7 +333,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 11
     region: content
     settings:
       display_label: true
