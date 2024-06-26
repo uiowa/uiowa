@@ -118,12 +118,12 @@ class AcademicCalendarController extends ControllerBase {
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-      // Modify the searchSessionDates call to include filtering
+      // Modify the searchSessionDates call to include filtering.
       $dates = $this->maui->searchSessionDates($session->id, [
-        'isWebDisplay' => true,
-        'isReviewed' => true,
+        'isWebDisplay' => TRUE,
+        'isReviewed' => TRUE,
         'startDate' => $start,
-        'endDate' => $end
+        'endDate' => $end,
       ]);
 
       foreach ($dates as $date) {
@@ -171,7 +171,10 @@ class AcademicCalendarController extends ControllerBase {
    * @return object
    *   The processed event object.
    */
-  // In the processDate() method of AcademicCalendarController
+
+  /**
+   * In the processDate() method of AcademicCalendarController.
+   */
   private function processDate($date, $session, $session_index) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
@@ -180,7 +183,7 @@ class AcademicCalendarController extends ControllerBase {
 
     $event->categories = [];
 
-    // Determine the date to display
+    // Determine the date to display.
     $start = date('M j, Y', strtotime($date->beginDate));
     if ($date->endDate != $date->beginDate) {
       $end = date('M j, Y', strtotime($date->endDate));
@@ -188,7 +191,7 @@ class AcademicCalendarController extends ControllerBase {
     }
     $event->displayDate = $start;
 
-    // Determine what session to display
+    // Determine what session to display.
     if (isset($date->subSession)) {
       $session_display = $date->subSession;
       $event->subSession = TRUE;
@@ -196,7 +199,8 @@ class AcademicCalendarController extends ControllerBase {
       $prefix = trim($parts[1]);
       $prefix = str_replace(' Week', 'wk', $prefix);
       $event->title = "{$prefix}: {$event->title}";
-    } else {
+    }
+    else {
       $session_display = $session->shortDescription;
       $event->subSession = FALSE;
     }
@@ -213,12 +217,12 @@ class AcademicCalendarController extends ControllerBase {
       Html::getClass($session_display),
     ];
 
-    // Add dateCategoryLookups for filtering
+    // Add dateCategoryLookups for filtering.
     foreach ($date->dateCategoryLookups as $category) {
       $event->categories[$category->naturalKey] = $category->description;
     }
 
-    // Add description
+    // Add description.
     $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
 
     return $event;

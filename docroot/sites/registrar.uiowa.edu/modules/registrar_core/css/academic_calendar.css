@@ -1,139 +1,110 @@
-.popper,
-.tooltip {
-  position: absolute;
-  z-index: 9999;
-  background: #1E252B;
-  color: #FFFFFF;
-  max-width: 200px;
-  width: auto;
-  font-size: .8rem;
-  padding: .5em 1em;
-  border-radius: 3px;
-  box-shadow: 0 0 2px rgba(0,0,0,0.5);
-  text-align: center;
+
+
+.block-padding__top, .element--padding__top {
+  padding-top: 3rem!important;
 }
 
-.popper .popper__arrow,
-.tooltip .tooltip-arrow {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  position: absolute;
-  margin: 5px;
-  border-color: #1E252B;
+.block-padding__top:first-child {
+  padding-top: 0!important;
 }
 
-.popper[x-placement^="top"],
-.tooltip[x-placement^="top"] {
-  margin-bottom: 5px;
+.badge {
+  font-size: .9rem!important;
 }
 
-.popper[x-placement^="top"] .popper__arrow,
-.tooltip[x-placement^="top"] .tooltip-arrow {
-  border-width: 5px 5px 0 5px;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  bottom: -5px;
-  left: calc(50% - 5px);
-  margin-top: 0;
-  margin-bottom: 0;
+.form-item-group-by-month.form-type-checkbox  .form-checkbox {
+  height: 1cm;
+  width: 1cm;
+  flex-shrink: 0
 }
 
-.popper[x-placement^="bottom"],
-.tooltip[x-placement^="bottom"] {
-  margin-top: 5px;
+.form-item-group-by-month.form-type-checkbox  .form-checkboxes label {
+  line-height: 1.5;
+  padding-left: .625rem
 }
 
-.tooltip[x-placement^="bottom"] .tooltip-arrow,
-.popper[x-placement^="bottom"] .popper__arrow {
-  border-width: 0 5px 5px 5px;
-  border-left-color: transparent;
-  border-right-color: transparent;
-  border-top-color: transparent;
-  top: -5px;
-  left: calc(50% - 5px);
-  margin-top: 0;
-  margin-bottom: 0;
+.academic-calendar-filters.uids-content .form-item-group-by-month.form-type-checkbox  .form-checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 62px;
+  height: 32px;
+  display: inline-block;
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #cacaca;
+  transition: background-color ease 0.3s
 }
 
-.tooltip[x-placement^="right"],
-.popper[x-placement^="right"] {
-  margin-left: 5px;
+.form-item-group-by-month.form-type-checkbox  .form-checkbox:focus {
+  background: #737373
 }
 
-.popper[x-placement^="right"] .popper__arrow,
-.tooltip[x-placement^="right"] .tooltip-arrow {
-  border-width: 5px 5px 5px 0;
-  border-left-color: transparent;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  left: -5px;
-  top: calc(50% - 5px);
-  margin-left: 0;
-  margin-right: 0;
+.academic-calendar-filters.uids-content .form-item-group-by-month.form-type-checkbox  label {
+  margin-left: 1rem;
+  margin-top: .3rem;
+  font-weight: bold;
+  align-self: flex-start;
 }
 
-.popper[x-placement^="left"],
-.tooltip[x-placement^="left"] {
-  margin-right: 5px;
-}
-
-.popper[x-placement^="left"] .popper__arrow,
-.tooltip[x-placement^="left"] .tooltip-arrow {
-  border-width: 5px 0 5px 5px;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  right: -5px;
-  top: calc(50% - 5px);
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.uiowa-maui-legend li {
-  padding-inline-end: 0.5rem;
-}
-
-.fc-h-event.badge, .fc-event.badge {
-  color: inherit;
-  color: #fff!important;
-}
-.fc-event.badge {
-  width: 100%;
-}
-
-table tbody tr.badge--primary:not(.is-selected):nth-child(2n),
-table tbody tr.badge--primary:not(.is-selected):nth-child(2n) th {
-  background-color: #ffcd00;
-}
-table tbody tr.badge--secondary:not(.is-selected):nth-child(2n),
-table tbody tr.badge--secondary:not(.is-selected):nth-child(2n) th {
-  background-color: #000;
-}
-table tbody tr.badge--cool-gray:not(.is-selected):nth-child(2n),
-table tbody tr.badge--cool-gray:not(.is-selected):nth-child(2n) th {
-  background-color: #63666a;
-}
-table tbody tr.badge--blue:not(.is-selected):nth-child(2n),
-table tbody tr.badge--blue:not(.is-selected):nth-child(2n) th {
-  background-color: #00558c;
-}
-table tbody tr.badge--green:not(.is-selected):nth-child(2n),
-table tbody tr.badge--green:not(.is-selected):nth-child(2n) th {
-  background-color: #00664f;
-}
-table tbody tr.badge--orange:not(.is-selected):nth-child(2n),
-table tbody tr.badge--orange:not(.is-selected):nth-child(2n) th {
-  background-color: #bd472a;
-}
-
-tr.badge {
-  border-radius: unset;
+.form-item-group-by-month.form-type-checkbox  .form-checkbox:before {
+  content: "on off";
   display: block;
+  position: absolute;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  font: 10px/28px Helvetica;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-indent: -22px;
+  word-spacing: 37px;
+  color: var(--brand-secondary);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: all cubic-bezier(0.3,1.5,0.7,1) 0.3s
 }
 
-.upcoming-date {
+.academic-calendar-filters.uids-content .form-item-group-by-month.form-type-checkbox  .form-checkbox:checked {
+  background-color: var(--brand-primary)
+}
+
+.form-item-group-by-month.form-type-checkbox  .form-checkbox:checked:before {
+  left: 32px
+}
+
+.academic-calendar-filters.uids-content .form-type-checkbox label {
+  vertical-align: top;
+  margin-left: .75rem;
+}
+
+.academic-calendar-filters [type=checkbox] {
+  height: 1.2rem;
+  width: 1.2rem;
+  margin: 0 .35rem 0 .25rem;
+  -webkit-transform: scale(1.3);
+}
+
+.academic-calendar-filters .form-type-checkbox {
+  padding: 0 .5rem;
+  display: flex;
+}
+
+/* Card styles to move to UIDS */
+
+.card--layout-left .media--small.media--circle, .card--layout-right .media--small.media--circle {
+  max-width: 5.375rem!important;
+}
+
+.card .upcoming-date {
   position: relative;
   color: #000;
   background-color: #ffcd00;
@@ -143,14 +114,16 @@ tr.badge {
   width: 6rem;
   height: 6rem;
 }
-.upcoming-month {
+
+.card .upcoming-month {
   font-size: 1rem;
   display: block;
   line-height: 100%;
   text-transform: uppercase;
   font-weight: 300;
 }
-.upcoming-day {
+
+.card .upcoming-day {
   font-size: 2.5rem;
   display: block;
   line-height: 100%;
@@ -158,17 +131,15 @@ tr.badge {
   font-weight: 600;
 }
 
-.card--layout-left .media--small.media--circle, .card--layout-right .media--small.media--circle {
-  max-width: 5.375rem!important;
-}
-.block-padding__top, .element--padding__top {
-  padding-top: 3rem!important;
+.academic-calendar-filters.uids-content .chosen-container-multi .chosen-choices {
+  display: block;
 }
 
-.views--twocol--25-75 {
-  align-items: start;
+.academic-calendar-filters.uids-content .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  height: 3.5rem;
 }
 
-.block-padding__top:first-child {
-  padding-top: 0!important;
+.academic-calendar-filters.uids-content .chosen-container-multi .chosen-choices li.search-choice {
+  max-width: 100%;
+  margin: .5rem 0 0 0;
 }

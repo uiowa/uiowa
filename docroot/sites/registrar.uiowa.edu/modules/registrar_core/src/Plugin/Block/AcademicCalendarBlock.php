@@ -140,6 +140,13 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#required' => FALSE,
     ];
 
+    $form['group_by_month'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Group by month'),
+      '#description' => $this->t('Default setting for grouping events by month.'),
+      '#default_value' => $this->configuration['group_by_month'],
+    ];
+
     return $form;
   }
 
@@ -149,6 +156,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $this->configuration['steps'] = $form_state->getValue('steps');
+    $this->configuration['group_by_month'] = $form_state->getValue('group_by_month');
   }
 
   /**
@@ -157,22 +165,25 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function build() {
     $form = $this->formBuilder->getForm($this);
 
-    $build = [];
-    // Add the legend.
-    //$build['legend'] = $this->buildLegend();
-    $build['form'] = $form;
-    $build['calendar'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['academic-calendar view-content'], 'id' => 'academic-calendar-wrapper'],
+    $build = [
+      'wrapper' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['list-container__inner'],
+        ],
+        'form' => $form,
+        'calendar' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['academic-calendar content'], 'id' => 'academic-calendar-content'],
+        ],
+      ],
     ];
 
     // Attach the library for the calendar.
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
-    $build['#attached']['library'][] = 'uids_base/view-calendar';
     $build['#attached']['library'][] = 'uids_base/card';
-    $build['#attached']['library'][] = 'uids_base/views';
-    $build['#attached']['library'][] = 'uids_base/view-bef';
+    $build['#attached']['library'][] = 'uids_base/chosen';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
@@ -184,62 +195,15 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     // Get the end date of the last session.
     $last_session_end_date = end($sessions)->endDate;
 
-    // Add the steps value to drupalSettings.
-    $build['#attached']['drupalSettings']['academicCalendar']['steps'] = $this->configuration['steps'];
-    // Add the first session start date to drupalSettings.
-    $build['#attached']['drupalSettings']['academicCalendar']['firstSessionStartDate'] = $first_session_start_date;
-    $build['#attached']['drupalSettings']['academicCalendar']['lastSessionEndDate'] = $last_session_end_date;
+    // Add the configuration values to drupalSettings.
+    $build['#attached']['drupalSettings']['academicCalendar'] = [
+      'steps' => $this->configuration['steps'],
+      'groupByMonth' => $this->configuration['group_by_month'],
+      'firstSessionStartDate' => $first_session_start_date,
+      'lastSessionEndDate' => $last_session_end_date,
+    ];
 
     return $build;
-  }
-
-  /**
-   * Builds the legend for the calendar.
-   *
-   * @return array
-   *   A render array for the legend.
-   */
-  protected function buildLegend() {
-    $current = $this->maui->getCurrentSession();
-    $steps = $this->configuration['steps'];
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    $legend_items = [];
-    foreach ($sessions as $index => $session) {
-      $bg_color = $this->getSessionColor($index);
-      $class = [
-        'uiowa-maui-key',
-        'uiowa-maui-key-' . $session->id,
-        'badge',
-        'badge--' . $bg_color,
-        Html::getClass($session->shortDescription),
-      ];
-
-      $legend_items[] = [
-        '#type' => 'html_tag',
-        '#tag' => 'span',
-        '#value' => $session->shortDescription,
-        '#attributes' => [
-          'class' => $class,
-        ],
-      ];
-    }
-
-    return [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['uiowa-maui-legend']],
-      'title' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#value' => $this->t('Legend'),
-        '#attributes' => ['class' => ['element-invisible']],
-      ],
-      'list' => [
-        '#theme' => 'item_list',
-        '#items' => $legend_items,
-        '#attributes' => ['class' => ['element--list-none element--inline element--margin-none']],
-      ],
-    ];
   }
 
   /**
@@ -249,9 +213,56 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters view-filters views-exposed-form bef-exposed-form bg--gray';
+    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
+
+    $form['group_by_month'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Group by month'),
+      '#id' => 'group-by-month',
+      '#default_value' => $this->configuration['group_by_month'],
+    ];
+
+    $form['show_previous_events'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show previous events'),
+      '#id' => 'show-previous-events',
+      '#states' => [
+        'visible' => [
+          ':input[id="group-by-month"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
+    $form['search'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Search'),
+      '#attributes' => [
+        'placeholder' => $this->t('Search the calendar'),
+        'class' => ['academic-calendar-search'],
+      ],
+    ];
+
+    $form['session'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Session'),
+      '#options' => ['all' => $this->t('All Sessions')],
+      '#empty_option' => $this->t('- Select -'),
+      '#attributes' => ['class' => ['academic-calendar-session']],
+    ];
+
+    $form['start_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Start Date'),
+      '#attributes' => ['class' => ['academic-calendar-start-date']],
+    ];
+
+    $form['end_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('End Date'),
+      '#attributes' => ['class' => ['academic-calendar-end-date']],
+    ];
 
     $form['category'] = [
       '#type' => 'select',
