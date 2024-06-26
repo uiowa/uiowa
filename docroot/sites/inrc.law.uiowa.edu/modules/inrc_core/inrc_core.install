@@ -10,7 +10,7 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Import Iowa counties and cities.
  */
-function inrc_core_update_10001() {
+function inrc_core_install() {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $path = $path_resolver->getPath('module', 'inrc_core');
