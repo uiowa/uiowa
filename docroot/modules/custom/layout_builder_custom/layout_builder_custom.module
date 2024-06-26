@@ -259,6 +259,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
+            // Listblock specific default.
+            if ($form_id === 'layout_builder_add_block') {
+              if ($form['settings']['override']['items_per_page']) {
+                $form['settings']['override']['items_per_page']['#default_value'] = 10;
+              }
+            }
+
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
               // The card block is stacked by default.
@@ -291,14 +298,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Make some block-specific add form adjustments.
             if ($form_id === 'layout_builder_add_block') {
               switch ($block->getPluginId()) {
-                // This case should fall through to the next
-                // to set the default items_per_page.
                 case 'views_block:article_list_block-list_article':
                   $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
+                  break;
+
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['hide_fields']['order_fields']['field_person_website']['hide']['#default_value'] = 1;
-                case 'views_block:page_list_block-list_page':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   break;
               }
             }
