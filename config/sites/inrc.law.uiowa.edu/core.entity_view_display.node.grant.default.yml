@@ -59,7 +59,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 0
+            weight: -14
             additional: {  }
             third_party_settings: {  }
           -
@@ -75,7 +75,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: -13
             additional: {  }
             third_party_settings: {  }
           -
@@ -92,7 +92,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
+            weight: -12
             additional: {  }
             third_party_settings: {  }
           -
@@ -109,7 +109,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: -11
             additional: {  }
             third_party_settings: {  }
           -
@@ -126,7 +126,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 4
+            weight: -10
             additional: {  }
             third_party_settings: {  }
           -
@@ -143,7 +143,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: -9
             additional: {  }
             third_party_settings: {  }
           -
@@ -159,7 +159,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: -8
             additional: {  }
             third_party_settings: {  }
           -
@@ -175,7 +175,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: -7
             additional: {  }
             third_party_settings: {  }
           -
@@ -191,7 +191,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: -6
             additional: {  }
             third_party_settings: {  }
           -
@@ -207,7 +207,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: -5
             additional: {  }
             third_party_settings: {  }
           -
@@ -223,7 +223,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: -4
             additional: {  }
             third_party_settings: {  }
           -
@@ -231,36 +231,46 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:grant:field_grant_sizes'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: number_integer
                 label: above
                 settings:
-                  thousand_separator: ''
+                  thousand_separator: ','
                   prefix_suffix: true
-                third_party_settings: {  }
-            weight: 11
-            additional: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: -3
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 81143c48-857f-464a-b38b-5344803505d4
             region: content
             configuration:
               id: 'field_block:node:grant:field_grant_total_grants'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: number_integer
                 label: above
                 settings:
-                  thousand_separator: ''
+                  thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 12
-            additional: {  }
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 27b0e1b8-a25f-4ca3-a3cf-16969310c692
@@ -275,7 +285,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 13
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -291,7 +301,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 14
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -312,7 +322,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 15
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -320,17 +330,21 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:grant:field_grant_pdf_version'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_label
                 label: above
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 16
-            additional: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 0961ac02-f1bd-4570-a763-1c0dc8b258fd
@@ -345,7 +359,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 17
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -363,7 +377,7 @@ third_party_settings:
                   timezone_override: ''
                   format_type: medium
                 third_party_settings: {  }
-            weight: 18
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -381,7 +395,7 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 19
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -399,7 +413,7 @@ third_party_settings:
                   timezone_override: ''
                   format_type: medium
                 third_party_settings: {  }
-            weight: 20
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -415,8 +429,146 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 21
+            weight: 7
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ntee_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_areas_of_interest'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 9
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_type_of_grant'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 10
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 11
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_counties'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 12
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_cities'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 13
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 0223695d-120d-4707-bff1-62c9df9a0993
@@ -426,109 +578,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 22
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_ntee_classification'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 23
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_areas_of_interest'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 24
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_type_of_grant'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 25
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_classification'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 26
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_counties'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 27
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_cities'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 28
+            weight: -15
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
