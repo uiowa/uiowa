@@ -502,6 +502,11 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
 
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
@@ -510,6 +515,13 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       // file replace functionality.
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
+      }
+      // Hide alias path setting on media for non-admins to prevent
+      // unwanted changes to internal paths (not the public-facing path).
+      if (isset($form['path'])) {
+        if ($access->isForbidden()) {
+          $form['path']['#access'] = FALSE;
+        }
       }
 
       // Prevent deletion if there is entity usage.
@@ -551,12 +563,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Restrict theme settings form for non-admins.
     case 'system_theme_settings':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         $form['theme_settings']['#access'] = FALSE;
         $form['logo']['#access'] = FALSE;
@@ -577,12 +583,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Restrict certain webform component options.
     case 'webform_ui_element_form':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         // Remove access to wrapper, element, label attributes.
         $form['properties']['wrapper_attributes']['#access'] = FALSE;
@@ -610,11 +610,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         // to minimal and remove headline field.
         if ($uuid === '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
           $form['field_uiowa_headline']['#access'] = FALSE;
-          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-          $check = \Drupal::service('uiowa_core.access_checker');
-
-          $access = $check->access(\Drupal::currentUser()->getAccount());
-
           if ($access->isForbidden()) {
             $form['field_uiowa_text_area']['widget'][0]['#allowed_formats'] = [
               'minimal',
