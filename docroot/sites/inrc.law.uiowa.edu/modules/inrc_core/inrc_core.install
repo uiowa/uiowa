@@ -23,11 +23,18 @@ function inrc_core_install() {
     }
 
     foreach ($csv as $term_name) {
-      Term::create([
+      $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $terms = $storage->loadByProperties([
         'name' => $term_name,
         'vid' => $type,
-      ])
-        ->save();
+      ]);
+      if (empty($terms)) {
+        Term::create([
+          'name' => $term_name,
+          'vid' => $type,
+        ])
+          ->save();
+      }
     }
   }
 
