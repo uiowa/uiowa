@@ -87,6 +87,23 @@ function iwp_core_taxonomy_term_session_form_submit($form, FormStateInterface $f
  */
 function iwp_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_resource_countries':
+      uiowa_core_set_field_icon($variables, 'fa-globe');
+      uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      break;
+    case 'field_resource_genre':
+      uiowa_core_set_field_icon($variables, 'fa-masks-theater');
+      uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      break;
+    case 'field_resource_link':
+      uiowa_core_set_field_icon($variables, 'fa-link');
+      uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      break;
+    case 'field_resource_year':
+    case 'field_resource_button':
+      uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+      uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      break;
     case 'field_writer_bio_session_status':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_icon($variables, 'fa-calendar-days');
@@ -235,7 +252,7 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
             $fid = $media->getSource()->getSourceFieldValue($media);
             $file = File::load($fid);
 
-            $link = \Drupal::service('file_system')->realpath($file->getFileUri());
+            $link = Url::fromRoute($file->getFileUri());
           }
           else if ($media->bundle() === 'remote_video') {
             $link = $media->getSource()->getSourceFieldValue($media);
@@ -250,10 +267,16 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
       $build['field_resource_button'] = [
         '#type' => 'markup',
         '#markup' => '
-          <a class="bttn bttn--primary bttn--medium" href="' . $link . '">
-            Hello world
-            <span><i class="fas fa-arrow-right"></i></span>
-          </a>',
+          <div class="element--inline padding--inline-end--sm field field--name-field-resource-link field--type-link field--label-visually_hidden">
+            <div class="field__label visually-hidden">Resource source</div>
+            <i class="fa-solid fa-link"></i>
+            <div class="field__item">
+              <a href="' . $link . '">
+                View source
+              </a>
+            </div>
+          </div>
+        ',
       ];
     }
   }
