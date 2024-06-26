@@ -7432,3 +7432,39 @@ $sites['programeventmanagement.uiowa.ddev.site'] = 'eventmanagement.program.uiow
 $sites['programeventmanagement.dev.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
 $sites['programeventmanagement.stage.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
 $sites['programeventmanagement.prod.drupal.uiowa.edu'] = 'eventmanagement.program.uiowa.edu';
+
+// Directory aliases for report.hancher.uiowa.edu.
+$sites['hancherreport.uiowa.ddev.site'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.dev.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.stage.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+$sites['hancherreport.prod.drupal.uiowa.edu'] = 'report.hancher.uiowa.edu';
+
+// Directory aliases for ris.research.uiowa.edu.
+$sites['researchris.uiowa.ddev.site'] = 'ris.research.uiowa.edu';
+$sites['researchris.dev.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+$sites['researchris.stage.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+$sites['researchris.prod.drupal.uiowa.edu'] = 'ris.research.uiowa.edu';
+
+// Directory aliases for ehs.research.uiowa.edu.
+$sites['researchehs.uiowa.ddev.site'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.dev.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.stage.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+$sites['researchehs.prod.drupal.uiowa.edu'] = 'ehs.research.uiowa.edu';
+
+// Directory aliases for animal.research.uiowa.edu.
+$sites['researchanimal.uiowa.ddev.site'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.dev.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.stage.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
+$sites['researchanimal.prod.drupal.uiowa.edu'] = 'animal.research.uiowa.edu';
+
+// Directory aliases for shen.lab.uiowa.edu.
+$sites['labshen.uiowa.ddev.site'] = 'shen.lab.uiowa.edu';
+$sites['labshen.dev.drupal.uiowa.edu'] = 'shen.lab.uiowa.edu';
+$sites['labshen.stage.drupal.uiowa.edu'] = 'shen.lab.uiowa.edu';
+$sites['labshen.prod.drupal.uiowa.edu'] = 'shen.lab.uiowa.edu';
+
+// Directory aliases for sustainability.lab.uiowa.edu.
+$sites['labsustainability.uiowa.ddev.site'] = 'sustainability.lab.uiowa.edu';
+$sites['labsustainability.dev.drupal.uiowa.edu'] = 'sustainability.lab.uiowa.edu';
+$sites['labsustainability.stage.drupal.uiowa.edu'] = 'sustainability.lab.uiowa.edu';
+$sites['labsustainability.prod.drupal.uiowa.edu'] = 'sustainability.lab.uiowa.edu';
