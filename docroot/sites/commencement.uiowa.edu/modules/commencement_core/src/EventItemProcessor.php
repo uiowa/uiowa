@@ -34,12 +34,14 @@ class EventItemProcessor extends EntityItemProcessorBase {
     $updated = parent::process($entity, $record);
 
     if (isset($record->description)) {
-      // Set both value and format for the body field.
-      $entity->set('body', [
-        'value' => $record->description,
-        'format' => 'filtered_html',
-      ]);
-      $updated = TRUE;
+      if ($entity->get('body')->value !== $record->description) {
+        // Set both value and format for the body field.
+        $entity->set('body', [
+          'value' => $record->description,
+          'format' => 'filtered_html',
+        ]);
+        $updated = TRUE;
+      }
     }
 
     return $updated;
