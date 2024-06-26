@@ -156,7 +156,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: a8e602eb-f439-418a-a28b-11662424c51d
-            region: card_content
+            region: card_meta
             configuration:
               id: 'field_block:node:resource:field_resource_year'
               label: null
@@ -177,9 +177,33 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 1d395c2d-689f-4334-a30d-2f8f1369275f
-            region: card_content
+            region: card_meta
             configuration:
               id: 'field_block:node:resource:field_resource_genre'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ', '
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: fd37c4e3-ad95-47e9-80db-432071483040
+            region: card_meta
+            configuration:
+              id: 'field_block:node:resource:field_resource_countries'
               label: null
               label_display: null
               provider: layout_builder
@@ -201,7 +225,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: c5237dff-9242-4d1a-a071-4c36a2b2435a
-            region: card_content
+            region: card_meta
             configuration:
               id: 'extra_field_block:node:resource:links'
               label: null
@@ -212,38 +236,14 @@ third_party_settings:
               formatter:
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: fd37c4e3-ad95-47e9-80db-432071483040
-            region: card_content
-            configuration:
-              id: 'field_block:node:resource:field_resource_countries'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: visually_hidden
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ', '
-            weight: 6
+            weight: 5
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: bb55a1db-9dc8-43ad-9bc6-c1b4adedb4d9
-            region: card_content
+            region: card_meta
             configuration:
               id: 'field_block:node:resource:field_resource_link'
               label: null
@@ -262,14 +262,14 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 9
+            weight: 6
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: fd696a27-dd97-4a23-85a5-1da7494e047a
-            region: card_content
+            region: card_meta
             configuration:
               id: 'extra_field_block:node:resource:field_resource_button'
               label: null
@@ -280,7 +280,7 @@ third_party_settings:
               formatter:
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: 7
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
