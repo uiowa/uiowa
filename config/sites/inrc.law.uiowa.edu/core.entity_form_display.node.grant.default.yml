@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.grant.body
-    - field.field.node.grant.field_application_info
+    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
     - field.field.node.grant.field_grant_areas_of_interest
@@ -86,7 +86,7 @@ third_party_settings:
         - field_grant_areas_of_interest
         - field_grant_type_of_grant
         - field_grant_pdf_version
-        - field_application_info
+        - field_grant_application_info
         - field_grant_application_deadline
       label: 'Grant Information'
       region: content
@@ -135,14 +135,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_application_info:
-    type: text_textarea
-    weight: 24
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
   field_grant_address:
     type: address_default
     weight: 6
@@ -154,6 +146,14 @@ content:
     weight: 25
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_grant_application_info:
+    type: text_textarea
+    weight: 24
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_grant_areas_of_interest:
     type: options_select

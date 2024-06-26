@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.grant.body
-    - field.field.node.grant.field_application_info
+    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
     - field.field.node.grant.field_grant_areas_of_interest
@@ -334,7 +334,7 @@ third_party_settings:
             uuid: 0961ac02-f1bd-4570-a763-1c0dc8b258fd
             region: content
             configuration:
-              id: 'field_block:node:grant:field_application_info'
+              id: 'field_block:node:grant:field_grant_application_info'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -513,13 +513,6 @@ content:
     third_party_settings: {  }
     weight: -20
     region: content
-  field_application_info:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 117
-    region: content
   field_grant_address:
     type: address_default
     label: above
@@ -535,6 +528,13 @@ content:
       format_type: medium
     third_party_settings: {  }
     weight: 118
+    region: content
+  field_grant_application_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 117
     region: content
   field_grant_areas_of_interest:
     type: entity_reference_label
