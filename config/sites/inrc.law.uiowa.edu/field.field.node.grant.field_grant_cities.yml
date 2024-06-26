@@ -1,0 +1,29 @@
+uuid: 743e0dfc-99f8-4168-bfc4-d00aa3a36339
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_cities
+    - node.type.grant
+    - taxonomy.vocabulary.cities
+id: node.grant.field_grant_cities
+field_name: field_grant_cities
+entity_type: node
+bundle: grant
+label: Cities
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      cities: cities
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

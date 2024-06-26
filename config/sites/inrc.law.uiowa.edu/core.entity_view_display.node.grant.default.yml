@@ -4,13 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.grant.body
-    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_cities
     - field.field.node.grant.field_grant_classification
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_counties
     - field.field.node.grant.field_grant_ein
     - field.field.node.grant.field_grant_email
     - field.field.node.grant.field_grant_fax
@@ -495,6 +497,40 @@ third_party_settings:
             weight: 26
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_counties'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 27
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_cities'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 28
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.grant.default
 targetEntityType: node
@@ -544,6 +580,14 @@ content:
     third_party_settings: {  }
     weight: 123
     region: content
+  field_grant_cities:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 127
+    region: content
   field_grant_classification:
     type: entity_reference_label
     label: above
@@ -567,6 +611,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 105
+    region: content
+  field_grant_counties:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 126
     region: content
   field_grant_ein:
     type: string

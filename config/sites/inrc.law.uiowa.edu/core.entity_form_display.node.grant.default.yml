@@ -4,13 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.grant.body
-    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_address
     - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_cities
     - field.field.node.grant.field_grant_classification
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_counties
     - field.field.node.grant.field_grant_ein
     - field.field.node.grant.field_grant_email
     - field.field.node.grant.field_grant_fax
@@ -86,12 +88,10 @@ third_party_settings:
         - field_grant_areas_of_interest
         - field_grant_type_of_grant
         - field_grant_pdf_version
-        - field_grant_application_info
-        - field_grant_application_deadline
       label: 'Grant Information'
       region: content
       parent_name: ''
-      weight: 12
+      weight: 11
       format_type: fieldset
       format_settings:
         classes: ''
@@ -106,7 +106,37 @@ third_party_settings:
       label: 'Financial Information'
       region: content
       parent_name: ''
+      weight: 14
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_application_info:
+      children:
+        - field_grant_application_info
+        - field_grant_application_deadline
+      label: 'Application Information'
+      region: content
+      parent_name: ''
       weight: 13
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_location_info:
+      children:
+        - field_grant_counties
+        - field_grant_cities
+      label: 'Location Information'
+      region: content
+      parent_name: ''
+      weight: 12
       format_type: fieldset
       format_settings:
         classes: ''
@@ -143,13 +173,13 @@ content:
     third_party_settings: {  }
   field_grant_application_deadline:
     type: datetime_default
-    weight: 25
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grant_application_info:
     type: text_textarea
-    weight: 24
+    weight: 27
     region: content
     settings:
       rows: 5
@@ -158,6 +188,12 @@ content:
   field_grant_areas_of_interest:
     type: options_select
     weight: 21
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_grant_cities:
+    type: options_select
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -182,6 +218,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_grant_counties:
+    type: options_select
+    weight: 25
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_grant_ein:
     type: string_textfield
@@ -333,7 +375,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 11
+    weight: 10
     region: content
     settings:
       display_label: true
