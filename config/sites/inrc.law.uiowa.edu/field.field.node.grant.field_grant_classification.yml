@@ -1,0 +1,29 @@
+uuid: edeae350-3e01-4e43-b7ba-84d6290c6f20
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_classification
+    - node.type.grant
+    - taxonomy.vocabulary.grant_classification
+id: node.grant.field_grant_classification
+field_name: field_grant_classification
+entity_type: node
+bundle: grant
+label: 'Grant Classification'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      grant_classification: grant_classification
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
