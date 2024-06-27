@@ -102,6 +102,12 @@ class EventsProcessor extends EntityProcessorBase {
       $record->location_name = $this->findVenueNid($record->location_name);
     }
 
+    // Convert empty strings to null for the room number field.
+    // Otherwise the importer 'updates' this field every time it is run.
+    if (property_exists($record, 'room_number') && $record->room_number === '') {
+      $record->room_number = NULL;
+    }
+
     // If there are event instances embedded.
     if (property_exists($record, 'event_instances') && !empty($record->event_instances)) {
       // Set default duration.
