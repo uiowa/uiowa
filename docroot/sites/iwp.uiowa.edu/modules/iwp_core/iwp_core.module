@@ -19,7 +19,6 @@ use Drupal\iwp_core\Entity\WriterBio;
 use Drupal\media\Entity\Media;
 use Drupal\views\ViewExecutable;
 
-
 /**
  * Implements hook_entity_bundle_info_alter().
  */
@@ -225,6 +224,9 @@ function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, 
   return $options;
 }
 
+/**
+ *
+ */
 function iwp_core_entity_extra_field_info() {
   $extra = [];
 
@@ -263,7 +265,7 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
 
             $link = $file->getFileUri();
           }
-          else if ($media->bundle() === 'remote_video') {
+          elseif ($media->bundle() === 'remote_video') {
             $link = $media->getSource()->getSourceFieldValue($media);
           }
         }
