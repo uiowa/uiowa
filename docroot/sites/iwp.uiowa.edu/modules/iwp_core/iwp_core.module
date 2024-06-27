@@ -156,7 +156,9 @@ function iwp_core_preprocess_field(&$variables) {
 
     case 'field_image':
       $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
-      if (isset($variables['element']['#object']) && !$layout_context) {
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
         $node = $variables['element']['#object'];
         $node_type = $node->bundle();
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
@@ -170,7 +172,9 @@ function iwp_core_preprocess_field(&$variables) {
 
     case 'field_resource_media':
       $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
-      if (isset($variables['element']['#object']) && !$layout_context) {
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
         $node = $variables['element']['#object'];
         $node_type = $node->bundle();
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
@@ -263,7 +267,7 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
             $fid = $media->getSource()->getSourceFieldValue($media);
             $file = File::load($fid);
 
-            $link = $file->getFileUri();
+            $link = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
           }
           elseif ($media->bundle() === 'remote_video') {
             $link = $media->getSource()->getSourceFieldValue($media);
@@ -272,63 +276,63 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
       }
 
       if (!empty($link)) {
-//        $build['field_resource_button'] = [
-//          '#type' => 'markup',
-//          '#markup' => '
-//          <div class="fa-field-item field field--name-field-resource-button field--type-link field--label-visually_hidden">
-//            <div class="field__label visually-hidden">Resource source</div>
-//            <i class="fa-solid fa-link"></i>
-//            <div class="field__item">
-//              <a href="' . $link . '">
-//                View source
-//              </a>
-//            </div>
-//          </div>
-//        ',
-//        ];
-
         $build['field_resource_button'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'fa-field-item',
-              'field',
-              'field--name-field-resource-button',
-              'field--type-link',
-              'field--label-visually_hidden',
-            ],
-          ],
-        ];
-
-        $build['field_resource_button']['label_container'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'field__label',
-              'visually-hidden',
-            ],
-          ],
-        ];
-
-        $build['field_resource_button']['label_container']['label'] = [
           '#type' => 'markup',
-          '#markup' => 'Resource source',
+          '#markup' => '
+          <div class="fa-field-item field field--name-field-resource-button field--type-link field--label-visually_hidden">
+            <div class="field__label visually-hidden">Resource source</div>
+            <i class="fa-solid fa-link"></i>
+            <div class="field__item">
+              <a href="' . $link . '">
+                View source
+              </a>
+            </div>
+          </div>
+        ',
         ];
 
-        $build['field_resource_button']['link_container'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'field__item'
-            ],
-          ],
-        ];
-
-        $build['field_resource_button']['link_container']['link'] = [
-          '#type' => 'link',
-          '#title' => 'View source',
-          '#url' => $link,
-        ];
+//        $build['field_resource_button'] = [
+//          '#type' => 'container',
+//          '#attributes' => [
+//            'class' => [
+//              'fa-field-item',
+//              'field',
+//              'field--name-field-resource-button',
+//              'field--type-link',
+//              'field--label-visually_hidden',
+//            ],
+//          ],
+//        ];
+//
+//        $build['field_resource_button']['label_container'] = [
+//          '#type' => 'container',
+//          '#attributes' => [
+//            'class' => [
+//              'field__label',
+//              'visually-hidden',
+//            ],
+//          ],
+//        ];
+//
+//        $build['field_resource_button']['label_container']['label'] = [
+//          '#type' => 'markup',
+//          '#markup' => 'Resource source',
+//        ];
+//
+//        $build['field_resource_button']['link_container'] = [
+//          '#type' => 'container',
+//          '#attributes' => [
+//            'class' => [
+//              'field__item'
+//            ],
+//          ],
+//        ];
+//
+//        $build['field_resource_button']['link_container']['link'] = [
+//          '#type' => 'link',
+//          '#title' => 'View source',
+//          '#url' => $link,
+//        ];
       }
     }
   }
