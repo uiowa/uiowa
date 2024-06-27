@@ -17,6 +17,7 @@ use Drupal\file\Entity\File;
 use Drupal\iwp_core\Entity\Resource;
 use Drupal\iwp_core\Entity\WriterBio;
 use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -78,6 +79,16 @@ function iwp_core_taxonomy_term_session_form_submit($form, FormStateInterface $f
     $config->set('default_session', $term_id)->save();
     // Invalidate the views cache for the ceremonies view.
     Cache::invalidateTags(['config:views.view.writer_bio']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function iwp_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'resource') {
+    $variables['attributes']['class'][] = 'bg--none';
   }
 }
 
@@ -291,48 +302,48 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
         ',
         ];
 
-//        $build['field_resource_button'] = [
-//          '#type' => 'container',
-//          '#attributes' => [
-//            'class' => [
-//              'fa-field-item',
-//              'field',
-//              'field--name-field-resource-button',
-//              'field--type-link',
-//              'field--label-visually_hidden',
-//            ],
-//          ],
-//        ];
-//
-//        $build['field_resource_button']['label_container'] = [
-//          '#type' => 'container',
-//          '#attributes' => [
-//            'class' => [
-//              'field__label',
-//              'visually-hidden',
-//            ],
-//          ],
-//        ];
-//
-//        $build['field_resource_button']['label_container']['label'] = [
-//          '#type' => 'markup',
-//          '#markup' => 'Resource source',
-//        ];
-//
-//        $build['field_resource_button']['link_container'] = [
-//          '#type' => 'container',
-//          '#attributes' => [
-//            'class' => [
-//              'field__item'
-//            ],
-//          ],
-//        ];
-//
-//        $build['field_resource_button']['link_container']['link'] = [
-//          '#type' => 'link',
-//          '#title' => 'View source',
-//          '#url' => $link,
-//        ];
+        // $build['field_resource_button'] = [
+        //          '#type' => 'container',
+        //          '#attributes' => [
+        //            'class' => [
+        //              'fa-field-item',
+        //              'field',
+        //              'field--name-field-resource-button',
+        //              'field--type-link',
+        //              'field--label-visually_hidden',
+        //            ],
+        //          ],
+        //        ];
+        //
+        //        $build['field_resource_button']['label_container'] = [
+        //          '#type' => 'container',
+        //          '#attributes' => [
+        //            'class' => [
+        //              'field__label',
+        //              'visually-hidden',
+        //            ],
+        //          ],
+        //        ];
+        //
+        //        $build['field_resource_button']['label_container']['label'] = [
+        //          '#type' => 'markup',
+        //          '#markup' => 'Resource source',
+        //        ];
+        //
+        //        $build['field_resource_button']['link_container'] = [
+        //          '#type' => 'container',
+        //          '#attributes' => [
+        //            'class' => [
+        //              'field__item'
+        //            ],
+        //          ],
+        //        ];
+        //
+        //        $build['field_resource_button']['link_container']['link'] = [
+        //          '#type' => 'link',
+        //          '#title' => 'View source',
+        //          '#url' => $link,
+        //        ];
       }
     }
   }

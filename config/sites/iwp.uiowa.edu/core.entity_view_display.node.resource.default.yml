@@ -19,6 +19,7 @@ dependencies:
     - link
     - metatag
     - options
+    - system
     - text
     - user
   theme:
@@ -34,17 +35,6 @@ third_party_settings:
           label: ''
         components:
           -
-            uuid: 74cfd3a8-836f-448f-8c5c-aea9b105c548
-            region: content
-            configuration:
-              id: 'extra_field_block:node:resource:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: -5
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 4eeda178-c3de-4692-8f5d-56f868f9ca15
             region: content
             configuration:
@@ -57,9 +47,30 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 74cfd3a8-836f-448f-8c5c-aea9b105c548
+            region: content
+            configuration:
+              id: 'extra_field_block:node:resource:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+        components:
           -
             uuid: 3bb98c64-2a6d-4e53-bf97-549d6281576a
             region: content
@@ -77,7 +88,20 @@ third_party_settings:
                 settings:
                   size: h1
                 third_party_settings: {  }
-            weight: 5
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 42387edc-771c-4b17-9a20-1753120408b1
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -172,8 +196,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 2
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 1d395c2d-689f-4334-a30d-2f8f1369275f
@@ -196,8 +219,7 @@ third_party_settings:
                     delimiter: ', '
             weight: 3
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: fd37c4e3-ad95-47e9-80db-432071483040
@@ -220,8 +242,7 @@ third_party_settings:
                     delimiter: ', '
             weight: 4
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: c5237dff-9242-4d1a-a071-4c36a2b2435a
@@ -264,8 +285,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 6
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: fd696a27-dd97-4a23-85a5-1da7494e047a
@@ -282,10 +302,13 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 7
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.resource.default
 targetEntityType: node
 bundle: resource
