@@ -1,0 +1,888 @@
+uuid: ec6ae999-23f3-427d-9269-18131e22d196
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.grant.body
+    - field.field.node.grant.field_grant_address
+    - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_application_info
+    - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_cities
+    - field.field.node.grant.field_grant_classification
+    - field.field.node.grant.field_grant_contact_name
+    - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_counties
+    - field.field.node.grant.field_grant_ein
+    - field.field.node.grant.field_grant_email
+    - field.field.node.grant.field_grant_fax
+    - field.field.node.grant.field_grant_filter_friendly_name
+    - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_ntee_classification
+    - field.field.node.grant.field_grant_pdf_version
+    - field.field.node.grant.field_grant_phone
+    - field.field.node.grant.field_grant_restrictions
+    - field.field.node.grant.field_grant_sample_grants
+    - field.field.node.grant.field_grant_sizes
+    - field.field.node.grant.field_grant_total_assets
+    - field.field.node.grant.field_grant_total_grants
+    - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_type_of_grant
+    - field.field.node.grant.field_grant_website
+    - field.field.node.grant.field_meta_tags
+    - node.type.grant
+  module:
+    - address
+    - datetime
+    - layout_builder
+    - link
+    - metatag
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          context_mapping: {  }
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+        components:
+          -
+            uuid: 0223695d-120d-4707-bff1-62c9df9a0993
+            region: content
+            configuration:
+              id: 'extra_field_block:node:grant:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_margin_edge_to_edge
+        components:
+          -
+            uuid: 40b768ff-6e34-4257-9398-d83430b061e8
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
+            region: content
+            configuration:
+              id: 'field_block:node:page:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 05b1b602-7d73-4f0e-ba7a-e3087c41ec5e
+            region: content
+            configuration:
+              id: 'extra_field_block:node:grant:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: -14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f148d926-c72f-4ad3-bb52-628f48f9b1c3
+            region: content
+            configuration:
+              id: 'field_block:node:grant:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 796bd982-9bd0-4e40-8b58-fa6d5bd425fd
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_filter_friendly_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -12
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 59a6ada4-67b9-4189-a81c-841e5b025d8f
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ein'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -11
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9dd00806-fd06-48d1-aa67-7ad79e3fd0b2
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_contact_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ec94a62a-3557-4f5c-999e-008385e81e1f
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_contact_title'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f784b004-e3cd-4b32-9ced-aa4d2b5c5030
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_address'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: address_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f07b4479-ca6a-42c7-9b45-41c73b315239
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_phone'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 82800806-201d-49da-9014-c45abd9ac6e0
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_fax'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c8396b4f-005f-4f69-a2c6-eba3e479a85e
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_email'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0fbce546-ab3d-4eed-a1fa-752f563136de
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_restrictions'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 756493bc-f1ce-417f-ae34-37f7d4471476
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_sizes'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ','
+                  prefix_suffix: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: -3
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 81143c48-857f-464a-b38b-5344803505d4
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_total_grants'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ','
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 27b0e1b8-a25f-4ca3-a3cf-16969310c692
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_trustees'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c8451e87-97ad-4a63-82f2-1fa35e9eaec4
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_sample_grants'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: da208bee-be11-47c7-8298-d7c7cd4bd87f
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_website'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3371846f-c9fe-413e-8b83-a8e64fcc2687
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_pdf_version'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0961ac02-f1bd-4570-a763-1c0dc8b258fd
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_application_info'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 927a15f3-251a-4466-8c83-92022e8750f3
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_application_deadline'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e748d416-7bec-4874-aee5-7aa204a9147d
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_total_assets'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2cb23433-8d1c-4e17-a726-5529fa66d0db
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_financial_data'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 1436e212-f9ae-462d-b146-11fc1e261746
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ntee_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_areas_of_interest'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 9
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_type_of_grant'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 10
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 11
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_counties'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 12
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_cities'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 13
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+id: node.grant.default
+targetEntityType: node
+bundle: grant
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_grant_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_grant_application_deadline:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 118
+    region: content
+  field_grant_application_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 117
+    region: content
+  field_grant_areas_of_interest:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 123
+    region: content
+  field_grant_cities:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 127
+    region: content
+  field_grant_classification:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 125
+    region: content
+  field_grant_contact_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_grant_contact_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_grant_counties:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 126
+    region: content
+  field_grant_ein:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_grant_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_grant_fax:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_grant_filter_friendly_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_grant_financial_data:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 120
+    region: content
+  field_grant_ntee_classification:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 122
+    region: content
+  field_grant_pdf_version:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 116
+    region: content
+  field_grant_phone:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_grant_restrictions:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  field_grant_sample_grants:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 114
+    region: content
+  field_grant_sizes:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 111
+    region: content
+  field_grant_total_assets:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 119
+    region: content
+  field_grant_total_grants:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 112
+    region: content
+  field_grant_trustees:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 113
+    region: content
+  field_grant_type_of_grant:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 124
+    region: content
+  field_grant_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 115
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 121
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

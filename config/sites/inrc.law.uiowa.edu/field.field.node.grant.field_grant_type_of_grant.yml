@@ -1,0 +1,29 @@
+uuid: 3e2262e2-0e08-4f45-8c77-1d84fab17e71
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_type_of_grant
+    - node.type.grant
+    - taxonomy.vocabulary.type_of_grant
+id: node.grant.field_grant_type_of_grant
+field_name: field_grant_type_of_grant
+entity_type: node
+bundle: grant
+label: 'Type of Grant'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      type_of_grant: type_of_grant
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
