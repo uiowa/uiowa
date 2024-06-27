@@ -258,15 +258,12 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
             $link = $media->getSource()->getSourceFieldValue($media);
           }
         }
-
-        else if ($resource_type === 'audio') {
-          $link = $node->get('field_resource_link')->getValue()[0]['uri'];
-        }
       }
 
-      $build['field_resource_button'] = [
-        '#type' => 'markup',
-        '#markup' => '
+      if (!empty($link)) {
+        $build['field_resource_button'] = [
+          '#type' => 'markup',
+          '#markup' => '
           <div class="fa-field-item field field--name-field-resource-button field--type-link field--label-visually_hidden">
             <div class="field__label visually-hidden">Resource source</div>
             <i class="fa-solid fa-link"></i>
@@ -277,7 +274,8 @@ function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisp
             </div>
           </div>
         ',
-      ];
+        ];
+      }
     }
   }
 }
