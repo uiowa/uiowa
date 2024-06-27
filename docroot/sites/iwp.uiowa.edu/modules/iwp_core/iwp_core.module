@@ -91,19 +91,28 @@ function iwp_core_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-globe');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
+
     case 'field_resource_genre':
       uiowa_core_set_field_icon($variables, 'fa-masks-theater');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
+
+    case 'field_resource_type':
+      uiowa_core_set_field_icon($variables, 'fa-font-awesome');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
     case 'field_resource_link':
     case 'field_resource_button':
       uiowa_core_set_field_icon($variables, 'fa-link');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
+
     case 'field_resource_year':
       uiowa_core_set_field_icon($variables, 'fa-calendar-days');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
+
     case 'field_writer_bio_session_status':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_icon($variables, 'fa-calendar-days');

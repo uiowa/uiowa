@@ -33,6 +33,7 @@ class Resource extends NodeBundleBase implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       ...parent::getDefaultCardStyles(),
+      'media_format' => 'media--square',
     ];
   }
 
