@@ -1,0 +1,33 @@
+uuid: cac13be3-05ec-4491-b51e-890c525bd072
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The inrc.law.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/inrc.law.uiowa.edu
+module:
+  inrc_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_form_display.node.grant.default
+  - metatag.metatag_defaults.node__grant
+  - node.type.grant
+  - pathauto.pattern.grant
+  - simple_sitemap.bundle_settings.default.node.grant
+  - taxonomy.vocabulary.cities
+  - taxonomy.vocabulary.counties
+  - taxonomy.vocabulary.grant_areas_of_interest
+  - taxonomy.vocabulary.grant_classification
+  - taxonomy.vocabulary.ntee_classification
+  - taxonomy.vocabulary.type_of_grant
+  - 'core.entity_view_display.node.grant.*'
+  - 'field.storage.node.field_grant_*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'

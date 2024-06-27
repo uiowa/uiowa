@@ -1,0 +1,91 @@
+uuid: d9f51bf3-fd7b-4b93-a20b-cf05f12c0dbe
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.grant.body
+    - field.field.node.grant.field_grant_address
+    - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_application_info
+    - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_cities
+    - field.field.node.grant.field_grant_classification
+    - field.field.node.grant.field_grant_contact_name
+    - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_counties
+    - field.field.node.grant.field_grant_ein
+    - field.field.node.grant.field_grant_email
+    - field.field.node.grant.field_grant_fax
+    - field.field.node.grant.field_grant_filter_friendly_name
+    - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_ntee_classification
+    - field.field.node.grant.field_grant_pdf_version
+    - field.field.node.grant.field_grant_phone
+    - field.field.node.grant.field_grant_restrictions
+    - field.field.node.grant.field_grant_sample_grants
+    - field.field.node.grant.field_grant_sizes
+    - field.field.node.grant.field_grant_total_assets
+    - field.field.node.grant.field_grant_total_grants
+    - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_type_of_grant
+    - field.field.node.grant.field_grant_website
+    - field.field.node.grant.field_meta_tags
+    - node.type.grant
+  module:
+    - text
+    - user
+id: node.grant.teaser
+targetEntityType: node
+bundle: grant
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_grant_address: true
+  field_grant_application_deadline: true
+  field_grant_application_info: true
+  field_grant_areas_of_interest: true
+  field_grant_cities: true
+  field_grant_classification: true
+  field_grant_contact_name: true
+  field_grant_contact_title: true
+  field_grant_counties: true
+  field_grant_ein: true
+  field_grant_email: true
+  field_grant_fax: true
+  field_grant_filter_friendly_name: true
+  field_grant_financial_data: true
+  field_grant_ntee_classification: true
+  field_grant_pdf_version: true
+  field_grant_phone: true
+  field_grant_restrictions: true
+  field_grant_sample_grants: true
+  field_grant_sizes: true
+  field_grant_total_assets: true
+  field_grant_total_grants: true
+  field_grant_trustees: true
+  field_grant_type_of_grant: true
+  field_grant_website: true
+  field_meta_tags: true
+  search_api_excerpt: true
