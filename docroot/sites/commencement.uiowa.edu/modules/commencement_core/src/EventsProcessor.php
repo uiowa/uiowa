@@ -104,10 +104,8 @@ class EventsProcessor extends EntityProcessorBase {
 
     // Convert empty strings to null for the room number field.
     // Otherwise the importer 'updates' this field every time it is run.
-    if (property_exists($record, 'room_number') && !is_null($record->room_number)) {
-      if (($record->room_number) == "") {
-        $record->room_number = NULL;
-      }
+    if (property_exists($record, 'room_number') && $record->room_number === '') {
+      $record->room_number = NULL;
     }
 
     // If there are event instances embedded.
