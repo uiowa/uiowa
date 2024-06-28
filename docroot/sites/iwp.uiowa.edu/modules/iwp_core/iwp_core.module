@@ -261,89 +261,54 @@ function iwp_core_entity_extra_field_info() {
  */
 function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === 'resource' && $view_mode === 'full') {
-
     // Resource button.
     if ($display->getComponent('field_resource_button')) {
       $link = '';
-
       $node_type = $node->bundle();
-      if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
-        $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
-
+      if ($node_type == 'resource' && !$node->get('field_resource_type')->isEmpty()) {
+        $resource_type = $node->get('field_resource_type')->first()->getValue()['value'];
         if ($resource_type === 'video' || $resource_type === 'document') {
-          $media_id = $node->get('field_resource_media')->getValue()[0]['target_id'];
-          $media = Media::load($media_id);
-
-          if ($media->bundle() === 'file') {
-            $fid = $media->getSource()->getSourceFieldValue($media);
-            $file = File::load($fid);
-
-            $link = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
-          }
-          elseif ($media->bundle() === 'remote_video') {
-            $link = $media->getSource()->getSourceFieldValue($media);
+          $media_field = $node->get('field_resource_media');
+          if (!$media_field->isEmpty()) {
+            $media_id = $media_field->first()->getValue()['target_id'];
+            if ($media_id) {
+              $media = Media::load($media_id);
+              if ($media) {
+                if ($media->bundle() === 'file') {
+                  $fid = $media->getSource()->getSourceFieldValue($media);
+                  if ($fid) {
+                    $file = File::load($fid);
+                    if ($file) {
+                      $link = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+                    }
+                  }
+                }
+                elseif ($media->bundle() === 'remote_video') {
+                  $link = $media->getSource()->getSourceFieldValue($media);
+                }
+              }
+            }
           }
         }
       }
-
       if (!empty($link)) {
         $build['field_resource_button'] = [
-          '#type' => 'markup',
-          '#markup' => '
-          <div class="fa-field-item field field--name-field-resource-button field--type-link field--label-visually_hidden">
-            <div class="field__label visually-hidden">Resource source</div>
-            <i class="fa-solid fa-link"></i>
-            <div class="field__item">
-              <a href="' . $link . '">
-                View source
-              </a>
-            </div>
-          </div>
-        ',
+          '#theme' => 'field',
+          '#title' => t('Resource source'),
+          '#label_display' => 'visually_hidden',
+          '#field_type' => 'link',
+          '#formatter' => 'link',
+          '#field_name' => 'field_resource_button',
+          '#entity_type' => 'node',
+          '#bundle' => 'resource',
+          '#view_mode' => 'default',
+          '#is_multiple' => FALSE,
+          0 => [
+            '#type' => 'link',
+            '#title' => t('View media'),
+            '#url' => Url::fromUri($link),
+          ],
         ];
-
-        // $build['field_resource_button'] = [
-        //          '#type' => 'container',
-        //          '#attributes' => [
-        //            'class' => [
-        //              'fa-field-item',
-        //              'field',
-        //              'field--name-field-resource-button',
-        //              'field--type-link',
-        //              'field--label-visually_hidden',
-        //            ],
-        //          ],
-        //        ];
-        //
-        //        $build['field_resource_button']['label_container'] = [
-        //          '#type' => 'container',
-        //          '#attributes' => [
-        //            'class' => [
-        //              'field__label',
-        //              'visually-hidden',
-        //            ],
-        //          ],
-        //        ];
-        //
-        //        $build['field_resource_button']['label_container']['label'] = [
-        //          '#type' => 'markup',
-        //          '#markup' => 'Resource source',
-        //        ];
-        //
-        //        $build['field_resource_button']['link_container'] = [
-        //          '#type' => 'container',
-        //          '#attributes' => [
-        //            'class' => [
-        //              'field__item'
-        //            ],
-        //          ],
-        //        ];
-        //
-        //        $build['field_resource_button']['link_container']['link'] = [
-        //          '#type' => 'link',
-        //          '#title' => 'View source',
-        //          '#url' => $link,
-        //        ];
       }
     }
   }
