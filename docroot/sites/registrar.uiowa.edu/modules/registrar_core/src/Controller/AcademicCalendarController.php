@@ -205,6 +205,9 @@ class AcademicCalendarController extends ControllerBase {
       $end = date('M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
+    $start_timestamp = strtotime($start);
+    $month = date('M', $start_timestamp);
+    $day = date('j', $start_timestamp);
     $event->displayDate = $start;
 
     // Determine what session to display.
@@ -242,9 +245,53 @@ class AcademicCalendarController extends ControllerBase {
     $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
 
     // Build card.
+    $attributes = [];
+    $attributes['class'] = [
+      'card--layout-left',
+      'borderless',
+      'click-container',
+      'block--word-break',
+      'card',
+      'media--circle',
+      'media--border',
+      'media--small',
+      'media',
+    ];
     $card = [
       '#type' => 'card',
-      '#title' => $event->title,
+      '#title' => html_entity_decode($event->title),
+      '#attributes' => $attributes,
+      '#media' => $this->t('
+<div class="upcoming-date"> <span class="upcoming-month">
+%month</span><span class="upcoming-day">
+%day</span></div>',
+        ['%month' => $month, '%day' => $day]),
+      '#meta' => [
+        'date' => [
+          '#type' => 'markup',
+          '#markup' => $this->t('<div class="fa-field-item field field--name-field-event-when field--type-smartdate field--label-visually_hidden">
+                      <div class="field__label visually-hidden">When</div>
+                      <span role="presentation" class="field__icon fas fa-calendar far"></span>
+                      <div class="field__item">
+                        %start
+                      </div>
+                    </div>', ['%start' => $start]),
+        ],
+        'description' => [
+          '#type' => 'markup',
+          '#markup' => '<div class="field__item">' . $event->description . '</div>',
+        ],
+
+      ],
+      '#content' => [
+        'body' => [
+          '#type' => 'markup',
+          '#markup' => $this->t('<div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-visually_hidden">
+                  <div class="field__label visually-hidden">Description</div>
+                  %session_display
+                </div>', ['%session_display' => $event->sessionDisplay]),
+        ],
+      ],
     ];
     $event->rendered = $this->renderer->render($card);
 
