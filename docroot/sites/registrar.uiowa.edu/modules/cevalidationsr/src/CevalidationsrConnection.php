@@ -104,19 +104,22 @@ class CevalidationsrConnection {
         $item = json_decode($json);
         if ($item[0]->ValidStatus === "VALID") {
           $utcDateTime = gmdate("Y-m-d H:i:s");
+          $distinction = $item[0]->Honor1 == "" ? "" : "<tr><td>" . "<b>Distinction:</b>" . "</td><td>" . $item[0]->Honor1 . "</td></tr>";
           $schoolName = $item[0]->SchoolName == "" ? "" : "<tr><td>" . "<b>School:</b>" . "</td><td>" . $item[0]->SchoolName . "</td></tr>";
           $degree = $item[0]->Degree1 == "" ? "" : $item[0]->Degree1 . "<br />";
-          $major = $item[0]->Major1 == "" ? "" : "<tr><td>" . " " . "</td><td>" . $item[0]->Major1 . "</td></tr>";
-          $honor = $item[0]->Honor1 == "" ? "" : "<tr><td>" . " " . "</td><td>" . $item[0]->Honor1 . "</td></tr>";
-          $credential = $this->replaceLast("<br />", "", $degree . $major . $honor);
+          $major = $item[0]->Major1 == "" ? "" : "<tr><td>" . "<b>Major:</b>" . "</td><td>" . $item[0]->Major1 . "</td></tr>";
+          $honor = $item[0]->Option1 == "" ? "" : "<tr><td>" . "<b>Honors:</b>" . "</td><td>" . $item[0]->Option1 . "</td></tr>";
           $hostedvalidationurl = $item[0]->HostedValidationUrl == "" ? "" : $item[0]->HostedValidationUrl;
           $tbody = "<tbody>
-            <tr><td style='width:22%'><b>CeDiD:</b></td><td style='width:78%'>" . $item[0]->CeDiplomaID . "</td></tr>" .
-            $schoolName .
+  <tr><td style='width:22%'><b>CeDiD:</b></td><td style='width:78%'>" . $item[0]->CeDiplomaID . "</td></tr>" .
             "<tr><td><b>Name:</b></td><td>" . $item[0]->Name . "</td></tr>" .
-            "<tr><td><b>Date:</b></td><td>" . $item[0]->ConferralDate . "</td></tr>" .
-            "<tr><td><b>Credential:</b></td><td>" . $credential . "</td></tr>
-          </tbody>";
+            $schoolName .
+            "<tr><td><b>Credential:</b></td><td>" . $degree . "</td></tr>" .
+            $distinction .
+            $major .
+            $honor .
+            "<tr><td><b>Conferral Date:</b></td><td>" . $item[0]->ConferralDate . "</td></tr>
+</tbody>";
           $tbodyHtml = preg_replace('/\s+/', ' ', $tbody);
           $output['result_table'] = $tbodyHtml;
           $output['successfail_result'] = "<b>This is a Valid Credential</b><br />Validated: " . $utcDateTime;
