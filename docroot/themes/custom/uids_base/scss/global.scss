@@ -446,6 +446,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         }
       }
 
+      // Layout with card sidebar.
+      .layout__region-container.card {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
       .layout__region--second,
       .layout__region--content,
       .layout__region-container {
