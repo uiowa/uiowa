@@ -80,7 +80,6 @@ class AcademicCalendarController extends ControllerBase {
     $subsession = filter_var($subsession, FILTER_VALIDATE_BOOLEAN);
 
     $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':' . ($subsession ? '1' : '0') . ':' . $steps;
-    $data = NULL;
 
     if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
@@ -121,7 +120,7 @@ class AcademicCalendarController extends ControllerBase {
       // Modify the searchSessionDates call to include filtering.
       $dates = $this->maui->searchSessionDates($session->id, [
         'isWebDisplay' => TRUE,
-        'isReviewed' => TRUE,
+        'reviewed' => TRUE,
         'startDate' => $start,
         'endDate' => $end,
       ]);
