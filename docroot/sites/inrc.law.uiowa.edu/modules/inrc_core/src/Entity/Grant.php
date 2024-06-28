@@ -26,8 +26,6 @@ class Grant extends NodeBundleBase implements RendersAsCardInterface {
     ]);
   }
 
-
-
   /**
    * {@inheritdoc}
    */
