@@ -137,12 +137,12 @@ class AcademicCalendarController extends ControllerBase {
         if ($date->reviewed !== TRUE) {
           continue;
         }
-        if (!$start) {
-          $start = 'today';
-        }
-        if (strtotime($date->beginDate) < strtotime($start)) {
-          continue;
-        }
+//        if (!$start) {
+//          $start = 'today';
+//        }
+//        if (strtotime($date->beginDate) < strtotime($start)) {
+//          continue;
+//        }
         if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index);
           if ($this->filterEvent($event, $categories, $subsession)) {
