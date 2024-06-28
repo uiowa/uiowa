@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,6 +34,13 @@ class AcademicCalendarController extends ControllerBase {
   protected $cacheBackend;
 
   /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * Constructs a new AcademicCalendarController.
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui
@@ -40,9 +48,10 @@ class AcademicCalendarController extends ControllerBase {
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   The cache backend service.
    */
-  public function __construct(MauiApi $maui, CacheBackendInterface $cache_backend) {
+  public function __construct(MauiApi $maui, CacheBackendInterface $cache_backend, RendererInterface $renderer) {
     $this->maui = $maui;
     $this->cacheBackend = $cache_backend;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -51,7 +60,8 @@ class AcademicCalendarController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('uiowa_maui.api'),
-      $container->get('cache.default')
+      $container->get('cache.default'),
+      $container->get('renderer')
     );
   }
 
@@ -125,6 +135,12 @@ class AcademicCalendarController extends ControllerBase {
 
       foreach ($dates as $date) {
         if ($date->reviewed !== TRUE) {
+          continue;
+        }
+        if (!$start) {
+          $start = 'today';
+        }
+        if (strtotime($date->beginDate) < strtotime($start)) {
           continue;
         }
         if (!empty($date->dateCategoryLookups)) {
@@ -224,6 +240,13 @@ class AcademicCalendarController extends ControllerBase {
 
     // Add description.
     $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
+
+    // Build card.
+    $card = [
+      '#type' => 'card',
+      '#title' => $event->title,
+    ];
+    $event->rendered = $this->renderer->render($card);
 
     return $event;
   }
