@@ -137,13 +137,12 @@ class AcademicCalendarController extends ControllerBase {
         if ($date->reviewed !== TRUE) {
           continue;
         }
-//        if (!$start) {
-//          $start = 'today';
-//        }
-//        if (strtotime($date->beginDate) < strtotime($start)) {
-//          continue;
-//        }
+        $allowed_categories = $this->maui->getDateCategories();
+
         if (!empty($date->dateCategoryLookups)) {
+          if (limit_to_allowed_categories($allowed_categories, $date->dateCategoryLookups)) {
+            continue;
+          }
           $event = $this->processDate($date, $session, $session_index);
           if ($this->filterEvent($event, $categories, $subsession)) {
             $events[] = $event;
@@ -298,4 +297,22 @@ class AcademicCalendarController extends ControllerBase {
     return $event;
   }
 
+}
+
+/**
+ * Helper function to weed out dates.
+ */
+function limit_to_allowed_categories($sourceArray, $arrayToCheck) {
+  $approvedKeys = array_merge(
+    array_keys($sourceArray['Student']),
+    array_keys($sourceArray['Faculty/Staff'])
+  );
+
+  foreach ($arrayToCheck as $value) {
+    if (in_array($value->naturalKey, $approvedKeys)) {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
 }
