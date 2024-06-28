@@ -108,8 +108,26 @@ function iwp_core_preprocess_field(&$variables) {
       break;
 
     case 'field_resource_type':
-      uiowa_core_set_field_icon($variables, 'fa-font-awesome');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+      uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--md');
+      $resource_type = '';
+      if (!empty($variables['element']['#items'])) {
+        $resource_type = $variables['element']['#items']->getString();
+      }
+
+      // Set the icon based on the resource type.
+      switch ($resource_type) {
+        case 'video':
+          uiowa_core_set_field_icon($variables, 'fa-video');
+          break;
+
+        case 'document':
+          uiowa_core_set_field_icon($variables, 'fa-file');
+          break;
+
+        case 'audio':
+          uiowa_core_set_field_icon($variables, 'fa-volume-up');
+          break;
+      }
       break;
 
     case 'field_resource_link':
@@ -121,6 +139,9 @@ function iwp_core_preprocess_field(&$variables) {
     case 'field_resource_year':
       uiowa_core_set_field_icon($variables, 'fa-calendar-days');
       uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--sm');
+      }
       break;
 
     case 'field_writer_bio_session_status':
