@@ -3959,12 +3959,6 @@ $sites['cheec.dev.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
 $sites['cheec.stage.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
 $sites['cheec.prod.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
 
-// Directory aliases for humanitiesandpubliclife.uiowa.edu.
-$sites['humanitiesandpubliclife.uiowa.ddev.site'] = 'humanitiesandpubliclife.uiowa.edu';
-$sites['humanitiesandpubliclife.dev.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
-$sites['humanitiesandpubliclife.stage.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
-$sites['humanitiesandpubliclife.prod.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
-
 // Directory aliases for butali.lab.uiowa.edu.
 $sites['labbutali.uiowa.ddev.site'] = 'butali.lab.uiowa.edu';
 $sites['labbutali.dev.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
