@@ -119,13 +119,19 @@ class AcademicCalendarController extends ControllerBase {
     foreach ($sessions as $session_index => $session) {
       // Modify the searchSessionDates call to include filtering.
       $dates = $this->maui->searchSessionDates($session->id, [
-        'isWebDisplay' => TRUE,
-        'reviewed' => TRUE,
         'startDate' => $start,
         'endDate' => $end,
       ]);
 
       foreach ($dates as $date) {
+        // Filter isWebDisplay.
+        if ($date->printDate !== TRUE) {
+          continue;
+        }
+        // Filter reviewed.
+        if ($date->reviewed !== TRUE) {
+          continue;
+        }
         if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index);
           if ($this->filterEvent($event, $categories, $subsession)) {
