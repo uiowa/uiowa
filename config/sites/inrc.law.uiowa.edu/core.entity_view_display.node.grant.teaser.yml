@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.grant.field_meta_tags
     - node.type.grant
   module:
+    - datetime
     - text
     - user
 id: node.grant.teaser
@@ -44,27 +45,41 @@ content:
     type: text_summary_or_trimmed
     label: hidden
     settings:
-      trim_length: 600
+      trim_length: 256
     third_party_settings: {  }
-    weight: 101
+    weight: 3
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
+    region: content
+  field_grant_application_deadline:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_grant_application_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_grant_address: true
-  field_grant_application_deadline: true
-  field_grant_application_info: true
   field_grant_areas_of_interest: true
   field_grant_cities: true
   field_grant_classification: true

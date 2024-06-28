@@ -121,6 +121,11 @@ display:
               secondary_open: true
               reset_button_always_show: false
             filter:
+              field_grant_sizes_value:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: true
               combine:
                 plugin_id: default
                 advanced:
@@ -204,6 +209,7 @@ display:
           plugin_id: bundle
           value:
             grant: grant
+          group: 1
         combine:
           id: combine
           table: views
@@ -251,6 +257,56 @@ display:
             group_items: {  }
           fields:
             title: title
+        field_grant_sizes_value:
+          id: field_grant_sizes_value
+          table: node__field_grant_sizes
+          field: field_grant_sizes_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: between
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_grant_sizes_value_op
+            label: 'Grant Sizes'
+            description: ''
+            use_operator: false
+            operator: field_grant_sizes_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_grant_sizes_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            min_placeholder: 'Minimum grant size'
+            max_placeholder: 'Maximum grant size'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         field_grant_classification_target_id:
           id: field_grant_classification_target_id
           table: node__field_grant_classification
@@ -425,6 +481,10 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: default
         options:
@@ -445,7 +505,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: 'bef-form bef-form--label-hidden'
+      css_class: 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75 '
       header: {  }
       footer: {  }
       display_extenders: {  }
