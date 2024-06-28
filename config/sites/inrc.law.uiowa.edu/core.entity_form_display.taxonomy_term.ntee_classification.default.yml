@@ -1,0 +1,53 @@
+uuid: 268689ab-1ccf-43e5-bcab-dd7201c32d60
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ntee_classification
+  module:
+    - path
+    - text
+id: taxonomy_term.ntee_classification.default
+targetEntityType: taxonomy_term
+bundle: ntee_classification
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 100
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true
