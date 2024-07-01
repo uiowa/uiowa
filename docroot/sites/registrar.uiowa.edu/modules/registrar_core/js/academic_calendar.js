@@ -140,7 +140,7 @@
 
           Object.entries(groupedEvents).forEach(([sessionDisplay, events]) => {
             $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`);
-            events.forEach(event => event.rendered);
+            events.forEach(event => renderEvent(event, false));
           });
         }
 
@@ -148,8 +148,13 @@
         function renderMonths(months, groupedEvents) {
           months.forEach(month => {
             $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`);
-            groupedEvents[month].forEach(event => event.rendered);
+            groupedEvents[month].forEach(event => renderEvent(event, true));
           });
+        }
+
+        // Function to render individual event.
+        function renderEvent(event, includeSession) {
+          $(element).append(event.rendered);
         }
 
         // Function to populate the session filter dropdown.
