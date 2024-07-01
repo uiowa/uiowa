@@ -3237,3 +3237,22 @@ function sitenow_update_10008() {
 function sitenow_update_10009() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update views list blocks with blank items_per_page setting to be set to 50
+ * instead.
+ */
+function sitenow_update_10010() {
+  _update_all_blocks_by_plugin_id([
+    'views_block:article_list_block-list_article',
+    'views_block:events_list_block-card_list',
+    'views_block:page_list_block-list_page',
+    'views_block:people_list_block-list_card',
+  ], function (&$component, $block) {
+    $config = $component->get('configuration');
+    if ($config['items_per_page'] === '') {
+      $config['items_per_page'] = 50;
+      $component->setConfiguration($config);
+    }
+  });
+}
