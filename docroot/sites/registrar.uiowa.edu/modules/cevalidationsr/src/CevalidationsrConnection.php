@@ -118,19 +118,25 @@ class CevalidationsrConnection {
           ];
 
           // Generate table HTML.
-          $tbody = "<tbody>";
+          $tableHtml = "
+                <caption class='element-invisible'>Credential Details</caption>
+                <tbody>";
+
           foreach ($tableData as $label => $value) {
             if (!empty($value)) {
-              $tbody .= "<tr>
-                        <td style='width:22%'><b>{$label}:</b></td>
-                        <td style='width:78%'>{$value}</td>
+              $tableHtml .= "<tr>
+                        <th scope='row'>{$label}</th>
+                        <td>" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "</td>
                     </tr>";
             }
           }
-          $tbody .= "</tbody>";
 
-          $tbodyHtml = preg_replace('/\s+/', ' ', $tbody);
-          $output['result_table'] = $tbodyHtml;
+          $tableHtml .= "</tbody>";
+
+          // Remove excess whitespace.
+          $tableHtml = preg_replace('/\s+/', ' ', $tableHtml);
+
+          $output['result_table'] = $tableHtml;
           $output['successfail_result'] = "<b>This is a Valid Credential</b><br />Validated: " . $utcDateTime;
 
           $hostedvalidationurl = $item[0]->HostedValidationUrl ?? '';
