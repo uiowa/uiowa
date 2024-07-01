@@ -3250,7 +3250,7 @@ function sitenow_update_10010() {
     'views_block:people_list_block-list_card',
   ], function (&$component, $block) {
     $config = $component->get('configuration');
-    if ($config['items_per_page'] === '') {
+    if (!is_numeric($config['items_per_page'])) {
       $config['items_per_page'] = 50;
       $component->setConfiguration($config);
     }
