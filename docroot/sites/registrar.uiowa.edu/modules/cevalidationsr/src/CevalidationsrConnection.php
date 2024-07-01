@@ -104,30 +104,39 @@ class CevalidationsrConnection {
         $item = json_decode($json);
         if ($item[0]->ValidStatus === "VALID") {
           $utcDateTime = gmdate("Y-m-d H:i:s");
-          $distinction = $item[0]->Honor1 == "" ? "" : "<tr><td>" . "<b>Distinction:</b>" . "</td><td>" . $item[0]->Honor1 . "</td></tr>";
-          $schoolName = $item[0]->SchoolName == "" ? "" : "<tr><td>" . "<b>School:</b>" . "</td><td>" . $item[0]->SchoolName . "</td></tr>";
-          $degree = $item[0]->Degree1 == "" ? "" : $item[0]->Degree1 . "<br />";
-          $major = $item[0]->Major1 == "" ? "" : "<tr><td>" . "<b>Major:</b>" . "</td><td>" . $item[0]->Major1 . "</td></tr>";
-          $honor = $item[0]->Option1 == "" ? "" : "<tr><td>" . "<b>Honors:</b>" . "</td><td>" . $item[0]->Option1 . "</td></tr>";
-          $hostedvalidationurl = $item[0]->HostedValidationUrl == "" ? "" : $item[0]->HostedValidationUrl;
-          $tbody = "<tbody>
-  <tr><td style='width:22%'><b>CeDiD:</b></td><td style='width:78%'>" . $item[0]->CeDiplomaID . "</td></tr>" .
-            "<tr><td><b>Name:</b></td><td>" . $item[0]->Name . "</td></tr>" .
-            $schoolName .
-            "<tr><td><b>Credential:</b></td><td>" . $degree . "</td></tr>" .
-            $distinction .
-            $major .
-            $honor .
-            "<tr><td><b>Conferral Date:</b></td><td>" . $item[0]->ConferralDate . "</td></tr>
-</tbody>";
+
+          // Define table data.
+          $tableData = [
+            'CeDiD' => $item[0]->CeDiplomaID,
+            'Name' => $item[0]->Name,
+            'School' => $item[0]->SchoolName,
+            'Credential' => $item[0]->Degree1,
+            'Distinction' => $item[0]->Honor1,
+            'Major' => $item[0]->Major1,
+            'Honors' => $item[0]->Option1,
+            'Conferral Date' => $item[0]->ConferralDate,
+          ];
+
+          // Generate table HTML.
+          $tbody = "<tbody>";
+          foreach ($tableData as $label => $value) {
+            if (!empty($value)) {
+              $tbody .= "<tr>
+                        <td style='width:22%'><b>{$label}:</b></td>
+                        <td style='width:78%'>{$value}</td>
+                    </tr>";
+            }
+          }
+          $tbody .= "</tbody>";
+
           $tbodyHtml = preg_replace('/\s+/', ' ', $tbody);
           $output['result_table'] = $tbodyHtml;
           $output['successfail_result'] = "<b>This is a Valid Credential</b><br />Validated: " . $utcDateTime;
 
+          $hostedvalidationurl = $item[0]->HostedValidationUrl ?? '';
           if ($hostedvalidationurl != "") {
             $output['scholarrecord_result'] = "<a class='bttn bttn--secondary' href='" . $hostedvalidationurl . "' target='_blank'><b>Scholar</b>Record</a><br /><small>By selecting ScholarRecord™, you will be taken to CeCredential Trust, a trusted partner of the University, to provide you with more detail of the learner's credential.<br /><br />";
           }
-
         }
       }
       // JSON_UNESCAPED_SLASHES Available since PHP 5.4.
