@@ -2,8 +2,6 @@
 
 namespace Drupal\iwp_core\Entity;
 
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
@@ -22,7 +20,7 @@ class Resource extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => [
         'field_resource_type',
         'field_resource_year',
-      ]
+      ],
     ]);
 
   }
@@ -33,6 +31,7 @@ class Resource extends NodeBundleBase implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       ...parent::getDefaultCardStyles(),
+      'media_format' => 'media--square',
     ];
   }
 

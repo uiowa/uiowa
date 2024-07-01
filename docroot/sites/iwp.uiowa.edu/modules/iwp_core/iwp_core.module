@@ -7,12 +7,17 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
 use Drupal\iwp_core\Entity\Resource;
 use Drupal\iwp_core\Entity\WriterBio;
+use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -78,10 +83,67 @@ function iwp_core_taxonomy_term_session_form_submit($form, FormStateInterface $f
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function iwp_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'resource') {
+    $variables['attributes']['class'][] = 'bg--none';
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function iwp_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_resource_countries':
+      uiowa_core_set_field_icon($variables, 'fa-globe');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_genre':
+      uiowa_core_set_field_icon($variables, 'fa-masks-theater');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_type':
+      uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--md');
+      $resource_type = '';
+      if (!empty($variables['element']['#items'])) {
+        $resource_type = $variables['element']['#items']->getString();
+      }
+
+      // Set the icon based on the resource type.
+      switch ($resource_type) {
+        case 'video':
+          uiowa_core_set_field_icon($variables, 'fa-video');
+          break;
+
+        case 'document':
+          uiowa_core_set_field_icon($variables, 'fa-file');
+          break;
+
+        case 'audio':
+          uiowa_core_set_field_icon($variables, 'fa-volume-up');
+          break;
+      }
+      break;
+
+    case 'field_resource_link':
+    case 'field_resource_button':
+      uiowa_core_set_field_icon($variables, 'fa-link');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_year':
+      uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--sm');
+      }
+      break;
+
     case 'field_writer_bio_session_status':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_icon($variables, 'fa-calendar-days');
@@ -123,6 +185,38 @@ function iwp_core_preprocess_field(&$variables) {
         $variables['items'][0]['content'] = $link->toString();
       }
       break;
+
+    case 'field_image':
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type === 'video') {
+            unset($variables["items"]);
+          }
+        }
+      }
+      break;
+
+    case 'field_resource_media':
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type !== 'video') {
+            unset($variables["items"]);
+          }
+        }
+      }
+      break;
   }
 }
 
@@ -159,9 +253,84 @@ function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, 
 
   $i = $thisyear + 10;
   $options = [];
-  while ($i >= $thisyear - 50) :
+  while ($i >= 1950) :
     $options[$i] = $i;
     $i--;
   endwhile;
   return $options;
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function iwp_core_entity_extra_field_info() {
+  $extra = [];
+
+  // Resource button.
+  $extra['node']['resource']['display']['field_resource_button'] = [
+    'label' => t('Resource button'),
+    'description' => t('The button to link to the designate resource.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'resource' && $view_mode === 'full') {
+    // Resource button.
+    if ($display->getComponent('field_resource_button')) {
+      $link = '';
+      $node_type = $node->bundle();
+      if ($node_type == 'resource' && !$node->get('field_resource_type')->isEmpty()) {
+        $resource_type = $node->get('field_resource_type')->first()->getValue()['value'];
+        if ($resource_type === 'video' || $resource_type === 'document') {
+          $media_field = $node->get('field_resource_media');
+          if (!$media_field->isEmpty()) {
+            $media_id = $media_field->first()->getValue()['target_id'];
+            if ($media_id) {
+              $media = Media::load($media_id);
+              if ($media) {
+                if ($media->bundle() === 'file') {
+                  $fid = $media->getSource()->getSourceFieldValue($media);
+                  if ($fid) {
+                    $file = File::load($fid);
+                    if ($file) {
+                      $link = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+                    }
+                  }
+                }
+                elseif ($media->bundle() === 'remote_video') {
+                  $link = $media->getSource()->getSourceFieldValue($media);
+                }
+              }
+            }
+          }
+        }
+      }
+      if (!empty($link)) {
+        $build['field_resource_button'] = [
+          '#theme' => 'field',
+          '#title' => t('Resource source'),
+          '#label_display' => 'visually_hidden',
+          '#field_type' => 'link',
+          '#formatter' => 'link',
+          '#field_name' => 'field_resource_button',
+          '#entity_type' => 'node',
+          '#bundle' => 'resource',
+          '#view_mode' => 'default',
+          '#is_multiple' => FALSE,
+          0 => [
+            '#type' => 'link',
+            '#title' => t('View media'),
+            '#url' => Url::fromUri($link),
+          ],
+        ];
+      }
+    }
+  }
 }
