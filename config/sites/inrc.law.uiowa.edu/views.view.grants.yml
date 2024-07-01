@@ -101,7 +101,7 @@ display:
         type: bef
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -111,7 +111,7 @@ display:
           text_input_required_format: filtered_html
           bef:
             general:
-              autosubmit: false
+              autosubmit: true
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_hide: false
@@ -121,17 +121,17 @@ display:
               secondary_open: true
               reset_button_always_show: false
             filter:
-              field_grant_sizes_value:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: true
               combine:
                 plugin_id: default
                 advanced:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+              field_grant_sizes_value:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: true
               field_grant_classification_target_id:
                 plugin_id: default
                 advanced:
@@ -506,6 +506,7 @@ display:
           query_tags: {  }
       relationships: {  }
       css_class: 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75 '
+      use_ajax: true
       header: {  }
       footer: {  }
       display_extenders: {  }
