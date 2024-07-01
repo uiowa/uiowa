@@ -83,8 +83,7 @@ function inrc_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'field_grant_application_deadline':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-calendar-days');
-        uiowa_core_set_attributes($variables, 'fa-field-item');
+        uiowa_core_set_field_label_icon($variables, 'fa-calendar-days');
       }
       break;
 

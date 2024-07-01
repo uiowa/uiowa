@@ -18,12 +18,12 @@ class Grant extends NodeBundleBase implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#meta' => 'field_grant_application_deadline',
       '#content' => [
         'body',
-        'field_grant_application_info',
+        'field_grant_application_deadline',
       ],
     ]);
+    $build['#link_indicator'] = TRUE;
   }
 
   /**
