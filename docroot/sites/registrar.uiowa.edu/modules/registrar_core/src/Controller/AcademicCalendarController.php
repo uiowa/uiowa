@@ -199,14 +199,14 @@ class AcademicCalendarController extends ControllerBase {
     $event->categories = [];
 
     // Determine the date to display.
-    $start = date('M j, Y', strtotime($date->beginDate));
+    $start_timestamp = strtotime($date->beginDate);
+    $start = date('M j, Y', $start_timestamp);
+    $month = date('M', $start_timestamp);
+    $day = date('j', $start_timestamp);
     if ($date->endDate != $date->beginDate) {
       $end = date('M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
-    $start_timestamp = strtotime($start);
-    $month = date('M', $start_timestamp);
-    $day = date('j', $start_timestamp);
     $event->displayDate = $start;
 
     // Determine what session to display.
@@ -261,34 +261,27 @@ class AcademicCalendarController extends ControllerBase {
       '#title' => html_entity_decode($event->title),
       '#attributes' => $attributes,
       '#media' => $this->t('
-<div class="upcoming-date"> <span class="upcoming-month">
+<div class="upcoming-date"><span class="upcoming-month">
 %month</span><span class="upcoming-day">
 %day</span></div>',
         ['%month' => $month, '%day' => $day]),
-      '#meta' => [
+      '#subtitle' => [
         'date' => [
           '#type' => 'markup',
-          '#markup' => $this->t('<div class="fa-field-item field field--name-field-event-when field--type-smartdate field--label-visually_hidden">
-                      <div class="field__label visually-hidden">When</div>
-                      <span role="presentation" class="field__icon fas fa-calendar far"></span>
-                      <div class="field__item">
-                        %start
-                      </div>
-                    </div>', ['%start' => $start]),
+          '#markup' => $start,
         ],
+      ],
+      '#meta' => [
         'description' => [
           '#type' => 'markup',
-          '#markup' => '<div class="field__item">' . $event->description . '</div>',
+          '#markup' => $event->description,
         ],
 
       ],
       '#content' => [
         'body' => [
           '#type' => 'markup',
-          '#markup' => $this->t('<div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-visually_hidden">
-                  <div class="field__label visually-hidden">Description</div>
-                  %session_display
-                </div>', ['%session_display' => $event->sessionDisplay]),
+          '#markup' => '<span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span>',
         ],
       ],
     ];

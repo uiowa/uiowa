@@ -140,7 +140,7 @@
 
           Object.entries(groupedEvents).forEach(([sessionDisplay, events]) => {
             $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`);
-            events.forEach(event => renderEvent(event, false));
+            events.forEach(event => event.rendered);
           });
         }
 
@@ -148,77 +148,8 @@
         function renderMonths(months, groupedEvents) {
           months.forEach(month => {
             $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`);
-            groupedEvents[month].forEach(event => renderEvent(event, true));
+            groupedEvents[month].forEach(event => event.rendered);
           });
-        }
-
-        // Function to render individual event.
-        function renderEvent(event, includeSession) {
-          const startDate = new Date(event.start);
-          const endDate = new Date(event.end);
-          const monthAbbr = startDate.toLocaleString('default', { month: 'short' });
-          const startDay = startDate.getDate();
-          const formattedStartDate = startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-          // Determine how to display the date.
-          let dateDisplay;
-          if (startDate.toDateString() === endDate.toDateString()) {
-            dateDisplay = `<time datetime="${event.start}" class="datetime">${formattedStartDate}</time>`;
-          } else {
-            const formattedEndDate = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            dateDisplay = `
-              <time datetime="${event.start}" class="datetime">${formattedStartDate}</time>
-              -
-              <time datetime="${event.end}" class="datetime">${formattedEndDate}</time>
-            `;
-          }
-
-          const sessionDisplay = includeSession ? `<div class="badge badge--${event.bgColor}">${event.sessionDisplay}</div>` : '';
-
-          // Create event item HTML.
-          // const $eventItem = $(`
-          //   <div class="card--layout-left borderless click-container block--word-break card">
-          //     <div class="media--circle media--border media--small media">
-          //       <div class="media__inner">
-          //         <div class="media media--type-image media--view-mode-large__square">
-          //           <div class="upcoming-date">
-          //             <span class="upcoming-month">${monthAbbr}</span>
-          //             <span class="upcoming-day">${startDay}</span>
-          //           </div>
-          //         </div>
-          //       </div>
-          //     </div>
-          //     <div class="card__body">
-          //       <header>
-          //         <h3 class="headline headline--serif default">
-          //           <a href="#" class="click-target">
-          //             <span class="headline__heading">${event.title}</span>
-          //           </a>
-          //         </h3>
-          //       </header>
-          //       <div class="card__details">
-          //         <div class="card__meta">
-          //           <div class="fa-field-item field field--name-field-event-when field--type-smartdate field--label-visually_hidden">
-          //             <div class="field__label visually-hidden">When</div>
-          //             <span role="presentation" class="field__icon fas fa-calendar far"></span>
-          //             <div class="field__item">
-          //               ${dateDisplay}
-          //             </div>
-          //           </div>
-          //         </div>
-          //         <div class="card__meta">
-          //           <div class="field__item">${event.description}</div>
-          //         </div>
-          //       </div>
-          //       <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-visually_hidden">
-          //         <div class="field__label visually-hidden">Description</div>
-          //         ${sessionDisplay}
-          //       </div>
-          //     </div>
-          //   </div>
-          // `);
-
-          $(element).append(event.rendered);
         }
 
         // Function to populate the session filter dropdown.
