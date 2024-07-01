@@ -47,6 +47,8 @@ class AcademicCalendarController extends ControllerBase {
    *   The MAUI API service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   The cache backend service.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
   public function __construct(MauiApi $maui, CacheBackendInterface $cache_backend, RendererInterface $renderer) {
     $this->maui = $maui;
