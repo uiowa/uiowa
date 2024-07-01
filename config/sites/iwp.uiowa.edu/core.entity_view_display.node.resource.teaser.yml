@@ -27,7 +27,7 @@ content:
     type: text_summary_or_trimmed
     label: hidden
     settings:
-      trim_length: 600
+      trim_length: 256
     third_party_settings: {  }
     weight: 3
     region: content
@@ -40,21 +40,26 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: large__widescreen
+      view_mode: large__square
       link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_resource_button:
+    settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
   field_resource_type:
     type: list_default
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
   field_resource_year:
     type: list_default
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 5
