@@ -2627,12 +2627,6 @@ $sites['labtucker.dev.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 $sites['labtucker.stage.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 $sites['labtucker.prod.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 
-// Directory aliases for arts.uiowa.edu.
-$sites['arts.uiowa.ddev.site'] = 'arts.uiowa.edu';
-$sites['arts.dev.drupal.uiowa.edu'] = 'arts.uiowa.edu';
-$sites['arts.stage.drupal.uiowa.edu'] = 'arts.uiowa.edu';
-$sites['arts.prod.drupal.uiowa.edu'] = 'arts.uiowa.edu';
-
 // Directory aliases for iowafloodmaps.iihr.uiowa.edu.
 $sites['iihriowafloodmaps.uiowa.ddev.site'] = 'iowafloodmaps.iihr.uiowa.edu';
 $sites['iihriowafloodmaps.dev.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
