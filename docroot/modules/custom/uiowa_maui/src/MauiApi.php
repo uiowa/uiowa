@@ -179,12 +179,12 @@ class MauiApi {
     $data = $this->request('GET', '/pub/registrar/sessions/range', [
       'from' => $from,
       'steps' => $steps,
-      'term' => strtoupper($term),
+      'term' => $term !== NULL ? strtoupper($term) : NULL,
     ]);
 
     // Sort by start date.
     usort($data, function ($a, $b) {
-      return strtotime($a->startDate) > strtotime($b->startDate);
+      return strtotime($a->startDate) <=> strtotime($b->startDate);
     });
 
     return $data;

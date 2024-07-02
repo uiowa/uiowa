@@ -75,3 +75,32 @@
     }
   }
 }
+
+// Layout.
+.grid--twocol--25-75 {
+  .list-container__inner {
+    align-items: start;
+    @include grid-base;
+    @include breakpoint(sm) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+
+      .sidebar {
+        grid-area: 2/1/6/2;
+        min-width: 200px;
+      }
+
+      .content {
+        grid-area: 2/2/6/5;
+        min-width: 0;
+        > div + div {
+          margin-top: 1.6rem;
+        }
+      }
+    }
+    @include breakpoint(page-container) {
+      gap: 3rem;
+    }
+  }
+}

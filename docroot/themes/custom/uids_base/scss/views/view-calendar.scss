@@ -1,46 +1,50 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 
+table thead th.fc-col-header-cell {
+  background-color: var(--brand-primary);
+}
 // Full Calendar styles
 a.fc-event {
   border: none;
 }
 .fc-button-primary {
-  background-color: $secondary;
+  background-color: $secondary!important;
 }
 
 .fc-button-primary:hover {
-  background-color: $secondary;
+  background-color: $secondary!important;
 }
 
 .fc-button-primary:focus {
-  box-shadow: 0 0 0 0 darken(#000000, 15%);
+  box-shadow: 0 0 0 0 darken(#000000, 15%)!important;
 }
 
 .fc-button-primary:disabled {
-  background-color: rgb(66, 66, 66);
-  border-color: rgb(66, 66, 66);
+  background-color: rgb(66, 66, 66)!important;
+  border-color: rgb(66, 66, 66)!important;
 }
 
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
-  border-color: darken(#000000, 15%);
+  border-color: darken(#000000, 15%)!important;
 }
 
 .fc-button-primary:not(:disabled):active:focus,
 .fc-button-primary:not(:disabled).fc-button-active:focus {
-  box-shadow: 0 0 0 0.2rem darken(#000000, 15%);
+  box-shadow: 0 0 0 0.2rem darken(#000000, 15%)!important;
 }
 
 .fc-button-primary:not(:disabled).fc-button-active,
 .fc-button-primary:not(:disabled):active {
-  background-color: $brand-cool-gray;
+  background-color: $brand-cool-gray!important;
 }
 
 .fc-day-grid-event {
   padding: .5rem !important;
 }
-.fc-day-header {
+.fc-day-header,
+.fc-col-header-cell {
   padding: .5rem !important;
 }
 .fc-day-number {
@@ -49,5 +53,5 @@ a.fc-event {
 
 // Adjustment to allow for text wrapping.
 .fc-day-grid-event .fc-content {
-  white-space: normal;
+  white-space: normal!important;
 }
