@@ -103,7 +103,7 @@ function iwp_core_preprocess_field(&$variables) {
       break;
 
     case 'field_resource_genre':
-      uiowa_core_set_field_icon($variables, 'fa-masks-theater');
+      uiowa_core_set_field_icon($variables, 'fa-book');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
@@ -196,7 +196,9 @@ function iwp_core_preprocess_field(&$variables) {
         if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
           $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
           if ($resource_type === 'video') {
-            unset($variables["items"]);
+            if (isset($node->get('field_resource_media')->getValue()[0])) {
+              unset($variables["items"]);
+            }
           }
         }
       }
