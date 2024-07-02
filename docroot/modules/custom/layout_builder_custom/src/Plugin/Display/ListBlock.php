@@ -443,6 +443,30 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
+  public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
+    parent::blockValidate($block, $form, $form_state);
+    // Check that offset is a positive integer.
+    $offset = $form_state->getValue([
+      'override',
+      'pager_offset',
+    ]);
+    if (!is_numeric($offset) || $offset < 0) {
+      $form_state->setErrorByName('override][pager_offset', $this->t('Offset must be a positive integer.'));
+    }
+
+    // Check that items per page is a positive integer between 1 and 50.
+    $items_per_page = $form_state->getValue([
+      'override',
+      'items_per_page',
+    ]);
+    if (!is_numeric($items_per_page) || $items_per_page < 1 || $items_per_page > 50) {
+      $form_state->setErrorByName('override][items_per_page', $this->t('Items per page must be a positive integer between 1 and 50.'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
     parent::blockSubmit($block, $form, $form_state);
     $allow_settings = array_filter($this->getOption('allow'));
@@ -459,14 +483,6 @@ class ListBlock extends CoreBlock {
       $pager = 'full';
     }
     $block->setConfigurationValue('pager', $pager);
-
-    // Save "Pager offset" settings to block configuration.
-    if (!empty($allow_settings['offset'])) {
-      $block->setConfigurationValue('pager_offset', $form_state->getValue([
-        'override',
-        'pager_offset',
-      ]));
-    }
 
     if (!empty($allow_settings['use_more'])) {
 
