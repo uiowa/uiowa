@@ -283,6 +283,7 @@ function commencement_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, [
         'headline',
         'headline--serif',
+        'headline--underline',
         'h3',
       ]);
       break;
@@ -413,8 +414,8 @@ function commencement_core_preprocess_paragraph(&$variables) {
   switch ($paragraph->bundle()) {
     case 'uiowa_collection_section':
       uiowa_core_set_attributes($variables, [
-        'block-margin__bottom--extra',
-        'block-padding__top',
+//        'block-margin__bottom--extra',
+        'block-margin__top',
       ]);
   }
 }
