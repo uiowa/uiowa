@@ -1,0 +1,6 @@
+registrar_core.academic_calendar_data:
+  path: '/api/academic-calendar'
+  defaults:
+    _controller: '\Drupal\registrar_core\Controller\AcademicCalendarController::getCalendarData'
+  requirements:
+    _permission: 'access content'
