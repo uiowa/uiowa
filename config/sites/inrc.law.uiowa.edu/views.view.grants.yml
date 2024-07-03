@@ -207,13 +207,6 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
-              field_grant_sizes_value:
-                plugin_id: default
-                advanced:
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Grant Sizes'
-                  collapsible: false
-                  is_secondary: true
               field_grant_classification_target_id:
                 plugin_id: bef
                 advanced:
@@ -244,9 +237,17 @@ display:
                     filter_rewrite_values: ''
                   collapsible: true
                   is_secondary: true
-                select_all_none: true
+                select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
+              field_grant_sizes_value:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Grant Sizes'
+                  collapsible: false
+                  is_secondary: true
       access:
         type: perm
         options:
