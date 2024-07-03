@@ -68,8 +68,11 @@
   }
 }
 
-.field__item {
+.field__item:not([class*="headline"]) {
   line-height: 1.7;
+}
+
+.field__item {
   margin-top: 0;
 
   &.h1,
