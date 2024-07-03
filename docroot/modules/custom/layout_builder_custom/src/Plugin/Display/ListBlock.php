@@ -446,21 +446,25 @@ class ListBlock extends CoreBlock {
   public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
     parent::blockValidate($block, $form, $form_state);
     // Check that offset is a positive integer.
-    $offset = $form_state->getValue([
-      'override',
-      'pager_offset',
-    ]);
-    if (!is_numeric($offset) || $offset < 0) {
-      $form_state->setErrorByName('override][pager_offset', $this->t('Offset must be a positive integer.'));
+    if ($form['override']['pager_offset']) {
+      $offset = $form_state?->getValue([
+        'override',
+        'pager_offset',
+      ]);
+      if (!is_numeric($offset) || $offset < 0) {
+        $form_state->setErrorByName('override][pager_offset', $this->t('Offset must be a positive integer.'));
+      }
     }
 
     // Check that items per page is a positive integer between 1 and 50.
-    $items_per_page = $form_state->getValue([
-      'override',
-      'items_per_page',
-    ]);
-    if (!is_numeric($items_per_page) || $items_per_page < 1 || $items_per_page > 50) {
-      $form_state->setErrorByName('override][items_per_page', $this->t('Items per page must be a positive integer between 1 and 50.'));
+    if ($form['override']['items_per_page']) {
+      $items_per_page = $form_state->getValue([
+        'override',
+        'items_per_page',
+      ]);
+      if (!is_numeric($items_per_page) || $items_per_page < 1 || $items_per_page > 50) {
+        $form_state->setErrorByName('override][items_per_page', $this->t('Items per page must be a positive integer between 1 and 50.'));
+      }
     }
   }
 
