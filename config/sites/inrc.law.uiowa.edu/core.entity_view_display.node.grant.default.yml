@@ -37,6 +37,7 @@ dependencies:
     - layout_builder
     - link
     - metatag
+    - system
     - text
     - user
   theme:
@@ -127,24 +128,21 @@ third_party_settings:
               6: 6
               8: 8
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol_card_sidebar
         layout_settings:
           label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            2: section_card_media_size_medium
+            3: section_card_media_format_widescreen
+            section_no_border: 0
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 05b1b602-7d73-4f0e-ba7a-e3087c41ec5e
-            region: content
-            configuration:
-              id: 'extra_field_block:node:grant:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: -14
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: f148d926-c72f-4ad3-bb52-628f48f9b1c3
-            region: content
+            region: main
             configuration:
               id: 'field_block:node:grant:body'
               label_display: '0'
@@ -155,87 +153,35 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -13
+            weight: -3
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 796bd982-9bd0-4e40-8b58-fa6d5bd425fd
-            region: content
+            uuid: f07b4479-ca6a-42c7-9b45-41c73b315239
+            region: card_meta
             configuration:
-              id: 'field_block:node:grant:field_grant_filter_friendly_name'
+              id: 'field_block:node:grant:field_grant_phone'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: string
+                type: basic_string
                 label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: -12
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 59a6ada4-67b9-4189-a81c-841e5b025d8f
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_ein'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: -11
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9dd00806-fd06-48d1-aa67-7ad79e3fd0b2
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_contact_name'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: -10
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: ec94a62a-3557-4f5c-999e-008385e81e1f
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_contact_title'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
+                settings: {  }
                 third_party_settings: {  }
             weight: -9
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: f784b004-e3cd-4b32-9ced-aa4d2b5c5030
-            region: content
+            uuid: 82800806-201d-49da-9014-c45abd9ac6e0
+            region: card_meta
             configuration:
-              id: 'field_block:node:grant:field_grant_address'
+              id: 'field_block:node:grant:field_grant_fax'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: address_default
+                type: basic_string
                 label: above
                 settings: {  }
                 third_party_settings: {  }
@@ -243,10 +189,10 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: f07b4479-ca6a-42c7-9b45-41c73b315239
-            region: content
+            uuid: c8396b4f-005f-4f69-a2c6-eba3e479a85e
+            region: card_meta
             configuration:
-              id: 'field_block:node:grant:field_grant_phone'
+              id: 'field_block:node:grant:field_grant_email'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -259,134 +205,8 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 82800806-201d-49da-9014-c45abd9ac6e0
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_fax'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: -6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: c8396b4f-005f-4f69-a2c6-eba3e479a85e
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_email'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: basic_string
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: -5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 0fbce546-ab3d-4eed-a1fa-752f563136de
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_restrictions'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: -4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 756493bc-f1ce-417f-ae34-37f7d4471476
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_sizes'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ','
-                  prefix_suffix: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: -3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 81143c48-857f-464a-b38b-5344803505d4
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_total_grants'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ','
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: -2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 27b0e1b8-a25f-4ca3-a3cf-16969310c692
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_trustees'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: -1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: c8451e87-97ad-4a63-82f2-1fa35e9eaec4
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_sample_grants'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: da208bee-be11-47c7-8298-d7c7cd4bd87f
-            region: content
+            region: card_meta
             configuration:
               id: 'field_block:node:grant:field_grant_website'
               label_display: '0'
@@ -402,12 +222,211 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
+            weight: -6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0fbce546-ab3d-4eed-a1fa-752f563136de
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_restrictions'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
           -
+            uuid: 756493bc-f1ce-417f-ae34-37f7d4471476
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_sizes'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ','
+                  prefix_suffix: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 81143c48-857f-464a-b38b-5344803505d4
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_total_grants'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ','
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 27b0e1b8-a25f-4ca3-a3cf-16969310c692
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_trustees'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e748d416-7bec-4874-aee5-7aa204a9147d
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_total_assets'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2cb23433-8d1c-4e17-a726-5529fa66d0db
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_financial_data'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: datetime_default
+                label: inline
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 5
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_type_of_grant'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 927a15f3-251a-4466-8c83-92022e8750f3
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_application_deadline'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: datetime_default
+                label: inline
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: -4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0961ac02-f1bd-4570-a763-1c0dc8b258fd
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_application_info'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c8451e87-97ad-4a63-82f2-1fa35e9eaec4
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_sample_grants'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: -1
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: 3371846f-c9fe-413e-8b83-a8e64fcc2687
-            region: content
+            region: card_meta
             configuration:
               id: 'field_block:node:grant:field_grant_pdf_version'
               label: null
@@ -422,78 +441,110 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 2
+            weight: -5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 0961ac02-f1bd-4570-a763-1c0dc8b258fd
+            uuid: 59a6ada4-67b9-4189-a81c-841e5b025d8f
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_ein'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -5
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9dd00806-fd06-48d1-aa67-7ad79e3fd0b2
+            region: card_title
+            configuration:
+              id: 'field_block:node:grant:field_grant_contact_name'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -14
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: ec94a62a-3557-4f5c-999e-008385e81e1f
+            region: card_subtitle
+            configuration:
+              id: 'field_block:node:grant:field_grant_contact_title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -11
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 05b1b602-7d73-4f0e-ba7a-e3087c41ec5e
             region: content
             configuration:
-              id: 'field_block:node:grant:field_grant_application_info'
+              id: 'extra_field_block:node:grant:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: -13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f784b004-e3cd-4b32-9ced-aa4d2b5c5030
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_address'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: text_default
+                type: address_default
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 927a15f3-251a-4466-8c83-92022e8750f3
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_application_deadline'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: e748d416-7bec-4874-aee5-7aa204a9147d
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_total_assets'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2cb23433-8d1c-4e17-a726-5529fa66d0db
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_financial_data'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 6
+            weight: -11
             additional: {  }
             third_party_settings: {  }
           -
@@ -509,14 +560,28 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 7
+            weight: 4
             additional: {  }
             third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
           -
-            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
             region: content
             configuration:
-              id: 'field_block:node:grant:field_grant_ntee_classification'
+              id: 'field_block:node:grant:field_grant_cities'
               label: null
               label_display: null
               provider: layout_builder
@@ -525,84 +590,16 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: inline
                 settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 8
+            weight: 4
             additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_areas_of_interest'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 9
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 37d6c69d-5459-49da-8349-fdfe167ca0e0
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_type_of_grant'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 10
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_classification'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 11
-            additional:
-              layout_builder_styles_style: {  }
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
@@ -617,21 +614,22 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: inline
                 settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 12
+            weight: 3
             additional:
-              layout_builder_styles_style: {  }
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
-            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
+            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
             region: content
             configuration:
-              id: 'field_block:node:grant:field_grant_cities'
+              id: 'field_block:node:grant:field_grant_areas_of_interest'
               label: null
               label_display: null
               provider: layout_builder
@@ -640,17 +638,72 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: above
+                label: inline
                 settings:
                   link: true
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 13
+            weight: 2
             additional:
-              layout_builder_styles_style: {  }
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ntee_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.grant.default
 targetEntityType: node
 bundle: grant

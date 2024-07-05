@@ -34,6 +34,33 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function inrc_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_grant_application_deadline':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_grant_application_info':
+      // Set up the details element.
+      $variables['label_display'] = 'visually_hidden';
+      $details = [
+        '#type' => 'details',
+        '#title' => $variables['label'],
+      ];
+
+      // Wrap the field output in the details element.
+      $details['#children'] = $variables['items'][0]['content'];
+      $variables['items'][0]['content'] = $details;
+      break;
+  }
+}
+
+/**
  * Custom submit handler for node grant forms.
  */
 function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_state) {
