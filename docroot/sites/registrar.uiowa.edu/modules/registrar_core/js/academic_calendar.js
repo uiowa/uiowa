@@ -9,59 +9,52 @@
         let uniqueSessions = new Set();
 
         // Cache objects for frequently used elements.
-        const $form = $('#academic-calendar-filter-form', context);
-        const $groupByMonthCheckbox = $('#group-by-month', context);
-        const $showPreviousEventsCheckbox = $('#show-previous-events', context);
+        const form = context.querySelector('#academic-calendar-filter-form');
+        const groupByMonthCheckbox = context.querySelector('#group-by-month');
+        const showPreviousEventsCheckbox = context.querySelector('#show-previous-events');
 
         // Function to toggle visibility of 'Show previous events' checkbox.
         function toggleShowPreviousEvents() {
-          const $container = $showPreviousEventsCheckbox.closest('.js-form-item');
-          $container.toggle($groupByMonthCheckbox.is(':checked'));
+          const container = showPreviousEventsCheckbox.closest('.js-form-item');
+          container.style.display = groupByMonthCheckbox.checked ? 'block' : 'none';
         }
 
         // Function to fetch events from the server and display them
         function fetchAndDisplayEvents() {
           // Gather all form data.
-          const categories = $form.find('select[name="category[]"]').val() || ['STUDENT'];
-          const subsession = $form.find('input[name="subsession"]').is(':checked') ? '1' : '0';
-          const startDate = $form.find('.academic-calendar-start-date').val();
-          const endDate = $form.find('.academic-calendar-end-date').val();
-          const session = $form.find('select[name="session"]').val();
+          // TODO get Chosen selection to load and to work.
+          const chosenContainer = form.querySelector('#edit-category');
+          const chosenOptions = chosenContainer.querySelectorAll('.search-choice');
+          const categories = ['STUDENT'];
+
+          const subsession = form.querySelector('input[name="subsession"]').checked ? '1' : '0';
+          const startDate = form.querySelector('.academic-calendar-start-date').value;
+          const endDate = form.querySelector('.academic-calendar-end-date').value;
+          const session = form.querySelector('select[name="session"]').value;
           const steps = drupalSettings.academicCalendar.steps || 0;
 
           // Make AJAX request to fetch events.
-          $.ajax({
-            url: '/api/academic-calendar',
-            method: 'GET',
-            data: {
-              category: categories,
-              subsession: subsession,
-              start: startDate,
-              end: endDate,
-              session: session,
-              steps: steps
-            },
-            success: function(events) {
+          fetch(`/api/academic-calendar?category=${categories}&subsession=${subsession}&start=${startDate}&end=${endDate}&session=${session}&steps=${steps}`)
+            .then(response => response.json())
+            .then(events => {
               allEvents = events;
               uniqueSessions.clear();
               events.forEach(event => uniqueSessions.add(event.sessionDisplay));
               populateSessionFilter();
               filterAndDisplayEvents();
-            },
-            error: function(xhr, status, error) {
+            })
+            .catch(error => {
               console.error('Error fetching events:', error);
-              $(element).html('<div>Error loading events. Please try again later.</div>');
-            }
-          });
+              element.innerHTML = '<div>Error loading events. Please try again later.</div>';
+            });
         }
 
         // Function to filter and display events based on current form state.
         function filterAndDisplayEvents() {
-          const searchTerm = $('.academic-calendar-search').val().toLowerCase();
-          const startDate = new Date($('.academic-calendar-start-date').val());
-          const endDate = new Date($('.academic-calendar-end-date').val());
-          const selectedSession = $form.find('select[name="session"]').val();
-
+          const searchTerm = form.querySelector('.academic-calendar-search').value.toLowerCase();
+          const startDate = new Date(form.querySelector('.academic-calendar-start-date').value);
+          const endDate = new Date(form.querySelector('.academic-calendar-end-date').value);
+          const selectedSession = form.querySelector('select[name="session"]').value;
           // Filter events based on search term, date range, and selected session.
           const filteredEvents = allEvents.filter(event => {
             const eventStart = new Date(event.start);
@@ -81,18 +74,18 @@
 
         // Function to display filtered events.
         function displayEvents(events) {
-          $(element).empty();
+          element.innerHTML = '';
 
           if (events.length === 0) {
-            $(element).append('<p>No events found matching your criteria.</p>');
+            element.innerHTML = '<p>No events found matching your criteria.</p>';
             return;
           }
 
           // Sort events chronologically.
           events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-          const groupByMonth = $groupByMonthCheckbox.is(':checked');
-          const showPreviousEvents = $showPreviousEventsCheckbox.is(':checked');
+          const groupByMonth = groupByMonthCheckbox.checked;
+          const showPreviousEvents = showPreviousEventsCheckbox.checked;
 
           if (groupByMonth) {
             displayGroupedByMonth(events, showPreviousEvents);
@@ -139,7 +132,7 @@
           }, {});
 
           Object.entries(groupedEvents).forEach(([sessionDisplay, events]) => {
-            $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`);
+            element.innerHTML += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
             events.forEach(event => renderEvent(event, false));
           });
         }
@@ -147,59 +140,60 @@
         // Function to render months and their events.
         function renderMonths(months, groupedEvents) {
           months.forEach(month => {
-            $(element).append(`<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`);
+            element.innerHTML += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
             groupedEvents[month].forEach(event => renderEvent(event, true));
           });
         }
 
         // Function to render individual event.
         function renderEvent(event, includeSession) {
-          $(element).append(event.rendered);
+          element.innerHTML += event.rendered;
         }
 
         // Function to populate the session filter dropdown.
         function populateSessionFilter() {
-          const $sessionSelect = $form.find('select[name="session"]');
-          const currentValue = $sessionSelect.val();
+          const sessionSelect = form.querySelector('select[name="session"]');
+          const currentValue = sessionSelect.value;
 
-          $sessionSelect.empty().append('<option value="">All Sessions</option>');
+          sessionSelect.innerHTML = '<option value="">All Sessions</option>';
 
           Array.from(uniqueSessions).sort().forEach(session => {
-            $sessionSelect.append(`<option value="${session}">${session}</option>`);
+            sessionSelect.innerHTML += `<option value="${session}">${session}</option>`;
           });
 
-          if (currentValue && uniqueSessions.has(currentValue)) {
-            $sessionSelect.val(currentValue);
-          } else {
-            $sessionSelect.val('');
-          }
+          sessionSelect.value = uniqueSessions.has(currentValue) ? currentValue : '';
         }
 
         // Set initial state of 'Group by month' checkbox based on Drupal settings.
         if (typeof drupalSettings.academicCalendar !== 'undefined' &&
           typeof drupalSettings.academicCalendar.groupByMonth !== 'undefined') {
-          $groupByMonthCheckbox.prop('checked', drupalSettings.academicCalendar.groupByMonth === 1);
+          groupByMonthCheckbox.checked = drupalSettings.academicCalendar.groupByMonth === 1;
         }
 
         // Initial toggle of 'Show previous events' checkbox.
         toggleShowPreviousEvents();
 
         // Add event listener for changes to 'Group by month' checkbox.
-        $groupByMonthCheckbox.on('change', toggleShowPreviousEvents);
+        groupByMonthCheckbox.addEventListener('change', toggleShowPreviousEvents);
 
         // Initial fetch of events.
         fetchAndDisplayEvents();
 
         // Attach filter functionality to form elements.
-        $form.on('change', 'select, input[name="subsession"], #group-by-month, #show-previous-events', function() {
-          fetchAndDisplayEvents();
+        form.addEventListener('change', function (event) {
+          if (['search', 'session', 'start_date', 'end_date', 'subsession,', 'group_by_month', 'show_previous_events', 'select', 'input[name="subsession"]', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+            fetchAndDisplayEvents();
+          }
         });
 
         // Attach search and date filter functionality.
-        $('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date', context).on('input change', Drupal.debounce(filterAndDisplayEvents, 300));
+        context.querySelectorAll('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
+          input.addEventListener('input', Drupal.debounce(filterAndDisplayEvents, 300));
+          input.addEventListener('change', Drupal.debounce(filterAndDisplayEvents, 300));
+        });
 
         // Handle form submission
-        $form.on('submit', function(e) {
+        form.addEventListener('submit', function (e) {
           e.preventDefault();
           fetchAndDisplayEvents();
         });
