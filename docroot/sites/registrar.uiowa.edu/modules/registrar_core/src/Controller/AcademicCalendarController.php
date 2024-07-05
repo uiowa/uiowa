@@ -249,9 +249,8 @@ class AcademicCalendarController extends ControllerBase {
       'click-container',
       'block--word-break',
       'card',
-      'media--circle',
-      'media--border',
-      'media--small',
+      'media--default',
+      'media--no-crop',
       'media',
     ];
     $card = [
@@ -259,10 +258,10 @@ class AcademicCalendarController extends ControllerBase {
       '#title' => html_entity_decode($event->title),
       '#attributes' => $attributes,
       '#media' => $this->t('
-<div class="upcoming-date"><span class="upcoming-month">
-%month</span><span class="upcoming-day">
-%day</span></div>',
-        ['%month' => $month, '%day' => $day]),
+<div class="media--date"><span class="media--date__month">
+@month</span><span class="media--date__day">
+@day</span></div>',
+        ['@month' => $month, '@day' => $day]),
       '#subtitle' => [
         'date' => [
           '#type' => 'markup',
