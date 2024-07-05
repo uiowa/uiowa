@@ -51,6 +51,10 @@ function inrc_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_grant_ein':
+      uiowa_core_set_attributes($variables, 'badge badge--cool-gray');
+      break;
+
     case 'field_grant_fax':
       uiowa_core_set_field_icon($variables, 'fa-fax');
       uiowa_core_set_attributes($variables, 'fa-field-item');

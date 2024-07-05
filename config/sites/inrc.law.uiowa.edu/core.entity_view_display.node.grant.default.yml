@@ -78,25 +78,14 @@ third_party_settings:
               6: 6
               8: 8
       -
-        layout_id: layout_header
+        layout_id: layout_onecol
         layout_settings:
-          label: Header
+          label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - section_margin_edge_to_edge
+            - section_background_white_pattern_particle
+            - section_margin_fixed_width_container
         components:
-          -
-            uuid: 40b768ff-6e34-4257-9398-d83430b061e8
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: Breadcrumbs
-              label_display: '0'
-              provider: system
-              context_mapping: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
@@ -117,16 +106,40 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock:
-              1: 1
-              2: 2
-              3: 3
-              4: 4
-              5: 5
-              6: 6
-              8: 8
+          -
+            uuid: 40b768ff-6e34-4257-9398-d83430b061e8
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 59a6ada4-67b9-4189-a81c-841e5b025d8f
+            region: content
+            configuration:
+              id: 'field_block:node:grant:field_grant_ein'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_twocol_card_sidebar
         layout_settings:
@@ -442,27 +455,6 @@ third_party_settings:
                   link: true
                 third_party_settings: {  }
             weight: 1
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 59a6ada4-67b9-4189-a81c-841e5b025d8f
-            region: main
-            configuration:
-              id: 'field_block:node:grant:field_grant_ein'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: -7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
