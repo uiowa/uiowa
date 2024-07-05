@@ -1,4 +1,4 @@
-(function ($, Drupal, drupalSettings) {
+(function (Drupal, drupalSettings) {
   'use strict';
 
   Drupal.behaviors.academicCalendar = {
@@ -200,4 +200,4 @@
       });
     }
   };
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, drupalSettings);
