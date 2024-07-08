@@ -33,6 +33,7 @@
           const session = form.querySelector('select[name="session"]').value;
           const steps = drupalSettings.academicCalendar.steps || 0;
 
+          Drupal.announce('Fetching events.');
           // Make AJAX request to fetch events.
           fetch(`/api/academic-calendar?category=${categories}&subsession=${subsession}&start=${startDate}&end=${endDate}&session=${session}&steps=${steps}`)
             .then(response => response.json())
@@ -46,6 +47,7 @@
             .catch(error => {
               console.error('Error fetching events:', error);
               element.innerHTML = '<div>Error loading events. Please try again later.</div>';
+              Drupal.announce('Error loading events. Please try again later.');
             });
         }
 
@@ -68,7 +70,6 @@
 
             return matchesSearch && matchesDateRange && matchesSession;
           });
-
           displayEvents(filteredEvents);
 
           const calendarContent = document.getElementById('academic-calendar-content');
@@ -89,8 +90,11 @@
 
           if (events.length === 0) {
             element.innerHTML = '<p>No events found matching your criteria.</p>';
+            Drupal.announce('No events found matching your criteria.');
             return;
           }
+
+          Drupal.announce(`Displaying ${events.length} events based on filter criteria.`);
 
           // Sort events chronologically.
           events.sort((a, b) => new Date(a.start) - new Date(b.start));
@@ -115,6 +119,7 @@
             return groups;
           }, {});
 
+          Drupal.announce(`Grouping events by month.`);
           const now = new Date();
           const currentMonth = now.toLocaleString('default', { month: 'long', year: 'numeric' });
           const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
@@ -125,6 +130,7 @@
             const futureMonths = sortedMonths.slice(currentMonthIndex);
 
             if (showPreviousEvents) {
+              Drupal.announce(`Including past events.`);
               renderMonths(pastMonths, groupedEvents);
             }
             renderMonths(futureMonths, groupedEvents);
@@ -135,6 +141,7 @@
 
         // Function to display events grouped by session.
         function displayGroupedBySession(events) {
+          Drupal.announce(`Grouping events by session.`);
           const groupedEvents = events.reduce((groups, event) => {
             const group = groups[event.sessionDisplay] || [];
             group.push(event);
