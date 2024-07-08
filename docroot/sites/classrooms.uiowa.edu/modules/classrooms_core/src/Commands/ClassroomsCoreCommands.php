@@ -11,8 +11,8 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\uiowa_maui\MauiApi;
 use Drupal\uiowa_core\Commands\CpuTimeTrait;
+use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -68,13 +68,13 @@ class ClassroomsCoreCommands extends DrushCommands {
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
    * @param \Drupal\uiowa_maui\MauiApi $mauiApi
-   *    The uiowa_maui.api service.
+   *   The uiowa_maui.api service.
    * @param \Drupal\Core\Cache\CacheBackendInterface $mauiCache
-   *    The cache.uiowa_maui service.
+   *   The cache.uiowa_maui service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *    The entity_type.manager service.
+   *   The entity_type.manager service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
-   *    The datetime.time service.
+   *   The datetime.time service.
    */
   public function __construct(AccountSwitcherInterface $accountSwitcher, MauiApi $mauiApi, CacheBackendInterface $mauiCache, EntityTypeManagerInterface $entityTypeManager, TimeInterface $time) {
     $this->accountSwitcher = $accountSwitcher;
