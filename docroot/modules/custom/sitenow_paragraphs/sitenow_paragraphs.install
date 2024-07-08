@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Update articles and people column width to `Full` after removing `-none-`.
+ */
+function sitenow_paragraphs_update_9001() {
+  $database = Database::getConnection();
+  $query = $database->select('paragraphs_item', 'p')
+    ->fields('p');
+
+  // People and Articles column width entries.
+  $pacw = $database->select('paragraph__field_uip_colwidth', 'cw')
+    ->fields('cw', ['entity_id'])
+    ->condition('cw.bundle', ['people', 'articles'], 'IN')
+    ->execute()->fetchCol();
+
+  // People and Articles revisions column width entries.
+  $parcw = $database->select('paragraph_revision__field_uip_colwidth', 'cw')
+    ->fields('cw', ['revision_id'])
+    ->condition('cw.bundle', ['people', 'articles'], 'IN')
+    ->execute()->fetchCol();
+}
