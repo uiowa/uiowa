@@ -175,6 +175,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         'calendar' => [
           '#type' => 'container',
           '#attributes' => ['class' => ['academic-calendar content'], 'id' => 'academic-calendar-content'],
+          'content' => [
+            '#lazy_builder' => [
+              'registrar_core.lazy_builder:loadAcademicCalendarContent', [],
+            ],
+            '#create_placeholder' => TRUE,
+          ],
         ],
       ],
     ];

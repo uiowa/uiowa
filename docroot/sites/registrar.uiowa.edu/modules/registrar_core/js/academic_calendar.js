@@ -70,6 +70,17 @@
           });
 
           displayEvents(filteredEvents);
+
+          const calendarContent = document.getElementById('academic-calendar-content');
+          if (calendarContent) {
+            const observer = new MutationObserver(function () {
+              const spinner = calendarContent.querySelector('.fa-spinner');
+              if (spinner) {
+                spinner.style.display = 'none';
+              }
+            });
+            observer.observe(calendarContent, { childList: true });
+          }
         }
 
         // Function to display filtered events.
