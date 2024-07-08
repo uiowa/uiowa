@@ -22,10 +22,19 @@
         // Function to fetch events from the server and display them
         function fetchAndDisplayEvents() {
           // Gather all form data.
-          // TODO get Chosen selection to load and to work.
-          const chosenContainer = form.querySelector('#edit-category');
-          const chosenOptions = chosenContainer.querySelectorAll('.search-choice');
-          const categories = ['STUDENT'];
+          const chosenContainer = document.getElementById('edit_category_chosen');
+          let categories = ['STUDENT'];
+
+          if (chosenContainer) {
+            const chosenOptions = chosenContainer.querySelectorAll('.search-choice');
+            if (chosenOptions.length > 0) {
+              const indices = Array.from(chosenOptions).map(option => parseInt(option.querySelector('a').getAttribute('data-option-array-index')) - 1);
+              if (indices.length > 0) {
+                const selectElement = document.getElementById('edit-category');
+                categories = indices.map(index => selectElement.options[index].value);
+              }
+            }
+          }
 
           const subsession = form.querySelector('input[name="subsession"]').checked ? '1' : '0';
           const startDate = form.querySelector('.academic-calendar-start-date').value;
