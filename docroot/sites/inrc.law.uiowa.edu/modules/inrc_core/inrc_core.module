@@ -52,7 +52,13 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_ein':
-      uiowa_core_set_attributes($variables, 'badge badge--cool-gray');
+      if (!empty($variables['items'][0]['content']['#context']['value'])) {
+        $field_label = $variables['items'][0]['content']['#context']['value'];
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<span class="badge badge--light">' . $field_label . '</span>',
+        ];
+      }
       break;
 
     case 'field_grant_fax':
@@ -67,19 +73,19 @@ function inrc_core_preprocess_field(&$variables) {
 
     case 'field_grant_pdf_version':
       uiowa_core_set_field_icon($variables, 'fa-file');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+      uiowa_core_set_attributes($variables, [
+        'bttn',
+        'bttn--tertiary',
+        'bttn--medium',
+      ]);
 
-    case 'field_grant_pdf_version':
       $node = $variables['element']['#object'];
       $field_name = $variables['element']['#field_name'];
 
       if (!empty($node->$field_name->entity->field_media_file->entity)) {
         $file_entity = $node->$field_name->entity->field_media_file->entity;
         $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
-
-        // Get the label from the field name.
         $link_text = ucwords(str_replace(['field_', '_'], ['', ' '], $field_name));
-
         $link = Link::fromTextAndUrl($link_text, Url::fromUri($file_url));
         $variables['items'][0]['content'] = $link->toString();
       }
@@ -99,19 +105,6 @@ function inrc_core_preprocess_field(&$variables) {
     case 'field_grant_address':
       uiowa_core_set_field_icon($variables, 'fa-map-marker');
       uiowa_core_set_attributes($variables, 'fa-field-item');
-      break;
-
-    case 'field_grant_application_info':
-      // Set up the details element.
-      $variables['label_display'] = 'visually_hidden';
-      $details = [
-        '#type' => 'details',
-        '#title' => $variables['label'],
-      ];
-
-      // Wrap the field output in the details element.
-      $details['#children'] = $variables['items'][0]['content'];
-      $variables['items'][0]['content'] = $details;
       break;
   }
 }
@@ -137,18 +130,6 @@ function inrc_core_entity_extra_field_info() {
   ];
 
   return $extra;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function inrc_core_preprocess_block(&$variables) {
-  switch ($variables['plugin_id']) {
-
-    case 'field_block:node:grant:field_grant_application_info':
-      uiowa_core_set_attributes($variables, 'card borderless');
-      break;
-  }
 }
 
 /**
@@ -178,7 +159,8 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
 function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
   if ($node instanceof NodeInterface && $node->getType() === 'grant') {
-    $variables['attributes']['class'][] = 'bg--none';
+    $variables['attributes']['class'][] = 'bg--none border--left';
+    $variables['region_attributes']['card_meta']?->addClass('padding--block--md');
     $variables['content']['card_title'] = [
       '#type' => 'markup',
       '#markup' => '<h2 class="headline headline--serif default block-margin__bottom"><span class="headline__heading">Contact</span></h2>',
@@ -227,4 +209,16 @@ function inrc_core_form_views_exposed_form_alter(&$form, FormStateInterface $for
   if ($form['#id'] === 'views-exposed-form-grants-block-grants') {
     $form['#attached']['library'][] = 'uids_base/view-bef';
   }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function inrc_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_grant_application_info__grant__default' => [
+      'template' => 'field--node--field-grant-application-info--grant--default',
+      'base hook' => 'field',
+    ],
+  ];
 }
