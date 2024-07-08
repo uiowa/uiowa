@@ -224,6 +224,28 @@
           e.preventDefault();
           fetchAndDisplayEvents();
         });
+
+
+        // Handle changes in the Chosen select box
+        // NOT WORKING.
+        const chosenSelect = document.querySelector('#edit-category');
+
+        if (chosenSelect) {
+          const chosenContainer = document.getElementById('edit_category_chosen');
+          const observer = new MutationObserver(() => {
+            console.log('Chosen select options changed');
+            fetchAndDisplayEvents();
+          });
+
+          if (chosenContainer) {
+            observer.observe(chosenContainer, { childList: true, subtree: true });
+          }
+
+          chosenSelect.addEventListener('change', function (event) {
+            console.log('Chosen select element changed:', event.target.id);
+            fetchAndDisplayEvents();
+          });
+        }
       });
     }
   };
