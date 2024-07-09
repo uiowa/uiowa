@@ -16,9 +16,9 @@ function sitenow_paragraphs_update_9001() {
   // Current entities.
   $people_and_articles_with_column_width_entries =
     $database->select('paragraph__field_uip_colwidth', 'cw')
-    ->fields('cw', ['entity_id'])
-    ->condition('cw.bundle', ['people', 'articles'], 'IN')
-    ->execute()->fetchCol();
+      ->fields('cw', ['entity_id'])
+      ->condition('cw.bundle', ['people', 'articles'], 'IN')
+      ->execute()->fetchCol();
 
   $people_and_articles_without_column_entries =
     $database->select('paragraphs_item', 'pi')
@@ -36,7 +36,7 @@ function sitenow_paragraphs_update_9001() {
       'revision_id' => $paragraph->revision_id,
       'langcode' => 'en',
       'delta' => 0,
-      'field_uip_colwidth_value' => 'col-md-12'
+      'field_uip_colwidth_value' => 'col-md-12',
     ];
   }
 
@@ -52,9 +52,9 @@ function sitenow_paragraphs_update_9001() {
   $query->join('paragraphs_item', 'pi', 'pi.id = pi_r.id');
   $people_and_articles_revisions_without_column_entries =
     $query->fields('pi', ['type'])
-    ->condition('pi.type', ['people', 'articles'], 'IN')
-    ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
-    ->execute();
+      ->condition('pi.type', ['people', 'articles'], 'IN')
+      ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
+      ->execute();
 
   $revisions = [];
   foreach ($people_and_articles_revisions_without_column_entries as $paragraph) {
@@ -65,7 +65,7 @@ function sitenow_paragraphs_update_9001() {
       'revision_id' => $paragraph->revision_id,
       'langcode' => 'en',
       'delta' => 0,
-      'field_uip_colwidth_value' => 'col-md-12'
+      'field_uip_colwidth_value' => 'col-md-12',
     ];
   }
 
