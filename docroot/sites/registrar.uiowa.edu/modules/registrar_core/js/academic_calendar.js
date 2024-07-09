@@ -130,22 +130,32 @@
 
           Drupal.announce(`Grouping events by month.`);
           const now = new Date();
-          const currentMonth = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+          const currentMonthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+          const currentMonthDate = new Date(currentMonthYear);
           const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
-          const currentMonthIndex = sortedMonths.indexOf(currentMonth);
+          const splitMonths = (months, current) => {
+            const pastMonths = [];
+            const futureMonths = [];
 
-          if (currentMonthIndex !== -1) {
-            const pastMonths = sortedMonths.slice(0, currentMonthIndex);
-            const futureMonths = sortedMonths.slice(currentMonthIndex);
-
-            if (showPreviousEvents) {
-              Drupal.announce(`Including past events.`);
-              renderMonths(pastMonths, groupedEvents);
+            for (let month of months) {
+              const monthDate = new Date(month);
+              if (monthDate < current) {
+                pastMonths.push(month);
+              } else {
+                futureMonths.push(month);
+              }
             }
-            renderMonths(futureMonths, groupedEvents);
-          } else {
-            renderMonths(sortedMonths, groupedEvents);
+
+            return { pastMonths, futureMonths };
+          };
+
+          const { pastMonths, futureMonths } = splitMonths(sortedMonths, currentMonthDate);
+
+          if (showPreviousEvents) {
+            Drupal.announce(`Including past events.`);
+            renderMonths(pastMonths, groupedEvents);
           }
+          renderMonths(futureMonths, groupedEvents);
         }
 
         // Function to display events grouped by session.
