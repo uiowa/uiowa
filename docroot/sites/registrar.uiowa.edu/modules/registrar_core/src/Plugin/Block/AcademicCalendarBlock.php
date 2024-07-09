@@ -110,6 +110,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function defaultConfiguration() {
     return [
       'steps' => 0,
+      'show_group_by_month' => 1,
+      'group_by_month' => 1,
     ] + parent::defaultConfiguration();
   }
 
@@ -232,12 +234,14 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $current_request = $this->requestStack->getCurrentRequest();
 
-    $form['group_by_month'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Group by month'),
-      '#id' => 'group-by-month',
-      '#default_value' => $this->configuration['group_by_month'],
-    ];
+    if ($this->configuration['show_group_by_month']) {
+      $form['group_by_month'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Group by month'),
+        '#id' => 'group-by-month',
+        '#default_value' => $this->configuration['group_by_month'],
+      ];
+    }
 
     $form['show_previous_events'] = [
       '#type' => 'checkbox',

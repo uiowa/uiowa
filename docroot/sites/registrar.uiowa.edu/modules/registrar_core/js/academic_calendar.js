@@ -10,16 +10,23 @@
 
         // Cache objects for frequently used elements.
         const form = context.querySelector('#academic-calendar-filter-form');
-        const groupByMonthCheckbox = context.querySelector('#group-by-month');
         const showPreviousEventsCheckbox = context.querySelector('#show-previous-events');
         const categoryChosen = context.getElementById('edit_category_chosen');
         const calendarContent = context.getElementById('academic-calendar-content');
         const spinner = calendarContent.querySelector('.fa-spinner');
 
+        let groupByMonthCheckbox = null;
+        const showGroupByMonth = drupalSettings.academicCalendar.showGroupByMonth;
+
+        // Initial toggle of 'Show previous events' checkbox.
+        toggleShowPreviousEvents();
+
         // Function to toggle visibility of 'Show previous events' checkbox.
         function toggleShowPreviousEvents() {
           const container = showPreviousEventsCheckbox.closest('.js-form-item');
-          container.style.display = groupByMonthCheckbox.checked ? 'block' : 'none';
+          const shouldShow = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
+          console.log(shouldShow);
+          container.style.display = shouldShow ? 'block' : 'none';
         }
 
         // Function to fetch events from the server and display them
@@ -112,7 +119,7 @@
           // Sort events chronologically.
           events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-          const groupByMonth = groupByMonthCheckbox.checked;
+          const groupByMonth = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
           const showPreviousEvents = showPreviousEventsCheckbox.checked;
 
           if (groupByMonth) {
@@ -211,17 +218,17 @@
           sessionSelect.value = uniqueSessions.has(currentValue) ? currentValue : '';
         }
 
-        // Set initial state of 'Group by month' checkbox based on Drupal settings.
-        if (typeof drupalSettings.academicCalendar !== 'undefined' &&
-          typeof drupalSettings.academicCalendar.groupByMonth !== 'undefined') {
-          groupByMonthCheckbox.checked = drupalSettings.academicCalendar.groupByMonth === 1;
+        if (showGroupByMonth) {
+          groupByMonthCheckbox = context.querySelector('#group-by-month');
+
+          // Set initial state of 'Group by month' checkbox based on Drupal settings.
+          if (typeof drupalSettings.academicCalendar.groupByMonth !== 'undefined') {
+            groupByMonthCheckbox.checked = drupalSettings.academicCalendar.groupByMonth === 1;
+          }
+
+          // Add event listener for changes to 'Group by month' checkbox.
+          groupByMonthCheckbox.addEventListener('change', toggleShowPreviousEvents);
         }
-
-        // Initial toggle of 'Show previous events' checkbox.
-        toggleShowPreviousEvents();
-
-        // Add event listener for changes to 'Group by month' checkbox.
-        groupByMonthCheckbox.addEventListener('change', toggleShowPreviousEvents);
 
         // Initial fetch of events.
         fetchAndDisplayEvents();
