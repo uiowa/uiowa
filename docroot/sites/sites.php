@@ -7474,3 +7474,9 @@ $sites['medicineponseti.uiowa.ddev.site'] = 'ponseti.medicine.uiowa.edu';
 $sites['medicineponseti.dev.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
 $sites['medicineponseti.stage.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
 $sites['medicineponseti.prod.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+
+// Directory aliases for cpss.uihealthcare.org.
+$sites['org-uihealthcarecpss.uiowa.ddev.site'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.dev.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.stage.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.prod.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
