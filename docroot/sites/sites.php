@@ -7468,3 +7468,9 @@ $sites['medicine.uiowa.ddev.site'] = 'medicine.uiowa.edu';
 $sites['medicine.dev.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
 $sites['medicine.stage.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
 $sites['medicine.prod.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+
+// Directory aliases for ponseti.medicine.uiowa.edu.
+$sites['medicineponseti.uiowa.ddev.site'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.dev.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.stage.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.prod.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
