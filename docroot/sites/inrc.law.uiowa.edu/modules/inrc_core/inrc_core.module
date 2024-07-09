@@ -52,10 +52,11 @@ function inrc_core_preprocess_field(&$variables) {
 
     case 'field_grant_ein':
       if (!empty($variables['items'][0]['content']['#context']['value'])) {
-        $field_label = $variables['items'][0]['content']['#context']['value'];
+        $field_content = $variables['items'][0]['content']['#context']['value'];
+        $field_label = $variables['label'];
         $variables['items'][0]['content'] = [
           '#type' => 'markup',
-          '#markup' => '<span class="badge badge--light">' . $field_label . '</span>',
+          '#markup' => '<span class="badge badge--light">' . $field_label . ': ' . $field_content . '</span>',
         ];
       }
       break;
