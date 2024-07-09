@@ -12,6 +12,7 @@
         const form = context.querySelector('#academic-calendar-filter-form');
         const groupByMonthCheckbox = context.querySelector('#group-by-month');
         const showPreviousEventsCheckbox = context.querySelector('#show-previous-events');
+        const categoryChosen = context.getElementById('edit_category_chosen');
 
         // Function to toggle visibility of 'Show previous events' checkbox.
         function toggleShowPreviousEvents() {
@@ -22,11 +23,10 @@
         // Function to fetch events from the server and display them
         function fetchAndDisplayEvents() {
           // Gather all form data.
-          const chosenContainer = document.getElementById('edit_category_chosen');
           let categories = ['STUDENT'];
 
-          if (chosenContainer) {
-            const chosenOptions = chosenContainer.querySelectorAll('.search-choice');
+          if (categoryChosen) {
+            const chosenOptions = categoryChosen.querySelectorAll('.search-choice');
             if (chosenOptions.length > 0) {
               const indices = Array.from(chosenOptions).map(option => parseInt(option.querySelector('a').getAttribute('data-option-array-index')) - 1);
               if (indices.length > 0) {
@@ -225,12 +225,11 @@
           fetchAndDisplayEvents();
         });
 
-        const chosenContainer = document.getElementById('edit_category_chosen');
-        if (chosenContainer) {
+        if (categoryChosen) {
           const observer = new MutationObserver(function () {
             fetchAndDisplayEvents();
           });
-          observer.observe(chosenContainer, { childList: true, subtree: true });
+          observer.observe(categoryChosen, { childList: true, subtree: true });
         }
       });
     }
