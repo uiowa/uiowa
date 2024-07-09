@@ -14,7 +14,6 @@ function sitenow_paragraphs_update_9001() {
   $database = Database::getConnection();
 
   // Current entities.
-
   $people_and_articles_with_column_width_entries =
     $database->select('paragraph__field_uip_colwidth', 'cw')
     ->fields('cw', ['entity_id'])
@@ -37,7 +36,7 @@ function sitenow_paragraphs_update_9001() {
       'revision_id' => $paragraph->revision_id,
       'langcode' => 'en',
       'delta' => 0,
-      'field_uip_colwidth_value' => 'col-md'
+      'field_uip_colwidth_value' => 'col-md-12'
     ];
   }
 
@@ -57,8 +56,6 @@ function sitenow_paragraphs_update_9001() {
     ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
     ->execute();
 
-
-
   $revisions = [];
   foreach ($people_and_articles_revisions_without_column_entries as $paragraph) {
     $revisions[] = [
@@ -68,7 +65,7 @@ function sitenow_paragraphs_update_9001() {
       'revision_id' => $paragraph->revision_id,
       'langcode' => 'en',
       'delta' => 0,
-      'field_uip_colwidth_value' => 'col-md'
+      'field_uip_colwidth_value' => 'col-md-12'
     ];
   }
 
@@ -83,6 +80,4 @@ function sitenow_paragraphs_update_9001() {
       ->fields($revision)
       ->execute();
   }
-
-  $foo = 'bar';
 }
