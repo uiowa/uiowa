@@ -4,7 +4,7 @@ namespace Drupal\sitenow_p2lb\Commands;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -16,7 +16,6 @@ use Drush\Drush;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
-  use LoggerChannelTrait;
   use StringTranslationTrait;
 
   /**
@@ -50,8 +49,9 @@ class P2LbCommands extends DrushCommands {
   /**
    * Command constructor.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerChannel $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
     $this->accountSwitcher = $accountSwitcher;
+    $this->logger = $logger;
     $this->entityTypeManager = $entityTypeManager;
     $this->orphanPurger = $orphanPurger;
     $this->configFactory = $config_factory;
@@ -87,7 +87,7 @@ class P2LbCommands extends DrushCommands {
 
     // If we don't have any entities, send a message and exit.
     if (empty($entities)) {
-      $this->getLogger('sitenow_p2lb')->notice($this->t('No pages available to update.'));
+      $this->logger->notice($this->t('No pages available to update.'));
 
       // Switch user back.
       $this->accountSwitcher->switchBack();
@@ -130,7 +130,7 @@ class P2LbCommands extends DrushCommands {
 
     batch_set($batch);
     drush_backend_batch_process();
-    $this->getLogger('sitenow_p2lb')->notice($this->t('Process batch operations ended.'));
+    $this->logger->notice($this->t('Process batch operations ended.'));
 
     // Delete orphaned paragraphs, three-levels deep (section > block > item).
     for ($i = 0; $i < 3; $i++) {
