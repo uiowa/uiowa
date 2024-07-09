@@ -161,14 +161,20 @@
         // Function to display events grouped by session.
         function displayGroupedBySession(events) {
           Drupal.announce(`Grouping events by session.`);
+          // Group events by id.
           const groupedEvents = events.reduce((groups, event) => {
-            const group = groups[event.sessionDisplay] || [];
-            group.push(event);
-            groups[event.sessionDisplay] = group;
+            const group = groups[event.sessionId] || { sessionDisplay: event.sessionDisplay, events: [] };
+            group.events.push(event);
+            groups[event.sessionId] = group;
             return groups;
           }, {});
 
-          Object.entries(groupedEvents).forEach(([sessionDisplay, events]) => {
+          // Sort session ids
+          const sortedSessionIds = Object.keys(groupedEvents).sort((a, b) => a - b);
+
+          // Display the grouped and sorted events
+          sortedSessionIds.forEach(sessionId => {
+            const { sessionDisplay, events } = groupedEvents[sessionId];
             element.innerHTML += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
             events.forEach(event => renderEvent(event, false));
           });

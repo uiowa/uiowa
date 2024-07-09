@@ -141,7 +141,7 @@ class AcademicCalendarController extends ControllerBase {
         }
 
         if (!empty($date->dateCategoryLookups)) {
-          $event = $this->processDate($date, $session, $session_index);
+          $event = $this->processDate($date, $session, $session_index, $session->id);
           if ($this->filterEvent($event, $categories, $subsession)) {
             $events[] = $event;
           }
@@ -188,7 +188,7 @@ class AcademicCalendarController extends ControllerBase {
   /**
    * In the processDate() method of AcademicCalendarController.
    */
-  private function processDate($date, $session, $session_index) {
+  private function processDate($date, $session, $session_index, $session_id) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
@@ -222,6 +222,7 @@ class AcademicCalendarController extends ControllerBase {
     }
 
     $event->sessionDisplay = $session_display;
+    $event->sessionId = $session_id;
 
     $bg_color = $this->getSessionColor($session_index);
     $event->bgColor = $bg_color;
