@@ -13,6 +13,8 @@
         const groupByMonthCheckbox = context.querySelector('#group-by-month');
         const showPreviousEventsCheckbox = context.querySelector('#show-previous-events');
         const categoryChosen = context.getElementById('edit_category_chosen');
+        const calendarContent = context.getElementById('academic-calendar-content');
+        const spinner = calendarContent.querySelector('.fa-spinner');
 
         // Function to toggle visibility of 'Show previous events' checkbox.
         function toggleShowPreviousEvents() {
@@ -22,6 +24,10 @@
 
         // Function to fetch events from the server and display them
         function fetchAndDisplayEvents() {
+          calendarContent.innerHTML = '<span class="fa-solid fa-spinner fa-spin"></span>';
+          if (spinner) {
+            spinner.style.display = 'block';
+          }
           // Gather all form data.
           let categories = ['STUDENT'];
 
@@ -81,10 +87,8 @@
           });
           displayEvents(filteredEvents);
 
-          const calendarContent = document.getElementById('academic-calendar-content');
           if (calendarContent) {
             const observer = new MutationObserver(function () {
-              const spinner = calendarContent.querySelector('.fa-spinner');
               if (spinner) {
                 spinner.style.display = 'none';
               }
@@ -224,7 +228,7 @@
 
         // Attach filter functionality to form elements.
         form.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'subsession,', 'group_by_month', 'show_previous_events', 'select', 'input[name="subsession"]', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
             fetchAndDisplayEvents();
           }
         });
