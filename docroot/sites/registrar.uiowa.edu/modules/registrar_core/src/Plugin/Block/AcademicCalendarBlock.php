@@ -146,6 +146,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#description' => $this->t('Default setting for grouping events by month.'),
       '#default_value' => $this->configuration['group_by_month'],
     ];
+    $form['show_group_by_month'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Expose "Group by month"'),
+      '#description' => $this->t('Expose group by month filter to visitors.'),
+      '#default_value' => $this->configuration['show_group_by_month'],
+    ];
 
     return $form;
   }
@@ -156,6 +162,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $this->configuration['steps'] = $form_state->getValue('steps');
+    $this->configuration['show_group_by_month'] = $form_state->getValue('show_group_by_month');
     $this->configuration['group_by_month'] = $form_state->getValue('group_by_month');
   }
 
@@ -206,6 +213,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $build['#attached']['drupalSettings']['academicCalendar'] = [
       'steps' => $this->configuration['steps'],
       'groupByMonth' => $this->configuration['group_by_month'],
+      'showGroupByMonth' => $this->configuration['show_group_by_month'],
       'firstSessionStartDate' => $first_session_start_date,
       'lastSessionEndDate' => $last_session_end_date,
     ];
