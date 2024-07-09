@@ -48,12 +48,16 @@ function sitenow_paragraphs_update_9001() {
       ->condition('cw.bundle', ['people', 'articles'], 'IN')
       ->execute()->fetchCol();
 
+  $query = $database->select('paragraphs_item_revision', 'pi_r')
+    ->fields('pi_r', ['id', 'revision_id']);
+  $query->join('paragraphs_item', 'pi', 'pi.id = pi_r.id');
   $people_and_articles_revisions_without_column_entries =
-    $database->select('paragraphs_item_revision', 'pi')
-      ->fields('pi', ['id', 'revision_id', 'type'])
-      ->condition('pi.type', ['people', 'articles'], 'IN')
-      ->condition('pi.id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
-      ->execute();
+    $query->fields('pi', ['type'])
+    ->condition('pi.type', ['people', 'articles'], 'IN')
+    ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
+    ->execute();
+
+
 
   $revisions = [];
   foreach ($people_and_articles_revisions_without_column_entries as $paragraph) {
@@ -66,6 +70,18 @@ function sitenow_paragraphs_update_9001() {
       'delta' => 0,
       'field_uip_colwidth_value' => 'col-md'
     ];
+  }
+
+  // Do our inserts.
+  foreach ($current_entities as $current_entity) {
+    $database->insert('paragraph__field_uip_colwidth')
+      ->fields($current_entity)
+      ->execute();
+  }
+  foreach ($revisions as $revision) {
+    $database->insert('paragraph_revision__field_uip_colwidth')
+      ->fields($revision)
+      ->execute();
   }
 
   $foo = 'bar';
