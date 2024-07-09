@@ -7480,3 +7480,9 @@ $sites['org-uihealthcarecpss.uiowa.ddev.site'] = 'cpss.uihealthcare.org';
 $sites['org-uihealthcarecpss.dev.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
 $sites['org-uihealthcarecpss.stage.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
 $sites['org-uihealthcarecpss.prod.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+
+// Directory aliases for respiratorycareseminar.uihealthcare.org.
+$sites['org-uihealthcarerespiratorycareseminar.uiowa.ddev.site'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.dev.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.stage.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.prod.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
