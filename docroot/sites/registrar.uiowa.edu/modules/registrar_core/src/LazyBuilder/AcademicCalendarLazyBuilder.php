@@ -72,8 +72,6 @@ class AcademicCalendarLazyBuilder implements TrustedCallbackInterface {
       '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
     ];
 
-    $build['#attached']['library'][] = 'registrar_core/academic-calendar';
-
     return $build;
   }
 
