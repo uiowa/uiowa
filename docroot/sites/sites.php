@@ -7462,3 +7462,9 @@ $sites['labshariftabrizi.uiowa.ddev.site'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.dev.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.stage.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.prod.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
+
+// Directory aliases for medicine.uiowa.edu.
+$sites['medicine.uiowa.ddev.site'] = 'medicine.uiowa.edu';
+$sites['medicine.dev.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+$sites['medicine.stage.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+$sites['medicine.prod.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
