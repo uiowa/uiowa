@@ -6,6 +6,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\symfony_mailer\EmailFactoryInterface;
 use Drush\Commands\DrushCommands;
@@ -19,6 +20,7 @@ use Drush\Commands\DrushCommands;
  */
 class BrandCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
+  use StringTranslationTrait;
 
   /**
    * Drush command constructor.
