@@ -62,7 +62,21 @@ class AcademicCalendarLazyBuilder implements TrustedCallbackInterface {
    * @return array
    *   A renderable array representing the academic calendar content.
    */
-  public function loadAcademicCalendarContent() {
+  public function loadAcademicCalendarContent($steps) {
+    $current = $this->maui->getCurrentSession();
+    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+
+    // Get the start date of the first session.
+    $first_session_start_date = $sessions[0]->startDate;
+
+    // Get the end date of the last session.
+    $last_session_end_date = end($sessions)->endDate;
+
+    $build['#attached']['drupalSettings']['academicCalendar'] = [
+      'firstSessionStartDate' => $first_session_start_date,
+      'lastSessionEndDate' => $last_session_end_date,
+    ];
+
     $build = [
       '#type' => 'container',
       '#attributes' => ['class' => ['academic-calendar content']],
