@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   category = @Translation("Site custom")
  * )
  */
-class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface {
+class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
   use SessionColorTrait;
 
   /**
@@ -186,7 +187,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
           '#attributes' => ['class' => ['academic-calendar content'], 'id' => 'academic-calendar-content'],
           'content' => [
             '#lazy_builder' => [
-              'registrar_core.lazy_builder:loadAcademicCalendarContent',
+              static::class . '::lazyBuilder',
               [],
             ],
             '#create_placeholder' => TRUE,
@@ -303,6 +304,26 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     return $form;
+  }
+
+  /**
+   * A #lazy_builder callback.
+   */
+  public static function lazyBuilder() {
+    return [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['academic-calendar', 'content']],
+      'content' => [
+        '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function trustedCallbacks() {
+    return ['lazyBuilder'];
   }
 
 }
