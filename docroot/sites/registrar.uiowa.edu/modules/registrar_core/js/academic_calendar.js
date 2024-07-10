@@ -4,6 +4,9 @@
   Drupal.behaviors.academicCalendar = {
     attach: function (context, settings) {
       once('academicCalendar', '.academic-calendar', context).forEach(function (element) {
+        // Keep the HTML here so that we can add it all at once, preventing content refreshes.
+        let domBuffer = '';
+
         // Initialize variables to store all events and unique sessions.
         let allEvents = [];
         let uniqueSessions = new Set();
@@ -67,7 +70,7 @@
             })
             .catch(error => {
               console.error('Error fetching events:', error);
-              element.innerHTML = '<div>Error loading events. Please try again later.</div>';
+              domBuffer = '<div>Error loading events. Please try again later.</div>';
               Drupal.announce('Error loading events. Please try again later.');
             });
         }
@@ -105,10 +108,10 @@
 
         // Function to display filtered events.
         function displayEvents(events) {
-          element.innerHTML = '';
+          domBuffer = '';
 
           if (events.length === 0) {
-            element.innerHTML = '<p>No events found matching your criteria.</p>';
+            domBuffer = '<p>No events found matching your criteria.</p>';
             Drupal.announce('No events found matching your criteria.');
             return;
           }
@@ -126,6 +129,9 @@
           } else {
             displayGroupedBySession(events);
           }
+
+          element.innerHTML = domBuffer;
+          domBuffer = '';
         }
 
         // Function to display events grouped by month.
@@ -185,7 +191,7 @@
           // Display the grouped and sorted events
           sortedSessionIds.forEach(sessionId => {
             const { sessionDisplay, events } = groupedEvents[sessionId];
-            element.innerHTML += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
+            domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
             events.forEach(event => renderEvent(event, false));
           });
         }
@@ -193,14 +199,14 @@
         // Function to render months and their events.
         function renderMonths(months, groupedEvents) {
           months.forEach(month => {
-            element.innerHTML += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
+            domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
             groupedEvents[month].forEach(event => renderEvent(event, true));
           });
         }
 
         // Function to render individual event.
         function renderEvent(event, includeSession) {
-          element.innerHTML += event.rendered;
+          domBuffer += event.rendered;
         }
 
         // Function to populate the session filter dropdown.
@@ -208,12 +214,15 @@
           const sessionSelect = form.querySelector('select[name="session"]');
           const currentValue = sessionSelect.value;
 
-          sessionSelect.innerHTML = '<option value="">All Sessions</option>';
+
+          // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
+          let sessionBuffer = '<option value="">All Sessions</option>';
 
           Array.from(uniqueSessions).sort().forEach(session => {
-            sessionSelect.innerHTML += `<option value="${session}">${session}</option>`;
+            sessionBuffer += `<option value="${session}">${session}</option>`;
           });
 
+          sessionSelect.innerHTML = sessionBuffer;
           sessionSelect.value = uniqueSessions.has(currentValue) ? currentValue : '';
         }
 
