@@ -25,7 +25,6 @@
         function toggleShowPreviousEvents() {
           const container = showPreviousEventsCheckbox.closest('.js-form-item');
           const shouldShow = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
-          console.log(shouldShow);
           container.style.display = shouldShow ? 'block' : 'none';
         }
 
