@@ -18,7 +18,6 @@ use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\sitenow_p2lb\P2LbHelper;
 use Drupal\sitenow_pages\Entity\Page;
-use Drush\Drush;
 
 /**
  * Implements hook_form_alter().
@@ -1423,104 +1422,4 @@ function sitenow_p2lb_clear_tempstore(ContentEntityInterface $entity): bool {
 
   // Else, return false, signifying no need to clear tempstore.
   return FALSE;
-}
-
-/**
- * Clean up orphan paragraphs and turn of V2isms.
- *
- * @param int $batch_size
- *   The size of each batch to run.
- *
- * @return \Drupal\Core\StringTranslation\TranslatableMarkup
- *   The process completion message.
- */
-function sitenow_p2lb_cleanup(int $batch_size) {
-  $storage = \Drupal::entityTypeManager()->getStorage('node');
-
-  // Get existing page nodes.
-  $query = $storage
-    ->getQuery()
-    ->condition('type', 'page')
-    ->accessCheck(TRUE);
-  $entities = $query->execute();
-
-  // If we don't have any entities, send a message and exit.
-  if (empty($entities)) {
-    return t('No pages available to update.');
-  }
-
-  // Batch them up.
-  // Create the operations array for the batch.
-  $operations = [];
-  $num_operations = 0;
-  $batch_id = 1;
-  // Quick manipulate to ensure we have a positive
-  // integer to use for the batch size.
-  $batch_size = max(1, abs($batch_size));
-  for ($i = 0; $i < count($entities);) {
-    $nids = $storage
-      ->getQuery()
-      ->condition('type', 'page')
-      ->range($i, $batch_size)
-      ->accessCheck(TRUE)
-      ->execute();
-
-    $operations[] = [
-      '\Drupal\sitenow_p2lb\P2LbDeleteRevisions::deleteRevisions',
-      [
-        $batch_id,
-        $nids,
-      ],
-    ];
-    $batch_id++;
-    $num_operations++;
-    $i += $batch_size;
-  }
-  $batch = [
-    'title' => t('Processing @num node(s).', [
-      '@num' => $num_operations,
-    ]),
-    'operations' => $operations,
-  ];
-
-  batch_set($batch);
-  drush_backend_batch_process();
-  \Drupal::logger('sitenow_p2lb')->notice('Process batch operations ended.');
-
-  // Delete orphaned paragraphs, three-levels deep (section > block > item).
-  $purger = \Drupal::service('entity_reference_revisions.orphan_purger');
-  for ($i = 0; $i < 3; $i++) {
-    $purger->setBatch(['paragraph']);
-    drush_backend_batch_process();
-  }
-
-  // Turn off V2.
-  $config_factory = \Drupal::configFactory();
-  $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
-  $sitenow_v2->set('status', FALSE);
-  $sitenow_v2->save(TRUE);
-
-  // Turn off P2LB.
-  $sitenow_p2lb = $config_factory->getEditable('config_split.config_split.p2lb');
-  $sitenow_p2lb->set('status', FALSE);
-  $sitenow_p2lb->save(TRUE);
-
-  // Update replicate_allowed.
-  $uiowa_core_config = $config_factory->getEditable('uiowa_core.settings');
-
-  // Allow these content types to be replicated if they exist.
-  $uiowa_core_config
-    ->set('uiowa_core.replicate_allowed', ['page', 'article', 'event', 'alert'])
-    ->save();
-
-  // Programmatically run `cim`.
-  $alias = Drush::aliasManager()->getSelf();
-  $config_import = Drush::processManager()->drush($alias, 'cim');
-  $config_import->run($config_import->showRealtime());
-  $config_import->getOutput();
-  drupal_flush_all_caches();
-
-  $message = t('P2lb cleanup completed.');
-  \Drupal::logger('sitenow_p2lb')->notice($message);
-  return $message;
 }
