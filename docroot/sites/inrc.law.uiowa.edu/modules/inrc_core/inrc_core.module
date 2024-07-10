@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\inrc_core\Entity\Grant;
 use Drupal\node\NodeInterface;
@@ -72,13 +73,6 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_pdf_version':
-      uiowa_core_set_field_icon($variables, 'fa-file');
-      uiowa_core_set_attributes($variables, [
-        'bttn',
-        'bttn--tertiary',
-        'bttn--medium',
-      ]);
-
       $node = $variables['element']['#object'];
       $field_name = $variables['element']['#field_name'];
 
@@ -86,8 +80,11 @@ function inrc_core_preprocess_field(&$variables) {
         $file_entity = $node->$field_name->entity->field_media_file->entity;
         $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
         $link_text = ucwords(str_replace(['field_', '_'], ['', ' '], $field_name));
-        $link = Link::fromTextAndUrl($link_text, Url::fromUri($file_url));
-        $variables['items'][0]['content'] = $link->toString();
+        $icon = '<span role="presentation" class="field__icon fas fa-file"></span>';
+        $link = Link::fromTextAndUrl(Markup::create($link_text . ' ' . $icon), Url::fromUri($file_url));
+
+        $variables['items'][0]['content'] = $link->toRenderable();
+        $variables['items'][0]['content']['#attributes']['class'][] = 'bttn bttn--tertiary bttn--medium';
       }
 
       break;
@@ -139,15 +136,23 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
   if ($node->bundle() === 'grant' && $view_mode === 'full') {
     if ($display->getComponent('field_grant_information_heading')) {
       $build['field_grant_information_heading'] = [
-        '#type' => 'markup',
-        '#markup' => '<h2 class="headline headline--serif headline--underline h4">' . t('Grant Information') . '</h2>',
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Grant Information'),
       ];
     }
 
     if ($display->getComponent('field_grant_financials_heading')) {
       $build['field_grant_financials_heading'] = [
-        '#type' => 'markup',
-        '#markup' => '<h2 class="headline headline--serif headline--underline h4">' . t('Financials') . '</h2>',
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Financials'),
       ];
     }
   }
@@ -159,13 +164,31 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
 function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
   if ($node instanceof NodeInterface && $node->getType() === 'grant') {
-    $variables['attributes']['class'][] = 'bg--none border--left';
-    $variables['region_attributes']['card_meta']?->addClass('padding--block--md');
+    $variables['attributes']['class'][] = 'border--left';
+    $variables['attributes']['class'][] = 'bg--none';
+    if (isset($variables['region_attributes']['card_meta'])) {
+      $variables['region_attributes']['card_meta']?->addClass('padding--block--md element--padding__left');
+    }
+    if (isset($variables['region_attributes']['card_subtitle'])) {
+      $variables['region_attributes']['card_subtitle']->addClass('element--padding__left');
+    }
+
     $variables['content']['card_title'] = [
-      '#type' => 'markup',
-      '#markup' => '<h2 class="headline headline--serif default block-margin__bottom"><span class="headline__heading">Contact</span></h2>',
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['element--padding__left'],
+      ],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'block-margin__bottom'],
+        ],
+        '#value' => t('Contact'),
+      ],
     ];
   }
+
 }
 
 /**
