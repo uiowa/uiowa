@@ -7462,3 +7462,39 @@ $sites['labshariftabrizi.uiowa.ddev.site'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.dev.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.stage.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
 $sites['labshariftabrizi.prod.drupal.uiowa.edu'] = 'shariftabrizi.lab.uiowa.edu';
+
+// Directory aliases for medicine.uiowa.edu.
+$sites['medicine.uiowa.ddev.site'] = 'medicine.uiowa.edu';
+$sites['medicine.dev.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+$sites['medicine.stage.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+$sites['medicine.prod.drupal.uiowa.edu'] = 'medicine.uiowa.edu';
+
+// Directory aliases for ponseti.medicine.uiowa.edu.
+$sites['medicineponseti.uiowa.ddev.site'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.dev.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.stage.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+$sites['medicineponseti.prod.drupal.uiowa.edu'] = 'ponseti.medicine.uiowa.edu';
+
+// Directory aliases for cpss.uihealthcare.org.
+$sites['org-uihealthcarecpss.uiowa.ddev.site'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.dev.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.stage.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+$sites['org-uihealthcarecpss.prod.drupal.uiowa.edu'] = 'cpss.uihealthcare.org';
+
+// Directory aliases for respiratorycareseminar.uihealthcare.org.
+$sites['org-uihealthcarerespiratorycareseminar.uiowa.ddev.site'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.dev.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.stage.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+$sites['org-uihealthcarerespiratorycareseminar.prod.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+
+// Directory aliases for inspire2aspire.org.uiowa.edu.
+$sites['orginspire2aspire.uiowa.ddev.site'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.dev.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.stage.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.prod.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
+
+// Directory aliases for yu.lab.uiowa.edu.
+$sites['labyu.uiowa.ddev.site'] = 'yu.lab.uiowa.edu';
+$sites['labyu.dev.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
+$sites['labyu.stage.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
+$sites['labyu.prod.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
