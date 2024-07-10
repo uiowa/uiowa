@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicine.uiowa.ddev.site
+    protocol: https
+  machine_name: medicine
+  human_name: medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicine.prod
+drupal:
+  db:
+    database: medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicine.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Carver College of Medicine'
