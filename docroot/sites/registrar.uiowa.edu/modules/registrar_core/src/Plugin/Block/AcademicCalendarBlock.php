@@ -173,9 +173,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function build() {
     $form = $this->formBuilder->getForm($this);
-    $steps = $this->configuration['steps'];
-    $group_by_month = $this->configuration['group_by_month'];
-    $show_group_by_month = $this->configuration['show_group_by_month'];
 
     $build = [
       'wrapper' => [
@@ -190,7 +187,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
           'content' => [
             '#lazy_builder' => [
               'registrar_core.lazy_builder:loadAcademicCalendarContent',
-              [$steps],
+              [],
             ],
             '#create_placeholder' => TRUE,
           ],
@@ -198,18 +195,30 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       ],
     ];
 
-    // Add the configuration values to drupalSettings.
-    $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'steps' => $steps,
-      'groupByMonth' => $group_by_month,
-      'showGroupByMonth' => $show_group_by_month,
-    ];
-
     // Attach the library for the calendar.
     $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'uids_base/chosen';
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
+
+    $current = $this->maui->getCurrentSession();
+    $steps = $this->configuration['steps'];
+    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+
+    // Get the start date of the first session.
+    $first_session_start_date = $sessions[0]->startDate;
+
+    // Get the end date of the last session.
+    $last_session_end_date = end($sessions)->endDate;
+
+    // Add the configuration values to drupalSettings.
+    $build['#attached']['drupalSettings']['academicCalendar'] = [
+      'steps' => $steps,
+      'groupByMonth' => $this->configuration['group_by_month'],
+      'showGroupByMonth' => $this->configuration['show_group_by_month'],
+      'firstSessionStartDate' => $first_session_start_date,
+      'lastSessionEndDate' => $last_session_end_date,
+    ];
 
     return $build;
   }

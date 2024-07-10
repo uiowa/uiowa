@@ -8,7 +8,7 @@ use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a service for a academic calendar #lazy_builder callback.
+ * Defines a service for an academic calendar #lazy_builder callback.
  */
 class AcademicCalendarLazyBuilder implements TrustedCallbackInterface {
 
@@ -62,31 +62,14 @@ class AcademicCalendarLazyBuilder implements TrustedCallbackInterface {
    * @return array
    *   A renderable array representing the academic calendar content.
    */
-  public function loadAcademicCalendarContent($steps) {
-    $current = $this->maui->getCurrentSession();
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    // Get the start date of the first session.
-    $first_session_start_date = $sessions[0]->startDate;
-
-    // Get the end date of the last session.
-    $last_session_end_date = end($sessions)->endDate;
-
-    $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'firstSessionStartDate' => $first_session_start_date,
-      'lastSessionEndDate' => $last_session_end_date,
-    ];
-
-    $build = [
+  public function loadAcademicCalendarContent() {
+    return [
       '#type' => 'container',
-      '#attributes' => ['class' => ['academic-calendar content']],
+      '#attributes' => ['class' => ['academic-calendar', 'content']],
+      'content' => [
+        '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
+      ],
     ];
-
-    $build['content'] = [
-      '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
-    ];
-
-    return $build;
   }
 
 }
