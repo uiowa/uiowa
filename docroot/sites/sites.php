@@ -7486,3 +7486,9 @@ $sites['org-uihealthcarerespiratorycareseminar.uiowa.ddev.site'] = 'respiratoryc
 $sites['org-uihealthcarerespiratorycareseminar.dev.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
 $sites['org-uihealthcarerespiratorycareseminar.stage.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
 $sites['org-uihealthcarerespiratorycareseminar.prod.drupal.uiowa.edu'] = 'respiratorycareseminar.uihealthcare.org';
+
+// Directory aliases for inspire2aspire.org.uiowa.edu.
+$sites['orginspire2aspire.uiowa.ddev.site'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.dev.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.stage.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
+$sites['orginspire2aspire.prod.drupal.uiowa.edu'] = 'inspire2aspire.org.uiowa.edu';
