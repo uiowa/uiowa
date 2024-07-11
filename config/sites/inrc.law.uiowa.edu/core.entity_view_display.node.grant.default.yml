@@ -292,7 +292,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -335,28 +335,6 @@ third_party_settings:
                   prefix_suffix: true
                 third_party_settings: {  }
             weight: 3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2cb23433-8d1c-4e17-a726-5529fa66d0db
-            region: main
-            configuration:
-              id: 'field_block:node:grant:field_grant_financial_data'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -560,6 +538,28 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: -2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2cb23433-8d1c-4e17-a726-5529fa66d0db
+            region: main
+            configuration:
+              id: 'field_block:node:grant:field_grant_financial_data'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: datetime_custom
+                label: above
+                settings:
+                  timezone_override: ''
+                  date_format: 'M Y'
+                third_party_settings: {  }
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
