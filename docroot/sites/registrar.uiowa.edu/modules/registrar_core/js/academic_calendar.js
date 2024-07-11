@@ -161,12 +161,13 @@
   };
 
   class AcademicCalendar {
-    constructor(calendarEl, steps, groupByMonth, showSubsessions) {
+    constructor(calendarEl, steps, showGroupByMonth) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domBuffer = '';
       this.allEvents = [];
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
+      this.showGroupByMonth = showGroupByMonth;
       // Cache objects for frequently used elements.
       this.form = calendarEl.querySelector('#academic-calendar-filter-form');
       this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
@@ -186,8 +187,8 @@
 
     // Function to toggle visibility of 'Show previous events' checkbox.
     toggleShowPreviousEvents() {
-      const container = showPreviousEventsCheckbox.closest('.js-form-item');
-      const shouldShow = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
+      const container = this.showPreviousEventsCheckbox.closest('.js-form-item');
+      const shouldShow = this.showGroupByMonth ? (this.groupByMonthCheckbox && this.groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
       container.style.display = shouldShow ? 'block' : 'none';
     }
 
