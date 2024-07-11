@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.grant.field_grant_application_deadline
     - field.field.node.grant.field_grant_application_info
     - field.field.node.grant.field_grant_areas_of_interest
-    - field.field.node.grant.field_grant_cities
     - field.field.node.grant.field_grant_classification
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
@@ -617,30 +616,6 @@ third_party_settings:
             - section_margin_fixed_width_container
         components:
           -
-            uuid: 41d8f458-c555-4b65-8550-80df6e9ff657
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_cities'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 4
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
             uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
             region: content
             configuration:
@@ -811,14 +786,6 @@ content:
       link: true
     third_party_settings: {  }
     weight: 123
-    region: content
-  field_grant_cities:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 127
     region: content
   field_grant_classification:
     type: entity_reference_label
