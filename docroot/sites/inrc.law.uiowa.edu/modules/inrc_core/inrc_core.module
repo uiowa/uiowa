@@ -31,10 +31,24 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     case 'node_grant_form':
     case 'node_grant_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
-      // Add our custom submit handler to remove the country code
-      // if no other address info is available. Add it to the front
-      // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
+      if (isset($form['field_grant_counties'])) {
+        $form['#attached']['library'][] = 'inrc_core/chosen-select-all';
+        $form['field_grant_counties']['field_grant_counties_actions'] = [
+          '#type' => 'container',
+          '#weight' => $form['field_grant_counties']['#weight'] - 0.5,
+          'select_all' => [
+            '#type' => 'button',
+            '#value' => t('Select All'),
+            '#attributes' => ['class' => ['grant-counties-select-all']],
+          ],
+          'deselect_all' => [
+            '#type' => 'button',
+            '#value' => t('Deselect All'),
+            '#attributes' => ['class' => ['grant-counties-deselect-all']],
+          ],
+        ];
+      }
       break;
   }
 }
@@ -44,6 +58,22 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
  */
 function inrc_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+
+    case 'field_grant_counties':
+      $vid = 'counties';
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+      $total_terms = count($terms);
+
+      $selected_terms = count($variables['items']);
+
+      if ($selected_terms == $total_terms) {
+        $variables['items'] = [];
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>' .  t('All Counties')  . '</p>',
+        ];
+      }
+      break;
 
     case 'field_grant_application_deadline':
       if ($variables['element']['#view_mode'] == 'teaser') {
