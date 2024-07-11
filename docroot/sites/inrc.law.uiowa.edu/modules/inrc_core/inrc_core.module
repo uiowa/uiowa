@@ -5,8 +5,14 @@
  * Custom functionality the INRC website.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 use Drupal\inrc_core\Entity\Grant;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -31,6 +37,158 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
       array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
       break;
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function inrc_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+
+    case 'field_grant_application_deadline':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_label_icon($variables, 'fa-calendar-days');
+      }
+      break;
+
+    case 'field_grant_ein':
+      if (!empty($variables['items'][0]['content']['#context']['value'])) {
+        $field_content = $variables['items'][0]['content']['#context']['value'];
+        $field_label = $variables['label'];
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<span class="badge badge--light">' . $field_label . ': ' . $field_content . '</span>',
+        ];
+      }
+      break;
+
+    case 'field_grant_fax':
+      uiowa_core_set_field_icon($variables, 'fa-fax');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_grant_email':
+      uiowa_core_set_field_icon($variables, 'fa-envelope');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_grant_pdf_version':
+      $node = $variables['element']['#object'];
+      $field_name = $variables['element']['#field_name'];
+
+      if (!empty($node->$field_name->entity->field_media_file->entity)) {
+        $file_entity = $node->$field_name->entity->field_media_file->entity;
+        $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
+        $link_text = ucwords(str_replace(['field_', '_'], ['', ' '], $field_name));
+        $icon = '<span role="presentation" class="field__icon fas fa-file"></span>';
+        $link = Link::fromTextAndUrl(Markup::create($link_text . ' ' . $icon), Url::fromUri($file_url));
+
+        $variables['items'][0]['content'] = $link->toRenderable();
+        $variables['items'][0]['content']['#attributes']['class'][] = 'bttn bttn--tertiary bttn--medium';
+      }
+
+      break;
+
+    case 'field_grant_phone':
+      uiowa_core_set_field_icon($variables, 'fa-phone');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_grant_website':
+      uiowa_core_set_field_icon($variables, 'fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_grant_address':
+      uiowa_core_set_field_icon($variables, 'fa-map-marker');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function inrc_core_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['node']['grant']['display']['field_grant_information_heading'] = [
+    'label' => t('Grant information heading'),
+    'description' => t('Grant Information'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  $extra['node']['grant']['display']['field_grant_financials_heading'] = [
+    'label' => t('Grant financials heading'),
+    'description' => t('Financials'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'grant' && $view_mode === 'full') {
+    if ($display->getComponent('field_grant_information_heading')) {
+      $build['field_grant_information_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Grant Information'),
+      ];
+    }
+
+    if ($display->getComponent('field_grant_financials_heading')) {
+      $build['field_grant_financials_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Financials'),
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'grant') {
+    $variables['attributes']['class'][] = 'border--left';
+    $variables['attributes']['class'][] = 'bg--none';
+    if (isset($variables['region_attributes']['card_meta'])) {
+      $variables['region_attributes']['card_meta']?->addClass('padding--block--md element--padding__left');
+    }
+    if (isset($variables['region_attributes']['card_subtitle'])) {
+      $variables['region_attributes']['card_subtitle']->addClass('element--padding__left');
+    }
+
+    $variables['content']['card_title'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['element--padding__left'],
+      ],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'block-margin__bottom'],
+        ],
+        '#value' => t('Contact'),
+      ],
+    ];
+  }
+
 }
 
 /**
@@ -77,27 +235,13 @@ function inrc_core_form_views_exposed_form_alter(&$form, FormStateInterface $for
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_theme().
  */
-function inrc_core_preprocess_field(&$variables) {
-  switch ($variables['element']['#field_name']) {
-    case 'field_grant_application_deadline':
-      if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-calendar-days');
-      }
-      break;
-
-    case 'field_grant_application_info':
-      // Set up the details element.
-      $variables['label_display'] = 'visually_hidden';
-      $details = [
-        '#type' => 'details',
-        '#title' => $variables['label'],
-      ];
-
-      // Wrap the field output in the details element.
-      $details['#children'] = $variables['items'][0]['content'];
-      $variables['items'][0]['content'] = $details;
-      break;
-  }
+function inrc_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_grant_application_info__grant__default' => [
+      'template' => 'field--node--field-grant-application-info--grant--default',
+      'base hook' => 'field',
+    ],
+  ];
 }
