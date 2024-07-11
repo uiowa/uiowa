@@ -3,108 +3,15 @@
 
   Drupal.behaviors.academicCalendar = {
     attach: function (context, settings) {
-      once('academicCalendar', '.academic-calendar', context).forEach(function (element) {
-        // Keep the HTML here so that we can add it all at once, preventing content refreshes.
-        let domBuffer = '';
+      once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
+        console.log('element', calendarEl);
 
-        // Initialize variables to store all events and unique sessions.
-        let allEvents = [];
-        let uniqueSessions = new Set();
-
-        // Cache objects for frequently used elements.
-        const form = context.querySelector('#academic-calendar-filter-form');
-        const showPreviousEventsCheckbox = context.querySelector('#show-previous-events');
-        const categoryChosen = context.getElementById('edit_category_chosen');
-        const calendarContent = context.getElementById('academic-calendar-content');
-        const spinner = calendarContent.querySelector('.fa-spinner');
-
+        const steps = drupalSettings.academicCalendar.steps || 0;
         let groupByMonthCheckbox = null;
         const showGroupByMonth = drupalSettings.academicCalendar.showGroupByMonth;
 
-        // Initial toggle of 'Show previous events' checkbox.
-        toggleShowPreviousEvents();
-
-        // Function to toggle visibility of 'Show previous events' checkbox.
-        function toggleShowPreviousEvents() {
-          const container = showPreviousEventsCheckbox.closest('.js-form-item');
-          const shouldShow = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
-          container.style.display = shouldShow ? 'block' : 'none';
-        }
-
-        // Function to fetch events from the server and display them
-        function fetchAndDisplayEvents() {
-          calendarContent.innerHTML = '<span class="fa-solid fa-spinner fa-spin"></span>';
-          if (spinner) {
-            spinner.style.display = 'block';
-          }
-          // Gather all form data.
-          let categories = ['STUDENT'];
-
-          if (categoryChosen) {
-            const chosenOptions = categoryChosen.querySelectorAll('.search-choice');
-            if (chosenOptions.length > 0) {
-              const indices = Array.from(chosenOptions).map(option => parseInt(option.querySelector('a').getAttribute('data-option-array-index')) - 1);
-              if (indices.length > 0) {
-                const selectElement = document.getElementById('edit-category');
-                categories = indices.map(index => selectElement.options[index].value);
-              }
-            }
-          }
-
-          const subsession = form.querySelector('input[name="subsession"]').checked ? '1' : '0';
-          const startDate = form.querySelector('.academic-calendar-start-date').value;
-          const endDate = form.querySelector('.academic-calendar-end-date').value;
-          const session = form.querySelector('select[name="session"]').value;
-          const steps = drupalSettings.academicCalendar.steps || 0;
-
-          Drupal.announce('Fetching events.');
-          // Make AJAX request to fetch events.
-          fetch(`/api/academic-calendar?category=${categories}&subsession=${subsession}&start=${startDate}&end=${endDate}&session=${session}&steps=${steps}`)
-            .then(response => response.json())
-            .then(events => {
-              allEvents = events;
-              uniqueSessions.clear();
-              events.forEach(event => uniqueSessions.add(event.sessionDisplay));
-              populateSessionFilter();
-              filterAndDisplayEvents();
-            })
-            .catch(error => {
-              console.error('Error fetching events:', error);
-              domBuffer = '<div>Error loading events. Please try again later.</div>';
-              Drupal.announce('Error loading events. Please try again later.');
-            });
-        }
-
-        // Function to filter and display events based on current form state.
-        function filterAndDisplayEvents() {
-          const searchTerm = form.querySelector('.academic-calendar-search').value.toLowerCase();
-          const startDate = new Date(form.querySelector('.academic-calendar-start-date').value);
-          const endDate = new Date(form.querySelector('.academic-calendar-end-date').value);
-          const selectedSession = form.querySelector('select[name="session"]').value;
-          // Filter events based on search term, date range, and selected session.
-          const filteredEvents = allEvents.filter(event => {
-            const eventStart = new Date(event.start);
-            const eventEnd = new Date(event.end);
-            const matchesSearch = !searchTerm ||
-              event.title.toLowerCase().includes(searchTerm) ||
-              event.description.toLowerCase().includes(searchTerm);
-            const matchesDateRange = (!startDate.valueOf() || eventEnd >= startDate) &&
-              (!endDate.valueOf() || eventStart <= endDate);
-            const matchesSession = !selectedSession || event.sessionDisplay === selectedSession;
-
-            return matchesSearch && matchesDateRange && matchesSession;
-          });
-          displayEvents(filteredEvents);
-
-          if (calendarContent) {
-            const observer = new MutationObserver(function () {
-              if (spinner) {
-                spinner.style.display = 'none';
-              }
-            });
-            observer.observe(calendarContent, { childList: true });
-          }
-        }
+        // Initialize the AcademicCalendar object.
+        const academicCalendar = new AcademicCalendar(calendarEl, steps, showGroupByMonth);
 
         // Function to display filtered events.
         function displayEvents(events) {
@@ -209,23 +116,6 @@
           domBuffer += event.rendered;
         }
 
-        // Function to populate the session filter dropdown.
-        function populateSessionFilter() {
-          const sessionSelect = form.querySelector('select[name="session"]');
-          const currentValue = sessionSelect.value;
-
-
-          // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
-          let sessionBuffer = '<option value="">All Sessions</option>';
-
-          Array.from(uniqueSessions).sort().forEach(session => {
-            sessionBuffer += `<option value="${session}">${session}</option>`;
-          });
-
-          sessionSelect.innerHTML = sessionBuffer;
-          sessionSelect.value = uniqueSessions.has(currentValue) ? currentValue : '';
-        }
-
         if (showGroupByMonth) {
           groupByMonthCheckbox = context.querySelector('#group-by-month');
 
@@ -269,4 +159,129 @@
       });
     }
   };
+
+  class AcademicCalendar {
+    constructor(calendarEl, steps, groupByMonth, showSubsessions) {
+      // Keep the HTML here so that we can add it all at once, preventing content refreshes.
+      this.domBuffer = '';
+      this.allEvents = [];
+      // Initialize variables to store all events and unique sessions.
+      this.uniqueSessions = new Set();
+      // Cache objects for frequently used elements.
+      this.form = calendarEl.querySelector('#academic-calendar-filter-form');
+      this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
+      this.categoryChosen = calendarEl.getElementById('edit_category_chosen');
+      this.calendarContent = calendarEl.getElementById('academic-calendar-content');
+      this.spinner = calendarContent.querySelector('.fa-spinner');
+      this.categories = ['STUDENT'];
+      this.startDate = this.form.querySelector('.academic-calendar-start-date').value;
+      this.endDate = this.form.querySelector('.academic-calendar-end-date').value;
+      this.sessionSelectEl = this.form.querySelector('select[name="session"]');
+      this.selectedSession = this.form.querySelector('select[name="session"]').value;
+
+      // Initial toggle of 'Show previous events' checkbox.
+      // this.toggleShowPreviousEvents();
+      this.fetchEvents();
+    }
+
+    // Function to toggle visibility of 'Show previous events' checkbox.
+    toggleShowPreviousEvents() {
+      const container = showPreviousEventsCheckbox.closest('.js-form-item');
+      const shouldShow = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
+      container.style.display = shouldShow ? 'block' : 'none';
+    }
+
+    // Function to filter categories.
+    filterCategories() {
+      if (this.categoryChosen) {
+        const chosenOptions = this.categoryChosen.querySelectorAll('.search-choice');
+        if (chosenOptions.length > 0) {
+          const indices = Array.from(chosenOptions).map(option => parseInt(option.querySelector('a').getAttribute('data-option-array-index')) - 1);
+          if (indices.length > 0) {
+            const selectElement = document.getElementById('edit-category');
+            this.categories = indices.map(index => selectElement.options[index].value);
+          }
+        }
+      }
+    }
+
+    // Function to toggle visibility of spinner.
+    toggleSpinner() {
+      this.calendarContent.innerHTML = '<span class="fa-solid fa-spinner fa-spin"></span>';
+      if (this.spinner) {
+        this.spinner.style.display = 'block';
+      }
+    }
+
+    // Function to populate the session filter dropdown.
+    populateSessionFilter() {
+      const currentValue = this.sessionSelectEl.value;
+
+      // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
+      let sessionBuffer = '<option value="">All Sessions</option>';
+
+      Array.from(this.uniqueSessions).sort().forEach(session => {
+        sessionBuffer += `<option value="${session}">${session}</option>`;
+      });
+
+      this.sessionSelectEl.innerHTML = sessionBuffer;
+      this.sessionSelectEl.value = this.uniqueSessions.has(currentValue) ? currentValue : '';
+    }
+
+    // Function to filter and display events based on current form state.
+    filterAndDisplayEvents() {
+      const searchTerm = this.form.querySelector('.academic-calendar-search').value.toLowerCase();
+      const startDate = new Date(this.startDate);
+      const endDate = new Date(this.endDate);
+      const selectedSession = this.sessionSelectEl.value;
+      // Filter events based on search term, date range, and selected session.
+      const filteredEvents = allEvents.filter(event => {
+        const eventStart = new Date(event.start);
+        const eventEnd = new Date(event.end);
+        const matchesSearch = !searchTerm ||
+          event.title.toLowerCase().includes(searchTerm) ||
+          event.description.toLowerCase().includes(searchTerm);
+        const matchesDateRange = (!startDate.valueOf() || eventEnd >= startDate) &&
+          (!endDate.valueOf() || eventStart <= endDate);
+        const matchesSession = !selectedSession || event.sessionDisplay === selectedSession;
+
+        return matchesSearch && matchesDateRange && matchesSession;
+      });
+      displayEvents(filteredEvents);
+
+      if (calendarContent) {
+        const observer = new MutationObserver(function () {
+          if (spinner) {
+            spinner.style.display = 'none';
+          }
+        });
+        observer.observe(calendarContent, { childList: true });
+      }
+    }
+
+    // Function to fetch events from the server and display them.
+    fetchEvents() {
+      this.toggleSpinner();
+      this.filterCategories();
+
+      const subsession = this.form.querySelector('input[name="subsession"]').checked ? '1' : '0';
+
+      Drupal.announce('Fetching events.');
+      // Make AJAX request to fetch events.
+      fetch(`/api/academic-calendar?category=${categories}&subsession=${subsession}&start=${startDate}&end=${endDate}&session=${session}&steps=${this.steps}`)
+        .then(response => response.json())
+        .then(events => {
+          this.allEvents = events;
+          this.uniqueSessions.clear();
+          events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
+          this.populateSessionFilter();
+          filterAndDisplayEvents();
+        })
+        .catch(error => {
+          console.error('Error fetching events:', error);
+          this.domBuffer = '<div>Error loading events. Please try again later.</div>';
+          Drupal.announce('Error loading events. Please try again later.');
+        });
+    }
+  }
 })(Drupal, drupalSettings);

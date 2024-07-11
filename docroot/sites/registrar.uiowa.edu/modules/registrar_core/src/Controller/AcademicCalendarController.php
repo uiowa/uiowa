@@ -142,9 +142,9 @@ class AcademicCalendarController extends ControllerBase {
 
         if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
-          if ($this->filterEvent($event, $categories, $subsession)) {
+//          if ($this->filterEvent($event, $categories, $subsession)) {
             $events[] = $event;
-          }
+//          }
         }
       }
     }

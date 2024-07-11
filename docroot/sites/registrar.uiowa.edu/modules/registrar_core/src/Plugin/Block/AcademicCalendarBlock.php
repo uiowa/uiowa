@@ -179,12 +179,18 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'wrapper' => [
         '#type' => 'container',
         '#attributes' => [
-          'class' => ['list-container__inner'],
+          'class' => [
+            'list-container__inner',
+            'sitenow-academic-calendar',
+          ],
         ],
         'form' => $form,
         'calendar' => [
           '#type' => 'container',
-          '#attributes' => ['class' => ['academic-calendar content'], 'id' => 'academic-calendar-content'],
+          '#attributes' => [
+            'class' => ['academic-calendar content'], 
+            'id' => 'academic-calendar-content',
+          ],
           'content' => [
             '#lazy_builder' => [
               static::class . '::lazyBuilder',
