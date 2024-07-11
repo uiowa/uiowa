@@ -1,0 +1,33 @@
+id: inrc_grant
+label: Grant
+dependencies:
+  enforced:
+    module:
+      - inrc_migrate
+migration_tags:
+  - inrc
+migration_group: sitenow_migrate
+source:
+  plugin: inrc_grant
+  node_type: grant
+destination:
+  plugin: 'entity:node'
+  default_bundle: service
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+migration_dependencies: {  }
