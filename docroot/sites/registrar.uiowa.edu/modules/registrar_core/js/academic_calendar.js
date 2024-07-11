@@ -207,9 +207,12 @@
 
     // Function to toggle visibility of spinner.
     toggleSpinner() {
-      this.calendarContent.innerHTML = '<span class="fa-solid fa-spinner fa-spin"></span>';
       if (this.spinner) {
-        this.spinner.style.display = 'block';
+        if (this.spinner.style.display === 'block') {
+          this.spinner.style.display = 'none';
+        } else {
+          this.spinner.style.display = 'block';
+        }
       }
     }
 
@@ -247,15 +250,14 @@
 
         return matchesSearch && matchesDateRange && matchesSession;
       });
+      // @todo Implement this.
       displayEvents(filteredEvents);
 
-      if (calendarContent) {
-        const observer = new MutationObserver(function () {
-          if (spinner) {
-            spinner.style.display = 'none';
-          }
+      if (this.calendarContent) {
+        const observer = new MutationObserver(() => {
+          this.toggleSpinner();
         });
-        observer.observe(calendarContent, { childList: true });
+        observer.observe(this.calendarContent, { childList: true });
       }
     }
 
@@ -264,18 +266,16 @@
       this.toggleSpinner();
       this.filterCategories();
 
-      const subsession = this.form.querySelector('input[name="subsession"]').checked ? '1' : '0';
-
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
-      fetch(`/api/academic-calendar?category=${categories}&subsession=${subsession}&start=${startDate}&end=${endDate}&session=${session}&steps=${this.steps}`)
+      fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
         .then(response => response.json())
         .then(events => {
           this.allEvents = events;
           this.uniqueSessions.clear();
           events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
           this.populateSessionFilter();
-          filterAndDisplayEvents();
+          this.filterAndDisplayEvents();
         })
         .catch(error => {
           console.error('Error fetching events:', error);
