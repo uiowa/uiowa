@@ -43,7 +43,7 @@ class CevalidationsrForm extends FormBase {
     $form['credentialId'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Please enter CeDiD:'),
-      '#label_attributes' => ['class' => ['labelgray']],
+      '#label_attributes' => ['class' => ['h6']],
       '#required' => TRUE,
       '#description' => $this->t('Not case sensitive.'),
       '#attributes' => [
