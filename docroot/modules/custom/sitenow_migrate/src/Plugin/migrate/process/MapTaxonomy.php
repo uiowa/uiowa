@@ -49,14 +49,8 @@ class MapTaxonomy extends ProcessPluginBase {
     if ($this->configuration['vocabulary']) {
       $this->vocabulary = $this->configuration['vocabulary'];
     };
-    // If we have a basic string, proceed directly to the extraction.
-    if (is_string($value)) {
-      return $this->extractSummaryFromText($value, $this->length);
-    }
-    // If we have an array, we need to do some extra checking.
-    return $this->getSummaryFromTextField($value, $this->length);
+    return $this->fetchTag($value);
   }
-
 
   /**
    * Helper function to fetch existing tags.
