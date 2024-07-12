@@ -17,7 +17,8 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  *   source_module = "node"
  * )
  */
-class Grant extends BaseNodeSource {
+class Grant extends BaseNodeSource
+{
   use ProcessMediaTrait;
   use LinkReplaceTrait;
 
@@ -31,7 +32,8 @@ class Grant extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
+  public function fields()
+  {
     $fields = parent::fields();
     $fields['alias'] = $this->t('The URL alias for this node.');
     return $fields;
@@ -40,7 +42,8 @@ class Grant extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
+  public function prepareRow(Row $row)
+  {
     // Skip this node if it comes after our last migrated.
     if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
       return FALSE;
@@ -56,3 +59,4 @@ class Grant extends BaseNodeSource {
 
     return TRUE;
   }
+}
