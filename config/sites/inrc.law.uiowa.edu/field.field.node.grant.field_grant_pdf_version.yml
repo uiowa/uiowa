@@ -1,0 +1,29 @@
+uuid: eab6e70a-7f66-46ca-b037-aa225fd59ec8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_pdf_version
+    - media.type.file
+    - node.type.grant
+id: node.grant.field_grant_pdf_version
+field_name: field_grant_pdf_version
+entity_type: node
+bundle: grant
+label: 'PDF Version'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

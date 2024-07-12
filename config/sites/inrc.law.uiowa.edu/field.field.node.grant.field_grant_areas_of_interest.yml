@@ -1,0 +1,29 @@
+uuid: 86fe9155-c24e-4e67-8362-0dab42c3ab51
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_areas_of_interest
+    - node.type.grant
+    - taxonomy.vocabulary.grant_areas_of_interest
+id: node.grant.field_grant_areas_of_interest
+field_name: field_grant_areas_of_interest
+entity_type: node
+bundle: grant
+label: 'Areas of Interest'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      grant_areas_of_interest: grant_areas_of_interest
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

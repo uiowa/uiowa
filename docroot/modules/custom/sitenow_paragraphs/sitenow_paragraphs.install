@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Update articles and people column width to `Full` after removing `-none-`.
+ */
+function sitenow_paragraphs_update_9001() {
+  $database = Database::getConnection();
+
+  // Current entities.
+  $people_and_articles_with_column_width_entries =
+    $database->select('paragraph__field_uip_colwidth', 'cw')
+      ->fields('cw', ['entity_id'])
+      ->condition('cw.bundle', ['people', 'articles'], 'IN')
+      ->execute()->fetchCol();
+
+  $people_and_articles_without_column_entries =
+    $database->select('paragraphs_item', 'pi')
+      ->fields('pi', ['id', 'revision_id', 'type'])
+      ->condition('pi.type', ['people', 'articles'], 'IN')
+      ->condition('pi.id', $people_and_articles_with_column_width_entries, 'NOT IN')
+      ->execute();
+
+  $current_entities = [];
+  foreach ($people_and_articles_without_column_entries as $paragraph) {
+    $current_entities[] = [
+      'bundle' => $paragraph->type,
+      'deleted' => 0,
+      'entity_id' => $paragraph->id,
+      'revision_id' => $paragraph->revision_id,
+      'langcode' => 'en',
+      'delta' => 0,
+      'field_uip_colwidth_value' => 'col-md-12',
+    ];
+  }
+
+  // Revisions.
+  $people_and_articles_revisions_with_column_width_entries =
+    $database->select('paragraph_revision__field_uip_colwidth', 'cw')
+      ->fields('cw', ['revision_id'])
+      ->condition('cw.bundle', ['people', 'articles'], 'IN')
+      ->execute()->fetchCol();
+
+  $query = $database->select('paragraphs_item_revision', 'pi_r')
+    ->fields('pi_r', ['id', 'revision_id']);
+  $query->join('paragraphs_item', 'pi', 'pi.id = pi_r.id');
+  $people_and_articles_revisions_without_column_entries =
+    $query->fields('pi', ['type'])
+      ->condition('pi.type', ['people', 'articles'], 'IN')
+      ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
+      ->execute();
+
+  $revisions = [];
+  foreach ($people_and_articles_revisions_without_column_entries as $paragraph) {
+    $revisions[] = [
+      'bundle' => $paragraph->type,
+      'deleted' => 0,
+      'entity_id' => $paragraph->id,
+      'revision_id' => $paragraph->revision_id,
+      'langcode' => 'en',
+      'delta' => 0,
+      'field_uip_colwidth_value' => 'col-md-12',
+    ];
+  }
+
+  // Do our inserts.
+  foreach ($current_entities as $current_entity) {
+    $database->insert('paragraph__field_uip_colwidth')
+      ->fields($current_entity)
+      ->execute();
+  }
+  foreach ($revisions as $revision) {
+    $database->insert('paragraph_revision__field_uip_colwidth')
+      ->fields($revision)
+      ->execute();
+  }
+}

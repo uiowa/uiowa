@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Uiowa Core module.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function registrar_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    // Unset request info buttons.
+    case 'academic_calendar_block':
+      uiowa_core_set_attributes($variables, 'grid--twocol--25-75');
+      break;
+  }
+}

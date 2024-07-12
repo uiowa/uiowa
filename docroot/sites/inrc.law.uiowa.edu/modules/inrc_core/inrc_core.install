@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Import Iowa counties and cities.
+ */
+function inrc_core_install() {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'inrc_core');
+  foreach (['counties', 'cities'] as $type) {
+    $csv = array_map('str_getcsv', file($path . "/data/iowa_{$type}.csv"));
+    $header = FALSE;
+
+    if ($header === TRUE) {
+      unset($csv[0]);
+    }
+
+    foreach ($csv as $term_name) {
+      $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $terms = $storage->loadByProperties([
+        'name' => $term_name,
+        'vid' => $type,
+      ]);
+      if (empty($terms)) {
+        Term::create([
+          'name' => $term_name,
+          'vid' => $type,
+        ])
+          ->save();
+      }
+    }
+  }
+
+}

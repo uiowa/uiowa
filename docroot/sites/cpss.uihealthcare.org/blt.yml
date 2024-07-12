@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-uihealthcarecpss.uiowa.ddev.site
+    protocol: https
+  machine_name: org-uihealthcarecpss
+  human_name: cpss.uihealthcare.org
+drush:
+  aliases:
+    local: self
+    remote: org-uihealthcarecpss.prod
+drupal:
+  db:
+    database: cpss_uihealthcare_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-uihealthcarecpss.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Center for Procedural Skills and Simulation'

@@ -1,0 +1,22 @@
+uuid: 4a2864a2-7f42-4535-83e6-74c4d2f8ea0e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: resource
+label: Resource
+type: 'canonical_entities:node'
+pattern: 'archives/media/[node:title]'
+selection_criteria:
+  3609c5bc-bdcb-4fbf-a9b2-b32c98f69e57:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 3609c5bc-bdcb-4fbf-a9b2-b32c98f69e57
+    context_mapping:
+      node: node
+    bundles:
+      resource: resource
+selection_logic: and
+weight: -5
+relationships: {  }

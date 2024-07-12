@@ -1,0 +1,143 @@
+uuid: f94dfa5f-8c92-44e9-9010-3d8480657787
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.minimal
+    - field.field.node.grant.body
+    - field.field.node.grant.field_grant_address
+    - field.field.node.grant.field_grant_application_deadline
+    - field.field.node.grant.field_grant_application_info
+    - field.field.node.grant.field_grant_areas_of_interest
+    - field.field.node.grant.field_grant_cities
+    - field.field.node.grant.field_grant_classification
+    - field.field.node.grant.field_grant_contact_name
+    - field.field.node.grant.field_grant_contact_title
+    - field.field.node.grant.field_grant_counties
+    - field.field.node.grant.field_grant_ein
+    - field.field.node.grant.field_grant_email
+    - field.field.node.grant.field_grant_fax
+    - field.field.node.grant.field_grant_filter_friendly_name
+    - field.field.node.grant.field_grant_financial_data
+    - field.field.node.grant.field_grant_ntee_classification
+    - field.field.node.grant.field_grant_pdf_version
+    - field.field.node.grant.field_grant_phone
+    - field.field.node.grant.field_grant_restrictions
+    - field.field.node.grant.field_grant_sample_grants
+    - field.field.node.grant.field_grant_sizes
+    - field.field.node.grant.field_grant_total_assets
+    - field.field.node.grant.field_grant_total_grants
+    - field.field.node.grant.field_grant_trustees
+    - field.field.node.grant.field_grant_type_of_grant
+    - field.field.node.grant.field_grant_website
+    - field.field.node.grant.field_meta_tags
+    - node.type.grant
+    - workflows.workflow.editorial
+  module:
+    - content_moderation
+    - path
+id: node.grant.minimal
+targetEntityType: node
+bundle: grant
+mode: minimal
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_grant_address: true
+  field_grant_application_deadline: true
+  field_grant_application_info: true
+  field_grant_areas_of_interest: true
+  field_grant_cities: true
+  field_grant_classification: true
+  field_grant_contact_name: true
+  field_grant_contact_title: true
+  field_grant_counties: true
+  field_grant_ein: true
+  field_grant_email: true
+  field_grant_fax: true
+  field_grant_filter_friendly_name: true
+  field_grant_financial_data: true
+  field_grant_ntee_classification: true
+  field_grant_pdf_version: true
+  field_grant_phone: true
+  field_grant_restrictions: true
+  field_grant_sample_grants: true
+  field_grant_sizes: true
+  field_grant_total_assets: true
+  field_grant_total_grants: true
+  field_grant_trustees: true
+  field_grant_type_of_grant: true
+  field_grant_website: true
+  field_meta_tags: true
+  publish_on: true
+  publish_state: true
+  scheduler_settings: true
+  unpublish_on: true
+  unpublish_state: true

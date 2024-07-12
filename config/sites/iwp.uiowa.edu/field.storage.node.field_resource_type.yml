@@ -1,0 +1,30 @@
+uuid: 078684eb-6fcf-413d-a457-cf1217b373b7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_resource_type
+field_name: field_resource_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: video
+      label: Video
+    -
+      value: audio
+      label: Audio
+    -
+      value: document
+      label: Document
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -35,6 +35,15 @@
 
 // === BEF Summary & Details === //
 .bef-form {
+
+  .bef-exposed-form {
+    details {
+      &[open] > summary::before {
+        content: "\f139";
+      }
+    }
+  }
+
   details {
     --elemHeight: 3.5rem;
     flex: 1;
@@ -45,10 +54,6 @@
     &.form-wrapper {
       border: none;
       background: none;
-    }
-
-    &[open] > summary::before {
-      content: "\f139";
     }
 
     &.form-item {
@@ -125,9 +130,6 @@
     font-weight: 600;
     display: block;
     margin-bottom: 1rem;
-    @include breakpoint(sm) {
-      margin-bottom: 0;
-    }
 
     &::-webkit-details-marker,
     &::marker {
