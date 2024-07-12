@@ -29,5 +29,38 @@ process:
     plugin: default_value
     default_value: 1
   title: title
+  field_grant_filter_friendly_name: field_filter_name
+  field_grant_ein: field_grant_employer_id
+  field_grant_contact_name: field_grant_contact_name
+  field_grant_contact_title: field_grant_contact_title
+  field_grant_address/country_code: field_inrc_address/country
+  field_grant_address/address_line1: field_inrc_address/thoroughfare
+  field_grant_address/address_line2: field_inrc_address/premise
+  field_grant_address/locality: field_inrc_address/locality
+  field_grant_address/administrative_area: field_inrc_address/administrative_area
+  field_grant_address/postal_code: field_inrc_address/postal_code
+  field_grant_phone: field_inrc_telephone_number
+  field_grant_fax: field_inrc_fax
+  field_grant_email: field_inrc_email
+  field_grant_classification: field_grant_classification
   body: body
+  field_grant_restrictions: field_grant_restrictions
+  field_grant_sizes: field_grant_sizes
+  field_grant_total_grants: field_grant_total_grants
+  field_grant_trustees: field_grant_trustees
+  field_grant_sample_grants: field_grant_sample_grants
+  field_grant_website:
+    plugin: field_link
+    source: field_inrc_website
+  field_grant_ntee_classification: field_grant_ntee
+  field_grant_areas_of_interest: field_grant_interest_areas
+  field_grant_type_of_grant: field_grant_ref_types
+  field_grant_pdf_version:
+    plugin: create_media_from_file_field
+    source: field_pdf_version
+  field_grant_counties: field_entityref_counties
+  field_grant_application_info: field_grant_application_info
+  field_grant_application_deadline: field_grant_app_deadline
+  field_grant_total_assets: field_grant_total_assets
+  field_grant_financial_data: field_grant_financial_recieved
 migration_dependencies: {  }
