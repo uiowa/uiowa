@@ -104,13 +104,12 @@ class CcomArticle extends BaseNodeSource {
         $this->migration
           ->getIdMap()
           ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
-        if ($this->logger != NULL) {
-          $this->logger->notice('Metatag @item: @value not migrated for node: @nid', [
+        $this->logger->notice('Metatag @item: @value not migrated for node: @nid',
+          [
             '@item' => $item,
             '@value' => $value,
             '@nid' => $row->getSourceProperty('nid'),
           ]);
-        }
       }
     }
     // If a date is specified in field_date,
