@@ -7498,3 +7498,9 @@ $sites['labyu.uiowa.ddev.site'] = 'yu.lab.uiowa.edu';
 $sites['labyu.dev.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
 $sites['labyu.stage.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
 $sites['labyu.prod.drupal.uiowa.edu'] = 'yu.lab.uiowa.edu';
+
+// Directory aliases for ccn.lab.uiowa.edu.
+$sites['labccn.uiowa.ddev.site'] = 'ccn.lab.uiowa.edu';
+$sites['labccn.dev.drupal.uiowa.edu'] = 'ccn.lab.uiowa.edu';
+$sites['labccn.stage.drupal.uiowa.edu'] = 'ccn.lab.uiowa.edu';
+$sites['labccn.prod.drupal.uiowa.edu'] = 'ccn.lab.uiowa.edu';
