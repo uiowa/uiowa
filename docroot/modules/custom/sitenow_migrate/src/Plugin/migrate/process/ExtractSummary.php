@@ -8,7 +8,7 @@ use Drupal\migrate\Row;
 use Drupal\smart_trim\TruncateHTML;
 
 /**
- * Extract a summary from a compound text field..
+ * Extract a summary from a compound text field.
  *
  * A truncation length (number of characters) can be specified:
  * @code
