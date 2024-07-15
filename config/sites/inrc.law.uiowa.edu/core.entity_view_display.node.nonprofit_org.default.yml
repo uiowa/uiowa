@@ -6,8 +6,98 @@ dependencies:
     - field.field.node.nonprofit_org.body
     - node.type.nonprofit_org
   module:
+    - layout_builder
+    - system
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 35749293-1901-42f4-a6a7-587830c46564
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 6da93827-4390-4d18-a5d9-07a7871c9da4
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 109f8baa-e7af-4b0d-ba85-ad49f8ea94b0
+            region: content
+            configuration:
+              id: 'extra_field_block:node:nonprofit_org:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e0667eb9-d57c-4304-ac47-d89aaa469a6c
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.nonprofit_org.default
 targetEntityType: node
 bundle: nonprofit_org
