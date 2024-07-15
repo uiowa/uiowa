@@ -1,8 +1,9 @@
-uuid: 79e988a0-0b97-4d51-a526-7f0f2c27ce4e
+uuid: dac73a93-bf05-4645-95d4-5d12da89d878
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.minimal
     - field.field.node.nonprofit_org.body
     - field.field.node.nonprofit_org.field_np_address
     - field.field.node.nonprofit_org.field_np_contact_name
@@ -13,76 +14,18 @@ dependencies:
     - node.type.nonprofit_org
     - workflows.workflow.editorial
   module:
-    - address
     - content_moderation
     - path
-    - telephone
-    - text
-id: node.nonprofit_org.default
+id: node.nonprofit_org.minimal
 targetEntityType: node
 bundle: nonprofit_org
-mode: default
+mode: minimal
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 121
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_np_address:
-    type: address_default
-    weight: 125
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_np_contact_name:
-    type: string_textfield
-    weight: 123
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_np_contact_title:
-    type: string_textfield
-    weight: 124
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_np_employer_id:
-    type: string_textfield
-    weight: 122
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_np_ntee:
-    type: string_textfield
-    weight: 127
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_np_telephone_number:
-    type: telephone_default
-    weight: 126
-    region: content
-    settings:
-      placeholder: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
@@ -146,7 +89,15 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  body: true
+  field_np_address: true
+  field_np_contact_name: true
+  field_np_contact_title: true
+  field_np_employer_id: true
+  field_np_ntee: true
+  field_np_telephone_number: true
   publish_on: true
   publish_state: true
+  scheduler_settings: true
   unpublish_on: true
   unpublish_state: true

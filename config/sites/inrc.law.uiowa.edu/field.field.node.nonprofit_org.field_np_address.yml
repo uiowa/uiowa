@@ -1,0 +1,40 @@
+uuid: 01df6b5c-aa32-464d-8567-bbb4e60fce66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_np_address
+    - node.type.nonprofit_org
+  module:
+    - address
+id: node.nonprofit_org.field_np_address
+field_name: field_np_address
+entity_type: node
+bundle: nonprofit_org
+label: Address
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    langcode: null
+    country_code: US
+    administrative_area: ''
+    locality: ''
+    dependent_locality: null
+    postal_code: ''
+    sorting_code: null
+    address_line1: ''
+    address_line2: ''
+    organization: ''
+    given_name: ''
+    additional_name: null
+    family_name: ''
+default_value_callback: ''
+settings:
+  available_countries:
+    US: US
+  langcode_override: ''
+  field_overrides: {  }
+  fields: {  }
+field_type: address
