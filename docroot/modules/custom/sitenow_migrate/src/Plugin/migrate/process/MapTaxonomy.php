@@ -41,6 +41,21 @@ class MapTaxonomy extends ProcessPluginBase {
   protected $vocabulary = 'tags';
 
   /**
+   * The source database connection.
+   *
+   * @var Drupal\Core\Database\Database
+   */
+  protected $database;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->database = Database::getConnection('default', 'drupal_7');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
@@ -96,10 +111,7 @@ class MapTaxonomy extends ProcessPluginBase {
     if (!isset($value['tid'])) {
       return FALSE;
     }
-    // Check the source database for term name.
-    // @todo Add this to the constructor.
-    $db = Database::getConnection('default', 'drupal_7');
-    return $db->select('taxonomy_term_data', 't')
+    return $this->database->select('taxonomy_term_data', 't')
       ->fields('t', ['name'])
       ->condition('t.tid', $value['tid'])
       ->execute()
