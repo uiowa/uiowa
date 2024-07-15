@@ -43,9 +43,13 @@ class Grant extends BaseNodeSource {
 
     // Skip over the rest of the preprocessing, as it's not needed
     // for redirects. Also avoids duplicating the notices.
-    // Return TRUE because the row should be created.
+    // Return TRUE as long as we have an alias so that
+    // the row will be created.
     if ($this->migration->id() === 'inrc_grant_redirects') {
-      return TRUE;
+      if ($row->getSourceProperty('alias')) {
+        return TRUE;
+      }
+      return FALSE;
     }
 
     return TRUE;
