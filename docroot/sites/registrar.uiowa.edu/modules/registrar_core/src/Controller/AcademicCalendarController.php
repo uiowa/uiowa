@@ -198,11 +198,11 @@ class AcademicCalendarController extends ControllerBase {
 
     // Determine the date to display.
     $start_timestamp = strtotime($date->beginDate);
-    $start = date('M j, Y', $start_timestamp);
+    $start = date('D, M j, Y', $start_timestamp);
     $month = date('M', $start_timestamp);
     $day = date('j', $start_timestamp);
     if ($date->endDate != $date->beginDate) {
-      $end = date('M j, Y', strtotime($date->endDate));
+      $end = date('D, M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
     $event->displayDate = $start;
