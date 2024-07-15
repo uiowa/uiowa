@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\process;
 
+use Drupal\Core\Database\Database;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
@@ -49,15 +50,20 @@ class MapTaxonomy extends ProcessPluginBase {
     if ($this->configuration['vocabulary']) {
       $this->vocabulary = $this->configuration['vocabulary'];
     };
-    return $this->fetchTag($value);
+    $term_name = $this->fetchTermName($value);
+    if ($term_name) {
+      $tid = $this->fetchTag($term_name);
+      if ($tid) {
+        return ['tid' => $tid];
+      }
+    }
+    return FALSE;
   }
 
   /**
    * Helper function to fetch existing tags.
    */
-  private function fetchTag($value) {
-    // Fetch the name from the source based on its term id.
-    $term_name = fetchTermName($value);
+  private function fetchTag($term_name) {
     // Check if we already have the tag in the destination.
     $result = \Drupal::database()
       ->select('taxonomy_term_field_data', 't')
@@ -71,21 +77,33 @@ class MapTaxonomy extends ProcessPluginBase {
     }
     // If we didn't have the tag already,
     // then create a new tag and return its id.
-    $term = Term::create([
-      'name' => $term_name,
-      'vid' => $this->vocabulary,
-    ]);
-    if ($term->save()) {
-      return $term->id();
+    if ($this->createNew) {
+      $term = Term::create([
+        'name' => $term_name,
+        'vid' => $this->vocabulary,
+      ]);
+      if ($term->save()) {
+        return $term->id();
+      }
     }
+    return FALSE;
   }
 
   /**
    * Helper function to fetch tag name based on source tag id.
    */
   private function fetchTermName($value) {
+    if (!isset($value['tid'])) {
+      return FALSE;
+    }
     // Check the source database for term name.
-    return $value;
+    // @todo Add this to the constructor.
+    $db = Database::getConnection('default', 'drupal_7');
+    return $db->select('taxonomy_term_data', 't')
+      ->fields('t', ['name'])
+      ->condition('t.tid', $value['tid'])
+      ->execute()
+      ->fetchCol();
   }
 
 }
