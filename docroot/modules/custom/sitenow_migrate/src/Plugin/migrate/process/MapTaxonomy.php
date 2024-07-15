@@ -108,12 +108,21 @@ class MapTaxonomy extends ProcessPluginBase {
    * Helper function to fetch tag name based on source tag id.
    */
   private function fetchTermName($value) {
-    if (!isset($value['tid'])) {
+    // Depending on the source fieldtype,
+    // the value we're interested in might be in
+    // 'tid' or 'target_id'.
+    if (isset($value['tid'])) {
+      $tid = $value['tid'];
+    }
+    elseif (isset($value['target_id'])) {
+      $tid = $value['target_id'];
+    }
+    else {
       return FALSE;
     }
     return $this->database->select('taxonomy_term_data', 't')
       ->fields('t', ['name'])
-      ->condition('t.tid', $value['tid'])
+      ->condition('t.tid', $tid)
       ->execute()
       ->fetchCol();
   }
