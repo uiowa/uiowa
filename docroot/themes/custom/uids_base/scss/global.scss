@@ -304,6 +304,9 @@ details {
   }
   &--left {
     border-left: 1px solid rgba(0, 0, 0, 0.25);
+    &.borderless.card {
+      border-left: 1px solid rgba(0, 0, 0, 0.25)!important;
+    }
   }
 }
 
@@ -627,6 +630,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   padding-block: 0.5rem;
 }
 
+.padding--block--md {
+  padding-block: 1rem;
+}
+
 .padding--inline-start--sm {
   padding-inline-start: 0.5rem;
 }
@@ -689,6 +696,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region {
       .block + .block {
         margin-top: 1.6rem;
+        .field--label-above {
+          margin-bottom: 0;
+        }
+
+        .field.text-formatted div {
+          margin-bottom: 0;
+          p:first-child:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         &:first-child {
           margin-top: 0;

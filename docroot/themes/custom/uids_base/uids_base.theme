@@ -803,6 +803,13 @@ function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
         $variables['no_border'] = $class;
       }
     }
+    // Check if the class starts with "border".
+    if (str_starts_with($class, 'border--')) {
+      // Add the class to no_border.
+      if ($class == 'border--left') {
+        $variables['border_left'] = $class;
+      }
+    }
     // Check if it's a background class.
     if (str_starts_with($class, 'bg--')) {
       // If it's a specified background, include it,
