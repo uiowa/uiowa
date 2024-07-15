@@ -54,10 +54,10 @@ class MapTaxonomy extends ProcessPluginBase {
     if ($term_name) {
       $tid = $this->fetchTag($term_name);
       if ($tid) {
-        return ['tid' => $tid];
+        return $tid;
       }
     }
-    return FALSE;
+    return NULL;
   }
 
   /**
