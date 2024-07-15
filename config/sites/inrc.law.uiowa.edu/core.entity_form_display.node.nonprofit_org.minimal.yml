@@ -5,12 +5,19 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.nonprofit_org.body
+    - field.field.node.nonprofit_org.field_image
     - field.field.node.nonprofit_org.field_np_address
+    - field.field.node.nonprofit_org.field_np_assets
+    - field.field.node.nonprofit_org.field_np_category
     - field.field.node.nonprofit_org.field_np_contact_name
     - field.field.node.nonprofit_org.field_np_contact_title
+    - field.field.node.nonprofit_org.field_np_email
     - field.field.node.nonprofit_org.field_np_employer_id
+    - field.field.node.nonprofit_org.field_np_income
     - field.field.node.nonprofit_org.field_np_ntee
+    - field.field.node.nonprofit_org.field_np_revenue
     - field.field.node.nonprofit_org.field_np_telephone_number
+    - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
     - workflows.workflow.editorial
   module:
@@ -90,12 +97,19 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_image: true
   field_np_address: true
+  field_np_assets: true
+  field_np_category: true
   field_np_contact_name: true
   field_np_contact_title: true
+  field_np_email: true
   field_np_employer_id: true
+  field_np_income: true
   field_np_ntee: true
+  field_np_revenue: true
   field_np_telephone_number: true
+  field_np_website: true
   publish_on: true
   publish_state: true
   scheduler_settings: true

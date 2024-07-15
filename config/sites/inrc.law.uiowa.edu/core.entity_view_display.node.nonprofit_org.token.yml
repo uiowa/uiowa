@@ -1,9 +1,9 @@
-uuid: 57fc1bc4-0367-4fa7-a45e-cc41c7a17127
+uuid: 61b561d1-183a-4de2-b939-faf289bc34bd
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.token
     - field.field.node.nonprofit_org.body
     - field.field.node.nonprofit_org.field_image
     - field.field.node.nonprofit_org.field_np_address
@@ -20,29 +20,20 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
   module:
-    - text
     - user
-id: node.nonprofit_org.teaser
+id: node.nonprofit_org.token
 targetEntityType: node
 bundle: nonprofit_org
-mode: teaser
+mode: token
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 101
-    region: content
   field_image:
     type: entity_reference_entity_view
-    label: hidden
+    label: visually_hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 6
+    weight: 0
     region: content
   links:
     settings: {  }
@@ -50,6 +41,7 @@ content:
     weight: 100
     region: content
 hidden:
+  body: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true

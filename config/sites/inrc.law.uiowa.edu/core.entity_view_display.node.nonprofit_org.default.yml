@@ -5,16 +5,25 @@ dependencies:
   config:
     - core.base_field_override.node.nonprofit_org.title
     - field.field.node.nonprofit_org.body
+    - field.field.node.nonprofit_org.field_image
     - field.field.node.nonprofit_org.field_np_address
+    - field.field.node.nonprofit_org.field_np_assets
+    - field.field.node.nonprofit_org.field_np_category
     - field.field.node.nonprofit_org.field_np_contact_name
     - field.field.node.nonprofit_org.field_np_contact_title
+    - field.field.node.nonprofit_org.field_np_email
     - field.field.node.nonprofit_org.field_np_employer_id
+    - field.field.node.nonprofit_org.field_np_income
     - field.field.node.nonprofit_org.field_np_ntee
+    - field.field.node.nonprofit_org.field_np_revenue
     - field.field.node.nonprofit_org.field_np_telephone_number
+    - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
   module:
     - address
+    - entity_reference_revisions
     - layout_builder
+    - link
     - system
     - text
     - user
@@ -168,6 +177,133 @@ third_party_settings:
             weight: 7
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: dec85710-e3f8-4e5b-b446-50815bd110e0
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_email'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a8c4bf12-f630-4123-82ef-2879fdf52364
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_website'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bbee537e-879b-45de-bc6a-4c735bf7d2d1
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                  link: false
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 30c08616-51c6-4630-a78b-5b806cbaa313
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_category'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ce98e58e-d0d4-4109-8192-0dfabcb67c1a
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_assets'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 245d3e46-4b1d-4333-b06b-5f051e132500
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_income'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 107229fe-a143-40b1-974f-bff9881817d5
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_revenue'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -218,12 +354,39 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    weight: 110
+    region: content
   field_np_address:
     type: address_default
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 105
+    region: content
+  field_np_assets:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 112
+    region: content
+  field_np_category:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 111
     region: content
   field_np_contact_name:
     type: string
@@ -241,6 +404,13 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
+  field_np_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
+    region: content
   field_np_employer_id:
     type: string
     label: above
@@ -248,6 +418,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_np_income:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 113
     region: content
   field_np_ntee:
     type: string
@@ -257,12 +436,33 @@ content:
     third_party_settings: {  }
     weight: 107
     region: content
+  field_np_revenue:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 114
+    region: content
   field_np_telephone_number:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 106
+    region: content
+  field_np_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 109
     region: content
   links:
     settings: {  }

@@ -4,20 +4,73 @@ status: true
 dependencies:
   config:
     - field.field.node.nonprofit_org.body
+    - field.field.node.nonprofit_org.field_image
     - field.field.node.nonprofit_org.field_np_address
+    - field.field.node.nonprofit_org.field_np_assets
+    - field.field.node.nonprofit_org.field_np_category
     - field.field.node.nonprofit_org.field_np_contact_name
     - field.field.node.nonprofit_org.field_np_contact_title
+    - field.field.node.nonprofit_org.field_np_email
     - field.field.node.nonprofit_org.field_np_employer_id
+    - field.field.node.nonprofit_org.field_np_income
     - field.field.node.nonprofit_org.field_np_ntee
+    - field.field.node.nonprofit_org.field_np_revenue
     - field.field.node.nonprofit_org.field_np_telephone_number
+    - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
-    - workflows.workflow.editorial
   module:
     - address
     - content_moderation
+    - field_group
+    - link
+    - media_library
     - path
     - telephone
     - text
+third_party_settings:
+  field_group:
+    group_general_information:
+      children:
+        - title
+        - field_np_employer_id
+        - field_np_contact_name
+        - field_np_contact_title
+        - field_np_address
+        - field_np_telephone_number
+        - field_np_email
+        - field_np_ntee
+        - field_np_website
+        - field_image
+        - field_np_category
+        - body
+        - group_financial_information
+      label: 'General Information'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_financial_information:
+      children:
+        - field_np_assets
+        - field_np_income
+        - field_np_revenue
+      label: 'Financial Information'
+      region: hidden
+      parent_name: group_general_information
+      weight: 12
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
 id: node.nonprofit_org.default
 targetEntityType: node
 bundle: nonprofit_org
@@ -25,7 +78,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 121
+    weight: 13
     region: content
     settings:
       rows: 9
@@ -35,19 +88,39 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 10
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   field_np_address:
     type: address_default
-    weight: 125
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_assets:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_category:
+    type: options_buttons
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   field_np_contact_name:
     type: string_textfield
-    weight: 123
+    weight: 3
     region: content
     settings:
       size: 60
@@ -55,76 +128,106 @@ content:
     third_party_settings: {  }
   field_np_contact_title:
     type: string_textfield
-    weight: 124
+    weight: 4
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_np_email:
+    type: email_default
+    weight: 7
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
   field_np_employer_id:
     type: string_textfield
-    weight: 122
+    weight: 2
     region: content
     settings:
       size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_income:
+    type: number
+    weight: 13
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   field_np_ntee:
     type: string_textfield
-    weight: 127
+    weight: 8
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_np_telephone_number:
-    type: telephone_default
-    weight: 126
+  field_np_revenue:
+    type: number
+    weight: 14
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_np_telephone_number:
+    type: telephone_default
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_website:
+    type: link_default
+    weight: 9
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 15
+    weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 120
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 16
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 1
     region: content
     settings:
       size: 60
@@ -132,7 +235,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 1
     region: content
     settings:
       match_operator: CONTAINS
@@ -141,7 +244,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
