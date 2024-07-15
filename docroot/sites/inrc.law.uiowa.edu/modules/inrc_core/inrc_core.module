@@ -31,6 +31,9 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     case 'node_grant_form':
     case 'node_grant_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
       if (isset($form['field_grant_counties'])) {
         $form['#attached']['library'][] = 'inrc_core/chosen-select-all';
