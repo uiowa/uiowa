@@ -1,0 +1,34 @@
+uuid: 57fc1bc4-0367-4fa7-a45e-cc41c7a17127
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.nonprofit_org.body
+    - node.type.nonprofit_org
+  module:
+    - text
+    - user
+id: node.nonprofit_org.teaser
+targetEntityType: node
+bundle: nonprofit_org
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
