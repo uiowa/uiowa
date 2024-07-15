@@ -7,173 +7,83 @@
         console.log('element', calendarEl);
 
         const steps = drupalSettings.academicCalendar.steps || 0;
-        let groupByMonthCheckbox = null;
-        const showGroupByMonth = drupalSettings.academicCalendar.showGroupByMonth;
+        const initGroupByMonth = drupalSettings.academicCalendar.groupByMonth;
 
         // Initialize the AcademicCalendar object.
-        const academicCalendar = new AcademicCalendar(calendarEl, steps, showGroupByMonth);
+        const academicCalendar = new AcademicCalendar(calendarEl, steps, initGroupByMonth);
 
-        // Function to display filtered events.
-        function displayEvents(events) {
-          domBuffer = '';
-
-          if (events.length === 0) {
-            domBuffer = '<p>No events found matching your criteria.</p>';
-            Drupal.announce('No events found matching your criteria.');
-            return;
-          }
-
-          Drupal.announce(`Displaying ${events.length} events based on filter criteria.`);
-
-          // Sort events chronologically.
-          events.sort((a, b) => new Date(a.start) - new Date(b.start));
-
-          const groupByMonth = showGroupByMonth ? (groupByMonthCheckbox && groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
-          const showPreviousEvents = showPreviousEventsCheckbox.checked;
-
-          if (groupByMonth) {
-            displayGroupedByMonth(events, showPreviousEvents);
-          } else {
-            displayGroupedBySession(events);
-          }
-
-          element.innerHTML = domBuffer;
-          domBuffer = '';
-        }
-
-        // Function to display events grouped by month.
-        function displayGroupedByMonth(events, showPreviousEvents) {
-          const groupedEvents = events.reduce((groups, event) => {
-            const date = new Date(event.start);
-            const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-            if (!groups[month]) groups[month] = [];
-            groups[month].push(event);
-            return groups;
-          }, {});
-
-          Drupal.announce(`Grouping events by month.`);
-          const now = new Date();
-          const currentMonthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' });
-          const currentMonthDate = new Date(currentMonthYear);
-          const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
-          const splitMonths = (months, current) => {
-            const pastMonths = [];
-            const futureMonths = [];
-
-            for (let month of months) {
-              const monthDate = new Date(month);
-              if (monthDate < current) {
-                pastMonths.push(month);
-              } else {
-                futureMonths.push(month);
-              }
-            }
-
-            return { pastMonths, futureMonths };
-          };
-
-          const { pastMonths, futureMonths } = splitMonths(sortedMonths, currentMonthDate);
-
-          if (showPreviousEvents) {
-            Drupal.announce(`Including past events.`);
-            renderMonths(pastMonths, groupedEvents);
-          }
-          renderMonths(futureMonths, groupedEvents);
-        }
-
-        // Function to display events grouped by session.
-        function displayGroupedBySession(events) {
-          Drupal.announce(`Grouping events by session.`);
-          // Group events by id.
-          const groupedEvents = events.reduce((groups, event) => {
-            const group = groups[event.sessionId] || { sessionDisplay: event.sessionDisplay, events: [] };
-            group.events.push(event);
-            groups[event.sessionId] = group;
-            return groups;
-          }, {});
-
-          // Sort session ids
-          const sortedSessionIds = Object.keys(groupedEvents).sort((a, b) => a - b);
-
-          // Display the grouped and sorted events
-          sortedSessionIds.forEach(sessionId => {
-            const { sessionDisplay, events } = groupedEvents[sessionId];
-            domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
-            events.forEach(event => renderEvent(event, false));
-          });
-        }
-
-        // Function to render months and their events.
-        function renderMonths(months, groupedEvents) {
-          months.forEach(month => {
-            domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
-            groupedEvents[month].forEach(event => renderEvent(event, true));
-          });
-        }
-
-        // Function to render individual event.
-        function renderEvent(event, includeSession) {
-          domBuffer += event.rendered;
-        }
-
-        if (showGroupByMonth) {
-          groupByMonthCheckbox = context.querySelector('#group-by-month');
+        if (drupalSettings.academicCalendar.showGroupByMonth) {
+          const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
 
           // Set initial state of 'Group by month' checkbox based on Drupal settings.
-          if (typeof drupalSettings.academicCalendar.groupByMonth !== 'undefined') {
-            groupByMonthCheckbox.checked = drupalSettings.academicCalendar.groupByMonth === 1;
+          if (typeof initGroupByMonth !== 'undefined') {
+            groupByMonthCheckbox.checked = initGroupByMonth === 1;
           }
 
           // Add event listener for changes to 'Group by month' checkbox.
-          groupByMonthCheckbox.addEventListener('change', toggleShowPreviousEvents);
+          groupByMonthCheckbox.addEventListener('change', () => {
+            academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
+            academicCalendar.filterAndDisplayEvents();
+          });
         }
 
-        // Initial fetch of events.
-        fetchAndDisplayEvents();
+        const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
+
+        showPreviousEventsCheckbox.addEventListener('change', () => {
+          academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
+          academicCalendar.filterAndDisplayEvents();
+        });
 
         // Attach filter functionality to form elements.
-        form.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
-            fetchAndDisplayEvents();
-          }
-        });
+        // form.addEventListener('change', function (event) {
+        //   if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+        //     academicCalendar.filterAndDisplayEvents();
+        //   }
+        // });
 
         // Attach search and date filter functionality.
         context.querySelectorAll('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
-          input.addEventListener('input', Drupal.debounce(filterAndDisplayEvents, 300));
-          input.addEventListener('change', Drupal.debounce(filterAndDisplayEvents, 300));
+          input.addEventListener('input', Drupal.debounce(academicCalendar.filterAndDisplayEvents, 300));
+          input.addEventListener('change', Drupal.debounce(academicCalendar.filterAndDisplayEvents, 300));
         });
 
         // Handle form submission
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          fetchAndDisplayEvents();
-        });
+        // form.addEventListener('submit', function (e) {
+        //   e.preventDefault();
+        //   academicCalendar.filterAndDisplayEvents();
+        // });
 
-        if (categoryChosen) {
-          const observer = new MutationObserver(function () {
-            fetchAndDisplayEvents();
-          });
-          observer.observe(categoryChosen, { childList: true, subtree: true });
-        }
+        // if (categoryChosen) {
+        //   const observer = new MutationObserver(function () {
+        //     academicCalendar.filterAndDisplayEvents();
+        //   });
+        //   observer.observe(categoryChosen, { childList: true, subtree: true });
+        // }
       });
     }
   };
 
   class AcademicCalendar {
-    constructor(calendarEl, steps, showGroupByMonth) {
+    steps = 0;
+    groupByMonth = false;
+    showPreviousEvents = false;
+    constructor(calendarEl, steps, groupByMonth, showPreviousEvents) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domBuffer = '';
       this.allEvents = [];
+      this.calendarEl = calendarEl;
+      this.steps = steps;
+      this.groupByMonth = groupByMonth;
+      this.showPreviousEvents = showPreviousEvents;
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
-      this.showGroupByMonth = showGroupByMonth;
       // Cache objects for frequently used elements.
       this.form = calendarEl.querySelector('#academic-calendar-filter-form');
       this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
-      this.categoryChosen = calendarEl.getElementById('edit_category_chosen');
-      this.calendarContent = calendarEl.getElementById('academic-calendar-content');
-      this.spinner = calendarContent.querySelector('.fa-spinner');
+      console.log("calendarEl", calendarEl);
+      this.categoryChosen = calendarEl.querySelector('#edit_category_chosen');
+      this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
+      this.spinner = this.calendarContent.querySelector('.fa-spinner');
       this.categories = ['STUDENT'];
       this.startDate = this.form.querySelector('.academic-calendar-start-date').value;
       this.endDate = this.form.querySelector('.academic-calendar-end-date').value;
@@ -183,6 +93,37 @@
       // Initial toggle of 'Show previous events' checkbox.
       // this.toggleShowPreviousEvents();
       this.fetchEvents();
+    }
+
+    get groupByMonth() {
+      return this.groupByMonth;
+    }
+
+    set groupByMonth(value) {
+      this.groupByMonth = value;
+    }
+
+    // Function to fetch events from the server and display them.
+    fetchEvents() {
+      this.toggleSpinner();
+      this.filterCategories();
+
+      Drupal.announce('Fetching events.');
+      // Make AJAX request to fetch events.
+      fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
+        .then(response => response.json())
+        .then(events => {
+          this.allEvents = events;
+          this.uniqueSessions.clear();
+          events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
+          this.populateSessionFilter();
+          this.filterAndDisplayEvents();
+        })
+        .catch(error => {
+          console.error('Error fetching events:', error);
+          this.domBuffer = '<div>Error loading events. Please try again later.</div>';
+          Drupal.announce('Error loading events. Please try again later.');
+        });
     }
 
     // Function to toggle visibility of 'Show previous events' checkbox.
@@ -239,7 +180,7 @@
       const endDate = new Date(this.endDate);
       const selectedSession = this.sessionSelectEl.value;
       // Filter events based on search term, date range, and selected session.
-      const filteredEvents = allEvents.filter(event => {
+      const filteredEvents = this.allEvents.filter(event => {
         const eventStart = new Date(event.start);
         const eventEnd = new Date(event.end);
         const matchesSearch = !searchTerm ||
@@ -252,7 +193,7 @@
         return matchesSearch && matchesDateRange && matchesSession;
       });
       // @todo Implement this.
-      displayEvents(filteredEvents);
+      this.displayEvents(filteredEvents);
 
       if (this.calendarContent) {
         const observer = new MutationObserver(() => {
@@ -262,27 +203,104 @@
       }
     }
 
-    // Function to fetch events from the server and display them.
-    fetchEvents() {
-      this.toggleSpinner();
-      this.filterCategories();
+    // Function to display filtered events.
+    displayEvents(events) {
+      this.domBuffer = '';
 
-      Drupal.announce('Fetching events.');
-      // Make AJAX request to fetch events.
-      fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
-        .then(response => response.json())
-        .then(events => {
-          this.allEvents = events;
-          this.uniqueSessions.clear();
-          events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
-          this.populateSessionFilter();
-          this.filterAndDisplayEvents();
-        })
-        .catch(error => {
-          console.error('Error fetching events:', error);
-          this.domBuffer = '<div>Error loading events. Please try again later.</div>';
-          Drupal.announce('Error loading events. Please try again later.');
-        });
+      if (events.length === 0) {
+        this.domBuffer = '<p>No events found matching your criteria.</p>';
+        Drupal.announce('No events found matching your criteria.');
+        return;
+      }
+
+      Drupal.announce(`Displaying ${events.length} events based on filter criteria.`);
+
+      // Sort events chronologically.
+      events.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+      if (this.groupByMonth) {
+        this.displayGroupedByMonth(events, this.showPreviousEvents);
+      } else {
+        this.displayGroupedBySession(events);
+      }
+
+      this.calendarContent.innerHTML = this.domBuffer;
+      this.domBuffer = '';
+    }
+
+    // Function to display events grouped by month.
+    displayGroupedByMonth(events, showPreviousEvents) {
+      const groupedEvents = events.reduce((groups, event) => {
+        const date = new Date(event.start);
+        const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+        if (!groups[month]) groups[month] = [];
+        groups[month].push(event);
+        return groups;
+      }, {});
+
+      Drupal.announce(`Grouping events by month.`);
+      const now = new Date();
+      const currentMonthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+      const currentMonthDate = new Date(currentMonthYear);
+      const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
+      const splitMonths = (months, current) => {
+        const pastMonths = [];
+        const futureMonths = [];
+
+        for (let month of months) {
+          const monthDate = new Date(month);
+          if (monthDate < current) {
+            pastMonths.push(month);
+          } else {
+            futureMonths.push(month);
+          }
+        }
+
+        return { pastMonths, futureMonths };
+      };
+
+      const { pastMonths, futureMonths } = splitMonths(sortedMonths, currentMonthDate);
+
+      if (showPreviousEvents) {
+        Drupal.announce(`Including past events.`);
+        this.renderMonths(pastMonths, groupedEvents);
+      }
+      this.renderMonths(futureMonths, groupedEvents);
+    }
+
+    // Function to display events grouped by session.
+    displayGroupedBySession(events) {
+      Drupal.announce(`Grouping events by session.`);
+      // Group events by id.
+      const groupedEvents = events.reduce((groups, event) => {
+        const group = groups[event.sessionId] || { sessionDisplay: event.sessionDisplay, events: [] };
+        group.events.push(event);
+        groups[event.sessionId] = group;
+        return groups;
+      }, {});
+
+      // Sort session ids
+      const sortedSessionIds = Object.keys(groupedEvents).sort((a, b) => a - b);
+
+      // Display the grouped and sorted events
+      sortedSessionIds.forEach(sessionId => {
+        const { sessionDisplay, events } = groupedEvents[sessionId];
+        this.domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
+        events.forEach(event => renderEvent(event, false));
+      });
+    }
+
+    // Function to render months and their events.
+    renderMonths(months, groupedEvents) {
+      months.forEach(month => {
+        this.domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
+        groupedEvents[month].forEach(event => this.renderEvent(event, true));
+      });
+    }
+
+    // Function to render individual event.
+    renderEvent(event, includeSession) {
+      this.domBuffer += event.rendered;
     }
   }
 })(Drupal, drupalSettings);
