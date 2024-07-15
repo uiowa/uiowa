@@ -8,9 +8,19 @@
 
         const steps = drupalSettings.academicCalendar.steps || 0;
         const initGroupByMonth = drupalSettings.academicCalendar.groupByMonth;
+        const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
+        const startDateEl = formEl.querySelector('.academic-calendar-start-date');
+        const endDateEl = formEl.querySelector('.academic-calendar-end-date');
+        const sessionSelectEl = formEl.querySelector('select[name="session"]');
+        const categoryEl = formEl.querySelector('#edit_category_chosen');
 
         // Initialize the AcademicCalendar object.
-        const academicCalendar = new AcademicCalendar(calendarEl, steps, initGroupByMonth);
+        const academicCalendar = new AcademicCalendar(calendarEl, startDateEl.value, endDateEl.value, steps, initGroupByMonth, sessionSelectEl.value);
+
+        // Fetch events and populate session filter.
+        academicCalendar.fetchEvents().then(() => {
+          populateSessionFilter(academicCalendar.uniqueSessions);
+        });
 
         if (drupalSettings.academicCalendar.showGroupByMonth) {
           const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
@@ -35,11 +45,12 @@
         });
 
         // Attach filter functionality to form elements.
-        // form.addEventListener('change', function (event) {
-        //   if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
-        //     academicCalendar.filterAndDisplayEvents();
-        //   }
-        // });
+        formEl.addEventListener('change', function (event) {
+          if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+            updateAcademicCalendarFromFilters();
+            academicCalendar.filterAndDisplayEvents();
+          }
+        });
 
         // Attach search and date filter functionality.
         context.querySelectorAll('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
@@ -48,17 +59,40 @@
         });
 
         // Handle form submission
-        // form.addEventListener('submit', function (e) {
-        //   e.preventDefault();
-        //   academicCalendar.filterAndDisplayEvents();
-        // });
+        formEl.addEventListener('submit', function (e) {
+          e.preventDefault();
+          updateAcademicCalendarFromFilters();
+          academicCalendar.filterAndDisplayEvents();
+        });
 
-        // if (categoryChosen) {
-        //   const observer = new MutationObserver(function () {
-        //     academicCalendar.filterAndDisplayEvents();
-        //   });
-        //   observer.observe(categoryChosen, { childList: true, subtree: true });
-        // }
+        if (categoryEl) {
+          const observer = new MutationObserver(function () {
+            updateAcademicCalendarFromFilters();
+            academicCalendar.filterAndDisplayEvents();
+          });
+          observer.observe(categoryEl, { childList: true, subtree: true });
+        }
+
+        // Function to update AcademicCalendar object based on form filters.
+        function updateAcademicCalendarFromFilters() {
+          academicCalendar.startDate = startDateEl.value;
+          academicCalendar.endDate = endDateEl.value;
+        }
+
+        // Function to populate the session filter dropdown.
+        function populateSessionFilter(sessions) {
+          const currentValue = sessionSelectEl.value;
+
+          // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
+          let sessionBuffer = '<option value="">All Sessions</option>';
+
+          Array.from(sessions).sort().forEach(session => {
+            sessionBuffer += `<option value="${session}">${session}</option>`;
+          });
+
+          sessionSelectEl.innerHTML = sessionBuffer;
+          sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
+        }
       });
     }
   };
@@ -67,32 +101,28 @@
     steps = 0;
     groupByMonth = false;
     showPreviousEvents = false;
-    constructor(calendarEl, steps, groupByMonth, showPreviousEvents) {
+    constructor(calendarEl, startDate, endDate, steps, groupByMonth, showPreviousEvents, selectedSession) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
-      this.domBuffer = '';
+      this.output = '';
       this.allEvents = [];
       this.calendarEl = calendarEl;
+      this.startDate = startDate;
+      this.endDate = endDate;
+      this.searchTerm = '';
       this.steps = steps;
       this.groupByMonth = groupByMonth;
       this.showPreviousEvents = showPreviousEvents;
+      this.selectedSession = selectedSession;
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
       // Cache objects for frequently used elements.
       this.form = calendarEl.querySelector('#academic-calendar-filter-form');
       this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
-      console.log("calendarEl", calendarEl);
-      this.categoryChosen = calendarEl.querySelector('#edit_category_chosen');
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
-      this.categories = ['STUDENT'];
-      this.startDate = this.form.querySelector('.academic-calendar-start-date').value;
-      this.endDate = this.form.querySelector('.academic-calendar-end-date').value;
-      this.sessionSelectEl = this.form.querySelector('select[name="session"]');
-      this.selectedSession = this.form.querySelector('select[name="session"]').value;
 
       // Initial toggle of 'Show previous events' checkbox.
       // this.toggleShowPreviousEvents();
-      this.fetchEvents();
     }
 
     get groupByMonth() {
@@ -104,9 +134,8 @@
     }
 
     // Function to fetch events from the server and display them.
-    fetchEvents() {
+    async fetchEvents() {
       this.toggleSpinner();
-      this.filterCategories();
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
@@ -116,12 +145,11 @@
           this.allEvents = events;
           this.uniqueSessions.clear();
           events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
-          this.populateSessionFilter();
           this.filterAndDisplayEvents();
         })
         .catch(error => {
           console.error('Error fetching events:', error);
-          this.domBuffer = '<div>Error loading events. Please try again later.</div>';
+          this.output = '<div>Error loading events. Please try again later.</div>';
           Drupal.announce('Error loading events. Please try again later.');
         });
     }
@@ -131,20 +159,6 @@
       const container = this.showPreviousEventsCheckbox.closest('.js-form-item');
       const shouldShow = this.showGroupByMonth ? (this.groupByMonthCheckbox && this.groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
       container.style.display = shouldShow ? 'block' : 'none';
-    }
-
-    // Function to filter categories.
-    filterCategories() {
-      if (this.categoryChosen) {
-        const chosenOptions = this.categoryChosen.querySelectorAll('.search-choice');
-        if (chosenOptions.length > 0) {
-          const indices = Array.from(chosenOptions).map(option => parseInt(option.querySelector('a').getAttribute('data-option-array-index')) - 1);
-          if (indices.length > 0) {
-            const selectElement = document.getElementById('edit-category');
-            this.categories = indices.map(index => selectElement.options[index].value);
-          }
-        }
-      }
     }
 
     // Function to toggle visibility of spinner.
@@ -158,27 +172,11 @@
       }
     }
 
-    // Function to populate the session filter dropdown.
-    populateSessionFilter() {
-      const currentValue = this.sessionSelectEl.value;
-
-      // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
-      let sessionBuffer = '<option value="">All Sessions</option>';
-
-      Array.from(this.uniqueSessions).sort().forEach(session => {
-        sessionBuffer += `<option value="${session}">${session}</option>`;
-      });
-
-      this.sessionSelectEl.innerHTML = sessionBuffer;
-      this.sessionSelectEl.value = this.uniqueSessions.has(currentValue) ? currentValue : '';
-    }
-
     // Function to filter and display events based on current form state.
     filterAndDisplayEvents() {
       const searchTerm = this.form.querySelector('.academic-calendar-search').value.toLowerCase();
       const startDate = new Date(this.startDate);
       const endDate = new Date(this.endDate);
-      const selectedSession = this.sessionSelectEl.value;
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
         const eventStart = new Date(event.start);
@@ -188,7 +186,7 @@
           event.description.toLowerCase().includes(searchTerm);
         const matchesDateRange = (!startDate.valueOf() || eventEnd >= startDate) &&
           (!endDate.valueOf() || eventStart <= endDate);
-        const matchesSession = !selectedSession || event.sessionDisplay === selectedSession;
+        const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
 
         return matchesSearch && matchesDateRange && matchesSession;
       });
@@ -205,10 +203,10 @@
 
     // Function to display filtered events.
     displayEvents(events) {
-      this.domBuffer = '';
+      this.output = '';
 
       if (events.length === 0) {
-        this.domBuffer = '<p>No events found matching your criteria.</p>';
+        this.output = '<p>No events found matching your criteria.</p>';
         Drupal.announce('No events found matching your criteria.');
         return;
       }
@@ -224,8 +222,8 @@
         this.displayGroupedBySession(events);
       }
 
-      this.calendarContent.innerHTML = this.domBuffer;
-      this.domBuffer = '';
+      this.calendarContent.innerHTML = this.output;
+      this.output = '';
     }
 
     // Function to display events grouped by month.
@@ -285,22 +283,22 @@
       // Display the grouped and sorted events
       sortedSessionIds.forEach(sessionId => {
         const { sessionDisplay, events } = groupedEvents[sessionId];
-        this.domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
-        events.forEach(event => renderEvent(event, false));
+        this.output += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
+        events.forEach(event => this.renderEvent(event, false));
       });
     }
 
     // Function to render months and their events.
     renderMonths(months, groupedEvents) {
       months.forEach(month => {
-        this.domBuffer += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
+        this.output += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
         groupedEvents[month].forEach(event => this.renderEvent(event, true));
       });
     }
 
     // Function to render individual event.
     renderEvent(event, includeSession) {
-      this.domBuffer += event.rendered;
+      this.output += event.rendered;
     }
   }
 })(Drupal, drupalSettings);
