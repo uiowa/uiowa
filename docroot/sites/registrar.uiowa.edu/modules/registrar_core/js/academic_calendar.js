@@ -25,8 +25,6 @@
         });
 
         const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
-        console.log('---prev-ev-check---');
-        console.log(showPreviousEventsCheckbox);
         showPreviousEventsCheckbox.addEventListener('change', () => {
           academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
           academicCalendar.filterAndDisplayEvents();
