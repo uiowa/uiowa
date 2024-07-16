@@ -52,6 +52,11 @@ class Grant extends BaseNodeSource {
       return FALSE;
     }
 
+    // Convert the UNIX timestamp into a date string.
+    if ($timestamp = $row->getSourceProperty('field_grant_financial_recieved')) {
+      $row->setSourceProperty('field_grant_financial_recieved', date('Y-m-d', $timestamp[0]['value']));
+    }
+
     return TRUE;
   }
 
