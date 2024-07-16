@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_category
     - field.field.node.nonprofit_org.field_np_contact_name
     - field.field.node.nonprofit_org.field_np_contact_title
+    - field.field.node.nonprofit_org.field_np_denomination
     - field.field.node.nonprofit_org.field_np_documents
     - field.field.node.nonprofit_org.field_np_email
     - field.field.node.nonprofit_org.field_np_employer_id
@@ -127,6 +128,23 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: -6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: aa6a025c-615f-49a6-a7c0-c493ecd27012
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_denomination'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -5
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -568,6 +586,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_np_denomination:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 124
     region: content
   field_np_documents:
     type: entity_reference_label
