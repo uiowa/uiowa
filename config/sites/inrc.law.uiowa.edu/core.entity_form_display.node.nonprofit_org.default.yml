@@ -54,6 +54,7 @@ third_party_settings:
         - field_image
         - field_np_category
         - field_np_denomination
+        - group_financial_information
         - body
       label: 'General Information'
       region: content
@@ -73,8 +74,8 @@ third_party_settings:
         - field_np_revenue
       label: 'Financial Information'
       region: content
-      parent_name: ''
-      weight: 1
+      parent_name: group_general_information
+      weight: 13
       format_type: fieldset
       format_settings:
         classes: ''
@@ -136,7 +137,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 13
+    weight: 14
     region: content
     settings:
       rows: 9
