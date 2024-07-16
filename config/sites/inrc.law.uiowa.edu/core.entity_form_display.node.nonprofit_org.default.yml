@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.nonprofit_org.body
     - field.field.node.nonprofit_org.field_image
+    - field.field.node.nonprofit_org.field_meta_tags
     - field.field.node.nonprofit_org.field_np_address
     - field.field.node.nonprofit_org.field_np_assets
     - field.field.node.nonprofit_org.field_np_board_resolution_date
@@ -24,6 +25,7 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_training_location
     - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
+    - workflows.workflow.editorial
   module:
     - address
     - content_moderation
@@ -31,6 +33,7 @@ dependencies:
     - field_group
     - link
     - media_library
+    - metatag
     - path
     - telephone
     - text
@@ -151,6 +154,14 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 8
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_np_address:
     type: address_default

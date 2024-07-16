@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.token
     - field.field.node.nonprofit_org.body
     - field.field.node.nonprofit_org.field_image
+    - field.field.node.nonprofit_org.field_meta_tags
     - field.field.node.nonprofit_org.field_np_address
     - field.field.node.nonprofit_org.field_np_assets
     - field.field.node.nonprofit_org.field_np_board_resolution_date
@@ -32,6 +33,11 @@ targetEntityType: node
 bundle: nonprofit_org
 mode: token
 content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: visually_hidden
@@ -51,6 +57,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_meta_tags: true
   field_np_address: true
   field_np_assets: true
   field_np_board_resolution_date: true

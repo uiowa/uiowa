@@ -2,6 +2,7 @@ adding:
   dependencies:
     config:
       - node.type.grant
+      - node.type.nonprofit_org
       - taxonomy.vocabulary.counties
       - taxonomy.vocabulary.grant_areas_of_interest
       - taxonomy.vocabulary.grant_classification
@@ -10,6 +11,7 @@ adding:
       - taxonomy.vocabulary.type_of_grant
   permissions:
     - 'create grant content'
+    - 'create nonprofit_org content'
     - 'create terms in counties'
     - 'create terms in grant_areas_of_interest'
     - 'create terms in grant_classification'
@@ -17,8 +19,11 @@ adding:
     - 'create terms in ntee_classification'
     - 'create terms in type_of_grant'
     - 'delete any grant content'
+    - 'delete any nonprofit_org content'
     - 'delete grant revisions'
+    - 'delete nonprofit_org revisions'
     - 'delete own grant content'
+    - 'delete own nonprofit_org content'
     - 'delete terms in counties'
     - 'delete terms in grant_areas_of_interest'
     - 'delete terms in grant_classification'
@@ -26,7 +31,9 @@ adding:
     - 'delete terms in ntee_classification'
     - 'delete terms in type_of_grant'
     - 'edit any grant content'
+    - 'edit any nonprofit_org content'
     - 'edit own grant content'
+    - 'edit own nonprofit_org content'
     - 'edit terms in counties'
     - 'edit terms in grant_areas_of_interest'
     - 'edit terms in grant_classification'
@@ -34,8 +41,10 @@ adding:
     - 'edit terms in ntee_classification'
     - 'edit terms in type_of_grant'
     - 'enter grant revision log entry'
+    - 'enter nonprofit_org revision log entry'
     - 'override grant authored by option'
     - 'override grant authored on option'
     - 'revert grant revisions'
     - 'view grant revisions'
+    - 'view nonprofit_org revisions'
 removing: {  }
