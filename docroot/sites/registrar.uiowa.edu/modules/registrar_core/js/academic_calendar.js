@@ -47,7 +47,7 @@
           });
 
           // Initial toggle of 'Show previous events' checkbox.
-          toggleShowPreviousEvents(showPreviousEventsCheckbox);
+          toggleShowPreviousEvents(groupByMonthCheckbox);
         }
 
         // Attach filter functionality to form elements.
