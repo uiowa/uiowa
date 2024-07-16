@@ -6,8 +6,10 @@
       once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
         console.log('element', calendarEl);
 
-        const steps = drupalSettings.academicCalendar.steps || 0;
-        const initGroupByMonth = drupalSettings.academicCalendar.groupByMonth;
+        const calendarSettings = drupalSettings.academicCalendar;
+        const steps = calendarSettings.steps || 0;
+        const initGroupByMonth = calendarSettings.groupByMonth;
+        const showGroupByMonth = calendarSettings.showGroupByMonth;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
         const startDateEl = formEl.querySelector('.academic-calendar-start-date');
         const endDateEl = formEl.querySelector('.academic-calendar-end-date');
@@ -22,7 +24,15 @@
           populateSessionFilter(academicCalendar.uniqueSessions);
         });
 
-        if (drupalSettings.academicCalendar.showGroupByMonth) {
+        const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
+        console.log('---prev-ev-check---');
+        console.log(showPreviousEventsCheckbox);
+        showPreviousEventsCheckbox.addEventListener('change', () => {
+          academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
+          academicCalendar.filterAndDisplayEvents();
+        });
+
+        if (calendarSettings.showGroupByMonth) {
           const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
 
           // Set initial state of 'Group by month' checkbox based on Drupal settings.
@@ -35,14 +45,10 @@
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
             academicCalendar.filterAndDisplayEvents();
           });
+
+          // Initial toggle of 'Show previous events' checkbox.
+          toggleShowPreviousEvents(showPreviousEventsCheckbox);
         }
-
-        const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
-
-        showPreviousEventsCheckbox.addEventListener('change', () => {
-          academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
-          academicCalendar.filterAndDisplayEvents();
-        });
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
@@ -93,6 +99,14 @@
           sessionSelectEl.innerHTML = sessionBuffer;
           sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
         }
+
+        // Function to toggle visibility of 'Show previous events' checkbox.
+        function toggleShowPreviousEvents(checkbox) {
+          const container = showPreviousEventsCheckbox.closest('.js-form-item');
+          const shouldShow = showGroupByMonth ? (checkbox && checkbox.checked) : (calendarSettings.groupByMonth === 1);
+          console.log(shouldShow);
+          container.style.display = shouldShow ? 'block' : 'none';
+        }
       });
     }
   };
@@ -120,9 +134,6 @@
       this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
-
-      // Initial toggle of 'Show previous events' checkbox.
-      // this.toggleShowPreviousEvents();
     }
 
     get groupByMonth() {
@@ -152,13 +163,6 @@
           this.output = '<div>Error loading events. Please try again later.</div>';
           Drupal.announce('Error loading events. Please try again later.');
         });
-    }
-
-    // Function to toggle visibility of 'Show previous events' checkbox.
-    toggleShowPreviousEvents() {
-      const container = this.showPreviousEventsCheckbox.closest('.js-form-item');
-      const shouldShow = this.showGroupByMonth ? (this.groupByMonthCheckbox && this.groupByMonthCheckbox.checked) : (drupalSettings.academicCalendar.groupByMonth === 1);
-      container.style.display = shouldShow ? 'block' : 'none';
     }
 
     // Function to toggle visibility of spinner.
