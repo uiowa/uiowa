@@ -59,7 +59,7 @@ third_party_settings:
               label_display: null
               provider: system
               context_mapping: {  }
-            weight: 0
+            weight: -9
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -80,60 +80,9 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: -8
             additional:
               layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 3f25f4e2-0f3e-42ba-ae25-593c73d06a60
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_employer_id'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: f66c14da-22d9-465f-9fec-31c10e88844b
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_contact_name'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 12e531c4-d81f-450d-9b08-dbfccff31fa9
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_contact_title'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
             third_party_settings: {  }
           -
             uuid: 84e79df8-6748-4631-b32f-42bf04acda5c
@@ -148,30 +97,79 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: -7
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 2fc13e27-3d32-44ee-a490-049b87b7f802
+            uuid: c2ca682f-c425-4b4b-9f92-fedead715f4f
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_np_telephone_number'
+              id: 'extra_field_block:node:nonprofit_org:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: -10
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 109f8baa-e7af-4b0d-ba85-ad49f8ea94b0
+            region: content
+            configuration:
+              id: 'extra_field_block:node:nonprofit_org:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 16
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e0667eb9-d57c-4304-ac47-d89aaa469a6c
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: basic_string
-                label: above
+                type: text_default
+                label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 19
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 724dc661-e936-4f60-ae41-42f7c20a2502
+            uuid: 68c062d2-b03d-4898-9a0a-dd2fb2281cc9
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_np_ntee'
+              id: 'field_block:node:nonprofit_org:field_np_documents'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 18
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8ccc284c-3d45-4690-b14b-1f3bc42dcb0a
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_training_location'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -181,23 +179,167 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 7
+            weight: 17
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: dec85710-e3f8-4e5b-b446-50815bd110e0
+            uuid: cf403a23-ad02-4382-a4dd-7f8f0cf03261
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_np_email'
+              id: 'field_block:node:nonprofit_org:field_np_training_attendees'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: basic_string
+                type: text_default
                 label: above
                 settings: {  }
                 third_party_settings: {  }
+            weight: 15
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 42af4cb7-bdad-497b-a8df-bf20806be170
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_expiration_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3fcce42d-dfad-418d-808a-eaa9f30a50f6
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_last_training_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2769849e-54a5-496c-8437-78abc3dba4ca
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_board_resolution_date'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: datetime_default
+                label: above
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 107229fe-a143-40b1-974f-bff9881817d5
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_revenue'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 245d3e46-4b1d-4333-b06b-5f051e132500
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_income'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ce98e58e-d0d4-4109-8192-0dfabcb67c1a
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_assets'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
             weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 30c08616-51c6-4630-a78b-5b806cbaa313
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_category'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bbee537e-879b-45de-bc6a-4c735bf7d2d1
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                  link: false
+                third_party_settings: {  }
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -222,170 +364,26 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: bbee537e-879b-45de-bc6a-4c735bf7d2d1
+            uuid: dec85710-e3f8-4e5b-b446-50815bd110e0
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_image'
+              id: 'field_block:node:nonprofit_org:field_np_email'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: full__ultrawide
-                  link: false
-                third_party_settings: {  }
-            weight: 10
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 30c08616-51c6-4630-a78b-5b806cbaa313
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_category'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 11
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: ce98e58e-d0d4-4109-8192-0dfabcb67c1a
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_assets'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: 12
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 245d3e46-4b1d-4333-b06b-5f051e132500
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_income'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: 13
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 107229fe-a143-40b1-974f-bff9881817d5
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_revenue'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: 14
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2769849e-54a5-496c-8437-78abc3dba4ca
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_board_resolution_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 15
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 3fcce42d-dfad-418d-808a-eaa9f30a50f6
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_last_training_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 16
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 42af4cb7-bdad-497b-a8df-bf20806be170
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_expiration_date'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: datetime_default
-                label: above
-                settings:
-                  timezone_override: ''
-                  format_type: medium
-                third_party_settings: {  }
-            weight: 19
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: cf403a23-ad02-4382-a4dd-7f8f0cf03261
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_training_attendees'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
+                type: basic_string
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 20
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 8ccc284c-3d45-4690-b14b-1f3bc42dcb0a
+            uuid: 724dc661-e936-4f60-ae41-42f7c20a2502
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_np_training_location'
+              id: 'field_block:node:nonprofit_org:field_np_ntee'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -395,55 +393,72 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 21
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 68c062d2-b03d-4898-9a0a-dd2fb2281cc9
+            uuid: 2fc13e27-3d32-44ee-a490-049b87b7f802
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:field_np_documents'
+              id: 'field_block:node:nonprofit_org:field_np_telephone_number'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: entity_reference_label
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 12e531c4-d81f-450d-9b08-dbfccff31fa9
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_contact_title'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
                 label: above
                 settings:
-                  link: true
+                  link_to_entity: false
                 third_party_settings: {  }
-            weight: 22
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components:
-          -
-            uuid: 109f8baa-e7af-4b0d-ba85-ad49f8ea94b0
-            region: content
-            configuration:
-              id: 'extra_field_block:node:nonprofit_org:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 0
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: e0667eb9-d57c-4304-ac47-d89aaa469a6c
+            uuid: f66c14da-22d9-465f-9fec-31c10e88844b
             region: content
             configuration:
-              id: 'field_block:node:nonprofit_org:body'
+              id: 'field_block:node:nonprofit_org:field_np_contact_name'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3f25f4e2-0f3e-42ba-ae25-593c73d06a60
+            region: content
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_employer_id'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
                 third_party_settings: {  }
             weight: 1
             additional: {  }
@@ -464,6 +479,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_image:
     type: entity_reference_entity_view
