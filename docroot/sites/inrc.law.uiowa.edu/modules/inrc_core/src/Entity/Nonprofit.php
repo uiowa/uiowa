@@ -6,7 +6,7 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for grant entities.
+ * Provides an interface for nonprofit entities.
  */
 class Nonprofit extends NodeBundleBase implements RendersAsCardInterface {
 
