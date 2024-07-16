@@ -72,6 +72,48 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 /**
  * Implements hook_preprocess_HOOK().
  */
+function inrc_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'extra_field_block:node:grant:field_grant_financials_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_total_grants->value) &&
+        empty($node->field_grant_financial_data->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:grant:field_grant_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_application_deadline->value) &&
+        empty($node->body->value) &&
+        empty($node->field_grant_classification->value) &&
+        empty($node->field_grant_sample_grants->value) &&
+        empty($node->field_grant_application_info->value) &&
+        empty($node->field_grant_restrictions->value) &&
+        empty($node->field_grant_trustees->value) &&
+        empty($node->field_grant_sizes->value) &&
+        empty($node->field_grant_total_assets->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function inrc_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
 
