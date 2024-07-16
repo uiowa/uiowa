@@ -965,12 +965,6 @@ $sites['orgmajorshadowuiowa.dev.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa
 $sites['orgmajorshadowuiowa.stage.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
 $sites['orgmajorshadowuiowa.prod.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
 
-// Directory aliases for phibetadelta.org.uiowa.edu.
-$sites['orgphibetadelta.uiowa.ddev.site'] = 'phibetadelta.org.uiowa.edu';
-$sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
-$sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
-$sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
-
 // Directory aliases for uibtaa.centerforconferences.uiowa.edu.
 $sites['centerforconferencesuibtaa.uiowa.ddev.site'] = 'uibtaa.centerforconferences.uiowa.edu';
 $sites['centerforconferencesuibtaa.dev.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
