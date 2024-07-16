@@ -473,6 +473,8 @@ function uids_base_preprocess_media(array &$variables) {
         if ($parent instanceof EntityAdapter) {
           $parent_entity = $parent->getEntity();
           if ($parent_entity instanceof BlockContent) {
+            // Play video inline instead of going to native player.
+            $variables['content']['field_media_video_file'][0]['#attributes']['playsinline'] = 'playsinline';
             // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
             //   cookie and skip adding autoplay if so.
             if ($parent_entity->hasField('field_uiowa_banner_autoplay')) {
