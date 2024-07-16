@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\inrc_core\Entity\Grant;
+use Drupal\inrc_core\Entity\Nonprofit;
 use Drupal\node\NodeInterface;
 
 /**
@@ -20,6 +21,9 @@ use Drupal\node\NodeInterface;
 function inrc_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['grant'])) {
     $bundles['node']['grant']['class'] = Grant::class;
+  }
+  if (isset($bundles['node']['nonprofit_org'])) {
+    $bundles['node']['nonprofit_org']['class'] = Nonprofit::class;
   }
 }
 
@@ -114,6 +118,34 @@ function inrc_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
+    case 'field_np_email':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_phone':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_address':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_website':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-desktop');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
     case 'field_grant_pdf_version':
       $node = $variables['element']['#object'];
       $field_name = $variables['element']['#field_name'];
@@ -142,7 +174,7 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_address':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker');
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
