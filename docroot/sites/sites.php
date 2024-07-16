@@ -7516,3 +7516,9 @@ $sites['labfethke.uiowa.ddev.site'] = 'fethke.lab.uiowa.edu';
 $sites['labfethke.dev.drupal.uiowa.edu'] = 'fethke.lab.uiowa.edu';
 $sites['labfethke.stage.drupal.uiowa.edu'] = 'fethke.lab.uiowa.edu';
 $sites['labfethke.prod.drupal.uiowa.edu'] = 'fethke.lab.uiowa.edu';
+
+// Directory aliases for henry.lab.uiowa.edu.
+$sites['labhenry.uiowa.ddev.site'] = 'henry.lab.uiowa.edu';
+$sites['labhenry.dev.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
+$sites['labhenry.stage.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
+$sites['labhenry.prod.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
