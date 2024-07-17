@@ -35,7 +35,7 @@
         const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
         showPreviousEventsCheckbox.addEventListener('change', () => {
           academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
-          academicCalendar.filterAndDisplayEvents();
+          updateFilterDisplay();
         });
 
         if (showGroupByMonth) {
@@ -49,7 +49,7 @@
           // Add event listener for changes to 'Group by month' checkbox.
           groupByMonthCheckbox.addEventListener('change', () => {
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
-            academicCalendar.filterAndDisplayEvents();
+            updateFilterDisplay();
           });
 
           // Initial toggle of 'Show previous events' checkbox.
@@ -59,8 +59,7 @@
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
           if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
-            updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents();
+            updateFilterDisplay();
           }
         });
 
@@ -68,13 +67,17 @@
         context.querySelectorAll('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
           input.addEventListener('input',
             Drupal.debounce(
-              () => { academicCalendar.filterAndDisplayEvents.call(academicCalendar) },
+              () => {
+                updateFilterDisplay(true);
+              },
               300
             )
           );
           input.addEventListener('change',
             Drupal.debounce(
-              () => { academicCalendar.filterAndDisplayEvents.call(academicCalendar) },
+              () => {
+                updateFilterDisplay(true);
+              },
               300
             )
           );
@@ -83,18 +86,29 @@
         // Handle form submission
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
-          updateAcademicCalendarFromFilters();
-          academicCalendar.filterAndDisplayEvents();
+          updateFilterDisplay();
         });
 
         if (categoryEl) {
           const observer = new MutationObserver(function () {
-            updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents();
+            updateFilterDisplay();
           });
           observer.observe(categoryEl, { childList: true, subtree: true });
         }
 
+        // Wrapper function to call updateAcademicCalendarFromFilters() and then academicCalendar.filterAndDisplayEvents().
+        function updateFilterDisplay(call = false) {
+          if (call) {
+            updateAcademicCalendarFromFilters();
+            academicCalendar.filterAndDisplayEvents.call(academicCalendar);
+          }
+          else{
+            updateAcademicCalendarFromFilters();
+            academicCalendar.filterAndDisplayEvents();
+          }
+        }
+
+        // Function to get search term based on form filters.
         function getSearchTerm() {
           return formEl.querySelector('.academic-calendar-search').value.toLowerCase();
         }
@@ -198,7 +212,7 @@
 
     // Function to filter and display events based on current form state.
     filterAndDisplayEvents() {
-      const searchTerm = this.form.querySelector('.academic-calendar-search').value.toLowerCase();
+      const searchTerm = this.searchTerm;
       const startDate = new Date(this.startDate);
       const endDate = new Date(this.endDate);
 
