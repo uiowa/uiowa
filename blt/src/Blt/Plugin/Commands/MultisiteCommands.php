@@ -1088,7 +1088,7 @@ EOD;
         'field' => 'application',
       ])
       ->printMetadata(FALSE)
-      ->printOutput(FALSE)
+      ->printOutput(TRUE)
       ->run();
 
     if (!$result->wasSuccessful()) {
