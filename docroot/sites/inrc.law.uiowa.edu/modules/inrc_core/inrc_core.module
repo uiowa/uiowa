@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\inrc_core\Entity\Grant;
+use Drupal\inrc_core\Entity\Nonprofit;
 use Drupal\node\NodeInterface;
 
 /**
@@ -20,6 +21,9 @@ use Drupal\node\NodeInterface;
 function inrc_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['grant'])) {
     $bundles['node']['grant']['class'] = Grant::class;
+  }
+  if (isset($bundles['node']['nonprofit_org'])) {
+    $bundles['node']['nonprofit_org']['class'] = Nonprofit::class;
   }
 }
 
@@ -52,6 +56,57 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
           ],
         ];
       }
+      break;
+
+    case 'node_nonprofit_org_form':
+    case 'node_nonprofit_org_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
+      array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function inrc_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'extra_field_block:node:grant:field_grant_financials_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_total_grants->value) &&
+        empty($node->field_grant_financial_data->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:grant:field_grant_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_application_deadline->value) &&
+        empty($node->body->value) &&
+        empty($node->field_grant_classification->value) &&
+        empty($node->field_grant_sample_grants->value) &&
+        empty($node->field_grant_application_info->value) &&
+        empty($node->field_grant_restrictions->value) &&
+        empty($node->field_grant_trustees->value) &&
+        empty($node->field_grant_sizes->value) &&
+        empty($node->field_grant_total_assets->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
       break;
   }
 }
@@ -105,6 +160,34 @@ function inrc_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
+    case 'field_np_email':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_phone':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_address':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_np_website':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-desktop');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
     case 'field_grant_pdf_version':
       $node = $variables['element']['#object'];
       $field_name = $variables['element']['#field_name'];
@@ -133,7 +216,7 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_address':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker');
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
@@ -228,32 +311,36 @@ function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Custom submit handler for node grant forms.
  */
 function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_state) {
-  $contact_address = $form_state->getValue('field_grant_address');
-  if (isset($contact_address[0]['address'])) {
-    $has_info = FALSE;
-    // Loop through all the details of the address to
-    // check if any of them have been set besides the
-    // country.
-    foreach ($contact_address[0]['address'] as $key => $details) {
-      if ($key === 'country_code') {
-        continue;
-      }
-      // If we find a non-empty value, we can stop looping.
-      if (!empty($details)) {
-        $has_info = TRUE;
-        break;
-      }
-    }
+  $address_fields = ['field_np_address', 'field_grant_address'];
 
-    // If no other fields have been set, then unset the address.
-    if (!$has_info) {
-      // Set country code to empty string.
-      $form_state->setValue([
-        'field_grant_address',
-        0,
-        'address',
-        'country_code',
-      ], '');
+  foreach ($address_fields as $field_name) {
+    $contact_address = $form_state->getValue($field_name);
+    if (isset($contact_address[0]['address'])) {
+      $has_info = FALSE;
+      // Loop through all the details of the address to
+      // check if any of them have been set besides the
+      // country.
+      foreach ($contact_address[0]['address'] as $key => $details) {
+        if ($key === 'country_code') {
+          continue;
+        }
+        // If we find a non-empty value, we can stop looping.
+        if (!empty($details)) {
+          $has_info = TRUE;
+          break;
+        }
+      }
+
+      // If no other fields have been set, then unset the address.
+      if (!$has_info) {
+        // Set country code to empty string.
+        $form_state->setValue([
+          $field_name,
+          0,
+          'address',
+          'country_code',
+        ], '');
+      }
     }
   }
 }
