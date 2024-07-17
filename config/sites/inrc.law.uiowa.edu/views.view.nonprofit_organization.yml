@@ -7,6 +7,7 @@ dependencies:
     - node.type.nonprofit_org
     - taxonomy.vocabulary.nonprofit_organization_category
   module:
+    - address
     - better_exposed_filters
     - node
     - taxonomy
@@ -90,6 +91,56 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_np_address_locality:
+          id: field_np_address_locality
+          table: node__field_np_address
+          field: field_np_address_locality
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: subdivision
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          display_name: true
       pager:
         type: full
         options:
@@ -230,7 +281,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: Search
+            placeholder: 'Search org name or city'
           is_grouped: false
           group_info:
             label: ''
@@ -245,6 +296,7 @@ display:
             group_items: {  }
           fields:
             title: title
+            field_np_address_locality: field_np_address_locality
         status:
           id: status
           table: node_field_data
@@ -356,51 +408,6 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
-        field_np_address_locality:
-          id: field_np_address_locality
-          table: node__field_np_address
-          field: field_np_address_locality
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_np_address_locality_op
-            label: City
-            description: ''
-            use_operator: false
-            operator: field_np_address_locality_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: city
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            placeholder: City
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       filter_groups:
         operator: AND
         groups:
