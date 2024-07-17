@@ -187,15 +187,21 @@
         .then(events => {
           this.allEvents = events;
           this.uniqueSessions.clear();
-          events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
+          events.forEach((event) => {
+            this.uniqueSessions.add(event.sessionDisplay)
+            event.domTree = this.parseCardDomString(event.rendered)
+          });
           this.allEvents = events;
           this.filterAndDisplayEvents();
+          console.log(this.allEvents);
         })
         .catch(error => {
           console.error('Error fetching events:', error);
           this.output = '<div>Error loading events. Please try again later.</div>';
           Drupal.announce('Error loading events. Please try again later.');
         });
+
+      console.log(this.allEvents);
     }
 
     // Function to toggle visibility of spinner.
@@ -207,6 +213,12 @@
           this.spinner.style.display = 'block';
         }
       }
+    }
+
+    // Function to parse HTML strings in to card dom trees.
+    parseCardDomString(string) {
+      const domTreeEl = new DOMParser().parseFromString(string, "text/html");
+      return domTreeEl.querySelector('.card');
     }
 
     // Function to filter and display events based on current form state.
