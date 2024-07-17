@@ -32,15 +32,12 @@
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
           populateSessionFilter(academicCalendar.uniqueSessions);
-
-          console.log('___all events after populate___');
-          console.log(academicCalendar.allEvents);
         });
 
         const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
         showPreviousEventsCheckbox.addEventListener('change', () => {
           academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
-          academicCalendar.filterAndDisplayEvents();
+          academicCalendar.filterAndDisplayEvents(academicCalendar);
         });
 
         if (calendarSettings.showGroupByMonth) {
@@ -54,7 +51,7 @@
           // Add event listener for changes to 'Group by month' checkbox.
           groupByMonthCheckbox.addEventListener('change', () => {
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
-            academicCalendar.filterAndDisplayEvents();
+            academicCalendar.filterAndDisplayEvents(academicCalendar);
           });
 
           // Initial toggle of 'Show previous events' checkbox.
@@ -65,27 +62,37 @@
         formEl.addEventListener('change', function (event) {
           if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
             updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents();
+            academicCalendar.filterAndDisplayEvents(academicCalendar);
           }
         });
 
         // Attach search and date filter functionality.
         context.querySelectorAll('.academic-calendar-search, .academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
-          input.addEventListener('input', Drupal.debounce(academicCalendar.filterAndDisplayEvents, 300));
-          input.addEventListener('change', Drupal.debounce(academicCalendar.filterAndDisplayEvents, 300));
+          input.addEventListener('input',
+            Drupal.debounce(
+              function(){academicCalendar.filterAndDisplayEvents(academicCalendar)},
+              300
+            )
+          );
+          input.addEventListener('change',
+            Drupal.debounce(
+              function(){academicCalendar.filterAndDisplayEvents(academicCalendar)},
+              300
+            )
+          );
         });
 
         // Handle form submission
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
           updateAcademicCalendarFromFilters();
-          academicCalendar.filterAndDisplayEvents();
+          academicCalendar.filterAndDisplayEvents(academicCalendar);
         });
 
         if (categoryEl) {
           const observer = new MutationObserver(function () {
             updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents();
+            academicCalendar.filterAndDisplayEvents(academicCalendar);
           });
           observer.observe(categoryEl, { childList: true, subtree: true });
         }
@@ -145,8 +152,8 @@
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
 
       this.svf = getSearchValFn;
-      console.log('___custom function in constructor___');
-      console.log(this.svf !== null ? this.svf() : '');
+      // console.log('___custom function in constructor___');
+      // console.log(this.svf !== null ? this.svf() : '');
     }
 
     get groupByMonth() {
@@ -157,6 +164,10 @@
       this.groupByMonth = value;
     }
 
+    get getAllEvents() {
+      return this.allEvents;
+    }
+
     setAllEvents(value) {
       this.allEvents = value;
     }
@@ -164,19 +175,16 @@
     // Function to fetch events from the server and display them.
     async fetchEvents() {
       this.toggleSpinner();
-      console.log(this.startDate, this.endDate, this.steps);
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
         .then(response => response.json())
         .then(events => {
-          console.log(this);
           this.setAllEvents(events);
-          console.log('___events in fetch events response___');
-          console.log(events);
           this.uniqueSessions.clear();
           events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
+          this.setAllEvents(events);
           this.filterAndDisplayEvents();
         })
         .catch(error => {
@@ -198,14 +206,13 @@
     }
 
     // Function to filter and display events based on current form state.
-    filterAndDisplayEvents() {
-      console.log('___events in filterAndDisplayEvents()___');
-      console.log(this.allEvents);
-      const searchTerm = this.form.querySelector('.academic-calendar-search').value.toLowerCase();
-      const startDate = new Date(this.startDate);
-      const endDate = new Date(this.endDate);
+    filterAndDisplayEvents(_context = null) {
+      const context = _context === null ? this : _context;
+      const searchTerm = context.form.querySelector('.academic-calendar-search').value.toLowerCase();
+      const startDate = new Date(context.startDate);
+      const endDate = new Date(context.endDate);
       // Filter events based on search term, date range, and selected session.
-      const filteredEvents = this.allEvents.filter(event => {
+      const filteredEvents = context.allEvents.filter(event => {
         const eventStart = new Date(event.start);
         const eventEnd = new Date(event.end);
         const matchesSearch = !searchTerm ||
@@ -213,18 +220,18 @@
           event.description.toLowerCase().includes(searchTerm);
         const matchesDateRange = (!startDate.valueOf() || eventEnd >= startDate) &&
           (!endDate.valueOf() || eventStart <= endDate);
-        const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
+        const matchesSession = !context.selectedSession || event.sessionDisplay === context.selectedSession;
 
         return matchesSearch && matchesDateRange && matchesSession;
       });
       // @todo Implement this.
-      this.displayEvents(filteredEvents);
+      context.displayEvents(filteredEvents);
 
-      if (this.calendarContent) {
+      if (context.calendarContent) {
         const observer = new MutationObserver(() => {
-          this.toggleSpinner();
+          context.toggleSpinner();
         });
-        observer.observe(this.calendarContent, { childList: true });
+        observer.observe(context.calendarContent, { childList: true });
       }
     }
 
