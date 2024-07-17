@@ -151,7 +151,6 @@
     showPreviousEvents = false;
     constructor(calendarEl, searchTerm, startDate, endDate, steps, groupByMonth, selectedSession) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
-      this.output = '';
       this.domOutput = document.createElement("div");
       this.allEvents = [];
       this.calendarEl = calendarEl;
@@ -197,8 +196,8 @@
         })
         .catch(error => {
           console.error('Error fetching events:', error);
-          this.output = '<div>Error loading events. Please try again later.</div>';
 
+          this.domOutput = document.createElement("div");
           const eventsError = document.createElement("div");
           eventsError.innerText = 'Error loading events. Please try again later.';
           this.domOutput.append(eventsError);
@@ -256,12 +255,9 @@
 
     // Function to display filtered events.
     displayEvents(events) {
-      this.output = '';
       this.domOutput = document.createElement("div");
 
       if (events.length === 0) {
-        this.output = '<p>No events found matching your criteria.</p>';
-
         const noEvents = document.createElement("p");
         noEvents.innerText = 'No events found matching your criteria.';
         this.domOutput.append(noEvents);
@@ -281,9 +277,7 @@
         this.displayGroupedBySession(events);
       }
 
-      // this.calendarContent.innerHTML = this.output;
       this.calendarContent.replaceChildren(...this.domOutput.childNodes)
-      this.output = '';
       this.domOutput = document.createElement("div");
     }
 
@@ -344,7 +338,6 @@
       // Display the grouped and sorted events
       sortedSessionIds.forEach(sessionId => {
         const { sessionDisplay, events } = groupedEvents[sessionId];
-        this.output += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${sessionDisplay}</h2>`;
 
         const headline = document.createElement("h2");
         let classesToAdd = ['headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top'];
@@ -359,7 +352,6 @@
     // Function to render months and their events.
     renderMonths(months, groupedEvents) {
       months.forEach(month => {
-        this.output += `<h2 class="headline headline--serif block-margin__bottom--extra block-padding__top">${month}</h2>`;
 
         const headline = document.createElement("h2");
         let classesToAdd = ['headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top'];
@@ -373,7 +365,6 @@
 
     // Function to render individual event.
     renderEvent(event, includeSession) {
-      this.output += event.rendered;
       this.domOutput.append(event.domTree);
     }
   }
