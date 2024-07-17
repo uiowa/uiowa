@@ -164,7 +164,6 @@
       this.uniqueSessions = new Set();
       //------------------------------//
       // Cache objects for frequently used elements.
-      this.form = calendarEl.querySelector('#academic-calendar-filter-form');
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
     }
