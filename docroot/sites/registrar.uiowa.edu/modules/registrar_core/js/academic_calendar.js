@@ -17,11 +17,24 @@
         const categoryEl = formEl.querySelector('#edit_category_chosen');
 
         // Initialize the AcademicCalendar object.
-        const academicCalendar = new AcademicCalendar(calendarEl, startDateEl.value, endDateEl.value, steps, initGroupByMonth, sessionSelectEl.value);
+        const academicCalendar = new AcademicCalendar(
+          calendarEl,
+          startDateEl.value,
+          endDateEl.value,
+          steps,
+          initGroupByMonth,
+          sessionSelectEl.value,
+          function() {
+            return formEl.querySelector('.academic-calendar-search').value.toLowerCase();
+          }
+        );
 
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
           populateSessionFilter(academicCalendar.uniqueSessions);
+
+          console.log('___all events after populate___');
+          console.log(academicCalendar.allEvents);
         });
 
         const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
@@ -102,7 +115,6 @@
         function toggleShowPreviousEvents(checkbox) {
           const container = showPreviousEventsCheckbox.closest('.js-form-item');
           const shouldShow = showGroupByMonth ? (checkbox && checkbox.checked) : (calendarSettings.groupByMonth === 1);
-          console.log(shouldShow);
           container.style.display = shouldShow ? 'block' : 'none';
         }
       });
@@ -113,7 +125,7 @@
     steps = 0;
     groupByMonth = false;
     showPreviousEvents = false;
-    constructor(calendarEl, startDate, endDate, steps, groupByMonth, showPreviousEvents, selectedSession) {
+    constructor(calendarEl, startDate, endDate, steps, groupByMonth, selectedSession, getSearchValFn = null) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.output = '';
       this.allEvents = [];
@@ -123,15 +135,18 @@
       this.searchTerm = '';
       this.steps = steps;
       this.groupByMonth = groupByMonth;
-      this.showPreviousEvents = showPreviousEvents;
       this.selectedSession = selectedSession;
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
+      //------------------------------//
       // Cache objects for frequently used elements.
       this.form = calendarEl.querySelector('#academic-calendar-filter-form');
-      this.showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
+
+      this.svf = getSearchValFn;
+      console.log('___custom function in constructor___');
+      console.log(this.svf !== null ? this.svf() : '');
     }
 
     get groupByMonth() {
@@ -142,16 +157,24 @@
       this.groupByMonth = value;
     }
 
+    setAllEvents(value) {
+      this.allEvents = value;
+    }
+
     // Function to fetch events from the server and display them.
     async fetchEvents() {
       this.toggleSpinner();
+      console.log(this.startDate, this.endDate, this.steps);
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
         .then(response => response.json())
         .then(events => {
-          this.allEvents = events;
+          console.log(this);
+          this.setAllEvents(events);
+          console.log('___events in fetch events response___');
+          console.log(events);
           this.uniqueSessions.clear();
           events.forEach(event => this.uniqueSessions.add(event.sessionDisplay));
           this.filterAndDisplayEvents();
@@ -176,6 +199,8 @@
 
     // Function to filter and display events based on current form state.
     filterAndDisplayEvents() {
+      console.log('___events in filterAndDisplayEvents()___');
+      console.log(this.allEvents);
       const searchTerm = this.form.querySelector('.academic-calendar-search').value.toLowerCase();
       const startDate = new Date(this.startDate);
       const endDate = new Date(this.endDate);
