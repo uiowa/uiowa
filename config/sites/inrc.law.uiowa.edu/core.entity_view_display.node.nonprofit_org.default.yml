@@ -225,18 +225,21 @@ third_party_settings:
             region: card_media
             configuration:
               id: 'field_block:node:nonprofit_org:field_image'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: visually_hidden
                 settings:
-                  view_mode: full__ultrawide
-                  link: false
+                  view_mode: medium__widescreen
                 third_party_settings: {  }
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: a8c4bf12-f630-4123-82ef-2879fdf52364
@@ -319,7 +322,9 @@ third_party_settings:
                 label: visually_hidden
                 settings:
                   title: ''
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: 0
             additional:
               layout_builder_styles_style: {  }
@@ -514,10 +519,10 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_label
+                type: entity_reference_entity_view
                 label: inline
                 settings:
-                  link: true
+                  view_mode: default
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
