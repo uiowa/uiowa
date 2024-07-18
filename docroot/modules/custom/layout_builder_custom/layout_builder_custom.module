@@ -202,15 +202,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             break;
 
           case 'inline_block:uiowa_quote':
-            $lb_styles_extra_settings['content_alignment']['default'] = 'quote_left';
-            unset($lb_styles_extra_settings['content_alignment']['empty_label']);
             $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
-            $form['layout_builder_style_default_content_alignment']['#default_value'] = 'quote_left';
-            $form['layout_builder_style_default_content_alignment']['#required'] = TRUE;
-            // Remove the empty option if it exists
-            unset($form['layout_builder_style_default_content_alignment']['#empty_option']);
-            $lb_styles_extra_settings['content_alignment']['#required'] = TRUE;
-
             break;
 
           case 'inline_block:uiowa_image_gallery':
