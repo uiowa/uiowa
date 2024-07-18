@@ -30,7 +30,6 @@ dependencies:
   module:
     - address
     - link
-    - telephone
     - user
 id: node.nonprofit_org.teaser
 targetEntityType: node
@@ -72,14 +71,6 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  field_np_telephone_number:
-    type: telephone_link
-    label: visually_hidden
-    settings:
-      title: ''
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_np_website:
     type: link
     label: visually_hidden
@@ -116,6 +107,7 @@ hidden:
   field_np_last_training_date: true
   field_np_ntee: true
   field_np_revenue: true
+  field_np_telephone_number: true
   field_np_training_attendees: true
   field_np_training_information_heading: true
   field_np_training_location: true

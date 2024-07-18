@@ -262,7 +262,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -282,7 +282,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -1
+            weight: 0
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -302,30 +302,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2fc13e27-3d32-44ee-a490-049b87b7f802
-            region: card_meta
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_telephone_number'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: telephone_link
-                label: visually_hidden
-                settings:
-                  title: ''
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 0
+            weight: -1
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -474,6 +451,27 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 3
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 70e418c3-e16f-4845-861a-f50ae5218400
+            region: card_meta
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_telephone_number'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -773,11 +771,12 @@ content:
     weight: 114
     region: content
   field_np_telephone_number:
-    type: basic_string
+    type: string
     label: above
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    weight: 106
+    weight: 125
     region: content
   field_np_training_attendees:
     type: text_default
