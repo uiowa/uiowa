@@ -34,8 +34,7 @@ blockquote {
    .blockquote__media {
      margin-bottom: .9rem;
    }
-    &.blockquote--right,
-    &.blockquote--left {
+    &.blockquote:not(.blockquote--center) {
       padding:  0;
       .blockquote__media {
         margin-top: 0;
@@ -50,23 +49,24 @@ blockquote {
       flex-flow: column nowrap;
       flex-direction: column;
     }
-    &.blockquote--center {
-      footer {
-        text-align: center;
-        max-width: 100%;
-        cite {
-          text-align: unset;
-        }
-      }
-    }
-    &.blockquote--right {
-      footer {
-        align-items: flex-end;
-      }
-    }
-    &.blockquote--left {
+    &.blockquote {
       footer {
         align-items: start;
+      }
+      &.blockquote--center {
+        footer {
+          align-items: center;
+          text-align: center;
+          max-width: 100%;
+          cite {
+            text-align: unset;
+          }
+        }
+      }
+      &.blockquote--right {
+        footer {
+          align-items: flex-end;
+        }
       }
     }
   }
