@@ -105,14 +105,17 @@ class AcademicCalendarController extends ControllerBase {
     return new JsonResponse($data);
   }
 
+  /**
+   *
+   */
   private function eventCompare($a, $b): int {
     $event1 = $a;
     $event2 = $b;
 
-    //todo: need to add alpha check.
-
+    // @todo need to add alpha check.
     // If both events have the same date, we need to do more sorting.
-    if($event1->start === $event2->start) {// COMMENT HERE
+    // COMMENT HERE
+    if ($event1->start === $event2->start) {
       $weightLookup = [
         '4wk' => '2',
         '6wk I' => '4',
@@ -122,15 +125,15 @@ class AcademicCalendarController extends ControllerBase {
       ];
 
       $title1 = $event1->title;
-      $observed1 = ( count( explode('(Observed)', $title1)) > 1) ? 1 : 0;
+      $observed1 = (count(explode('(Observed)', $title1)) > 1) ? 1 : 0;
       $subSession1 = explode(':', $title1);
-      $subSession1 = ( count( $subSession1 ) > 1) ? $weightLookup[$subSession1[0]] : 0;
+      $subSession1 = (count($subSession1) > 1) ? $weightLookup[$subSession1[0]] : 0;
       $totalWeight1 = $observed1 + $subSession1;
 
       $title2 = $event2->title;
-      $observed2 = ( count( explode('(Observed)', $title2)) > 1) ? 1 : 0;
+      $observed2 = (count(explode('(Observed)', $title2)) > 1) ? 1 : 0;
       $subSession2 = explode(':', $title2);
-      $subSession2 = ( count( $subSession2 ) > 1) ? $weightLookup[$subSession2[0]] : 0;
+      $subSession2 = (count($subSession2) > 1) ? $weightLookup[$subSession2[0]] : 0;
       $totalWeight2 = $observed2 + $subSession2;
 
       return ($totalWeight1 < $totalWeight2) ? -1 : 1;
@@ -189,7 +192,7 @@ class AcademicCalendarController extends ControllerBase {
       $events,
       [
         'Drupal\registrar_core\Controller\AcademicCalendarController',
-        'eventCompare'
+        'eventCompare',
       ]
     );
 
@@ -331,4 +334,5 @@ class AcademicCalendarController extends ControllerBase {
 
     return $event;
   }
+
 }
