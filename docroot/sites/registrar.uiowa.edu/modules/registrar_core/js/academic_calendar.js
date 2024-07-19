@@ -193,6 +193,7 @@
           });
           this.allEvents = events;
           this.filterAndDisplayEvents();
+          console.log(this.allEvents);
         })
         .catch(error => {
           console.error('Error fetching events:', error);

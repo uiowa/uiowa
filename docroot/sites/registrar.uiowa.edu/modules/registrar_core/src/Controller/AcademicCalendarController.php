@@ -142,12 +142,15 @@ class AcademicCalendarController extends ControllerBase {
 
         if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
-//          if ($this->filterEvent($event, $categories, $subsession)) {
-            $events[] = $event;
-//          }
+
+          // Add sort string to array here. subSessionSortString(string $title);
+
+          $events[] = $event;
         }
       }
     }
+
+    // Sort data here using sort string.
 
     return $events;
   }
@@ -286,6 +289,23 @@ class AcademicCalendarController extends ControllerBase {
     $event->rendered = $this->renderer->render($card);
 
     return $event;
+  }
+
+  private function subSessionSortString(string $title): string {
+    $data = explode(':', $title);
+    if (count($data) < 2) {
+      return $title;
+    }
+
+    $weightLookup = [
+      '4 wk' => '0',
+      '6 wk I' => '1',
+      '6 wk II' => '2',
+      '8 wk' => '3',
+      '12 wk' => '4',
+    ];
+
+    return $data[1] . '-' . $weightLookup[$data[0]];
   }
 
 }
