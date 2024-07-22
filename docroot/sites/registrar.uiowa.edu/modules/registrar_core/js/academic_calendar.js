@@ -27,6 +27,8 @@
 
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
+          console.log('After fetch');
+          console.log(academicCalendar.uniqueSessions);
           populateSessionFilter(academicCalendar.uniqueSessions);
         });
 
@@ -180,13 +182,16 @@
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
-      fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
+      // Use `await` so we don't return a promise before the fetch is done.
+      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
         .then(response => response.json())
         .then(events => {
           this.allEvents = events;
           this.uniqueSessions.clear();
+          console.log('During fetch');
           events.forEach((event) => {
             this.uniqueSessions.add(event.sessionDisplay)
+            console.log(this.uniqueSessions);
             event.domTree = this.parseCardDomString(event.rendered)
           });
           this.allEvents = events;
