@@ -4,8 +4,6 @@
   Drupal.behaviors.academicCalendar = {
     attach: function (context, settings) {
       once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
-        console.log('element', calendarEl);
-
         const calendarSettings = drupalSettings.academicCalendar;
         const steps = calendarSettings.steps || 0;
         const initGroupByMonth = calendarSettings.groupByMonth;
