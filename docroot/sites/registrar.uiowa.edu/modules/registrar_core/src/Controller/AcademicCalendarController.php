@@ -106,8 +106,10 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Creates a weight encoded string from an event.
+   *
    * Creates a string that encodes weight data in it so that an alphabetical
-   *    check can sort it without doing additional work.
+   *     check can sort it without doing additional work.
    *
    * @param object $event
    *   The event we will construct our sort string from.
@@ -149,7 +151,7 @@ class AcademicCalendarController extends ControllerBase {
    * @param object $event1
    *   The first event to compare.
    * @param object $event2
-   *    The second event to compare.
+   *   The second event to compare.
    *
    * @return int
    *   Less than 0 if $event1 should be placed before $event2,
