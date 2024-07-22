@@ -108,35 +108,52 @@ class AcademicCalendarController extends ControllerBase {
   /**
    *
    */
-  private function eventCompare($a, $b): int {
-    $event1 = $a;
-    $event2 = $b;
+  private function sortString($event): string {
+    $title = $event->title;
+    $observed = explode('(Observed)', $title);
+    $title = $observed[0];
+    $titleWeight = 0;
+    $isObserved = count($observed) > 1;
+    if ($isObserved) {
+      $titleWeight += 1;
+    }
+    $isSubSession = $event->subSession;
+    if ($isSubSession) {
+      $subSession = explode(':', $title);
+      $title = end($subSession);
 
-    // @todo need to add alpha check.
+      $weightLookup = [
+        '' => 0,
+        '4wk' => 2,
+        '6wk I' => 4,
+        '6wk II' => 6,
+        '8wk' => 8,
+        '12wk' => 10,
+      ];
+      $titleWeight += $weightLookup[$subSession[0]];
+    }
+
+    if ($titleWeight < 10) {
+      $titleWeight = '0' . $titleWeight;
+    }
+
+    // Example sorting weight
+    // Title - Observed - session
+    return trim($title) . $titleWeight;
+  }
+
+  /**
+   *
+   */
+  private function eventCompare($event1, $event2): int {
+
     // If both events have the same date, we need to do more sorting.
     // COMMENT HERE
     if ($event1->start === $event2->start) {
-      $weightLookup = [
-        '4wk' => '2',
-        '6wk I' => '4',
-        '6wk II' => '6',
-        '8wk' => '8',
-        '12wk' => '10',
-      ];
+      $sortString1 = $event1->sortString;
+      $sortString2 = $event2->sortString;
 
-      $title1 = $event1->title;
-      $observed1 = (count(explode('(Observed)', $title1)) > 1) ? 1 : 0;
-      $subSession1 = explode(':', $title1);
-      $subSession1 = (count($subSession1) > 1) ? $weightLookup[$subSession1[0]] : 0;
-      $totalWeight1 = $observed1 + $subSession1;
-
-      $title2 = $event2->title;
-      $observed2 = (count(explode('(Observed)', $title2)) > 1) ? 1 : 0;
-      $subSession2 = explode(':', $title2);
-      $subSession2 = (count($subSession2) > 1) ? $weightLookup[$subSession2[0]] : 0;
-      $totalWeight2 = $observed2 + $subSession2;
-
-      return ($totalWeight1 < $totalWeight2) ? -1 : 1;
+      return strcasecmp($sortString1, $sortString2);
     }
 
     // If they are not the same date, return the comparison.
@@ -182,6 +199,7 @@ class AcademicCalendarController extends ControllerBase {
 
         if (!empty($date->dateCategoryLookups)) {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
+          $event->sortString = $this->sortString($event);
 
           $events[] = $event;
         }
