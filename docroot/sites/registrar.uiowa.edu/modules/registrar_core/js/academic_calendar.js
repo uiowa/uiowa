@@ -285,8 +285,21 @@
     }
 
     addDateHiders(node) {
+      const datesFound= [];
+
       node.childNodes.forEach((node)=>{
-        
+        const date = node.querySelector('.media--date');
+
+        if (date) {
+          const entryIndex = date.innerText;
+
+          if (datesFound.includes(entryIndex)) {
+            date.classList.add('element-invisible');
+          }
+          else {
+            datesFound.push(entryIndex);
+          }
+        }
       })
     }
 
