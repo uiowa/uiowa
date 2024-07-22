@@ -177,10 +177,11 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Session'),
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
-      '#options' => $this->sessionOptionsCallback(4, 4),
+      '#options' => $this->sessionOptions(4, 4),
       '#ajax' => [
         'callback' => [$this, 'sessionDropdownCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines-department-dropdown',
+        'event' => 'change',
       ],
       '#prefix' => '<div id="uiowa-maui-course-deadlines-session-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -192,7 +193,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Department'),
       '#description' => $this->t('Select a department to auto-populate the course dropdown options.'),
       '#empty_option' => '- Department -',
-      '#options' => $this->departmentOptionsCallback(),
+      '#options' => $this->departmentOptions(),
       '#default_value' => $department ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-department-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -209,7 +210,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Course'),
       '#description' => $this->t('Select a course to auto-populate the section dropdown options.'),
       '#empty_option' => '- Course -',
-      '#options' => $this->courseOptionsCallback($session, $department),
+      '#options' => $this->courseOptions($session, $department),
       '#default_value' => $course ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-course-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -226,7 +227,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Section'),
       '#description' => $this->t('Select a section to display course deadline information.'),
       '#empty_option' => '- Section -',
-      '#options' => $this->sectionOptionsCallback($session, $department, $course),
+      '#options' => $this->sectionOptions($session, $department, $course),
       '#default_value' => $section ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-section-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -255,6 +256,27 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
+   * Helper function to generate select list options for sessions.
+   *
+   * @param int $previous
+   *   How many sessions to go backwards.
+   * @param int $future
+   *   How many sessions to go forwards.
+   *
+   * @return array
+   *   Array of select list options.
+   */
+  private function sessionOptions($previous = 4, $future = 4) {
+    $sessions = $this->maui->getSessionsBounded($previous, $future);
+    $options = [];
+    foreach ($sessions as $session) {
+      $options[$session->id] = $session->shortDescription;
+    }
+
+    return $options;
+  }
+
+  /**
    * Department dropdown callback.
    */
   private function departmentDropdownCallback($form, $form_state) {
@@ -262,9 +284,26 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
+   * Helper function to generate select list options for departments.
+   */
+  private function departmentOptions() {
+    $departments = $this->maui->getCourseSubjects();
+    if (empty($departments)) {
+      return [];
+    }
+
+    $options = [];
+    foreach ($departments as $department) {
+      $options[$department->naturalKey] = $department->naturalKey;
+    }
+
+    return $options;
+  }
+
+  /**
    * Course dropdown option callback.
    */
-  private function courseOptionsCallback($session, $department) {
+  private function courseOptions($session, $department) {
     $options = [];
 
     if (isset($session, $department)) {
@@ -291,7 +330,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   JSON decoded array of response data.
    */
   private function fetchCourseDropdown($session, $subject) {
-    $endpoint = 'registrar/course/dropdown/' . $session . '/' . $subject;
+    $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
     $data = $this->maui->request('GET', $endpoint);
     sort($data);
     return $data;
@@ -307,7 +346,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Section dropdown option callback.
    */
-  private function sectionOptionsCallback($session, $department, $course) {
+  private function sectionOptions($session, $department, $course) {
     $options = [];
 
     if (isset($session, $department, $course)) {
@@ -336,7 +375,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   JSON decoded array of response data.
    */
   private function fetchSectionsDropdown($session, $subject, $course) {
-    $endpoint = 'registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
+    $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
     $data = $this->maui->request('GET', $endpoint);
     return $data;
   }
@@ -561,44 +600,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     }
 
     return $deadlines;
-  }
-
-  /**
-   * Helper function to generate select list options for sessions.
-   *
-   * @param int $previous
-   *   How many sessions to go backwards.
-   * @param int $future
-   *   How many sessions to go forwards.
-   *
-   * @return array
-   *   Array of select list options.
-   */
-  private function sessionOptionsCallback($previous = 4, $future = 4) {
-    $sessions = $this->maui->getSessionsBounded($previous, $future);
-    $options = [];
-    foreach ($sessions as $session) {
-      $options[$session->id] = $session->shortDescription;
-    }
-
-    return $options;
-  }
-
-  /**
-   * Helper function to generate select list options for departments.
-   */
-  private function departmentOptionsCallback() {
-    $departments = $this->maui->getCourseSubjects();
-    if (empty($departments)) {
-      return [];
-    }
-
-    $options = [];
-    foreach ($departments as $department) {
-      $options[$department->naturalKey] = $department->naturalKey;
-    }
-
-    return $options;
   }
 
 }
