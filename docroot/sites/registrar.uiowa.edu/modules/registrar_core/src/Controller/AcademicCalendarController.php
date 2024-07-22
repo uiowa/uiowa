@@ -138,7 +138,7 @@ class AcademicCalendarController extends ControllerBase {
     }
 
     // Example sorting weight
-    // Title - Observed - session
+    // Title - Observed - session.
     return trim($title) . $titleWeight;
   }
 
@@ -148,7 +148,7 @@ class AcademicCalendarController extends ControllerBase {
   private function eventCompare($event1, $event2): int {
 
     // If both events have the same date, we need to do more sorting.
-    // COMMENT HERE
+    // COMMENT HERE.
     if ($event1->start === $event2->start) {
       $sortString1 = $event1->sortString;
       $sortString2 = $event2->sortString;
