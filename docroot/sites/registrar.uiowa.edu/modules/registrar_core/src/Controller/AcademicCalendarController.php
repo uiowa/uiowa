@@ -106,9 +106,16 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Creates a string that encodes weight data in it so that an alphabetical
+   *    check can sort it without doing additional work.
    *
+   * @param object $event
+   *   The event we will construct our sort string from.
+   *
+   * @return string
+   *   A string with weight data encoded for sorting.
    */
-  private function sortString($event): string {
+  private function sortString(object $event): string {
     $title = $event->title;
     $titleWeight = 0;
     $isSubSession = $event->subSession;
@@ -133,13 +140,23 @@ class AcademicCalendarController extends ControllerBase {
 
     // Example sorting weight
     // Title - Observed - session.
-    return  $titleWeight . trim($title);
+    return $titleWeight . trim($title);
   }
 
   /**
+   * Compares two events so we can sort them with a custom sorting pass.
    *
+   * @param object $event1
+   *   The first event to compare.
+   * @param object $event2
+   *    The second event to compare.
+   *
+   * @return int
+   *   Less than 0 if $event1 should be placed before $event2,
+   *   0 if they have no weight difference,
+   *   And greater than 0 if $event1 should be placed after $event2.
    */
-  private function eventCompare($event1, $event2): int {
+  private function eventCompare(object $event1, object $event2): int {
 
     // If both events have the same date, we need to do more sorting.
     // COMMENT HERE.
