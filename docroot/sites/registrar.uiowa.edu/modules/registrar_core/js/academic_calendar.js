@@ -193,7 +193,6 @@
           });
           this.allEvents = events;
           this.filterAndDisplayEvents();
-          console.log(this.allEvents);
         })
         .catch(error => {
           console.error('Error fetching events:', error);
@@ -278,12 +277,21 @@
         this.displayGroupedBySession(events);
       }
 
+      // Do any last minute changes here.
+      this.addDateHiders(this.domOutput);
+
       this.calendarContent.replaceChildren(...this.domOutput.childNodes)
       this.domOutput = document.createElement("div");
     }
 
+    addDateHiders(node) {
+      node.childNodes.forEach((node)=>{
+        
+      })
+    }
+
     // Function to display events grouped by month.
-    displayGroupedByMonth(events, showPreviousEvents) {
+     displayGroupedByMonth(events, showPreviousEvents) {
       const groupedEvents = events.reduce((groups, event) => {
         const date = new Date(event.start);
         const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });

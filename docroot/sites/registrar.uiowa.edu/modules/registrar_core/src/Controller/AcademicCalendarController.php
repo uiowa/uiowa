@@ -110,13 +110,7 @@ class AcademicCalendarController extends ControllerBase {
    */
   private function sortString($event): string {
     $title = $event->title;
-    $observed = explode('(Observed)', $title);
-    $title = $observed[0];
     $titleWeight = 0;
-    $isObserved = count($observed) > 1;
-    if ($isObserved) {
-      $titleWeight += 1;
-    }
     $isSubSession = $event->subSession;
     if ($isSubSession) {
       $subSession = explode(':', $title);
@@ -139,7 +133,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // Example sorting weight
     // Title - Observed - session.
-    return trim($title) . $titleWeight;
+    return  $titleWeight . trim($title);
   }
 
   /**
