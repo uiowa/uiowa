@@ -333,4 +333,50 @@ class MauiApi {
       ]);
   }
 
+  /**
+   * The section/course search web service by internal id.
+   *
+   * GET /pub/registrar/sections/{sectionId: /d+}.
+   *
+   * @param string $section
+   *   The section id.
+   * @param array $exclude
+   *   The exclusion parameters.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getSection($section, $exclude) {
+    $endpoint = 'pub/registrar/sections/' . $section;
+
+    $params = [
+      'exclude' => json_encode($exclude),
+    ];
+
+    return $this->request('GET', $endpoint, $params);
+  }
+
+  /**
+   * Find all course subjects.
+   *
+   * GET /pub/lookups/registrar/coursesubjects.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getCourseSubjects() {
+    $endpoint = 'pub/lookups/registrar/coursesubjects';
+    $data = $this->request('GET', $endpoint);
+
+    // @todo Troubleshoot why we weren't getting data.
+    if ($data) {
+      // Sort alphabetically by natural key, i.e. CHEM.
+      usort($data, function ($a, $b) {
+        return strcasecmp($a->naturalKey, $b->naturalKey);
+      });
+    }
+
+    return $data;
+  }
+
 }
