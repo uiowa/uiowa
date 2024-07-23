@@ -94,15 +94,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    // @todo Get rid of this if we don't end up
-    //   needing block configuration.
-    return [] + parent::defaultConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
@@ -126,7 +117,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function build() {
-
     // Attach the library for the deadlines block.
     $build['#attached']['library'][] = 'registrar_core/course-deadlines';
 
@@ -195,7 +185,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Course'),
       '#description' => $this->t('Select a course to auto-populate the section dropdown options.'),
       '#empty_option' => '- Course -',
-      '#options' => $this->courseOptions($form_state),
+      '#options' => $this->courseOptions($session, $department),
       '#default_value' => $course ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-course-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -293,9 +283,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Course dropdown option callback.
    */
-  private function courseOptions($form_state) {
-    $session = $form_state->getValue('session');
-    $department = $form_state->getValue('department');
+  private function courseOptions($session, $department) {
     $options = [];
 
     if (!empty($session) && !empty($department)) {
