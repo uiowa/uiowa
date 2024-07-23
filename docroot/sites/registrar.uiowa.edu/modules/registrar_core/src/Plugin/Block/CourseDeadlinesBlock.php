@@ -476,12 +476,10 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
       foreach ($dates as $key => $label) {
         if ($data->$key) {
-          $items[] = [
-            'data' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
-              '@label' => $label,
-              '@date' => date('m/d/Y', strtotime($data->$key)),
-            ]),
-          ];
+          $items[] = $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
+            '@label' => $label,
+            '@date' => date('m/d/Y', strtotime($data->$key)),
+          ]);
         }
       }
 
