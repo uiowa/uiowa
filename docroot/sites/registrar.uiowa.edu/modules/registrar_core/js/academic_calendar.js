@@ -110,6 +110,7 @@
           academicCalendar.selectedCategories = filterValues.selectedCategories;
         }
 
+        // Function to get the values of the filters at call time.
         function getFilterValues() {
           return {
             'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
@@ -122,7 +123,6 @@
           };
         }
 
-
         // Function to get the `chosen` values from a `chosen` field.
         function getChosenChoices(chosen) {
           const choices = [];
@@ -134,6 +134,7 @@
           return choices;
         }
 
+        // Function to get the form elements for future use.
         function getFormEls(formEl) {
           return {
             'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
