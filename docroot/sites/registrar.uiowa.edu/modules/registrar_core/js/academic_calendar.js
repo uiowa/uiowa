@@ -9,32 +9,22 @@
         const initGroupByMonth = calendarSettings.groupByMonth;
         const showGroupByMonth = calendarSettings.showGroupByMonth;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
-        const startDateEl = formEl.querySelector('.academic-calendar-start-date');
-        const endDateEl = formEl.querySelector('.academic-calendar-end-date');
-        const sessionSelectEl = formEl.querySelector('select[name="session"]');
-        const categoryEl = formEl.querySelector('#edit_category_chosen');
+        const formEls = getFormEls(formEl);
 
         // Initialize the AcademicCalendar object.
         const academicCalendar = new AcademicCalendar(
           calendarEl,
-          getSearchTerm(),
-          startDateEl.value,
-          endDateEl.value,
           steps,
           initGroupByMonth,
-          sessionSelectEl.value
+          getFilterValues()
         );
 
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
-          console.log('After fetch');
-          console.log(academicCalendar.uniqueSessions);
           populateSessionFilter(academicCalendar.uniqueSessions);
         });
 
-        const showPreviousEventsCheckbox = calendarEl.querySelector('#show-previous-events');
-        showPreviousEventsCheckbox.addEventListener('change', () => {
-          academicCalendar.showPreviousEvents = showPreviousEventsCheckbox.checked;
+        formEls.showPreviousEventsEl.addEventListener('change', () => {
           updateFilterDisplay();
         });
 
@@ -89,11 +79,11 @@
           updateFilterDisplay();
         });
 
-        if (categoryEl) {
+        if (formEls.categoryEl) {
           const observer = new MutationObserver(function () {
             updateFilterDisplay();
           });
-          observer.observe(categoryEl, { childList: true, subtree: true });
+          observer.observe(formEls.categoryEl, { childList: true, subtree: true });
         }
 
         // Wrapper function to call updateAcademicCalendarFromFilters() and then academicCalendar.filterAndDisplayEvents().
@@ -108,21 +98,57 @@
           }
         }
 
-        // Function to get search term based on form filters.
-        function getSearchTerm() {
-          return formEl.querySelector('.academic-calendar-search').value.toLowerCase();
-        }
-
         // Function to update AcademicCalendar object based on form filters.
         function updateAcademicCalendarFromFilters() {
-          academicCalendar.searchTerm = getSearchTerm();
-          academicCalendar.startDate = startDateEl.value;
-          academicCalendar.endDate = endDateEl.value;
+          const filterValues = getFilterValues();
+          academicCalendar.searchTerm = filterValues.searchTerm;
+          academicCalendar.startDate = filterValues.startDate;
+          academicCalendar.endDate = filterValues.endDate;
+          academicCalendar.selectedSession = filterValues.selectedSession;
+          academicCalendar.showSubSessions = filterValues.showSubSessions;
+          academicCalendar.showPreviousEvents = filterValues.showPreviousEvents;
+          academicCalendar.selectedCategories = filterValues.selectedCategories;
+        }
+
+        function getFilterValues() {
+          return {
+            'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
+            'startDate' : formEls.startDateEl.value,
+            'endDate' : formEls.endDateEl.value,
+            'selectedSession' : formEls.sessionSelectEl.value,
+            'showSubSessions' : formEls.showSubSessionEl.checked,
+            'showPreviousEvents' : formEls.showPreviousEventsEl.checked,
+            'selectedCategories' : getChosenChoices(formEls.categoryEl),
+          };
+        }
+
+
+        // Function to get the `chosen` values from a `chosen` field.
+        function getChosenChoices(chosen) {
+          const choices = [];
+          const domChoices = chosen.querySelectorAll('.chosen-choices .search-choice');
+          domChoices.forEach((choice) => {
+            choices.push(choice.innerText);
+          });
+
+          return choices;
+        }
+
+        function getFormEls(formEl) {
+          return {
+            'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
+            'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
+            'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
+            'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
+            'showSubSessionEl' : formEl.querySelector('#subsession'),
+            'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
+            'categoryEl' : formEl.querySelector('#edit_category_chosen'),
+          }
         }
 
         // Function to populate the session filter dropdown.
         function populateSessionFilter(sessions) {
-          const currentValue = sessionSelectEl.value;
+          const currentValue = formEls.sessionSelectEl.value;
 
           // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
           let sessionBuffer = '<option value="">All Sessions</option>';
@@ -131,13 +157,13 @@
             sessionBuffer += `<option value="${session}">${session}</option>`;
           });
 
-          sessionSelectEl.innerHTML = sessionBuffer;
-          sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
+          formEls.sessionSelectEl.innerHTML = sessionBuffer;
+          formEls.sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
         }
 
         // Function to toggle visibility of 'Show previous events' checkbox.
         function toggleShowPreviousEvents(checkbox) {
-          const container = showPreviousEventsCheckbox.closest('.js-form-item');
+          const container = formEls.showPreviousEventsEl.closest('.js-form-item');
           const shouldShow = showGroupByMonth ? (checkbox && checkbox.checked) : (calendarSettings.groupByMonth === 1);
           container.style.display = shouldShow ? 'block' : 'none';
         }
@@ -148,18 +174,21 @@
   class AcademicCalendar {
     steps = 0;
     groupByMonth = false;
-    showPreviousEvents = false;
-    constructor(calendarEl, searchTerm, startDate, endDate, steps, groupByMonth, selectedSession) {
+    constructor(calendarEl, steps, groupByMonth, filterValues) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domOutput = document.createElement("div");
       this.allEvents = [];
       this.calendarEl = calendarEl;
-      this.startDate = startDate;
-      this.endDate = endDate;
-      this.searchTerm = searchTerm;
+      this.startDate = filterValues.startDate;
+      this.endDate = filterValues.endDate;
+      this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
+
       this.groupByMonth = groupByMonth;
-      this.selectedSession = selectedSession;
+      this.selectedSession = filterValues.selectedSession;
+      this.showSubSessions = filterValues.showSubSessions;
+      this.showPreviousEvents = filterValues.showPreviousEvents;
+      this.selectedCategories = filterValues.selectedCategories;
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
       //------------------------------//
@@ -188,10 +217,8 @@
         .then(events => {
           this.allEvents = events;
           this.uniqueSessions.clear();
-          console.log('During fetch');
           events.forEach((event) => {
             this.uniqueSessions.add(event.sessionDisplay)
-            console.log(this.uniqueSessions);
             event.domTree = this.parseCardDomString(event.rendered)
           });
           this.allEvents = events;
@@ -229,6 +256,7 @@
     // Function to filter and display events based on current form state.
     filterAndDisplayEvents() {
       const searchTerm = this.searchTerm;
+      const today = new Date();
       const startDate = new Date(this.startDate);
       const endDate = new Date(this.endDate);
 
@@ -236,14 +264,25 @@
       const filteredEvents = this.allEvents.filter(event => {
         const eventStart = new Date(event.start);
         const eventEnd = new Date(event.end);
+
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
           event.description.toLowerCase().includes(searchTerm);
-        const matchesDateRange = (!startDate.valueOf() || eventEnd >= startDate) &&
-          (!endDate.valueOf() || eventStart <= endDate);
+        const startCheck = !startDate.valueOf() ? !this.showPreviousEvents ? eventEnd >= today : true : eventEnd >= startDate;
+        const endCheck = (!endDate.valueOf() || eventStart <= endDate)
+        const matchesDateRange = (startCheck) && (endCheck);
         const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
+        const matchesSubSession = event.subSession ? this.showSubSessions : true;
 
-        return matchesSearch && matchesDateRange && matchesSession;
+        let matchCategories = false;
+        const eventCategories = Object.values(event.categories);
+        eventCategories.forEach((category) => {
+          if (this.selectedCategories.includes(category)) {
+            matchCategories = true;
+          }
+        });
+
+        return matchesSearch && matchesDateRange && matchesSession && matchesSubSession && matchCategories;
       });
       // @todo Implement this.
       this.displayEvents(filteredEvents);
@@ -264,6 +303,8 @@
         const noEvents = document.createElement("p");
         noEvents.innerText = 'No events found matching your criteria.';
         this.domOutput.append(noEvents);
+        this.calendarContent.replaceChildren(...this.domOutput.childNodes)
+        this.domOutput = document.createElement("div");
 
         Drupal.announce('No events found matching your criteria.');
         return;
@@ -300,6 +341,7 @@
             date.classList.add('element-invisible');
           }
           else {
+            date.classList.remove('element-invisible');
             datesFound.push(entryIndex);
           }
         }
