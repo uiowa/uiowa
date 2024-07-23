@@ -347,7 +347,7 @@ class MauiApi {
    *   JSON decoded array of response data.
    */
   public function getSection($section, $exclude) {
-    $endpoint = '/pub/registrar/sections/' . $section;
+    $endpoint = 'pub/registrar/sections/' . $section;
 
     $params = [
       'exclude' => json_encode($exclude),
@@ -365,10 +365,9 @@ class MauiApi {
    *   JSON decoded array of response data.
    */
   public function getCourseSubjects() {
-    $endpoint = '/pub/lookups/registrar/coursesubjects';
+    $endpoint = 'pub/lookups/registrar/coursesubjects';
     $data = $this->request('GET', $endpoint);
 
-    // @todo Troubleshoot why we weren't getting data.
     if ($data) {
       // Sort alphabetically by natural key, i.e. CHEM.
       usort($data, function ($a, $b) {

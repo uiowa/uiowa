@@ -339,7 +339,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   private function fetchCourseDropdown($session, $subject) {
     $data = [];
     if (!empty($session) && !empty($subject)) {
-      $endpoint = '/pub/registrar/course/dropdown/' . $session . '/' . $subject;
+      $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
       if ($data = $this->maui->request('GET', $endpoint)) {
         sort($data);
       }
@@ -388,7 +388,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   private function fetchSectionsDropdown($session, $subject, $course) {
     $data = [];
     if (!empty($session) && !empty($subject) && !empty($course)) {
-      $endpoint = '/pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
+      $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
       $data = $this->maui->request('GET', $endpoint);
     }
     return is_array($data) ? $data : [];
