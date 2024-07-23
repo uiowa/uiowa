@@ -7510,3 +7510,9 @@ $sites['labhenry.uiowa.ddev.site'] = 'henry.lab.uiowa.edu';
 $sites['labhenry.dev.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
 $sites['labhenry.stage.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
 $sites['labhenry.prod.drupal.uiowa.edu'] = 'henry.lab.uiowa.edu';
+
+// Directory aliases for scsmh.education.uiowa.edu.
+$sites['educationscsmh.uiowa.ddev.site'] = 'scsmh.education.uiowa.edu';
+$sites['educationscsmh.dev.drupal.uiowa.edu'] = 'scsmh.education.uiowa.edu';
+$sites['educationscsmh.stage.drupal.uiowa.edu'] = 'scsmh.education.uiowa.edu';
+$sites['educationscsmh.prod.drupal.uiowa.edu'] = 'scsmh.education.uiowa.edu';
