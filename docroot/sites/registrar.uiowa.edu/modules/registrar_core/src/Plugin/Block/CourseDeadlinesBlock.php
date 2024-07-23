@@ -2,7 +2,6 @@
 
 namespace Drupal\registrar_core\Plugin\Block;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
@@ -111,17 +110,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    parent::blockSubmit($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function build() {
-    // Attach the library for the deadlines block.
-    $build['#attached']['library'][] = 'registrar_core/course-deadlines';
-
     $form = $this->formBuilder->getForm($this);
 
     $build = [
@@ -133,6 +122,9 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         'form' => $form,
       ],
     ];
+
+    // Attach the library for the deadlines block.
+    $build['#attached']['library'][] = 'registrar_core/course-deadlines';
 
     return $build;
   }
@@ -478,10 +470,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
       foreach ($dates as $key => $label) {
         if ($data->$key) {
-          $items[] = ['#markup' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
-            '@label' => $label,
-            '@date' => date('m/d/Y', strtotime($data->$key)),
-          ])];
+          $items[] = [
+            '#markup' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
+              '@label' => $label,
+              '@date' => date('m/d/Y', strtotime($data->$key)),
+            ]),
+          ];
         }
       }
 
