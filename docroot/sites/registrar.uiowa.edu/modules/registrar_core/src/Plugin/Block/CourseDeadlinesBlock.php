@@ -177,7 +177,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Session'),
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
-      '#options' => $this->sessionOptions(4, 4),
+      '#options' => $this->sessionOptions(4, 4, TRUE),
       '#ajax' => [
         'callback' => [$this, 'sessionDropdownCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines-department-dropdown',
@@ -209,7 +209,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#title' => $this->t('Course'),
       '#description' => $this->t('Select a course to auto-populate the section dropdown options.'),
       '#empty_option' => '- Course -',
-      '#options' => $this->courseOptions($session, $department),
+      '#options' => $this->courseOptions($form_state),
       '#default_value' => $course ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-course-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -261,15 +261,20 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   How many sessions to go backwards.
    * @param int $future
    *   How many sessions to go forwards.
+   * @param bool $legacy
+   *   Whether the id or legacyCode key should be used.
    *
    * @return array
    *   Array of select list options.
    */
-  private function sessionOptions($previous = 4, $future = 4) {
+  private function sessionOptions($previous = 4, $future = 4, $legacy = TRUE) {
     $sessions = $this->maui->getSessionsBounded($previous, $future);
     $options = [];
+
+    $key = ($legacy) ? 'legacyCode' : 'id';
+
     foreach ($sessions as $session) {
-      $options[$session->id] = $session->shortDescription;
+      $options[$session->$key] = $session->shortDescription;
     }
 
     return $options;
@@ -302,7 +307,9 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Course dropdown option callback.
    */
-  private function courseOptions($session, $department) {
+  private function courseOptions($form_state) {
+    $session = $form_state->getValue('session');
+    $department = $form_state->getValue('department');
     $options = [];
 
     if (!empty($session) && !empty($department)) {
@@ -331,8 +338,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   private function fetchCourseDropdown($session, $subject) {
     $data = [];
-    if (!empty($session) && !empty($department)) {
-      $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
+    if (!empty($session) && !empty($subject)) {
+      $endpoint = '/pub/registrar/course/dropdown/' . $session . '/' . $subject;
       if ($data = $this->maui->request('GET', $endpoint)) {
         sort($data);
       }
@@ -380,8 +387,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   private function fetchSectionsDropdown($session, $subject, $course) {
     $data = [];
-    if (!empty($session) && !empty($department) && !empty($course)) {
-      $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
+    if (!empty($session) && !empty($subject) && !empty($course)) {
+      $endpoint = '/pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
       $data = $this->maui->request('GET', $endpoint);
     }
     return is_array($data) ? $data : [];
