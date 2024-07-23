@@ -2,6 +2,7 @@
 
 namespace Drupal\registrar_core\Plugin\Block;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
@@ -477,10 +478,10 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
       foreach ($dates as $key => $label) {
         if ($data->$key) {
-          $items[] = $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
+          $items[] = ['#markup' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
             '@label' => $label,
             '@date' => date('m/d/Y', strtotime($data->$key)),
-          ]);
+          ])];
         }
       }
 
@@ -542,7 +543,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           }
         }
 
-        $times_and_locations[] = implode(' ', [$time, $location]);
+        $times_and_locations[] = ['#markup' => implode(' ', [$time, $location])];
       }
 
       if (!empty($times_and_locations)) {
