@@ -26,14 +26,14 @@
             $('#uiowa-maui-course-deadlines').empty();
             break;
         }
-      };
+      }
     });
   };
 
   // Attach uiowaMauiCourseDeadlines behavior.
   Drupal.behaviors.uiowaMauiCourseDeadlines = {
     attach: function(context, settings) {
-      $(once('uiowaMauiCourseDeadlines', 'uiowa-maui-course-deadlines-form', context)).each(function() {
+      $(once('uiowaMauiCourseDeadlines', '#uiowa-maui-course-deadlines-form', context)).each(function() {
         Drupal.uiowaMauiCourseDeadlines();
       });
     }
