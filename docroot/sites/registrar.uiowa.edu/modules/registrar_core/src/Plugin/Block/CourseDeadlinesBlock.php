@@ -442,12 +442,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         ],
       ];
 
-      if ($data->subtitle) {
+      if ($data->subTitle) {
         $deadlines['title_wrapper']['subtitle'] = [
           '#prefix' => '<span class="uiowa-maui-course-subtitle">',
           '#suffix' => '</span>',
           '#markup' => $this->t('@subtitle', [
-            '@subtitle' => $data->subTitle ?? '',
+            '@subtitle' => $data->subTitle,
           ]),
         ];
       }
@@ -530,40 +530,40 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       $times_and_locations = [];
 
       foreach ($data->timeAndLocations as $key => $value) {
-        if ($value['arrangedTime']) {
+        if ($value->arrangedTime) {
           $time = 'Time is to be arranged.';
         }
         else {
           $time = $this->t('@days @start@end', [
-            '@days' => $value['days'] ?? '',
-            '@start' => $value['startTime'] ?? '',
-            '@end' => isset($value['endTime']) ? '-' . $value['endTime'] : '',
+            '@days' => $value->days ?? '',
+            '@start' => $value->startTime ?? '',
+            '@end' => ($value->endTime) ? '-' . $value->endTime : '',
           ]);
         }
 
         $location = NULL;
 
-        if ($value['arrangedLocation']) {
+        if ($value->arrangedLocation) {
           $location = 'Location is to be arranged.';
         }
-        elseif ($value['offsite']) {
+        elseif ($value->offsite) {
           $location = $this->t('@building @street @city @country', [
-            '@building' => $value['offsiteBuilding'] ?? '',
-            '@street' => $value['offsiteStreet'] ?? '',
-            '@city' => $value['offsiteCity'] ?? '',
-            '@country' => $value['offsiteCountry'] ?? '',
+            '@building' => $value->offsiteBuilding ?? '',
+            '@street' => $value->offsiteStreet ?? '',
+            '@city' => $value->offsiteCity ?? '',
+            '@country' => $value->offsiteCountry ?? '',
           ]);
         }
         else {
-          if (isset($value['building'])) {
+          if ($value->building) {
             $lookup = json_decode(file_get_contents('https://data.its.uiowa.edu/maps/number-lookup'));
-            $building = strtolower($value['building']);
+            $building = strtolower($value->building);
 
-            if (isset($lookup[$building])) {
+            if ($lookup?->$building) {
               $location = $this->t('@room <a href="@url">@building</a>', [
-                '@room' => $value['room'] ?? '',
-                '@url' => urlencode('https://www.facilities.uiowa.edu/building/' . $lookup[$building]),
-                '@building' => $value['building'],
+                '@room' => $value->room ?? '',
+                '@url' => urlencode('https://www.facilities.uiowa.edu/building/' . $lookup->$building),
+                '@building' => $value->building,
               ]);
             }
           }
@@ -593,8 +593,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
       foreach ($data->instructors as $instructor) {
         $instructors[] = $this->t('@name (@role)', [
-          '@name' => $instructor['name'],
-          '@role' => $instructor['role'],
+          '@name' => $instructor->name,
+          '@role' => $instructor->role,
         ]);
       }
 
