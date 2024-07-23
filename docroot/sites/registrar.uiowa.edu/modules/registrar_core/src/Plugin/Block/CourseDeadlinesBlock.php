@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -534,7 +535,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             if ($lookup?->$building) {
               $location = $this->t('@room <a href="@url">@building</a>', [
                 '@room' => $value->room ?? '',
-                '@url' => urlencode('https://www.facilities.uiowa.edu/building/' . $lookup->$building),
+                '@url' => Url::fromUri('https://www.facilities.uiowa.edu/building/' . $lookup->$building)->toString(),
                 '@building' => $value->building,
               ]);
             }
