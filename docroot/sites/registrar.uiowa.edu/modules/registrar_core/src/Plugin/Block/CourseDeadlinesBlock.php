@@ -8,10 +8,8 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'Course Deadlines' block.
@@ -23,7 +21,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * )
  */
 class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface {
-  use SessionColorTrait;
   use StringTranslationTrait;
 
   /**
@@ -41,13 +38,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $formBuilder;
 
   /**
-   * The request stack service.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected $requestStack;
-
-  /**
    * Constructs a new CourseDeadlinesBlock instance.
    *
    * @param array $configuration
@@ -60,14 +50,11 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The MAUI API service.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder service.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-   *   The request stack service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, RequestStack $requestStack) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
     $this->formBuilder = $formBuilder;
-    $this->requestStack = $requestStack;
   }
 
   /**
@@ -80,7 +67,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       $plugin_definition,
       $container->get('uiowa_maui.api'),
       $container->get('form_builder'),
-      $container->get('request_stack')
     );
   }
 
