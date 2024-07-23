@@ -505,7 +505,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           $items[] = [
             'data' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
               '@label' => $label,
-              '@date' => date_format(strtotime($data->$key), 'm/d/Y'),
+              '@date' => date('m/d/Y', strtotime($data->$key)),
             ]),
           ];
         }
