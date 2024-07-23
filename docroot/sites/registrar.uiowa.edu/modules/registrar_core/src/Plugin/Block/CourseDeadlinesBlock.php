@@ -181,7 +181,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#ajax' => [
         'callback' => [$this, 'sessionDropdownCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines-department-dropdown',
-        'event' => 'change',
       ],
       '#prefix' => '<div id="uiowa-maui-course-deadlines-session-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
@@ -242,7 +241,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     $form['deadlines'] = [
       '#prefix' => '<div id="uiowa-maui-course-deadlines" aria-live="assertive" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
       '#suffix' => '</div>',
-      'deadlines' => $this->deadlinesMarkupCallback($session, $department, $course, $section),
+      'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
 
     return $form;
@@ -251,7 +250,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Sessions dropdown AJAX callback.
    */
-  private function sessionDropdownCallback($form, $form_state) {
+  public function sessionDropdownCallback($form, $form_state) {
     return $form['department'];
   }
 
@@ -279,7 +278,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Department dropdown callback.
    */
-  private function departmentDropdownCallback($form, $form_state) {
+  public function departmentDropdownCallback($form, $form_state) {
     return $form['course'];
   }
 
@@ -306,10 +305,11 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   private function courseOptions($session, $department) {
     $options = [];
 
-    if (isset($session, $department)) {
-      $courses = $this->fetchCourseDropdown($session, $department);
-      foreach ($courses as $course) {
-        $options[$course] = $course;
+    if (!empty($session) && !empty($department)) {
+      if ($courses = $this->fetchCourseDropdown($session, $department)) {
+        foreach ($courses as $course) {
+          $options[$course] = $course;
+        }
       }
     }
 
@@ -330,16 +330,20 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   JSON decoded array of response data.
    */
   private function fetchCourseDropdown($session, $subject) {
-    $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
-    $data = $this->maui->request('GET', $endpoint);
-    sort($data);
+    $data = [];
+    if (!empty($session) && !empty($department)) {
+      $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
+      if ($data = $this->maui->request('GET', $endpoint)) {
+        sort($data);
+      }
+    }
     return $data;
   }
 
   /**
    * Course dropdown callback.
    */
-  private function courseDropdownCallback($form, $form_state) {
+  public function courseDropdownCallback($form, $form_state) {
     return $form['section'];
   }
 
@@ -349,7 +353,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   private function sectionOptions($session, $department, $course) {
     $options = [];
 
-    if (isset($session, $department, $course)) {
+    if (!empty($session) && !empty($department) && !empty($course)) {
       $sections = $this->fetchSectionsDropdown($session, $department, $course);
       foreach ($sections as $section) {
         $options[$section->sectionId] = $section->sectionNumber;
@@ -375,25 +379,28 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   JSON decoded array of response data.
    */
   private function fetchSectionsDropdown($session, $subject, $course) {
-    $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
-    $data = $this->maui->request('GET', $endpoint);
-    return $data;
+    $data = [];
+    if (!empty($session) && !empty($department) && !empty($course)) {
+      $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
+      $data = $this->maui->request('GET', $endpoint);
+    }
+    return is_array($data) ? $data : [];
   }
 
   /**
    * Deadlines AJAX callback.
    */
-  private function deadlinesCallback($form, $form_state) {
+  public function deadlinesCallback($form, $form_state) {
     return $form['deadlines'];
   }
 
   /**
    * Deadlines markup callback.
    */
-  private function deadlinesMarkupCallback($session, $department, $course, $section) {
+  public function deadlinesMarkup($session, $department, $course, $section) {
     $deadlines = [];
 
-    if (isset($session, $department, $course, $section)) {
+    if (!empty($session) && !empty($department) && !empty($course) && !empty($section)) {
       $exclude = [
         'lastDays' => FALSE,
         'prereq' => TRUE,
@@ -402,6 +409,9 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       ];
 
       $data = $this->maui->getSection($section, $exclude);
+      if (empty($data)) {
+        return $deadlines;
+      }
 
       $deadlines['title_wrapper'] = [
         '#type' => 'container',
