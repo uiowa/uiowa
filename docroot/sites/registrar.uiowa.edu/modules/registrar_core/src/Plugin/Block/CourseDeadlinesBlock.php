@@ -74,7 +74,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'course_deadlines_filter_form';
   }
 
@@ -237,7 +237,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    * @return array
    *   Array of select list options.
    */
-  private function sessionOptions($previous = 4, $future = 4, $legacy = TRUE) {
+  private function sessionOptions(int $previous = 4, int $future = 4, bool $legacy = TRUE): array {
     $sessions = $this->maui->getSessionsBounded($previous, $future);
     $options = [];
 
@@ -260,7 +260,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Helper function to generate select list options for departments.
    */
-  private function departmentOptions() {
+  private function departmentOptions() : array {
     $departments = $this->maui->getCourseSubjects();
     if (empty($departments)) {
       return [];
@@ -276,43 +276,32 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * Course dropdown option callback.
-   */
-  private function courseOptions($session, $department) {
-    $options = [];
-
-    if (!empty($session) && !empty($department)) {
-      if ($courses = $this->fetchCourseDropdown($session, $department)) {
-        foreach ($courses as $course) {
-          $options[$course] = $course;
-        }
-      }
-    }
-
-    return $options;
-  }
-
-  /**
-   * Provide a list of values for a course number dropdown.
    *
    * GET /pub/registrar/course/dropdown/{session}/{subject}.
    *
    * @param string $session
-   *   No documentation in MAUI - looks like session legacyCode.
-   * @param string $subject
+   *   No documentation in MAUI.
+   * @param string $department
    *   No documentation in MAUI.
    *
    * @return array
    *   JSON decoded array of response data.
    */
-  private function fetchCourseDropdown($session, $subject) {
-    $data = [];
-    if (!empty($session) && !empty($subject)) {
-      $endpoint = 'pub/registrar/course/dropdown/' . $session . '/' . $subject;
-      if ($data = $this->maui->request('GET', $endpoint)) {
-        sort($data);
+  private function courseOptions($session, $department): array {
+    $options = [];
+
+    if (empty($session) || empty($department)) {
+      return $options;
+    }
+    // In MAUI, department and subject refer to the same thing here.
+    $endpoint = "pub/registrar/course/dropdown/{$session}/{$department}";
+    if ($data = $this->maui->request('GET', $endpoint)) {
+      sort($data);
+      foreach ($data as $course) {
+        $options[$course] = $course;
       }
     }
-    return $data;
+    return $options;
   }
 
   /**
@@ -324,28 +313,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * Section dropdown option callback.
-   */
-  private function sectionOptions($session, $department, $course) {
-    $options = [];
-
-    if (!empty($session) && !empty($department) && !empty($course)) {
-      $sections = $this->fetchSectionsDropdown($session, $department, $course);
-      foreach ($sections as $section) {
-        $options[$section->sectionId] = $section->sectionNumber;
-      }
-    }
-
-    return $options;
-  }
-
-  /**
-   * Provide a list of values for a section number dropdown.
    *
    * GET /pub/registrar/sections/dropdown/{session}/{subject}/{course}.
    *
    * @param string $session
    *   No documentation in MAUI.
-   * @param string $subject
+   * @param string $department
    *   No documentation in MAUI.
    * @param string $course
    *   No documentation in MAUI.
@@ -353,13 +326,18 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
    * @return array
    *   JSON decoded array of response data.
    */
-  private function fetchSectionsDropdown($session, $subject, $course) {
-    $data = [];
-    if (!empty($session) && !empty($subject) && !empty($course)) {
-      $endpoint = 'pub/registrar/sections/dropdown/' . $session . '/' . $subject . '/' . $course;
-      $data = $this->maui->request('GET', $endpoint);
+  private function sectionOptions($session, $department, $course): array {
+    $options = [];
+    if (empty($session) || empty($department) || empty($course)) {
+      return $options;
     }
-    return is_array($data) ? $data : [];
+    $endpoint = "pub/registrar/sections/dropdown/{$session}/{$department}/{$course}";
+    if ($data = $this->maui->request('GET', $endpoint)) {
+      foreach ($data as $section) {
+        $options[$section->sectionId] = $section->sectionNumber;
+      }
+    }
+    return $options;
   }
 
   /**
@@ -372,7 +350,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Deadlines markup callback.
    */
-  public function deadlinesMarkup($session, $department, $course, $section) {
+  public function deadlinesMarkup($session, $department, $course, $section): array {
     $deadlines = [];
 
     if (!empty($session) && !empty($department) && !empty($course) && !empty($section)) {
