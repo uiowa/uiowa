@@ -126,12 +126,21 @@
         // Function to get the `chosen` values from a `chosen` field.
         function getChosenChoices(chosen) {
           const choices = [];
-          const domChoices = chosen.querySelectorAll('.chosen-choices .search-choice');
-          domChoices.forEach((choice) => {
-            choices.push(choice.innerText);
-          });
+          const isDisabled = !chosen || chosen.classList.contains('chosen-disabled');
 
-          return choices;
+          if(!isDisabled) {
+
+            const domChoices = chosen.querySelectorAll('.chosen-choices .search-choice');
+
+            domChoices.forEach((choice) => {
+              choices.push(choice.innerText);
+            });
+
+            return choices;
+          }
+          else {
+            return ['All Student Dates'];
+          }
         }
 
         // Function to get the form elements for future use.
