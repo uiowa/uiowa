@@ -153,9 +153,42 @@
 
           // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
           let sessionBuffer = '<option value="">All Sessions</option>';
+          const sessionsArray = Array.from(sessions);
+          const sessionsSortArray = [];
+          const sessionsMap = {};
 
-          Array.from(sessions).sort().forEach(session => {
-            sessionBuffer += `<option value="${session}">${session}</option>`;
+          const weightLookup = {
+            '' : '00',
+            '4 Week' : '02',
+            '6 Week I' : '04',
+            '6 Week II' : '06',
+            '8 Week' : '08',
+            '12 Week' : '10',
+          };
+          const seasonLookup = {
+            'spring' : '00',
+            'summer' : '02',
+            'winter' : '04',
+            'fall' : '06',
+          };
+
+          sessionsArray.forEach((session) =>{
+            const subSessionSplit = session.split(' - ');
+            const isSubSession = subSessionSplit.length > 1;
+            const subSessionWeight = weightLookup[isSubSession ? subSessionSplit[1] : ''];
+
+            const seasonYear = subSessionSplit[0].split(' ');
+            const seasonWeight = seasonLookup[seasonYear[0].toLowerCase()];
+            const year = seasonYear[1];
+            const sortString = year + '-' + seasonWeight + '-' + subSessionWeight;
+
+            sessionsSortArray.push(sortString);
+            sessionsMap[sortString] = session;
+          });
+
+          sessionsSortArray.sort().forEach(sessionLookupString => {
+            const mappedSession = sessionsMap[sessionLookupString];
+            sessionBuffer += `<option value="${mappedSession}">${mappedSession}</option>`;
           });
 
           formEls.sessionSelectEl.innerHTML = sessionBuffer;
