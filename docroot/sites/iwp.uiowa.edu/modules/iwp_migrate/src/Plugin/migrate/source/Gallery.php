@@ -65,7 +65,7 @@ class Gallery extends BaseNodeSource {
     if ($source_year = $row->getSourceProperty('field_media_year')) {
       // Lookup term reference id name.
       $tid = $source_year[0]['tid'];
-      $year = \Drupal::database()->select('taxonomy_term_data', 't')
+      $year = $this->select('taxonomy_term_data', 't')
         ->fields('t', ['name'])
         ->condition('t.tid', $tid, '=')
         ->execute()
