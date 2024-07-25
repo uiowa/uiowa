@@ -1,0 +1,57 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - iwp_migrate
+id: iwp_gallery
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - iwp
+migration_group: sitenow_migrate
+label: IWP Media Gallery Migration
+source:
+  plugin: iwp_gallery
+  node_type: media_youtube
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: field_video_description
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_media_image
+  field_resource_type:
+    plugin: default_value
+    default_value: 'video'
+  field_resource_media: field_youtube_id
+  field_resource_countries:
+    plugin: map_taxonomy
+    source: field_media_country
+    create_new: false
+    vocabulary: writer_bio_countries
+  field_resource_genre:
+    plugin: map_taxonomy
+    source: field_media_genre
+    create_new: true
+    vocabulary: resource_genre
+  field_resource_year: field_media_year
+destination:
+  plugin: 'entity:node'
+  default_bundle: resource
+migration_dependencies: {  }
