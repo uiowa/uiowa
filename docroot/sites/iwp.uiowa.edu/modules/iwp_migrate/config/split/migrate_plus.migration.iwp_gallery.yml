@@ -33,6 +33,9 @@ process:
     default_value: 1
   title: title
   body: field_video_description
+  body/format:
+    plugin: default_value
+    default_value: 'filtered_html'
   field_image:
     plugin: create_media_from_file_field
     source: field_media_image

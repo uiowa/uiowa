@@ -2,6 +2,7 @@
 
 namespace Drupal\iwp_migrate\Plugin\migrate\source;
 
+use Drupal\media\Entity\Media;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -39,6 +40,24 @@ class Gallery extends BaseNodeSource {
     // Return TRUE because the row should be created.
     if ($this->migration->id() === 'iwp_gallery_redirects') {
       return TRUE;
+    }
+
+    if ($media = $row->getSourceProperty('field_youtube_id')) {
+      $id = $media[0]['value'];
+      $entity_id = \Drupal::database()->select('media__field_media_oembed_video', 'm')
+        ->fields('m', ['entity_id'])
+        ->condition('m.field_media_oembed_video_value', $id, 'LIKE')
+        ->execute()
+        ->fetchField();
+      if (!$entity_id) {
+        $entity_id = Media::create([
+          'bundle' => 'remote_video',
+          'name' => $row->getSourceProperty('title'),
+          'field_media_oembed_video' => "https://www.youtube.com/watch?v={$id}",
+        ])
+          ->save();
+      }
+      $row->setSourceProperty('field_youtube_id', $entity_id);
     }
 
     return TRUE;
