@@ -108,6 +108,36 @@ function inrc_core_preprocess_block(&$variables) {
       }
 
       break;
+
+    case 'extra_field_block:node:nonprofit_org:field_np_training_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_np_last_training_date->value) &&
+        empty($node->field_np_training_attendees->value) &&
+        empty($node->field_np_training_location->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:nonprofit_org:field_np_financial_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_np_assets->value) &&
+        empty($node->field_np_revenue->value) &&
+        empty($node->field_np_income->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
   }
 }
 
@@ -140,6 +170,7 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_ein':
+    case 'field_np_employer_id':
       if (!empty($variables['items'][0]['content']['#context']['value'])) {
         $field_content = $variables['items'][0]['content']['#context']['value'];
         $field_label = $variables['label'];
@@ -161,31 +192,23 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_np_email':
-      if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-envelope');
-        uiowa_core_set_attributes($variables, 'fa-field-item');
-      }
+      uiowa_core_set_field_icon($variables, 'fa-envelope');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
-    case 'field_np_phone':
-      if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-phone');
-        uiowa_core_set_attributes($variables, 'fa-field-item');
-      }
+    case 'field_np_telephone_number':
+      uiowa_core_set_field_icon($variables, 'fa-phone');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_np_address':
-      if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
-        uiowa_core_set_attributes($variables, 'fa-field-item');
-      }
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_np_website':
-      if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-desktop');
-        uiowa_core_set_attributes($variables, 'fa-field-item');
-      }
+      uiowa_core_set_field_icon($variables, 'fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_grant_pdf_version':
@@ -242,6 +265,20 @@ function inrc_core_entity_extra_field_info() {
     'visible' => TRUE,
   ];
 
+  $extra['node']['nonprofit_org']['display']['field_np_training_information_heading'] = [
+    'label' => t('Training information heading'),
+    'description' => t('Training information'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  $extra['node']['nonprofit_org']['display']['field_np_financial_information_heading'] = [
+    'label' => t('Financial information heading'),
+    'description' => t('Financial information'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
   return $extra;
 }
 
@@ -272,6 +309,28 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
       ];
     }
   }
+  if ($node->bundle() === 'nonprofit_org' && $view_mode === 'full') {
+    if ($display->getComponent('field_np_training_information_heading')) {
+      $build['field_np_training_information_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Training Information'),
+      ];
+    }
+    if ($display->getComponent('field_np_financial_information_heading')) {
+      $build['field_np_financial_information_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Financial Information'),
+      ];
+    }
+  }
 }
 
 /**
@@ -294,6 +353,23 @@ function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
       '#attributes' => [
         'class' => ['element--padding__left'],
       ],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'block-margin__bottom'],
+        ],
+        '#value' => t('Contact'),
+      ],
+    ];
+  }
+  if ($node instanceof NodeInterface && $node->getType() === 'nonprofit_org') {
+    $variables['attributes']['class'][] = 'bg--none';
+    if (isset($variables['region_attributes']['card_meta'])) {
+      $variables['region_attributes']['card_meta']?->addClass('padding--block--md');
+    }
+    $variables['content']['card_title'] = [
+      '#type' => 'container',
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
@@ -349,7 +425,8 @@ function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_stat
  * Implements hook_form_FORM_ID_alter().
  */
 function inrc_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] === 'views-exposed-form-grants-block-grants') {
+  if ($form['#id'] === 'views-exposed-form-grants-block-grants' ||
+    $form['#id'] === 'views-exposed-form-nonprofit-organization-nonprofit-org') {
     $form['#attached']['library'][] = 'uids_base/view-bef';
   }
 }

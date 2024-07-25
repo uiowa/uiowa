@@ -37,7 +37,7 @@ content:
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -46,12 +46,12 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 2
     region: content
 hidden:
   body: true
@@ -70,12 +70,14 @@ hidden:
   field_np_email: true
   field_np_employer_id: true
   field_np_expiration_date: true
+  field_np_financial_information_heading: true
   field_np_income: true
   field_np_last_training_date: true
   field_np_ntee: true
   field_np_revenue: true
   field_np_telephone_number: true
   field_np_training_attendees: true
+  field_np_training_information_heading: true
   field_np_training_location: true
   field_np_website: true
   search_api_excerpt: true
