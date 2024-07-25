@@ -62,8 +62,17 @@ class Gallery extends BaseNodeSource {
       $row->setSourceProperty('field_youtube_id', $entity_id);
     }
 
-    if ($year = $row->getSourceProperty('field_media_year')) {
+    if ($source_year = $row->getSourceProperty('field_media_year')) {
       // Lookup term reference id name.
+      $tid = $source_year[0]['tid'];
+      $year = \Drupal::database()->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tid, '=')
+        ->execute()
+        ->fetchField();
+      if ($year) {
+        $row->setSourceProperty('field_media_year', $year);
+      }
     }
 
     return TRUE;
