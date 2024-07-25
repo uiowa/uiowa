@@ -50,14 +50,20 @@ class Gallery extends BaseNodeSource {
         ->execute()
         ->fetchField();
       if (!$entity_id) {
-        $entity_id = Media::create([
+        $media = Media::create([
           'bundle' => 'remote_video',
           'name' => $row->getSourceProperty('title'),
           'field_media_oembed_video' => "https://www.youtube.com/watch?v={$id}",
-        ])
-          ->save();
+        ]);
+        if ($media->save()) {
+          $entity_id = $media->id();
+        }
       }
       $row->setSourceProperty('field_youtube_id', $entity_id);
+    }
+
+    if ($year = $row->getSourceProperty('field_media_year')) {
+      // Lookup term reference id name.
     }
 
     return TRUE;
