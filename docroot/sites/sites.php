@@ -7516,3 +7516,9 @@ $sites['orgmidwest-voice.uiowa.ddev.site'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.dev.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.stage.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.prod.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
+
+// Directory aliases for pezzulo.lab.uiowa.edu.
+$sites['labpezzulo.uiowa.ddev.site'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.dev.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.stage.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.prod.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
