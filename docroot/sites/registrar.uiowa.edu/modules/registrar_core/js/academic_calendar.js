@@ -177,8 +177,8 @@
           const seasonLookup = {
             'spring' : '00',
             'summer' : '02',
-            'winter' : '04',
-            'fall' : '06',
+            'fall' : '04',
+            'winter' : '06',
           };
 
           sessionsArray.forEach((session) =>{
