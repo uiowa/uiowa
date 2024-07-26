@@ -210,7 +210,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+    // Session range steps must be 1 or greater, so if we want only
+    // the current session, wrap it in an array but don't fetch others.
+    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     // Get the start date of the first session.
     $first_session_start_date = $sessions[0]->startDate;

@@ -194,7 +194,9 @@ class AcademicCalendarController extends ControllerBase {
    */
   private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps) {
     $current = $this->maui->getCurrentSession();
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+    // Session range steps must be 1 or greater, so if we want only
+    // the current session, wrap it in an array but don't fetch others.
+    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     $events = [];
 
