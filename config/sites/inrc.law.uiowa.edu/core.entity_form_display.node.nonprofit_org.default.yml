@@ -36,7 +36,6 @@ dependencies:
     - media_library
     - metatag
     - path
-    - telephone
     - text
 third_party_settings:
   field_group:
@@ -273,10 +272,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_np_telephone_number:
-    type: telephone_default
+    type: string_textfield
     weight: 6
     region: content
     settings:
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_np_training_attendees:

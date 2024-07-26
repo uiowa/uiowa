@@ -24,7 +24,7 @@ class Nonprofit extends NodeBundleBase implements RendersAsCardInterface {
       ],
       '#meta' => [
         'field_np_email',
-        'field_np_phone',
+        'field_np_telephone_number',
         'field_np_address',
         'field_np_website',
       ],
