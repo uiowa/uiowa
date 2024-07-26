@@ -142,22 +142,29 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $form['#id'] = 'uiowa-maui-course-deadlines-form';
 
-    $form['session'] = [
+    $form['deadlines'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'uiowa-maui-course-deadlines',
+      ],
+    ];
+
+    $form['deadlines']['session'] = [
       '#type' => 'select',
       '#title' => $this->t('Session'),
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
       '#options' => $this->sessionOptions(4, 4, TRUE),
       '#ajax' => [
-        'callback' => [$this, 'sessionDropdownCallback'],
-        'wrapper' => 'uiowa-maui-course-deadlines-department-dropdown',
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'uiowa-maui-course-deadlines',
       ],
       '#prefix' => '<div id="uiowa-maui-course-deadlines-session-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#validated' => TRUE,
     ];
 
-    $form['department'] = [
+    $form['deadlines']['department'] = [
       '#type' => 'select',
       '#title' => $this->t('Department'),
       '#description' => $this->t('Select a department to auto-populate the course dropdown options.'),
@@ -167,14 +174,14 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#prefix' => '<div id="uiowa-maui-course-deadlines-department-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
-        'callback' => [$this, 'departmentDropdownCallback'],
-        'wrapper' => 'uiowa-maui-course-deadlines-course-dropdown',
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'uiowa-maui-course-deadlines',
       ],
-      '#disabled' => !isset($session),
+      '#disabled' => empty($session),
       '#validated' => TRUE,
     ];
 
-    $form['course'] = [
+    $form['deadlines']['course'] = [
       '#type' => 'select',
       '#title' => $this->t('Course'),
       '#description' => $this->t('Select a course to auto-populate the section dropdown options.'),
@@ -184,32 +191,38 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#prefix' => '<div id="uiowa-maui-course-deadlines-course-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
-        'callback' => [$this, 'courseDropdownCallback'],
-        'wrapper' => 'uiowa-maui-course-deadlines-section-dropdown',
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'uiowa-maui-course-deadlines',
       ],
-      '#disabled' => !isset($department),
+      '#disabled' => empty($department),
       '#validated' => TRUE,
     ];
 
-    $form['section'] = [
+    $section_options = $this->sectionOptions($session, $department, $course);
+
+    if (count($section_options) === 1) {
+      $section = key($section_options);
+    }
+
+    $form['deadlines']['section'] = [
       '#type' => 'select',
       '#title' => $this->t('Section'),
       '#description' => $this->t('Select a section to display course deadline information.'),
       '#empty_option' => '- Section -',
-      '#options' => $this->sectionOptions($session, $department, $course),
-      '#default_value' => $section ?? NULL,
+      '#options' => $section_options,
+      '#default_value' => !empty($section) ? $section : NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-section-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
-        'callback' => [$this, 'deadlinesCallback'],
+        'callback' => [$this, 'ajaxCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines',
       ],
-      '#disabled' => !isset($course),
+      '#disabled' => empty($course),
       '#validated' => TRUE,
     ];
 
-    $form['deadlines'] = [
-      '#prefix' => '<div id="uiowa-maui-course-deadlines" aria-live="assertive" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
+    $form['deadlines']['deadlines'] = [
+      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" aria-live="assertive" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
@@ -218,10 +231,10 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Sessions dropdown AJAX callback.
+   * AJAX callback for the form.
    */
-  public function sessionDropdownCallback($form, $form_state) {
-    return $form['department'];
+  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
+    return $form;
   }
 
   /**
@@ -248,13 +261,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     }
 
     return $options;
-  }
-
-  /**
-   * Department dropdown callback.
-   */
-  public function departmentDropdownCallback($form, $form_state) {
-    return $form['course'];
   }
 
   /**
@@ -305,13 +311,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Course dropdown callback.
-   */
-  public function courseDropdownCallback($form, $form_state) {
-    return $form['section'];
-  }
-
-  /**
    * Section dropdown option callback.
    *
    * GET /pub/registrar/sections/dropdown/{session}/{subject}/{course}.
@@ -338,13 +337,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       }
     }
     return $options;
-  }
-
-  /**
-   * Deadlines AJAX callback.
-   */
-  public function deadlinesCallback($form, $form_state) {
-    return $form['deadlines'];
   }
 
   /**
