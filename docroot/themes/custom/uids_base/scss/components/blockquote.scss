@@ -1,16 +1,12 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/blockquote/blockquote.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/components/blockquote.scss";
 
 blockquote p[class*="h"] {
   font-weight: 300;
 }
 
 blockquote {
-  p:last-of-type {
-    margin-bottom: 0;
-  }
-
   &.blockquote--no-left-margin {
     margin-left: 0;
   }
@@ -38,8 +34,7 @@ blockquote {
    .blockquote__media {
      margin-bottom: .9rem;
    }
-    &.blockquote--right,
-    &.blockquote--left {
+    &.blockquote:not(.blockquote--center) {
       padding:  0;
       .blockquote__media {
         margin-top: 0;
@@ -54,23 +49,24 @@ blockquote {
       flex-flow: column nowrap;
       flex-direction: column;
     }
-    &.blockquote--center {
-      footer {
-        text-align: center;
-        max-width: 100%;
-        cite {
-          text-align: unset;
-        }
-      }
-    }
-    &.blockquote--right {
-      footer {
-        align-items: flex-end;
-      }
-    }
-    &.blockquote--left {
+    &.blockquote {
       footer {
         align-items: start;
+      }
+      &.blockquote--center {
+        footer {
+          align-items: center;
+          text-align: center;
+          max-width: 100%;
+          cite {
+            text-align: unset;
+          }
+        }
+      }
+      &.blockquote--right {
+        footer {
+          align-items: flex-end;
+        }
       }
     }
   }
