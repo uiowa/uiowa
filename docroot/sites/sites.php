@@ -7522,3 +7522,9 @@ $sites['labpezzulo.uiowa.ddev.site'] = 'pezzulo.lab.uiowa.edu';
 $sites['labpezzulo.dev.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
 $sites['labpezzulo.stage.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
 $sites['labpezzulo.prod.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+
+// Directory aliases for csi-sitenow-test.sites.uiowa.edu.
+$sites['sitescsi-sitenow-test.uiowa.ddev.site'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.dev.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.stage.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.prod.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
