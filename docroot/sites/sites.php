@@ -7528,3 +7528,9 @@ $sites['sitescsi-sitenow-test.uiowa.ddev.site'] = 'csi-sitenow-test.sites.uiowa.
 $sites['sitescsi-sitenow-test.dev.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
 $sites['sitescsi-sitenow-test.stage.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
 $sites['sitescsi-sitenow-test.prod.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+
+// Directory aliases for iowalionseyebank.org.
+$sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.stage.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.prod.drupal.uiowa.edu'] = 'iowalionseyebank.org';
