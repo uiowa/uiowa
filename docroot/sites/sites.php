@@ -7517,6 +7517,24 @@ $sites['orgmidwest-voice.dev.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.stage.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.prod.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 
+// Directory aliases for pezzulo.lab.uiowa.edu.
+$sites['labpezzulo.uiowa.ddev.site'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.dev.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.stage.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+$sites['labpezzulo.prod.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
+
+// Directory aliases for csi-sitenow-test.sites.uiowa.edu.
+$sites['sitescsi-sitenow-test.uiowa.ddev.site'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.dev.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.stage.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+$sites['sitescsi-sitenow-test.prod.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
+
+// Directory aliases for iowalionseyebank.org.
+$sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.stage.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+$sites['org-iowalionseyebank.prod.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+
 // Directory aliases for michaelson-lab.uiowa.edu.
 $sites['michaelson-lab.uiowa.ddev.site'] = 'michaelson-lab.uiowa.edu';
 $sites['michaelson-lab.dev.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
