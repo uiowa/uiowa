@@ -106,6 +106,76 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Creates a weight encoded string from an event.
+   *
+   * Creates a string that encodes weight data in it so that an alphabetical
+   *     check can sort it without doing additional work.
+   *
+   * @param object $event
+   *   The event we will construct our sort string from.
+   *
+   * @return string
+   *   A string with weight data encoded for sorting.
+   */
+  private function sortString(object $event): string {
+    $title = $event->title;
+    $titleWeight = 0;
+    $isSubSession = $event->subSession;
+    if ($isSubSession) {
+      $subSession = explode(':', $title);
+      $title = end($subSession);
+
+      $weightLookup = [
+        '' => 0,
+        '4wk' => 2,
+        '6wk I' => 4,
+        '6wk II' => 6,
+        '8wk' => 8,
+        '12wk' => 10,
+      ];
+      $titleWeight += $weightLookup[$subSession[0]];
+    }
+
+    if ($titleWeight < 10) {
+      $titleWeight = '0' . $titleWeight;
+    }
+
+    // Example sorting weight
+    // Title - Observed - session.
+    return $titleWeight . trim($title);
+  }
+
+  /**
+   * Compares two events so we can sort them with a custom sorting pass.
+   *
+   * @param object $event1
+   *   The first event to compare.
+   * @param object $event2
+   *   The second event to compare.
+   *
+   * @return int
+   *   Less than 0 if $event1 should be placed before $event2,
+   *   0 if they have no weight difference,
+   *   And greater than 0 if $event1 should be placed after $event2.
+   */
+  private function eventCompare(object $event1, object $event2): int {
+
+    // If both events have the same date, we need to do more sorting.
+    // COMMENT HERE.
+    if ($event1->start === $event2->start) {
+      $sortString1 = $event1->sortString;
+      $sortString2 = $event2->sortString;
+
+      return strcasecmp($sortString1, $sortString2);
+    }
+
+    // If they are not the same date, return the comparison.
+    else {
+      return ($event1->start < $event2->start) ? -1 : 1;
+    }
+  }
+
+  /**
    * Fetches and processes calendar data.
    *
    * @param string $start
@@ -124,7 +194,9 @@ class AcademicCalendarController extends ControllerBase {
    */
   private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps) {
     $current = $this->maui->getCurrentSession();
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+    // Session range steps must be 1 or greater, so if we want only
+    // the current session, wrap it in an array but don't fetch others.
+    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     $events = [];
 
@@ -141,13 +213,21 @@ class AcademicCalendarController extends ControllerBase {
         }
 
         if (!empty($date->dateCategoryLookups)) {
-          $event = $this->processDate($date, $session, $session_index);
-          if ($this->filterEvent($event, $categories, $subsession)) {
-            $events[] = $event;
-          }
+          $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
+          $event->sortString = $this->sortString($event);
+
+          $events[] = $event;
         }
       }
     }
+
+    usort(
+      $events,
+      [
+        'Drupal\registrar_core\Controller\AcademicCalendarController',
+        'eventCompare',
+      ]
+    );
 
     return $events;
   }
@@ -188,7 +268,7 @@ class AcademicCalendarController extends ControllerBase {
   /**
    * In the processDate() method of AcademicCalendarController.
    */
-  private function processDate($date, $session, $session_index) {
+  private function processDate($date, $session, $session_index, $session_legacy_id) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
@@ -198,11 +278,11 @@ class AcademicCalendarController extends ControllerBase {
 
     // Determine the date to display.
     $start_timestamp = strtotime($date->beginDate);
-    $start = date('M j, Y', $start_timestamp);
+    $start = date('D, M j, Y', $start_timestamp);
     $month = date('M', $start_timestamp);
     $day = date('j', $start_timestamp);
     if ($date->endDate != $date->beginDate) {
-      $end = date('M j, Y', strtotime($date->endDate));
+      $end = date('D, M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
     $event->displayDate = $start;
@@ -222,6 +302,7 @@ class AcademicCalendarController extends ControllerBase {
     }
 
     $event->sessionDisplay = $session_display;
+    $event->sessionId = $session_legacy_id;
 
     $bg_color = $this->getSessionColor($session_index);
     $event->bgColor = $bg_color;
@@ -249,9 +330,8 @@ class AcademicCalendarController extends ControllerBase {
       'click-container',
       'block--word-break',
       'card',
-      'media--circle',
-      'media--border',
-      'media--small',
+      'media--default',
+      'media--no-crop',
       'media',
     ];
     $card = [
@@ -259,10 +339,10 @@ class AcademicCalendarController extends ControllerBase {
       '#title' => html_entity_decode($event->title),
       '#attributes' => $attributes,
       '#media' => $this->t('
-<div class="upcoming-date"><span class="upcoming-month">
-%month</span><span class="upcoming-day">
-%day</span></div>',
-        ['%month' => $month, '%day' => $day]),
+<div class="media--date"><span class="media--date__month">
+@month</span><span class="media--date__day">
+@day</span></div>',
+        ['@month' => $month, '@day' => $day]),
       '#subtitle' => [
         'date' => [
           '#type' => 'markup',

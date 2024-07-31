@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: educationscsmh.uiowa.ddev.site
+    protocol: https
+  machine_name: educationscsmh
+  human_name: scsmh.education.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: educationscsmh.prod
+drupal:
+  db:
+    database: scsmh_education_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://educationscsmh.prod.drupal.uiowa.edu'
+  requester: kkrtnickwilson
+  site-name: 'Scanlan Center for School Mental Health'

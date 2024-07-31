@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\inrc_core\Entity\Grant;
+use Drupal\inrc_core\Entity\Nonprofit;
 use Drupal\node\NodeInterface;
 
 /**
@@ -20,6 +21,9 @@ use Drupal\node\NodeInterface;
 function inrc_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['grant'])) {
     $bundles['node']['grant']['class'] = Grant::class;
+  }
+  if (isset($bundles['node']['nonprofit_org'])) {
+    $bundles['node']['nonprofit_org']['class'] = Nonprofit::class;
   }
 }
 
@@ -35,6 +39,104 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
       // if no other address info is available. Add it to the front
       // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
+      if (isset($form['field_grant_counties'])) {
+        $form['#attached']['library'][] = 'inrc_core/chosen-select-all';
+        $form['field_grant_counties']['field_grant_counties_actions'] = [
+          '#type' => 'container',
+          '#weight' => $form['field_grant_counties']['#weight'] - 0.5,
+          'select_all' => [
+            '#type' => 'button',
+            '#value' => t('Select All'),
+            '#attributes' => ['class' => ['grant-counties-select-all']],
+          ],
+          'deselect_all' => [
+            '#type' => 'button',
+            '#value' => t('Deselect All'),
+            '#attributes' => ['class' => ['grant-counties-deselect-all']],
+          ],
+        ];
+      }
+      break;
+
+    case 'node_nonprofit_org_form':
+    case 'node_nonprofit_org_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
+      array_unshift($form['actions']['submit']['#submit'], 'inrc_core_grant_form_submit');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function inrc_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'extra_field_block:node:grant:field_grant_financials_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_total_grants->value) &&
+        empty($node->field_grant_financial_data->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:grant:field_grant_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_grant_application_deadline->value) &&
+        empty($node->body->value) &&
+        empty($node->field_grant_classification->value) &&
+        empty($node->field_grant_sample_grants->value) &&
+        empty($node->field_grant_application_info->value) &&
+        empty($node->field_grant_restrictions->value) &&
+        empty($node->field_grant_trustees->value) &&
+        empty($node->field_grant_sizes->value) &&
+        empty($node->field_grant_total_assets->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:nonprofit_org:field_np_training_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_np_last_training_date->value) &&
+        empty($node->field_np_training_attendees->value) &&
+        empty($node->field_np_training_location->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
+    case 'extra_field_block:node:nonprofit_org:field_np_financial_information_heading':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if all the specified fields are empty.
+      $hide_block = empty($node->field_np_assets->value) &&
+        empty($node->field_np_revenue->value) &&
+        empty($node->field_np_income->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
       break;
   }
 }
@@ -45,6 +147,22 @@ function inrc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 function inrc_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
 
+    case 'field_grant_counties':
+      $vid = 'counties';
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+      $total_terms = count($terms);
+
+      $selected_terms = count($variables['items']);
+
+      if ($selected_terms == $total_terms) {
+        $variables['items'] = [];
+        $variables['items'][0]['content'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>' . t('All counties') . '</p>',
+        ];
+      }
+      break;
+
     case 'field_grant_application_deadline':
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_field_label_icon($variables, 'fa-calendar-days');
@@ -52,6 +170,7 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_ein':
+    case 'field_np_employer_id':
       if (!empty($variables['items'][0]['content']['#context']['value'])) {
         $field_content = $variables['items'][0]['content']['#context']['value'];
         $field_label = $variables['label'];
@@ -69,6 +188,26 @@ function inrc_core_preprocess_field(&$variables) {
 
     case 'field_grant_email':
       uiowa_core_set_field_icon($variables, 'fa-envelope');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_np_email':
+      uiowa_core_set_field_icon($variables, 'fa-envelope');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_np_telephone_number':
+      uiowa_core_set_field_icon($variables, 'fa-phone');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_np_address':
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_np_website':
+      uiowa_core_set_field_icon($variables, 'fa-desktop');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
@@ -100,7 +239,7 @@ function inrc_core_preprocess_field(&$variables) {
       break;
 
     case 'field_grant_address':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker');
+      uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
@@ -122,6 +261,20 @@ function inrc_core_entity_extra_field_info() {
   $extra['node']['grant']['display']['field_grant_financials_heading'] = [
     'label' => t('Grant financials heading'),
     'description' => t('Financials'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  $extra['node']['nonprofit_org']['display']['field_np_training_information_heading'] = [
+    'label' => t('Training information heading'),
+    'description' => t('Training information'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  $extra['node']['nonprofit_org']['display']['field_np_financial_information_heading'] = [
+    'label' => t('Financial information heading'),
+    'description' => t('Financial information'),
     'weight' => 1,
     'visible' => TRUE,
   ];
@@ -153,6 +306,28 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
           'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
         ],
         '#value' => t('Financials'),
+      ];
+    }
+  }
+  if ($node->bundle() === 'nonprofit_org' && $view_mode === 'full') {
+    if ($display->getComponent('field_np_training_information_heading')) {
+      $build['field_np_training_information_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Training Information'),
+      ];
+    }
+    if ($display->getComponent('field_np_financial_information_heading')) {
+      $build['field_np_financial_information_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
+        ],
+        '#value' => t('Financial Information'),
       ];
     }
   }
@@ -188,6 +363,23 @@ function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
       ],
     ];
   }
+  if ($node instanceof NodeInterface && $node->getType() === 'nonprofit_org') {
+    $variables['attributes']['class'][] = 'bg--none';
+    if (isset($variables['region_attributes']['card_meta'])) {
+      $variables['region_attributes']['card_meta']?->addClass('padding--block--md');
+    }
+    $variables['content']['card_title'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => [
+          'class' => ['headline', 'headline--serif', 'block-margin__bottom'],
+        ],
+        '#value' => t('Contact'),
+      ],
+    ];
+  }
 
 }
 
@@ -195,32 +387,36 @@ function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Custom submit handler for node grant forms.
  */
 function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_state) {
-  $contact_address = $form_state->getValue('field_grant_address');
-  if (isset($contact_address[0]['address'])) {
-    $has_info = FALSE;
-    // Loop through all the details of the address to
-    // check if any of them have been set besides the
-    // country.
-    foreach ($contact_address[0]['address'] as $key => $details) {
-      if ($key === 'country_code') {
-        continue;
-      }
-      // If we find a non-empty value, we can stop looping.
-      if (!empty($details)) {
-        $has_info = TRUE;
-        break;
-      }
-    }
+  $address_fields = ['field_np_address', 'field_grant_address'];
 
-    // If no other fields have been set, then unset the address.
-    if (!$has_info) {
-      // Set country code to empty string.
-      $form_state->setValue([
-        'field_grant_address',
-        0,
-        'address',
-        'country_code',
-      ], '');
+  foreach ($address_fields as $field_name) {
+    $contact_address = $form_state->getValue($field_name);
+    if (isset($contact_address[0]['address'])) {
+      $has_info = FALSE;
+      // Loop through all the details of the address to
+      // check if any of them have been set besides the
+      // country.
+      foreach ($contact_address[0]['address'] as $key => $details) {
+        if ($key === 'country_code') {
+          continue;
+        }
+        // If we find a non-empty value, we can stop looping.
+        if (!empty($details)) {
+          $has_info = TRUE;
+          break;
+        }
+      }
+
+      // If no other fields have been set, then unset the address.
+      if (!$has_info) {
+        // Set country code to empty string.
+        $form_state->setValue([
+          $field_name,
+          0,
+          'address',
+          'country_code',
+        ], '');
+      }
     }
   }
 }
@@ -229,7 +425,8 @@ function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_stat
  * Implements hook_form_FORM_ID_alter().
  */
 function inrc_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] === 'views-exposed-form-grants-block-grants') {
+  if ($form['#id'] === 'views-exposed-form-grants-block-grants' ||
+    $form['#id'] === 'views-exposed-form-nonprofit-organization-nonprofit-org') {
     $form['#attached']['library'][] = 'uids_base/view-bef';
   }
 }

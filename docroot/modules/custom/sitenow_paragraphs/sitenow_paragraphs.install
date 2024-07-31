@@ -20,12 +20,16 @@ function sitenow_paragraphs_update_9001() {
       ->condition('cw.bundle', ['people', 'articles'], 'IN')
       ->execute()->fetchCol();
 
-  $people_and_articles_without_column_entries =
+  $people_and_articles_without_column_entries_query =
     $database->select('paragraphs_item', 'pi')
       ->fields('pi', ['id', 'revision_id', 'type'])
-      ->condition('pi.type', ['people', 'articles'], 'IN')
-      ->condition('pi.id', $people_and_articles_with_column_width_entries, 'NOT IN')
-      ->execute();
+      ->condition('pi.type', ['people', 'articles'], 'IN');
+
+  if (!empty($people_and_articles_with_column_width_entries)) {
+    $people_and_articles_without_column_entries_query->condition('pi.id', $people_and_articles_with_column_width_entries, 'NOT IN');
+  }
+
+  $people_and_articles_without_column_entries = $people_and_articles_without_column_entries_query->execute();
 
   $current_entities = [];
   foreach ($people_and_articles_without_column_entries as $paragraph) {
@@ -50,11 +54,15 @@ function sitenow_paragraphs_update_9001() {
   $query = $database->select('paragraphs_item_revision', 'pi_r')
     ->fields('pi_r', ['id', 'revision_id']);
   $query->join('paragraphs_item', 'pi', 'pi.id = pi_r.id');
-  $people_and_articles_revisions_without_column_entries =
+  $people_and_articles_revisions_without_column_entries_query =
     $query->fields('pi', ['type'])
-      ->condition('pi.type', ['people', 'articles'], 'IN')
-      ->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN')
-      ->execute();
+      ->condition('pi.type', ['people', 'articles'], 'IN');
+
+  if (!empty($people_and_articles_revisions_with_column_width_entries)) {
+    $people_and_articles_revisions_without_column_entries_query->condition('pi_r.revision_id', $people_and_articles_revisions_with_column_width_entries, 'NOT IN');
+  }
+
+  $people_and_articles_revisions_without_column_entries = $people_and_articles_revisions_without_column_entries_query->execute();
 
   $revisions = [];
   foreach ($people_and_articles_revisions_without_column_entries as $paragraph) {

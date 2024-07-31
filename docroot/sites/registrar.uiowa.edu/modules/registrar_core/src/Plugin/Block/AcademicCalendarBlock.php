@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   category = @Translation("Site custom")
  * )
  */
-class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface {
+class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
   use SessionColorTrait;
 
   /**
@@ -110,6 +111,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function defaultConfiguration() {
     return [
       'steps' => 0,
+      'show_group_by_month' => 1,
+      'group_by_month' => 1,
     ] + parent::defaultConfiguration();
   }
 
@@ -146,6 +149,12 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#description' => $this->t('Default setting for grouping events by month.'),
       '#default_value' => $this->configuration['group_by_month'],
     ];
+    $form['show_group_by_month'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Expose "Group by month"'),
+      '#description' => $this->t('Expose group by month filter to visitors.'),
+      '#default_value' => $this->configuration['show_group_by_month'],
+    ];
 
     return $form;
   }
@@ -156,6 +165,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $this->configuration['steps'] = $form_state->getValue('steps');
+    $this->configuration['show_group_by_month'] = $form_state->getValue('show_group_by_month');
     $this->configuration['group_by_month'] = $form_state->getValue('group_by_month');
   }
 
@@ -169,25 +179,40 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'wrapper' => [
         '#type' => 'container',
         '#attributes' => [
-          'class' => ['list-container__inner'],
+          'class' => [
+            'list-container__inner',
+            'sitenow-academic-calendar',
+          ],
         ],
         'form' => $form,
         'calendar' => [
           '#type' => 'container',
-          '#attributes' => ['class' => ['academic-calendar content'], 'id' => 'academic-calendar-content'],
+          '#attributes' => [
+            'class' => ['academic-calendar content'],
+            'id' => 'academic-calendar-content',
+          ],
+          'content' => [
+            '#lazy_builder' => [
+              static::class . '::lazyBuilder',
+              [],
+            ],
+            '#create_placeholder' => TRUE,
+          ],
         ],
       ],
     ];
 
     // Attach the library for the calendar.
-    $build['#attached']['library'][] = 'registrar_core/academic-calendar';
     $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'uids_base/chosen';
+    $build['#attached']['library'][] = 'registrar_core/academic-calendar';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
-    $sessions = $this->maui->getSessionsRange($current->id, max(1, $steps));
+    // Session range steps must be 1 or greater, so if we want only
+    // the current session, wrap it in an array but don't fetch others.
+    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     // Get the start date of the first session.
     $first_session_start_date = $sessions[0]->startDate;
@@ -197,8 +222,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     // Add the configuration values to drupalSettings.
     $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'steps' => $this->configuration['steps'],
+      'steps' => $steps,
       'groupByMonth' => $this->configuration['group_by_month'],
+      'showGroupByMonth' => $this->configuration['show_group_by_month'],
       'firstSessionStartDate' => $first_session_start_date,
       'lastSessionEndDate' => $last_session_end_date,
     ];
@@ -217,12 +243,14 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $current_request = $this->requestStack->getCurrentRequest();
 
-    $form['group_by_month'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Group by month'),
-      '#id' => 'group-by-month',
-      '#default_value' => $this->configuration['group_by_month'],
-    ];
+    if ($this->configuration['show_group_by_month']) {
+      $form['group_by_month'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Group by month'),
+        '#id' => 'group-by-month',
+        '#default_value' => $this->configuration['group_by_month'],
+      ];
+    }
 
     $form['show_previous_events'] = [
       '#type' => 'checkbox',
@@ -275,6 +303,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form['subsession'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show subsessions'),
+      '#id' => 'subsession',
       '#default_value' => $current_request->query->get('subsession', FALSE),
     ];
 
@@ -283,6 +312,26 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     return $form;
+  }
+
+  /**
+   * A #lazy_builder callback.
+   */
+  public static function lazyBuilder() {
+    return [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['academic-calendar', 'content']],
+      'content' => [
+        '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function trustedCallbacks() {
+    return ['lazyBuilder'];
   }
 
 }

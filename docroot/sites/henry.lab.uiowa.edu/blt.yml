@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhenry.uiowa.ddev.site
+    protocol: https
+  machine_name: labhenry
+  human_name: henry.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhenry.prod
+drupal:
+  db:
+    database: henry_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhenry.prod.drupal.uiowa.edu'
+  requester: ejelizalde
+  site-name: 'Henry lab '

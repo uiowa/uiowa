@@ -39,3 +39,21 @@ function inrc_core_install() {
   }
 
 }
+
+/**
+ * Delete cities vocabulary terms.
+ */
+function inrc_core_update_10001() {
+  $vid = 'cities';
+
+  // Delete all terms in the vocabulary.
+  $tids = \Drupal::entityQuery('taxonomy_term')
+    ->accessCheck(FALSE)
+    ->condition('vid', $vid)
+    ->execute();
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $terms = $term_storage->loadMultiple($tids);
+  $term_storage->delete($terms);
+
+  return t('The cities taxonomy vocabulary terms have been deleted.');
+}

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgmidwest-voice.uiowa.ddev.site
+    protocol: https
+  machine_name: orgmidwest-voice
+  human_name: midwest-voice.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgmidwest-voice.prod
+drupal:
+  db:
+    database: midwest_voice_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgmidwest-voice.prod.drupal.uiowa.edu'
+  requester: ehunter
+  site-name: 'Midwest Voice Consortium'

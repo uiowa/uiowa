@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: michaelson-lab.uiowa.ddev.site
+    protocol: https
+  machine_name: michaelson-lab
+  human_name: michaelson-lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: michaelson-lab.prod
+drupal:
+  db:
+    database: michaelson_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://michaelson-lab.prod.drupal.uiowa.edu'
+  requester: strathearnc
+  site-name: 'Michaelson Lab'
