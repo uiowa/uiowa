@@ -7516,3 +7516,9 @@ $sites['orgmidwest-voice.uiowa.ddev.site'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.dev.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.stage.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
 $sites['orgmidwest-voice.prod.drupal.uiowa.edu'] = 'midwest-voice.org.uiowa.edu';
+
+// Directory aliases for michaelson-lab.uiowa.edu.
+$sites['michaelson-lab.uiowa.ddev.site'] = 'michaelson-lab.uiowa.edu';
+$sites['michaelson-lab.dev.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
+$sites['michaelson-lab.stage.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
+$sites['michaelson-lab.prod.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
