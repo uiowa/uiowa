@@ -123,9 +123,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       ],
     ];
 
-    // Attach the library for the deadlines block.
-    $build['#attached']['library'][] = 'registrar_core/course-deadlines';
-
     return $build;
   }
 
@@ -135,10 +132,14 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
+    if ($trigger = $form_state->getTriggeringElement()) {
+      $trigger = $trigger['#name'];
+    }
+
     $session = $form_state->getValue('session');
-    $department = $form_state->getValue('department');
-    $course = $form_state->getValue('course');
-    $section = $form_state->getValue('section');
+    $department = ($trigger === 'session') ? NULL : $form_state->getValue('department');
+    $course = (in_array($trigger, ['session', 'department'])) ? NULL : $form_state->getValue('course');
+    $section = (in_array($trigger, ['session', 'department', 'course'])) ? NULL : $form_state->getValue('section');
 
     $form['#id'] = 'uiowa-maui-course-deadlines-form';
 
@@ -198,8 +199,9 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#validated' => TRUE,
     ];
 
+    // If there is only a single section,
+    // we want to go ahead and auto-select it.
     $section_options = $this->sectionOptions($session, $department, $course);
-
     if (count($section_options) === 1) {
       $section = key($section_options);
     }
@@ -210,7 +212,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#description' => $this->t('Select a section to display course deadline information.'),
       '#empty_option' => '- Section -',
       '#options' => $section_options,
-      '#default_value' => !empty($section) ? $section : NULL,
+      '#default_value' => $section,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-section-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
