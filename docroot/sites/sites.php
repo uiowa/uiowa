@@ -7546,3 +7546,9 @@ $sites['orghcha.uiowa.ddev.site'] = 'hcha.org.uiowa.edu';
 $sites['orghcha.dev.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
 $sites['orghcha.stage.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
 $sites['orghcha.prod.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+
+// Directory aliases for boyden.lab.uiowa.edu.
+$sites['labboyden.uiowa.ddev.site'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.dev.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.stage.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.prod.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
