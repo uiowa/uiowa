@@ -139,7 +139,7 @@ function commencement_core_node_view(array &$build, EntityInterface $node, Entit
     if ($display->getComponent('field_event_ceremony_info_heading')) {
       $build['field_event_ceremony_info_heading'] = [
         '#type' => 'markup',
-        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left headline--serif headline--underline">' . t('Ceremony Information') . '</h2>',
+        '#markup' => '<h2 id="ceremony_info" class="headline block__headline headline block__headline headline--left headline--serif headline--underline">' . t('Additional Info for Graduates and Guests') . '</h2>',
       ];
     }
 
@@ -268,6 +268,7 @@ function commencement_core_preprocess_field(&$variables) {
 
   switch ($variables['element']['#field_name']) {
     case 'field_coll_section_collections':
+    case 'field_event_ceremony_info_detail':
       if (isset($variables['element'][0]['#paragraph'])) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $variables['element'][0]['#paragraph'];
@@ -275,14 +276,6 @@ function commencement_core_preprocess_field(&$variables) {
         // uiowa_collection_item and we actually want the parent entity.
         $parent = $paragraph->getParentEntity();
         $variables['id'] = $parent->id();
-      }
-      break;
-
-    case 'field_event_ceremony_info_detail':
-      if (isset($variables['element'][0]['#paragraph'])) {
-        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-        $paragraph = $variables['element'][0]['#paragraph'];
-        $variables['id'] = $paragraph->id();
       }
       break;
 
