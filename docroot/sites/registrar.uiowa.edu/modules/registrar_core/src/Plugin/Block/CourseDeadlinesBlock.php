@@ -204,6 +204,11 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     $section_options = $this->sectionOptions($session, $department, $course);
     if (count($section_options) === 1) {
       $section = key($section_options);
+      // Get the current user input and overwrite the section
+      // and then re-set into the form as faux input.
+      $values = $form_state->getUserInput();
+      $values['section'] = $section;
+      $form_state->setUserInput($values);
     }
 
     $form['deadlines']['section'] = [
