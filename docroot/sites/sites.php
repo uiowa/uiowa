@@ -7534,3 +7534,9 @@ $sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.stage.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.prod.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+
+// Directory aliases for ctsdmc.uiowa.edu.
+$sites['ctsdmc.uiowa.ddev.site'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.dev.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.stage.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.prod.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
