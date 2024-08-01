@@ -7540,3 +7540,9 @@ $sites['ctsdmc.uiowa.ddev.site'] = 'ctsdmc.uiowa.edu';
 $sites['ctsdmc.dev.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
 $sites['ctsdmc.stage.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
 $sites['ctsdmc.prod.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+
+// Directory aliases for hcha.org.uiowa.edu.
+$sites['orghcha.uiowa.ddev.site'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.dev.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.stage.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.prod.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
