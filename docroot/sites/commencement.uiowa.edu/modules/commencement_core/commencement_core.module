@@ -278,6 +278,14 @@ function commencement_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_event_ceremony_info_detail':
+      if (isset($variables['element'][0]['#paragraph'])) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $variables['element'][0]['#paragraph'];
+        $variables['id'] = $paragraph->id();
+      }
+      break;
+
     case 'field_coll_section_title':
       $variables['item_tag'] = 'h3';
       uiowa_core_set_attributes($variables, [
