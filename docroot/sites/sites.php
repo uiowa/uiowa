@@ -7534,9 +7534,3 @@ $sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.stage.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.prod.drupal.uiowa.edu'] = 'iowalionseyebank.org';
-
-// Directory aliases for michaelson-lab.uiowa.edu.
-$sites['michaelson-lab.uiowa.ddev.site'] = 'michaelson-lab.uiowa.edu';
-$sites['michaelson-lab.dev.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
-$sites['michaelson-lab.stage.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
-$sites['michaelson-lab.prod.drupal.uiowa.edu'] = 'michaelson-lab.uiowa.edu';
