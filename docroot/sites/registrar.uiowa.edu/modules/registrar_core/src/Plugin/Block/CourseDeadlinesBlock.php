@@ -132,10 +132,13 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
+    // If the form has been interacted with, we'll have a triggering element
+    // to deal with and determine what should be reset or not.
     if ($trigger = $form_state->getTriggeringElement()) {
       $trigger = $trigger['#name'];
     }
-
+    // For each form interaction, we want to reset any fields
+    // below the most recent interaction.
     $session = $form_state->getValue('session');
     $department = ($trigger === 'session') ? NULL : $form_state->getValue('department');
     $course = (in_array($trigger, ['session', 'department'])) ? NULL : $form_state->getValue('course');
