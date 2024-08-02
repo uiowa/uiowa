@@ -431,9 +431,9 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
 
     if ($variables['view_mode'] === 'accordion') {
 
-      $variables['delta'] = 0;
       $parent = $paragraph->getParentEntity();
       if ($parent instanceof ParagraphInterface && $parent->getType() === 'uiowa_collection_section') {
+        $variables['delta'] = 0;
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
 
