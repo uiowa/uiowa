@@ -267,8 +267,16 @@ function commencement_core_preprocess_field(&$variables) {
   $node = $variables['element']['#object'];
 
   switch ($variables['element']['#field_name']) {
-    case 'field_coll_section_collections':
     case 'field_event_ceremony_info_detail':
+      foreach ($variables['items'] as $delta => $item) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $item['content']['#paragraph'];
+        $headline = $paragraph->get('field_collection_headline')->getValue()[0]['value'];
+        $variables['items'][$delta]['label'] = $headline;
+      }
+      break;
+
+    case 'field_coll_section_collections':
       if (isset($variables['element'][0]['#paragraph'])) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $variables['element'][0]['#paragraph'];
