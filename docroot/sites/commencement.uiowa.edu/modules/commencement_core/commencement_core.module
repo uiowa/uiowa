@@ -273,6 +273,8 @@ function commencement_core_preprocess_field(&$variables) {
         $paragraph = $item['content']['#paragraph'];
         $headline = $paragraph->get('field_collection_headline')->getValue()[0]['value'];
         $variables['items'][$delta]['label'] = $headline;
+        $body = $paragraph->get('field_collection_body')->view();
+        $variables['items'][$delta]['body'] = $body;
       }
       break;
 
