@@ -106,12 +106,6 @@ tabs:
 header-sticky:
   js:
     assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
-banner:
-  css:
-    component:
-      assets/css/components/banner.css: { preprocess: false }
-  js:
-    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -168,13 +162,22 @@ highlight:
   css:
     component:
       assets/css/components/highlight.css: { preprocess: false }
+click-a11y:
+  js:
+    assets/js/click-a11y-init.js: { preprocess: true, attributes: { type: module } }
+banner:
+  css:
+    component:
+      assets/css/components/banner.css: { preprocess: false }
+  dependencies:
+    - uids_base/click-a11y
 card:
   css:
     component:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
-  js:
-    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
+  dependencies:
+    - uids_base/click-a11y
 media:
   css:
     component:
