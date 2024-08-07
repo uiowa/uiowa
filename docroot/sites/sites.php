@@ -6227,12 +6227,6 @@ $sites['sitesmatthew-arndt.dev.drupal.uiowa.edu'] = 'matthew-arndt.sites.uiowa.e
 $sites['sitesmatthew-arndt.stage.drupal.uiowa.edu'] = 'matthew-arndt.sites.uiowa.edu';
 $sites['sitesmatthew-arndt.prod.drupal.uiowa.edu'] = 'matthew-arndt.sites.uiowa.edu';
 
-// Directory aliases for iowateacherintern.org.
-$sites['org-iowateacherintern.uiowa.ddev.site'] = 'iowateacherintern.org';
-$sites['org-iowateacherintern.dev.drupal.uiowa.edu'] = 'iowateacherintern.org';
-$sites['org-iowateacherintern.stage.drupal.uiowa.edu'] = 'iowateacherintern.org';
-$sites['org-iowateacherintern.prod.drupal.uiowa.edu'] = 'iowateacherintern.org';
-
 // Directory aliases for turkish.org.uiowa.edu.
 $sites['orgturkish.uiowa.ddev.site'] = 'turkish.org.uiowa.edu';
 $sites['orgturkish.dev.drupal.uiowa.edu'] = 'turkish.org.uiowa.edu';
@@ -7534,3 +7528,21 @@ $sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.stage.drupal.uiowa.edu'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.prod.drupal.uiowa.edu'] = 'iowalionseyebank.org';
+
+// Directory aliases for ctsdmc.uiowa.edu.
+$sites['ctsdmc.uiowa.ddev.site'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.dev.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.stage.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+$sites['ctsdmc.prod.drupal.uiowa.edu'] = 'ctsdmc.uiowa.edu';
+
+// Directory aliases for hcha.org.uiowa.edu.
+$sites['orghcha.uiowa.ddev.site'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.dev.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.stage.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+$sites['orghcha.prod.drupal.uiowa.edu'] = 'hcha.org.uiowa.edu';
+
+// Directory aliases for boyden.lab.uiowa.edu.
+$sites['labboyden.uiowa.ddev.site'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.dev.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.stage.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+$sites['labboyden.prod.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
