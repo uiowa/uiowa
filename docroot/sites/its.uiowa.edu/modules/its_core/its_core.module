@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -32,6 +33,23 @@ function its_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['paragraph']['alert_update'])) {
     $bundles['paragraph']['alert_update']['class'] = AlertUpdate::class;
   }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function its_core_entity_extra_field_info() {
+  $extra = [];
+
+  // Ceremony information heading.
+  $extra['node']['page']['display']['field_page_alert_type_legend'] = [
+    'label' => t('Alert type legend'),
+    'description' => t('A block displaying the different alert types.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
 }
 
 /**
@@ -178,6 +196,28 @@ function its_core_node_update(EntityInterface $entity) {
   if ($type === 'alert' && $entity->send_email) {
     $alert = its_core_alert_email_build($entity);
     its_core_send_alert_email($entity, $alert);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function its_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'page' && $view_mode === 'full') {
+
+    // Ceremony information heading.
+    if ($display->getComponent('field_page_alert_type_legend')) {
+      $build['field_page_alert_type_legend'] = [
+        '#type' => 'markup',
+        '#markup' =>
+          '<div class="card__meta" >' .
+            '<div class="field__item"><span class="block-margin__top badge badge--orange"><i class="svg-inline--fa fas fa-triangle-exclamation"></i>Outage</span></div>' .
+            '<div class="field__item"><span class="block-margin__top badge badge--green">Planned Maintenance</span></div>' .
+            '<div class="field__item"><span class="block-margin__top badge badge--blue"><i class="svg-inline--fa fas fa-arrow-trend-down"></i></svg>Service Degradation</span></div>' .
+            '<div class="field__item"><span class="block-margin__top badge badge--cool-gray">Service Announcement</span></div>'.
+          '</div>',
+      ];
+    }
   }
 }
 
