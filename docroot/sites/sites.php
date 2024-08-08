@@ -7546,3 +7546,9 @@ $sites['researchisc.uiowa.ddev.site'] = 'isc.research.uiowa.edu';
 $sites['researchisc.dev.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
 $sites['researchisc.stage.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
 $sites['researchisc.prod.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+
+// Directory aliases for ccsc.org.uiowa.edu.
+$sites['orgccsc.uiowa.ddev.site'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.dev.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.stage.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.prod.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
