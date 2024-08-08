@@ -7517,12 +7517,6 @@ $sites['labpezzulo.dev.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
 $sites['labpezzulo.stage.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
 $sites['labpezzulo.prod.drupal.uiowa.edu'] = 'pezzulo.lab.uiowa.edu';
 
-// Directory aliases for csi-sitenow-test.sites.uiowa.edu.
-$sites['sitescsi-sitenow-test.uiowa.ddev.site'] = 'csi-sitenow-test.sites.uiowa.edu';
-$sites['sitescsi-sitenow-test.dev.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
-$sites['sitescsi-sitenow-test.stage.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
-$sites['sitescsi-sitenow-test.prod.drupal.uiowa.edu'] = 'csi-sitenow-test.sites.uiowa.edu';
-
 // Directory aliases for iowalionseyebank.org.
 $sites['org-iowalionseyebank.uiowa.ddev.site'] = 'iowalionseyebank.org';
 $sites['org-iowalionseyebank.dev.drupal.uiowa.edu'] = 'iowalionseyebank.org';
@@ -7546,3 +7540,21 @@ $sites['labboyden.uiowa.ddev.site'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.dev.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.stage.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.prod.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+
+// Directory aliases for isc.research.uiowa.edu.
+$sites['researchisc.uiowa.ddev.site'] = 'isc.research.uiowa.edu';
+$sites['researchisc.dev.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+$sites['researchisc.stage.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+$sites['researchisc.prod.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+
+// Directory aliases for ccsc.org.uiowa.edu.
+$sites['orgccsc.uiowa.ddev.site'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.dev.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.stage.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
+$sites['orgccsc.prod.drupal.uiowa.edu'] = 'ccsc.org.uiowa.edu';
+
+// Directory aliases for pfas.conference.uiowa.edu.
+$sites['conferencepfas.uiowa.ddev.site'] = 'pfas.conference.uiowa.edu';
+$sites['conferencepfas.dev.drupal.uiowa.edu'] = 'pfas.conference.uiowa.edu';
+$sites['conferencepfas.stage.drupal.uiowa.edu'] = 'pfas.conference.uiowa.edu';
+$sites['conferencepfas.prod.drupal.uiowa.edu'] = 'pfas.conference.uiowa.edu';
