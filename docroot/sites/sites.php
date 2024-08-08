@@ -7540,3 +7540,9 @@ $sites['labboyden.uiowa.ddev.site'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.dev.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.stage.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
 $sites['labboyden.prod.drupal.uiowa.edu'] = 'boyden.lab.uiowa.edu';
+
+// Directory aliases for isc.research.uiowa.edu.
+$sites['researchisc.uiowa.ddev.site'] = 'isc.research.uiowa.edu';
+$sites['researchisc.dev.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+$sites['researchisc.stage.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
+$sites['researchisc.prod.drupal.uiowa.edu'] = 'isc.research.uiowa.edu';
