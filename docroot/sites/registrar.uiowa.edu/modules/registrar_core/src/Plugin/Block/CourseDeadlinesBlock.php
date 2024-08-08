@@ -504,13 +504,22 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         }
         else {
           if ($value->building) {
+            // @todo Update this to use a source other than data.its.
             $lookup = json_decode(file_get_contents('https://data.its.uiowa.edu/maps/number-lookup'));
             $building = strtolower($value->building);
 
+            // Create a link if we were able to pull a building number,
+            // else just output as plain text.
             if ($lookup?->$building) {
               $location = $this->t('@room <a href="@url">@building</a>', [
                 '@room' => $value->room ?? '',
                 '@url' => Url::fromUri('https://www.facilities.uiowa.edu/building/' . $lookup->$building)->toString(),
+                '@building' => $value->building,
+              ]);
+            }
+            else {
+              $location = $this->t('@room @building', [
+                '@room' => $value->room ?? '',
                 '@building' => $value->building,
               ]);
             }
