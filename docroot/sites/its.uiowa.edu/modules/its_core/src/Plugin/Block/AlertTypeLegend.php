@@ -39,7 +39,6 @@ class AlertTypeLegend extends BlockBase {
       '#attributes' => [
         'class' => [
           'headline',
-          'headline--highlight',
           'headline--uppercase',
           'h5',
         ],
