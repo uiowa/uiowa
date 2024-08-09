@@ -137,12 +137,31 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     if ($trigger = $form_state->getTriggeringElement()) {
       $trigger = $trigger['#name'];
     }
-    // For each form interaction, we want to reset any fields
-    // below the most recent interaction.
     $session = $form_state->getValue('session');
     $department = $form_state->getValue('department');
-    $course = (in_array($trigger, ['session', 'department'])) ? NULL : $form_state->getValue('course');
-    $section = (in_array($trigger, ['session', 'department', 'course'])) ? NULL : $form_state->getValue('section');
+    $course = $form_state->getValue('course');
+    $section = $form_state->getValue('section');
+
+    // For each form interaction of session, department, or course,
+    // we need to re-set the fields below department, as course
+    // and section are dependent on the other field choices.
+    switch ($trigger) {
+      // These cases should fall through to the course case as well.
+      case 'session':
+      case 'department':
+        $course = NULL;
+
+      case 'course':
+        $section = NULL;
+        // Get the current user input and overwrite the section
+        // and then re-set into the form as faux input
+        // to nullify as needed.
+        $values = $form_state->getUserInput();
+        $values['section'] = $section;
+        $values['course'] = $course;
+        $form_state->setUserInput($values);
+        break;
+    }
 
     $form['#id'] = 'uiowa-maui-course-deadlines-form';
 
