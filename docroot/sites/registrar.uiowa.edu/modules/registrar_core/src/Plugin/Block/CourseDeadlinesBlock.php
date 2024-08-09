@@ -140,7 +140,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     // For each form interaction, we want to reset any fields
     // below the most recent interaction.
     $session = $form_state->getValue('session');
-    $department = ($trigger === 'session') ? NULL : $form_state->getValue('department');
+    $department = $form_state->getValue('department');
     $course = (in_array($trigger, ['session', 'department'])) ? NULL : $form_state->getValue('course');
     $section = (in_array($trigger, ['session', 'department', 'course'])) ? NULL : $form_state->getValue('section');
 
