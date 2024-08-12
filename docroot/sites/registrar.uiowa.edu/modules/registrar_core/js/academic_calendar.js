@@ -265,7 +265,6 @@
 
       this.toggleSpinner();
 
-      if(false) {
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       // Use `await` so we don't return a promise before the fetch is done.
@@ -291,7 +290,6 @@
 
           Drupal.announce('Error loading events. Please try again later.');
         });
-      }
     }
 
     // Function to toggle visibility of spinner.
