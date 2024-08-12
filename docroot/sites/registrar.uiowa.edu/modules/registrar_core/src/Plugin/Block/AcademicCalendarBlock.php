@@ -336,7 +336,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'media--default',
       'media--no-crop',
       'media',
-      'skeleton-loader'
+      'skeleton-loader',
     ];
     $attributes['aria-hidden'] = ['true'];
     $card = [
@@ -371,7 +371,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'content' => [
         $card,
         $card,
-        $card
+        $card,
       ],
     ];
   }
