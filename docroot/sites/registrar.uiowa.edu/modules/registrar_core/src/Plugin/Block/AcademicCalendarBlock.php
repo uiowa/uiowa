@@ -341,26 +341,28 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $attributes['aria-hidden'] = ['true'];
     $card = [
       '#type' => 'card',
-      '#title' => 'Giacomo Ultimocuore Sognatore',
       '#attributes' => $attributes,
-      '#media' => t('<div class="media--date"></div>'),
-      '#subtitle' => [
-        'date' => [
-          '#type' => 'markup',
-          '#markup' => 'Di Pace Tre Volte DiBella',
-        ],
-      ],
-      '#meta' => [
-        'description' => [
-          '#type' => 'markup',
-          '#markup' => 'Sogno Sensa Fine',
-        ],
-
-      ],
+      '#media' => t('<div class="bone media--date"></div>'),
       '#content' => [
-        'body' => [
+        'container' => [
           '#type' => 'markup',
-          '#markup' => '<span class="uiowa-maui-fc-event badge badge--primary summer-2024">Summer 2024</span>',
+          '#markup' => '
+            <header>
+              <h2 class="bone marrow headline default">
+                <span class="headline__heading">
+                Giacomo Ultimocuore Sognatore
+                </span>
+              </h2>
+            </header>
+            <div class="bone marrow card__details">
+              <div class="card__subtitle">
+                Di Pace Tre Volte DiBella
+              </div>
+              <div class="card__meta">
+                Sogno Sensa Fine
+              </div>
+            </div>
+            <span class="bone uiowa-maui-fc-event badge badge--primary summer-2024">Summer 2024</span>',
         ],
       ],
     ];

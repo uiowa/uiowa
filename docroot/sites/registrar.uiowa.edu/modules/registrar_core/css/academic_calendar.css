@@ -148,14 +148,7 @@
   pointer-events: none;
 }
 
-.card.skeleton-loader .card__body {
-  max-width: 500px;
-}
-
-.card.skeleton-loader .media--date,
-.card.skeleton-loader h2,
-.card.skeleton-loader .card__details,
-.card.skeleton-loader .badge {
+.card.skeleton-loader .bone {
   position: relative;
   overflow: hidden;
   background: #f3f3f3;
@@ -164,10 +157,7 @@
   color: transparent;
 }
 
-.card.skeleton-loader .media--date:before,
-.card.skeleton-loader h2:before,
-.card.skeleton-loader .card__details:before,
-.card.skeleton-loader .badge:before {
+.card.skeleton-loader .bone:before {
   position: absolute;
   top: 0;
   left: 0;
@@ -180,28 +170,21 @@
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.0) calc(50% - 50px), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.0) calc(50% + 50px), rgba(255, 255, 255, 0) 100%)
 }
 
-.card.skeleton-loader:nth-child(2) .media--date:before,
-.card.skeleton-loader:nth-child(2) h2:before,
-.card.skeleton-loader:nth-child(2) .card__details:before,
-.card.skeleton-loader:nth-child(2) .badge:before{
+.card.skeleton-loader:nth-child(2) .bone:before {
   animation-delay: 2000ms;
 }
 
-.card.skeleton-loader:nth-child(3) .media--date:before,
-.card.skeleton-loader:nth-child(3) h2:before,
-.card.skeleton-loader:nth-child(3) .card__details:before,
-.card.skeleton-loader:nth-child(3) .badge:before{
+.card.skeleton-loader:nth-child(3) .bone:before {
   animation-delay: 1000ms;
 }
 
-.card.skeleton-loader h2,
-.card.skeleton-loader .card__details {
+.card.skeleton-loader .marrow {
   border-radius: 3px;
-  margin-top: .6em;
+  margin-top: 0;
+  max-width: 500px;
 }
 
-.card.skeleton-loader h2:before,
-.card.skeleton-loader .card__details:before {
+.card.skeleton-loader .marrow:before {
   opacity: .4;
   animation: skeletonShimmer 6s ease-in-out infinite;
 }
