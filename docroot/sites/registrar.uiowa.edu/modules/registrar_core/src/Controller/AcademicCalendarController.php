@@ -189,6 +189,8 @@ class AcademicCalendarController extends ControllerBase {
    *   Whether to include subsessions.
    * @param int $steps
    *   The number of sessions to fetch.
+   * @param int $includePastSessions
+   *    Whether to include an equivalent number of past sessions equal to $steps.
    *
    * @return array
    *   The processed calendar data.
