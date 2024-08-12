@@ -328,11 +328,50 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * A #lazy_builder callback.
    */
   public static function lazyBuilder() {
+    $attributes['class'] = [
+      'card--layout-left',
+      'borderless',
+      'block--word-break',
+      'card',
+      'media--default',
+      'media--no-crop',
+      'media',
+      'skeleton-loader'
+    ];
+    $attributes['aria-hidden'] = ['true'];
+    $card = [
+      '#type' => 'card',
+      '#title' => 'Giacomo Ultimocuore Sognatore',
+      '#attributes' => $attributes,
+      '#media' => t('<div class="media--date"></div>'),
+      '#subtitle' => [
+        'date' => [
+          '#type' => 'markup',
+          '#markup' => 'Di Pace Tre Volte DiBella',
+        ],
+      ],
+      '#meta' => [
+        'description' => [
+          '#type' => 'markup',
+          '#markup' => 'Sogno Sensa Fine',
+        ],
+
+      ],
+      '#content' => [
+        'body' => [
+          '#type' => 'markup',
+          '#markup' => '<span class="uiowa-maui-fc-event badge badge--primary summer-2024">Summer 2024</span>',
+        ],
+      ],
+    ];
+
     return [
       '#type' => 'container',
       '#attributes' => ['class' => ['academic-calendar', 'content']],
       'content' => [
-        '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
+        $card,
+        $card,
+        $card
       ],
     ];
   }
