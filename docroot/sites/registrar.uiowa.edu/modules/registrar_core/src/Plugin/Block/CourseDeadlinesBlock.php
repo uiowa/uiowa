@@ -388,9 +388,17 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       }
 
       $deadlines['title_wrapper'] = [
-        '#type' => 'container',
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
         '#attributes' => [
-          'class' => ['uiowa-maui-course-deadlines-wrapper', 'title-wrapper'],
+          'class' => [
+            'uiowa-maui-course-deadlines-wrapper',
+            'title-wrapper',
+            'headline',
+            'headline--serif',
+            'default',
+            'block-margin__bottom',
+          ],
         ],
         'subject_course_section' => [
           '#prefix' => '<span class="uiowa-maui-subject-course-section">',
@@ -401,7 +409,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           ]),
         ],
         'title' => [
-          '#prefix' => '<span class="uiowa-maui-course-title">',
+          '#prefix' => ' - <span class="uiowa-maui-course-title">',
           '#suffix' => '</span>',
           '#markup' => $this->t('@title', [
             '@title' => $data->courseTitle ?? '',
@@ -411,7 +419,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
 
       if ($data->subTitle) {
         $deadlines['title_wrapper']['subtitle'] = [
-          '#prefix' => '<span class="uiowa-maui-course-subtitle">',
+          '#prefix' => ' - <span class="uiowa-maui-course-subtitle">',
           '#suffix' => '</span>',
           '#markup' => $this->t('@subtitle', [
             '@subtitle' => $data->subTitle,
@@ -423,13 +431,14 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['independent_study_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'independent-study-wrapper'],
+            'class' => ['uiowa-maui-course-deadlines-wrapper', 'independent-study-wrapper', 'alert', 'alert--info'],
           ],
           'independent_study' => [
             '#prefix' => '<span class="uiowa-maui-independent-study">',
             '#suffix' => '</span>',
             '#markup' => $this->t('This is an independent study course.'),
           ],
+          '#suffix' => '<br />',
         ];
       }
 
@@ -437,27 +446,26 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['offcycle_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'offcycle-wrapper'],
+            'class' => ['uiowa-maui-course-deadlines-wrapper', 'offcycle-wrapper', 'alert', 'alert--info'],
           ],
           'offcycle' => [
             '#prefix' => '<span class="uiowa-maui-offcycle">',
             '#suffix' => '</span>',
             '#markup' => $this->t('This is an off-cycle course.'),
           ],
+          '#suffix' => '<br />',
         ];
       }
-
-      $items = [];
 
       $dates = [
         'beginDate' => 'Begin date',
         'endDate' => 'End date',
         'lastDayToDropOrReduceHoursWithTuitionReduction' => 'Last day for tuition & fee reduction if you drop the course or reduce hours (See Note below)',
         'lastDayToAddDropNoFee' => 'Last day to add or drop the course without $12 charge',
-        'lastDayToAddWithoutDeanApproval' => "Last day to add without collegiate approval",
+        'lastDayToAddWithoutDeanApproval' => 'Last day to add without collegiate approval',
         'lastDayToDropWithoutW' => 'Last day to drop without a "W"',
-        'lastDayToDropWithoutDeanApprovalUndergrad' => "Last day to drop without collegiate approval, undergraduate",
-        'lastDayToDropWithoutDeanApprovalGrad' => "Last day to drop without collegiate approval, graduate",
+        'lastDayToDropWithoutDeanApprovalUndergrad' => 'Last day to drop without collegiate approval, undergraduate',
+        'lastDayToDropWithoutDeanApprovalGrad' => 'Last day to drop without collegiate approval, graduate',
       ];
 
       // Remove $12 charge field for sessions after Fall 2016.
@@ -467,31 +475,43 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         unset($dates['lastDayToAddDropNoFee']);
       }
 
+      $deadline_rows = [];
       foreach ($dates as $key => $label) {
         if ($data->$key) {
-          $items[] = [
-            '#markup' => $this->t('<span class="uiowa-maui-deadline-label">@label</span> <span class="uiowa-maui-deadline-date">@date</span>', [
-              '@label' => $label,
-              '@date' => date('m/d/Y', strtotime($data->$key)),
-            ]),
+          $deadline_rows[] = [
+            $label,
+            date('m/d/Y', strtotime($data->$key)),
           ];
         }
       }
 
-      $deadlines['deadlines_wrapper'] = [
-        '#type' => 'container',
-        '#suffix' => '<p style="text-align: center;"><a href="https://registrar.uiowa.edu/collegiate-office-contact-information-students">Collegiate Office Contact Information</a> to obtain collegiate approval.</p>',
+      // Add a footer row that spans across the columns.
+      $footer_link = $this->t('<a href="@url">Collegiate Office Contact Information</a> to obtain collegiate approval.', [
+        '@url' => Url::fromUri('https://registrar.uiowa.edu/collegiate-office-contact-information-students')->toString(),
+      ]);
+      $footer_row = [
+        [
+          'data' => $footer_link,
+          'colspan' => 2,
+          'class' => ['table-footer'],
+        ],
+      ];
+
+      // Add the footer row to the end of the rows array.
+      $deadline_rows[] = $footer_row;
+
+      $deadlines['deadlines_table'] = [
+        '#type' => 'table',
+        '#header' => [
+          $this->t('Deadline'),
+          $this->t('Date'),
+        ],
+        '#rows' => $deadline_rows,
         '#attributes' => [
-          'class' => ['uiowa-maui-course-deadlines-wrapper', 'deadlines-wrapper'],
+          'class' => ['uiowa-maui-deadlines-table'],
         ],
-        'deadlines' => [
-          '#title' => 'Deadlines',
-          '#items' => $items,
-          '#theme' => 'item_list',
-          '#attributes' => [
-            'class' => 'uiowa-maui-deadlines',
-          ],
-        ],
+        '#caption' => $this->t('Course Deadlines'),
+        '#suffix' => '<p>&nbsp;</p>',
       ];
 
       $times_and_locations = [];
