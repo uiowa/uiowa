@@ -82,6 +82,7 @@ class AcademicCalendarController extends ControllerBase {
     $category = $request->query->all()['category'] ?? [];
     $subsession = $request->query->get('subsession', '0');
     $steps = $request->query->get('steps', 0);
+    $includePastSessions = $request->query->get('includePastSessions', 0);
 
     // Ensure category is always an array.
     if (!is_array($category)) {
@@ -91,13 +92,13 @@ class AcademicCalendarController extends ControllerBase {
     // Convert subsession to boolean.
     $subsession = filter_var($subsession, FILTER_VALIDATE_BOOLEAN);
 
-    $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':' . ($subsession ? '1' : '0') . ':' . $steps;
+    $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':' . ($subsession ? '1' : '0') . ':' . $steps . ':' . $includePastSessions;
 
     if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
     }
     else {
-      $data = $this->fetchAndProcessCalendarData($start, $end, $category, $subsession, $steps);
+      $data = $this->fetchAndProcessCalendarData($start, $end, $category, $subsession, $steps, $includePastSessions);
       // Cache for 24 hours.
       $this->cacheBackend->set($cid, $data, time() + 86400);
     }
@@ -192,11 +193,17 @@ class AcademicCalendarController extends ControllerBase {
    * @return array
    *   The processed calendar data.
    */
-  private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps) {
+  private function fetchAndProcessCalendarData($start, $end, $categories, $subsession, $steps, $includePastSessions) {
     $current = $this->maui->getCurrentSession();
     // Session range steps must be 1 or greater, so if we want only
     // the current session, wrap it in an array but don't fetch others.
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
+
+    // If we want to include the past sessions...
+    if ($includePastSessions) {
+      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps-1), 0, $steps);
+      $sessions = array_merge($pastSessions, $sessions);
+    }
 
     $events = [];
 

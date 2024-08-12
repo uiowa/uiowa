@@ -6,6 +6,7 @@
       once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
         const calendarSettings = drupalSettings.academicCalendar;
         const steps = calendarSettings.steps || 0;
+        const includePastSessions = calendarSettings.includePastSessions || 0;
         const initGroupByMonth = calendarSettings.groupByMonth;
         const showGroupByMonth = calendarSettings.showGroupByMonth;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
@@ -15,6 +16,7 @@
         const academicCalendar = new AcademicCalendar(
           calendarEl,
           steps,
+          includePastSessions,
           initGroupByMonth,
           getFilterValues()
         );
@@ -217,7 +219,7 @@
   class AcademicCalendar {
     steps = 0;
     groupByMonth = false;
-    constructor(calendarEl, steps, groupByMonth, filterValues) {
+    constructor(calendarEl, steps, includePastSessions, groupByMonth, filterValues) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domOutput = document.createElement("div");
       this.allEvents = [];
@@ -226,6 +228,7 @@
       this.endDate = filterValues.endDate;
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
+      this.includePastSessions = includePastSessions;
 
       this.groupByMonth = groupByMonth;
       this.selectedSession = filterValues.selectedSession;
@@ -250,12 +253,22 @@
 
     // Function to fetch events from the server and display them.
     async fetchEvents() {
+      const date = new Date();
+
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      // This arrangement can be altered based on how we want the date's format to appear.
+      let startDate = `${year-2}-${month}-${day}`;
+      let endDate = `${year+2}-${month}-${day}`;
+
       this.toggleSpinner();
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       // Use `await` so we don't return a promise before the fetch is done.
-      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
+      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}&includePastSessions=${this.includePastSessions}`)
         .then(response => response.json())
         .then(events => {
           this.allEvents = events;

@@ -138,9 +138,17 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         3 => $this->t('Current session, plus next three sessions'),
         4 => $this->t('Current session, plus next four sessions'),
         5 => $this->t('Current session, plus next five sessions'),
+        10 => $this->t('Current session, plus next ten sessions'),
       ],
       '#default_value' => $this->configuration['steps'],
       '#required' => FALSE,
+    ];
+
+    $form['include_past_sessions'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include past sessions'),
+      '#description' => $this->t('Include an amount of sessions in the past equal to the number set above.'),
+      '#default_value' => $this->configuration['include_past_sessions'],
     ];
 
     $form['group_by_month'] = [
@@ -165,6 +173,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $this->configuration['steps'] = $form_state->getValue('steps');
+    $this->configuration['include_past_sessions'] = $form_state->getValue('include_past_sessions');
     $this->configuration['show_group_by_month'] = $form_state->getValue('show_group_by_month');
     $this->configuration['group_by_month'] = $form_state->getValue('group_by_month');
   }
@@ -225,6 +234,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       'steps' => $steps,
       'groupByMonth' => $this->configuration['group_by_month'],
       'showGroupByMonth' => $this->configuration['show_group_by_month'],
+      'includePastSessions' => $this->configuration['include_past_sessions'],
       'firstSessionStartDate' => $first_session_start_date,
       'lastSessionEndDate' => $last_session_end_date,
     ];
