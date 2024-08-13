@@ -203,7 +203,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     // Attach the library for the calendar.
-    $build['#attached']['library'][] = 'sitenow/chosen';
+//    $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'uids_base/chosen';
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
@@ -260,16 +260,25 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-session']],
     ];
 
-    $form['start_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Start Date'),
-      '#attributes' => ['class' => ['academic-calendar-start-date']],
-    ];
-
-    $form['end_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('End Date'),
-      '#attributes' => ['class' => ['academic-calendar-end-date']],
+    $form['month'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Month'),
+      '#options' => [
+        '' => $this->t('All Months'),
+        '01' => $this->t('January'),
+        '02' => $this->t('February'),
+        '03' => $this->t('March'),
+        '04' => $this->t('April'),
+        '05' => $this->t('May'),
+        '06' => $this->t('June'),
+        '07' => $this->t('July'),
+        '08' => $this->t('August'),
+        '09' => $this->t('September'),
+        '10' => $this->t('October'),
+        '11' => $this->t('November'),
+        '12' => $this->t('December'),
+      ],
+      '#attributes' => ['class' => ['academic-calendar-month']],
     ];
 
     $form['category'] = [
@@ -277,7 +286,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#title' => $this->t('Category'),
       '#options' => $this->maui->getDateCategories(),
       '#default_value' => $current_request->query->get('category', 'STUDENT'),
-      '#multiple' => TRUE,
+      '#multiple' => FALSE,
     ];
 
     if ($this->configuration['show_group_by_month']) {
