@@ -9,7 +9,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  *   id = "alert_type_legend_block",
- *   admin_label = @Translation("Alert Type Legend"),
+ *   admin_label = @Translation("Alert type legend"),
  *   category = @Translation("Site custom")
  * )
  */
