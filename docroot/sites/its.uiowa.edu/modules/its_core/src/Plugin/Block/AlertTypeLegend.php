@@ -47,7 +47,7 @@ class AlertTypeLegend extends BlockBase {
     $build['alert_type_legend']['heading']['content'] = [
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => 'Alert type legend',
+      '#value' => 'Legend',
       '#attributes' => [
         'class' => ['headline__heading'],
       ],
@@ -56,12 +56,12 @@ class AlertTypeLegend extends BlockBase {
       'wrapper' => [
         '#type' => 'markup',
         '#markup' =>
-        '<div class="card__meta" >' .
-        '<div class="field__item"><span class="block-margin__top badge badge--orange"><i class="svg-inline--fa fas fa-triangle-exclamation"></i>Outage</span></div>' .
-        '<div class="field__item"><span class="block-margin__top badge badge--green">Planned Maintenance</span></div>' .
-        '<div class="field__item"><span class="block-margin__top badge badge--blue"><i class="svg-inline--fa fas fa-arrow-trend-down"></i></svg>Service Degradation</span></div>' .
-        '<div class="field__item"><span class="block-margin__top badge badge--cool-gray">Service Announcement</span></div>' .
-        '</div>',
+        '<p>' .
+        '<span class="block-margin__top badge badge--orange">Outage</span> ' .
+        '<span class="block-margin__top badge badge--green">Planned Maintenance</span> ' .
+        '<span class="block-margin__top badge badge--blue">Service Degradation</span> ' .
+        '<span class="block-margin__top badge badge--cool-gray">Service Announcement</span>' .
+        '</p>',
       ],
     ];
 
