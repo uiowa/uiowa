@@ -290,17 +290,14 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $section_input = $key ? ($form['deadlines']['section']['#options'][$key] ?? NULL) : NULL;
 
         if ($section_input) {
-          $message = $this->t('Returning results for @department:@course:@section', [
+          $message = $this->t('Returning course deadline information for @department:@course:@section', [
             '@department' => $department,
             '@course' => $course,
             '@section' => $section_input,
           ]);
         }
         else {
-          $message = $this->t('Returning result for @department:@course', [
-            '@department' => $department,
-            '@course' => $course,
-          ]);
+          $message = $this->t('Updating form options based on course selection');
         }
 
         break;
