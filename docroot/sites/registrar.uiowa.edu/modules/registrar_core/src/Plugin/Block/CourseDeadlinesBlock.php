@@ -257,8 +257,18 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#validated' => TRUE,
     ];
 
+    $form['deadlines']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#ajax' => [
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'uiowa-maui-course-deadlines',
+      ],
+      '#disabled' => empty($section),
+    ];
+
     $form['deadlines']['deadlines'] = [
-      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
+      '#prefix' => '<br /><br /><div id="uiowa-maui-course-deadlines-content" class="border element--padding__all" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
@@ -303,12 +313,14 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         break;
 
       case 'section':
-        $message = $this->t('Returning result for @department:@course:@section', [
+      case 'op':
+        $message = $this->t('Returning course deadline information for @department:@course:@section', [
           '@department' => $department,
           '@course' => $course,
           '@section' => $form['deadlines']['section']['#options'][$section],
         ]);
         break;
+
     }
     $response->addCommand(new AnnounceCommand($message, 'polite'));
     $wrapper_id = '#' . $this->getFormId() . '-wrapper';
