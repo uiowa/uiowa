@@ -26,6 +26,26 @@ class AlertTypeLegend extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
+    $tids = ['406', '411', '416', '421'];
+    $tcolor = [
+      '406' => 'orange',
+      '411' => 'green',
+      '416' => 'blue',
+      '421' => 'cool-gray'
+    ];
+    $entityTypeManager = \Drupal::entityTypeManager();
+    $terms = $entityTypeManager->getStorage('taxonomy_term')->loadMultiple($tids);
+    $badgeMarkup = '<p>';
+    foreach ($terms as $term) {
+      $name = $term->name->value;
+      $description = trim(preg_replace('/\s\s+/', '',strip_tags($term->description->value)));
+      $color = $tcolor[$term->tid->value];
+
+      $badgeMarkup .= '<span class="block-margin__top badge badge--' . $color. '" title="' . $description .'">' . $name . '</span> ';
+    }
+
+    $badgeMarkup .= '</p>';
+
     $build['alert_type_legend'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
@@ -55,13 +75,7 @@ class AlertTypeLegend extends BlockBase {
     $build['alert_type_legend']['badges'] = [
       'wrapper' => [
         '#type' => 'markup',
-        '#markup' =>
-        '<p>' .
-        '<span class="block-margin__top badge badge--orange">Outage</span> ' .
-        '<span class="block-margin__top badge badge--green">Planned Maintenance</span> ' .
-        '<span class="block-margin__top badge badge--blue">Service Degradation</span> ' .
-        '<span class="block-margin__top badge badge--cool-gray">Service Announcement</span>' .
-        '</p>',
+        '#markup' => $badgeMarkup,
       ],
     ];
 
