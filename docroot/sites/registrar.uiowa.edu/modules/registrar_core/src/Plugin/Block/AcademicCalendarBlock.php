@@ -243,26 +243,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $current_request = $this->requestStack->getCurrentRequest();
 
-    if ($this->configuration['show_group_by_month']) {
-      $form['group_by_month'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Group by month'),
-        '#id' => 'group-by-month',
-        '#default_value' => $this->configuration['group_by_month'],
-      ];
-    }
-
-    $form['show_previous_events'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show previous events'),
-      '#id' => 'show-previous-events',
-      '#states' => [
-        'visible' => [
-          ':input[id="group-by-month"]' => ['checked' => TRUE],
-        ],
-      ],
-    ];
-
     $form['search'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
@@ -300,6 +280,26 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#multiple' => TRUE,
     ];
 
+    if ($this->configuration['show_group_by_month']) {
+      $form['group_by_month'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Group by month'),
+        '#id' => 'group-by-month',
+        '#default_value' => $this->configuration['group_by_month'],
+      ];
+    }
+
+    $form['show_previous_events'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show previous events'),
+      '#id' => 'show-previous-events',
+      '#states' => [
+        'visible' => [
+          ':input[id="group-by-month"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $form['subsession'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show subsessions'),
@@ -309,6 +309,20 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $form['actions'] = [
       '#type' => 'actions',
+      '#attributes' => ['class' => ['bttn--full']],
+    ];
+
+    $form['actions']['reset'] = [
+      '#type' => 'button',
+      '#value' => $this->t('Reset'),
+      '#attributes' => [
+        'class' => [
+          'bttn',
+          'bttn--secondary',
+          'bttn--full',
+          'js-form-submit',
+        ],
+      ],
     ];
 
     return $form;

@@ -73,11 +73,12 @@
           );
         });
 
-        // Handle form submission
-        formEl.addEventListener('submit', function (e) {
-          e.preventDefault();
-          updateFilterDisplay();
-        });
+        // Form reset.
+        if (formEls.resetButton) {
+          formEls.resetButton.addEventListener('click', function (e) {
+            formEl.reset();
+          });
+        }
 
         if (formEls.categoryEl) {
           const observer = new MutationObserver(function () {
@@ -153,6 +154,7 @@
             'showSubSessionEl' : formEl.querySelector('#subsession'),
             'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
             'categoryEl' : formEl.querySelector('#edit_category_chosen'),
+            'resetButton' : formEl.querySelector('.js-form-submit'),
           }
         }
 
