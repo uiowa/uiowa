@@ -1,0 +1,30 @@
+uuid: 1392ba84-2cdd-4a06-9a0f-2375c2131b8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.alert
+    - workflows.workflow.alert
+    - workflows.workflow.editorial
+id: alert_modified
+label: 'Alert modified'
+format: html
+subject: '[node:title] alert has been modified'
+recipient_types:
+  fixed_email:
+    id: fixed_email
+    provider: workbench_email
+    status: true
+    settings:
+      recipients: ' HelpDesk-Notify@uiowa.edu'
+bundles:
+  'node:alert': 'node:alert'
+body:
+  value: '<p>[node:title] alert has been modified by [node:author]. <a href="url]">Please review and publish the alert</a> if necessary.</p>'
+  format: filtered_html
+replyTo: '[site:mail]'
+transitions:
+  alert:
+    create_new_draft: create_new_draft
+    needs_review: needs_review
+  editorial: {  }
