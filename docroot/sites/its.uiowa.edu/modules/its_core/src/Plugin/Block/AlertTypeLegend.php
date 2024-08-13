@@ -39,8 +39,7 @@ class AlertTypeLegend extends BlockBase {
       '#attributes' => [
         'class' => [
           'headline',
-          'headline--uppercase',
-          'h5',
+          'h6',
         ],
       ],
     ];
@@ -48,7 +47,7 @@ class AlertTypeLegend extends BlockBase {
     $build['alert_type_legend']['heading']['content'] = [
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => 'Alert types',
+      '#value' => 'Alert type legend',
       '#attributes' => [
         'class' => ['headline__heading'],
       ],
