@@ -73,7 +73,13 @@
           );
         });
 
-        // Form reset.
+        // Handle form submission
+        formEl.addEventListener('submit', function (e) {
+          e.preventDefault();
+          updateFilterDisplay();
+        });
+        
+          // Form reset.
         if (formEls.resetButton) {
           formEls.resetButton.addEventListener('click', function (e) {
             formEl.reset();
