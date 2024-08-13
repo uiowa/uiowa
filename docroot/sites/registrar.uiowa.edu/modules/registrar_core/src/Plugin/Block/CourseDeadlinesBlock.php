@@ -502,7 +502,13 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['independent_study_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'independent-study-wrapper', 'alert', 'alert--info', 'block-margin__bottom'],
+            'class' => [
+              'uiowa-maui-course-deadlines-wrapper',
+              'independent-study-wrapper',
+              'alert',
+              'alert--info',
+              'block-margin__bottom',
+            ],
           ],
           'independent_study' => [
             '#prefix' => '<span class="uiowa-maui-independent-study">',
@@ -516,7 +522,13 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['offcycle_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'offcycle-wrapper', 'alert', 'alert--info', 'block-margin__bottom'],
+            'class' => [
+              'uiowa-maui-course-deadlines-wrapper',
+              'offcycle-wrapper',
+              'alert',
+              'alert--info',
+              'block-margin__bottom',
+            ],
           ],
           'offcycle' => [
             '#prefix' => '<span class="uiowa-maui-offcycle">',
