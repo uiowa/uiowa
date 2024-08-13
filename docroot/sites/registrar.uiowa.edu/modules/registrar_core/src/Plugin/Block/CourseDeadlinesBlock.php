@@ -2,6 +2,9 @@
 
 namespace Drupal\registrar_core\Plugin\Block;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\AnnounceCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
@@ -132,6 +135,10 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
+    $wrapper_id = $this->getFormId() . '-wrapper';
+    $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
+    $form['#suffix'] = '</div>';
+
     // If the form has been interacted with, we'll have a triggering element
     // to deal with and determine what should be reset or not.
     if ($trigger = $form_state->getTriggeringElement()) {
@@ -251,7 +258,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     $form['deadlines']['deadlines'] = [
-      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" aria-live="assertive" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
+      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
@@ -262,8 +269,55 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * AJAX callback for the form.
    */
-  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
-    return $form;
+  public function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $response = new AjaxResponse();
+    $triggering_element = $form_state->getTriggeringElement();
+    $message = 'Form updated';
+    $department = $form_state->getValue('department');
+    $course = $form_state->getValue('course');
+    $section = $form_state->getValue('section');
+    switch ($triggering_element['#name']) {
+      case  'session':
+        $message = $this->t('Updating form options based on session selection');
+        break;
+
+      case  'department':
+        $message = $this->t('Updating form options based on department selection');
+        break;
+
+      case  'course':
+        $key = $form['deadlines']['section']['#default_value'] ?? NULL;
+        $section_input = $key ? ($form['deadlines']['section']['#options'][$key] ?? NULL) : NULL;
+
+        if ($section_input) {
+          $message = $this->t('Returning results for @department:@course:@section', [
+            '@department' => $department,
+            '@course' => $course,
+            '@section' => $section_input,
+          ]);
+        }
+        else {
+          $message = $this->t('Returning result for @department:@course', [
+            '@department' => $department,
+            '@course' => $course,
+          ]);
+        }
+
+        break;
+
+      case 'section':
+        $message = $this->t('Returning result for @department:@course:@section', [
+          '@department' => $department,
+          '@course' => $course,
+          '@section' => $form['deadlines']['section']['#options'][$section],
+        ]);
+        break;
+    }
+    $response->addCommand(new AnnounceCommand($message, 'polite'));
+    $wrapper_id = '#' . $this->getFormId() . '-wrapper';
+    $response->addCommand(new ReplaceCommand($wrapper_id, $form));
+
+    return $response;
   }
 
   /**
@@ -400,16 +454,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'block-margin__bottom',
           ],
         ],
-        'subject_course_section' => [
-          '#prefix' => '<span class="uiowa-maui-subject-course-section">',
-          '#suffix' => '</span>',
-          '#markup' => $this->t('@subject_course:@section_number', [
-            '@subject_course' => $data->subjectCourse,
-            '@section_number' => $data->sectionNumber,
-          ]),
-        ],
         'title' => [
-          '#prefix' => ' - <span class="uiowa-maui-course-title">',
+          '#prefix' => '<span class="uiowa-maui-course-title">',
           '#suffix' => '</span>',
           '#markup' => $this->t('@title', [
             '@title' => $data->courseTitle ?? '',
@@ -426,6 +472,22 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           ]),
         ];
       }
+
+      $deadlines['course_badge'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['uiowa-maui-subject-course-section-wrapper'],
+        ],
+        'badge' => [
+          '#type' => 'markup',
+          '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
+          '#suffix' => '</span></p>',
+          '#markup' => $this->t('@subject_course:@section_number', [
+            '@subject_course' => $data->subjectCourse,
+            '@section_number' => $data->sectionNumber,
+          ]),
+        ],
+      ];
 
       if ($data->isIndependentStudySection) {
         $deadlines['independent_study_wrapper'] = [
@@ -485,21 +547,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         }
       }
 
-      // Add a footer row that spans across the columns.
-      $footer_link = $this->t('<a href="@url">Collegiate Office Contact Information</a> to obtain collegiate approval.', [
-        '@url' => Url::fromUri('https://registrar.uiowa.edu/collegiate-office-contact-information-students')->toString(),
-      ]);
-      $footer_row = [
-        [
-          'data' => $footer_link,
-          'colspan' => 2,
-          'class' => ['table-footer'],
-        ],
-      ];
-
-      // Add the footer row to the end of the rows array.
-      $deadline_rows[] = $footer_row;
-
       $deadlines['deadlines_table'] = [
         '#type' => 'table',
         '#header' => [
@@ -511,7 +558,31 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           'class' => ['uiowa-maui-deadlines-table'],
         ],
         '#caption' => $this->t('Course Deadlines'),
-        '#suffix' => '<p>&nbsp;</p>',
+      ];
+
+      $contact_info = $this->t('<a href="@url">Collegiate Office Contact Information</a> to obtain collegiate approval.', [
+        '@url' => Url::fromUri('https://registrar.uiowa.edu/collegiate-office-contact-information-students')->toString(),
+      ]);
+
+      $deadlines['contact_wrapper'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'uiowa-maui-course-deadlines-wrapper',
+            'contact-wrapper',
+            'alert',
+            'alert--info',
+          ],
+        ],
+        'contact' => [
+          '#type' => 'markup',
+          '#markup' => $contact_info,
+          '#attributes' => [
+            'class' => 'uiowa-maui-contact',
+          ],
+        ],
+        '#prefix' => '<br />',
+        '#suffix' => '<br />',
       ];
 
       $times_and_locations = [];
@@ -610,6 +681,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
           ],
         ];
       }
+    }
+    else {
+      $deadlines = [
+        '#type' => 'markup',
+        '#markup' => 'Complete the form above for course deadline information.',
+      ];
     }
 
     return $deadlines;
