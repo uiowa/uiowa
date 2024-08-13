@@ -268,7 +268,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     $form['deadlines']['deadlines'] = [
-      '#prefix' => '<br /><br /><div id="uiowa-maui-course-deadlines-content" class="border element--padding__all">',
+      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all block-margin__top">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
@@ -502,14 +502,13 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['independent_study_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'independent-study-wrapper', 'alert', 'alert--info'],
+            'class' => ['uiowa-maui-course-deadlines-wrapper', 'independent-study-wrapper', 'alert', 'alert--info', 'block-margin__bottom'],
           ],
           'independent_study' => [
             '#prefix' => '<span class="uiowa-maui-independent-study">',
             '#suffix' => '</span>',
             '#markup' => $this->t('This is an independent study course.'),
           ],
-          '#suffix' => '<br />',
         ];
       }
 
@@ -517,14 +516,13 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         $deadlines['offcycle_wrapper'] = [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['uiowa-maui-course-deadlines-wrapper', 'offcycle-wrapper', 'alert', 'alert--info'],
+            'class' => ['uiowa-maui-course-deadlines-wrapper', 'offcycle-wrapper', 'alert', 'alert--info', 'block-margin__bottom'],
           ],
           'offcycle' => [
             '#prefix' => '<span class="uiowa-maui-offcycle">',
             '#suffix' => '</span>',
             '#markup' => $this->t('This is an off-cycle course.'),
           ],
-          '#suffix' => '<br />',
         ];
       }
 
@@ -581,6 +579,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'contact-wrapper',
             'alert',
             'alert--info',
+            'block-margin__bottom',
           ],
         ],
         'contact' => [
@@ -590,8 +589,6 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'class' => 'uiowa-maui-contact',
           ],
         ],
-        '#prefix' => '<br />',
-        '#suffix' => '<br />',
       ];
 
       $times_and_locations = [];
