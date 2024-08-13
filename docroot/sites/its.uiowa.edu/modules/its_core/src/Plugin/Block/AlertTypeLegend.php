@@ -31,17 +31,17 @@ class AlertTypeLegend extends BlockBase {
       '406' => 'orange',
       '411' => 'green',
       '416' => 'blue',
-      '421' => 'cool-gray'
+      '421' => 'cool-gray',
     ];
     $entityTypeManager = \Drupal::entityTypeManager();
     $terms = $entityTypeManager->getStorage('taxonomy_term')->loadMultiple($tids);
     $badgeMarkup = '<p>';
     foreach ($terms as $term) {
       $name = $term->name->value;
-      $description = trim(preg_replace('/\s\s+/', '',strip_tags($term->description->value)));
+      $description = trim(preg_replace('/\s\s+/', '', strip_tags($term->description->value)));
       $color = $tcolor[$term->tid->value];
 
-      $badgeMarkup .= '<span class="block-margin__top badge badge--' . $color. '" title="' . $description .'">' . $name . '</span> ';
+      $badgeMarkup .= '<span class="block-margin__top badge badge--' . $color . '" title="' . $description . '">' . $name . '</span> ';
     }
 
     $badgeMarkup .= '</p>';
