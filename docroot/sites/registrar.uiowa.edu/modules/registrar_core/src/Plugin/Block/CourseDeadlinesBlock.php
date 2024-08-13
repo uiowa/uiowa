@@ -268,7 +268,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     $form['deadlines']['deadlines'] = [
-      '#prefix' => '<br /><br /><div id="uiowa-maui-course-deadlines-content" class="border element--padding__all" aria-describedby="uiowa-maui-course-deadlines-session-dropdown uiowa-maui-course-deadlines-department-dropdown uiowa-maui-course-deadlines-course-dropdown uiowa-maui-course-deadlines-section-dropdown">',
+      '#prefix' => '<br /><br /><div id="uiowa-maui-course-deadlines-content" class="border element--padding__all">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
