@@ -189,6 +189,8 @@ class AcademicCalendarController extends ControllerBase {
    *   Whether to include subsessions.
    * @param int $steps
    *   The number of sessions to fetch.
+   * @param int $includePastSessions
+   *   Whether to include an equivalent number of past sessions equal to $steps.
    *
    * @return array
    *   The processed calendar data.
@@ -201,7 +203,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // If we want to include the past sessions...
     if ($includePastSessions) {
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps-1), 0, $steps);
+      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
       $sessions = array_merge($pastSessions, $sessions);
     }
 
