@@ -3,6 +3,9 @@
 namespace Drupal\its_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an 'Alert Type Legend' block.
@@ -13,7 +16,14 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Site custom")
  * )
  */
-class AlertTypeLegend extends BlockBase {
+class AlertTypeLegend extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -25,23 +35,42 @@ class AlertTypeLegend extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build() {
-    $tids = ['406', '411', '416', '421'];
-    $tcolor = [
-      '406' => 'orange',
-      '411' => 'green',
-      '416' => 'blue',
-      '421' => 'cool-gray',
-    ];
-    $entityTypeManager = \Drupal::entityTypeManager();
-    $terms = $entityTypeManager->getStorage('taxonomy_term')->loadMultiple($tids);
-    $badgeMarkup = '<p>';
-    foreach ($terms as $term) {
-      $name = $term->name->value;
-      $description = trim(preg_replace('/\s\s+/', '', strip_tags($term->description->value)));
-      $color = $tcolor[$term->tid->value];
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
-      $badgeMarkup .= '<span class="block-margin__top badge badge--' . $color . '" title="' . $description . '">' . $name . '</span> ';
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $map = its_core_alert_type_tag_map();
+    $tids = array_column($map, 'tid');
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadMultiple($tids);
+    $badgeMarkup = '<p>';
+
+    foreach ($terms as $term) {
+      foreach ($map as $data) {
+        if ($term->id() == $data['tid']) {
+          $name = $term->name->value;
+          $description = trim(preg_replace('/\s\s+/', '', strip_tags($term->description->value)));
+          $color = $data['color'];
+
+          $badgeMarkup .= '<span class="block-margin__top badge badge--' . $color . '" title="' . $description . '">' . $name . '</span> ';
+        }
+      }
     }
 
     $badgeMarkup .= '</p>';
