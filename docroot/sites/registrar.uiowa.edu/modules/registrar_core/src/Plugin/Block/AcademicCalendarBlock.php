@@ -259,27 +259,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-session']],
     ];
 
-    $form['month'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Month'),
-      '#options' => [
-        '' => $this->t('All Months'),
-        '01' => $this->t('January'),
-        '02' => $this->t('February'),
-        '03' => $this->t('March'),
-        '04' => $this->t('April'),
-        '05' => $this->t('May'),
-        '06' => $this->t('June'),
-        '07' => $this->t('July'),
-        '08' => $this->t('August'),
-        '09' => $this->t('September'),
-        '10' => $this->t('October'),
-        '11' => $this->t('November'),
-        '12' => $this->t('December'),
-      ],
-      '#attributes' => ['class' => ['academic-calendar-month']],
-    ];
-
     $form['start_date'] = [
       '#type' => 'date',
       '#title' => $this->t('Start Date'),
@@ -313,11 +292,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#type' => 'checkbox',
       '#title' => $this->t('Show previous events'),
       '#id' => 'show-previous-events',
-      '#states' => [
-        'visible' => [
-          ':input[id="group-by-month"]' => ['checked' => TRUE],
-        ],
-      ],
     ];
 
     $form['subsession'] = [
