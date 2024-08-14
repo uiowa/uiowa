@@ -110,10 +110,10 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-        'steps' => 0,
-        'show_group_by_month' => 1,
-        'group_by_month' => 1,
-      ] + parent::defaultConfiguration();
+      'steps' => 0,
+      'show_group_by_month' => 1,
+      'group_by_month' => 1,
+    ] + parent::defaultConfiguration();
   }
 
   /**
