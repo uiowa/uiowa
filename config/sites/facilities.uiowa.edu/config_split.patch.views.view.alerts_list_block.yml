@@ -10,6 +10,21 @@ removing:
   display:
     default:
       display_options:
+        sorts:
+          field_alert_date_value:
+            id: field_alert_date_value
+            table: node__field_alert_date
+            field: field_alert_date_value
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: date
+            order: ASC
+            expose:
+              label: ''
+              field_identifier: ''
+            exposed: false
+            granularity: second
         filters:
           field_alert_date_value:
             id: field_alert_date_value
