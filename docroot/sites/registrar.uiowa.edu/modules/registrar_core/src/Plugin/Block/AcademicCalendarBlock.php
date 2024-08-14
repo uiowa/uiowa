@@ -110,10 +110,10 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-      'steps' => 0,
-      'show_group_by_month' => 1,
-      'group_by_month' => 1,
-    ] + parent::defaultConfiguration();
+        'steps' => 0,
+        'show_group_by_month' => 1,
+        'group_by_month' => 1,
+      ] + parent::defaultConfiguration();
   }
 
   /**
@@ -280,6 +280,18 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-month']],
     ];
 
+    $form['start_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Start Date'),
+      '#attributes' => ['class' => ['academic-calendar-start-date']],
+    ];
+
+    $form['end_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('End Date'),
+      '#attributes' => ['class' => ['academic-calendar-end-date']],
+    ];
+
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
@@ -318,6 +330,11 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form['actions'] = [
       '#type' => 'actions',
       '#attributes' => ['class' => ['bttn--full']],
+    ];
+
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Search'),
     ];
 
     $form['actions']['reset'] = [

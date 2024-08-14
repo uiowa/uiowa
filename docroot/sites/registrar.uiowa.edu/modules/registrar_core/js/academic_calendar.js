@@ -48,7 +48,7 @@
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'session', 'month', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events', 'category'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'end_date', 'month', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events', 'category'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -82,7 +82,9 @@
           // Form reset.
         if (formEls.resetButton) {
           formEls.resetButton.addEventListener('click', function (e) {
+            e.preventDefault();
             formEl.reset();
+            updateFilterDisplay();
           });
         }
 
@@ -109,6 +111,8 @@
         function updateAcademicCalendarFromFilters() {
           const filterValues = getFilterValues();
           academicCalendar.searchTerm = filterValues.searchTerm;
+          academicCalendar.startDate = filterValues.startDate;
+          academicCalendar.endDate = filterValues.endDate;
           academicCalendar.selectedMonth = filterValues.selectedMonth;
           academicCalendar.selectedSession = filterValues.selectedSession;
           academicCalendar.showSubSessions = filterValues.showSubSessions;
@@ -120,6 +124,8 @@
         function getFilterValues() {
           return {
             'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
+            'startDate' : formEls.startDateEl.value,
+            'endDate' : formEls.endDateEl.value,
             'selectedMonth': formEls.monthSelectEl.value,
             'selectedSession' : formEls.sessionSelectEl.value,
             'showSubSessions' : formEls.showSubSessionEl.checked,
@@ -132,12 +138,14 @@
         function getFormEls(formEl) {
           return {
             'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
+            'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
+            'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
             'monthSelectEl': formEl.querySelector('select[name="month"]'),
             'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
             'showSubSessionEl' : formEl.querySelector('#subsession'),
             'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
             'categoryEl' : formEl.querySelector('select[name="category"]'),
-            'resetButton' : formEl.querySelector('.js-form-submit'),
+            'resetButton' : formEl.querySelector('.js-form-reset'),
           }
         }
 
@@ -207,6 +215,8 @@
       this.domOutput = document.createElement("div");
       this.allEvents = [];
       this.calendarEl = calendarEl;
+      this.startDate = filterValues.startDate;
+      this.endDate = filterValues.endDate;
       this.selectedMonth = filterValues.selectedMonth;
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
@@ -286,10 +296,19 @@
       const today = new Date();
       const selectedMonth = this.selectedMonth;
 
+      const endDate = new Date(this.endDate);
+      const startDate = new Date(this.startDate);
+
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
+        const eventStart = new Date(event.start);
+        const eventEnd = new Date(event.end);
         const eventDate = new Date(event.start);
         const eventMonth = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+
+        const startCheck = !startDate.valueOf() ? !this.showPreviousEvents ? eventEnd >= today : true : eventEnd >= startDate;
+        const endCheck = (!endDate.valueOf() || eventStart <= endDate)
+        const matchesDateRange = (startCheck) && (endCheck);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
@@ -305,7 +324,7 @@
           matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
         }
 
-        return matchesSearch && matchesMonth && matchesSession && matchesSubSession && matchesCategories;
+        return matchesSearch && matchesMonth && matchesDateRange && matchesSession && matchesSubSession && matchesCategories;
       });
 
       // @todo Implement this.
