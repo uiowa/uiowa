@@ -135,6 +135,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
+    $form['#attached']['library'][] = 'uids_base/callout';
+
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
@@ -505,15 +507,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'class' => [
               'uiowa-maui-course-deadlines-wrapper',
               'independent-study-wrapper',
-              'alert',
-              'alert--info',
-              'block-margin__bottom',
             ],
           ],
           'independent_study' => [
             '#prefix' => '<span class="uiowa-maui-independent-study">',
             '#suffix' => '</span>',
-            '#markup' => $this->t('This is an independent study course.'),
+            '#markup' => $this->t('<p><span class="fa fa-info-circle"></span> This is an independent study course.</p>'),
           ],
         ];
       }
@@ -525,15 +524,12 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'class' => [
               'uiowa-maui-course-deadlines-wrapper',
               'offcycle-wrapper',
-              'alert',
-              'alert--info',
-              'block-margin__bottom',
             ],
           ],
           'offcycle' => [
             '#prefix' => '<span class="uiowa-maui-offcycle">',
             '#suffix' => '</span>',
-            '#markup' => $this->t('This is an off-cycle course.'),
+            '#markup' => $this->t('<p><span class="fa fa-info-circle"></span> This is an off-cycle course.</p>'),
           ],
         ];
       }
@@ -584,13 +580,15 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
       ]);
 
       $deadlines['contact_wrapper'] = [
-        '#type' => 'container',
+        '#type' => 'html_tag',
+        '#tag' => 'div',
         '#attributes' => [
           'class' => [
             'uiowa-maui-course-deadlines-wrapper',
             'contact-wrapper',
-            'alert',
-            'alert--info',
+            'callout',
+            'bg--gray',
+            'block-margin__top',
             'block-margin__bottom',
           ],
         ],
