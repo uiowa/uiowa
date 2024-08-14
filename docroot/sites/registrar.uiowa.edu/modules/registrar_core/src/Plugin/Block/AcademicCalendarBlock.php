@@ -329,12 +329,13 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $form['actions'] = [
       '#type' => 'actions',
-      '#attributes' => ['class' => ['bttn--full']],
+      '#attributes' => ['class' => ['form-actions--stacked']],
     ];
 
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
+      '#attributes' => ['class' => ['bttn--full']],
     ];
 
     $form['actions']['reset'] = [
@@ -345,7 +346,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
           'bttn',
           'bttn--secondary',
           'bttn--full',
-          'js-form-submit',
+          'js-form-reset',
         ],
       ],
     ];

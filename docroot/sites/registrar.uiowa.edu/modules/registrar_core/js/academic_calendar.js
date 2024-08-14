@@ -73,6 +73,8 @@
           );
         });
 
+        formEls.resetButton.style.display = 'none';
+
         // Handle form submission
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
@@ -85,6 +87,7 @@
             e.preventDefault();
             formEl.reset();
             updateFilterDisplay();
+            formEls.resetButton.style.display = 'none';
           });
         }
 
@@ -104,6 +107,9 @@
           else{
             updateAcademicCalendarFromFilters();
             academicCalendar.filterAndDisplayEvents();
+            if (formEls.resetButton) {
+              formEls.resetButton.style.display = 'inline-block';
+            }
           }
         }
 
