@@ -270,7 +270,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     $form['deadlines']['deadlines'] = [
-      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all block-margin__top">',
+      '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all element--margin__top--extra">',
       '#suffix' => '</div>',
       'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
     ];
@@ -462,7 +462,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'headline',
             'headline--serif',
             'default',
-            'block-margin__bottom',
+            'element--margin__bottom',
           ],
         ],
         'title' => [
@@ -570,7 +570,7 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         ],
         '#rows' => $deadline_rows,
         '#attributes' => [
-          'class' => ['uiowa-maui-deadlines-table'],
+          'class' => ['table--gray-borders element--margin__bottom uiowa-maui-deadlines-table'],
         ],
         '#caption' => $this->t('Course Deadlines'),
       ];
@@ -588,8 +588,8 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
             'contact-wrapper',
             'callout',
             'bg--gray',
-            'block-margin__top',
-            'block-margin__bottom',
+            'element--margin__top--extra',
+            'element--margin__bottom--extra',
           ],
         ],
         'contact' => [
