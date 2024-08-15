@@ -310,13 +310,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#multiple' => TRUE,
     ];
 
-    $form['subsession'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show subsessions'),
-      '#id' => 'subsession',
-      '#default_value' => $current_request->query->get('subsession', FALSE),
-    ];
-
     $form['actions'] = [
       '#type' => 'actions',
     ];

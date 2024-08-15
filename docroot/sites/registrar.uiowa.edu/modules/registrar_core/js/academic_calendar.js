@@ -50,7 +50,7 @@
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'end_date', 'group_by_month', 'show_previous_events', 'select', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -107,7 +107,6 @@
           academicCalendar.startDate = filterValues.startDate;
           academicCalendar.endDate = filterValues.endDate;
           academicCalendar.selectedSession = filterValues.selectedSession;
-          academicCalendar.showSubSessions = filterValues.showSubSessions;
           academicCalendar.showPreviousEvents = filterValues.showPreviousEvents;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
         }
@@ -119,7 +118,6 @@
             'startDate' : formEls.startDateEl.value,
             'endDate' : formEls.endDateEl.value,
             'selectedSession' : formEls.sessionSelectEl.value,
-            'showSubSessions' : formEls.showSubSessionEl.checked,
             'showPreviousEvents' : formEls.showPreviousEventsEl.checked,
             'selectedCategories' : getChosenChoices(formEls.categoryEl),
           };
@@ -152,7 +150,6 @@
             'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
             'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
             'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
-            'showSubSessionEl' : formEl.querySelector('#subsession'),
             'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
             'categoryEl' : formEl.querySelector('#edit_category_chosen'),
           }
@@ -232,7 +229,6 @@
 
       this.groupByMonth = groupByMonth;
       this.selectedSession = filterValues.selectedSession;
-      this.showSubSessions = filterValues.showSubSessions;
       this.showPreviousEvents = filterValues.showPreviousEvents;
       this.selectedCategories = filterValues.selectedCategories;
       // Initialize variables to store all events and unique sessions.
@@ -328,7 +324,6 @@
         const endCheck = (!endDate.valueOf() || eventStart <= endDate)
         const matchesDateRange = (startCheck) && (endCheck);
         const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
-        const matchesSubSession = event.subSession ? this.showSubSessions : true;
 
         let matchCategories = false;
         const eventCategories = Object.values(event.categories);
@@ -338,7 +333,7 @@
           }
         });
 
-        return matchesSearch && matchesDateRange && matchesSession && matchesSubSession && matchCategories;
+        return matchesSearch && matchesDateRange && matchesSession&& matchCategories;
       });
       // @todo Implement this.
       this.displayEvents(filteredEvents);
