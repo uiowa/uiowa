@@ -70,8 +70,6 @@
           );
         });
 
-        formEls.resetButton.style.display = 'none';
-
         // Handle form submission
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
@@ -79,6 +77,8 @@
         });
 
           // Form reset.
+        formEls.resetButton.style.display = 'none';
+        
         if (formEls.resetButton) {
           formEls.resetButton.addEventListener('click', function (e) {
             e.preventDefault();
