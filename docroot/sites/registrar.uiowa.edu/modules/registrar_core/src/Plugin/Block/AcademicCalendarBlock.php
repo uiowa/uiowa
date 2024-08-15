@@ -267,8 +267,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $form['end_date'] = [
       '#type' => 'date',
-      '#title' => $this->t('End Date'),
-      '#attributes' => ['class' => ['academic-calendar-end-date']],
+      '#attributes' => ['class' => ['academic-calendar-end-date element-invisible']],
     ];
 
     $form['category'] = [
