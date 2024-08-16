@@ -232,9 +232,9 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     // Add the configuration values to drupalSettings.
     $build['#attached']['drupalSettings']['academicCalendar'] = [
       'steps' => $steps,
-      'groupByMonth' => $this->configuration['group_by_month'],
-      'showGroupByMonth' => $this->configuration['show_group_by_month'],
-      'includePastSessions' => $this->configuration['include_past_sessions'],
+      'groupByMonth' => $this?->configuration['group_by_month'] ?? FALSE,
+      'showGroupByMonth' => $this?->configuration['show_group_by_month'] ?? FALSE,
+      'includePastSessions' => $this?->configuration['include_past_sessions'] ?? FALSE,
       'firstSessionStartDate' => $first_session_start_date,
       'lastSessionEndDate' => $last_session_end_date,
     ];
