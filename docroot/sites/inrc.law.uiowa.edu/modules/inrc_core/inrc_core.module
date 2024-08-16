@@ -265,6 +265,13 @@ function inrc_core_entity_extra_field_info() {
     'visible' => TRUE,
   ];
 
+  $extra['node']['grant']['display']['field_grant_submit_update'] = [
+    'label' => t('Submit update button'),
+    'description' => t('Submit update'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
   $extra['node']['nonprofit_org']['display']['field_np_training_information_heading'] = [
     'label' => t('Training information heading'),
     'description' => t('Training information'),
@@ -279,6 +286,13 @@ function inrc_core_entity_extra_field_info() {
     'visible' => TRUE,
   ];
 
+  $extra['node']['nonprofit_org']['display']['field_np_submit_update'] = [
+    'label' => t('Submit update button'),
+    'description' => t('Submit update'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
   return $extra;
 }
 
@@ -287,6 +301,20 @@ function inrc_core_entity_extra_field_info() {
  */
 function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === 'grant' && $view_mode === 'full') {
+    if ($display->getComponent('field_grant_submit_update')) {
+      $url = '/form/submit-organization-update';
+      $build['field_grant_submit_update'] = [
+        '#type' => 'link',
+        '#url' => Url::fromUri($url),
+        '#title' => [
+          '#type' => 'markup',
+          '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
+        ],
+        '#attributes' => [
+          'class' => ['bttn', 'bttn--full', 'bttn--primary'],
+        ],
+      ];
+    }
     if ($display->getComponent('field_grant_information_heading')) {
       $build['field_grant_information_heading'] = [
         '#type' => 'html_tag',
@@ -310,6 +338,20 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
     }
   }
   if ($node->bundle() === 'nonprofit_org' && $view_mode === 'full') {
+    if ($display->getComponent('field_np_submit_update')) {
+      $url = '/form/submit-organization-update';
+      $build['field_np_submit_update'] = [
+        '#type' => 'link',
+        '#url' => Url::fromUri($url),
+        '#title' => [
+          '#type' => 'markup',
+          '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
+        ],
+        '#attributes' => [
+          'class' => ['bttn', 'bttn--full', 'bttn--primary'],
+        ],
+      ];
+    }
     if ($display->getComponent('field_np_training_information_heading')) {
       $build['field_np_training_information_heading'] = [
         '#type' => 'html_tag',
