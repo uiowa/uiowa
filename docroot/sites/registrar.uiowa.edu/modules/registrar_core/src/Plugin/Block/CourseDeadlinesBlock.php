@@ -294,22 +294,34 @@ class CourseDeadlinesBlock extends BlockBase implements ContainerFactoryPluginIn
         break;
 
       case  'department':
-        $message = $this->t('Updating form options based on department selection');
-        break;
-
-      case  'course':
-        $key = $form['deadlines']['section']['#default_value'] ?? NULL;
-        $section_input = $key ? ($form['deadlines']['section']['#options'][$key] ?? NULL) : NULL;
-
-        if ($section_input) {
-          $message = $this->t('Returning course deadline information for @department:@course:@section', [
-            '@department' => $department,
-            '@course' => $course,
-            '@section' => $section_input,
-          ]);
+        $course_options = $form['deadlines']['course']['#options'] ?? [];
+        if (count($course_options) > 1) {
+          $message = $this->t('Updating form options based on department selection');
         }
         else {
-          $message = $this->t('Updating form options based on course selection');
+          $message = $this->t('No courses are available for @department during this session. Please try again.', ['@department' => $department]);
+        }
+        break;
+
+      case 'course':
+        $section_options = $form['deadlines']['section']['#options'] ?? [];
+        if (count($section_options) > 1) {
+          $key = $form['deadlines']['section']['#default_value'] ?? NULL;
+          $section_input = $key ? ($section_options[$key] ?? NULL) : NULL;
+
+          if ($section_input) {
+            $message = $this->t('Returning course deadline information for @department:@course:@section', [
+              '@department' => $department,
+              '@course' => $course,
+              '@section' => $section_input,
+            ]);
+          }
+          else {
+            $message = $this->t('Updating form options based on course selection');
+          }
+        }
+        else {
+          $message = $this->t('No sections available for the selected @course. Please try again.', ['@course' => $course]);
         }
 
         break;
