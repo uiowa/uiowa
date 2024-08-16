@@ -854,7 +854,7 @@ function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
   // Certain tags are required for alert category functionality.
   // Grab our associative TID map, and the array_values
   // will be the list of tag ids that can't be deleted.
-  $required_tids = array_values(its_core_alert_type_tag_map());
+  $required_tids = array_column(its_core_alert_type_tag_map(), 'tid');
   if (in_array($tag->id(), $required_tids)) {
     $form['actions']['submit']['#disabled'] = TRUE;
     $form['description']['#markup'] = its_core_prevent_tag_delete_message($tag->getName());
@@ -876,20 +876,20 @@ function its_core_prevent_tag_delete_message($name) {
 }
 
 /**
- * Mapping for alert types to their associated tags.
+ * Mapping for alert types to their associated tags and colors.
  *
  * @param string $alert_type
- *   The alert type as a machine name, or empty to fetch TIDs array.
+ *   The alert type as a machine name, or empty to fetch the full mapping.
  *
- * @return string|bool|array
- *   The associated TID or FALSE, or an associative array of TIDs.
+ * @return array|bool
+ *   The associated array with TID and color, or FALSE, or the full associative array.
  */
 function its_core_alert_type_tag_map(string $alert_type = '') {
   $map = [
-    'service-degradation' => '416',
-    'outage' => '406',
-    'planned-maintenance' => '411',
-    'service-announcement' => '421',
+    'service-degradation' => ['tid' => '416', 'color' => 'blue'],
+    'outage' => ['tid' => '406', 'color' => 'orange'],
+    'planned-maintenance' => ['tid' => '411', 'color' => 'green'],
+    'service-announcement' => ['tid' => '421', 'color' => 'cool-gray'],
   ];
   // If we aren't getting a specific TID,
   // then return the full map.
