@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_telephone_number
     - field.field.node.nonprofit_org.field_np_training_attendees
     - field.field.node.nonprofit_org.field_np_training_location
+    - field.field.node.nonprofit_org.field_np_training_notes
     - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
   module:
@@ -474,6 +475,22 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+          -
+            uuid: 862f6a6b-da9a-4f79-8a3c-addbf5a3ff80
+            region: main
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_training_notes'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -798,6 +815,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 121
+    region: content
+  field_np_training_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 126
     region: content
   field_np_website:
     type: link
