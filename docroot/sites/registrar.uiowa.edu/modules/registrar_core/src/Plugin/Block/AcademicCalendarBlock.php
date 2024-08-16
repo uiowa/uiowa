@@ -140,7 +140,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         5 => $this->t('Current session, plus next five sessions'),
         10 => $this->t('Current session, plus next ten sessions'),
       ],
-      '#default_value' => $this->configuration['steps'],
+      '#default_value' => $this->configuration['steps'] ?? 0,
       '#required' => FALSE,
     ];
 
@@ -148,20 +148,20 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#type' => 'checkbox',
       '#title' => $this->t('Include past sessions'),
       '#description' => $this->t('Include an amount of sessions in the past equal to the number set above.'),
-      '#default_value' => $this->configuration['include_past_sessions'],
+      '#default_value' => $this->configuration['include_past_sessions'] ?? FALSE,
     ];
 
     $form['group_by_month'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Group by month'),
       '#description' => $this->t('Default setting for grouping events by month.'),
-      '#default_value' => $this->configuration['group_by_month'],
+      '#default_value' => $this->configuration['group_by_month'] ?? FALSE,
     ];
     $form['show_group_by_month'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Expose "Group by month"'),
       '#description' => $this->t('Expose group by month filter to visitors.'),
-      '#default_value' => $this->configuration['show_group_by_month'],
+      '#default_value' => $this->configuration['show_group_by_month'] ?? FALSE,
     ];
 
     return $form;
@@ -258,7 +258,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         '#type' => 'checkbox',
         '#title' => $this->t('Group by month'),
         '#id' => 'group-by-month',
-        '#default_value' => $this->configuration['group_by_month'],
+        '#default_value' => $this->configuration['group_by_month'] ?? FALSE,
       ];
     }
 
