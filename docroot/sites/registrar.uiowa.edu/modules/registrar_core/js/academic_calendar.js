@@ -196,7 +196,11 @@
 
           sessionsSortArray.sort().forEach(sessionLookupString => {
             const mappedSession = sessionsMap[sessionLookupString];
-            sessionBuffer += `<option value="${mappedSession}">${mappedSession}</option>`;
+
+            // This just allows us to tell if we have a subsession,
+            //     and tab it in for hierarchy in the select list.
+            const isSubSession = sessionLookupString.slice(-2) === '00' ? '' : '&emsp;';
+            sessionBuffer += `<option value="${mappedSession}">${isSubSession + mappedSession}</option>`;
           });
 
           formEls.sessionSelectEl.innerHTML = sessionBuffer;
