@@ -174,7 +174,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -3
+            weight: -1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -316,7 +316,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 0
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -337,7 +337,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -2
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -360,7 +360,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -1
+            weight: 1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -378,7 +378,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -5
+            weight: -4
             additional: {  }
             third_party_settings: {  }
           -
@@ -394,7 +394,7 @@ third_party_settings:
               formatter:
                 settings: {  }
                 third_party_settings: {  }
-            weight: -4
+            weight: -2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -416,7 +416,7 @@ third_party_settings:
                   timezone_override: ''
                   format_type: medium
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -434,7 +434,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -451,7 +451,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -488,7 +488,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -623,6 +623,17 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 9cf0b340-2728-4152-bded-cabea9cacc1d
+            region: content
+            configuration:
+              id: 'extra_field_block:node:nonprofit_org:field_np_submit_update'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
 id: node.nonprofit_org.default
@@ -787,6 +798,11 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     weight: 114
+    region: content
+  field_np_submit_update:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_np_telephone_number:
     type: string
