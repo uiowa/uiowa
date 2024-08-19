@@ -6,6 +6,7 @@
       once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
         const calendarSettings = drupalSettings.academicCalendar;
         const steps = calendarSettings.steps || 0;
+        const includePastSessions = calendarSettings.includePastSessions || 0;
         const initGroupByMonth = calendarSettings.groupByMonth;
         const showGroupByMonth = calendarSettings.showGroupByMonth;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
@@ -15,6 +16,7 @@
         const academicCalendar = new AcademicCalendar(
           calendarEl,
           steps,
+          includePastSessions,
           initGroupByMonth,
           getFilterValues()
         );
@@ -48,7 +50,7 @@
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'subsession', 'group_by_month', 'show_previous_events', 'select', '#subsession', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'end_date', 'group_by_month', 'show_previous_events', 'select', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -105,7 +107,6 @@
           academicCalendar.startDate = filterValues.startDate;
           academicCalendar.endDate = filterValues.endDate;
           academicCalendar.selectedSession = filterValues.selectedSession;
-          academicCalendar.showSubSessions = filterValues.showSubSessions;
           academicCalendar.showPreviousEvents = filterValues.showPreviousEvents;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
         }
@@ -117,7 +118,6 @@
             'startDate' : formEls.startDateEl.value,
             'endDate' : formEls.endDateEl.value,
             'selectedSession' : formEls.sessionSelectEl.value,
-            'showSubSessions' : formEls.showSubSessionEl.checked,
             'showPreviousEvents' : formEls.showPreviousEventsEl.checked,
             'selectedCategories' : getChosenChoices(formEls.categoryEl),
           };
@@ -150,7 +150,6 @@
             'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
             'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
             'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
-            'showSubSessionEl' : formEl.querySelector('#subsession'),
             'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
             'categoryEl' : formEl.querySelector('#edit_category_chosen'),
           }
@@ -197,7 +196,11 @@
 
           sessionsSortArray.sort().forEach(sessionLookupString => {
             const mappedSession = sessionsMap[sessionLookupString];
-            sessionBuffer += `<option value="${mappedSession}">${mappedSession}</option>`;
+
+            // This just allows us to tell if we have a subsession,
+            //     and tab it in for hierarchy in the select list.
+            const isSubSession = sessionLookupString.slice(-2) === '00' ? '' : '&emsp;';
+            sessionBuffer += `<option value="${mappedSession}">${isSubSession + mappedSession}</option>`;
           });
 
           formEls.sessionSelectEl.innerHTML = sessionBuffer;
@@ -217,7 +220,7 @@
   class AcademicCalendar {
     steps = 0;
     groupByMonth = false;
-    constructor(calendarEl, steps, groupByMonth, filterValues) {
+    constructor(calendarEl, steps, includePastSessions, groupByMonth, filterValues) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domOutput = document.createElement("div");
       this.allEvents = [];
@@ -226,10 +229,10 @@
       this.endDate = filterValues.endDate;
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
+      this.includePastSessions = includePastSessions;
 
       this.groupByMonth = groupByMonth;
       this.selectedSession = filterValues.selectedSession;
-      this.showSubSessions = filterValues.showSubSessions;
       this.showPreviousEvents = filterValues.showPreviousEvents;
       this.selectedCategories = filterValues.selectedCategories;
       // Initialize variables to store all events and unique sessions.
@@ -250,12 +253,22 @@
 
     // Function to fetch events from the server and display them.
     async fetchEvents() {
+      const date = new Date();
+
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      // This arrangement can be altered based on how we want the date's format to appear.
+      let startDate = `${year-2}-${month}-${day}`;
+      let endDate = `${year+2}-${month}-${day}`;
+
       this.toggleSpinner();
 
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       // Use `await` so we don't return a promise before the fetch is done.
-      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}`)
+      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}&includePastSessions=${this.includePastSessions}`)
         .then(response => response.json())
         .then(events => {
           this.allEvents = events;
@@ -315,7 +328,6 @@
         const endCheck = (!endDate.valueOf() || eventStart <= endDate)
         const matchesDateRange = (startCheck) && (endCheck);
         const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
-        const matchesSubSession = event.subSession ? this.showSubSessions : true;
 
         let matchCategories = false;
         const eventCategories = Object.values(event.categories);
@@ -325,7 +337,7 @@
           }
         });
 
-        return matchesSearch && matchesDateRange && matchesSession && matchesSubSession && matchCategories;
+        return matchesSearch && matchesDateRange && matchesSession&& matchCategories;
       });
       // @todo Implement this.
       this.displayEvents(filteredEvents);
