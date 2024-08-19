@@ -46,7 +46,7 @@ class ReplaceCommands extends BltTasks {
     if ($this->taskExec('command -v parallel')->run()->wasSuccessful()) {
       $this->logger->info('Running multisite updates in parallel.');
       // Run site updates in parallel.
-      $this->taskExec('parallel -j 3 blt uiowa:update:site ::: '. implode(' ', array_map('escapeshellarg', $multisites)))
+      $this->taskExec('parallel -j 3 blt uiowa:update:site ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
         ->run();
     }
     else {
@@ -273,6 +273,7 @@ EOD;
    *   The site to update.
    *
    * @command uiowa:update:site $site
+   *
    * @throws \Robo\Exception\TaskException
    */
   public function updateSingleSite($site) {
@@ -285,15 +286,14 @@ EOD;
   /**
    * Run updates for a single site.
    *
-   * @param $site
+   * @param string $site
    *   The site to update.
    * @param string $env
    *   The environment the site is being updated in.
    *
-   * @return void
    * @throws \Robo\Exception\TaskException
    */
-  protected function updateSite($site, string $env = 'local') {
+  protected function updateSite(string $site, string $env = 'local'): void {
     $db = $this->getConfigValue('drupal.db.database');
 
     // Check for database include on this application.
@@ -335,4 +335,5 @@ EOD;
       }
     }
   }
+
 }
