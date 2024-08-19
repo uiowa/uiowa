@@ -305,10 +305,14 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
       $base_url = \Drupal::request()->getSchemeAndHttpHost();
       $node_path = $node->toUrl()->toString();
       $full_node_url = $base_url . $node_path;
-      $url = '/form/submit-organization-update?your_organization_s_url_path=' . urlencode($full_node_url);
+      $url = Url::fromUri('internal:/form/submit-organization-update', [
+        'query' => [
+          'your_organization_s_url_path' => $full_node_url,
+        ],
+      ]);
       $build['field_grant_submit_update'] = [
         '#type' => 'link',
-        '#url' => Url::fromUserInput($url),
+        '#url' => $url,
         '#title' => [
           '#type' => 'markup',
           '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
@@ -345,10 +349,14 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
       $base_url = \Drupal::request()->getSchemeAndHttpHost();
       $node_path = $node->toUrl()->toString();
       $full_node_url = $base_url . $node_path;
-      $url = '/form/submit-organization-update?your_organization_s_url_path=' . urlencode($full_node_url);
+      $url = Url::fromUri('internal:/form/submit-organization-update', [
+        'query' => [
+          'your_organization_s_url_path' => $full_node_url,
+        ],
+      ]);
       $build['field_np_submit_update'] = [
         '#type' => 'link',
-        '#url' => Url::fromUserInput($url),
+        '#url' => $url,
         '#title' => [
           '#type' => 'markup',
           '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
