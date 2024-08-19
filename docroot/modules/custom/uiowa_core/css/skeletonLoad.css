@@ -2,7 +2,7 @@
   display: flex;
 }
 
-.sheen {
+.skeleton-load__skeleton .sheen {
   background-attachment: scroll;
   background-clip: border-box;
   background-color: rgb(243, 243, 243);
@@ -13,14 +13,14 @@
   background-repeat: repeat;
   background-size: 400% 100%;
   background-position: 200% 0px;
+  opacity: 0.6;
+  animation: skeletonShimmer 10s ease-in-out infinite;
 }
 
 .skeleton-load__skull {
   width: 6rem;
   height: 6rem;
   border-radius: 50%;
-  opacity: 0.6;
-  animation: skeletonShimmer 10s ease-in-out infinite;
 }
 
 .skeleton-load__bones {

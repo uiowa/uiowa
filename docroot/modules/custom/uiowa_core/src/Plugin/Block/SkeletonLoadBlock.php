@@ -114,7 +114,10 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
-        'class' => ['skeleton-load__bone'],
+        'class' => [
+          'skeleton-load__bone',
+          'sheen'
+        ],
       ],
     ];
 
@@ -122,7 +125,10 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
-        'class' => ['skeleton-load__bone'],
+        'class' => [
+          'skeleton-load__bone',
+          'sheen'
+        ],
       ],
     ];
 
