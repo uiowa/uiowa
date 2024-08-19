@@ -1,0 +1,29 @@
+.skeleton-load {
+}
+
+.sheen {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(243, 243, 243);
+  background-image: linear-gradient(270deg, rgb(215, 222, 225), rgb(243, 243, 243), rgb(243, 243, 243), rgb(215, 222, 225));
+  background-origin: padding-box;
+  background-position-x: 197.89%;
+  background-position-y: 0px;
+  background-repeat: repeat;
+  background-size: 400% 100%;
+  background-position: 200% 0px;
+}
+
+.skeleton-load__skull {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: skeletonShimmer 10s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    background-position: -200% 0px;
+  }
+}
