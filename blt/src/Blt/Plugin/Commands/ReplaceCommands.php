@@ -42,47 +42,16 @@ class ReplaceCommands extends BltTasks {
       }
     }
 
-    foreach ($multisites as $multisite) {
-      $this->switchSiteContext($multisite);
-      $db = $this->getConfigValue('drupal.db.database');
-
-      // Check for database include on this application.
-      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->logger->debug("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
-        continue;
-      }
-      else {
-        if ($this->isDrupalInstalled($multisite)) {
-          $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
-
-          // Invalidate the Twig cache if on AH env. This happens automatically
-          // for the default site but not multisites. We don't need to pass
-          // the multisite URI here since we switch site context above.
-          // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
-          $script = '/var/www/site-scripts/invalidate-twig-cache.php';
-
-          if (file_exists($script)) {
-            $this->taskDrush()
-              ->drush('php:script')
-              ->arg($script)
-              ->run();
-          }
-
-          try {
-            // Clear the plugin cache for discovery and potential layout issue.
-            // @see: https://github.com/uiowa/uiowa/issues/3585.
-            $this->taskDrush()
-              ->drush('cc plugin')
-              ->run();
-
-            $this->invokeCommand('drupal:update');
-            $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
-          }
-          catch (BltException $e) {
-            $this->logger->error("Failed deploying updates to {$multisite}.");
-            $multisite_exception = TRUE;
-          }
-        }
+    // Check if the parallel command exists.
+    if ($this->taskExec('command -v parallel')->run()->wasSuccessful()) {
+      $this->logger->info('Running multisite updates in parallel.');
+      // Run site updates in parallel.
+      $this->taskExec('parallel -j 3 blt uiowa:update:site ::: '. implode(' ', array_map('escapeshellarg', $multisites)))
+        ->run();
+    }
+    else {
+      foreach ($multisites as $multisite) {
+        $this->updateSite($multisite, $app);
       }
     }
 
@@ -297,4 +266,73 @@ EOD;
     }
   }
 
+  /**
+   * Update a single site.
+   *
+   * @param string $site
+   *   The site to update.
+   *
+   * @command uiowa:update:site $site
+   * @throws \Robo\Exception\TaskException
+   */
+  public function updateSingleSite($site) {
+    $this->switchSiteContext($site);
+    // Add logging statement that this task is being run.
+    $this->writeln("[TEST] Running updates for <comment>{$site}</comment>...");
+    $this->updateSite($site);
+  }
+
+  /**
+   * Run updates for a single site.
+   *
+   * @param $site
+   *   The site to update.
+   * @param string $env
+   *   The environment the site is being updated in.
+   *
+   * @return void
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function updateSite($site, string $env = 'local') {
+    $db = $this->getConfigValue('drupal.db.database');
+
+    // Check for database include on this application.
+    if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$env}/{$db}-settings.inc")) {
+      $this->logger->debug("Skipping {$site} on AH environment. Database {$db} does not exist.");
+      return;
+    }
+    else {
+      if ($this->isDrupalInstalled($site)) {
+        $this->writeln("Deploying updates to <comment>{$site}</comment>...");
+
+        // Invalidate the Twig cache if on AH env. This happens automatically
+        // for the default site but not multisites. We don't need to pass
+        // the multisite URI here since we switch site context above.
+        // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
+        $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+
+        if (file_exists($script)) {
+          $this->taskDrush()
+            ->drush('php:script')
+            ->arg($script)
+            ->run();
+        }
+
+        try {
+          // Clear the plugin cache for discovery and potential layout issue.
+          // @see: https://github.com/uiowa/uiowa/issues/3585.
+          $this->taskDrush()
+            ->drush('cc plugin')
+            ->run();
+
+          $this->invokeCommand('drupal:update');
+          $this->logger->info("Finished deploying updates to <comment>{$site}</comment>.");
+        }
+        catch (BltException $e) {
+          $this->logger->error("Failed deploying updates to {$site}.");
+          $multisite_exception = TRUE;
+        }
+      }
+    }
+  }
 }
