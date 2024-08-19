@@ -283,9 +283,8 @@ EOD;
    * @throws \Robo\Exception\TaskException
    */
   public function updateSingleSite($site) {
-    $this->switchSiteContext($site);
     // Add logging statement that this task is being run.
-    $this->writeln("[TEST] Running updates for <comment>{$site}</comment>...");
+    $this->writeln("Running updates for <comment>{$site}</comment>...");
     $this->updateSite($site);
   }
 
@@ -300,6 +299,7 @@ EOD;
    * @throws \Robo\Exception\TaskException
    */
   protected function updateSite(string $site, string $env = 'local'): void {
+    $this->switchSiteContext($site);
     $db = $this->getConfigValue('drupal.db.database');
 
     // Check for database include on this application.
