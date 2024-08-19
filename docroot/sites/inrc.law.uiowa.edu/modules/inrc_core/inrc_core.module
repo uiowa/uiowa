@@ -302,16 +302,19 @@ function inrc_core_entity_extra_field_info() {
 function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === 'grant' && $view_mode === 'full') {
     if ($display->getComponent('field_grant_submit_update')) {
-      $url = '/form/submit-organization-update';
+      $base_url = \Drupal::request()->getSchemeAndHttpHost();
+      $node_path = $node->toUrl()->toString();
+      $full_node_url = $base_url . $node_path;
+      $url = '/form/submit-organization-update?your_organization_s_url_path=' . urlencode($full_node_url);
       $build['field_grant_submit_update'] = [
         '#type' => 'link',
-        '#url' => Url::fromUri($url),
+        '#url' => Url::fromUserInput($url),
         '#title' => [
           '#type' => 'markup',
           '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
         ],
         '#attributes' => [
-          'class' => ['bttn', 'bttn--full', 'bttn--primary'],
+          'class' => ['bttn', 'bttn--primary'],
         ],
       ];
     }
@@ -339,16 +342,19 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
   }
   if ($node->bundle() === 'nonprofit_org' && $view_mode === 'full') {
     if ($display->getComponent('field_np_submit_update')) {
-      $url = '/form/submit-organization-update';
+      $base_url = \Drupal::request()->getSchemeAndHttpHost();
+      $node_path = $node->toUrl()->toString();
+      $full_node_url = $base_url . $node_path;
+      $url = '/form/submit-organization-update?your_organization_s_url_path=' . urlencode($full_node_url);
       $build['field_np_submit_update'] = [
         '#type' => 'link',
-        '#url' => Url::fromUri($url),
+        '#url' => Url::fromUserInput($url),
         '#title' => [
           '#type' => 'markup',
           '#markup' => t('Submit an Update') . ' <span class="fa-arrow-right fas"></span>',
         ],
         '#attributes' => [
-          'class' => ['bttn', 'bttn--full', 'bttn--primary'],
+          'class' => ['bttn', 'bttn--primary'],
         ],
       ];
     }
