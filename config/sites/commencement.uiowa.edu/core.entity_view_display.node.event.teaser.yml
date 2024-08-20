@@ -25,21 +25,12 @@ dependencies:
     - node.type.event
   module:
     - smart_date
-    - text
     - user
 id: node.event.teaser
 targetEntityType: node
 bundle: event
 mode: teaser
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 2
-    region: content
   field_event_venue:
     type: entity_reference_label
     label: visually_hidden
@@ -50,7 +41,7 @@ content:
     region: content
   field_event_when:
     type: smartdate_default
-    label: above
+    label: visually_hidden
     settings:
       timezone_override: ''
       format_type: medium
@@ -71,6 +62,7 @@ content:
     weight: 0
     region: content
 hidden:
+  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true

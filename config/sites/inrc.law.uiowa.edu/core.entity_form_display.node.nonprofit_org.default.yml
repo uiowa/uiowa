@@ -1,0 +1,371 @@
+uuid: 79e988a0-0b97-4d51-a526-7f0f2c27ce4e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.nonprofit_org.body
+    - field.field.node.nonprofit_org.field_image
+    - field.field.node.nonprofit_org.field_meta_tags
+    - field.field.node.nonprofit_org.field_np_address
+    - field.field.node.nonprofit_org.field_np_assets
+    - field.field.node.nonprofit_org.field_np_board_resolution_date
+    - field.field.node.nonprofit_org.field_np_category
+    - field.field.node.nonprofit_org.field_np_contact_name
+    - field.field.node.nonprofit_org.field_np_contact_title
+    - field.field.node.nonprofit_org.field_np_denomination
+    - field.field.node.nonprofit_org.field_np_documents
+    - field.field.node.nonprofit_org.field_np_email
+    - field.field.node.nonprofit_org.field_np_employer_id
+    - field.field.node.nonprofit_org.field_np_expiration_date
+    - field.field.node.nonprofit_org.field_np_income
+    - field.field.node.nonprofit_org.field_np_last_training_date
+    - field.field.node.nonprofit_org.field_np_ntee
+    - field.field.node.nonprofit_org.field_np_revenue
+    - field.field.node.nonprofit_org.field_np_telephone_number
+    - field.field.node.nonprofit_org.field_np_training_attendees
+    - field.field.node.nonprofit_org.field_np_training_location
+    - field.field.node.nonprofit_org.field_np_website
+    - node.type.nonprofit_org
+    - workflows.workflow.editorial
+  module:
+    - address
+    - content_moderation
+    - datetime
+    - field_group
+    - link
+    - media_library
+    - metatag
+    - path
+    - text
+third_party_settings:
+  field_group:
+    group_general_information:
+      children:
+        - title
+        - field_np_employer_id
+        - field_np_contact_name
+        - field_np_contact_title
+        - field_np_address
+        - field_np_telephone_number
+        - field_np_email
+        - field_np_ntee
+        - field_np_website
+        - field_image
+        - field_np_category
+        - field_np_denomination
+        - group_financial_information
+        - body
+      label: 'General Information'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_financial_information:
+      children:
+        - field_np_assets
+        - field_np_income
+        - field_np_revenue
+      label: 'Financial Information'
+      region: content
+      parent_name: group_general_information
+      weight: 13
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_register_of_accountability:
+      children:
+        - group_register_by_board_res
+        - group_register_by_completed
+        - field_np_documents
+        - field_np_expiration_date
+      label: 'Register of Accountability Information'
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_register_by_board_res:
+      children:
+        - field_np_board_resolution_date
+      label: 'Register by Board Resolution'
+      region: content
+      parent_name: group_register_of_accountability
+      weight: 12
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_register_by_completed:
+      children:
+        - field_np_last_training_date
+        - field_np_training_attendees
+        - field_np_training_location
+      label: 'Register by Completed Training'
+      region: content
+      parent_name: group_register_of_accountability
+      weight: 13
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+id: node.nonprofit_org.default
+targetEntityType: node
+bundle: nonprofit_org
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 14
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 10
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 9
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
+    third_party_settings: {  }
+  field_np_address:
+    type: address_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_assets:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_board_resolution_date:
+    type: datetime_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_category:
+    type: options_buttons
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_contact_name:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_contact_title:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_denomination:
+    type: string_textfield
+    weight: 12
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_documents:
+    type: media_library_widget
+    weight: 14
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_np_email:
+    type: email_default
+    weight: 7
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_np_employer_id:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_expiration_date:
+    type: datetime_default
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_income:
+    type: number
+    weight: 13
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_last_training_date:
+    type: datetime_default
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_np_ntee:
+    type: string_textfield
+    weight: 8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_revenue:
+    type: number
+    weight: 14
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_telephone_number:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_training_attendees:
+    type: text_textarea
+    weight: 14
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_training_location:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_np_website:
+    type: link_default
+    weight: 9
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true

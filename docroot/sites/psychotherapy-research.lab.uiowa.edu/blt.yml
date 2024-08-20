@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpsychotherapy-research.uiowa.ddev.site
+    protocol: https
+  machine_name: labpsychotherapy-research
+  human_name: psychotherapy-research.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpsychotherapy-research.prod
+drupal:
+  db:
+    database: psychotherapy_research_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpsychotherapy-research.prod.drupal.uiowa.edu'
+  requester: nyeager
+  site-name: psychotherapy-research.lab.uiowa.edu

@@ -6,7 +6,7 @@
 .list-container.list-container--list:not([class*="grid-"]) {
   .list-container__inner {
     > div + div {
-      margin-top: 1.6rem;
+      margin-top: 2rem;
     }
   }
 }
@@ -27,7 +27,7 @@
 // Set first item within list-container to full width
 .grid--first-item-full-width {
   .list-container__inner {
-    :first-child {
+    > :first-child {
       grid-column: 1 / -1;
     }
   }
@@ -72,6 +72,37 @@
     @include grid-base;
     @include breakpoint(md) {
       @include fourcol-grid;
+    }
+  }
+}
+
+// Layout.
+.grid--twocol--25-75 {
+  .list-container__inner {
+    align-items: start;
+    @include grid-base;
+    .content {
+      > div + div {
+        margin-top: 2rem;
+      }
+    }
+    @include breakpoint(sm) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+
+      .sidebar {
+        grid-area: 2/1/6/2;
+        min-width: 200px;
+      }
+
+      .content {
+        grid-area: 2/2/6/5;
+        min-width: 0;
+      }
+    }
+    @include breakpoint(page-container) {
+      gap: 3rem;
     }
   }
 }

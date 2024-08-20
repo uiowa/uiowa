@@ -6,7 +6,6 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -38,22 +37,18 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
   $layout = $formObject->getLayout();
   $config = $layout->getConfiguration();
   // Section component unique ID is stored in third-party settings.
-  $form['unique_id_wrapper'] = [
-    '#type' => 'container',
-    '#weight' => 0,
-    '#attributes' => [
-      'id' => 'unique-id-wrapper',
-    ],
-    'unique_id' => [
-      '#type' => 'textfield',
-      '#title' => t('Unique ID'),
-      '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
-      '#default_value' => $config['layout_builder_custom_unique_id'] ?: '',
-      '#ajax' => [
-        'callback' => '_layout_builder_custom_unique_id',
-        'wrapper' => 'unique-id-wrapper',
-        'disable-refocus' => TRUE,
-      ],
+  $wrapper_id = Html::getUniqueId('unique-id-wrapper');
+  $form['unique_id'] = [
+    '#prefix' => '<div id="' . $wrapper_id . '">',
+    '#suffix' => '</div>',
+    '#type' => 'textfield',
+    '#title' => t('Unique ID'),
+    '#description' => t('Provide a unique identifier for this section. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
+    '#default_value' => $config['layout_builder_custom_unique_id'] ?: '',
+    '#ajax' => [
+      'callback' => '_layout_builder_custom_unique_id',
+      'wrapper' => $wrapper_id,
+      'disable-refocus' => TRUE,
     ],
   ];
 
@@ -76,14 +71,8 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
  */
 function _layout_builder_custom_section_form_validate(array &$form, FormStateInterface $form_state) {
   // Run unique_id clean for when the AJAX callback is not triggered.
-  if ($unique_id = $form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ])) {
-    $form_state->setValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ], Html::cleanCssIdentifier($unique_id));
+  if ($unique_id = $form_state->getValue('unique_id')) {
+    $form_state->setValue('unique_id', Html::cleanCssIdentifier($unique_id));
   }
 }
 
@@ -104,10 +93,7 @@ function _layout_builder_custom_submit_section_form(array &$form, FormStateInter
   }
 
   // Save the third-party value if set, otherwise unset it.
-  if ($unique_id = $form_state->getValue([
-    'unique_id_wrapper',
-    'unique_id',
-  ])) {
+  if ($unique_id = $form_state->getValue('unique_id')) {
     $config['layout_builder_custom_unique_id'] = $unique_id;
   }
   else {
@@ -180,22 +166,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
         // Section component unique ID is stored in third-party settings.
-        $form['unique_id_wrapper'] = [
-          '#type' => 'container',
-          '#weight' => 0,
-          '#attributes' => [
-            'id' => 'unique-id-wrapper',
-          ],
-          'unique_id' => [
-            '#type' => 'textfield',
-            '#title' => t('Unique ID'),
-            '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
-            '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
-            '#ajax' => [
-              'callback' => '_layout_builder_custom_unique_id',
-              'wrapper' => 'unique-id-wrapper',
-              'disable-refocus' => TRUE,
-            ],
+        $wrapper_id = Html::getUniqueId('unique-id-wrapper');
+        $form['unique_id'] = [
+          '#prefix' => '<div id="' . $wrapper_id . '">',
+          '#suffix' => '</div>',
+          '#type' => 'textfield',
+          '#title' => t('Unique ID'),
+          '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
+          '#ajax' => [
+            'callback' => '_layout_builder_custom_unique_id',
+            'wrapper' => $wrapper_id,
+            'disable-refocus' => TRUE,
           ],
         ];
 
@@ -277,6 +259,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
+            // Listblock specific default.
+            if ($form_id === 'layout_builder_add_block') {
+              if ($form['settings']['override']['items_per_page']) {
+                $form['settings']['override']['items_per_page']['#default_value'] = 10;
+              }
+            }
+
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
               // The card block is stacked by default.
@@ -309,14 +298,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Make some block-specific add form adjustments.
             if ($form_id === 'layout_builder_add_block') {
               switch ($block->getPluginId()) {
-                // This case should fall through to the next
-                // to set the default items_per_page.
                 case 'views_block:article_list_block-list_article':
                   $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
+                  break;
+
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['hide_fields']['order_fields']['field_person_website']['hide']['#default_value'] = 1;
-                case 'views_block:page_list_block-list_page':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   break;
               }
             }
@@ -388,6 +375,19 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 ],
               ];
 
+              // Set '#states' for menu alignment.
+              $form['layout_builder_style_alignment']['#states'] = [
+                'visible' => [
+                  // Always show alignment options if orientation.
+                  // is set to 'horizontal'.
+                  [
+                    ':input[name="layout_builder_style_menu_orientation"]' => [
+                      'value' => 'block_menu_horizontal',
+                    ],
+                  ],
+                ],
+              ];
+
               // Unset the layout builder style heading.
               unset($form['lbs_heading']);
             }
@@ -408,6 +408,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
             // Update the description on the label_type.
             $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. The title is displayed only for screen reader users. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
+            // Hide the options to set the parent to render.
+            $form['settings']['advanced']['render_parent']['#access'] = FALSE;
+            // Hide the options to hide on nonactive menu pages.
+            $form['settings']['advanced']['hide_on_nonactive']['#access'] = FALSE;
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
@@ -554,14 +558,8 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
     $component = $form_object->getCurrentComponent();
 
     // Run unique_id clean for when the AJAX callback is not triggered.
-    if ($unique_id = $form_state->getValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ])) {
-      $form_state->setValue([
-        'unique_id_wrapper',
-        'unique_id',
-      ], Html::cleanCssIdentifier($unique_id));
+    if ($unique_id = $form_state->getValue('unique_id')) {
+      $form_state->setValue('unique_id', Html::cleanCssIdentifier($unique_id));
     }
 
     switch ($component->getPluginId()) {
@@ -702,10 +700,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     $block = $component->getPlugin();
 
     // Save the third-party value if set, otherwise unset it.
-    if ($unique_id = $form_state->getValue([
-      'unique_id_wrapper',
-      'unique_id',
-    ])) {
+    if ($unique_id = $form_state->getValue('unique_id')) {
       $component->setThirdPartySetting('layout_builder_custom', 'unique_id', $unique_id);
     }
     else {
@@ -1085,21 +1080,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 function layout_builder_custom_field_widget_single_element_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
-
-      case 'uiowa_collection_item':
-        if (isset($element['subform']['field_unique_id'])) {
-          $element['subform']['#prefix'] = '<div id="unique-id-wrapper-child">';
-          $element['subform']['#suffix'] = '</div>';
-          $element['subform']['field_unique_id']['widget'][0]['value']['#ajax'] = [
-            'callback' => '_layout_builder_custom_unique_id',
-            'event' => 'change',
-            'wrapper' => 'unique-id-wrapper-child',
-            'disable-refocus' => TRUE,
-          ];
-        }
-
-        break;
-
       case 'uiowa_timeline_item':
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $check = \Drupal::service('uiowa_core.access_checker');
@@ -1226,7 +1206,11 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
     // Add grid modifier class to exclude headline for rendering in grid.
-    $variables['attributes']['class'][] = 'grid--first-item-full-width';
+    $lb_styles_array = $variables['elements']['#layout_builder_style'] ?? [];
+    if (!in_array('list_format_list', $lb_styles_array)) {
+      $variables['attributes']['class'][] = 'grid--first-item-full-width';
+    }
+
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {
@@ -1495,18 +1479,6 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
  */
 function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
   $triggering_element = $form_state->getTriggeringElement();
-  $unique_id = Html::cleanCssIdentifier($triggering_element['#value']);
-
-  // Check if the trigger element is a nested field.
-  if (isset($triggering_element['#field_parents']) && isset($triggering_element['#array_parents'])) {
-    // Access the part of the form we want to return.
-    $parent = NestedArray::getValue($form, array_slice($triggering_element['#array_parents'], 0, -4));
-    $parent['field_unique_id']['widget'][0]['value']['#value'] = $unique_id;
-    return $parent;
-  }
-  else {
-    $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
-    return $form['unique_id_wrapper'];
-  }
-
+  $triggering_element['#value'] = Html::cleanCssIdentifier($triggering_element['#value']);
+  return $triggering_element;
 }

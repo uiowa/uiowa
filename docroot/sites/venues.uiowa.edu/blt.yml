@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: venues.uiowa.ddev.site
+    protocol: https
+  machine_name: venues
+  human_name: venues.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: venues.prod
+drupal:
+  db:
+    database: venues_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://venues.prod.drupal.uiowa.edu'
+  requester: kjhughes
+  site-name: 'University Rental Spaces and Venues'

@@ -13,5 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 function wellbeing_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form['#id'] === 'views-exposed-form-page-list-block-list-page') {
     $form['#attached']['library'][] = 'sitenow/chosen';
+    $form['#attached']['library'][] = 'uids_base/chosen';
   }
 }

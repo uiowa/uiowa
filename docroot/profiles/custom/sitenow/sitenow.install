@@ -3181,3 +3181,77 @@ function sitenow_update_10007() {
   }
 
 }
+
+/**
+ * Update field_article_author_bio to filtered_html.
+ */
+function sitenow_update_10008() {
+  if (\Drupal::getContainer()->getParameter('site.path') !== 'sites/91stmeridian.iwp.uiowa.edu') {
+    return FALSE;
+  }
+
+  $db = \Drupal::database();
+
+  $tables = [
+    'node__field_article_author_bio',
+    'node_revision__field_article_author_bio',
+  ];
+
+  // Run this for all tables.
+  foreach ($tables as $table_name) {
+    // Select DB records for our $table_name where the field has the wrong
+    // filter format.
+    $query = $db->select($table_name, 'n')
+      ->condition('n.field_article_author_bio_format', 'minimal')
+      ->fields('n', ['revision_id', 'delta']);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    // Print some helpful output.
+    \Drupal::messenger()
+      ->addMessage(t('Instances of field_article_author_bio with wrong filter found in @table table: @count',
+        [
+          '@table' => $table_name,
+          '@count' => $count,
+        ]));
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Update the record.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          'field_article_author_bio_format' => 'filtered_html',
+        ])
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Clear all the caches.
+ */
+function sitenow_update_10009() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Update list blocks with blank items_per_page setting to 50 instead.
+ */
+function sitenow_update_10010() {
+  _update_all_blocks_by_plugin_id([
+    'views_block:article_list_block-list_article',
+    'views_block:events_list_block-card_list',
+    'views_block:page_list_block-list_page',
+    'views_block:people_list_block-list_card',
+  ], function (&$component, $block) {
+    $config = $component->get('configuration');
+    if (!is_numeric($config['items_per_page'])) {
+      $config['items_per_page'] = 50;
+      $component->setConfiguration($config);
+    }
+  });
+}

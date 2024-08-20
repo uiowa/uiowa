@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labshen.uiowa.ddev.site
+    protocol: https
+  machine_name: labshen
+  human_name: shen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshen.prod
+drupal:
+  db:
+    database: shen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshen.prod.drupal.uiowa.edu'
+  requester: sshen
+  site-name: 'Shen Lab'

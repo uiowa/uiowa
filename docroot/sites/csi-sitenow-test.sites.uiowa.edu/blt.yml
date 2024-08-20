@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitescsi-sitenow-test.uiowa.ddev.site
+    protocol: https
+  machine_name: sitescsi-sitenow-test
+  human_name: csi-sitenow-test.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitescsi-sitenow-test.prod
+drupal:
+  db:
+    database: csi_sitenow_test_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitescsi-sitenow-test.prod.drupal.uiowa.edu'
+  requester: jlin4
+  site-name: 'CSI SiteNow Testing'
