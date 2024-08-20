@@ -294,7 +294,7 @@
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
         const eventEnd = new Date(event.end);
-        const startCheck = !startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate;
+        const startCheck = this.selectedSession ? true : (!startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
