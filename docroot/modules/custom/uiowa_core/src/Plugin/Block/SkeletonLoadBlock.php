@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "skeleton_load_block",
  *   admin_label = @Translation("Skeleton Load"),
- *   category = @Translation("Site custom")
+ *   category = @Translation("Restricted")
  * )
  */
 class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInterface {
