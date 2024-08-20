@@ -607,89 +607,19 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 67-33
           layout_builder_styles_style:
-            - section_background_style_gray
-            - section_margin_fixed_width_container
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_counties'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 3
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_areas_of_interest'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 2
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
-            region: content
-            configuration:
-              id: 'field_block:node:grant:field_grant_ntee_classification'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 1
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
             uuid: 4dffc66c-47cf-44bc-86fc-d617524f2d61
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:grant:field_grant_classification'
               label: null
@@ -712,8 +642,80 @@ third_party_settings:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
+            uuid: 754d17b2-26e6-4cbc-9297-92dc368f34a2
+            region: first
+            configuration:
+              id: 'field_block:node:grant:field_grant_ntee_classification'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 019e9a9e-2437-4e0a-b003-551f9b0898ed
+            region: first
+            configuration:
+              id: 'field_block:node:grant:field_grant_areas_of_interest'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 2
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 58613ec2-4a96-4b8a-a222-7fd490170e3a
+            region: first
+            configuration:
+              id: 'field_block:node:grant:field_grant_counties'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
             uuid: 3371846f-c9fe-413e-8b83-a8e64fcc2687
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:grant:field_grant_pdf_version'
               label: null
@@ -728,19 +730,19 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 5
+            weight: 4
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 4bb82872-a060-4658-bb41-5ed441933131
-            region: content
+            region: second
             configuration:
               id: 'extra_field_block:node:grant:field_grant_submit_update'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 6
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
