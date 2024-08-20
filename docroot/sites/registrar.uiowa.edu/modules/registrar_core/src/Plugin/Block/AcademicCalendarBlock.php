@@ -297,12 +297,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       ];
     }
 
-    $form['show_previous_events'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show previous events'),
-      '#id' => 'show-previous-events',
-    ];
-
     $form['actions'] = [
       '#type' => 'actions',
       '#attributes' => ['class' => ['form-actions--stacked']],
