@@ -52,7 +52,8 @@ class ReplaceCommands extends BltTasks {
       $this->say('Running multisite updates in parallel.');
       // Run site updates in parallel.
       $parallel_output = $this->taskExec('parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
-        ->printOutput(FALSE)
+        ->printOutput(TRUE)
+        ->interactive(FALSE)
         ->run()
         ->getMessage();
       // Set the exception flag if our output contains a failure message.
@@ -293,7 +294,6 @@ EOD;
    * @throws \Robo\Exception\TaskException
    */
   public function updateSingleSite($site) {
-
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $this->updateSite($site, $app);
   }
