@@ -300,7 +300,7 @@ EOD;
    *
    * @param string $site
    *   The site to update.
-   * @param string $env
+   * @param string $app
    *   The environment the site is being updated in.
    *
    * @throws \Robo\Exception\TaskException
