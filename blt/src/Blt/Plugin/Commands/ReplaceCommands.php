@@ -290,7 +290,9 @@ EOD;
    * @throws \Robo\Exception\TaskException
    */
   public function updateSingleSite($site) {
-    $this->updateSite($site);
+
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $this->updateSite($site, $app);
   }
 
   /**
@@ -303,12 +305,12 @@ EOD;
    *
    * @throws \Robo\Exception\TaskException
    */
-  protected function updateSite(string $site, string $env = 'local'): bool {
+  protected function updateSite(string $site, string $app = 'local'): bool {
     $this->switchSiteContext($site);
     $db = $this->getConfigValue('drupal.db.database');
 
     // Check for database include on this application.
-    if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$env}/{$db}-settings.inc")) {
+    if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
       $this->writeln("Skipping {$site} on AH environment. Database {$db} does not exist.");
     }
     else {
