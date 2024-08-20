@@ -51,13 +51,13 @@ class ReplaceCommands extends BltTasks {
     if (trim($parallel_installed->getMessage())) {
       $this->say('Running multisite updates in parallel.');
       // Run site updates in parallel.
-      $this->taskExec('parallel -j 3 blt uiowa:update:site ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
+      $this->taskExec('parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
         ->run();
     }
     else {
       $this->say('Running multisite updates sequentially.');
       foreach ($multisites as $multisite) {
-        $this->updateSite($multisite, $app);
+        $multisite_exception = !$this->updateSite($multisite, $app);
       }
     }
 
@@ -275,16 +275,16 @@ EOD;
   /**
    * Update a single site.
    *
+   * This is essentially a command wrapper for the updateSite method.
+   *
    * @param string $site
    *   The site to update.
    *
-   * @command uiowa:update:site $site
+   * @command uiowa:site:update $site
    *
    * @throws \Robo\Exception\TaskException
    */
   public function updateSingleSite($site) {
-    // Add logging statement that this task is being run.
-    $this->writeln("Running updates for <comment>{$site}</comment>...");
     $this->updateSite($site);
   }
 
@@ -298,14 +298,13 @@ EOD;
    *
    * @throws \Robo\Exception\TaskException
    */
-  protected function updateSite(string $site, string $env = 'local'): void {
+  protected function updateSite(string $site, string $env = 'local'): bool {
     $this->switchSiteContext($site);
     $db = $this->getConfigValue('drupal.db.database');
 
     // Check for database include on this application.
     if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$env}/{$db}-settings.inc")) {
       $this->writeln("Skipping {$site} on AH environment. Database {$db} does not exist.");
-      return;
     }
     else {
       if ($this->isDrupalInstalled($site)) {
@@ -336,10 +335,11 @@ EOD;
         }
         catch (BltException $e) {
           $this->say("Failed deploying updates to {$site}.");
-          $multisite_exception = TRUE;
+          return FALSE;
         }
       }
     }
+    return TRUE;
   }
 
 }
