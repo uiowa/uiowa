@@ -75,7 +75,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
     $build['skeleton_load']['heading']['content'] = [
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => 'Giacomo Ultimocuore',
+      '#value' => 'Placeholder title',
       '#attributes' => [
         'class' => ['headline__heading'],
         'aria-hidden' => ['true'],
@@ -118,7 +118,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
     $skeleton['bones']['humerus'] = [
       '#type' => 'html_tag',
       '#tag' => 'h3',
-      '#value' => 'Sognatore Di Pace',
+      '#value' => 'Placeholder heading',
       '#attributes' => [
         'class' => [
           'skeleton-load__bone',
@@ -141,7 +141,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
     $skeleton['bones']['phalanx'] = [
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => 'DiBella',
+      '#value' => 'Badge',
       '#attributes' => [
         'class' => [
           'skeleton-load__bone',
