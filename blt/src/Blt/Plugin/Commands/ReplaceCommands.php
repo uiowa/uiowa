@@ -62,7 +62,10 @@ class ReplaceCommands extends BltTasks {
     else {
       $this->say('Running multisite updates sequentially.');
       foreach ($multisites as $multisite) {
-        $multisite_exception = !$this->updateSite($multisite, $app);
+        $success = $this->updateSite($multisite, $app);
+        if (!$success) {
+          $multisite_exception = TRUE;
+        }
       }
     }
 
