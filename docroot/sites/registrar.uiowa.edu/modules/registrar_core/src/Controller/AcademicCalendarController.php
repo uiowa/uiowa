@@ -90,7 +90,6 @@ class AcademicCalendarController extends ControllerBase {
 
     $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':1:' . $steps . ':' . $includePastSessions;
 
-
     if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
     }

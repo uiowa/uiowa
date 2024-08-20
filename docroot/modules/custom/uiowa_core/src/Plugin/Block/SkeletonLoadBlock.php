@@ -51,7 +51,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load'],
-        'aria-busy' => ['true']
+        'aria-busy' => ['true'],
       ],
     ];
     $build['#attached']['library'][] = 'uiowa_core/skeletonLoad';
@@ -61,14 +61,14 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#attributes' => [
         'class' => [
           'skeleton-load__bone',
-          'sheen' ,
+          'sheen',
           'headline',
           'headline--serif',
           'block-margin__bottom--extra',
           'block-padding__top',
-          'marrowed'
+          'marrowed',
         ],
-        'aria-hidden' => ['true']
+        'aria-hidden' => ['true'],
       ],
     ];
 
@@ -78,7 +78,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#value' => 'Giacomo Ultimocuore',
       '#attributes' => [
         'class' => ['headline__heading'],
-        'aria-hidden' => ['true']
+        'aria-hidden' => ['true'],
       ],
     ];
 
@@ -87,7 +87,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load__closet'],
-        'aria-hidden' => ['true']
+        'aria-hidden' => ['true'],
       ],
     ];
 
@@ -98,13 +98,13 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
         'class' => ['skeleton-load__skeleton'],
       ],
     ];
-    $skeleton['skull'] =  [
+    $skeleton['skull'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => [
           'skeleton-load__skull',
-          'sheen'
+          'sheen',
         ],
       ],
     ];
@@ -123,7 +123,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
         'class' => [
           'skeleton-load__bone',
           'sheen',
-          'marrowed'
+          'marrowed',
         ],
       ],
     ];
@@ -134,7 +134,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
         'class' => [
           'skeleton-load__bone',
           'sheen',
-          'body'
+          'body',
         ],
       ],
     ];
@@ -146,7 +146,7 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
         'class' => [
           'skeleton-load__bone',
           'sheen',
-          'phalanx'
+          'phalanx',
         ],
       ],
     ];
@@ -156,4 +156,5 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
 
     return $build;
   }
+
 }

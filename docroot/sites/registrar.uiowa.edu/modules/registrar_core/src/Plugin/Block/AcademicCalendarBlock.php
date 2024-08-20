@@ -328,7 +328,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#type' => 'container',
       '#attributes' => ['class' => ['academic-calendar', 'content']],
       'content' => [
-        $skeletonLoader
+        $skeletonLoader,
       ],
     ];
   }
