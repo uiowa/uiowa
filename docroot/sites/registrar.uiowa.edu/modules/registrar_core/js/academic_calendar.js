@@ -43,7 +43,7 @@
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'group_by_month', 'select', '#group-by-month', 'category'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'group_by_month', 'select', '#group-by-month', 'category'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -113,7 +113,6 @@
           const filterValues = getFilterValues();
           academicCalendar.searchTerm = filterValues.searchTerm;
           academicCalendar.startDate = filterValues.startDate;
-          academicCalendar.endDate = filterValues.endDate;
           academicCalendar.selectedSession = filterValues.selectedSession;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
           // Update groupByMonth
@@ -125,7 +124,6 @@
           return {
             'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
             'startDate' : formEls.startDateEl.value,
-            'endDate' : formEls.endDateEl.value,
             'selectedSession' : formEls.sessionSelectEl.value,
             'selectedCategories' : formEls.categoryEl.value,
           };
@@ -136,7 +134,6 @@
           return {
             'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
             'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
-            'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
             'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
             'categoryEl' : formEl.querySelector('select[name="category"]'),
             'resetButton' : formEl.querySelector('.js-form-reset'),
@@ -206,7 +203,7 @@
       this.domOutput = document.createElement("div");
       this.allEvents = [];
       this.startDate = filterValues.startDate;
-      this.endDate = filterValues.endDate;
+      this.endDate = '';
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
       this.includePastSessions = includePastSessions;
@@ -292,17 +289,12 @@
     filterAndDisplayEvents() {
       const searchTerm = this.searchTerm;
       const today = new Date();
-
-      const endDate = new Date(this.endDate);
       const startDate = new Date(this.startDate);
 
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
-        const eventStart = new Date(event.start);
         const eventEnd = new Date(event.end);
         const startCheck = !startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate;
-        const endCheck = (!endDate.valueOf() || eventStart <= endDate);
-        const matchesDateRange = (startCheck) && (endCheck);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
@@ -317,7 +309,7 @@
           matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
         }
 
-        return matchesSearch && matchesDateRange && matchesSession && matchesCategories;
+        return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
 
       // @todo Implement this.
