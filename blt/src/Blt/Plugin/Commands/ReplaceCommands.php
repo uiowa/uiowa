@@ -58,7 +58,6 @@ class ReplaceCommands extends BltTasks {
         ->getMessage();
       // Set the exception flag if our output contains a failure message.
       $multisite_exception = str_contains($parallel_output, 'error');
-      $this->say($parallel_output);
     }
     else {
       $this->say('Running multisite updates sequentially.');
