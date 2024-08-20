@@ -46,32 +46,39 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
    * {@inheritdoc}
    */
   public function build() {
-
     $build['skeleton_load'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load'],
+        'aria-busy' => ['true']
       ],
     ];
     $build['#attached']['library'][] = 'uiowa_core/skeletonLoad';
     $build['skeleton_load']['heading'] = [
       '#type' => 'html_tag',
-      '#tag' => 'div',
+      '#tag' => 'h2',
       '#attributes' => [
         'class' => [
+          'skeleton-load__bone',
+          'sheen' ,
           'headline',
-          'h6',
+          'headline--serif',
+          'block-margin__bottom--extra',
+          'block-padding__top',
+          'marrowed'
         ],
+        'aria-hidden' => ['true']
       ],
     ];
 
     $build['skeleton_load']['heading']['content'] = [
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => 'Giacomo DiBella',
+      '#value' => 'Giacomo Ultimocuore',
       '#attributes' => [
         'class' => ['headline__heading'],
+        'aria-hidden' => ['true']
       ],
     ];
 
@@ -80,18 +87,18 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load__closet'],
+        'aria-hidden' => ['true']
       ],
     ];
 
-    $build['skeleton_load']['closet']['skeleton'] = [
+    $skeleton = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load__skeleton'],
       ],
     ];
-
-    $build['skeleton_load']['closet']['skeleton']['skull'] = [
+    $skeleton['skull'] =  [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
@@ -101,36 +108,51 @@ class SkeletonLoadBlock extends BlockBase implements ContainerFactoryPluginInter
         ],
       ],
     ];
-
-    $build['skeleton_load']['closet']['skeleton']['bones'] = [
+    $skeleton['bones'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['skeleton-load__bones'],
       ],
     ];
-
-    $build['skeleton_load']['closet']['skeleton']['bones']['bone_1'] = [
+    $skeleton['bones']['humerus'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => 'Sognatore Di Pace',
+      '#attributes' => [
+        'class' => [
+          'skeleton-load__bone',
+          'sheen',
+          'marrowed'
+        ],
+      ],
+    ];
+    $skeleton['bones']['radius'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => [
           'skeleton-load__bone',
-          'sheen'
+          'sheen',
+          'body'
         ],
       ],
     ];
-
-    $build['skeleton_load']['closet']['skeleton']['bones']['bone_2'] = [
+    $skeleton['bones']['phalanx'] = [
       '#type' => 'html_tag',
-      '#tag' => 'div',
+      '#tag' => 'span',
+      '#value' => 'DiBella',
       '#attributes' => [
         'class' => [
           'skeleton-load__bone',
-          'sheen'
+          'sheen',
+          'phalanx'
         ],
       ],
     ];
+    $build['skeleton_load']['closet'][] = $skeleton;
+    $build['skeleton_load']['closet'][] = $skeleton;
+    $build['skeleton_load']['closet'][] = $skeleton;
 
     return $build;
   }

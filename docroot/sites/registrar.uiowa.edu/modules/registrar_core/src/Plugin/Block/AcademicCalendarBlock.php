@@ -321,52 +321,14 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * A #lazy_builder callback.
    */
   public static function lazyBuilder() {
-    $attributes['class'] = [
-      'card--layout-left',
-      'borderless',
-      'block--word-break',
-      'card',
-      'media--default',
-      'media--no-crop',
-      'media',
-      'skeleton-loader',
-    ];
-    $attributes['aria-hidden'] = ['true'];
-    $card = [
-      '#type' => 'card',
-      '#attributes' => $attributes,
-      '#media' => t('<div class="bone media--date"></div>'),
-      '#content' => [
-        'container' => [
-          '#type' => 'markup',
-          '#markup' => '
-            <header>
-              <h2 class="bone marrow headline default">
-                <span class="headline__heading">
-                Giacomo Ultimocuore Sognatore
-                </span>
-              </h2>
-            </header>
-            <div class="bone marrow card__details">
-              <div class="card__subtitle">
-                Di Pace Tre Volte DiBella
-              </div>
-              <div class="card__meta">
-                Sogno Sensa Fine
-              </div>
-            </div>
-            <span class="bone uiowa-maui-fc-event badge badge--primary summer-2024">Summer 2024</span>',
-        ],
-      ],
-    ];
+    $block_manager = \Drupal::service('plugin.manager.block');
+    $skeletonLoader = $block_manager->createInstance('skeleton_load_block')->build();
 
     return [
       '#type' => 'container',
       '#attributes' => ['class' => ['academic-calendar', 'content']],
       'content' => [
-        $card,
-        $card,
-        $card,
+        $skeletonLoader
       ],
     ];
   }
