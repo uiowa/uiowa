@@ -51,8 +51,13 @@ class ReplaceCommands extends BltTasks {
     if (trim($parallel_installed->getMessage())) {
       $this->say('Running multisite updates in parallel.');
       // Run site updates in parallel.
-      $this->taskExec('parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
-        ->run();
+      $parallel_output = $this->taskExec('parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
+        ->printOutput(false)
+        ->run()
+        ->getMessage();
+      // Set the exception flag if our output contains a failure message.
+      $multisite_exception = str_contains($parallel_output, 'error');
+      $this->say($parallel_output);
     }
     else {
       $this->say('Running multisite updates sequentially.');
