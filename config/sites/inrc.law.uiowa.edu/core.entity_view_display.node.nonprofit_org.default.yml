@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_telephone_number
     - field.field.node.nonprofit_org.field_np_training_attendees
     - field.field.node.nonprofit_org.field_np_training_location
+    - field.field.node.nonprofit_org.field_np_training_notes
     - field.field.node.nonprofit_org.field_np_website
     - node.type.nonprofit_org
   module:
@@ -173,7 +174,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -3
+            weight: -1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -315,7 +316,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 0
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -336,7 +337,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -2
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -359,7 +360,7 @@ third_party_settings:
                   thousand_separator: ','
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: -1
+            weight: 1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -377,7 +378,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: -5
+            weight: -4
             additional: {  }
             third_party_settings: {  }
           -
@@ -393,7 +394,7 @@ third_party_settings:
               formatter:
                 settings: {  }
                 third_party_settings: {  }
-            weight: -4
+            weight: -2
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -415,7 +416,7 @@ third_party_settings:
                   timezone_override: ''
                   format_type: medium
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -433,7 +434,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -450,7 +451,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -473,6 +474,22 @@ third_party_settings:
             weight: 1
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 862f6a6b-da9a-4f79-8a3c-addbf5a3ff80
+            region: main
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_training_notes'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -503,41 +520,19 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 67-33
           layout_builder_styles_style:
-            - section_background_style_gray
-            - section_margin_fixed_width_container
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 68c062d2-b03d-4898-9a0a-dd2fb2281cc9
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_documents'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: small__no_crop
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ' '
-            weight: 1
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
             uuid: 30c08616-51c6-4630-a78b-5b806cbaa313
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:nonprofit_org:field_np_category'
               label: null
@@ -558,28 +553,6 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: -2
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 724dc661-e936-4f60-ae41-42f7c20a2502
-            region: content
-            configuration:
-              id: 'field_block:node:nonprofit_org:field_np_ntee'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
             weight: 0
             additional:
               layout_builder_styles_style:
@@ -587,7 +560,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: aa6a025c-615f-49a6-a7c0-c493ecd27012
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:nonprofit_org:field_np_denomination'
               label: null
@@ -602,12 +575,75 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: -1
+            weight: 1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 724dc661-e936-4f60-ae41-42f7c20a2502
+            region: first
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_ntee'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 68c062d2-b03d-4898-9a0a-dd2fb2281cc9
+            region: first
+            configuration:
+              id: 'field_block:node:nonprofit_org:field_np_documents'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: small__no_crop
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ' '
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 9cf0b340-2728-4152-bded-cabea9cacc1d
+            region: second
+            configuration:
+              id: 'extra_field_block:node:nonprofit_org:field_np_submit_update'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
 id: node.nonprofit_org.default
 targetEntityType: node
 bundle: nonprofit_org
@@ -771,6 +807,11 @@ content:
     third_party_settings: {  }
     weight: 114
     region: content
+  field_np_submit_update:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_np_telephone_number:
     type: string
     label: above
@@ -798,6 +839,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 121
+    region: content
+  field_np_training_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 126
     region: content
   field_np_website:
     type: link
