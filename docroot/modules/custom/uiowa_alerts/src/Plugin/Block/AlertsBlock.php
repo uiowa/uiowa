@@ -73,12 +73,6 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     if ($config->get('hawk_alert.display')) {
       $source = $config->get('hawk_alert.source');
-      if (str_ends_with($source, '.json')) {
-        $library = 'uiowa_alerts/uiowa-alerts';
-      }
-      else {
-        $library = 'uiowa_alerts/alerts';
-      }
 
       $build['wrapper']['hawk_alerts'] = [
         '#type' => 'container',
@@ -89,7 +83,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
         ],
         '#attached' => [
           'library' => [
-            $library,
+            'uiowa_alerts/alerts',
           ],
           'drupalSettings' => [
             'uiowaAlerts' => [
