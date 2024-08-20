@@ -275,7 +275,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-start-date']],
     ];
 
-
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
