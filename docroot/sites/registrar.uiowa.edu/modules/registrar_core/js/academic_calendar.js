@@ -21,6 +21,22 @@
           getFilterValues()
         );
 
+        // Toggle date input visibility if session is selected.
+        function toggleDateInputVisibility() {
+          const selectedSession = formEls.sessionSelectEl.value;
+          if (selectedSession === "") {
+            formEls.startDateEl.closest('.js-form-item').style.display = "block";
+          } else {
+            formEls.startDateEl.closest('.js-form-item').style.display = "none";
+          }
+        }
+
+        // Modify the event listener for session select
+        formEls.sessionSelectEl.addEventListener('change', function() {
+          toggleDateInputVisibility();
+          updateFilterDisplay();
+        });
+
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
           populateSessionFilter(academicCalendar.uniqueSessions);
@@ -106,6 +122,7 @@
               formEls.resetButton.style.display = 'inline-block';
             }
           }
+          toggleDateInputVisibility();
         }
 
         // Function to update AcademicCalendar object based on form filters.
