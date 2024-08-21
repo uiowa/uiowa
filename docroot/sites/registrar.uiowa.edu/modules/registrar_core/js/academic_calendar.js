@@ -47,7 +47,7 @@
           // Set initial state of 'Group by month' checkbox based on Drupal settings.
           groupByMonthCheckbox.checked = initGroupByMonth;
           academicCalendar.groupByMonth = initGroupByMonth;
-
+          // Add event listener for changes to 'Group by month' checkbox.
           groupByMonthCheckbox.addEventListener('change', () => {
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
             updateFilterDisplay();
@@ -330,6 +330,7 @@
         return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
 
+      // @todo Implement this.
       this.displayEvents(filteredEvents);
 
       if (this.calendarContent) {
