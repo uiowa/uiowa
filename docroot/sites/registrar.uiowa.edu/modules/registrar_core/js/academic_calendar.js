@@ -45,15 +45,15 @@
           const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
 
           // Set initial state of 'Group by month' checkbox based on Drupal settings.
-          if (typeof initGroupByMonth !== 'undefined') {
-            groupByMonthCheckbox.checked = initGroupByMonth === 1;
-          }
+          groupByMonthCheckbox.checked = initGroupByMonth;
+          academicCalendar.groupByMonth = initGroupByMonth;
 
-          // Add event listener for changes to 'Group by month' checkbox.
           groupByMonthCheckbox.addEventListener('change', () => {
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
             updateFilterDisplay();
           });
+        } else {
+          academicCalendar.groupByMonth = initGroupByMonth;
         }
 
         // Attach filter functionality to form elements.
@@ -89,7 +89,7 @@
           updateFilterDisplay();
         });
 
-          // Form reset.
+        // Form reset.
         formEls.resetButton.style.display = 'none';
 
         if (formEls.resetButton) {
@@ -131,8 +131,11 @@
           academicCalendar.startDate = filterValues.startDate;
           academicCalendar.selectedSession = filterValues.selectedSession;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
-          // Update groupByMonth
-          academicCalendar.groupByMonth = calendarEl.querySelector('#group-by-month')?.checked || false;
+          // Update groupByMonth.
+          if (showGroupByMonth) {
+            const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
+            academicCalendar.groupByMonth = groupByMonthCheckbox ? groupByMonthCheckbox.checked : initGroupByMonth;
+          }
         }
 
         // Function to get the values of the filters at call time.
@@ -223,7 +226,6 @@
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
       this.includePastSessions = includePastSessions;
-
       this.groupByMonth = groupByMonth;
       this.selectedSession = filterValues.selectedSession;
       this.selectedCategories = filterValues.selectedCategories;
@@ -328,11 +330,9 @@
         return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
 
-      // @todo Implement this.
       this.displayEvents(filteredEvents);
 
       if (this.calendarContent) {
-
         const observer = new MutationObserver(() => {
           this.toggleSpinner();
         });
@@ -405,10 +405,10 @@
 
       Drupal.announce(`Grouping events by month.`);
 
-      // Sort months chronologically
+      // Sort months chronologically.
       const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
 
-      // Render all months, including past ones
+      // Render all months, including past ones.
       this.renderMonths(sortedMonths, groupedEvents);
     }
 
