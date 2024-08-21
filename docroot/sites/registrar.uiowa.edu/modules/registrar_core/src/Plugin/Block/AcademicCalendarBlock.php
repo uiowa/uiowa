@@ -321,11 +321,14 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * A #lazy_builder callback.
    */
   public static function lazyBuilder() {
+    $block_manager = \Drupal::service('plugin.manager.block');
+    $skeletonLoader = $block_manager->createInstance('skeleton_load_block')->build();
+
     return [
       '#type' => 'container',
       '#attributes' => ['class' => ['academic-calendar', 'content']],
       'content' => [
-        '#markup' => '<span class="fa-solid fa-spinner fa-spin"></span>',
+        $skeletonLoader,
       ],
     ];
   }
