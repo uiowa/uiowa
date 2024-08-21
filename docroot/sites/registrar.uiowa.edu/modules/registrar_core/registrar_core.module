@@ -30,5 +30,6 @@ function registrar_core_preprocess_block(&$variables) {
 function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'gpa_calculator_form') {
     $form["gpa_row"]["actions"]["add_row"]["#attributes"]['class'][] = 'button--small';
+    $form["gpa_row"]["actions"]["add_row"]["#attributes"]['class'][] = 'button--full-width';
   }
 }
