@@ -45,17 +45,6 @@ class Nonprofit extends BaseNodeSource {
       return FALSE;
     }
 
-    // Convert the UNIX timestamps into date strings.
-    foreach ([
-      'field_np_board_res_date',
-      'field_np_last_training_date',
-      'field_expiration_date',
-    ] as $field) {
-      if ($timestamp = $row->getSourceProperty($field)) {
-        $row->setSourceProperty($field, date('Y-m-d', $timestamp[0]['value']));
-      }
-    }
-
     return TRUE;
   }
 
