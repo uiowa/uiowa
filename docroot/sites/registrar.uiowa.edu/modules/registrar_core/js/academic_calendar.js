@@ -31,15 +31,14 @@
           }
         }
 
-        // Modify the event listener for session select
-        formEls.sessionSelectEl.addEventListener('change', function() {
-          toggleDateInputVisibility();
-          updateFilterDisplay();
-        });
-
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
           populateSessionFilter(academicCalendar.uniqueSessions);
+        });
+
+        formEls.sessionSelectEl.addEventListener('change', function() {
+          toggleDateInputVisibility();
+          updateFilterDisplay();
         });
 
         if (showGroupByMonth) {
