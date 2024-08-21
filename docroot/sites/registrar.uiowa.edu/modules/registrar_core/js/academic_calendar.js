@@ -222,6 +222,7 @@
       this.domOutput = document.createElement("div");
       this.allEvents = [];
       this.startDate = filterValues.startDate;
+      // @todo remove endDate once approved by registrar.
       this.endDate = '';
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
