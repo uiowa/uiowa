@@ -212,7 +212,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     // Attach the library for the calendar.
-    $build['#attached']['library'][] = 'sitenow/chosen';
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'uids_base/chosen';
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
@@ -253,26 +252,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     $current_request = $this->requestStack->getCurrentRequest();
 
-    if ($this->configuration['show_group_by_month']) {
-      $form['group_by_month'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Group by month'),
-        '#id' => 'group-by-month',
-        '#default_value' => $this->configuration['group_by_month'] ?? FALSE,
-      ];
-    }
-
-    $form['show_previous_events'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show previous events'),
-      '#id' => 'show-previous-events',
-      '#states' => [
-        'visible' => [
-          ':input[id="group-by-month"]' => ['checked' => TRUE],
-        ],
-      ],
-    ];
-
     $form['search'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
@@ -296,22 +275,45 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-start-date']],
     ];
 
-    $form['end_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('End Date'),
-      '#attributes' => ['class' => ['academic-calendar-end-date']],
-    ];
-
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
       '#options' => $this->maui->getDateCategories(),
       '#default_value' => $current_request->query->get('category', 'STUDENT'),
-      '#multiple' => TRUE,
+      '#multiple' => FALSE,
     ];
+
+    if ($this->configuration['show_group_by_month']) {
+      $form['group_by_month'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Group by month'),
+        '#id' => 'group-by-month',
+        '#default_value' => $this->configuration['group_by_month'],
+      ];
+    }
 
     $form['actions'] = [
       '#type' => 'actions',
+      '#attributes' => ['class' => ['form-actions--stacked']],
+    ];
+
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Search'),
+      '#attributes' => ['class' => ['bttn--full']],
+    ];
+
+    $form['actions']['reset'] = [
+      '#type' => 'button',
+      '#value' => $this->t('Reset'),
+      '#attributes' => [
+        'class' => [
+          'bttn',
+          'bttn--secondary',
+          'bttn--full',
+          'js-form-reset',
+        ],
+      ],
     ];
 
     return $form;
