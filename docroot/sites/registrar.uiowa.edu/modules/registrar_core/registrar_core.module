@@ -35,6 +35,9 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
   }
 }
 
+/**
+ *
+ */
 function _second_submit(&$form, FormStateInterface $form_state) {
   $block_manager = \Drupal::service('plugin.manager.block');
   $skeletonLoader = $block_manager->createInstance('skeleton_load_block')->build();
@@ -47,4 +50,3 @@ function _second_submit(&$form, FormStateInterface $form_state) {
   $form["gpa_results_wrapper"]['#prefix'] = '<blockquote class="callout bg--gray">';
   $form["gpa_results_wrapper"]['#suffix'] = '</blockquote>';
 }
-
