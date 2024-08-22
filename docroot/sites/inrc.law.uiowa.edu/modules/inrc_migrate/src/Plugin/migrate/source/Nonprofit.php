@@ -45,6 +45,23 @@ class Nonprofit extends BaseNodeSource {
       return FALSE;
     }
 
+    // Convert the UNIX timestamps into date strings.
+    foreach ([
+      'field_np_board_res_date',
+      'field_np_last_training_date',
+    ] as $field) {
+      if ($timestamp = $row->getSourceProperty($field)) {
+        $row->setSourceProperty($field, date('Y-m-d', $timestamp[0]['value']));
+      }
+    }
+
+    // Field expiration date is in a YYYY-mm-dd 00:00:00 format,
+    // but we don't need the hour:minute:second granularity.
+    if ($timestamp = $row->getSourceProperty('field_expiration_date')) {
+      $timestamp = substr($timestamp[0]['value'], 0, 10);
+      $row->setSourceProperty('field_expiration_date', $timestamp);
+    }
+
     return TRUE;
   }
 
