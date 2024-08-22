@@ -31,5 +31,13 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
   if ($form_id === 'gpa_calculator_form') {
     $form["gpa_row"]["actions"]["add_row"]["#attributes"]['class'][] = 'button--small';
     $form["gpa_row"]["actions"]["add_row"]["#attributes"]['class'][] = 'button--full-width';
+    $form['#submit'][1] = '_second_submit';
   }
 }
+
+function _second_submit(&$form, FormStateInterface $form_state) {
+  $calculatedGrades = $form["gpa_results_wrapper"]["#markup"]->getArguments();
+  $current = $calculatedGrades['@current_gpa'];
+  $cumulative = $calculatedGrades['@cumulative_gpa'];
+}
+
