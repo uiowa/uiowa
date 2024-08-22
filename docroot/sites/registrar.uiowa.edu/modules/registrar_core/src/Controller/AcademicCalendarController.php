@@ -340,6 +340,7 @@ class AcademicCalendarController extends ControllerBase {
     $card = [
       '#type' => 'card',
       '#title' => html_entity_decode($event->title),
+      '#title_heading_size' => 'h3',
       '#attributes' => $attributes,
       '#media' => $this->t('
 <div class="media--date"><span class="media--date__month">
