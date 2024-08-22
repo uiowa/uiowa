@@ -103,6 +103,44 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Retrieves Five Year calendar data.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The current request.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   A JSON response containing the Five Year calendar data.
+   */
+  public function getFiveYearCalendarData(Request $request) {
+    $start = $request->query->get('start');
+    $end = $request->query->get('end');
+    $category = $request->query->all()['category'] ?? [];
+    $subsession = $request->query->get('subsession', '0');
+    $steps = $request->query->get('steps', 0);
+    $includePastSessions = $request->query->get('includePastSessions', 0);
+
+    // Ensure category is always an array.
+    if (!is_array($category)) {
+      $category = [$category];
+    }
+
+    $subsession = filter_var($subsession, FILTER_VALIDATE_BOOLEAN);
+
+    $cid = 'registrar_core:five_year_academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':' . ($subsession ? '1' : '0') . ':' . $steps . ':' . $includePastSessions;
+
+    if ($cache = $this->cacheBackend->get($cid)) {
+      $data = $cache->data;
+    }
+    else {
+      $data = $this->fetchAndProcessFiveYearCalendarData($start, $end, $category, $steps, $includePastSessions);
+      // Cache for 24 hours.
+      $this->cacheBackend->set($cid, $data, time() + 86400);
+    }
+
+    return new JsonResponse($data);
+  }
+
+  /**
    * Creates a weight encoded string from an event.
    *
    * Creates a string that encodes weight data in it so that an alphabetical
@@ -208,7 +246,58 @@ class AcademicCalendarController extends ControllerBase {
       $dates = $this->maui->searchSessionDates($session->id, [
         'startDate' => $start,
         'endDate' => $end,
+        'fiveYearDate' => TRUE,
       ], TRUE);
+
+      foreach ($dates as $date) {
+        if ($date->reviewed !== TRUE) {
+          continue;
+        }
+
+        if (!empty($date->dateCategoryLookups)) {
+          $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
+          $event->sortString = $this->sortString($event);
+
+          $events[] = $event;
+        }
+      }
+    }
+
+    usort(
+      $events,
+      [
+        'Drupal\registrar_core\Controller\AcademicCalendarController',
+        'eventCompare',
+      ]
+    );
+
+    return $events;
+  }
+
+  /**
+   * Fetches and processes calendar data for the Five Year calendar.
+   */
+  private function fetchAndProcessFiveYearCalendarData($start, $end, $categories, $steps, $includePastSessions) {
+    $current = $this->maui->getCurrentSession();
+    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
+
+    if ($includePastSessions) {
+      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
+      $sessions = array_merge($pastSessions, $sessions);
+    }
+
+    $events = [];
+
+    foreach ($sessions as $session_index => $session) {
+      $dates = $this->maui->searchSessionDates(
+        $session->id,
+        NULL, // date_category
+        TRUE, // print_date
+        TRUE, // five_year_date
+        NULL, // session_code
+        NULL, // date
+        NULL  // context
+      );
 
       foreach ($dates as $date) {
         if ($date->reviewed !== TRUE) {
