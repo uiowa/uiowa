@@ -1,0 +1,78 @@
+.skeleton-load__skeleton {
+  display: flex;
+}
+
+.skeleton-load__skeleton + .skeleton-load__skeleton {
+  margin-top: 2rem;
+}
+
+.skeleton-load__skeleton .sheen {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(243, 243, 243);
+  background-image: linear-gradient(270deg, rgb(231, 231, 236), rgb(243, 243, 243), rgb(243, 243, 243), rgb(231, 231, 236));
+  background-origin: padding-box;
+  background-position-x: 197.89%;
+  background-position-y: 0px;
+  background-repeat: repeat;
+  background-size: 400% 100%;
+  background-position: 200% 0px;
+  opacity: 1;
+  animation: skeletonShimmer 10s ease-in-out infinite;
+}
+
+.skeleton-load__skull {
+  width: 6rem;
+  height: 6rem;
+  margin-right: 1.7rem;
+  border-radius: 50%;
+}
+
+.skeleton-load__bones {
+  flex: 1 1 auto;
+}
+
+.skeleton-load__bone {
+  min-height: 1.3rem;
+  background: #f3f3f3;
+  margin-bottom: 0.3rem;
+  border-radius: 3px;
+  color: transparent;
+  pointer-events: none;
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.skeleton-load__bone.body {
+  min-height: 3.6rem;
+}
+
+.skeleton-load__bone.marrowed {
+  display: inline-block;
+  width: 33%;
+  min-width: fit-content;
+}
+
+.skeleton-load__bone.phalanx {
+  width: 10%;
+  border-radius: 1rem;
+  line-height: 1.67;
+  font-size: 1.25rem;
+  padding: 0 .75rem;
+}
+h2.skeleton-load__bone {
+  margin-bottom: 2rem;
+}
+
+h3.skeleton-load__bone {
+  font-size: 1.5rem;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    background-position: -200% 0px;
+  }
+}
