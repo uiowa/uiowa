@@ -4,6 +4,7 @@ namespace Drupal\uiowa_maui;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -376,6 +377,92 @@ class MauiApi {
     }
 
     return $data;
+  }
+
+  /**
+   * Get year options for the start year select.
+   *
+   * @param int $previous
+   *   Number of years to go back.
+   * @param int $future
+   *   Number of years to go forward.
+   *
+   * @return array
+   *   Array of year options.
+   */
+  public function getYearOptions($previous = 4, $future = 4) {
+    $fall = $this->getFallSession();
+    $startDate = (new DrupalDateTime($fall->startDate))
+      ->modify("-{$previous} years")
+      ->format('Y-m-d');
+
+    $start = $this->request('GET', '/pub/registrar/sessions/by-date', ['date' => $startDate]);
+    $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
+
+    $options = [];
+    $seenYears = [];
+
+    foreach ($range as $session) {
+      $startYear = date('Y', strtotime($session->startDate));
+
+      if (isset($seenYears[$startYear])) {
+        continue;
+      }
+
+      $endYear = substr((string)($startYear + 1), -2);
+      $options[$startYear] = [
+        'id' => $session->id,
+        'label' => "{$startYear} - {$endYear}",
+      ];
+
+      $seenYears[$startYear] = true;
+    }
+
+    ksort($options);
+    
+    $sortedOptions = [];
+    foreach ($options as $option) {
+      $sortedOptions[$option['id']] = $option['label'];
+    }
+
+    return $sortedOptions;
+  }
+
+  /**
+   * Get the fall session.
+   *
+   * @return object
+   *   The fall session object.
+   */
+  public function getFallSession() {
+    $currentSession = $this->getCurrentSession();
+    $currentTerm = $this->getTerm($currentSession->shortDescription);
+
+    if ($currentTerm == 'Fall') {
+      return $currentSession;
+    }
+
+    $range = $this->getSessionsRange($currentSession->id, -1, 'FALL');
+    return $range[0];
+  }
+
+  /**
+   * Get the term from a session description.
+   *
+   * @param string $description
+   *   The session description.
+   *
+   * @return string
+   *   The term (Fall, Spring, Summer, or Winter).
+   */
+  public function getTerm($description) {
+    $terms = ['Fall', 'Spring', 'Summer', 'Winter'];
+    foreach ($terms as $term) {
+      if (stripos($description, $term) !== FALSE) {
+        return $term;
+      }
+    }
+    return '';
   }
 
 }
