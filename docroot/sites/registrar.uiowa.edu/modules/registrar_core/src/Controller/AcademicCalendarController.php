@@ -291,12 +291,18 @@ class AcademicCalendarController extends ControllerBase {
     foreach ($sessions as $session_index => $session) {
       $dates = $this->maui->searchSessionDates(
         $session->id,
-        NULL, // date_category
-        TRUE, // print_date
-        TRUE, // five_year_date
-        NULL, // session_code
-        NULL, // date
-        NULL  // context
+      // date_category.
+        NULL,
+      // print_date.
+        TRUE,
+      // five_year_date.
+        TRUE,
+      // session_code.
+        NULL,
+      // Date.
+        NULL,
+      // Context.
+        NULL
       );
 
       foreach ($dates as $date) {
