@@ -5,6 +5,7 @@ adding:
       - node.type.service
       - node.type.support_article
       - workflows.workflow.alert
+      - workflows.workflow.draft
     module:
       - replicate_ui
   permissions:
@@ -30,6 +31,10 @@ adding:
     - 'revert support_article revisions'
     - 'use alert transition create_new_draft'
     - 'use alert transition needs_review'
+    - 'use draft transition archived_published'
+    - 'use draft transition create_new_draft'
+    - 'use draft transition publish'
+    - 'use editorial transition archive'
     - 'view alert revisions'
     - 'view service revisions'
     - 'view support_article revisions'
