@@ -419,7 +419,7 @@ class MauiApi {
     }
 
     ksort($options);
-    
+
     $sortedOptions = [];
     foreach ($options as $option) {
       $sortedOptions[$option['id']] = $option['label'];
