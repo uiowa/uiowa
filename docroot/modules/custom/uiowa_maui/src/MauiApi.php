@@ -390,7 +390,7 @@ class MauiApi {
    * @return array
    *   Array of year options.
    */
-  public function getYearOptions($previous = 4, $future = 4) {
+  public function getYearOptions($previous = 4, $future = 10) {
     $fall = $this->getFallSession();
     $startDate = (new DrupalDateTime($fall->startDate))
       ->modify("-{$previous} years")
@@ -400,32 +400,20 @@ class MauiApi {
     $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
 
     $options = [];
-    $seenYears = [];
 
     foreach ($range as $session) {
       $startYear = date('Y', strtotime($session->startDate));
+      $endYear = substr((string) ($startYear + 1), -2);
+      $academicYear = "{$startYear} - {$endYear}";
 
-      if (isset($seenYears[$startYear])) {
-        continue;
+      // Use the academic year as the key to avoid duplicates.
+      if (!isset($options[$academicYear])) {
+        $options[$academicYear] = $session->id;
       }
-
-      $endYear = substr((string)($startYear + 1), -2);
-      $options[$startYear] = [
-        'id' => $session->id,
-        'label' => "{$startYear} - {$endYear}",
-      ];
-
-      $seenYears[$startYear] = true;
     }
 
-    ksort($options);
-
-    $sortedOptions = [];
-    foreach ($options as $option) {
-      $sortedOptions[$option['id']] = $option['label'];
-    }
-
-    return $sortedOptions;
+    // Flip the array to have session IDs as keys and academic years as values.
+    return array_flip($options);
   }
 
   /**
