@@ -7,6 +7,8 @@
         const calendarSettings = drupalSettings.academicCalendar;
         const steps = calendarSettings.steps || 0;
         const includePastSessions = calendarSettings.includePastSessions || 0;
+        const initGroupByMonth = calendarSettings.groupByMonth;
+        const showGroupByMonth = calendarSettings.showGroupByMonth;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
         const formEls = getFormEls(formEl);
 
@@ -15,21 +17,48 @@
           calendarEl,
           steps,
           includePastSessions,
+          initGroupByMonth,
           getFilterValues()
         );
 
-        // Fetch events and populate year filter.
+        // Toggle date input visibility if session is selected.
+        function toggleDateInputVisibility() {
+          const selectedSession = formEls.sessionSelectEl.value;
+          if (selectedSession === "") {
+            formEls.startDateEl.closest('.js-form-item').style.display = "block";
+          } else {
+            formEls.startDateEl.closest('.js-form-item').style.display = "none";
+          }
+        }
+
+        // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
-          populateYearFilter(academicCalendar.uniqueYears);
+          populateSessionFilter(academicCalendar.uniqueSessions);
         });
 
-        formEls.yearSelectEl.addEventListener('change', function() {
+        formEls.sessionSelectEl.addEventListener('change', function() {
+          toggleDateInputVisibility();
           updateFilterDisplay();
         });
 
+        if (showGroupByMonth) {
+          const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
+
+          // Set initial state of 'Group by month' checkbox based on Drupal settings.
+          groupByMonthCheckbox.checked = initGroupByMonth;
+          academicCalendar.groupByMonth = initGroupByMonth;
+          // Add event listener for changes to 'Group by month' checkbox.
+          groupByMonthCheckbox.addEventListener('change', () => {
+            academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
+            updateFilterDisplay();
+          });
+        } else {
+          academicCalendar.groupByMonth = initGroupByMonth;
+        }
+
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'year', 'start_date', 'subsession', '#subsession', 'select', 'category'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'group_by_month', 'select', '#group-by-month', 'category'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -92,6 +121,7 @@
               formEls.resetButton.style.display = 'inline-block';
             }
           }
+          toggleDateInputVisibility();
         }
 
         // Function to update AcademicCalendar object based on form filters.
@@ -99,9 +129,13 @@
           const filterValues = getFilterValues();
           academicCalendar.searchTerm = filterValues.searchTerm;
           academicCalendar.startDate = filterValues.startDate;
-          academicCalendar.selectedYear = filterValues.selectedYear;
+          academicCalendar.selectedSession = filterValues.selectedSession;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
-          academicCalendar.showSubSessions = filterValues.showSubSessions;
+          // Update groupByMonth.
+          if (showGroupByMonth) {
+            const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
+            academicCalendar.groupByMonth = groupByMonthCheckbox ? groupByMonthCheckbox.checked : initGroupByMonth;
+          }
         }
 
         // Function to get the values of the filters at call time.
@@ -109,9 +143,8 @@
           return {
             'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
             'startDate' : formEls.startDateEl.value,
-            'selectedYear' : formEls.yearSelectEl.value,
+            'selectedSession' : formEls.sessionSelectEl.value,
             'selectedCategories' : formEls.categoryEl.value,
-            'showSubSessions' : formEls.showSubSessionEl.checked,
           };
         }
 
@@ -120,23 +153,62 @@
           return {
             'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
             'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
-            'yearSelectEl' : formEl.querySelector('select[name="year"]'),
+            'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
             'categoryEl' : formEl.querySelector('select[name="category"]'),
             'resetButton' : formEl.querySelector('.js-form-reset'),
-            'showSubSessionEl' : formEl.querySelector('#subsession'),
           }
         }
 
-        // Function to populate the year filter dropdown.
-        function populateYearFilter(years) {
-          let yearBuffer = '<option value="">All Years</option>';
-          const sortedYears = Array.from(years).sort((a, b) => a - b);
+        // Function to populate the session filter dropdown.
+        function populateSessionFilter(sessions) {
+          const currentValue = formEls.sessionSelectEl.value;
 
-          sortedYears.forEach(year => {
-            yearBuffer += `<option value="${year}">${year}</option>`;
+          // Keep the session HTML here so that we can add it all at once, preventing content refreshes.
+          let sessionBuffer = '<option value="">All Sessions</option>';
+          const sessionsArray = Array.from(sessions);
+          const sessionsSortArray = [];
+          const sessionsMap = {};
+
+          const weightLookup = {
+            '' : '00',
+            '4 Week' : '02',
+            '6 Week I' : '04',
+            '6 Week II' : '06',
+            '8 Week' : '08',
+            '12 Week' : '10',
+          };
+          const seasonLookup = {
+            'spring' : '00',
+            'summer' : '02',
+            'fall' : '04',
+            'winter' : '06',
+          };
+
+          sessionsArray.forEach((session) =>{
+            const subSessionSplit = session.split(' - ');
+            const isSubSession = subSessionSplit.length > 1;
+            const subSessionWeight = weightLookup[isSubSession ? subSessionSplit[1] : ''];
+
+            const seasonYear = subSessionSplit[0].split(' ');
+            const seasonWeight = seasonLookup[seasonYear[0].toLowerCase()];
+            const year = seasonYear[1];
+            const sortString = year + '-' + seasonWeight + '-' + subSessionWeight;
+
+            sessionsSortArray.push(sortString);
+            sessionsMap[sortString] = session;
           });
 
-          formEls.yearSelectEl.innerHTML = yearBuffer;
+          sessionsSortArray.sort().forEach(sessionLookupString => {
+            const mappedSession = sessionsMap[sessionLookupString];
+
+            // This just allows us to tell if we have a subsession,
+            //     and tab it in for hierarchy in the select list.
+            const isSubSession = sessionLookupString.slice(-2) === '00' ? '' : '&emsp;';
+            sessionBuffer += `<option value="${mappedSession}">${isSubSession + mappedSession}</option>`;
+          });
+
+          formEls.sessionSelectEl.innerHTML = sessionBuffer;
+          formEls.sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
         }
       });
     }
@@ -144,7 +216,8 @@
 
   class AcademicCalendar {
     steps = 0;
-    constructor(calendarEl, steps, includePastSessions, filterValues) {
+    groupByMonth = false;
+    constructor(calendarEl, steps, includePastSessions, groupByMonth, filterValues) {
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domOutput = document.createElement("div");
       this.allEvents = [];
@@ -154,15 +227,23 @@
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
       this.includePastSessions = includePastSessions;
-      this.selectedYear = filterValues.selectedYear;
-      this.showSubSessions = filterValues.showSubSessions;
+      this.groupByMonth = groupByMonth;
+      this.selectedSession = filterValues.selectedSession;
       this.selectedCategories = filterValues.selectedCategories;
-      // Initialize variables to store all events and unique years.
-      this.uniqueYears = new Set();
+      // Initialize variables to store all events and unique sessions.
+      this.uniqueSessions = new Set();
       //------------------------------//
       // Cache objects for frequently used elements.
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
       this.spinner = this.calendarContent.querySelector('.fa-spinner');
+    }
+
+    get groupByMonth() {
+      return this.groupByMonth;
+    }
+
+    set groupByMonth(value) {
+      this.groupByMonth = value;
     }
 
     // Function to fetch events from the server and display them.
@@ -182,15 +263,16 @@
       Drupal.announce('Fetching events.');
       // Make AJAX request to fetch events.
       // Use `await` so we don't return a promise before the fetch is done.
-      const fetchResults = await fetch(`/api/five-year-academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}&includePastSessions=${this.includePastSessions}`)
+      const fetchResults = await fetch(`/api/academic-calendar?subsession=1&start=${this.startDate}&end=${this.endDate}&steps=${this.steps}&includePastSessions=${this.includePastSessions}`)
         .then(response => response.json())
         .then(events => {
           this.allEvents = events;
-          this.uniqueYears.clear();
+          this.uniqueSessions.clear();
           events.forEach((event) => {
-            this.uniqueYears.add(new Date(event.start).getFullYear());
+            this.uniqueSessions.add(event.sessionDisplay)
             event.domTree = this.parseCardDomString(event.rendered)
           });
+          this.allEvents = events;
           this.filterAndDisplayEvents();
         })
         .catch(error => {
@@ -228,17 +310,16 @@
       const today = new Date();
       const startDate = new Date(this.startDate);
 
-      // Filter events based on search term, date range, and selected year.
+      // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
         const eventEnd = new Date(event.end);
-        const startCheck = this.selectedYear ? true : (!startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate);
-        const matchesSubSession = event.subSession ? this.showSubSessions : true;
+        const startCheck = this.selectedSession ? true : (!startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
           event.description.toLowerCase().includes(searchTerm);
 
-        const matchesYear = !this.selectedYear || new Date(event.start).getFullYear().toString() === this.selectedYear;
+        const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
 
         let matchesCategories;
         if (this.selectedCategories === 'STUDENT') {
@@ -247,9 +328,10 @@
           matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
         }
 
-        return matchesSearch && startCheck && matchesYear && matchesCategories && matchesSubSession;
+        return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
 
+      // @todo Implement this.
       this.displayEvents(filteredEvents);
 
       if (this.calendarContent) {
@@ -280,9 +362,13 @@
       // Sort events chronologically.
       events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-      this.displayGroupedByYearAndSession(events);
+      if (this.groupByMonth) {
+        this.displayGroupedByMonth(events);
+      } else {
+        this.displayGroupedBySession(events);
+      }
 
-      // Apply date hiding after all events have been added to the DOM
+      // Do any last minute changes here.
       this.addDateHiders(this.domOutput);
 
       this.calendarContent.replaceChildren(...this.domOutput.childNodes)
@@ -290,128 +376,88 @@
     }
 
     addDateHiders(node) {
-      const yearHeadings = node.querySelectorAll('h2');
-      yearHeadings.forEach(yearHeading => {
-        let currentElement = yearHeading.nextElementSibling;
-        let datesFound = [];
+      const datesFound= [];
 
-        while (currentElement && currentElement.tagName !== 'H2') {
-          if (currentElement.tagName === 'H3') {
-            // New session, reset datesFound
-            datesFound = [];
+      node.childNodes.forEach((node)=>{
+        const date = node.querySelector('.media--date');
+
+        if (date) {
+          const entryIndex = date.innerText;
+
+          if (datesFound.includes(entryIndex)) {
+            date.classList.add('element-invisible');
           }
-
-          if (currentElement.tagName === 'H4' && this.showSubSessions) {
-            // New subsession and showSubSessions is true, reset datesFound
-            datesFound = [];
+          else {
+            date.classList.remove('element-invisible');
+            datesFound.push(entryIndex);
           }
-
-          const date = currentElement.querySelector('.media--date');
-          if (date) {
-            const entryIndex = date.innerText;
-            if (datesFound.includes(entryIndex)) {
-              date.classList.add('element-invisible');
-            } else {
-              date.classList.remove('element-invisible');
-              datesFound.push(entryIndex);
-            }
-          }
-
-          currentElement = currentElement.nextElementSibling;
         }
-      });
+      })
     }
 
-    // Function to display events grouped by year and then by session.
-    displayGroupedByYearAndSession(events) {
-      Drupal.announce(`Grouping events by year and session.`);
-
-      // Group events by year and session
-      const groupedEvents = this.groupEventsByYearAndSession(events);
-
-      // Sort years
-      const sortedYears = Object.keys(groupedEvents).sort((a, b) => a - b);
-
-      // Display the grouped and sorted events
-      sortedYears.forEach(year => {
-        this.renderYearHeading(year);
-
-        const sessionsInYear = groupedEvents[year];
-        const sortedSessionIds = Object.keys(sessionsInYear).sort((a, b) => a - b);
-
-        sortedSessionIds.forEach(sessionId => {
-          const { sessionDisplay, events, subsessions } = sessionsInYear[sessionId];
-          this.renderSessionHeading(sessionDisplay, events);
-
-          if (subsessions) {
-            Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
-              this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
-            });
-          }
-        });
-      });
-    }
-
-    // Helper function to group events by year and session
-    groupEventsByYearAndSession(events) {
-      return events.reduce((groups, event) => {
-        const year = new Date(event.start).getFullYear();
-        if (!groups[year]) {
-          groups[year] = {};
-        }
-
-        if (event.subSession) {
-          // This is a subsession event
-          const mainSessionId = event.sessionId.split('-')[0]; // Assuming main session ID is the first part
-          if (!groups[year][mainSessionId]) {
-            groups[year][mainSessionId] = { sessionDisplay: event.sessionDisplay.split(' - ')[0], events: [], subsessions: {} };
-          }
-          if (!groups[year][mainSessionId].subsessions[event.sessionDisplay]) {
-            groups[year][mainSessionId].subsessions[event.sessionDisplay] = [];
-          }
-          groups[year][mainSessionId].subsessions[event.sessionDisplay].push(event);
-        } else {
-          // This is a main session event
-          if (!groups[year][event.sessionId]) {
-            groups[year][event.sessionId] = { sessionDisplay: event.sessionDisplay, events: [], subsessions: {} };
-          }
-          groups[year][event.sessionId].events.push(event);
-        }
-
+    // Function to display events grouped by month.
+    displayGroupedByMonth(events) {
+      const groupedEvents = events.reduce((groups, event) => {
+        const date = new Date(event.start);
+        const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+        if (!groups[month]) groups[month] = [];
+        groups[month].push(event);
         return groups;
       }, {});
+
+      Drupal.announce(`Grouping events by month.`);
+
+      // Sort months chronologically.
+      const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
+
+      // Render all months, including past ones.
+      this.renderMonths(sortedMonths, groupedEvents);
     }
 
-    // Function to render year heading
-    renderYearHeading(year) {
-      const yearHeading = document.createElement("h2");
-      yearHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top');
-      yearHeading.innerText = year;
-      this.domOutput.append(yearHeading);
+    // Function to display events grouped by session.
+    displayGroupedBySession(events) {
+      Drupal.announce(`Grouping events by session.`);
+      // Group events by id.
+      const groupedEvents = events.reduce((groups, event) => {
+        const group = groups[event.sessionId] || { sessionDisplay: event.sessionDisplay, events: [] };
+        group.events.push(event);
+        groups[event.sessionId] = group;
+        return groups;
+      }, {});
+
+      // Sort session ids
+      const sortedSessionIds = Object.keys(groupedEvents).sort((a, b) => a - b);
+
+      // Display the grouped and sorted events
+      sortedSessionIds.forEach(sessionId => {
+        const { sessionDisplay, events } = groupedEvents[sessionId];
+
+        const headline = document.createElement("h2");
+        let classesToAdd = ['headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top'];
+        headline.classList.add(...classesToAdd);
+        headline.innerText = sessionDisplay;
+        this.domOutput.append(headline);
+
+        events.forEach(event => this.renderEvent(event, false));
+      });
     }
 
-    // Function to render session heading
-    renderSessionHeading(sessionDisplay, events) {
-      const sessionHeading = document.createElement("h3");
-      sessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra');
-      sessionHeading.innerText = sessionDisplay;
-      this.domOutput.append(sessionHeading);
+    // Function to render months and their events.
+    renderMonths(months, groupedEvents) {
+      months.forEach(month => {
 
-      events.forEach(event => this.renderEvent(event));
-    }
+        const headline = document.createElement("h2");
+        let classesToAdd = ['headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top'];
+        headline.classList.add(...classesToAdd);
+        headline.innerText = month;
+        this.domOutput.append(headline);
 
-    // Function to render subsession heading
-    renderSubSessionHeading(subSessionDisplay, events) {
-      const subSessionHeading = document.createElement("h4");
-      subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--medium');
-      subSessionHeading.innerText = subSessionDisplay;
-      this.domOutput.append(subSessionHeading);
-
-      events.forEach(event => this.renderEvent(event));
+        groupedEvents[month].forEach(event => this.renderEvent(event, true));
+      });
     }
 
     // Function to render individual event.
-    renderEvent(event) {
+    renderEvent(event, includeSession) {
       this.domOutput.append(event.domTree);
     }
   }

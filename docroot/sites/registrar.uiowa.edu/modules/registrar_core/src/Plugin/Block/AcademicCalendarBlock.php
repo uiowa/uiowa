@@ -110,10 +110,10 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    */
   public function defaultConfiguration() {
     return [
-      'steps' => 0,
-      'show_group_by_month' => 1,
-      'group_by_month' => 1,
-    ] + parent::defaultConfiguration();
+        'steps' => 0,
+        'show_group_by_month' => 1,
+        'group_by_month' => 1,
+      ] + parent::defaultConfiguration();
   }
 
   /**
@@ -248,7 +248,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
+    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--margin__bottom--extra  element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
@@ -269,14 +269,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => ['class' => ['academic-calendar-session']],
     ];
 
-    $form['year'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Year'),
-      '#options' => ['all' => $this->t('All Years')],
-      '#empty_option' => $this->t('- Select -'),
-      '#attributes' => ['class' => ['academic-calendar-year']],
-    ];
-
     $form['start_date'] = [
       '#type' => 'date',
       '#title' => $this->t('Start Date'),
@@ -291,13 +283,14 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#multiple' => FALSE,
     ];
 
-    $form['subsession'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show subsessions'),
-      '#id' => 'subsession',
-      '#default_value' => $current_request->query->get('subsession', FALSE),
-    ];
-
+    if ($this->configuration['show_group_by_month']) {
+      $form['group_by_month'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Group by month'),
+        '#id' => 'group-by-month',
+        '#default_value' => $this->configuration['group_by_month'],
+      ];
+    }
 
     $form['actions'] = [
       '#type' => 'actions',
