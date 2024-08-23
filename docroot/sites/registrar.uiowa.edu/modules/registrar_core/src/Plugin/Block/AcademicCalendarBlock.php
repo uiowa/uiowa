@@ -248,7 +248,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
+    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--margin__bottom--extra  element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
