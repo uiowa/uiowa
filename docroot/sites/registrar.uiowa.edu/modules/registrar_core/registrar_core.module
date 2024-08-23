@@ -31,22 +31,15 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
   if ($form_id === 'gpa_calculator_form') {
     $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
     $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
-    $form['#submit'][1] = '_second_submit';
+    $form['#submit'][] = 'registrar_core_post_submit';
   }
 }
 
 /**
- *
+ * Triggers after submit to change the way that the grade output is generated.
  */
-function _second_submit(&$form, FormStateInterface $form_state) {
-  $block_manager = \Drupal::service('plugin.manager.block');
-  $skeletonLoader = $block_manager->createInstance('skeleton_load_block')->build();
-
-  $calculatedGrades = $form['gpa_results_wrapper']['#markup']->getArguments();
-  $current = $calculatedGrades['@current_gpa'];
-  $cumulative = $calculatedGrades['@cumulative_gpa'];
+function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
   $form['#attached']['library'][] = 'uids_base/callout';
-  $form['#attached']['library'][] = 'uids_base/callout';
-  $form["gpa_results_wrapper"]['#prefix'] = '<blockquote class="callout bg--gray">';
-  $form["gpa_results_wrapper"]['#suffix'] = '</blockquote>';
+  $form["gpa_results_wrapper"]['#prefix'] = '<div class="callout bg--gray">';
+  $form["gpa_results_wrapper"]['#suffix'] = '</div>';
 }
