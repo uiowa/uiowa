@@ -1,0 +1,66 @@
+id: inrc_nonprofit
+label: Nonprofit
+dependencies:
+  enforced:
+    module:
+      - inrc_migrate
+migration_tags:
+  - inrc
+migration_group: sitenow_migrate
+source:
+  plugin: inrc_nonprofit
+  node_type: nonprofit_org
+destination:
+  plugin: 'entity:node'
+  default_bundle: nonprofit_org
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_np_employer_id: field_np_employer_id
+  field_np_contact_name: field_np_contact_name
+  field_np_contact_title: field_np_contact_title
+  field_np_address/country_code: field_inrc_address/0/country
+  field_np_address/address_line1: field_inrc_address/0/thoroughfare
+  field_np_address/address_line2: field_inrc_address/0/premise
+  field_np_address/locality: field_inrc_address/0/locality
+  field_np_address/administrative_area: field_inrc_address/0/administrative_area
+  field_np_address/postal_code: field_inrc_address/0/postal_code
+  field_np_telephone_number: field_inrc_telephone_number
+  field_np_email/value: field_inrc_email/0/email
+  field_np_ntee: field_np_ntee
+  field_np_website:
+    plugin: field_link
+    source: field_inrc_website
+  field_image: field_image
+  field_np_category:
+    plugin: map_taxonomy
+    source: field_np_category
+    create_new: true
+    vocabulary: nonprofit_organization_category
+  field_np_denomination: field_np_denomination
+  field_np_assets: field_np_assets
+  field_np_income: field_np_income
+  field_np_revenue: field_np_revenue
+  body: field_npo_notes
+  field_np_board_resolution_date: field_np_board_res_date
+  field_np_last_training_date: field_np_last_training_date
+  field_np_training_attendees: field_np_training_attendees
+  field_np_training_location: field_np_training_location
+  field_np_documents:
+    plugin: create_media_from_file_field
+    source: field_np_documents
+  field_np_expiration_date: field_expiration_date
+migration_dependencies: {  }
