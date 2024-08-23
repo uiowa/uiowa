@@ -15,15 +15,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Provides an 'Academic Calendar' block.
+ * Provides an 'Five Year Academic Calendar' block.
  *
  * @Block(
- *   id = "academic_calendar_block",
- *   admin_label = @Translation("Academic Calendar"),
+ *   id = "five_year_academic_calendar_block",
+ *   admin_label = @Translation("Five Year Academic Calendar"),
  *   category = @Translation("Site custom")
  * )
  */
-class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
+class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
   use SessionColorTrait;
 
   /**
@@ -88,7 +88,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'academic_calendar_filter_form';
+    return 'five_year_academic_calendar_filter_form';
   }
 
   /**
@@ -190,15 +190,15 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
         '#attributes' => [
           'class' => [
             'list-container__inner',
-            'sitenow-academic-calendar',
+            'sitenow-five-year-academic-calendar',
           ],
         ],
         'form' => $form,
         'calendar' => [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['academic-calendar content'],
-            'id' => 'academic-calendar-content',
+            'class' => ['five-year-academic-calendar content'],
+            'id' => 'five-year-academic-calendar-content',
           ],
           'content' => [
             '#lazy_builder' => [
@@ -213,8 +213,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     // Attach the library for the calendar.
     $build['#attached']['library'][] = 'uids_base/card';
-    $build['#attached']['library'][] = 'uids_base/chosen';
-    $build['#attached']['library'][] = 'registrar_core/academic-calendar';
+    $build['#attached']['library'][] = 'registrar_core/five-year-academic-calendar';
 
     $current = $this->maui->getCurrentSession();
     $steps = $this->configuration['steps'];
@@ -252,8 +251,8 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
-    $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
+    $form['#id'] = 'five-year-academic-calendar-filter-form';
+    $form['#attributes']['class'][] = 'five-year-academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
@@ -262,7 +261,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#title' => $this->t('Year'),
       '#options' => ['all' => $this->t('All Years')],
       '#empty_option' => $this->t('- Select -'),
-      '#attributes' => ['class' => ['academic-calendar-year']],
+      '#attributes' => ['class' => ['five-year-academic-calendar-year']],
     ];
 
     $form['start_year'] = [
@@ -271,13 +270,13 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       '#description' => $this->t('Select a start year.'),
       '#default_value' => $this->maui->getFallSession()->id,
       '#options' => $this->maui->getYearOptions(2, 5),
-      '#attributes' => ['class' => ['academic-calendar-year']],
+      '#attributes' => ['class' => ['five-year-academic-calendar-year']],
     ];
 
     $form['start_date'] = [
       '#type' => 'date',
       '#title' => $this->t('Start Date'),
-      '#attributes' => ['class' => ['element-invisible academic-calendar-start-date']],
+      '#attributes' => ['class' => ['element-invisible five-year-academic-calendar-start-date']],
     ];
 
     $form['subsession'] = [
@@ -324,7 +323,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     return [
       '#type' => 'container',
-      '#attributes' => ['class' => ['academic-calendar', 'content']],
+      '#attributes' => ['class' => ['five-year-academic-calendar', 'content']],
       'content' => [
         $skeletonLoader,
       ],
