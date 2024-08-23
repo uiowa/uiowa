@@ -5,7 +5,6 @@
     attach: function (context, settings) {
       once('academicCalendar', '.sitenow-academic-calendar', context).forEach(function (calendarEl) {
         const calendarSettings = drupalSettings.academicCalendar;
-        const steps = calendarSettings.steps || 0;
         const yearOptions = calendarSettings.yearOptions || {};
         const defaultYear = calendarSettings.defaultYear;
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
@@ -14,13 +13,12 @@
         // Initialize the AcademicCalendar object.
         const academicCalendar = new AcademicCalendar(
           calendarEl,
-          steps,
           getFilterValues(),
           yearOptions,
           defaultYear
         );
 
-        // Fetch events
+        // Fetch events.
         academicCalendar.fetchEvents();
 
         formEls.startYearSelectEl.addEventListener('change', function() {
@@ -29,32 +27,12 @@
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['start_year', 'start_date', 'subsession', '#subsession'].includes(event.target.name)) {
+          if (['start_year', 'subsession', '#subsession'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
 
-        // Attach date filter functionality.
-        context.querySelectorAll('.academic-calendar-start-date, .academic-calendar-end-date').forEach(input => {
-          input.addEventListener('input',
-            Drupal.debounce(
-              () => {
-                updateFilterDisplay(true);
-              },
-              300
-            )
-          );
-          input.addEventListener('change',
-            Drupal.debounce(
-              () => {
-                updateFilterDisplay(true);
-              },
-              300
-            )
-          );
-        });
-
-        // Handle form submission
+        // Handle form submission.
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
           updateFilterDisplay();
@@ -88,14 +66,12 @@
 
         function updateAcademicCalendarFromFilters() {
           const filterValues = getFilterValues();
-          academicCalendar.startDate = filterValues.startDate;
           academicCalendar.selectedYear = filterValues.selectedYear;
           academicCalendar.showSubSessions = filterValues.showSubSessions;
         }
 
         function getFilterValues() {
           return {
-            'startDate' : formEls.startDateEl.value,
             'selectedYear' : formEls.startYearSelectEl.value,
             'showSubSessions' : formEls.showSubSessionEl.checked,
           };
@@ -103,7 +79,6 @@
 
         function getFormEls(formEl) {
           return {
-            'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
             'startYearSelectEl' : formEl.querySelector('select[name="start_year"]'),
             'resetButton' : formEl.querySelector('.js-form-reset'),
             'showSubSessionEl' : formEl.querySelector('#subsession'),
@@ -114,25 +89,20 @@
   };
 
   class AcademicCalendar {
-    constructor(calendarEl, steps, filterValues, yearOptions, defaultYear) {
+    constructor(calendarEl, filterValues, yearOptions, defaultYear) {
       this.domOutput = document.createElement("div");
       this.allEvents = [];
-      this.startDate = filterValues.startDate;
-      this.endDate = '';
-      this.steps = steps;
       this.yearOptions = yearOptions;
       this.defaultYear = defaultYear;
       this.selectedYear = filterValues.selectedYear || this.defaultYear;
       this.showSubSessions = filterValues.showSubSessions;
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
-      this.spinner = this.calendarContent.querySelector('.fa-spinner');
     }
 
     async fetchEvents() {
-      this.toggleSpinner();
       Drupal.announce('Fetching events.');
       try {
-        const response = await fetch(`/api/five-year-academic-calendar?subsession=1&start=${this.startDate}&steps=10&includePastSessions=1`);
+        const response = await fetch(`/api/five-year-academic-calendar?subsession=1&steps=30&includePastSessions=1`);
         const events = await response.json();
         this.allEvents = events;
         events.forEach((event) => {
@@ -147,20 +117,15 @@
         this.domOutput.append(eventsError);
         Drupal.announce('Error loading events. Please try again later.');
       }
-      this.toggleSpinner();
     }
 
-    toggleSpinner() {
-      if (this.spinner) {
-        this.spinner.style.display = this.spinner.style.display === 'block' ? 'none' : 'block';
-      }
-    }
 
     parseCardDomString(string) {
       const domTreeEl = new DOMParser().parseFromString(string, "text/html");
       return domTreeEl.querySelector('.card');
     }
 
+    // Filters and displays events based on the current filter settings.
     filterAndDisplayEvents() {
       const selectedYearRange = this.yearOptions[this.selectedYear].split(' - ');
       const startYear = parseInt(selectedYearRange[0]);
@@ -172,18 +137,21 @@
         const eventMonth = eventDate.getMonth();
 
         // Academic year is considered from August 1st to July 31st
-        const isInAcademicYear = (eventYear === startYear && eventMonth >= 8) ||
-          (eventYear === endYear && eventMonth < 8);
+        const isInAcademicYear =
+          (eventYear === startYear && eventMonth >= 7) || // Fall semester and start of academic year
+          (eventYear === endYear && (eventMonth < 8 || (eventMonth === 7 && eventDate.getDate() <= 31))) || // Spring, Summer, and August of end year
+          (eventYear > startYear && eventYear < endYear); // Full years in between, if any
+
 
         const matchesSubSession = event.subSession ? this.showSubSessions : true;
-        const matchesCategories = event.categories && Object.keys(event.categories).includes('STUDENT');
 
-        return isInAcademicYear && matchesSubSession && matchesCategories;
+        return isInAcademicYear && matchesSubSession;
       });
 
       this.displayEvents(filteredEvents);
     }
 
+    // Displays the filtered events.
     displayEvents(events) {
       this.domOutput = document.createElement("div");
 
@@ -210,6 +178,7 @@
       this.domOutput = document.createElement("div");
     }
 
+    // Adds date hiders to avoid repetitive date displays.
     addDateHiders(node) {
       const yearHeadings = node.querySelectorAll('h2');
       yearHeadings.forEach(yearHeading => {
@@ -241,6 +210,7 @@
       });
     }
 
+    // Displays events grouped by year and session.
     displayGroupedByYearAndSession(events) {
       Drupal.announce(`Grouping events by year and session.`);
 
@@ -264,6 +234,7 @@
       });
     }
 
+    // Groups events by year and session.
     groupEventsByYearAndSession(events) {
       const selectedYearRange = this.yearOptions[this.selectedYear].split(' - ');
       const startYear = parseInt(selectedYearRange[0]);
@@ -282,12 +253,12 @@
           sessionYear = endYear;
         }
 
-        // Ensure the event is in the correct academic year
+        // Ensure the event is in the correct academic year.
         if ((sessionName === 'Fall' && eventYear !== startYear) ||
           (sessionName === 'Winter' && (eventMonth === 12 && eventYear === startYear || eventMonth === 1 && eventYear === startYear + 1)) ||
           (sessionName === 'Spring' && eventYear !== endYear) ||
           (sessionName === 'Summer' && eventYear !== endYear)) {
-          return groups; // Skip this event if it's not in the correct year
+          return groups;
         }
 
         const sessionDisplay = `${sessionName} ${sessionYear}`;
@@ -314,6 +285,7 @@
       }, {});
     }
 
+    // Renders the year heading.
     renderYearHeading(year) {
       const yearHeading = document.createElement("h2");
       yearHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top');
@@ -321,6 +293,7 @@
       this.domOutput.append(yearHeading);
     }
 
+    // Renders the session heading and its events.
     renderSessionHeading(sessionDisplay, events) {
       const sessionHeading = document.createElement("h3");
       sessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra');
@@ -330,6 +303,7 @@
       events.forEach(event => this.renderEvent(event));
     }
 
+    //Renders the sub-session heading and its events.
     renderSubSessionHeading(subSessionDisplay, events) {
       const subSessionHeading = document.createElement("h4");
       subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--medium');

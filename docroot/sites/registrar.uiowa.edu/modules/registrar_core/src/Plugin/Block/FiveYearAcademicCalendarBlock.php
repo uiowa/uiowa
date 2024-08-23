@@ -2,7 +2,6 @@
 
 namespace Drupal\registrar_core\Plugin\Block;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormInterface;
@@ -108,74 +107,10 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return [
-      'steps' => 0,
-      'show_group_by_month' => 1,
-      'group_by_month' => 1,
-    ] + parent::defaultConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
-    $sessions = [];
-    foreach ($this->maui->getSessionsBounded() as $session) {
-      $sessions[$session->id] = Html::escape($session->shortDescription);
-    }
-
-    $form['steps'] = [
-      '#title' => $this->t('Session(s) to display'),
-      '#description' => $this->t('What session(s) you wish to display academic calendar information for.'),
-      '#type' => 'select',
-      '#options' => [
-        0 => $this->t('Current session'),
-        1 => $this->t('Current session, plus next session'),
-        2 => $this->t('Current session, plus next two sessions'),
-        3 => $this->t('Current session, plus next three sessions'),
-        4 => $this->t('Current session, plus next four sessions'),
-        5 => $this->t('Current session, plus next five sessions'),
-        10 => $this->t('Current session, plus next ten sessions'),
-      ],
-      '#default_value' => $this->configuration['steps'] ?? 0,
-      '#required' => FALSE,
-    ];
-
-    $form['include_past_sessions'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Include past sessions'),
-      '#description' => $this->t('Include an amount of sessions in the past equal to the number set above.'),
-      '#default_value' => $this->configuration['include_past_sessions'] ?? FALSE,
-    ];
-
-    $form['group_by_month'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Group by month'),
-      '#description' => $this->t('Default setting for grouping events by month.'),
-      '#default_value' => $this->configuration['group_by_month'] ?? FALSE,
-    ];
-    $form['show_group_by_month'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Expose "Group by month"'),
-      '#description' => $this->t('Expose group by month filter to visitors.'),
-      '#default_value' => $this->configuration['show_group_by_month'] ?? FALSE,
-    ];
-
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    parent::blockSubmit($form, $form_state);
-    $this->configuration['steps'] = $form_state->getValue('steps');
-    $this->configuration['include_past_sessions'] = $form_state->getValue('include_past_sessions');
-    $this->configuration['show_group_by_month'] = $form_state->getValue('show_group_by_month');
-    $this->configuration['group_by_month'] = $form_state->getValue('group_by_month');
   }
 
   /**
@@ -190,15 +125,15 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
         '#attributes' => [
           'class' => [
             'list-container__inner',
-            'sitenow-five-year-academic-calendar',
+            'sitenow-academic-calendar',
           ],
         ],
         'form' => $form,
         'calendar' => [
           '#type' => 'container',
           '#attributes' => [
-            'class' => ['five-year-academic-calendar content'],
-            'id' => 'five-year-academic-calendar-content',
+            'class' => ['academic-calendar content'],
+            'id' => 'academic-calendar-content',
           ],
           'content' => [
             '#lazy_builder' => [
@@ -215,29 +150,11 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'registrar_core/five-year-academic-calendar';
 
-    $current = $this->maui->getCurrentSession();
-    $steps = $this->configuration['steps'];
-    // Session range steps must be 1 or greater, so if we want only
-    // the current session, wrap it in an array but don't fetch others.
-    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    // Get the start date of the first session.
-    $first_session_start_date = $sessions[0]->startDate;
-
-    // Get the end date of the last session.
-    $last_session_end_date = end($sessions)->endDate;
-
     // Get the year options.
-    $yearOptions = $this->maui->getYearOptions(2, 5);
+    $yearOptions = $this->maui->getYearOptions(2, 10);
 
     // Add the configuration values to drupalSettings.
     $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'steps' => $steps,
-      'groupByMonth' => $this?->configuration['group_by_month'] ?? FALSE,
-      'showGroupByMonth' => $this?->configuration['show_group_by_month'] ?? FALSE,
-      'includePastSessions' => $this?->configuration['include_past_sessions'] ?? FALSE,
-      'firstSessionStartDate' => $first_session_start_date,
-      'lastSessionEndDate' => $last_session_end_date,
       'yearOptions' => $yearOptions,
       'defaultYear' => $this->maui->getFallSession()->id,
     ];
@@ -251,32 +168,17 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
-    $form['#id'] = 'five-year-academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'five-year-academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
+    $form['#id'] = 'academic-calendar-filter-form';
+    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
-
-    $form['year'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Year'),
-      '#options' => ['all' => $this->t('All Years')],
-      '#empty_option' => $this->t('- Select -'),
-      '#attributes' => ['class' => ['five-year-academic-calendar-year']],
-    ];
 
     $form['start_year'] = [
       '#type' => 'select',
       '#title' => $this->t('Year'),
-      '#description' => $this->t('Select a start year.'),
       '#default_value' => $this->maui->getFallSession()->id,
-      '#options' => $this->maui->getYearOptions(2, 5),
-      '#attributes' => ['class' => ['five-year-academic-calendar-year']],
-    ];
-
-    $form['start_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Start Date'),
-      '#attributes' => ['class' => ['element-invisible five-year-academic-calendar-start-date']],
+      '#options' => $this->maui->getYearOptions(2, 4),
+      '#attributes' => ['class' => ['academic-calendar-year']],
     ];
 
     $form['subsession'] = [
@@ -313,7 +215,6 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     return $form;
   }
 
-
   /**
    * A #lazy_builder callback.
    */
@@ -323,7 +224,7 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
 
     return [
       '#type' => 'container',
-      '#attributes' => ['class' => ['five-year-academic-calendar', 'content']],
+      '#attributes' => ['class' => ['academic-calendar', 'content']],
       'content' => [
         $skeletonLoader,
       ],
