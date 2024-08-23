@@ -29,7 +29,7 @@ type_settings:
       published: true
       default_revision: true
     review:
-      label: Review
+      label: Submit
       weight: -1
       published: false
       default_revision: false
@@ -59,6 +59,7 @@ type_settings:
       label: 'Needs Review'
       from:
         - draft
+        - published
         - review
       to: review
       weight: -1
