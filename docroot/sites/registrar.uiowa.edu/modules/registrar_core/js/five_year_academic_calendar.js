@@ -306,7 +306,7 @@
     //Renders the sub-session heading and its events.
     renderSubSessionHeading(subSessionDisplay, events) {
       const subSessionHeading = document.createElement("h4");
-      subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--medium');
+      subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra');
       subSessionHeading.innerText = subSessionDisplay;
       this.domOutput.append(subSessionHeading);
 
