@@ -246,7 +246,6 @@ class AcademicCalendarController extends ControllerBase {
       $dates = $this->maui->searchSessionDates($session->id, [
         'startDate' => $start,
         'endDate' => $end,
-        'fiveYearDate' => TRUE,
       ], TRUE);
 
       foreach ($dates as $date) {
