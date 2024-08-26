@@ -290,11 +290,10 @@ class MultisiteCommands extends BltTasks {
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
 
-        foreach ($this->getConfigValue('uiowa.applications') as $name => $uuid) {
+        if (array_key_exists($app, $uuids = $this->getConfigValue('uiowa.applications'))) {
+          $uuid = $uuids[$app];
           /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
           $databases = new Databases($client);
-
-          // Find the application that hosts the database.
           foreach ($databases->getAll($uuid) as $database) {
             if ($database->name == $db) {
               $databases->delete($uuid, $db);
