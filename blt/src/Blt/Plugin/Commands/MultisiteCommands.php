@@ -288,33 +288,40 @@ class MultisiteCommands extends BltTasks {
         }
 
         /** @var \AcquiaCloudApi\Connector\Client $client */
-        $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
+        $client = $this->getAcquiaCloudApiClient(
+          $this->getConfigValue('uiowa.credentials.acquia.key'),
+          $this->getConfigValue('uiowa.credentials.acquia.secret')
+        );
 
-        if (array_key_exists($app, $uuids = $this->getConfigValue('uiowa.applications'))) {
-          $uuid = $uuids[$app];
-          /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
-          $databases = new Databases($client);
-          foreach ($databases->getAll($uuid) as $database) {
-            if ($database->name == $db) {
-              $databases->delete($uuid, $db);
-              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$name}</comment> application.");
+        $uuids = $this->getConfigValue('uiowa.applications');
+        if (!array_key_exists($app, $uuids)) {
+          return;
+        }
 
-              /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-              $environments = new Environments($client);
+        $uuid = $uuids[$app];
+        /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+        $databases = new Databases($client);
 
-              foreach ($environments->getAll($uuid) as $environment) {
-                if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
-                  $domains = new Domains($client);
+        foreach ($databases->getAll($uuid) as $database) {
+          if ($database->name === $db) {
+            $databases->delete($uuid, $db);
+            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$name}</comment> application.");
 
-                  foreach ($intersect as $domain) {
-                    $domains->delete($environment->uuid, $domain);
-                    $this->say("Deleted <comment>{$domain}</comment> domain on {$name} application.");
-                  }
+            /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+            $environments = new Environments($client);
+
+            foreach ($environments->getAll($uuid) as $environment) {
+              if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+                $domains = new Domains($client);
+
+                foreach ($intersect as $domain) {
+                  $domains->delete($environment->uuid, $domain);
+                  $this->say("Deleted <comment>{$domain}</comment> domain on {$name} application.");
                 }
               }
-
-              break 2;
             }
+
+            break;
           }
         }
       }
