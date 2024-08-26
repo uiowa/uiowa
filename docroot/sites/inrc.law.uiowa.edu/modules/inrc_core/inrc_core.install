@@ -5,6 +5,8 @@
  * Install tasks.
  */
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -56,4 +58,63 @@ function inrc_core_update_10001() {
   $term_storage->delete($terms);
 
   return t('The cities taxonomy vocabulary terms have been deleted.');
+}
+
+/**
+ * Updates telephone and fax fields to text fields.
+ */
+function inrc_core_update_10002() {
+  $fields = [
+    'field_grant_phone',
+    'field_grant_fax',
+  ];
+
+  $entity_type = 'node';
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name) {
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (!$field_storage) {
+      continue;
+    }
+
+    $table = "node__$field_name";
+    $revision_table = "node_revision__$field_name";
+
+    // Fetch current data.
+    $rows = $database->select($table, 't')->fields('t')->execute()->fetchAll();
+    $revision_rows = $database->select($revision_table, 'r')->fields('r')->execute()->fetchAll();
+
+    $new_fields = [];
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'string';
+      $new_field['settings'] = ['max_length' => 255];
+      $new_fields[] = $new_field;
+    }
+
+    // Update field storage.
+    $new_field_storage = $field_storage->toArray();
+    $new_field_storage['type'] = 'string';
+    $new_field_storage['settings'] = ['max_length' => 255];
+    $field_storage->delete();
+    field_purge_batch(100);
+
+    // Create new field storage and fields.
+    FieldStorageConfig::create($new_field_storage)->save();
+    foreach ($new_fields as $new_field) {
+      FieldConfig::create($new_field)->save();
+    }
+
+    // Restore data.
+    foreach ($rows as $row) {
+      $database->insert($table)->fields((array) $row)->execute();
+    }
+    foreach ($revision_rows as $row) {
+      $database->insert($revision_table)->fields((array) $row)->execute();
+    }
+  }
+
+  return t('Updated telephone fields to string fields.');
 }

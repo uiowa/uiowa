@@ -21,12 +21,23 @@
           getFilterValues()
         );
 
+        // Toggle date input visibility if session is selected.
+        function toggleDateInputVisibility() {
+          const selectedSession = formEls.sessionSelectEl.value;
+          if (selectedSession === "") {
+            formEls.startDateEl.closest('.js-form-item').style.display = "block";
+          } else {
+            formEls.startDateEl.closest('.js-form-item').style.display = "none";
+          }
+        }
+
         // Fetch events and populate session filter.
         academicCalendar.fetchEvents().then(() => {
           populateSessionFilter(academicCalendar.uniqueSessions);
         });
 
-        formEls.showPreviousEventsEl.addEventListener('change', () => {
+        formEls.sessionSelectEl.addEventListener('change', function() {
+          toggleDateInputVisibility();
           updateFilterDisplay();
         });
 
@@ -34,23 +45,20 @@
           const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
 
           // Set initial state of 'Group by month' checkbox based on Drupal settings.
-          if (typeof initGroupByMonth !== 'undefined') {
-            groupByMonthCheckbox.checked = initGroupByMonth === 1;
-          }
-
+          groupByMonthCheckbox.checked = initGroupByMonth;
+          academicCalendar.groupByMonth = initGroupByMonth;
           // Add event listener for changes to 'Group by month' checkbox.
           groupByMonthCheckbox.addEventListener('change', () => {
             academicCalendar.groupByMonth = groupByMonthCheckbox.checked;
             updateFilterDisplay();
           });
-
-          // Initial toggle of 'Show previous events' checkbox.
-          toggleShowPreviousEvents(groupByMonthCheckbox);
+        } else {
+          academicCalendar.groupByMonth = initGroupByMonth;
         }
 
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
-          if (['search', 'session', 'start_date', 'end_date', 'group_by_month', 'show_previous_events', 'select', '#group-by-month', '#show-previous-events'].includes(event.target.name)) {
+          if (['search', 'session', 'start_date', 'group_by_month', 'select', '#group-by-month', 'category'].includes(event.target.name)) {
             updateFilterDisplay();
           }
         });
@@ -81,6 +89,18 @@
           updateFilterDisplay();
         });
 
+        // Form reset.
+        formEls.resetButton.style.display = 'none';
+
+        if (formEls.resetButton) {
+          formEls.resetButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            formEl.reset();
+            updateFilterDisplay();
+            formEls.resetButton.style.display = 'none';
+          });
+        }
+
         if (formEls.categoryEl) {
           const observer = new MutationObserver(function () {
             updateFilterDisplay();
@@ -97,7 +117,11 @@
           else{
             updateAcademicCalendarFromFilters();
             academicCalendar.filterAndDisplayEvents();
+            if (formEls.resetButton) {
+              formEls.resetButton.style.display = 'inline-block';
+            }
           }
+          toggleDateInputVisibility();
         }
 
         // Function to update AcademicCalendar object based on form filters.
@@ -105,10 +129,13 @@
           const filterValues = getFilterValues();
           academicCalendar.searchTerm = filterValues.searchTerm;
           academicCalendar.startDate = filterValues.startDate;
-          academicCalendar.endDate = filterValues.endDate;
           academicCalendar.selectedSession = filterValues.selectedSession;
-          academicCalendar.showPreviousEvents = filterValues.showPreviousEvents;
           academicCalendar.selectedCategories = filterValues.selectedCategories;
+          // Update groupByMonth.
+          if (showGroupByMonth) {
+            const groupByMonthCheckbox = calendarEl.querySelector('#group-by-month');
+            academicCalendar.groupByMonth = groupByMonthCheckbox ? groupByMonthCheckbox.checked : initGroupByMonth;
+          }
         }
 
         // Function to get the values of the filters at call time.
@@ -116,31 +143,9 @@
           return {
             'searchTerm' : formEls.searchTermEl.value.toLowerCase(),
             'startDate' : formEls.startDateEl.value,
-            'endDate' : formEls.endDateEl.value,
             'selectedSession' : formEls.sessionSelectEl.value,
-            'showPreviousEvents' : formEls.showPreviousEventsEl.checked,
-            'selectedCategories' : getChosenChoices(formEls.categoryEl),
+            'selectedCategories' : formEls.categoryEl.value,
           };
-        }
-
-        // Function to get the `chosen` values from a `chosen` field.
-        function getChosenChoices(chosen) {
-          const choices = [];
-          const isDisabled = !chosen || chosen.classList.contains('chosen-disabled');
-
-          if(!isDisabled) {
-
-            const domChoices = chosen.querySelectorAll('.chosen-choices .search-choice');
-
-            domChoices.forEach((choice) => {
-              choices.push(choice.innerText);
-            });
-
-            return choices;
-          }
-          else {
-            return ['All Student Dates'];
-          }
         }
 
         // Function to get the form elements for future use.
@@ -148,10 +153,9 @@
           return {
             'searchTermEl' : formEl.querySelector('.academic-calendar-search'),
             'startDateEl' : formEl.querySelector('.academic-calendar-start-date'),
-            'endDateEl' : formEl.querySelector('.academic-calendar-end-date'),
             'sessionSelectEl' : formEl.querySelector('select[name="session"]'),
-            'showPreviousEventsEl' : formEl.querySelector('#show-previous-events'),
-            'categoryEl' : formEl.querySelector('#edit_category_chosen'),
+            'categoryEl' : formEl.querySelector('select[name="category"]'),
+            'resetButton' : formEl.querySelector('.js-form-reset'),
           }
         }
 
@@ -206,13 +210,6 @@
           formEls.sessionSelectEl.innerHTML = sessionBuffer;
           formEls.sessionSelectEl.value = sessions.has(currentValue) ? currentValue : '';
         }
-
-        // Function to toggle visibility of 'Show previous events' checkbox.
-        function toggleShowPreviousEvents(checkbox) {
-          const container = formEls.showPreviousEventsEl.closest('.js-form-item');
-          const shouldShow = showGroupByMonth ? (checkbox && checkbox.checked) : (calendarSettings.groupByMonth === 1);
-          container.style.display = shouldShow ? 'block' : 'none';
-        }
       });
     }
   };
@@ -224,16 +221,14 @@
       // Keep the HTML here so that we can add it all at once, preventing content refreshes.
       this.domOutput = document.createElement("div");
       this.allEvents = [];
-      this.calendarEl = calendarEl;
       this.startDate = filterValues.startDate;
-      this.endDate = filterValues.endDate;
+      // @todo remove endDate once approved by registrar.
+      this.endDate = '';
       this.searchTerm = filterValues.searchTerm;
       this.steps = steps;
       this.includePastSessions = includePastSessions;
-
       this.groupByMonth = groupByMonth;
       this.selectedSession = filterValues.selectedSession;
-      this.showPreviousEvents = filterValues.showPreviousEvents;
       this.selectedCategories = filterValues.selectedCategories;
       // Initialize variables to store all events and unique sessions.
       this.uniqueSessions = new Set();
@@ -314,31 +309,28 @@
       const searchTerm = this.searchTerm;
       const today = new Date();
       const startDate = new Date(this.startDate);
-      const endDate = new Date(this.endDate);
 
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
-        const eventStart = new Date(event.start);
         const eventEnd = new Date(event.end);
+        const startCheck = this.selectedSession ? true : (!startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
           event.description.toLowerCase().includes(searchTerm);
-        const startCheck = !startDate.valueOf() ? !this.showPreviousEvents ? eventEnd >= today : true : eventEnd >= startDate;
-        const endCheck = (!endDate.valueOf() || eventStart <= endDate)
-        const matchesDateRange = (startCheck) && (endCheck);
+
         const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
 
-        let matchCategories = false;
-        const eventCategories = Object.values(event.categories);
-        eventCategories.forEach((category) => {
-          if (this.selectedCategories.includes(category)) {
-            matchCategories = true;
-          }
-        });
+        let matchesCategories;
+        if (this.selectedCategories === 'STUDENT') {
+          matchesCategories = true;
+        } else {
+          matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
+        }
 
-        return matchesSearch && matchesDateRange && matchesSession&& matchCategories;
+        return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
+
       // @todo Implement this.
       this.displayEvents(filteredEvents);
 
@@ -371,7 +363,7 @@
       events.sort((a, b) => new Date(a.start) - new Date(b.start));
 
       if (this.groupByMonth) {
-        this.displayGroupedByMonth(events, this.showPreviousEvents);
+        this.displayGroupedByMonth(events);
       } else {
         this.displayGroupedBySession(events);
       }
@@ -404,7 +396,7 @@
     }
 
     // Function to display events grouped by month.
-     displayGroupedByMonth(events, showPreviousEvents) {
+    displayGroupedByMonth(events) {
       const groupedEvents = events.reduce((groups, event) => {
         const date = new Date(event.start);
         const month = date.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -414,33 +406,12 @@
       }, {});
 
       Drupal.announce(`Grouping events by month.`);
-      const now = new Date();
-      const currentMonthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' });
-      const currentMonthDate = new Date(currentMonthYear);
+
+      // Sort months chronologically.
       const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
-      const splitMonths = (months, current) => {
-        const pastMonths = [];
-        const futureMonths = [];
 
-        for (let month of months) {
-          const monthDate = new Date(month);
-          if (monthDate < current) {
-            pastMonths.push(month);
-          } else {
-            futureMonths.push(month);
-          }
-        }
-
-        return { pastMonths, futureMonths };
-      };
-
-      const { pastMonths, futureMonths } = splitMonths(sortedMonths, currentMonthDate);
-
-      if (showPreviousEvents) {
-        Drupal.announce(`Including past events.`);
-        this.renderMonths(pastMonths, groupedEvents);
-      }
-      this.renderMonths(futureMonths, groupedEvents);
+      // Render all months, including past ones.
+      this.renderMonths(sortedMonths, groupedEvents);
     }
 
     // Function to display events grouped by session.
