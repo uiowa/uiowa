@@ -404,7 +404,7 @@ class MauiApi {
     foreach ($range as $session) {
       $startYear = date('Y', strtotime($session->startDate));
       $endYear = substr((string) ($startYear + 1), -2);
-      $academicYear = "{$startYear} - {$endYear}";
+      $academicYear = "{$startYear}-{$endYear}";
 
       // Use the academic year as the key to avoid duplicates.
       if (!isset($options[$academicYear])) {
@@ -412,7 +412,7 @@ class MauiApi {
       }
     }
 
-    // Flip the array to have session IDs as keys and academic years as values.
+    // Flip to have session IDs as keys and academic years as values.
     return array_flip($options);
   }
 

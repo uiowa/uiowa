@@ -150,15 +150,6 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     $build['#attached']['library'][] = 'uids_base/card';
     $build['#attached']['library'][] = 'registrar_core/five-year-academic-calendar';
 
-    // Get the year options.
-    $yearOptions = $this->maui->getYearOptions(2, 10);
-
-    // Add the configuration values to drupalSettings.
-    $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'yearOptions' => $yearOptions,
-      'defaultYear' => $this->maui->getFallSession()->id,
-    ];
-
     return $build;
   }
 
@@ -172,18 +163,20 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
+    $yearOptions = $this->maui->getYearOptions(4, 4);
+    $defaultYear = $this->maui->getFallSession()->id;
 
     $form['start_year'] = [
       '#type' => 'select',
-      '#title' => $this->t('Year'),
-      '#default_value' => $this->maui->getFallSession()->id,
-      '#options' => $this->maui->getYearOptions(2, 4),
+      '#title' => $this->t('Academic Year'),
+      '#default_value' => $defaultYear,
+      '#options' => $yearOptions,
       '#attributes' => ['class' => ['academic-calendar-year']],
     ];
 
     $form['subsession'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show subsessions'),
+      '#title' => $this->t('Show sub-sessions'),
       '#id' => 'subsession',
       '#default_value' => $current_request->query->get('subsession', FALSE),
     ];
@@ -210,6 +203,12 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
           'js-form-reset',
         ],
       ],
+    ];
+
+    // Add configuration values to drupalSettings.
+    $form['#attached']['drupalSettings']['academicCalendar'] = [
+      'yearOptions' => $yearOptions,
+      'defaultYear' => $defaultYear,
     ];
 
     return $form;

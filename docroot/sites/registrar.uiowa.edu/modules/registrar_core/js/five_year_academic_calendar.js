@@ -10,7 +10,30 @@
         const formEl = calendarEl.querySelector('#academic-calendar-filter-form');
         const formEls = getFormEls(formEl);
 
-        // Initialize the AcademicCalendar object.
+        // Function to get year range from year ID.
+        function getYearRangeFromId(yearId) {
+          return yearOptions[yearId] || '';
+        }
+
+        // Check for hash in URL and update the year if it matches.
+        function checkUrlHash() {
+          const hash = window.location.hash.substring(1);
+          if (hash && yearOptions.hasOwnProperty(hash)) {
+            formEls.startYearSelectEl.value = hash;
+            return hash;
+          }
+          return defaultYear;
+        }
+
+        // Update URL hash with year range.
+        function updateUrlHash(yearId) {
+          const yearRange = getYearRangeFromId(yearId);
+          history.replaceState(null, null, `#${yearRange}`);
+        }
+
+        // Initialize the AcademicCalendar object with the year from URL or default.
+        const initialYear = checkUrlHash();
+        updateUrlHash(initialYear);
         const academicCalendar = new AcademicCalendar(
           calendarEl,
           getFilterValues(),
@@ -23,8 +46,9 @@
 
         formEls.startYearSelectEl.addEventListener('change', function() {
           updateFilterDisplay();
+          updateUrlHash(this.value);
         });
-
+        
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
           if (['start_year', 'subsession', '#subsession'].includes(event.target.name)) {
@@ -47,8 +71,19 @@
             formEl.reset();
             updateFilterDisplay();
             formEls.resetButton.style.display = 'none';
+            // Clear URL hash on reset.
+            history.pushState("", document.title, window.location.pathname + window.location.search);
           });
         }
+
+        // Listen for hashchange events.
+        window.addEventListener('hashchange', function() {
+          const newYear = checkUrlHash();
+          if (newYear !== academicCalendar.selectedYear) {
+            formEls.startYearSelectEl.value = newYear;
+            updateFilterDisplay(true);
+          }
+        });
 
         function updateFilterDisplay(call = false) {
           if (call) {
@@ -127,7 +162,7 @@
 
     // Filters and displays events based on the current filter settings.
     filterAndDisplayEvents() {
-      const selectedYearRange = this.yearOptions[this.selectedYear].split(' - ');
+      const selectedYearRange = this.yearOptions[this.selectedYear].split('-');
       const startYear = parseInt(selectedYearRange[0]);
       const endYear = parseInt('20' + selectedYearRange[1]);
 
@@ -136,12 +171,10 @@
         const eventYear = eventDate.getFullYear();
         const eventMonth = eventDate.getMonth();
 
-        // Academic year is considered from August 1st to July 31st
         const isInAcademicYear =
-          (eventYear === startYear && eventMonth >= 7) || // Fall semester and start of academic year
-          (eventYear === endYear && (eventMonth < 8 || (eventMonth === 7 && eventDate.getDate() <= 31))) || // Spring, Summer, and August of end year
-          (eventYear > startYear && eventYear < endYear); // Full years in between, if any
-
+          (eventYear === startYear && eventMonth >= 7) ||
+          (eventYear === endYear && (eventMonth < 8 || (eventMonth === 7 && eventDate.getDate() <= 31))) ||
+          (eventYear > startYear && eventYear < endYear);
 
         const matchesSubSession = event.subSession ? this.showSubSessions : true;
 
@@ -236,7 +269,7 @@
 
     // Groups events by year and session.
     groupEventsByYearAndSession(events) {
-      const selectedYearRange = this.yearOptions[this.selectedYear].split(' - ');
+      const selectedYearRange = this.yearOptions[this.selectedYear].split('-');
       const startYear = parseInt(selectedYearRange[0]);
       const endYear = parseInt('20' + selectedYearRange[1]);
 
@@ -288,7 +321,7 @@
     // Renders the year heading.
     renderYearHeading(year) {
       const yearHeading = document.createElement("h2");
-      yearHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top');
+      yearHeading.classList.add('headline', 'headline--underline', 'headline--serif', 'block-margin__bottom--extra', 'block-padding__top');
       yearHeading.innerText = `Academic Year ${this.yearOptions[year]}`;
       this.domOutput.append(yearHeading);
     }
@@ -303,7 +336,7 @@
       events.forEach(event => this.renderEvent(event));
     }
 
-    //Renders the sub-session heading and its events.
+    // Renders the sub-session heading and its events.
     renderSubSessionHeading(subSessionDisplay, events) {
       const subSessionHeading = document.createElement("h4");
       subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra');
