@@ -316,7 +316,7 @@ class MultisiteCommands extends BltTasks {
 
                 foreach ($intersect as $domain) {
                   $domains->delete($environment->uuid, $domain);
-                  $this->say("Deleted <comment>{$domain}</comment> domain on {$name} application.");
+                  $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
                 }
               }
             }
@@ -362,7 +362,7 @@ EOD
         $task->add("config/sites/$dir");
       }
 
-      $task->commit("Delete {$dir} multisite on {$name}")
+      $task->commit("Delete {$dir} multisite on {$app}")
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
