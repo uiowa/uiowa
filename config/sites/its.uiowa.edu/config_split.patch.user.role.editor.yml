@@ -5,6 +5,7 @@ adding:
       - node.type.service
       - node.type.support_article
       - workflows.workflow.alert
+      - workflows.workflow.draft
     module:
       - replicate_ui
   permissions:
@@ -22,15 +23,25 @@ adding:
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
     - 'enter support_article revision log entry'
-    - 'override service published option'
-    - 'override support_article published option'
     - 'replicate entities'
     - 'revert alert revisions'
     - 'revert service revisions'
     - 'revert support_article revisions'
     - 'use alert transition create_new_draft'
     - 'use alert transition needs_review'
+    - 'use draft transition archived_published'
+    - 'use draft transition create_new_draft'
+    - 'use draft transition publish'
+    - 'use editorial transition archive'
     - 'view alert revisions'
     - 'view service revisions'
     - 'view support_article revisions'
-removing: {  }
+removing:
+  permissions:
+    - 'create page content'
+    - 'delete own page content'
+    - 'delete page revisions'
+    - 'edit any page content'
+    - 'edit own page content'
+    - 'override page published option'
+    - 'revert page revisions'

@@ -10,7 +10,6 @@ adding:
     module:
       - content_moderation
       - paragraphs
-      - uiowa_core
   content:
     body:
       weight: 12
@@ -94,10 +93,11 @@ adding:
     sticky:
       weight: 8
     title:
-      type: string_case_widget
       weight: 1
     uid:
       weight: 2
+  hidden:
+    title: true
 removing:
   dependencies:
     config:
@@ -139,8 +139,11 @@ removing:
     sticky:
       weight: 9
     title:
-      type: string_textfield
       weight: 12
+      settings:
+        size: 60
+        placeholder: ''
+      type: string_textfield
     uid:
       weight: 0
   hidden:
