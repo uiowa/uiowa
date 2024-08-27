@@ -136,7 +136,8 @@
   [type='time'],
   [type='url'],
   [type='color'],
-  textarea {
+  textarea,
+  select {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -206,6 +207,15 @@
     appearance: none;
     @include bttn;
     font-family: $font-family-caps-bold;
+
+    &.button--small {
+      padding: 0.6rem 1rem 0.8rem;
+      font-size: 1.05rem;
+    }
+
+    &.button--full-width {
+      width: 100%;
+    }
   }
 
   input[type='search'] {
@@ -214,7 +224,7 @@
   }
 
   input[id^='edit-submit'][type='submit'],
-  input#edit-actions-submit {
+  input[id^='edit-actions-submit'] {
     @include bttn--primary;
   }
 
@@ -300,7 +310,7 @@
     font-size: $base-font-size;
     font-weight: normal;
     line-height: 1.5;
-    @include margin($top: 0, $right: 0, $bottom: $sm);
+    @include margin($top: 0, $right: 0, $bottom: 1rem);
     appearance: none;
     @include padding($right: $lg, $left: $md);
   }
