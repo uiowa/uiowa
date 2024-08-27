@@ -332,7 +332,7 @@
         return groups;
       }, {});
 
-      // Sort summer subsessions
+      // Sort summer subsessions.
       if (groups['Summer'] && groups['Summer'].subsessions) {
         const sortedSubsessions = {};
         this.summerSessionOrder.forEach(sessionName => {
