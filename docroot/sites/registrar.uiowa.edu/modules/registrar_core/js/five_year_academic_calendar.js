@@ -48,7 +48,7 @@
           updateFilterDisplay();
           updateUrlHash(this.value);
         });
-        
+
         // Attach filter functionality to form elements.
         formEl.addEventListener('change', function (event) {
           if (['start_year', 'subsession', '#subsession'].includes(event.target.name)) {
@@ -132,6 +132,7 @@
       this.selectedYear = filterValues.selectedYear || this.defaultYear;
       this.showSubSessions = filterValues.showSubSessions;
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
+      this.summerSessionOrder = ['6 Week I', '12 Week', '4 Week', '8 Week', '6 Week II'];
     }
 
     async fetchEvents() {
@@ -259,21 +260,35 @@
           this.renderSessionHeading(sessionDisplay, events);
 
           if (subsessions) {
-            Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
-              this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
-            });
+            if (session === 'Summer') {
+              const renderedSubSessions = new Set();
+              this.summerSessionOrder.forEach(subSessionName => {
+                Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
+                  if (subSessionDisplay.includes(subSessionName) && !renderedSubSessions.has(subSessionName)) {
+                    this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
+                    renderedSubSessions.add(subSessionName);
+                  }
+                });
+              });
+            } else {
+              Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
+                this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
+              });
+            }
           }
         }
       });
     }
 
+
     // Groups events by year and session.
+
     groupEventsByYearAndSession(events) {
       const selectedYearRange = this.yearOptions[this.selectedYear].split('-');
       const startYear = parseInt(selectedYearRange[0]);
       const endYear = parseInt('20' + selectedYearRange[1]);
 
-      return events.reduce((groups, event) => {
+      const groups = events.reduce((groups, event) => {
         const eventDate = new Date(event.start);
         const eventYear = eventDate.getFullYear();
         const eventMonth = eventDate.getMonth();
@@ -316,7 +331,24 @@
 
         return groups;
       }, {});
+
+      // Sort summer subsessions
+      if (groups['Summer'] && groups['Summer'].subsessions) {
+        const sortedSubsessions = {};
+        this.summerSessionOrder.forEach(sessionName => {
+          Object.keys(groups['Summer'].subsessions).forEach(key => {
+            if (key.includes(sessionName)) {
+              sortedSubsessions[key] = groups['Summer'].subsessions[key];
+            }
+          });
+        });
+        groups['Summer'].subsessions = sortedSubsessions;
+      }
+
+      return groups;
     }
+
+
 
     // Renders the year heading.
     renderYearHeading(year) {
@@ -340,7 +372,11 @@
     renderSubSessionHeading(subSessionDisplay, events) {
       const subSessionHeading = document.createElement("h4");
       subSessionHeading.classList.add('headline', 'headline--serif', 'block-margin__bottom--extra');
-      subSessionHeading.innerText = subSessionDisplay;
+      // Remove the year from the subSessionDisplay.
+      const displayParts = subSessionDisplay.split(' ');
+      displayParts.pop();
+      const cleanedDisplay = displayParts.join(' ');
+      subSessionHeading.innerText = cleanedDisplay;
       this.domOutput.append(subSessionHeading);
 
       events.forEach(event => this.renderEvent(event));
