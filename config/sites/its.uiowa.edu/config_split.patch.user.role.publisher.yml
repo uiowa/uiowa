@@ -4,6 +4,7 @@ adding:
       - node.type.service
       - node.type.support_article
       - workflows.workflow.alert
+      - workflows.workflow.draft
   permissions:
     - 'create support_article content'
     - 'delete any support_article content'
@@ -30,6 +31,10 @@ adding:
     - 'use alert transition create_new_draft'
     - 'use alert transition needs_review'
     - 'use alert transition publish'
+    - 'use draft transition archive'
+    - 'use draft transition archived_published'
+    - 'use draft transition create_new_draft'
+    - 'use draft transition publish'
     - 'view service revisions'
     - 'view support_article revisions'
 removing:

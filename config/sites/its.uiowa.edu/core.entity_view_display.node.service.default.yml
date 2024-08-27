@@ -36,6 +36,33 @@ third_party_settings:
       -
         layout_id: layout_onecol
         layout_settings:
+          label: Moderation
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_container_narrow
+        components:
+          -
+            uuid: ''
+            region: content
+            configuration:
+              id: 'extra_field_block:node:service:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
