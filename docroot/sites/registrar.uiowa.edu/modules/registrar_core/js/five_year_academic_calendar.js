@@ -78,19 +78,14 @@
           }
         });
 
-        function updateFilterDisplay(call = false) {
-          if (call) {
-            updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents.call(academicCalendar);
-          }
-          else {
-            updateAcademicCalendarFromFilters();
-            academicCalendar.filterAndDisplayEvents();
-            if (formEls.resetButton) {
-              formEls.resetButton.style.display = 'inline-block';
-            }
+        function updateFilterDisplay() {
+          updateAcademicCalendarFromFilters();
+          academicCalendar.filterAndDisplayEvents();
+          if (formEls.resetButton) {
+            formEls.resetButton.style.display = 'inline-block';
           }
         }
+
 
         function updateAcademicCalendarFromFilters() {
           const filterValues = getFilterValues();
