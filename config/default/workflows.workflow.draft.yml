@@ -1,15 +1,11 @@
-uuid: 141eaaa7-2876-453d-9a8f-c340b1f50b07
+uuid: d237e481-7313-4ec4-83a8-75b3d13ca8de
 langcode: en
 status: true
 dependencies:
-  config:
-    - node.type.alert
   module:
     - content_moderation
-  enforced:
-    config: {  }
-id: alert
-label: Alert
+id: draft
+label: Draft
 type: content_moderation
 type_settings:
   states:
@@ -20,7 +16,7 @@ type_settings:
       default_revision: true
     draft:
       label: Draft
-      weight: -2
+      weight: -1
       published: false
       default_revision: false
     published:
@@ -28,11 +24,6 @@ type_settings:
       weight: 0
       published: true
       default_revision: true
-    review:
-      label: Submit
-      weight: -1
-      published: false
-      default_revision: false
   transitions:
     archive:
       label: Archive
@@ -52,26 +43,14 @@ type_settings:
         - archived
         - draft
         - published
-        - review
       to: draft
-      weight: -2
-    needs_review:
-      label: 'Needs Review'
-      from:
-        - draft
-        - published
-        - review
-      to: review
       weight: -1
     publish:
       label: Publish
       from:
         - draft
         - published
-        - review
       to: published
       weight: 0
-  entity_types:
-    node:
-      - alert
+  entity_types: {  }
   default_moderation_state: draft
