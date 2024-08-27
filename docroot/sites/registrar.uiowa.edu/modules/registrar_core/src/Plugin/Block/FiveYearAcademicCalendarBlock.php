@@ -162,7 +162,6 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     $form['#id'] = 'academic-calendar-filter-form';
     $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
-    $current_request = $this->requestStack->getCurrentRequest();
     $yearOptions = $this->maui->getYearOptions(4, 4);
     $defaultYear = $this->maui->getFallSession()->id;
 
@@ -174,13 +173,6 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
       '#attributes' => ['class' => ['academic-calendar-year']],
     ];
 
-    $form['subsession'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show sub-sessions'),
-      '#id' => 'subsession',
-      '#default_value' => $current_request->query->get('subsession', FALSE),
-    ];
-
     $form['actions'] = [
       '#type' => 'actions',
       '#attributes' => ['class' => ['form-actions--stacked']],
@@ -188,7 +180,7 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
 
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Search'),
+      '#value' => $this->t('Submit'),
       '#attributes' => ['class' => ['bttn--full']],
     ];
 

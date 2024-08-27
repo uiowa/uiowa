@@ -49,13 +49,6 @@
           updateUrlHash(this.value);
         });
 
-        // Attach filter functionality to form elements.
-        formEl.addEventListener('change', function (event) {
-          if (['start_year', 'subsession', '#subsession'].includes(event.target.name)) {
-            updateFilterDisplay();
-          }
-        });
-
         // Handle form submission.
         formEl.addEventListener('submit', function (e) {
           e.preventDefault();
@@ -90,7 +83,7 @@
             updateAcademicCalendarFromFilters();
             academicCalendar.filterAndDisplayEvents.call(academicCalendar);
           }
-          else{
+          else {
             updateAcademicCalendarFromFilters();
             academicCalendar.filterAndDisplayEvents();
             if (formEls.resetButton) {
@@ -102,21 +95,18 @@
         function updateAcademicCalendarFromFilters() {
           const filterValues = getFilterValues();
           academicCalendar.selectedYear = filterValues.selectedYear;
-          academicCalendar.showSubSessions = filterValues.showSubSessions;
         }
 
         function getFilterValues() {
           return {
-            'selectedYear' : formEls.startYearSelectEl.value,
-            'showSubSessions' : formEls.showSubSessionEl.checked,
+            'selectedYear': formEls.startYearSelectEl.value,
           };
         }
 
         function getFormEls(formEl) {
           return {
-            'startYearSelectEl' : formEl.querySelector('select[name="start_year"]'),
-            'resetButton' : formEl.querySelector('.js-form-reset'),
-            'showSubSessionEl' : formEl.querySelector('#subsession'),
+            'startYearSelectEl': formEl.querySelector('select[name="start_year"]'),
+            'resetButton': formEl.querySelector('.js-form-reset'),
           }
         }
       });
@@ -130,15 +120,13 @@
       this.yearOptions = yearOptions;
       this.defaultYear = defaultYear;
       this.selectedYear = filterValues.selectedYear || this.defaultYear;
-      this.showSubSessions = filterValues.showSubSessions;
       this.calendarContent = calendarEl.querySelector('#academic-calendar-content');
-      this.summerSessionOrder = ['6 Week I', '12 Week', '4 Week', '8 Week', '6 Week II'];
     }
 
     async fetchEvents() {
       Drupal.announce('Fetching events.');
       try {
-        const response = await fetch(`/api/five-year-academic-calendar?subsession=1&steps=30&includePastSessions=1`);
+        const response = await fetch(`/api/five-year-academic-calendar`);
         const events = await response.json();
         this.allEvents = events;
         events.forEach((event) => {
@@ -154,7 +142,6 @@
         Drupal.announce('Error loading events. Please try again later.');
       }
     }
-
 
     parseCardDomString(string) {
       const domTreeEl = new DOMParser().parseFromString(string, "text/html");
@@ -172,14 +159,9 @@
         const eventYear = eventDate.getFullYear();
         const eventMonth = eventDate.getMonth();
 
-        const isInAcademicYear =
-          (eventYear === startYear && eventMonth >= 7) ||
+        return (eventYear === startYear && eventMonth >= 7) ||
           (eventYear === endYear && (eventMonth < 8 || (eventMonth === 7 && eventDate.getDate() <= 31))) ||
           (eventYear > startYear && eventYear < endYear);
-
-        const matchesSubSession = event.subSession ? this.showSubSessions : true;
-
-        return isInAcademicYear && matchesSubSession;
       });
 
       this.displayEvents(filteredEvents);
@@ -224,7 +206,7 @@
             datesFound = [];
           }
 
-          if (currentElement.tagName === 'H4' && this.showSubSessions) {
+          if (currentElement.tagName === 'H4') {
             datesFound = [];
           }
 
@@ -260,29 +242,15 @@
           this.renderSessionHeading(sessionDisplay, events);
 
           if (subsessions) {
-            if (session === 'Summer') {
-              const renderedSubSessions = new Set();
-              this.summerSessionOrder.forEach(subSessionName => {
-                Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
-                  if (subSessionDisplay.includes(subSessionName) && !renderedSubSessions.has(subSessionName)) {
-                    this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
-                    renderedSubSessions.add(subSessionName);
-                  }
-                });
-              });
-            } else {
-              Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
-                this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
-              });
-            }
+            Object.entries(subsessions).forEach(([subSessionDisplay, subSessionEvents]) => {
+              this.renderSubSessionHeading(subSessionDisplay, subSessionEvents);
+            });
           }
         }
       });
     }
 
-
     // Groups events by year and session.
-
     groupEventsByYearAndSession(events) {
       const selectedYearRange = this.yearOptions[this.selectedYear].split('-');
       const startYear = parseInt(selectedYearRange[0]);
@@ -335,20 +303,28 @@
       // Sort summer subsessions.
       if (groups['Summer'] && groups['Summer'].subsessions) {
         const sortedSubsessions = {};
-        this.summerSessionOrder.forEach(sessionName => {
-          Object.keys(groups['Summer'].subsessions).forEach(key => {
-            if (key.includes(sessionName)) {
-              sortedSubsessions[key] = groups['Summer'].subsessions[key];
-            }
-          });
+        const subsessionEntries = Object.entries(groups['Summer'].subsessions);
+
+        subsessionEntries.sort((a, b) => {
+          const getWeekNumber = (str) => {
+            const match = str.match(/(\d+)\s*(Week|wk)/i);
+            return match ? parseInt(match[1]) : 0;
+          };
+          const weekA = getWeekNumber(a[0]);
+          const weekB = getWeekNumber(b[0]);
+
+          return weekA - weekB;
         });
+
+        subsessionEntries.forEach(([key, value]) => {
+          sortedSubsessions[key] = value;
+        });
+
         groups['Summer'].subsessions = sortedSubsessions;
       }
 
       return groups;
     }
-
-
 
     // Renders the year heading.
     renderYearHeading(year) {
