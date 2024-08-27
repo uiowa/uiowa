@@ -305,7 +305,7 @@ class MultisiteCommands extends BltTasks {
         foreach ($databases->getAll($uuid) as $database) {
           if ($database->name === $db) {
             $databases->delete($uuid, $db);
-            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$name}</comment> application.");
+            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
 
             /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
             $environments = new Environments($client);
