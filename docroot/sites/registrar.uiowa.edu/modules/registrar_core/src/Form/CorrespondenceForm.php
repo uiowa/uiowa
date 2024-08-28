@@ -2,6 +2,7 @@
 
 namespace Drupal\registrar_core\Form;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
@@ -77,35 +78,40 @@ class CorrespondenceForm extends FormBase {
 
     $rows = [];
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
-    $archives = $this->dispatchGetData($endpoint . 'archives?visible=true');
+    $dispatch_params = [
+      'visible' => 'true',
+      'tag' => 'registrar',
+    ];
+    $query = UrlHelper::buildQuery($dispatch_params);
+    $archives = $this->dispatchGetData($endpoint . "archives?{$query}");
 
     foreach ($archives as $archive_url) {
       $archive = $this->dispatchGetData($archive_url);
+      $communication = $this->dispatchGetData($archive->communication);
 
-      if ($archive?->hidden === FALSE) {
-        $date = date('m/d/Y', strtotime($archive->createdOn));
-        $communication = $this->dispatchGetData($archive->communication);
-        $campaign = $this->dispatchGetData($communication->campaign);
-
+      // Filter out ones that don't match our filter tag,
+      // if "all" was not selected.
+      if ($audience !== 'all') {
         $matches = [
-          'all' => 'registrar',
           'student' => 'student',
           'faculty_staff' => 'faculty/staff',
         ];
-
+        $campaign = $this->dispatchGetData($communication->campaign);
         if (in_array($matches[$audience], $campaign->tags)) {
-          $population = $this->dispatchGetData($communication->population);
-
-          $key = basename($archive_url);
-
-          $rows[] = [
-            $date,
-            $communication->email->fromName,
-            Link::fromTextAndUrl($communication->email->subject, Url::fromUri("https://apps.its.uiowa.edu/dispatch/archive/{$key}")),
-            $population->name,
-          ];
+          continue;
         }
       }
+
+      $date = date('m/d/Y', strtotime($archive->createdOn));
+      $population = $this->dispatchGetData($communication->population);
+      $key = basename($archive_url);
+
+      $rows[] = [
+        $date,
+        $communication->email->fromName,
+        Link::fromTextAndUrl($communication->email->subject, Url::fromUri("https://apps.its.uiowa.edu/dispatch/archive/{$key}")),
+        $population->name,
+      ];
     }
 
     $headers = [
