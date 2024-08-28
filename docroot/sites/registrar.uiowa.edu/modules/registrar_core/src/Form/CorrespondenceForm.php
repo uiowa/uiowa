@@ -87,6 +87,12 @@ class CorrespondenceForm extends FormBase {
 
     foreach ($archives as $archive_url) {
       $archive = $this->dispatchGetData($archive_url);
+      // Archives are retrieved in order, so once we hit one
+      // that is prior to 2 years ago from today (63072000 seconds),
+      // we can exit the loop without further processing.
+      if (strtotime($archive->createdOn) < time() - 63072000) {
+        break;
+      }
       $communication = $this->dispatchGetData($archive->communication);
 
       // Filter out ones that don't match our filter tag,
