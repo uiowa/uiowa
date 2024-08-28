@@ -288,34 +288,40 @@ class MultisiteCommands extends BltTasks {
         }
 
         /** @var \AcquiaCloudApi\Connector\Client $client */
-        $client = $this->getAcquiaCloudApiClient($this->getConfigValue('uiowa.credentials.acquia.key'), $this->getConfigValue('uiowa.credentials.acquia.secret'));
+        $client = $this->getAcquiaCloudApiClient(
+          $this->getConfigValue('uiowa.credentials.acquia.key'),
+          $this->getConfigValue('uiowa.credentials.acquia.secret')
+        );
 
-        foreach ($this->getConfigValue('uiowa.applications') as $name => $uuid) {
-          /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
-          $databases = new Databases($client);
+        $uuids = $this->getConfigValue('uiowa.applications');
+        if (!array_key_exists($app, $uuids)) {
+          return;
+        }
 
-          // Find the application that hosts the database.
-          foreach ($databases->getAll($uuid) as $database) {
-            if ($database->name == $db) {
-              $databases->delete($uuid, $db);
-              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$name}</comment> application.");
+        $uuid = $uuids[$app];
+        /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+        $databases = new Databases($client);
 
-              /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-              $environments = new Environments($client);
+        foreach ($databases->getAll($uuid) as $database) {
+          if ($database->name === $db) {
+            $databases->delete($uuid, $db);
+            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
 
-              foreach ($environments->getAll($uuid) as $environment) {
-                if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
-                  $domains = new Domains($client);
+            /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+            $environments = new Environments($client);
 
-                  foreach ($intersect as $domain) {
-                    $domains->delete($environment->uuid, $domain);
-                    $this->say("Deleted <comment>{$domain}</comment> domain on {$name} application.");
-                  }
+            foreach ($environments->getAll($uuid) as $environment) {
+              if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+                $domains = new Domains($client);
+
+                foreach ($intersect as $domain) {
+                  $domains->delete($environment->uuid, $domain);
+                  $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
                 }
               }
-
-              break 2;
             }
+
+            break;
           }
         }
       }
@@ -356,7 +362,7 @@ EOD
         $task->add("config/sites/$dir");
       }
 
-      $task->commit("Delete {$dir} multisite on {$name}")
+      $task->commit("Delete {$dir} multisite on {$app}")
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
