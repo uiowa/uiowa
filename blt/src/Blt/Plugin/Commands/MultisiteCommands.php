@@ -536,8 +536,26 @@ EOD
     $app_id = $applications[$app];
 
     if (!$options['no-db']) {
-      $databases->create($app_id, $db);
-      $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
+      try {
+        // Attempt to trigger remote database creation.
+        $response = $databases->create($app_id, $db);
+
+        // Check if response message indicates success.
+        if (stripos($response->message, 'created') !== FALSE) {
+          $this->say("Creating {$db} database on {$app}.");
+        }
+        else {
+          // If the response message doesn't indicate success, return error.
+          $error_message = "Failure to trigger database creation for {$db} on {$app}. Message: " . $response->message;
+          $this->logger->error($error_message);
+          throw new \Exception($error_message);
+        }
+      }
+      catch (\Exception $e) {
+        // Log the exception and stop the script.
+        $this->logger->error('An error occurred: ' . $e->getMessage());
+        throw $e;
+      }
     }
     else {
       $this->logger->warning('Skipping database creation.');
