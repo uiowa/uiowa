@@ -56,12 +56,10 @@ class CorrespondenceForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
+    $form = [];
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
-
-    $form = [];
 
     $form['#id'] = 'correspondence-form';
 
@@ -79,7 +77,7 @@ class CorrespondenceForm extends FormBase {
 
     $rows = [];
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
-    $archives = $this->dispatchGetData($endpoint . 'archives');
+    $archives = $this->dispatchGetData($endpoint . 'archives?visible=true');
 
     foreach ($archives as $archive_url) {
       $archive = $this->dispatchGetData($archive_url);
