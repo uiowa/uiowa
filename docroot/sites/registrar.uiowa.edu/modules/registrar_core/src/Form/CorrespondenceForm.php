@@ -127,7 +127,7 @@ class CorrespondenceForm extends FormBase {
       '#description' => t('audience by audience.'),
       '#default_value' => $audience,
       '#ajax' => [
-        'callback' => 'ajaxCallback',
+        'callback' => [$this, 'ajaxCallback'],
         'wrapper' => 'registrar-core-correspondence-table',
         'effect' => 'fade',
       ],
