@@ -86,7 +86,6 @@
           }
         }
 
-
         function updateAcademicCalendarFromFilters() {
           const filterValues = getFilterValues();
           academicCalendar.selectedYear = filterValues.selectedYear;
@@ -172,19 +171,14 @@
         this.domOutput.append(noEvents);
         this.calendarContent.replaceChildren(...this.domOutput.childNodes)
         this.domOutput = document.createElement("div");
-
         Drupal.announce('No events found matching your criteria.');
         return;
       }
 
       Drupal.announce(`Displaying ${events.length} events based on filter criteria.`);
 
-      events.sort((a, b) => new Date(a.start) - new Date(b.start));
-
       this.displayGroupedByYearAndSession(events);
-
       this.addDateHiders(this.domOutput);
-
       this.calendarContent.replaceChildren(...this.domOutput.childNodes)
       this.domOutput = document.createElement("div");
     }
@@ -295,25 +289,20 @@
         return groups;
       }, {});
 
-      // Sort summer subsessions.
+      // Sort summer subsessions using sortString.
       if (groups['Summer'] && groups['Summer'].subsessions) {
+
+        // Sort the subsession keys themselves.
         const sortedSubsessions = {};
-        const subsessionEntries = Object.entries(groups['Summer'].subsessions);
-
-        subsessionEntries.sort((a, b) => {
-          const getWeekNumber = (str) => {
-            const match = str.match(/(\d+)\s*(Week|wk)/i);
-            return match ? parseInt(match[1]) : 0;
-          };
-          const weekA = getWeekNumber(a[0]);
-          const weekB = getWeekNumber(b[0]);
-
-          return weekA - weekB;
-        });
-
-        subsessionEntries.forEach(([key, value]) => {
-          sortedSubsessions[key] = value;
-        });
+        Object.keys(groups['Summer'].subsessions)
+          .sort((a, b) => {
+            const eventA = groups['Summer'].subsessions[a][0];
+            const eventB = groups['Summer'].subsessions[b][0];
+            return eventA.sortString.localeCompare(eventB.sortString);
+          })
+          .forEach(key => {
+            sortedSubsessions[key] = groups['Summer'].subsessions[key];
+          });
 
         groups['Summer'].subsessions = sortedSubsessions;
       }
