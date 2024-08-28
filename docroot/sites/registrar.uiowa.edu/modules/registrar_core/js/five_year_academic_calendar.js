@@ -18,12 +18,15 @@
         // Check for hash in URL and update the year if it matches.
         function checkUrlHash() {
           const hash = window.location.hash.substring(1);
-          if (hash && yearOptions.hasOwnProperty(hash)) {
-            formEls.startYearSelectEl.value = hash;
-            return hash;
+          // Check if the hash matches any year range in yearOptions.
+          const matchingYearId = Object.keys(yearOptions).find(yearId => yearOptions[yearId] === hash);
+          if (matchingYearId) {
+            formEls.startYearSelectEl.value = matchingYearId;
+            return matchingYearId;
           }
           return defaultYear;
         }
+
 
         // Update URL hash with year range.
         function updateUrlHash(yearId) {
