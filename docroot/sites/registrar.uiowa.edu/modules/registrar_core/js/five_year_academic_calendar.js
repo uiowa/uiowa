@@ -27,7 +27,6 @@
           return defaultYear;
         }
 
-
         // Update URL hash with year range.
         function updateUrlHash(yearId) {
           const yearRange = getYearRangeFromId(yearId);
