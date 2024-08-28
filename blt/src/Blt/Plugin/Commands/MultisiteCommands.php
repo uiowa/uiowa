@@ -398,9 +398,42 @@ EOD
       return new CommandError('Cannot parse URI for validation.');
     }
 
-    // RMI does this but we run it with no interaction.
-    if (file_exists("{$root}/docroot/sites/{$host}")) {
+    $sites_dir = "{$root}/docroot/sites/";
+
+    // RMI does this, but we run it with no interaction.
+    if (file_exists("{$sites_dir}{$host}")) {
       return new CommandError("Site {$host} already exists.");
+    }
+
+    // Normalize the host for conflict checking.
+    $normalized_host = str_replace(['.', '-'], '_', $host);
+
+    // Scan the sites directory for potential conflicts with normalized names.
+    $directories = scandir($sites_dir);
+    $potential_conflicts = [];
+
+    foreach ($directories as $dir) {
+      // Skip '.' and '..' directories and non-directories.
+      if ($dir === '.' || $dir === '..' || !is_dir($sites_dir . $dir)) {
+        continue;
+      }
+
+      // Normalize the directory name same as Multisite::getDatabaseName().
+      $normalized_dir_name = str_replace(['.', '-'], '_', $dir);
+
+      // Compare normalized directory name with the normalized host.
+      if (stripos($normalized_dir_name, $normalized_host) !== FALSE) {
+        $potential_conflicts[] = $dir;
+      }
+    }
+
+    // If potential conflicts are found, warn the user and ask for confirmation.
+    if (!empty($potential_conflicts)) {
+      $this->logger->warning('Potential conflicts detected with existing sites: ' . implode(', ', $potential_conflicts));
+
+      if (!$this->confirm('Proceed with creating the site despite the potential conflicts?')) {
+        throw new \Exception('Multisite creation aborted.');
+      }
     }
   }
 
@@ -542,7 +575,7 @@ EOD
 
         // Check if response message indicates success.
         if (stripos($response->message, 'created') !== FALSE) {
-          $this->say("Creating {$db} database on {$app}.");
+          $this->say("The database, {$db}, is being created on {$app}.");
         }
         else {
           // If the response message doesn't indicate success, return error.
