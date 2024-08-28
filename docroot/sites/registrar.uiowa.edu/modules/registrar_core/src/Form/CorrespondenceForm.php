@@ -79,8 +79,8 @@ class CorrespondenceForm extends FormBase {
     $rows = [];
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
     $dispatch_params = [
-      'visible' => 'true',
-      'tag' => 'registrar',
+      'VISIBLE' => 'true',
+      'TAG' => 'registrar',
     ];
     $query = UrlHelper::buildQuery($dispatch_params);
     $archives = $this->dispatchGetData($endpoint . "archives?{$query}");
@@ -97,7 +97,7 @@ class CorrespondenceForm extends FormBase {
           'faculty_staff' => 'faculty/staff',
         ];
         $campaign = $this->dispatchGetData($communication->campaign);
-        if (in_array($matches[$audience], $campaign->tags)) {
+        if (!in_array($matches[$audience], $campaign->tags)) {
           continue;
         }
       }
