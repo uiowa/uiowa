@@ -101,12 +101,7 @@ class AcademicCalendarController extends ControllerBase {
       $data = $cache->data;
     }
     else {
-      if ($isFiveYearCalendar) {
-        $data = $this->fetchAndProcessFiveYearCalendarData($start, $end, $category);
-      }
-      else {
-        $data = $this->fetchAndProcessCalendarData($start, $end, $category, $steps, $includePastSessions);
-      }
+      $data = $this->fetchAndProcessCalendarData($start, $end, $category, $steps, $includePastSessions, $isFiveYearCalendar);
       // Cache for 24 hours.
       $this->cacheBackend->set($cid, $data, time() + 86400);
     }
@@ -203,12 +198,13 @@ class AcademicCalendarController extends ControllerBase {
    * @return array
    *   The processed calendar data.
    */
-  private function fetchAndProcessCalendarData($start, $end, $categories, $steps, $includePastSessions, $isFiveYearCalendar = FALSE) {
+  private function fetchAndProcessCalendarData($start, $end, $categories, $steps = 0, $includePastSessions = FALSE, $isFiveYearCalendar = FALSE) {
     $current = $this->maui->getCurrentSession();
 
     // For five-year calendar.
     if ($isFiveYearCalendar) {
       $steps = 20;
+      $includePastSessions = TRUE;
     }
 
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
@@ -221,7 +217,6 @@ class AcademicCalendarController extends ControllerBase {
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-
       $dates = $this->maui->searchSessionDates($session->id, [
         'startDate' => $start,
         'endDate' => $end,
@@ -251,24 +246,6 @@ class AcademicCalendarController extends ControllerBase {
     );
 
     return $events;
-  }
-
-  /**
-   * Fetches and processes calendar data for the Five Year calendar.
-   *
-   * @param string $start
-   *   The start date.
-   * @param string $end
-   *   The end date.
-   * @param array $categories
-   *   The categories to filter by.
-   *
-   * @return array
-   *   The processed calendar data.
-   */
-  private function fetchAndProcessFiveYearCalendarData($start, $end, $categories) {
-    // Use with five-year calendar flag.
-    return $this->fetchAndProcessCalendarData($start, $end, $categories, 20, TRUE, TRUE);
   }
 
   /**
