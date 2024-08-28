@@ -6245,12 +6245,6 @@ $sites['labwilliams.dev.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
 $sites['labwilliams.stage.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
 $sites['labwilliams.prod.drupal.uiowa.edu'] = 'williams.lab.uiowa.edu';
 
-// Directory aliases for gel.sites.uiowa.edu.
-$sites['sitesgel.uiowa.ddev.site'] = 'gel.sites.uiowa.edu';
-$sites['sitesgel.dev.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
-$sites['sitesgel.stage.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
-$sites['sitesgel.prod.drupal.uiowa.edu'] = 'gel.sites.uiowa.edu';
-
 // Directory aliases for trihawks.org.uiowa.edu.
 $sites['orgtrihawks.uiowa.ddev.site'] = 'trihawks.org.uiowa.edu';
 $sites['orgtrihawks.dev.drupal.uiowa.edu'] = 'trihawks.org.uiowa.edu';
