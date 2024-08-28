@@ -208,7 +208,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // For five-year calendar.
     if ($isFiveYearCalendar) {
-      $steps = 24;
+      $steps = 20;
     }
 
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
@@ -237,9 +237,7 @@ class AcademicCalendarController extends ControllerBase {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
           $event->sortString = $this->sortString($event);
 
-          if ($this->filterEvent($event, $categories, TRUE)) {
             $events[] = $event;
-          }
         }
       }
     }
@@ -270,7 +268,7 @@ class AcademicCalendarController extends ControllerBase {
    */
   private function fetchAndProcessFiveYearCalendarData($start, $end, $categories) {
     // Use with five-year calendar flag.
-    return $this->fetchAndProcessCalendarData($start, $end, $categories, 24, TRUE, TRUE);
+    return $this->fetchAndProcessCalendarData($start, $end, $categories, 20, TRUE, TRUE);
   }
 
   /**
