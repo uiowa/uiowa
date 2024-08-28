@@ -237,7 +237,7 @@ class AcademicCalendarController extends ControllerBase {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
           $event->sortString = $this->sortString($event);
 
-            $events[] = $event;
+          $events[] = $event;
         }
       }
     }
