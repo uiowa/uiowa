@@ -2,15 +2,15 @@
 
 namespace Drupal\registrar_core\Form;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AnnounceCommand;
-use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,10 +25,13 @@ class CorrespondenceForm extends FormBase {
    *   The factory for configuration objects.
    * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
    *   The Dispatch API client service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *    The cache backend service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, protected CacheBackendInterface $cache) {
     $this->configFactory = $config_factory;
     $this->dispatch = $dispatch;
+    $this->cache = $cache;
   }
 
   /**
@@ -38,6 +41,7 @@ class CorrespondenceForm extends FormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('sitenow_dispatch.dispatch_client'),
+      $container->get('cache.default'),
     );
   }
 
@@ -61,29 +65,29 @@ class CorrespondenceForm extends FormBase {
 
     $form['#id'] = 'correspondence-form';
 
-//    $params = drupal_get_query_parameters();
+    $params = \Drupal::request()->query->get('keys');
 
     if ($form_state->getValue('audience')) {
       $audience = $form_state->getValue('audience');
     }
-//    elseif (isset($params['audience'])) {
-//      $audience = $params['audience'];
-//    }
+    elseif (isset($params['audience'])) {
+      $audience = $params['audience'];
+    }
     else {
       $audience = 'all';
     }
 
     $rows = [];
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
-    $archives = $this->dispatch->get($endpoint . 'archives', []);
+    $archives = $this->dispatchGetData($endpoint . 'archives');
 
     foreach ($archives as $archive_url) {
-      $archive = $this->dispatch->get($archive_url);
+      $archive = $this->dispatchGetData($archive_url);
 
-      if ($archive->hidden === FALSE) {
+      if ($archive?->hidden === FALSE) {
         $date = date('m/d/Y', strtotime($archive->createdOn));
-        $communication = $this->dispatch->get($archive->communication);
-        $campaign = $this->dispatch->get($communication->campaign);
+        $communication = $this->dispatchGetData($archive->communication);
+        $campaign = $this->dispatchGetData($communication->campaign);
 
         $matches = [
           'all' => 'registrar',
@@ -92,7 +96,7 @@ class CorrespondenceForm extends FormBase {
         ];
 
         if (in_array($matches[$audience], $campaign->tags)) {
-          $population = $this->dispatch->get($communication->population);
+          $population = $this->dispatchGetData($communication->population);
 
           $key = basename($archive_url);
 
@@ -146,23 +150,8 @@ class CorrespondenceForm extends FormBase {
   /**
    * AJAX callback for the form.
    */
-  public function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $response = new AjaxResponse();
-    $triggering_element = $form_state->getTriggeringElement();
-    $message = 'Form updated';
-
-    switch ($triggering_element['#name']) {
-      case 'op':
-        $message = $this->t('Returning correspondences.');
-        break;
-
-    }
-
-    $response->addCommand(new AnnounceCommand($message, 'polite'));
-    $wrapper_id = '#' . $this->getFormId() . '-wrapper';
-    $response->addCommand(new ReplaceCommand($wrapper_id, $form));
-
-    return $response;
+  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
+    return $form['table'];
   }
 
   /**
@@ -180,29 +169,38 @@ class CorrespondenceForm extends FormBase {
    * @return object
    */
   function dispatchGetData($endpoint) {
-//    $cache_key = 'registrar_core_correspondence' . base64_encode($endpoint);
-//    $data = &drupal_static(__FUNCTION__ . ':' . $cache_key);
-
-    if (!isset($data)) {
-//      $cache = cache_get($cache_key);
-//      if (isset($cache, $cache->data, $cache->expire) && time() < $cache->expire) {
-//        $data = $cache->data;
-//      } else {
+    $data = FALSE;
+    $hash = base64_encode($endpoint);
+    $cid = "registrar_core_correspondence:request:{$hash}";
+    if ($cache = $this->cache->get($cid)) {
+      $data = $cache->data;
+    }
+    else {
       $options = [
         'headers' => [
           'x-dispatch-api-key' => $this->dispatch->getKey(),
-          'accept' => 'application/json',
+          'Accept' => 'application/json',
         ],
       ];
-//      $this->dispatch->addAuthToOptions($options);
-      $request = $this->dispatch->get($endpoint, $options);
-//
-      $data = json_decode($request->data);
-//        cache_set($cache_key, $data, 'cache', time() + 3600);
+      try {
+        $data = $this->dispatch->get($endpoint, $options);
       }
-//    }
+      catch (RequestException | GuzzleException $e) {
+        // @todo Add logger service for error reporting.
+        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+          '@endpoint' => $endpoint,
+          '@code' => $e->getCode(),
+          '@error' => $e->getMessage(),
+        ]);
+      }
 
-    return $request;
+      if ($data) {
+        // Cache for 12 hours.
+        $this->cache->set($cid, $data, time() + 43200);
+      }
+    }
+
+    return $data;
   }
 
 }
