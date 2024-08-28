@@ -64,13 +64,17 @@ class CorrespondenceForm extends FormBase {
 
     $form['#id'] = 'correspondence-form';
 
-    $params = \Drupal::request()->query->get('keys');
-
+    $params = \Drupal::request()->query;
     if ($form_state->getValue('audience')) {
       $audience = $form_state->getValue('audience');
     }
-    elseif (isset($params['audience'])) {
-      $audience = $params['audience'];
+    elseif ($params->has('audience')) {
+      $audience = $params->get('audience');
+      // If the given audience param doesn't match our available options,
+      // default to ALL.
+      if (!in_array($audience, ['all', 'student', 'faculty_staff'])) {
+        $audience = 'all';
+      }
     }
     else {
       $audience = 'all';
