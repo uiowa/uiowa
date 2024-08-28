@@ -128,13 +128,13 @@ class CorrespondenceForm extends FormBase {
       'Created',
       'From',
       'Email',
-      'Intended Population',
+      'Audience',
     ];
 
     $form['audience'] = [
       '#type' => 'select',
       '#title' => t('Audience'),
-      '#description' => t('audience by audience.'),
+      '#description' => t('The intended audience for the communications.'),
       '#default_value' => $audience,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
