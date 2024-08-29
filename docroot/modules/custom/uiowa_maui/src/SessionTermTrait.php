@@ -40,7 +40,7 @@ trait SessionTermTrait {
    * @return string
    *   The term (Fall, Spring, Summer, or Winter).
    */
-  public function getTerm($description) {
+  protected function getTerm($description) {
     $terms = ['Fall', 'Spring', 'Summer', 'Winter'];
     foreach ($terms as $term) {
       if (stripos($description, $term) !== FALSE) {
