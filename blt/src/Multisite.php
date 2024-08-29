@@ -30,8 +30,7 @@ class Multisite {
       throw new \Exception('The default site is configured automatically by BLT.');
     }
     else {
-      $db = str_replace('.', '_', $dir);
-      $db = str_replace('-', '_', $db);
+      $db = str_replace(['.', '-'], '_', $dir);
     }
 
     return $db;
