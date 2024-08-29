@@ -8,7 +8,6 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\registrar_core\Controller\AcademicCalendarController;
 use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -62,15 +61,12 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
    *   The form builder service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack service.
-   * @param \Drupal\registrar_core\Controller\AcademicCalendarController $academicCalendarController
-   *   The Academic Calendar Controller.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, RequestStack $requestStack, AcademicCalendarController $academicCalendarController) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, RequestStack $requestStack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
     $this->formBuilder = $formBuilder;
     $this->requestStack = $requestStack;
-    $this->academicCalendarController = $academicCalendarController;
   }
 
   /**
@@ -83,8 +79,7 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
       $plugin_definition,
       $container->get('uiowa_maui.api'),
       $container->get('form_builder'),
-      $container->get('request_stack'),
-      $container->get('registrar_core.academic_calendar_controller')
+      $container->get('request_stack')
     );
   }
 
@@ -168,7 +163,7 @@ class FiveYearAcademicCalendarBlock extends BlockBase implements ContainerFactor
     $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--padding__all--minimal bg--gray';
 
     $yearOptions = $this->maui->getYearOptions(4, 4);
-    $defaultYear = $this->academicCalendarController->getFallSession()->id;
+    $defaultYear = $this->maui->getFallSession()->id;
 
     $form['start_year'] = [
       '#type' => 'select',

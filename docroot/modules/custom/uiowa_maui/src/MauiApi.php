@@ -17,6 +17,8 @@ use Psr\Log\LoggerInterface;
  */
 class MauiApi {
 
+  use SessionTermTrait;
+
   const BASE = 'https://api.maui.uiowa.edu/maui/api/';
 
   /**
