@@ -41,6 +41,43 @@ class AcademicCalendarController extends ControllerBase {
   protected $renderer;
 
   /**
+   * Get the fall session.
+   *
+   * @return object
+   *   The fall session object.
+   */
+  public function getFallSession() {
+    $currentSession = $this->maui->getCurrentSession();
+    $currentTerm = $this->getTerm($currentSession->shortDescription);
+
+    if ($currentTerm == 'Fall') {
+      return $currentSession;
+    }
+
+    $range = $this->maui->getSessionsRange($currentSession->id, -1, 'FALL');
+    return $range[0];
+  }
+
+  /**
+   * Get the term from a session description.
+   *
+   * @param string $description
+   *   The session description.
+   *
+   * @return string
+   *   The term (Fall, Spring, Summer, or Winter).
+   */
+  protected function getTerm($description) {
+    $terms = ['Fall', 'Spring', 'Summer', 'Winter'];
+    foreach ($terms as $term) {
+      if (stripos($description, $term) !== FALSE) {
+        return $term;
+      }
+    }
+    return '';
+  }
+
+  /**
    * Constructs a new AcademicCalendarController.
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui

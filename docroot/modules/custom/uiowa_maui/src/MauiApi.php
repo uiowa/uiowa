@@ -391,8 +391,8 @@ class MauiApi {
    *   Array of year options.
    */
   public function getYearOptions($previous = 4, $future = 10) {
-    $fall = $this->getFallSession();
-    $startDate = (new DrupalDateTime($fall->startDate))
+    $currentSession = $this->getCurrentSession();
+    $startDate = (new DrupalDateTime($currentSession->startDate))
       ->modify("-{$previous} years")
       ->format('Y-m-d');
 
@@ -414,43 +414,6 @@ class MauiApi {
 
     // Flip to have session IDs as keys and academic years as values.
     return array_flip($options);
-  }
-
-  /**
-   * Get the fall session.
-   *
-   * @return object
-   *   The fall session object.
-   */
-  public function getFallSession() {
-    $currentSession = $this->getCurrentSession();
-    $currentTerm = $this->getTerm($currentSession->shortDescription);
-
-    if ($currentTerm == 'Fall') {
-      return $currentSession;
-    }
-
-    $range = $this->getSessionsRange($currentSession->id, -1, 'FALL');
-    return $range[0];
-  }
-
-  /**
-   * Get the term from a session description.
-   *
-   * @param string $description
-   *   The session description.
-   *
-   * @return string
-   *   The term (Fall, Spring, Summer, or Winter).
-   */
-  public function getTerm($description) {
-    $terms = ['Fall', 'Spring', 'Summer', 'Winter'];
-    foreach ($terms as $term) {
-      if (stripos($description, $term) !== FALSE) {
-        return $term;
-      }
-    }
-    return '';
   }
 
 }
