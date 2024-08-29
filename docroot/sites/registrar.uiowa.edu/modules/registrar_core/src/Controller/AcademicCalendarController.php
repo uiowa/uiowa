@@ -68,15 +68,17 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
-   * Retrieves calendar data.
+   * Retrieves calendar data for both regular and five-year calendars.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
+   * @param bool $isFiveYearCalendar
+   *   Whether this is a request for the five-year calendar.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   A JSON response containing the calendar data.
    */
-  public function getCalendarData(Request $request) {
+  public function getCalendarData(Request $request, $isFiveYearCalendar = FALSE) {
     $start = $request->query->get('start');
     $end = $request->query->get('end');
     $category = $request->query->all()['category'] ?? [];
@@ -88,13 +90,18 @@ class AcademicCalendarController extends ControllerBase {
       $category = [$category];
     }
 
-    $cid = 'registrar_core:academic_calendar:' . $start . ':' . $end . ':' . implode(',', $category) . ':1:' . $steps . ':' . $includePastSessions;
+    $calendarType = $isFiveYearCalendar ? 'five_year_academic_calendar' : 'academic_calendar';
+    $cid = "registrar_core:{$calendarType}:" . $start . ':' . $end . ':' . implode(',', $category);
+
+    if (!$isFiveYearCalendar) {
+      $cid .= ':1:' . $steps . ':' . $includePastSessions;
+    }
 
     if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
     }
     else {
-      $data = $this->fetchAndProcessCalendarData($start, $end, $category, $steps, $includePastSessions);
+      $data = $this->fetchAndProcessCalendarData($start, $end, $category, $steps, $includePastSessions, $isFiveYearCalendar);
       // Cache for 24 hours.
       $this->cacheBackend->set($cid, $data, time() + 86400);
     }
@@ -185,17 +192,23 @@ class AcademicCalendarController extends ControllerBase {
    *   The number of sessions to fetch.
    * @param int $includePastSessions
    *   Whether to include an equivalent number of past sessions equal to $steps.
+   * @param bool $isFiveYearCalendar
+   *   Whether this is for the five-year calendar view. Defaults to FALSE.
    *
    * @return array
    *   The processed calendar data.
    */
-  private function fetchAndProcessCalendarData($start, $end, $categories, $steps, $includePastSessions) {
+  private function fetchAndProcessCalendarData($start, $end, $categories, $steps = 0, $includePastSessions = FALSE, $isFiveYearCalendar = FALSE) {
     $current = $this->maui->getCurrentSession();
-    // Session range steps must be 1 or greater, so if we want only
-    // the current session, wrap it in an array but don't fetch others.
+
+    // For five-year calendar.
+    if ($isFiveYearCalendar) {
+      $steps = 20;
+      $includePastSessions = TRUE;
+    }
+
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
-    // If we want to include the past sessions...
     if ($includePastSessions) {
       $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
       $sessions = array_merge($pastSessions, $sessions);
@@ -204,14 +217,14 @@ class AcademicCalendarController extends ControllerBase {
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-      // Modify the searchSessionDates call to include filtering.
       $dates = $this->maui->searchSessionDates($session->id, [
         'startDate' => $start,
         'endDate' => $end,
-      ], TRUE);
+      ], TRUE, $isFiveYearCalendar);
 
       foreach ($dates as $date) {
-        if ($date->reviewed !== TRUE) {
+        // Skip the reviewed check for five-year calendar.
+        if (!$isFiveYearCalendar && $date->reviewed !== TRUE) {
           continue;
         }
 
