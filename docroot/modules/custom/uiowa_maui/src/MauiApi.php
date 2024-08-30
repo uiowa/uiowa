@@ -4,6 +4,7 @@ namespace Drupal\uiowa_maui;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -15,6 +16,8 @@ use Psr\Log\LoggerInterface;
  * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
 class MauiApi {
+
+  use SessionTermTrait;
 
   const BASE = 'https://api.maui.uiowa.edu/maui/api/';
 
@@ -376,6 +379,43 @@ class MauiApi {
     }
 
     return $data;
+  }
+
+  /**
+   * Get year options for the start year select.
+   *
+   * @param int $previous
+   *   Number of years to go back.
+   * @param int $future
+   *   Number of years to go forward.
+   *
+   * @return array
+   *   Array of year options.
+   */
+  public function getYearOptions($previous = 4, $future = 10) {
+    $currentSession = $this->getCurrentSession();
+    $startDate = (new DrupalDateTime($currentSession->startDate))
+      ->modify("-{$previous} years")
+      ->format('Y-m-d');
+
+    $start = $this->request('GET', '/pub/registrar/sessions/by-date', ['date' => $startDate]);
+    $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
+
+    $options = [];
+
+    foreach ($range as $session) {
+      $startYear = date('Y', strtotime($session->startDate));
+      $endYear = substr((string) ($startYear + 1), -2);
+      $academicYear = "{$startYear}-{$endYear}";
+
+      // Use the academic year as the key to avoid duplicates.
+      if (!isset($options[$academicYear])) {
+        $options[$academicYear] = $session->id;
+      }
+    }
+
+    // Flip to have session IDs as keys and academic years as values.
+    return array_flip($options);
   }
 
 }

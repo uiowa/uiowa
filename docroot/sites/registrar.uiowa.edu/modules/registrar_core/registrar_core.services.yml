@@ -1,0 +1,4 @@
+services:
+  registrar_core.academic_calendar_controller:
+    class: Drupal\registrar_core\Controller\AcademicCalendarController
+    arguments: ['@uiowa_maui.api', '@cache.default', '@renderer']
