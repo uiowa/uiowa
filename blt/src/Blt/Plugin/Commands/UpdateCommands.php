@@ -8,8 +8,9 @@ use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Blt\Plugin\Commands\MultisiteCommands;
+use Uiowa\Blt\Plugin\Commands\MultisiteCommands as MSC;
 use Uiowa\Multisite;
+use Acquia\Blt\Robo\Tasks\LoadTasks;
 
 /**
  * Define update commands.
@@ -73,6 +74,37 @@ class UpdateCommands extends BltTasks {
     else {
       return '1000';
     }
+  }
+
+  /**
+   * Get the application from the prod remote Drush alias.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   * @param string $env
+   *   The environment to use for the Drush alias. Defaults to prod.
+   *
+   * @return string
+   *   The application name.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
+    $result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->printMetadata(FALSE)
+      ->printOutput(TRUE)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception('Unable to get current application with Drush.');
+    }
+
+    return trim($result->getMessage());
   }
 
   /**
@@ -614,13 +646,14 @@ EOD;
     $path = "$root/blt/test.yml";
     $yaml = YamlMunge::parseFile($path);
     $yaml['manifest'] = [];
+
     // For each site...
     $sites = Multisite::getAllSites($root);
     foreach ($sites as $host) {
       $id = Multisite::getIdentifier("https://$host");
-//      $app = MultisiteCommands::publicGetApplicationFromDrushRemote($id); <--This doesnt work.
+      $app = $this->getApplicationFromDrushRemote($id); //<--This doesnt work.
 
-      $yaml['manifest'][] = $id;
+      $yaml['manifest'][] = $app;
     }
 
 //    $foo = 'bar';
