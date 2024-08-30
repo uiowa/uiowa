@@ -101,7 +101,8 @@ class UpdateCommands extends BltTasks {
       ->run();
 
     if (!$result->wasSuccessful()) {
-      throw new \Exception('Unable to get current application with Drush.');
+//      throw new \Exception('Unable to get current application with Drush.');
+        return "COULD NOT FIND APP FOR $id.$env";
     }
 
     return trim($result->getMessage());
@@ -650,19 +651,29 @@ EOD;
     // For each site...
     $sites = Multisite::getAllSites($root);
     foreach ($sites as $host) {
+      // Run the drush get alias command
       $id = Multisite::getIdentifier("https://$host");
-      $app = $this->getApplicationFromDrushRemote($id); //<--This doesnt work.
+      $app = $this->getApplicationFromDrushRemote($id);
 
-      $yaml['manifest'][] = $app;
+      // Put it in the right key's entry
+      if (!isset($yaml['manifest'][$app])) {
+        $yaml['manifest'][$app] = [];
+      }
+
+      $yaml['manifest'][$app][] = $host;
     }
 
-//    $foo = 'bar';
-      // Run the drush get alias command
-      // Put it in the right key's entry
+    // Sort the apps.
+    ksort($yaml['manifest']);
+    foreach ($yaml['manifest'] as $app) {
+      sort($app);
+    }
+
     // Write to the btl.yml file with the new entries.
     YamlMunge::writeFile($path, $yaml);
+
     // Set schema version to 1017.
-//    $this->setSchemaVersion(1017);
+    $this->setSchemaVersion(1017);
   }
 
 }
