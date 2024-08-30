@@ -12,11 +12,12 @@ function registrar_core_schema() {
   $schema['correspondence_archives'] = [
     'description' => 'List of Dispatch correspondence archives.',
     'fields' => [
-      'id' => [
-        'type' => 'serial',
-        'unsigned' => TRUE,
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
         'not null' => TRUE,
-        'description' => 'Record id',
+        'default' => '',
       ],
       'date' => [
         'description' => 'Date of correspondence.',
@@ -37,13 +38,6 @@ function registrar_core_schema() {
         'length' => 255,
         'not null' => TRUE,
       ],
-      'url' => [
-        'description' => 'Direct link to the correspondence.',
-        'type' => 'varchar_ascii',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => '',
-      ],
       'audience' => [
         'description' => 'Intended correspondence subject.',
         'type' => 'varchar_ascii',
@@ -59,12 +53,7 @@ function registrar_core_schema() {
         'default' => '',
       ],
     ],
-    'primary key' => ['id'],
-    'indexes' => [
-      'url' => [
-        'url',
-      ],
-    ],
+    'primary key' => ['url'],
   ];
 
   return $schema;
@@ -77,11 +66,12 @@ function registrar_core_update_10001() {
   $schema['correspondence_archives'] = [
     'description' => 'List of Dispatch correspondence archives.',
     'fields' => [
-      'id' => [
-        'type' => 'serial',
-        'unsigned' => TRUE,
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
         'not null' => TRUE,
-        'description' => 'Record id',
+        'default' => '',
       ],
       'date' => [
         'description' => 'Date of correspondence.',
@@ -102,13 +92,6 @@ function registrar_core_update_10001() {
         'length' => 255,
         'not null' => TRUE,
       ],
-      'url' => [
-        'description' => 'Direct link to the correspondence.',
-        'type' => 'varchar_ascii',
-        'length' => 255,
-        'not null' => TRUE,
-        'default' => '',
-      ],
       'audience' => [
         'description' => 'Intended correspondence subject.',
         'type' => 'varchar_ascii',
@@ -124,12 +107,7 @@ function registrar_core_update_10001() {
         'default' => '',
       ],
     ],
-    'primary key' => ['id'],
-    'indexes' => [
-      'url' => [
-        'url',
-      ],
-    ],
+    'primary key' => ['url'],
   ];
 
   $db_schema = \Drupal::database()->schema();
