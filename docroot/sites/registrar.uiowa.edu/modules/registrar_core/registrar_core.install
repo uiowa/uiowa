@@ -71,7 +71,7 @@ function registrar_core_schema() {
 }
 
 /**
- * Create and populate the custom database if it does not exist.
+ * Create the custom database if it does not exist.
  */
 function registrar_core_update_10001() {
   $schema['correspondence_archives'] = [
@@ -138,5 +138,4 @@ function registrar_core_update_10001() {
     $db_schema->createTable('correspondence_archives', $schema['correspondence_archives']);
   }
 
-  registrar_core_fetch_correspondence_from_dispatch();
 }

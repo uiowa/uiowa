@@ -107,9 +107,9 @@ function registrar_core_dispatch_get_data(string $endpoint) {
   $options = [
     'headers' => [
       'Accept' => 'application/json',
+      'x-dispatch-api-key' => $dispatch->getKey(),
     ],
   ];
-  $dispatch->addAuthToOptions($options);
   $data = $dispatch->get($endpoint, $options);
 
   return $data;
