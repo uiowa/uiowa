@@ -7,10 +7,9 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Blt\Plugin\Commands\MultisiteCommands as MSC;
 use Uiowa\Multisite;
-use Acquia\Blt\Robo\Tasks\LoadTasks;
 
 /**
  * Define update commands.
@@ -117,6 +116,16 @@ class UpdateCommands extends BltTasks {
   protected function setSchemaVersion($version) {
     $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
     file_put_contents($file, $version);
+  }
+
+  protected function ymlMapDump($path, array $contents) {
+    $fs = new Filesystem();
+    $yaml_string = Yaml::dump($contents, 8, 2, Yaml::DUMP_OBJECT_AS_MAP);
+    $fs->dumpFile($path, $yaml_string);
+  }
+
+  protected function ymlMapParse($path) {
+    return Yaml::parse(file_get_contents($path, Yaml::PARSE_OBJECT_FOR_MAP));
   }
 
   /**
@@ -644,12 +653,13 @@ EOD;
     // Load blt.yml.
     $root = $this->getConfigValue('repo.root');
     $path = "$root/blt/blt.yml";
-    $yaml = YamlMunge::parseFile($path);
+    $yaml = $this->ymlMapParse($path);
     $yaml['manifest'] = [];
 
     // For each site...
     $sites = Multisite::getAllSites($root);
     foreach ($sites as $host) {
+
       // Run the drush get alias command
       $id = Multisite::getIdentifier("https://$host");
       $app = $this->getApplicationFromDrushRemote($id);
@@ -669,7 +679,7 @@ EOD;
     }
 
     // Write to the btl.yml file with the new entries.
-    YamlMunge::writeFile($path, $yaml);
+    $this->ymlMapDump($path, $yaml);
 
     // Set schema version to 1017.
 //    $this->setSchemaVersion(1017);
