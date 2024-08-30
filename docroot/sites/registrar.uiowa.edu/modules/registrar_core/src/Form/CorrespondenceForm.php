@@ -92,7 +92,7 @@ class CorrespondenceForm extends FormBase {
       ->execute();
     foreach ($data as $row) {
       $rows[] = [
-        $row->date,
+        date('m/d/Y', strtotime($row->timestamp)),
         $row->from_name,
         Link::fromTextAndUrl($row->subject, Url::fromUri($row->url)),
         $row->audience,

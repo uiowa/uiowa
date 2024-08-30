@@ -66,24 +66,14 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     $archive = registrar_core_dispatch_get_data($archive_url);
     // Check if archive is older than2 years today (63072000 seconds).
     if (strtotime($archive->createdOn) < time() - 63072000) {
-      // Actively remove ones that are out of this
-      // timeframe as well.
-      $count = $database->select('correspondence_archives', 'c')
-        ->condition('c.url', $url, '=')
-        ->countQuery()
-        ->execute();
-      if ($count === 1) {
-        $database->delete('correspondence_archives')
-          ->condition('c.url', $url, '=');
-      }
+      break;
     }
     $communication = registrar_core_dispatch_get_data($archive->communication);
     $campaign = registrar_core_dispatch_get_data($communication->campaign);
-    $date = date('m/d/Y', strtotime($archive->createdOn));
     $population = registrar_core_dispatch_get_data($communication->population);
 
     $rows[] = [
-      'date' => $date,
+      'timestamp' => strtotime($archive->createdOn),
       'from_name' => $communication->email->fromName,
       'subject' => $communication->email->subject,
       'url' => $url,
@@ -92,7 +82,7 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     ];
   }
   $query = $database->upsert('correspondence_archives')
-    ->fields(['date', 'from_name', 'subject', 'url', 'audience', 'tags'])
+    ->fields(['timestamp', 'from_name', 'subject', 'url', 'audience', 'tags'])
     ->key('url');
   foreach ($rows as $row) {
     $query->values($row);
@@ -122,6 +112,12 @@ function registrar_core_dispatch_get_data(string $endpoint) {
   return $data;
 }
 
+function registrar_core_prune_correspondence($timestamp) {
+  \Drupal::database()->delete('correspondence_archives')
+    ->condition('timestamp', $timestamp, '<')
+    ->execute();
+}
+
 /**
  * Implements hook_cron().
  */
@@ -132,6 +128,8 @@ function registrar_core_cron() {
 
   if (!$last_run || $request_date > $last_run) {
     registrar_core_fetch_correspondence_from_dispatch();
+    // Prune entries older than 2 years (63072000 seconds).
+    registrar_core_prune_correspondence(time() - 63072000);
 
     \Drupal::state()->set('registrar_core_daily_last', $request_date);
   }

@@ -19,12 +19,10 @@ function registrar_core_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-      'date' => [
+      'timestamp' => [
         'description' => 'Date of correspondence.',
-        'type' => 'varchar_ascii',
-        'length' => 128,
+        'type' => 'int',
         'not null' => TRUE,
-        'default' => '',
       ],
       'from_name' => [
         'description' => 'From name of correspondence.',
@@ -73,12 +71,11 @@ function registrar_core_update_10001() {
         'not null' => TRUE,
         'default' => '',
       ],
-      'date' => [
+      'timestamp' => [
         'description' => 'Date of correspondence.',
-        'type' => 'varchar_ascii',
-        'length' => 128,
+        'type' => 'int',
         'not null' => TRUE,
-        'default' => '',
+        'unsigned' => TRUE,
       ],
       'from_name' => [
         'description' => 'From name of correspondence.',
