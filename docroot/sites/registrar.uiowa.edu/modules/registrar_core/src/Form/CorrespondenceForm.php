@@ -2,16 +2,13 @@
 
 namespace Drupal\registrar_core\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,13 +23,13 @@ class CorrespondenceForm extends FormBase {
    *   The factory for configuration objects.
    * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
    *   The Dispatch API client service.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *    The cache backend service.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database connection.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, protected CacheBackendInterface $cache) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, protected Connection $connection) {
     $this->configFactory = $config_factory;
     $this->dispatch = $dispatch;
-    $this->cache = $cache;
+    $this->connection = $connection;
   }
 
   /**
@@ -42,7 +39,7 @@ class CorrespondenceForm extends FormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('sitenow_dispatch.dispatch_client'),
-      $container->get('cache.default'),
+      $container->get('database'),
     );
   }
 
@@ -64,6 +61,7 @@ class CorrespondenceForm extends FormBase {
 
     $form['#id'] = 'correspondence-form';
 
+    // @todo Inject this service instead.
     $params = \Drupal::request()->query;
     if ($form_state->getValue('audience')) {
       $audience = $form_state->getValue('audience');
@@ -87,7 +85,7 @@ class CorrespondenceForm extends FormBase {
 
     $rows = [];
 
-    $data = \Drupal::database()
+    $data = $this->connection
       ->select('correspondence_archives', 'c')
       ->fields('c')
       ->condition('tags', '%' . $mapping[$audience] . '%', 'LIKE')
@@ -110,8 +108,8 @@ class CorrespondenceForm extends FormBase {
 
     $form['audience'] = [
       '#type' => 'select',
-      '#title' => t('Audience'),
-      '#description' => t('The intended audience for the communications.'),
+      '#title' => $this->t('Audience'),
+      '#description' => $this->t('The intended audience for the communications.'),
       '#default_value' => $audience,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
@@ -119,9 +117,9 @@ class CorrespondenceForm extends FormBase {
         'effect' => 'fade',
       ],
       '#options' => [
-        'all' => 'All',
-        'student' => 'Student',
-        'faculty_staff' => 'Faculty/Staff',
+        'all' => $this->t('All'),
+        'student' => $this->t('Student'),
+        'faculty_staff' => $this->t('Faculty/Staff'),
       ],
     ];
 
