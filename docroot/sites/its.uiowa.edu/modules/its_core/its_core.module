@@ -94,10 +94,8 @@ function its_core_entity_presave(EntityInterface $entity) {
       // If we're saving an outage or service degradation,
       // we also want to check and set our views cache invalidation date.
       if ($entity->isPublished()) {
-        $cache_affected_targets = [];
-        foreach (['service-degradation', 'outage', 'planned-maintenance', 'service-announcement'] as $target) {
-          $cache_affected_targets[] = its_core_alert_type_tag_map($target);
-        }
+        $cache_affected_targets = array_column(its_core_alert_type_tag_map(), 'tid');
+
         if (in_array($entity->field_alert_category->target_id, $cache_affected_targets)) {
           if ($entity instanceof ClosableInterface) {
             // If the alert is already closed, we're not concerned
