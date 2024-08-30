@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function registrar_core_schema() {
+  $schema['correspondence_archives'] = [
+    'description' => 'List of Dispatch correspondence archives.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Record id',
+      ],
+      'date' => [
+        'description' => 'Date of correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'from_name' => [
+        'description' => 'From name of correspondence.',
+        'type' => 'text',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'subject' => [
+        'description' => 'Correspondence subject.',
+        'type' => 'text',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'audience' => [
+        'description' => 'Intended correspondence subject.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'tags' => [
+        'description' => 'Dispatch tags.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'url' => [
+        'url',
+      ],
+    ],
+  ];
+
+  return $schema;
+}

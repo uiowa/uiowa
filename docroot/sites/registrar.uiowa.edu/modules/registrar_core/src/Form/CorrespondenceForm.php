@@ -79,48 +79,25 @@ class CorrespondenceForm extends FormBase {
     else {
       $audience = 'all';
     }
+    $mapping = [
+      'all' => '',
+      'student' => 'student',
+      'faculty_staff' => 'faculty/staff',
+    ];
 
     $rows = [];
-    $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
-    $dispatch_params = [
-      'VISIBLE' => 'true',
-      'TAG' => 'registrar',
-    ];
-    $query = UrlHelper::buildQuery($dispatch_params);
-    $archives = $this->dispatchGetData($endpoint . "archives?{$query}");
 
-    foreach ($archives as $archive_url) {
-      $archive = $this->dispatchGetData($archive_url);
-      // Archives are retrieved in order, so once we hit one
-      // that is prior to 2 years ago from today (63072000 seconds),
-      // we can exit the loop without further processing.
-      if (strtotime($archive->createdOn) < time() - 63072000) {
-        break;
-      }
-      $communication = $this->dispatchGetData($archive->communication);
-
-      // Filter out ones that don't match our filter tag,
-      // if "all" was not selected.
-      if ($audience !== 'all') {
-        $matches = [
-          'student' => 'student',
-          'faculty_staff' => 'faculty/staff',
-        ];
-        $campaign = $this->dispatchGetData($communication->campaign);
-        if (!in_array($matches[$audience], $campaign->tags)) {
-          continue;
-        }
-      }
-
-      $date = date('m/d/Y', strtotime($archive->createdOn));
-      $population = $this->dispatchGetData($communication->population);
-      $key = basename($archive_url);
-
+    $data = \Drupal::database()
+      ->select('correspondence_archives', 'c')
+      ->fields('c')
+      ->condition('tags', '%' . $mapping[$audience] . '%', 'LIKE')
+      ->execute();
+    foreach ($data as $row) {
       $rows[] = [
-        $date,
-        $communication->email->fromName,
-        Link::fromTextAndUrl($communication->email->subject, Url::fromUri("https://apps.its.uiowa.edu/dispatch/archive/{$key}")),
-        $population->name,
+        $row->date,
+        $row->from_name,
+        Link::fromTextAndUrl($row->subject, Url::fromUri($row->url)),
+        $row->audience,
       ];
     }
 
@@ -173,48 +150,6 @@ class CorrespondenceForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // No-op.
-  }
-
-  /**
-   * Helper function to get dispatch data.
-   *
-   * @param $endpoint
-   *
-   * @return object
-   */
-  function dispatchGetData($endpoint) {
-    $data = FALSE;
-    $hash = base64_encode($endpoint);
-    $cid = "registrar_core_correspondence:request:{$hash}";
-    if ($cache = $this->cache->get($cid)) {
-      $data = $cache->data;
-    }
-    else {
-      $options = [
-        'headers' => [
-          'x-dispatch-api-key' => $this->dispatch->getKey(),
-          'Accept' => 'application/json',
-        ],
-      ];
-      try {
-        $data = $this->dispatch->get($endpoint, $options);
-      }
-      catch (RequestException | GuzzleException $e) {
-        // @todo Add logger service for error reporting.
-        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-          '@endpoint' => $endpoint,
-          '@code' => $e->getCode(),
-          '@error' => $e->getMessage(),
-        ]);
-      }
-
-      if ($data) {
-        // Cache for 12 hours.
-        $this->cache->set($cid, $data, time() + 43200);
-      }
-    }
-
-    return $data;
   }
 
 }

@@ -5,7 +5,10 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\sitenow_dispatch\DispatchApiClient;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -42,4 +45,79 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
 function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
   $form["gpa_results_wrapper"]['#prefix'] = '<div class="callout bg--gray">';
   $form["gpa_results_wrapper"]['#suffix'] = '</div>';
+}
+
+function registrar_core_fetch_correspondence_from_dispatch() {
+  $rows = [];
+  $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
+  $dispatch_params = [
+    'VISIBLE' => 'true',
+    'TAG' => 'registrar',
+  ];
+  $query = UrlHelper::buildQuery($dispatch_params);
+  $archives = registrar_core_dispatch_get_data($endpoint . "archives?{$query}");
+
+  foreach ($archives as $archive_url) {
+    $archive = registrar_core_dispatch_get_data($archive_url);
+    // Archives are retrieved in order, so once we hit one
+    // that is prior to 2 years ago from today (63072000 seconds),
+    // we can exit the loop without further processing.
+    if (strtotime($archive->createdOn) < time() - 63072000) {
+      // @todo Actively remove ones that are out of this
+      // timeframe as well.
+      break;
+    }
+    $communication = registrar_core_dispatch_get_data($archive->communication);
+    $campaign = registrar_core_dispatch_get_data($communication->campaign);
+    $date = date('m/d/Y', strtotime($archive->createdOn));
+    $population = registrar_core_dispatch_get_data($communication->population);
+    $key = basename($archive_url);
+
+    $rows[] = [
+      'date' => $date,
+      'from_name' => $communication->email->fromName,
+      'subject' => $communication->email->subject,
+      'url' => "https://apps.its.uiowa.edu/dispatch/archive/{$key}",
+      'audience' => $population->name,
+      'tags' => implode(' ', $campaign->tags),
+    ];
+  }
+  $query = \Drupal::database()->upsert('correspondence_archives')
+    ->fields(['date', 'from_name', 'subject', 'url', 'audience', 'tags'])
+    ->key('url');
+  foreach ($rows as $row) {
+    $query->values($row);
+  }
+  $query->execute();
+}
+
+/**
+ * Helper function to get dispatch data.
+ *
+ * @param $endpoint
+ *
+ * @return object
+ */
+function registrar_core_dispatch_get_data($endpoint) {
+  $data = FALSE;
+  $dispatch = \Drupal::service('sitenow_dispatch.dispatch_client');
+  $options = [
+    'headers' => [
+      'x-dispatch-api-key' => $dispatch->getKey(),
+      'Accept' => 'application/json',
+    ],
+  ];
+//  try {
+  $data = $dispatch->get($endpoint, $options);
+//  }
+//  catch (RequestException | GuzzleException $e) {
+    // @todo Add logger service for error reporting.
+//    $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+//      '@endpoint' => $endpoint,
+//      '@code' => $e->getCode(),
+//      '@error' => $e->getMessage(),
+//    ]);
+//  }
+
+  return $data;
 }
