@@ -114,3 +114,18 @@ function registrar_core_dispatch_get_data(string $endpoint) {
 
   return $data;
 }
+
+/**
+ * Implements hook_cron().
+ */
+function registrar_core_cron() {
+  // Check if we've run this yet today.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('registrar_core_daily_last');
+
+  if (!$last_run || $request_date > $last_run) {
+    registrar_core_fetch_correspondence_from_dispatch();
+
+    \Drupal::state()->set('registrar_core_daily_last', $request_date);
+  }
+}
