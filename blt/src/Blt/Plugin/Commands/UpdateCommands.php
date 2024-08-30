@@ -102,7 +102,7 @@ class UpdateCommands extends BltTasks {
 
     if (!$result->wasSuccessful()) {
 //      throw new \Exception('Unable to get current application with Drush.');
-        return "COULD NOT FIND APP FOR $id.$env";
+        return "Unknown";
     }
 
     return trim($result->getMessage());
@@ -643,8 +643,7 @@ EOD;
   protected function update1017() {
     // Load blt.yml.
     $root = $this->getConfigValue('repo.root');
-//    $path = "$root/blt/blt.yml";
-    $path = "$root/blt/test.yml";
+    $path = "$root/blt/blt.yml";
     $yaml = YamlMunge::parseFile($path);
     $yaml['manifest'] = [];
 
@@ -673,7 +672,6 @@ EOD;
     YamlMunge::writeFile($path, $yaml);
 
     // Set schema version to 1017.
-    $this->setSchemaVersion(1017);
+//    $this->setSchemaVersion(1017);
   }
-
 }
