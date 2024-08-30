@@ -8,6 +8,7 @@ use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\Blt\Plugin\Commands\MultisiteCommands;
 use Uiowa\Multisite;
 
 /**
@@ -595,6 +596,40 @@ EOD;
     }
 
     $this->setSchemaVersion(1016);
+  }
+
+  /**
+   * Update 1017.
+   *
+   * @Update(
+   *   version = "1017",
+   *   description = "Write a yml entry in the blt/blt.yml file to log the
+   *   docroot for each site."
+   * )
+   */
+  protected function update1017() {
+    // Load blt.yml.
+    $root = $this->getConfigValue('repo.root');
+//    $path = "$root/blt/blt.yml";
+    $path = "$root/blt/test.yml";
+    $yaml = YamlMunge::parseFile($path);
+    $yaml['manifest'] = [];
+    // For each site...
+    $sites = Multisite::getAllSites($root);
+    foreach ($sites as $host) {
+      $id = Multisite::getIdentifier("https://$host");
+//      $app = MultisiteCommands::publicGetApplicationFromDrushRemote($id); <--This doesnt work.
+
+      $yaml['manifest'][] = $id;
+    }
+
+//    $foo = 'bar';
+      // Run the drush get alias command
+      // Put it in the right key's entry
+    // Write to the btl.yml file with the new entries.
+    YamlMunge::writeFile($path, $yaml);
+    // Set schema version to 1017.
+//    $this->setSchemaVersion(1017);
   }
 
 }

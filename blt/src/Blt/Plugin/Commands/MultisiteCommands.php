@@ -6,6 +6,7 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Acquia\Blt\Robo\Tasks\LoadTasks;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
@@ -1139,6 +1140,37 @@ EOD;
    */
   protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
     $result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->printMetadata(FALSE)
+      ->printOutput(TRUE)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception('Unable to get current application with Drush.');
+    }
+
+    return trim($result->getMessage());
+  }
+
+  /**
+   * Get the application from the prod remote Drush alias.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   * @param string $env
+   *   The environment to use for the Drush alias. Defaults to prod.
+   *
+   * @return string
+   *   The application name.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  public static function publicGetApplicationFromDrushRemote(string $id, string $env = 'prod') {
+    $result = LoadTasks::class->taskDrush()
       ->alias("$id.$env")
       ->drush('status')
       ->options([
