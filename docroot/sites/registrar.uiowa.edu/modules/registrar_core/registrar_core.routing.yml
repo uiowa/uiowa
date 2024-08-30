@@ -2,5 +2,13 @@ registrar_core.academic_calendar_data:
   path: '/api/academic-calendar'
   defaults:
     _controller: '\Drupal\registrar_core\Controller\AcademicCalendarController::getCalendarData'
+    isFiveYearCalendar: false
+  requirements:
+    _permission: 'access content'
+registrar_core.five_year_academic_calendar_data:
+  path: '/api/five-year-academic-calendar'
+  defaults:
+    _controller: '\Drupal\registrar_core\Controller\AcademicCalendarController::getCalendarData'
+    isFiveYearCalendar: true
   requirements:
     _permission: 'access content'
