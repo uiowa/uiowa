@@ -7564,3 +7564,9 @@ $sites['labxzan.uiowa.ddev.site'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.dev.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.stage.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.prod.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
+
+// Directory aliases for muhsstudentorg.org.uiowa.edu.
+$sites['orgmuhsstudentorg.uiowa.ddev.site'] = 'muhsstudentorg.org.uiowa.edu';
+$sites['orgmuhsstudentorg.dev.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
+$sites['orgmuhsstudentorg.stage.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
+$sites['orgmuhsstudentorg.prod.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
