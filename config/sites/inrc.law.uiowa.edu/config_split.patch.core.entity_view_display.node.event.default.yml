@@ -1,0 +1,136 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_contact_email
+      - field.field.node.event.field_event_contact_name
+      - field.field.node.event.field_event_contact_phone
+      - field.field.node.event.field_event_cost
+      - field.field.node.event.field_event_sponsor
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_l6ct2hansrhd9uoh:
+              uuid: c0eceed3-2b09-4d2e-8b41-c9223c6a4a1c
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_cost'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: string
+                  label: above
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 3
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_h9s9pbutfqso45us:
+              uuid: f1cc0c2a-0235-4219-bac3-dae8e4f85ba4
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_sponsor'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: string
+                  label: above
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 4
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_tintagg5gs9osvuj:
+              uuid: 36b556e8-f950-4517-aa00-131f3a97b3bb
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_contact_name'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: string
+                  label: above
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 5
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_hbaiuuv395gs4li5:
+              uuid: 83b0cdb4-2a70-4e79-9f33-3d358a55023e
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_contact_email'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: basic_string
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 6
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_hmar8qcqm5ov1105:
+              uuid: 4bcaf82b-de70-4f97-baa7-bfd7e4df31b4
+              region: content
+              configuration:
+                id: 'field_block:node:event:field_event_contact_phone'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: basic_string
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 7
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_event_contact_email:
+      type: basic_string
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 109
+      region: content
+    field_event_contact_name:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 108
+      region: content
+    field_event_contact_phone:
+      type: basic_string
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 110
+      region: content
+    field_event_cost:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 106
+      region: content
+    field_event_sponsor:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 107
+      region: content
+removing: {  }
