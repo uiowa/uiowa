@@ -124,21 +124,6 @@ function inrc_core_preprocess_block(&$variables) {
 
       break;
 
-    case 'extra_field_block:node:event:field_event_contact_information_heading':
-      // Load the node entity.
-      $node = \Drupal::routeMatch()->getParameter('node');
-
-      // Check if all the specified fields are empty.
-      $hide_block = empty($node->field_event_contact_name->value) &&
-        empty($node->field_event_contact_phone->value) &&
-        empty($node->field_event_contact_email->value);
-      // Hide the block if all the specified fields are empty.
-      if ($hide_block) {
-        $variables['content'] = [];
-      }
-
-      break;
-
     case 'extra_field_block:node:nonprofit_org:field_np_financial_information_heading':
       // Load the node entity.
       $node = \Drupal::routeMatch()->getParameter('node');
@@ -265,13 +250,6 @@ function inrc_core_preprocess_field(&$variables) {
  */
 function inrc_core_entity_extra_field_info() {
   $extra = [];
-
-  $extra['node']['event']['display']['field_event_contact_information_heading'] = [
-    'label' => t('Event contact information heading'),
-    'description' => t('Contact Information'),
-    'weight' => 1,
-    'visible' => TRUE,
-  ];
 
   $extra['node']['grant']['display']['field_grant_information_heading'] = [
     'label' => t('Grant information heading'),
@@ -406,18 +384,6 @@ function inrc_core_node_view(array &$build, EntityInterface $node, EntityViewDis
           'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
         ],
         '#value' => t('Financial Information'),
-      ];
-    }
-  }
-  if ($node->bundle() === 'event' && $view_mode === 'full') {
-    if ($display->getComponent('field_event_contact_information_heading')) {
-      $build['field_event_contact_information_heading'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => [
-          'class' => ['headline', 'headline--serif', 'headline--underline', 'h4'],
-        ],
-        '#value' => t('Contact Information'),
       ];
     }
   }
