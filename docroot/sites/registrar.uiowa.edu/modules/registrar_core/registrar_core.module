@@ -112,7 +112,13 @@ function registrar_core_dispatch_get_data(string $endpoint) {
   return $data;
 }
 
-function registrar_core_prune_correspondence($timestamp) {
+/**
+ * Helper function to remove outdated correspondence archive data.
+ *
+ * @param int $timestamp
+ *   The UNIX timestamp before which records should be deleted.
+ */
+function registrar_core_prune_correspondence(int $timestamp) {
   \Drupal::database()->delete('correspondence_archives')
     ->condition('timestamp', $timestamp, '<')
     ->execute();
