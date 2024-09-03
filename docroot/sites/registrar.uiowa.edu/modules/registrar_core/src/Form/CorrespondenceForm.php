@@ -88,7 +88,7 @@ class CorrespondenceForm extends FormBase {
     $data = $this->connection
       ->select('correspondence_archives', 'c')
       ->fields('c')
-      ->condition('tags', '%' . $mapping[$audience] . '%', 'LIKE')
+      ->condition('audience', '%' . $mapping[$audience] . '%', 'LIKE')
       ->orderBy('timestamp', 'DESC')
       ->execute();
     foreach ($data as $row) {
