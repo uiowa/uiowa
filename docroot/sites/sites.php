@@ -7570,3 +7570,9 @@ $sites['orgmuhsstudentorg.uiowa.ddev.site'] = 'muhsstudentorg.org.uiowa.edu';
 $sites['orgmuhsstudentorg.dev.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
 $sites['orgmuhsstudentorg.stage.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
 $sites['orgmuhsstudentorg.prod.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
+
+// Directory aliases for sparta.lab.uiowa.edu.
+$sites['labsparta.uiowa.ddev.site'] = 'sparta.lab.uiowa.edu';
+$sites['labsparta.dev.drupal.uiowa.edu'] = 'sparta.lab.uiowa.edu';
+$sites['labsparta.stage.drupal.uiowa.edu'] = 'sparta.lab.uiowa.edu';
+$sites['labsparta.prod.drupal.uiowa.edu'] = 'sparta.lab.uiowa.edu';
