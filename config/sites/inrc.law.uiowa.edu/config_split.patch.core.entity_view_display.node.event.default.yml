@@ -11,88 +11,111 @@ adding:
       sections:
         -
           components:
-            config_split_sequence_l6ct2hansrhd9uoh:
-              uuid: c0eceed3-2b09-4d2e-8b41-c9223c6a4a1c
-              region: content
+            config_split_sequence_hbaiuuv395gs4li5:
+              uuid: 83b0cdb4-2a70-4e79-9f33-3d358a55023e
+              region: main
               configuration:
-                id: 'field_block:node:event:field_event_cost'
-                label_display: '0'
+                id: 'field_block:node:event:field_event_contact_email'
+                label: null
+                label_display: null
+                provider: layout_builder
                 context_mapping:
                   entity: layout_builder.entity
+                  view_mode: view_mode
                 formatter:
-                  type: string
-                  label: above
-                  settings:
-                    link_to_entity: false
+                  type: email_mailto
+                  label: visually_hidden
+                  settings: {  }
                   third_party_settings: {  }
-              weight: 3
-              additional: {  }
-              third_party_settings: {  }
-            config_split_sequence_h9s9pbutfqso45us:
-              uuid: f1cc0c2a-0235-4219-bac3-dae8e4f85ba4
-              region: content
-              configuration:
-                id: 'field_block:node:event:field_event_sponsor'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: string
-                  label: above
-                  settings:
-                    link_to_entity: false
-                  third_party_settings: {  }
-              weight: 4
-              additional: {  }
+              weight: 12
+              additional:
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
               third_party_settings: {  }
             config_split_sequence_tintagg5gs9osvuj:
               uuid: 36b556e8-f950-4517-aa00-131f3a97b3bb
-              region: content
+              region: main
               configuration:
                 id: 'field_block:node:event:field_event_contact_name'
-                label_display: '0'
+                label: null
+                label_display: null
+                provider: layout_builder
                 context_mapping:
                   entity: layout_builder.entity
+                  view_mode: view_mode
                 formatter:
                   type: string
-                  label: above
+                  label: visually_hidden
                   settings:
                     link_to_entity: false
                   third_party_settings: {  }
-              weight: 5
-              additional: {  }
-              third_party_settings: {  }
-            config_split_sequence_hbaiuuv395gs4li5:
-              uuid: 83b0cdb4-2a70-4e79-9f33-3d358a55023e
-              region: content
-              configuration:
-                id: 'field_block:node:event:field_event_contact_email'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: basic_string
-                  label: above
-                  settings: {  }
-                  third_party_settings: {  }
-              weight: 6
-              additional: {  }
+              weight: 10
+              additional:
+                layout_builder_styles_style: {  }
               third_party_settings: {  }
             config_split_sequence_hmar8qcqm5ov1105:
               uuid: 4bcaf82b-de70-4f97-baa7-bfd7e4df31b4
-              region: content
+              region: main
               configuration:
                 id: 'field_block:node:event:field_event_contact_phone'
-                label_display: '0'
+                label: null
+                label_display: null
+                provider: layout_builder
                 context_mapping:
                   entity: layout_builder.entity
+                  view_mode: view_mode
                 formatter:
-                  type: basic_string
-                  label: above
-                  settings: {  }
+                  type: telephone_link
+                  label: visually_hidden
+                  settings:
+                    title: ''
+                  third_party_settings: {  }
+              weight: 11
+              additional:
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
+              third_party_settings: {  }
+            config_split_sequence_l6ct2hansrhd9uoh:
+              uuid: c0eceed3-2b09-4d2e-8b41-c9223c6a4a1c
+              region: main
+              configuration:
+                id: 'field_block:node:event:field_event_cost'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: string
+                  label: inline
+                  settings:
+                    link_to_entity: false
                   third_party_settings: {  }
               weight: 7
-              additional: {  }
+              additional:
+                layout_builder_styles_style: {  }
+              third_party_settings: {  }
+            config_split_sequence_h9s9pbutfqso45us:
+              uuid: f1cc0c2a-0235-4219-bac3-dae8e4f85ba4
+              region: main
+              configuration:
+                id: 'field_block:node:event:field_event_sponsor'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: string
+                  label: inline
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 8
+              additional:
+                layout_builder_styles_style: {  }
               third_party_settings: {  }
   content:
     field_event_contact_email:
