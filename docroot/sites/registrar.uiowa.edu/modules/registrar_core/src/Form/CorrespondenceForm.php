@@ -89,10 +89,11 @@ class CorrespondenceForm extends FormBase {
       ->select('correspondence_archives', 'c')
       ->fields('c')
       ->condition('tags', '%' . $mapping[$audience] . '%', 'LIKE')
+      ->orderBy('timestamp', 'DESC')
       ->execute();
     foreach ($data as $row) {
       $rows[] = [
-        date('m/d/Y', strtotime($row->timestamp)),
+        date('m/d/Y', $row->timestamp),
         $row->from_name,
         Link::fromTextAndUrl($row->subject, Url::fromUri($row->url)),
         $row->audience,
