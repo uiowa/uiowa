@@ -58,18 +58,22 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     'TAG' => 'registrar',
   ];
   $query = UrlHelper::buildQuery($dispatch_params);
-  $archives = registrar_core_dispatch_get_data($endpoint . "archives?{$query}");
+  $archives = registrar_core_dispatch_get_data("{$endpoint}archives?{$query}");
 
   foreach ($archives as $archive_url) {
-    $key = basename($archive_url);
-    $url = "https://apps.its.uiowa.edu/dispatch/archive/{$key}";
     $archive = registrar_core_dispatch_get_data($archive_url);
-    // Check if archive is older than2 years today (63072000 seconds).
+    // Fetched archives are in descending chronological order
+    // and we're only keeping ones that are 2 years or younger,
+    // so once we've hit one that is older than 2 years old
+    // (63072000 seconds) we know we're done processing.
     if (strtotime($archive->createdOn) < time() - 63072000) {
       break;
     }
+    $key = basename($archive_url);
+    $url = "https://apps.its.uiowa.edu/dispatch/archive/{$key}";
     $communication = registrar_core_dispatch_get_data($archive->communication);
     $campaign = registrar_core_dispatch_get_data($communication->campaign);
+
     $audience = [];
     foreach ([
       'student' => 'Student',

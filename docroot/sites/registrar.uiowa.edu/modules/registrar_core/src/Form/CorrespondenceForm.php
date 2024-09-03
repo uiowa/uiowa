@@ -10,6 +10,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Form for correspondence block.
@@ -25,11 +26,14 @@ class CorrespondenceForm extends FormBase {
    *   The Dispatch API client service.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, protected Connection $connection) {
+  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, protected Connection $connection, protected RequestStack $request_stack) {
     $this->configFactory = $config_factory;
     $this->dispatch = $dispatch;
     $this->connection = $connection;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -40,6 +44,7 @@ class CorrespondenceForm extends FormBase {
       $container->get('config.factory'),
       $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('database'),
+      $container->get('request_stack'),
     );
   }
 
@@ -61,8 +66,9 @@ class CorrespondenceForm extends FormBase {
 
     $form['#id'] = 'correspondence-form';
 
-    // @todo Inject this service instead.
-    $params = \Drupal::request()->query;
+    // Check if we have a form value set for the audience
+    // and if not, check if we have a valid query param in the URL.
+    $params = $this->requestStack->getCurrentRequest()->query;
     if ($form_state->getValue('audience')) {
       $audience = $form_state->getValue('audience');
     }
