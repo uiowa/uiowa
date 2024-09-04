@@ -1481,12 +1481,6 @@ $sites['labappliedphys.dev.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 $sites['labappliedphys.stage.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 $sites['labappliedphys.prod.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 
-// Directory aliases for finance.clas.uiowa.edu.
-$sites['clasfinance.uiowa.ddev.site'] = 'finance.clas.uiowa.edu';
-$sites['clasfinance.dev.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
-$sites['clasfinance.stage.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
-$sites['clasfinance.prod.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
-
 // Directory aliases for cinematicarts.uiowa.edu.
 $sites['cinematicarts.uiowa.ddev.site'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.dev.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
