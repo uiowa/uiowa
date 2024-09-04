@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsparta.uiowa.ddev.site
+    protocol: https
+  machine_name: labsparta
+  human_name: sparta.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsparta.prod
+drupal:
+  db:
+    database: sparta_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsparta.prod.drupal.uiowa.edu'
+  requester: rnithyanand
+  site-name: 'SPARTA Lab'
