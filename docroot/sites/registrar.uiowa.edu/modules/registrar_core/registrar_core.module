@@ -50,6 +50,9 @@ function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
  * Retrieve correspondence data from Dispatch.
  */
 function registrar_core_fetch_correspondence_from_dispatch() {
+  $logger = \Drupal::logger('registrar_core');
+  $logger->notice('Fetching correspondence archives.');
+
   $rows = [];
   $database = \Drupal::database();
   $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
@@ -59,6 +62,10 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   ];
   $query = UrlHelper::buildQuery($dispatch_params);
   $archives = registrar_core_dispatch_get_data("{$endpoint}archives?{$query}");
+
+  if (empty($archives)) {
+    $logger->warning('Unable to retrieve correspondence archives.');
+  }
 
   foreach ($archives as $archive_url) {
     $archive = registrar_core_dispatch_get_data($archive_url);
@@ -101,6 +108,10 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     $query->values($row);
   }
   $query->execute();
+
+  $logger->notice(t('@count archives upserted.', [
+    '@count' => count($rows),
+  ]));
 }
 
 /**
@@ -132,6 +143,14 @@ function registrar_core_dispatch_get_data(string $endpoint) {
  *   The UNIX timestamp before which records should be deleted.
  */
 function registrar_core_prune_correspondence(int $timestamp) {
+  $count = \Drupal::database()->select('correspondence_archives')
+    ->condition('timestamp', $timestamp, '<')
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+  \Drupal::logger('registrar_core')->notice(t('Pruning @count records from the correspondence archives.', [
+    '@count' => $count,
+  ]));
   \Drupal::database()->delete('correspondence_archives')
     ->condition('timestamp', $timestamp, '<')
     ->execute();
