@@ -7570,3 +7570,9 @@ $sites['sitesnataf.uiowa.ddev.site'] = 'nataf.sites.uiowa.edu';
 $sites['sitesnataf.dev.drupal.uiowa.edu'] = 'nataf.sites.uiowa.edu';
 $sites['sitesnataf.stage.drupal.uiowa.edu'] = 'nataf.sites.uiowa.edu';
 $sites['sitesnataf.prod.drupal.uiowa.edu'] = 'nataf.sites.uiowa.edu';
+
+// Directory aliases for xzan.lab.uiowa.edu.
+$sites['labxzan.uiowa.ddev.site'] = 'xzan.lab.uiowa.edu';
+$sites['labxzan.dev.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
+$sites['labxzan.stage.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
+$sites['labxzan.prod.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
