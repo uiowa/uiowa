@@ -41,6 +41,14 @@ removing:
   dependencies:
     config:
       - taxonomy.vocabulary.alert_categories
+    module:
+      - menu_admin_per_menu
   permissions:
+    - 'access fragments overview'
+    - 'administer main menu items'
+    - 'create region_item fragments'
+    - 'create region_item_after_content fragments'
     - 'create terms in alert_categories'
     - 'edit terms in alert_categories'
+    - 'update own region_item fragments'
+    - 'update own region_item_after_content fragments'
