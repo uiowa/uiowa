@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Render\Element;
 
 /**
@@ -26,12 +27,46 @@ class Card extends BlockContent implements RendersAsCardInterface {
     ]);
 
     // Capture the parts of the URL.
-    foreach ([
-      'url' => 'url',
-      'title' => 'link_text',
-    ] as $field_link_prop => $link_prop) {
-      if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
-        $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
+    $path = isset($build['field_uiowa_card_link'][0]['#url']) ? $build['field_uiowa_card_link'][0]['#url']->toString() : NULL;
+    $text = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
+
+    if ($path === NULL || $text === NULL) {
+      $build['#url'] = '';
+      $build['#link_text'] = '';
+    }
+    else {
+      $is_nolink = str_starts_with($path, 'route:<nolink>');
+      $is_front = str_starts_with($path, '<front>');
+      $is_external = UrlHelper::isExternal($path);
+
+      switch (TRUE) {
+        case $is_nolink:
+          $build['#url'] = '';
+          $build['#link_text'] = $text;
+          break;
+
+        case $is_front:
+          $build['#url'] = '/' . substr($path, strlen('<front>'));
+          $build['#link_text'] = $text;
+          break;
+
+        case $is_external:
+          $build['#url'] = $path;
+          $build['#link_text'] = str_starts_with($text, 'http') ? NULL : $text;
+          break;
+
+        default:
+          $internal_path = str_starts_with($path, '/') ? $path : '/' . $path;
+          $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+
+          if ($alias) {
+            $build['#url'] = $alias;
+            $build['#link_text'] = str_starts_with($text, '/') ? NULL : $text;
+          }
+          else {
+            $build['#url'] = $path;
+            $build['#link_text'] = $text;
+          }
       }
     }
     unset($build['field_uiowa_card_link']);

@@ -12,7 +12,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
     - heading
-    - link
+    - linkit
     - media_library
     - text
 _core:
@@ -52,12 +52,14 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_uiowa_card_link:
-    type: link_default
+    type: linkit
     weight: 4
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: default
+      linkit_auto_link_text: false
     third_party_settings: {  }
   field_uiowa_card_title:
     type: heading

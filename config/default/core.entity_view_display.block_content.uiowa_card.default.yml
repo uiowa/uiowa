@@ -12,7 +12,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
     - heading
-    - link
+    - linkit
     - text
 _core:
   default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
@@ -46,7 +46,7 @@ content:
     weight: 3
     region: content
   field_uiowa_card_link:
-    type: link_separate
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
@@ -54,6 +54,7 @@ content:
       url_plain: false
       rel: '0'
       target: '0'
+      linkit_profile: default
     third_party_settings: {  }
     weight: 2
     region: content
