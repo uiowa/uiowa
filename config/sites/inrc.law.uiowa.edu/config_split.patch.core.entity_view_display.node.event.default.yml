@@ -132,11 +132,11 @@ adding:
                   view_mode: view_mode
                 formatter:
                   type: string
-                  label: inline
+                  label: above
                   settings:
                     link_to_entity: false
                   third_party_settings: {  }
-              weight: 7
+              weight: 9
               additional:
                 layout_builder_styles_style: {  }
               third_party_settings: {  }
@@ -153,13 +153,14 @@ adding:
                   view_mode: view_mode
                 formatter:
                   type: telephone_link
-                  label: inline
+                  label: visually_hidden
                   settings:
                     title: ''
                   third_party_settings: {  }
-              weight: 8
+              weight: 10
               additional:
-                layout_builder_styles_style: {  }
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
               third_party_settings: {  }
             config_split_sequence_a322rpa6gdees3o9:
               uuid: c524e038-cb90-4d02-953f-9b48f49221e7
@@ -174,10 +175,32 @@ adding:
                   view_mode: view_mode
                 formatter:
                   type: email_mailto
-                  label: inline
+                  label: visually_hidden
                   settings: {  }
                   third_party_settings: {  }
-              weight: 9
+              weight: 11
+              additional:
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
+              third_party_settings: {  }
+            config_split_sequence_e1tmcj9meunlljrj:
+              uuid: 15a3755a-4057-46c1-8d9d-3e508c740151
+              region: card_meta
+              configuration:
+                id: 'field_block:node:event:field_event_cost'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: string
+                  label: visually_hidden
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+              weight: 10
               additional:
                 layout_builder_styles_style: {  }
               third_party_settings: {  }
@@ -198,28 +221,7 @@ adding:
                   settings:
                     link_to_entity: false
                   third_party_settings: {  }
-              weight: 10
-              additional:
-                layout_builder_styles_style: {  }
-              third_party_settings: {  }
-            config_split_sequence_e1tmcj9meunlljrj:
-              uuid: 15a3755a-4057-46c1-8d9d-3e508c740151
-              region: card_meta
-              configuration:
-                id: 'field_block:node:event:field_event_cost'
-                label: null
-                label_display: null
-                provider: layout_builder
-                context_mapping:
-                  entity: layout_builder.entity
-                  view_mode: view_mode
-                formatter:
-                  type: string
-                  label: visually_hidden
-                  settings:
-                    link_to_entity: false
-                  third_party_settings: {  }
-              weight: 10
+              weight: 8
               additional:
                 layout_builder_styles_style: {  }
               third_party_settings: {  }

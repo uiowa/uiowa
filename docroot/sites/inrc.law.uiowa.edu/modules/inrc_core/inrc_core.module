@@ -242,6 +242,12 @@ function inrc_core_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
+
+    case 'field_event_cost':
+      uiowa_core_set_field_icon($variables, 'fas fa-ticket');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
   }
 }
 
