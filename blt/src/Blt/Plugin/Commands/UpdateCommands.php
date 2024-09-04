@@ -7,9 +7,9 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
+use Uiowa\UtilsTrait;
 
 /**
  * Define update commands.
@@ -17,6 +17,8 @@ use Uiowa\Multisite;
  * @Annotation
  */
 class UpdateCommands extends BltTasks {
+
+  use UtilsTrait;
 
   /**
    * Execute uiowa application updates.
@@ -76,38 +78,6 @@ class UpdateCommands extends BltTasks {
   }
 
   /**
-   * Get the application from the prod remote Drush alias.
-   *
-   * @param string $id
-   *   The multisite identifier.
-   * @param string $env
-   *   The environment to use for the Drush alias. Defaults to prod.
-   *
-   * @return string
-   *   The application name.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
-    $result = $this->taskDrush()
-      ->alias("$id.$env")
-      ->drush('status')
-      ->options([
-        'field' => 'application',
-      ])
-      ->printMetadata(FALSE)
-      ->printOutput(TRUE)
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-//      throw new \Exception('Unable to get current application with Drush.');
-        return "Unknown";
-    }
-
-    return trim($result->getMessage());
-  }
-
-  /**
    * Write version to the schema file.
    *
    * @param int $version
@@ -116,16 +86,6 @@ class UpdateCommands extends BltTasks {
   protected function setSchemaVersion($version) {
     $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
     file_put_contents($file, $version);
-  }
-
-  protected function ymlMapDump($path, array $contents) {
-    $fs = new Filesystem();
-    $yaml_string = Yaml::dump($contents, 8, 2, Yaml::DUMP_OBJECT_AS_MAP);
-    $fs->dumpFile($path, $yaml_string);
-  }
-
-  protected function ymlMapParse($path) {
-    return Yaml::parse(file_get_contents($path, Yaml::PARSE_OBJECT_FOR_MAP));
   }
 
   /**
@@ -658,18 +618,23 @@ EOD;
 
     // For each site...
     $sites = Multisite::getAllSites($root);
+    $counter = 0;
+    $limit = 10;
     foreach ($sites as $host) {
+      if ($counter < $limit) {
+        $counter++;
 
-      // Run the drush get alias command
-      $id = Multisite::getIdentifier("https://$host");
-      $app = $this->getApplicationFromDrushRemote($id);
+        // Run the drush get alias command.
+        $id = Multisite::getIdentifier("https://$host");
+        $app = $this->getApplicationFromDrushRemote($id, 'prod', FALSE);
 
-      // Put it in the right key's entry
-      if (!isset($yaml['manifest'][$app])) {
-        $yaml['manifest'][$app] = [];
+        // Put it in the right key's entry.
+        if (!isset($yaml['manifest'][$app])) {
+          $yaml['manifest'][$app] = [];
+        }
+
+        $yaml['manifest'][$app][] = $host;
       }
-
-      $yaml['manifest'][$app][] = $host;
     }
 
     // Sort the apps.
@@ -682,6 +647,7 @@ EOD;
     $this->ymlMapDump($path, $yaml);
 
     // Set schema version to 1017.
-//    $this->setSchemaVersion(1017);
+    //    $this->setSchemaVersion(1017);.
   }
+
 }
