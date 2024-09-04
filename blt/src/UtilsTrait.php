@@ -42,11 +42,73 @@ trait UtilsTrait {
         throw new \Exception('Unable to get current application with Drush.');
       }
       else {
-        return "unknown";
+        return FALSE;
       }
     }
 
     return trim($result->getMessage());
+  }
+
+  /**
+   * Adds a $site to the $yaml array under the 'manifest'.
+   *
+   * @param array $yaml
+   *    The yaml array to be added to.
+   * @param string $site
+   *   The multisite identifier.
+   * @param string $app
+   *   The app identifier under which to put the $site.
+   *
+   * @return array
+   *    The yaml array.
+   */
+  protected function addSiteToManifest(array $yaml, string $site, string $app): array {
+    if (isset($yaml['manifest'][$app])) {
+      $yaml['manifest'][$app][] = $site;
+      return $yaml;
+    }
+
+    $yaml['manifest'][$app] = [];
+    $yaml['manifest'][$app][] = $site;
+    return $yaml;
+  }
+
+  /**
+   * Adds a $site to the $yaml array under the 'manifest'.
+   *
+   * @param array $yaml
+   *    The yaml array to be removed from.
+   * @param string $site
+   *   The multisite identifier.
+   * @param string $app
+   *   The app identifier from which to remove the $site from.
+   *
+   * @return array
+   *    The yaml array.
+   */
+  protected function removeSiteFromManifest(array $yaml, string $site, string $app): array {
+    // If the designated app exists...
+    if (isset($yaml['manifest'][$app])) {
+
+      // Look for the key in the array.
+      if (($key = array_search($site, $yaml['manifest'][$app])) !== false) {
+
+        // And unset it if we find it.
+        unset($yaml['manifest'][$app][$key]);
+        $yaml['manifest'][$app] = array_values($yaml['manifest'][$app]);
+      }
+
+      // If the app isn't empty, return the yaml.
+      if(count($yaml['manifest'][$app]) > 0) {
+        return $yaml;
+      }
+
+      // If it is, remove the app, and re-index the manifest.
+      unset($yaml['manifest'][$app]);
+      return $yaml;
+    }
+
+    return $yaml;
   }
 
   /**

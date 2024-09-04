@@ -620,6 +620,7 @@ EOD;
     $sites = Multisite::getAllSites($root);
     $counter = 0;
     $limit = 10;
+//    $yaml = $this->removeSiteFromManifest($yaml, 'academicmusiciowa.sites.uiowa.edu', 'uiowa01');
     foreach ($sites as $host) {
       if ($counter < $limit) {
         $counter++;
@@ -628,12 +629,9 @@ EOD;
         $id = Multisite::getIdentifier("https://$host");
         $app = $this->getApplicationFromDrushRemote($id, 'prod', FALSE);
 
-        // Put it in the right key's entry.
-        if (!isset($yaml['manifest'][$app])) {
-          $yaml['manifest'][$app] = [];
+        if ($app) {
+          $yaml = $this->addSiteToManifest($yaml, $host, $app);
         }
-
-        $yaml['manifest'][$app][] = $host;
       }
     }
 
