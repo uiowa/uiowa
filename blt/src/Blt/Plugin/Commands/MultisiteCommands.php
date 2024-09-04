@@ -358,8 +358,8 @@ EOD
         ->add("drush/sites/{$id}.site.yml")
         ->interactive(FALSE);
 
-      if (file_exists("$root/config/sites/$dir")) {
-        $task->add("config/sites/$dir");
+      if (file_exists("{$root}/config/sites/{$dir}")) {
+        $task->add("config/sites/{$dir}");
       }
 
       $task->commit("Delete {$dir} multisite on {$app}")
