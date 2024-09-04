@@ -27,7 +27,7 @@ class ReplaceCommands extends BltTasks {
     $multisite_exception = FALSE;
 
     // Unshift sites to the beginning to run first.
-    $multisites = $this->getConfigValue('multisites');
+    $multisites = $this->getConfigValue("manifest.$app");
     $run_first = $this->getConfigValue('uiowa.run_first');
 
     if ($run_first) {
