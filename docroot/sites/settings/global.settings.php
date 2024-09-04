@@ -81,7 +81,8 @@ if (extension_loaded('newrelic')) {
 }
 
 // Increase 'max_input_vars' for large menu pages so webmasters can save changes.
-if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
+if (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'],
+    'admin/structure/menu')) {
   ini_set('max_input_vars', '5000');
 }
 
