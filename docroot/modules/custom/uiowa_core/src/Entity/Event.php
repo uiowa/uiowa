@@ -30,7 +30,10 @@ class Event extends BlockContent implements RendersAsCardInterface {
 
     // Get the link.
     if (isset($build['field_uiowa_event_link'][0]['#url'])) {
-      $build['#url'] = $build['field_uiowa_event_link'][0]['#url'];
+      $url = $build['field_uiowa_event_link'][0]['#url'];
+      if (!($url->isRouted() && in_array($url->getRouteName(), ['<nolink>', '<button>']))) {
+        $build['#url'] = $url;
+      }
     }
     unset($build['field_uiowa_event_link']);
 
