@@ -42,7 +42,7 @@ trait UtilsTrait {
         throw new \Exception('Unable to get current application with Drush.');
       }
       else {
-        return "Unknown";
+        return "unknown";
       }
     }
 

@@ -23,6 +23,7 @@ use Symfony\Component\Yaml\Yaml;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
+use Uiowa\UtilsTrait;
 
 /**
  * Global multisite commands.
@@ -31,6 +32,7 @@ class MultisiteCommands extends BltTasks {
 
   use AcquiaCloudApiTrait;
   use InspectorTrait;
+  use UtilsTrait;
 
   /**
    * A no-op command.
@@ -1122,37 +1124,6 @@ EOD;
     } while ($notification->status == 'in-progress');
 
     return $notification;
-  }
-
-  /**
-   * Get the application from the prod remote Drush alias.
-   *
-   * @param string $id
-   *   The multisite identifier.
-   * @param string $env
-   *   The environment to use for the Drush alias. Defaults to prod.
-   *
-   * @return string
-   *   The application name.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
-    $result = $this->taskDrush()
-      ->alias("$id.$env")
-      ->drush('status')
-      ->options([
-        'field' => 'application',
-      ])
-      ->printMetadata(FALSE)
-      ->printOutput(TRUE)
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception('Unable to get current application with Drush.');
-    }
-
-    return trim($result->getMessage());
   }
 
   /**
