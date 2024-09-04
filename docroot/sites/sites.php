@@ -4697,12 +4697,6 @@ $sites['conferencemidwestdnarepair.dev.drupal.uiowa.edu'] = 'midwestdnarepair.co
 $sites['conferencemidwestdnarepair.stage.drupal.uiowa.edu'] = 'midwestdnarepair.conference.uiowa.edu';
 $sites['conferencemidwestdnarepair.prod.drupal.uiowa.edu'] = 'midwestdnarepair.conference.uiowa.edu';
 
-// Directory aliases for tech.clas.uiowa.edu.
-$sites['clastech.uiowa.ddev.site'] = 'tech.clas.uiowa.edu';
-$sites['clastech.dev.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
-$sites['clastech.stage.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
-$sites['clastech.prod.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
-
 // Directory aliases for storyteller.studio.uiowa.edu.
 $sites['studiostoryteller.uiowa.ddev.site'] = 'storyteller.studio.uiowa.edu';
 $sites['studiostoryteller.dev.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
