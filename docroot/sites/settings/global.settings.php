@@ -80,6 +80,12 @@ if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
 
+// Increase 'max_input_vars' for large menu pages so webmasters can save changes.
+if (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'],
+    'admin/structure/menu')) {
+  ini_set('max_input_vars', '5000');
+}
+
 // Under Acquia Cloud, this will override the temporary folder used by
 // the Webform module and might resolve issues around exporting.
 // See https://www.drupal.org/project/webform/issues/2980276 for more information.
