@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function registrar_core_schema() {
+  $schema['correspondence_archives'] = [
+    'description' => 'List of Dispatch correspondence archives.',
+    'fields' => [
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'timestamp' => [
+        'description' => 'Date of correspondence.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'from_name' => [
+        'description' => 'From name of correspondence.',
+        'type' => 'text',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'subject' => [
+        'description' => 'Correspondence subject.',
+        'type' => 'text',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'audience' => [
+        'description' => 'Intended correspondence subject.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'tags' => [
+        'description' => 'Dispatch tags.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['url'],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Create the custom database if it does not exist.
+ */
+function registrar_core_update_10001() {
+  $schema['correspondence_archives'] = [
+    'description' => 'List of Dispatch correspondence archives.',
+    'fields' => [
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'timestamp' => [
+        'description' => 'Date of correspondence.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'from_name' => [
+        'description' => 'From name of correspondence.',
+        'type' => 'text',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'subject' => [
+        'description' => 'Correspondence subject.',
+        'type' => 'text',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'audience' => [
+        'description' => 'Intended correspondence subject.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'tags' => [
+        'description' => 'Dispatch tags.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['url'],
+  ];
+
+  $db_schema = \Drupal::database()->schema();
+
+  if (!$db_schema->tableExists('correspondence_archives')) {
+    $db_schema->createTable('correspondence_archives', $schema['correspondence_archives']);
+  }
+
+}
