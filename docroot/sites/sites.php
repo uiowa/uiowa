@@ -7535,12 +7535,6 @@ $sites['labjohnson.dev.drupal.uiowa.edu'] = 'johnson.lab.uiowa.edu';
 $sites['labjohnson.stage.drupal.uiowa.edu'] = 'johnson.lab.uiowa.edu';
 $sites['labjohnson.prod.drupal.uiowa.edu'] = 'johnson.lab.uiowa.edu';
 
-// Directory aliases for muhsstudentorg.org.uiowa.edu.
-$sites['orgmuhsstudentorg.uiowa.ddev.site'] = 'muhsstudentorg.org.uiowa.edu';
-$sites['orgmuhsstudentorg.dev.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
-$sites['orgmuhsstudentorg.stage.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
-$sites['orgmuhsstudentorg.prod.drupal.uiowa.edu'] = 'muhsstudentorg.org.uiowa.edu';
-
 // Directory aliases for sparta.lab.uiowa.edu.
 $sites['labsparta.uiowa.ddev.site'] = 'sparta.lab.uiowa.edu';
 $sites['labsparta.dev.drupal.uiowa.edu'] = 'sparta.lab.uiowa.edu';
@@ -7558,3 +7552,15 @@ $sites['labxzan.uiowa.ddev.site'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.dev.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.stage.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
 $sites['labxzan.prod.drupal.uiowa.edu'] = 'xzan.lab.uiowa.edu';
+
+// Directory aliases for muhsstudent.org.uiowa.edu.
+$sites['orgmuhsstudent.uiowa.ddev.site'] = 'muhsstudent.org.uiowa.edu';
+$sites['orgmuhsstudent.dev.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
+$sites['orgmuhsstudent.stage.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
+$sites['orgmuhsstudent.prod.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
+
+// Directory aliases for kgsa.org.uiowa.edu.
+$sites['orgkgsa.uiowa.ddev.site'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.dev.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.stage.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.prod.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
