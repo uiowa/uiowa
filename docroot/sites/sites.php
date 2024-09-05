@@ -7558,3 +7558,9 @@ $sites['orgmuhsstudent.uiowa.ddev.site'] = 'muhsstudent.org.uiowa.edu';
 $sites['orgmuhsstudent.dev.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
 $sites['orgmuhsstudent.stage.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
 $sites['orgmuhsstudent.prod.drupal.uiowa.edu'] = 'muhsstudent.org.uiowa.edu';
+
+// Directory aliases for kgsa.org.uiowa.edu.
+$sites['orgkgsa.uiowa.ddev.site'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.dev.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.stage.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
+$sites['orgkgsa.prod.drupal.uiowa.edu'] = 'kgsa.org.uiowa.edu';
