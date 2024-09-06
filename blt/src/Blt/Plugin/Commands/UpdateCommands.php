@@ -618,25 +618,19 @@ EOD;
 
     // For each site...
     $sites = Multisite::getAllSites($root);
-    $counter = 0;
-    $limit = 10;
     foreach ($sites as $site) {
-      if ($counter < $limit) {
-        $counter++;
+      // Run the drush get alias command.
+      $id = Multisite::getIdentifier("https://$site");
+      // Handle exceptions.
+      try {
+        $app = $this->getApplicationFromDrushRemote($id);
+      }
+      catch (\Exception $e) {
+        $app = NULL;
+      }
 
-        // Run the drush get alias command.
-        $id = Multisite::getIdentifier("https://$site");
-        // Handle exceptions.
-        try {
-          $app = $this->getApplicationFromDrushRemote($id);
-        }
-        catch (\Exception $e) {
-          $app = NULL;
-        }
-
-        if ($app) {
-          $this->addSiteToManifest($manifest, $app, $site);
-        }
+      if ($app) {
+        $this->addSiteToManifest($manifest, $app, $site);
       }
     }
 
@@ -644,7 +638,7 @@ EOD;
     $this->arrayToManifest($manifest);
 
     // Set schema version to 1017.
-    //    $this->setSchemaVersion(1017);.
+    $this->setSchemaVersion(1017);
   }
 
 }
