@@ -9,7 +9,8 @@ use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
-use Uiowa\UtilsTrait;
+use Uiowa\MultisiteTrait;
+use Uiowa\YamlTrait;
 
 /**
  * Define update commands.
@@ -18,7 +19,7 @@ use Uiowa\UtilsTrait;
  */
 class UpdateCommands extends BltTasks {
 
-  use UtilsTrait;
+  use MultisiteTrait;
 
   /**
    * Execute uiowa application updates.
@@ -605,44 +606,42 @@ EOD;
    *
    * @Update(
    *   version = "1017",
-   *   description = "Write a yml entry in the blt/blt.yml file to log the
+   *   description = "Write a yaml entry in the blt/blt.yml file to log the
    *   docroot for each site."
    * )
+   * @throws \Exception
    */
   protected function update1017() {
     // Load blt.yml.
     $root = $this->getConfigValue('repo.root');
-    $path = "$root/blt/blt.yml";
-    $yaml = $this->ymlMapParse($path);
-    $yaml['manifest'] = [];
+    $manifest = [];
 
     // For each site...
     $sites = Multisite::getAllSites($root);
     $counter = 0;
     $limit = 10;
-//    $yaml = $this->removeSiteFromManifest($yaml, 'academicmusiciowa.sites.uiowa.edu', 'uiowa01');
-    foreach ($sites as $host) {
+    foreach ($sites as $site) {
       if ($counter < $limit) {
         $counter++;
 
         // Run the drush get alias command.
-        $id = Multisite::getIdentifier("https://$host");
-        $app = $this->getApplicationFromDrushRemote($id, 'prod', FALSE);
+        $id = Multisite::getIdentifier("https://$site");
+        // Handle exceptions.
+        try {
+          $app = $this->getApplicationFromDrushRemote($id);
+        }
+        catch (\Exception $e) {
+          $app = NULL;
+        }
 
         if ($app) {
-          $yaml = $this->addSiteToManifest($yaml, $host, $app);
+          $this->addSiteToManifest($manifest, $app, $site);
         }
       }
     }
 
-    // Sort the apps.
-    ksort($yaml['manifest']);
-    foreach ($yaml['manifest'] as $app) {
-      sort($app);
-    }
-
-    // Write to the btl.yml file with the new entries.
-    $this->ymlMapDump($path, $yaml);
+    // Write the manifest to a file.
+    $this->arrayToManifest($manifest);
 
     // Set schema version to 1017.
     //    $this->setSchemaVersion(1017);.

@@ -23,7 +23,8 @@ use Symfony\Component\Yaml\Yaml;
 use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
-use Uiowa\UtilsTrait;
+use Uiowa\MultisiteTrait;
+use Uiowa\YamlTrait;
 
 /**
  * Global multisite commands.
@@ -32,7 +33,7 @@ class MultisiteCommands extends BltTasks {
 
   use AcquiaCloudApiTrait;
   use InspectorTrait;
-  use UtilsTrait;
+  use MultisiteTrait;
 
   /**
    * A no-op command.
@@ -281,9 +282,9 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      $app = $this->getApplicationFromDrushRemote($id);
-
       if (!$options['simulate']) {
+        $app = $this->getApplicationFromDrushRemote($id);
+
         // Iterate over each environment and delete files.
         foreach (['dev', 'test', 'prod'] as $env) {
           $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
@@ -353,21 +354,25 @@ EOD
         ->to('')
         ->run();
 
-      $task = $this->taskGit()
-        ->dir($root)
-        ->add('docroot/sites/sites.php')
-        ->add("docroot/sites/{$dir}/")
-        ->add("drush/sites/{$id}.site.yml")
-        ->interactive(FALSE);
+      if (!$options['simulate']) {
 
-      if (file_exists("{$root}/config/sites/{$dir}")) {
-        $task->add("config/sites/{$dir}");
+        $task = $this->taskGit()
+          ->dir($root)
+          ->add('docroot/sites/sites.php')
+          ->add("docroot/sites/{$dir}/")
+          ->add("drush/sites/{$id}.site.yml")
+          ->interactive(FALSE);
+
+        if (file_exists("{$root}/config/sites/{$dir}")) {
+          $task->add("config/sites/{$dir}");
+        }
+
+        $task->commit("Delete {$dir} multisite on {$app}")
+          ->run();
+
+        $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
       }
 
-      $task->commit("Delete {$dir} multisite on {$app}")
-        ->run();
-
-      $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
       $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
     }
   }
@@ -718,6 +723,15 @@ EOD;
       ->run();
 
     $this->say('Added default <comment>sites.php</comment> entries.');
+
+    // Load the manifest.
+    $manifest = $this->manifestToArray();
+
+    // Add the site to the manifest.
+    $this->addSiteToManifest($manifest, $app, $host);
+
+    // Write the manifest back to the file.
+    $this->arrayToManifest($manifest);
 
     // Regenerate the local settings file - it had the wrong database name.
     $this->getConfig()->set('multisites', [
