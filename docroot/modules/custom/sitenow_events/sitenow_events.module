@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -114,6 +115,17 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
 
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_events_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] === 'views-exposed-form-events-list-block-card-list') {
+    $today = new DrupalDateTime('now');
+    $form['field_event_when_value']['#default_value'] = $today->format('Y-m-d');
+    $form_state->setRebuild();
   }
 }
 
