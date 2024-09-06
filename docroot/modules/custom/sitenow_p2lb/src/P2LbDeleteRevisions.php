@@ -28,6 +28,11 @@ class P2LbDeleteRevisions {
       // Get the protected revision.
       $protected_vid = $node->get('field_v3_conversion_revision_id')->value;
 
+      // If this is a new node since P2LB, skip it.
+      if ($protected_vid === 'v3_new') {
+        continue;
+      }
+
       if ($protected_vid) {
         foreach ($vids as $vid) {
           if ($vid <= $protected_vid) {

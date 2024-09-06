@@ -80,9 +80,10 @@ if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
 
-// Memory increase for large menu pages so webmasters can save changes.
-if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
-  ini_set('memory_limit', '256M');
+// Increase 'max_input_vars' for large menu pages so webmasters can save changes.
+if (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'],
+    'admin/structure/menu')) {
+  ini_set('max_input_vars', '5000');
 }
 
 // Under Acquia Cloud, this will override the temporary folder used by

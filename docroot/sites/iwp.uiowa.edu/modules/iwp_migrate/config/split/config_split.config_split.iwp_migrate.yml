@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: iwp_migrate
+label: 'IWP Migrate'
+description: 'Migrations for IWP'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/iwp.uiowa.edu/modules/iwp_migrate/config/split
+module:
+  iwp_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.iwp_migrate
+  - 'migrate_plus.migration.iwp_*'
+partial_list: {  }

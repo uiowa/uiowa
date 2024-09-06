@@ -70,6 +70,9 @@
 
 .field__item {
   line-height: 1.7;
+}
+
+.field__item {
   margin-top: 0;
 
   &.h1,
@@ -108,8 +111,16 @@
   }
 }
 
+.field__item.headline {
+  line-height: 1;
+}
+
 .field--label-above {
   margin-bottom: $sm;
+
+  .block-margin__default--removed & {
+    margin-bottom: 0;
+  }
 
   ul {
     margin-top: 0;

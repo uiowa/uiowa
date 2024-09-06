@@ -10,6 +10,10 @@ third_party_settings:
   jsonapi_defaults:
     default_filter:
       'filter:complete#value': '0'
+      'filter:status#value': '1'
+    default_sorting:
+      'sort:titleSort#path': created
+      'sort:titleSort#direction': DESC
     page_limit: 50
 id: node--hawk_alert
 disabled: false
@@ -65,7 +69,7 @@ resourceFields:
     enhancer:
       id: ''
   status:
-    disabled: true
+    disabled: false
     fieldName: status
     publicName: status
     enhancer:
@@ -194,6 +198,12 @@ resourceFields:
     disabled: true
     fieldName: menu_link
     publicName: menu_link
+    enhancer:
+      id: ''
+  more_info_link:
+    disabled: false
+    fieldName: more_info_link
+    publicName: more_info_link
     enhancer:
       id: ''
   body:

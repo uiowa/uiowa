@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Uiowa Core module.
+ */
+
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function registrar_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    // Unset request info buttons.
+    case 'academic_calendar_block':
+    case 'five_year_academic_calendar_block':
+      uiowa_core_set_attributes($variables, 'grid--twocol--25-75');
+      break;
+
+    // Add gpa calculator styles.
+    case 'gpa_calculator':
+      $variables['#attached']['library'][] = 'registrar_core/gpa-calculator';
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'gpa_calculator_form') {
+    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
+    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
+    $form['#attached']['library'][] = 'uids_base/callout';
+    $form['#submit'][] = 'registrar_core_post_submit';
+  }
+}
+
+/**
+ * Triggers after submit to change the way that the grade output is generated.
+ */
+function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
+  $form["gpa_results_wrapper"]['#prefix'] = '<div class="callout bg--gray">';
+  $form["gpa_results_wrapper"]['#suffix'] = '</div>';
+}
+
+/**
+ * Retrieve correspondence data from Dispatch.
+ */
+function registrar_core_fetch_correspondence_from_dispatch() {
+  $logger = \Drupal::logger('registrar_core');
+  $logger->notice('Fetching correspondence archives.');
+
+  $rows = [];
+  $database = \Drupal::database();
+  $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
+  $dispatch_params = [
+    'VISIBLE' => 'true',
+    'TAG' => 'registrar',
+  ];
+  $query = UrlHelper::buildQuery($dispatch_params);
+  $archives = registrar_core_dispatch_get_data("{$endpoint}archives?{$query}");
+
+  if (empty($archives)) {
+    $logger->warning('Unable to retrieve correspondence archives.');
+  }
+
+  foreach ($archives as $archive_url) {
+    $archive = registrar_core_dispatch_get_data($archive_url);
+    // Fetched archives are in descending chronological order
+    // and we're only keeping ones that are 2 years or younger,
+    // so once we've hit one that is older than 2 years old
+    // (63072000 seconds) we know we're done processing.
+    if (strtotime($archive->createdOn) < time() - 63072000) {
+      break;
+    }
+    $key = basename($archive_url);
+    $url = "https://apps.its.uiowa.edu/dispatch/archive/{$key}";
+    $communication = registrar_core_dispatch_get_data($archive->communication);
+    $campaign = registrar_core_dispatch_get_data($communication->campaign);
+
+    $audience = [];
+    foreach ([
+      'student' => 'Student',
+      'faculty/staff' => 'Faculty/Staff',
+    ] as $tag => $friendly_name) {
+      if (in_array($tag, $campaign->tags)) {
+        $audience[] = $friendly_name;
+      }
+    }
+    $audience = implode(', ', $audience);
+
+    $rows[] = [
+      'timestamp' => strtotime($archive->createdOn),
+      'from_name' => $communication->email->fromName,
+      'subject' => $communication->email->subject,
+      'url' => $url,
+      'audience' => $audience,
+      'tags' => implode(' ', $campaign->tags),
+    ];
+  }
+  $query = $database->upsert('correspondence_archives')
+    ->fields(['timestamp', 'from_name', 'subject', 'url', 'audience', 'tags'])
+    ->key('url');
+  foreach ($rows as $row) {
+    $query->values($row);
+  }
+  $query->execute();
+
+  $logger->notice(t('@count archives upserted.', [
+    '@count' => count($rows),
+  ]));
+}
+
+/**
+ * Helper function to get dispatch data.
+ *
+ * @param string $endpoint
+ *   The Dispatch API endpoint.
+ *
+ * @return object
+ *   The returned data from Dispatch.
+ */
+function registrar_core_dispatch_get_data(string $endpoint) {
+  $dispatch = \Drupal::service('sitenow_dispatch.dispatch_client');
+  $options = [
+    'headers' => [
+      'Accept' => 'application/json',
+      'x-dispatch-api-key' => $dispatch->getKey(),
+    ],
+  ];
+  $data = $dispatch->get($endpoint, $options);
+
+  return $data;
+}
+
+/**
+ * Helper function to remove outdated correspondence archive data.
+ *
+ * @param int $timestamp
+ *   The UNIX timestamp before which records should be deleted.
+ */
+function registrar_core_prune_correspondence(int $timestamp) {
+  $count = \Drupal::database()->select('correspondence_archives')
+    ->condition('timestamp', $timestamp, '<')
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+  \Drupal::logger('registrar_core')->notice(t('Pruning @count records from the correspondence archives.', [
+    '@count' => $count,
+  ]));
+  \Drupal::database()->delete('correspondence_archives')
+    ->condition('timestamp', $timestamp, '<')
+    ->execute();
+}
+
+/**
+ * Implements hook_cron().
+ */
+function registrar_core_cron() {
+  // Check if we've run this yet today.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('registrar_core_daily_last');
+
+  if (!$last_run || $request_date > $last_run) {
+    registrar_core_fetch_correspondence_from_dispatch();
+    // Prune entries older than 2 years (63072000 seconds).
+    registrar_core_prune_correspondence(time() - 63072000);
+
+    \Drupal::state()->set('registrar_core_daily_last', $request_date);
+  }
+}

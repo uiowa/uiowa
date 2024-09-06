@@ -90,9 +90,10 @@ class RoomItemProcessor extends EntityItemProcessorBase {
 
         if (!empty($features)) {
           // Cheat it a bit by fetching a string and exploding it
-          // to end up with a basic array of target ids.
+          // to end up with a basic array of target ids, as long
+          // as it wasn't an empty string.
           $entity_features = $entity->get(static::$termBundleToFieldMap[$bundle])->getString();
-          $entity_features = explode(', ', $entity_features);
+          $entity_features = empty($entity_features) ? [] : explode(', ', $entity_features);
           // Sort lists before comparing.
           sort($entity_features);
           sort($features[$bundle]);
@@ -111,11 +112,11 @@ class RoomItemProcessor extends EntityItemProcessorBase {
         if ($api_mapping = $term->get('field_api_mapping')?->value) {
           if (in_array($api_mapping, $record->regionList)) {
             // If we found a mappable region, set it.
-            $regions[] = $term->id();
+            $regions[] = ['target_id' => $term->id()];
           }
         }
       }
-      if (!empty($regions)) {
+      if ($regions !== $entity->field_room_scheduling_regions?->getValue()) {
         $updated = TRUE;
         $entity->set('field_room_scheduling_regions', $regions);
       }

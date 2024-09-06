@@ -1,0 +1,20 @@
+{# Template to implement accordion container for event ceremony information details. #}
+{{ attach_library('uids_base/accordion') }}
+
+<div class="collection--accordion">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-ceremony-detail">
+    {% for item in items %}
+      {% set accordion_item = {
+        'accordion_h_size' : 'h3',
+        'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ loop.index,
+        'accordion_parent_id': '#accordion-ceremony-detail',
+        'accordion_item_label': item.label,
+        'accordion_item_content': item.body,
+        'accordion_hash':  item.label|clean_class,
+      } %}
+      {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+
+      {% endembed %}
+    {% endfor %}
+  </div>
+</div>

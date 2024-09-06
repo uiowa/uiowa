@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchris.uiowa.ddev.site
+    protocol: https
+  machine_name: researchris
+  human_name: ris.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchris.prod
+drupal:
+  db:
+    database: ris_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchris.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Research Information Systems'

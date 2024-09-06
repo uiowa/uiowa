@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.writer_bio.field_writer_bio_sample
     - field.field.node.writer_bio.field_writer_bio_sample_original
     - field.field.node.writer_bio.field_writer_bio_session_status
+    - field.field.node.writer_bio.field_writer_bio_visitor
     - node.type.writer_bio
   module:
     - field_delimiter
@@ -43,7 +44,7 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: large__widescreen
+      view_mode: large__square
       link: false
     third_party_settings: {  }
     weight: 1
@@ -119,4 +120,5 @@ hidden:
   field_writer_bio_family_name: true
   field_writer_bio_given_name: true
   field_writer_bio_photo_credit: true
+  field_writer_bio_visitor: true
   search_api_excerpt: true

@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.writer_bio.field_writer_bio_sample
     - field.field.node.writer_bio.field_writer_bio_sample_original
     - field.field.node.writer_bio.field_writer_bio_session_status
+    - field.field.node.writer_bio.field_writer_bio_visitor
     - node.type.writer_bio
     - workflows.workflow.editorial
   module:
@@ -94,7 +95,7 @@ content:
     third_party_settings: {  }
   field_writer_bio_media_link:
     type: link_default
-    weight: 26
+    weight: 22
     region: content
     settings:
       placeholder_url: ''
@@ -102,7 +103,7 @@ content:
     third_party_settings: {  }
   field_writer_bio_photo_credit:
     type: string_textfield
-    weight: 20
+    weight: 21
     region: content
     settings:
       size: 60
@@ -110,14 +111,14 @@ content:
     third_party_settings: {  }
   field_writer_bio_sample:
     type: media_library_widget
-    weight: 18
+    weight: 19
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_writer_bio_sample_original:
     type: media_library_widget
-    weight: 19
+    weight: 20
     region: content
     settings:
       media_types: {  }
@@ -127,6 +128,13 @@ content:
     weight: 12
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_writer_bio_visitor:
+    type: boolean_checkbox
+    weight: 18
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

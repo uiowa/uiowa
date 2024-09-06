@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lababoualaiwa.uiowa.ddev.site
+    protocol: https
+  machine_name: lababoualaiwa
+  human_name: aboualaiwa.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lababoualaiwa.prod
+drupal:
+  db:
+    database: aboualaiwa_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lababoualaiwa.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Abou Alaiwa Lab'

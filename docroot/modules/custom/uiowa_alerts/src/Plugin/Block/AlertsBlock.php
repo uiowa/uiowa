@@ -83,7 +83,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
         ],
         '#attached' => [
           'library' => [
-            'uiowa_alerts/uiowa-alerts',
+            'uiowa_alerts/alerts',
           ],
           'drupalSettings' => [
             'uiowaAlerts' => [

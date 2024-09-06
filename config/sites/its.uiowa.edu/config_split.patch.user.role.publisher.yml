@@ -4,6 +4,7 @@ adding:
       - node.type.service
       - node.type.support_article
       - workflows.workflow.alert
+      - workflows.workflow.draft
   permissions:
     - 'create support_article content'
     - 'delete any support_article content'
@@ -30,12 +31,24 @@ adding:
     - 'use alert transition create_new_draft'
     - 'use alert transition needs_review'
     - 'use alert transition publish'
+    - 'use draft transition archive'
+    - 'use draft transition archived_published'
+    - 'use draft transition create_new_draft'
+    - 'use draft transition publish'
     - 'view service revisions'
     - 'view support_article revisions'
 removing:
   dependencies:
     config:
       - taxonomy.vocabulary.alert_categories
+    module:
+      - menu_admin_per_menu
   permissions:
+    - 'access fragments overview'
+    - 'administer main menu items'
+    - 'create region_item fragments'
+    - 'create region_item_after_content fragments'
     - 'create terms in alert_categories'
     - 'edit terms in alert_categories'
+    - 'update own region_item fragments'
+    - 'update own region_item_after_content fragments'

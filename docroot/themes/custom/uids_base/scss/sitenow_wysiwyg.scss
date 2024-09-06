@@ -1,5 +1,3 @@
-@import '../uids/scss/base/reset';
-
 .ck.ck-content,
 .ck-content {
   // Colors
@@ -21,6 +19,17 @@
   @import "components/typography/global-serif";
   @import "../uids/scss/components/callout";
   @import "../uids/scss/components/inline";
+
+  .element--circle-list>li:before, .uids-component--circle-list>li:before {
+    width: 80px;
+    height: 80px;
+    line-height: 1.8;
+    padding-top: 0;
+  }
+
+  blockquote {
+    font-style: normal;
+  }
 
 
   font-family: Roboto, sans-serif;
@@ -102,6 +111,16 @@
     }
     img {
       min-width: initial;
+    }
+  }
+
+  .media--type-remote-video {
+    iframe {
+      position: relative;
+      top: 0;
+    }
+    &.media--view-mode-vertical .field--name-field-media-oembed-video {
+      height: 100%;
     }
   }
 
