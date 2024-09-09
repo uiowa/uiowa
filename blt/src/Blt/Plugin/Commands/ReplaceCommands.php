@@ -7,12 +7,14 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use Uiowa\InspectorTrait;
+use Uiowa\MultisiteTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
   use InspectorTrait;
+  use MultisiteTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -23,11 +25,14 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $app = EnvironmentDetector::getAhGroup() ?: 'uiowa07';
     $multisite_exception = FALSE;
 
+    // Load the manifest.
+    $manifest = $this->manifestToArray();
+
     // Unshift sites to the beginning to run first.
-    $multisites = $this->getConfigValue("manifest.$app");
+    $multisites = $manifest[$app];
     $run_first = $this->getConfigValue('uiowa.run_first');
 
     if ($run_first) {

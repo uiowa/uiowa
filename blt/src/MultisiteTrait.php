@@ -4,7 +4,6 @@ namespace Uiowa;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Tasks\LoadTasks;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
@@ -212,7 +211,10 @@ trait MultisiteTrait {
   }
 
   /**
+   * Get the path to the manifest file.
+   *
    * @return string
+   *   The path to the manifest file.
    */
   protected function getManifestPath(): string {
     $root = $this->getConfigValue('repo.root');
@@ -242,13 +244,10 @@ trait MultisiteTrait {
    *
    * @param array $manifest
    *   The yaml array to be removed from.
-   * @param string $site
-   *   The multisite identifier.
    * @param string $app
    *   The app identifier from which to remove the $site from.
-   *
-   * @return array
-   *   The yaml array.
+   * @param string $site
+   *   The multisite identifier.
    */
   protected function removeSiteFromManifest(array &$manifest, string $app, string $site): array {
     // If the designated app exists...
@@ -282,11 +281,8 @@ trait MultisiteTrait {
   /**
    * Dump the manifest array to a file.
    *
-   * @param $path
-   *
-   * @param $manifest
-   *
-   * @return void
+   * @param array $manifest
+   *   The manifest array.
    */
   protected function arrayToManifest($manifest): void {
     // Sort the apps.

@@ -10,7 +10,6 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 use Uiowa\MultisiteTrait;
-use Uiowa\YamlTrait;
 
 /**
  * Define update commands.
@@ -609,6 +608,7 @@ EOD;
    *   description = "Write a yaml entry in the blt/blt.yml file to log the
    *   docroot for each site."
    * )
+   *
    * @throws \Exception
    */
   protected function update1017() {
