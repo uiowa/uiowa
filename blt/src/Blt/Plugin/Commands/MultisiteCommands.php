@@ -24,7 +24,6 @@ use Uiowa\Blt\AcquiaCloudApiTrait;
 use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 use Uiowa\MultisiteTrait;
-use Uiowa\YamlTrait;
 
 /**
  * Global multisite commands.
@@ -277,14 +276,14 @@ class MultisiteCommands extends BltTasks {
       ],
     ];
 
+    $app = $this->getApplicationFromDrushRemote($id);
     $this->printArrayAsTable($properties);
-    if (!$this->confirm('The cloud properties above will be deleted. Are you sure?', FALSE)) {
-      throw new \Exception('Aborted.');
-    }
-    else {
-      if (!$options['simulate']) {
-        $app = $this->getApplicationFromDrushRemote($id);
 
+    if (!$options['simulate']) {
+      if (!$this->confirm('The cloud properties above will be deleted. Are you sure?', FALSE)) {
+        throw new \Exception('Aborted.');
+      }
+      else {
         // Iterate over each environment and delete files.
         foreach (['dev', 'test', 'prod'] as $env) {
           $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
@@ -328,20 +327,21 @@ class MultisiteCommands extends BltTasks {
           }
         }
       }
-      else {
-        $this->logger->warning('Skipping cloud operations.');
-      }
+    }
+    else {
+      $this->logger->warning('The cloud properties above will not be deleted because you used the --simulate option.');
+    }
 
-      // Delete the site code.
-      $this->taskFilesystemStack()
-        ->remove("{$root}/config/sites/{$dir}")
-        ->remove("{$root}/docroot/sites/{$dir}")
-        ->remove("{$root}/drush/sites/{$id}.site.yml")
-        ->run();
+    // Delete the site code.
+    $this->taskFilesystemStack()
+      ->remove("{$root}/config/sites/{$dir}")
+      ->remove("{$root}/docroot/sites/{$dir}")
+      ->remove("{$root}/drush/sites/{$id}.site.yml")
+      ->run();
 
-      // Remove the directory aliases from sites.php.
-      $this->taskReplaceInFile("{$root}/docroot/sites/sites.php")
-        ->from(<<<EOD
+    // Remove the directory aliases from sites.php.
+    $this->taskReplaceInFile("{$root}/docroot/sites/sites.php")
+      ->from(<<<EOD
 
 // Directory aliases for {$dir}.
 \$sites['{$local}'] = '{$dir}';
@@ -350,31 +350,39 @@ class MultisiteCommands extends BltTasks {
 \$sites['{$prod}'] = '{$dir}';
 
 EOD
-        )
-        ->to('')
-        ->run();
+      )
+      ->to('')
+      ->run();
 
-      if (!$options['simulate']) {
+    // Load the manifest.
+    $manifest = $this->manifestToArray();
 
-        $task = $this->taskGit()
-          ->dir($root)
-          ->add('docroot/sites/sites.php')
-          ->add("docroot/sites/{$dir}/")
-          ->add("drush/sites/{$id}.site.yml")
-          ->interactive(FALSE);
+    // Add the site to the manifest.
+    $this->removeSiteFromManifest($manifest, $app, $dir);
 
-        if (file_exists("{$root}/config/sites/{$dir}")) {
-          $task->add("config/sites/{$dir}");
-        }
+    // Write the manifest back to the file.
+    $this->arrayToManifest($manifest);
 
-        $task->commit("Delete {$dir} multisite on {$app}")
-          ->run();
+    if (!$options['simulate']) {
 
-        $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
+      $task = $this->taskGit()
+        ->dir($root)
+        ->add('docroot/sites/sites.php')
+        ->add("docroot/sites/{$dir}/")
+        ->add("drush/sites/{$id}.site.yml")
+        ->interactive(FALSE);
+
+      if (file_exists("{$root}/config/sites/{$dir}")) {
+        $task->add("config/sites/{$dir}");
       }
 
-      $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
+      $task->commit("Delete {$dir} multisite on {$app}")
+        ->run();
+
+      $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
     }
+
+    $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
   }
 
   /**
