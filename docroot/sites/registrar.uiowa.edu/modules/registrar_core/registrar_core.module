@@ -172,3 +172,27 @@ function registrar_core_cron() {
     \Drupal::state()->set('registrar_core_daily_last', $request_date);
   }
 }
+
+/**
+ * Helper function for correspondence archive tags.
+ *
+ * @param string $tag
+ *   The tag to map, or empty to return the full mapping array.
+ *
+ * @return string|string[]
+ *   The tag display title or an associative array of tags => display names.
+ */
+function registrar_core_correspondence_tags(string $tag = '') {
+  $mapping = [
+    'classroom scheduling' =>	'Classroom Scheduling',
+    'commencement' => 'Commencement',
+    'grad_analysis'	=> 'Degree Services',
+    'exam'=> 'Exams',
+    'grades' => 'Grades',
+    'registration' => 'Registration',
+  ];
+  if (empty($tag)) {
+    return $mapping;
+  }
+  return $mapping[$tag] ?? '';
+}

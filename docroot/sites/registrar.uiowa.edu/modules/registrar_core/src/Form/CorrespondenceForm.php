@@ -83,26 +83,48 @@ class CorrespondenceForm extends FormBase {
     else {
       $audience = 'all';
     }
+    if ($form_state->getValue('topic')) {
+      $topic = $form_state->getValue('topic');
+    }
+    elseif ($params->has('topic')) {
+      $topic = $params->get('topic');
+      // If the given audience param doesn't match our available options,
+      // default to ALL.
+      if (!in_array($audience, array_keys(registrar_core_correspondence_tags()))) {
+        $topic = '';
+      }
+    }
+    else {
+      $topic = '';
+    }
+
     $mapping = [
       'all' => '',
       'student' => 'student',
       'faculty_staff' => 'faculty/staff',
     ];
-
     $rows = [];
 
     $data = $this->connection
       ->select('correspondence_archives', 'c')
       ->fields('c')
       ->condition('audience', '%' . $mapping[$audience] . '%', 'LIKE')
+      ->condition('tags', '%' . $topic . '%', 'LIKE')
       ->orderBy('timestamp', 'DESC')
       ->execute();
     foreach ($data as $row) {
+      $topics = [];
+      foreach (registrar_core_correspondence_tags() as $tag => $display) {
+        if (str_contains($row->tags, $tag)) {
+          $topics[] = $display;
+        }
+      }
       $rows[] = [
         date('m/d/Y', $row->timestamp),
         $row->from_name,
         Link::fromTextAndUrl($row->subject, Url::fromUri($row->url)),
         $row->audience,
+        implode(', ', $topics),
       ];
     }
 
@@ -111,6 +133,7 @@ class CorrespondenceForm extends FormBase {
       'From',
       'Email',
       'Audience',
+      'Topic',
     ];
 
     $form['audience'] = [
@@ -128,6 +151,20 @@ class CorrespondenceForm extends FormBase {
         'student' => $this->t('Student'),
         'faculty_staff' => $this->t('Faculty/Staff'),
       ],
+    ];
+
+    $form['topic'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Topic'),
+      '#description' => $this->t('The communication topic.'),
+      '#empty_option' => '- Select -',
+      '#default_value' => $topic,
+      '#ajax' => [
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'registrar-core-correspondence-table',
+        'effect' => 'fade',
+      ],
+      '#options' => registrar_core_correspondence_tags(),
     ];
 
     $form['table'] = [
