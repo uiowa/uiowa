@@ -17,9 +17,10 @@
       }
     }
   }
-  // Modifier to hide labels.
+  // Modifier to hide search label.
   &--label-hidden {
-    .form-item-combine label {
+    .form-item-combine label,
+    .form-item-title label {
       @include element-invisible;
     }
   }
@@ -220,9 +221,10 @@
     .bef-exposed-form .form-actions {
       margin-block-start: 1rem;
       @include breakpoint(sm) {
-        margin-block-start: 0;
+        margin-block-start: 1.75rem;
       }
     }
+
     .bef-exposed-form .form--inline .form-item {
       @include breakpoint(sm) {
         flex: 1;
