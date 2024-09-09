@@ -5849,12 +5849,6 @@ $sites['labhodgson-zingman.dev.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.e
 $sites['labhodgson-zingman.stage.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.edu';
 $sites['labhodgson-zingman.prod.drupal.uiowa.edu'] = 'hodgson-zingman.lab.uiowa.edu';
 
-// Directory aliases for irani.lab.uiowa.edu.
-$sites['labirani.uiowa.ddev.site'] = 'irani.lab.uiowa.edu';
-$sites['labirani.dev.drupal.uiowa.edu'] = 'irani.lab.uiowa.edu';
-$sites['labirani.stage.drupal.uiowa.edu'] = 'irani.lab.uiowa.edu';
-$sites['labirani.prod.drupal.uiowa.edu'] = 'irani.lab.uiowa.edu';
-
 // Directory aliases for lamping.lab.uiowa.edu.
 $sites['lablamping.uiowa.ddev.site'] = 'lamping.lab.uiowa.edu';
 $sites['lablamping.dev.drupal.uiowa.edu'] = 'lamping.lab.uiowa.edu';
