@@ -2254,15 +2254,13 @@ display:
                   collapsible: false
                   is_secondary: false
               field_event_when_end_value:
-                plugin_id: bef_datepicker
+                plugin_id: default
                 advanced:
-                  placeholder_text: 'Starts on or after'
                   collapsible: false
                   is_secondary: true
               field_event_when_value:
-                plugin_id: bef_datepicker
+                plugin_id: default
                 advanced:
-                  placeholder_text: 'Ends on or before'
                   collapsible: false
                   is_secondary: true
               field_event_performer_target_id_1:
@@ -2480,7 +2478,7 @@ display:
           exposed: true
           expose:
             operator_id: field_event_when_end_value_op
-            label: Ends
+            label: 'Starts on or after'
             description: ''
             use_operator: false
             operator: field_event_when_end_value_op
@@ -2535,7 +2533,7 @@ display:
           exposed: true
           expose:
             operator_id: field_event_when_value_op
-            label: Starts
+            label: 'Ends on or before'
             description: ''
             use_operator: false
             operator: field_event_when_value_op
