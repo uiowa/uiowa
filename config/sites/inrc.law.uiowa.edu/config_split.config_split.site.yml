@@ -10,7 +10,9 @@ stackable: true
 storage: folder
 folder: ../config/sites/inrc.law.uiowa.edu
 module:
+  csv_serialization: 0
   inrc_core: 0
+  views_data_export: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -38,6 +40,7 @@ complete_list:
   - taxonomy.vocabulary.nonprofit_organization_category
   - taxonomy.vocabulary.ntee_classification
   - taxonomy.vocabulary.type_of_grant
+  - views.view.expired_non_profit_organizations
   - views.view.grants
   - views.view.nonprofit_organization
   - taxonomy.vocabulary.cities
