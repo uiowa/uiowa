@@ -54,6 +54,11 @@
     &.form-wrapper {
       border: none;
       background: none;
+      &.form-item {
+        @include breakpoint(sm) {
+          margin-top: 1.75rem;
+        }
+      }
     }
 
     &.form-item {
