@@ -1397,12 +1397,6 @@ $sites['socialwork.dev.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 $sites['socialwork.stage.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 $sites['socialwork.prod.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 
-// Directory aliases for ace.uiowa.edu.
-$sites['ace.uiowa.ddev.site'] = 'ace.uiowa.edu';
-$sites['ace.dev.drupal.uiowa.edu'] = 'ace.uiowa.edu';
-$sites['ace.stage.drupal.uiowa.edu'] = 'ace.uiowa.edu';
-$sites['ace.prod.drupal.uiowa.edu'] = 'ace.uiowa.edu';
-
 // Directory aliases for itprivacy.uiowa.edu.
 $sites['itprivacy.uiowa.ddev.site'] = 'itprivacy.uiowa.edu';
 $sites['itprivacy.dev.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
