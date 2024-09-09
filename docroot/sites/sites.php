@@ -7564,3 +7564,9 @@ $sites['icts.uiowa.ddev.site'] = 'icts.uiowa.edu';
 $sites['icts.dev.drupal.uiowa.edu'] = 'icts.uiowa.edu';
 $sites['icts.stage.drupal.uiowa.edu'] = 'icts.uiowa.edu';
 $sites['icts.prod.drupal.uiowa.edu'] = 'icts.uiowa.edu';
+
+// Directory aliases for hancher.uiowa.edu.
+$sites['hancher.uiowa.ddev.site'] = 'hancher.uiowa.edu';
+$sites['hancher.dev.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
+$sites['hancher.stage.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
+$sites['hancher.prod.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
