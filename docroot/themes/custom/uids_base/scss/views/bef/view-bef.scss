@@ -20,7 +20,8 @@
   // Modifier to hide search label.
   &--label-hidden {
     .form-item-combine label,
-    .form-item-title label {
+    .form-item-title label,
+    .form-item-search label {
       @include element-invisible;
     }
   }
@@ -137,6 +138,12 @@
     display: block;
     margin-bottom: 1rem;
 
+    span.summary {
+      margin-left: 1rem;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) calc(50% - 1px), rgba(192, 192, 192, 1) calc(50%), rgba(0, 0, 0, 0) calc(50% + 1px));
+      padding-right: calc(100% - 94px);
+    }
+
     &::-webkit-details-marker,
     &::marker {
       display: none;
@@ -234,6 +241,9 @@
 
   .bef-exposed-form {
     padding: 1.5rem;
+    @include breakpoint(sm) {
+      padding-bottom: .6rem;
+    }
 
     &[data-drupal-form-fields*="edit-reset--"] {
       .bef--secondary {
@@ -322,8 +332,8 @@
     }
     @include breakpoint(sm) {
       width: calc(100% + 85px);
-      padding-top: #{3 * $xsm-sm};
-      margin-top: $xsm-sm;
+      padding-top: 0;
+      margin-top: 0;
     }
     @include breakpoint(md) {
       width: calc(100% + 91px);
@@ -331,9 +341,6 @@
 
     &.form-wrapper {
       border: none;
-      @include breakpoint(sm) {
-        border-top: 1px solid $grey-light;
-      }
       background: none;
     }
   }
