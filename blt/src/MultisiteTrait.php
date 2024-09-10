@@ -287,7 +287,7 @@ trait MultisiteTrait {
   protected function arrayToManifest($manifest): void {
     // Sort the apps.
     ksort($manifest);
-    foreach ($manifest as $app) {
+    foreach ($manifest as &$app) {
       sort($app);
     }
     $this->taskWriteToFile($this->getManifestPath())
