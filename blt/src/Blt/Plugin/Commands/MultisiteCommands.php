@@ -757,6 +757,7 @@ EOD;
       $this->taskGit()
         ->dir($root)
         ->add('docroot/sites/sites.php')
+        ->add('blt/manifest.yml')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
         ->commit("Initialize {$host} multisite on {$app}")
