@@ -25,7 +25,7 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ?: 'uiowa07';
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $multisite_exception = FALSE;
 
     // If this is running locally, pull list of sites from config. Otherwise,
