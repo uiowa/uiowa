@@ -28,11 +28,22 @@ class ReplaceCommands extends BltTasks {
     $app = EnvironmentDetector::getAhGroup() ?: 'uiowa07';
     $multisite_exception = FALSE;
 
-    // Load the manifest.
-    $manifest = $this->manifestToArray();
+    // If this is running locally, pull list of sites from config. Otherwise,
+    // get the list of sites from the manifest.
+    if ($app === 'local') {
+      $multisites = $this->getConfigValue('multisites');
+    }
+    else {
+      // Load the manifest.
+      $manifest = $this->manifestToArray();
+      // If the manifest is empty, log a warning and continue.
+      if (!isset($manifest[$app])) {
+        $this->logger->warning('No multisites found in manifest for application: ' . $app);
+      }
+      $multisites = $manifest[$app] ?: [];
+    }
 
     // Unshift sites to the beginning to run first.
-    $multisites = $manifest[$app];
     $run_first = $this->getConfigValue('uiowa.run_first');
 
     if ($run_first) {
@@ -351,6 +362,9 @@ EOD;
           $this->say("Failed deploying updates to {$site}.");
           return FALSE;
         }
+      }
+      else {
+        $this->writeln("Skipping {$site}. Drupal is not installed.");
       }
     }
     return TRUE;
