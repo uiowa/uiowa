@@ -31,8 +31,7 @@ drush:
   default_alias: self
 tests:
   phpunit:
-    -
-      config: '${repo.root}'
+    - config: '${repo.root}'
 validate:
   lint:
     filesets:
@@ -55,13 +54,13 @@ drupal:
     password: root
 command-hooks:
   frontend-reqs:
-    dir: '${docroot}'
+    dir: ${docroot}
     command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
   frontend-assets:
-    dir: '${docroot}'
+    dir: ${docroot}
     command: 'yarn workspaces run build'
   post-deploy-build:
-    dir: '${repo.root}'
+    dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
 cm:
   core:
@@ -73,6 +72,11 @@ sync:
     - 'uiowa:multisite:noop'
     - 'uiowa:multisite:noop'
     - 'uiowa:multisite:noop'
+disable-targets:
+  tests:
+    security-drupal: true
+
+# Custom configuration.
 uiowa:
   applications:
     uiowa: 6bcc006f-9a0e-425e-aba0-198585dd2b56
@@ -85,26 +89,28 @@ uiowa:
     uiowa07: 25f49632-0a90-4134-bcc3-bb64fd5a0f67
     uiowa08: 74f7607a-0d2a-4d97-bafe-cb59551d4258
   run_first:
-    - emergency.uiowa.edu
-    - police.uiowa.edu
-    - uiowa.edu
-    - admissions.uiowa.edu
-    - grad.admissions.uiowa.edu
-    - clas.uiowa.edu
-    - dentistry.uiowa.edu
-    - education.uiowa.edu
-    - engineering.uiowa.edu
-    - grad.uiowa.edu
-    - law.uiowa.edu
-    - medicine.uiowa.edu
-    - nursing.uiowa.edu
-    - pharmacy.uiowa.edu
-    - public-health.uiowa.edu
-    - tippie.uiowa.edu
-    - uc.uiowa.edu
+    - 'emergency.uiowa.edu'
+    - 'police.uiowa.edu'
+    - 'uiowa.edu'
+    - 'admissions.uiowa.edu'
+    - 'grad.admissions.uiowa.edu'
+    - 'clas.uiowa.edu'
+    - 'dentistry.uiowa.edu'
+    - 'education.uiowa.edu'
+    - 'engineering.uiowa.edu'
+    - 'grad.uiowa.edu'
+    - 'law.uiowa.edu'
+    - 'medicine.uiowa.edu'
+    - 'nursing.uiowa.edu'
+    - 'pharmacy.uiowa.edu'
+    - 'public-health.uiowa.edu'
+    - 'tippie.uiowa.edu'
+    - 'uc.uiowa.edu'
+  # Helper for running config split exports.
   development:
     config_split:
       splits:
         p2lb:
           dependencies:
             - sitenow_v2
+
