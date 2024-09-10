@@ -7564,3 +7564,9 @@ $sites['hancher.uiowa.ddev.site'] = 'hancher.uiowa.edu';
 $sites['hancher.dev.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
 $sites['hancher.stage.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
 $sites['hancher.prod.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
+
+// Directory aliases for mensicehockeyclub.org.uiowa.edu.
+$sites['orgmensicehockeyclub.uiowa.ddev.site'] = 'mensicehockeyclub.org.uiowa.edu';
+$sites['orgmensicehockeyclub.dev.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
+$sites['orgmensicehockeyclub.stage.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
+$sites['orgmensicehockeyclub.prod.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
