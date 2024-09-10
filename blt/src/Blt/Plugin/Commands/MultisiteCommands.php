@@ -276,7 +276,7 @@ class MultisiteCommands extends BltTasks {
       ],
     ];
 
-    $app = $this->getApplicationFromDrushRemote($id);
+    $app = $this->getAppForSiteFromManifest($dir);
     $this->printArrayAsTable($properties);
 
     if (!$options['simulate']) {

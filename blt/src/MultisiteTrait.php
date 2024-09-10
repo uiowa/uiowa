@@ -211,6 +211,25 @@ trait MultisiteTrait {
   }
 
   /**
+   * Get the application for a site from the manifest.
+   *
+   * @param string $site
+   *   The site URL as listed in the manifest.
+   *
+   * @return string
+   *   The application name.
+   */
+  protected function getAppForSiteFromManifest(string $site): string {
+    $manifest = $this->manifestToArray();
+    foreach ($manifest as $app => $sites) {
+      if (in_array($site, $sites)) {
+        return $app;
+      }
+    }
+    return '';
+  }
+
+  /**
    * Get the path to the manifest file.
    *
    * @return string
@@ -249,7 +268,7 @@ trait MultisiteTrait {
    * @param string $site
    *   The multisite identifier.
    */
-  protected function removeSiteFromManifest(array &$manifest, string $app, string $site): array {
+  protected function removeSiteFromManifest(array &$manifest, string $app, string $site): void {
     // If the designated app exists...
     if (isset($manifest[$app])) {
 
