@@ -370,6 +370,7 @@ EOD
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
+        ->add('blt/manifest.yml')
         ->interactive(FALSE);
 
       if (file_exists("{$root}/config/sites/{$dir}")) {
