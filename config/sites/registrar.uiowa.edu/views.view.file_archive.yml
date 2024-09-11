@@ -4,8 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.media.field_file_archive_type
-    - field.storage.media.field_file_date_range_end
-    - field.storage.media.field_file_date_range_start
+    - field.storage.media.field_file_date_range
     - field.storage.media.field_media_file
     - media.type.file
     - taxonomy.vocabulary.file_archive_type
@@ -13,6 +12,7 @@ dependencies:
     - datetime
     - file
     - media
+    - smart_date
     - taxonomy
     - user
 id: file_archive
@@ -31,16 +31,16 @@ display:
     display_options:
       title: 'File archive'
       fields:
-        field_file_date_range_start:
-          id: field_file_date_range_start
-          table: media__field_file_date_range_start
-          field: field_file_date_range_start
+        field_file_date_range:
+          id: field_file_date_range
+          table: media__field_file_date_range
+          field: field_file_date_range
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: ''
-          exclude: true
+          label: Year
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -72,7 +72,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -81,74 +81,29 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: datetime_custom
+          type: smartdate_custom
           settings:
-            timezone_override: ''
+            separator: ' - '
+            time_diff:
+              enabled: 0
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: '2'
+              refresh: '60'
+              description: ''
             date_format: 'Y'
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_file_date_range_end:
-          id: field_file_date_range_end
-          table: media__field_file_date_range_end
-          field: field_file_date_range_end
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_custom
-          settings:
-            timezone_override: ''
-            date_format: 'Y'
+            custom_date_format: ''
+            timezone: ''
+            tooltip:
+              date_format: long
+              custom_date_format: ''
+            join: ', '
+            time_format: ''
+            time_hour_format: ''
+            allday_label: 'All day'
+            date_first: '1'
+            ampm_reduce: 0
+            site_time_toggle: 0
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -298,7 +253,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_file_archive_type }} {{ field_file_date_range_start }} - {{ field_file_date_range_end }} '
+            text: '{{ field_file_archive_type }} {{ field_file_date_range }} '
             make_link: true
             path: '{{ field_media_file }} '
             absolute: false
@@ -339,134 +294,6 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_file_date_range_end_1:
-          id: field_file_date_range_end_1
-          table: media__field_file_date_range_end
-          field: field_file_date_range_end
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_custom
-          settings:
-            timezone_override: ''
-            date_format: 'Y'
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_file_date_range_start_1:
-          id: field_file_date_range_start_1
-          table: media__field_file_date_range_start
-          field: field_file_date_range_start
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: Year
-          exclude: false
-          alter:
-            alter_text: true
-            text: '{{ field_file_date_range_start_1 }} - {{ field_file_date_range_end_1 }} '
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_custom
-          settings:
-            timezone_override: ''
-            date_format: 'Y'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -719,8 +546,7 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.media.field_file_archive_type'
-        - 'config:field.storage.media.field_file_date_range_end'
-        - 'config:field.storage.media.field_file_date_range_start'
+        - 'config:field.storage.media.field_file_date_range'
         - 'config:field.storage.media.field_media_file'
   block_file_archive:
     id: block_file_archive
@@ -764,6 +590,5 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.media.field_file_archive_type'
-        - 'config:field.storage.media.field_file_date_range_end'
-        - 'config:field.storage.media.field_file_date_range_start'
+        - 'config:field.storage.media.field_file_date_range'
         - 'config:field.storage.media.field_media_file'

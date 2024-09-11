@@ -2,10 +2,9 @@ adding:
   dependencies:
     config:
       - field.field.media.file.field_file_archive_type
-      - field.field.media.file.field_file_date_range_end
-      - field.field.media.file.field_file_date_range_start
+      - field.field.media.file.field_file_date_range
     module:
-      - datetime
+      - smart_date
   content:
     field_file_archive_type:
       type: options_select
@@ -13,22 +12,17 @@ adding:
       region: content
       settings: {  }
       third_party_settings: {  }
-    field_file_date_range_end:
-      type: datetime_datelist
-      weight: 28
+    field_file_date_range:
+      type: smartdate_datelist
+      weight: 30
       region: content
       settings:
         increment: 15
         date_order: YMD
         time_type: '24'
-      third_party_settings: {  }
-    field_file_date_range_start:
-      type: datetime_datelist
-      weight: 27
-      region: content
-      settings:
-        increment: 15
-        date_order: YMD
-        time_type: '24'
+        show_extra: false
+        hide_date: true
+        allday: true
+        remove_seconds: false
       third_party_settings: {  }
 removing: {  }

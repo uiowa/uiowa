@@ -2,10 +2,9 @@ adding:
   dependencies:
     config:
       - field.field.media.file.field_file_archive_type
-      - field.field.media.file.field_file_date_range_end
-      - field.field.media.file.field_file_date_range_start
+      - field.field.media.file.field_file_date_range
     module:
-      - datetime
+      - smart_date
   content:
     field_file_archive_type:
       type: entity_reference_label
@@ -15,22 +14,26 @@ adding:
       third_party_settings: {  }
       weight: 1
       region: content
-    field_file_date_range_end:
-      type: datetime_default
+    field_file_date_range:
+      type: smartdate_default
       label: above
       settings:
         timezone_override: ''
         format_type: medium
+        format: default
+        force_chronological: false
+        add_classes: false
+        time_wrapper: true
+        localize: false
+        parts:
+          - start
+          - end
+        duration:
+          separator: ' | '
+          unit: ''
+          decimals: 2
+          suffix: h
       third_party_settings: {  }
-      weight: 3
-      region: content
-    field_file_date_range_start:
-      type: datetime_default
-      label: above
-      settings:
-        timezone_override: ''
-        format_type: medium
-      third_party_settings: {  }
-      weight: 2
+      weight: 5
       region: content
 removing: {  }
