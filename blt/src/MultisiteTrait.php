@@ -4,7 +4,6 @@ namespace Uiowa;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Tasks\LoadTasks;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -46,11 +45,20 @@ trait MultisiteTrait {
     return trim($result->getMessage());
   }
 
+  /**
+   * Get the application for a site from it's drush alias file.
+   *
+   * @param string $alias
+   *   The drush alias.
+   *
+   * @return string|null
+   *   The application name.
+   */
   protected function getAppFromDrushAliasFile(string $alias): ?string {
     $root = $this->getConfigValue('repo.root');
     $path = "{$root}/drush/sites/{$alias}.site.yml";
     $yaml = YamlMunge::parseFile($path);
-    // Get first segment of prod.uri from $yaml.
+    // Get first segment of prod.user from $yaml.
     if (!empty($yaml['prod']['user'])) {
       return explode('.', $yaml['prod']['user'])[0];
     }
