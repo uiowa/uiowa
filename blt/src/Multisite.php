@@ -50,10 +50,6 @@ class Multisite {
    * @throws \Exception
    */
   public static function getIdentifier($uri) {
-    // Add the scheme if it is missing because it is required for the next step.
-    if (!str_starts_with($uri, 'https://')) {
-      $uri = "https://{$uri}";
-    }
     // Parse the URL.
     if ($parsed = parse_url($uri)) {
 

@@ -620,7 +620,7 @@ EOD;
     $sites = Multisite::getAllSites($root);
     foreach ($sites as $site) {
       // Run the drush get alias command.
-      $id = Multisite::getIdentifier("$site");
+      $id = Multisite::getIdentifier("https://{$site}");
       // Handle exceptions.
       try {
         $app = $this->getAppFromDrushAliasFile($id);
