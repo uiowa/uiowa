@@ -46,6 +46,17 @@ trait MultisiteTrait {
     return trim($result->getMessage());
   }
 
+  protected function getAppFromDrushAliasFile(string $alias): ?string {
+    $root = $this->getConfigValue('repo.root');
+    $path = "{$root}/drush/sites/{$alias}.site.yml";
+    $yaml = YamlMunge::parseFile($path);
+    // Get first segment of prod.uri from $yaml.
+    if (!empty($yaml['prod']['user'])) {
+      return explode('.', $yaml['prod']['user'])[0];
+    }
+    return NULL;
+  }
+
   /**
    * Get the application for a site from the manifest.
    *
