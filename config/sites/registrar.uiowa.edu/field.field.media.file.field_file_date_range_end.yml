@@ -1,0 +1,24 @@
+uuid: 0d9700a1-a058-48c5-809c-4febb41617e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_file_date_range_end
+    - media.type.file
+  module:
+    - datetime
+id: media.file.field_file_date_range_end
+field_name: field_file_date_range_end
+entity_type: media
+bundle: file
+label: 'File date range end'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: relative
+    default_date: '+ 1 year'
+default_value_callback: ''
+settings: {  }
+field_type: datetime

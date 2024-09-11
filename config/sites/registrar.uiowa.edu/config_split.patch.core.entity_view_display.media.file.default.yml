@@ -1,0 +1,36 @@
+adding:
+  dependencies:
+    config:
+      - field.field.media.file.field_file_archive_type
+      - field.field.media.file.field_file_date_range_end
+      - field.field.media.file.field_file_date_range_start
+    module:
+      - datetime
+  content:
+    field_file_archive_type:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 1
+      region: content
+    field_file_date_range_end:
+      type: datetime_default
+      label: above
+      settings:
+        timezone_override: ''
+        format_type: medium
+      third_party_settings: {  }
+      weight: 3
+      region: content
+    field_file_date_range_start:
+      type: datetime_default
+      label: above
+      settings:
+        timezone_override: ''
+        format_type: medium
+      third_party_settings: {  }
+      weight: 2
+      region: content
+removing: {  }

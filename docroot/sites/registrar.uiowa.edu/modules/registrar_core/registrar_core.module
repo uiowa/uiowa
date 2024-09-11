@@ -30,11 +30,26 @@ function registrar_core_preprocess_block(&$variables) {
  * Implements hook_form_alter().
  */
 function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'gpa_calculator_form') {
-    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
-    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
-    $form['#attached']['library'][] = 'uids_base/callout';
-    $form['#submit'][] = 'registrar_core_post_submit';
+  switch ($form_id) {
+    case 'gpa_calculator_form':
+      $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
+      $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
+      $form['#attached']['library'][] = 'uids_base/callout';
+      $form['#submit'][] = 'registrar_core_post_submit';
+      break;
+
+    case 'media_file_add_form':
+    case 'media_file_edit_form':
+      $date_fields = ['field_file_date_range_start', 'field_file_date_range_end'];
+
+      foreach ($date_fields as $field) {
+        if (isset($form[$field]['widget'][0]['value'])) {
+          $form[$field]['widget'][0]['value']['#date_part_order'] = ['year'];
+          unset($form[$field]['widget'][0]['value']['month']);
+          unset($form[$field]['widget'][0]['value']['day']);
+        }
+      }
+      break;
   }
 }
 
