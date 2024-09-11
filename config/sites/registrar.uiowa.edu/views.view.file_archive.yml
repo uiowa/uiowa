@@ -6,10 +6,12 @@ dependencies:
     - field.storage.media.field_file_archive_type
     - field.storage.media.field_file_date_range_end
     - field.storage.media.field_file_date_range_start
+    - field.storage.media.field_media_file
     - media.type.file
     - taxonomy.vocabulary.file_archive_type
   module:
     - datetime
+    - file
     - media
     - taxonomy
     - user
@@ -220,23 +222,22 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        view_media:
-          id: view_media
-          table: media
-          field: view_media
+        field_media_file:
+          id: field_media_file
+          table: media__field_media_file
+          field: field_media_file
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: media
-          plugin_id: entity_link
+          plugin_id: field
           label: ''
           exclude: true
           alter:
-            alter_text: true
+            alter_text: false
             text: ''
             make_link: false
             path: ''
-            absolute: false
+            absolute: true
             external: false
             replace_spaces: false
             path_case: none
@@ -270,9 +271,19 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: view
-          output_url_as_text: true
-          absolute: true
+          click_sort_column: target_id
+          type: file_url_plain
+          settings: {  }
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         name:
           id: name
           table: media_field_data
@@ -283,13 +294,13 @@ display:
           entity_type: media
           entity_field: media
           plugin_id: field
-          label: Name
+          label: 'File name'
           exclude: false
           alter:
             alter_text: true
             text: '{{ field_file_archive_type }} {{ field_file_date_range_start }} - {{ field_file_date_range_end }} '
             make_link: true
-            path: '{{ view_media }} '
+            path: '{{ field_media_file }} '
             absolute: false
             external: false
             replace_spaces: false
@@ -327,7 +338,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -467,10 +478,26 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: some
+        type: full
         options:
           offset: 0
-          items_per_page: 5
+          items_per_page: 50
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -488,7 +515,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'There are currently no programs to display. '
+            format: filtered_html
+          tokenize: false
       sorts:
         field_file_date_range_start_value:
           id: field_file_date_range_start_value
@@ -534,13 +574,13 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: 'not empty'
+          operator: or
           value: {  }
           group: 1
-          exposed: false
+          exposed: true
           expose:
             operator_id: field_file_archive_type_target_id_op
-            label: 'File Archive Type  (field_file_archive_type)'
+            label: 'File archive type  (field_file_archive_type)'
             description: ''
             use_operator: false
             operator: field_file_archive_type_target_id_op
@@ -674,12 +714,14 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags:
         - 'config:field.storage.media.field_file_archive_type'
         - 'config:field.storage.media.field_file_date_range_end'
         - 'config:field.storage.media.field_file_date_range_start'
+        - 'config:field.storage.media.field_media_file'
   block_file_archive:
     id: block_file_archive
     display_title: Block
@@ -691,14 +733,37 @@ display:
           metatags: {  }
           tokenize: false
       block_category: 'Site custom'
+      allow:
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        configure_filters: configure_filters
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters_custom: 0
+        use_more: 0
+      general_help_text: ''
+      more_link_help_text: ''
+      restrict_fields:
+        field_file_date_range_start: 0
+        field_file_date_range_end: 0
+        field_file_archive_type: 0
+        view_media: 0
+        name: 0
+        field_file_date_range_end_1: 0
+        field_file_date_range_start_1: 0
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags:
         - 'config:field.storage.media.field_file_archive_type'
         - 'config:field.storage.media.field_file_date_range_end'
         - 'config:field.storage.media.field_file_date_range_start'
+        - 'config:field.storage.media.field_media_file'
