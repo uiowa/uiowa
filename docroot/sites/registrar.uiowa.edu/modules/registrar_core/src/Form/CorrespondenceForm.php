@@ -193,7 +193,6 @@ class CorrespondenceForm extends FormBase {
       '#attributes' => [
         'id' => 'correspondence-archives-content',
         'class' => 'element--margin__top--extra',
-        'aria-describedby' => 'correspondence-archives-audience-dropdown correspondence-archives-topic-dropdown',
       ],
     ];
 
@@ -218,7 +217,7 @@ class CorrespondenceForm extends FormBase {
         '#theme' => 'table',
         '#header' => $headers,
         '#rows' => $rows,
-        '#prefix' => '<div id="correspondence-archives-content-results-table" role="region" aria-live="polite">',
+        '#prefix' => '<div id="correspondence-archives-content-table" role="region" aria-live="polite">',
         '#suffix' => '</div>',
       ];
     }
