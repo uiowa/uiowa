@@ -166,7 +166,7 @@ class CorrespondenceForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Topic'),
       '#description' => $this->t('The communication topic.'),
-      '#empty_option' => '- Select -',
+      '#empty_option' => '- Any -',
       '#default_value' => $topic,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
