@@ -3,7 +3,9 @@ adding:
     config:
       - field.field.media.file.field_file_archive_type
       - field.field.media.file.field_file_date_range
+      - field.field.media.file.field_file_session
     module:
+      - options
       - smart_date
   content:
     field_file_archive_type:
@@ -35,5 +37,12 @@ adding:
           suffix: h
       third_party_settings: {  }
       weight: 5
+      region: content
+    field_file_session:
+      type: list_default
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 6
       region: content
 removing: {  }

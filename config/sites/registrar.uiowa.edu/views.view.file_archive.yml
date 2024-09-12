@@ -9,7 +9,6 @@ dependencies:
     - media.type.file
     - taxonomy.vocabulary.file_archive_type
   module:
-    - datetime
     - file
     - media
     - smart_date
@@ -40,7 +39,7 @@ display:
           admin_label: ''
           plugin_id: field
           label: Year
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -253,7 +252,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_file_archive_type }} {{ field_file_date_range }} '
+            text: '{{ field_file_date_range }}  {{ field_file_archive_type }}'
             make_link: true
             path: '{{ field_media_file }} '
             absolute: false
@@ -357,15 +356,15 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        field_file_date_range_start_value:
-          id: field_file_date_range_start_value
-          table: media__field_file_date_range_start
-          field: field_file_date_range_start_value
+        field_file_date_range_value:
+          id: field_file_date_range_value
+          table: media__field_file_date_range
+          field: field_file_date_range_value
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: datetime
-          order: ASC
+          plugin_id: date
+          order: DESC
           expose:
             label: ''
             field_identifier: ''
@@ -407,7 +406,7 @@ display:
           exposed: true
           expose:
             operator_id: field_file_archive_type_target_id_op
-            label: 'File archive type  (field_file_archive_type)'
+            label: 'File archive type'
             description: ''
             use_operator: false
             operator: field_file_archive_type_target_id_op
@@ -561,7 +560,7 @@ display:
       block_category: 'Site custom'
       allow:
         items_per_page: false
-        offset: '0'
+        offset: offset
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
@@ -573,13 +572,10 @@ display:
       general_help_text: ''
       more_link_help_text: ''
       restrict_fields:
-        field_file_date_range_start: 0
-        field_file_date_range_end: 0
+        field_file_date_range: 0
         field_file_archive_type: 0
-        view_media: 0
+        field_media_file: 0
         name: 0
-        field_file_date_range_end_1: 0
-        field_file_date_range_start_1: 0
     cache_metadata:
       max-age: -1
       contexts:
