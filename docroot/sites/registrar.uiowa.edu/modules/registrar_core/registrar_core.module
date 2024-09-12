@@ -24,7 +24,8 @@ class RegistrarCoreSessionOptions {
 function registrar_core_allowed_session_values() {
   $trait = new RegistrarCoreSessionOptions();
   $trait->setMauiApi(\Drupal::service('uiowa_maui.api'));
-  return $trait->getSessionOptions(26, 0, TRUE);
+  $options = $trait->getSessionOptions(26, 0, TRUE);
+  return array_reverse($options, TRUE);
 }
 
 /**
