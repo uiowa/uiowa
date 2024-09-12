@@ -40,20 +40,20 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
 
     case 'media_file_add_form':
     case 'media_file_edit_form':
-    if (isset($form['field_file_date_range']['widget'][0])) {
-      if (isset($form['field_file_date_range']['widget'][0]['value'])) {
-        $form['field_file_date_range']['widget'][0]['value']['#date_part_order'] = ['year'];
-        unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][1]);
-        unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][2]);
-      }
+      if (isset($form['field_file_date_range']['widget'][0])) {
+        if (isset($form['field_file_date_range']['widget'][0]['value'])) {
+          $form['field_file_date_range']['widget'][0]['value']['#date_part_order'] = ['year'];
+          unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][1]);
+          unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][2]);
+        }
 
-      if (isset($form['field_file_date_range']['widget'][0]['end_value'])) {
-        $form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'] = ['year'];
-        unset($form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'][1]);
-      }
+        if (isset($form['field_file_date_range']['widget'][0]['end_value'])) {
+          $form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'] = ['year'];
+          unset($form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'][1]);
+        }
 
-    }
-    break;
+      }
+      break;
   }
 }
 
