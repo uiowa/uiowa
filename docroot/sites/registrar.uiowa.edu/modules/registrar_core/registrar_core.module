@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -41,17 +42,25 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
     case 'media_file_add_form':
     case 'media_file_edit_form':
       if (isset($form['field_file_date_range']['widget'][0])) {
+        // Modify start date to show year only.
         if (isset($form['field_file_date_range']['widget'][0]['value'])) {
           $form['field_file_date_range']['widget'][0]['value']['#date_part_order'] = ['year'];
-          unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][1]);
-          unset($form['field_file_date_range']['widget'][0]['value']['#date_part_order'][2]);
         }
-
+        // Modify end date to show year only.
         if (isset($form['field_file_date_range']['widget'][0]['end_value'])) {
           $form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'] = ['year'];
-          unset($form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'][1]);
-        }
 
+          // Set default end year to next year for new entities.
+          $entity = $form_state->getFormObject()->getEntity();
+          if ($entity->isNew()) {
+            $next_year = new DrupalDateTime('+1 year');
+            $form['field_file_date_range']['widget'][0]['end_value']['#default_value'] = $next_year;
+          }
+        }
+        // Hide the duration element.
+        if (isset($form['field_file_date_range']['widget'][0]['duration'])) {
+          $form['field_file_date_range']['widget'][0]['duration']['#access'] = FALSE;
+        }
       }
       break;
   }
