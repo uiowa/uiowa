@@ -50,6 +50,7 @@ class Multisite {
    * @throws \Exception
    */
   public static function getIdentifier($uri) {
+    // Parse the URL.
     if ($parsed = parse_url($uri)) {
 
       // Make a special exception for the default site and homepage. The

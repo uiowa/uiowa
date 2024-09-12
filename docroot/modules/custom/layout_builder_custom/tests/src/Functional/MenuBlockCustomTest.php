@@ -41,7 +41,7 @@ class MenuBlockCustomTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'layout_builder',
     'block',
     'block_content',
