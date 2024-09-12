@@ -420,10 +420,10 @@ display:
             format: filtered_html
           tokenize: false
       sorts:
-        field_file_date_range_value:
-          id: field_file_date_range_value
+        field_file_date_range_end_value:
+          id: field_file_date_range_end_value
           table: media__field_file_date_range
-          field: field_file_date_range_value
+          field: field_file_date_range_end_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -434,6 +434,19 @@ display:
             field_identifier: ''
           exposed: false
           granularity: second
+        field_file_session_value:
+          id: field_file_session_value
+          table: media__field_file_session
+          field: field_file_session_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments: {  }
       filters:
         status:
