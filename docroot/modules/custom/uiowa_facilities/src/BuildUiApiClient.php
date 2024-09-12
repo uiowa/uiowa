@@ -23,7 +23,7 @@ class BuildUiApiClient extends ApiClientBase implements BuildUiApiClientInterfac
     ClientInterface $client,
     LoggerInterface $logger,
     CacheBackendInterface $cache,
-    ConfigFactoryInterface $configFactory
+    ConfigFactoryInterface $configFactory,
   ) {
     parent::__construct($client, $logger, $cache, $configFactory);
     $auth = $this->configFactory->get('uiowa_facilities.apis')->get('buildui.auth');

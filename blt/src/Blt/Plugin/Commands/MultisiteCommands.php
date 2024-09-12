@@ -132,13 +132,15 @@ class MultisiteCommands extends BltTasks {
    *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install(array $options = [
-    'envs' => [
-      'local',
-      'prod',
+  public function install(
+    array $options = [
+      'envs' => [
+        'local',
+        'prod',
+      ],
+      'dry-run' => FALSE,
     ],
-    'dry-run' => FALSE,
-  ]) {
+  ) {
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
@@ -484,14 +486,17 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, array $options = [
-    'simulate' => FALSE,
-    'no-commit' => FALSE,
-    'no-db' => FALSE,
-    'requester' => InputOption::VALUE_REQUIRED,
-    'split' => InputOption::VALUE_REQUIRED,
-    'site-name' => InputOption::VALUE_REQUIRED,
-  ]) {
+  public function create(
+    $host,
+    array $options = [
+      'simulate' => FALSE,
+      'no-commit' => FALSE,
+      'no-db' => FALSE,
+      'requester' => InputOption::VALUE_REQUIRED,
+      'split' => InputOption::VALUE_REQUIRED,
+      'site-name' => InputOption::VALUE_REQUIRED,
+    ],
+  ) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');

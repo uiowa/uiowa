@@ -65,7 +65,7 @@ class StringCaseWidget extends StringTextfieldWidget {
   public function massageFormValues(
     array $values,
     array $form,
-    FormStateInterface $form_state
+    FormStateInterface $form_state,
   ) {
     $values = parent::massageFormValues($values, $form, $form_state);
     foreach ($values as &$value) {
