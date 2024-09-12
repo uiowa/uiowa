@@ -80,6 +80,31 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
         if (isset($form['field_file_date_range']['widget'][0]['duration'])) {
           $form['field_file_date_range']['widget'][0]['duration']['#access'] = FALSE;
         }
+
+        // Add states to show/hide the date range field.
+        $form['field_file_date_range']['#states'] = [
+          'visible' => [
+            ':input[name="field_file_archive_type"]' => [
+              ['value' => '4'],
+              ['value' => '7'],
+              ['value' => '9'],
+            ],
+          ],
+        ];
+
+        // Add states to show/hide the archive type field.
+        $form['field_file_session']['#states'] = [
+          'visible' => [
+            ':input[name="field_file_archive_type"]' => [
+              ['value' => '1'],
+              ['value' => '2'],
+              ['value' => '3'],
+              ['value' => '5'],
+              ['value' => '6'],
+              ['value' => '8'],
+            ],
+          ],
+        ];
       }
       break;
   }
