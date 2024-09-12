@@ -16,7 +16,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_maui'];
+  protected static $modules = ['uiowa_maui'];
 
   /**
    * The MAUI mock.
