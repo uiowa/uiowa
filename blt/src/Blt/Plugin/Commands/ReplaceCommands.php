@@ -32,6 +32,7 @@ class ReplaceCommands extends BltTasks {
     // get the list of sites from the manifest.
     if ($app === 'local') {
       $multisites = $this->getConfigValue('multisites');
+      $log_dir = '/tmp/';
     }
     else {
       // Load the manifest.
@@ -41,6 +42,7 @@ class ReplaceCommands extends BltTasks {
         $this->logger->warning('No multisites found in manifest for application: ' . $app);
       }
       $multisites = $manifest[$app] ?: [];
+      $log_dir = '/shared/logs/';
     }
 
     // Unshift sites to the beginning to run first.
@@ -63,17 +65,29 @@ class ReplaceCommands extends BltTasks {
       ->printOutput(FALSE)
       ->run();
 
+    $datetime = date('Ymd_His');
+    $log_file = $log_dir . 'parallel_deploy_log_' . $app . '_' . $datetime . '.log';
+
     // Check if the parallel command exists.
     if (trim($parallel_installed->getMessage())) {
       $this->say('Running multisite updates in parallel.');
-      // Run site updates in parallel.
-      $parallel_output = $this->taskExec('parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)))
-        ->printOutput(TRUE)
+
+      // Run site updates in parallel, logging output to terminal and file.
+      $command = 'parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)) . " 2>&1 | tee -a $log_file";
+
+      $this->taskExec($command)
         ->interactive(FALSE)
+        ->run();
+
+      // After running, check the log file for errors using grep.
+      $grep_command = "grep -i 'error' $log_file";
+      $grep_result = $this->taskExec($grep_command)
+        ->printOutput(FALSE)
         ->run()
         ->getMessage();
-      // Set the exception flag if our output contains a failure message.
-      $multisite_exception = str_contains($parallel_output, 'error');
+
+      // Set the exception flag if grep found any error messages.
+      $multisite_exception = !empty($grep_result);
     }
     else {
       $this->say('Running multisite updates sequentially.');
