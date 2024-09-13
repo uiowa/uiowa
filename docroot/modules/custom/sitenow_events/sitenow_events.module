@@ -124,8 +124,21 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 function sitenow_events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
   if ($view->id() === 'events_list_block') {
     $exposed_input = $view->getExposedInput();
-    $today = new DrupalDateTime('now');
-    $exposed_input['field_event_when_value'] = $today->format('Y-m-d');
+
+    // Check if there's a date in the URL parameters.
+    $request = \Drupal::request();
+    $date_from_url = $request->query->get('field_event_when_value');
+
+    if ($date_from_url) {
+      // Use the date from the URL if it exists.
+      $exposed_input['field_event_when_value'] = $date_from_url;
+    }
+    else {
+      // If no date in URL, set to today's date.
+      $today = new DrupalDateTime('now');
+      $exposed_input['field_event_when_value'] = $today->format('Y-m-d');
+    }
+
     $view->setExposedInput($exposed_input);
   }
 }
