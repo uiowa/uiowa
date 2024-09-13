@@ -106,8 +106,27 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
             ],
           ],
         ];
+
+        // Add custom validate handler to clear hidden field values.
+        $form['#validate'][] = 'registrar_core_media_file_form_validate';
       }
       break;
+  }
+}
+
+/**
+ * Custom validate function for media documents.
+ */
+function registrar_core_media_file_form_validate($form, FormStateInterface $form_state) {
+  // Unset fields if they are hidden.
+  $archive_type = $form_state->getValue('field_file_archive_type');
+  $archive_type_id = $archive_type[0]['target_id'] ?? NULL;
+  if (!in_array($archive_type_id, ['4', '7', '9'])) {
+    $form_state->unsetValue(['field_file_date_range', 0, 'value']);
+    $form_state->unsetValue(['field_file_date_range', 0, 'end_value']);
+  }
+  if (!in_array($archive_type_id, ['1', '2', '3', '5', '6', '8'])) {
+    $form_state->unsetValue(['field_file_session', 0, 'value']);
   }
 }
 
