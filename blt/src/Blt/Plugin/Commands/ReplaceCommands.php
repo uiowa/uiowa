@@ -42,7 +42,7 @@ class ReplaceCommands extends BltTasks {
       }
 
       // Ensure that default is added to each app, so we update the default site.
-      $multisites = $manifest[$app] ? [...['default'], ...$manifest[$app]]: [];
+      $multisites = $manifest[$app] ? [...['default'], ...$manifest[$app]] : [];
     }
 
     // Unshift sites to the beginning to run first.
