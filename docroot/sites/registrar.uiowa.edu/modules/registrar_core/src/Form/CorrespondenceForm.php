@@ -188,6 +188,25 @@ class CorrespondenceForm extends FormBase {
       ],
     ];
 
+    $form['correspondence']['reset'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Reset'),
+      '#submit' => ['::resetForm'],
+      '#states' => [
+        'invisible' => [
+          ':input[name="audience"]' => ['value' => 'all'],
+          'and',
+          ':input[name="topic"]' => ['value' => ''],
+        ],
+      ],
+      '#attributes' => [
+        'class' => [
+          'bttn',
+          'bttn--secondary',
+        ],
+      ],
+    ];
+
     $form['correspondence']['content'] = [
       '#type' => 'container',
       '#attributes' => [
@@ -222,7 +241,7 @@ class CorrespondenceForm extends FormBase {
       ];
     }
     else {
-      $form['correspondence']['content']['results'] = [
+      $form['correspondence']['content']['results_count'] = [
         '#type' => 'markup',
         '#markup' => $this->t('No results found @suffix', [
           '@suffix' => $suffix,
@@ -241,6 +260,13 @@ class CorrespondenceForm extends FormBase {
    */
   public function ajaxCallback(array &$form, FormStateInterface $form_state) {
     return $form['correspondence']['content'];
+  }
+
+  /**
+   * Basic form reset callback.
+   */
+  public function resetForm(array $form, FormStateInterface &$form_state) {
+    $form_state->setRebuild(FALSE);
   }
 
   /**
