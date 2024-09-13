@@ -97,7 +97,7 @@ class CorrespondenceForm extends FormBase {
       $topic = $params->get('topic');
       // If the given audience param doesn't match our available options,
       // default to ALL.
-      if (!in_array($audience, array_keys(registrar_core_correspondence_tags()))) {
+      if (!in_array($topic, array_keys(registrar_core_correspondence_tags()))) {
         $topic = '';
       }
     }
