@@ -193,6 +193,8 @@ class CorrespondenceForm extends FormBase {
       '#attributes' => [
         'id' => 'correspondence-archives-content',
         'class' => 'element--margin__top--extra',
+        'role' => 'region',
+        'aria-live' => 'polite',
       ],
     ];
 
@@ -209,7 +211,7 @@ class CorrespondenceForm extends FormBase {
           '@count' => $count,
           '@suffix' => $suffix,
         ]),
-        '#prefix' => '<div id="correspondence-archives-content-results" role="region" aria-live="polite">',
+        '#prefix' => '<div id="correspondence-archives-content-results">',
         '#suffix' => '</div>',
       ];
 
@@ -217,7 +219,7 @@ class CorrespondenceForm extends FormBase {
         '#theme' => 'table',
         '#header' => $headers,
         '#rows' => $rows,
-        '#prefix' => '<div id="correspondence-archives-content-table">',
+        '#prefix' => '<div id="correspondence-archives-content-table" aria-describedby="correspondence-archives-content-results">',
         '#suffix' => '</div>',
       ];
     }
@@ -227,7 +229,7 @@ class CorrespondenceForm extends FormBase {
         '#markup' => $this->t('No results found @suffix', [
           '@suffix' => $suffix,
         ]),
-        '#prefix' => '<div id="correspondence-archives-content-results" role="region" aria-live="polite">',
+        '#prefix' => '<div id="correspondence-archives-content-results">',
         '#suffix' => '</div>',
       ];
     }
