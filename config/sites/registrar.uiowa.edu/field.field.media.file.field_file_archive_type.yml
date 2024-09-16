@@ -1,0 +1,29 @@
+uuid: 8f72aa50-6fd7-4513-a3c2-112c9bbb67f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_file_archive_type
+    - media.type.file
+    - taxonomy.vocabulary.file_archive_type
+id: media.file.field_file_archive_type
+field_name: field_file_archive_type
+entity_type: media
+bundle: file
+label: 'File archive type '
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      file_archive_type: file_archive_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
