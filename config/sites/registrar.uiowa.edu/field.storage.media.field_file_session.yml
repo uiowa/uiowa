@@ -1,0 +1,21 @@
+uuid: 56a82296-b61b-4c95-aa3d-e0cbd50d0b38
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+    - options
+id: media.field_file_session
+field_name: field_file_session
+entity_type: media
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'registrar_core_allowed_session_values'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
