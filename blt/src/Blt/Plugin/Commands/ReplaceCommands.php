@@ -41,9 +41,9 @@ class ReplaceCommands extends BltTasks {
         $this->logger->warning('No multisites found in manifest for application: ' . $app);
       }
 
-      // Ensure that default is added to each app, so we update the default site.
       $multisites = $manifest[$app] ?: [];
 
+      // Ensure that default is added to uiowa app, so we update the default site.
       if ($app === 'uiowa') {
         $multisites = [...['default'], ...$multisites];
       }
