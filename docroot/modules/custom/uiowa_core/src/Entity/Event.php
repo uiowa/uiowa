@@ -22,15 +22,22 @@ class Event extends BlockContent implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_uiowa_event_image',
       '#subtitle' => 'field_uiowa_event_date',
-      '#meta' => [
-        'field_uiowa_event_icon',
-        'field_uiowa_event_location',
-      ],
     ]);
+
+    // Check for location and add meta fields if it exists.
+    if (!$this->get('field_uiowa_event_location')->isEmpty()) {
+      $build['#meta'] = [
+        'field_uiowa_event_location' => $this->get('field_uiowa_event_location')->view('default'),
+        'field_uiowa_event_icon' => $this->get('field_uiowa_event_icon')->view('default'),
+      ];
+    }
 
     // Get the link.
     if (isset($build['field_uiowa_event_link'][0]['#url'])) {
-      $build['#url'] = $build['field_uiowa_event_link'][0]['#url'];
+      $url = $build['field_uiowa_event_link'][0]['#url'];
+      if (!($url->isRouted() && in_array($url->getRouteName(), ['<nolink>', '<button>']))) {
+        $build['#url'] = $url;
+      }
     }
     unset($build['field_uiowa_event_link']);
 

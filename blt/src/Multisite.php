@@ -30,8 +30,7 @@ class Multisite {
       throw new \Exception('The default site is configured automatically by BLT.');
     }
     else {
-      $db = str_replace('.', '_', $dir);
-      $db = str_replace('-', '_', $db);
+      $db = str_replace(['.', '-'], '_', $dir);
     }
 
     return $db;
@@ -51,6 +50,7 @@ class Multisite {
    * @throws \Exception
    */
   public static function getIdentifier($uri) {
+    // Parse the URL.
     if ($parsed = parse_url($uri)) {
 
       // Make a special exception for the default site and homepage. The

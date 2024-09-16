@@ -71,6 +71,8 @@ class FilesystemTest extends UnitTestCase {
 
   /**
    * Test sites.php entries exist.
+   *
+   * @throws \Exception
    */
   public function testDirectoryAliasesExist() {
     $sites = Multisite::getAllSites($this->root . '/..');
@@ -120,6 +122,8 @@ EOD;
 
   /**
    * Test that multisite files exist and that BLT config is set correctly.
+   *
+   * @throws \Exception
    */
   public function testMultisiteFiles() {
     $sites = Multisite::getAllSites($this->root . '/..');

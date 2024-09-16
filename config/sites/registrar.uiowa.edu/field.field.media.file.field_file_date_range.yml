@@ -1,0 +1,28 @@
+uuid: b2c503d3-bdd5-4be1-a824-19bc5201df22
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_file_date_range
+    - media.type.file
+  module:
+    - smart_date
+id: media.file.field_file_date_range
+field_name: field_file_date_range
+entity_type: media
+bundle: file
+label: 'File date range'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_duration: 0
+    default_duration_increments: custom
+    default_date_type: now
+    default_date: ''
+    min: ''
+    max: ''
+default_value_callback: ''
+settings: {  }
+field_type: smartdate

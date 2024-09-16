@@ -7,12 +7,14 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use Uiowa\InspectorTrait;
+use Uiowa\MultisiteTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
   use InspectorTrait;
+  use MultisiteTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -26,8 +28,22 @@ class ReplaceCommands extends BltTasks {
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $multisite_exception = FALSE;
 
+    // If this is running locally, pull list of sites from config. Otherwise,
+    // get the list of sites from the manifest.
+    if ($app === 'local') {
+      $multisites = $this->getConfigValue('multisites');
+    }
+    else {
+      // Load the manifest.
+      $manifest = $this->manifestToArray();
+      // If the manifest is empty, log a warning and continue.
+      if (!isset($manifest[$app])) {
+        $this->logger->warning('No multisites found in manifest for application: ' . $app);
+      }
+      $multisites = $manifest[$app] ?: [];
+    }
+
     // Unshift sites to the beginning to run first.
-    $multisites = $this->getConfigValue('multisites');
     $run_first = $this->getConfigValue('uiowa.run_first');
 
     if ($run_first) {
@@ -346,6 +362,9 @@ EOD;
           $this->say("Failed deploying updates to {$site}.");
           return FALSE;
         }
+      }
+      else {
+        $this->writeln("Skipping {$site}. Drupal is not installed.");
       }
     }
     return TRUE;
