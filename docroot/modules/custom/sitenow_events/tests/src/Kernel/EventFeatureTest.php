@@ -22,7 +22,7 @@ class EventFeatureTest extends BrowserTestBase {
    *
    * @var string[]
    */
-  public static $modules = [
+  protected static $modules = [
     'node',
     'address',
     'config',

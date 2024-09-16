@@ -750,12 +750,16 @@ function sitenow_events_preprocess_field(&$variables) {
  * @return array
  *   An array of data.
  */
-function sitenow_events_load(array $params = [
-  'display_id' => 'events',
-], array $args = [
-  'views',
-  'event_instances_api.json',
-], $cache = TRUE) {
+function sitenow_events_load(
+  array $params = [
+    'display_id' => 'events',
+  ],
+  array $args = [
+    'views',
+    'event_instances_api.json',
+  ],
+  $cache = TRUE,
+) {
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
 
