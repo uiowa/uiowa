@@ -40,7 +40,9 @@ class ReplaceCommands extends BltTasks {
       if (!isset($manifest[$app])) {
         $this->logger->warning('No multisites found in manifest for application: ' . $app);
       }
-      $multisites = $manifest[$app] ?: [];
+
+      // Ensure that default is added to each app, so we update the default site.
+      $multisites = $manifest[$app] ? [...['default'], ...$manifest[$app]] : [];
     }
 
     // Unshift sites to the beginning to run first.
