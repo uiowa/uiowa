@@ -295,6 +295,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
             }
 
+            if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
+              switch ($block->getPluginId()) {
+                case 'views_block:events_list_block-card_list':
+                  $form['settings']['exposed']['filter-field_event_when_value']['field_event_when_value']['#type'] = 'hidden';
+                  break;
+              }
+            }
+
             // Make some block-specific add form adjustments.
             if ($form_id === 'layout_builder_add_block') {
               switch ($block->getPluginId()) {

@@ -22,7 +22,7 @@ bundles:
 body:
   value: '<p>[node:title] alert has been created by [node:author]. <a href="[node:url]">Please review and publish the alert</a></p>'
   format: filtered_html
-replyTo: '[site:mail]'
+replyTo: '[node:author:mail]'
 transitions:
   alert:
     needs_review: needs_review
