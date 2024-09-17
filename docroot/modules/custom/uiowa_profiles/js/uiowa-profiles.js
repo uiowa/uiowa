@@ -18,7 +18,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
     // Trim any trailing slash.
     if (path.endsWith('/')) {
-      path = path.substr(0, path.length - 1);
+      path = path.slice(0, -1);
     }
 
     // Grab the canonical link element.
@@ -145,7 +145,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
    */
   Drupal.behaviors.uiowaProfiles = {
     attach(context, settings) {
-      once('uiowaProfiles', context).forEach(function(profiles) {
+      once('uiowaProfiles', context.querySelector('#uiprof')).forEach(function (profiles) {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
         // Note that this seems to observe multiple changes per person.

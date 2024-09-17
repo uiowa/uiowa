@@ -6,7 +6,27 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\registrar_core\SessionOptionsTrait;
+
+/**
+ * Define a class to use the SessionOptionsTrait.
+ */
+class RegistrarCoreSessionOptions {
+  use SessionOptionsTrait;
+
+}
+
+/**
+ * Allowed values function for the session field.
+ */
+function registrar_core_allowed_session_values() {
+  $trait = new RegistrarCoreSessionOptions();
+  $trait->setMauiApi(\Drupal::service('uiowa_maui.api'));
+  $options = $trait->getSessionOptions(60, 0, TRUE);
+  return array_reverse($options, TRUE);
+}
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -30,11 +50,83 @@ function registrar_core_preprocess_block(&$variables) {
  * Implements hook_form_alter().
  */
 function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'gpa_calculator_form') {
-    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
-    $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
-    $form['#attached']['library'][] = 'uids_base/callout';
-    $form['#submit'][] = 'registrar_core_post_submit';
+  switch ($form_id) {
+    case 'gpa_calculator_form':
+      $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
+      $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
+      $form['#attached']['library'][] = 'uids_base/callout';
+      $form['#submit'][] = 'registrar_core_post_submit';
+      break;
+
+    case 'media_file_add_form':
+    case 'media_file_edit_form':
+      // Modify the date range field.
+      if (isset($form['field_file_date_range']['widget'][0])) {
+        // Modify start date to show year only.
+        if (isset($form['field_file_date_range']['widget'][0]['value'])) {
+          $form['field_file_date_range']['widget'][0]['value']['#date_part_order'] = ['year'];
+        }
+        // Modify end date to show year only.
+        if (isset($form['field_file_date_range']['widget'][0]['end_value'])) {
+          $form['field_file_date_range']['widget'][0]['end_value']['#date_part_order'] = ['year'];
+
+          // Set default end year to next year for new entities.
+          $entity = $form_state->getFormObject()->getEntity();
+          if ($entity->isNew()) {
+            $next_year = new DrupalDateTime('+1 year');
+            $form['field_file_date_range']['widget'][0]['end_value']['#default_value'] = $next_year;
+          }
+        }
+        // Hide the duration element.
+        if (isset($form['field_file_date_range']['widget'][0]['duration'])) {
+          $form['field_file_date_range']['widget'][0]['duration']['#access'] = FALSE;
+        }
+
+        // Add states to show/hide the date range field.
+        $form['field_file_date_range']['#states'] = [
+          'visible' => [
+            ':input[name="field_file_archive_type"]' => [
+              ['value' => '4'],
+              ['value' => '7'],
+              ['value' => '9'],
+            ],
+          ],
+        ];
+
+        // Add states to show/hide the archive type field.
+        $form['field_file_session']['#states'] = [
+          'visible' => [
+            ':input[name="field_file_archive_type"]' => [
+              ['value' => '1'],
+              ['value' => '2'],
+              ['value' => '3'],
+              ['value' => '5'],
+              ['value' => '6'],
+              ['value' => '8'],
+            ],
+          ],
+        ];
+
+        // Add custom validate handler to clear hidden field values.
+        $form['#validate'][] = 'registrar_core_media_file_form_validate';
+      }
+      break;
+  }
+}
+
+/**
+ * Custom validate function for media documents.
+ */
+function registrar_core_media_file_form_validate($form, FormStateInterface $form_state) {
+  // Unset fields if they are hidden.
+  $archive_type = $form_state->getValue('field_file_archive_type');
+  $archive_type_id = $archive_type[0]['target_id'] ?? NULL;
+  if (!in_array($archive_type_id, ['4', '7', '9'])) {
+    $form_state->unsetValue(['field_file_date_range', 0, 'value']);
+    $form_state->unsetValue(['field_file_date_range', 0, 'end_value']);
+  }
+  if (!in_array($archive_type_id, ['1', '2', '3', '5', '6', '8'])) {
+    $form_state->unsetValue(['field_file_session', 0, 'value']);
   }
 }
 
