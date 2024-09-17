@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * )
  */
 class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
-  use SessionColorTrait;
-
   /**
    * The MAUI API service.
    *
@@ -88,7 +86,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'academic_calendar_filter_form';
+    return 'final_exam_schedule_filter_form';
   }
 
   /**
@@ -108,15 +106,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return [
-        'steps' => 0,
-      ] + parent::defaultConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
@@ -127,16 +116,12 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
 
     $form['steps'] = [
       '#title' => $this->t('Session(s) to display'),
-      '#description' => $this->t('What session(s) you wish to display academic calendar information for.'),
+      '#description' => $this->t('What session(s) you wish to display final exam schedule information for.'),
       '#type' => 'select',
       '#options' => [
         0 => $this->t('Current session'),
         1 => $this->t('Current session, plus next session'),
         2 => $this->t('Current session, plus next two sessions'),
-        3 => $this->t('Current session, plus next three sessions'),
-        4 => $this->t('Current session, plus next four sessions'),
-        5 => $this->t('Current session, plus next five sessions'),
-        10 => $this->t('Current session, plus next ten sessions'),
       ],
       '#default_value' => $this->configuration['steps'] ?? 0,
       '#required' => FALSE,
@@ -205,18 +190,10 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     // the current session, wrap it in an array but don't fetch others.
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
-    // Get the start date of the first session.
-    $first_session_start_date = $sessions[0]->startDate;
-
-    // Get the end date of the last session.
-    $last_session_end_date = end($sessions)->endDate;
-
     // Add the configuration values to drupalSettings.
     $build['#attached']['drupalSettings']['academicCalendar'] = [
       'steps' => $steps,
       'includePastSessions' => $this?->configuration['include_past_sessions'] ?? FALSE,
-      'firstSessionStartDate' => $first_session_start_date,
-      'lastSessionEndDate' => $last_session_end_date,
     ];
 
     return $build;
@@ -229,7 +206,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $form = [];
 
     $form['#id'] = 'academic-calendar-filter-form';
-    $form['#attributes']['class'][] = 'academic-calendar-filters sidebar element--margin__bottom--extra  element--padding__all--minimal bg--gray';
 
     $current_request = $this->requestStack->getCurrentRequest();
 
