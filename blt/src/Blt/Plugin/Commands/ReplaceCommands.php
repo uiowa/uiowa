@@ -41,8 +41,14 @@ class ReplaceCommands extends BltTasks {
       if (!isset($manifest[$app])) {
         $this->logger->warning('No multisites found in manifest for application: ' . $app);
       }
+
       $multisites = $manifest[$app] ?: [];
       $log_dir = '/shared/logs/';
+
+      // Ensure that default is added to uiowa app, so we update the default site.
+      if ($app === 'uiowa') {
+        $multisites = [...['default'], ...$multisites];
+      }
     }
 
     // Unshift sites to the beginning to run first.
