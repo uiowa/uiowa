@@ -100,7 +100,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $session = $this->configuration['session'];
     $last_updated = $this->configuration['last_updated'];
     return [
-      '#markup' => $session,
+      '#markup' => $session . "<br>Last updated: " . $last_updated,
     ];
   }
 
