@@ -27,7 +27,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   protected $maui;
 
   /**
-   * Constructs a new AcademicCalendarBlock instance.
+   * Constructs a new FinalExamScheduleBlock instance.
    *
    * @param array $configuration
    *   The plugin configuration.
