@@ -211,7 +211,7 @@ class CorrespondenceForm extends FormBase {
           '@count' => $count,
           '@suffix' => $suffix,
         ]),
-        '#prefix' => '<div id="correspondence-archives-content-results">',
+        '#prefix' => '<div id="correspondence-archives-content-results" aria-live="polite">',
         '#suffix' => '</div>',
       ];
 
@@ -229,7 +229,7 @@ class CorrespondenceForm extends FormBase {
         '#markup' => $this->t('No results found @suffix', [
           '@suffix' => $suffix,
         ]),
-        '#prefix' => '<div id="correspondence-archives-content-results">',
+        '#prefix' => '<div id="correspondence-archives-content-results" aria-live="polite">',
         '#suffix' => '</div>',
       ];
     }
