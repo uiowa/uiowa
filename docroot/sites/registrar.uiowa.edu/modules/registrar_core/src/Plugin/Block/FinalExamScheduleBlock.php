@@ -4,15 +4,10 @@ namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Form\FormBuilderInterface;
-use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\registrar_core\SessionColorTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a Final Exam Schedule block.
@@ -23,27 +18,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   category = @Translation("Site custom")
  * )
  */
-class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPluginInterface, FormInterface, TrustedCallbackInterface {
+class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The MAUI API service.
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
   protected $maui;
-
-  /**
-   * The form builder service.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
-  /**
-   * The request stack service.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected $requestStack;
 
   /**
    * Constructs a new AcademicCalendarBlock instance.
@@ -56,16 +37,10 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
-   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
-   *   The form builder service.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-   *   The request stack service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, RequestStack $requestStack) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
-    $this->formBuilder = $formBuilder;
-    $this->requestStack = $requestStack;
   }
 
   /**
@@ -77,30 +52,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('uiowa_maui.api'),
-      $container->get('form_builder'),
-      $container->get('request_stack')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'final_exam_schedule_filter_form';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Add any validation if needed.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Handle form submission if needed.
   }
 
   /**
@@ -111,27 +63,22 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
 
     $sessions = [];
     foreach ($this->maui->getSessionsBounded() as $session) {
-      $sessions[$session->id] = Html::escape($session->shortDescription);
+      $sessions[$session->legacyCode] = Html::escape($session->shortDescription);
     }
 
-    $form['steps'] = [
-      '#title' => $this->t('Session(s) to display'),
-      '#description' => $this->t('What session(s) you wish to display final exam schedule information for.'),
+    $form['session'] = [
+      '#title' => $this->t('Session'),
       '#type' => 'select',
-      '#options' => [
-        0 => $this->t('Current session'),
-        1 => $this->t('Current session, plus next session'),
-        2 => $this->t('Current session, plus next two sessions'),
-      ],
-      '#default_value' => $this->configuration['steps'] ?? 0,
-      '#required' => FALSE,
+      '#options' => $sessions,
+      '#default_value' => $this->configuration['session'] ?? NULL,
+      '#required' => TRUE,
     ];
 
-    $form['include_past_sessions'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Include past sessions'),
-      '#description' => $this->t('Include an amount of sessions in the past equal to the number set above.'),
-      '#default_value' => $this->configuration['include_past_sessions'] ?? FALSE,
+    $form['last_updated'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Last Updated'),
+      '#default_value' => $this->configuration['last_updated'] ?? NULL,
+      '#required' => TRUE,
     ];
 
     return $form;
@@ -142,152 +89,19 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
-    $this->configuration['steps'] = $form_state->getValue('steps');
-    $this->configuration['include_past_sessions'] = $form_state->getValue('include_past_sessions');
+    $this->configuration['session'] = $form_state->getValue('session');
+    $this->configuration['last_updated'] = $form_state->getValue('last_updated');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $form = $this->formBuilder->getForm($this);
-
-    $build = [
-      'wrapper' => [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'list-container__inner',
-            'sitenow-academic-calendar',
-          ],
-        ],
-        'form' => $form,
-        'calendar' => [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => ['academic-calendar content'],
-            'id' => 'academic-calendar-content',
-          ],
-          'content' => [
-            '#lazy_builder' => [
-              static::class . '::lazyBuilder',
-              [],
-            ],
-            '#create_placeholder' => TRUE,
-          ],
-        ],
-      ],
-    ];
-
-    // Attach the library for the calendar.
-    $build['#attached']['library'][] = 'uids_base/card';
-    $build['#attached']['library'][] = 'uids_base/chosen';
-    $build['#attached']['library'][] = 'registrar_core/academic-calendar';
-
-    $current = $this->maui->getCurrentSession();
-    $steps = $this->configuration['steps'];
-    // Session range steps must be 1 or greater, so if we want only
-    // the current session, wrap it in an array but don't fetch others.
-    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    // Add the configuration values to drupalSettings.
-    $build['#attached']['drupalSettings']['academicCalendar'] = [
-      'steps' => $steps,
-      'includePastSessions' => $this?->configuration['include_past_sessions'] ?? FALSE,
-    ];
-
-    return $build;
-  }
-
-  /**
-   * Builds the form elements for the block.
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = [];
-
-    $form['#id'] = 'academic-calendar-filter-form';
-
-    $current_request = $this->requestStack->getCurrentRequest();
-
-    $form['search'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Search'),
-      '#attributes' => [
-        'placeholder' => $this->t('Search the calendar'),
-        'class' => ['academic-calendar-search'],
-      ],
-    ];
-
-    $form['session'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Session'),
-      '#options' => ['all' => $this->t('All Sessions')],
-      '#empty_option' => $this->t('- Select -'),
-      '#attributes' => ['class' => ['academic-calendar-session']],
-    ];
-
-    $form['start_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Start Date'),
-      '#attributes' => ['class' => ['academic-calendar-start-date']],
-    ];
-
-    $form['category'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Category'),
-      '#options' => $this->maui->getDateCategories(),
-      '#default_value' => $current_request->query->get('category', 'STUDENT'),
-      '#multiple' => FALSE,
-    ];
-
-    $form['actions'] = [
-      '#type' => 'actions',
-      '#attributes' => ['class' => ['form-actions--stacked']],
-    ];
-
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Search'),
-      '#attributes' => ['class' => ['bttn--full']],
-    ];
-
-    $form['actions']['reset'] = [
-      '#type' => 'button',
-      '#value' => $this->t('Reset'),
-      '#attributes' => [
-        'class' => [
-          'bttn',
-          'bttn--secondary',
-          'bttn--full',
-          'js-form-reset',
-        ],
-      ],
-    ];
-
-    return $form;
-  }
-
-  /**
-   * A #lazy_builder callback.
-   */
-  public static function lazyBuilder() {
-    $block_manager = \Drupal::service('plugin.manager.block');
-    $skeletonLoader = $block_manager->createInstance('skeleton_load_block')->build();
-
+    $session = $this->configuration['session'];
+    $last_updated = $this->configuration['last_updated'];
     return [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['academic-calendar', 'content']],
-      'content' => [
-        $skeletonLoader,
-      ],
+      '#markup' => $session,
     ];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public static function trustedCallbacks() {
-    return ['lazyBuilder'];
   }
 
 }
