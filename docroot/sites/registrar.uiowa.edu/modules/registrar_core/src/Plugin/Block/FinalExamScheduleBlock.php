@@ -74,12 +74,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       '#required' => TRUE,
     ];
 
-    $form['session_name'] = [
-      '#title' => $this->t('Session Name'),
-      '#default_value' => $this->configuration['session_name'] ?? NULL,
-      '#required' => TRUE,
-    ];
-
     $form['last_updated'] = [
       '#type' => 'date',
       '#title' => $this->t('Last Updated'),
@@ -96,7 +90,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $this->configuration['session'] = $form_state->getValue('session');
-    $this->configuration['session_name'] = $form["settings"]["session"]["#options"][$form_state->getValue('session')];
+    $this->configuration['session_name'] = $form['settings']['session']['#options'][$form_state->getValue('session')];
     $this->configuration['last_updated'] = $form_state->getValue('last_updated');
   }
 
