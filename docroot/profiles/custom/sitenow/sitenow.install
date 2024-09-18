@@ -3259,7 +3259,7 @@ function sitenow_update_10010() {
 /**
  * Update the articles view to add new sort configuration for title field.
  */
-function sitenow_update_10011(&$sandbox) {
+function sitenow_update_10011() {
   $config_factory = \Drupal::configFactory();
 
   // Get the articles view configuration.
@@ -3308,4 +3308,36 @@ function sitenow_update_10011(&$sandbox) {
     $view_config->save(TRUE);
 
   }
+}
+
+/**
+ * Update existing article list blocks with new sort configuration.
+ */
+function sitenow_update_10012() {
+  _update_all_blocks_by_plugin_id('views_block:article_list_block-list_article', function (&$component) {
+
+    $configuration = $component->getConfiguration();
+
+    // Update the sort configuration.
+    $configuration['sort'] = [
+      'sticky' => [
+        'order' => 'DESC',
+        'weight' => 0,
+      ],
+      'created' => [
+        'order' => 'DESC',
+        'weight' => 1,
+      ],
+      'title' => [
+        'order' => 'ASC',
+        'weight' => 2,
+      ],
+    ];
+
+    // Ensure the block is using the default display.
+    $configuration['display_id'] = 'default';
+
+    $component->setConfiguration($configuration);
+
+  });
 }
