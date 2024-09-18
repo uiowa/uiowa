@@ -3255,3 +3255,57 @@ function sitenow_update_10010() {
     }
   });
 }
+
+/**
+ * Update the articles view to add new sort configuration for title field.
+ */
+function sitenow_update_10011(&$sandbox) {
+  $config_factory = \Drupal::configFactory();
+
+  // Get the articles view configuration.
+  $view_config = $config_factory->getEditable('views.view.articles');
+
+  if ($view_config) {
+    $displays = $view_config->get('display');
+
+    if (is_array($displays)) {
+      foreach ($displays as &$display) {
+        if (isset($display['display_options']['sorts'])) {
+          // Check if title sort already exists.
+          $title_sort_exists = FALSE;
+          foreach ($display['display_options']['sorts'] as $sort) {
+            if ($sort['field'] == 'title') {
+              $title_sort_exists = TRUE;
+              break;
+            }
+          }
+
+          // If title sort doesn't exist, add it.
+          if (!$title_sort_exists) {
+            $display['display_options']['sorts']['title'] = [
+              'id' => 'title',
+              'table' => 'node_field_data',
+              'field' => 'title',
+              'relationship' => 'none',
+              'group_type' => 'group',
+              'admin_label' => '',
+              'entity_type' => 'node',
+              'entity_field' => 'title',
+              'plugin_id' => 'standard',
+              'order' => 'ASC',
+              'expose' => [
+                'label' => '',
+                'field_identifier' => '',
+              ],
+              'exposed' => FALSE,
+            ];
+          }
+        }
+      }
+    }
+
+    $view_config->set('display', $displays);
+    $view_config->save(TRUE);
+
+  }
+}
