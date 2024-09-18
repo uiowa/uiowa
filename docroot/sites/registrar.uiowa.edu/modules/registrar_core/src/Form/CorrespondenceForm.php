@@ -188,29 +188,6 @@ class CorrespondenceForm extends FormBase {
       ],
     ];
 
-    $form['correspondence']['reset'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Reset'),
-      '#ajax' => [
-        'callback' => [$this, 'resetForm'],
-        'wrapper' => 'correspondence-archives-content',
-        'effect' => 'fade',
-      ],
-      '#states' => [
-        'invisible' => [
-          ':input[name="audience"]' => ['value' => 'all'],
-          'and',
-          ':input[name="topic"]' => ['value' => ''],
-        ],
-      ],
-      '#attributes' => [
-        'class' => [
-          'bttn',
-          'bttn--secondary',
-        ],
-      ],
-    ];
-
     $form['correspondence']['content'] = [
       '#type' => 'container',
       '#attributes' => [
@@ -265,17 +242,6 @@ class CorrespondenceForm extends FormBase {
    * AJAX callback for the form.
    */
   public function ajaxCallback(array &$form, FormStateInterface $form_state) {
-    return $form['correspondence']['content'];
-  }
-
-  /**
-   * Basic form reset.
-   */
-  public function resetForm(array $form, FormStateInterface &$form_state) {
-    $values = $form_state->getUserInput();
-    $values['audience'] = 'all';
-    $values['topic'] = '';
-    $form_state->setUserInput($values);
     return $form['correspondence']['content'];
   }
 
