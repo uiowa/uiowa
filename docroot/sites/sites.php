@@ -7570,3 +7570,9 @@ $sites['orgmensicehockeyclub.uiowa.ddev.site'] = 'mensicehockeyclub.org.uiowa.ed
 $sites['orgmensicehockeyclub.dev.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
 $sites['orgmensicehockeyclub.stage.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
 $sites['orgmensicehockeyclub.prod.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
+
+// Directory aliases for m-ashley-spies.lab.uiowa.edu.
+$sites['labm-ashley-spies.uiowa.ddev.site'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.dev.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.stage.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.prod.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
