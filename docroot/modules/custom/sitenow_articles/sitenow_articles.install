@@ -103,7 +103,7 @@ function sitenow_articles_update_9306() {
 /**
  * Update the articles view to add new sort configuration for title field.
  */
-function sitenow_articles_update_1000() {
+function sitenow_articles_update_9307() {
   $config_factory = \Drupal::configFactory();
 
   // Get the articles view configuration.
@@ -113,11 +113,13 @@ function sitenow_articles_update_1000() {
     $displays = $view_config->get('display');
 
     if (is_array($displays)) {
-      foreach ($displays as &$display) {
-        if (isset($display['display_options']['sorts'])) {
+      $target_displays = ['default', 'page_articles'];
+
+      foreach ($target_displays as $display_id) {
+        if (isset($displays[$display_id]['display_options']['sorts'])) {
           // Check if title sort already exists.
           $title_sort_exists = FALSE;
-          foreach ($display['display_options']['sorts'] as $sort) {
+          foreach ($displays[$display_id]['display_options']['sorts'] as $sort) {
             if ($sort['field'] == 'title') {
               $title_sort_exists = TRUE;
               break;
@@ -126,7 +128,7 @@ function sitenow_articles_update_1000() {
 
           // If title sort doesn't exist, add it.
           if (!$title_sort_exists) {
-            $display['display_options']['sorts']['title'] = [
+            $displays[$display_id]['display_options']['sorts']['title'] = [
               'id' => 'title',
               'table' => 'node_field_data',
               'field' => 'title',
@@ -150,6 +152,5 @@ function sitenow_articles_update_1000() {
 
     $view_config->set('display', $displays);
     $view_config->save(TRUE);
-
   }
 }
