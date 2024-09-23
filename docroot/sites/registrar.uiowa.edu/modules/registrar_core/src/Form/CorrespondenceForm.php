@@ -66,6 +66,13 @@ class CorrespondenceForm extends FormBase {
 
     $form['#id'] = 'correspondence-form';
 
+    $form['correspondence'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'correspondence-archives',
+      ],
+    ];
+
     // Check if we have a form value set for the audience
     // and if not, check if we have a valid query param in the URL.
     $params = $this->requestStack->getCurrentRequest()->query;
@@ -83,26 +90,50 @@ class CorrespondenceForm extends FormBase {
     else {
       $audience = 'all';
     }
+    if ($form_state->getValue('topic')) {
+      $topic = $form_state->getValue('topic');
+    }
+    elseif ($params->has('topic')) {
+      $topic = $params->get('topic');
+      // If the given audience param doesn't match our available options,
+      // default to ALL.
+      if (!in_array($topic, array_keys(registrar_core_correspondence_tags()))) {
+        $topic = '';
+      }
+    }
+    else {
+      $topic = '';
+    }
+
     $mapping = [
       'all' => '',
       'student' => 'student',
       'faculty_staff' => 'faculty/staff',
     ];
 
+    $topic = $topic !== '- any -' ? $topic : '';
     $rows = [];
 
     $data = $this->connection
       ->select('correspondence_archives', 'c')
       ->fields('c')
       ->condition('audience', '%' . $mapping[$audience] . '%', 'LIKE')
+      ->condition('tags', '%' . $topic . '%', 'LIKE')
       ->orderBy('timestamp', 'DESC')
       ->execute();
     foreach ($data as $row) {
+      $topics = [];
+      foreach (registrar_core_correspondence_tags() as $tag => $display) {
+        if (str_contains($row->tags, $tag)) {
+          $topics[] = $display;
+        }
+      }
       $rows[] = [
         date('m/d/Y', $row->timestamp),
         $row->from_name,
         Link::fromTextAndUrl($row->subject, Url::fromUri($row->url)),
         $row->audience,
+        implode(', ', $topics),
       ];
     }
 
@@ -111,16 +142,17 @@ class CorrespondenceForm extends FormBase {
       'From',
       'Email',
       'Audience',
+      'Topic',
     ];
 
-    $form['audience'] = [
+    $form['correspondence']['audience'] = [
       '#type' => 'select',
       '#title' => $this->t('Audience'),
       '#description' => $this->t('The intended audience for the communications.'),
       '#default_value' => $audience,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
-        'wrapper' => 'registrar-core-correspondence-table',
+        'wrapper' => 'correspondence-archives-content',
         'effect' => 'fade',
       ],
       '#options' => [
@@ -128,16 +160,80 @@ class CorrespondenceForm extends FormBase {
         'student' => $this->t('Student'),
         'faculty_staff' => $this->t('Faculty/Staff'),
       ],
+      '#prefix' => '<div id="correspondence-archives-audience-dropdown" aria-controls="correspondence-archives-content">',
+      '#suffix' => '</div>',
     ];
 
-    $form['table'] = [
-      '#theme' => 'table',
-      '#header' => $headers,
-      '#rows' => $rows,
-      '#attributes' => [
-        'id' => 'registrar-core-correspondence-table',
+    $form['correspondence']['topic'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Topic'),
+      '#description' => $this->t('The communication topic.'),
+      '#default_value' => $topic,
+      '#ajax' => [
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'correspondence-archives-content',
+        'effect' => 'fade',
+      ],
+      '#options' => registrar_core_correspondence_tags(),
+      '#prefix' => '<div id="correspondence-archives-topic-dropdown" aria-controls="correspondence-archives-content">',
+      '#suffix' => '</div>',
+    ];
+
+    $form['correspondence']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#ajax' => [
+        'callback' => [$this, 'ajaxCallback'],
+        'wrapper' => 'correspondence-archives-content',
+        'effect' => 'fade',
       ],
     ];
+
+    $form['correspondence']['content'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'correspondence-archives-content',
+        'class' => 'element--margin__top--extra',
+        'role' => 'region',
+        'aria-live' => 'polite',
+      ],
+    ];
+
+    // Build a suffix for the results message based on the selected filters.
+    $suffix = 'for ';
+    $suffix .= ($audience === 'all') ? $audience . ' audiences' : $mapping[$audience] . ' audiences';
+    $suffix .= (empty($topic)) ? '.' : ' and the topic of ' . strtolower(registrar_core_correspondence_tags($topic)) . '.';
+
+    $count = count($rows);
+    if ($count > 0) {
+      $form['correspondence']['content']['results_count'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('@count results found @suffix', [
+          '@count' => $count,
+          '@suffix' => $suffix,
+        ]),
+        '#prefix' => '<p id="correspondence-archives-content-results" aria-live="polite">',
+        '#suffix' => '</p>',
+      ];
+
+      $form['correspondence']['content']['table'] = [
+        '#theme' => 'table',
+        '#header' => $headers,
+        '#rows' => $rows,
+        '#prefix' => '<div id="correspondence-archives-content-table" aria-describedby="correspondence-archives-content-results">',
+        '#suffix' => '</div>',
+      ];
+    }
+    else {
+      $form['correspondence']['content']['results_count'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('No results found @suffix', [
+          '@suffix' => $suffix,
+        ]),
+        '#prefix' => '<div id="correspondence-archives-content-results" aria-live="polite">',
+        '#suffix' => '</div>',
+      ];
+    }
 
     return $form;
 
@@ -147,7 +243,7 @@ class CorrespondenceForm extends FormBase {
    * AJAX callback for the form.
    */
   public function ajaxCallback(array &$form, FormStateInterface $form_state) {
-    return $form['table'];
+    return $form['correspondence']['content'];
   }
 
   /**
