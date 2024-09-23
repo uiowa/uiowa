@@ -232,7 +232,13 @@ class AcademicCalendarController extends ControllerBase {
           $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
           $event->sortString = $this->sortString($event);
 
-          $events[] = $event;
+          // Split any events that are multiple days into multiple event entries.
+          if ($date->endDate !== $date->beginDate) {
+            $multiDayEvent = $this->splitMultiDayEvent($event);
+          }
+          else {
+            $events[] = $event;
+          }
         }
       }
     }
@@ -268,6 +274,20 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Splits a multi day event, so it can be displayed multiple times.
+   *
+   * @param object $event
+   *   The multi day event to split.
+   *
+   * @return Object[]
+   *   TRUE if the event should be included, FALSE otherwise.
+   */
+  private function splitMultiDayEvent($event) : array {
+    $days = [];
+    return $days;
+  }
+
+  /**
    * Processes a date into an event object.
    *
    * @param object $date
@@ -297,7 +317,7 @@ class AcademicCalendarController extends ControllerBase {
     $start = date('D, M j, Y', $start_timestamp);
     $month = date('M', $start_timestamp);
     $day = date('j', $start_timestamp);
-    if ($date->endDate != $date->beginDate) {
+    if ($date->endDate !== $date->beginDate) {
       $end = date('D, M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
