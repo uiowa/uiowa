@@ -110,13 +110,15 @@ class CorrespondenceForm extends FormBase {
       'student' => 'student',
       'faculty_staff' => 'faculty/staff',
     ];
+
+    $topic = $topic !== '- any -' ? $topic : '';
     $rows = [];
 
     $data = $this->connection
       ->select('correspondence_archives', 'c')
       ->fields('c')
       ->condition('audience', '%' . $mapping[$audience] . '%', 'LIKE')
-      ->condition('tags', '%' . $topic . '%', 'LIKE')
+      ->condition('tags', '%' . $topic  . '%', 'LIKE')
       ->orderBy('timestamp', 'DESC')
       ->execute();
     foreach ($data as $row) {
@@ -166,7 +168,6 @@ class CorrespondenceForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Topic'),
       '#description' => $this->t('The communication topic.'),
-      '#empty_option' => '- Any -',
       '#default_value' => $topic,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
