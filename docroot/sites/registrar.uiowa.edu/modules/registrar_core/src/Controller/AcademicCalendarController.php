@@ -286,10 +286,6 @@ class AcademicCalendarController extends ControllerBase {
    *
    * @param object $date
    *   The date object to split into multiple events.
-   * @param object $session
-   *   The session object.
-   * @param int $session_index
-   *   The session index.
    *
    * @return Object[]
    *   TRUE if the event should be included, FALSE otherwise.
