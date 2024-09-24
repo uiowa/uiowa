@@ -2,9 +2,6 @@
 
 namespace Drupal\registrar_core\Controller;
 
-use DateInterval;
-use DatePeriod;
-use DateTime;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -288,22 +285,22 @@ class AcademicCalendarController extends ControllerBase {
    * Splits a multi day event, so it can be displayed multiple times.
    *
    * @param object $date
-   *    The date object to split into multiple events.
+   *   The date object to split into multiple events.
    * @param object $session
-   *    The session object.
+   *   The session object.
    * @param int $session_index
-   *    The session index.
+   *   The session index.
    *
    * @return Object[]
    *   TRUE if the event should be included, FALSE otherwise.
    */
   private function splitMultiDayEvent(object $date) : array {
     $days = [];
-    $interval = new DateInterval('P1D');
-    $realEnd = new DateTime($date->endDate);
+    $interval = new \DateInterval('P1D');
+    $realEnd = new \DateTime($date->endDate);
     $realEnd->add($interval);
-    $period = new DatePeriod(
-      new DateTime($date->beginDate),
+    $period = new \DatePeriod(
+      new \DateTime($date->beginDate),
       $interval,
       $realEnd
     );
