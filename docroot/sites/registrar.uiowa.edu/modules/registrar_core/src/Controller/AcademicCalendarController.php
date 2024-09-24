@@ -2,6 +2,9 @@
 
 namespace Drupal\registrar_core\Controller;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -229,15 +232,23 @@ class AcademicCalendarController extends ControllerBase {
         }
 
         if (!empty($date->dateCategoryLookups)) {
-          $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
-          $event->sortString = $this->sortString($event);
 
           // Split any events that are multiple days into multiple event entries.
-          if ($date->endDate !== $date->beginDate) {
-            $multiDayEvent = $this->splitMultiDayEvent($event);
+          if ($date->endDate === $date->beginDate) {
+            $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
+            $event->sortString = $this->sortString($event);
+
+            $events[] = $event;
           }
           else {
-            $events[] = $event;
+            $newEvents = [];
+            $multiDayEventDays = $this->splitMultiDayEvent($date);
+            foreach ($multiDayEventDays as $day) {
+              $newEvent = $this->processDate($date, $session, $session_index, $session->legacyCode, $day);
+              $newEvents[] = $newEvent;
+            }
+
+            $events = [...$events, ...$newEvents];
           }
         }
       }
@@ -276,14 +287,30 @@ class AcademicCalendarController extends ControllerBase {
   /**
    * Splits a multi day event, so it can be displayed multiple times.
    *
-   * @param object $event
-   *   The multi day event to split.
+   * @param object $date
+   *    The date object to split into multiple events.
+   * @param object $session
+   *    The session object.
+   * @param int $session_index
+   *    The session index.
    *
    * @return Object[]
    *   TRUE if the event should be included, FALSE otherwise.
    */
-  private function splitMultiDayEvent($event) : array {
+  private function splitMultiDayEvent(object $date) : array {
     $days = [];
+    $interval = new DateInterval('P1D');
+    $realEnd = new DateTime($date->endDate);
+    $realEnd->add($interval);
+    $period = new DatePeriod(
+      new DateTime($date->beginDate),
+      $interval,
+      $realEnd
+    );
+    foreach ($period as $day) {
+      array_push($days, $day);
+    }
+
     return $days;
   }
 
@@ -304,7 +331,7 @@ class AcademicCalendarController extends ControllerBase {
   /**
    * In the processDate() method of AcademicCalendarController.
    */
-  private function processDate($date, $session, $session_index, $session_legacy_id) {
+  private function processDate($date, $session, $session_index, $session_legacy_id, $alt_start_day = NULL) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
@@ -314,13 +341,31 @@ class AcademicCalendarController extends ControllerBase {
 
     // Determine the date to display.
     $start_timestamp = strtotime($date->beginDate);
-    $start = date('D, M j, Y', $start_timestamp);
-    $month = date('M', $start_timestamp);
-    $day = date('j', $start_timestamp);
+
+    if ($alt_start_day) {
+      $event->start = $alt_start_day->format('Y-m-d\TH:i:s.000+0000');
+      $alt_start_timestamp = strtotime($event->start);
+      $start = date('D, M j, Y', $alt_start_timestamp);
+      $month = date('M', $alt_start_timestamp);
+      $day = date('j', $alt_start_timestamp);
+    }
+    else {
+      $start = date('D, M j, Y', $start_timestamp);
+      $month = date('M', $start_timestamp);
+      $day = date('j', $start_timestamp);
+    }
     if ($date->endDate !== $date->beginDate) {
       $end = date('D, M j, Y', strtotime($date->endDate));
       $start = "{$start} - {$end}";
     }
+
+    // We want to show the original start in the subtitle.
+    if ($alt_start_day && $date->endDate !== $event->start) {
+      $originalStart = date('D, M j, Y', $start_timestamp);
+      $end = date('D, M j, Y', strtotime($date->endDate));
+      $start = "{$originalStart} - {$end}";
+    }
+
     $event->displayDate = $start;
 
     // Determine what session to display.
