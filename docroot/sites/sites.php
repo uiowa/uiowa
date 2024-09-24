@@ -839,12 +839,6 @@ $sites['sitesstatefair.dev.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 $sites['sitesstatefair.stage.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 $sites['sitesstatefair.prod.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 
-// Directory aliases for critical-incident-plan.sites.uiowa.edu.
-$sites['sitescritical-incident-plan.uiowa.ddev.site'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.dev.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.stage.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.prod.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-
 // Directory aliases for mural-film.sites.uiowa.edu.
 $sites['sitesmural-film.uiowa.ddev.site'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.dev.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
