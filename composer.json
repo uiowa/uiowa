@@ -47,7 +47,10 @@
     },
     "config": {
         "audit": {
-            "abandoned": "ignore"
+            "abandoned": "ignore",
+            "ignore": {
+                "GHSA-mg8j-w93w-xjgc": "Temporary ignore."
+            }
         },
         "sort-packages": true,
         "platform": {
@@ -262,6 +265,9 @@
             },
             "drupal/fragments": {
                 "remove_views_data_type": "https://www.drupal.org/files/issues/2022-08-24/3305851-remove_views_data_type-6.patch"
+            },
+            "drupal/fullcalendar_view": {
+                "only_rebuild_on_view_change": "patches/fullcalendar_only_rebuild_on_view_change.patch"
             },
             "drupal/google_analytics": {
                 "[3373921] Cannot install from existing config": "patches/3373921.patch"
