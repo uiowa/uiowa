@@ -839,12 +839,6 @@ $sites['sitesstatefair.dev.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 $sites['sitesstatefair.stage.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 $sites['sitesstatefair.prod.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
 
-// Directory aliases for critical-incident-plan.sites.uiowa.edu.
-$sites['sitescritical-incident-plan.uiowa.ddev.site'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.dev.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.stage.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-$sites['sitescritical-incident-plan.prod.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
-
 // Directory aliases for mural-film.sites.uiowa.edu.
 $sites['sitesmural-film.uiowa.ddev.site'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.dev.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
@@ -7570,3 +7564,15 @@ $sites['orgmensicehockeyclub.uiowa.ddev.site'] = 'mensicehockeyclub.org.uiowa.ed
 $sites['orgmensicehockeyclub.dev.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
 $sites['orgmensicehockeyclub.stage.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
 $sites['orgmensicehockeyclub.prod.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
+
+// Directory aliases for m-ashley-spies.lab.uiowa.edu.
+$sites['labm-ashley-spies.uiowa.ddev.site'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.dev.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.stage.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
+$sites['labm-ashley-spies.prod.drupal.uiowa.edu'] = 'm-ashley-spies.lab.uiowa.edu';
+
+// Directory aliases for johnsoncountydap.sites.uiowa.edu.
+$sites['sitesjohnsoncountydap.uiowa.ddev.site'] = 'johnsoncountydap.sites.uiowa.edu';
+$sites['sitesjohnsoncountydap.dev.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
+$sites['sitesjohnsoncountydap.stage.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
+$sites['sitesjohnsoncountydap.prod.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
