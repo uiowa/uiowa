@@ -516,13 +516,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
       }
-      // Hide alias path setting on media for non-admins to prevent
-      // unwanted changes to internal paths (not the public-facing path).
-      if (isset($form['path'])) {
-        if ($access->isForbidden()) {
-          $form['path']['#access'] = FALSE;
-        }
-      }
 
       // Prevent deletion if there is entity usage.
       // This is accompanied by a message from the entity_usage module.
