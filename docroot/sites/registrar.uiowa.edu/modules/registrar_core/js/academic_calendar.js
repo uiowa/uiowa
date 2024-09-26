@@ -322,11 +322,7 @@
         const matchesSession = !this.selectedSession || event.sessionDisplay === this.selectedSession;
 
         let matchesCategories;
-        if (this.selectedCategories === 'STUDENT') {
-          matchesCategories = true;
-        } else {
-          matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
-        }
+        matchesCategories = event.categories && Object.keys(event.categories).includes(this.selectedCategories);
 
         return matchesSearch && startCheck && matchesSession && matchesCategories;
       });
