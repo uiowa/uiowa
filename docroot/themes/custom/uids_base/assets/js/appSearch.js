@@ -15,6 +15,7 @@ function main() {
 function setup() {
   filter = document.getElementById('filter');
   filter.addEventListener('input', filterChanged);
+  filter.focus();
 }
 
 function filterChanged(e) {
