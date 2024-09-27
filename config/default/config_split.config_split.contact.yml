@@ -1,0 +1,25 @@
+uuid: db2153c5-ab3e-4b9c-94dd-1237a8068992
+langcode: en
+status: false
+dependencies: {  }
+id: contact
+label: Contact
+description: 'Contact content type.'
+weight: 80
+stackable: true
+storage: folder
+folder: ../config/features/contact
+module: {  }
+theme: {  }
+complete_list:
+  - core.base_field_override.node.contact.promote
+  - metatag.metatag_defaults.node__contact
+  - node.type.contact
+  - pathauto.pattern.contact
+  - simple_sitemap.bundle_settings.default.node.contact
+  - 'core.entity_form_display.node.contact.*'
+  - 'core.entity_view_display.node.contact.*'
+  - 'field.storage.node.field_contact_*'
+partial_list:
+  - metatag.settings
+  - 'user.role.*'
