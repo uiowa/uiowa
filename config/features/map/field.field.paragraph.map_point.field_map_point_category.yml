@@ -1,0 +1,29 @@
+uuid: bb9f32f5-9ff7-4461-bf19-06b040109309
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_map_point_category
+    - paragraphs.paragraphs_type.map_point
+    - taxonomy.vocabulary.map_category
+id: paragraph.map_point.field_map_point_category
+field_name: field_map_point_category
+entity_type: paragraph
+bundle: map_point
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      map_category: map_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
