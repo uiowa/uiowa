@@ -7582,3 +7582,9 @@ $sites['labloqate.uiowa.ddev.site'] = 'loqate.lab.uiowa.edu';
 $sites['labloqate.dev.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
 $sites['labloqate.stage.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
 $sites['labloqate.prod.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
+
+// Directory aliases for mensrugby.org.uiowa.edu.
+$sites['orgmensrugby.uiowa.ddev.site'] = 'mensrugby.org.uiowa.edu';
+$sites['orgmensrugby.dev.drupal.uiowa.edu'] = 'mensrugby.org.uiowa.edu';
+$sites['orgmensrugby.stage.drupal.uiowa.edu'] = 'mensrugby.org.uiowa.edu';
+$sites['orgmensrugby.prod.drupal.uiowa.edu'] = 'mensrugby.org.uiowa.edu';
