@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.fragment.region_item.default
+    - core.entity_view_display.fragment.region_item_after_content.default
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -34,6 +36,7 @@ dependencies:
     - find_text
     - fragments
     - google_analytics
+    - layout_builder
     - media
     - menu_admin_per_menu
     - metatag_extended_perms
@@ -101,6 +104,8 @@ permissions:
   - 'access tour'
   - 'access users overview'
   - 'administer main menu items'
+  - 'configure editable region_item fragment layout overrides'
+  - 'configure editable region_item_after_content fragment layout overrides'
   - 'create article content'
   - 'create audio media'
   - 'create facebook media'
