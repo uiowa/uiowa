@@ -4,9 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
+    - field.field.node.contact.body
+    - field.field.node.contact.field_contact_address
     - field.field.node.contact.field_contact_email
+    - field.field.node.contact.field_contact_fax
     - field.field.node.contact.field_contact_phone_number
     - node.type.contact
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - telephone
@@ -50,7 +54,10 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  body: true
   created: true
+  field_contact_address: true
+  field_contact_fax: true
   path: true
   promote: true
   publish_on: true

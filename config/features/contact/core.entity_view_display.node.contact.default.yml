@@ -4,14 +4,19 @@ status: true
 dependencies:
   config:
     - core.base_field_override.node.contact.title
+    - field.field.node.contact.body
+    - field.field.node.contact.field_contact_address
     - field.field.node.contact.field_contact_email
+    - field.field.node.contact.field_contact_fax
     - field.field.node.contact.field_contact_phone_number
     - node.type.contact
   module:
+    - address
     - layout_builder
     - layout_builder_restrictions
     - system
     - telephone
+    - text
     - user
   theme:
     - uids_base
@@ -96,6 +101,54 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: f8e94e59-f0a3-4ff7-8643-0435e7fd8e29
+            region: content
+            configuration:
+              id: 'field_block:node:contact:field_contact_fax'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 7c334fff-d4de-42ea-8d49-0b37121e1919
+            region: content
+            configuration:
+              id: 'field_block:node:contact:field_contact_address'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: address_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 55627cac-ebff-4c00-b816-50d775c771bf
+            region: content
+            configuration:
+              id: 'field_block:node:contact:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -111,12 +164,33 @@ targetEntityType: node
 bundle: contact
 mode: default
 content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_contact_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_contact_email:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_contact_fax:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_contact_phone_number:
     type: telephone_link
