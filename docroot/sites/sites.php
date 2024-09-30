@@ -7576,3 +7576,9 @@ $sites['sitesjohnsoncountydap.uiowa.ddev.site'] = 'johnsoncountydap.sites.uiowa.
 $sites['sitesjohnsoncountydap.dev.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
 $sites['sitesjohnsoncountydap.stage.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
 $sites['sitesjohnsoncountydap.prod.drupal.uiowa.edu'] = 'johnsoncountydap.sites.uiowa.edu';
+
+// Directory aliases for loqate.lab.uiowa.edu.
+$sites['labloqate.uiowa.ddev.site'] = 'loqate.lab.uiowa.edu';
+$sites['labloqate.dev.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
+$sites['labloqate.stage.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
+$sites['labloqate.prod.drupal.uiowa.edu'] = 'loqate.lab.uiowa.edu';
