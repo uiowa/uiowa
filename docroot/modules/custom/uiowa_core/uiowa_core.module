@@ -516,23 +516,31 @@ function template_preprocess_card(&$variables) {
 function uiowa_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'field_contact_address':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
       break;
 
     case 'field_contact_email':
-      uiowa_core_set_field_icon($variables, 'fa-envelope');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
       break;
 
-    case 'field_contact_phone':
-      uiowa_core_set_field_icon($variables, 'fa-phone');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+    case 'field_contact_phone_number':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
       break;
 
     case 'field_contact_fax':
-      uiowa_core_set_field_icon($variables, 'fa-fax');
-      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-fax');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
       break;
 
     case 'title':

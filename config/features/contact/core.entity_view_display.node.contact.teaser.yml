@@ -12,6 +12,7 @@ dependencies:
     - node.type.contact
   module:
     - address
+    - field_delimiter
     - smart_trim
     - telephone
     - user
@@ -47,21 +48,21 @@ content:
     region: content
   field_contact_address:
     type: address_default
-    label: above
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 3
     region: content
   field_contact_email:
     type: basic_string
-    label: above
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
   field_contact_fax:
     type: telephone_link
-    label: above
+    label: visually_hidden
     settings:
       title: ''
     third_party_settings: {  }
@@ -69,10 +70,12 @@ content:
     region: content
   field_contact_phone_number:
     type: telephone_link
-    label: above
+    label: visually_hidden
     settings:
       title: ''
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 0
     region: content
 hidden:
