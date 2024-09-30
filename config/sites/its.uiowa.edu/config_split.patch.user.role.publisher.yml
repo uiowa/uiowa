@@ -5,6 +5,7 @@ adding:
       - node.type.support_article
       - workflows.workflow.alert
       - workflows.workflow.draft
+  weight: -6
   permissions:
     - 'create support_article content'
     - 'delete any support_article content'
@@ -43,6 +44,7 @@ removing:
       - taxonomy.vocabulary.alert_categories
     module:
       - menu_admin_per_menu
+  weight: -5
   permissions:
     - 'access fragments overview'
     - 'administer main menu items'
