@@ -418,4 +418,19 @@ class MauiApi {
     return array_flip($options);
   }
 
+  /**
+   * Basic final exam fetcher.
+   */
+  public function getFinalExamSchedule($session_id) {
+    $endpoint = "pub/registrar/exam-schedule/{$session_id}";
+    $options = [
+      'headers' => [
+        'Accept' => 'application/xml',
+        'Content-Type' => 'application/x-www-form-urlencoded',
+      ]
+    ];
+    $data = $this->request('GET', $endpoint, [], $options);
+    return $data;
+  }
+
 }
