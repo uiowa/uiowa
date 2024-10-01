@@ -1,0 +1,59 @@
+uuid: b46ea813-510e-42d2-8654-3bb84f6b19d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.map_collection
+    - field.field.block_content.map_collection.field_map_center
+    - field.field.block_content.map_collection.field_map_features
+    - field.field.block_content.map_collection.field_map_height
+    - field.field.block_content.map_collection.field_map_zoom
+  module:
+    - entity_reference_revisions
+    - geofield
+id: block_content.map_collection.default
+targetEntityType: block_content
+bundle: map_collection
+mode: default
+content:
+  field_map_center:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_map_features:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_map_height:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_map_zoom:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
