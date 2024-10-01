@@ -102,9 +102,21 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $session_name = $this->configuration['session_name'];
     $last_updated = $this->configuration['last_updated'];
     $data = $this->maui->getFinalExamSchedule($session);
-    return [
-      '#markup' => $session_name . " " . $session . "<br>Last updated: " . date('F j, Y', strtotime($last_updated)),
+    $headers = [
+      'Sections',
+      'Course Title',
+      'Start Times',
+      'End Times',
+      'Rooms',
     ];
+    return [
+      '#theme' => 'table',
+      '#header' => $headers,
+      '#rows' => $data,
+    ];
+//    return [
+//      '#markup' => $session_name . " " . $session . "<br>Last updated: " . date('F j, Y', strtotime($last_updated)),
+//    ];
   }
 
 }

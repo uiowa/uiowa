@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_maui;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -115,8 +116,24 @@ class MauiApi {
       if (isset($response)) {
         $contents = $response->getBody()->getContents();
 
-        /** @var object $data */
-        $data = json_decode($contents);
+        if ($options['headers']['Accept'] === 'application/xml') {
+          // Process the XML.
+          $xml = simplexml_load_string($contents);
+          $data = [];
+          foreach ($xml->Table as $row) {
+            $data[] = [
+              'sections' => (string) $row->sections,
+              'course_title' => (string) $row->course_title,
+              'start_time' => (string) $row->start_time,
+              'end_time' => (string) $row->end_time,
+              'rooms' => (string) $row->rooms,
+            ];
+          }
+        }
+        else {
+          /** @var object $data */
+          $data = json_decode($contents);
+        }
 
         // Cache for 15 minutes.
         $this->cache->set($cid, $data, time() + 900);
@@ -427,7 +444,7 @@ class MauiApi {
       'headers' => [
         'Accept' => 'application/xml',
         'Content-Type' => 'application/x-www-form-urlencoded',
-      ]
+      ],
     ];
     $data = $this->request('GET', $endpoint, [], $options);
     return $data;
