@@ -27,9 +27,9 @@ default_value:
     address_line1: ''
     address_line2: ''
     organization: ''
-    given_name: ''
+    given_name: null
     additional_name: null
-    family_name: ''
+    family_name: null
 default_value_callback: ''
 settings:
   available_countries: {  }
@@ -39,5 +39,13 @@ settings:
       override: hidden
     familyName:
       override: hidden
+    addressLine1:
+      override: optional
+    postalCode:
+      override: optional
+    locality:
+      override: optional
+    administrativeArea:
+      override: optional
   fields: {  }
 field_type: address
