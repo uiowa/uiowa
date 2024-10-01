@@ -109,14 +109,22 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       'End Times',
       'Rooms',
     ];
-    return [
+    $table = [
       '#theme' => 'table',
       '#header' => $headers,
       '#rows' => $data,
     ];
-//    return [
-//      '#markup' => $session_name . " " . $session . "<br>Last updated: " . date('F j, Y', strtotime($last_updated)),
-//    ];
+
+    $build['wrapper'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => ['table-responsive']
+      ],
+      'table' => $table
+    ];
+
+    return $build;
   }
 
 }
