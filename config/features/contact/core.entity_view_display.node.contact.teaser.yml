@@ -13,8 +13,8 @@ dependencies:
   module:
     - address
     - field_delimiter
-    - smart_trim
     - telephone
+    - text
     - user
 id: node.contact.teaser
 targetEntityType: node
@@ -22,27 +22,9 @@ bundle: contact
 mode: teaser
 content:
   body:
-    type: smart_trim
+    type: text_default
     label: hidden
-    settings:
-      trim_length: 0
-      trim_type: chars
-      trim_suffix: ''
-      wrap_output: false
-      wrap_class: trimmed
-      more:
-        display_link: false
-        target_blank: false
-        link_trim_only: false
-        class: more-link
-        text: More
-        aria_label: 'Read more about [node:title]'
-        token_browser: ''
-      summary_handler: full
-      trim_options:
-        text: false
-        trim_zero: true
-        replace_tokens: false
+    settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
