@@ -127,9 +127,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     // At this point we still have more data from MAUI than we needed,
     // and also need to process the data we do want to keep.
     foreach ($data as &$row) {
-      foreach ($row as &$entry) {
-        $entry = Markup::create(Xss::filter($entry, $allowed_tags));
-      }
+      $row = [
+        Markup::create(Xss::filter($row['sections'], $allowed_tags)),
+        Markup::create(Xss::filter($row['course_title'], $allowed_tags)),
+        Markup::create(Xss::filter($row['start_time'], $allowed_tags)),
+        Markup::create(Xss::filter($row['end_time'], $allowed_tags)),
+        Markup::create(Xss::filter($row['rooms'], $allowed_tags)),
+      ];
     }
 
     $table = [
