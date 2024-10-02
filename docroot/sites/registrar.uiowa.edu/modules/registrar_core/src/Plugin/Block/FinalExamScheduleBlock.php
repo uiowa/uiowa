@@ -109,6 +109,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       'End Times',
       'Rooms',
     ];
+
+    foreach ($data as &$row) {
+      foreach ($row as &$entry) {
+        $entry = html_entity_decode(htmlspecialchars_decode($entry));
+      }
+    }
+
     $table = [
       '#theme' => 'table',
       '#header' => $headers,
