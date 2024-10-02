@@ -8,9 +8,11 @@ adding:
       - workflows.workflow.draft
     module:
       - replicate_ui
+  weight: -7
   permissions:
     - 'create alert content'
     - 'create support_article content'
+    - 'delete any support_article content'
     - 'delete own support_article content'
     - 'delete service revisions'
     - 'delete support_article revisions'
@@ -32,7 +34,6 @@ adding:
     - 'use draft transition archived_published'
     - 'use draft transition create_new_draft'
     - 'use draft transition publish'
-    - 'use editorial transition archive'
     - 'view alert revisions'
     - 'view service revisions'
     - 'view support_article revisions'
@@ -40,18 +41,12 @@ removing:
   dependencies:
     config:
       - block_content.type.uiowa_text_area
-      - core.entity_view_display.fragment.region_item.default
-      - core.entity_view_display.fragment.region_item_after_content.default
     module:
       - menu_admin_per_menu
+  weight: -6
   permissions:
-    - 'access fragments overview'
     - 'administer main menu items'
-    - 'configure editable region_item fragment layout overrides'
-    - 'configure editable region_item_after_content fragment layout overrides'
     - 'create page content'
-    - 'create region_item fragments'
-    - 'create region_item_after_content fragments'
     - 'create uiowa_text_area block content'
     - 'delete any uiowa_text_area block content'
     - 'delete own page content'
@@ -61,5 +56,3 @@ removing:
     - 'edit own page content'
     - 'override page published option'
     - 'revert page revisions'
-    - 'update own region_item fragments'
-    - 'update own region_item_after_content fragments'

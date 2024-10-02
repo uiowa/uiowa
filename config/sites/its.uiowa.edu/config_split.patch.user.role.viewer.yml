@@ -3,10 +3,12 @@ adding:
     config:
       - node.type.service
       - node.type.support_article
+  weight: -8
   permissions:
     - 'enter alert revision log entry'
     - 'enter service revision log entry'
     - 'enter support_article revision log entry'
     - 'view service revisions'
     - 'view support_article revisions'
-removing: {  }
+removing:
+  weight: -7
