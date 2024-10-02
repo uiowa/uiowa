@@ -3,9 +3,11 @@
 namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -115,16 +117,19 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       'Rooms',
     ];
 
+    $allowed_tags = [
+      'a',
+      'strong',
+      'em',
+      'br'
+    ];
+
     // At this point we still have more data from MAUI than we needed,
     // and also need to process the data we do want to keep.
     foreach ($data as &$row) {
-      $row = [
-        html_entity_decode(htmlspecialchars_decode($row['sections'])),
-        html_entity_decode(htmlspecialchars_decode($row['course_title'])),
-        html_entity_decode(htmlspecialchars_decode($row['start_time'])),
-        html_entity_decode(htmlspecialchars_decode($row['end_time'])),
-        html_entity_decode(htmlspecialchars_decode($row['rooms'])),
-      ];
+      foreach ($row as &$entry) {
+        $entry = Markup::create(Xss::filter($entry, $allowed_tags));
+      }
     }
 
     $table = [
