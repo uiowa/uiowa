@@ -117,18 +117,19 @@ class MauiApi {
         $contents = $response->getBody()->getContents();
 
         if ($options['headers']['Accept'] === 'application/xml') {
-          // Process the XML.
+          // Quick and dirty way to use the XML and JSON parsers
+          // to convert from XML to an associative PHP array. XML
+          // allows non-unique names in children unlike JSON, so
+          // we encode to force unique names, then decode to
+          // convert to an array. Based on
+          // https://hakre.wordpress.com/2013/07/09/simplexml-and-json-encode-in-php-part-i/
           $xml = simplexml_load_string($contents);
-          $data = [];
-          foreach ($xml->Table as $row) {
-            $data[] = [
-              'sections' => (string) $row->sections,
-              'course_title' => (string) $row->course_title,
-              'start_time' => (string) $row->start_time,
-              'end_time' => (string) $row->end_time,
-              'rooms' => (string) $row->rooms,
-            ];
-          }
+          $data = json_decode(
+            json_encode($xml),
+            TRUE
+          );
+          // Place the contents back into the XML parent's namespace.
+          $data = [$xml->getName() => $data];
         }
         else {
           /** @var object $data */

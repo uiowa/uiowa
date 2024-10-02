@@ -102,6 +102,11 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $session_name = $this->configuration['session_name'];
     $last_updated = $this->configuration['last_updated'];
     $data = $this->maui->getFinalExamSchedule($session);
+    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
+      // @todo Add some handling if data fetching failed
+      //   or there's something weird with the structure.
+    }
+    $data = $data['NewDataSet']['Table'];
     $headers = [
       'Sections',
       'Course Title',
@@ -111,9 +116,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     ];
 
     foreach ($data as &$row) {
-      foreach ($row as &$entry) {
-        $entry = html_entity_decode(htmlspecialchars_decode($entry));
-      }
+      $row = [
+        html_entity_decode(htmlspecialchars_decode($row['sections'])),
+        html_entity_decode(htmlspecialchars_decode($row['course_title'])),
+        html_entity_decode(htmlspecialchars_decode($row['start_time'])),
+        html_entity_decode(htmlspecialchars_decode($row['end_time'])),
+        html_entity_decode(htmlspecialchars_decode($row['rooms'])),
+      ];
     }
 
     $table = [
