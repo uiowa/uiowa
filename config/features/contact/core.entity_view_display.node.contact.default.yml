@@ -44,12 +44,13 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: basic_string
-                label: inline
+                type: email_mailto
+                label: above
                 settings: {  }
                 third_party_settings: {  }
             weight: 3
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 7bac68a1-7e62-4fa0-b33d-4e3046da6a0d
@@ -64,12 +65,15 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: telephone_link
-                label: inline
+                label: above
                 settings:
                   title: ''
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
             weight: 4
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: d9b02670-0623-4250-a9e1-7959d2488e12
@@ -108,16 +112,21 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:contact:field_contact_fax'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: basic_string
+                type: telephone_link
                 label: above
-                settings: {  }
+                settings:
+                  title: ''
                 third_party_settings: {  }
             weight: 5
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 7c334fff-d4de-42ea-8d49-0b37121e1919
@@ -167,6 +176,17 @@ third_party_settings:
             weight: 8
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 69ee0b7e-5700-4731-b55f-49f1db3965e7
+            region: content
+            configuration:
+              id: 'extra_field_block:node:contact:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -188,6 +208,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_contact_address:
     type: address_default
