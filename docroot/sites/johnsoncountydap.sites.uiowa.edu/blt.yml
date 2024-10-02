@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesjohnsoncountydap.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesjohnsoncountydap
+  human_name: johnsoncountydap.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesjohnsoncountydap.prod
+drupal:
+  db:
+    database: johnsoncountydap_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesjohnsoncountydap.prod.drupal.uiowa.edu'
+  requester: hjelmeland
+  site-name: 'The Income Assistance and Wellbeing Research Project'

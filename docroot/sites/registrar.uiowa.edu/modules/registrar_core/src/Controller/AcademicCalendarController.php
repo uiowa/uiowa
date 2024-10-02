@@ -217,10 +217,14 @@ class AcademicCalendarController extends ControllerBase {
     $events = [];
 
     foreach ($sessions as $session_index => $session) {
-      $dates = $this->maui->searchSessionDates($session->id, [
-        'startDate' => $start,
-        'endDate' => $end,
-      ], TRUE, $isFiveYearCalendar);
+      $dates = $this->maui->searchSessionDates(
+        $session->id, [
+          'startDate' => $start,
+          'endDate' => $end,
+        ],
+        TRUE,
+        $isFiveYearCalendar ?: NULL
+      );
 
       foreach ($dates as $date) {
         // Skip the reviewed check for five-year calendar.

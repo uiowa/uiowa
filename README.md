@@ -2,6 +2,7 @@
 
 The base application on Acquia Cloud for the University of Iowa.
 
+
 # Getting Started
 
 This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
