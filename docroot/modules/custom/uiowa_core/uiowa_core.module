@@ -895,8 +895,10 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * Custom submit handler for node contact forms.
  */
 function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_state) {
-  $address_fields = ['field_contact_address'];
-  uiowa_core_clean_address_fields($form, $form_state, $address_fields);
+  $field_config = [
+    'field_contact_address' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -1593,37 +1595,73 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
 }
 
 /**
- * Helper function to clean address fields.
+ * Helper function to validate and clean address fields, including paragraphs.
  *
  * @param array &$form
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state object.
- * @param array $address_fields
- *   An array of address field names to process.
+ * @param array $field_config
+ *   An array of field configurations to process.
  */
-function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_state, array $address_fields) {
-  foreach ($address_fields as $field_name) {
-    $contact_address = $form_state->getValue($field_name);
-    if (isset($contact_address[0]['address'])) {
-      $has_info = FALSE;
+function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_state, array $field_config) {
+  foreach ($field_config as $field_name => $config) {
+    $field_values = $form_state->getValue($field_name);
 
-      // Check if any field other than country_code is set.
-      foreach ($contact_address[0]['address'] as $key => $details) {
-        if ($key !== 'country_code' && !empty($details)) {
-          $has_info = TRUE;
-          break;
+    if (is_null($field_values)) {
+      continue;
+    }
+
+    if ($config['type'] === 'paragraph') {
+      foreach ($field_values as $delta => $paragraph_subform) {
+        if (isset($paragraph_subform['subform'])) {
+          $address_field = $paragraph_subform['subform'][$config['address_field']][0];
+          if (isset($address_field['address'])) {
+            $has_info = FALSE;
+
+            foreach ($address_field['address'] as $key => $details) {
+              if ($key !== 'country_code' && !empty($details)) {
+                $has_info = TRUE;
+                break;
+              }
+            }
+
+            if (!$has_info) {
+              $form_state->setValue([
+                $field_name,
+                $delta,
+                'subform',
+                $config['address_field'],
+                0,
+                'address',
+                'country_code',
+              ], '');
+            }
+          }
         }
       }
+    }
+    else {
+      // Regular field processing.
+      $address_field = $field_values[0];
+      if (isset($address_field['address'])) {
+        $has_info = FALSE;
 
-      // If no other fields have been set, clear the country code.
-      if (!$has_info) {
-        $form_state->setValue([
-          $field_name,
-          0,
-          'address',
-          'country_code',
-        ], '');
+        foreach ($address_field['address'] as $key => $details) {
+          if ($key !== 'country_code' && !empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_info) {
+          $form_state->setValue([
+            $field_name,
+            0,
+            'address',
+            'country_code',
+          ], '');
+        }
       }
     }
   }

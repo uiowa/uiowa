@@ -458,8 +458,11 @@ function inrc_core_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Custom submit handler for node grant forms.
  */
 function inrc_core_grant_form_submit(array &$form, FormStateInterface $form_state) {
-  $address_fields = ['field_np_address', 'field_grant_address'];
-  uiowa_core_clean_address_fields($form, $form_state, $address_fields);
+  $field_config = [
+    'field_np_address' => ['type' => 'regular'],
+    'field_grant_address' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
