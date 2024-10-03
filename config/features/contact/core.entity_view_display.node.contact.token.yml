@@ -1,0 +1,43 @@
+uuid: f9d092f9-882c-4303-bd2b-d64343ca99cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.token
+    - field.field.node.contact.body
+    - field.field.node.contact.field_contact_address
+    - field.field.node.contact.field_contact_email
+    - field.field.node.contact.field_contact_fax
+    - field.field.node.contact.field_contact_phone_number
+    - field.field.node.contact.field_meta_tags
+    - node.type.contact
+  module:
+    - text
+    - user
+id: node.contact.token
+targetEntityType: node
+bundle: contact
+mode: token
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_contact_address: true
+  field_contact_email: true
+  field_contact_fax: true
+  field_contact_phone_number: true
+  field_meta_tags: true
+  search_api_excerpt: true
