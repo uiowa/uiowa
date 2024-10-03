@@ -337,30 +337,30 @@ class AcademicCalendarController extends ControllerBase {
     $event->categories = [];
 
     // Determine the date to display.
+    $original_start_timestamp = strtotime($date->beginDate);
     $start_timestamp = strtotime($date->beginDate);
 
     if ($alt_start_day) {
       $event->start = $alt_start_day->format('Y-m-d\TH:i:s.000+0000');
-      $alt_start_timestamp = strtotime($event->start);
-      $start = date('D, M j, Y', $alt_start_timestamp);
-      $month = date('M', $alt_start_timestamp);
-      $day = date('j', $alt_start_timestamp);
-    }
-    else {
-      $start = date('D, M j, Y', $start_timestamp);
-      $month = date('M', $start_timestamp);
-      $day = date('j', $start_timestamp);
-    }
-    if ($date->endDate !== $date->beginDate) {
-      $end = date('D, M j, Y', strtotime($date->endDate));
-      $start = "{$start} - {$end}";
+      $start_timestamp = strtotime($event->start);
     }
 
+    $start = date('D, M j, Y', $start_timestamp);
+    $month = date('M', $start_timestamp);
+    $day = date('j', $start_timestamp);
+
     // We want to show the original start in the subtitle.
+    $formatted_start = $start;
     if ($alt_start_day && $date->endDate !== $event->start) {
-      $originalStart = date('D, M j, Y', $start_timestamp);
+      $formatted_start = date('D, M j, Y', $original_start_timestamp);
+    }
+
+    if (
+      ($date->endDate !== $date->beginDate) ||
+      ($alt_start_day && $date->endDate !== $event->start)
+    ) {
       $end = date('D, M j, Y', strtotime($date->endDate));
-      $start = "{$originalStart} - {$end}";
+      $start = "{$formatted_start} - {$end}";
     }
 
     $event->displayDate = $start;
