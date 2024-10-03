@@ -349,15 +349,8 @@ class AcademicCalendarController extends ControllerBase {
     $day = date('j', $start_timestamp);
 
     // We want to show the original start in the subtitle.
-    $formatted_start = $start;
-    if ($alt_start_day && $date->endDate !== $event->start) {
+    if ($alt_start_day && $date->endDate !== $date->beginDate) {
       $formatted_start = date('D, M j, Y', $original_start_timestamp);
-    }
-
-    if (
-      ($date->endDate !== $date->beginDate) ||
-      ($alt_start_day && $date->endDate !== $event->start)
-    ) {
       $end = date('D, M j, Y', strtotime($date->endDate));
       $start = "{$formatted_start} - {$end}";
     }
