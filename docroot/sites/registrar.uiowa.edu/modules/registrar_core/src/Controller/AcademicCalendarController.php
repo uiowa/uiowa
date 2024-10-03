@@ -246,6 +246,7 @@ class AcademicCalendarController extends ControllerBase {
             $multiDayEventDays = $this->splitMultiDayEvent($date);
             foreach ($multiDayEventDays as $day) {
               $newEvent = $this->processDate($date, $session, $session_index, $session->legacyCode, $day);
+              $newEvent->sortString = $this->sortString($newEvent);
               $newEvents[] = $newEvent;
             }
 
