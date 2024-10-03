@@ -2753,12 +2753,6 @@ $sites['iowahousehotel.dev.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
 $sites['iowahousehotel.stage.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
 $sites['iowahousehotel.prod.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
 
-// Directory aliases for rvap.uiowa.edu.
-$sites['rvap.uiowa.ddev.site'] = 'rvap.uiowa.edu';
-$sites['rvap.dev.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
-$sites['rvap.stage.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
-$sites['rvap.prod.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
-
 // Directory aliases for mlk.uiowa.edu.
 $sites['mlk.uiowa.ddev.site'] = 'mlk.uiowa.edu';
 $sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
