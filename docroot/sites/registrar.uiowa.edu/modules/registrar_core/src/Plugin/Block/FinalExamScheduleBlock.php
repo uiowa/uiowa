@@ -137,7 +137,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       ];
     }
     usort($data, function ($a, $b) {
-      return $a <=> $b;
+      return $a[0] <=> $b[0];
     });
 
     $table = [
