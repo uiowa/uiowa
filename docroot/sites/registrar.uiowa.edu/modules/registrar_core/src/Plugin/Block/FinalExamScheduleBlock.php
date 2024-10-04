@@ -125,17 +125,39 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       'br',
     ];
 
+    $build['form']['search'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Search'),
+      '#default_value' => '',
+      '#description' => $this->t('The string to search against.'),
+    ];
+
     // At this point we still have more data from MAUI than we needed,
     // and also need to process the data we do want to keep.
-    foreach ($data as &$row) {
-      $row = [
-        Markup::create(Xss::filter($row['sections'], $allowed_tags)),
-        Markup::create(Xss::filter($row['course_title'], $allowed_tags)),
-        Markup::create(Xss::filter($row['start_time'], $allowed_tags)),
-        Markup::create(Xss::filter($row['end_time'], $allowed_tags)),
-        Markup::create(Xss::filter($row['rooms'], $allowed_tags)),
-      ];
+    $search = '';
+    foreach ($data as $index => $row) {
+      $pass = FALSE;
+      $new_row = [];
+      foreach (['sections',
+        'course_title',
+        'start_time',
+        'end_time',
+        'rooms',
+      ] as $key) {
+        $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
+        if (!$pass && str_contains($value, $search)) {
+          $pass = TRUE;
+        }
+        $new_row[] = $value;
+      }
+      if ($pass) {
+        $data[$index] = $new_row;
+      }
+      else {
+        unset($data[$index]);
+      }
     }
+
     usort($data, function ($a, $b) {
       return $a[0] <=> $b[0];
     });
