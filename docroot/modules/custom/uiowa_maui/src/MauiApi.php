@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_maui;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Datetime\DrupalDateTime;

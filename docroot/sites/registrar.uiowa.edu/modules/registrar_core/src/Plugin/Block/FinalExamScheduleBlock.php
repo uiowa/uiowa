@@ -107,6 +107,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     if (empty($data) || !isset($data['NewDataSet']['Table'])) {
       // @todo Add some handling if data fetching failed
       //   or there's something weird with the structure.
+      return [];
     }
     $data = $data['NewDataSet']['Table'];
     $headers = [
@@ -121,7 +122,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       'a',
       'strong',
       'em',
-      'br'
+      'br',
     ];
 
     // At this point we still have more data from MAUI than we needed,
@@ -135,6 +136,9 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
         Markup::create(Xss::filter($row['rooms'], $allowed_tags)),
       ];
     }
+    usort($data, function ($a, $b) {
+      return $a <=> $b;
+    });
 
     $table = [
       '#theme' => 'table',
@@ -146,9 +150,9 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
-        'class' => ['table-responsive']
+        'class' => ['table-responsive'],
       ],
-      'table' => $table
+      'table' => $table,
     ];
 
     return $build;
