@@ -480,38 +480,38 @@
 
     renderEvent(event, includeSession) {
       this.domOutput.append(event.domTree);
-      if (
-        this.previousSortString !== event.sortString ||
-        (new Date(event.start).getMonth() !== this.previousMonth && this.previousSortString === event.sortString)
-      ) {
-        if (this.previousSortStringCount > 1) {
-
-          if (new Date(event.start).getMonth() !== this.previousMonth) {
-            // console.log(this.previousSortString + ' appeared ' + this.previousSortStringCount + ' times.');
-            // console.log('Month ' + this.previousMonth);
-            let centerEntries = this.groupedEvents.slice(1, -1);
-            // console.log(this.groupedEvents);
-            centerEntries.forEach((entry) => {
-              entry.classList.add('calendar-invisible');
-            });
-            if (centerEntries.length > 0) {
-              this.groupedEvents[0].querySelector('.media--date').classList.add('first-item');
-              let lastElement = this.groupedEvents.pop();
-              lastElement.querySelector('.card__body').classList.add('calendar-invisible');
-              lastElement.classList.add('last-item');
-            }
-          }
-        }
-        this.previousSortString = event.sortString;
-        this.previousSortStringCount = 1;
-        this.previousMonth = new Date(event.start).getMonth();
-        this.groupedEvents = [this.domOutput.lastChild];
-
-      }
-      else {
-        this.previousSortStringCount++;
-        this.groupedEvents.push(this.domOutput.lastChild);
-      }
+      // if (
+      //   this.previousSortString !== event.sortString ||
+      //   (new Date(event.start).getMonth() !== this.previousMonth && this.previousSortString === event.sortString)
+      // ) {
+      //   if (this.previousSortStringCount > 1) {
+      //
+      //     if (new Date(event.start).getMonth() !== this.previousMonth) {
+      //       // console.log(this.previousSortString + ' appeared ' + this.previousSortStringCount + ' times.');
+      //       // console.log('Month ' + this.previousMonth);
+      //       let centerEntries = this.groupedEvents.slice(1, -1);
+      //       // console.log(this.groupedEvents);
+      //       centerEntries.forEach((entry) => {
+      //         entry.classList.add('calendar-invisible');
+      //       });
+      //       if (centerEntries.length > 0) {
+      //         this.groupedEvents[0].querySelector('.media--date').classList.add('first-item');
+      //         let lastElement = this.groupedEvents.pop();
+      //         lastElement.querySelector('.card__body').classList.add('calendar-invisible');
+      //         lastElement.classList.add('last-item');
+      //       }
+      //     }
+      //   }
+      //   this.previousSortString = event.sortString;
+      //   this.previousSortStringCount = 1;
+      //   this.previousMonth = new Date(event.start).getMonth();
+      //   this.groupedEvents = [this.domOutput.lastChild];
+      //
+      // }
+      // else {
+      //   this.previousSortStringCount++;
+      //   this.groupedEvents.push(this.domOutput.lastChild);
+      // }
     }
   }
 })(Drupal, drupalSettings);
