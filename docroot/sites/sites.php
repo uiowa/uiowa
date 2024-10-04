@@ -7588,3 +7588,9 @@ $sites['libukchoralcomposers.uiowa.ddev.site'] = 'ukchoralcomposers.lib.uiowa.ed
 $sites['libukchoralcomposers.dev.drupal.uiowa.edu'] = 'ukchoralcomposers.lib.uiowa.edu';
 $sites['libukchoralcomposers.stage.drupal.uiowa.edu'] = 'ukchoralcomposers.lib.uiowa.edu';
 $sites['libukchoralcomposers.prod.drupal.uiowa.edu'] = 'ukchoralcomposers.lib.uiowa.edu';
+
+// Directory aliases for evedrewelowe.sites.uiowa.edu.
+$sites['sitesevedrewelowe.uiowa.ddev.site'] = 'evedrewelowe.sites.uiowa.edu';
+$sites['sitesevedrewelowe.dev.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
+$sites['sitesevedrewelowe.stage.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
+$sites['sitesevedrewelowe.prod.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
