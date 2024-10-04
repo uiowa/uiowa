@@ -236,19 +236,10 @@ class AcademicCalendarController extends ControllerBase {
 
           // Split any events that are multiple days into multiple event entries.
           if ($date->endDate === $date->beginDate) {
-            $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
-            $event->sortString = $this->sortString($event);
-
-            $events[] = $event;
+            $events[] = $this->processDate($date, $session, $session_index, $session->legacyCode);
           }
           else {
-            $newEvents = [];
-            $multiDayEventDays = $this->splitMultiDayEvent($date);
-            foreach ($multiDayEventDays as $day) {
-              $newEvent = $this->processDate($date, $session, $session_index, $session->legacyCode, $day);
-              $newEvent->sortString = $this->sortString($newEvent);
-              $events[] = $newEvent;
-            }
+            $events = [...$events, ...$this->splitMultiDayEvent($date, $session, $session_index, $session->legacyCode)];
           }
         }
       }
@@ -293,7 +284,7 @@ class AcademicCalendarController extends ControllerBase {
    * @return Object[]
    *   TRUE if the event should be included, FALSE otherwise.
    */
-  private function splitMultiDayEvent(object $date) : array {
+  private function splitMultiDayEvent(object $date, $session, $session_index, $session_legacy_id) : array {
     $days = [];
     $interval = new \DateInterval('P1D');
     $realEnd = new \DateTime($date->endDate);
@@ -307,7 +298,13 @@ class AcademicCalendarController extends ControllerBase {
       array_push($days, $day);
     }
 
-    return $days;
+    $newEvents = [];
+    foreach ($days as $day) {
+      $newEvent = $this->processDate($date, $session, $session_index, $session->legacyCode, $day);
+      $newEvents[] = $newEvent;
+    }
+
+    return $newEvents;
   }
 
   /**
@@ -435,6 +432,8 @@ class AcademicCalendarController extends ControllerBase {
       ],
     ];
     $event->rendered = $this->renderer->render($card);
+
+    $event->sortString = $this->sortString($event);
 
     return $event;
   }

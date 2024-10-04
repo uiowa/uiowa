@@ -307,13 +307,10 @@
     // Function to filter and display events based on current form state.
     filterAndDisplayEvents() {
       const searchTerm = this.searchTerm;
-      const today = new Date();
-      const startDate = new Date(this.startDate);
 
       // Filter events based on search term, date range, and selected session.
       const filteredEvents = this.allEvents.filter(event => {
-        const eventEnd = new Date(event.end);
-        const startCheck = this.selectedSession ? true : (!startDate.valueOf() ? eventEnd >= today : eventEnd >= startDate);
+        const startCheck = this.startCheck(event);
 
         const matchesSearch = !searchTerm ||
           event.title.toLowerCase().includes(searchTerm) ||
@@ -336,6 +333,29 @@
         });
         observer.observe(this.calendarContent, { childList: true });
       }
+    }
+
+    // Function to check if the event matches the criteria of the start date filter.
+    startCheck(event) {
+      const today = new Date();
+      const startDate = new Date(this.startDate);
+      const eventEnd = new Date(event.end);
+      let startCheck;
+      if (this.selectedSession){
+        startCheck = true;
+      }
+      else if (!startDate.valueOf()) {
+        startCheck = eventEnd >= today;
+      }
+      else {
+        startCheck = eventEnd >= startDate;
+      }
+
+      if (startCheck && startDate > new Date(event.start)) {
+        startCheck = false;
+      }
+
+      return startCheck;
     }
 
     // Function to display filtered events.
