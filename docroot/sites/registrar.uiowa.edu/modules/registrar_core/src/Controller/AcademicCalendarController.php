@@ -280,11 +280,15 @@ class AcademicCalendarController extends ControllerBase {
    *
    * @param object $date
    *   The date object to split into multiple events.
+   * @param object $session
+   *    The session object.
+   * @param int $session_index
+   *    The session index.
    *
    * @return Object[]
    *   TRUE if the event should be included, FALSE otherwise.
    */
-  private function splitMultiDayEvent(object $date, $session, $session_index, $session_legacy_id) : array {
+  private function splitMultiDayEvent(object $date, object $session, int $session_index) : array {
     $days = [];
     $interval = new \DateInterval('P1D');
     $realEnd = new \DateTime($date->endDate);
