@@ -5,13 +5,13 @@
  * Custom functionality for the Commencement website.
  */
 
-use Drupal\commencement_core\Entity\Event;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\commencement_core\Entity\Event;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
@@ -482,7 +482,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_section(&$vari
 /**
  * Allowed values function to return a list of years for a session.
  */
-function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
   $thisyear = (int) date('Y');
 
   $i = $thisyear + 10;

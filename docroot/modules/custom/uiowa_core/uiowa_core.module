@@ -5,7 +5,6 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -17,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
@@ -1216,7 +1216,7 @@ function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $fo
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
   return [
     'Adair',
     'Adams',
@@ -1323,7 +1323,7 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
   $start_year = 2008;
   $end_year = date('Y') + 1;
   $years = [];
@@ -1355,7 +1355,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function uiowa_core_state_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',

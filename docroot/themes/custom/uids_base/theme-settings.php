@@ -5,9 +5,9 @@
  * Settings file for the theme.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 
 /**
  * Implements hook_form_FORM_ID_alter().

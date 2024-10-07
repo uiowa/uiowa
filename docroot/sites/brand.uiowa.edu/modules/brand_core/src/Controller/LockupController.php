@@ -2,12 +2,12 @@
 
 namespace Drupal\brand_core\Controller;
 
-use Drupal\brand_core\BrandSVG;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\brand_core\BrandSVG;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
