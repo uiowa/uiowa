@@ -15,6 +15,7 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *   id = "its_core",
  *   sub_types = {
  *    "its_alert_email" = @Translation("ITS Alert Email"),
+ *    "its_alert_email_msteams" = @Translation("ITS Alert Email MS Teams"),
  *    "its_alerts_digest" = @Translation("ITS Alerts Digest Email"),
  *   },
  * )
@@ -46,31 +47,26 @@ class ITSAlertEmail extends EmailBuilderBase {
     // Send the alerts digest.
     if ($email->getSubType() == 'its_alerts_digest') {
       $email->setSubject('IT Service Alerts Daily Digest');
-      // Grab the alerts digest email to send to. Typically,
-      // in production this would be
-      // IT-Service-Alerts-Members@iowa.uiowa.edu.
       $to_email = $its_settings->get('alert-digest');
-      // If we don't have an email set,
-      // then exit here because nothing should be sent.
       if (empty($to_email)) {
         return;
       }
       $email->setTo($to_email);
     }
 
-    // Send an individual alert.
+    // Send an individual alert to the "To" recipient.
     if ($email->getSubType() == 'its_alert_email') {
-      // Grab the individual alerts email to send to. Typically,
-      // in production this would be
-      // IT-Service-Alerts-Members@iowa.uiowa.edu for TO and
-      // e7199078.iowa.onmicrosoft.com@amer.teams.ms as BCC.
-      $addresses = [];
-      $addresses['setTo'] = $its_settings->get('single-alert-to');
-      $addresses['setBcc'] = $its_settings->get('single-alert-bcc');
-      foreach ($addresses as $method => $value) {
-        if (!empty($value)) {
-          $email->$method($value);
-        }
+      $to_email = $its_settings->get('single-alert-to');
+      if (!empty($to_email)) {
+        $email->setTo($to_email);
+      }
+    }
+
+    // Send an individual alert to the "Bcc" recipient.
+    if ($email->getSubType() == 'its_alert_email_msteams') {
+      $msteams_email = $its_settings->get('single-alert-msteams');
+      if (!empty($msteams_email)) {
+        $email->setTo($msteams_email);
       }
     }
 
