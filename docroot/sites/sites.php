@@ -7594,3 +7594,9 @@ $sites['sitesevedrewelowe.uiowa.ddev.site'] = 'evedrewelowe.sites.uiowa.edu';
 $sites['sitesevedrewelowe.dev.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
 $sites['sitesevedrewelowe.stage.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
 $sites['sitesevedrewelowe.prod.drupal.uiowa.edu'] = 'evedrewelowe.sites.uiowa.edu';
+
+// Directory aliases for cat.lab.uiowa.edu.
+$sites['labcat.uiowa.ddev.site'] = 'cat.lab.uiowa.edu';
+$sites['labcat.dev.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
+$sites['labcat.stage.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
+$sites['labcat.prod.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
