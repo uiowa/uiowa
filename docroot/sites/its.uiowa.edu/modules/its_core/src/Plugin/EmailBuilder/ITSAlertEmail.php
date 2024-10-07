@@ -15,7 +15,7 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *   id = "its_core",
  *   sub_types = {
  *    "its_alert_email" = @Translation("ITS Alert Email"),
- *    "its_alert_email_msteams" = @Translation("ITS Alert Email MS Teams"),
+ *    "its_alert_email_secondary" = @Translation("ITS Alert Secondary Email"),
  *    "its_alerts_digest" = @Translation("ITS Alerts Digest Email"),
  *   },
  * )
@@ -63,10 +63,10 @@ class ITSAlertEmail extends EmailBuilderBase {
     }
 
     // Send an individual alert to the "Bcc" recipient.
-    if ($email->getSubType() == 'its_alert_email_msteams') {
-      $msteams_email = $its_settings->get('single-alert-msteams');
-      if (!empty($msteams_email)) {
-        $email->setTo($msteams_email);
+    if ($email->getSubType() == 'its_alert_email_secondary') {
+      $secondary_email = $its_settings->get('single-alert-secondary');
+      if (!empty($secondary_email)) {
+        $email->setTo($secondary_email);
       }
     }
 

@@ -151,7 +151,7 @@ function its_core_entity_presave(EntityInterface $entity) {
  */
 function its_core_alert_email_addresses_exist() {
   $settings = \Drupal::configFactory()->get('its_core.settings');
-  return (!empty($settings->get('single-alert-to')) || !empty($settings->get('single-alert-msteams')));
+  return (!empty($settings->get('single-alert-to')) || !empty($settings->get('single-alert-secondary')));
 }
 
 /**
@@ -325,12 +325,12 @@ function its_core_send_alert_email($entity, $alert) {
   $email->send();
 
   // Send email to the "MS Teams" recipient.
-  $email_msteams = $emailFactory->newTypedEmail('its_core', 'its_alert_email_msteams', $alert)
+  $email_secondary = $emailFactory->newTypedEmail('its_core', 'its_alert_email_secondary', $alert)
     ->setSubject($alert_title);
-  $email_msteams->send();
+  $email_secondary->send();
 
   // Log whether the emails were sent or not.
-  if ($email->getError() || $email_msteams->getError()) {
+  if ($email->getError() || $email_secondary->getError()) {
     \Drupal::logger('its_core')->error(t('Unable to send one or both alert emails from alert @id', [
       '@id' => $entity->id(),
     ]));
