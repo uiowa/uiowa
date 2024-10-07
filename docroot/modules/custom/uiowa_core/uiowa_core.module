@@ -1216,7 +1216,7 @@ function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $fo
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Adair',
     'Adams',
@@ -1323,7 +1323,7 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntit
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $start_year = 2008;
   $end_year = date('Y') + 1;
   $years = [];

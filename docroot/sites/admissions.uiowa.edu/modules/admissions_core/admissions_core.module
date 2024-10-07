@@ -1097,7 +1097,7 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
 /**
  * Implements hook_allowed_values_function().
  */
-function admissions_core_allowed_values_function(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
+function admissions_core_allowed_values_function(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   // Available degree abbreviations.
   // Can be moved to store in a config file later.
   $options = [
@@ -1135,7 +1135,7 @@ function admissions_core_allowed_values_function(FieldStorageConfig $definition,
 /**
  * Added allowed values function for AoS Subprogram type.
  */
-function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
+function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $options = [
     'areas_of_emphasis' => 'Areas of Emphasis',
     'areas_of_specialization' => 'Areas of Specialization',
