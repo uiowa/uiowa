@@ -116,7 +116,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
       }
     }
 
-    // Validate 'single-alert-secondary' as a single email.
+    // Validate 'single-alert-secondary' as a single email as we want it to act like a BCC and not reveal additional recipients.
     $secondary_email = trim($form_state->getValue('single-alert-secondary'));
     if ($secondary_email !== '' && !$this->emailValidator->isValid($secondary_email)) {
       $form_state->setError($form['email']['single-alert-secondary'], $this->t('The email address %mail is not valid.', [
