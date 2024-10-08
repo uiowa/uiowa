@@ -3,11 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_session_program
+    - field.storage.media.field_media_file
     - field.storage.taxonomy_term.field_session_session
     - field.storage.taxonomy_term.field_session_year
     - taxonomy.vocabulary.session
   module:
+    - file
+    - media
     - options
     - taxonomy
     - user
@@ -35,8 +37,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: Year
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -68,7 +70,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -97,8 +99,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: Session
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -130,7 +132,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -151,16 +153,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_session_program:
-          id: field_session_program
-          table: taxonomy_term__field_session_program
-          field: field_session_program
-          relationship: none
+        field_media_file:
+          id: field_media_file
+          table: media__field_media_file
+          field: field_media_file
+          relationship: field_session_program
           group_type: group
           admin_label: ''
           plugin_id: field
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -201,10 +203,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_entity_view
-          settings:
-            view_mode: default
-          group_column: target_id
+          type: file_url_plain
+          settings: {  }
+          group_column: ''
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -214,6 +215,55 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: custom
+          label: 'Commencement programs'
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<a href="{{ field_media_file }} ">{{ field_session_session }} {{ field_session_year }} program </a>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: '0'
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
       pager:
         type: full
         options:
@@ -375,7 +425,17 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships: {  }
+      relationships:
+        field_session_program:
+          id: field_session_program
+          table: taxonomy_term__field_session_program
+          field: field_session_program
+          relationship: none
+          group_type: group
+          admin_label: 'field_session_program: Media'
+          plugin_id: standard
+          required: true
+      use_ajax: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -387,7 +447,7 @@ display:
         - url.query_args
         - user.permissions
       tags:
-        - 'config:field.storage.taxonomy_term.field_session_program'
+        - 'config:field.storage.media.field_media_file'
         - 'config:field.storage.taxonomy_term.field_session_session'
         - 'config:field.storage.taxonomy_term.field_session_year'
   block_1:
@@ -409,6 +469,6 @@ display:
         - url.query_args
         - user.permissions
       tags:
-        - 'config:field.storage.taxonomy_term.field_session_program'
+        - 'config:field.storage.media.field_media_file'
         - 'config:field.storage.taxonomy_term.field_session_session'
         - 'config:field.storage.taxonomy_term.field_session_year'

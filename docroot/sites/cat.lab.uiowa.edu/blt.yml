@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcat.uiowa.ddev.site
+    protocol: https
+  machine_name: labcat
+  human_name: cat.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcat.prod
+drupal:
+  db:
+    database: cat_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcat.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Advanced Catalyst Discovery Lab'
