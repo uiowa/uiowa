@@ -941,12 +941,6 @@ $sites['orglegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 $sites['orglegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 $sites['orglegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 
-// Directory aliases for coronavirus.uiowa.edu.
-$sites['coronavirus.uiowa.ddev.site'] = 'coronavirus.uiowa.edu';
-$sites['coronavirus.dev.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
-$sites['coronavirus.stage.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
-$sites['coronavirus.prod.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
-
 // Directory aliases for liberalartsbeyondbars.sites.uiowa.edu.
 $sites['sitesliberalartsbeyondbars.uiowa.ddev.site'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
