@@ -482,7 +482,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_section(&$vari
 /**
  * Allowed values function to return a list of years for a session.
  */
-function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
+function commencement_core_session_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity, $cacheable) {
   $thisyear = (int) date('Y');
 
   $i = $thisyear + 10;
