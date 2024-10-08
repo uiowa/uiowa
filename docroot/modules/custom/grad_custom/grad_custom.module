@@ -93,7 +93,7 @@ function grad_custom_programs_phd_allowed_values() {
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_custom_degrees_offered_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity, $cacheable) {
+function grad_custom_degrees_offered_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Au.D.' => 'AuD',
     'Certificate' => 'Certificate',
@@ -143,7 +143,7 @@ function grad_custom_degrees_offered_allowed_values(FieldStorageConfig $definiti
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity, $cacheable) {
+function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Applied Health Sciences' => 'Applied Health Sciences',
     'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
@@ -158,7 +158,7 @@ function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, 
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_custom_srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity, $cacheable) {
+function grad_custom_srop_year_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   // Available srop year values.
   $thisyear = date('Y');
   $i = 2000;
