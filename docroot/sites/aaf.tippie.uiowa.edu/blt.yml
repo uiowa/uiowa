@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippieaaf.uiowa.ddev.site
+    protocol: https
+  machine_name: tippieaaf
+  human_name: aaf.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippieaaf.prod
+drupal:
+  db:
+    database: aaf_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippieaaf.prod.drupal.uiowa.edu'
+  requester: jbcarsten
+  site-name: 'University of Iowa American Advertising Federation'
