@@ -2,6 +2,10 @@ adding:
   dependencies:
     config:
       - field.field.node.article.field_article_related_service
+      - workflows.workflow.editorial
   hidden:
     field_article_related_service: true
-removing: {  }
+removing:
+  dependencies:
+    config:
+      - workflows.workflow.draft
