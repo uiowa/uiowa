@@ -22,7 +22,7 @@ function sppa_core_state_options_alter(&$options, $entity, $bundle) {
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_core_opportunity_types_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
+function sppa_core_opportunity_types_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'jobs' => 'Jobs',
     'internships' => 'Internships',
@@ -34,7 +34,7 @@ function sppa_core_opportunity_types_allowed_values(FieldStorageConfig $definiti
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
+function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'URP' => 'URP',
     'MPA' => 'MPA',
