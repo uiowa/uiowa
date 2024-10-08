@@ -5,6 +5,7 @@ namespace Drupal\registrar_core\Plugin\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Markup;
@@ -29,6 +30,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   protected $maui;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Constructs a new FinalExamScheduleBlock instance.
    *
    * @param array $configuration
@@ -39,10 +47,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form builder service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
+    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -54,6 +65,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('uiowa_maui.api'),
+      $container->get('form_builder'),
     );
   }
 
@@ -101,82 +113,84 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function build() {
     $session = $this->configuration['session'];
-    $session_name = $this->configuration['session_name'];
-    $last_updated = $this->configuration['last_updated'];
-    $data = $this->maui->getFinalExamSchedule($session);
-    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
-      // @todo Add some handling if data fetching failed
-      //   or there's something weird with the structure.
-      return [];
-    }
-    $data = $data['NewDataSet']['Table'];
-    $headers = [
-      'Sections',
-      'Course Title',
-      'Start Times',
-      'End Times',
-      'Rooms',
-    ];
+//    $session_name = $this->configuration['session_name'];
+//    $last_updated = $this->configuration['last_updated'];
+//    $data = $this->maui->getFinalExamSchedule($session);
+//    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
+//      // @todo Add some handling if data fetching failed
+//      //   or there's something weird with the structure.
+//      return [];
+//    }
+//    $data = $data['NewDataSet']['Table'];
+//    $headers = [
+//      'Sections',
+//      'Course Title',
+//      'Start Times',
+//      'End Times',
+//      'Rooms',
+//    ];
+//
+//    $allowed_tags = [
+//      'a',
+//      'strong',
+//      'em',
+//      'br',
+//    ];
+//
+//    $build['form']['search'] = [
+//      '#type' => 'textfield',
+//      '#title' => $this->t('Search'),
+//      '#default_value' => '',
+//      '#description' => $this->t('The string to search against.'),
+//    ];
+//
+//    // At this point we still have more data from MAUI than we needed,
+//    // and also need to process the data we do want to keep.
+//    $search = '';
+//    foreach ($data as $index => $row) {
+//      $pass = FALSE;
+//      $new_row = [];
+//      foreach (['sections',
+//        'course_title',
+//        'start_time',
+//        'end_time',
+//        'rooms',
+//      ] as $key) {
+//        $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
+//        if (!$pass && str_contains($value, $search)) {
+//          $pass = TRUE;
+//        }
+//        $new_row[] = $value;
+//      }
+//      if ($pass) {
+//        $data[$index] = $new_row;
+//      }
+//      else {
+//        unset($data[$index]);
+//      }
+//    }
+//
+//    usort($data, function ($a, $b) {
+//      return $a[0] <=> $b[0];
+//    });
+//
+//    $table = [
+//      '#theme' => 'table',
+//      '#header' => $headers,
+//      '#rows' => $data,
+//    ];
+//
+//    $build['wrapper'] = [
+//      '#type' => 'html_tag',
+//      '#tag' => 'div',
+//      '#attributes' => [
+//        'class' => ['table-responsive'],
+//      ],
+//      'table' => $table,
+//    ];
 
-    $allowed_tags = [
-      'a',
-      'strong',
-      'em',
-      'br',
-    ];
-
-    $build['form']['search'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Search'),
-      '#default_value' => '',
-      '#description' => $this->t('The string to search against.'),
-    ];
-
-    // At this point we still have more data from MAUI than we needed,
-    // and also need to process the data we do want to keep.
-    $search = '';
-    foreach ($data as $index => $row) {
-      $pass = FALSE;
-      $new_row = [];
-      foreach (['sections',
-        'course_title',
-        'start_time',
-        'end_time',
-        'rooms',
-      ] as $key) {
-        $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
-        if (!$pass && str_contains($value, $search)) {
-          $pass = TRUE;
-        }
-        $new_row[] = $value;
-      }
-      if ($pass) {
-        $data[$index] = $new_row;
-      }
-      else {
-        unset($data[$index]);
-      }
-    }
-
-    usort($data, function ($a, $b) {
-      return $a[0] <=> $b[0];
-    });
-
-    $table = [
-      '#theme' => 'table',
-      '#header' => $headers,
-      '#rows' => $data,
-    ];
-
-    $build['wrapper'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => ['table-responsive'],
-      ],
-      'table' => $table,
-    ];
-
+    $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm');
+    $build['form']['final_exam']['session_id']['#value'] = $session;
     return $build;
   }
 
