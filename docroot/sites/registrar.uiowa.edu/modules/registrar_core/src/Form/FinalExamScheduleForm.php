@@ -4,16 +4,11 @@ namespace Drupal\registrar_core\Form;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
-use Drupal\Core\Url;
-use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Form for the final exams schedule block.
@@ -78,7 +73,14 @@ class FinalExamScheduleForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#default_value' => $search,
-      '#description' => $this->t('The string to search against.'),
+      '#description' => $this->t('You can search using any of the following methods:
+
+Any part of a Subject:Course:Section number (e.g. ACCT:, or MATH:1005)
+Any word in a course title (e.g. Technology)
+A room (e.g. 205 NH)
+Search results yield character string matches from all columns (e.g. a search for "math" displays any courses with a subject of MATH, course titles with the word math or any word containing the letters "math" like mathematics or aftermath.)'
+      ),
+
       '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
       '#suffix' => '</div>',
     ];
@@ -86,10 +88,6 @@ class FinalExamScheduleForm extends FormBase {
     $form['final_exam']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
-      '#ajax' => [
-        'callback' => [$this, 'ajaxCallback'],
-        'wrapper' => 'final-exam-schedule-content',
-      ],
     ];
 
     $form['final_exam']['session_id'] = [
@@ -175,17 +173,11 @@ class FinalExamScheduleForm extends FormBase {
   }
 
   /**
-   * AJAX callback for the form.
-   */
-  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
-    return $form['final_exam']['content'];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // No-op.
+    $form_state->setRebuild(TRUE);
   }
 
 }
