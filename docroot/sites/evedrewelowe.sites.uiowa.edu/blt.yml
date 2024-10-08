@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesevedrewelowe.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesevedrewelowe
+  human_name: evedrewelowe.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesevedrewelowe.prod
+drupal:
+  db:
+    database: evedrewelowe_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesevedrewelowe.prod.drupal.uiowa.edu'
+  requester: aisbell
+  site-name: 'Eve Drewelowe Collection'
