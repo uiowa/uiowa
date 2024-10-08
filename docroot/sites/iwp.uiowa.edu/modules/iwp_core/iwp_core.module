@@ -274,7 +274,7 @@ function iwp_core_preprocess_views_view(&$variables) {
 /**
  * Allowed values function to return a list of years for a session.
  */
-function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity, $cacheable) {
+function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $thisyear = (int) date('Y');
 
   $i = $thisyear + 10;
