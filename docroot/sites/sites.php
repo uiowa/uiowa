@@ -7600,3 +7600,9 @@ $sites['labcat.uiowa.ddev.site'] = 'cat.lab.uiowa.edu';
 $sites['labcat.dev.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
 $sites['labcat.stage.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
 $sites['labcat.prod.drupal.uiowa.edu'] = 'cat.lab.uiowa.edu';
+
+// Directory aliases for aaf.tippie.uiowa.edu.
+$sites['tippieaaf.uiowa.ddev.site'] = 'aaf.tippie.uiowa.edu';
+$sites['tippieaaf.dev.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
+$sites['tippieaaf.stage.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
+$sites['tippieaaf.prod.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
