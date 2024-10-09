@@ -124,7 +124,8 @@ Search results yield character string matches from all columns (e.g. a search fo
     ];
 
     foreach ($data as $index => $row) {
-      $pass = FALSE;
+      // If we have an empty string, everything should pass.
+      $pass = empty($string);
       $new_row = [];
       foreach (['sections',
         'course_title',
@@ -133,11 +134,12 @@ Search results yield character string matches from all columns (e.g. a search fo
         'rooms',
       ] as $key) {
         $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
-        // Str_contains is case-sensitive, so lowercase before comparing.
-        $lc_value = strtolower($value);
-        $lc_search = strtolower($search);
-        if (!$pass && str_contains($lc_value, $lc_search)) {
-          $pass = TRUE;
+        // Str_contains is case-sensitive, so lowercase before comparing,
+        // only if we haven't already matched.
+        if (!$pass) {
+          $lc_value = strtolower($value);
+          $lc_search = strtolower($search);
+          $pass = str_contains($lc_value, $lc_search);
         }
         $new_row[] = $value;
       }
