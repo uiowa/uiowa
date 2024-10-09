@@ -4,4 +4,9 @@ adding:
       - sitenow_intranet
   permissions:
     - 'administer sitenow intranet'
-removing: {  }
+removing:
+  dependencies:
+    module:
+      - siteimprove
+  permissions:
+    - 'use siteimprove'
