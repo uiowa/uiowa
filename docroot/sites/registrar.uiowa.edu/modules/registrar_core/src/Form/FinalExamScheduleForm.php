@@ -98,8 +98,7 @@ Search results yield character string matches from all columns (e.g. a search fo
     $headers = [
       'Sections',
       'Course Title',
-      'Start Times',
-      'End Times',
+      'Exam Date and Time',
       'Rooms',
     ];
 
@@ -129,19 +128,30 @@ Search results yield character string matches from all columns (e.g. a search fo
       $new_row = [];
       foreach (['sections',
         'course_title',
-        'start_time',
-        'end_time',
+        'time',
         'rooms',
       ] as $key) {
-        $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
-        // Str_contains is case-sensitive, so lowercase before comparing,
-        // only if we haven't already matched.
-        if (!$pass) {
-          $lc_value = strtolower($value);
-          $lc_search = strtolower($search);
-          $pass = str_contains($lc_value, $lc_search);
+        switch ($key) {
+          case 'time':
+            $start_time = strtotime($row['start_time']);
+            $end_time = strtotime($row['end_time']);
+            $start_formatted = date('D n/j/Y, g:iA', $start_time);
+            $end_formatted = date('g:iA', $end_time);
+            $new_row[] = "{$start_formatted} - {$end_formatted}";
+            break;
+
+          default:
+            $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
+            // Str_contains is case-sensitive, so lowercase before comparing,
+            // only if we haven't already matched.
+            if (!$pass) {
+              $lc_value = strtolower($value);
+              $lc_search = strtolower($search);
+              $pass = str_contains($lc_value, $lc_search);
+            }
+            $new_row[] = $value;
+            break;
         }
-        $new_row[] = $value;
       }
       if ($pass) {
         $data[$index] = $new_row;
