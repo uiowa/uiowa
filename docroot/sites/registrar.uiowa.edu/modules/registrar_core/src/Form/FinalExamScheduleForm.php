@@ -133,7 +133,10 @@ Search results yield character string matches from all columns (e.g. a search fo
         'rooms',
       ] as $key) {
         $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
-        if (!$pass && str_contains($value, $search)) {
+        // Str_contains is case-sensitive, so lowercase before comparing.
+        $lc_value = strtolower($value);
+        $lc_search = strtolower($search);
+        if (!$pass && str_contains($lc_value, $lc_search)) {
           $pass = TRUE;
         }
         $new_row[] = $value;
