@@ -899,7 +899,7 @@ function sitenow_events_field_widget_single_element_paragraphs_form_alter(&$elem
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
   switch ($definition->getName()) {
@@ -1075,7 +1075,7 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
     'EventScheduled' => 'Scheduled',
     'EventCancelled' => 'Cancelled',

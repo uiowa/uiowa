@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\layout_builder_custom\Functional;
 
-use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 
 /**
  * Tests for the menu_block module.

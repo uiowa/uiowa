@@ -5,8 +5,6 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\classrooms_core\Entity\ClassroomsRoom;
-use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -14,6 +12,8 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\classrooms_core\Entity\ClassroomsRoom;
+use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
@@ -444,7 +444,7 @@ function classrooms_core_preprocess_node(&$variables): void {
  *
  * @see options_allowed_values()
  */
-function classrooms_core_room_category_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function classrooms_core_room_category_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'UNIVERSITY_CLASSROOM' => 'University Classroom',
     'PROGRAMMED_CLASSROOM' => 'Programmed Classroom',

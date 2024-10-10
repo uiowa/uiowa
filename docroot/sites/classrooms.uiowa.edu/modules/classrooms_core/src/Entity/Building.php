@@ -2,8 +2,8 @@
 
 namespace Drupal\classrooms_core\Entity;
 
-use Drupal\classrooms_core\BuildingInterface;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\classrooms_core\BuildingInterface;
 
 /**
  * Defines the building entity type.
