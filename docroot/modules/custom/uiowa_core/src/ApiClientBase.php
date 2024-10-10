@@ -86,7 +86,7 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function request(string $method, string $endpoint, array $options = []) {
+  public function request(string $method, string $endpoint, array $options = [], $application = 'json') {
     // Encode any special characters and trim duplicate slash.
     if (!str_starts_with($endpoint, $this->basePath())) {
       $endpoint = UrlHelper::encodePath(ltrim($endpoint, '/'));
@@ -96,7 +96,8 @@ abstract class ApiClientBase implements ApiClientInterface {
     $this->addAuthToOptions($options);
 
     // Re-set Accept header in case it was accidentally left out of $options.
-    $options['headers']['Accept'] = 'application/json';
+    $application = (!in_array($application, ['json', 'xml'])) ? 'json' : $application;
+    $options['headers']['Accept'] = "application/{$application}";
 
     try {
       $this->lastResponse = $this->client->request($method, $endpoint, $options);
@@ -138,7 +139,31 @@ abstract class ApiClientBase implements ApiClientInterface {
       return FALSE;
     }
 
-    $data = json_decode($this->lastResponse->getBody()->getContents());
+    switch ($application) {
+      case 'json':
+        $data = json_decode($this->lastResponse->getBody()->getContents());
+        break;
+
+      case 'xml':
+        // Quick and dirty way to use the XML and JSON parsers
+        // to convert from XML to an associative PHP array. XML
+        // allows non-unique names in children unlike JSON, so
+        // we encode to force unique names, then decode to
+        // convert to an array. Based on
+        // https://hakre.wordpress.com/2013/07/09/simplexml-and-json-encode-in-php-part-i/
+        $xml = simplexml_load_string($this->lastResponse->getBody()->getContents());
+        $data = json_decode(
+          json_encode($xml),
+          TRUE
+        );
+        // Place the contents back into the XML parent's namespace.
+        $data = [$xml->getName() => $data];
+        break;
+
+      default:
+        $data = [];
+
+    }
 
     $this->logger->info('API request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
       '@endpoint' => $endpoint,
@@ -151,13 +176,13 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function get($endpoint, array $options = []) {
+  public function get($endpoint, array $options = [], $type = 'json') {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
     if ($cache = $this->cache->get($cache_id)) {
       $data = $cache->data;
     }
     else {
-      $data = $this->request('GET', $endpoint, $options);
+      $data = $this->request('GET', $endpoint, $options, $type);
       if ($data) {
         // Cache for 15 minutes.
         $this->cache->set($cache_id, $data, time() + $this->cacheLength);
