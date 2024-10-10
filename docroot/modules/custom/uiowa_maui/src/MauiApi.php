@@ -2,16 +2,9 @@
 
 namespace Drupal\uiowa_maui;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Log\LoggerInterface;
 
 /**
  * Maui API service.
@@ -208,7 +201,7 @@ class MauiApi extends ApiClientBase {
    *   The API response data.
    */
   public function getRoomData($building_id, $room_id) {
-    return $this->get('/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
+    return $this->get("/pub/registrar/courses/AstraRoomData/{$building_id}/{$room_id}");
   }
 
   /**
@@ -229,7 +222,7 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
-    return $this->get('/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
+    return $this->get("/pub/registrar/courses/AstraRoomSchedule/{$startdate}/{$enddate}/{$building_id}/{$room_id}");
   }
 
   /**
