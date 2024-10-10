@@ -43,7 +43,7 @@ class MauiApi extends ApiClientBase {
    *   The session object.
    */
   public function getCurrentSession() {
-    return $this->request('GET', '/pub/registrar/sessions/current');
+    return $this->get('/pub/registrar/sessions/current');
   }
 
   /**
@@ -58,7 +58,7 @@ class MauiApi extends ApiClientBase {
    *   Array of session objects.
    */
   public function getSessionsBounded($previous = 4, $future = 4) {
-    $data = $this->request('GET', '/pub/registrar/sessions/bounded', [
+    $data = $this->get('/pub/registrar/sessions/bounded', [
       'previous' => $previous,
       'future' => $future,
     ]);
@@ -89,7 +89,7 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function getSessionsRange($from, $steps, $term = NULL) {
-    $data = $this->request('GET', '/pub/registrar/sessions/range', [
+    $data = $this->get('/pub/registrar/sessions/range', [
       'from' => $from,
       'steps' => $steps,
       'term' => $term !== NULL ? strtoupper($term) : NULL,
@@ -132,7 +132,7 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
-    $data = $this->request('GET', '/pub/registrar/session-dates', [
+    $data = $this->get('/pub/registrar/session-dates', [
       'context' => $context,
       'date' => $date,
       'sessionCode' => $session_code,
@@ -208,7 +208,7 @@ class MauiApi extends ApiClientBase {
    *   The API response data.
    */
   public function getRoomData($building_id, $room_id) {
-    return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
+    return $this->get('/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
   }
 
   /**
@@ -229,7 +229,7 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
-    return $this->request('GET', '/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
+    return $this->get('/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
   }
 
   /**
@@ -239,11 +239,9 @@ class MauiApi extends ApiClientBase {
    *   The API response data.
    */
   public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM') {
-    return $this->request('GET',
-      '/pub/facilityBuildingRoom/list',
-      [
-        'roomCategory' => $room_category,
-      ]);
+    return $this->get('/pub/facilityBuildingRoom/list', [
+      'roomCategory' => $room_category,
+    ]);
   }
 
   /**
@@ -260,13 +258,9 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function getSection($section, $exclude) {
-    $endpoint = 'pub/registrar/sections/' . $section;
-
-    $params = [
+    return $this->get("pub/registrar/sections/{$section}", [
       'exclude' => json_encode($exclude),
-    ];
-
-    return $this->request('GET', $endpoint, $params);
+    ]);
   }
 
   /**
@@ -278,8 +272,7 @@ class MauiApi extends ApiClientBase {
    *   JSON decoded array of response data.
    */
   public function getCourseSubjects() {
-    $endpoint = 'pub/lookups/registrar/coursesubjects';
-    $data = $this->request('GET', $endpoint);
+    $data = $this->get('pub/lookups/registrar/coursesubjects');
 
     if ($data) {
       // Sort alphabetically by natural key, i.e. CHEM.
@@ -308,7 +301,9 @@ class MauiApi extends ApiClientBase {
       ->modify("-{$previous} years")
       ->format('Y-m-d');
 
-    $start = $this->request('GET', '/pub/registrar/sessions/by-date', ['date' => $startDate]);
+    $start = $this->get('/pub/registrar/sessions/by-date', [
+      'date' => $startDate,
+    ]);
     $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
 
     $options = [];
@@ -339,7 +334,7 @@ class MauiApi extends ApiClientBase {
         'Content-Type' => 'application/x-www-form-urlencoded',
       ],
     ];
-    $data = $this->request('GET', $endpoint, [], $options);
+    $data = $this->get($endpoint, $options, 'xml');
     return $data;
   }
 

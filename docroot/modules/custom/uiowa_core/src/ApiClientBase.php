@@ -176,13 +176,13 @@ abstract class ApiClientBase implements ApiClientInterface {
   /**
    * {@inheritdoc}
    */
-  public function get($endpoint, array $options = []) {
+  public function get($endpoint, array $options = [], $type = 'json') {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
     if ($cache = $this->cache->get($cache_id)) {
       $data = $cache->data;
     }
     else {
-      $data = $this->request('GET', $endpoint, $options);
+      $data = $this->request('GET', $endpoint, $options, $type);
       if ($data) {
         // Cache for 15 minutes.
         $this->cache->set($cache_id, $data, time() + $this->cacheLength);
