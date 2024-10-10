@@ -54,7 +54,7 @@ class FinalExamScheduleForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, $session_id = NULL) {
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
@@ -102,11 +102,7 @@ Search results yield character string matches from all columns (e.g. a search fo
       'Rooms',
     ];
 
-    $session = $form_state->getValue('session_id');
-    if (empty($session)) {
-      $session = '20243';
-    }
-    $data = $this->maui->getFinalExamSchedule($session);
+    $data = $this->maui->getFinalExamSchedule($session_id);
     if (empty($data) || !isset($data['NewDataSet']['Table'])) {
       // @todo Add some handling if data fetching failed
       //   or there's something weird with the structure.

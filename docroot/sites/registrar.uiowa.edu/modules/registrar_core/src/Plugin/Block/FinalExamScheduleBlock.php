@@ -113,8 +113,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $session = $this->configuration['session'];
     // $session_name = $this->configuration['session_name'];
     // $last_updated = $this->configuration['last_updated'];
-    $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm');
-    $build['form']['final_exam']['session_id']['#value'] = $session;
+    $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm', $session);
     return $build;
   }
 
