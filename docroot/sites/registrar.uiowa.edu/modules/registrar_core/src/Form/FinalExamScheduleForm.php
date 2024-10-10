@@ -71,7 +71,7 @@ class FinalExamScheduleForm extends FormBase {
     if (empty($session_info)) {
       $form['final_exam']['empty'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('No final exams found.'),
+        '#markup' => '<p>No final exams found.</p>',
       ];
       return $form;
     }
@@ -84,6 +84,15 @@ class FinalExamScheduleForm extends FormBase {
       '#type' => 'markup',
       '#markup' => "<p>{$session_name} {$session_id}<br>Last updated: {$last_updated}</p>",
     ];
+
+    $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
+    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
+      $form['final_exam']['empty'] = [
+        '#type' => 'markup',
+        '#markup' => '<p>No final exams found.</p>',
+      ];
+      return $form;
+    }
 
     $search = $form_state->getValue('search') ?? '';
     $form['final_exam']['search'] = [
@@ -120,15 +129,7 @@ class FinalExamScheduleForm extends FormBase {
       'Rooms',
     ];
 
-    $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
-    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
-      // @todo Add some handling if data fetching failed
-      //   or there's something weird with the structure.
-      $data = [];
-    }
-    else {
-      $data = $data['NewDataSet']['Table'];
-    }
+    $data = $data['NewDataSet']['Table'];
     $allowed_tags = [
       'a',
       'strong',
