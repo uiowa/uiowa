@@ -54,7 +54,7 @@ class FinalExamScheduleForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $session_id = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $session_info = NULL) {
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
@@ -68,19 +68,37 @@ class FinalExamScheduleForm extends FormBase {
       ],
     ];
 
+    if (empty($session_info)) {
+      $form['final_exam']['empty'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('No final exams found.'),
+      ];
+      return $form;
+    }
+
+    $session_id = $session_info['session_id'];
+    $session_name = $session_info['session_name'];
+    $last_updated = date('F j, Y', strtotime($session_info['last_updated']));
+
+    $form['final_exam']['intro'] = [
+      '#type' => 'markup',
+      '#markup' => "<p>{$session_name} {$session_id}<br>Last updated: {$last_updated}</p>",
+    ];
+
     $search = $form_state->getValue('search') ?? '';
     $form['final_exam']['search'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#default_value' => $search,
-      '#description' => $this->t('You can search using any of the following methods:
-
-Any part of a Subject:Course:Section number (e.g. ACCT:, or MATH:1005)
-Any word in a course title (e.g. Technology)
-A room (e.g. 205 NH)
-Search results yield character string matches from all columns (e.g. a search for "math" displays any courses with a subject of MATH, course titles with the word math or any word containing the letters "math" like mathematics or aftermath.)'
-      ),
-
+      '#description' => <<< 'EOD'
+        <p>You can search using any of the following methods:</p>
+        <ul>
+            <li>Any part of a Subject:Course:Section number (e.g. ACCT:, or MATH:1005)</li>
+            <li>Any word in a course title (e.g. Technology)</li>
+            <li>A room (e.g. 205 NH)</li>
+        </ul>
+        <p>Search results yield character string matches from all columns (e.g. a search for "math" displays any courses with a subject of MATH, course titles with the word math or any word containing the letters "math" like mathematics or aftermath.)</p>
+      EOD,
       '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
       '#suffix' => '</div>',
     ];
@@ -102,7 +120,7 @@ Search results yield character string matches from all columns (e.g. a search fo
       'Rooms',
     ];
 
-    $data = $this->maui->getFinalExamSchedule($session_id);
+    $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
     if (empty($data) || !isset($data['NewDataSet']['Table'])) {
       // @todo Add some handling if data fetching failed
       //   or there's something weird with the structure.
