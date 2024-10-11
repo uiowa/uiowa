@@ -90,7 +90,7 @@ class ITSCoreCommands extends DrushCommands {
       // Include related links.
       $links = [
         Link::fromTextAndUrl('Why am I receiving this email?',
-          Url::fromUri('https://its.uiowa.edu/support/article/127441')),
+          Url::fromUri('https://its.uiowa.edu/services/it-service-alerts/overview-it-service-alerts')),
         Link::fromTextAndUrl('IT Service Alerts page',
           Url::fromUri('https://its.uiowa.edu/alerts')),
         Link::fromTextAndUrl('Calendar view of alerts',
