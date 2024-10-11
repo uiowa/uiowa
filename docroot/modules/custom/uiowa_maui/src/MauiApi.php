@@ -126,13 +126,15 @@ class MauiApi extends ApiClientBase {
    */
   public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
     $data = $this->get('/pub/registrar/session-dates', [
-      'context' => $context,
-      'date' => $date,
-      'sessionCode' => $session_code,
-      'sessionId' => $session_id,
-      'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
-      'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
-      'dateCategory' => $date_category,
+      'query' => [
+        'context' => $context,
+        'date' => $date,
+        'sessionCode' => $session_code,
+        'sessionId' => $session_id,
+        'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
+        'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
+        'dateCategory' => $date_category,
+      ],
     ]);
 
     // Filter out dates with no categories.
