@@ -52,8 +52,10 @@ class MauiApi extends ApiClientBase {
    */
   public function getSessionsBounded($previous = 4, $future = 4) {
     $data = $this->get('/pub/registrar/sessions/bounded', [
-      'previous' => $previous,
-      'future' => $future,
+      'query' => [
+        'previous' => $previous,
+        'future' => $future,
+      ],
     ]);
 
     // Sort by start date.
@@ -83,9 +85,11 @@ class MauiApi extends ApiClientBase {
    */
   public function getSessionsRange($from, $steps, $term = NULL) {
     $data = $this->get('/pub/registrar/sessions/range', [
-      'from' => $from,
-      'steps' => $steps,
-      'term' => $term !== NULL ? strtoupper($term) : NULL,
+      'query' => [
+        'from' => $from,
+        'steps' => $steps,
+        'term' => $term !== NULL ? strtoupper($term) : NULL,
+      ],
     ]);
 
     // Sort by start date.
@@ -235,7 +239,9 @@ class MauiApi extends ApiClientBase {
    */
   public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM') {
     return $this->get('/pub/facilityBuildingRoom/list', [
-      'roomCategory' => $room_category,
+      'query' => [
+        'roomCategory' => $room_category,
+      ],
     ]);
   }
 
@@ -297,7 +303,9 @@ class MauiApi extends ApiClientBase {
       ->format('Y-m-d');
 
     $start = $this->get('/pub/registrar/sessions/by-date', [
-      'date' => $startDate,
+      'query' => [
+        'date' => $startDate,
+      ],
     ]);
     $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
 
