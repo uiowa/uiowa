@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_maui;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
 
 /**
@@ -12,7 +11,6 @@ use Drupal\uiowa_core\ApiClientBase;
  * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
 class MauiApi extends ApiClientBase {
-  use ApiAuthKeyTrait;
   use SessionTermTrait;
 
   /**
