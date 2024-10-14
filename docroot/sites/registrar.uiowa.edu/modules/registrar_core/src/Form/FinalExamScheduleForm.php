@@ -194,6 +194,7 @@ class FinalExamScheduleForm extends FormBase {
       '#theme' => 'table',
       '#header' => $headers,
       '#rows' => $data,
+      '#attributes' => ['class' => ['table--gray-borders']],
       '#prefix' => '<div id="final-exam-schedule-content-table">',
       '#suffix' => '</div>',
     ];
