@@ -139,7 +139,7 @@ class FinalExamScheduleForm extends FormBase {
 
     foreach ($data as $index => $row) {
       // If we have an empty string, everything should pass.
-      $pass = empty($string);
+      $pass = empty($search);
       $new_row = [];
       foreach (['sections',
         'course_title',
