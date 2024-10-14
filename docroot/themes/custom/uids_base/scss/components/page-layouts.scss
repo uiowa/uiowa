@@ -38,6 +38,16 @@ main {
 }
 
 .header-sticky {
+  &.header--healthcare {
+    @include breakpoint(md) {
+      padding-top: 100px;
+    }
+    &.below {
+      @include breakpoint(md) {
+        padding-top: 140px;
+      }
+    }
+  }
   @include breakpoint(md) {
     padding-top: 80px;
   }
@@ -82,11 +92,11 @@ main {
 
 .grid--3-2 .layout__region {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
 
 
   @include breakpoint(sm) {
-    grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
   }
 }
 
@@ -114,11 +124,11 @@ main {
   }
 
   @include breakpoint(sm) {
-    grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
   }
 
   @include breakpoint(page-container) {
-    grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
   }
 }
 

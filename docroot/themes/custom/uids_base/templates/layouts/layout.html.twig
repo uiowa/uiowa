@@ -43,7 +43,7 @@
 
         {% if render_sections[region] %}
           {# The inner container for each region is necessary for putting space between columns. #}
-          <div {{ region_attributes[region].addClass('layout__region', 'layout__region--' ~ region|clean_class) }}>
+          <div {{ region_attributes[region].addClass('column-container', 'layout__region', 'layout__region--' ~ region|clean_class) }}>
             {{ render_sections[region] }}
           </div>
         {% endif %}

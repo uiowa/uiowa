@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.support_article.body
+    - field.field.node.support_article.field_meta_tags
     - field.field.node.support_article.field_support_article_category
     - field.field.node.support_article.field_support_article_faqs
     - field.field.node.support_article.field_support_article_service
@@ -12,6 +13,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - metatag
     - system
     - text
     - user
@@ -22,6 +24,33 @@ third_party_settings:
     enabled: true
     allow_custom: false
     sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: Moderation
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_container_narrow
+        components:
+          -
+            uuid: ''
+            region: content
+            configuration:
+              id: 'extra_field_block:node:support_article:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_header
         layout_settings:
@@ -88,34 +117,25 @@ third_party_settings:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
-        components:
           -
-            uuid: 67c1f7ae-b670-482b-8f84-869ce21d68d8
+            uuid: d3b92c3b-5dd4-41e2-b26d-2ef26fe9b85f
             region: content
             configuration:
-              id: 'extra_field_block:node:support_article:content_moderation_control'
+              id: 'field_block:node:support_article:field_meta_tags'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 4
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
+          layout_builder_lock:
+            lock: {  }
           layout_builder_limit:
             limit:
               scope: disabled
@@ -284,6 +304,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 105
     region: content
   field_support_article_category:
     type: entity_reference_label

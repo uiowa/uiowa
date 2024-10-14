@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineotolaryngology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineotolaryngology
+  human_name: otolaryngology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineotolaryngology.prod
+drupal:
+  db:
+    database: otolaryngology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineotolaryngology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Otolaryngology'

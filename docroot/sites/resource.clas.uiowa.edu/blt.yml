@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: clasresource.uiowa.ddev.site
+    protocol: https
+  machine_name: clasresource
+  human_name: resource.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasresource.prod
+drupal:
+  db:
+    database: resource_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://clasresource.prod.drupal.uiowa.edu'
+  requester: mwright27
+  site-name: 'CLAS Resource Site'

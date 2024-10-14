@@ -28,7 +28,7 @@ class AdditionalInfoButtons extends BlockBase {
   public function build() {
     $build = [
       '#theme' => 'requestinfobutton_block',
-      '#check_availability_link' => 'http://classroomscheduling.registrar.uiowa.edu/AdAstra7Prod/Portal/GuestPortal.aspx',
+      '#check_availability_link' => 'https://www.aaiscloud.com/uiowa',
       '#request_link' => 'https://workflow.uiowa.edu/entry/new/667/',
       '#report_issue_link' => '/classroom-assistance',
     ];

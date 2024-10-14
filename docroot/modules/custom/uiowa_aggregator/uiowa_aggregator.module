@@ -54,6 +54,8 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
  */
 function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   $build['#type'] = 'card';
+  $build['#prefix'] = '<div class="column-container">';
+  $build['#suffix'] = '</div>';
   unset($build['#theme']);
 }
 
@@ -66,7 +68,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   $build['#attached']['library'][] = 'uids_base/card';
 
   // Set the title.
-  $build['#title'] = $entity->label();
+  $build['#title'] = html_entity_decode($entity->label());
 
   // Move author field to #meta and add an icon.
   if (!$entity->get('author')->isEmpty() && isset($build['author'])) {

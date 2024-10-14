@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbowden.uiowa.ddev.site
+    protocol: https
+  machine_name: labbowden
+  human_name: bowden.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbowden.prod
+drupal:
+  db:
+    database: bowden_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbowden.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'The Bowden Group'

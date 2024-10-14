@@ -1,0 +1,36 @@
+uuid: 29868910-c53a-436e-8b60-166dacc52e07
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: registrar.uiowa.edu
+description: 'Custom functionality for registrar.uiowa.edu.'
+weight: 70
+stackable: false
+storage: folder
+folder: ../config/sites/registrar.uiowa.edu
+module:
+  cevalidationsr: 0
+  gpa_calculator: 0
+  registrar_core: 0
+theme: {  }
+complete_list:
+  - cevalidationsr.settings
+  - config_split.config_split.site
+  - field.field.media.file.field_file_archive_type
+  - field.field.media.file.field_file_date_range
+  - field.field.media.file.field_file_session
+  - field.storage.media.field_file_archive_type
+  - field.storage.media.field_file_date_range
+  - field.storage.media.field_file_session
+  - taxonomy.vocabulary.file_archive_type
+  - views.view.file_archive
+  - field.field.media.file.field_file_date_range_end
+  - field.field.media.file.field_file_date_range_start
+  - field.storage.media.field_file_date_range_end
+  - field.storage.media.field_file_date_range_start
+partial_list:
+  - config_ignore.settings
+  - core.entity_form_display.media.file.default
+  - core.entity_view_display.media.file.default
+  - core.entity_view_display.node.page.default

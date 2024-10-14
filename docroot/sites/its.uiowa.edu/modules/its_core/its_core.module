@@ -80,10 +80,6 @@ function its_core_entity_presave(EntityInterface $entity) {
         $additional_details,
       ]));
 
-      if ($entity->isClosed()) {
-        $alert_title = '[Closed] ' . $alert_title;
-      }
-
       $entity->setTitle($alert_title);
 
       // Reorder the Updates to chronological.
@@ -98,10 +94,8 @@ function its_core_entity_presave(EntityInterface $entity) {
       // If we're saving an outage or service degradation,
       // we also want to check and set our views cache invalidation date.
       if ($entity->isPublished()) {
-        $cache_affected_targets = [];
-        foreach (['service-degradation', 'outage', 'planned-maintenance', 'service-announcement'] as $target) {
-          $cache_affected_targets[] = its_core_alert_type_tag_map($target);
-        }
+        $cache_affected_targets = array_column(its_core_alert_type_tag_map(), 'tid');
+
         if (in_array($entity->field_alert_category->target_id, $cache_affected_targets)) {
           if ($entity instanceof ClosableInterface) {
             // If the alert is already closed, we're not concerned
@@ -127,10 +121,19 @@ function its_core_entity_presave(EntityInterface $entity) {
           // Append to the revision log if it exists, otherwise set one.
           // @todo see about line breaks in log message?
           $revision_log = $entity->get('revision_log')?->value;
+          if (its_core_alert_email_addresses_exist()) {
+            $message = 'Alert email triggered.';
+          }
+          else {
+            $message = 'Alert email triggered but not sent. No recipient addresses have been set.';
+            // No addresses are set, so we don't need to trigger the send.
+            $entity->send_email = 0;
+            $messenger = \Drupal::messenger();
+            $messenger->addMessage("{$message} Please contact the site administrator.", $messenger::TYPE_WARNING);
+          }
           // Set field back and record revision log info.
-          $revision_log = $revision_log . ' Alert email triggered.';
+          $revision_log = "{$revision_log} {$message}";
           $entity->set('revision_log', $revision_log);
-
           $entity->set('field_alert_email', 0);
         }
       }
@@ -138,6 +141,17 @@ function its_core_entity_presave(EntityInterface $entity) {
       break;
 
   }
+}
+
+/**
+ * Helper function to check if an address is set for the alert email.
+ *
+ * @return bool
+ *   Whether To or MS Teams address has been set.
+ */
+function its_core_alert_email_addresses_exist() {
+  $settings = \Drupal::configFactory()->get('its_core.settings');
+  return (!empty($settings->get('single-alert-to')) || !empty($settings->get('single-alert-secondary')));
 }
 
 /**
@@ -278,11 +292,10 @@ function its_core_alert_email_build($entity) {
  * Custom function to send an alert email.
  */
 function its_core_send_alert_email($entity, $alert) {
-
   $alert_title = $entity->label();
 
   if ($entity->isClosed()) {
-    $alert_title = '[CLOSED] ' . $alert_title;
+    $alert_title = '[Closed] ' . $alert_title;
   }
 
   $emailFactory = \Drupal::service('email_factory');
@@ -306,13 +319,19 @@ function its_core_send_alert_email($entity, $alert) {
     '#items' => $links,
   ];
 
+  // Send email to the "To" recipient.
   $email = $emailFactory->newTypedEmail('its_core', 'its_alert_email', $alert)
     ->setSubject($alert_title);
   $email->send();
 
-  // Log whether the email was sent or not.
-  if ($email->getError()) {
-    \Drupal::logger('its_core')->error(t('Unable send alert email from alert @id', [
+  // Send email to the "MS Teams" recipient.
+  $email_secondary = $emailFactory->newTypedEmail('its_core', 'its_alert_email_secondary', $alert)
+    ->setSubject($alert_title);
+  $email_secondary->send();
+
+  // Log whether the emails were sent or not.
+  if ($email->getError() || $email_secondary->getError()) {
+    \Drupal::logger('its_core')->error(t('Unable to send one or both alert emails from alert @id', [
       '@id' => $entity->id(),
     ]));
   }
@@ -370,11 +389,21 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     case 'node_alert_edit_form':
     case 'node_alert_form':
+      $form['field_alert_date']['widget'][0]['duration']['#title'] = t('End Date');
+      $form['field_alert_updates']['widget']['add_more']['#suffix'] = t('to this alert');
       // Attach smart_date override js.
       $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
       if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
+        // Supplement moderation selection with description text explaining workflow.
+        $form['moderation_state']['widget'][0]['state']['#description'] = t('In order to publish, alert must be saved as "Submit" to notify the ITS Help Desk.');
+      }
+      // Only allow access to these fields for users
+      // with the 'administer site configuration' permission.
+      if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+        unset($form["path"]);
+        unset($form["field_meta_tags"]);
       }
       break;
 
@@ -438,10 +467,6 @@ function its_core_preprocess_block(&$variables) {
 
     case 'field_block:node:article:field_article_related_service':
       $variables['attributes']['class'][] = 'article--meta';
-      break;
-
-    case 'field_block:node:alert:field_alert_updates':
-      uiowa_core_set_attributes($variables, 'list-container list-container--list');
       break;
 
     case 'field_block:node:alert:changed':
@@ -516,10 +541,6 @@ function its_core_preprocess_layout__twocol__card_sidebar(&$variables) {
 function its_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_alert_date':
-      if ($variables['element']['#view_mode'] === '_custom') {
-        unset($variables['field_icon']);
-        unset($variables['attributes']['class']);
-      }
       // If we don't have an "end" time or a specified start/text/time
       // in our start time, it means we have an "ongoing" event,
       // and we should alter the label.
@@ -578,12 +599,13 @@ function its_core_preprocess_field(&$variables, $hook) {
 
     case 'field_alert_service_affected':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
         if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline field--separator');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline field--separator');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services and buildings affected');
         }
         elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+          uiowa_core_set_attributes($variables, 'fa-field-item element--inline');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services affected');
         }
       }
       break;
@@ -592,15 +614,15 @@ function its_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_attributes($variables, 'element--inline');
         if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
-          uiowa_core_set_field_icon($variables, 'fa-circle-info fa-li');
-          uiowa_core_set_attributes($variables, 'fa-ul element--inline');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Buildings affected');
+          uiowa_core_set_attributes($variables, 'fa-field-item');
         }
       }
       break;
 
     case 'field_alert_update_date':
-      uiowa_core_set_field_icon($variables, 'fa-clock fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-clock');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_alert_updates':
@@ -705,6 +727,19 @@ function its_core_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function its_core_node_load($entities) {
+  foreach ($entities as $entity) {
+    // Override the alert title if the alert is closed.
+    if ($entity->bundle() === 'alert' && $entity->isClosed() && $entity->hasField('title')) {
+      $title = '[Closed] ' . $entity->getTitle();
+      $entity->set('title', $title);
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function its_core_preprocess_field__node__title(&$variables) {
@@ -773,14 +808,7 @@ function its_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'alerts_list_block':
-      if ($view->current_display === 'service_announcements') {
-        foreach ($variables['rows'] as &$row_build) {
-          $row_build['content']['#override_styles'] = [
-            'border' => '',
-          ];
-        }
-      }
-      elseif ($view->current_display === 'alert_status') {
+      if ($view->current_display === 'alert_status') {
         // Attach the library using the #attached property.
         $variables['#attached']['library'][] = 'uids_base/view-bef';
       }
@@ -831,7 +859,7 @@ function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
   // Certain tags are required for alert category functionality.
   // Grab our associative TID map, and the array_values
   // will be the list of tag ids that can't be deleted.
-  $required_tids = array_values(its_core_alert_type_tag_map());
+  $required_tids = array_column(its_core_alert_type_tag_map(), 'tid');
   if (in_array($tag->id(), $required_tids)) {
     $form['actions']['submit']['#disabled'] = TRUE;
     $form['description']['#markup'] = its_core_prevent_tag_delete_message($tag->getName());
@@ -853,20 +881,20 @@ function its_core_prevent_tag_delete_message($name) {
 }
 
 /**
- * Mapping for alert types to their associated tags.
+ * Mapping for alert types to their associated tags and colors.
  *
  * @param string $alert_type
- *   The alert type as a machine name, or empty to fetch TIDs array.
+ *   The alert type as a machine name, or empty to fetch the full mapping.
  *
- * @return string|bool|array
- *   The associated TID or FALSE, or an associative array of TIDs.
+ * @return array|bool
+ *   The associated array with TID and color, or FALSE, or the full associative array.
  */
 function its_core_alert_type_tag_map(string $alert_type = '') {
   $map = [
-    'service-degradation' => '416',
-    'outage' => '406',
-    'planned-maintenance' => '411',
-    'service-announcement' => '421',
+    'service-degradation' => ['tid' => '416', 'color' => 'blue'],
+    'outage' => ['tid' => '406', 'color' => 'orange'],
+    'planned-maintenance' => ['tid' => '411', 'color' => 'green'],
+    'service-announcement' => ['tid' => '421', 'color' => 'cool-gray'],
   ];
   // If we aren't getting a specific TID,
   // then return the full map.
@@ -942,103 +970,4 @@ function its_core_clear_custom_cache_tag(string $tag): void {
     $invalidations = [$purgeInvalidationFactory->get('tag', $tag)];
     $purgeQueue->add($queuer, $invalidations);
   }
-}
-
-/**
- * Create and send the alerts digest email.
- *
- * @return \Drupal\Core\StringTranslation\TranslatableMarkup
- *   The process completion message.
- */
-function its_core_alerts_digest() {
-  // Check that this process is being called with
-  // admin permissions.
-  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-  $check = \Drupal::service('uiowa_core.access_checker');
-  /** @var Drupal\Core\Access\AccessResultInterface $access */
-  $access = $check->access(\Drupal::currentUser()->getAccount());
-  if (!$access) {
-    return t('This is a restricted process.');
-  }
-
-  $views = [];
-  $views['outages_degradations'] = [
-    'title' => 'Alerts',
-    'view' => views_get_view_result('alerts_list_block', 'outages_degradations'),
-  ];
-  $views['planned_maintenance'] = [
-    'title' => 'Planned Maintenance',
-    'view' => views_get_view_result('alerts_list_block', 'planned_maintenance'),
-  ];
-  $views['service_announcements'] = [
-    'title' => 'Service Announcements',
-    'view' => views_get_view_result('alerts_list_block', 'service_announcements'),
-  ];
-  $views['ongoing'] = [
-    'title' => 'Ongoing Maintenance',
-    'view' => views_get_view_result('alerts_list_block', 'ongoing'),
-  ];
-  $content = [];
-
-  if (!empty($views)) {
-    foreach ($views as $group => $view) {
-      if (!empty($view['view'])) {
-        $alerts = [];
-        foreach ($view['view'] as $row) {
-          $entity = $row->_entity;
-          $content[$group] = [
-            '#type' => 'container',
-          ];
-          $content[$group]['title'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'h1',
-            '#value' => $view['title'],
-          ];
-
-          $alerts[] = its_core_alert_email_build($entity);
-
-        }
-        $content[$group]['alerts'] = $alerts;
-      }
-    }
-
-    // Include related links.
-    $links = [
-      Link::fromTextAndUrl('Why am I receiving this email?',
-        Url::fromUri('https://its.uiowa.edu/support/article/127441')),
-      Link::fromTextAndUrl('IT Service Alerts page',
-        Url::fromUri('https://its.uiowa.edu/alerts')),
-      Link::fromTextAndUrl('Calendar view of alerts',
-        Url::fromUri('https://its.uiowa.edu/alerts/calendar')),
-    ];
-
-    $content['related']['title'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h1',
-      '#value' => 'Related links',
-    ];
-    $content['related']['list'] = [
-      '#theme' => 'item_list',
-      '#type' => 'ul',
-      '#items' => $links,
-    ];
-
-    $emailFactory = \Drupal::service('email_factory');
-
-    $email = $emailFactory->sendTypedEmail('its_core', 'its_alerts_digest', $content);
-
-    if ($email->getError()) {
-      $message = t('Alerts Digest no sent');
-    }
-    else {
-      $message = t('Alerts Digest sent');
-    }
-
-  }
-  else {
-    $message = t('Alerts Digest - No items to send');
-  }
-
-  \Drupal::logger('its_core')->notice($message);
-  return $message;
 }

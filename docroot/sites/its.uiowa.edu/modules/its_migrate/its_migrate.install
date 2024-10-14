@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for its_service module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function its_migrate_install() {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $config_path = $path_resolver->getPath('module', 'its_migrate') . '/config/split';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+
+  foreach ($source->listAll() as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.its_migrate');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function its_migrate_uninstall() {
+  // Disable the split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.its_migrate');
+  $config->set('status', FALSE);
+  $config->save(TRUE);
+
+  // Delete config-ignore entities that cause CM dependency problems on import.
+  $config_factory->getEditable('migrate_plus.migration_group.default')->delete();
+  $config_factory->getEditable('migrate_plus.migration_group.sitenow_migrate')->delete();
+}

@@ -7,6 +7,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
+use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\Exception\InvalidStreamWrapperException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Render\RendererInterface;
@@ -16,6 +18,7 @@ use Drupal\media\MediaSourceFieldConstraintsInterface;
 use Drupal\media\MediaTypeInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -153,13 +156,21 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
           $source = end($redirects);
           $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = $scheme . '://panopto_thumbnails/';
+          $destination = "$scheme://panopto_thumbnails/";
           $realpath = $this->fs->realpath($destination);
+          $destination_file = "$destination$uuid.jpg";
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-            /** @var \Drupal\file\FileInterface $file */
-            $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
-            return $file->getFileUri();
+            try {
+              $data = (string) $this->client->get($source)->getBody();
+              return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
+            }
+            catch (TransferException $exception) {
+              \Drupal::messenger()->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));
+            }
+            catch (FileException | InvalidStreamWrapperException $e) {
+              \Drupal::messenger()->addError(t('Failed to save file due to error "%error"', ['%error' => $e->getMessage()]));
+            }
           }
         }
         catch (ClientException $e) {

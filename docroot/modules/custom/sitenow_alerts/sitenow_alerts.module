@@ -21,11 +21,6 @@ function sitenow_alerts_entity_bundle_info_alter(array &$bundles) {
  */
 function sitenow_alerts_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
-    case 'field_alert_date':
-      uiowa_core_set_field_icon($variables, 'fa-calendar far fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
     case 'field_alert_category':
       $view_mode = $variables['element']['#view_mode'];
       if ($view_mode === 'teaser' || $view_mode === '_custom') {
@@ -35,6 +30,13 @@ function sitenow_alerts_preprocess_field(&$variables, $hook) {
           unset($item['content']['#plain_text']);
           $item['content']['#markup'] = '<span class="badge badge--light">' . $field_label . '</span>';
         }
+      }
+      break;
+
+    case 'field_alert_date':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-calendar far');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
   }

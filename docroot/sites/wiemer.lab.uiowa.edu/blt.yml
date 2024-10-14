@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwiemer.uiowa.ddev.site
+    protocol: https
+  machine_name: labwiemer
+  human_name: wiemer.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwiemer.prod
+drupal:
+  db:
+    database: wiemer_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwiemer.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Wiemer Research Group'

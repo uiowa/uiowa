@@ -47,7 +47,10 @@
     },
     "config": {
         "audit": {
-            "abandoned": "ignore"
+            "abandoned": "ignore",
+            "ignore": {
+                "GHSA-mg8j-w93w-xjgc": "Temporary ignore."
+            }
         },
         "sort-packages": true,
         "platform": {
@@ -62,7 +65,7 @@
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
             "phpstan/extension-installer": true,
-            "drupal/core-project-message": false
+            "php-http/discovery": true
         }
     },
     "require": {
@@ -88,21 +91,20 @@
         "drupal/better_exposed_filters": "^6.0",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/bigmenu": "^2.0@RC",
-        "drupal/block_content_permissions": "^1.9",
         "drupal/captcha": "^2.0",
         "drupal/classy": "^1.0",
-        "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "3.0.0-beta2",
         "drupal/config_inspector": "^2.0",
         "drupal/config_split": "^2.0@RC",
-        "drupal/core-composer-scaffold": "10.1.8",
-        "drupal/core-recommended": "10.1.8",
+        "drupal/core-composer-scaffold": "~10.2.0",
+        "drupal/core-recommended": "~10.2.0",
         "drupal/crop": "^2.2",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.0",
+        "drupal/date_popup": "^2.0",
         "drupal/default_content": "^2.0@alpha",
         "drupal/devel": "^5.1",
-        "drupal/diff": "^1.1",
+        "drupal/diff": "^1.8",
         "drupal/draggableviews": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editor_advanced_link": "^2.0",
@@ -122,13 +124,14 @@
         "drupal/geofield": "^1.53",
         "drupal/google_analytics": "^4.0",
         "drupal/google_tag": "^1.6",
+        "drupal/gpa_calculator": "^2.0",
         "drupal/hcaptcha": "^1.2",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "^2.1",
         "drupal/iframe_title_filter": "^2.0",
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^3.6",
-        "drupal/inline_entity_form": "^1.0.0-rc2",
+        "drupal/inline_entity_form": "^3.0.0-rc19",
         "drupal/jsonapi_extras": "^3.23",
         "drupal/jsonapi_include": "^1.6",
         "drupal/layout_builder_limit": "^1.0@beta",
@@ -140,7 +143,7 @@
         "drupal/lazy": "^3.6",
         "drupal/lb_direct_add": "^2.0",
         "drupal/leaflet": "^10.2",
-        "drupal/linkit": "^6.1@RC",
+        "drupal/linkit": "^6.1",
         "drupal/linkit_media_library": "^1.0",
         "drupal/mailsystem": "^4.1",
         "drupal/masquerade": "^2.0@beta",
@@ -192,11 +195,12 @@
         "drupal/tvi": "^2.0@alpha",
         "drupal/views_bulk_operations": "^4.1",
         "drupal/views_custom_cache_tag": "^1.3",
+        "drupal/views_data_export": "^1.4",
         "drupal/views_tree": "^2.0@alpha",
-        "drupal/webform": "^6.2@beta",
+        "drupal/webform": "^6.2",
         "drupal/weight": "^3.2",
-        "drupal/workbench_email": "^2.2",
-        "drush/drush": "^12.4.0",
+        "drupal/workbench_email": "^3.0",
+        "drush/drush": "^12.4.4",
         "kartsims/easysvg": "2.5",
         "npm-asset/accessible-menu": "4.x-dev#2481e91",
         "npm-asset/jquery-collapse": "^1.1",
@@ -233,21 +237,17 @@
                 "Views Block Display skips preBlockBuild() call on ajax rebuild": "patches/drupal-core-2605218-10.1.x.patch",
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "Fix LB contextual links after dragging block to new section": "https://www.drupal.org/files/issues/2021-12-03/3160785-20.patch",
-                "ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "patches/3008292-imageitem-validators.patch",
-                "Support third party settings for components within a section": "https://www.drupal.org/files/issues/2023-06-15/3015152-198.patch",
+                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "patches/core-3008292-imageitem-validators-10.2.patch",
+                "[3015152] Support third party settings for components within a section": "patches/core-3015152-lb-components-third-party-settings-10.2.patch",
                 "Improve migration system performance: statically cache DrupalSqlBase::$systemData": "https://www.drupal.org/files/issues/2022-01-24/3154156-12.patch",
                 "layout_builder__layout_section column hitting database limit": "https://www.drupal.org/files/issues/2021-10-11/3030154-44.patch",
-                "Node form layout looks squeezed": "https://www.drupal.org/files/issues/2023-09-29/3326339-14.patch",
                 "Layout builder off-canvas positioning problem when resizing browser ": "https://www.drupal.org/files/issues/2023-07-19/3359465-8.patch",
                 "Responsive image width/height values are not used from fallback image style": "https://www.drupal.org/files/issues/2023-08-04/3377420-responsive-image-dimension-fallback-style-9.patch",
-                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-01-09/2230909-292.patch",
+                "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-12-21/2230909-309.patch",
                 "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"
-            },
-            "drupal/cshs": {
-                "Drupal 10 proper once dependency": "patches/3347581.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2022-12-06/default_content-3160146-53.patch",
@@ -265,6 +265,9 @@
             },
             "drupal/fragments": {
                 "remove_views_data_type": "https://www.drupal.org/files/issues/2022-08-24/3305851-remove_views_data_type-6.patch"
+            },
+            "drupal/fullcalendar_view": {
+                "only_rebuild_on_view_change": "patches/fullcalendar_only_rebuild_on_view_change.patch"
             },
             "drupal/google_analytics": {
                 "[3373921] Cannot install from existing config": "patches/3373921.patch"
@@ -285,6 +288,9 @@
             "drupal/linkit_media_library": {
                 "[3329877] Not compatible with Ckeditor5": "patches/3329877.patch"
             },
+            "drupal/media_entity_twitter": {
+                "Add `x.com` link support for oembed": "patches/3392584_add-x-com-link-support-8.patch"
+            },
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch"
             },
@@ -300,6 +306,9 @@
             },
             "drupal/scheduler_content_moderation_integration": {
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
+            },
+            "drupal/smart_date": {
+                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch"
             }
         },
         "installer-types": [

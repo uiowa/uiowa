@@ -270,10 +270,10 @@ class NewsFeature extends BaseNodeSource {
         // left align the video, otherwise center align so that it
         // doesn't overlap later media.
         if (preg_match('/(drupal-media)|(callout)/is', substr($body[0]['value'], 0, 700)) === 0) {
-          $video = $this->createVideo($media[0]['fid'], 'right');
+          $video = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid']), 'right');
         }
         else {
-          $video = $this->createVideo($media[0]['fid']);
+          $video = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid']));
         }
 
         $body[0]['value'] = $video . $body[0]['value'];

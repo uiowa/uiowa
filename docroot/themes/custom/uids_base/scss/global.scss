@@ -1,6 +1,27 @@
 @import "uids/scss/uids-core.scss";
 $imgpath: '../../uids/assets/images';
 
+// @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block, lb-direct-add.
+.layout__region--unset-type .column-container,
+.layout-builder .column-container {
+  container-type: unset;
+}
+
+// Specify container-type for vertical video.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-text-area:has(.media--view-mode-vertical),
+// Specify container-type for cards in layout builder.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-events .column-container,
+// Specify container-type for list blocks using views-row class.
+.list-container__inner .views-row {
+  container-type: inline-size;
+  container-name: column;
+}
+
 // Word break classes.
 .block--word-break,
 .block-inline-blockuiowa-text-area,
@@ -42,11 +63,26 @@ details {
 
 .element--inline {
   display: inline-flex;
+  align-items: baseline;
 }
 
 // Align items in a grid to the top.
 .element--align-top {
   align-self: start;
+}
+
+// Position absolute.
+.element--absolute {
+  position: absolute;
+  z-index: 1;
+}
+
+.element--absolute--left {
+  left: $desktop-width-gutter;
+}
+
+.element--absolute--bottom {
+  bottom: $desktop-width-gutter;
 }
 
 // Set object to cover.
@@ -55,7 +91,8 @@ details {
     object-fit: cover;
     height: 100%;
   }
-  .contextual-links {
+  .contextual-links,
+  .leaflet-control {
     height: auto;
   }
 }
@@ -267,6 +304,9 @@ details {
   }
   &--left {
     border-left: 1px solid rgba(0, 0, 0, 0.25);
+    &.borderless.card {
+      border-left: 1px solid rgba(0, 0, 0, 0.25)!important;
+    }
   }
 }
 
@@ -387,9 +427,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   // sidebar layout
   &.layout--has-sidebar {
     .layout__spacing_container {
-      flex-direction: column-reverse;
-      @include breakpoint(md) {
-        flex-direction: unset;
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
       }
     }
   }
@@ -407,10 +449,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         }
       }
 
+      // Layout with card sidebar.
+      .layout__region-container.card {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
       .layout__region--second,
       .layout__region--content,
       .layout__region-container {
-        order: 1;
+        order: 2;
         @include breakpoint(md) {
           order: inherit;
         }
@@ -542,15 +592,27 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .element--padding {
   &__top {
     padding-top: $desktop-width-gutter;
+    &--minimal {
+      padding-top: 2rem;
+    }
   }
   &__right {
     padding-right: $desktop-width-gutter;
+    &--minimal {
+      padding-right: 2rem;
+    }
   }
   &__bottom {
     padding-bottom: $desktop-width-gutter;
+    &--minimal {
+      padding-bottom: 2rem;
+    }
   }
   &__left {
     padding-left: $desktop-width-gutter;
+    &--minimal {
+      padding-left: 2rem;
+    }
   }
   &__all {
     padding: $desktop-width-gutter;
@@ -566,6 +628,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // CSS logical property padding utility classes.
 .padding--block--sm {
   padding-block: 0.5rem;
+}
+
+.padding--block--md {
+  padding-block: 1rem;
 }
 
 .padding--inline-start--sm {
@@ -588,7 +654,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   padding-inline: 1rem;
 }
 
-.block-margin {
+.block-margin,
+.element--margin {
   &__top {
     margin-top: $md;
 
@@ -630,6 +697,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region {
       .block + .block {
         margin-top: 1.6rem;
+        .field--label-above {
+          margin-bottom: 0;
+        }
+
+        .field.text-formatted div {
+          margin-bottom: 0;
+          p:first-child:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         &:first-child {
           margin-top: 0;
@@ -813,60 +890,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .uids-component--alert {
   margin-top: 0;
-}
-
-// ie11
-
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .layout__container .block-inline-blockuiowa-text-area {
-    flex-basis: auto;
-  }
-
-  .o-canvas__group {
-    -ms-flex-preferred-size: auto !important;
-    flex-basis: auto !important;
-  }
-
-  .card__body {
-    flex: auto !important;
-  }
-
-  .card.card--horizontal .card__body {
-    flex: 1 !important;
-    flex-direction: column;
-  }
-
-  .card.card--horizontal>* {
-    flex-direction: unset;
-    display: block !important;
-  }
-
-  .paragraph--type--articles.list .card__body,
-  .paragraph--type--people.list .card__body,
-  .paragraph--type--events.list .card__body,
-  .view-display-id-page_articles .card__body,
-  .paragraph--type--featured-content.list .card__body,
-  .view-id-people .card__body,
-  .view-display-id-page_articles .view-content {
-    flex: 1 !important;
-  }
-
-  .paragraph--type--articles.list .view-content,
-  .paragraph--type--people.list .view-content,
-  .view-display-id-page_articles .view-content,
-  .paragraph--type--featured-content.list .field--name-field-featured-content {
-    display: block !important;
-  }
-
-  .view-id-people .card--list,
-  .view-id-people .node--type-article {
-    display: flex !important;
-  }
-
-  #superfish-main-accordion {
-    position: relative !important;
-  }
 }
 
 // Extra padding to help browsers with a full menu drawer

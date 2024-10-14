@@ -51,14 +51,14 @@ trait LinkReplaceTrait {
             if ($lookup = $this->manualLookup($nid)) {
               $link->setAttribute('href', '/node/' . $lookup);
               $link->parentNode->replaceChild($link, $link);
-              $this->logger->info('Replaced internal link @link in article @article.', [
+              $this->getLogger('sitenow_migrate')->info('Replaced internal link @link in article @article.', [
                 '@link' => $href,
                 '@article' => $row->getSourceProperty('title'),
               ]);
 
             }
             else {
-              $this->logger->notice('Unable to replace internal link @link in article @article.', [
+              $this->getLogger('sitenow_migrate')->notice('Unable to replace internal link @link in article @article.', [
                 '@link' => $href,
                 '@article' => $row->getSourceProperty('title'),
               ]);
@@ -85,7 +85,7 @@ trait LinkReplaceTrait {
    *   Array of the database tables and columns to check for broken links.
    */
   private function postLinkReplace(string $entity_type, array $field_tables) {
-    $this->logger->notice('Beginning link replace.');
+    $this->getLogger('sitenow_migrate')->notice('Beginning link replace.');
     // Initialize our storage manager and our
     // "broken link candidates" list to add to and edit later.
     $entity_manager = \Drupal::service('entity_type.manager')
@@ -131,7 +131,7 @@ trait LinkReplaceTrait {
         $field_name = str_replace('_value', '', $col);
         $field_data = $entity->get($field_name)->getValue()[0];
 
-        $this->logger->info('Checking @link in entity @entity.', [
+        $this->getLogger('sitenow_migrate')->info('Checking @link in entity @entity.', [
           '@link' => $field_name,
           '@entity' => $entity_id,
         ]);
@@ -147,18 +147,19 @@ trait LinkReplaceTrait {
             $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
             if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
               $nid = explode('node/', $href)[1];
+              $nid = explode('#', $nid)[0];
 
               if ($lookup = $this->manualLookup($nid)) {
                 $link->setAttribute('href', '/node/' . $lookup);
                 $link->parentNode->replaceChild($link, $link);
-                $this->logger->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
+                $this->getLogger('sitenow_migrate')->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
                   '@nid' => $nid,
                   '@link' => $lookup,
                   '@entity' => $entity_id,
                 ]);
               }
               else {
-                $this->logger->notice('Unable to replace internal link @link in entity @entity.', [
+                $this->getLogger('sitenow_migrate')->notice('Unable to replace internal link @link in entity @entity.', [
                   '@link' => $href,
                   '@entity' => $entity_id,
                 ]);
@@ -224,7 +225,7 @@ trait LinkReplaceTrait {
         }
 
         foreach ($oopsie_daisies as $id => $links) {
-          $this->logger->notice($this->t('Possible broken links found in node @candidate: @links', [
+          $this->getLogger('sitenow_migrate')->notice($this->t('Possible broken links found in node @candidate: @links', [
             '@candidate' => $id,
             '@links' => $links,
           ]));

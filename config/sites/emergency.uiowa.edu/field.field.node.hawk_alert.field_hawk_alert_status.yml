@@ -1,0 +1,29 @@
+uuid: 09ba381b-a10f-479e-ab35-3b3d8d349635
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_hawk_alert_status
+    - node.type.hawk_alert
+    - taxonomy.vocabulary.hawk_alert_status
+id: node.hawk_alert.field_hawk_alert_status
+field_name: field_hawk_alert_status
+entity_type: node
+bundle: hawk_alert
+label: Status
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      hawk_alert_status: hawk_alert_status
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

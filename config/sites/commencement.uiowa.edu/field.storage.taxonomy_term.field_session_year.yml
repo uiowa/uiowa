@@ -1,0 +1,21 @@
+uuid: b289e947-f236-49cb-a7aa-0790b248f69a
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - taxonomy
+id: taxonomy_term.field_session_year
+field_name: field_session_year
+entity_type: taxonomy_term
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'commencement_core_session_years_allowed_values'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

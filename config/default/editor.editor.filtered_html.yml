@@ -100,8 +100,10 @@ settings:
         - heading5
         - heading6
     ckeditor5_list:
-      reversed: false
-      startIndex: true
+      properties:
+        reversed: true
+        startIndex: true
+      multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<cite>'
@@ -116,7 +118,7 @@ settings:
         - '<div class>'
         - '<blockquote cite class>'
         - '<ul type class>'
-        - '<ol start type reversed class>'
+        - '<ol type class>'
         - '<hr class>'
         - '<table border summary id role="presentation grid" aria-label aria-labelledby class>'
         - '<caption id>'

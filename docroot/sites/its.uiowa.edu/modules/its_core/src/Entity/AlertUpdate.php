@@ -33,7 +33,7 @@ class AlertUpdate extends Paragraph implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     return [
       'card_headline_style' => 'headline--serif',
-      'styles' => 'bg--gray',
+      'styles' => 'bg--gray block-margin__bottom',
       'border' => 'borderless',
     ];
   }

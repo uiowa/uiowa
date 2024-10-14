@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiovandervelde.uiowa.ddev.site
+    protocol: https
+  machine_name: studiovandervelde
+  human_name: vandervelde.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiovandervelde.prod
+drupal:
+  db:
+    database: vandervelde_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiovandervelde.prod.drupal.uiowa.edu'
+  requester: vndrvlde
+  site-name: 'Lea VanderVelde Studio'

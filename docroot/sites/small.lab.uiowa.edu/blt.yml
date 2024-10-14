@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsmall.uiowa.ddev.site
+    protocol: https
+  machine_name: labsmall
+  human_name: small.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsmall.prod
+drupal:
+  db:
+    database: small_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsmall.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Small Research Group'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesamomentofmagic.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesamomentofmagic
+  human_name: amomentofmagic.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesamomentofmagic.prod
+drupal:
+  db:
+    database: amomentofmagic_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesamomentofmagic.prod.drupal.uiowa.edu'
+  requester: vanderheiden
+  site-name: 'A Moment of Magic UIowa'

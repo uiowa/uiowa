@@ -1,0 +1,81 @@
+
+
+.block-padding__top, .element--padding__top {
+  padding-top: 3rem!important;
+}
+
+
+@media (min-width: 768px) {
+  .block-padding__top:first-child {
+    padding-top: 0 !important;
+  }
+}
+
+.badge {
+  font-size: .9rem!important;
+}
+
+.academic-calendar-filters.uids-content .form-item-group-by-month.form-type-checkbox  label {
+  margin-left: 0;
+  margin-top: .3rem;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.form-item-group-by-month.form-type-checkbox .form-checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #cacaca;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  transition: background-color ease 0.3s;
+  width: 62px;
+  margin-right: 1rem;
+}
+
+.form-item-group-by-month.form-type-checkbox .form-checkbox:focus {
+  outline: 5px auto #4d90fe;
+}
+
+.form-item-group-by-month.form-type-checkbox .form-checkbox:before {
+  content: "on off";
+  display: block;
+  position: absolute;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  font: 10px/28px Helvetica;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-indent: -22px;
+  word-spacing: 37px;
+  color: var(--brand-secondary);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: all cubic-bezier(0.3,1.5,0.7,1) 0.3s
+}
+
+.form-item-group-by-month.form-type-checkbox .form-checkbox:checked {
+  background-color: var(--brand-primary)
+}
+
+.form-item-group-by-month.form-type-checkbox .form-checkbox:checked:before {
+  left: 32px
+}
+
+.academic-calendar-filters [type="checkbox"] {
+  margin: 0 .35rem 0 .5rem;
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+}

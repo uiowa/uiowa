@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmargulis.uiowa.ddev.site
+    protocol: https
+  machine_name: labmargulis
+  human_name: margulis.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmargulis.prod
+drupal:
+  db:
+    database: margulis_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmargulis.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'The Margulis Group'

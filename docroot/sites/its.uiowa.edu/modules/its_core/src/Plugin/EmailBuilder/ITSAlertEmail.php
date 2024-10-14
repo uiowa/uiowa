@@ -15,6 +15,7 @@ use Drupal\symfony_mailer\Processor\EmailBuilderBase;
  *   id = "its_core",
  *   sub_types = {
  *    "its_alert_email" = @Translation("ITS Alert Email"),
+ *    "its_alert_email_secondary" = @Translation("ITS Alert Secondary Email"),
  *    "its_alerts_digest" = @Translation("ITS Alerts Digest Email"),
  *   },
  * )
@@ -38,30 +39,34 @@ class ITSAlertEmail extends EmailBuilderBase {
     $from = new EmailAddress('IT-Service-Alerts@uiowa.edu', 'IT Service Alerts');
     $email->setFrom($from);
     $email->setReplyTo($from);
-    $env = getenv('AH_PRODUCTION');
+
+    $its_settings = $this->helper()
+      ->config()
+      ->get('its_core.settings');
 
     // Send the alerts digest.
     if ($email->getSubType() == 'its_alerts_digest') {
       $email->setSubject('IT Service Alerts Daily Digest');
-      // Only send emails if PROD, otherwise use the site email for debugging.
-      if ((int) $env === 1) {
-        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
+      $to_email = $its_settings->get('alert-digest');
+      if (empty($to_email)) {
+        return;
       }
-      else {
-        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
+      $email->setTo($to_email);
+    }
+
+    // Send an individual alert to the "To" recipient.
+    if ($email->getSubType() == 'its_alert_email') {
+      $to_email = $its_settings->get('single-alert-to');
+      if (!empty($to_email)) {
+        $email->setTo($to_email);
       }
     }
 
-    // Send an individual alert.
-    if ($email->getSubType() == 'its_alert_email') {
-
-      // Only send emails if PROD, otherwise use the site email for debugging.
-      if ((int) $env === 1) {
-        $email->setTo('IT-Service-Alerts-Members@iowa.uiowa.edu');
-        $email->setBcc('e7199078.iowa.onmicrosoft.com@amer.teams.ms');
-      }
-      else {
-        $email->setTo($this->helper()->config()->get('system.site')->get('mail'));
+    // Send an individual alert to the "Bcc" recipient.
+    if ($email->getSubType() == 'its_alert_email_secondary') {
+      $secondary_email = $its_settings->get('single-alert-secondary');
+      if (!empty($secondary_email)) {
+        $email->setTo($secondary_email);
       }
     }
 

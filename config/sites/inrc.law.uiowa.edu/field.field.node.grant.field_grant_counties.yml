@@ -1,0 +1,29 @@
+uuid: d4dffdad-538e-4537-9045-b5e00f494892
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grant_counties
+    - node.type.grant
+    - taxonomy.vocabulary.counties
+id: node.grant.field_grant_counties
+field_name: field_grant_counties
+entity_type: node
+bundle: grant
+label: Counties
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      counties: counties
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgcolorguard.uiowa.ddev.site
+    protocol: https
+  machine_name: orgcolorguard
+  human_name: colorguard.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcolorguard.prod
+drupal:
+  db:
+    database: colorguard_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgcolorguard.prod.drupal.uiowa.edu'
+  requester: siennbrown
+  site-name: 'Color Guard Club'

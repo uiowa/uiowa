@@ -80,6 +80,7 @@
     }
   }
 
+  // Uploaded image.
   div.site-name {
     padding-left: 20px;
     @include breakpoint(md) {
@@ -97,6 +98,24 @@
     }
     @include breakpoint(page-container) {
       padding-left: 0;
+    }
+  }
+
+  .parent-site-name {
+    @include breakpoint(md) {
+      padding-left: 1.25rem;
+    }
+    @include breakpoint(page-container) {
+      padding-left: 0;
+    }
+  }
+
+  .iowa-bar__below {
+    h1.site-name,
+    div.site-name {
+      @include breakpoint(md) {
+        padding-left: 0;
+      }
     }
   }
 

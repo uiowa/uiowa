@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: hancherreport.uiowa.ddev.site
+    protocol: https
+  machine_name: hancherreport
+  human_name: report.hancher.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: hancherreport.prod
+drupal:
+  db:
+    database: report_hancher_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://hancherreport.prod.drupal.uiowa.edu'
+  requester: zwoodworth
+  site-name: 'Hancher Impact Report'

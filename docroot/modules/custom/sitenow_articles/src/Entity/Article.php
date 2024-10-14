@@ -50,10 +50,10 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     // If the source author is hidden or not set, its value is NULL.
     $source_author = in_array('field_article_author', $hide_fields) ? NULL : !$this->get('field_article_author')->isEmpty();
 
-    // Add a wrapper div with class "fa-ul"
+    // Add a wrapper div with class "fa-field-item"
     // if author field is not empty or if it's hidden in hide_fields.
     if ((!$this->get('field_article_author')->isEmpty() && $source_author)) {
-      $build['#meta']['#prefix'] = '<div class="fa-ul">';
+      $build['#meta']['#prefix'] = '<div class="fa-field-item">';
       $build['#meta']['#suffix'] = '</div>';
     }
 
