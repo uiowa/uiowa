@@ -76,13 +76,12 @@ class FinalExamScheduleForm extends FormBase {
       return $form;
     }
 
-    $session_id = $session_info['session_id'];
     $session_name = $session_info['session_name'];
     $last_updated = date('F j, Y', strtotime($session_info['last_updated']));
 
     $form['final_exam']['intro'] = [
       '#type' => 'markup',
-      '#markup' => "<p><strong>Session:</strong> {$session_name} {$session_id}<br><strong>Last updated:</strong> {$last_updated}</p>",
+      '#markup' => "<p><strong>Session:</strong> {$session_name}<br><strong>Last updated:</strong> {$last_updated}</p>",
     ];
 
     $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
