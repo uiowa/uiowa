@@ -1,3 +1,4 @@
+# https://github.com/mglaman/drupal-check?tab=readme-ov-file#rollback-update-to-phpstan-level-2-for-deprecation-analysis
 parameters:
   customRulesetUsed: true
   ignoreErrors:
@@ -9,7 +10,6 @@ parameters:
     - '#Class .+ extends deprecated class Drupal\\Core\\Render\\Element\\RenderElement:#'
     - '#Call to deprecated method renderPlain\(\) of class Drupal\\Core\\Render\\Renderer:#'
     - '#Fetching deprecated class constant EXISTS_REPLACE of interface Drupal\\Core\\File\\FileSystemInterface:#'
-    - '#Fetching deprecated class constant EXISTS_ERROR of interface Drupal\\Core\\File\\FileSystemInterface:#'
     - '#Instantiation of deprecated class Drupal\\migrate\\MigrateSkipProcessException:#'
   reportUnmatchedIgnoredErrors: false
   excludePaths:
