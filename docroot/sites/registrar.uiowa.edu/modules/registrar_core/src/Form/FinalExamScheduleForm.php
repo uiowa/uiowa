@@ -172,9 +172,10 @@ class FinalExamScheduleForm extends FormBase {
           default:
             $value = Markup::create(Xss::filter($row[$key], $allowed_tags));
             // Str_contains is case-sensitive, so lowercase before comparing,
-            // only if we haven't already matched.
+            // only if we haven't already matched. Additionally, make sure
+            // spaces in the search match non-breaking spaces.
             if (!$pass) {
-              $lc_value = strtolower($value);
+              $lc_value = strtolower(str_replace('&nbsp;', ' ', $value));
               $lc_search = strtolower($search);
               $pass = str_contains($lc_value, $lc_search);
             }
