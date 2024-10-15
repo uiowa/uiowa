@@ -82,7 +82,7 @@ class FinalExamScheduleForm extends FormBase {
 
     $form['final_exam']['intro'] = [
       '#type' => 'markup',
-      '#markup' => "<p>{$session_name} {$session_id}<br>Last updated: {$last_updated}</p>",
+      '#markup' => "<p><strong>Session:</strong> {$session_name} {$session_id}<br><strong>Last updated:</strong> {$last_updated}</p>",
     ];
 
     $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
@@ -108,7 +108,7 @@ class FinalExamScheduleForm extends FormBase {
       '#default_value' => $search,
       '#title_display' => 'invisible',
       '#title_attributes' => ['class' => ['element-invisible']],
-      '#placeholder' => $this->t('Enter your search term'),
+      '#placeholder' => $this->t('Search'),
     ];
 
     $form['final_exam']['search_wrapper']['submit'] = [
@@ -209,6 +209,7 @@ class FinalExamScheduleForm extends FormBase {
       '#theme' => 'table',
       '#header' => $headers,
       '#rows' => $data,
+      '#caption' => 'Final Exam Schedule',
       '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
       '#prefix' => '<div class="table-responsive" id="final-exam-schedule-content-table">',
       '#suffix' => '</div>',
