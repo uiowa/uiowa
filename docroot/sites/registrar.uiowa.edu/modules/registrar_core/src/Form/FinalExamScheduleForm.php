@@ -97,7 +97,7 @@ class FinalExamScheduleForm extends FormBase {
     $search = $form_state->getValue('search') ?? '';
     $form['final_exam']['search_wrapper'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['uiowa-search-form element--inline-breakpoint']],
+      '#attributes' => ['class' => ['uiowa-search-form']],
       '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
       '#suffix' => '</div>',
     ];
@@ -210,7 +210,7 @@ class FinalExamScheduleForm extends FormBase {
       '#header' => $headers,
       '#rows' => $data,
       '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
-      '#prefix' => '<div class="table-responsive table-sticky" id="final-exam-schedule-content-table">',
+      '#prefix' => '<div class="table-responsive" id="final-exam-schedule-content-table">',
       '#suffix' => '</div>',
     ];
 
