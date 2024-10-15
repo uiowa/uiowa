@@ -140,7 +140,8 @@ class CreateMediaFromFile extends FileCopy {
       // Check if we're skipping on error.
       if ($this->configuration['skip_on_error']) {
         $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
-        throw new MigrateSkipProcessException($e->getMessage());
+        $this->stopPipeline();
+        return NULL;
       }
       else {
         // Pass the error back on again.
