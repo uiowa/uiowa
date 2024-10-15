@@ -95,26 +95,40 @@ class FinalExamScheduleForm extends FormBase {
     }
 
     $search = $form_state->getValue('search') ?? '';
-    $form['final_exam']['search'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Search'),
-      '#default_value' => $search,
-      '#description' => <<< 'EOD'
-        <p>You can search using any of the following methods:</p>
-        <ul>
-            <li>Any part of a Subject:Course:Section number (e.g. ACCT:, or MATH:1005)</li>
-            <li>Any word in a course title (e.g. Technology)</li>
-            <li>A room (e.g. 205 NH)</li>
-        </ul>
-        <p>Search results yield character string matches from all columns (e.g. a search for "math" displays any courses with a subject of MATH, course titles with the word math or any word containing the letters "math" like mathematics or aftermath.)</p>
-      EOD,
+    $form['final_exam']['search_wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['uiowa-search-form element--inline-breakpoint']],
       '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
       '#suffix' => '</div>',
     ];
 
-    $form['final_exam']['submit'] = [
+    $form['final_exam']['search_wrapper']['search'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Search'),
+      '#default_value' => $search,
+      '#title_display' => 'invisible',
+      '#title_attributes' => ['class' => ['element-invisible']],
+      '#placeholder' => $this->t('Enter your search term'),
+    ];
+
+    $form['final_exam']['search_wrapper']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
+      '#prefix' => '<div class="form-item">',
+      '#suffix' => '</div>',
+    ];
+
+    $form['final_exam']['search_description'] = [
+      '#type' => 'markup',
+      '#markup' => <<< 'EOD'
+    <p>You can search using any of the following methods:</p>
+    <ul>
+        <li>Any part of a Subject:Course:Section number (e.g. ACCT:, or MATH:1005)</li>
+        <li>Any word in a course title (e.g. Technology)</li>
+        <li>A room (e.g. 205 NH)</li>
+    </ul>
+    <p>Search results yield character string matches from all columns (e.g. a search for "math" displays any courses with a subject of MATH, course titles with the word math or any word containing the letters "math" like mathematics or aftermath.)</p>
+  EOD,
     ];
 
     $form['final_exam']['session_id'] = [
@@ -194,8 +208,8 @@ class FinalExamScheduleForm extends FormBase {
       '#theme' => 'table',
       '#header' => $headers,
       '#rows' => $data,
-      '#attributes' => ['class' => ['table--gray-borders']],
-      '#prefix' => '<div id="final-exam-schedule-content-table">',
+      '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
+      '#prefix' => '<div class="table-responsive table-sticky" id="final-exam-schedule-content-table">',
       '#suffix' => '</div>',
     ];
 
