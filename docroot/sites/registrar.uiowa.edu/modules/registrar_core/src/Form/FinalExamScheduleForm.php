@@ -118,6 +118,20 @@ class FinalExamScheduleForm extends FormBase {
       '#suffix' => '</div>',
     ];
 
+    if (!empty($search)) {
+      $form['final_exam']['search_wrapper']['reset'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Reset'),
+        '#submit' => ['::resetForm'],
+        '#limit_validation_errors' => [],
+        '#attributes' => [
+          'class' => ['bttn--secondary'],
+        ],
+        '#prefix' => '<div class="form-item">',
+        '#suffix' => '</div>',
+      ];
+    }
+
     $form['final_exam']['search_description'] = [
       '#type' => 'markup',
       '#markup' => <<< 'EOD'
@@ -224,6 +238,14 @@ class FinalExamScheduleForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // No-op.
+    $form_state->setRebuild(TRUE);
+  }
+
+  /**
+   * Submit handler for the reset button.
+   */
+  public function resetForm(array &$form, FormStateInterface $form_state) {
+    $form_state->setValue('search', '');
     $form_state->setRebuild(TRUE);
   }
 
