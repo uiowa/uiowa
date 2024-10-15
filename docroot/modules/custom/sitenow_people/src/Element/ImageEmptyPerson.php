@@ -2,14 +2,14 @@
 
 namespace Drupal\sitenow_people\Element;
 
-use Drupal\Core\Render\Element\RenderElementBase;
+use Drupal\Core\Render\Element\RenderElement;
 
 /**
  * Provides a responsive image element.
  *
- * @RenderElementBase("image_empty_person")
+ * @RenderElement("image_empty_person")
  */
-class ImageEmptyPerson extends RenderElementBase {
+class ImageEmptyPerson extends RenderElement {
 
   const RESPONSIVE_STYLE_DEFAULT = 'large__square';
 
