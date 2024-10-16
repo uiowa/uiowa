@@ -4,6 +4,7 @@ namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\uiowa_maui\MauiApi;
@@ -27,6 +28,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   protected $maui;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Constructs a new FinalExamScheduleBlock instance.
    *
    * @param array $configuration
@@ -37,10 +45,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form builder service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
+    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -52,6 +63,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('uiowa_maui.api'),
+      $container->get('form_builder'),
     );
   }
 
@@ -98,12 +110,12 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function build() {
-    $session = $this->configuration['session'];
-    $session_name = $this->configuration['session_name'];
-    $last_updated = $this->configuration['last_updated'];
-    return [
-      '#markup' => $session_name . " " . $session . "<br>Last updated: " . date('F j, Y', strtotime($last_updated)),
-    ];
+    $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm', [
+      'session_id' => $this->configuration['session'],
+      'session_name' => $this->configuration['session_name'],
+      'last_updated' => $this->configuration['last_updated'],
+    ]);
+    return $build;
   }
 
 }
