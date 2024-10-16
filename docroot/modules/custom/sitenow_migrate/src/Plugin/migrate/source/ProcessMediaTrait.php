@@ -262,7 +262,7 @@ trait ProcessMediaTrait {
       ],
     ];
 
-    return \Drupal::service('renderer')->renderPlain($media);
+    return \Drupal::service('renderer')->renderInIsolation($media);
   }
 
   /**
