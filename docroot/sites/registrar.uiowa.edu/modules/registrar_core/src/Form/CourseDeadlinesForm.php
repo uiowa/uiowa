@@ -432,8 +432,9 @@ class CourseDeadlinesForm extends FormBase {
           '#type' => 'markup',
           '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
           '#suffix' => '</span></p>',
-          '#markup' => $this->t('@subject_course:@section_number', [
-            '@subject_course' => $data->subjectCourse,
+          '#markup' => $this->t('@department:@subject_course:@section_number', [
+            '@department' => $department,
+            '@subject_course' => $course,
             '@section_number' => $data->sectionNumber,
           ]),
         ],
