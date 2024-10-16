@@ -22,7 +22,7 @@ class MauiApiTest extends UnitTestCase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->maui = $this->createPartialMock('\Drupal\uiowa_maui\MauiApi', ['request']);
+    $this->maui = $this->createPartialMock('\Drupal\uiowa_maui\MauiApi', ['get']);
   }
 
   /**
@@ -35,7 +35,7 @@ class MauiApiTest extends UnitTestCase {
     ];
 
     $this->maui->expects($this->any())
-      ->method('request')
+      ->method('get')
       ->will($this->returnValue($current));
 
     $data = $this->maui->getCurrentSession();
@@ -62,7 +62,7 @@ class MauiApiTest extends UnitTestCase {
     ];
 
     $this->maui->expects($this->any())
-      ->method('request')
+      ->method('get')
       ->will($this->returnValue($bounding));
 
     $data = $this->maui->getSessionsBounded();
@@ -115,7 +115,7 @@ class MauiApiTest extends UnitTestCase {
     ];
 
     $this->maui->expects($this->any())
-      ->method('request')
+      ->method('get')
       ->will($this->returnValue($dates));
 
     $data = $this->maui->searchSessionDates(1);
