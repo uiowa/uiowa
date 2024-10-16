@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgprssa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgprssa
+  human_name: prssa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgprssa.prod
+drupal:
+  db:
+    database: prssa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgprssa.prod.drupal.uiowa.edu'
+  requester: avewatson
+  site-name: 'Public Relations Student Society of America at Iowa'
