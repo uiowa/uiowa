@@ -7600,3 +7600,15 @@ $sites['tippieaaf.uiowa.ddev.site'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.dev.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.stage.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.prod.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
+
+// Directory aliases for prssa.org.uiowa.edu.
+$sites['orgprssa.uiowa.ddev.site'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.dev.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.stage.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.prod.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+
+// Directory aliases for hrl.lab.uiowa.edu.
+$sites['labhrl.uiowa.ddev.site'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.dev.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.stage.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.prod.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
