@@ -244,7 +244,7 @@ class FinalExamScheduleForm extends FormBase {
    * Submit handler for the reset button.
    */
   public function resetForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setValue('search', '');
+    $form_state->setUserInput(['search'], '');
     $form_state->setRebuild(TRUE);
   }
 
