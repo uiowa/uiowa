@@ -423,6 +423,8 @@ class CourseDeadlinesForm extends FormBase {
         ];
       }
 
+      $indentical_courses = $this->maui->getIdenticalCourses($session, $data->courseId);
+
       $deadlines['course_badge'] = [
         '#type' => 'container',
         '#attributes' => [
