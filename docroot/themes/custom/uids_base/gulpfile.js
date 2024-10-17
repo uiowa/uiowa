@@ -5,10 +5,8 @@
 const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
-const gulpSass = require('gulp-sass');
-const nodeSass = require('node-sass');
-const sass = gulpSass(nodeSass);
-const del = require ('del');
+const gulpSass = require('gulp-sass')(require('sass'));
+const del = require('del');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano')
@@ -68,11 +66,11 @@ function css() {
   return src(`${paths.src}`)
     .pipe((mode.development(sourcemaps.init())))
     .pipe(glob())
-    .pipe(sass({
-        includePaths: [
-          "./node_modules",
-        ]
-      }).on('error', sass.logError))
+    .pipe(gulpSass({
+      includePaths: [
+        "./node_modules",
+      ]
+    }).on('error', gulpSass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))
     .pipe(dest(`${paths.dest}/css`));
