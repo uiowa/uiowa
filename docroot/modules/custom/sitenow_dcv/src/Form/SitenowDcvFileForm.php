@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dcv\Form;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -135,7 +136,7 @@ class SitenowDcvFileForm extends FormBase {
     ],
     FALSE,
     0,
-    FileSystemInterface::EXISTS_REPLACE
+      FileExists::Replace
     );
 
     if ($file) {

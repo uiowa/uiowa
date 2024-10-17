@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_core\Entity;
 
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Render\Element;
+use Drupal\block_content\Entity\BlockContent;
 
 /**
  * A bundle entity class for card block content.

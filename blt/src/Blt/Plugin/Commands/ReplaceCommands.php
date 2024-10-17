@@ -140,26 +140,22 @@ class ReplaceCommands extends BltTasks {
    * @command tests:deprecated
    */
   public function testsDeprecated() {
-    $this->say("Checking for deprecated code.");
+    $this->say('Checking for deprecated code with PHPStan.');
     $bin = $this->getConfigValue('composer.bin');
     $root = $this->getConfigValue('repo.root');
     $docroot = $this->getConfigValue('docroot');
+    $phpstanConfig = "{$root}/phpstan.neon";
 
     $paths = [
-      "{$root}/tests/" => '',
-      "{$docroot}/profiles/custom/" => '',
-      "{$docroot}/modules/custom/" => '',
-      "{$docroot}/themes/custom/" => '',
-      "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
+      "{$root}/tests/",
+      "{$docroot}/profiles/custom/",
+      "{$docroot}/modules/custom/",
+      "{$docroot}/themes/custom/",
+      "{$docroot}/sites/",
     ];
 
-    foreach ($paths as $path => $exclude) {
-      if (!empty($exclude)) {
-        $cmd = "$bin/drupal-check -e {$exclude} -d {$path}";
-      }
-      else {
-        $cmd = "$bin/drupal-check -d {$path}";
-      }
+    foreach ($paths as $path) {
+      $cmd = "$bin/phpstan analyse -c $phpstanConfig $path";
 
       $result = $this->taskExecStack()
         ->dir($this->getConfigValue('repo.root'))

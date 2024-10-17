@@ -20,7 +20,7 @@ class UiowaCoreAccess implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account = NULL) {
+  public function access(?AccountInterface $account = NULL) {
     // Check the current account if no account was passed.
     if (is_null($account)) {
       $account = \Drupal::currentUser()->getAccount();

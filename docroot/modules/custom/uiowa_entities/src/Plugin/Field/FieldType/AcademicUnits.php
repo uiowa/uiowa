@@ -92,7 +92,7 @@ class AcademicUnits extends EntityReferenceItem {
   /**
    * {@inheritdoc}
    */
-  public function getSettableOptions(AccountInterface $account = NULL) {
+  public function getSettableOptions(?AccountInterface $account = NULL) {
     $au_storage = \Drupal::service('entity_type.manager')->getStorage('uiowa_academic_unit');
     return $au_storage->getOptions(FALSE);
   }

@@ -48,7 +48,7 @@ function iowasummerwritingfestival_core_theme($existing, $type, $theme, $path) {
  *
  * @see options_allowed_values()
  */
-function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable) : array {
+function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity, bool &$cacheable) : array {
   $options = [];
 
   // Set the allowed values for the field_event_genre field to the following.

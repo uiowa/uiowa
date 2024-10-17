@@ -2,7 +2,7 @@
 
 namespace Drupal\uiowa_core\Element;
 
-use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Render\Element\FormElementBase;
 
 /**
  * Provides a form input element for entering a headline.
@@ -10,13 +10,13 @@ use Drupal\Core\Render\Element\FormElement;
  * This implementation is incomplete and not in use. It is
  * provided as a jumping off point for future work.
  *
- * @see \Drupal\Core\Render\Element\FormElement
+ * @see \Drupal\Core\Render\Element\FormElementBase
  *
  * @FormElement("headline")
  *
  * @todo Finish this plugin class.
  */
-class Headline extends FormElement {
+class Headline extends FormElementBase {
 
   /**
    * {@inheritdoc}

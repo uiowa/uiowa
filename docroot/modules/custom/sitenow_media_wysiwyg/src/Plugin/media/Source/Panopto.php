@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\Exception\InvalidStreamWrapperException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Render\RendererInterface;
@@ -163,7 +164,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
             try {
               $data = (string) $this->client->get($source)->getBody();
-              return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
+              return $this->fs->saveData($data, $destination_file, FileExists::Replace);
             }
             catch (TransferException $exception) {
               \Drupal::messenger()->addError(t('Failed to fetch file due to error "%error"', ['%error' => $exception->getMessage()]));

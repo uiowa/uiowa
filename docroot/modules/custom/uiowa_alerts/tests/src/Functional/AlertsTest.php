@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\uiowa_alerts\Functional;
 
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Test description.

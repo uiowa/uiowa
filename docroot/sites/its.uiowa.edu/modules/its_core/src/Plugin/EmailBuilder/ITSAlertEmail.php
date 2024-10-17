@@ -28,7 +28,7 @@ class ITSAlertEmail extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, array $message = NULL) {
+  public function createParams(EmailInterface $email, ?array $message = NULL) {
     $email->setParam('message', $message);
   }
 

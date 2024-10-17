@@ -21,7 +21,7 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\node\NodeInterface $object */
     $result = $object->access('update', $account, TRUE)
       ->andIf($object->field_page_content_block->access('edit', $account, TRUE));
@@ -32,7 +32,7 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
+  public function execute(?ContentEntityInterface $entity = NULL) {
     /** @var \Drupal\sitenow_p2lb\P2LbConverter $converter */
     $converter = \Drupal::service('sitenow_p2lb.converter_manager')->createConverter($entity);
     $converter->convert();
