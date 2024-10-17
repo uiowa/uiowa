@@ -339,4 +339,20 @@ class MauiApi extends ApiClientBase {
     return $data;
   }
 
+  /**
+   * Get identical courses.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getIdenticalCourses($session, $courseId) {
+    $data = $this->get("pub/registrar/course/search", [
+      'query' => [
+        'session' => $session,
+        'courseId' => $courseId,
+      ],
+    ]);
+    return $data;
+  }
+
 }
