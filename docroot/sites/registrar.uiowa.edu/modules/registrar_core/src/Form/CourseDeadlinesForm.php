@@ -458,7 +458,7 @@ class CourseDeadlinesForm extends FormBase {
           '#type' => 'markup',
           '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
           '#suffix' => '</span></p>',
-          '#markup' => $this->identicalCourses($session, $data->courseId,$data->sectionNumber),
+          '#markup' => $this->identicalCourses($session, $data->courseId, $data->sectionNumber),
         ],
       ];
 
