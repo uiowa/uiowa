@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\sitenow\Unit;
 
-use Drupal\sitenow\ConfigOverride\SimpleSitemapOverride;
 use Drupal\Tests\UnitTestCase;
+use Drupal\sitenow\ConfigOverride\SimpleSitemapOverride;
 
 /**
  * Simple sitemap config override test.

@@ -23,7 +23,7 @@ class BrandLockupDigestEmailBuilder extends EmailBuilderBase {
   /**
    * {@inheritdoc}
    */
-  public function createParams(EmailInterface $email, array $lockups = NULL, string $label = NULL, string $results = NULL, string $login_url = NULL) {
+  public function createParams(EmailInterface $email, ?array $lockups = NULL, ?string $label = NULL, ?string $results = NULL, ?string $login_url = NULL) {
     $email->setParam('lockups', $lockups)
       ->setParam('label', $label)
       ->setParam('results', $results)

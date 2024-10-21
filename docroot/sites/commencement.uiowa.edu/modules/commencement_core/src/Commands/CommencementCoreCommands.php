@@ -2,10 +2,10 @@
 
 namespace Drupal\commencement_core\Commands;
 
-use Drupal\commencement_core\EventsProcessor;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\commencement_core\EventsProcessor;
 use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drush\Commands\DrushCommands;
 
