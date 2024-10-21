@@ -387,6 +387,9 @@ class CourseDeadlinesForm extends FormBase {
    */
   private function identicalCourses($session, $courseId, $sectionNumber): string {
     $options = "";
+    if (empty($session) || empty($courseId) || empty($sectionNumber)) {
+      return $options;
+    }
 
     if ($data = $this->maui->getIdenticalCourses($session, $courseId)) {
       foreach ($data as $course) {
