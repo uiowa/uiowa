@@ -66,12 +66,23 @@ class DepartmentCodesForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $search = $form_state->getValue('search') ?? '';
+    $rows = $this->getCourseSubjectRows($search);
+
     $form['search_wrapper'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['uiowa-search-form']],
       '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
       '#suffix' => '</div>',
     ];
+
+    if (empty($rows) && !empty($search)) {
+      $form['no_results'] = [
+        '#type' => 'markup',
+        '#markup' => '<p>' . $this->t('No results found for "@search".', ['@search' => $search]) . '</p>',
+        '#prefix' => '<div class="no-results-message">',
+        '#suffix' => '</div>',
+      ];
+    }
 
     $form['search_wrapper']['search'] = [
       '#type' => 'textfield',
@@ -102,32 +113,34 @@ class DepartmentCodesForm extends FormBase {
       ];
     }
 
-    $form['table'] = [
-      '#type' => 'table',
-      '#caption' => 'Department codes',
-      '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
-      '#prefix' => '<div class="table-responsive">',
-      '#suffix' => '</div>',
-      '#header' => [
-        [
-          'data' => $this->t('Subject'),
-          'scope' => 'col',
+    if (!empty($rows)) {
+      $form['table'] = [
+        '#type' => 'table',
+        '#caption' => 'Department codes',
+        '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
+        '#prefix' => '<div class="table-responsive">',
+        '#suffix' => '</div>',
+        '#header' => [
+          [
+            'data' => $this->t('Subject'),
+            'scope' => 'col',
+          ],
+          [
+            'data' => $this->t('Legacy Code'),
+            'scope' => 'col',
+          ],
+          [
+            'data' => $this->t('Description'),
+            'scope' => 'col',
+          ],
+          [
+            'data' => $this->t('Status'),
+            'scope' => 'col',
+          ],
         ],
-        [
-          'data' => $this->t('Legacy Code'),
-          'scope' => 'col',
-        ],
-        [
-          'data' => $this->t('Description'),
-          'scope' => 'col',
-        ],
-        [
-          'data' => $this->t('Status'),
-          'scope' => 'col',
-        ],
-      ],
-      '#rows' => $this->getCourseSubjectRows($form_state->getValue('search')),
-    ];
+        '#rows' => $rows,
+      ];
+    }
 
     return $form;
   }
