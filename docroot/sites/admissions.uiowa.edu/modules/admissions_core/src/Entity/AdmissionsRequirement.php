@@ -2,9 +2,9 @@
 
 namespace Drupal\admissions_core\Entity;
 
-use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;

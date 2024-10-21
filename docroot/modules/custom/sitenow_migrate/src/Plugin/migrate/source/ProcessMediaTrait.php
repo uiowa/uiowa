@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
@@ -261,7 +262,7 @@ trait ProcessMediaTrait {
       ],
     ];
 
-    return \Drupal::service('renderer')->renderPlain($media);
+    return \Drupal::service('renderer')->renderInIsolation($media);
   }
 
   /**
@@ -409,7 +410,7 @@ trait ProcessMediaTrait {
       $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
         $dir,
         $filename,
-      ]), FileSystemInterface::EXISTS_REPLACE);
+      ]), FileExists::Replace);
     }
     catch (\Throwable $e) {
       return FALSE;

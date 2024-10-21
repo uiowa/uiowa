@@ -2,11 +2,11 @@
 
 namespace Drupal\uiowa_aggregator;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\aggregator\FeedInterface;
 use Drupal\aggregator\ItemsImporter;
 use Drupal\aggregator\Plugin\AggregatorPluginManager;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\Exception\InvalidStreamWrapperException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Render\RendererInterface;
@@ -162,7 +163,7 @@ class StaticMap extends MediaSourceBase {
                 $data = (string) \Drupal::httpClient()
                   ->get($thumbnail_url)
                   ->getBody();
-                return $this->fs->saveData($data, $destination_file, FileSystemInterface::EXISTS_REPLACE);
+                return $this->fs->saveData($data, $destination_file, FileExists::Replace);
               }
               catch (TransferException $exception) {
                 \Drupal::messenger()
