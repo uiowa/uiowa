@@ -56,7 +56,10 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
         $course_options = $form['deadlines']['course']['#options'];
         if (count($course_options) < 1) {
           $form['deadlines']['course']['#disabled'] = TRUE;
-          $form['deadlines']['course']['#empty_option'] = 'There are no courses for the selected department and session.';
+        }
+        $section_options = $form['deadlines']['section']['#options'];
+        if (count($section_options) < 1) {
+          $form['deadlines']['section']['#disabled'] = TRUE;
         }
       }
       break;
