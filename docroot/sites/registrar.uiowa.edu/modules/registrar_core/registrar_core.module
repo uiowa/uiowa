@@ -51,6 +51,16 @@ function registrar_core_preprocess_block(&$variables) {
  */
 function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'course_deadlines_form':
+      if (isset($form['deadlines']['session']) && isset($form['deadlines']['department'])) {
+        $course_options = $form['deadlines']['course']['#options'];
+        if (count($course_options) < 1) {
+          $form['deadlines']['course']['#disabled'] = TRUE;
+          $form['deadlines']['course']['#empty_option'] = 'There are no courses for the selected department and session.';
+        }
+      }
+      break;
+
     case 'gpa_calculator_form':
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
