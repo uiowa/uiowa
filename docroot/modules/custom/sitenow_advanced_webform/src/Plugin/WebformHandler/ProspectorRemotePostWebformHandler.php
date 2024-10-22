@@ -4,6 +4,7 @@ namespace Drupal\sitenow_advanced_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Webform submission remote post handler.
@@ -32,8 +33,14 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
-  public function preprocessConfirmation(array &$variables) {
-    // @todo Add preprocessing code.
+  public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
+    // @todo Load configuration.
+    // @todo Load basic auth credentials.
+    // @todo Build Guzzle request.
+    // @todo Add data from first_name, last_name, email, and phone fields.
+    // @todo Send request.
+    // @todo Handle exceptions.
+    // @todo Log request and response.
   }
 
 }
