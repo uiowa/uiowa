@@ -65,7 +65,7 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
             $section_options = $form['deadlines']['section']['#options'];
             if (count($section_options) < 1) {
               $form['deadlines']['section']['#disabled'] = TRUE;
-              $form['deadlines']['section']['#empty_option'] = 'No sections available for the selected ' . $values['course'] .  '. Please try again.';
+              $form['deadlines']['section']['#empty_option'] = 'No sections available for the selected ' . $values['course'] . '. Please try again.';
             }
           }
         }
