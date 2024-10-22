@@ -7618,3 +7618,9 @@ $sites['labcyndari.uiowa.ddev.site'] = 'cyndari.lab.uiowa.edu';
 $sites['labcyndari.dev.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
 $sites['labcyndari.stage.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
 $sites['labcyndari.prod.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+
+// Directory aliases for nbs.medicine.uiowa.edu.
+$sites['medicinenbs.uiowa.ddev.site'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.dev.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.stage.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.prod.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
