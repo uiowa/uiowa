@@ -58,14 +58,14 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
           $course_options = $form['deadlines']['course']['#options'];
           if (count($course_options) < 1) {
             $form['deadlines']['course']['#disabled'] = TRUE;
-            $form['deadlines']['course']['#empty_option'] = 'There are no courses for the selected department and session.';
+            $form['deadlines']['course']['#empty_option'] = 'No courses are available for ' . $values['department'] . ' during this session. Please try again.';
             break;
           }
           if ($values['course']) {
             $section_options = $form['deadlines']['section']['#options'];
             if (count($section_options) < 1) {
               $form['deadlines']['section']['#disabled'] = TRUE;
-              $form['deadlines']['section']['#empty_option'] = 'There are no sections for the selected course, department, and session.';
+              $form['deadlines']['section']['#empty_option'] = 'No sections available for the selected ' . $values['course'] .  '. Please try again.';
             }
           }
         }
