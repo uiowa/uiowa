@@ -2,9 +2,9 @@
 
 namespace Drupal\registrar_core\Form;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -21,23 +21,23 @@ class DepartmentCodesForm extends FormBase {
   protected $maui;
 
   /**
-   * The messenger service.
+   * The cache service.
    *
-   * @var \Drupal\Core\Messenger\MessengerInterface
+   * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected $messenger;
+  protected $cache;
 
   /**
    * CourseSubjectsTable constructor.
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The Maui API service.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache service.
    */
-  public function __construct(MauiApi $maui, MessengerInterface $messenger) {
+  public function __construct(MauiApi $maui, CacheBackendInterface $cache) {
     $this->maui = $maui;
-    $this->messenger = $messenger;
+    $this->cache = $cache;
   }
 
   /**
@@ -46,7 +46,7 @@ class DepartmentCodesForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('uiowa_maui.api'),
-      $container->get('messenger')
+      $container->get('cache.default')
     );
   }
 
@@ -56,10 +56,6 @@ class DepartmentCodesForm extends FormBase {
   public function getFormId() {
     return 'course_subjects_table';
   }
-
-  /**
-   * {@inheritdoc}
-   */
 
   /**
    * {@inheritdoc}
@@ -126,11 +122,11 @@ class DepartmentCodesForm extends FormBase {
             'scope' => 'col',
           ],
           [
-            'data' => $this->t('Legacy Code'),
+            'data' => $this->t('Description'),
             'scope' => 'col',
           ],
           [
-            'data' => $this->t('Description'),
+            'data' => $this->t('Legacy Code'),
             'scope' => 'col',
           ],
           [
@@ -156,14 +152,22 @@ class DepartmentCodesForm extends FormBase {
    */
   protected function getCourseSubjectRows($search = '') {
     $rows = [];
-    $course_subjects = $this->maui->getCourseSubjects();
+    $cid = 'registrar_core:course_subjects';
+
+    if ($cache = $this->cache->get($cid)) {
+      $course_subjects = $cache->data;
+    }
+    else {
+      $course_subjects = $this->maui->getCourseSubjects();
+      $this->cache->set($cid, $course_subjects, time() + (86400));
+    }
 
     foreach ($course_subjects as $subject) {
       $additionalInfo = (array) $subject->additionalInfo;
       $row = [
         'naturalKey' => $subject->naturalKey,
-        'itchCode' => $additionalInfo['itchCode'] ?? '',
         'description' => $subject->description,
+        'itchCode' => $additionalInfo['itchCode'] ?? '',
         'status' => $subject->status->label,
       ];
 
