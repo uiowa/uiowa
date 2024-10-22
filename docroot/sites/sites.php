@@ -7612,3 +7612,9 @@ $sites['labhrl.uiowa.ddev.site'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.dev.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.stage.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.prod.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+
+// Directory aliases for cyndari.lab.uiowa.edu.
+$sites['labcyndari.uiowa.ddev.site'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.dev.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.stage.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.prod.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
