@@ -7630,3 +7630,9 @@ $sites['medicineneurodegeneration.uiowa.ddev.site'] = 'neurodegeneration.medicin
 $sites['medicineneurodegeneration.dev.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
 $sites['medicineneurodegeneration.stage.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
 $sites['medicineneurodegeneration.prod.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+
+// Directory aliases for lweber.lab.uiowa.edu.
+$sites['lablweber.uiowa.ddev.site'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.dev.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.stage.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.prod.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
