@@ -185,7 +185,7 @@ class CourseDeadlinesForm extends FormBase {
         if (count($course_options) < 1) {
           $form['deadlines']['course']['#disabled'] = TRUE;
         }
-        if ($values['session'] && $values['department'] && $values['course']) {
+        if ($values['course']) {
           $section_options = $form['deadlines']['section']['#options'];
           if (count($section_options) < 1) {
             $form['deadlines']['section']['#disabled'] = TRUE;
