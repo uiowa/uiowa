@@ -29,4 +29,4 @@ services:
       - SIMPLETEST_BASE_URL=https://web
       - BROWSERTEST_OUTPUT_DIRECTORY=/var/www/html/reports/phpunit
       - BROWSERTEST_OUTPUT_BASE_URL=${DDEV_PRIMARY_URL}
-      - MINK_DRIVER_ARGS_WEBDRIVER=["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu","--headless", "--no-sandbox"]}}, "http://chromedriver:9515"]
+      - MINK_DRIVER_ARGS_WEBDRIVER=["chrome", {"browserName":"chrome","goog:chromeOptions":{"args":["--disable-gpu","--headless", "--no-sandbox"]}}, "http://chromedriver:9515"]
