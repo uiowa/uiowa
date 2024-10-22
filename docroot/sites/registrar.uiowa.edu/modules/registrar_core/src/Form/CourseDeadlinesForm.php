@@ -178,6 +178,22 @@ class CourseDeadlinesForm extends FormBase {
       '#validated' => TRUE,
     ];
 
+    $values = $form_state->getValues();
+    if ($values !== []) {
+      if ($values['session'] && $values['department']) {
+        $course_options = $form['deadlines']['course']['#options'];
+        if (count($course_options) < 1) {
+          $form['deadlines']['course']['#disabled'] = TRUE;
+        }
+        if ($values['session'] && $values['department'] && $values['course']) {
+          $section_options = $form['deadlines']['section']['#options'];
+          if (count($section_options) < 1) {
+            $form['deadlines']['section']['#disabled'] = TRUE;
+          }
+        }
+      }
+    }
+
     $form['deadlines']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -662,6 +678,18 @@ class CourseDeadlinesForm extends FormBase {
           ],
         ];
       }
+    }
+    elseif (!empty($session) && !empty($department) && empty($course)) {
+      $deadlines = [
+        '#type' => 'markup',
+        '#markup' => 'No courses are available for ' . $department . ' during this session. Please try again.',
+      ];
+    }
+    elseif (!empty($session) && !empty($department) && !empty($course) && empty($section)) {
+      $deadlines = [
+        '#type' => 'markup',
+        '#markup' => 'No sections available for the selected ' . $course . '. Please try again.',
+      ];
     }
     else {
       $deadlines = [
