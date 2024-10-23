@@ -93,7 +93,9 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       $response = $this->httpClient->request('POST', $request_url, $options);
       // @todo Log response?
       // Print message confirming submission.
-      $this->messenger()->addStatus($this->t('Webform submission posted to Prospector.'));
+      $this->messenger()->addStatus($this->t('Webform submission posted to Prospector. Data: <pre>@data</pre>', [
+        '@response_data' => $response->getBody()->getContents(),
+      ]));
     }
     catch (GuzzleException $e) {
       // Handle exceptions.

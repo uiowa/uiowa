@@ -64,7 +64,7 @@ class SettingsForm extends ConfigFormBase {
     // Save the Prospector site UUID.
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
-      ->set('prospector.site_uuid', $form_state->getValue('prospector.site_uuid'))
+      ->set('prospector.site_uuid', $form_state->getValue('site_uuid'))
       ->save();
 
     parent::submitForm($form, $form_state);
