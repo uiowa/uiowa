@@ -2,9 +2,12 @@
 
 namespace Drupal\sitenow_advanced_webform\Plugin\WebformHandler;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,10 +54,27 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-    // @todo Load configuration.
-    // @todo Load basic auth credentials.
-    // @todo Build Guzzle request.
-    // @todo Add data from first_name, last_name, email, and phone fields.
+    // Load configuration.
+    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
+    $site_uuid = $config->get('prospector.site_uuid');
+    // We need a site UUID to proceed.
+    if (!$site_uuid) {
+      $this->messenger()->addError($this->t('Prospector Site UUID is missing.'));
+      return;
+    }
+
+    // Load basic auth credentials from config.
+    $auth = $config->get('prospector.auth');
+    // We need auth credentials to proceed.
+    if (!isset($auth['user']) || !isset($auth['pass'])) {
+      $this->messenger()->addError($this->t('Prospector authentication credentials are missing.'));
+      return;
+    }
+    $options = [
+      'auth' => [$auth['user'], $auth['pass']],
+    ];
+
+    // Add data from first_name, last_name, email, and phone fields.
     $elements = ['first_name', 'last_name', 'email', 'phone'];
     $data = [];
     foreach ($elements as $element) {
@@ -62,11 +82,24 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
         $data[$element] = $value;
       }
     }
-    // @todo Send request.
-    $params = UrlHelper::buildQuery([$data]);
-    $response = $this->httpClient->get($request_url, $request_options);
-    // @todo Handle exceptions.
-    // @todo Log request and response.
+    $data['siteInteractionUuid'] = $site_uuid;
+
+    // Build http request.
+    $query = UrlHelper::buildQuery([$data]);
+    $request_url = Url::fromUri('https://test.its.uiowa.edu/prospect-api/api/prospect/submit', ['query' => $query])->toString();
+
+    // Send http request.
+    try {
+      $response = $this->httpClient->request('POST', $request_url, $options);
+      // @todo Log response?
+      // Print message confirming submission.
+      $this->messenger()->addStatus($this->t('Webform submission posted to Prospector.'));
+    }
+    catch (GuzzleException $e) {
+      // Handle exceptions.
+      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector.'));
+      return;
+    }
   }
 
 }
