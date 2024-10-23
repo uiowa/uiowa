@@ -54,7 +54,7 @@ class DepartmentCodesForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'course_subjects_table';
+    return 'department_codes_table';
   }
 
   /**
@@ -64,15 +64,15 @@ class DepartmentCodesForm extends FormBase {
     $search = $form_state->getValue('search') ?? '';
     $rows = $this->getCourseSubjectRows($search);
 
-    $form['search_wrapper'] = [
+    $form['department_codes']['search_wrapper'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['uiowa-search-form']],
-      '#prefix' => '<div id="final-exam-schedule-search" aria-controls="final-exam-schedule-content">',
+      '#prefix' => '<div id="department-codes-search" aria-controls="department-codes-content">',
       '#suffix' => '</div>',
     ];
 
     if (empty($rows) && !empty($search)) {
-      $form['no_results'] = [
+      $form['department_codes']['no_results'] = [
         '#type' => 'markup',
         '#markup' => '<p>' . $this->t('No results found for "@search".', ['@search' => $search]) . '</p>',
         '#prefix' => '<div class="no-results-message">',
@@ -80,7 +80,7 @@ class DepartmentCodesForm extends FormBase {
       ];
     }
 
-    $form['search_wrapper']['search'] = [
+    $form['department_codes']['search_wrapper']['search'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#title_display' => 'invisible',
@@ -88,7 +88,7 @@ class DepartmentCodesForm extends FormBase {
       '#placeholder' => $this->t('Search'),
     ];
 
-    $form['search_wrapper']['submit'] = [
+    $form['department_codes']['search_wrapper']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
       '#prefix' => '<div class="form-item">',
@@ -96,7 +96,7 @@ class DepartmentCodesForm extends FormBase {
     ];
 
     if (!empty($search)) {
-      $form['search_wrapper']['reset'] = [
+      $form['department_codes']['search_wrapper']['reset'] = [
         '#type' => 'submit',
         '#value' => $this->t('Reset'),
         '#submit' => ['::resetForm'],
@@ -110,7 +110,17 @@ class DepartmentCodesForm extends FormBase {
     }
 
     if (!empty($rows)) {
-      $form['table'] = [
+      $form['department_codes']['content'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'id' => 'department-codes-content',
+          'class' => 'element--margin__top--extra',
+          'role' => 'region',
+          'aria-live' => 'polite',
+        ],
+      ];
+
+      $form['department_codes']['content']['table'] = [
         '#type' => 'table',
         '#caption' => 'Department codes',
         '#attributes' => ['class' => ['table--hover-highlight table--gray-borders']],
