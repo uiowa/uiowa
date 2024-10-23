@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinenbs.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinenbs
+  human_name: nbs.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinenbs.prod
+drupal:
+  db:
+    database: nbs_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinenbs.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Iowa Center for Noninvasive Brain Stimulation'
