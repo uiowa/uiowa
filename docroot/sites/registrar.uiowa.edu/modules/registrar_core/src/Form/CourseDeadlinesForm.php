@@ -439,23 +439,31 @@ class CourseDeadlinesForm extends FormBase {
         ];
       }
 
+      // Add badge for input course.
+      $deadlines['course_badge'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['uiowa-maui-subject-course-section-wrapper'],
+        ],
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+        'badge' => [
+          '#type' => 'markup',
+          '#markup' => '<span class="uiowa-maui-subject-course-section badge badge--cool-gray">' . $department . ":" . $course . ":" . $data->sectionNumber . '</span>',
+        ],
+      ];
+
+      // If course exists under different name,
+      // add badge for that name as well.
       $identical_courses = $this->maui->getIdenticalCourses($session, $data->courseId);
       if ($identical_courses) {
         foreach ($identical_courses as $course) {
           $course_subject = $course->courseSubject;
           $course_number = $course->courseNumber;
-          $deadlines['course_badge'] = [
-            '#type' => 'container',
-            '#attributes' => [
-              'class' => ['uiowa-maui-subject-course-section-wrapper'],
-            ],
-            'badge' => [
-              '#type' => 'markup',
-              '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
-              '#suffix' => '</span></p>',
-              '#markup' => $course_subject . ":" . $course_number . ":" . $data->sectionNumber,
-            ],
-          ];
+          // Skip input course as it is already added.
+          if ($course_subject != $department && $course_number != $course) {
+            $deadlines['course_badge']['badge']['#markup'] .= " " . '<span class="uiowa-maui-subject-course-section badge badge--cool-gray">' . $course_subject . ":" . $course_number . ":" . $data->sectionNumber . '</span>';
+          }
         }
       }
 
