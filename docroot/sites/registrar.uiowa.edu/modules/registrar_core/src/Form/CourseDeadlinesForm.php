@@ -389,35 +389,6 @@ class CourseDeadlinesForm extends FormBase {
   }
 
   /**
-   * Helper function to generate list of identical courses.
-   *
-   * @param string $session
-   *   Current session.
-   * @param string $courseId
-   *   CourseID that is shared by identical courses.
-   * @param string $sectionNumber
-   *   The section number, also shared by identical courses.
-   *
-   * @return string
-   *   JSON decoded array of response data.
-   */
-  private function identicalCourses($session, $courseId, $sectionNumber): string {
-    $options = "";
-    if (empty($session) || empty($courseId) || empty($sectionNumber)) {
-      return $options;
-    }
-
-    if ($data = $this->maui->getIdenticalCourses($session, $courseId)) {
-      foreach ($data as $course) {
-        $course_subject = $course->courseSubject;
-        $course_number = $course->courseNumber;
-        $options = $options . $course_subject . ":" . $course_number . ":" . $sectionNumber . " ";
-      }
-    }
-    return $options;
-  }
-
-  /**
    * Deadlines markup callback.
    */
   public function deadlinesMarkup($session, $department, $course, $section): array {
@@ -468,18 +439,25 @@ class CourseDeadlinesForm extends FormBase {
         ];
       }
 
-      $deadlines['course_badge'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => ['uiowa-maui-subject-course-section-wrapper'],
-        ],
-        'badge' => [
-          '#type' => 'markup',
-          '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
-          '#suffix' => '</span></p>',
-          '#markup' => $this->identicalCourses($session, $data->courseId, $data->sectionNumber),
-        ],
-      ];
+      $identical_courses = $this->maui->getIdenticalCourses($session, $data->courseId);
+      if ($identical_courses) {
+        foreach ($identical_courses as $course) {
+          $course_subject = $course->courseSubject;
+          $course_number = $course->courseNumber;
+          $deadlines['course_badge'] = [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => ['uiowa-maui-subject-course-section-wrapper'],
+            ],
+            'badge' => [
+              '#type' => 'markup',
+              '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
+              '#suffix' => '</span></p>',
+              '#markup' => $course_subject . ":" . $course_number . ":" . $data->sectionNumber,
+            ],
+          ];
+        }
+      }
 
       if ($data->isIndependentStudySection) {
         $deadlines['independent_study_wrapper'] = [
