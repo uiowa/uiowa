@@ -178,6 +178,7 @@ class CourseDeadlinesForm extends FormBase {
       '#validated' => TRUE,
     ];
 
+    // Disable select fields if no courses or sections available.
     $values = $form_state->getValues();
     if ($values !== []) {
       if ($values['session'] && $values['department']) {

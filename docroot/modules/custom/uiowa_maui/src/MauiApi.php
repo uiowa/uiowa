@@ -340,7 +340,7 @@ class MauiApi extends ApiClientBase {
   }
 
   /**
-   * Get identical courses.
+   * Get identical, cross-referenced courses.
    *
    * @return mixed
    *   The API response data.
