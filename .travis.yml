@@ -40,7 +40,7 @@ script:
 - rm LICENSE.chromedriver
 deploy:
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
+  script: "$TRAVIS_BUILD_DIR/scripts/deploy_branch"
   skip_cleanup: true
   on:
     branch: develop
