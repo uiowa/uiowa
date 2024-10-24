@@ -504,8 +504,14 @@ class CourseDeadlinesForm extends FormBase {
       $deadlines['deadlines_table'] = [
         '#type' => 'table',
         '#header' => [
-          $this->t('Deadline'),
-          $this->t('Date'),
+          [
+            'data' => $this->t('Deadline'),
+            'scope' => 'col',
+          ],
+          [
+            'data' => $this->t('Date'),
+            'scope' => 'col',
+          ],
         ],
         '#rows' => $deadline_rows,
         '#attributes' => [

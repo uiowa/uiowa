@@ -150,10 +150,22 @@ class FinalExamScheduleForm extends FormBase {
     ];
 
     $headers = [
-      'Sections',
-      'Course Title',
-      'Exam Date and Time',
-      'Rooms',
+      [
+        'data' => 'Sections',
+        'scope' => 'col',
+      ],
+      [
+        'data' => 'Course Title',
+        'scope' => 'col',
+      ],
+      [
+        'data' => 'Exam Date and Time',
+        'scope' => 'col',
+      ],
+      [
+        'data' => 'Rooms',
+        'scope' => 'col',
+      ],
     ];
 
     $data = $data['NewDataSet']['Table'];
