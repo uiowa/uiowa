@@ -7,6 +7,7 @@
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\User;
 
 /**
  * Populate Building vocabulary.
@@ -62,4 +63,34 @@ function its_core_update_10001() {
   }
 
   return t("The 'single-alert-bcc' configuration has been renamed to 'single-alert-secondary'.");
+}
+
+/**
+ * Move folks to new role.
+ */
+function its_core_update_10002() {
+  // Get users with the 'editor' role.
+  $query = \Drupal::database()->select('user__roles', 'ur')
+    ->fields('ur', ['entity_id'])
+    ->condition('ur.roles_target_id', 'editor');
+
+  // Use a subquery to get users who also have the 'publisher' role.
+  $query->condition('ur.entity_id',
+    \Drupal::database()->select('user__roles', 'ur_sub')
+      ->fields('ur_sub', ['entity_id'])
+      ->condition('ur_sub.roles_target_id', 'publisher'),
+    'IN');
+
+  // Fetch the user IDs.
+  $uids = $query->execute()->fetchCol();
+
+  if (!empty($uids)) {
+    // Load the users and modify roles.
+    $users = User::loadMultiple($uids);
+    foreach ($users as $user) {
+      $user->addRole('help_desk');
+      $user->removeRole('publisher');
+      $user->save();
+    }
+  }
 }
