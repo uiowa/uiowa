@@ -671,13 +671,13 @@ class CourseDeadlinesForm extends FormBase {
         ];
       }
     }
-    elseif (!empty($session) && !empty($department) && empty($course)) {
+    elseif (!empty($session) && !empty($department) && empty($this->courseOptions($session, $department))) {
       $deadlines = [
         '#type' => 'markup',
         '#markup' => 'No courses are available for ' . $department . ' during this session. Please try again.',
       ];
     }
-    elseif (!empty($session) && !empty($department) && !empty($course) && empty($section)) {
+    elseif (!empty($session) && !empty($department) && !empty($course) && empty($this->sectionOptions($session, $department, $course))) {
       $deadlines = [
         '#type' => 'markup',
         '#markup' => 'No sections available for the selected ' . $course . '. Please try again.',
