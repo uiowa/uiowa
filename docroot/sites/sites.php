@@ -7612,3 +7612,27 @@ $sites['labhrl.uiowa.ddev.site'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.dev.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.stage.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
 $sites['labhrl.prod.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+
+// Directory aliases for cyndari.lab.uiowa.edu.
+$sites['labcyndari.uiowa.ddev.site'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.dev.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.stage.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.prod.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+
+// Directory aliases for nbs.medicine.uiowa.edu.
+$sites['medicinenbs.uiowa.ddev.site'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.dev.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.stage.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.prod.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+
+// Directory aliases for neurodegeneration.medicine.uiowa.edu.
+$sites['medicineneurodegeneration.uiowa.ddev.site'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.dev.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.stage.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.prod.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+
+// Directory aliases for lweber.lab.uiowa.edu.
+$sites['lablweber.uiowa.ddev.site'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.dev.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.stage.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.prod.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
