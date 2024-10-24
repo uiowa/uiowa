@@ -30,7 +30,7 @@ class CevalidationsrConfigurationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, Request $request = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?Request $request = NULL) {
     $config = $this->config('cevalidationsr.settings');
     // $state  = \Drupal::state();
     $form["#attributes"]["autocomplete"] = "off";

@@ -7600,3 +7600,39 @@ $sites['tippieaaf.uiowa.ddev.site'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.dev.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.stage.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
 $sites['tippieaaf.prod.drupal.uiowa.edu'] = 'aaf.tippie.uiowa.edu';
+
+// Directory aliases for prssa.org.uiowa.edu.
+$sites['orgprssa.uiowa.ddev.site'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.dev.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.stage.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+$sites['orgprssa.prod.drupal.uiowa.edu'] = 'prssa.org.uiowa.edu';
+
+// Directory aliases for hrl.lab.uiowa.edu.
+$sites['labhrl.uiowa.ddev.site'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.dev.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.stage.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+$sites['labhrl.prod.drupal.uiowa.edu'] = 'hrl.lab.uiowa.edu';
+
+// Directory aliases for cyndari.lab.uiowa.edu.
+$sites['labcyndari.uiowa.ddev.site'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.dev.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.stage.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+$sites['labcyndari.prod.drupal.uiowa.edu'] = 'cyndari.lab.uiowa.edu';
+
+// Directory aliases for nbs.medicine.uiowa.edu.
+$sites['medicinenbs.uiowa.ddev.site'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.dev.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.stage.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+$sites['medicinenbs.prod.drupal.uiowa.edu'] = 'nbs.medicine.uiowa.edu';
+
+// Directory aliases for neurodegeneration.medicine.uiowa.edu.
+$sites['medicineneurodegeneration.uiowa.ddev.site'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.dev.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.stage.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+$sites['medicineneurodegeneration.prod.drupal.uiowa.edu'] = 'neurodegeneration.medicine.uiowa.edu';
+
+// Directory aliases for lweber.lab.uiowa.edu.
+$sites['lablweber.uiowa.ddev.site'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.dev.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.stage.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+$sites['lablweber.prod.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';

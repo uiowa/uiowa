@@ -1,0 +1,14 @@
+# https://github.com/mglaman/drupal-check?tab=readme-ov-file#rollback-update-to-phpstan-level-2-for-deprecation-analysis
+parameters:
+  customRulesetUsed: true
+  ignoreErrors:
+    - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
+  reportUnmatchedIgnoredErrors: false
+  excludePaths:
+    - */sites/simpletest/*
+    - */sites/default/files/*
+    - */tests/Drupal/Tests/Listeners/Legacy/*
+    - */tests/fixtures/*.php
+    - */settings*.php
+    - */bower_components/*
+    - */node_modules/*

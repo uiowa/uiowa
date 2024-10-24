@@ -884,7 +884,7 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
  *
  * @see options_allowed_values()
  */
-function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $types = [];
 
   $allowed_types = \Drupal::entityTypeManager()
