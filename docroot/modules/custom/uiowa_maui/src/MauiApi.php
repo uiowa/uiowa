@@ -244,22 +244,24 @@ class MauiApi extends ApiClientBase {
   }
 
   /**
-   * The section/course search web service by internal id.
+   * The section/course search web service.
    *
-   * GET /pub/registrar/sections/{sectionId: /d+}.
+   * GET /pub/registrar/sections/{sessionCode:/d{5}}/{subject:/w{2,4}}/{course:/w{3,4}}/{section:/w{3,4}}.
    *
+   * @param string $session
+   *   The session id.
+   * @param string $department
+   *   The department id.
+   * @param string $course
+   *   The course id.
    * @param string $section
    *   The section id.
-   * @param array $exclude
-   *   The exclusion parameters.
    *
    * @return array
    *   JSON decoded array of response data.
    */
-  public function getSection($section, $exclude) {
-    return $this->get("pub/registrar/sections/{$section}", [
-      'exclude' => json_encode($exclude),
-    ]);
+  public function getSection($session, $department, $course, $section) {
+    return $this->get("pub/registrar/sections/{$session}/{$department}/{$course}/{$section}");
   }
 
   /**

@@ -191,7 +191,7 @@ class CourseDeadlinesForm extends FormBase {
     $form['deadlines']['deadlines'] = [
       '#prefix' => '<div id="uiowa-maui-course-deadlines-content" class="border element--padding__all element--margin__top--extra">',
       '#suffix' => '</div>',
-      'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section),
+      'deadlines' => $this->deadlinesMarkup($session, $department, $course, $section, $form['deadlines']['section']['#options'][$section]),
     ];
 
     return $form;
@@ -375,7 +375,7 @@ class CourseDeadlinesForm extends FormBase {
   /**
    * Deadlines markup callback.
    */
-  public function deadlinesMarkup($session, $department, $course, $section): array {
+  public function deadlinesMarkup($session, $department, $course, $section, $named_section): array {
     $deadlines = [];
 
     if (!empty($session) && !empty($department) && !empty($course) && !empty($section)) {
@@ -386,7 +386,7 @@ class CourseDeadlinesForm extends FormBase {
         'restrictions' => TRUE,
       ];
 
-      $data = $this->maui->getSection($section, $exclude);
+      $data = $this->maui->getSection($session, $department, $course, $named_section);
       if (empty($data)) {
         return $deadlines;
       }
