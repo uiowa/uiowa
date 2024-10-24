@@ -50,9 +50,25 @@ function its_core_update_8001() {
 }
 
 /**
- * Move folks to new role.
+ * Rename 'single-alert-bcc' configuration to 'single-alert-secondary'.
  */
 function its_core_update_10001() {
+  $config = \Drupal::configFactory()->getEditable('its_core.settings');
+  $old_value = $config->get('single-alert-bcc');
+
+  if ($old_value !== NULL) {
+    $config->set('single-alert-secondary', $old_value);
+    $config->clear('single-alert-bcc');
+    $config->save(TRUE);
+  }
+
+  return t("The 'single-alert-bcc' configuration has been renamed to 'single-alert-secondary'.");
+}
+
+/**
+ * Move folks to new role.
+ */
+function its_core_update_10002() {
   // Get users with the 'editor' role.
   $query = \Drupal::database()->select('user__roles', 'ur')
     ->fields('ur', ['entity_id'])

@@ -27,11 +27,13 @@ interface ApiClientInterface {
    *   The entire API endpoint URL or just the path relative to the base URL.
    * @param array $options
    *   Additional request options. Accept and API key set automatically.
+   * @param string $application
+   *   The application to accept, e.g. json or xml.
    *
    * @return mixed
    *   The API response data or FALSE.
    */
-  public function request(string $method, string $endpoint, array $options = []);
+  public function request(string $method, string $endpoint, array $options = [], string $application = 'json');
 
   /**
    * Performs a 'GET' request and returns response data.
