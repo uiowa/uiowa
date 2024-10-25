@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Form for course deadlines block.
@@ -28,9 +30,12 @@ class CourseDeadlinesForm extends FormBase {
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *    The request stack service.
    */
-  public function __construct(MauiApi $maui) {
+  public function __construct(MauiApi $maui, protected RequestStack $request_stack) {
     $this->maui = $maui;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -38,7 +43,8 @@ class CourseDeadlinesForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_maui.api')
+      $container->get('uiowa_maui.api'),
+      $container->get('request_stack')
     );
   }
 
@@ -54,6 +60,10 @@ class CourseDeadlinesForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    // Check if we have a form value set for the audience
+    // and if not, check if we have a valid query param in the URL.
+    $params = $this->requestStack->getCurrentRequest()->query;
+
     $form['#attached']['library'][] = 'uids_base/callout';
 
     $wrapper_id = $this->getFormId() . '-wrapper';
@@ -65,7 +75,12 @@ class CourseDeadlinesForm extends FormBase {
     if ($trigger = $form_state->getTriggeringElement()) {
       $trigger = $trigger['#name'];
     }
-    $session = $form_state->getValue('session');
+
+    $param_index = 'session';
+    $param_allowed = $this->sessionOptions();
+    $param = $this->getFormValue($form_state, $param_index, $param_allowed, $params);
+    $session = $param;
+
     $department = $form_state->getValue('department');
     $course = $form_state->getValue('course');
     $section = $form_state->getValue('section');
@@ -105,7 +120,7 @@ class CourseDeadlinesForm extends FormBase {
       '#title' => $this->t('Session'),
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
-      '#options' => $this->sessionOptions(4, 4, TRUE),
+      '#options' => $this->sessionOptions(),
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines',
@@ -328,6 +343,32 @@ class CourseDeadlinesForm extends FormBase {
     }
 
     return $options;
+  }
+
+  /**
+   * Helper function to return proper form value.
+   */
+  private function getFormValue(
+    FormStateInterface $form_state,
+    String $param_index,
+    Array $param_allowed,
+    InputBag $params
+  ): String {
+    $param = '';
+    if ($form_state->getValue($param_index)) {
+      $param = $form_state->getValue($param_index);
+    }
+    elseif ($params->has($param_index)) {
+      $param = $params->get($param_index);
+
+      // If the given audience param doesn't match our available options,
+      // default to ALL.
+      if (!in_array($param, $param_allowed)) {
+        $param = '';
+      }
+    }
+
+    return $param;
   }
 
   /**
