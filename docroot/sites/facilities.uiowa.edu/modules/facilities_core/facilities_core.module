@@ -31,7 +31,7 @@ use Drupal\node\NodeInterface;
  *
  * @see options_allowed_values()
  */
-function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
     'cambus' => 'Cambus',
     'coralville' => 'Coralville',
@@ -54,7 +54,7 @@ function facilities_core_get_affected_bus_routes_options(FieldStorageDefinitionI
  *
  * @see options_allowed_values()
  */
-function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function facilities_core_get_artwork_status_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
     'active' => 'Active',
     'notOnView' => 'Not Currently On View',

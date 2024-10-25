@@ -4,6 +4,7 @@ namespace Drupal\facilities_core;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
@@ -161,7 +162,7 @@ class BuildingsProcessor extends EntityProcessorBase {
 
         if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
           $data = file_get_contents($result->imageUrl);
-          $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileSystemInterface::EXISTS_REPLACE);
+          $file = \Drupal::service('file.repository')->writeData($data, "{$destination}{$building_number}.jpg", FileExists::Replace);
 
           $building_formal_name = $result?->buildingFormalName ?: '';
 

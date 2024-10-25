@@ -47,7 +47,7 @@ class IntranetHelper {
    * @return bool
    *   Whether the code exists and is in the map.
    */
-  public static function checkStatusCode(int $code = NULL): bool {
+  public static function checkStatusCode(?int $code = NULL): bool {
     return !is_null($code) && in_array($code, array_keys(self::getStatusCodeMap()));
   }
 
