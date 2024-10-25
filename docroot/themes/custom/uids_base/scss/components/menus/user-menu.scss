@@ -1,3 +1,28 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/menus/user-menu/_user-menu.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
+.menu--account {
+  .menu {
+    @include flexbox;
+    @include margin($top: $md, $left: 0, $bottom: $sm);
+    li {
+      @include flexbox;
+      a {
+        display: block;
+        text-decoration: none;
+        color: $dark-gray;
+        border: 1px solid $grey-light;
+        border-right: none;
+        @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+        &:hover {
+          background: $light;
+        }
+      }
+      &:last-child {
+        a {
+          border-right: 1px solid $grey-light;
+        }
+      }
+    }
+  }
+}
