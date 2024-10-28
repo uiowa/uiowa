@@ -100,9 +100,11 @@
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {
       @include bttn--secondary;
-      border: 1px solid $secondary;
       @include bttn--focus;
-      color: $white !important;
+      & {
+        border: 1px solid $secondary;
+        color: $white !important;
+      }
 
       &:after {
         background-color: $primary;
@@ -261,8 +263,10 @@
 
     a.btn-primary {
       @include bttn--primary;
-      border: 1px solid $primary;
       @include bttn--focus;
+      & {
+        border: 1px solid $primary;
+      }
 
       &:after {
         background-color: $secondary;
@@ -336,9 +340,12 @@
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {
       @include bttn--primary;
-      border: 1px solid $primary;
       @include bttn--focus;
-      color: $secondary !important;
+      & {
+        border: 1px solid $primary;
+        color: $secondary !important;
+      }
+
 
       &:after {
         background-color: $secondary;
@@ -542,9 +549,11 @@
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {
       @include bttn--primary;
-      border: 1px solid $primary;
       @include bttn--focus;
-      color: $secondary !important;
+      & {
+        border: 1px solid $primary;
+        color: $secondary !important;
+      }
 
       &:after {
         background-color: $secondary;
@@ -723,9 +732,12 @@
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {
       @include bttn--primary;
-      border: 1px solid $primary;
       @include bttn--focus;
-      color: $secondary !important;
+
+      & {
+        border: 1px solid $primary;
+        color: $secondary !important;
+      }
 
       &:after {
         background-color: $secondary;
