@@ -260,7 +260,7 @@ class MauiApi extends ApiClientBase {
     return $this->get("pub/registrar/sections/{$section}", [
       'query' => [
         'exclude' => json_encode($exclude),
-        ]
+      ],
     ]);
   }
 
