@@ -258,7 +258,9 @@ class MauiApi extends ApiClientBase {
    */
   public function getSection($section, $exclude) {
     return $this->get("pub/registrar/sections/{$section}", [
-      'exclude' => json_encode($exclude),
+      'query' => [
+        'exclude' => json_encode($exclude),
+        ]
     ]);
   }
 
