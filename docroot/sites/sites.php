@@ -7642,3 +7642,9 @@ $sites['examservices.uiowa.ddev.site'] = 'examservices.uiowa.edu';
 $sites['examservices.dev.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
 $sites['examservices.stage.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
 $sites['examservices.prod.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
+
+// Directory aliases for brazilianjiu-jitsuclub.org.uiowa.edu.
+$sites['orgbrazilianjiu-jitsuclub.uiowa.ddev.site'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
+$sites['orgbrazilianjiu-jitsuclub.dev.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
+$sites['orgbrazilianjiu-jitsuclub.stage.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
+$sites['orgbrazilianjiu-jitsuclub.prod.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
