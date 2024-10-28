@@ -7648,3 +7648,9 @@ $sites['orgbrazilianjiu-jitsuclub.uiowa.ddev.site'] = 'brazilianjiu-jitsuclub.or
 $sites['orgbrazilianjiu-jitsuclub.dev.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
 $sites['orgbrazilianjiu-jitsuclub.stage.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
 $sites['orgbrazilianjiu-jitsuclub.prod.drupal.uiowa.edu'] = 'brazilianjiu-jitsuclub.org.uiowa.edu';
+
+// Directory aliases for legalclinic.law.uiowa.edu.
+$sites['lawlegalclinic.uiowa.ddev.site'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
