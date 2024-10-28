@@ -178,6 +178,23 @@ class CourseDeadlinesForm extends FormBase {
       '#validated' => TRUE,
     ];
 
+    // Disable select fields if no courses or sections available.
+    $values = $form_state->getValues();
+    if ($values !== []) {
+      if ($values['session'] && $values['department']) {
+        $course_options = $form['deadlines']['course']['#options'];
+        if (count($course_options) < 1) {
+          $form['deadlines']['course']['#disabled'] = TRUE;
+        }
+        if ($values['course']) {
+          $section_options = $form['deadlines']['section']['#options'];
+          if (count($section_options) < 1) {
+            $form['deadlines']['section']['#disabled'] = TRUE;
+          }
+        }
+      }
+    }
+
     $form['deadlines']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -423,21 +440,33 @@ class CourseDeadlinesForm extends FormBase {
         ];
       }
 
+      // Add badge for input course.
       $deadlines['course_badge'] = [
         '#type' => 'container',
         '#attributes' => [
           'class' => ['uiowa-maui-subject-course-section-wrapper'],
         ],
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
         'badge' => [
           '#type' => 'markup',
-          '#prefix' => '<p><span class="uiowa-maui-subject-course-section badge badge--cool-gray">',
-          '#suffix' => '</span></p>',
-          '#markup' => $this->t('@subject_course:@section_number', [
-            '@subject_course' => $data->subjectCourse,
-            '@section_number' => $data->sectionNumber,
-          ]),
+          '#markup' => '<span class="uiowa-maui-subject-course-section badge badge--cool-gray">' . $department . ":" . $course . ":" . $data->sectionNumber . '</span>',
         ],
       ];
+
+      // If course exists under different name,
+      // add badge for that name as well.
+      $identical_courses = $this->maui->getIdenticalCourses($session, $data->courseId);
+      if ($identical_courses) {
+        foreach ($identical_courses as $course) {
+          $course_subject = $course->courseSubject;
+          $course_number = $course->courseNumber;
+          // Skip input course as it is already added.
+          if ($course_subject != $department && $course_number != $course) {
+            $deadlines['course_badge']['badge']['#markup'] .= " " . '<span class="uiowa-maui-subject-course-section badge badge--cool-gray">' . $course_subject . ":" . $course_number . ":" . $data->sectionNumber . '</span>';
+          }
+        }
+      }
 
       if ($data->isIndependentStudySection) {
         $deadlines['independent_study_wrapper'] = [
@@ -504,8 +533,14 @@ class CourseDeadlinesForm extends FormBase {
       $deadlines['deadlines_table'] = [
         '#type' => 'table',
         '#header' => [
-          $this->t('Deadline'),
-          $this->t('Date'),
+          [
+            'data' => $this->t('Deadline'),
+            'scope' => 'col',
+          ],
+          [
+            'data' => $this->t('Date'),
+            'scope' => 'col',
+          ],
         ],
         '#rows' => $deadline_rows,
         '#attributes' => [
@@ -636,6 +671,18 @@ class CourseDeadlinesForm extends FormBase {
           ],
         ];
       }
+    }
+    elseif (!empty($session) && !empty($department) && empty($this->courseOptions($session, $department))) {
+      $deadlines = [
+        '#type' => 'markup',
+        '#markup' => 'No courses are available for ' . $department . ' during this session. Please try again.',
+      ];
+    }
+    elseif (!empty($session) && !empty($department) && !empty($course) && empty($this->sectionOptions($session, $department, $course))) {
+      $deadlines = [
+        '#type' => 'markup',
+        '#markup' => 'No sections available for the selected ' . $course . '. Please try again.',
+      ];
     }
     else {
       $deadlines = [
