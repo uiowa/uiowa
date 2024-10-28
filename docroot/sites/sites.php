@@ -7636,3 +7636,9 @@ $sites['lablweber.uiowa.ddev.site'] = 'lweber.lab.uiowa.edu';
 $sites['lablweber.dev.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
 $sites['lablweber.stage.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
 $sites['lablweber.prod.drupal.uiowa.edu'] = 'lweber.lab.uiowa.edu';
+
+// Directory aliases for examservices.uiowa.edu.
+$sites['examservices.uiowa.ddev.site'] = 'examservices.uiowa.edu';
+$sites['examservices.dev.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
+$sites['examservices.stage.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
+$sites['examservices.prod.drupal.uiowa.edu'] = 'examservices.uiowa.edu';
