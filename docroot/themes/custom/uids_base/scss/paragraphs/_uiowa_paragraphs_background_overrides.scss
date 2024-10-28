@@ -137,7 +137,7 @@
             color: $white;
 
             &:hover {
-              background-color: lighten(#000000, 20%);
+              background-color: color.scale(#000000, $lightness: 20%);
               color: $white;
               cursor: pointer;
             }
@@ -145,7 +145,7 @@
         }
 
         &>a:hover {
-          background-color: lighten(#000000, 20%);
+          background-color: color.scale(#000000, $lightness: 20%);
           color: $white;
         }
       }
@@ -383,17 +383,17 @@
         &.is-active {
           &>a {
             color: $white;
-            background-color: lighten(#000000, 20%);
+            background-color: color.scale(#000000, $lightness: 20%);
 
             &:hover {
-              background-color: lighten(#000000, 10%);
+              background-color: color.scale(#000000, $lightness: 10%);
               cursor: pointer;
             }
           }
         }
 
         &>a:hover {
-          background-color: lighten(#000000, 10%);
+          background-color: color.scale(#000000, $lightness: 10%);
           color: $white;
         }
       }
@@ -590,17 +590,17 @@
         &.is-active {
           &>a {
             color: $white;
-            background-color: lighten(#000000, 20%);
+            background-color: color.scale(#000000, $lightness: 20%);
 
             &:hover {
-              background-color: lighten(#000000, 10%);
+              background-color: color.scale(#000000, $lightness: 10%);
               cursor: pointer;
             }
           }
         }
 
         &>a:hover {
-          background-color: lighten(#000000, 10%);
+          background-color: color.scale(#000000, $lightness: 10%);
           color: $white;
         }
       }
@@ -762,18 +762,18 @@
       .pager__item {
         &.is-active {
           &>a {
-            background-color: darken($light, 20%);
+            background-color: color.scale($light, $lightness: -20%);
             color: $secondary;
 
             &:hover {
-              background-color: darken($light, 40%);
+              background-color: color.scale($light, $lightness: -40%);
               cursor: pointer;
             }
           }
         }
 
         &>a:hover {
-          background-color: darken($light, 40%);
+          background-color: color.scale($light, $lightness: -40%);
         }
       }
     }
