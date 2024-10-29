@@ -25,6 +25,9 @@ class CourseDeadlinesForm extends FormBase {
    */
   protected $maui;
 
+  private $cachedFormState;
+  private $cachedParams;
+
   /**
    * HoursFilterForm constructor.
    *
@@ -64,6 +67,9 @@ class CourseDeadlinesForm extends FormBase {
     // and if not, check if we have a valid query param in the URL.
     $params = $this->requestStack->getCurrentRequest()->query;
 
+    $this->cachedFormState = $form_state;
+    $this->cachedParams = $params;
+
     $form['#attached']['library'][] = 'uids_base/callout';
 
     $wrapper_id = $this->getFormId() . '-wrapper';
@@ -76,14 +82,10 @@ class CourseDeadlinesForm extends FormBase {
       $trigger = $trigger['#name'];
     }
 
-    $param_index = 'session';
-    $param_allowed = $this->sessionOptions();
-    $param = $this->getFormValue($form_state, $param_index, $param_allowed, $params);
-    $session = $param;
-
-    $department = $form_state->getValue('department');
-    $course = $form_state->getValue('course');
-    $section = $form_state->getValue('section');
+    $session = $this->getFormValue('session', $this->sessionOptions());
+    $department = $this->getFormValue('department', $this->departmentOptions());
+    $course = $this->getFormValue('course', $this->courseOptions($session, $department));
+    $section = $this->getFormValue('section', $this->sectionOptions($session, $department, $course));
 
     // For each form interaction of session, department, or course,
     // we need to re-set the fields below department, as course
@@ -121,6 +123,7 @@ class CourseDeadlinesForm extends FormBase {
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
       '#options' => $this->sessionOptions(),
+      '#default_value' => $session ?? NULL,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines',
@@ -182,7 +185,7 @@ class CourseDeadlinesForm extends FormBase {
       '#description' => $this->t('Select a section to display course deadline information.'),
       '#empty_option' => '- Section -',
       '#options' => $section_options,
-      '#default_value' => $section,
+      '#default_value' => $section ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-section-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
@@ -349,11 +352,11 @@ class CourseDeadlinesForm extends FormBase {
    * Helper function to return proper form value.
    */
   private function getFormValue(
-    FormStateInterface $form_state,
     String $param_index,
-    Array $param_allowed,
-    InputBag $params
+    Array $param_allowed
   ): String {
+    $form_state = $this->cachedFormState;
+    $params = $this->cachedParams;
     $param = '';
     if ($form_state->getValue($param_index)) {
       $param = $form_state->getValue($param_index);
@@ -363,7 +366,7 @@ class CourseDeadlinesForm extends FormBase {
 
       // If the given audience param doesn't match our available options,
       // default to ALL.
-      if (!in_array($param, $param_allowed)) {
+      if (!array_key_exists($param, $param_allowed)) {
         $param = '';
       }
     }
