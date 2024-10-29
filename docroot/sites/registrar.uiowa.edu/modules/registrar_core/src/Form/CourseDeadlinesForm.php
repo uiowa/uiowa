@@ -24,7 +24,18 @@ class CourseDeadlinesForm extends FormBase {
    */
   protected $maui;
 
+  /**
+   * A variable to cache the form state of the form.
+   *
+   * @var \Drupal\Core\Form\FormStateInterface
+   */
   private $cachedFormState;
+
+  /**
+   * A variable to cache the form state of the form.
+   *
+   * @var \Symfony\Component\HttpFoundation\InputBag
+   */
   private $cachedParams;
 
   /**
@@ -347,7 +358,10 @@ class CourseDeadlinesForm extends FormBase {
   }
 
   /**
-   * Helper function to return proper form value based on user input and URL query parameters.
+   * Helper function to return proper form value.
+   *
+   * Uses user input and URL query parameters
+   * to determine proper form value.
    */
   private function getFormValue(
     String $param_index,
