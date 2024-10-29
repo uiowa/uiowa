@@ -10,7 +10,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -34,7 +33,7 @@ class CourseDeadlinesForm extends FormBase {
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *    The request stack service.
+   *   The request stack service.
    */
   public function __construct(MauiApi $maui, protected RequestStack $request_stack) {
     $this->maui = $maui;
@@ -63,8 +62,7 @@ class CourseDeadlinesForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Check if we have a form value set for the audience
-    // and if not, check if we have a valid query param in the URL.
+    // Check if we have a valid query param in the URL.
     $params = $this->requestStack->getCurrentRequest()->query;
 
     $this->cachedFormState = $form_state;
@@ -349,26 +347,29 @@ class CourseDeadlinesForm extends FormBase {
   }
 
   /**
-   * Helper function to return proper form value.
+   * Helper function to return proper form value based on user input and URL query parameters.
    */
   private function getFormValue(
     String $param_index,
-    Array $param_allowed
+    Array $param_allowed,
   ): String {
+
+    // Get cached values.
     $form_state = $this->cachedFormState;
     $params = $this->cachedParams;
+
+    // If the user has already entered a value, use that.
     $param = '';
     if ($form_state->getValue($param_index)) {
       $param = $form_state->getValue($param_index);
     }
-    elseif ($params->has($param_index)) {
-      $param = $params->get($param_index);
 
-      // If the given audience param doesn't match our available options,
-      // default to ALL.
-      if (!array_key_exists($param, $param_allowed)) {
-        $param = '';
-      }
+    // Else if the given audience param matches our available options,
+    // check if we have the current parameter index in the URL query params.
+    elseif (array_key_exists($params->get($param_index), $param_allowed) && $params->has($param_index)) {
+
+      // And if we do, set it as our parameter to be used in the form.
+      $param = $params->get($param_index);
     }
 
     return $param;
