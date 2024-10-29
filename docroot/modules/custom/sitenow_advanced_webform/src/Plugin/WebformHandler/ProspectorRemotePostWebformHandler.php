@@ -71,7 +71,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       return;
     }
     $options = [
-      'auth' => [$auth['user'], $auth['pass']],
+      'auth' => array_values($auth),
     ];
 
     // Add data from first_name, last_name, email, and phone fields.
@@ -85,8 +85,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $data['siteInteractionUuid'] = $site_uuid;
 
     // Build http request.
-    $query = UrlHelper::buildQuery([$data]);
-    $request_url = Url::fromUri('https://test.its.uiowa.edu/prospect-api/api/prospect/submit', ['query' => $query])->toString();
+    $request_url = Url::fromUri('https://test.its.uiowa.edu/prospect-api/api/prospect/submit', ['query' => $data])->toString();
 
     // Send http request.
     try {
@@ -99,7 +98,9 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     }
     catch (GuzzleException $e) {
       // Handle exceptions.
-      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector.'));
+      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector. Error: @error', [
+        '@error' => $e->getMessage(),
+      ]));
       return;
     }
   }
