@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..c3e0bd5e6 100644
+index 4031da475..41d2b47b8 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,15 @@
@@ -18,7 +18,7 @@ index 4031da475..c3e0bd5e6 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
-@@ -60,6 +69,60 @@ AddEncoding gzip svgz
+@@ -60,6 +69,64 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
@@ -76,10 +76,14 @@ index 4031da475..c3e0bd5e6 100644
 +  RewriteCond %{REQUEST_URI} ^/itu$ [NC]
 +  RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
 +
++  # Redirect www and writinguniversity.uiowa.edu to writinguniversity.org.
++  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.uiowa\.edu$ [NC]
++  RewriteRule ^(.*)$ https://www.writinguniversity.org/$1 [L,R=301]
++
    # Set "protossl" to "s" if we were accessed via https://.  This is used later
    # if you enable "www." stripping or enforcement, in order to ensure that
    # you don't bounce between http and https.
-@@ -168,6 +231,10 @@ AddEncoding gzip svgz
+@@ -168,6 +235,10 @@ AddEncoding gzip svgz
        # Force proxies to cache gzipped & non-gzipped css/js files separately.
        Header append Vary Accept-Encoding
      </FilesMatch>
