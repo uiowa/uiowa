@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawlegalclinic.uiowa.ddev.site
+    protocol: https
+  machine_name: lawlegalclinic
+  human_name: legalclinic.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawlegalclinic.prod
+drupal:
+  db:
+    database: legalclinic_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawlegalclinic.prod.drupal.uiowa.edu'
+  requester: couhoffman
+  site-name: 'University of Iowa Clinical Law Programs'
