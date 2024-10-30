@@ -45,7 +45,14 @@ class SearchOverlay {
 
       // If opening the search, wait longer then move focus.
       if (isExpanded === 'true') {
-        setTimeout(() => this.searchInput.focus(), 200);
+        if (!this.searchInput) {
+          this.searchInput = document.getElementsByName('search-terms')[0];
+        }
+
+        setTimeout(() => {
+            this.searchInput.focus()
+          }
+          ,750);
       }
     }
   }
