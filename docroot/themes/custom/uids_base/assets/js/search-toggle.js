@@ -42,6 +42,7 @@ class SearchOverlay {
       // Update other attributes and classes.
       this.wrapper.setAttribute('aria-hidden', isSearchOpen ? 'true' : 'false');
       this.body.classList.toggle('search-is-open');
+      Drupal.announce(isSearchOpen ? 'Search form closed.' : 'Search form expanded and focus changed.');
 
       // If opening the search, wait longer then move focus.
       if (isExpanded === 'true') {
