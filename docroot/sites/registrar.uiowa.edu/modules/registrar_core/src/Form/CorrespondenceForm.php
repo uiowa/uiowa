@@ -11,11 +11,14 @@ use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\uiowa_core\FormHelpersTrait;
 
 /**
  * Form for correspondence block.
  */
 class CorrespondenceForm extends FormBase {
+
+  use FormHelpersTrait;
 
   /**
    * Constructs the SettingsForm object.
@@ -76,34 +79,25 @@ class CorrespondenceForm extends FormBase {
     // Check if we have a form value set for the audience
     // and if not, check if we have a valid query param in the URL.
     $params = $this->requestStack->getCurrentRequest()->query;
-    if ($form_state->getValue('audience')) {
-      $audience = $form_state->getValue('audience');
-    }
-    elseif ($params->has('audience')) {
-      $audience = $params->get('audience');
-      // If the given audience param doesn't match our available options,
-      // default to ALL.
-      if (!in_array($audience, ['all', 'student', 'faculty_staff'])) {
-        $audience = 'all';
-      }
-    }
-    else {
-      $audience = 'all';
-    }
-    if ($form_state->getValue('topic')) {
-      $topic = $form_state->getValue('topic');
-    }
-    elseif ($params->has('topic')) {
-      $topic = $params->get('topic');
-      // If the given audience param doesn't match our available options,
-      // default to ALL.
-      if (!in_array($topic, array_keys(registrar_core_correspondence_tags()))) {
-        $topic = '';
-      }
-    }
-    else {
-      $topic = '';
-    }
+    $audience_allowed = [
+      'all' => '',
+      'student' => 'student',
+      'faculty_staff' => 'faculty/staff',
+    ];
+    $audience = $this->getFormValue(
+      'audience',
+      $audience_allowed,
+      $form_state,
+      $params,
+      'all'
+    );
+
+    $topic = $this->getFormValue(
+      'topic',
+      registrar_core_correspondence_tags(),
+      $form_state,
+      $params
+    );
 
     $mapping = [
       'all' => '',
