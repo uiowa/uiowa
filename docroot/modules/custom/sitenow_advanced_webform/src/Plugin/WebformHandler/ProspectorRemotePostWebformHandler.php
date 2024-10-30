@@ -67,7 +67,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $auth = $config->get('prospector.auth');
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
-      $this->messenger()->addError($this->t('Prospector authentication credentials are missing.'));
+      $this->messenger()->addError($this->t('Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
     $options = [
@@ -83,17 +83,15 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       }
     }
     $data['siteInteractionUuid'] = $site_uuid;
-
-    // Build http request.
-    $request_url = Url::fromUri('https://test.its.uiowa.edu/prospect-api/api/prospect/submit', ['query' => $data])->toString();
+    $options['json'] = $data;
 
     // Send http request.
     try {
-      $response = $this->httpClient->request('POST', $request_url, $options);
+      $response = $this->httpClient->request('POST', 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit', $options);
       // @todo Log response?
       // Print message confirming submission.
-      $this->messenger()->addStatus($this->t('Webform submission posted to Prospector. Data: <pre>@data</pre>', [
-        '@response_data' => $response->getBody()->getContents(),
+      $this->messenger()->addStatus($this->t('@response', [
+        '@response' => $response->getBody()->getContents(),
       ]));
     }
     catch (GuzzleException $e) {
