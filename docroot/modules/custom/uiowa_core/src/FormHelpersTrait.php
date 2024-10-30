@@ -2,17 +2,26 @@
 
 namespace Drupal\uiowa_core;
 
-use Symfony\Component\HttpFoundation\InputBag;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 
+/**
+ * Form helper functions
+ *
+ * This trait contains functions that assist in
+ * the construction of custom forms.
+ */
 trait FormHelpersTrait {
 
+  /**
+   * Gets form value from user interaction and URL params.
+   */
   public function getFormValue(
-    string             $param_index,
-    array              $param_allowed,
+    string $param_index,
+    array $param_allowed,
     FormStateInterface $form_state,
-    InputBag           $params,
-    String             $baseState = '',
+    InputBag $params,
+    String $baseState = '',
   ): String {
 
     // If the user has already entered a value, use that.
@@ -31,4 +40,5 @@ trait FormHelpersTrait {
 
     return $param;
   }
+
 }

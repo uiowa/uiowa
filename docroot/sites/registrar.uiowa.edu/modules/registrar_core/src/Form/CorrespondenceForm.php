@@ -9,9 +9,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Drupal\uiowa_core\FormHelpersTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\uiowa_core\FormHelpersTrait;
 
 /**
  * Form for correspondence block.
