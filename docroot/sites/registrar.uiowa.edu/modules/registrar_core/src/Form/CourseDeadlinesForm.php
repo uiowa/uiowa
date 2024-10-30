@@ -11,11 +11,14 @@ use Drupal\Core\Url;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\uiowa_core\FormHelpers;
 
 /**
  * Form for course deadlines block.
  */
 class CourseDeadlinesForm extends FormBase {
+
+  use FormHelpers;
 
   /**
    * The MAUI API service.
@@ -23,20 +26,6 @@ class CourseDeadlinesForm extends FormBase {
    * @var \Drupal\uiowa_maui\MauiApi
    */
   protected $maui;
-
-  /**
-   * A variable to cache the form state of the form.
-   *
-   * @var \Drupal\Core\Form\FormStateInterface
-   */
-  private $cachedFormState;
-
-  /**
-   * A variable to cache the form state of the form.
-   *
-   * @var \Symfony\Component\HttpFoundation\InputBag
-   */
-  private $cachedParams;
 
   /**
    * HoursFilterForm constructor.
@@ -76,9 +65,6 @@ class CourseDeadlinesForm extends FormBase {
     // Check if we have a valid query param in the URL.
     $params = $this->requestStack->getCurrentRequest()->query;
 
-    $this->cachedFormState = $form_state;
-    $this->cachedParams = $params;
-
     $form['#attached']['library'][] = 'uids_base/callout';
 
     $wrapper_id = $this->getFormId() . '-wrapper';
@@ -91,10 +77,26 @@ class CourseDeadlinesForm extends FormBase {
       $trigger = $trigger['#name'];
     }
 
-    $session = $this->getFormValue('session', $this->sessionOptions());
-    $department = $this->getFormValue('department', $this->departmentOptions());
-    $course = $this->getFormValue('course', $this->courseOptions($session, $department));
-    $section = $this->getFormValue('section', $this->sectionOptions($session, $department, $course));
+    $session = $this->getFormValue(
+      'session',
+      $this->sessionOptions(),
+      $form_state, $params
+    );
+    $department = $this->getFormValue(
+      'department',
+      $this->departmentOptions(),
+      $form_state, $params
+    );
+    $course = $this->getFormValue(
+      'course',
+      $this->courseOptions($session, $department),
+      $form_state, $params
+    );
+    $section = $this->getFormValue(
+      'section',
+      $this->sectionOptions($session, $department, $course),
+      $form_state, $params
+    );
 
     // For each form interaction of session, department, or course,
     // we need to re-set the fields below department, as course
@@ -355,38 +357,6 @@ class CourseDeadlinesForm extends FormBase {
     }
 
     return $options;
-  }
-
-  /**
-   * Helper function to return proper form value.
-   *
-   * Uses user input and URL query parameters
-   * to determine proper form value.
-   */
-  private function getFormValue(
-    String $param_index,
-    Array $param_allowed,
-  ): String {
-
-    // Get cached values.
-    $form_state = $this->cachedFormState;
-    $params = $this->cachedParams;
-
-    // If the user has already entered a value, use that.
-    $param = '';
-    if ($form_state->getValue($param_index)) {
-      $param = $form_state->getValue($param_index);
-    }
-
-    // Else if the given audience param matches our available options,
-    // check if we have the current parameter index in the URL query params.
-    elseif (array_key_exists($params->get($param_index), $param_allowed) && $params->has($param_index)) {
-
-      // And if we do, set it as our parameter to be used in the form.
-      $param = $params->get($param_index);
-    }
-
-    return $param;
   }
 
   /**
