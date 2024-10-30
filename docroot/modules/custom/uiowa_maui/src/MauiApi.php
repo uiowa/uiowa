@@ -258,7 +258,9 @@ class MauiApi extends ApiClientBase {
    */
   public function getSection($section, $exclude) {
     return $this->get("pub/registrar/sections/{$section}", [
-      'exclude' => json_encode($exclude),
+      'query' => [
+        'exclude' => json_encode($exclude),
+      ],
     ]);
   }
 
@@ -337,6 +339,22 @@ class MauiApi extends ApiClientBase {
     ];
     $data = $this->get($endpoint, $options, 'xml');
     return $data;
+  }
+
+  /**
+   * Get identical, cross-referenced courses.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getIdenticalCourses($session, $courseId): mixed {
+    $data = $this->get("pub/registrar/course/search", [
+      'query' => [
+        'session' => $session,
+        'courseId' => $courseId,
+      ],
+    ]);
+    return $data->payload[0]->identities;
   }
 
 }
