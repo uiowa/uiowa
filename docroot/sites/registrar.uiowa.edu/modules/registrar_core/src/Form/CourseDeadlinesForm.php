@@ -11,14 +11,14 @@ use Drupal\Core\Url;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\uiowa_core\FormHelpers;
+use Drupal\uiowa_core\FormHelpersTrait;
 
 /**
  * Form for course deadlines block.
  */
 class CourseDeadlinesForm extends FormBase {
 
-  use FormHelpers;
+  use FormHelpersTrait;
 
   /**
    * The MAUI API service.

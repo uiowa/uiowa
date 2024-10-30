@@ -1,10 +1,11 @@
 <?php
+
 namespace Drupal\uiowa_core;
 
 use Symfony\Component\HttpFoundation\InputBag;
 use Drupal\Core\Form\FormStateInterface;
 
-trait FormHelpers {
+trait FormHelpersTrait {
 
   public function getFormValue(
     string             $param_index,
