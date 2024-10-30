@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -50,6 +51,29 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $this->applyFormStateToConfiguration($form_state);
   }
 
+  public function prepareForm(
+    WebformSubmissionInterface $webform_submission,
+    $operation,
+    FormStateInterface $form_state
+  ) {
+    // @todo This doesn't seem quite right because it might show to an end user.
+    //   Maybe it should be limited by the user's permissions? Or maybe there is
+    //   a better place to show this message where only a form admin would see
+    //   it?
+    // Load configuration.
+    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
+    $site_uuid = $config->get('prospector.site_uuid');
+    // We need a site UUID to proceed.
+    if (!$site_uuid) {
+      // Generate a URL for the sitenow_advanced_webform settings form.
+      $url = Url::fromRoute('sitenow_advanced_webform.settings_form')->toString();
+      // Print a message directing the user to the settings form.
+      $this->messenger()->addError($this->t('Prospector Site UUID is missing. Please visit the settings form at @url to configure.', [
+        '@url' => $url,
+      ]));
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -59,7 +83,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $site_uuid = $config->get('prospector.site_uuid');
     // We need a site UUID to proceed.
     if (!$site_uuid) {
-      $this->messenger()->addError($this->t('Prospector Site UUID is missing.'));
+      // @todo Log this?
       return;
     }
 
@@ -67,6 +91,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $auth = $config->get('prospector.auth');
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
+      // @todo I think this needs to be moved similar to the site_uuid check.
       $this->messenger()->addError($this->t('Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
@@ -87,18 +112,20 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
 
     // Send http request.
     try {
+      // @todo Should the URL be stored in config or as a setting?
       $response = $this->httpClient->request('POST', 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit', $options);
-      // @todo Log response?
-      // Print message confirming submission.
+      // Prints the message received from the API.
       $this->messenger()->addStatus($this->t('@response', [
         '@response' => $response->getBody()->getContents(),
       ]));
     }
     catch (GuzzleException $e) {
-      // Handle exceptions.
-      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector. Error: @error', [
+      // Log the exception.
+      $this->getLogger()->error('An error occurred while posting the webform submission to Prospector. Error: @error', [
         '@error' => $e->getMessage(),
-      ]));
+      ]);
+      // Print error message.
+      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector.'));
       return;
     }
   }
