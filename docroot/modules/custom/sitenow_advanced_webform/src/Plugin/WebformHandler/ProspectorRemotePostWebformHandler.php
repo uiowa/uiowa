@@ -2,13 +2,11 @@
 
 namespace Drupal\sitenow_advanced_webform\Plugin\WebformHandler;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,10 +49,13 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $this->applyFormStateToConfiguration($form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function prepareForm(
     WebformSubmissionInterface $webform_submission,
     $operation,
-    FormStateInterface $form_state
+    FormStateInterface $form_state,
   ) {
     // @todo This doesn't seem quite right because it might show to an end user.
     //   Maybe it should be limited by the user's permissions? Or maybe there is
