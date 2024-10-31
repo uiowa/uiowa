@@ -8,13 +8,17 @@ use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\uiowa_core\FormHelpersTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Form for course deadlines block.
  */
 class CourseDeadlinesForm extends FormBase {
+
+  use FormHelpersTrait;
 
   /**
    * The MAUI API service.
@@ -28,9 +32,12 @@ class CourseDeadlinesForm extends FormBase {
    *
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The MAUI API service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack service.
    */
-  public function __construct(MauiApi $maui) {
+  public function __construct(MauiApi $maui, protected RequestStack $request_stack) {
     $this->maui = $maui;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -38,7 +45,8 @@ class CourseDeadlinesForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_maui.api')
+      $container->get('uiowa_maui.api'),
+      $container->get('request_stack')
     );
   }
 
@@ -54,6 +62,9 @@ class CourseDeadlinesForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    // Check if we have a valid query param in the URL.
+    $params = $this->requestStack->getCurrentRequest()->query;
+
     $form['#attached']['library'][] = 'uids_base/callout';
 
     $wrapper_id = $this->getFormId() . '-wrapper';
@@ -65,10 +76,27 @@ class CourseDeadlinesForm extends FormBase {
     if ($trigger = $form_state->getTriggeringElement()) {
       $trigger = $trigger['#name'];
     }
-    $session = $form_state->getValue('session');
-    $department = $form_state->getValue('department');
-    $course = $form_state->getValue('course');
-    $section = $form_state->getValue('section');
+
+    $session = $this->getFormValue(
+      'session',
+      $this->sessionOptions(),
+      $form_state, $params
+    );
+    $department = $this->getFormValue(
+      'department',
+      $this->departmentOptions(),
+      $form_state, $params
+    );
+    $course = $this->getFormValue(
+      'course',
+      $this->courseOptions($session, $department),
+      $form_state, $params
+    );
+    $section = $this->getFormValue(
+      'section',
+      $this->sectionOptions($session, $department, $course),
+      $form_state, $params
+    );
 
     // For each form interaction of session, department, or course,
     // we need to re-set the fields below department, as course
@@ -105,7 +133,8 @@ class CourseDeadlinesForm extends FormBase {
       '#title' => $this->t('Session'),
       '#description' => $this->t('Select a session to auto-populate the department dropdown options.'),
       '#empty_option' => '- Session -',
-      '#options' => $this->sessionOptions(4, 4, TRUE),
+      '#options' => $this->sessionOptions(),
+      '#default_value' => $session ?? NULL,
       '#ajax' => [
         'callback' => [$this, 'ajaxCallback'],
         'wrapper' => 'uiowa-maui-course-deadlines',
@@ -167,7 +196,7 @@ class CourseDeadlinesForm extends FormBase {
       '#description' => $this->t('Select a section to display course deadline information.'),
       '#empty_option' => '- Section -',
       '#options' => $section_options,
-      '#default_value' => $section,
+      '#default_value' => $section ?? NULL,
       '#prefix' => '<div id="uiowa-maui-course-deadlines-section-dropdown" class="uiowa-maui-form-wrapper">',
       '#suffix' => '</div>',
       '#ajax' => [
