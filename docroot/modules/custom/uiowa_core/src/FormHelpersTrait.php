@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 
 /**
- * Form helper functions
+ * Form helper functions.
  *
  * This trait contains functions that assist in
  * the construction of custom forms.
