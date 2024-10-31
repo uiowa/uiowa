@@ -84,7 +84,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $site_uuid = $config->get('prospector.site_uuid');
     // We need a site UUID to proceed.
     if (!$site_uuid) {
-      // @todo Log this?
+      // Log that the site UUID is missing.
+      $this->getLogger()->error('Prospector Site UUID is missing.');
       return;
     }
 
