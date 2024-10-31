@@ -123,6 +123,10 @@ AddEncoding gzip svgz
   RewriteCond %{REQUEST_URI} ^/itu$ [NC]
   RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
 
+  # Redirect www and writinguniversity.uiowa.edu to writinguniversity.org.
+  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.uiowa\.edu$ [NC]
+  RewriteRule ^(.*)$ https://www.writinguniversity.org/$1 [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
