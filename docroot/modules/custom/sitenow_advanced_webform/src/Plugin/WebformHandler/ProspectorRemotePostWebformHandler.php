@@ -44,6 +44,50 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    // Load configuration.
+    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
+
+    // We need a site UUID to proceed.
+    $site_uuid = $config->get('prospector.site_uuid');
+    if (!$site_uuid) {
+      // Generate a URL for the sitenow_advanced_webform settings form.
+      $url = Url::fromRoute('sitenow_advanced_webform.settings_form')->toString();
+      // Print a message directing the user to the settings form.
+
+      $form['missing_uuid'] = [
+        '#markup' => $this->t('<strong>Warning:</strong> The site UUID is missing. Please configure it at <a href="@url">this form</a>.', [
+          '@url' => $url,
+        ]),
+        '#weight' => -100,
+      ];
+    }
+
+    // We need an endpoint URL to proceed.
+    $endpoint_url = $config->get('prospector.endpoint_url');
+    if (!$endpoint_url) {
+      // Print a message letting the user know they need to contact the SiteNow team.
+      $form['missing_uuid'] = [
+        '#markup' => $this->t('<strong>Warning:</strong> The Prospector endpoint URL is missing. Please contact the SiteNow team for assistance.'),
+        '#weight' => -100,
+      ];
+    }
+
+    // Load basic auth credentials from config.
+    $auth = $config->get('prospector.auth');
+    // We need auth credentials to proceed.
+    if (!isset($auth['user']) || !isset($auth['pass'])) {
+      $form['missing_auth'] = [
+        '#markup' => $this->t('<strong>Warning:</strong> Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'),
+        '#weight' => -100,
+      ];
+    }
+    return $this->setSettingsParents($form);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
     $this->applyFormStateToConfiguration($form_state);
@@ -52,40 +96,23 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareForm(
-    WebformSubmissionInterface $webform_submission,
-    $operation,
-    FormStateInterface $form_state,
-  ) {
-    // @todo This doesn't seem quite right because it might show to an end user.
-    //   Maybe it should be limited by the user's permissions? Or maybe there is
-    //   a better place to show this message where only a form admin would see
-    //   it?
-    // Load configuration.
-    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
-    $site_uuid = $config->get('prospector.site_uuid');
-    // We need a site UUID to proceed.
-    if (!$site_uuid) {
-      // Generate a URL for the sitenow_advanced_webform settings form.
-      $url = Url::fromRoute('sitenow_advanced_webform.settings_form')->toString();
-      // Print a message directing the user to the settings form.
-      $this->messenger()->addError($this->t('Prospector Site UUID is missing. Please visit the settings form at @url to configure.', [
-        '@url' => $url,
-      ]));
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     // Load configuration.
     $config = $this->configFactory->get('sitenow_advanced_webform.settings');
-    $site_uuid = $config->get('prospector.site_uuid');
+
     // We need a site UUID to proceed.
+    $site_uuid = $config->get('prospector.site_uuid');
     if (!$site_uuid) {
       // Log that the site UUID is missing.
       $this->getLogger()->error('Prospector Site UUID is missing.');
+      return;
+    }
+
+    // We need an endpoint URL to proceed.
+    $endpoint_url = $config->get('prospector.endpoint_url');
+    if (!$endpoint_url) {
+      // Log that the endpoint URL is missing.
+      $this->getLogger()->error($this->t('Prospector Endpoint URL is missing.'));
       return;
     }
 
@@ -93,10 +120,11 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     $auth = $config->get('prospector.auth');
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
-      // @todo I think this needs to be moved similar to the site_uuid check.
-      $this->messenger()->addError($this->t('Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'));
+      // Log that the auth credentials are missing.
+      $this->getLogger()->error($this->t('Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
+
     $options = [
       'auth' => array_values($auth),
     ];
@@ -114,8 +142,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
 
     // Send http request.
     try {
-      // @todo Should the URL be stored in config or as a setting?
-      $response = $this->httpClient->request('POST', 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit', $options);
+      $response = $this->httpClient->request('POST', $endpoint_url, $options);
       // Prints the message received from the API.
       $this->messenger()->addStatus($this->t('@response', [
         '@response' => $response->getBody()->getContents(),
