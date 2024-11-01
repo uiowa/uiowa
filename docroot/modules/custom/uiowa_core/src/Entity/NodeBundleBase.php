@@ -80,7 +80,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
       if (!empty($sorts)) {
         if (array_key_exists('sticky', $sorts) && $this->isSticky()) {
           $build['#pre_title'] = [
-            '#markup' => '<span role="presentation" class="fas fa-solid fa-thumbtack"></span> Pinned',
+            '#markup' => '<span aria-label="Pinned content" role="presentation" class="fas fa-solid fa-thumbtack"></span> Pinned<span class="sr-only">&nbsp;content, custom sorted.</span>',
           ];
         }
       }
