@@ -268,8 +268,9 @@ $imgpath: '../../../uids/assets/images';
   }
 
   &__container {
-    @include container-width;;
     justify-content: space-between;
+    @include container-width;;
+
 
     div:first-of-type,
     nav:first-of-type {
@@ -302,12 +303,11 @@ $imgpath: '../../../uids/assets/images';
 
   a {
     margin: $md 0;
+    padding-top: $xsm;
 
     @include breakpoint(sm) {
       margin: 0 $md;
     }
-
-    padding-top: $xsm;
 
     &:before {
       content: ' ';

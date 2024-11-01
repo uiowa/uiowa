@@ -1,6 +1,56 @@
-@import "../../../themes/custom/uids_base/uids3/assets/scss/variables";
-@import "../../../themes/custom/uids_base/uids3/assets/scss/utilities";
-@import "../../../themes/custom/uids_base/uids3/components/breadcrumbs/breadcrumbs";
+@import "../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@import "../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
+.breadcrumb {
+  list-style: none;
+  @include margin($top: $sm, $right: 0, $bottom: $sm, $left:0);
+  ol {
+    @extend %no-ul-list;
+  }
+}
+
+.breadcrumb::before,
+.breadcrumb::after {
+  display: table;
+  content: ' ';
+  @include flex($fb: 0);
+  @include order($int: 1);
+}
+
+.breadcrumb::after {
+  clear: both;
+}
+
+.breadcrumb li {
+  float: left;
+  cursor: default;
+  //text-transform: uppercase;
+  color: $secondary;
+  font-size: $small-font-size;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  position: relative;
+  content: "/";
+  opacity: 1;
+  color: $primary;
+  @include margin($top: 0, $right: $sm, $bottom: 0, $left:$sm);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: $secondary;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus {
+  text-decoration: underline;
+}
+
+.breadcrumb .disabled {
+  cursor: not-allowed;
+  color: $grey-light;
+}
 
 #block-uids-base-local-tasks nav {
   border-bottom: none;
