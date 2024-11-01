@@ -1,7 +1,192 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/slider/slider.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
+// @todo Move to UIDS4 as a component.
+
+.slider__slide:first-child:focus-within {
+  margin-left: 2px;
+}
+
+.slider {
+  flex-wrap: wrap;
+  @include flexbox;
+  flex-basis: 100%;
+
+  @include breakpoint(sm) {
+    align-content: stretch;
+    align-items: stretch;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  &__slide {
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+    //min-height: 300px;
+    //transition: all 0.4s cubic-bezier(0.61, -0.44, 0.33, 1.39);
+    color: $white;
+    @include flex(1, 0, 100%);
+
+    &:focus {
+      z-index: 2;
+    }
+
+    &:first-child:focus-within {
+      margin-left: 2px;
+    }
+
+    &:last-child:focus-within {
+      margin-right: 2px;
+    }
+
+    @include breakpoint(md) {
+      align-self: auto;
+      flex: unset;
+      order: 0;
+      min-height: 500px;
+      //transition: all 0.6s ease;
+      transition-timing-function: linear;
+      transition: 0.8s;
+      width: 20%;
+    }
+
+    // banner overrides
+
+    .banner--medium {
+      @include breakpoint(sm) {
+        min-height: 33rem;
+      }
+    }
+
+    .banner__image img {
+      display: block;
+      width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+
+      @include breakpoint(md) {
+        height: 33rem;
+      }
+    }
+
+    .banner__text {
+      @include breakpoint(sm) {
+        opacity: 0;
+        transition: opacity .2s ease-in;
+      }
+    }
+
+    .headline {
+      @include breakpoint(sm) {
+        opacity: 0;
+        transition: opacity .2s linear;
+      }
+    }
+
+    .banner__content {
+      opacity: 1;
+      @include padding($top: $xlg, $right: $xlg, $bottom: $xlg, $left: $xlg);
+      width: 100%;
+
+      @include breakpoint(sm) {
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        top: unset;
+        transition: opacity .2s linear;
+      }
+    }
+
+    // Expanded overrides.
+    &[aria-expanded="true"] {
+      @include breakpoint(sm) {
+        flex-grow: 1;
+        transition: 0.3s;
+      }
+
+      .banner__content {
+        opacity: 1;
+        //transition: opacity 1s linear;
+      }
+
+      .headline {
+        opacity: 1;
+        transition: opacity 1s linear;
+      }
+
+      .banner__text {
+        opacity: 1;
+        transition: opacity 1.5s ease-in;
+      }
+
+      .slider__teaser {
+        opacity: 0;
+      }
+
+      &:after {
+        @include breakpoint(sm) {
+          /*
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          content: "";
+          background: linear-gradient(transparent 1%, transparent 29%, rgba(0, 0, 0, .9));
+          */
+        }
+      }
+    }
+  }
+
+  &__teaser {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    width: 100%;
+    padding: $md;
+    //transition: opacity .4s linear;
+    opacity: 0;
+    color: $white;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
+    @include center(vertical);
+
+    @include breakpoint(sm) {
+      opacity: 1;
+    }
+  }
+
+  &__teaser-heading {
+    display: flex;
+    margin: 0;
+    color: $white;
+    font-size: $h6-font-size;
+    font-weight: $font-weight-medium-bold;
+    font-style: normal;
+    line-height: 1;
+    padding-right: 2rem;
+    @include center(vertical);
+
+    span {
+      padding-left: $sm;
+      position: absolute;
+      right: 20px;
+
+      &.fa-plus:before {
+        padding: $xsm;
+        color: $primary;
+        border: 1px solid $white;
+        border-radius: 50%;
+        font-size: $small-font-size;
+      }
+    }
+  }
+}
+
+// uids_base styles.
 // @todo Make this better.
 .slider__teaser {
   svg {

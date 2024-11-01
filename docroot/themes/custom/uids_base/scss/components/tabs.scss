@@ -1,3 +1,127 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/tabs/tabs.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
+.tabs-collection {
+  margin: 0;
+  list-style-type: none;
+
+  &::after,
+  &::before {
+    display: table;
+    content: ' ';
+  }
+
+  [role="tablist"] {
+    margin: 0 0 -0.1rem;
+    overflow: visible;
+    font-size: 0;
+  }
+
+  [role="tab"] {
+    position: relative;
+    margin: 0;
+    padding: 1rem 1rem 1.3rem;
+    border: none;
+    overflow: visible;
+    font-family: $font-family-sans-serif;
+    font-size: $content-font-size;
+    font-weight: $font-weight-medium;
+    background: none;
+    transition: background 0.8s ease-out;
+    cursor: pointer;
+
+    &::before {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 5px;
+      content: "";
+      transition: 0.3s;
+      z-index: 1;
+    }
+
+    [class*="bg--black"] & {
+      color: $light;
+    }
+
+    &[aria-selected="true"] {
+      border-radius: 0;
+      outline: 0;
+
+      &:focus-visible::before {
+        background: $primary;
+      }
+
+      &::after {
+        width: 100%;
+        background: $primary;
+
+        [class*="bg--gold"] & {
+          background: $secondary;
+        }
+      }
+
+      [class*="bg--black"] & {
+        color: $primary;
+      }
+    }
+
+    &[aria-selected="false"] {
+      color: $med-gray;
+
+      &::after {
+        width: 100%;
+        background: $grey-light;
+
+        [class*="bg--gold"] & {
+          background: $light;
+        }
+      }
+
+      [class*="bg--black"] & {
+        color: $light;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 5px;
+      content: "";
+      transition: 0.3s;
+    }
+
+    &:focus-visible::before,
+    &:hover::before {
+      background: $brand-cool-gray;
+      width: 100%;
+
+      [class*="bg--gold"] & {
+        background: $med-gray;
+      }
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      outline: 0;
+    }
+  }
+
+  [role="tabpanel"] {
+    position: relative;
+    z-index: 2;
+    padding: $mobile-height-gutter 0;
+
+    &.is-hidden {
+      display: none;
+    }
+  }
+
+  [role="tabpanel"] * + p {
+    margin-top: 1rem;
+  }
+}
