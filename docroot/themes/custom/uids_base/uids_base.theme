@@ -5,19 +5,28 @@
  * Functions to support theming in the uids_base theme.
  */
 
-use Drupal\block\Entity\Block;
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\StatusMessages;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\views\field\EntityField;
+
+/**
+ * Implements template_preprocess_block().
+ */
+function uids_base_preprocess_block__system_messages_block(&$variables) {
+  $variables['content'] = StatusMessages::renderMessages();
+  $variables['#cache']['max-age'] = 0;
+}
 
 /**
  * Implements hook_form_alter().

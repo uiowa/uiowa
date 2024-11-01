@@ -233,10 +233,14 @@ class AcademicCalendarController extends ControllerBase {
         }
 
         if (!empty($date->dateCategoryLookups)) {
-          $event = $this->processDate($date, $session, $session_index, $session->legacyCode);
-          $event->sortString = $this->sortString($event);
 
-          $events[] = $event;
+          // Split any events that are multiple days into multiple event entries.
+          if ($date->endDate === $date->beginDate) {
+            $events[] = $this->processDate($date, $session, $session_index, $session->legacyCode);
+          }
+          else {
+            $events = [...$events, ...$this->splitMultiDayEvent($date, $session, $session_index, $session->legacyCode)];
+          }
         }
       }
     }
@@ -272,6 +276,42 @@ class AcademicCalendarController extends ControllerBase {
   }
 
   /**
+   * Splits a multi day event, so it can be displayed multiple times.
+   *
+   * @param object $date
+   *   The date object to split into multiple events.
+   * @param object $session
+   *   The session object.
+   * @param int $session_index
+   *   The session index.
+   *
+   * @return Object[]
+   *   TRUE if the event should be included, FALSE otherwise.
+   */
+  private function splitMultiDayEvent(object $date, object $session, int $session_index) : array {
+    $days = [];
+    $interval = new \DateInterval('P1D');
+    $realEnd = new \DateTime($date->endDate);
+    $realEnd->add($interval);
+    $period = new \DatePeriod(
+      new \DateTime($date->beginDate),
+      $interval,
+      $realEnd
+    );
+    foreach ($period as $day) {
+      array_push($days, $day);
+    }
+
+    $newEvents = [];
+    foreach ($days as $day) {
+      $newEvent = $this->processDate($date, $session, $session_index, $session->legacyCode, $day);
+      $newEvents[] = $newEvent;
+    }
+
+    return $newEvents;
+  }
+
+  /**
    * Processes a date into an event object.
    *
    * @param object $date
@@ -288,7 +328,7 @@ class AcademicCalendarController extends ControllerBase {
   /**
    * In the processDate() method of AcademicCalendarController.
    */
-  private function processDate($date, $session, $session_index, $session_legacy_id) {
+  private function processDate($date, $session, $session_index, $session_legacy_id, $alt_start_day = NULL) {
     $event = new \stdClass();
     $event->title = Xss::filterAdmin($date->dateLookup->description);
     $event->start = $date->beginDate;
@@ -297,14 +337,25 @@ class AcademicCalendarController extends ControllerBase {
     $event->categories = [];
 
     // Determine the date to display.
+    $original_start_timestamp = strtotime($date->beginDate);
     $start_timestamp = strtotime($date->beginDate);
+
+    if ($alt_start_day) {
+      $event->start = $alt_start_day->format('Y-m-d\TH:i:s.000+0000');
+      $start_timestamp = strtotime($event->start);
+    }
+
     $start = date('D, M j, Y', $start_timestamp);
     $month = date('M', $start_timestamp);
     $day = date('j', $start_timestamp);
-    if ($date->endDate != $date->beginDate) {
+
+    // We want to show the original start in the subtitle.
+    if ($alt_start_day && $date->endDate !== $date->beginDate) {
+      $formatted_start = date('D, M j, Y', $original_start_timestamp);
       $end = date('D, M j, Y', strtotime($date->endDate));
-      $start = "{$start} - {$end}";
+      $start = "{$formatted_start} - {$end}";
     }
+
     $event->displayDate = $start;
 
     // Determine what session to display.
@@ -385,6 +436,8 @@ class AcademicCalendarController extends ControllerBase {
       ],
     ];
     $event->rendered = $this->renderer->render($card);
+
+    $event->sortString = $this->sortString($event);
 
     return $event;
   }

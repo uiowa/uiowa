@@ -2,8 +2,6 @@
 
 namespace Drupal\classrooms_core\Commands;
 
-use Drupal\classrooms_core\Entity\Building;
-use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -11,6 +9,8 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\classrooms_core\Entity\Building;
+use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;

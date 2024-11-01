@@ -5,7 +5,6 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -17,12 +16,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
 use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Contact;
 use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
@@ -104,6 +105,9 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
     $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
+  }
+  if (isset($bundles['node']['contact'])) {
+    $bundles['node']['contact']['class'] = Contact::class;
   }
 }
 
@@ -510,7 +514,35 @@ function template_preprocess_card(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_field(&$variables) {
-  switch ($variables['field_name']) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_contact_address':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_email':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_phone_number':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_fax':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-fax');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
     case 'title':
       uiowa_core_set_attributes($variables, [
         'page-title',
@@ -847,7 +879,26 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_person_form':
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
       break;
+
+    case 'node_contact_form':
+    case 'node_contact_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
+      array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
+      break;
   }
+}
+
+/**
+ * Custom submit handler for node contact forms.
+ */
+function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_state) {
+  $field_config = [
+    'field_contact_address' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -1165,7 +1216,7 @@ function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $fo
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Adair',
     'Adams',
@@ -1272,7 +1323,7 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $start_year = 2008;
   $end_year = date('Y') + 1;
   $years = [];
@@ -1304,7 +1355,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function uiowa_core_state_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -1539,6 +1590,79 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
 
     foreach ($fields_to_hide as $field_to_hide) {
       $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+  }
+}
+
+/**
+ * Helper function to validate and clean address fields, including paragraphs.
+ *
+ * @param array &$form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ * @param array $field_config
+ *   An array of field configurations to process.
+ */
+function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_state, array $field_config) {
+  foreach ($field_config as $field_name => $config) {
+    $field_values = $form_state->getValue($field_name);
+
+    if (is_null($field_values)) {
+      continue;
+    }
+
+    if ($config['type'] === 'paragraph') {
+      foreach ($field_values as $delta => $paragraph_subform) {
+        if (isset($paragraph_subform['subform'])) {
+          $address_field = $paragraph_subform['subform'][$config['address_field']][0];
+          if (isset($address_field['address'])) {
+            $has_info = FALSE;
+
+            foreach ($address_field['address'] as $key => $details) {
+              if ($key !== 'country_code' && !empty($details)) {
+                $has_info = TRUE;
+                break;
+              }
+            }
+
+            if (!$has_info) {
+              $form_state->setValue([
+                $field_name,
+                $delta,
+                'subform',
+                $config['address_field'],
+                0,
+                'address',
+                'country_code',
+              ], '');
+            }
+          }
+        }
+      }
+    }
+    else {
+      // Regular field processing.
+      $address_field = $field_values[0];
+      if (isset($address_field['address'])) {
+        $has_info = FALSE;
+
+        foreach ($address_field['address'] as $key => $details) {
+          if ($key !== 'country_code' && !empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_info) {
+          $form_state->setValue([
+            $field_name,
+            0,
+            'address',
+            'country_code',
+          ], '');
+        }
+      }
     }
   }
 }
