@@ -63,7 +63,7 @@ $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
 // Compatibility with Acquia Platform Email for Symfony Mailer module.
 // See https://docs.acquia.com/cloud-platform/manage/platform-email/faq/#can-i-use-symfony-mailer-with-platform-email
 $settings['mailer_sendmail_commands'] = [
-  ini_get('sendmail_path') . ' -t',
+  '/usr/sbin/sendmail -t'
 ];
 
 if ($ah_env !== 'local') {
