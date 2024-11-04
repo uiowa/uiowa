@@ -86,13 +86,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       '#required' => TRUE,
     ];
 
-    $form['last_updated'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Last Updated'),
-      '#default_value' => $this->configuration['last_updated'] ?? NULL,
-      '#required' => TRUE,
-    ];
-
     return $form;
   }
 
@@ -103,7 +96,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     parent::blockSubmit($form, $form_state);
     $this->configuration['session'] = $form_state->getValue('session');
     $this->configuration['session_name'] = $form['settings']['session']['#options'][$form_state->getValue('session')];
-    $this->configuration['last_updated'] = $form_state->getValue('last_updated');
   }
 
   /**
@@ -113,7 +105,6 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
     $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm', [
       'session_id' => $this->configuration['session'],
       'session_name' => $this->configuration['session_name'],
-      'last_updated' => $this->configuration['last_updated'],
     ]);
     return $build;
   }
