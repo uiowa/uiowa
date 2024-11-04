@@ -7660,3 +7660,9 @@ $sites['labhaim.uiowa.ddev.site'] = 'haim.lab.uiowa.edu';
 $sites['labhaim.dev.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
 $sites['labhaim.stage.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
 $sites['labhaim.prod.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
+
+// Directory aliases for accessibility.uiowa.edu.
+$sites['accessibility.uiowa.ddev.site'] = 'accessibility.uiowa.edu';
+$sites['accessibility.dev.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
+$sites['accessibility.stage.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
+$sites['accessibility.prod.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
