@@ -7654,3 +7654,15 @@ $sites['lawlegalclinic.uiowa.ddev.site'] = 'legalclinic.law.uiowa.edu';
 $sites['lawlegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
 $sites['lawlegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
 $sites['lawlegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
+
+// Directory aliases for haim.lab.uiowa.edu.
+$sites['labhaim.uiowa.ddev.site'] = 'haim.lab.uiowa.edu';
+$sites['labhaim.dev.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
+$sites['labhaim.stage.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
+$sites['labhaim.prod.drupal.uiowa.edu'] = 'haim.lab.uiowa.edu';
+
+// Directory aliases for accessibility.uiowa.edu.
+$sites['accessibility.uiowa.ddev.site'] = 'accessibility.uiowa.edu';
+$sites['accessibility.dev.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
+$sites['accessibility.stage.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
+$sites['accessibility.prod.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
