@@ -72,10 +72,12 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
 
   // Move author field to #meta and add an icon.
   if (!$entity->get('author')->isEmpty() && isset($build['author'])) {
-    $build['#meta']['author'] = [
-      ...(is_array($build['author']) ? $build['author'] : []),
-      '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
-    ];
+    $build['#meta']['author'] = array_merge(
+      is_array($build['author']) ? $build['author'] : [],
+      [
+        'prefix' => '<span role="presentation" class="fas fa-user"></span>',
+      ]
+    );
   }
 
   unset($build['author']);

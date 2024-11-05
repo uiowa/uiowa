@@ -91,11 +91,13 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-left',
-      'media_format' => 'media--circle media--border',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--layout-left',
+        'media_format' => 'media--circle media--border',
+      ]
+    );
   }
 
 }
