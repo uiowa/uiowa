@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "prospector_remote_post",
  *   label = @Translation("Prospector Remote Post"),
  *   category = @Translation("External"),
- *   description = @Translation("Posts webform submissions to a URL."),
+ *   description = @Translation("Posts webform submissions to ITS-AIS' Prospector application."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
@@ -54,9 +54,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       // Generate a URL for the sitenow_advanced_webform settings form.
       $url = Url::fromRoute('sitenow_advanced_webform.settings_form')->toString();
       // Print a message directing the user to the settings form.
-
       $form['missing_uuid'] = [
-        '#markup' => $this->t('<strong>Warning:</strong> The site UUID is missing. Please configure it at <a href="@url">this form</a>.', [
+        '#markup' => $this->t('<strong>Warning:</strong> The website UUID required for this handler is missing. <a href="@url">Please configure it at here</a>.', [
           '@url' => $url,
         ]),
         '#weight' => -100,
@@ -66,7 +65,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     // We need an endpoint URL to proceed.
     $endpoint_url = $config->get('prospector.endpoint_url');
     if (!$endpoint_url) {
-      // Print a message letting the user know they need to contact the SiteNow team.
+      // Print a message letting the user know they need to contact
+      // the SiteNow team.
       $form['missing_uuid'] = [
         '#markup' => $this->t('<strong>Warning:</strong> The Prospector endpoint URL is missing. Please contact the SiteNow team for assistance.'),
         '#weight' => -100,
@@ -143,10 +143,7 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
     // Send http request.
     try {
       $response = $this->httpClient->request('POST', $endpoint_url, $options);
-      // Prints the message received from the API.
-      $this->messenger()->addStatus($this->t('@response', [
-        '@response' => $response->getBody()->getContents(),
-      ]));
+      $this->getLogger()->notice($response->getBody()->getContents());
     }
     catch (GuzzleException $e) {
       // Log the exception.

@@ -2,14 +2,8 @@
 
 namespace Drupal\sitenow_advanced_webform\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\path_alias\AliasRepositoryInterface;
-use Drupal\pathauto\AliasCleanerInterface;
-use Drupal\pathauto\PathautoGenerator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure SiteNow Pages settings for this site.
@@ -49,9 +43,9 @@ class SettingsForm extends ConfigFormBase {
 
     $form['prospector']['site_uuid'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Prospector Site UUID'),
+      '#title' => $this->t('Prospector Website UUID'),
       '#default_value' => $config->get('prospector.site_uuid'),
-      '#description' => $this->t('The UUID of the site in the Prospector app.'),
+      '#description' => $this->t('The UUID of the website in the Prospector application.'),
     ];
 
     return $form;
