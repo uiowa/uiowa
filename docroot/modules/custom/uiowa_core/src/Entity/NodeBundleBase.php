@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\node\Entity\Node;
+use Drupal\views\ViewExecutable;
 
 /**
  * Bundle-specific subclass of Node.
@@ -70,6 +71,19 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     // hiding fields or overriding styles.
     if (isset($build['#cache']['keys'])) {
       unset($build['#cache']['keys']);
+    }
+
+    // Indicate sticky content if part of view with sticky sort applied.
+    $view = $this->values['view'] ?? NULL;
+    if ($view instanceof ViewExecutable) {
+      $sorts = $view->getDisplay()->getOption('sorts');
+      if (!empty($sorts)) {
+        if (array_key_exists('sticky', $sorts) && $this->isSticky()) {
+          $build['#pre_title'] = [
+            '#markup' => '<span aria-label="Pinned content" role="presentation" class="fas fa-solid fa-thumbtack"></span> Pinned<span class="sr-only">&nbsp;content, custom sorted.</span>',
+          ];
+        }
+      }
     }
   }
 
