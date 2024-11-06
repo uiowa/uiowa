@@ -25,6 +25,7 @@ class Card extends RenderElementBase {
       '#attributes' => [],
       '#media' => NULL,
       '#media_attributes' => [],
+      '#pre_title' => NULL,
       '#title' => NULL,
       '#title_heading_size' => 'h2',
       '#subtitle' => NULL,
