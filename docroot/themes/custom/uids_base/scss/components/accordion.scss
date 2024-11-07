@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 
@@ -48,7 +49,7 @@
       }
 
       &:hover, &:focus {
-        background-color: darken(#edeceb, 4%);
+        background-color: color.scale(#edeceb, $lightness: -4%);
 
         i {
           transform: rotate(-180deg) translate(0px, -0.2em);
