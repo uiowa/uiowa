@@ -145,6 +145,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
             $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
           }
           $variables['list'] = [
+            '#type' => 'markup',
             '#markup' => $message,
           ];
         }

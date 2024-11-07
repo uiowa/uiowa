@@ -437,6 +437,7 @@ function sitenow_events_preprocess_block(&$variables) {
           $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
         }
         $variables['content']['no_results'] = [
+          '#type' => 'markup',
           '#markup' => $message,
         ];
       }
