@@ -271,3 +271,9 @@
     }
   }
 }
+
+// Hide card pre-title for people lists.
+[class*="view-people"] .card__pre-title,
+.view-counselors .card__pre-title {
+  @include element-invisible;
+}
