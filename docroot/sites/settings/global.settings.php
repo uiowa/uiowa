@@ -69,7 +69,7 @@ $settings['mailer_sendmail_commands'] = [
 if ($ah_env !== 'local') {
   // Set this in config since the config references the actual text of the
   // command, which is different for each environment.
-  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = ini_get('sendmail_path') . ' -t';
+  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = '/usr/sbin/sendmail -t';
 }
 
 // Set recommended New Relic configuration.
