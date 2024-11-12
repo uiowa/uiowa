@@ -41,7 +41,6 @@ class GoogleAnalyticsOverride implements ConfigFactoryOverrideInterface {
         $overrides['google_analytics.settings']['account'] = '';
       }
 
-      // Only check config if config factory was provided.
       if ($this->configFactory) {
         // Remove GA based on uiowa_core settings.
         $uiowa_core_config = $this->configFactory->get('uiowa_core.settings');
