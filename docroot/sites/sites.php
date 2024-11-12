@@ -7672,3 +7672,9 @@ $sites['shlstaffportal.uiowa.ddev.site'] = 'staffportal.shl.uiowa.edu';
 $sites['shlstaffportal.dev.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
 $sites['shlstaffportal.stage.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
 $sites['shlstaffportal.prod.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
+
+// Directory aliases for sees.uiowa.edu.
+$sites['sees.uiowa.ddev.site'] = 'sees.uiowa.edu';
+$sites['sees.dev.drupal.uiowa.edu'] = 'sees.uiowa.edu';
+$sites['sees.stage.drupal.uiowa.edu'] = 'sees.uiowa.edu';
+$sites['sees.prod.drupal.uiowa.edu'] = 'sees.uiowa.edu';
