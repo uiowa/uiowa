@@ -68,7 +68,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Include Google Analytics Functionality'),
       '#default_value' => $config->get('uiowa_core.ga'),
-      '#description' => $this->t('If checked, and Google Analytics are configured, GA snippets will be inserted and loaded on the website.'),
+      '#description' => $this->t('If checked, and if Google Analytics is configured with a tracking ID, Google Analytics tracking code will be inserted and loaded on the website.'),
       '#size' => 60,
     ];
 
