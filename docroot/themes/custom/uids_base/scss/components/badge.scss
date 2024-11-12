@@ -1,44 +1,6 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
-
-// @todo Move back to UIDS4.
-.badge {
-  display: inline-block;
-  padding: 0 .75em;
-  line-height: 1.67;
-  font-size: 75%;
-  font-weight: $font-weight-medium;
-  color: $white;
-  border: 1px solid transparent;
-  border-radius: 1em;
-}
-
-.badge--primary {
-  background: $primary;
-  color: $blk;
-}
-
-.badge--secondary {
-  background: $secondary;
-}
-
-.badge--cool-gray {
-  background: $brand-cool-gray;
-}
-
-.badge--blue {
-  background: $info;
-}
-
-.badge--green {
-  background: $success;
-}
-
-.badge--orange {
-  background: $danger;
-}
-
-// uids_base styles.
+@import "uids/scss/components/badge.scss";
 
 .badge--light {
   background: $light;
