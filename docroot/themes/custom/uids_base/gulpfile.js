@@ -36,6 +36,11 @@ const uids = {
   ],
 }
 
+const brandIcons = {
+  src: `${paths.node}@uiowa/brand-icons`,
+  dest: `${__dirname}/brand-icons/`,
+}
+
 // Clean
 function clean() {
   return del([
@@ -61,6 +66,13 @@ function copyUids3() {
     .pipe(dest(`${uids3.dest}`));
 }
 
+function copyIcons() {
+  return src([
+    `${brandIcons.src}/**/*.svg`,
+  ], { encoding: false })
+    .pipe(dest(`${brandIcons.dest}`));
+}
+
 // SCSS bundled into CSS task.
 function css() {
   return src(`${paths.src}`)
@@ -81,7 +93,7 @@ function watchFiles() {
   watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids3, copyUids);
+const copy = parallel(copyUids3, copyUids, copyIcons);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
