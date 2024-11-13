@@ -110,7 +110,6 @@ class BrandIcon extends MediaSourceBase {
         return 'media:' . $media->bundle() . ':brand-icon-' . pathinfo($brand_icon_path, PATHINFO_FILENAME);
 
       case 'thumbnail_uri':
-        // You can generate a thumbnail for the brand icon SVG if needed.
         return 'media:' . $media->bundle() . ':brand-icon-' . pathinfo($brand_icon_path, PATHINFO_FILENAME);
     }
 

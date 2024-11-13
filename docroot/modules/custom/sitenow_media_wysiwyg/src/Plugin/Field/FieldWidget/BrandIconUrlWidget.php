@@ -26,7 +26,6 @@ class BrandIconUrlWidget extends LinkWidget {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    // Add custom attributes for the brand icon SVG.
     if (isset($items[$delta]->uri)) {
       $element['uri']['#attributes']['data-brand-icon-path'] = $items[$delta]->uri;
     }
