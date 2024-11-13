@@ -15,17 +15,17 @@ class GoogleAnalyticsOverride implements ConfigFactoryOverrideInterface {
   /**
    * The config factory service.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface|null
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private $configFactory;
+  private ConfigFactoryInterface $configFactory;
 
   /**
    * Constructs a new GoogleAnalyticsOverride object.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface|null $config_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
    */
-  public function __construct(?ConfigFactoryInterface $config_factory = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory) {
     $this->configFactory = $config_factory;
   }
 
@@ -41,14 +41,10 @@ class GoogleAnalyticsOverride implements ConfigFactoryOverrideInterface {
         $overrides['google_analytics.settings']['account'] = '';
       }
 
-      if ($this->configFactory) {
-        // Remove GA based on uiowa_core settings.
-        $uiowa_core_config = $this->configFactory->get('uiowa_core.settings');
-        $include_ga = $uiowa_core_config->get('uiowa_core.ga');
-
-        if (!$include_ga) {
-          $overrides['google_analytics.settings']['account'] = '';
-        }
+      // Remove GA based on uiowa_core settings.
+      $uiowa_core_config = $this->configFactory->get('uiowa_core.settings');
+      if ($uiowa_core_config && !$uiowa_core_config->get('uiowa_core.ga')) {
+        $overrides['google_analytics.settings']['account'] = '';
       }
     }
 

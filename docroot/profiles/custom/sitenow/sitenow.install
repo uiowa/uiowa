@@ -3260,6 +3260,9 @@ function sitenow_update_10010() {
  * Set new config value on existing sites.
  */
 function sitenow_update_10011() {
+  // Flush caches for the change to the sitenow.services.yml.
+  drupal_flush_all_caches();
+
   /** @var Drupal\Core\Config\ImmutableConfig $config */
   $ccom_config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.ccom');
   // Set to 1 if the ccom config doesn't exist or isn't set,
