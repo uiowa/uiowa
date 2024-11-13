@@ -7666,3 +7666,15 @@ $sites['accessibility.uiowa.ddev.site'] = 'accessibility.uiowa.edu';
 $sites['accessibility.dev.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
 $sites['accessibility.stage.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
 $sites['accessibility.prod.drupal.uiowa.edu'] = 'accessibility.uiowa.edu';
+
+// Directory aliases for staffportal.shl.uiowa.edu.
+$sites['shlstaffportal.uiowa.ddev.site'] = 'staffportal.shl.uiowa.edu';
+$sites['shlstaffportal.dev.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
+$sites['shlstaffportal.stage.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
+$sites['shlstaffportal.prod.drupal.uiowa.edu'] = 'staffportal.shl.uiowa.edu';
+
+// Directory aliases for sees.uiowa.edu.
+$sites['sees.uiowa.ddev.site'] = 'sees.uiowa.edu';
+$sites['sees.dev.drupal.uiowa.edu'] = 'sees.uiowa.edu';
+$sites['sees.stage.drupal.uiowa.edu'] = 'sees.uiowa.edu';
+$sites['sees.prod.drupal.uiowa.edu'] = 'sees.uiowa.edu';
