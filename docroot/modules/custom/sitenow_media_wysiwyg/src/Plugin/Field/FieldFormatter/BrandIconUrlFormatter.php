@@ -3,7 +3,7 @@
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
+use Drupal\Core\Field\FormatterBase;
 
 /**
  * BrandIcon URL field formatter.
@@ -17,55 +17,32 @@ use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
  *   }
  * )
  */
-class BrandIconUrlFormatter extends LinkFormatter {
+class BrandIconUrlFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = parent::viewElements($items, $langcode);
-    $values = $items->getValue();
-    foreach ($elements as $delta => $entity) {
-      $regex = \Drupal::config('sitenow_media_wysiwyg.settings')
-        ->get('sitenow_media_wysiwyg.brand_icon_regex');
-      if ($regex) {
-        preg_match($regex, parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
-        $location = $regex_matches[1];
-        $alt = $values[0]['alt'];
-        $zoom = $values[0]['zoom'];
+    $elements = [];
 
-        // Original/Default is medium square, else change view mode.
-        $view_mode = 'medium__square';
-        if ($this->viewMode && $this->viewMode !== 'default') {
-          $view_mode = $this->viewMode;
-        }
+    foreach ($items as $delta => $item) {
+      $brand_icon_path = $item->uri;
 
-        $elements[$delta] = [
-          'map' => [
-            '#type' => 'html_tag',
-            '#tag' => 'a',
-            '#attributes' => [
-              'href' => $values[0]['uri'],
-              'title' => $alt,
-              'aria-label' => 'View on maps.uiowa.edu',
-            ],
-            'static' => [
-              '#theme' => 'imagecache_external_responsive',
-              '#uri' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
-              '#responsive_image_style_id' => $view_mode,
-              '#attributes' => [
-                'loading' => 'lazy',
-                'alt' => $alt,
-                'class' => 'static-map',
-              ],
-            ],
-          ],
-        ];
+      // Remove the "internal:" prefix if present.
+      if (strpos($brand_icon_path, 'internal:') === 0) {
+        $brand_icon_path = substr($brand_icon_path, 9);
       }
-      else {
-        \Drupal::messenger()->addError($this->t('Unable to process Static Map Image URL.'));
-      }
+
+      $elements[$delta] = [
+        '#type' => 'html_tag',
+        '#tag' => 'img',
+        '#attributes' => [
+          'src' => $brand_icon_path,
+          'alt' => $item->getValue('options')['alt'],
+        ],
+      ];
     }
+
     return $elements;
   }
 
