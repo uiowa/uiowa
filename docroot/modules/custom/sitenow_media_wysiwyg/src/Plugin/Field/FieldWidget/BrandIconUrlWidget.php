@@ -46,8 +46,6 @@ class BrandIconUrlWidget extends LinkWidget {
       '#required' => FALSE,
     ];
 
-
-
     return $element;
   }
 
