@@ -6467,12 +6467,6 @@ $sites['labparker.dev.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
 $sites['labparker.stage.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
 $sites['labparker.prod.drupal.uiowa.edu'] = 'parker.lab.uiowa.edu';
 
-// Directory aliases for fab.law.uiowa.edu.
-$sites['lawfab.uiowa.ddev.site'] = 'fab.law.uiowa.edu';
-$sites['lawfab.dev.drupal.uiowa.edu'] = 'fab.law.uiowa.edu';
-$sites['lawfab.stage.drupal.uiowa.edu'] = 'fab.law.uiowa.edu';
-$sites['lawfab.prod.drupal.uiowa.edu'] = 'fab.law.uiowa.edu';
-
 // Directory aliases for nhlp.law.uiowa.edu.
 $sites['lawnhlp.uiowa.ddev.site'] = 'nhlp.law.uiowa.edu';
 $sites['lawnhlp.dev.drupal.uiowa.edu'] = 'nhlp.law.uiowa.edu';
