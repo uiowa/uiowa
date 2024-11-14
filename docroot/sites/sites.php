@@ -4475,12 +4475,6 @@ $sites['music.dev.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.stage.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.prod.drupal.uiowa.edu'] = 'music.uiowa.edu';
 
-// Directory aliases for nanotech.uiowa.edu.
-$sites['nanotech.uiowa.ddev.site'] = 'nanotech.uiowa.edu';
-$sites['nanotech.dev.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
-$sites['nanotech.stage.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
-$sites['nanotech.prod.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
-
 // Directory aliases for pda.uiowa.edu.
 $sites['pda.uiowa.ddev.site'] = 'pda.uiowa.edu';
 $sites['pda.dev.drupal.uiowa.edu'] = 'pda.uiowa.edu';
