@@ -29,6 +29,10 @@ class BrandIconUrl extends LinkItem {
     $properties['alt'] = DataDefinition::create('string')
       ->setLabel(t('Brand icon alt text'));
 
+    $properties['icon_id'] = DataDefinition::create('integer')
+      ->setLabel(t('Brand icon ID'))
+      ->setDescription(t('The unique identifier for this icon'));
+
     unset($properties['title']);
     unset($properties['options']);
 
@@ -48,6 +52,13 @@ class BrandIconUrl extends LinkItem {
       'description' => 'The alternative text for the brand icon.',
       'type' => 'varchar',
       'length' => 255,
+    ];
+
+    $schema['columns']['icon_id'] = [
+      'description' => 'The unique identifier for the brand icon.',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => FALSE,
     ];
 
     return $schema;

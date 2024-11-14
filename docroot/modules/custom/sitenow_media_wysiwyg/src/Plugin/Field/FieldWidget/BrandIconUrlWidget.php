@@ -24,20 +24,29 @@ class BrandIconUrlWidget extends LinkWidget {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    if (isset($items[$delta]->uri)) {
-      $element['uri']['#attributes']['data-brand-icon-path'] = $items[$delta]->uri;
-    }
+    $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     $element['alt'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Alternative text'),
       '#default_value' => $items[$delta]->alt ?? NULL,
       '#maxlength' => 255,
-      '#description' => $this->t('Short description of the static map image used by screen readers and displayed when the static map image is not loaded. This is important for accessibility.'),
+      '#description' => $this->t('Short description of the brand icon used by screen readers. This is important for accessibility.'),
       '#required' => TRUE,
     ];
+
+    $element['icon_id'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Icon ID'),
+      '#default_value' => $items[$delta]->icon_id ?? NULL,
+      '#description' => $this->t('The unique identifier for this icon.'),
+      '#min' => 1,
+      '#step' => 1,
+      '#required' => FALSE,
+    ];
+
+
 
     return $element;
   }

@@ -28,17 +28,12 @@ class BrandIconUrlFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $brand_icon_path = $item->uri;
 
-      // Remove the "internal:" prefix if present.
-      if (strpos($brand_icon_path, 'internal:') === 0) {
-        $brand_icon_path = substr($brand_icon_path, 9);
-      }
-
       $elements[$delta] = [
         '#type' => 'html_tag',
         '#tag' => 'img',
         '#attributes' => [
           'src' => $brand_icon_path,
-          'alt' => $item->getValue('options')['alt'],
+          'alt' => $item->alt,
         ],
       ];
     }

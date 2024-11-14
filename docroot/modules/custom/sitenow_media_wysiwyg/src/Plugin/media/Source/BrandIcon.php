@@ -87,20 +87,6 @@ class BrandIcon extends MediaSourceBase {
   /**
    * {@inheritdoc}
    */
-  public function getSourceFieldConstraints() {
-    return ['BrandIconUrl' => []];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function createSourceField(MediaTypeInterface $type) {
-    return parent::createSourceField($type)->set('label', 'Brand Icon URL');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getMetadata(MediaInterface $media, $attribute_name) {
     $source = $media->get($this->configuration['source_field']);
     $brand_icon_path = $source->getValue()[0]['uri'];
