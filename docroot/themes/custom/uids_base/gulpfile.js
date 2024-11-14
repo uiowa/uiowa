@@ -69,6 +69,7 @@ function copyUids3() {
 function copyIcons() {
   return src([
     `${brandIcons.src}/**/*.svg`,
+    `${brandIcons.src}/icons.json`,
   ], { encoding: false })
     .pipe(dest(`${brandIcons.dest}`));
 }
