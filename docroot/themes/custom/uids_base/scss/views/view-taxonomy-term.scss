@@ -2,6 +2,7 @@
 @import "uids/scss/abstracts/_utilities.scss";
 
 .view-taxonomy-term {
+  @include margin($top: $lg);
   // Style the term image.
   .view-header {
     // Add spacing between header and content area if using fields.
@@ -21,7 +22,7 @@
       }
     }
   }
-  @include margin($top: $lg);
+
   &[class*="grid--"] {
     .view-content.list-container__inner {
       @include breakpoint(sm) {
