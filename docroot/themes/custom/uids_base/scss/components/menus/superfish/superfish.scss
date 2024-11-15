@@ -430,7 +430,7 @@ ul.sf-accordion ul:focus-within {
   }
 
   &.is-active.menuparent {
-    text-decoration: none;
+   // text-decoration: none;
   }
 
   &:focus {
@@ -444,9 +444,19 @@ ul.sf-accordion ul:focus-within {
   }
 }
 
-.block-superfish .menu li .nolink:hover {
-  cursor: default;
+.block-superfish .menu li .nolink {
+  &:hover {
+    cursor: default;
+  }
+  &:focus {
+    text-decoration: none;
+  }
 }
+
+.block-superfish .menu li li .nolink:focus {
+  font-weight: bold;
+}
+
 
 .block-superfish .menu.sf-accordion li li .nolink,
 .block-superfish .menu.sf-accordion li li a {
