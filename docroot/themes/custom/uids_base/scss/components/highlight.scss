@@ -1,3 +1,71 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/highlight/highlight.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
+.highlight {
+  &__wrapper {
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: baseline;
+    flex-flow: column nowrap;
+    justify-content: center;
+    color: $white;
+    font-size: $h6-font-size;
+  }
+
+  &__sub {
+    color: $secondary;
+    font-size: .9rem;
+    line-height: 1.7;
+
+    @include breakpoint(sm) {
+      margin: 6px 0 0;
+    }
+
+    @include breakpoint(page-container) {
+      font-size: 1rem;
+    }
+
+    span {
+      display: inline;
+      padding: 0.45rem 1rem;
+      background-color: $primary;
+      box-decoration-break: clone;
+      line-height: 1.4;
+      -webkit-box-decoration-break: clone;
+    }
+  }
+
+  &__title {
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    padding: 2px 0;
+    text-transform: uppercase;
+    font-family: $font-family-caps-bold;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    font-size: calc(100% + -.7vw);
+    line-height: 1.7;
+
+    @include breakpoint(md) {
+      font-size: calc(100% + .3vw);
+      margin-bottom: -1px;
+    }
+
+    @include breakpoint(page-container) {
+      font-size: calc(100% + .8vw);
+    }
+
+    span {
+      display: inline;
+      padding: 0.45rem 1rem;
+      color: #fff;
+      background: $secondary;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+  }
+}
