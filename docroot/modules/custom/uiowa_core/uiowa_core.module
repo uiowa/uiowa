@@ -1667,3 +1667,10 @@ function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_
     }
   }
 }
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function uiowa_core_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'uiowa_core/find_text-icon';
+}
