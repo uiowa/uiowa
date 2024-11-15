@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwilliams.uiowa.ddev.site
+    protocol: https
+  machine_name: labwilliams
+  human_name: williams.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwilliams.prod
+drupal:
+  db:
+    database: williams_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwilliams.prod.drupal.uiowa.edu'
+  requester: kzear
+  site-name: 'Williams Lab'

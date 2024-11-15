@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinenfrc.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinenfrc
+  human_name: nfrc.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinenfrc.prod
+drupal:
+  db:
+    database: nfrc_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinenfrc.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'National Ferret Resource and Research Center'

@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .block-local-tasks-block {
   .tabs {
@@ -119,6 +119,10 @@
 
     &.local-task-icon--replicate::before {
       content: "\f24d";
+    }
+
+    &.local-task-icon--latest::before {
+      content: "\f0c5";
     }
   }
 }

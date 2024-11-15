@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
@@ -13,6 +14,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
  */
 trait ProcessMediaTrait {
   use CreateMediaTrait;
+
   /**
    * The file system service.
    *
@@ -54,6 +56,9 @@ trait ProcessMediaTrait {
       $base_url = rtrim($this->configuration['constants']['source_base_path'], '/');
 
       if ($files_dir = $this->variableGet('file_public_path', NULL)) {
+        return "{$base_url}/{$files_dir}/";
+      }
+      elseif ($files_dir = $this->configuration['constants']['public_file_path']) {
         return "{$base_url}/{$files_dir}/";
       }
       else {
@@ -119,19 +124,20 @@ trait ProcessMediaTrait {
     $file_data = $this->fidQuery($fid);
 
     if (!$file_data) {
-      // Failed to find a file, so let's leave the content unchanged.
-      return $match;
+      // Failed to find a file, so let's leave the content unchanged
+      // but log a message in the migration table.
+      $message = "Failed to replace file with fid: $fid.";
+      $this->migration
+        ->getIdMap()
+        ->saveMessage(['nid' => $this->getCurrentIds()['nid']], $message);
+      return $match[0];
     }
 
     $filename = $file_data['filename'];
     $uuid = $this->getMid($filename)['uuid'];
 
     if (!$uuid) {
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      $new_fid = $this->getD8FileByFilename($filename);
 
       $meta = [
         'title' => $file_properties['attributes']['title'] ?? $filename,
@@ -145,7 +151,11 @@ trait ProcessMediaTrait {
         // If it's an embedded video, divert
         // to the oembed video creation process.
         if (str_starts_with($uri, 'oembed')) {
-          return $this->createVideo($fid, $align);
+          return $this->constructInlineEntity(
+            $this->createVideoMediaEntity($fid),
+            $align,
+            'medium'
+          );
         }
         $filename_w_subdir = str_replace('public://', '', $uri);
 
@@ -192,11 +202,7 @@ trait ProcessMediaTrait {
     $id = $file_data['mid'];
 
     if (!$uuid) {
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      $new_fid = $this->getD8FileByFilename($filename);
 
       $meta = [
         'title' => $filename,
@@ -242,7 +248,7 @@ trait ProcessMediaTrait {
    * @return string
    *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
+  public function constructInlineEntity(string $uuid, string $align = '', $view_mode = '') {
     $align = !empty($align) ? $align : $this->align;
 
     $media = [
@@ -256,7 +262,7 @@ trait ProcessMediaTrait {
       ],
     ];
 
-    return \Drupal::service('renderer')->renderPlain($media);
+    return \Drupal::service('renderer')->renderInIsolation($media);
   }
 
   /**
@@ -404,7 +410,7 @@ trait ProcessMediaTrait {
       $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
         $dir,
         $filename,
-      ]), FileSystemInterface::EXISTS_REPLACE);
+      ]), FileExists::Replace);
     }
     catch (\Throwable $e) {
       return FALSE;
@@ -420,11 +426,7 @@ trait ProcessMediaTrait {
       $file = NULL;
       // Get a connection for the destination database
       // and retrieve the id for the newly created file.
-      return \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+      return $this->getD8FileByFilename($filename);
     }
 
     return FALSE;
@@ -467,11 +469,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = \Drupal::database()->select('file_managed', 'f')
-      ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+    $new_fid = $this->getD8FileByFilename($filename);
 
     // If we don't have a title, set it as the filename.
     if (empty($title)) {
@@ -539,11 +537,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = \Drupal::database()->select('file_managed', 'f')
-      ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+    $new_fid = $this->getD8FileByFilename($filename);
 
     // If there's no fid in the D8 database,
     // then we'll need to fetch it from the source.

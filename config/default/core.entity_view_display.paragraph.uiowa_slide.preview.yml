@@ -1,0 +1,71 @@
+uuid: 92f827ca-29a6-4f1c-8f13-49717dd75297
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.uiowa_slide.field_collection_headline
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_content
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_image
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_link
+    - paragraphs.paragraphs_type.uiowa_slide
+  module:
+    - layout_builder
+    - smart_trim
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: paragraph.uiowa_slide.preview
+targetEntityType: paragraph
+bundle: uiowa_slide
+mode: preview
+content:
+  field_collection_headline:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_uiowa_slide_content:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 100
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+        token_browser: ''
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: false
+        replace_tokens: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_uiowa_slide_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: thumbnail
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_uiowa_slide_link: true
+  search_api_excerpt: true

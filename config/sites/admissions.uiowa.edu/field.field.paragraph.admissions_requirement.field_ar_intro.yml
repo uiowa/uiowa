@@ -4,15 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_ar_intro
+    - filter.format.minimal
+    - filter.format.plain_text
     - paragraphs.paragraphs_type.admissions_requirement
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
-      - plain_text
 id: paragraph.admissions_requirement.field_ar_intro
 field_name: field_ar_intro
 entity_type: paragraph
@@ -23,5 +19,8 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
+    - plain_text
 field_type: text_long

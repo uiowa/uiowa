@@ -1,0 +1,22 @@
+diff --git a/field_delimiter.module b/field_delimiter.module
+index c14ab952afe33f7ad298f22280db9f456ca8cc8f..6e80c5272fa1e1f113e7f5360c0042f3ace8c1f1 100644
+--- a/field_delimiter.module
++++ b/field_delimiter.module
+@@ -24,7 +24,7 @@ function field_delimiter_field_formatter_settings_summary_alter(array &$summary,
+   if (($context['field_definition'] instanceof FieldDefinitionInterface)
+     && $context['field_definition']->getFieldStorageDefinition()->isMultiple()) {
+ 
+-    $setting = $context['formatter']->getThirdPartySetting('field_delimiter', 'delimiter');
++    $setting = $context['formatter']->getThirdPartySetting('field_delimiter', 'delimiter', '');
+ 
+     // Sanitize delimiter, allow a few reasonable HTML elements.
+     $safe_delimiter = Xss::filter($setting, array('br', 'hr', 'span', 'img', 'wbr'));
+@@ -50,7 +50,7 @@ function field_delimiter_field_formatter_third_party_settings_form(FormatterInte
+   $element = [];
+ 
+   if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+-    $setting = $plugin->getThirdPartySetting('field_delimiter', 'delimiter');
++    $setting = $plugin->getThirdPartySetting('field_delimiter', 'delimiter', '');
+     $element['delimiter'] = [
+       '#type' => 'textfield',
+       '#size' => 5,

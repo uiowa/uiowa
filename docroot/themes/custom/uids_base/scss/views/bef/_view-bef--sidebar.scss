@@ -1,5 +1,5 @@
-@import "../../../uids3/assets/scss/variables";
-@import "../../../uids3/assets/scss/utilities";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .bef-form.bef-form--sidebar {
   .bef-exposed-form {
@@ -9,6 +9,15 @@
       details summary {
         margin: 0;
       }
+
+      fieldset {
+        border: 1px solid #c0c0c0;
+        padding: 0 1rem;
+        .form-item {
+          margin-top: 0;
+        }
+      }
+
     }
 
     .form--inline {
@@ -72,7 +81,6 @@
         grid-column: 1/-1;
         margin: 1rem 0;
         @include breakpoint(sm) {
-          background: #fff;
           padding: 0;
           grid-area: unset;
           width: auto;

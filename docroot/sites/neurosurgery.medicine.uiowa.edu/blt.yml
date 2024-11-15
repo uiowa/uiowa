@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineneurosurgery.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineneurosurgery
+  human_name: neurosurgery.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineneurosurgery.prod
+drupal:
+  db:
+    database: neurosurgery_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineneurosurgery.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Neurosurgery'

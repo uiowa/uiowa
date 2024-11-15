@@ -84,6 +84,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 36
           total_pages: 0
           id: 0
@@ -136,7 +137,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: a
-          default_argument_skip_url: false
           summary_options: {  }
           summary:
             format: default_summary
@@ -339,7 +339,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: a
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: false
@@ -407,7 +406,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: "{% set title_1 = title_1|slice(0, 1) %}\r\n{% if title_1 matches '/^\\\\d+$/' %}\r\n{% set title_1 = '#' %}\r\n{% endif %}\r\n{{ title_1 }}"
+            text: "{% set title_1 = title_1|slice(0, 1)|lower %}\r\n{% if title_1 matches '/^\\\\d+$/' %}\r\n  {% set title_1 = '#' %}\r\n{% endif %}\r\n{{ title_1 }}"
             make_link: false
             path: ''
             absolute: false
@@ -647,7 +646,6 @@ display:
           title: ''
           default_argument_type: node
           default_argument_options: {  }
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -979,7 +977,7 @@ display:
         sort_fields: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: 0
+        configure_filters_custom: 0
         use_more: 0
       general_help_text: ''
       more_link_help_text: ''
@@ -991,7 +989,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1161,7 +1158,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: a
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1232,6 +1228,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:core.entity_view_display.node.alert.default'
+        - 'config:core.entity_view_display.node.alert.teaser'
         - 'config:core.entity_view_display.node.article.default'
         - 'config:core.entity_view_display.node.article.teaser'
         - 'config:core.entity_view_display.node.article.token'

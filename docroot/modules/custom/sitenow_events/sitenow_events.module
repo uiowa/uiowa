@@ -7,23 +7,27 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 /**
  * Implements hook_entity_bundle_info_alter().
  */
 function sitenow_events_entity_bundle_info_alter(array &$bundles) {
-  if (isset($bundles['node']['event'])) {
+  if (\Drupal::config('config_split.config_split.event')->get('status') === TRUE && isset($bundles['node']['event'])) {
     $bundles['node']['event']['class'] = Event::class;
   }
 }
@@ -43,30 +47,36 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_event_hide']['#group'] = 'options';
       }
 
-      $form['field_event_series_link_direct']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
-        ],
-      ];
+      if (isset($form['field_event_series_link_direct'])) {
+        $form['field_event_series_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
 
       // Show/hide the location and virtual info fields
       // based on the attendance mode. Hybrid should display both.
-      $form['field_event_location']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OfflineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+      if (isset($form['field_event_location'])) {
+        $form['field_event_location']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OfflineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
-      $form['field_event_virtual']['#states'] = [
-        'visible' => [
-          ':input[name="field_event_attendance_mode"]' => [
-            ['value' => 'OnlineEventAttendanceMode'],
-            ['value' => 'MixedEventAttendanceMode'],
+        ];
+      }
+      if (isset($form['field_event_virtual'])) {
+        $form['field_event_virtual']['#states'] = [
+          'visible' => [
+            ':input[name="field_event_attendance_mode"]' => [
+              ['value' => 'OnlineEventAttendanceMode'],
+              ['value' => 'MixedEventAttendanceMode'],
+            ],
           ],
-        ],
-      ];
+        ];
+      }
 
       // Because person titles are constructed
       // in sitenow_people_entity_presave, there is no title for this
@@ -107,6 +117,31 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
 
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function sitenow_events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() === 'events_list_block') {
+    $exposed_input = $view->getExposedInput();
+
+    // Check if there's a date in the URL parameters.
+    $request = \Drupal::request();
+    $date_from_url = $request->query->get('field_event_when_value');
+
+    if ($date_from_url) {
+      // Use the date from the URL if it exists.
+      $exposed_input['field_event_when_value'] = $date_from_url;
+    }
+    else {
+      // If no date in URL, set to today's date.
+      $today = new DrupalDateTime('now');
+      $exposed_input['field_event_when_value'] = $today->format('Y-m-d');
+    }
+
+    $view->setExposedInput($exposed_input);
   }
 }
 
@@ -203,38 +238,10 @@ function sitenow_events_entity_presave(EntityInterface $entity) {
  * Custom submit handler for node event forms.
  */
 function _sitenow_events_form_submit(array &$form, FormStateInterface $form_state) {
-  // Don't save event location if only country is set.
-  $event_location = $form_state->getValue('field_event_location');
-  if (!is_null($event_location)) {
-    foreach ($event_location as $delta => $location) {
-      if (isset($location['address'])) {
-        $has_info = FALSE;
-        // Loop through all the details of the address to
-        // check if any of them have been set besides the
-        // country.
-        foreach ($location['address'] as $key => $details) {
-          if ($key === 'country_code') {
-            continue;
-          }
-          // If we find a non-empty value, we can stop looping.
-          if (!empty($details)) {
-            $has_info = TRUE;
-            break;
-          }
-        }
-        // If no other fields have been set, then unset the address.
-        if (!$has_info) {
-          // Set country code to empty string.
-          $form_state->setValue([
-            'field_event_location',
-            $delta,
-            'address',
-            'country_code',
-          ], '');
-        }
-      }
-    }
-  }
+  $field_config = [
+    'field_event_location' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -423,8 +430,15 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
       else {
+        if (isset($data['error'])) {
+          $message = '<div class="events-empty"><p>Unable to fetch events at this time.</p></div>';
+        }
+        else {
+          $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
+        }
         $variables['content']['no_results'] = [
-          '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+          '#type' => 'markup',
+          '#markup' => $message,
         ];
       }
 
@@ -496,6 +510,8 @@ function sitenow_events_build_card(array $event): array {
     '#title' => $event['title'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
+    '#prefix' => '<div class="column-container">',
+    '#suffix' => '</div>',
   ];
 
   // Construct date string.
@@ -540,7 +556,7 @@ function sitenow_events_build_card(array $event): array {
   if ($event['virtual'] === TRUE) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fa-li fas fa-laptop"></span>',
+      '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
@@ -550,7 +566,7 @@ function sitenow_events_build_card(array $event): array {
   elseif (!is_null($event["location_name"])) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
-      '#markup' => '<span role="presentation" class="fa-li fas fa-map-marker-alt"></span>',
+      '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
@@ -558,8 +574,8 @@ function sitenow_events_build_card(array $event): array {
     ];
   }
 
-  // Add a wrapper div with class "fa-ul".
-  $card['#meta']['#prefix'] = '<div class="fa-ul">';
+  // Add a wrapper div with class "fa-field-item".
+  $card['#meta']['#prefix'] = '<div class="fa-field-item">';
   $card['#meta']['#suffix'] = '</div>';
 
   // Limit what html is allowed.
@@ -653,62 +669,26 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_geolocation':
-      uiowa_core_set_field_icon($variables, 'fas fa-map fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-
       // Modify the field label.
       $variables['label'] = t('Map');
-
-      // Check if the field exists.
-      if (isset($variables['element']['#items'])) {
-
-        // Retrieve the first item of the field values.
-        $geolocation = $variables['element']['#items']->first();
-
-        // Check if the field has a value.
-        if ($geolocation) {
-          // Access the 'latlon' value;.
-          $latlonValue = $geolocation->get('latlon')->getValue();
-
-          // Check if the 'latlon' value is available.
-          if (!empty($latlonValue)) {
-
-            // Construct the Google Maps link.
-            $googleMapsLink = 'https://www.google.com/maps?q=' . $latlonValue;
-
-            // Create the link element.
-            $link = [
-              '#type' => 'link',
-              '#title' => 'View on Google Maps',
-              '#url' => Url::fromUri($googleMapsLink),
-            ];
-
-            // Render the link.
-            $link_render_array = \Drupal::service('renderer')->render($link);
-
-            // Modify the field value to include the link.
-            $variables['items'][0]['content']['#markup'] = $link_render_array;
-          }
-        }
-      }
 
       break;
 
     case 'field_event_location':
-      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_performer':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_icon($variables, 'fas fa-user-circle fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_icon($variables, 'fas fa-user-circle');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
 
     case 'field_event_series_link':
-      uiowa_core_set_field_icon($variables, 'fas fa-link fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-link');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_status':
@@ -726,13 +706,13 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_virtual':
-      uiowa_core_set_field_icon($variables, 'fas fa-desktop fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fas fa-desktop');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_event_when':
-      uiowa_core_set_field_icon($variables, 'fa-calendar far fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_icon($variables, 'fa-calendar far');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
   }
 }
@@ -751,12 +731,16 @@ function sitenow_events_preprocess_field(&$variables) {
  * @return array
  *   An array of data.
  */
-function sitenow_events_load(array $params = [
-  'display_id' => 'events',
-], array $args = [
-  'views',
-  'event_instances_api.json',
-], $cache = TRUE) {
+function sitenow_events_load(
+  array $params = [
+    'display_id' => 'events',
+  ],
+  array $args = [
+    'views',
+    'event_instances_api.json',
+  ],
+  $cache = TRUE,
+) {
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
 
@@ -775,13 +759,10 @@ function sitenow_events_load(array $params = [
   }
   else {
     try {
-      $request = \Drupal::httpClient()->get($endpoint);
-    }
-    catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
-    }
-
-    if (isset($request)) {
+      // Set a timeout (e.g., 10 seconds).
+      $request = \Drupal::httpClient()->get($endpoint, [
+        'timeout' => 10.0,
+      ]);
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
       // Create a cache item set to 5 minutes.
@@ -790,10 +771,27 @@ function sitenow_events_load(array $params = [
         \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
       }
     }
-    else {
-      $data = [];
+    catch (ConnectException $e) {
+      \Drupal::logger('sitenow_events')->error('Connection timed out when reaching @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
     }
-
+    catch (RequestException $e) {
+      \Drupal::logger('sitenow_events')->error('Request error on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
+    catch (TransferException $e) {
+      \Drupal::logger('sitenow_events')->error('Transfer exception on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
   }
 
   return $data;
@@ -886,11 +884,11 @@ function sitenow_events_format_instance(array $event_instance) {
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  *
  * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
-function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_events_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] === 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
@@ -923,7 +921,7 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
   switch ($definition->getName()) {
@@ -1099,61 +1097,10 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
     'EventScheduled' => 'Scheduled',
     'EventCancelled' => 'Cancelled',
     'EventRescheduled' => 'Rescheduled',
   ];
-}
-
-/**
- * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
- */
-function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
-  if ($entity instanceof FieldableEntityInterface) {
-    $type = $entity->bundle();
-    if ($type == 'event') {
-
-      // Bring in children events if any.
-      $parent_id = $entity->id();
-      $sub_event_nids = \Drupal::entityQuery('node')
-        ->accessCheck(FALSE)
-        ->condition('type', 'event')
-        ->condition('status', 1)
-        ->condition('field_event_parent', $parent_id, '=')
-        ->execute();
-
-      if ($sub_event_nids) {
-        $sub_events = [];
-        foreach ($sub_event_nids as $nid) {
-          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
-          $sub_events[] = [
-            '@type' => 'Event',
-            'name' => $sub_event->label(),
-            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
-          ];
-        }
-        $data['subEvent'] = $sub_events;
-      }
-
-      // Add virtual location data to the schema if it's present.
-      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
-        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
-        $virtual = [
-          '@type' => 'VirtualLocation',
-          'url' => $uri,
-        ];
-        if (isset($data['location'])) {
-          $data['location'] = [
-            $data['location'],
-            $virtual,
-          ];
-        }
-        else {
-          $data['location'] = $virtual;
-        }
-      }
-    }
-  }
 }

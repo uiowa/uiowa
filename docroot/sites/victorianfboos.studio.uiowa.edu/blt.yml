@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiovictorianfboos.uiowa.ddev.site
+    protocol: https
+  machine_name: studiovictorianfboos
+  human_name: victorianfboos.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiovictorianfboos.prod
+drupal:
+  db:
+    database: victorianfboos_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiovictorianfboos.prod.drupal.uiowa.edu'
+  requester: fsboos
+  site-name: 'Florence Boos: Publication and Research Site'

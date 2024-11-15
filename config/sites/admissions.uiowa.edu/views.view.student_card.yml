@@ -276,7 +276,6 @@ display:
           title: ''
           default_argument_type: node
           default_argument_options: {  }
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -573,9 +572,10 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: 0
       filter_in_block:
         - field_student_profile_gender_value
@@ -587,6 +587,7 @@ display:
         title: title
         field_student_profile_major: field_student_profile_major
         field_student_profile_image: field_student_profile_image
+      general_help_text: ''
     cache_metadata:
       max-age: 0
       contexts:
@@ -670,6 +671,59 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        view_node:
+          id: view_node
+          table: node
+          field: view_node
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: entity_link
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          text: view
+          output_url_as_text: true
+          absolute: false
         field_student_profile_image:
           id: field_student_profile_image
           table: node__field_student_profile_image
@@ -684,11 +738,11 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/student-profiles/{{ title|render|lower }}'
+            path: '{{ view_node }}'
             absolute: false
             external: false
-            replace_spaces: true
-            path_case: lower
+            replace_spaces: false
+            path_case: none
             trim_whitespace: false
             alt: '{{ title }}'
             rel: ''
@@ -749,9 +803,10 @@ display:
         pager: '0'
         hide_fields: '0'
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: '0'
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: 0
       filter_in_block:
         - field_student_profile_gender_value
@@ -761,8 +816,8 @@ display:
       more_link_help_text: ''
       restrict_fields:
         title: title
-        field_student_profile_major: field_student_profile_major
         field_student_profile_image: field_student_profile_image
+      general_help_text: ''
     cache_metadata:
       max-age: 0
       contexts:

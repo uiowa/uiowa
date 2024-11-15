@@ -5,6 +5,9 @@ global-styling:
     base:
       assets/css/global.css: {}
       /libraries/fontawesome/css/all.min.css: {}
+      https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&display=swap: { type: external, minified: false }
+      https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&display=swap: { type: external, minified: false }
+      https://fonts.googleapis.com/css2?family=Antonio:wght@100;300;700&display=swap: { type: external, minified: false }
     layout:
       assets/css/components/page-layouts.css: {}
     component:
@@ -23,10 +26,8 @@ global-styling:
       assets/css/components/form/search.css: {}
       assets/css/components/brand-bar.css: {}
       assets/css/components/footer.css: {}
-      assets/css/components/menus/group.css: {}
       assets/css/components/menus/superfish/superfish.css: {}
       assets/css/components/menus/main-menu.css: {}
-      assets/css/components/menus/user-menu.css: {}
       assets/css/components/menus/top.css: {}
       assets/css/components/menus/quick.css: {}
       assets/css/components/uiowa-bar.css: {}
@@ -46,20 +47,6 @@ accessible-menu:
   js:
     /libraries/accessible-menu/dist/accessible-menu.js: {}
     assets/js/accessible-menu.init.js: {}
-# Leaflet
-leaflet:
-  remote: http://leafletjs.com/
-  version: 1.7.1
-  license:
-    name: Leaflet-License
-    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
-    gpl-compatible: true
-  js:
-    /libraries/leaflet/dist/leaflet.js: {}
-  css:
-    component:
-      /libraries/leaflet/dist/leaflet.css: {}
-      assets/css/components/leaflet.css: { preprocess: false }
 # Slick
 slick:
   css:
@@ -107,22 +94,16 @@ accordion:
       assets/css/components/accordion.css: { preprocess: false }
       assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
   js:
-    uids3/components/accordion/accordion.js: { preprocess: false  }
+    uids/assets/js/accordion.js: { preprocess: false  }
 tabs:
   css:
     component:
       assets/css/components/tabs.css: { preprocess: false }
   js:
-    uids3/components/tabs/tabs.js: { preprocess: false }
+    uids/assets/js/tabs.js: { preprocess: false }
 header-sticky:
   js:
     assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
-banner:
-  css:
-    component:
-      assets/css/components/banner.css: { preprocess: false }
-  js:
-    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -136,16 +117,19 @@ slider:
     component:
       assets/css/components/slider.css: { preprocess: false }
   js:
-    uids3/components/slider/slider.js: { preprocess: false }
+    uids/assets/js/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
 remote-video:
   css:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
+lazy-load-animation:
+  js:
+    assets/js/lazy_load_animation.js: {}
 video:
   js:
-    uids3/components/video/video.js: { preprocess: false }
+    assets/js/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -160,7 +144,7 @@ aggregator-feed:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids3/components/video/video.js: { preprocess: false }
+    assets/js/video.js: { preprocess: false }
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
@@ -171,18 +155,27 @@ vertical-video:
     component:
       assets/css/components/video/vertical.css: { preprocess: false }
   js:
-    uids3/components/video/vertical/vertical.js: { preprocess: false }
+    assets/js/vertical.js: { preprocess: false }
 highlight:
   css:
     component:
       assets/css/components/highlight.css: { preprocess: false }
+click-a11y:
+  js:
+    assets/js/click-a11y-init.js: { preprocess: true, attributes: { type: module } }
+banner:
+  css:
+    component:
+      assets/css/components/banner.css: { preprocess: false }
+  dependencies:
+    - uids_base/click-a11y
 card:
   css:
     component:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
-  js:
-    assets/js/click-a11y-init.js: { preprocess: false, attributes: { type: module } }
+  dependencies:
+    - uids_base/click-a11y
 media:
   css:
     component:
@@ -211,8 +204,6 @@ stat:
   css:
     component:
       assets/css/components/stat.css: { preprocess: false }
-  js:
-    uids3/components/stat/stat.js: { preprocess: false }
 timeline:
   css:
     component:
@@ -242,7 +233,7 @@ local-tasks:
 sitenow:
   css:
     component:
-      assets/css/sitenow.css: { weight: -800, preprocess: false }
+      assets/css/sitenow_v2.css: { weight: -800, preprocess: false }
 sitenow-events-single:
   css:
     component:
@@ -281,6 +272,10 @@ paragraphs-webform:
   css:
     component:
       assets/css/paragraphs/uiowa-paragraphs-webform.css: { preprocess: false }
+chosen:
+  css:
+    component:
+      assets/css/components/form/chosen.css: { preprocess: false }
 view-articles-list:
   css:
     component:
@@ -401,43 +396,36 @@ global-serif:
 # CSS libraries for Layout plugins.
 # One column
 onecol:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/onecol.css: {}
 # One column with background
 onecol--background:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/onecol--background.css: {}
 # One column with region
 onecol--fixed:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/onecol--fixed.css: {}
 # Two column
 twocol:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/twocol.css: {}
 # Three column
 threecol:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/threecol.css: {}
 # Four column
 fourcol:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/fourcol.css: {}
 # Left sidebar default page layout
 page--left-sidebar:
-  version: VERSION
   css:
     theme:
       assets/css/layouts/page--left-sidebar.css: { preprocess: false }

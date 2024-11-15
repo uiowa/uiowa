@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: transparency.uiowa.ddev.site
+    protocol: https
+  machine_name: transparency
+  human_name: transparency.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: transparency.prod
+drupal:
+  db:
+    database: transparency_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://transparency.prod.drupal.uiowa.edu'
+  requester: ajhnson
+  site-name: 'Office of Transparency'

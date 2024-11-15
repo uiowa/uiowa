@@ -1,6 +1,5 @@
-@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids3/components/card/_card-mixins.scss";
+@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
 .path-frontpage .page-title {
   margin-top: $gutter;
@@ -111,6 +110,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
         @include breakpoint(page-container) {
           flex: 0 0 calc(34.5% - 3rem);
           margin-bottom: $desktop-width-gutter;
+          display: flex;
 
           .sidebar-invisible.layout--has-sidebar & {
             flex: 0 0 calc(34.5% - 3rem);
@@ -130,8 +130,6 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
             margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
           }
         }
-
-        display: flex;
       }
     }
   }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgsinfonia.uiowa.ddev.site
+    protocol: https
+  machine_name: orgsinfonia
+  human_name: sinfonia.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgsinfonia.prod
+drupal:
+  db:
+    database: sinfonia_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgsinfonia.prod.drupal.uiowa.edu'
+  requester: acook15
+  site-name: 'Phi Mu Alpha at the University of Iowa'

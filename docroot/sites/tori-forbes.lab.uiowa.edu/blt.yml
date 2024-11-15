@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtori-forbes.uiowa.ddev.site
+    protocol: https
+  machine_name: labtori-forbes
+  human_name: tori-forbes.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtori-forbes.prod
+drupal:
+  db:
+    database: tori_forbes_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtori-forbes.prod.drupal.uiowa.edu'
+  requester: tforbes
+  site-name: 'Tori Forbes Research Lab'

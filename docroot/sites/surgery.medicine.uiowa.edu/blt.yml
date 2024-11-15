@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinesurgery.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinesurgery
+  human_name: surgery.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinesurgery.prod
+drupal:
+  db:
+    database: surgery_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinesurgery.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Surgery'

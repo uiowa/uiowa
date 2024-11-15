@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpotthoff.uiowa.ddev.site
+    protocol: https
+  machine_name: labpotthoff
+  human_name: potthoff.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpotthoff.prod
+drupal:
+  db:
+    database: potthoff_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpotthoff.prod.drupal.uiowa.edu'
+  requester: ansullivan
+  site-name: 'Potthoff Lab'

@@ -1,0 +1,38 @@
+uuid: 7ff5ac79-705b-481a-8943-7945dfc9e95d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.session.field_session_program
+    - field.field.taxonomy_term.session.field_session_session
+    - field.field.taxonomy_term.session.field_session_year
+    - taxonomy.vocabulary.session
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: taxonomy_term.session.teaser
+targetEntityType: taxonomy_term
+bundle: session
+mode: teaser
+content:
+  field_session_program:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_session_session: true
+  field_session_year: true
+  search_api_excerpt: true

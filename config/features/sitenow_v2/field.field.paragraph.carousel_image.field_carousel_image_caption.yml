@@ -8,10 +8,6 @@ dependencies:
   module:
     - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: paragraph.carousel_image.field_carousel_image_caption
 field_name: field_carousel_image_caption
 entity_type: paragraph
@@ -22,5 +18,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinekidsight.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinekidsight
+  human_name: kidsight.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinekidsight.prod
+drupal:
+  db:
+    database: kidsight_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinekidsight.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Iowa KidSight'

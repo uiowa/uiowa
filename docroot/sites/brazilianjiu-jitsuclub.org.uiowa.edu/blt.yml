@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgbrazilianjiu-jitsuclub.uiowa.ddev.site
+    protocol: https
+  machine_name: orgbrazilianjiu-jitsuclub
+  human_name: brazilianjiu-jitsuclub.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgbrazilianjiu-jitsuclub.prod
+drupal:
+  db:
+    database: brazilianjiu_jitsuclub_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgbrazilianjiu-jitsuclub.prod.drupal.uiowa.edu'
+  requester: kdhageman
+  site-name: 'Iowa Brazilian Jiu-Jitsu Club'

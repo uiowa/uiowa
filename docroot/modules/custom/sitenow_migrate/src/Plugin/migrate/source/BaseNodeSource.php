@@ -87,7 +87,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager, $module_handler);
     $this->fileSystem = $file_system;
-    $this->logger = $this->getLogger('sitenow_migrate');
     // Add a 'source_file_path' entry to configuration so that we can use it in
     // process plugins later. This is necessary because querying against the
     // source database in a process plugin is not at all straightforward.
@@ -114,7 +113,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
         $this->sourceMediaFields[] = $process['source'];
       }
     }
+    $this->setup();
   }
+
+  /**
+   * Method to allow implementing classes to run setup tasks.
+   */
+  protected function setup(): void {}
 
   /**
    * {@inheritdoc}
@@ -150,7 +155,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
       $plugin_id,

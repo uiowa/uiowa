@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablanguageacrossthelifespan.uiowa.ddev.site
+    protocol: https
+  machine_name: lablanguageacrossthelifespan
+  human_name: languageacrossthelifespan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablanguageacrossthelifespan.prod
+drupal:
+  db:
+    database: languageacrossthelifespan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablanguageacrossthelifespan.prod.drupal.uiowa.edu'
+  requester: samknight
+  site-name: 'Language Across the Lifespan Project'

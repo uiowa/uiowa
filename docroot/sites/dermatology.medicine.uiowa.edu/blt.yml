@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinedermatology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinedermatology
+  human_name: dermatology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinedermatology.prod
+drupal:
+  db:
+    database: dermatology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinedermatology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Dermatology'

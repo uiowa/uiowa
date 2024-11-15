@@ -109,6 +109,7 @@ function iowasummerwritingfestival_core_update_9002(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'event')
+      ->accessCheck()
       ->execute();
 
     $sandbox['total'] = count($query);
@@ -200,6 +201,7 @@ function iowasummerwritingfestival_core_update_9003() {
 
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'event')
+    ->accessCheck()
     ->execute();
   foreach ($nids as $nid) {
     $node = Node::load($nid);

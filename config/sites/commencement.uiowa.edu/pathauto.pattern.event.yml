@@ -1,0 +1,22 @@
+uuid: 06f34ccb-98aa-4fd5-8039-09a00f8ae3ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: event
+label: Event
+type: 'canonical_entities:node'
+pattern: 'ceremony/[node:field_event_session]/[node:title]'
+selection_criteria:
+  fdd40f16-17ab-4888-91d5-4bdf825f8d5f:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: fdd40f16-17ab-4888-91d5-4bdf825f8d5f
+    context_mapping:
+      node: node
+    bundles:
+      event: event
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 // This file contains the styles for the /admin/config/sitenow/sitenow-people page.
 
@@ -23,14 +23,15 @@
   .field--name-body.field__item {
     font-size: initial;
   }
+
+  .draggableviews-weight {
+    min-width: 45px;
+  }
 }
 
 
 .view-display-id-page_people_table {
   table {
-    @include breakpoint(sm) {
-      display: block;
-    }
     tbody tr:not(.is-selected):nth-child(2n),
     tbody tr:not(.is-selected):nth-child(2n) th {
       background-color: #fff;
@@ -53,11 +54,22 @@
     @include element-invisible;
   }
 
+  .views-field.views-field-rendered-entity {
+    width: 100%;
+    container-type: inline-size;
+    container-name: column;
+    @include breakpoint(sm) {
+      display: block;
+    }
+  }
+
   tr.draggable {
     position: relative;
+    width: 100%;
 
     .card {
       margin-bottom: 1.6rem;
+      width: 100%;
     }
 
     .tabledrag-handle {

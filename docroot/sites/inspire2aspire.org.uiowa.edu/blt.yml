@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orginspire2aspire.uiowa.ddev.site
+    protocol: https
+  machine_name: orginspire2aspire
+  human_name: inspire2aspire.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orginspire2aspire.prod
+drupal:
+  db:
+    database: inspire2aspire_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orginspire2aspire.prod.drupal.uiowa.edu'
+  requester: akvenkatesan
+  site-name: 'Inspire to Aspire'

@@ -100,6 +100,7 @@ content:
       collapsible: true
       collapsed: false
       revision: true
+      removed_reference: optional
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
@@ -150,6 +151,11 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 120
@@ -187,4 +193,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true

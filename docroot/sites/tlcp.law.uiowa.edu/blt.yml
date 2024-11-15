@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawtlcp.uiowa.ddev.site
+    protocol: https
+  machine_name: lawtlcp
+  human_name: tlcp.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawtlcp.prod
+drupal:
+  db:
+    database: tlcp_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawtlcp.prod.drupal.uiowa.edu'
+  requester: jacelliott
+  site-name: 'Transnational Law and Contemporary Problems'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: us-iaapt.uiowa.ddev.site
+    protocol: https
+  machine_name: us-iaapt
+  human_name: iaapt.us
+drush:
+  aliases:
+    local: self
+    remote: us-iaapt.prod
+drupal:
+  db:
+    database: iaapt_us
+uiowa:
+  stage_file_proxy:
+    origin: 'https://us-iaapt.prod.drupal.uiowa.edu'
+  requester: dstille
+  site-name: 'Iowa Section of the American Association of Physics Teachers'

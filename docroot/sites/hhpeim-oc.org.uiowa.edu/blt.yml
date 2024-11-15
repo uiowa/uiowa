@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orghhpeim-oc.uiowa.ddev.site
+    protocol: https
+  machine_name: orghhpeim-oc
+  human_name: hhpeim-oc.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orghhpeim-oc.prod
+drupal:
+  db:
+    database: hhpeim_oc_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orghhpeim-oc.prod.drupal.uiowa.edu'
+  requester: xcweber
+  site-name: hhpeim-oc

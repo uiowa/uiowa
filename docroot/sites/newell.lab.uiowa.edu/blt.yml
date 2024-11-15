@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnewell.uiowa.ddev.site
+    protocol: https
+  machine_name: labnewell
+  human_name: newell.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnewell.prod
+drupal:
+  db:
+    database: newell_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnewell.prod.drupal.uiowa.edu'
+  requester: btodd
+  site-name: 'Newell Lab'

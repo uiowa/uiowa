@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineocrme.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineocrme
+  human_name: ocrme.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineocrme.prod
+drupal:
+  db:
+    database: ocrme_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineocrme.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Office of Consultation and Research in Medical Education (OCRME)'

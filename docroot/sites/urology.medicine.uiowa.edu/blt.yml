@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineurology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineurology
+  human_name: urology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineurology.prod
+drupal:
+  db:
+    database: urology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineurology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Urology'

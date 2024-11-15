@@ -1,6 +1,6 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-
+@use "sass:color";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .webform-submission-form {
   label {
@@ -41,6 +41,16 @@
   // Make fields respect field width settings
   input[size]:not([size='60']) {
     width: inherit;
+  }
+
+  .webform-element-help {
+    background: $brand-cool-gray;
+    border: 2px solid $brand-cool-gray;
+    &:hover,
+    &:focus {
+      border: 2px solid $info;
+      background: $info;
+    }
   }
 
   // --------------------------------
@@ -201,7 +211,7 @@
         color: $secondary;
       }
       [class*="bg--black"] & {
-        background-color: lighten(#FFCD00, 40%);
+        background-color: color.scale(#FFCD00, $lightness: 40%);
       }
     }
     & input:checked:focus + label {

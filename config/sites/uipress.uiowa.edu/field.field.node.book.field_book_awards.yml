@@ -4,14 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_book_awards
+    - filter.format.minimal
     - node.type.book
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats:
-      - minimal
 id: node.book.field_book_awards
 field_name: field_book_awards
 entity_type: node
@@ -22,5 +18,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats:
+    - minimal
 field_type: text_long

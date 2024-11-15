@@ -1,8 +1,8 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
-$search-mobile-img-path: '../../../uids/assets/images/search-white-01.svg';
-$search-img-path: '../../../uids/assets/images/search-01.svg';
+$search-mobile-img-path: '../../images/search-white-01.svg';
+$search-img-path: '../../images/search-01.svg';
 
 // previous uids 3.x component styles.
 
@@ -11,7 +11,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   z-index: 2;
   top: 0;
   right: 0;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: auto;
   height: 70px;
   margin: 0;
@@ -77,6 +79,13 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     }
   }
 
+  .iowa-bar--full.iowa-bar--healthcare & {
+
+    @include breakpoint(md) {
+      height: 100px;
+    }
+  }
+
   .iowa-bar--narrow & {
     height: 70px;
     background: none;
@@ -117,13 +126,11 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     }
 
     &:before {
-      padding: 7px;
+      padding: $xsm;
       content: "\f00d";
       color: $secondary;
 
       @include breakpoint(md) {
-        width: 35px;
-        margin-right: 5px;
         color: $secondary;
         border-radius: 50%;
         background: #fff;
@@ -137,7 +144,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
         color: white;
         border-radius: 50%;
         background: $secondary;
-
       }
 
       .iowa-bar--full & {
@@ -150,7 +156,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   &:before {
     padding: $xsm;
-    padding-right: 7px;
     content: "\f002";
     color: #fff;
     font-size: 1.5rem;
@@ -159,6 +164,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     @include breakpoint(md) {
       font-size: 1.2rem;
       color: $secondary;
+      height: 35px;
+      width: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
     }
   }
 }
@@ -286,6 +297,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
       margin-top: 18px;
     }
   }
+
+  .iowa-bar--healthcare.iowa-bar--full & {
+    @include breakpoint(md) {
+      margin-top: 30px;
+    }
+  }
 }
 
 .search-overlay .uids-search [type="submit"] {
@@ -306,7 +323,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   padding: 20px;
   content: ' ';
-  background: url(../images/search-white-01.svg);
+  background: url($search-mobile-img-path);
   background-repeat: repeat;
   background-repeat: no-repeat;
   background-position: center;
@@ -314,7 +331,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
   @include breakpoint(md) {
     background-position: center;
-    background: url(../images/search-01.svg);
+    background: url($search-img-path);
   }
 
   .iowa-bar--narrow & {
@@ -475,16 +492,15 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 // Iowa Bar Full adjustments
 .iowa-bar--full.horizontal,
-.iowa-bar--full.mega {
-  .search-button {
-    @include breakpoint(page-container) {
-      height: 85px;
-      width: 159px;
+.iowa-bar--full.mega,
+.iowa-bar--full.toggle {
+  &.iowa-bar--healthcare {
+    .search-button {
+      @include breakpoint(page-container) {
+        height: 110px;
+      }
     }
   }
-}
-
-.iowa-bar--full.toggle {
   .search-button {
     @include breakpoint(page-container) {
       height: 85px;

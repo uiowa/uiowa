@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labquelle.uiowa.ddev.site
+    protocol: https
+  machine_name: labquelle
+  human_name: quelle.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labquelle.prod
+drupal:
+  db:
+    database: quelle_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labquelle.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'DQuelle Lab'

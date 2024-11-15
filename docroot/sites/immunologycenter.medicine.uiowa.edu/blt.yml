@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineimmunologycenter.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineimmunologycenter
+  human_name: immunologycenter.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineimmunologycenter.prod
+drupal:
+  db:
+    database: immunologycenter_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineimmunologycenter.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Center for Immunology and Immune Based Diseases'

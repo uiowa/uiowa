@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: religiousstudies.uiowa.ddev.site
+    protocol: https
+  machine_name: religiousstudies
+  human_name: religiousstudies.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: religiousstudies.prod
+drupal:
+  db:
+    database: religiousstudies_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://religiousstudies.prod.drupal.uiowa.edu'
+  requester: mwright27
+  site-name: 'Religious Studies'

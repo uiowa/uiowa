@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinebiomed.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinebiomed
+  human_name: biomed.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinebiomed.prod
+drupal:
+  db:
+    database: biomed_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinebiomed.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Biomedical Science Program'

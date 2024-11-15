@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpigge.uiowa.ddev.site
+    protocol: https
+  machine_name: labpigge
+  human_name: pigge.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpigge.prod
+drupal:
+  db:
+    database: pigge_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpigge.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Pigge Research Group'

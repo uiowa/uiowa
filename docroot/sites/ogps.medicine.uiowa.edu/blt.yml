@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineogps.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineogps
+  human_name: ogps.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineogps.prod
+drupal:
+  db:
+    database: ogps_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineogps.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Office of Graduate and Postdoctoral Studies'

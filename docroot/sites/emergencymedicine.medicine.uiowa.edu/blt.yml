@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineemergencymedicine.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineemergencymedicine
+  human_name: emergencymedicine.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineemergencymedicine.prod
+drupal:
+  db:
+    database: emergencymedicine_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineemergencymedicine.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Emergency Medicine'

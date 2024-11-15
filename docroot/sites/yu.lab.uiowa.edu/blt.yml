@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labyu.uiowa.ddev.site
+    protocol: https
+  machine_name: labyu
+  human_name: yu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labyu.prod
+drupal:
+  db:
+    database: yu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labyu.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Yu Lab'

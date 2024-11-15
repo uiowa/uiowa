@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepa.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepa
+  human_name: pa.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepa.prod
+drupal:
+  db:
+    database: pa_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepa.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Physician Assistant Studies '

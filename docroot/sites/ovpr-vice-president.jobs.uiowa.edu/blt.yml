@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: jobsovpr-vice-president.uiowa.ddev.site
+    protocol: https
+  machine_name: jobsovpr-vice-president
+  human_name: ovpr-vice-president.jobs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: jobsovpr-vice-president.prod
+drupal:
+  db:
+    database: ovpr_vice_president_jobs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://jobsovpr-vice-president.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Vice President for Research Search'

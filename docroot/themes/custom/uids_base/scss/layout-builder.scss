@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 html {
   scroll-behavior: auto;
@@ -106,7 +106,7 @@ form {
     background-color: transparent;
     margin: 0;
     width: 100%;
-    padding: $gutter/2;
+    padding: calc($gutter / 2);
     outline: none;
   }
 
@@ -420,11 +420,15 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 // @todo https://github.com/uiowa/uids/issues/768.
 blockquote.layout-builder-block {
-  &.blockquote--left,
   &.blockquote--right  {
     @include padding($top: $xsm, $bottom: $xsm, $left: $lg);
   }
+  // Restore Left (default) blockquote padding.
+  &:not(.blockquote--center):not(.blockquote--right) {
+    padding: .325rem 1.875rem;
+  }
 }
+
 
 // Override blockquote borders to show block highlighted.
 blockquote.layout-builder-block.is-layout-builder-highlighted  {
@@ -432,7 +436,7 @@ blockquote.layout-builder-block.is-layout-builder-highlighted  {
   &.blockquote--img-above {
     border: 4px solid #000;
   }
-  &.blockquote--left:not(.blockquote--img-above) {
+  &.blockquote:not(.blockquote--img-above):not(.blockquote--center):not(.blockquote--right) {
     border-left: 10px solid $primary;
   }
   &.blockquote--right:not(.blockquote--img-above)  {

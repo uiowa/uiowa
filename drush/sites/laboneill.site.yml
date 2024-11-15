@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: laboneill.uiowa.ddev.site
+  paths:
+    files: sites/oneill.lab.uiowa.edu/files
+dev:
+  uri: laboneill.dev.drupal.uiowa.edu
+  host: uiowa05dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/oneill.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.dev/docroot
+  user: uiowa05.dev
+prod:
+  uri: oneill.lab.uiowa.edu
+  host: uiowa05.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/oneill.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.prod/docroot
+  user: uiowa05.prod
+test:
+  uri: laboneill.stage.drupal.uiowa.edu
+  host: uiowa05stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/oneill.lab.uiowa.edu/files
+  root: /var/www/html/uiowa05.test/docroot
+  user: uiowa05.test

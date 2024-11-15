@@ -1,7 +1,8 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .view-taxonomy-term {
+  @include margin($top: $lg);
   // Style the term image.
   .view-header {
     // Add spacing between header and content area if using fields.
@@ -21,7 +22,7 @@
       }
     }
   }
-  @include margin($top: $lg);
+
   &[class*="grid--"] {
     .view-content.list-container__inner {
       @include breakpoint(sm) {

@@ -1,0 +1,33 @@
+uuid: 02ca14ed-713f-4122-9e0d-6edaae74f28b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.alert_update.field_alert_update_date
+    - field.field.paragraph.alert_update.field_alert_update_description
+    - paragraphs.paragraphs_type.alert_update
+  module:
+    - datetime
+    - text
+id: paragraph.alert_update.default
+targetEntityType: paragraph
+bundle: alert_update
+mode: default
+content:
+  field_alert_update_date:
+    type: datetime_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_alert_update_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

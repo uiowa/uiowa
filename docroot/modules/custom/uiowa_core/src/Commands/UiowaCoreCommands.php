@@ -5,6 +5,7 @@ namespace Drupal\uiowa_core\Commands;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleHandler;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService;
 use Drupal\purge\Plugin\Purge\Queue\QueueService;
 use Drupal\purge\Plugin\Purge\Queuer\QueuersService;
@@ -20,12 +21,14 @@ use Symfony\Component\Yaml\Yaml;
  * of the services file to use.
  */
 class UiowaCoreCommands extends DrushCommands {
+  use LoggerChannelTrait;
+
   /**
    * The uiowa_core logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected ?LoggerInterface $logger;
 
   /**
    * The config factory service.
@@ -85,13 +88,13 @@ class UiowaCoreCommands extends DrushCommands {
     $uiowa_core_gtag = $config->get('uiowa_core.gtag');
 
     if ((int) $uiowa_core_gtag === 1) {
-      $this->logger->notice('Site-specific Google Tag Manager Disabled');
+      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Disabled');
       $config
         ->set('uiowa_core.gtag', '0')
         ->save();
     }
     else {
-      $this->logger->notice('Site-specific Google Tag Manager Enabled');
+      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Enabled');
       $config
         ->set('uiowa_core.gtag', '1')
         ->save();
@@ -138,16 +141,16 @@ class UiowaCoreCommands extends DrushCommands {
         if ($diff) {
           // Prettify and dump result.
           $result = Yaml::dump($diff);
-          $this->logger->notice($result);
+          $this->getLogger('uiowa_core')->notice($result);
         }
       }
       else {
-        $this->logger->notice('Configuration to compare does not exist.');
+        $this->getLogger('uiowa_core')->notice('Configuration to compare does not exist.');
       }
 
     }
     else {
-      $this->logger->notice('uiowa_auth is not enabled.');
+      $this->getLogger('uiowa_core')->notice('uiowa_auth is not enabled.');
     }
   }
 

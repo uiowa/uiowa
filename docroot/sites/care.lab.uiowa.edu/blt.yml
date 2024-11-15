@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcare.uiowa.ddev.site
+    protocol: https
+  machine_name: labcare
+  human_name: care.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcare.prod
+drupal:
+  db:
+    database: care_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcare.prod.drupal.uiowa.edu'
+  requester: bhandary
+  site-name: care.lab.uiowa.edu

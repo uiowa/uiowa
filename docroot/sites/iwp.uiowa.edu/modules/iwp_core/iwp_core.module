@@ -1,0 +1,362 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality the IWP website.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
+use Drupal\iwp_core\Entity\Resource;
+use Drupal\iwp_core\Entity\WriterBio;
+use Drupal\media\Entity\Media;
+use Drupal\node\NodeInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function iwp_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['writer_bio'])) {
+    $bundles['node']['writer_bio']['class'] = WriterBio::class;
+  }
+  if (isset($bundles['node']['resource'])) {
+    $bundles['node']['resource']['class'] = Resource::class;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function iwp_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_writer_bio_form':
+    case 'node_writer_bio_edit_form':
+    case 'node_resource_form':
+    case 'node_resource_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_writer_bio_photo_credit'])) {
+        // Set field_writer_bio_photo_credit to node_image group.
+        $form['field_writer_bio_photo_credit']['#group'] = 'node_image';
+      }
+      break;
+
+    case 'taxonomy_term_writer_bio_session_status_form':
+      $term_id = $form_state->getFormObject()->getEntity()->id();
+      $config = \Drupal::config('iwp_core.settings');
+      $default_session = $config->get('default_session');
+      $form['default_session'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Default session'),
+        '#description' => t('Check this box to make this session the default session for the site.'),
+        // Set the default value based on whether it matches the term ID.
+        '#default_value' => $default_session == $term_id,
+      ];
+
+      // Add a submit handler for processing the default session.
+      $form['actions']['submit']['#submit'][] = 'iwp_core_taxonomy_term_session_form_submit';
+      break;
+  }
+}
+
+/**
+ * Custom submit handler for the taxonomy_term_session_form form.
+ */
+function iwp_core_taxonomy_term_session_form_submit($form, FormStateInterface $form_state) {
+  $is_default = $form_state->getValue('default_session');
+  // If a value was set for default session, update the configuration.
+  if ($is_default) {
+    $config = \Drupal::service('config.factory')->getEditable('iwp_core.settings');
+    // Set the term ID as the default session.
+    $term_id = $form_state->getFormObject()->getEntity()->id();
+    $config->set('default_session', $term_id)->save();
+    // Invalidate the views cache for the ceremonies view.
+    Cache::invalidateTags(['config:views.view.writer_bio']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function iwp_core_preprocess_breadcrumb(&$variables) {
+  // Get the current route name.
+  $route_match = \Drupal::routeMatch();
+  $current_route_name = $route_match->getRouteName();
+
+  // Check if this is the views page.
+  if ($current_route_name === 'view.writer_bio.page_writer_bio') {
+    foreach ($variables['links'] as $key => $link) {
+      $url = $link->getURL();
+      // Test for external paths.
+      if ($url->isRouted()) {
+        $route_name = $url->getRouteName();
+        // Remove linked breadcrumb if it matches the view route.
+        if ($route_name === 'view.writer_bio.page_writer_bio') {
+          unset($variables['breadcrumb'][$key]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for layout__twocol__card_sidebar.
+ */
+function iwp_core_preprocess_layout__twocol__card_sidebar(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'resource') {
+    $variables['attributes']['class'][] = 'bg--none';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function iwp_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_resource_countries':
+      uiowa_core_set_field_icon($variables, 'fa-globe');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_genre':
+      uiowa_core_set_field_icon($variables, 'fa-book');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_type':
+      uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--md');
+      $resource_type = '';
+      if (!empty($variables['element']['#items'])) {
+        $resource_type = $variables['element']['#items']->getString();
+      }
+
+      // Set the icon based on the resource type.
+      switch ($resource_type) {
+        case 'video':
+          uiowa_core_set_field_icon($variables, 'fa-video');
+          break;
+
+        case 'document':
+          uiowa_core_set_field_icon($variables, 'fa-file');
+          break;
+
+        case 'audio':
+          uiowa_core_set_field_icon($variables, 'fa-volume-up');
+          break;
+      }
+      break;
+
+    case 'field_resource_link':
+    case 'field_resource_button':
+      uiowa_core_set_field_icon($variables, 'fa-link');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      break;
+
+    case 'field_resource_year':
+      uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_attributes($variables, 'fa-field-item element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_session_status':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-calendar-days');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_countries':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-globe');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_languages':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-language');
+        uiowa_core_set_attributes($variables, 'element--inline padding--inline-end--sm');
+      }
+      break;
+
+    case 'field_writer_bio_sample':
+    case 'field_writer_bio_sample_original':
+      $field_name = $variables['element']['#field_name'];
+      $node = $variables["element"]["#object"];
+      $file_entity = NULL;
+      $field_to_check = ($field_name === 'field_writer_bio_sample') ? 'field_writer_bio_sample' : 'field_writer_bio_sample_original';
+      $link_text = $node->label();
+      $link_text .= ($field_name === 'field_writer_bio_sample') ? ' Writing Sample' : ' Writing Sample in Original Language';
+
+      // Check if the field has a file.
+      if (!empty($node->$field_to_check->entity) && !empty($node->$field_to_check->entity->field_media_file->entity)) {
+        $file_entity = $node->$field_to_check->entity->field_media_file->entity;
+      }
+
+      if ($file_entity) {
+        $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
+        $link = Link::fromTextAndUrl($link_text, Url::fromUri($file_url));
+        $variables['items'][0]['content'] = $link->toString();
+      }
+      break;
+
+    case 'field_image':
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type === 'video') {
+            if (isset($node->get('field_resource_media')->getValue()[0])) {
+              unset($variables["items"]);
+            }
+          }
+        }
+      }
+      break;
+
+    case 'field_resource_media':
+      $layout_context = \Drupal::routeMatch()->getRouteObject()->getOption('_layout_builder');
+      $is_full = isset($variables["element"]["#third_party_settings"]["layout_builder"]["view_mode"]);
+
+      if (isset($variables['element']['#object']) && !$layout_context && $is_full) {
+        $node = $variables['element']['#object'];
+        $node_type = $node->bundle();
+        if ($node_type == 'resource' && isset($node->get('field_resource_type')->getValue()[0]['value'])) {
+          $resource_type = $node->get('field_resource_type')->getValue()[0]['value'];
+          if ($resource_type !== 'video') {
+            unset($variables["items"]);
+          }
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function iwp_core_views_pre_build(ViewExecutable $view) {
+  if ($view->id() == 'writer_bio') {
+    $config = \Drupal::config('iwp_core.settings');
+    $default_session = $config->get('default_session');
+    if ($default_session) {
+      $filter = $view->display_handler->getHandler('filter', 'field_writer_bio_session_status_target_id');
+      $filter->value['value'] = $default_session;
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view().
+ */
+function iwp_core_preprocess_views_view(&$variables) {
+  // Check if the current view has a specific ID or display ID.
+  if ($variables['view']->id() === 'resources') {
+    // Attach the library using the #attached property.
+    $variables['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
+ * Allowed values function to return a list of years for a session.
+ */
+function iwp_core_resource_years_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
+  $thisyear = (int) date('Y');
+
+  $i = $thisyear + 10;
+  $options = [];
+  while ($i >= 1950) :
+    $options[$i] = $i;
+    $i--;
+  endwhile;
+  return $options;
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function iwp_core_entity_extra_field_info() {
+  $extra = [];
+
+  // Resource button.
+  $extra['node']['resource']['display']['field_resource_button'] = [
+    'label' => t('Resource button'),
+    'description' => t('The button to link to the designate resource.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function iwp_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'resource' && $view_mode === 'full') {
+    // Resource button.
+    if ($display->getComponent('field_resource_button')) {
+      $link = '';
+      $node_type = $node->bundle();
+      if ($node_type == 'resource' && !$node->get('field_resource_type')->isEmpty()) {
+        $resource_type = $node->get('field_resource_type')->first()->getValue()['value'];
+        if ($resource_type === 'video' || $resource_type === 'document') {
+          $media_field = $node->get('field_resource_media');
+          if (!$media_field->isEmpty()) {
+            $media_id = $media_field->first()->getValue()['target_id'];
+            if ($media_id) {
+              $media = Media::load($media_id);
+              if ($media) {
+                if ($media->bundle() === 'file') {
+                  $fid = $media->getSource()->getSourceFieldValue($media);
+                  if ($fid) {
+                    $file = File::load($fid);
+                    if ($file) {
+                      $link = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+                    }
+                  }
+                }
+                elseif ($media->bundle() === 'remote_video') {
+                  $link = $media->getSource()->getSourceFieldValue($media);
+                }
+              }
+            }
+          }
+        }
+      }
+      if (!empty($link)) {
+        $build['field_resource_button'] = [
+          '#theme' => 'field',
+          '#title' => t('Resource source'),
+          '#label_display' => 'visually_hidden',
+          '#field_type' => 'link',
+          '#formatter' => 'link',
+          '#field_name' => 'field_resource_button',
+          '#entity_type' => 'node',
+          '#bundle' => 'resource',
+          '#view_mode' => 'default',
+          '#is_multiple' => FALSE,
+          0 => [
+            '#type' => 'link',
+            '#title' => t('View media'),
+            '#url' => Url::fromUri($link),
+          ],
+        ];
+      }
+    }
+  }
+}

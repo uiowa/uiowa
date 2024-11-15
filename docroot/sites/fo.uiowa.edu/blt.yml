@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: fo.uiowa.ddev.site
+    protocol: https
+  machine_name: fo
+  human_name: fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fo.prod
+drupal:
+  db:
+    database: fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://fo.prod.drupal.uiowa.edu'
+  requester: wmoorehe
+  site-name: 'Finance and Operations'

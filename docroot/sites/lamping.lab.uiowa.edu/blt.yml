@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablamping.uiowa.ddev.site
+    protocol: https
+  machine_name: lablamping
+  human_name: lamping.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablamping.prod
+drupal:
+  db:
+    database: lamping_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablamping.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Lamping Lab'

@@ -37,7 +37,8 @@ function grad_admissions_core_update_9001() {
 
   // Grab all our area of study nodes.
   $query = \Drupal::entityQuery('node')
-    ->condition('type', 'area_of_study');
+    ->condition('type', 'area_of_study')
+    ->accessCheck();
 
   $results = $query->execute();
   $nodes = \Drupal::entityTypeManager()
@@ -81,7 +82,8 @@ function grad_admissions_core_update_9002(&$sandbox) {
 
   // Grab all our area of study nodes.
   $query = \Drupal::entityQuery('node')
-    ->condition('type', 'area_of_study');
+    ->condition('type', 'area_of_study')
+    ->accessCheck();
 
   $db = \Drupal::database();
 

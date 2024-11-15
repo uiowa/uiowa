@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgstudy-hawk.uiowa.ddev.site
+    protocol: https
+  machine_name: orgstudy-hawk
+  human_name: study-hawk.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgstudy-hawk.prod
+drupal:
+  db:
+    database: study_hawk_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgstudy-hawk.prod.drupal.uiowa.edu'
+  requester: dstrief
+  site-name: 'Study Hawk'

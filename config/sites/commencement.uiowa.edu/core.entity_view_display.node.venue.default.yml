@@ -1,0 +1,496 @@
+uuid: 9f85f7de-9ff0-4dc9-b8b3-fd6018d2ac1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.venue.body
+    - field.field.node.venue.field_geolocation
+    - field.field.node.venue.field_image
+    - field.field.node.venue.field_location
+    - field.field.node.venue.field_meta_tags
+    - field.field.node.venue.field_venue_additional_info
+    - node.type.venue
+    - system.menu.main
+    - views.view.events_by_venue
+  module:
+    - address
+    - commencement_core
+    - entity_reference_revisions
+    - geofield
+    - layout_builder
+    - layout_builder_restrictions
+    - menu_block
+    - metatag
+    - text
+    - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 8a266267-75c9-4697-b0de-3155e9b8b32d
+            region: content
+            configuration:
+              id: 'extra_field_block:node:venue:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+        components:
+          -
+            uuid: a7049687-6bf7-427d-aeff-f2ba4255e9e4
+            region: background
+            configuration:
+              id: 'field_block:node:venue:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                  link: false
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e9e8660a-7a58-4f82-a872-ef00a1d89a85
+            region: content
+            configuration:
+              id: 'field_block:node:venue:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: e322f8a8-4ca1-4d24-9f29-f2b4fa46da0e
+            region: content
+            configuration:
+              id: 'field_block:node:venue:field_location'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: address_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: -1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_container_narrow
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: 2b5ff073-4c96-4667-9f81-3dcf226f17c9
+            region: content
+            configuration:
+              id: 'menu_block:main'
+              label: null
+              label_display: null
+              provider: menu_block
+              context_mapping: {  }
+              follow: true
+              follow_parent: child
+              label_link: false
+              label_type: block
+              level: 1
+              depth: 1
+              expand_all_items: false
+              parent: 'main:'
+              suggestion: main
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                - block_alignment_center
+                - block_menu_horizontal
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_container_narrow
+        components:
+          -
+            uuid: 983d487f-a50f-4566-a260-6b6b273ad111
+            region: content
+            configuration:
+              id: 'field_block:node:venue:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_container_narrow
+        components:
+          -
+            uuid: cec6bd79-fb65-4b08-8f42-227998f9d3a1
+            region: content
+            configuration:
+              id: 'field_block:node:venue:field_venue_additional_info'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: accordion
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: Map
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_edge_to_edge
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: a5a44d74-4189-4478-be28-b45b42195735
+            region: first
+            configuration:
+              id: 'field_block:node:venue:field_geolocation'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: leaflet_formatter_default
+                label: visually_hidden
+                settings:
+                  multiple_map: false
+                  leaflet_map: 'OSM Mapnik'
+                  height: 650
+                  height_unit: px
+                  hide_empty_map: true
+                  disable_wheel: true
+                  gesture_handling: false
+                  fitbounds_options: '{"padding":[0,0]}'
+                  reset_map:
+                    control: false
+                    options: '{"position":"topleft","title":"Reset View"}'
+                  map_scale:
+                    control: false
+                    options: '{"position":"bottomright","maxWidth":100,"metric":true,"imperial":false,"updateWhenIdle":false}'
+                  locate:
+                    control: false
+                    options: '{"position":"topright","setView":"untilPanOrZoom","returnToPrevBounds":true,"keepCurrentZoomLevel":true,"strings":{"title":"Locate my position"}}'
+                    automatic: false
+                  leaflet_tooltip:
+                    value: ''
+                    options: '{"permanent":false,"direction":"center"}'
+                  leaflet_popup:
+                    control: '0'
+                    content: ''
+                    options: '{"maxWidth":"300","minWidth":"50","autoPan":true}'
+                  map_position:
+                    force: false
+                    center:
+                      lat: 0.0
+                      lon: 0.0
+                    zoomControlPosition: topleft
+                    zoom: 17
+                    minZoom: 1
+                    maxZoom: 19
+                    zoomFiner: 0
+                  icon:
+                    iconType: marker
+                    iconUrl: ''
+                    shadowUrl: ''
+                    className: ''
+                    iconSize:
+                      x: ''
+                      'y': ''
+                    iconAnchor:
+                      x: ''
+                      'y': ''
+                    shadowSize:
+                      x: ''
+                      'y': ''
+                    shadowAnchor:
+                      x: ''
+                      'y': ''
+                    popupAnchor:
+                      x: ''
+                      'y': ''
+                    html: '<div></div>'
+                    html_class: leaflet-map-divicon
+                    circle_marker_options: '{"radius":100,"color":"red","fillColor":"#f03","fillOpacity":0.5}'
+                  fullscreen:
+                    control: false
+                    options: '{"position":"topleft","pseudoFullscreen":false}'
+                  path: '{"color":"#3388ff","opacity":"1.0","stroke":true,"weight":3,"fill":"depends","fillColor":"*","fillOpacity":"0.2","radius":"6"}'
+                  feature_properties:
+                    values: ''
+                  map_lazy_load:
+                    lazy_load: true
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: df838a8b-2375-4fe3-8ee8-b418d2def509
+            region: second
+            configuration:
+              id: 'views_block:events_by_venue-block_1'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              exposed: {  }
+              headline:
+                headline: Events
+                hide_headline: 0
+                heading_size: h2
+                headline_style: headline_bold_serif_underline
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: f91f4d31-6cb2-4bf0-b8e9-0aa2b29e8c39
+            region: first
+            configuration:
+              id: directionslink_block
+              label: null
+              label_display: null
+              provider: commencement_core
+              context_mapping:
+                node: layout_builder.entity
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_container_narrow
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          -
+            uuid: 375f60ed-00a6-49f0-b575-fb85cde6299c
+            region: content
+            configuration:
+              id: 'field_block:node:venue:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 8
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: node.venue.default
+targetEntityType: node
+bundle: venue
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_geolocation:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_location:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_venue_additional_info:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

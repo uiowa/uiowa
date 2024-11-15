@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbanfi.uiowa.ddev.site
+    protocol: https
+  machine_name: labbanfi
+  human_name: banfi.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbanfi.prod
+drupal:
+  db:
+    database: banfi_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbanfi.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Banfi Laboratory'

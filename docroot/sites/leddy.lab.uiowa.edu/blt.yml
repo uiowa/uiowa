@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lableddy.uiowa.ddev.site
+    protocol: https
+  machine_name: lableddy
+  human_name: leddy.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lableddy.prod
+drupal:
+  db:
+    database: leddy_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lableddy.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Leddy Lab'

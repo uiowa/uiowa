@@ -1,7 +1,30 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/tables/tables.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/components/tables.scss";
 
 .lb__container .table-responsive {
   margin-right: auto;
+}
+
+table th {
+  a[href]::after {
+    content: none !important;
+  }
+}
+
+.table--align-top {
+  thead, tbody {
+    vertical-align: top;
+  }
+}
+.table--sort-arrow-inline {
+  th[aria-sort] a{
+    display: flex;
+    align-items: center;
+    margin-left: 2px;
+
+    .tablesort {
+      filter: saturate(0) brightness(0.2);
+    }
+  }
 }

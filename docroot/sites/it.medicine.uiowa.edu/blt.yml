@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineit.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineit
+  human_name: it.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineit.prod
+drupal:
+  db:
+    database: it_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineit.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Office of Information Technology'

@@ -2,9 +2,9 @@
 
 namespace Drupal\admissions_core\Entity;
 
-use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;
@@ -31,19 +31,21 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
     // Old preprocess function turned into method.
     $card_details = $this->getDetails();
 
-    // Label based on parent field.
-    $build['#title'] = $card_details['label'];
+    if (isset($card_details['label'])) {
+      // Label based on parent field.
+      $build['#title'] = $card_details['label'];
+
+      // Render icon as image.
+      $build['#media']['icon'] = [
+        '#type' => 'markup',
+        '#markup' => '<img src="/themes/custom/uids_base/assets/images/' . strtolower($card_details['label']) . '.png" alt="' . $card_details['label'] . '" />',
+      ];
+    }
 
     // Custom list of links.
     if (isset($card_details['card_list'])) {
       $build['#content']['card_list'] = $card_details['card_list'];
     }
-
-    // Render icon as image.
-    $build['#media']['icon'] = [
-      '#type' => 'markup',
-      '#markup' => '<img src="/themes/custom/uids_base/assets/images/' . strtolower($card_details['label']) . '.png" alt="' . $card_details['label'] . '" />',
-    ];
   }
 
   /**
@@ -85,7 +87,8 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                   $query = \Drupal::entityQuery('node')
                     ->condition('status', 1)
                     ->condition('type', 'transfer_tips')
-                    ->condition('field_transfer_tips_aos', $parent->id());
+                    ->condition('field_transfer_tips_aos', $parent->id())
+                    ->accessCheck();
                   $nids = $query->execute();
 
                   if (!empty($nids)) {
@@ -96,13 +99,14 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                     $transfer_tip_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
                     $card_list['transfer_tip'] = [
                       '#type' => 'markup',
-                      '#markup' => '<a href="' . $transfer_tip_url . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a>',
+                      '#markup' => '<a href="' . $transfer_tip_url . '" class=""><span class="text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a>',
                     ];
                   }
                   $query = \Drupal::entityQuery('node')
                     ->condition('type', 'major')
                     ->condition('status', 1)
-                    ->condition('field_major_area_of_study', $parent->id(), '=');
+                    ->condition('field_major_area_of_study', $parent->id(), '=')
+                    ->accessCheck();
                   // We only really need to know if there are areas of study,
                   // and not which or how many, because the link will just be
                   // based on the aos id.
@@ -115,7 +119,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
                     $two_plus_two_url = \Drupal::service('path_alias.manager')->getAliasByPath(AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $slug);
                     $card_list['two_plus_two'] = [
                       '#type' => 'markup',
-                      '#markup' => '<a href="' . $two_plus_two_url . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-calendar-check"></i></span> 2 plus 2 plan</a>',
+                      '#markup' => '<a href="' . $two_plus_two_url . '" class=""><span class="text--black"><i role="presentation" class="fas fa-calendar-check"></i></span> 2 plus 2 plan</a>',
                     ];
                   }
                 }
@@ -129,7 +133,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
         foreach ($this->get('field_ar_requirement')->getIterator() as $key => $link) {
           $card_list['ar_requirement'][$key] = [
             '#type' => 'markup',
-            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
+            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
           ];
         }
       }
@@ -138,7 +142,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
         foreach ($this->get('field_ar_process')->getIterator() as $key => $link) {
           $card_list['ar_process'][$key] = [
             '#type' => 'markup',
-            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
+            '#markup' => '<a href="' . $link->getUrl()->toString() . '" class=""><span class="text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> ' . $link->get('title')->getString() . ' </a>',
           ];
         }
       }
@@ -148,7 +152,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
           '#theme' => 'item_list',
           '#type' => 'ul',
           '#items' => $card_list,
-          '#attributes' => ['class' => 'element--list-none fa-ul'],
+          '#attributes' => ['class' => 'element--list-none card__meta fa-field-item'],
         ];
       }
     }

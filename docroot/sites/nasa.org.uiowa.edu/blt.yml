@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgnasa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgnasa
+  human_name: nasa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgnasa.prod
+drupal:
+  db:
+    database: nasa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgnasa.prod.drupal.uiowa.edu'
+  requester: acbuffalo
+  site-name: 'Native American Student Association'

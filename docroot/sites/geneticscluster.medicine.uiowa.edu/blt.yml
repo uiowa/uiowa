@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinegeneticscluster.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinegeneticscluster
+  human_name: geneticscluster.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinegeneticscluster.prod
+drupal:
+  db:
+    database: geneticscluster_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinegeneticscluster.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'UI Genetics Cluster Initiative'

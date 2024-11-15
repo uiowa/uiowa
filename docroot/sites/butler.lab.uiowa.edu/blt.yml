@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbutler.uiowa.ddev.site
+    protocol: https
+  machine_name: labbutler
+  human_name: butler.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbutler.prod
+drupal:
+  db:
+    database: butler_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbutler.prod.drupal.uiowa.edu'
+  requester: chernndez
+  site-name: 'Noah Butler lab'

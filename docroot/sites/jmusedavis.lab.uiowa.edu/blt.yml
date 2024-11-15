@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjmusedavis.uiowa.ddev.site
+    protocol: https
+  machine_name: labjmusedavis
+  human_name: jmusedavis.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjmusedavis.prod
+drupal:
+  db:
+    database: jmusedavis_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjmusedavis.prod.drupal.uiowa.edu'
+  requester: jdavis46
+  site-name: 'J Muse Davis Lab'

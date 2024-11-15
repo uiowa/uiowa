@@ -1,0 +1,25 @@
+uuid: 3b421941-6907-478f-8fdb-81385999718a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_estimated_cost
+    - node.type.project
+id: node.project.field_project_estimated_cost
+field_name: field_project_estimated_cost
+entity_type: node
+bundle: project
+label: 'Project Budget'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0.0
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: $
+  suffix: ''
+field_type: decimal

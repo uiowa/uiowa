@@ -1,0 +1,22 @@
+uuid: cc90eb25-0a9e-4534-b2f3-5e8e73d7bc7f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: artwork
+label: Artwork
+type: 'canonical_entities:node'
+pattern: 'art-on-campus/artwork/[node:title]'
+selection_criteria:
+  2cd84015-f5f0-4157-92f9-62ccbf663b16:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 2cd84015-f5f0-4157-92f9-62ccbf663b16
+    context_mapping:
+      node: node
+    bundles:
+      artwork: artwork
+selection_logic: and
+weight: -5
+relationships: {  }

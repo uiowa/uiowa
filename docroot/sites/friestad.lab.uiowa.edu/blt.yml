@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfriestad.uiowa.ddev.site
+    protocol: https
+  machine_name: labfriestad
+  human_name: friestad.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfriestad.prod
+drupal:
+  db:
+    database: friestad_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfriestad.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'The Friestad Research Group'

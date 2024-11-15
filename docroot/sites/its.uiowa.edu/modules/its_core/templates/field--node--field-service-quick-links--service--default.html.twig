@@ -50,9 +50,7 @@
 ] %}
 
 <div{{ attributes.addClass(classes) }}>
-  <div{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>
-    {{ label }}
-  </div>
+  <div{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>{{ label }}</div>
   <ul>
     {% for item in items %}
       <li {{ item.attributes.addClass('field__item') }}>{{ item.content }}</li>

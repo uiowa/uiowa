@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwold.uiowa.ddev.site
+    protocol: https
+  machine_name: labwold
+  human_name: wold.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwold.prod
+drupal:
+  db:
+    database: wold_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwold.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Wold Lab'

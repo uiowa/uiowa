@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineinbc.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineinbc
+  human_name: inbc.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineinbc.prod
+drupal:
+  db:
+    database: inbc_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineinbc.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Iowa NeuroBank Core'

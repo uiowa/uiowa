@@ -14,6 +14,7 @@ dependencies:
     - node.type.scholar
   module:
     - layout_builder
+    - layout_builder_restrictions
     - options
     - system
     - text
@@ -194,6 +195,15 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.scholar.default
 targetEntityType: node
 bundle: scholar

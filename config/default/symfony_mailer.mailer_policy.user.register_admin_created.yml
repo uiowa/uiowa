@@ -1,0 +1,25 @@
+uuid: d43300f8-32b2-41e4-9798-65e122821e26
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: eC3j_yyQMsgaoE3EK4lyJ6qRwCOay2nQtK9n7mVnvYQ
+id: user.register_admin_created
+configuration:
+  email_subject:
+    value: 'An administrator created an account for you at [site:name]'
+  email_body:
+    content:
+      value: |-
+        <p>[user:display-name],</p>
+        <p>A site administrator at <a href="[site:url]">[site:name]</a> has created an account for you.
+        You may now use this link to <a href="[user:one-time-login-url]">log in</a>. It can be used only once and will lead you to a page where you can set your password.</p>
+
+        <p>After setting your password, you will be able to <a href="[site:login-url]">log in</a> in the future using:</p>
+        <ul>
+          <li>username: [user:account-name]</li>
+          <li>password: Your password</li>
+        </ul>
+      format: email_html

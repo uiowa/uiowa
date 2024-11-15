@@ -4,13 +4,13 @@ namespace Drupal\sitenow_p2lb\Commands;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
-use Psr\Log\LoggerInterface;
 
 /**
  * A Drush command file for sitenow_p2lb.
@@ -24,13 +24,6 @@ class P2LbCommands extends DrushCommands {
    * @var \Drupal\Core\Session\AccountSwitcherInterface
    */
   protected $accountSwitcher;
-
-  /**
-   * The sitenow_p2lb logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
 
   /**
    * The entity_type.manager service.
@@ -56,7 +49,7 @@ class P2LbCommands extends DrushCommands {
   /**
    * Command constructor.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerInterface $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerChannel $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->logger = $logger;
     $this->entityTypeManager = $entityTypeManager;
@@ -94,7 +87,7 @@ class P2LbCommands extends DrushCommands {
 
     // If we don't have any entities, send a message and exit.
     if (empty($entities)) {
-      $this->logger('sitenow_p2lb')->notice('No pages available to update.');
+      $this->logger->notice($this->t('No pages available to update.'));
 
       // Switch user back.
       $this->accountSwitcher->switchBack();
@@ -137,7 +130,7 @@ class P2LbCommands extends DrushCommands {
 
     batch_set($batch);
     drush_backend_batch_process();
-    $this->logger('sitenow_p2lb')->notice('Process batch operations ended.');
+    $this->logger->notice($this->t('Process batch operations ended.'));
 
     // Delete orphaned paragraphs, three-levels deep (section > block > item).
     for ($i = 0; $i < 3; $i++) {

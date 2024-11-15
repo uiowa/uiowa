@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinehumangenetics.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinehumangenetics
+  human_name: humangenetics.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinehumangenetics.prod
+drupal:
+  db:
+    database: humangenetics_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinehumangenetics.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Iowa Institute of Human Genetics'

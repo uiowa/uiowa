@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labblackwell.uiowa.ddev.site
+    protocol: https
+  machine_name: labblackwell
+  human_name: blackwell.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labblackwell.prod
+drupal:
+  db:
+    database: blackwell_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labblackwell.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Blackwell KEN Lab'

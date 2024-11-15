@@ -55,16 +55,13 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @hook init core:status
    */
   public function initStatus(InputInterface $input, AnnotationData $annotationData) {
-    $fields = explode(',', $input->getOption('fields'));
-    $defaults = $annotationData->getList('default-fields');
+    $field_labels = $annotationData->getList('field-labels');
+    $field_labels['application'] = 'Application';
+    $annotationData->set('field-labels', $field_labels);
 
-    // If no specific fields were requested, add ours to the defaults.
-    if ($fields == $defaults) {
-      $annotationData->append('field-labels', "\n application: Application");
-      array_unshift($defaults, 'application');
-      $annotationData->set('default-fields', $defaults);
-      $input->setOption('fields', $defaults);
-    }
+    $defaults = $annotationData->getList('default-table-fields');
+    array_unshift($defaults, 'application');
+    $annotationData->set('default-table-fields', $defaults);
   }
 
   /**

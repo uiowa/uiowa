@@ -7,10 +7,80 @@
  * D8/9 and D10 methods.
  * See https://www.drupal.org/node/3305664
  */
-#drupal-off-canvas:not(.drupal-off-canvas-reset),
-#drupal-off-canvas-wrapper {
-  width: 100% !important;
+
+.js-off-canvas-dialog-open .dialog-off-canvas-main-canvas {
+  padding-right: calc(var(--off-canvas-width) + 13px) !important;
 }
+
+#drupal-off-canvas-wrapper {
+  overflow: visible;
+  padding: 0px;
+  margin-right: -1px;
+  width: var(--off-canvas-width) !important;
+}
+
+.dialog-off-canvas-main-canvas {
+  transition-duration: 0s;
+}
+
+/**
+ * The height is 1px too small.
+ */
+#drupal-off-canvas-wrapper:before {
+  position: absolute;
+  content: '';
+  left: -1px;
+  top: -1px;
+  background-color: var(--off-canvas-wrapper-border-color);
+  height: 1px;
+  width: calc(100% + 1px);
+}
+
+#drupal-off-canvas-wrapper:after {
+  position: absolute;
+  content: '';
+  left: -1px;
+  top: calc(100% - 1px);
+  background-color: var(--off-canvas-background-color);
+  height: 50px;
+  width: calc(100% + 1px);
+}
+
+#drupal-off-canvas {
+  width: calc(100% - 1px) !important;
+  height: calc(100% - (var(--off-canvas-title-padding) * 2 + 1.4rem)) !important;
+  overflow: auto;
+  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding) ;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar {
+  margin: 0px;
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar button {
+  position: fixed;
+  top: calc(var(--drupal-displace-offset-top) + var(--off-canvas-title-padding) + 0.7rem);
+}
+
+#drupal-off-canvas-wrapper .ui-dialog-titlebar:after,
+#drupal-off-canvas:after {
+  background-color: var(--off-canvas-title-background-color);
+  content: '';
+  left: 100%;
+  top: -1px;
+  width: 500px;
+  display: block;
+  height: calc(100% + 1px);
+  position: absolute;
+  z-index: -1;
+}
+
+#drupal-off-canvas:after {
+  background-color: var(--off-canvas-background-color);
+  top: 0px;
+  z-index: -2;
+}
+
 
 #drupal-off-canvas:not(.drupal-off-canvas-reset) p,
 #drupal-off-canvas-wrapper p {
@@ -60,41 +130,39 @@
  * Drag handle styling.
  */
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-handle {
-  width: 20px;
-  height: 50px;
-  top: 20vw;
-  background: #444;
-  box-shadow: -2px -2px 4px -2px rgba(0, 0, 0, 0.3333), -2px 3px 4px -2px rgba(0, 0, 0, 0.3333);
+  width: 15px;
+  height: calc(100% + 52px);
+  top: -1px;
+  background: #838383;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid #333333;
+  border-right: 1px solid #2b2b2b;
+  border-left: 1px solid #515151;
   cursor: ew-resize;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:before,
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:after {
   content: '';
-  background: #85898b;
-  border-right: 1px solid #2d2d2d;
+  background: #5c6264;
+  border-right: 1px solid #484646;
   width: 2px;
   display: block;
-  height: 30px;
+  height: 60px;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w {
-  left: -21px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  left: -15px;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w:before {
-  left: -1px;
+  left: -2px;
   position: relative;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w:after {
-  left: 3px;
+  left: 1px;
   position: relative;
 }
 

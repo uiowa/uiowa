@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmickelsen.uiowa.ddev.site
+    protocol: https
+  machine_name: labmickelsen
+  human_name: mickelsen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmickelsen.prod
+drupal:
+  db:
+    database: mickelsen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmickelsen.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Mickelsen Lab'

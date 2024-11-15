@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineradiationoncology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineradiationoncology
+  human_name: radiationoncology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineradiationoncology.prod
+drupal:
+  db:
+    database: radiationoncology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineradiationoncology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Radiation Oncology'

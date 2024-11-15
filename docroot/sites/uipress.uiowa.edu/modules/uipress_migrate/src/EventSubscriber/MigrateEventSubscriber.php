@@ -65,6 +65,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
           $ids = $query
             ->condition($field, $bundle)
+            ->accessCheck()
             ->execute();
 
           if ($ids) {

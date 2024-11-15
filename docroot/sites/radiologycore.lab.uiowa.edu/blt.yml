@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labradiologycore.uiowa.ddev.site
+    protocol: https
+  machine_name: labradiologycore
+  human_name: radiologycore.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labradiologycore.prod
+drupal:
+  db:
+    database: radiologycore_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labradiologycore.prod.drupal.uiowa.edu'
+  requester: jenkinsn
+  site-name: 'Radiology Core Lag'

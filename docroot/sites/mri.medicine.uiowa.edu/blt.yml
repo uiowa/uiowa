@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinemri.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinemri
+  human_name: mri.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinemri.prod
+drupal:
+  db:
+    database: mri_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinemri.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Magnetic Resonance Research Facility'

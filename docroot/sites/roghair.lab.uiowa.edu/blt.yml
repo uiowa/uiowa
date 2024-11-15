@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labroghair.uiowa.ddev.site
+    protocol: https
+  machine_name: labroghair
+  human_name: roghair.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labroghair.prod
+drupal:
+  db:
+    database: roghair_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labroghair.prod.drupal.uiowa.edu'
+  requester: roghairr
+  site-name: 'Dr. Robert Roghair Laboratory'

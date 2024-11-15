@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhoth.uiowa.ddev.site
+    protocol: https
+  machine_name: labhoth
+  human_name: hoth.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhoth.prod
+drupal:
+  db:
+    database: hoth_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhoth.prod.drupal.uiowa.edu'
+  requester: hothk
+  site-name: 'Hoth Lab'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: courseonlinepublishing.uiowa.ddev.site
+    protocol: https
+  machine_name: courseonlinepublishing
+  human_name: onlinepublishing.course.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: courseonlinepublishing.prod
+drupal:
+  db:
+    database: onlinepublishing_course_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://courseonlinepublishing.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: ' Editorial Practice: Techniques in Publishing Online'

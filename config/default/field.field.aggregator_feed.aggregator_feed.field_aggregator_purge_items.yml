@@ -1,0 +1,22 @@
+uuid: 786f5375-8707-4be0-ab68-15e5d302ff1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.aggregator_feed.field_aggregator_purge_items
+  module:
+    - aggregator
+id: aggregator_feed.aggregator_feed.field_aggregator_purge_items
+field_name: field_aggregator_purge_items
+entity_type: aggregator_feed
+bundle: aggregator_feed
+label: 'Purge Items'
+description: 'Purge existing items each time before fetching feed content.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

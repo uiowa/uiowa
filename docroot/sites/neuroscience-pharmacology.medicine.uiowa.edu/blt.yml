@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineneuroscience-pharmacology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineneuroscience-pharmacology
+  human_name: neuroscience-pharmacology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineneuroscience-pharmacology.prod
+drupal:
+  db:
+    database: neuroscience_pharmacology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineneuroscience-pharmacology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Neuroscience and Pharmacology'

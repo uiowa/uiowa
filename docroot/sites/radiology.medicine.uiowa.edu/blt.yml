@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineradiology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineradiology
+  human_name: radiology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineradiology.prod
+drupal:
+  db:
+    database: radiology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineradiology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Radiology'

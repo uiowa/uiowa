@@ -1,0 +1,65 @@
+uuid: 6e4dca6f-7779-4c4a-bf58-be3eebf58ee0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_body
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_date
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_heading
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_icon
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_link
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_media
+    - paragraphs.paragraphs_type.uiowa_timeline_item
+  module:
+    - fontawesome
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: paragraph.uiowa_timeline_item.preview
+targetEntityType: paragraph
+bundle: uiowa_timeline_item
+mode: preview
+content:
+  field_timeline_date:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_timeline_heading:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_timeline_icon:
+    type: fontawesome_icon_formatter
+    label: hidden
+    settings:
+      layers: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_timeline_media:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: thumbnail
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_timeline_body: true
+  field_timeline_link: true
+  search_api_excerpt: true

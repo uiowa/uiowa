@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablcn.uiowa.ddev.site
+    protocol: https
+  machine_name: lablcn
+  human_name: lcn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablcn.prod
+drupal:
+  db:
+    database: lcn_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablcn.prod.drupal.uiowa.edu'
+  requester: cipetkov
+  site-name: 'Laboratory of Comparative Neuropsychology'

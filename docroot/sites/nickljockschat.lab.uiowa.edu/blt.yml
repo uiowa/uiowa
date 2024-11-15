@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnickljockschat.uiowa.ddev.site
+    protocol: https
+  machine_name: labnickljockschat
+  human_name: nickljockschat.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnickljockschat.prod
+drupal:
+  db:
+    database: nickljockschat_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnickljockschat.prod.drupal.uiowa.edu'
+  requester: zjpeters
+  site-name: 'Nickl-Jockschat Lab'

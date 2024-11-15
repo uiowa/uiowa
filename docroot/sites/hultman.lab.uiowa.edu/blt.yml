@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhultman.uiowa.ddev.site
+    protocol: https
+  machine_name: labhultman
+  human_name: hultman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhultman.prod
+drupal:
+  db:
+    database: hultman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhultman.prod.drupal.uiowa.edu'
+  requester: hwickramasinghevith
+  site-name: 'Laboratory for Brain-Network Based Molecular Medicine'

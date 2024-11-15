@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineradsci.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineradsci
+  human_name: radsci.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineradsci.prod
+drupal:
+  db:
+    database: radsci_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineradsci.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Radiation Sciences Programs'

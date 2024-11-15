@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-iowalionseyebank.uiowa.ddev.site
+    protocol: https
+  machine_name: org-iowalionseyebank
+  human_name: iowalionseyebank.org
+drush:
+  aliases:
+    local: self
+    remote: org-iowalionseyebank.prod
+drupal:
+  db:
+    database: iowalionseyebank_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-iowalionseyebank.prod.drupal.uiowa.edu'
+  requester: bramowj
+  site-name: 'Iowa Lions Eye Bank'

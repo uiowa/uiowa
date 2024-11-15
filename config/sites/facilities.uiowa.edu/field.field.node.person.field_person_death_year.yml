@@ -1,0 +1,23 @@
+uuid: 31acefe3-8488-42f8-ad2a-7bb8f72251a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_death_year
+    - node.type.person
+id: node.person.field_person_death_year
+field_name: field_person_death_year
+entity_type: node
+bundle: person
+label: 'Death Year'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1800
+  max: 2100
+  prefix: ''
+  suffix: ''
+field_type: integer

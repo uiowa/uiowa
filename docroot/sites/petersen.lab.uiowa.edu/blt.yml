@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpetersen.uiowa.ddev.site
+    protocol: https
+  machine_name: labpetersen
+  human_name: petersen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpetersen.prod
+drupal:
+  db:
+    database: petersen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpetersen.prod.drupal.uiowa.edu'
+  requester: lee21
+  site-name: 'Dr. Christine Petersen Laboratory'

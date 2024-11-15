@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: worklife.uiowa.ddev.site
+    protocol: https
+  machine_name: worklife
+  human_name: worklife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: worklife.prod
+drupal:
+  db:
+    database: worklife_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://worklife.prod.drupal.uiowa.edu'
+  requester: kjcarter
+  site-name: 'Build a Career | Build a Life'

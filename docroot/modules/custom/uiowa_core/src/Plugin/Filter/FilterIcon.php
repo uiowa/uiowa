@@ -31,7 +31,7 @@ class FilterIcon extends FilterBase {
       if ($span->hasAttribute('class')) {
         $class = $span->getAttribute('class');
         $classes = explode(' ', $class);
-        $icon_classes = ['fa', 'fab', 'fas'];
+        $icon_classes = ['fa', 'fa-regular', 'fab', 'fa-brands', 'fas', 'fa-solid'];
         foreach ($icon_classes as $icon_class) {
           if (in_array($icon_class, $classes)) {
             $span->setAttribute('role', 'presentation');

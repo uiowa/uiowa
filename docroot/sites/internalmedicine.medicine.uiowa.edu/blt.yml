@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineinternalmedicine.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineinternalmedicine
+  human_name: internalmedicine.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineinternalmedicine.prod
+drupal:
+  db:
+    database: internalmedicine_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineinternalmedicine.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Internal Medicine'

@@ -1,5 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .field--label-above,
 .field--label-inline {
@@ -14,6 +14,14 @@
         content: "";
       }
     }
+  }
+}
+
+.field--separator {
+  &:after {
+    content: '-';
+    color: $grey;
+    margin: 0 $xsm 0 $sm;
   }
 }
 
@@ -35,18 +43,6 @@
     line-height: 1;
   }
 
-  &.badge,
-  .badge & {
-    font-size: 1.1rem;
-    + .field__items {
-      margin-left: $sm;
-      font-weight: normal;
-      .field__item {
-        font-size: 1.1rem;
-      }
-    }
-  }
-
   [class*="card__"] &,
   [class*="bttn"] & {
     font-size: inherit;
@@ -56,7 +52,8 @@
 
 .field--label-inline {
   margin-bottom: $sm;
-  [class*="card__"] & {
+  [class*="card__"] &,
+  .block-margin__default--removed & {
     margin-bottom: 0;
   }
 
@@ -73,6 +70,9 @@
 
 .field__item {
   line-height: 1.7;
+}
+
+.field__item {
   margin-top: 0;
 
   &.h1,
@@ -111,8 +111,16 @@
   }
 }
 
+.field__item.headline {
+  line-height: 1;
+}
+
 .field--label-above {
   margin-bottom: $sm;
+
+  .block-margin__default--removed & {
+    margin-bottom: 0;
+  }
 
   ul {
     margin-top: 0;
@@ -160,6 +168,9 @@
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
   margin-top: $sm;
+  .card__subtitle & {
+    margin-top: 0;
+  }
   .element--three-column &,
   .element--two-column & {
     @include breakpoint(sm) {
@@ -188,6 +199,11 @@
   word-break: break-word;
 }
 // Address styling.
+.field--type-address--inline {
+  br {
+    display: none;
+  }
+}
 .field p.address {
   [class*="card__"] & {
     font-size: 1.1rem;

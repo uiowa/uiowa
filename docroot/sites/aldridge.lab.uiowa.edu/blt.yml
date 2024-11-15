@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labaldridge.uiowa.ddev.site
+    protocol: https
+  machine_name: labaldridge
+  human_name: aldridge.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labaldridge.prod
+drupal:
+  db:
+    database: aldridge_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labaldridge.prod.drupal.uiowa.edu'
+  requester: aldridgeg
+  site-name: 'Aldridge Lab'

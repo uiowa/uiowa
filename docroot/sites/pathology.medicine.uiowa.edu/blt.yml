@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepathology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepathology
+  human_name: pathology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepathology.prod
+drupal:
+  db:
+    database: pathology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepathology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Pathology'

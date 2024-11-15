@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmarcinkiewcz.uiowa.ddev.site
+    protocol: https
+  machine_name: labmarcinkiewcz
+  human_name: marcinkiewcz.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmarcinkiewcz.prod
+drupal:
+  db:
+    database: marcinkiewcz_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmarcinkiewcz.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Marcinkiewcz Lab'

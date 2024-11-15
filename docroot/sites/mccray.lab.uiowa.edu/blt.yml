@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmccray.uiowa.ddev.site
+    protocol: https
+  machine_name: labmccray
+  human_name: mccray.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmccray.prod
+drupal:
+  db:
+    database: mccray_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmccray.prod.drupal.uiowa.edu'
+  requester: geraghty
+  site-name: 'McCray Lab'

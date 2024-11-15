@@ -1,0 +1,3 @@
+# Functionality
+
+- Additional filesystem structure.

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawnhlp.uiowa.ddev.site
+    protocol: https
+  machine_name: lawnhlp
+  human_name: nhlp.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawnhlp.prod
+drupal:
+  db:
+    database: nhlp_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawnhlp.prod.drupal.uiowa.edu'
+  requester: msstutzm
+  site-name: 'https://nhlp.law.uiowa.edu/'

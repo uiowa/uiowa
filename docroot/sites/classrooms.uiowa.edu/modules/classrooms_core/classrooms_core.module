@@ -5,8 +5,6 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\classrooms_core\Entity\ClassroomsRoom;
-use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -14,6 +12,8 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\classrooms_core\Entity\ClassroomsRoom;
+use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
@@ -224,13 +224,6 @@ function classrooms_core_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_file_link().
- */
-function classrooms_core_preprocess_file_link(&$variables) {
-  unset($variables['attributes']['class']);
-}
-
-/**
  * Implements hook_entity_presave().
  */
 function classrooms_core_node_presave(EntityInterface $entity) {
@@ -257,22 +250,22 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_room_name':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-door-closed fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_label_icon($variables, 'fa-door-closed ');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
 
     case 'field_room_responsible_unit':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-key fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_label_icon($variables, 'fa-key');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       break;
 
     case 'field_room_max_occupancy':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-user fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_label_icon($variables, 'fa-user');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       else {
         uiowa_core_set_field_label_icon($variables, 'fa-user');
@@ -292,10 +285,23 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       ]);
       break;
 
+    case 'field_gallery_images':
+      if ($variables['element']['#bundle'] === 'room') {
+        $variables['field_container_classes'] = 'uiowa-image-gallery';
+        uiowa_core_set_title_attributes($variables, [
+          'h2',
+          'block__headline',
+          'headline',
+          'headline--serif',
+          'headline--underline',
+        ]);
+      }
+      break;
+
     case 'field_room_type':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-building fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_label_icon($variables, 'fa-building');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       else {
         uiowa_core_set_field_label_icon($variables, 'fa-building');
@@ -352,8 +358,8 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         // Modify the field label.
         $variables['label'] = t('Seating type');
-        uiowa_core_set_field_label_icon($variables, 'fa-chair fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
+        uiowa_core_set_field_label_icon($variables, 'fa-chair ');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       else {
         uiowa_core_set_title_attributes($variables, [
@@ -366,7 +372,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_technology_features_icon':
-      uiowa_core_set_attributes($variables, 'fa-li');
+      uiowa_core_set_attributes($variables, '');
       break;
 
   }
@@ -438,7 +444,7 @@ function classrooms_core_preprocess_node(&$variables): void {
  *
  * @see options_allowed_values()
  */
-function classrooms_core_room_category_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function classrooms_core_room_category_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'UNIVERSITY_CLASSROOM' => 'University Classroom',
     'PROGRAMMED_CLASSROOM' => 'Programmed Classroom',

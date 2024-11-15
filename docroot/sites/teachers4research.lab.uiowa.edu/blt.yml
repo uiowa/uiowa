@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labteachers4research.uiowa.ddev.site
+    protocol: https
+  machine_name: labteachers4research
+  human_name: teachers4research.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labteachers4research.prod
+drupal:
+  db:
+    database: teachers4research_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labteachers4research.prod.drupal.uiowa.edu'
+  requester: ostrem
+  site-name: Teachers4Research

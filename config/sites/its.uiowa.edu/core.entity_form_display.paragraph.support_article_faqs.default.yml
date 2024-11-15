@@ -1,0 +1,34 @@
+uuid: d41e98e8-2bfe-491b-84dd-20470139bdbf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.support_article_faqs.field_support_faqs_answer
+    - field.field.paragraph.support_article_faqs.field_support_faqs_question
+    - paragraphs.paragraphs_type.support_article_faqs
+  module:
+    - text
+id: paragraph.support_article_faqs.default
+targetEntityType: paragraph
+bundle: support_article_faqs
+mode: default
+content:
+  field_support_faqs_answer:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_support_faqs_question:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

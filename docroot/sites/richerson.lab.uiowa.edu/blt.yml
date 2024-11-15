@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labricherson.uiowa.ddev.site
+    protocol: https
+  machine_name: labricherson
+  human_name: richerson.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labricherson.prod
+drupal:
+  db:
+    database: richerson_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labricherson.prod.drupal.uiowa.edu'
+  requester: gricherson
+  site-name: 'Richerson Lab'

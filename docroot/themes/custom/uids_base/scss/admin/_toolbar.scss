@@ -30,6 +30,11 @@
 // admin toolbar style for sticky header.
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
+  &.header--healthcare {
+    @include breakpoint(md) {
+      padding-top: 140px !important;
+    }
+  }
   @include breakpoint(md) {
     padding-top: 120px !important;
   }
@@ -37,6 +42,11 @@
   &.below {
     @include breakpoint(md) {
       padding-top: 160px !important;
+    }
+    &.header--healthcare {
+      @include breakpoint(md) {
+        padding-top: 190px !important;
+      }
     }
   }
 }
@@ -49,11 +59,21 @@
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
+  &.header--healthcare {
+    @include breakpoint(md) {
+      padding-top: 180px !important;
+    }
+  }
   @include breakpoint(md) {
     padding-top: 160px !important;
   }
 
   &.below {
+    &.header--healthcare {
+      @include breakpoint(md) {
+        padding-top: 230px !important;
+      }
+    }
     @include breakpoint(md) {
       padding-top: 210px !important;
     }

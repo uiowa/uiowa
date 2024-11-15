@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepstp.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepstp
+  human_name: pstp.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepstp.prod
+drupal:
+  db:
+    database: pstp_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepstp.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Physician Scientist Training Pathway'

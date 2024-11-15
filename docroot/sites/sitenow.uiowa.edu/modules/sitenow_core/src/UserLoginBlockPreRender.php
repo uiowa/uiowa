@@ -36,8 +36,13 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
       /** @var \Drupal\Core\Url $url */
       $url = $build['content']['hawkid']['link']['#url'];
-
       unset($build['content']['hawkid']['link']);
+
+      $qs = \Drupal::request()->getQueryString();
+
+      if ($qs !== '') {
+        $path .= '?' . $qs;
+      }
 
       $url->setOptions([
         'query' => [
@@ -53,6 +58,8 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
         ]),
       ];
     }
+
+    $build['#cache']['max-age'] = 0;
 
     return $build;
   }

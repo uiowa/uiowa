@@ -121,10 +121,11 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    */
   public function getEntityIds() {
     if (!isset($this->entityIds)) {
-      // Get existing building nodes.
+      // Get existing entity ID's.
       $this->entityIds = $this->entityTypeManager
         ->getStorage($this->entityType)
         ->getQuery()
+        ->accessCheck(TRUE)
         ->condition('type', $this->bundle)
         ->execute();
     }
@@ -139,7 +140,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     if (!$this->getData()) {
       // Log a message that data was not returned.
       static::getLogger('uiowa_core')->notice('No data returned for EntityProcessorBase::getData().');
-      return;
+      return FALSE;
     }
 
     $storage = $this->entityTypeManager
@@ -169,17 +170,16 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
       // Get building number and check to see if existing node exists.
       if (!is_null($existing_nid)) {
         // If existing, update values if different.
-        $entity = $this->existingNodes[$existing_nid] ?? $storage->load($existing_nid);
+        $entity = $this->existingEntities[$existing_nid] ?? $storage->load($existing_nid);
       }
       else {
         // If not, create new.
         $entity = $storage->create([
-          'type' => 'building',
+          'type' => $this->bundle,
         ]);
       }
 
       if ($entity instanceof ContentEntityInterface) {
-
         $changed = $this->processEntity($entity, $record);
 
         if (!is_null($existing_nid)) {
@@ -213,6 +213,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
         }
       }
     }
+    return TRUE;
   }
 
   /**

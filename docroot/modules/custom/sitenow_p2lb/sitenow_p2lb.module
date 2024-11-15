@@ -8,6 +8,7 @@
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -38,6 +39,19 @@ function sitenow_p2lb_form_node_page_form_alter(&$form, FormStateInterface $form
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function sitenow_p2lb_node_presave(EntityInterface $entity) {
+  // Prevent new paragraphs from being saved
+  // to the database when a new page is created.
+  if ($entity->bundle() == 'page' && $entity->isNew()) {
+    if ($entity->hasField('field_page_content_block') && !$entity->get('field_page_content_block')->isEmpty()) {
+      $entity->set('field_page_content_block', NULL);
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -51,6 +65,9 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
         // If we have a revision id, the page has been converted.
         // Disable field_page_content_block and set a warning message.
         \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+        $form['field_page_content_block']['#access'] = FALSE;
+      }
+      elseif ($node->field_v3_conversion_revision_id->value === 'v3_new') {
         $form['field_page_content_block']['#access'] = FALSE;
       }
       else {
@@ -68,6 +85,25 @@ function sitenow_p2lb_form_node_page_edit_form_alter(&$form, FormStateInterface 
             '@link' => Link::createFromRoute('Conversion report', 'entity.node.p2lb_conversion_status', ['node' => $node->id()])->toString(),
           ]));
         }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function sitenow_p2lb_preprocess_menu_local_task(&$variables) {
+  $url = $variables['link']['#url'];
+
+  if ($url instanceof Url) {
+    $route_name = $url->getRouteName();
+    if ($route_name === 'entity.node.p2lb_conversion_status') {
+      $theme = \Drupal::service('theme.manager')->getActiveTheme();
+      if ($theme->getName() === 'uids_base') {
+        $variables['#attached']['library'][] = 'sitenow_p2lb/overrides';
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--p2lb';
       }
     }
   }
@@ -185,7 +221,7 @@ function sitenow_p2lb_fetch_child_ids($parent) {
   $content = $parent->get($field);
   if (!is_null($content)) {
     foreach ($content as $content_ref) {
-      $ids[] = $content_ref->target_id;
+      $ids[] = $content_ref->target_revision_id;
     }
   }
   return $ids;
@@ -1057,8 +1093,8 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   // Assumes only one button or link is present.
   // Any more links will remain in the body.
   if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
-    // Attach the bookended content into a single value.
-    $text['value'] = strip_tags($matches[1] . $matches[5]);
+    $text['value'] = strip_tags($matches[1] . $matches[5],
+      ['p', 'a', 'strong', 'em', 'h2', 'h3', 'h4', 'h6']);
     // Set URI based on link being absolute or relative.
     $uri = (substr($matches[3], 0, 4) === 'http') ?
       $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
@@ -1184,7 +1220,6 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
 
     case 'uiowa_quote':
       return [
-        'quote_left',
         'quote_above',
       ];
 
@@ -1343,6 +1378,11 @@ function sitenow_p2lb_get_protected_revision(string $nid): ?RevisionableInterfac
 
   // Get the protected revision id.
   $protected_revision_id = sitenow_p2lb_get_protected_revision_id($nid);
+
+  // If this is a new node, don't bother with the query.
+  if ($protected_revision_id === 'v3_new') {
+    return NULL;
+  }
 
   // Return the protected revision or NULL.
   /** @var \Drupal\Core\Entity\RevisionableInterface $revision */

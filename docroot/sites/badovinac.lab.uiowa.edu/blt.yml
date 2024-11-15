@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbadovinac.uiowa.ddev.site
+    protocol: https
+  machine_name: labbadovinac
+  human_name: badovinac.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbadovinac.prod
+drupal:
+  db:
+    database: badovinac_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbadovinac.prod.drupal.uiowa.edu'
+  requester: eastonw
+  site-name: 'Badovinac Laboratory'

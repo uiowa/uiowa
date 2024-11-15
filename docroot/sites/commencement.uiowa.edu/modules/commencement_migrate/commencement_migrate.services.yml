@@ -1,0 +1,6 @@
+services:
+  commencement_migrate.event_subscriber:
+    class: Drupal\commencement_migrate\EventSubscriber\MigrateEventSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }

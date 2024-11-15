@@ -7,9 +7,8 @@ use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
-use Drupal\migrate\Plugin\migrate\process\FileCopy;
 use Drupal\migrate\Plugin\MigrateProcessInterface;
+use Drupal\migrate\Plugin\migrate\process\FileCopy;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
 
@@ -41,11 +40,20 @@ class CreateMediaFromFile extends FileCopy {
   protected $sourceBaseUrl;
 
   /**
+   * The source public file path.
+   *
+   * @var string
+   */
+  protected $sourcePublicFilePath;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, StreamWrapperManagerInterface $stream_wrappers, FileSystemInterface $file_system, MigrateProcessInterface $download_plugin) {
     $this->entityTypeManager = \Drupal::entityTypeManager();
     $this->sourceBaseUrl = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
+      ->get('shared_configuration.source.constants.source_base_path');
+    $this->sourcePublicFilePath = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
       ->get('shared_configuration.source.constants.source_base_path');
     parent::__construct($configuration, $plugin_id, $plugin_definition, $stream_wrappers, $file_system, $download_plugin);
   }
@@ -131,7 +139,8 @@ class CreateMediaFromFile extends FileCopy {
       // Check if we're skipping on error.
       if ($this->configuration['skip_on_error']) {
         $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
-        throw new MigrateSkipProcessException($e->getMessage());
+        $this->stopPipeline();
+        return NULL;
       }
       else {
         // Pass the error back on again.

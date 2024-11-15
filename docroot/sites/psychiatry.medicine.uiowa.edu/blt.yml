@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepsychiatry.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepsychiatry
+  human_name: psychiatry.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepsychiatry.prod
+drupal:
+  db:
+    database: psychiatry_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepsychiatry.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Psychiatry'

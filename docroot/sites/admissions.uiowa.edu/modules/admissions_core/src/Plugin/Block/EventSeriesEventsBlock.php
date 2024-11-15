@@ -91,7 +91,8 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
         ->condition('type', 'event')
         ->condition('status', 1)
         ->condition('field_event_series_link.uri', 'entity:node/' . $nid, '=')
-        ->sort('field_event_when.value', 'ASC');
+        ->sort('field_event_when.value', 'ASC')
+        ->accessCheck();
 
       $nids = $query->execute();
       if (!empty($nids)) {
@@ -104,7 +105,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
             $node_when = $node->get('field_event_when')->getValue();
             $date = $this->dateFormat->format($node_when[0]['value'], 'custom', 'D, M j');
             $markup = [
-              '#markup' => '<span class="fa-li"><span class="fa-angle-right text--gold fas"></span></span>' . $date,
+              '#markup' => '<span class="fa-angle-right text--gold fas"></span>' . $date,
             ];
             $dates[$nid] = $markup;
 
@@ -122,7 +123,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
         $listUl = [
           '#theme' => 'item_list',
           '#list_type' => 'ul',
-          '#attributes' => ['class' => 'element--list-none fa-ul'],
+          '#attributes' => ['class' => 'element--list-none fa-field-item'],
           '#items' => $dates,
         ],
         '#cache' => [

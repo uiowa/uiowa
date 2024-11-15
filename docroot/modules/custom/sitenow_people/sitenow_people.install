@@ -37,7 +37,7 @@ function sitenow_people_update_8001() {
 
     // Get all the person nodes.
     $nids = \Drupal::entityQuery('node')
-      ->accessCheck(TRUE)
+      ->accessCheck()
       ->condition('type', 'person')
       ->execute();
 
@@ -80,7 +80,7 @@ function sitenow_people_update_8002() {
 
     // Get all the person nodes.
     $nids = \Drupal::entityQuery('node')
-      ->accessCheck(TRUE)
+      ->accessCheck()
       ->condition('type', 'person')
       ->execute();
 

@@ -9,7 +9,9 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\layout_builder\Field\LayoutSectionItemList;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
+use Drupal\layout_builder\SectionComponent;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
@@ -54,6 +56,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @var \Drupal\Component\Datetime\TimeInterface
    */
   protected $time;
+
+  /**
+   * The replicant node's field item list.
+   *
+   * @var \Drupal\layout_builder\Field\LayoutSectionItemList
+   */
+  protected $replicantFieldItemList = NULL;
 
   /**
    * ReplicateSubscriber constructor.
@@ -132,20 +141,55 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected function additionalHandling(FieldableEntityInterface $entity) {
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
-    foreach ($field_item_list as $field_item) {
-      foreach ($field_item->section->getComponents() as $component) {
+    foreach ($field_item_list->getSections() as $section_delta => $section) {
+      $components = $section->getComponents();
+      $replicant_components = FALSE;
+      foreach ($components as $component) {
         $plugin = $component->getPlugin();
         if ($plugin instanceof ViewsBlock) {
           // Create a copy of the original component, and generate
-          // a new uuid.
-          $new_component = clone $component;
-          $new_component->set('uuid', $this->uuid->generate());
+          // a new uuid. Non-thirdparty settings are protected,
+          // so we'll copy it as an array, update it, and create
+          // from an array in order to set the unique identifier.
+          $new_component = $component->toArray();
+          $new_component['uuid'] = $this->uuid->generate();
+          $new_component = $component->fromArray($new_component);
+
           $old_uuid = $component->getUuid();
-          // Add the new component to the section, directly after
-          // the existing component so that it will be in the right order.
-          $field_item->section->insertAfterComponent($old_uuid, $new_component);
-          // Remove the original component.
-          $field_item->section->removeComponent($old_uuid);
+          // If the view block is the only component,
+          // we can just set the new block and remove the old.
+          if (count($components) === 1) {
+            $section->insertAfterComponent($old_uuid, $new_component);
+            $section->removeComponent($old_uuid);
+          }
+          else {
+            // The original entity's weight information is lost
+            // during replication, so if the component was not on its own,
+            // we need to re-load it to retrieve this information.
+            if (!$replicant_components) {
+              $replicant_components = $this->getSortedReplicantSectionComponents($section_delta);
+            }
+            // Find the delta of the component in our sorted copy of the
+            // original entity's components array, to see in which place
+            // it should sit. Since we know the old uuid is in there,
+            // we can do a keys, flip, direct index instead of a full search.
+            $index = array_flip(array_keys($replicant_components))[$old_uuid];
+            // If it's the first component, then insert the new
+            // and remove the old, similar to if it was alone.
+            if ($index === 0) {
+              $section->insertAfterComponent($old_uuid, $new_component);
+              $section->removeComponent($old_uuid);
+            }
+            else {
+              // Remove the original component.
+              $section->removeComponent($old_uuid);
+              // Get the uuid of the component at the adjusted index.
+              $uuid = array_keys($components)[$index];
+              // Add the new component to the section, directly after
+              // the existing component so that it will be in the right order.
+              $section->insertAfterComponent($uuid, $new_component);
+            }
+          }
         }
       }
     }
@@ -204,6 +248,50 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         $node_storage_manager->deleteRevision($vid);
       }
     }
+  }
+
+  /**
+   * Fetch the replicant node's field item list.
+   *
+   * @return \Drupal\layout_builder\Field\LayoutSectionItemList|false
+   *   The replicant's section list or false if it could not be retrieved.
+   */
+  protected function getReplicantFieldItemList(): bool|LayoutSectionItemList {
+    /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $replicant_field_item_list */
+    $replicant_field_item_list = $this->entityTypeManager
+      ->getStorage('node')
+      ?->load($this->getClonedNid())
+      ?->get(OverridesSectionStorage::FIELD_NAME);
+    return $replicant_field_item_list ?? FALSE;
+  }
+
+  /**
+   * Get a replicant's section's components, sorted by their designated weight.
+   *
+   * @param int $section_delta
+   *   The specific section to retrieve.
+   *
+   * @return array|SectionComponent[]
+   *   A sorted array of the section's components.
+   */
+  protected function getSortedReplicantSectionComponents(int $section_delta): array {
+    if (is_null($this->replicantFieldItemList)) {
+      $this->replicantFieldItemList = $this->getReplicantFieldItemList();
+    }
+    if ($this->replicantFieldItemList === FALSE) {
+      return [];
+    }
+    $replicant_components = $this->replicantFieldItemList
+      ?->getSection($section_delta)
+      ?->getComponents();
+    if (is_array($replicant_components)) {
+      // Sort the components array by the components' weights
+      // so that we can use it for proper ordering.
+      uasort($replicant_components, function (SectionComponent $a, SectionComponent $b) {
+        return $a->getWeight() <=> $b->getWeight();
+      });
+    }
+    return $replicant_components ?? [];
   }
 
 }

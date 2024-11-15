@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablira.uiowa.ddev.site
+    protocol: https
+  machine_name: lablira
+  human_name: lira.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablira.prod
+drupal:
+  db:
+    database: lira_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablira.prod.drupal.uiowa.edu'
+  requester: vlira
+  site-name: 'Lira Lab - Muscle Biology & Metabolism'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-iowahumanrights.uiowa.ddev.site
+    protocol: https
+  machine_name: org-iowahumanrights
+  human_name: iowahumanrights.org
+drush:
+  aliases:
+    local: self
+    remote: org-iowahumanrights.prod
+drupal:
+  db:
+    database: iowahumanrights_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-iowahumanrights.prod.drupal.uiowa.edu'
+  requester: bfarrell
+  site-name: 'Iowa Network of Human Rights Academics'

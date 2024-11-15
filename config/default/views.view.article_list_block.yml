@@ -219,6 +219,15 @@ display:
             date_format: medium
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -516,7 +525,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ path(''entity.node.canonical'', {''node'': nid}) }}'
+            text: "{{ path('entity.node.canonical', {'node': nid}) }}"
             make_link: false
             path: ''
             absolute: false
@@ -637,19 +646,20 @@ display:
         type: mini
         options:
           offset: 0
-          items_per_page: 0
+          pagination_heading_level: h4
+          items_per_page: 10
           total_pages: null
           id: 0
           tags:
             next: 'Next ›'
             previous: '‹ Previous'
           expose:
-            items_per_page: true
+            items_per_page: false
             items_per_page_label: 'Items per page'
-            items_per_page_options: '9'
-            items_per_page_options_all: true
+            items_per_page_options: '10'
+            items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
-            offset: true
+            offset: false
             offset_label: Offset
       exposed_form:
         type: basic
@@ -714,6 +724,21 @@ display:
             field_identifier: created
           exposed: false
           granularity: second
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments: {  }
       filters:
         status:
@@ -835,7 +860,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -853,7 +877,9 @@ display:
     display_options:
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       block_description: Articles
       block_category: Lists
       allow:
@@ -862,9 +888,10 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: configure_sorts
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: use_more
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/sitenow/uiowa-articles" target="_blank" rel="noopener">articles path set within SiteNow Articles</a>, make sure the ‘Enable articles listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'
       restrict_fields:
@@ -876,7 +903,7 @@ display:
         field_article_author: 0
         field_article_source_org: 0
         field_article_source_link: 0
-        field_teaser: 0
+        body: 0
       general_help_text: '<a href="/admin/content?title=&type=article&status=1" target="_blank" rel="noopener">Manage existing articles on this site</a> or <a href="/node/add/article" target="_blank" rel="noopener">add an article here</a>.'
     cache_metadata:
       max-age: -1
@@ -885,7 +912,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

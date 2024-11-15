@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labccn.uiowa.ddev.site
+    protocol: https
+  machine_name: labccn
+  human_name: ccn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labccn.prod
+drupal:
+  db:
+    database: ccn_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labccn.prod.drupal.uiowa.edu'
+  requester: jcockburn
+  site-name: 'Computational Cognitive Neuroscience Lab'

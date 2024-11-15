@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labshea.uiowa.ddev.site
+    protocol: https
+  machine_name: labshea
+  human_name: shea.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshea.prod
+drupal:
+  db:
+    database: shea_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshea.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Shea Lab'

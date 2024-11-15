@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinemicrobiology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinemicrobiology
+  human_name: microbiology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinemicrobiology.prod
+drupal:
+  db:
+    database: microbiology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinemicrobiology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Microbiology and Immunology'

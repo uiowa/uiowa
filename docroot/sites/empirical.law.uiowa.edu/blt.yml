@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawempirical.uiowa.ddev.site
+    protocol: https
+  machine_name: lawempirical
+  human_name: empirical.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawempirical.prod
+drupal:
+  db:
+    database: empirical_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawempirical.prod.drupal.uiowa.edu'
+  requester: jrantanen
+  site-name: 'Federal Circuit Dataset Project'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: clasenterpriseleadership.uiowa.ddev.site
+    protocol: https
+  machine_name: clasenterpriseleadership
+  human_name: enterpriseleadership.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasenterpriseleadership.prod
+drupal:
+  db:
+    database: enterpriseleadership_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://clasenterpriseleadership.prod.drupal.uiowa.edu'
+  requester: mwright27
+  site-name: 'Enterprise Leadership'

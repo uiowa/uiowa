@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgpubhealtheval.uiowa.ddev.site
+    protocol: https
+  machine_name: orgpubhealtheval
+  human_name: pubhealtheval.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgpubhealtheval.prod
+drupal:
+  db:
+    database: pubhealtheval_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgpubhealtheval.prod.drupal.uiowa.edu'
+  requester: richardb
+  site-name: 'https://pubhealtheval.org.uiowa.edu'

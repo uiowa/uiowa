@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgeyer.uiowa.ddev.site
+    protocol: https
+  machine_name: labgeyer
+  human_name: geyer.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgeyer.prod
+drupal:
+  db:
+    database: geyer_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgeyer.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Geyer Lab'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinenmr.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinenmr
+  human_name: nmr.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinenmr.prod
+drupal:
+  db:
+    database: nmr_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinenmr.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Nuclear Magnetic Resonance Facility'

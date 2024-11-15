@@ -2,6 +2,7 @@
 
 The base application on Acquia Cloud for the University of Iowa.
 
+
 # Getting Started
 
 This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
@@ -102,11 +103,12 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                      | Reason                                                                                                                         |
-|------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| acquia/blt-travis            | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
-| uiowa/block_content_template | Forked from a deprecated project.                                                                                              |
-| drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                    |
+| Package                      | Reason                                                                                                                       |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| uiowa/block_content_template | Forked from a deprecated project.                                                                                            |
+| drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                  |
+| bower-asset/fontawesome | The version we were using abruptly disappeared on 11/02/2023.|
+
 
 
 

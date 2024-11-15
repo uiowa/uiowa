@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labahmad.uiowa.ddev.site
+    protocol: https
+  machine_name: labahmad
+  human_name: ahmad.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labahmad.prod
+drupal:
+  db:
+    database: ahmad_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labahmad.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Ahmad Lab'

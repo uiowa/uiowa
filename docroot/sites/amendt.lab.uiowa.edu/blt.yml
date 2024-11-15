@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labamendt.uiowa.ddev.site
+    protocol: https
+  machine_name: labamendt
+  human_name: amendt.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labamendt.prod
+drupal:
+  db:
+    database: amendt_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labamendt.prod.drupal.uiowa.edu'
+  requester: amendtb
+  site-name: 'Amendt Laboratory'

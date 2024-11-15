@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -15,6 +16,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -106,6 +108,18 @@ function sitenow_preprocess_select(&$variables) {
           unset($variables['options'][0]);
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function sitenow_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
+  // Remove fontawesome js if ckeditor5 is present.
+  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
+    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
+      unset($javascript['libraries/fontawesome/js/all.min.js']);
     }
   }
 }
@@ -487,14 +501,61 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
-  // Hide revision information on media entity add/edit forms
-  // to prevent new revisions from being created. This aids our
-  // file replace functionality.
+
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
+      // Hide revision information on media entity add/edit forms
+      // to prevent new revisions from being created. This aids our
+      // file replace functionality.
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
+      }
+      // Hide alias path setting on media for non-admins to prevent
+      // unwanted changes to internal paths (not the public-facing path).
+      if (isset($form['path'])) {
+        if ($access->isForbidden()) {
+          $form['path']['#access'] = FALSE;
+        }
+      }
+
+      // Prevent deletion if there is entity usage.
+      // This is accompanied by a message from the entity_usage module.
+      if ($form_object->getOperation() == 'delete') {
+        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
+        if (!empty($usage_data)) {
+          // Check to see if usage is tied to a revisionable parent entity.
+          $connection = \Drupal::database();
+          foreach ($usage_data as $type => $source) {
+            if ($type === 'node') {
+              $form['actions']['submit']['#disabled'] = TRUE;
+              return;
+            }
+            foreach ($source as $vid => $item) {
+              $query = $connection->select('entity_usage', 'u');
+              $query->fields('u', ['source_type']);
+              $query->condition('u.target_id', $vid, '=');
+              $query->condition('u.target_type', $type, '=');
+              $result = $query->execute()
+                ->fetchField();
+              if ($result) {
+                if ($result === 'node' || $result === 'fragment') {
+                  $form['actions']['submit']['#disabled'] = TRUE;
+                  return;
+                }
+              }
+            }
+            // Unset warning message if only usage are remnants.
+            if (!$result) {
+              unset($form['entity_usage_delete_warning']);
+            }
+          }
+        }
       }
     }
   }
@@ -502,12 +563,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Restrict theme settings form for non-admins.
     case 'system_theme_settings':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         $form['theme_settings']['#access'] = FALSE;
         $form['logo']['#access'] = FALSE;
@@ -528,12 +583,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Restrict certain webform component options.
     case 'webform_ui_element_form':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         // Remove access to wrapper, element, label attributes.
         $form['properties']['wrapper_attributes']['#access'] = FALSE;
@@ -561,11 +610,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         // to minimal and remove headline field.
         if ($uuid === '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
           $form['field_uiowa_headline']['#access'] = FALSE;
-          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-          $check = \Drupal::service('uiowa_core.access_checker');
-
-          $access = $check->access(\Drupal::currentUser()->getAccount());
-
           if ($access->isForbidden()) {
             $form['field_uiowa_text_area']['widget'][0]['#allowed_formats'] = [
               'minimal',
@@ -619,11 +663,20 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
  */
 function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if (isset($element['#webform_key'])) {
-    // With Acquia varnish, Webform can't pre-populate
-    // Google/Facebook Click IDs (gclid, fbclid).
+    // Pass query string parameters allowed for pre-populating webforms via
+    // drupalSettings to javascript and attach a script to parse them.
     if (isset($element['#prepopulate'])) {
-      $element['#attributes']['prepopulate'] = 'true';
-      if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+      $webform_prepopulate_query_keys = [
+        'fbclid',
+        'gclid',
+        'utm_campaign',
+        'utm_source',
+        'utm_medium',
+        'utm_content',
+      ];
+      if (in_array($element['#webform_key'], $webform_prepopulate_query_keys)) {
+        $element['#attributes']['prepopulate'] = 'true';
+        $element['#attached']['drupalSettings']['sitenow']['webformPrepopulateQueryKeys'] = $webform_prepopulate_query_keys;
         $element['#attached']['library'][] = 'sitenow/get_clickid';
       }
     }
@@ -782,7 +835,7 @@ function _sitenow_prevent_front_delete_message($title) {
  *
  * @see options_allowed_values()
  */
-function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'title_hidden' => 'Visually hide title',
     'no_sidebars' => 'Remove sidebar regions',
@@ -1133,7 +1186,7 @@ function sitenow_entity_insert(EntityInterface $entity) {
  *
  * @see options_allowed_values()
  */
-function featured_image_size_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function featured_image_size_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'do_not_display' => 'Do not display',
     'small' => 'Small',

@@ -1,5 +1,5 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 // Previous uids 3.x component styles.
 
@@ -15,6 +15,14 @@
 }
 
 .iowa-bar.iowa-bar--narrow {
+  &.iowa-bar--healthcare {
+    .toggle-nav__bttn {
+      @include breakpoint(page-container) {
+        top: 64px;
+      }
+    }
+  }
+
   .toggle-nav__bttn {
     display: flex;
     height: 60px;
@@ -26,7 +34,6 @@
     @include breakpoint(page-container) {
       top: 50px;
     }
-
   }
 
   .toggle-nav__bttn.inactive {
@@ -45,15 +52,19 @@
 }
 
 // drawer container
-
 .o-canvas__group {
   display: flex;
   height: 100%;
+  flex-basis: 100%;
 
   @include breakpoint(page-container) {
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  @include breakpoint(md) {
+    flex-basis: unset;
   }
 }
 
@@ -68,7 +79,6 @@
 }
 
 // transparent overlay
-
 body {
   &.o-canvas--lock::before {
     visibility: visible;
@@ -95,24 +105,36 @@ body {
   }
 }
 
-.o-canvas__group {
-  flex-basis: 100%;
-
-  @include breakpoint(md) {
-    flex-basis: unset;
-  }
-}
-
 // buttons
-
-
 .toggle-nav__bttn {
+  border: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+  height: 60px;
+  padding: 0 0 0 15px;
+  font-weight: 700;
+  font-size: 1rem;
+  z-index: 2;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 1.4;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+
   .o-canvas--complete & {
     background: #fff;
   }
 
-  .below.scroll-up & {
-    animation: fadeIn 1s;
+  .below.scroll-up &,
+  .below.scroll-down & {
+    @include breakpoint(md) {
+      animation: fadeIn 3s;
+    }
   }
 
   &.active {
@@ -131,65 +153,22 @@ body {
     color: $secondary;
     font-size: 1.5rem;
     @include fas();
+
     @include breakpoint(md) {
       font-size: 1.2rem;
     }
   }
-}
-
-.toggle-nav__bttn {
-  justify-content: left;
-  width: 100%;
-}
-
-.toggle-nav__bttn.inactive {
-  background: #f1f1f1;
-
-  @include breakpoint(md) {
-    background: #fff;
-  }
-}
-
-.toggle-nav__bttn.active {
-  background: #f1f1f1;
-
-  @include breakpoint(md) {
-    background: #fff;
-  }
-}
-
-
-.o-canvas__wrapper {
-  width: 100%;
-
-  button>* {
-    pointer-events: none;
-  }
-}
-
-.toggle-nav__bttn {
-  border: none;
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 60px;
-  padding: 0 0 0 15px;
-  font-weight: 700;
-  font-size: 1rem;
-  z-index: 2;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  line-height: 1.4;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
 
   @include breakpoint(md) {
     height: 80px;
-    padding: 14px 35px 0;
+    padding: 14px 35px 7px;
+
     .iowa-bar--narrow & {
-      padding: 9px 35px 0;
+      padding: 9px 35px 7px;
+    }
+
+    .iowa-bar--healthcare & {
+      height: 100px;
     }
   }
 
@@ -220,13 +199,12 @@ body {
     padding: 1rem .9rem 1rem .7rem;
     color: $secondary;
     font-size: $base-font-size;
+    @include fas();
 
     @include breakpoint(md) {
       margin-right: 5px;
       padding: .8rem 1rem;
     }
-
-    @include fas();
 
     .o-canvas--open & {
       width: 25px;
@@ -250,9 +228,31 @@ body {
   }
 }
 
+.toggle-nav__bttn.inactive {
+  background: #f1f1f1;
+
+  @include breakpoint(md) {
+    background: #fff;
+  }
+}
+
+.toggle-nav__bttn.active {
+  background: #f1f1f1;
+
+  @include breakpoint(md) {
+    background: #fff;
+  }
+}
+
+.o-canvas__wrapper {
+  width: 100%;
+
+  button>* {
+    pointer-events: none;
+  }
+}
 
 // off canvas drawer
-
 .o-canvas__drawer {
   position: fixed;
   z-index: 2;
@@ -260,13 +260,14 @@ body {
   display: block;
   visibility: hidden;
   overflow-y: auto;
-  width: 100%;;
+  width: 100%;
   height: 100%;
   padding: 20px 22px 40px;
   transform: scale(0.925);
   transform-origin: right top;
   opacity: 0;
   background: #fff;
+  background-color: rgb(255, 255, 255);
 
   @include breakpoint(md) {
     padding: 40px 35px;
@@ -280,14 +281,10 @@ body {
     opacity: 1;
     box-shadow: 0 8px 8px 0 rgba(63, 63, 70, .25);
   }
-}
 
-.o-canvas__drawer {
-  background-color: rgb(255, 255, 255);
-}
-
-.o-canvas__drawer[aria-hidden="false"]:not(:focus-within) {
-  background-color: rgb(255, 255, 254);
+  &[aria-hidden="false"]:not(:focus-within) {
+    background-color: rgb(255, 255, 254);
+  }
 }
 
 .o-canvas--lock .iowa-bar__below {
@@ -295,14 +292,13 @@ body {
 }
 
 // uids_base overrides.
-
 .o-canvas__group .region-primary-menu {
   height: auto;
 }
 
 .iowa-bar--full.toggle .toggle-nav__bttn {
   @include breakpoint(page-container) {
-    padding: 19px 35px 0;
+    padding: 14px 35px 0;
   }
 }
 

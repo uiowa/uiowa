@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.field_area_of_study_career
     - node.type.area_of_study
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.area_of_study.field_area_of_study_career
 field_name: field_area_of_study_career
 entity_type: node
@@ -24,5 +20,6 @@ default_value:
     value: "<p>Iowa graduates have job placement rates ranging from 86-100 percent, depending on their area of study, and our <a href=\"http://www.careers.uiowa.edu/\">Pomerantz Career Center</a> offers multiple resources to help students find internships and jobs.</p>\r\n"
     format: filtered_html
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

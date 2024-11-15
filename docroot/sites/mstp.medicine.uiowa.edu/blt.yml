@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinemstp.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinemstp
+  human_name: mstp.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinemstp.prod
+drupal:
+  db:
+    database: mstp_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinemstp.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Medical Scientist Training Program'

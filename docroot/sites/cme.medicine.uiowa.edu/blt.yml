@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecme.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecme
+  human_name: cme.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecme.prod
+drupal:
+  db:
+    database: cme_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecme.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Division of Continuing Medical Education'

@@ -3,19 +3,17 @@
   "version": "1.0.0",
   "license": "ISC",
   "dependencies": {
-    "@uiowa/uids": "https://github.com/uiowa/uids.git#975b6d0",
-    "@uiowa/uids4": "https://github.com/uiowa/uids.git#8acab46",
+    "@uiowa/uids4": "https://github.com/uiowa/uids.git#92cd14f",
     "autoprefixer": "^9.8.8",
-    "breakpoint-sass": "^3.0.0",
     "cssnano": "^4.1.11",
     "del": "^6.1.1",
-    "gulp": "^4.0.0",
+    "gulp": "^5.0.0",
     "gulp-mode": "^1.0.2",
     "gulp-postcss": "^9.0.1",
     "gulp-sass": "^5.1.0",
     "gulp-sass-glob": "^1.0.9",
-    "gulp-scss-lint": "^1.0.0",
-    "gulp-sourcemaps": "^3.0.0"
+    "gulp-sourcemaps": "^3.0.0",
+    "sass": "^1.54.0"
   },
   "scripts": {
     "build": "gulp --production",
@@ -25,5 +23,7 @@
     "css": "gulp css",
     "watch": "gulp watch --development"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "postcss": "^8.0.0"
+  }
 }

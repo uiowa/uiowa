@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineobesity.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineobesity
+  human_name: obesity.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineobesity.prod
+drupal:
+  db:
+    database: obesity_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineobesity.prod.drupal.uiowa.edu'
+  requester: efry
+  site-name: 'Obesity Research and Education Initiative'

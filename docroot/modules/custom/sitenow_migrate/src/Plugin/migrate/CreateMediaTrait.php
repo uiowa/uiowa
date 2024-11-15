@@ -228,6 +228,9 @@ trait CreateMediaTrait {
       if ($files_dir = $this->getSourceFilePath($row)) {
         return "{$base_url}/{$files_dir}/";
       }
+      elseif ($files_dir = $this->sourcePublicFilePath) {
+        return "{$base_url}/{$files_dir}/";
+      }
       else {
         throw new MigrateException('Cannot process media. No public files path variable set.');
       }
@@ -314,7 +317,7 @@ trait CreateMediaTrait {
   /**
    * From file id, check if an oembed media exists, and create if not.
    */
-  protected function createVideo($fid, $alignment = 'center') {
+  protected function createVideoMediaEntity($fid) {
     $file_query = $this->fidQuery($fid);
     // Get the video source.
     $vid_uri = str_replace('oembed://', '', $file_query['uri']);
@@ -349,18 +352,7 @@ trait CreateMediaTrait {
         ->uuid();
     }
 
-    $media = [
-      '#type' => 'html_tag',
-      '#tag' => 'drupal-media',
-      '#attributes' => [
-        'data-align' => $alignment,
-        'data-entity-type' => 'media',
-        'data-entity-uuid' => $uuid,
-        'data-view-mode' => 'medium',
-      ],
-    ];
-
-    return \Drupal::service('renderer')->renderPlain($media);
+    return $uuid;
   }
 
 }

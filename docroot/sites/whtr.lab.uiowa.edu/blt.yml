@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwhtr.uiowa.ddev.site
+    protocol: https
+  machine_name: labwhtr
+  human_name: whtr.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwhtr.prod
+drupal:
+  db:
+    database: whtr_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwhtr.prod.drupal.uiowa.edu'
+  requester: ewhitehead
+  site-name: 'Women’s Health Tissue Repository'

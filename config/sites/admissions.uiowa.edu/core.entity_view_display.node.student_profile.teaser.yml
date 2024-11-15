@@ -31,11 +31,6 @@ targetEntityType: node
 bundle: student_profile
 mode: teaser
 content:
-  content_moderation_control:
-    settings: {  }
-    third_party_settings: {  }
-    weight: -20
-    region: content
   field_person_hometown:
     type: string
     label: visually_hidden
@@ -86,6 +81,7 @@ content:
     region: content
 hidden:
   body: true
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true

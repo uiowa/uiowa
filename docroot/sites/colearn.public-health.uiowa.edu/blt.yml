@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: public-healthcolearn.uiowa.ddev.site
+    protocol: https
+  machine_name: public-healthcolearn
+  human_name: colearn.public-health.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: public-healthcolearn.prod
+drupal:
+  db:
+    database: colearn_public_health_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://public-healthcolearn.prod.drupal.uiowa.edu'
+  requester: brupe
+  site-name: 'Central Midwest Climate Adaptation Partnership'

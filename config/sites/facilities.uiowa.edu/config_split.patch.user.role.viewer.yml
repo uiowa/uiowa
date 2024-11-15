@@ -1,11 +1,14 @@
 adding:
   dependencies:
     config:
+      - node.type.artwork
       - node.type.building
       - node.type.named_building
       - node.type.project
   permissions:
+    - 'enter artwork revision log entry'
     - 'enter named_building revision log entry'
+    - 'view artwork revisions'
     - 'view building revisions'
     - 'view named_building revisions'
     - 'view project revisions'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineneurology.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineneurology
+  human_name: neurology.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineneurology.prod
+drupal:
+  db:
+    database: neurology_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineneurology.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Neurology'

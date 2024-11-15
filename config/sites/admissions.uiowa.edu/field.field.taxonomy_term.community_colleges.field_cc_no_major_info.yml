@@ -6,16 +6,12 @@ dependencies:
     - field.storage.taxonomy_term.field_cc_no_major_info
     - taxonomy.vocabulary.community_colleges
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: taxonomy_term.community_colleges.field_cc_no_major_info
 field_name: field_cc_no_major_info
 entity_type: taxonomy_term
 bundle: community_colleges
-label: 'Unsure of your major? Don''t see your major?'
+label: "Unsure of your major? Don't see your major?"
 description: ''
 required: false
 translatable: false
@@ -24,5 +20,6 @@ default_value:
     value: "<p>There are many transfer majors available at the University of Iowa. <a data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"e6df9345-b3e2-40b7-b328-65abc56836fb\" href=\"/node/5331\" media_library=\"Media Library\">Contact us</a> to explore your options.</p>\r\n\r\n<p>The 2 Plus 2 plan is just one way to transfer to the University of Iowa. <a data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"21086070-a261-4369-a238-f4e5706d43ea\" href=\"/node/261\" media_library=\"Media Library\">See a list of other transfer options</a> at the University of Iowa.</p>\r\n"
     format: filtered_html
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

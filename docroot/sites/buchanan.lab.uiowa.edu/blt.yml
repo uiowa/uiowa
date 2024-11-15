@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbuchanan.uiowa.ddev.site
+    protocol: https
+  machine_name: labbuchanan
+  human_name: buchanan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbuchanan.prod
+drupal:
+  db:
+    database: buchanan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbuchanan.prod.drupal.uiowa.edu'
+  requester: gbuchanan
+  site-name: 'Buchanan Lab'

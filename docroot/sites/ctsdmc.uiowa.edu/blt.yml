@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ctsdmc.uiowa.ddev.site
+    protocol: https
+  machine_name: ctsdmc
+  human_name: ctsdmc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ctsdmc.prod
+drupal:
+  db:
+    database: ctsdmc_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ctsdmc.prod.drupal.uiowa.edu'
+  requester: klbarrett
+  site-name: 'Clinical Trails Statistical and Data management Center'

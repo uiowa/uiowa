@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgiowatc.uiowa.ddev.site
+    protocol: https
+  machine_name: orgiowatc
+  human_name: iowatc.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgiowatc.prod
+drupal:
+  db:
+    database: iowatc_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgiowatc.prod.drupal.uiowa.edu'
+  requester: ccking
+  site-name: 'Iowa Track and Field Club'

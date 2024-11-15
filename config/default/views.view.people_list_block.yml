@@ -687,19 +687,20 @@ display:
         type: mini
         options:
           offset: 0
-          items_per_page: 0
+          pagination_heading_level: h4
+          items_per_page: 10
           total_pages: null
           id: 0
           tags:
             next: 'Next ›'
             previous: '‹ Previous'
           expose:
-            items_per_page: true
+            items_per_page: false
             items_per_page_label: 'Items per page'
-            items_per_page_options: '9'
-            items_per_page_options_all: true
+            items_per_page_options: '10'
+            items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
-            offset: true
+            offset: false
             offset_label: Offset
       exposed_form:
         type: basic
@@ -1091,7 +1092,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1125,9 +1125,10 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
+        configure_filters: '0'
         disable_filters: '0'
         configure_sorts: configure_sorts
-        configure_filters: configure_filters
+        configure_filters_custom: configure_filters_custom
         use_more: use_more
       filter_in_block:
         - field_tags_target_id
@@ -1138,12 +1139,14 @@ display:
       restrict_fields:
         title: title
         view_node: view_node
+        field_person_website_link_direct: field_person_website_link_direct
         field_person_credential: 0
-        field_teaser: 0
+        body: 0
         field_person_email: 0
         field_image: 0
         field_person_phone: 0
         field_person_position: 0
+        field_person_website: 0
       general_help_text: '<a href="/admin/content?title=&type=person&status=1" target="_blank" rel="noopener">Manage existing people on this site</a> or <a href="/node/add/person" target="_blank" rel="noopener">add a person here</a>.'
     cache_metadata:
       max-age: -1
@@ -1152,7 +1155,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

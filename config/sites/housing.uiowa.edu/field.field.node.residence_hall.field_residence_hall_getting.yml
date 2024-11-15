@@ -6,11 +6,7 @@ dependencies:
     - field.storage.node.field_residence_hall_getting
     - node.type.residence_hall
   module:
-    - allowed_formats
     - text
-third_party_settings:
-  allowed_formats:
-    allowed_formats: {  }
 id: node.residence_hall.field_residence_hall_getting
 field_name: field_residence_hall_getting
 entity_type: node
@@ -21,5 +17,6 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

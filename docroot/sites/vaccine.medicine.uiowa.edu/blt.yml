@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinevaccine.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinevaccine
+  human_name: vaccine.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinevaccine.prod
+drupal:
+  db:
+    database: vaccine_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinevaccine.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Vaccine and Treatment Evaluation Unit'

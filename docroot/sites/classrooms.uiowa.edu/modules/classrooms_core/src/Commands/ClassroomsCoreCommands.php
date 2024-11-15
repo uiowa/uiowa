@@ -2,8 +2,6 @@
 
 namespace Drupal\classrooms_core\Commands;
 
-use Drupal\classrooms_core\Entity\Building;
-use Drupal\classrooms_core\RoomItemProcessor;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -11,6 +9,9 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\classrooms_core\Entity\Building;
+use Drupal\classrooms_core\RoomItemProcessor;
+use Drupal\uiowa_core\Commands\CpuTimeTrait;
 use Drupal\uiowa_maui\MauiApi;
 use Drush\Commands\DrushCommands;
 
@@ -22,6 +23,7 @@ use Drush\Commands\DrushCommands;
  * of the services file to use.
  */
 class ClassroomsCoreCommands extends DrushCommands {
+  use CpuTimeTrait;
   use LoggerChannelTrait;
   use StringTranslationTrait;
 
@@ -91,6 +93,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function getBuildings() {
+    $this->initMeasurement();
     $entities_created = 0;
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
@@ -143,14 +146,15 @@ class ClassroomsCoreCommands extends DrushCommands {
       $arguments = [
         '@count' => $entities_created,
       ];
-      $this->getLogger('classrooms_core')->notice('@count buildings were created. That is neat.', $arguments);
+      $this->getLogger('classrooms_core')->notice($this->t('@count buildings were created. That is neat.', $arguments));
     }
     else {
-      $this->getLogger('classrooms_core')->notice('Bummer. No new buildings were created. Maybe next time.');
+      $this->getLogger('classrooms_core')->notice($this->t('Bummer. No new buildings were created. Maybe next time.'));
     }
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
   /**
@@ -169,6 +173,7 @@ class ClassroomsCoreCommands extends DrushCommands {
    *  Process rooms with a specified batch size.
    */
   public function importRooms(array $options = ['batch' => 20]) {
+    $this->initMeasurement();
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
@@ -183,7 +188,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // If we don't have any entities, send a message
     // and we're done.
     if (empty($entities)) {
-      $this->getLogger('classrooms_core')->notice('No rooms available to update.');
+      $this->logger()->notice('No rooms available to update.');
 
       // Switch user back.
       $this->accountSwitcher->switchBack();
@@ -207,6 +212,7 @@ class ClassroomsCoreCommands extends DrushCommands {
         ->getQuery()
         ->condition('type', 'room')
         ->range($i, $batch_size)
+        ->accessCheck()
         ->execute();
       $nodes = $storage->loadMultiple($nids);
 
@@ -235,10 +241,11 @@ class ClassroomsCoreCommands extends DrushCommands {
     // 6. Process the batch sets.
     drush_backend_batch_process();
     // 7. Log some information.
-    $this->getLogger('classrooms_core')->notice('Update batch operations ended.');
+    $this->getLogger('classrooms_core')->notice($this->t('Rooms import update batch operations ended.'));
 
     // Switch user back.
     $this->accountSwitcher->switchBack();
+    $this->finishMeasurment();
   }
 
 }

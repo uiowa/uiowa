@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferenceiseh.uiowa.ddev.site
+    protocol: https
+  machine_name: conferenceiseh
+  human_name: iseh.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceiseh.prod
+drupal:
+  db:
+    database: iseh_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferenceiseh.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: 'ISEH Conference'

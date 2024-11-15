@@ -5,7 +5,6 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -17,11 +16,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\symfony_mailer\EmailInterface;
 use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Contact;
 use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
@@ -82,6 +84,16 @@ function uiowa_core_cron() {
 }
 
 /**
+ * Implements hook_entity_build_defaults_alter().
+ */
+function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
+  }
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function uiowa_core_entity_bundle_info_alter(array &$bundles) {
@@ -93,6 +105,9 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
     $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
+  }
+  if (isset($bundles['node']['contact'])) {
+    $bundles['node']['contact']['class'] = Contact::class;
   }
 }
 
@@ -109,42 +124,128 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
+ * Implements hook_mail().
+ */
+function uiowa_core_mail($key, &$message, $params) {
+  // Empty to trigger LegacyEmailBuilder for instances where mail is sent from
+  // MailManagerReplacement::mail() directly.
+}
+
+/**
  * Implements hook_mail_alter().
  */
 function uiowa_core_mail_alter(&$message) {
+  if (!in_array($message['module'], [
+    'webform',
+  ])) {
+    // Add header in use by email team to avoid spam/external tagging.
+    $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+    // Set a from address to the site email address if none are set.
+    if (empty($message['from'])) {
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+    }
+
+    // Override the from address if it doesn't match our Platform Email domain
+    // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+    // multiple from addresses here because that doesn't seem to work currently
+    // hook_mail_alter isn't even invoked for some reason.
+    try {
+      $from = Address::create($message['from']);
+      $domain = explode('@', $from->getAddress());
+      $domain = array_pop($domain);
+
+      if ($domain != 'uiowa.edu') {
+        $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+        $from = new Address('sitenow-noreply@uiowa.edu', $name);
+        $message['headers']['From'] = $from->toString();
+      }
+    }
+    catch (RfcComplianceException $e) {
+      \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+        '@from' => $message['from'],
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_mailer_PHASE().
+ */
+function uiowa_core_mailer_build(EmailInterface $email) {
   // Add header in use by email team to avoid spam/external tagging.
-  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+  $email->addTextHeader('X-UI-Hosted', 'ITS-Acquia');
+
+  // Set a from address to the site email address if none are set.
+  if (empty($email->getFrom())) {
+    $email->setFrom([
+      new Address(\Drupal::config('system.site')->get('mail'), \Drupal::config('system.site')->get('name')),
+    ]);
+  }
 
   // Override the from address if it doesn't match our Platform Email domain
   // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
   // multiple from addresses here because that doesn't seem to work currently -
   // hook_mail_alter isn't even invoked for some reason.
-  try {
-    $from = Address::create($message['from']);
-    $domain = explode('@', $from->getAddress());
+  $from_addresses = $email->getFrom();
+
+  foreach ($from_addresses as &$from) {
+
+    $domain = explode('@', $from->getEmail());
     $domain = array_pop($domain);
 
     if ($domain != 'uiowa.edu') {
-      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $name = $from->getDisplayName() ?: \Drupal::config('system.site')->get('name');
       $from = new Address('sitenow-noreply@uiowa.edu', $name);
-      $message['headers']['From'] = $from->toString();
     }
   }
-  catch (RfcComplianceException $e) {
-    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
-      '@from' => $message['from'],
-    ]));
-  }
+  $email->setFrom($from_addresses);
 }
 
 /**
- * Implements hook_entity_build_defaults_alter().
+ * Implements hook_entity_presave().
  */
-function uiowa_core_entity_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
-    // Add card build info.
-    $entity->addCardBuildInfo($build);
+function uiowa_core_entity_presave(EntityInterface $entity) {
+  // For entities with moderation and scheduler.
+  // Catching an odd situation after scheduler where it changes the node
+  // status to unpublished but doesn't change the moderation state.
+  if ($entity instanceof NodeInterface) {
+    if ($set_state = $entity->moderation_state?->value) {
+      if ($set_state == 'published' && !$entity->isPublished()) {
+        if ($entity->isNew()) {
+          $fallback_state = 'draft';
+        }
+        else {
+          $fallback_state = $entity->original->moderation_state->value;
+        }
+        // Add a user message along with changing the state.
+        $entity->moderation_state = $fallback_state;
+        $warning_text = t('Content criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+          '@label' => $entity->label(),
+          '@set_state' => $set_state,
+          '@fallback_state' => $fallback_state,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+      // Such as during bulk operations, prevent archive transition
+      // when there is a future date set.
+      if ($set_state == 'archived') {
+        if ($archive_time = $entity->unpublish_on?->value) {
+          $request_time = \Drupal::time()->getRequestTime();
+          if ($archive_time > $request_time) {
+            $entity->moderation_state = $entity->original->moderation_state->value;
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+              '@label' => $entity->label(),
+              '@set_state' => $set_state,
+              '@fallback_state' => $entity->original->moderation_state->value,
+            ]);
+            \Drupal::messenger()->addWarning($warning_text);
+          }
+        }
+      }
+    }
   }
+
 }
 
 /**
@@ -187,6 +288,27 @@ function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityVi
   if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode) && !$entity instanceof BlockContent) {
     // Build the card.
     $entity->buildCard($build);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Showing a message to viewers and up about how scheduling locks
+    // editors from editing the content for content with moderation.
+    if ($user->hasPermission('view any unpublished content') === TRUE) {
+      if (isset($variables['publish_on']) && $variables['node']->moderation_state?->value) {
+        if ($variables['view_mode'] === 'full') {
+          \Drupal::messenger()
+            ->addStatus(t('This content has been scheduled for publishing and editors are restricted from editing until published.'));
+        }
+      }
+    }
   }
 }
 
@@ -298,7 +420,7 @@ function template_preprocess_card(&$variables) {
 
   // Set 'aria-hidden' on the button if it is not linked.
   if ($element['#linked_element'] !== 'button') {
-    $element['#button_attributes']['aria-hidden'] = TRUE;
+    $element['#button_attributes']['aria-hidden'] = 'true';
   }
 
   // If title and link text are set, set a button id attribute for
@@ -362,6 +484,7 @@ function template_preprocess_card(&$variables) {
     'media',
     'media_attributes',
     'headline',
+    'pre_title',
     'subtitle',
     'meta',
     'content',
@@ -392,7 +515,35 @@ function template_preprocess_card(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_field(&$variables) {
-  switch ($variables['field_name']) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_contact_address':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_email':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_phone_number':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_fax':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-fax');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
     case 'title':
       uiowa_core_set_attributes($variables, [
         'page-title',
@@ -519,13 +670,14 @@ function uiowa_core_page_attachments(&$page) {
     // Load campus-wide Google Tag in PROD.
     $env = getenv('AH_PRODUCTION');
     if ((int) $env === 1) {
-      $page['#attached']['library'][] = 'uiowa_core/gtag';
+      // Check that the campus-wide container should be included.
+      // If the config isn't set, err on the side of inclusion.
+      $include_gtag = \Drupal::config('uiowa_core.settings')
+        ?->get('uiowa_core.campus_gtm');
+      if ($include_gtag !== 0) {
+        $page['#attached']['library'][] = 'uiowa_core/gtag';
+      }
     }
-  }
-
-  $theme = \Drupal::theme()->getActiveTheme()->getName();
-  if ($theme === 'claro') {
-    $page['#attached']['library'][] = 'uiowa_core/claro-node-form';
   }
 }
 
@@ -574,6 +726,58 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
       // Removes the "This action cannot be undone" text.
       $form['description'] = ['#markup' => ''];
+    }
+  }
+
+  if ($route_name === 'entity.node.edit_form') {
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      /** @var Drupal\Core\Entity\EntityInterface $node */
+      $node = $form_object->getEntity();
+
+      // Print a message on the form is scheduling options are set.
+      if ($node->get('publish_on')?->value) {
+        $state = 'published';
+      }
+      elseif ($node->get('unpublish_on')?->value) {
+        $state = 'archived';
+      }
+
+      if (!empty($state)) {
+        $message = 'This content is currently scheduled to be ' . $state . '.';
+        if ($node->moderation_state?->value) {
+          $message .= ' Editors are restricted from editing until published.';
+        }
+        \Drupal::messenger()
+          ->addStatus($message);
+      }
+    }
+  }
+
+  if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
+    // Update help text for scheduler on content types and if moderation
+    // is enabled, hide the publish/unpublish state fields.
+    $hide_classes = ['js', 'js-hide'];
+    if (isset($form['publish_on'])) {
+      $additional_published_help_text = t('Note: this content will transition to a published state within a one-hour window of the selected date and time.');
+      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
+      $form['publish_state']['#attributes']['class'] = (!empty($form['publish_state']['#attributes']['class']) ? array_merge($form['publish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+    }
+    if (isset($form['unpublish_on'])) {
+      if (isset($form['unpublish_state'])) {
+        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
+        $state = 'archived';
+        $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+      }
+      else {
+        $state = 'unpublished';
+      }
+
+      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
+        '@state' => $state,
+      ]);
+      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
+
     }
   }
 
@@ -677,18 +881,25 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
       break;
 
-    case 'views_exposed_form':
-      $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
-
-      // Fixes a bug with BEF, details here:
-      // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
-      foreach ($form as $k => $v) {
-        if (str_contains($k, '_collapsible')) {
-          $form[$k]['#open'] = FALSE;
-        }
-      }
+    case 'node_contact_form':
+    case 'node_contact_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
+      array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
       break;
   }
+}
+
+/**
+ * Custom submit handler for node contact forms.
+ */
+function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_state) {
+  $field_config = [
+    'field_contact_address' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -896,9 +1107,9 @@ function uiowa_core_token_info(): array {
     'name' => t('UIowa Core'),
     'description' => t('Tokens for UIowa Core.'),
   ];
-  $info['tokens']['uiowa_core']['org_name'] = [
-    'name' => 'Organization Name',
-    'description' => 'A token to override the default University of Iowa organization name.',
+  $info['tokens']['uiowa_core']['combined_org'] = [
+    'name' => 'Combined Organization Name',
+    'description' => 'A combined parent organization and organization token.',
   ];
   $info['tokens']['uiowa_core']['favicon_assets_path'] = [
     'name' => 'Favicon assets path',
@@ -913,24 +1124,35 @@ function uiowa_core_token_info(): array {
 function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
   if ($type === 'uiowa_core') {
-
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
     $theme_config = $config_factory->getEditable('uids_base.settings');
-    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
+    $uihc_site = ($theme_config->get('header.branding_options') == 'uihc');
 
     foreach ($tokens as $name => $original) {
+
       // Find the desired token by name.
       switch ($name) {
-        case 'org_name':
-          $org_name = $ccom_site ? 'Carver College of Medicine' : 'The University of Iowa';
-          $replacements[$original] = $config->get('uiowa_core.org_name') ?? $org_name;
-          break;
-
         case 'favicon_assets_path':
-          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $favicon_path = $uihc_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
           $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
 
+          break;
+
+        case 'combined_org':
+          $site_settings = $config_factory->getEditable('system.site');
+          $combined_org = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          $has_parent = $site_settings->get('has_parent');
+
+          if ($uihc_site) {
+            $combined_org = 'University of Iowa Health Care';
+          }
+          if ($has_parent) {
+            $parent_org = $site_settings->get('parent.name');
+            $combined_org = $parent_org . ' | ' . $combined_org;
+          }
+
+          $replacements[$original] = $combined_org;
           break;
       }
     }
@@ -943,6 +1165,24 @@ function uiowa_core_tokens($type, $tokens, array $data, array $options, Bubbleab
  */
 function uiowa_core_preprocess_views_view(&$variables) {
   // Check if the current view has a specific ID or display ID.
+  $class_exclusion_list = [
+    'student_card',
+    'student_profiles',
+    'academic_groups_taxonomy_term',
+    'people_list_block',
+    'article_list_block',
+    'page_list_block',
+    'related_manually_referenced_content',
+    'residence_halls',
+    'room_list',
+  ];
+
+  // Check if the current view's machine name is in the exclusion list.
+  if (!in_array($variables['view']->id(), $class_exclusion_list)) {
+    // Add list container class for list spacing.
+    $variables['attributes']['class'][] = 'list-container--list';
+  }
+
   if ($variables['view']->id() == 'related_manually_referenced_content') {
     // Attach the grid class.
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
@@ -950,9 +1190,37 @@ function uiowa_core_preprocess_views_view(&$variables) {
 }
 
 /**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $view = $form_state->getStorage('view');
+    $view_id = $view['view']->id();
+
+    switch ($view_id) {
+      case 'content':
+        $form['field_tags_target_id']['#size'] = "15";
+        $form['uid']['#size'] = "15";
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+
+      case 'media':
+        $form['field_tags_target_id']['#size'] = 20;
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+
+      case 'fragments':
+        $form['uid']['#size'] = 20;
+        $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+        break;
+    }
+  }
+}
+
+/**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Adair',
     'Adams',
@@ -1059,7 +1327,7 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $start_year = 2008;
   $end_year = date('Y') + 1;
   $years = [];
@@ -1091,7 +1359,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function uiowa_core_state_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -1165,8 +1433,9 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
 function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
   // Get available configuration entities.
   $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
-  $entities = $storage->getQuery();
-  $entities = $entities->condition('status', 1)
+  $entities = $storage->getQuery()
+    ->accessCheck()
+    ->condition('status', 1)
     ->sort('title')
     ->execute();
 
@@ -1219,8 +1488,10 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  *   The Font Awesome class for the field icon.
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field icon.
+ * @param string $icon_title
+ *   The title attribute value for the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '', string $icon_title = '') : void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1231,6 +1502,9 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes, stri
     ]);
   if (!empty($icon_bg_classes)) {
     $variables['field_icon_bg'] = $icon_bg_classes;
+  }
+  if (!empty($icon_title)) {
+    $variables['field_icon_title'] = $icon_title;
   }
 }
 
@@ -1320,6 +1594,79 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
 
     foreach ($fields_to_hide as $field_to_hide) {
       $row_build['content']['#hide_fields'][] = $field_to_hide;
+    }
+  }
+}
+
+/**
+ * Helper function to validate and clean address fields, including paragraphs.
+ *
+ * @param array &$form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ * @param array $field_config
+ *   An array of field configurations to process.
+ */
+function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_state, array $field_config) {
+  foreach ($field_config as $field_name => $config) {
+    $field_values = $form_state->getValue($field_name);
+
+    if (is_null($field_values)) {
+      continue;
+    }
+
+    if ($config['type'] === 'paragraph') {
+      foreach ($field_values as $delta => $paragraph_subform) {
+        if (isset($paragraph_subform['subform'])) {
+          $address_field = $paragraph_subform['subform'][$config['address_field']][0];
+          if (isset($address_field['address'])) {
+            $has_info = FALSE;
+
+            foreach ($address_field['address'] as $key => $details) {
+              if ($key !== 'country_code' && !empty($details)) {
+                $has_info = TRUE;
+                break;
+              }
+            }
+
+            if (!$has_info) {
+              $form_state->setValue([
+                $field_name,
+                $delta,
+                'subform',
+                $config['address_field'],
+                0,
+                'address',
+                'country_code',
+              ], '');
+            }
+          }
+        }
+      }
+    }
+    else {
+      // Regular field processing.
+      $address_field = $field_values[0];
+      if (isset($address_field['address'])) {
+        $has_info = FALSE;
+
+        foreach ($address_field['address'] as $key => $details) {
+          if ($key !== 'country_code' && !empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_info) {
+          $form_state->setValue([
+            $field_name,
+            0,
+            'address',
+            'country_code',
+          ], '');
+        }
+      }
     }
   }
 }

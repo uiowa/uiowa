@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labparekh.uiowa.ddev.site
+    protocol: https
+  machine_name: labparekh
+  human_name: parekh.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labparekh.prod
+drupal:
+  db:
+    database: parekh_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labparekh.prod.drupal.uiowa.edu'
+  requester: parekhk
+  site-name: 'The Parekh Laboratory'

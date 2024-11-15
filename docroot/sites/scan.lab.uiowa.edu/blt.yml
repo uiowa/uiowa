@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labscan.uiowa.ddev.site
+    protocol: https
+  machine_name: labscan
+  human_name: scan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labscan.prod
+drupal:
+  db:
+    database: scan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labscan.prod.drupal.uiowa.edu'
+  requester: bbartholow
+  site-name: 'Social Cognitive and Addiction Neuroscience Lab at the University of Iowa'

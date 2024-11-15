@@ -5,13 +5,6 @@
  * Primary module hooks for Admissions Core module.
  */
 
-use Drupal\admissions_core\AdmissionsCoreInterface;
-use Drupal\admissions_core\Entity\AcademicGroups;
-use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
-use Drupal\admissions_core\Entity\AdmissionsCard;
-use Drupal\admissions_core\Entity\AdmissionsPerson;
-use Drupal\admissions_core\Entity\AdmissionsRequirement;
-use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -19,6 +12,13 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Template\Attribute;
+use Drupal\admissions_core\AdmissionsCoreInterface;
+use Drupal\admissions_core\Entity\AcademicGroups;
+use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
+use Drupal\admissions_core\Entity\AdmissionsCard;
+use Drupal\admissions_core\Entity\AdmissionsPerson;
+use Drupal\admissions_core\Entity\AdmissionsRequirement;
+use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -556,7 +556,7 @@ function admissions_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:area_of_study:field_area_of_study_stories':
-      uiowa_core_set_attributes($variables, ['list-container']);
+      uiowa_core_set_attributes($variables, 'list-container list-container--list');
       break;
   }
 }
@@ -838,7 +838,8 @@ function admissions_core_preprocess_node(&$variables) {
         $query = \Drupal::entityQuery('node')
           ->condition('type', 'major')
           ->condition('status', 1)
-          ->condition('field_major_area_of_study', $area_of_study_id, '=');
+          ->condition('field_major_area_of_study', $area_of_study_id, '=')
+          ->accessCheck();
         // We only really need to know if there areas of study,
         // and not which or how many, because the link will just be
         // based on the aos id.
@@ -1096,7 +1097,7 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
 /**
  * Implements hook_allowed_values_function().
  */
-function admissions_core_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function admissions_core_allowed_values_function(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   // Available degree abbreviations.
   // Can be moved to store in a config file later.
   $options = [
@@ -1134,7 +1135,7 @@ function admissions_core_allowed_values_function(FieldStorageConfig $definition,
 /**
  * Added allowed values function for AoS Subprogram type.
  */
-function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $options = [
     'areas_of_emphasis' => 'Areas of Emphasis',
     'areas_of_specialization' => 'Areas of Specialization',

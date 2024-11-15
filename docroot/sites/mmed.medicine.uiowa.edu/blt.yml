@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinemmed.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinemmed
+  human_name: mmed.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinemmed.prod
+drupal:
+  db:
+    database: mmed_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinemmed.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Molecular Medicine'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinediabetes.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinediabetes
+  human_name: diabetes.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinediabetes.prod
+drupal:
+  db:
+    database: diabetes_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinediabetes.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Fraternal Order of Eagles Diabetes Research Center'

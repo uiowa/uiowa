@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstewart.uiowa.ddev.site
+    protocol: https
+  machine_name: labstewart
+  human_name: stewart.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstewart.prod
+drupal:
+  db:
+    database: stewart_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstewart.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'Stewart Lab'

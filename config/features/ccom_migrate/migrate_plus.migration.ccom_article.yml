@@ -1,0 +1,43 @@
+id: ccom_article
+label: CCOM Article
+dependencies:
+  enforced:
+    module:
+      - ccom_migrate
+migration_tags:
+  - CCOM
+migration_group: sitenow_migrate
+source:
+  plugin: ccom_article
+  node_type: article
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+  field_article_source_org: field_article_publication
+  body: body
+  field_tags: tags
+  field_article_source_link:
+    plugin: field_link
+    source: source
+  field_article_source_link_direct: link_direct
+  field_gallery_images: gallery
+migration_dependencies: {  }

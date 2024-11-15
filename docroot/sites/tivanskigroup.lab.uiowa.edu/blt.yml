@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtivanskigroup.uiowa.ddev.site
+    protocol: https
+  machine_name: labtivanskigroup
+  human_name: tivanskigroup.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtivanskigroup.prod
+drupal:
+  db:
+    database: tivanskigroup_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtivanskigroup.prod.drupal.uiowa.edu'
+  requester: gdias
+  site-name: 'Tivanski Research Group Analytical and Physical Chemistry Division'

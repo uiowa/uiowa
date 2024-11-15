@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgumusoglu.uiowa.ddev.site
+    protocol: https
+  machine_name: labgumusoglu
+  human_name: gumusoglu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgumusoglu.prod
+drupal:
+  db:
+    database: gumusoglu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgumusoglu.prod.drupal.uiowa.edu'
+  requester: sgumusoglu
+  site-name: 'Gumusoglu Lab, Mindfol: Molecular Investigation of Neuroscience, Development, and Obstetrics Lab'

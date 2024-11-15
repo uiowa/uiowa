@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecardiovascular.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecardiovascular
+  human_name: cardiovascular.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecardiovascular.prod
+drupal:
+  db:
+    database: cardiovascular_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecardiovascular.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Francois M. Abboud Cardiovascular Research Center'
