@@ -58,12 +58,26 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  // Views to exclude.
+  $excluded_views = ['media_library'];
+
   // For all views with exposed filters.
   if ($form_id === 'views_exposed_form') {
+
+    $view = $form_state->getStorage('view');
+    $current_view_id = $view['view']->id();
+
+    if (in_array($current_view_id, $excluded_views)) {
+      return;
+    }
+
     $form['#attributes']['class'][] = 'uids-content bg--gray';
     $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
-
     // Fixes a bug with BEF, details here:
     // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
     foreach ($form as $k => $v) {
@@ -72,6 +86,7 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
       }
     }
   }
+
   // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
   $view = $form_state->getStorage('view');
