@@ -1,6 +1,254 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/video/vertical/_vertical.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
+.portrait {
+  @include flexbox;
+  @include flex-wrap($value: wrap);
+  @include flex($fg: 1, $fs: 1, $fb: 0);
+
+  @include breakpoint(sm) {
+    @include margin($right: $md, $left: $md);
+  }
+
+  &:first-child {
+    @include margin($left: 0);
+    flex-basis: 100%;
+    text-align: center;
+
+    @include breakpoint(page-container) {
+      flex: 1 1 0;
+      text-align: left;
+
+    }
+  }
+
+  &:nth-child(2) {
+    @include margin($left: 0);
+
+    @include breakpoint(page-container) {
+      @include margin($left: $md);
+    }
+  }
+
+  &:last-child {
+    @include margin($right: 0);
+  }
+
+  &__wrapper {
+    margin: $mobile-height-gutter $gutter;
+
+    @include breakpoint(sm) {
+      margin: 4rem $desktop-width-gutter;
+    }
+
+    @include breakpoint(page-container) {
+      margin: $desktop-height-gutter $desktop-width-gutter;
+    }
+  }
+
+  &__container {
+    margin: 0;
+
+    @include breakpoint(sm) {
+      @include flexbox;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: $gutter;
+
+    @include breakpoint(sm) {
+      margin-bottom: 0;
+    }
+  }
+
+
+  &__body {
+    margin: $md auto;
+    @include breakpoint(sm) {
+      max-width: 60%;
+      margin: $lg auto;
+    }
+
+    @include breakpoint(page-container) {
+      max-width: 100%;
+    }
+  }
+}
+
+.portrait {
+  .highlight__title {
+    justify-content: left;
+    font-size: 1rem;
+    filter: opacity(0.75);
+
+    @include breakpoint(page-container) {
+      font-size: 1.1rem;
+    }
+
+    span {
+
+      @include breakpoint(sm) {
+        display: inline;
+      }
+    }
+  }
+
+  .highlight__sub {
+    font-size: 0.9rem;
+    filter: opacity(0.8);
+    color: #000;
+  }
+
+  .highlight__wrapper {
+    display: block;
+    pointer-events: none;
+    text-align: left;
+    position: absolute;
+    padding: $md;
+    right: 0;
+    top: 0;
+    left: 0;
+
+    &.active {
+      display: none;
+    }
+  }
+}
+
+.vidbttn {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 27.5px);
+  left: calc(50% - 27.5px);
+  box-sizing: border-box;
+  width: 55px;
+  height: 55px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  background: black;
+
+  @include breakpoint(sm) {
+    display: block;
+  }
+
+
+  &:hover:before,
+  &:focus:before {
+    color: #fff;
+    cursor: pointer;
+  }
+
+  &:before {
+    margin-left: -3px;
+    content: "\f144";
+    color: $primary;
+    font-size: 3.5rem;
+    @include fas();
+  }
+
+  &.paused:before {
+    content: "\f28b";
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.portrait .embed-responsive.active .vidbttn.active {
+  @include element-invisible;
+}
+
+
+.portrait .embed-responsive.active .vidbttn.active:focus {
+  //display: block;
+}
+
+.portrait .embed-responsive.active:hover .vidbttn.active:focus {
+  //display: block;
+}
+
+.portrait .embed-responsive.active:hover .vidbttn.active,
+.portrait .embed-responsive.active:focus .vidbttn.active {
+  //display: block;
+}
+
+.portrait video::cue {
+  line-height: 35px !important;
+  background-color: #000;
+  padding: 15px;
+  white-space: pre-line;
+  transform: translateY(-10%) !important;
+}
+
+.portrait video::-moz-media-text-track-container {
+  overflow: visible !important;
+  transform: translateY(-10%) !important;
+  line-height: 0;
+}
+
+.portrait video::cue i {
+  font-style: italic;
+}
+
+.portrait {
+
+  .embed-responsive {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .embed-responsive::before {
+    display: block;
+    content: "";
+  }
+
+  .embed-responsive .embed-responsive-item,
+  .embed-responsive iframe,
+  .embed-responsive embed,
+  .embed-responsive object,
+  .embed-responsive video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .embed-responsive-21by9::before {
+    padding-top: 42.857143%;
+  }
+
+  .embed-responsive-16by9::before {
+    padding-top: 56.25%;
+  }
+
+  .embed-responsive-4by3::before {
+    padding-top: 75%;
+  }
+
+  .embed-responsive-1by1::before {
+    padding-top: 100%;
+  }
+
+  .embed-responsive-9by16 {
+    padding-bottom: 177.78%;
+  }
+}
 
 .layout--fourcol,
 .layout--threecol,

@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 
@@ -17,7 +18,7 @@ a.fc-event {
 }
 
 .fc-button-primary:focus {
-  box-shadow: 0 0 0 0 darken(#000000, 15%)!important;
+  box-shadow: 0 0 0 0 color.scale(#000000, $lightness: -15%)!important;
 }
 
 .fc-button-primary:disabled {
@@ -27,12 +28,12 @@ a.fc-event {
 
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
-  border-color: darken(#000000, 15%)!important;
+  border-color: color.scale(#000000, $lightness: -15%)!important;
 }
 
 .fc-button-primary:not(:disabled):active:focus,
 .fc-button-primary:not(:disabled).fc-button-active:focus {
-  box-shadow: 0 0 0 0.2rem darken(#000000, 15%)!important;
+  box-shadow: 0 0 0 0.2rem color.scale(#000000, $lightness: -15%)!important;
 }
 
 .fc-button-primary:not(:disabled).fc-button-active,
