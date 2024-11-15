@@ -1,7 +1,7 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/typography/headings/headings.scss";
-@import "uids3/components/headline/headline.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/base/_headings.scss";
+@import "uids/scss/components/_headline.scss";
 
 // @todo https://github.com/uiowa/uiowa/issues/6584
 
@@ -85,8 +85,8 @@ html {
   .block-page-title-block,
   .block-local-tasks-block,
   .content-moderation-entity-moderation-form {
-    @include container-width;
     clear: both;
+    @include container-width;
   }
 }
 
