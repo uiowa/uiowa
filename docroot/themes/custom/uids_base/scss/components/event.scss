@@ -1,8 +1,5 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/event/event.scss";
-@import "uids3/components/card/_card-mixins.scss";
-
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 
 .layout--fourcol,
 .layout--threecol,
@@ -14,10 +11,10 @@
 
 // Event block
 .uiowa-card-event.card.card--media-left {
+  margin-bottom: 0;
   @include breakpoint(sm) {
     flex-direction: unset;
   }
-  margin-bottom: 0;
 
   .layout--fourcol &,
   .layout--threecol & {
