@@ -23,11 +23,6 @@ const paths = {
   node: `../../../../node_modules/`,
 };
 
-const uids3 = {
-  src: `${paths.node}@uiowa/uids/src`,
-  dest: `${__dirname}/uids3/`,
-}
-
 const uids = {
   src: `${paths.node}@uiowa/uids4/src`,
   dest: `${__dirname}/uids/`,
@@ -57,14 +52,6 @@ function copyUids() {
   ], { encoding: false })
     .pipe(dest(`${uids.dest}`));
 }
-function copyUids3() {
-  return src([
-    `${uids3.src}/**/*.scss`,
-    `${uids3.src}/**/*.js`,
-    `${uids3.src}/**/*.{jpg,png,svg}`,
-  ], { encoding: false })
-    .pipe(dest(`${uids3.dest}`));
-}
 
 function copyIcons() {
   return src([
@@ -82,7 +69,8 @@ function css() {
     .pipe(gulpSass({
       includePaths: [
         "./node_modules",
-      ]
+      ],
+      silenceDeprecations: ['import', 'legacy-js-api']
     }).on('error', gulpSass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))
@@ -94,7 +82,7 @@ function watchFiles() {
   watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids3, copyUids, copyIcons);
+const copy = parallel(copyUids, copyIcons);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
