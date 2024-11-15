@@ -109,7 +109,7 @@
         "drupal/editor_advanced_link": "^2.0",
         "drupal/entity_browser": "^2.4.0",
         "drupal/entity_print": "^2.6",
-        "drupal/entity_reference_revisions": "^1.12",
+        "drupal/entity_reference_revisions": "^1.5",
         "drupal/entity_reference_unpublished": "^2.0",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/field_delimiter": "^2.0",
@@ -262,7 +262,8 @@
                 "Fix for new window option not rendering under the\n advanced group on initial dialog open.": "patches/14.patch"
             },
             "drupal/entity_reference_revisions": {
-                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch"
+                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch",
+                "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460600-2.patch"
             },
             "drupal/field_delimiter": {
                 "Doesn't work in layout builder": "https://www.drupal.org/files/issues/2020-04-08/field_delimiter-3099580-7.patch",
@@ -275,8 +276,7 @@
                 "only_rebuild_on_view_change": "patches/fullcalendar_only_rebuild_on_view_change.patch"
             },
             "drupal/google_analytics": {
-                "[3373921] Cannot install from existing config": "patches/3373921.patch",
-                "[3300761] Need to delete all Web Property IDs": "patches/3300761.patch"
+                "[3373921] Cannot install from existing config": "patches/3373921.patch"
             },
             "drupal/inline_entity_form": {
                 "Custom blocks created in inline forms should not be reusable": "patches/3002175.patch"
@@ -315,7 +315,8 @@
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
             },
             "drupal/smart_date": {
-                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch"
+                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch",
+                "Return type declaration for extension of diff plugin base": "patches/3463447.patch"
             }
         },
         "installer-types": [
