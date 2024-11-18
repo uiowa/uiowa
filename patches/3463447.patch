@@ -1,0 +1,40 @@
+diff --git a/src/Plugin/diff/Field/SmartdateFieldBuilder.php b/src/Plugin/diff/Field/SmartdateFieldBuilder.php
+index 15efdc5bfef8f3c427b7dbb528a48df324d972a2..3a96e1d13d5dba0efbf5572fb8bf8a3e76f0518f 100644
+--- a/src/Plugin/diff/Field/SmartdateFieldBuilder.php
++++ b/src/Plugin/diff/Field/SmartdateFieldBuilder.php
+@@ -26,7 +26,7 @@ class SmartdateFieldBuilder extends FieldDiffBuilderBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function build(FieldItemListInterface $field_items) {
++  public function build(FieldItemListInterface $field_items): mixed {
+     $result = [];
+
+     $format = \Drupal::entityTypeManager()
+@@ -60,7 +60,7 @@ class SmartdateFieldBuilder extends FieldDiffBuilderBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
++  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
+     unset($form['format_type']);
+
+     // Change the description of the timezone_override element.
+@@ -96,7 +96,7 @@ class SmartdateFieldBuilder extends FieldDiffBuilderBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
++  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
+     $this->configuration['timezone_override'] = $form_state->getValue('timezone_override');
+     $this->configuration['format'] = $form_state->getValue('format');
+
+@@ -106,7 +106,7 @@ class SmartdateFieldBuilder extends FieldDiffBuilderBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function defaultConfiguration() {
++  public function defaultConfiguration(): array {
+     $default_configuration = [
+       'timezone_override' => 0,
+       'format' => 'default',
