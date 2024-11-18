@@ -336,9 +336,9 @@ class AcademicCalendarController extends ControllerBase {
 
     $event->categories = [];
 
-    // Add context to title when context is not default.
+    // Add context to title of event if context is not default.
     if (Xss::filterAdmin($date->contextLookup->naturalKey != 'DEFAULT')) {
-      $event->title = $event->title . "-" . Xss::filterAdmin($date->contextLookup->description);
+      $event->title = $event->title . " - " . Xss::filterAdmin($date->contextLookup->description);
     }
 
     // Determine the date to display.
