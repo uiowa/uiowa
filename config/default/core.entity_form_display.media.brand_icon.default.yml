@@ -1,0 +1,58 @@
+uuid: 80cc6b11-f8f4-4760-b946-d8cb967497b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.brand_icon.field_media_brand_icon
+    - media.type.brand_icon
+  module:
+    - path
+    - sitenow_media_wysiwyg
+id: media.brand_icon.default
+targetEntityType: media
+bundle: brand_icon
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_media_brand_icon:
+    type: brand_icon_url_widget
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  name: true
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true
