@@ -17,7 +17,7 @@ use Drupal\filter\Plugin\FilterBase;
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  *   description = @Translation("Limits &lt;iframe&gt; tag sources to those specified in the configuration."),
  *   settings = {
- *    "allowed_sources" = NULL
+ *    "allowed_sources" = ""
  *   },
  *   weight = -40
  * )
