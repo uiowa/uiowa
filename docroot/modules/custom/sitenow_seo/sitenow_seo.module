@@ -24,8 +24,9 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
     $form['advanced']['#access'] = FALSE;
 
     // Disable access to all tracking config except dimensions and metrics.
+    $allowed_children = ['parameters', 'page_visibility_settings'];
     foreach (Element::children($form['tracking']) as $child) {
-      if ($child != 'parameters') {
+      if (!in_array($child, $allowed_children)) {
         $form['tracking'][$child]['#access'] = FALSE;
       }
     }
