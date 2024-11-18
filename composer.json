@@ -229,6 +229,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/address": {
+                "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
+            },
             "drupal/better_exposed_filters": {
                 "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
             },
@@ -262,7 +265,8 @@
                 "Fix for new window option not rendering under the\n advanced group on initial dialog open.": "patches/14.patch"
             },
             "drupal/entity_reference_revisions": {
-                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch"
+                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch",
+                "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460600-2.patch"
             },
             "drupal/field_delimiter": {
                 "Doesn't work in layout builder": "https://www.drupal.org/files/issues/2020-04-08/field_delimiter-3099580-7.patch",
@@ -274,9 +278,11 @@
             "drupal/fullcalendar_view": {
                 "only_rebuild_on_view_change": "patches/fullcalendar_only_rebuild_on_view_change.patch"
             },
+            "drupal/geofield": {
+                "Return type declaration for extension of diff plugin base": "patches/3467827.patch"
+            },
             "drupal/google_analytics": {
-                "[3373921] Cannot install from existing config": "patches/3373921.patch",
-                "[3300761] Need to delete all Web Property IDs": "patches/3300761.patch"
+                "[3373921] Cannot install from existing config": "patches/3373921.patch"
             },
             "drupal/inline_entity_form": {
                 "Custom blocks created in inline forms should not be reusable": "patches/3002175.patch"
@@ -315,7 +321,8 @@
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
             },
             "drupal/smart_date": {
-                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch"
+                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch",
+                "Return type declaration for extension of diff plugin base": "patches/3463447.patch"
             }
         },
         "installer-types": [
