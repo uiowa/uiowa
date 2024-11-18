@@ -5411,12 +5411,6 @@ $sites['orgiise.dev.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
 $sites['orgiise.stage.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
 $sites['orgiise.prod.drupal.uiowa.edu'] = 'iise.org.uiowa.edu';
 
-// Directory aliases for intranet.shl.uiowa.edu.
-$sites['shlintranet.uiowa.ddev.site'] = 'intranet.shl.uiowa.edu';
-$sites['shlintranet.dev.drupal.uiowa.edu'] = 'intranet.shl.uiowa.edu';
-$sites['shlintranet.stage.drupal.uiowa.edu'] = 'intranet.shl.uiowa.edu';
-$sites['shlintranet.prod.drupal.uiowa.edu'] = 'intranet.shl.uiowa.edu';
-
 // Directory aliases for mocktrial.org.uiowa.edu.
 $sites['orgmocktrial.uiowa.ddev.site'] = 'mocktrial.org.uiowa.edu';
 $sites['orgmocktrial.dev.drupal.uiowa.edu'] = 'mocktrial.org.uiowa.edu';
