@@ -1,0 +1,12 @@
+diff --git a/src/Form/GoogleAnalyticsAdminSettingsForm.php b/src/Form/GoogleAnalyticsAdminSettingsForm.php
+index c7810a74adcaa0002443ed2b4f4b20a1b1be5ae7..db344542f1e46e12abde1feb7011310ceacee556 100644
+--- a/src/Form/GoogleAnalyticsAdminSettingsForm.php
++++ b/src/Form/GoogleAnalyticsAdminSettingsForm.php
+@@ -144,7 +144,6 @@ class GoogleAnalyticsAdminSettingsForm extends ConfigFormBase {
+       $form['general']['accounts'][$i]['value'] = [
+         '#default_value' => (string)$accounts[$i] ?? '',
+         '#maxlength' => 20,
+-        '#required' => ($i === 0),
+         '#size' => 20,
+         '#type' => 'textfield',
+         '#element_validate' => [[get_class($this), 'gtagElementValidate']],
