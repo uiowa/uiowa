@@ -1,0 +1,33 @@
+uuid: b7609170-698a-4d88-9798-b83d4b32407e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.brand_icon.field_media_brand_icon
+    - media.type.brand_icon
+  module:
+    - sitenow_media_wysiwyg
+id: media.brand_icon.media_library
+targetEntityType: media
+bundle: brand_icon
+mode: media_library
+content:
+  field_media_brand_icon:
+    type: brand_icon_url_widget
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  path: true
+  publish_on: true
+  publish_state: true
+  status: true
+  uid: true
+  unpublish_on: true
+  unpublish_state: true
