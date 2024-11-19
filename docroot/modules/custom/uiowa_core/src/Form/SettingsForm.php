@@ -58,6 +58,20 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
+    $form['ga'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Google Analytics',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['ga']['uiowa_core_ga'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include Google Analytics Functionality'),
+      '#default_value' => $config->get('uiowa_core.ga'),
+      '#description' => $this->t('If checked, and if Google Analytics is configured with a tracking ID, Google Analytics tracking code will be inserted and loaded on the website.'),
+      '#size' => 60,
+    ];
+
     return $form;
   }
 
@@ -68,6 +82,7 @@ class SettingsForm extends ConfigFormBase {
     $this->config('uiowa_core.settings')
       ->set('uiowa_core.gtag', $form_state->getValue('uiowa_core_gtag'))
       ->set('uiowa_core.campus_gtm', $form_state->getValue('uiowa_core_campus_gtm'))
+      ->set('uiowa_core.ga', $form_state->getValue('uiowa_core_ga'))
       ->save();
     parent::submitForm($form, $form_state);
 

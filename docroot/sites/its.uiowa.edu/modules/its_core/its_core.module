@@ -394,7 +394,7 @@ function its_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       // Attach smart_date override js.
       $form['#attached']['library'][] = 'its_core/smartdate-override';
       // Prevent users that can't publish from sending an email.
-      if (!\Drupal::currentUser()->hasPermission('use editorial transition publish')) {
+      if (!\Drupal::currentUser()->hasPermission('use alert transition publish')) {
         $form['field_alert_email']['#access'] = FALSE;
         // Supplement moderation selection with description text explaining workflow.
         $form['moderation_state']['widget'][0]['state']['#description'] = t('In order to publish, alert must be saved as "Submit" to notify the ITS Help Desk.');
