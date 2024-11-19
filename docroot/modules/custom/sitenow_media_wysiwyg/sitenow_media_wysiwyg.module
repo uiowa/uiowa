@@ -93,3 +93,58 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
     }
   }
 }
+
+/**
+ * Function to import brand icons from the JSON file and create media entities.
+ */
+function sitenow_media_wysiwyg_media_import_icons() {
+  $theme_path = \Drupal::theme()->getActiveTheme()->getPath();
+  $json_file_path = $theme_path . '/brand-icons/icons.json';
+
+  $json_data = file_get_contents($json_file_path);
+  $data = json_decode($json_data, TRUE);
+  $icons = $data['icons'] ?? [];
+
+  $created_count = 0;
+  $updated_count = 0;
+
+  foreach ($icons as $icon_data) {
+    $file_url = '/themes/custom/uids_base/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
+    $alt_text = str_replace('-', ' ', $icon_data['name']);
+    $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+
+    // Load or create media entity.
+    $existing_media = $media_storage->loadByProperties([
+      'bundle' => 'brand_icon',
+      'field_media_brand_icon.icon_id' => $icon_data['id'],
+    ]);
+
+    if (empty($existing_media)) {
+      $media = $media_storage->create([
+        'bundle' => 'brand_icon',
+        'name' => $icon_data['name'],
+        'status' => 1,
+        'uid' => 1,
+      ]);
+      $created_count++;
+    }
+    else {
+      $media = reset($existing_media);
+      $updated_count++;
+    }
+
+    $media->setName($icon_data['name']);
+    $media->set('field_media_brand_icon', [
+      'uri' => $file_url,
+      'alt' => $alt_text,
+      'icon_id' => $icon_data['id'],
+    ]);
+
+    $media->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('Icons import completed. Created: @created, Updated: @updated', [
+    '@created' => $created_count,
+    '@updated' => $updated_count,
+  ]));
+}
