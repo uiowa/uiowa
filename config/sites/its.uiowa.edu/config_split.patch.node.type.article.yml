@@ -1,10 +1,17 @@
 adding:
   third_party_settings:
+    node_revision_delete:
+      only_drafts:
+        status: false
+        settings:
+          age: 0
     scheduler:
       unpublish_enable: true
       unpublish_revision: true
+  name: 'News Article'
 removing:
   third_party_settings:
     scheduler:
       unpublish_enable: false
       unpublish_revision: false
+  name: Article
