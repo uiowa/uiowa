@@ -3276,3 +3276,21 @@ function sitenow_update_10011() {
   $config->set('uiowa_core.ga', $value)
     ->save();
 }
+
+/**
+ * Update CTA block with new default styles.
+ */
+function sitenow_update_10012() {
+  $block_plugin_id = 'inline_block:uiowa_cta';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    if (in_array('block_alignment_flex_row_center', $styles)) {
+      // Remove 'block_alignment_flex_row_center'.
+      $styles = array_diff($styles, ['block_alignment_flex_row_center']);
+
+      $component->set('layout_builder_styles_style', $styles);
+    }
+  });
+}
