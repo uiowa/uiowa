@@ -33,7 +33,7 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
   $description_addition = '<br /><br /><strong>The default SiteNow pages to exclude are:</strong><br>' .
     implode('<br>', $default_paths);
 
-  $form["tracking"]["page_visibility_settings"]["google_analytics_visibility_request_path_pages"]["#description"] .= $description_addition;
+  $form['tracking']['page_visibility_settings']['google_analytics_visibility_request_path_pages']['#description'] .= $description_addition;
 
   if ($access->isForbidden()) {
     $form['advanced']['#access'] = FALSE;
