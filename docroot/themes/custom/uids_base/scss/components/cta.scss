@@ -1,3 +1,78 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 @import "uids/scss/components/cta.scss";
+
+
+.cta__link {
+  .bttn--primary {
+
+    &:after {
+      [class*="bg--gold"] & {
+        background: $primary;
+      }
+    }
+
+    i,
+    svg {
+      [class*="bg--gold"] & {
+        color: $primary;
+      }
+    }
+
+    [class*="bg--gray"] &,
+    [class*="bg--white"] &,
+    .bg-pattern--brain & {
+      border: none;
+    }
+
+    [class*="bg--black"] [class*="bg--gold"] &,
+    [class*="bg--white"] [class*="bg--gold"] &,
+    [class*="bg--gray"] [class*="bg--gold"] &,
+    [class*="bg--gold"] [class*="bg--gold"] &,
+    .bg-pattern--brain-reversed &,
+    [class*="bg--gold"] & {
+      background: $secondary;
+      color: #fff;
+    }
+
+    .bg-pattern--brain-reversed [class*="bg--gray"] &,
+    [class*="bg--gold"] [class*="bg--gray"] &,
+    .bg-pattern--brain-reversed [class*="bg--white"] &,
+    [class*="bg--gold"] [class*="bg--white"] & {
+      background: $primary;
+      color: $secondary;
+      border: none;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--gold"] [class*="bg--black"] & {
+      background: $primary;
+      color: $secondary;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--black"] [class*="bg--black"] &,
+    [class*="bg--white"] [class*="bg--black"] &,
+    [class*="bg--gray"] [class*="bg--black"] &,
+    .bg-pattern--brain-black &,
+    [class*="bg--black"] & {
+      color: $secondary;
+    }
+  }
+}
