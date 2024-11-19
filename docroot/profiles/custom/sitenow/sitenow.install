@@ -3280,24 +3280,22 @@ function sitenow_update_10011() {
 /**
  * Update CTA block with new default styles.
  */
-function sitenow_update_10019() {
+function sitenow_update_10012() {
   $block_plugin_id = 'inline_block:uiowa_cta';
 
-  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
-    $styles = $component->get('layout_builder_styles_style');
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
 
-    if (in_array('block_alignment_flex_row_center', $styles)) {
-      // Remove 'block_alignment_flex_row_center'.
-      $styles = array_diff($styles, ['block_alignment_flex_row_center']);
+      if (!in_array('block_alignment_flex_row_center', $styles) &&
+        !in_array('block_alignment_left', $styles)) {
+        $styles['block_alignment_inline'] = 'block_alignment_inline';
+        $component->set('layout_builder_styles_style', $styles);
+      }
+      if (in_array('block_alignment_flex_row_center', $styles)) {
+        $styles = array_diff($styles, ['block_alignment_flex_row_center']);
 
-      $component->set('layout_builder_styles_style', $styles);
-    }
+        $component->set('layout_builder_styles_style', $styles);
+      }
 
-    // Check if neither 'block_alignment_flex_row_center' nor 'block_alignment_left' are set.
-    if (!in_array('block_alignment_flex_row_center', $styles) &&
-      !in_array('block_alignment_left', $styles)) {
-      $styles['block_alignment_inline'] = 'block_alignment_inline';
-      $component->set('layout_builder_styles_style', $styles);
-    }
-  });
-}
+    });
+  }
