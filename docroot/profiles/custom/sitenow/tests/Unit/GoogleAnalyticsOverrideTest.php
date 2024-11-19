@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\sitenow\Unit;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\sitenow\ConfigOverride\GoogleAnalyticsOverride;
 
@@ -29,7 +30,11 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
   public function testConfigNotOverriddenInProd() {
     putenv('AH_SITE_ENVIRONMENT=prod');
 
-    $override = new GoogleAnalyticsOverride();
+    // Create a mock for ConfigFactoryInterface.
+    $config_factory_mock = $this->createMock(ConfigFactoryInterface::class);
+
+    // Instantiate GoogleAnalyticsOverride with the mock config factory.
+    $override = new GoogleAnalyticsOverride($config_factory_mock);
     $overrides = $override->loadOverrides(['google_analytics.settings']);
     $this->assertArrayNotHasKey('google_analytics.settings', $overrides);
   }
@@ -44,7 +49,11 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
       putenv("AH_SITE_ENVIRONMENT={$env}");
     }
 
-    $override = new GoogleAnalyticsOverride();
+    // Create a mock for ConfigFactoryInterface.
+    $config_factory_mock = $this->createMock(ConfigFactoryInterface::class);
+
+    // Instantiate GoogleAnalyticsOverride with the mock config factory.
+    $override = new GoogleAnalyticsOverride($config_factory_mock);
     $overrides = $override->loadOverrides(['google_analytics.settings']);
     $this->assertEquals('', $overrides['google_analytics.settings']['account']);
   }
