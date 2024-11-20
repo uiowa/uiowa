@@ -82,6 +82,7 @@ class AcademicDatesFormTest extends KernelTestBase {
             'description' => 'A description',
             'webDescription' => 'A description',
           ],
+          'reviewed' => TRUE,
         ],
         (object) [
           'name' => 'bar',
@@ -94,6 +95,7 @@ class AcademicDatesFormTest extends KernelTestBase {
             'description' => 'A description',
             'webDescription' => 'A description',
           ],
+          'reviewed' => TRUE,
         ],
       ]));
 
