@@ -34,6 +34,8 @@ class BrandIconUrlFormatter extends FormatterBase {
         '#attributes' => [
           'src' => $brand_icon_path,
           'alt' => $item->alt,
+          'width' => '600',
+          'height' => '600',
         ],
       ];
     }
