@@ -760,7 +760,7 @@ function sitenow_events_load(
     try {
       // Set a timeout (e.g., 10 seconds).
       $request = \Drupal::httpClient()->get($endpoint, [
-        'timeout' => 10.0,
+        'timeout' => 20.0,
       ]);
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
