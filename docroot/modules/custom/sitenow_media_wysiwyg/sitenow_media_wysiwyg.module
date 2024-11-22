@@ -110,8 +110,13 @@ function sitenow_media_wysiwyg_media_import_icons() {
 
   foreach ($icons as $icon_data) {
     $file_url = '/themes/custom/uids_base/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
+    // Actual file path for modification.
+    $file_path = $theme_path . '/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
     $alt_text = str_replace('-', ' ', $icon_data['name']);
     $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+
+    // Modify the SVG file before processing it.
+    sitenow_media_wysiwyg_modify_svg_files($file_path);
 
     // Load or create media entity.
     $existing_media = $media_storage->loadByProperties([
@@ -147,4 +152,33 @@ function sitenow_media_wysiwyg_media_import_icons() {
     '@created' => $created_count,
     '@updated' => $updated_count,
   ]));
+}
+
+/**
+ * Function to modify svg icon to remove text and have a white background and be centered within a square.
+ */
+function sitenow_media_wysiwyg_modify_svg_files($file) {
+  if (!file_exists($file)) {
+    return;
+  }
+
+  $svg_content = file_get_contents($file);
+
+  // Remove any <text> elements from the SVG.
+  $svg_content = preg_replace('/<text[^>]*>.*?<\/text>/s', '', $svg_content);
+
+  // Modify the viewBox to expand the canvas to 90x90 and center the content.
+  $svg_content = preg_replace('/viewBox="([\d\s-]+)"/', 'viewBox="-20 -20 90 90"', $svg_content);
+
+  // Ensure width and height are set to 90x90 for the SVG to match the canvas size.
+  if (!strpos($svg_content, 'width="90"')) {
+    $svg_content = preg_replace('/<svg/', '<svg width="90" height="90"', $svg_content, 1);
+  }
+
+  // Add a white background rect that fully covers the 90x90 canvas.
+  if (!strpos($svg_content, '<rect x="-20" y="-20" width="90" height="90" fill="white"/>')) {
+    $svg_content = preg_replace('/(<svg[^>]*>)/', '$1<rect x="-20" y="-20" width="90" height="90" fill="white"/>', $svg_content, 1);
+  }
+
+  file_put_contents($file, $svg_content);
 }
