@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiehartfund.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiehartfund
+  human_name: hartfund.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiehartfund.prod
+drupal:
+  db:
+    database: hartfund_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiehartfund.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'The Hart Fund'
