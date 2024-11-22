@@ -170,13 +170,28 @@ function sitenow_media_wysiwyg_modify_svg_files($file) {
   // Modify the viewBox to expand the canvas to 90x90 and center the content.
   $svg_content = preg_replace('/viewBox="[^"]*"/', 'viewBox="-20 -20 90 90"', $svg_content);
 
-  // Ensure width and height are set to 90x90 for the SVG.
-  $svg_content = preg_replace('/<svg([^>]*)>/', '<svg width="90" height="90"$1>', $svg_content);
+  // Remove any existing width/height attributes first.
+  $svg_content = preg_replace('/(width|height)=["\']\d+["\']/', '', $svg_content);
+
+  // Add width and height attributes to the SVG tag if they don't exist.
+  $svg_content = preg_replace('/<svg/', '<svg width="90" height="90"', $svg_content, 1);
 
   // Add a white background rect that fully covers the 90x90 canvas.
   if (strpos($svg_content, 'fill="white"') === FALSE) {
     $svg_content = preg_replace('/(<svg[^>]*>)/', '$1<rect x="-20" y="-20" width="90" height="90" fill="white"/>', $svg_content);
   }
+
+  // Remove standalone stroke- attributes.
+  $svg_content = preg_replace('/\s+stroke-(?=[\s\/>])/', '', $svg_content);
+
+  // Remove any existing stroke-width attributes to avoid duplicates.
+  $svg_content = preg_replace('/\s+stroke-width=["\']\d+["\']/', '', $svg_content);
+
+  // Add stroke-width="0" to all paths and ellipses that don't already have it.
+  $svg_content = preg_replace('/(<(?:path|ellipse)[^>]*?)(\s*\/>)/', '$1 stroke-width="0"$2', $svg_content);
+
+  // Clean up any double spaces that might have been created.
+  $svg_content = preg_replace('/\s+/', ' ', $svg_content);
 
   file_put_contents($file, $svg_content);
 }
