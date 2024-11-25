@@ -4,6 +4,7 @@ namespace Drupal\sitenow_advanced_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -45,6 +46,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    $webform = $this->getWebform();
+
     // Load configuration.
     $config = $this->configFactory->get('sitenow_advanced_webform.settings');
 
@@ -82,6 +85,48 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
         '#weight' => -100,
       ];
     }
+    // Submission data.
+    $form['submission_data'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Submission data'),
+    ];
+    // Display warning about file uploads.
+    if ($this->getWebform()->hasManagedFile()) {
+      $form['submission_data']['managed_file_message'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t('Upload files will include the file\'s id, name, uri, and data (<a href=":href">Base64</a> encode).', [':href' => 'https://en.wikipedia.org/wiki/Base64']),
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#message_id' => 'webform_node.references',
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[file_data]"]' => ['checked' => TRUE],
+          ],
+        ],
+      ];
+      $form['submission_data']['managed_file_message_no_data'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t("Upload files will include the file's id, name and uri."),
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#message_id' => 'webform_node.references',
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[file_data]"]' => ['checked' => FALSE],
+          ],
+        ],
+      ];
+    }
+    $form['submission_data']['excluded_data'] = [
+      '#type' => 'webform_excluded_columns',
+      '#title' => $this->t('Posted data'),
+      '#title_display' => 'invisible',
+      '#webform_id' => $webform->id(),
+      '#required' => TRUE,
+      '#default_value' => $this->configuration['excluded_data'],
+    ];
     return $this->setSettingsParents($form);
   }
 
