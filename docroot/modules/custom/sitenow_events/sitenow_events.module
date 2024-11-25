@@ -14,12 +14,13 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -428,8 +429,15 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
       else {
+        if (isset($data['error'])) {
+          $message = '<div class="events-empty"><p>Unable to fetch events at this time.</p></div>';
+        }
+        else {
+          $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
+        }
         $variables['content']['no_results'] = [
-          '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+          '#type' => 'markup',
+          '#markup' => $message,
         ];
       }
 
@@ -750,14 +758,10 @@ function sitenow_events_load(
   }
   else {
     try {
-      $request = \Drupal::httpClient()->get($endpoint);
-    }
-    catch (RequestException $e) {
-      $logger = \Drupal::logger('sitenow_events');
-      Error::logException($logger, $e);
-    }
-
-    if (isset($request)) {
+      // Set a timeout (e.g., 10 seconds).
+      $request = \Drupal::httpClient()->get($endpoint, [
+        'timeout' => 20.0,
+      ]);
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
       // Create a cache item set to 5 minutes.
@@ -766,10 +770,27 @@ function sitenow_events_load(
         \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
       }
     }
-    else {
-      $data = [];
+    catch (ConnectException $e) {
+      \Drupal::logger('sitenow_events')->error('Connection timed out when reaching @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
     }
-
+    catch (RequestException $e) {
+      \Drupal::logger('sitenow_events')->error('Request error on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
+    catch (TransferException $e) {
+      \Drupal::logger('sitenow_events')->error('Transfer exception on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
   }
 
   return $data;

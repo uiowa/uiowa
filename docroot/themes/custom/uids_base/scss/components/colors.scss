@@ -1,2 +1,71 @@
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
 $imgpath: '../../../uids/assets/images';
-@import "uids3/components/colors/colors.scss";
+
+.bg-primary {
+  background: $primary;
+}
+
+.bg-secondary {
+  background: $secondary;
+}
+
+.bg-cool-gray {
+  background: $brand-cool-gray;
+}
+
+.bg-blue {
+  background: $info;
+}
+
+.bg-green {
+  background: $success;
+}
+
+.bg-orange {
+  background: $danger;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text--gray {
+  color: $brand-cool-gray;
+}
+
+.text--gold {
+  color: $primary;
+}
+
+.text--black {
+  color: $secondary;
+}
+
+a.text--black {
+  color: $secondary;
+  [class*="bg-"] &,
+  [class*="bg-"] [class*="bg-"] & {
+    color: $secondary;
+  }
+}
+
+.text--white {
+  color: $white;
+}
+
+.bg--gold {
+  background: $primary;
+}
+
+.bg--black {
+  background: $secondary;
+}
+
+.bg--gray {
+  background: $light;
+}
+
+.bg--light {
+  background: $white;
+}

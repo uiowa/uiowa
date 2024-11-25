@@ -1,7 +1,7 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
-$imgpath: '../../uids3/assets/images';
+$imgpath: '../../uids/assets/images';
 
 @import "admin/_off-canvas.scss";
 @import "admin/_chosen.scss";
@@ -69,4 +69,9 @@ $imgpath: '../../uids3/assets/images';
 // Set a minimum height for smallest height components.
 .layout-builder .layout-builder-block.block-inline-blockuiowa-card .card.borderless:not([class*="bg--"]) {
   min-height: 120px;
+}
+
+// Add padding to icons in the media library.
+.media-library-widget-modal img[src$=".svg"] {
+  padding: 2rem 1rem 0;
 }
