@@ -71,7 +71,7 @@ $imgpath: '../../uids/assets/images';
   min-height: 120px;
 }
 
-// Add padding to icons in the media library.
-.media-library-widget-modal img[src$=".svg"] {
-  padding: 2rem 1rem 0;
+// Fix for absolutely positioned checkbox for table view.
+.media-library-widget-modal td.media-library-item__click-to-select-checkbox {
+  position: relative;
 }
