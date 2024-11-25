@@ -7624,3 +7624,15 @@ $sites['sees.uiowa.ddev.site'] = 'sees.uiowa.edu';
 $sites['sees.dev.drupal.uiowa.edu'] = 'sees.uiowa.edu';
 $sites['sees.stage.drupal.uiowa.edu'] = 'sees.uiowa.edu';
 $sites['sees.prod.drupal.uiowa.edu'] = 'sees.uiowa.edu';
+
+// Directory aliases for hartfund.tippie.uiowa.edu.
+$sites['tippiehartfund.uiowa.ddev.site'] = 'hartfund.tippie.uiowa.edu';
+$sites['tippiehartfund.dev.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
+$sites['tippiehartfund.stage.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
+$sites['tippiehartfund.prod.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
+
+// Directory aliases for stem-k12-cancer.sites.uiowa.edu.
+$sites['sitesstem-k12-cancer.uiowa.ddev.site'] = 'stem-k12-cancer.sites.uiowa.edu';
+$sites['sitesstem-k12-cancer.dev.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
+$sites['sitesstem-k12-cancer.stage.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
+$sites['sitesstem-k12-cancer.prod.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
