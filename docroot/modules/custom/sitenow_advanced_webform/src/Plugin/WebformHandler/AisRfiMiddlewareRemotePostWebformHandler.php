@@ -14,17 +14,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Webform submission remote post handler.
  *
  * @WebformHandler(
- *   id = "prospector_remote_post",
- *   label = @Translation("Prospector Remote Post"),
+ *   id = "ais_rfi_middleware_remote_post",
+ *   label = @Translation("AIS RFI Middleware Remote Post"),
  *   category = @Translation("External"),
- *   description = @Translation("Posts webform submissions to ITS-AIS' Prospector application."),
+ *   description = @Translation("Posts webform submissions to AIS RFI middleware."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
  *   tokens = TRUE,
  * )
  */
-class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
+class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
 
   /**
    * The HTTP client to fetch the feed data with.
@@ -85,6 +85,14 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
         '#weight' => -100,
       ];
     }
+
+    $form['interaction_uuid'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Interaction UUID'),
+      '#default_value' => $config->get('interaction_uuid'),
+      '#description' => $this->t('The middleware interaction UUID.'),
+    ];
+
     // Submission data.
     $form['submission_data'] = [
       '#type' => 'details',
