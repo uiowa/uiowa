@@ -51,20 +51,6 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Load configuration.
     $config = $this->configFactory->get('sitenow_advanced_webform.settings');
 
-    // We need a site UUID to proceed.
-    $site_uuid = $config->get('prospector.site_uuid');
-    if (!$site_uuid) {
-      // Generate a URL for the sitenow_advanced_webform settings form.
-      $url = Url::fromRoute('sitenow_advanced_webform.settings_form')->toString();
-      // Print a message directing the user to the settings form.
-      $form['missing_uuid'] = [
-        '#markup' => $this->t('<strong>Warning:</strong> The website UUID required for this handler is missing. <a href="@url">Please configure it at here</a>.', [
-          '@url' => $url,
-        ]),
-        '#weight' => -100,
-      ];
-    }
-
     // We need an endpoint URL to proceed.
     $endpoint_url = $config->get('prospector.endpoint_url');
     if (!$endpoint_url) {
@@ -125,10 +111,10 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $config = $this->configFactory->get('sitenow_advanced_webform.settings');
 
     // We need a site UUID to proceed.
-    $site_uuid = $config->get('prospector.site_uuid');
-    if (!$site_uuid) {
+    $interaction_uuid = $this->configuration['interaction_uuid'];
+    if (!$interaction_uuid) {
       // Log that the site UUID is missing.
-      $this->getLogger()->error('Prospector Site UUID is missing.');
+      $this->getLogger()->error('AIS RFI Middleware Remote Post: Interaction UUID is missing.');
       return;
     }
 
@@ -136,7 +122,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $endpoint_url = $config->get('prospector.endpoint_url');
     if (!$endpoint_url) {
       // Log that the endpoint URL is missing.
-      $this->getLogger()->error($this->t('Prospector Endpoint URL is missing.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware Remote Post: Endpoint URL is missing.'));
       return;
     }
 
@@ -145,7 +131,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       // Log that the auth credentials are missing.
-      $this->getLogger()->error($this->t('Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware Remote Post: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
 
@@ -155,7 +141,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
 
     // Add data from the webform submission.
     $data = $this->getRequestData($webform_submission);
-    $data['siteInteractionUuid'] = $site_uuid;
+    $data['siteInteractionUuid'] = $interaction_uuid;
     $options['json'] = $data;
 
     // Send http request.
@@ -165,11 +151,11 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     }
     catch (GuzzleException $e) {
       // Log the exception.
-      $this->getLogger()->error('An error occurred while posting the webform submission to Prospector. Error: @error', [
+      $this->getLogger()->error('AIS RFI Middleware Remote Post: An error occurred while posting the webform submission to the middleware. Error: @error', [
         '@error' => $e->getMessage(),
       ]);
       // Print error message.
-      $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector.'));
+      $this->messenger()->addError($this->t('AIS RFI Middleware Remote Post: An error occurred while posting the webform submission to the middleware.'));
       return;
     }
   }
