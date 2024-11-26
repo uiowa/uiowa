@@ -90,37 +90,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'details',
       '#title' => $this->t('Submission data'),
     ];
-    // Display warning about file uploads.
-    if ($this->getWebform()->hasManagedFile()) {
-      $form['submission_data']['managed_file_message'] = [
-        '#type' => 'webform_message',
-        '#message_message' => $this->t('Upload files will include the file\'s id, name, uri, and data (<a href=":href">Base64</a> encode).', [':href' => 'https://en.wikipedia.org/wiki/Base64']),
-        '#message_type' => 'warning',
-        '#message_close' => TRUE,
-        '#message_id' => 'webform_node.references',
-        '#message_storage' => WebformMessage::STORAGE_SESSION,
-        '#states' => [
-          'visible' => [
-            ':input[name="settings[file_data]"]' => ['checked' => TRUE],
-          ],
-        ],
-      ];
-      $form['submission_data']['managed_file_message_no_data'] = [
-        '#type' => 'webform_message',
-        '#message_message' => $this->t("Upload files will include the file's id, name and uri."),
-        '#message_type' => 'warning',
-        '#message_close' => TRUE,
-        '#message_id' => 'webform_node.references',
-        '#message_storage' => WebformMessage::STORAGE_SESSION,
-        '#states' => [
-          'visible' => [
-            ':input[name="settings[file_data]"]' => ['checked' => FALSE],
-          ],
-        ],
-      ];
-    }
     $form['submission_data']['excluded_data'] = [
-      '#type' => 'webform_excluded_columns',
+      '#type' => 'webform_excluded_elements',
       '#title' => $this->t('Posted data'),
       '#title_display' => 'invisible',
       '#webform_id' => $webform->id(),
@@ -174,14 +145,8 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       'auth' => array_values($auth),
     ];
 
-    // Add data from first_name, last_name, email, and phone fields.
-    $elements = ['first_name', 'last_name', 'email', 'phone'];
-    $data = [];
-    foreach ($elements as $element) {
-      if ($value = $webform_submission->getElementData($element)) {
-        $data[$element] = $value;
-      }
-    }
+    // Add data from the webform submission.
+    $data = $this->getRequestData($webform_submission);
     $data['siteInteractionUuid'] = $site_uuid;
     $options['json'] = $data;
 
@@ -199,6 +164,32 @@ class ProspectorRemotePostWebformHandler extends WebformHandlerBase {
       $this->messenger()->addError($this->t('An error occurred while posting the webform submission to Prospector.'));
       return;
     }
+  }
+
+  /**
+   * Get a webform submission's request data.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   The webform submission to be posted.
+   *
+   * @return array
+   *   A webform submission converted to an associative array.
+   */
+  protected function getRequestData(WebformSubmissionInterface $webform_submission): array {
+    // Get submission and elements data.
+    $data = $webform_submission->toArray(TRUE);
+
+    // Flatten data and prioritize the element data over the
+    // webform submission data.
+    $element_data = $data['data'];
+    unset($data['data']);
+    $data = $element_data + $data;
+
+    // Excluded selected submission data.
+    $data = array_diff_key($data, $this->configuration['excluded_data']);
+
+    // Replace tokens.
+    return $this->replaceTokens($data, $webform_submission);
   }
 
 }
