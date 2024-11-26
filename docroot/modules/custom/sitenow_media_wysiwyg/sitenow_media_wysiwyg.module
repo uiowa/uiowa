@@ -99,34 +99,19 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
  */
 function sitenow_media_wysiwyg_media_import_icons() {
   $theme_path = \Drupal::theme()->getActiveTheme()->getPath();
-  $modified_icons_path = $theme_path . '/assets/brand-icons/';
-
-  if (!file_exists($modified_icons_path)) {
-    mkdir($modified_icons_path, 0755, TRUE);
-  }
-
   $json_file_path = $theme_path . '/brand-icons/icons.json';
+
   $json_data = file_get_contents($json_file_path);
   $data = json_decode($json_data, TRUE);
   $icons = $data['icons'] ?? [];
+
   $created_count = 0;
   $updated_count = 0;
 
   foreach ($icons as $icon_data) {
-    $original_file_path = $theme_path . '/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
-    $modified_file_path = $modified_icons_path . $icon_data['name'] . '-two-color.svg';
-
+    $file_url = '/themes/custom/uids_base/assets/brand-icons/' . $icon_data['name'] . '-two-color.svg';
     $alt_text = str_replace('-', ' ', $icon_data['name']);
     $media_storage = \Drupal::entityTypeManager()->getStorage('media');
-
-    // If modified icon doesn't exist, create it.
-    if (!file_exists($modified_file_path)) {
-      copy($original_file_path, $modified_file_path);
-      chmod($modified_file_path, 0644);
-      sitenow_media_wysiwyg_modify_svg_files($modified_file_path);
-    }
-
-    $file_url = '/themes/custom/uids_base/assets/brand-icons/' . $icon_data['name'] . '-two-color.svg';
 
     // Load or create media entity.
     $existing_media = $media_storage->loadByProperties([
@@ -154,6 +139,7 @@ function sitenow_media_wysiwyg_media_import_icons() {
       'alt' => $alt_text,
       'icon_id' => $icon_data['id'],
     ]);
+
     $media->save();
   }
 
@@ -161,46 +147,4 @@ function sitenow_media_wysiwyg_media_import_icons() {
     '@created' => $created_count,
     '@updated' => $updated_count,
   ]));
-}
-
-/**
- * Function to modify svg icon to remove text and have a white background and be centered within a square.
- */
-function sitenow_media_wysiwyg_modify_svg_files($file) {
-  if (!file_exists($file)) {
-    return;
-  }
-
-  $svg_content = file_get_contents($file);
-
-  // Remove any <text> elements from the SVG.
-  $svg_content = preg_replace('/<text[^>]*>.*?<\/text>/s', '', $svg_content);
-
-  // Modify the viewBox to expand the canvas to 90x90 and center the content.
-  $svg_content = preg_replace('/viewBox="[^"]*"/', 'viewBox="-10 -10 70 70"', $svg_content);
-
-  // Remove any existing width/height attributes first.
-  $svg_content = preg_replace('/(width|height)=["\']\d+["\']/', '', $svg_content);
-
-  // Add width and height attributes to the SVG tag if they don't exist.
-  $svg_content = preg_replace('/<svg/', '<svg width="70" height="70"', $svg_content, 1);
-
-  // Add a white background rect that fully covers the 90x90 canvas.
-  if (strpos($svg_content, 'fill="white"') === FALSE) {
-    $svg_content = preg_replace('/(<svg[^>]*>)/', '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>', $svg_content);
-  }
-
-  // Remove standalone stroke- attributes.
-  $svg_content = preg_replace('/\s+stroke-(?=[\s\/>])/', '', $svg_content);
-
-  // Remove any existing stroke-width attributes to avoid duplicates.
-  $svg_content = preg_replace('/\s+stroke-width=["\']\d+["\']/', '', $svg_content);
-
-  // Add stroke-width="0" to all paths and ellipses that don't already have it.
-  $svg_content = preg_replace('/(<(?:path|ellipse)[^>]*?)(\s*\/>)/', '$1 stroke-width="0"$2', $svg_content);
-
-  // Clean up any double spaces that might have been created.
-  $svg_content = preg_replace('/\s+/', ' ', $svg_content);
-
-  file_put_contents($file, $svg_content);
 }
