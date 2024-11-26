@@ -99,24 +99,34 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
  */
 function sitenow_media_wysiwyg_media_import_icons() {
   $theme_path = \Drupal::theme()->getActiveTheme()->getPath();
-  $json_file_path = $theme_path . '/brand-icons/icons.json';
+  $modified_icons_path = $theme_path . '/assets/brand-icons/';
 
+  if (!file_exists($modified_icons_path)) {
+    mkdir($modified_icons_path, 0755, TRUE);
+  }
+
+  $json_file_path = $theme_path . '/brand-icons/icons.json';
   $json_data = file_get_contents($json_file_path);
   $data = json_decode($json_data, TRUE);
   $icons = $data['icons'] ?? [];
-
   $created_count = 0;
   $updated_count = 0;
 
   foreach ($icons as $icon_data) {
-    $file_url = '/themes/custom/uids_base/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
-    // Actual file path for modification.
-    $file_path = $theme_path . '/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
+    $original_file_path = $theme_path . '/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
+    $modified_file_path = $modified_icons_path . $icon_data['name'] . '-two-color.svg';
+
     $alt_text = str_replace('-', ' ', $icon_data['name']);
     $media_storage = \Drupal::entityTypeManager()->getStorage('media');
 
-    // Modify the SVG file before processing it.
-    sitenow_media_wysiwyg_modify_svg_files($file_path);
+    // If modified icon doesn't exist, create it.
+    if (!file_exists($modified_file_path)) {
+      copy($original_file_path, $modified_file_path);
+      chmod($modified_file_path, 0644);
+      sitenow_media_wysiwyg_modify_svg_files($modified_file_path);
+    }
+
+    $file_url = '/themes/custom/uids_base/assets/brand-icons/' . $icon_data['name'] . '-two-color.svg';
 
     // Load or create media entity.
     $existing_media = $media_storage->loadByProperties([
@@ -144,7 +154,6 @@ function sitenow_media_wysiwyg_media_import_icons() {
       'alt' => $alt_text,
       'icon_id' => $icon_data['id'],
     ]);
-
     $media->save();
   }
 
