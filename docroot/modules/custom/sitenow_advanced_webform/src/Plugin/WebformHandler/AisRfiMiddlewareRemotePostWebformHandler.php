@@ -45,6 +45,16 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'excluded_data' => [],
+      'interaction_uuid' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $webform = $this->getWebform();
 
@@ -71,7 +81,10 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
         '#weight' => -100,
       ];
     }
+    // Flatten the form tree for simplicity.
+    $form['#tree'] = FALSE;
 
+    // Interaction UUID field.
     $form['interaction_uuid'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Interaction UUID'),
@@ -79,7 +92,10 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       '#description' => $this->t('The middleware interaction UUID.'),
     ];
 
-    // Submission data.
+    // We're using the webform_excluded_elements element type to generate the
+    // list of elements to exclude from the submission data. It works as an
+    // exclusion list behind the scenes, but we use it to include elements in
+    // the data that gets sent.
     $form['submission_data'] = [
       '#type' => 'details',
       '#title' => $this->t('Submission data'),
@@ -100,6 +116,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
+    // Convert form state values to configuration.
     $this->applyFormStateToConfiguration($form_state);
   }
 
@@ -139,7 +156,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       'auth' => array_values($auth),
     ];
 
-    // Add data from the webform submission.
+    // Add data from the webform submission elements.
     $data = $this->getRequestData($webform_submission);
     $data['siteInteractionUuid'] = $interaction_uuid;
     $options['json'] = $data;
