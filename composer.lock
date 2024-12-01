@@ -9516,26 +9516,30 @@
         },
         {
             "name": "drupal/piwik_pro",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/piwik_pro.git",
-                "reference": "1.0.2"
+                "reference": "1.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.0.2.zip",
-                "reference": "1.0.2",
-                "shasum": "611b08cfb6f75ef31a75dfb7b61d9337b986d1a3"
+                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.1.0.zip",
+                "reference": "1.1.0",
+                "shasum": "49221eba029af18d9a0c391ae9bc608647fbc95b"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9 || ^10"
+                "drupal/core": "^9 || ^10 || ^11",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.3"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.2",
-                    "datestamp": "1675231870",
+                    "version": "1.1.0",
+                    "datestamp": "1729866239",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9548,8 +9552,9 @@
             ],
             "authors": [
                 {
-                    "name": "heikkiy",
-                    "homepage": "https://www.drupal.org/user/3442607"
+                    "name": "Josha Hubbers",
+                    "homepage": "https://www.drupal.org/user/3442607",
+                    "email": "josha@hubbers.info"
                 },
                 {
                     "name": "joshahubbers",
@@ -9564,10 +9569,11 @@
                     "homepage": "https://www.drupal.org/user/3578201"
                 }
             ],
-            "description": "Allows your site to be tracked by Piwik Pro.",
+            "description": "Piwik Pro is a free analytics provider.",
             "homepage": "https://www.drupal.org/project/piwik_pro",
             "support": {
-                "source": "https://git.drupalcode.org/project/piwik_pro"
+                "source": "https://git.drupalcode.org/project/piwik_pro",
+                "issues": "https://drupal.org/project/issues/piwik_pro"
             }
         },
         {
