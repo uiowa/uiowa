@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sitenow_advanced_webform\Plugin\WebformHandler;
+namespace Drupal\sitenow_webform_ais_rfi\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -59,7 +59,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $webform = $this->getWebform();
 
     // Load configuration.
-    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
+    $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
     // We need an endpoint URL to proceed.
     $endpoint_url = $config->get('prospector.endpoint_url');
@@ -125,7 +125,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     // Load configuration.
-    $config = $this->configFactory->get('sitenow_advanced_webform.settings');
+    $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
     // We need a site UUID to proceed.
     $interaction_uuid = $this->configuration['interaction_uuid'];
@@ -159,6 +159,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Add data from the webform submission elements.
     $data = $this->getRequestData($webform_submission);
     $data['siteInteractionUuid'] = $interaction_uuid;
+    $data['clientKey'] = 'prospector';
     $options['json'] = $data;
 
     // Send http request.
