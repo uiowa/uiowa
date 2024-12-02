@@ -127,7 +127,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Load configuration.
     $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
-    // We need a site UUID to proceed.
+    // We need an interaction UUID to proceed.
     $interaction_uuid = $this->configuration['interaction_uuid'];
     if (!$interaction_uuid) {
       // Log that the site UUID is missing.
