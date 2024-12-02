@@ -52,14 +52,16 @@ class Artwork extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--stacked',
-      'card_headline_style' => '',
-      'media_size' => 'media--large',
-      'border' => '',
-      'styles' => 'bg--white',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--stacked',
+        'card_headline_style' => '',
+        'media_size' => 'media--large',
+        'border' => '',
+        'styles' => 'bg--white',
+      ]
+    );
   }
 
 }

@@ -20,7 +20,7 @@ recipient_types:
 bundles:
   'node:alert': 'node:alert'
 body:
-  value: '<p>[node:title] alert has been created by [node:author]. <a href="[node:url]">Please review and publish the alert</a></p>'
+  value: '<p>[node:title] alert has been created by [node:author] ([node:author:mail]). <a href="[node:url]">Please review and publish the alert</a></p>'
   format: filtered_html
 replyTo: '[node:author:mail]'
 transitions:
