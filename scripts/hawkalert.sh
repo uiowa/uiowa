@@ -9,7 +9,7 @@ start=$(date +%s)
 # This is where you run the drush command, wget,
 # curl, etc. that you would like to execute once a
 # minute.
-log="/shared/logs/drush-cron.log"
+log="/shared/logs/drush-cron-hawkalert.log"
 echo [HAWK ALERT IMPORT] `date` &>> $log
 drush @${AH_SITE_GROUP}.${AH_SITE_ENVIRONMENT} -l emergency.uiowa.edu rave-alerts &>> $log
 

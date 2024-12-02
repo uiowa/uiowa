@@ -112,12 +112,16 @@ class AcademicDatesForm extends FormBase {
       ],
     ];
 
-    $data = $this->maui->searchSessionDates($current, $category);
+    $data = $this->maui->searchSessionDates($current, $category, TRUE);
 
     if (!empty($data)) {
       $data = ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data;
 
       foreach ($data as $date) {
+        // Skip dates that are not reviewed.
+        if ($date->reviewed !== TRUE) {
+          continue;
+        }
         $start = strtotime($date->beginDate);
         $end = strtotime($date->endDate);
         $key = $start . $end;
