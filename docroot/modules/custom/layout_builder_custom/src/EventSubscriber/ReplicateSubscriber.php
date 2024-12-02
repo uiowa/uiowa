@@ -183,6 +183,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
               $section->removeComponent($old_uuid);
             }
             else {
+              // Remove the original component.
               $section->removeComponent($old_uuid);
               // Get the uuid of the component at the adjusted index.
               $uuid = array_keys($components)[$index];
