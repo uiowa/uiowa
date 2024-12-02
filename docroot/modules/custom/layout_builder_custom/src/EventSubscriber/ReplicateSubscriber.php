@@ -189,7 +189,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
               $uuid = array_keys($components)[$index];
               // Check that the uuid exists in the region.
               $region_components = $section->getComponentsByRegion($component->getRegion());
-              if (!is_null($uuid) && in_array($uuid, $region_components)) {
+              if (!is_null($uuid) && isset($region_components[$uuid])) {
                 // Add the new component to the section, directly after
                 // the existing component so that it will be in the right order.
                 $section->insertAfterComponent($uuid, $new_component);
