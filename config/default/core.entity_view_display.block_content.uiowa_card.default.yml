@@ -23,14 +23,6 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
-  field_card_icon:
-    type: icon_formatter
-    label: above
-    settings:
-      icon_settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_uiowa_card_author:
     type: string
     label: hidden
@@ -45,6 +37,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_uiowa_card_icon:
+    type: icon_formatter
+    label: above
+    settings:
+      icon_settings: {  }
+    third_party_settings: {  }
+    weight: 5
     region: content
   field_uiowa_card_image:
     type: entity_reference_entity_view
