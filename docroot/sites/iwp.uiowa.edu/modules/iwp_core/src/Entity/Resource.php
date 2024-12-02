@@ -29,10 +29,12 @@ class Resource extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'media_format' => 'media--square',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'media_format' => 'media--square',
+      ]
+    );
   }
 
 }
