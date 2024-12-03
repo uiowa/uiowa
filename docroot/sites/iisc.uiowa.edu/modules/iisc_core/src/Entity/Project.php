@@ -36,12 +36,14 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'media_size' => 'media--small',
-      'media_format' => 'media--widescreen',
-      'card_media_position' => 'card--layout-left',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'media_size' => 'media--small',
+        'media_format' => 'media--widescreen',
+        'card_media_position' => 'card--layout-left',
+      ]
+    );
   }
 
 }
