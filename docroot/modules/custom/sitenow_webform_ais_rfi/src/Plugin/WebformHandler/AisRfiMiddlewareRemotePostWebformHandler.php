@@ -88,7 +88,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $form['interaction_uuid'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Interaction UUID'),
-      '#default_value' => $config->get('interaction_uuid'),
+      '#default_value' => $this->configuration['interaction_uuid'],
       '#description' => $this->t('The middleware interaction UUID.'),
     ];
 
@@ -131,7 +131,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $interaction_uuid = $this->configuration['interaction_uuid'];
     if (!$interaction_uuid) {
       // Log that the site UUID is missing.
-      $this->getLogger()->error('AIS RFI Middleware Remote Post: Interaction UUID is missing.');
+      $this->getLogger()->error('AIS RFI Middleware: Interaction UUID is missing.');
       return;
     }
 
@@ -139,7 +139,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $endpoint_url = $config->get('prospector.endpoint_url');
     if (!$endpoint_url) {
       // Log that the endpoint URL is missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware Remote Post: Endpoint URL is missing.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Endpoint URL is missing.'));
       return;
     }
 
@@ -148,7 +148,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       // Log that the auth credentials are missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware Remote Post: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
 
@@ -165,15 +165,17 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Send http request.
     try {
       $response = $this->httpClient->request('POST', $endpoint_url, $options);
-      $this->getLogger()->notice($response->getBody()->getContents());
+      $this->getLogger()->notice($this->t('AIS RFI Middleware: @response_message', [
+        '@response_message' => $response->getBody()->getContents(),
+      ]));
     }
     catch (GuzzleException $e) {
       // Log the exception.
-      $this->getLogger()->error('AIS RFI Middleware Remote Post: An error occurred while posting the webform submission to the middleware. Error: @error', [
+      $this->getLogger()->error('AIS RFI Middleware: An error occurred while posting the webform submission to the middleware. Error: @error', [
         '@error' => $e->getMessage(),
       ]);
       // Print error message.
-      $this->messenger()->addError($this->t('AIS RFI Middleware Remote Post: An error occurred while posting the webform submission to the middleware.'));
+      $this->messenger()->addError($this->t('AIS RFI Middleware: An error occurred while posting the webform submission to the middleware.'));
       return;
     }
   }
