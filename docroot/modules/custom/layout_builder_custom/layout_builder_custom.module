@@ -775,6 +775,38 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
+          // Remove image or icon based on media_options selection.
+          $media_option = $form_state->getValue([
+            'settings',
+            'block_form',
+            'media_options',
+          ]);
+
+          if ($media_option) {
+            $form_image_selection = [
+              'settings',
+              'block_form',
+              'field_uiowa_card_image',
+              'selection',
+            ];
+
+            $form_icon_selection = [
+              'settings',
+              'block_form',
+              'field_uiowa_card_icon',
+              0,
+              'value',
+              'icon',
+            ];
+
+            if ($media_option === 'image') {
+              $form_state->unsetValue($form_icon_selection);
+            }
+            if ($media_option === 'icon') {
+              $form_state->unsetValue($form_image_selection);
+            }
+          }
+
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -783,14 +815,14 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'block_form',
               'field_uiowa_card_link',
             ]
-          )[0]['title'];
+            )[0]['title'];
           if ($link_title) {
             $form_state->setValue(
-              [
-                'settings',
-                'block_form',
-                'field_uiowa_card_button_display',
-              ], ['value' => 1]
+            [
+              'settings',
+              'block_form',
+              'field_uiowa_card_button_display',
+            ], ['value' => 1]
             );
           };
         }
@@ -963,6 +995,42 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_card':
+        $style_options = [
+          'image' => 'Image',
+          'icon' => 'Icon',
+        ];
+        $default_bg = 'image';
+
+        $element['media_options'] = [
+          '#type' => 'select',
+          '#title' => t('Background'),
+          '#options' => $style_options,
+          '#default_value' => $default_bg,
+          '#weight' => 4,
+        ];
+
+        $element['field_uiowa_card_image'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_options]"]' => [
+                'value' => 'image',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_card_image'];
+
+        $element['field_uiowa_card_icon'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_options]"]' => [
+                'value' => 'icon',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_card_icon'];
+
         if (isset($element['field_uiowa_card_button_display'])) {
           $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
           $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
