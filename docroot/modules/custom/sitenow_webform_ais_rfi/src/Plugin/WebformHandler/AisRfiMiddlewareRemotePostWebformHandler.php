@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Webform submission remote post handler.
  *
  * @WebformHandler(
- *   id = "ais_rfi_middleware_remote_post",
+ *   id = "ais_rfi_middleware_prospector",
  *   label = @Translation("AIS RFI Middleware Remote Post"),
  *   category = @Translation("External"),
  *   description = @Translation("Posts webform submissions to AIS RFI middleware."),
