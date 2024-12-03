@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @WebformHandler(
  *   id = "ais_rfi_middleware_prospector",
- *   label = @Translation("AIS RFI Middleware Remote Post"),
+ *   label = @Translation("AIS RFI Prospector"),
  *   category = @Translation("External"),
  *   description = @Translation("Posts webform submissions to AIS RFI middleware."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
@@ -62,22 +62,22 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
     // We need an endpoint URL to proceed.
-    $endpoint_url = $config->get('prospector.endpoint_url');
+    $endpoint_url = $config->get('middleware.endpoint_url');
     if (!$endpoint_url) {
       // Print a message letting the user know they need to contact
       // the SiteNow team.
       $form['missing_uuid'] = [
-        '#markup' => $this->t('<strong>Warning:</strong> The Prospector endpoint URL is missing. Please contact the SiteNow team for assistance.'),
+        '#markup' => $this->t('<strong>Warning:</strong> The AIS RFI Middleware endpoint URL is missing. Please contact the SiteNow team for assistance.'),
         '#weight' => -100,
       ];
     }
 
     // Load basic auth credentials from config.
-    $auth = $config->get('prospector.auth');
+    $auth = $config->get('middleware.auth');
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       $form['missing_auth'] = [
-        '#markup' => $this->t('<strong>Warning:</strong> Prospector authentication credentials are missing. Please contact the SiteNow team for assistance.'),
+        '#markup' => $this->t('<strong>Warning:</strong> The AIS RFI Middleware authentication credentials are missing. Please contact the SiteNow team for assistance.'),
         '#weight' => -100,
       ];
     }
