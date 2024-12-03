@@ -806,10 +806,9 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             if ($media_option === 'icon') {
               $form_state->unsetValue($form_image_selection);
             }
-            if ($media_option) {
-              // Save as a third-party setting.
-              $component->setThirdPartySetting('layout_builder_custom', 'media_options', $media_option);
-            }
+
+            // Save as a third-party setting.
+            $component->setThirdPartySetting('layout_builder_custom', 'media_options', $media_option);
           }
 
           // Make sure button display field is checked
