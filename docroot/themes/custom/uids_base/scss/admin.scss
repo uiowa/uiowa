@@ -71,7 +71,49 @@ $imgpath: '../../uids/assets/images';
   min-height: 120px;
 }
 
-// Add padding to icons in the media library.
-.media-library-widget-modal img[src$=".svg"] {
-  padding: 2rem 1rem 0;
+// Adjust ui_icons picker to be larger for brand icons.
+.ui-icons-picker-search {
+
+  // Search input.
+  .form-item-filter {
+    display: flex;
+    flex-grow: 1;
+  }
+  .form-item {
+    margin-top: 0;
+  }
+  .container-inline {
+    display: flex;
+    align-items: self-start;
+  }
+  [type=submit] {
+    font-size: .95rem;
+  }
+
+  // Icons grid.
+  .icon-picker-modal__content {
+    .form-radios {
+      grid-template-columns: repeat(5, 1fr) !important;
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(12, 1fr) !important;
+      }
+    }
+
+    .icon-preview-wrapper:not(.icon-preview-none) {
+      width: auto !important;
+      height: auto !important;
+    }
+
+    .icon-preview {
+      max-height: none !important;
+      width: 100%;
+    }
+
+    .form-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
+
