@@ -1006,10 +1006,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $default_bg = 'image';
 
         $element['media_options'] = [
-          '#type' => 'select',
-          '#title' => t('Background'),
+          '#type' => 'radios',
+          '#title' => t('Media type'),
           '#options' => $style_options,
-          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_options'),
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_options') ?: $default_bg,
           '#weight' => 4,
         ];
 
