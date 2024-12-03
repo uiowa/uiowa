@@ -39,33 +39,27 @@ const brandIcons = {
 
 // Modify Brand Icons.
 async function modifySvgFile(filePath) {
-  try {
-    let svgContent = await fs.readFile(filePath, 'utf8');
+  let svgContent = await fs.readFile(filePath, 'utf8');
 
-    svgContent = svgContent
-      .replace(/<text[^>]*>.*?<\/text>/gs, '')
-      .replace(/viewBox="[^"]*"/, 'viewBox="-10 -10 70 70"')
-      .replace(/(width|height)=["']\d+['"]/g, '')
-      .replace('<svg', '<svg width="70" height="70"');
+  svgContent = svgContent
+    .replace(/<text[^>]*>.*?<\/text>/gs, '')
+    .replace(/viewBox="[^"]*"/, 'viewBox="-10 -10 70 70"')
+    .replace(/(width|height)=["']\d+['"]/g, '')
+    .replace('<svg', '<svg width="70" height="70"');
 
-    if (!svgContent.includes('fill="white"')) {
-      svgContent = svgContent.replace(
-        /(<svg[^>]*>)/,
-        '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>'
-      );
-    }
-
-    svgContent = svgContent
-      .replace(/\s+stroke-(?=[\s/>])/g, '')
-      .replace(/\s+stroke-width=["']\d+['"]/g, '')
-      .replace(/(<(?:path|ellipse)[^>]*?)(\s*\/>)/g, '$1 stroke-width="0"$2')
-      .replace(/\s+/g, ' ');
-
-    await fs.writeFile(filePath, svgContent);
-
-  } catch (error) {
-    console.error(`Error modifying SVG file ${filePath}:`, error);
+  if (!svgContent.includes('fill="white"')) {
+    svgContent = svgContent.replace(
+      /(<svg[^>]*>)/,
+      '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>'
+    );
   }
+
+  svgContent = svgContent
+    .replace(/\s+stroke-(?=[\s/>])/g, '')
+    .replace(/\s+stroke-width=["']\d+['"]/g, '')
+    .replace(/(<(?:path|ellipse)[^>]*?)(\s*\/>)/g, '$1 stroke-width="0"$2')
+    .replace(/\s+/g, ' ');
+  await fs.writeFile(filePath, svgContent);
 }
 
 async function modifySvgFiles() {
