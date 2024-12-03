@@ -32,7 +32,7 @@ uiowa:
       src="{{ source }}"
       width="{{ width|default(150) }}"
       height="{{ height|default(150) }}"
-      alt="{{ alt }}"
+      alt="{{ icon_id|replace({'-two-color': ''})|replace({'-': ' '}) }}"
       {% if alt is empty %}
         role="presentation"
         aria-hidden="true"
