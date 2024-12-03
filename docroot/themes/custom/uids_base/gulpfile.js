@@ -68,39 +68,33 @@ async function modifySvgFile(filePath) {
   }
 }
 
-async function processIconFiles() {
-  const originalIconFolder = path.join(brandIcons.dest, 'icons');
-  const twoColorIconFolder = brandIcons.twoColorDest;
-  const blackIconFolder = brandIcons.blackDest;
+async function modifySvgFiles() {
+  const iconsSourceDir = path.join(brandIcons.dest, 'icons');
+  const twoColorDestPath = brandIcons.twoColorDest;
+  const blackDestPath = brandIcons.blackDest;
 
   // Make sure the destination folders exist.
-  await fs.mkdir(twoColorIconFolder, { recursive: true });
-  await fs.mkdir(blackIconFolder, { recursive: true });
+  await Promise.all([
+    fs.mkdir(twoColorDestPath, { recursive: true }),
+    fs.mkdir(blackDestPath, { recursive: true }),
+  ]);
 
-  // Read all files in the original icon folder.
-  const iconFiles = await fs.readdir(originalIconFolder);
+  const files = await fs.readdir(iconsSourceDir);
 
-  // Process each icon file.
-  for (const iconFileName of iconFiles) {
+  // Process all icons at once.
+  await Promise.all(files.map(async (filename) => {
+    const sourcePath = path.join(iconsSourceDir, filename);
 
-    const originalIconPath = path.join(originalIconFolder, iconFileName);
-
-    const destinationFolder = iconFileName.endsWith('-two-color.svg')
-      ? twoColorIconFolder
-      : blackIconFolder;
-
-    const processedIconPath = path.join(destinationFolder, iconFileName);
+    const destinationPath = filename.endsWith('-two-color.svg')
+      ? path.join(twoColorDestPath, filename)
+      : path.join(blackDestPath, filename);
 
     // Copy the original icon to its new location.
-    await fs.copyFile(originalIconPath, processedIconPath);
+    await fs.copyFile(sourcePath, destinationPath);
 
     // Modify the icon file.
-    await modifySvgFile(processedIconPath);
-  }
-}
-
-function modifySvgFiles() {
-  return processIconFiles();
+    await modifySvgFile(destinationPath);
+  }));
 }
 
 // Clean.
