@@ -801,14 +801,20 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             ];
 
             if ($media_option === 'image') {
-              $form_state->unsetValue($form_icon_selection);
+              if ($form_state->hasValue($form_icon_selection)) {
+                $form_state->unsetValue($form_icon_selection);
+              }
             }
             if ($media_option === 'icon') {
-              $form_state->unsetValue($form_image_selection);
+              if ($form_state->hasValue($form_image_selection)) {
+                $form_state->unsetValue($form_image_selection);
+              }
             }
 
             // Save as a third-party setting.
-            $component->setThirdPartySetting('layout_builder_custom', 'media_options', $media_option);
+            if (!empty($media_option)) {
+              $component->setThirdPartySetting('layout_builder_custom', 'media_options', $media_option);
+            }
           }
 
           // Make sure button display field is checked
