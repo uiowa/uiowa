@@ -22,7 +22,7 @@ class Card extends BlockContent implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#media' => [
         'field_uiowa_card_image',
-        'field_uiowa_card_icon',
+        'field_icon',
       ],
       '#subtitle' => 'field_uiowa_card_author',
       '#content' => 'field_uiowa_card_excerpt',

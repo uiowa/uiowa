@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
-    - field.field.block_content.uiowa_card.field_uiowa_card_icon
+    - field.field.block_content.uiowa_card.field_icon
     - field.field.block_content.uiowa_card.field_uiowa_card_author
     - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
@@ -23,6 +23,14 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_icon:
+    type: icon_formatter
+    label: above
+    settings:
+      icon_settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   field_uiowa_card_author:
     type: string
     label: hidden
@@ -37,14 +45,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_uiowa_card_icon:
-    type: icon_formatter
-    label: above
-    settings:
-      icon_settings: {  }
-    third_party_settings: {  }
-    weight: 5
     region: content
   field_uiowa_card_image:
     type: entity_reference_entity_view
