@@ -779,7 +779,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           $media_option = $form_state->getValue([
             'settings',
             'block_form',
-            'media_options',
+            'media_types',
           ]);
 
           if ($media_option) {
@@ -794,7 +794,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             $form_icon_selection = [
               'settings',
               'block_form',
-              'field_uiowa_card_icon',
+              'field_icon',
               0,
               'value',
               'icon',
@@ -805,7 +805,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
                 $form_state->unsetValue($form_icon_selection);
               }
             }
-            if ($media_option === 'icon') {
+            elseif ($media_option === 'icon') {
               if ($form_state->hasValue($form_image_selection)) {
                 $form_state->unsetValue($form_image_selection);
               }
@@ -813,7 +813,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 
             // Save as a third-party setting.
             if (!empty($media_option)) {
-              $component->setThirdPartySetting('layout_builder_custom', 'media_options', $media_option);
+              $component->setThirdPartySetting('layout_builder_custom', 'media_types', $media_option);
             }
           }
 
@@ -1005,24 +1005,24 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_card':
-        $style_options = [
+        $media_types = [
           'image' => 'Image',
           'icon' => 'Icon',
         ];
         $default_bg = 'image';
 
-        $element['media_options'] = [
+        $element['media_types'] = [
           '#type' => 'radios',
           '#title' => t('Media type'),
-          '#options' => $style_options,
-          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_options') ?: $default_bg,
+          '#options' => $media_types,
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_types') ?: $default_bg,
           '#weight' => 4,
         ];
 
         $element['field_uiowa_card_image'] = [
           '#states' => [
             'visible' => [
-              ':input[name="settings[block_form][media_options]"]' => [
+              ':input[name="settings[block_form][media_types]"]' => [
                 'value' => 'image',
               ],
             ],
@@ -1030,16 +1030,16 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           '#weight' => 5,
         ] + $element['field_uiowa_card_image'];
 
-        $element['field_uiowa_card_icon'] = [
+        $element['field_icon'] = [
           '#states' => [
             'visible' => [
-              ':input[name="settings[block_form][media_options]"]' => [
+              ':input[name="settings[block_form][media_types]"]' => [
                 'value' => 'icon',
               ],
             ],
           ],
           '#weight' => 5,
-        ] + $element['field_uiowa_card_icon'];
+        ] + $element['field_icon'];
 
         if (isset($element['field_uiowa_card_button_display'])) {
           $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
