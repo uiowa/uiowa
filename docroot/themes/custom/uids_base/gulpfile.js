@@ -33,8 +33,10 @@ const uids = {
 const brandIcons = {
   src: `${paths.node}@uiowa/brand-icons`,
   dest: `${__dirname}/brand-icons/`,
-  twoColorDest: `${__dirname}/brand-icons/two-color/`,
-  blackDest: `${__dirname}/brand-icons/black/`,
+  paths: {
+    twoColor: `${__dirname}/brand-icons/two-color/`,
+    black: `${__dirname}/brand-icons/black/`
+  }
 };
 
 // Modify Brand Icons.
@@ -62,26 +64,23 @@ async function modifySvgFile(filePath) {
   await fs.writeFile(filePath, svgContent);
 }
 
-async function modifySvgFiles() {
-  const iconsSourceDir = path.join(brandIcons.dest, 'icons');
-  const twoColorDestPath = brandIcons.twoColorDest;
-  const blackDestPath = brandIcons.blackDest;
-
+async function processSvgFiles() {
   // Make sure the destination folders exist.
-  await Promise.all([
-    fs.mkdir(twoColorDestPath, { recursive: true }),
-    fs.mkdir(blackDestPath, { recursive: true }),
-  ]);
+  await Promise.all(
+    Object.values(brandIcons.paths).map(path =>
+      fs.mkdir(path, { recursive: true })
+    )
+  );
 
-  const files = await fs.readdir(iconsSourceDir);
+  const files = await fs.readdir(path.join(brandIcons.dest, 'icons'));
 
   // Process all icons at once.
   await Promise.all(files.map(async (filename) => {
-    const sourcePath = path.join(iconsSourceDir, filename);
+    const sourcePath = path.join(brandIcons.dest, 'icons', filename);
 
     const destinationPath = filename.endsWith('-two-color.svg')
-      ? path.join(twoColorDestPath, filename)
-      : path.join(blackDestPath, filename);
+      ? path.join(brandIcons.paths.twoColor, filename)
+      : path.join(brandIcons.paths.black, filename);
 
     // Copy the original icon to its new location.
     await fs.copyFile(sourcePath, destinationPath);
@@ -136,11 +135,10 @@ function watchFiles() {
 }
 
 const copy = parallel(copyUids, copyIcons);
-const compileSvg = series(copyIcons, modifySvgFiles);
-const compile = series(clean, copy, compileSvg, css);
+const compile = series(clean, copy, processSvgFiles, css);
 
 exports.copy = copy;
 exports.css = css;
-exports.svg = modifySvgFiles;
+exports.svg = processSvgFiles;
 exports.default = compile;
 exports.watch = watchFiles;
