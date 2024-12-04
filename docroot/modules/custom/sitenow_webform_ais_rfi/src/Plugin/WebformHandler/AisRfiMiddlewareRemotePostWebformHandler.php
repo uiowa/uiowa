@@ -89,7 +89,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'textfield',
       '#title' => $this->t('Interaction UUID'),
       '#default_value' => $this->configuration['interaction_uuid'],
-      '#description' => $this->t('The middleware interaction UUID.'),
+      '#description' => $this->t('The middleware interaction UUID. Without this, no data will be sent to the middleware. Contact siddharth-sarathe@uiowa.edu for assistance setting up an interaction UUID.'),
     ];
 
     // We're using the webform_excluded_elements element type to generate the
@@ -98,7 +98,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // the data that gets sent.
     $form['submission_data'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission data'),
+      '#title' => $this->t('Data submitted to the middleware'),
     ];
     $form['submission_data']['excluded_data'] = [
       '#type' => 'webform_excluded_elements',
@@ -136,7 +136,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     }
 
     // We need an endpoint URL to proceed.
-    $endpoint_url = $config->get('prospector.endpoint_url');
+    $endpoint_url = $config->get('middleware.endpoint_url');
     if (!$endpoint_url) {
       // Log that the endpoint URL is missing.
       $this->getLogger()->error($this->t('AIS RFI Middleware: Endpoint URL is missing.'));
@@ -144,7 +144,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     }
 
     // Load basic auth credentials from config.
-    $auth = $config->get('prospector.auth');
+    $auth = $config->get('middleware.auth');
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       // Log that the auth credentials are missing.
