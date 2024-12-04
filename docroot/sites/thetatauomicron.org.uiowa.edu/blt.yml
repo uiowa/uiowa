@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgthetatauomicron.uiowa.ddev.site
+    protocol: https
+  machine_name: orgthetatauomicron
+  human_name: thetatauomicron.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgthetatauomicron.prod
+drupal:
+  db:
+    database: thetatauomicron_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgthetatauomicron.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Theta Tau Omicron Chapter'
