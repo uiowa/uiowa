@@ -132,7 +132,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       // Log that the auth credentials are missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing. No data was sent to the middleware.'));
       return;
     }
 
@@ -140,7 +140,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $interaction_uuid = $this->configuration['interaction_uuid'];
     if (!$interaction_uuid) {
       // Log that the site UUID is missing.
-      $this->getLogger()->error('AIS RFI Middleware: Interaction UUID is missing.');
+      $this->getLogger()->error('AIS RFI Middleware: Interaction UUID is missing. No data was sent to the middleware.');
       return;
     }
 
@@ -148,7 +148,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     $endpoint_url = $config->get('middleware.endpoint_url');
     if (!$endpoint_url) {
       // Log that the endpoint URL is missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware: Endpoint URL is missing.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Endpoint URL is missing. No data was sent to the middleware.'));
       return;
     }
 
@@ -165,7 +165,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Send http request.
     try {
       $response = $this->httpClient->request('POST', $endpoint_url, $options);
-      $this->getLogger()->notice($this->t('AIS RFI Middleware: @response_message', [
+      $this->getLogger()->notice($this->t('AIS RFI Middleware: Success: @response_message', [
         '@response_message' => $response->getBody()->getContents(),
       ]));
     }
