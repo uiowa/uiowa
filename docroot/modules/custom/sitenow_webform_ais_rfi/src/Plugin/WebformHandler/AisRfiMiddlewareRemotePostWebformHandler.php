@@ -132,7 +132,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // We need auth credentials to proceed.
     if (!isset($auth['user']) || !isset($auth['pass'])) {
       // Log that the auth credentials are missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing.'));
       return;
     }
 
