@@ -775,6 +775,48 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
+          // Remove image or icon based on media_options selection.
+          $media_option = $form_state->getValue([
+            'settings',
+            'block_form',
+            'media_types',
+          ]);
+
+          if ($media_option) {
+
+            $form_image_selection = [
+              'settings',
+              'block_form',
+              'field_uiowa_card_image',
+              'selection',
+            ];
+
+            $form_icon_selection = [
+              'settings',
+              'block_form',
+              'field_icon',
+              0,
+              'value',
+              'icon',
+            ];
+
+            if ($media_option === 'image') {
+              if ($form_state->hasValue($form_icon_selection)) {
+                $form_state->unsetValue($form_icon_selection);
+              }
+            }
+            elseif ($media_option === 'icon') {
+              if ($form_state->hasValue($form_image_selection)) {
+                $form_state->unsetValue($form_image_selection);
+              }
+            }
+
+            // Save as a third-party setting.
+            if (!empty($media_option)) {
+              $component->setThirdPartySetting('layout_builder_custom', 'media_types', $media_option);
+            }
+          }
+
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -783,14 +825,17 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'block_form',
               'field_uiowa_card_link',
             ]
-          )[0]['title'];
+            )[0]['title'];
           if ($link_title) {
             $form_state->setValue(
-              [
-                'settings',
-                'block_form',
-                'field_uiowa_card_button_display',
-              ], ['value' => 1]
+            [
+              'settings',
+              'block_form',
+              'field_uiowa_card_button_display',
+            ],
+            [
+              'value' => 1,
+            ],
             );
           };
         }
@@ -963,6 +1008,42 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_card':
+        $media_types = [
+          'image' => 'Image',
+          'icon' => 'Icon',
+        ];
+        $default_bg = 'image';
+
+        $element['media_types'] = [
+          '#type' => 'radios',
+          '#title' => t('Media type'),
+          '#options' => $media_types,
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_types') ?: $default_bg,
+          '#weight' => 4,
+        ];
+
+        $element['field_uiowa_card_image'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'image',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_card_image'];
+
+        $element['field_icon'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'icon',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_icon'];
+
         if (isset($element['field_uiowa_card_button_display'])) {
           $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
           $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
