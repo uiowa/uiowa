@@ -127,6 +127,15 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Load configuration.
     $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
+    // Load basic auth credentials from config.
+    $auth = $config->get('middleware.auth');
+    // We need auth credentials to proceed.
+    if (!isset($auth['user']) || !isset($auth['pass'])) {
+      // Log that the auth credentials are missing.
+      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
+      return;
+    }
+
     // We need an interaction UUID to proceed.
     $interaction_uuid = $this->configuration['interaction_uuid'];
     if (!$interaction_uuid) {
@@ -140,15 +149,6 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     if (!$endpoint_url) {
       // Log that the endpoint URL is missing.
       $this->getLogger()->error($this->t('AIS RFI Middleware: Endpoint URL is missing.'));
-      return;
-    }
-
-    // Load basic auth credentials from config.
-    $auth = $config->get('middleware.auth');
-    // We need auth credentials to proceed.
-    if (!isset($auth['user']) || !isset($auth['pass'])) {
-      // Log that the auth credentials are missing.
-      $this->getLogger()->error($this->t('AIS RFI Middleware: Authentication credentials are missing. Please contact the SiteNow team for assistance.'));
       return;
     }
 
