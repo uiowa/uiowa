@@ -9,6 +9,7 @@ $imgpath: '../../uids/assets/images';
 @import "admin/_toolbar.scss";
 @import "admin/_grid.scss";
 @import "admin/_claro.scss";
+@import "admin/_ui_icons.scss";
 
 .uiowa-headline--container {
   border: 1px solid #999;
@@ -70,50 +71,3 @@ $imgpath: '../../uids/assets/images';
 .layout-builder .layout-builder-block.block-inline-blockuiowa-card .card.borderless:not([class*="bg--"]) {
   min-height: 120px;
 }
-
-// Adjust ui_icons picker to be larger for brand icons.
-.ui-icons-picker-search {
-
-  // Search input.
-  .form-item-filter {
-    display: flex;
-    flex-grow: 1;
-  }
-  .form-item {
-    margin-top: 0;
-  }
-  .container-inline {
-    display: flex;
-    align-items: self-start;
-  }
-  [type=submit] {
-    font-size: .95rem;
-  }
-
-  // Icons grid.
-  .icon-picker-modal__content {
-    .form-radios {
-      grid-template-columns: repeat(5, 1fr) !important;
-      @include breakpoint(sm) {
-        grid-template-columns: repeat(12, 1fr) !important;
-      }
-    }
-
-    .icon-preview-wrapper:not(.icon-preview-none) {
-      width: auto !important;
-      height: auto !important;
-    }
-
-    .icon-preview {
-      max-height: none !important;
-      width: 100%;
-    }
-
-    .form-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
-
