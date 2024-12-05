@@ -11454,33 +11454,38 @@
         },
         {
             "name": "drupal/ui_icons",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/ui_icons.git",
-                "reference": "1.0.0-beta2"
+                "reference": "1.0.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ui_icons-1.0.0-beta2.zip",
-                "reference": "1.0.0-beta2",
-                "shasum": "80fe240cc49a6529133b0799bc7121761c16074c"
+                "url": "https://ftp.drupal.org/files/projects/ui_icons-1.0.0-beta3.zip",
+                "reference": "1.0.0-beta3",
+                "shasum": "0391afd6c57c038869f488c2df973bac5d104733"
             },
             "require": {
-                "drupal/core": "^10.3 || ^11"
+                "drupal/core": "^10.3 || ^11.0",
+                "drupal/ui_icons_backport": "*"
             },
             "require-dev": {
-                "drupal/link_attributes": "*",
+                "drupal/link_attributes": "^2.0",
+                "drupal/linkit": "^7.0",
+                "drupal/linkit_attributes": "*",
                 "drupal/ui_icons_field": "*",
                 "drupal/ui_icons_field-ui_icons_field": "*",
+                "drupal/ui_icons_field_linkit": "*",
                 "drupal/ui_icons_picker": "*",
-                "drupal/ui_icons_text": "*"
+                "drupal/ui_icons_text": "*",
+                "drupal/ui_patterns": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.0-beta2",
-                    "datestamp": "1729176702",
+                    "version": "1.0.0-beta3",
+                    "datestamp": "1733412269",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -11501,7 +11506,45 @@
                     "homepage": "https://www.drupal.org/user/1903334"
                 }
             ],
-            "description": "Core Icons management for Drupal.",
+            "description": "The UI Icons module is a generic icon manager for Drupal.",
+            "homepage": "https://www.drupal.org/project/ui_icons",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ui_icons"
+            }
+        },
+        {
+            "name": "drupal/ui_icons_backport",
+            "version": "1.0.0-beta3",
+            "require": {
+                "drupal/core": "^10.3 || ^11.0",
+                "drupal/ui_icons": "^1"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-beta3",
+                    "datestamp": "1733412269",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mogtofu33",
+                    "homepage": "https://www.drupal.org/user/278510"
+                },
+                {
+                    "name": "pdureau",
+                    "homepage": "https://www.drupal.org/user/1903334"
+                }
+            ],
+            "description": "UI Icons API backport for Drupal 11.0",
             "homepage": "https://www.drupal.org/project/ui_icons",
             "support": {
                 "source": "https://git.drupalcode.org/project/ui_icons"
