@@ -3276,3 +3276,32 @@ function sitenow_update_10011() {
   $config->set('uiowa_core.ga', $value)
     ->save();
 }
+
+/**
+ * Update CTA block with new default styles.
+ */
+function sitenow_update_10012() {
+  $block_plugin_id = 'inline_block:uiowa_cta';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    // Add inline alignment if no specific alignment exists.
+    if (!in_array('block_alignment_flex_row_center', $styles) &&
+      !in_array('block_alignment_left', $styles)) {
+      $styles[] = 'block_alignment_inline';
+    }
+
+    // Remove flex row center alignment.
+    if (in_array('block_alignment_flex_row_center', $styles)) {
+      $styles = array_diff($styles, ['block_alignment_flex_row_center']);
+    }
+
+    // Add button position right for left-aligned blocks.
+    if (in_array('block_alignment_left', $styles)) {
+      $styles[] = 'button_position_right';
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}

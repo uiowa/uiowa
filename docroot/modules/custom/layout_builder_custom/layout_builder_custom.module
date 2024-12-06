@@ -201,6 +201,21 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['layout_builder_style_button_width']['#description'] = t('If selected in single column layouts, multiple buttons will appear inline and equally sized. If selected in layouts with multiple columns, the buttons will stretch to fill the column and stack.');
             break;
 
+          case 'inline_block:uiowa_cta':
+            $form['#attached']['library'][] = 'layout_builder_custom/cta-block-form';
+            $form['layout_builder_style_alignment']['#empty_option'] = 'Center (default)';
+
+            $form['layout_builder_style_button_width']['#states'] = [
+              'visible' => [
+                [
+                  ':input[name="layout_builder_style_alignment"]' => [
+                    'value' => 'block_alignment_left',
+                  ],
+                ],
+              ],
+            ];
+            break;
+
           case 'inline_block:uiowa_quote':
             $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
             break;

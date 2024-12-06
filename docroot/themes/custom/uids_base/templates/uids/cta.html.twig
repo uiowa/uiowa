@@ -1,5 +1,5 @@
 {{ attach_library('uids_base/cta') }}
-<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+<div class="cta {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
   {% block cta_container_start %}
     <div class="cta__container">
       {% block heading %}
@@ -25,11 +25,11 @@
 
       {% block cta_link %}
         {% if cta_link_url is not empty %}
-          <div class="cta__link">
+          <footer class="cta__link">
             <a href="{{ cta_link_url }}" class="bttn bttn--primary">{{ cta_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
             </a>
-          </div>
+          </footer>
         {% endif %}
       {% endblock %}
     </div>

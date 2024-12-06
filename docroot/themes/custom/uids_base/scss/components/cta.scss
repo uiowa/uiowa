@@ -1,49 +1,7 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/cta_uids3.scss";
+@import "uids/scss/components/cta.scss";
 
-.layout__region--first,
-.layout__region--second,
-.layout__region--third,
-.layout__region--fourth {
-  .bg-pattern--brain-black .cta__container>div {
-    @include breakpoint(sm) {
-      margin: .5rem 0;
-    }
-  }
-
-  .cta__container>div {
-    @include breakpoint(sm) {
-      margin: 1.05rem 0;
-    }
-  }
-}
-
-.cta__content p {
-  margin: 0;
-}
-
-// ie11
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .cta__container>div {
-    @include breakpoint(page-container) {
-      margin: 1.05rem 0;
-    }
-  }
-}
-
-.grid--1-3 .cta__wrapper.element--flex-center {
-  padding: 0;
-}
-
-.grid--1-3 .cta__wrapper.element--flex-center .cta__title {
-  margin: 0 0 .5rem 0;
-}
-
-.grid--1-3 .cta__wrapper.element--flex-center .cta__link {
-  margin: .5rem 0 0 0;
-}
 
 // @todo remove once https://github.com/uiowa/uiowa/issues/5149 is completed.
 
