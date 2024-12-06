@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .menu--quick-links {
   top: 1.3rem;
@@ -22,7 +22,7 @@
       a {
         display: block;
         text-decoration: none;
-        color: $secondary;
+        color: variables.$secondary;
         font-size: .8rem;
         text-transform: uppercase;
         padding: 0;
@@ -44,14 +44,14 @@
   li:first-child a:before {
     content: "\f02e";
     @include fas();
-    padding-right: $md;
+    padding-right: variables.$md;
     color: white;
   }
 
   li:nth-child(2) a:before {
     content: "\f007";
     @include fas();
-    padding-right: $md;
+    padding-right: variables.$md;
     color: white;
   }
 }
@@ -61,7 +61,7 @@
 }
 
 .search-is-open .region-under-search .menu--quick-links {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     clip: auto;
     height: auto;
     width: auto;

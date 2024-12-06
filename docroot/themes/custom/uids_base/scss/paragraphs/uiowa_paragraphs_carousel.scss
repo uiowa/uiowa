@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // Full-width.
 .field--name-field-section-content-block {
@@ -41,8 +41,8 @@ div[data-carousel="carousel"] {
     padding: 1.25rem;
     overflow-y: auto;
     max-height: 7rem;
-    background-color: $dark;
-    color: $white;
+    background-color: variables.$dark;
+    color: variables.$white;
     position: absolute;
     bottom: 3rem;
     right: 15%;
@@ -79,12 +79,12 @@ div[data-carousel="carousel"] {
 
         &:focus {
           outline: auto;
-          background-color: $primary;
+          background-color: variables.$primary;
         }
       }
 
       &.slick-active button {
-        background-color: $primary;
+        background-color: variables.$primary;
       }
     }
   }
@@ -144,30 +144,30 @@ div[data-carousel="carousel"] {
   }
 
   a {
-    color: $primary;
+    color: variables.$primary;
   }
 }
 
 .paragraph--type--carousel-image.bg-dark {
   .carousel-caption {
-    background-color: $dark;
-    color: $white;
+    background-color: variables.$dark;
+    color: variables.$white;
 
     a:not(.btn):not(.alert-link) {
-      color: $primary;
+      color: variables.$primary;
     }
 
     blockquote,
     blockquote p {
-      border-color: $white;
+      border-color: variables.$white;
 
       &:before {
-        background-color: $white;
-        color: $dark;
+        background-color: variables.$white;
+        color: variables.$dark;
       }
 
       footer {
-        color: $dark-gray;
+        color: variables.$dark-gray;
       }
     }
   }
@@ -181,20 +181,20 @@ div[data-carousel="carousel"] {
 
 .paragraph--type--carousel-image.bg-light {
   .carousel-caption {
-    background-color: $light;
-    color: $dark-gray;
+    background-color: variables.$light;
+    color: variables.$dark-gray;
 
     blockquote,
     blockquote p {
-      border-color: $dark-gray;
+      border-color: variables.$dark-gray;
 
       &:before {
-        background-color: $dark-gray;
-        color: $white;
+        background-color: variables.$dark-gray;
+        color: variables.$white;
       }
 
       footer {
-        color: $dark-gray;
+        color: variables.$dark-gray;
       }
     }
   }
@@ -208,10 +208,10 @@ div[data-carousel="carousel"] {
 
 .paragraph--type--carousel-image.bg-yellow {
   .carousel-caption {
-    background-color: $primary;
+    background-color: variables.$primary;
 
     a:not(.btn):not(.alert-link) {
-      color: $secondary;
+      color: variables.$secondary;
       text-decoration: underline;
 
       &:hover,
@@ -222,15 +222,15 @@ div[data-carousel="carousel"] {
 
     blockquote,
     blockquote p {
-      border-color: $dark-gray;
+      border-color: variables.$dark-gray;
 
       &:before {
-        background-color: $dark-gray;
-        color: $white;
+        background-color: variables.$dark-gray;
+        color: variables.$white;
       }
 
       footer {
-        color: $dark-gray;
+        color: variables.$dark-gray;
       }
     }
   }
@@ -238,7 +238,7 @@ div[data-carousel="carousel"] {
   &.semi-transparent {
     .carousel-caption {
       background-color: rgba(255, 205, 0, 0.8) !important;
-      color: $dark-gray;
+      color: variables.$dark-gray;
     }
   }
 }

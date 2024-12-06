@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .pswp {
   a {
-    color: $light;
+    color: variables.$light;
   }
 }
 .pswp__button {
@@ -19,10 +19,10 @@
   display: block;
   column-count: 2;
   gap: 1.5rem;
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     column-count: 3;
   }
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     column-count: 4;
   }
   .media--view-mode-image-gallery {
@@ -82,7 +82,7 @@
 }
 
 .uiowa-image-gallery--single  .field__item {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     flex: 1;
   }
   &:first-child {
@@ -90,7 +90,7 @@
   }
   // Set a max width for smaller images.
   &:not(:first-child) {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       max-width: calc(15% - 10px);
       img {
         object-fit: cover;

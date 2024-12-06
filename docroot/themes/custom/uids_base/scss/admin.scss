@@ -1,14 +1,14 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import url('../../../../../core/themes/claro/css/components/dropbutton.css');
-$imgpath: '../../uids/assets/images';
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+// @use url('../../../../../core/themes/claro/css/components/dropbutton.css');
+variables.$imgpath: '../../uids/assets/images';
 
-@import "admin/_off-canvas.scss";
-@import "admin/_chosen.scss";
-@import "admin/_lb-direct-add.scss";
-@import "admin/_toolbar.scss";
-@import "admin/_grid.scss";
-@import "admin/_claro.scss";
+@use "admin/_off-canvas.scss";
+@use "admin/_chosen.scss";
+@use "admin/_lb-direct-add.scss";
+@use "admin/_toolbar.scss";
+@use "admin/_grid.scss";
+@use "admin/_claro.scss";
 
 .uiowa-headline--container {
   border: 1px solid #999;
@@ -18,9 +18,9 @@ $imgpath: '../../uids/assets/images';
 .node-preview-container {
   position: relative;
   margin-bottom: 1em;
-  padding: $md 0;
-  border-bottom: 2px solid $warning;
-  background: $warning-light;
+  padding: variables.$md 0;
+  border-bottom: 2px solid variables.$warning;
+  background: variables.$warning-light;
 
   form {
     display: flex;
@@ -36,7 +36,7 @@ $imgpath: '../../uids/assets/images';
     @include bttn;
     @include bttn--primary;
     @include bttn--focus;
-    font-family: $font-family-caps-bold;
+    font-family: variables.$font-family-caps-bold;
   }
 }
 
@@ -61,8 +61,8 @@ $imgpath: '../../uids/assets/images';
   .block-help-block,
   .form-actions,
   .form-type-vertical-tabs {
-    margin-right: $gutter;
-    margin-left: $gutter;
+    margin-right: variables.$gutter;
+    margin-left: variables.$gutter;
   }
 }
 
@@ -72,6 +72,6 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Add padding to icons in the media library.
-.media-library-widget-modal img[src$=".svg"] {
+.media-library-widget-modal img[srcvariables.$=".svg"] {
   padding: 2rem 1rem 0;
 }

@@ -1,13 +1,13 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/card.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/components/card.scss";
 
 // @todo move back to UIDS
 // https://github.com/uiowa/uiowa/issues/6295
 
 .card {
   p + p {
-    margin-top: $sm;
+    margin-top: variables.$sm;
   }
 
   // set font weight to normal if intro classes are used
@@ -88,7 +88,7 @@
   &.fa-field-item {
     > li {
       line-height: 1.4;
-      margin-bottom: $sm;
+      margin-bottom: variables.$sm;
     }
     svg[class*="fa-"],
     span[class*="fa-"] {
@@ -231,7 +231,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    background: $light;
+    background: variables.$light;
     padding: 0.5rem 1.2rem 0.5rem calc(20px + 0.5rem);
     border-radius: 2px;
     transition: background .15s ease-in-out;
@@ -248,9 +248,9 @@
   }
 
   summary::before {
-    padding: $xsm .9rem $xsm .625rem;
+    padding: variables.$xsm .9rem variables.$xsm .625rem;
     content: "\f0da";
-    color: $secondary;
+    color: variables.$secondary;
     @include fas();
     line-height: 9px;
     padding: 0.5rem;

@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // Use "views-form--stacked" class for exposed forms in a sidebar column.
 .views-exposed-form {
@@ -37,7 +37,7 @@
 
   [type='checkbox'] + label,
   [type='radio'] + label {
-    font-weight: $font-weight-normal;
+    font-weight: variables.$font-weight-normal;
     flex-basis: 75%;
   }
 
@@ -65,7 +65,7 @@
       max-height: 3.45rem;
       padding: 1rem 1.25rem;
       font-size: clamp(0.9rem, calc(0.7887vw + 0.6042rem), 1.25rem);
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         padding: 0.9rem 1.25rem 1.1rem;
       }
     }
@@ -81,7 +81,7 @@
 
     .views-form--stacked & {
       flex: 1;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         flex-basis: 100%;
       }
     }
@@ -95,7 +95,7 @@
 
 .views-exposed-form:not([class*="bef"]) {
   .form--inline {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       display: flex;
       justify-content: flex-start;
 
@@ -109,7 +109,7 @@
     gap: 0.9rem;
     display: flex;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-top: 2.75em;
     }
 
@@ -140,7 +140,7 @@
       .views-form--stacked & {
         margin-top: 1rem;
         margin-bottom: 1rem;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           margin-top: 0.5rem;
           margin-bottom: 0.5rem;
         }
@@ -155,7 +155,7 @@
 
     .form-actions:not(:last-child),
     .form-item:not(:last-child) {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-right: 1em;
 
         .views-form--stacked & {
@@ -165,14 +165,14 @@
     }
 
     .form-actions {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-top: 2.75em;
       }
 
       .button {
         flex: 1;
         .views-form--stacked & {
-          @include breakpoint(sm) {
+          @include utilities.breakpoint(sm) {
             flex-basis: 100%;
           }
         }
@@ -187,7 +187,7 @@
 
   .js-form-item {
     flex: auto 1 1;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       flex: 1;
 
       .views-form--stacked & {
@@ -209,13 +209,13 @@
   }
 
   .pager__item a {
-    color: $primary;
+    color: variables.$primary;
   }
 }
 
 .bg-yellow {
   .pager__item a {
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   .pager__item.is-active a {
@@ -229,7 +229,7 @@
     svg,
     span {
       margin-left: 0;
-      margin-right: $xsm;
+      margin-right: variables.$xsm;
     }
     padding-left: 0;
     padding-right: 0;
@@ -240,13 +240,13 @@
 .views-field {
   line-height: 1.7;
   margin-top: 0;
-  font-size: $content-font-size;
+  font-size: variables.$content-font-size;
 }
 
 // Layout
 .views--twocol--25-75 {
-  @include grid-base;
-  @include breakpoint(sm) {
+  @include utilities.grid-base;
+  @include utilities.breakpoint(sm) {
     display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: 1.5rem;
@@ -270,7 +270,7 @@
       grid-area: 6/2/6/5;
     }
   }
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     gap: 3rem;
   }
 }

@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/layout-main.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/layout-main.scss";
 
 .block-inline-blockuiowa-spacer-separator {
-  @include margin($top: $sm, $bottom: $sm);
+  @include margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
   flex-basis: 100%;
   background: #fff;
   clear: both;
@@ -14,7 +14,7 @@
 }
 
 .block-spacer-separator {
-   @include margin($top: $sm, $bottom: $sm);
+   @include margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
    flex-basis: 100%;
    background: #fff;
    height: 23px;
@@ -39,20 +39,20 @@ main {
 
 .header-sticky {
   &.header--healthcare {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 100px;
     }
     &.below {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         padding-top: 140px;
       }
     }
   }
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding-top: 80px;
   }
   &.below {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 130px;
     }
   }
@@ -69,7 +69,7 @@ main {
 .grid--3-2 .layout__region>:nth-child(3) {
   order: 4;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 3;
   }
 }
@@ -77,7 +77,7 @@ main {
 .grid--3-2 .layout__region>:nth-child(4) {
   order: 3;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 4;
   }
 }
@@ -95,7 +95,7 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
 
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
   }
 }
@@ -106,7 +106,7 @@ main {
   >:nth-child(3) {
     order: 4;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       order: 3;
     }
   }
@@ -114,20 +114,20 @@ main {
   >:nth-child(4) {
     order: 3;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       order: 4;
     }
   }
 
-  @include breakpoint(xsm) {
+  @include utilities.breakpoint(xsm) {
     display: grid;
   }
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
   }
 }

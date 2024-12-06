@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .layout--twocol {
   .layout__region--main,
@@ -10,11 +10,11 @@
     }
   }
   .layout__spacing_container {
-    @include grid-base;
+    @include utilities.grid-base;
   }
   &.layout--twocol--33-67 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
         row-gap: 0;
         .layout__region--first {
@@ -29,7 +29,7 @@
   }
   &.layout--twocol--67-33 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
         row-gap: 0;
         .layout__region--first,
@@ -46,7 +46,7 @@
   }
   &.layout--twocol--25-75 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
         row-gap: 0;
         .layout__region--first {
@@ -61,7 +61,7 @@
   }
   &.layout--twocol--75-25 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
         row-gap: 0;
         .layout__region--first {
@@ -76,7 +76,7 @@
   }
   &.layout--twocol--50-50 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         @include twocol-grid;
       }
     }

@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // apply uids styles to uiowa_bar search form
 
@@ -7,8 +7,8 @@
   &.uids-content__search {
     display: flex;
     justify-content: flex-start;
-    height: $lg;
-    @include margin($left: $xlg);
+    height: variables.$lg;
+    @include margin(variables.$left: variables.$xlg);
 
     .form-item,
     .form-actions {
@@ -17,18 +17,18 @@
 
     input[type="text"] {
       margin: 0;
-      height: $lg;
+      height: variables.$lg;
       border-radius: 0;
       border: none;
     }
 
     input[type="submit"] {
-      height: $lg;
+      height: variables.$lg;
       margin-left: -4px;
       background: #343a40;
       color: #fff;
-      font-size: $small-font-size;
-      @include padding($top: $xsm-sm, $bottom: $xsm-sm);
+      font-size: variables.$small-font-size;
+      @include padding(variables.$top: variables.$xsm-sm, variables.$bottom: variables.$xsm-sm);
     }
   }
 }
@@ -46,7 +46,7 @@
   justify-content: center;
   li {
     display: inline-flex;
-    @include margin($right: $xlg);
+    @include margin(variables.$right: variables.$xlg);
     &:last-child {
       margin: 0;
     }
@@ -59,22 +59,22 @@
 // styles for html.html.twig
 
 .uiowa__container {
-  background: $secondary;
-  @include padding($top: $sm, $bottom: $sm);
+  background: variables.$secondary;
+  @include padding(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
   .uiowa-bar--wrapper {
     @include container-width;
     & {
       padding: 0;
-      background: $secondary;
+      background: variables.$secondary;
     }
   }
 }
 
 .uiowa__container--full {
-  @include padding($top: $sm, $right: $gutter, $bottom: $sm, $left: $gutter);
-  background: $secondary;
+  @include padding(variables.$top: variables.$sm, variables.$right: variables.$gutter, variables.$bottom: variables.$sm, variables.$left: variables.$gutter);
+  background: variables.$secondary;
   .uiowa-bar--wrapper {
     padding: 0;
-    background: $secondary;
+    background: variables.$secondary;
   }
 }

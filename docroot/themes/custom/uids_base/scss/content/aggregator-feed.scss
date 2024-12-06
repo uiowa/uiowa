@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .aggregator-item {
   .field--name-author {
@@ -10,12 +10,12 @@
 .aggregator-feed {
 
   .feed-description {
-    margin: 0 0 $sm;
+    margin: 0 0 variables.$sm;
     padding: 0;
     font-size: 1.5rem;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
     line-height: 1.2;
-    padding-top: $md;
+    padding-top: variables.$md;
 
     a {
       text-decoration: none;
@@ -29,16 +29,16 @@
 
   .field--type-timestamp {
     display: table;
-    margin-bottom: $desktop-width-gutter;
+    margin-bottom: variables.$desktop-width-gutter;
 
     .field__item {
-      font-weight: $font-weight-light;
+      font-weight: variables.$font-weight-light;
     }
 
     .field__label {
       &:after {
         content: ":";
-        padding-right: $xsm;
+        padding-right: variables.$xsm;
       }
     }
 
@@ -50,6 +50,6 @@
   .feed-icon {
     @include bttn;
     @include bttn--primary;
-    font-family: $font-family-caps-bold;
+    font-family: variables.$font-family-caps-bold;
   }
 }
