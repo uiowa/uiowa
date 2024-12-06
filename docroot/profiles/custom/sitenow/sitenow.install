@@ -3276,3 +3276,29 @@ function sitenow_update_10011() {
   $config->set('uiowa_core.ga', $value)
     ->save();
 }
+
+/**
+ * Update Card block with new default styles missed in P2LB conversion.
+ */
+function sitenow_update_10012() {
+  $block_plugin_id = 'inline_block:uiowa_card';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    // Add headline style if it doesn't exist.
+    if (!in_array('card_headline_style_serif', $styles) &&
+      !in_array('card_headline_style_sans_serif', $styles)) {
+      $styles[] = 'card_headline_style_serif';
+    }
+
+    // Add headline style if it doesn't exist.
+    if (!in_array('media_size_large', $styles) &&
+      !in_array('media_size_medium', $styles) &&
+      !in_array('media_size_small', $styles)) {
+      $styles[] = 'media_size_small';
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
