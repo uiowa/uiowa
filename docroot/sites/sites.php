@@ -7642,3 +7642,9 @@ $sites['orgthetatauomicron.uiowa.ddev.site'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.dev.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.stage.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.prod.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
+
+// Directory aliases for stories.uiowa.edu.
+$sites['stories.uiowa.ddev.site'] = 'stories.uiowa.edu';
+$sites['stories.dev.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+$sites['stories.stage.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+$sites['stories.prod.drupal.uiowa.edu'] = 'stories.uiowa.edu';
