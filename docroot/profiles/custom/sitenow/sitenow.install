@@ -3278,7 +3278,7 @@ function sitenow_update_10011() {
 }
 
 /**
- * Update Card block with new default styles missed in P2LB conversion.
+ * Update card block with new default styles missed in P2LB conversion.
  */
 function sitenow_update_10012() {
   $block_plugin_id = 'inline_block:uiowa_card';
@@ -3292,7 +3292,7 @@ function sitenow_update_10012() {
       $styles[] = 'card_headline_style_serif';
     }
 
-    // Add headline style if it doesn't exist.
+    // Add media size if it doesn't exist.
     if (!in_array('media_size_large', $styles) &&
       !in_array('media_size_medium', $styles) &&
       !in_array('media_size_small', $styles)) {
