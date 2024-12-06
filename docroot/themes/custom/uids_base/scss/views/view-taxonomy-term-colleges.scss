@@ -1,6 +1,6 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/_headline-mixins.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_headline-mixins.scss";
 
 .view-colleges-taxonomy-term {
   h3 {
@@ -9,7 +9,7 @@
   }
   h3 {
     @include headline-serif;
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
   }
   .field--name-field-college-website {
     display: inline-block;
@@ -23,7 +23,7 @@
       background: white;
       &:hover,
       &:focus {
-        background: $primary;
+        background: variables.$primary;
       }
     }
     a {

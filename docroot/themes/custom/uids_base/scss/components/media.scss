@@ -1,22 +1,22 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/media.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/components/media.scss";
 
 .media--border img {
   [class*="bg--black"] & {
     background: #f3f3f3;
-    box-shadow: inset 0 0 0 8px $secondary;
+    box-shadow: inset 0 0 0 8px variables.$secondary;
   }
   [class*="bg--black"] [class*="bg--gold"] & {
-    box-shadow: inset 0 0 0 8px $primary;
+    box-shadow: inset 0 0 0 8px variables.$primary;
   }
   [class*="bg--black"] [class*="bg--white"] & {
     box-shadow: inset 0 0 0 8px #fff;
-    background: $grey-light;
+    background: variables.$grey-light;
   }
   [class*="bg--black"] [class*="bg--gray"] & {
-    box-shadow: inset 0 0 0 8px $light;
-    background: $brand-cool-gray;
+    box-shadow: inset 0 0 0 8px variables.$light;
+    background: variables.$brand-cool-gray;
   }
 }
 

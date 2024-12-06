@@ -11,7 +11,7 @@
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(4) {
   order: 4;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 3;
   }
 }
@@ -19,7 +19,7 @@
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(5) {
   order: 3;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 4;
   }
 }
@@ -37,7 +37,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
   }
 }

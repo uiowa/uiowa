@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // Media alignment
 
@@ -7,12 +7,12 @@
 
   .align-right.embedded-entity,
   .align-right .embedded-entity {
-    margin-left: $gutter;
+    margin-left: variables.$gutter;
   }
 
   .align-left.embedded-entity,
   .align-left .embedded-entity {
-    margin-right: $gutter;
+    margin-right: variables.$gutter;
   }
 
 }

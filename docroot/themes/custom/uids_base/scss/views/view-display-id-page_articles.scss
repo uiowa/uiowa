@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .view-display-id-page_articles {
-  @include margin($top: $lg);
-  @include breakpoint(sm) {
+  @include margin(variables.$top: variables.$lg);
+  @include utilities.breakpoint(sm) {
     display: grid;
     grid-template-columns: minmax(50%, 1fr) 25%;
     //grid-template-columns: repeat(3, 1fr);
@@ -13,37 +13,37 @@
 
   .view-header {
     grid-area: 1 / 1 / 2 / 4;
-    margin-bottom: $mobile-height-gutter;
+    margin-bottom: variables.$mobile-height-gutter;
   }
 
   .view-content {
     grid-area: 2 / 1 / 3 / 3;
-    @include breakpoint(sm) {
-      margin-bottom: $mobile-height-gutter;
+    @include utilities.breakpoint(sm) {
+      margin-bottom: variables.$mobile-height-gutter;
     }
   }
 
   .pager {
     grid-area: 5 / 1 / 3 / 3;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-bottom: 4rem;
     }
   }
 
   .view-footer {
-    margin-top: $mobile-height-gutter;
+    margin-top: variables.$mobile-height-gutter;
     grid-area: 2 / 3 / 4 / 4;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-top: 0;
       margin-left: 3rem;
     }
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       margin-left: 6rem;
     }
   }
 
   .feed-icons {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       grid-area: 5 / 1 / 3 / 3;
       margin-top: 6rem;
     }

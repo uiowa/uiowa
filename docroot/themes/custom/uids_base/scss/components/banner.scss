@@ -1,11 +1,11 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/banner.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/components/banner.scss";
 
 .banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative,
 .banner.banner--gradient-left-reversed .headline.headline--highlight{
   text-shadow: none;
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 
@@ -20,15 +20,15 @@
     // Set layout text width for onecol containers only excluding the rule below
     &:not([class*="banner--horizontal-left"]) {
       .banner__text {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           width: 100%;
         }
 
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           width: 80%;
         }
 
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           width: 60%;
         }
       }
@@ -74,7 +74,7 @@
   }
 
   .banner__content {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding: 2rem;
     }
   }
@@ -87,7 +87,7 @@
 .layout--twocol--67-33 .layout__region--first,
 .layout--twocol--50-50 {
   .banner .banner__content {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding: 1.5rem;
     }
   }
@@ -95,15 +95,15 @@
   // Set banner content width if centered left is selected
   .banner--vertical-center.banner--horizontal-left {
     .banner__content {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         width: 100%;
       }
 
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         width: 80%;
       }
 
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         width: 50%;
       }
     }
@@ -116,7 +116,7 @@
     .slider__slide {
       .banner.banner--vertical-bottom.banner--horizontal-left {
         .banner__content {
-          @include breakpoint(page-container) {
+          @include utilities.breakpoint(page-container) {
             padding: 3rem 1.5rem 4rem;
           }
         }
@@ -124,7 +124,7 @@
     }
     .banner.banner--video.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
         }
       }
@@ -133,7 +133,7 @@
   .banner.banner--video {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           padding: 3rem 1.5rem 4rem 1.5rem;
         }
       }
@@ -147,7 +147,7 @@
   .banner__content {
     padding-bottom: 4rem;
     padding-top: 4rem;
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       padding-bottom: 6rem;
       padding-top: 6rem;
     }
@@ -155,11 +155,11 @@
   &.banner--stacked {
     .banner__content {
       padding: 1.25rem;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         padding-bottom: 4rem;
         padding-top: 4rem;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         padding-bottom: 6rem;
         padding-top: 6rem;
       }
@@ -170,7 +170,7 @@
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
     .banner__content {
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         padding: 3rem 0;
       }
     }
@@ -189,12 +189,12 @@
     position: unset;
     &.media--video {
       position: absolute;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         position: unset;
       }
       .banner--stacked & {
         position: relative;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           position: unset;
         }
       }
@@ -210,7 +210,7 @@
 .media--video .video-controls {
   z-index: 2;
   .banner--vertical-bottom.banner--horizontal-left & {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       left: 1.5rem;
       bottom: 1.5rem;
     }
@@ -292,21 +292,21 @@
     margin: 1rem auto;
     display: block;
     width: fit-content;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: 0 1rem 1rem 0;
       display: inline-block;
       width: auto;
     }
 
     + .bttn {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin: 0 1rem 1rem 0;
       }
     }
 
     &:last-child {
       margin: 1rem auto;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-top: 0;
         margin-right: 0;
       }
@@ -333,7 +333,7 @@
     .banner__image {
       max-height: 15rem;
       overflow: hidden;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         max-height: auto;
         overflow: visible;
       }

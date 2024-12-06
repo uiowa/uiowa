@@ -1,13 +1,13 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/base/headings.scss";
-@import "uids/scss/components/headline.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/base/headings.scss";
+@use "uids/scss/components/headline.scss";
 
 h1 {
   margin-top: 0;
   margin-bottom: 0;
   .path-taxonomy & {
-    margin-bottom: $sm;
+    margin-bottom: variables.$sm;
   }
 }
 
@@ -20,14 +20,14 @@ body:not(.page-node-type-article, .page-node-type-page) #block-uids-base-page-ti
 }
 
 .page-title.headline--serif {
-  font-weight: $font-weight-medium-bold;
+  font-weight: variables.$font-weight-medium-bold;
   .banner & {
     margin-bottom: 0;
   }
 }
 
 .hero .page-title.bold-headline--serif {
-  font-weight: $font-weight-bold;
+  font-weight: variables.$font-weight-bold;
 }
 
 .headline.block__headline {
@@ -58,6 +58,6 @@ body:not(.page-node-type-article, .page-node-type-page) #block-uids-base-page-ti
 [class*="bg--gold"] [class*="bg--white"] .bold-headline--underline,
 [class*="bg--gold"] [class*="bg--white"] .headline--underline {
   &:after {
-    background: $primary;
+    background: variables.$primary;
   }
 }

@@ -1,14 +1,14 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 
 .layout--threecol {
   .layout__spacing_container {
-    @include grid-base;
+    @include utilities.grid-base;
   }
   &.layout--threecol--50-25-25 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(5, 1fr);
         .layout__region--first { grid-area: 1 / 1 / 6 / 3; }
@@ -20,7 +20,7 @@
   }
   &.layout--threecol--25-25-50 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(5, 1fr);
         .layout__region--first {
@@ -43,7 +43,7 @@
   }
   &.layout--threecol--25-50-25 {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(5, 1fr);
         .layout__region--first {
@@ -66,8 +66,8 @@
   }
   &.layout--threecol--33-34-33 {
     .layout__spacing_container {
-      @include breakpoint(md) {
-        @include threecol-grid;
+      @include utilities.breakpoint(md) {
+        @include utilities.threecol-grid;
       }
     }
   }

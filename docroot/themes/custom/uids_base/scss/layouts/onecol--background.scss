@@ -1,6 +1,6 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/_headline-mixins.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_headline-mixins.scss";
 
 .layout--onecol .layout__region {
   width: 100%;
@@ -15,10 +15,10 @@
   // or is in twocol layout.
   &.banner {
     .banner__content {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         padding: 1.25rem;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         padding: 1.25rem 0;
       }
     }
@@ -37,7 +37,7 @@
   &.layout--title--with-background {
     .bold-headline,
     .page-title.headline {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         @include headline-negative;
         text-shadow: 0 1px 1px #000;
       }
@@ -45,17 +45,17 @@
 
     .breadcrumb {
       margin-top: 0;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-top: 1.75rem;
       }
       li {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           color: white;
         }
       }
 
       a {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           color: white;
         }
       }

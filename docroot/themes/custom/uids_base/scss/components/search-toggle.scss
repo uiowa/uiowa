@@ -1,8 +1,8 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
-$search-mobile-img-path: '../../images/search-white-01.svg';
-$search-img-path: '../../images/search-01.svg';
+variables.$search-mobile-img-path: '../../images/search-white-01.svg';
+variables.$search-img-path: '../../images/search-01.svg';
 
 // previous uids 3.x component styles.
 
@@ -28,7 +28,7 @@ $search-img-path: '../../images/search-01.svg';
   font-size: 1rem;
   font-weight: 700;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     position: absolute;
     right: 0;
 
@@ -37,11 +37,11 @@ $search-img-path: '../../images/search-01.svg';
     }
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     right: 167px;
   }
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     top: 0;
     height: 80px;
     padding: 14px 25px 7px 18px;
@@ -74,14 +74,14 @@ $search-img-path: '../../images/search-01.svg';
   .iowa-bar--full & {
     height: 70px;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       height: 80px;
     }
   }
 
   .iowa-bar--full.iowa-bar--healthcare & {
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       height: 100px;
     }
   }
@@ -90,7 +90,7 @@ $search-img-path: '../../images/search-01.svg';
     height: 70px;
     background: none;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: 0px;
       width: auto;
       height: 90px;
@@ -101,7 +101,7 @@ $search-img-path: '../../images/search-01.svg';
     //@include element-invisible;
     display: none;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       //@include element-invisible-off;
       display: inline;
       overflow: unset;
@@ -113,29 +113,29 @@ $search-img-path: '../../images/search-01.svg';
   .uiowa-bar--home & {
     top: 0;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       top: 0;
     }
   }
 
   &[aria-expanded="true"] {
-    background: $white;
+    background: variables.$white;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       background: none;
     }
 
     &:before {
-      padding: $xsm;
+      padding: variables.$xsm;
       content: "\f00d";
-      color: $secondary;
+      color: variables.$secondary;
 
-      @include breakpoint(md) {
-        color: $secondary;
+      @include utilities.breakpoint(md) {
+        color: variables.$secondary;
         border-radius: 50%;
         background: #fff;
         line-height: 1.2;
-        color: $secondary;
+        color: variables.$secondary;
       }
 
       .iowa-bar--narrow & {
@@ -143,27 +143,27 @@ $search-img-path: '../../images/search-01.svg';
         height: 35px;
         color: white;
         border-radius: 50%;
-        background: $secondary;
+        background: variables.$secondary;
       }
 
       .iowa-bar--full & {
-        @include breakpoint(md) {
-          color: $secondary;
+        @include utilities.breakpoint(md) {
+          color: variables.$secondary;
         }
       }
     }
   }
 
   &:before {
-    padding: $xsm;
+    padding: variables.$xsm;
     content: "\f002";
     color: #fff;
     font-size: 1.5rem;
     @include fas();
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       font-size: 1.2rem;
-      color: $secondary;
+      color: variables.$secondary;
       height: 35px;
       width: 35px;
       display: flex;
@@ -186,13 +186,13 @@ $search-img-path: '../../images/search-01.svg';
   width: 70%;
   cursor: text;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     width: 73%;
     height: 50px;
     border-bottom: 1px solid #6d5a0e;
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     width: 73%;
     margin-right: 90px;
   }
@@ -200,14 +200,14 @@ $search-img-path: '../../images/search-01.svg';
 }
 
 .search-is-open .iowa-bar--full .site-name {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     display: none;
   }
 }
 
 
 .search-is-open .iowa-bar--narrow .uids-search {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     border-bottom: 1px solid #666;
   }
 }
@@ -245,8 +245,8 @@ $search-img-path: '../../images/search-01.svg';
   box-shadow: none !important;
   font-size: 1.5rem;
 
-  @include breakpoint(md) {
-    color: $secondary;
+  @include utilities.breakpoint(md) {
+    color: variables.$secondary;
 
     .iowa-bar--narrow & {
       border-bottom: none;
@@ -258,7 +258,7 @@ $search-img-path: '../../images/search-01.svg';
     font-size: 1rem;
     padding-top: 10px;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 0;
       color: #000;
       font-size: unset;
@@ -272,16 +272,16 @@ $search-img-path: '../../images/search-01.svg';
   padding: 0;
   padding: 0px;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     margin-top: 18px;
-    background: $primary;
+    background: variables.$primary;
 
     .iowa-bar--narrow & {
       background: transparent;
     }
   }
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     .iowa-bar--narrow & {
       margin-top: 22px;
       margin-left: 0;
@@ -293,13 +293,13 @@ $search-img-path: '../../images/search-01.svg';
   .iowa-bar--full & {
     margin-top: 7px;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-top: 18px;
     }
   }
 
   .iowa-bar--healthcare.iowa-bar--full & {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-top: 30px;
     }
   }
@@ -323,15 +323,15 @@ $search-img-path: '../../images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   padding: 20px;
   content: ' ';
-  background: url($search-mobile-img-path);
+  background: url(variables.$search-mobile-img-path);
   background-repeat: repeat;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90%;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     background-position: center;
-    background: url($search-img-path);
+    background: url(variables.$search-img-path);
   }
 
   .iowa-bar--narrow & {
@@ -345,7 +345,7 @@ $search-img-path: '../../images/search-01.svg';
   visibility: hidden;
 
   .search-is-open & {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       width: 100%;
     }
   }
@@ -363,17 +363,17 @@ $search-img-path: '../../images/search-01.svg';
 
 // color changes for active search - change to focus invisible?
 .search-is-open {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     .uiowa-bar__title {
-      color: $primary;
+      color: variables.$primary;
     }
   }
 }
 
 .search-is-open .iowa-bar--narrow {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     .uiowa-bar__title {
-      color: $white;
+      color: variables.$white;
     }
   }
 }
@@ -384,14 +384,14 @@ $search-img-path: '../../images/search-01.svg';
   top: 0;
 
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     position: relative;
     display: flex;
     flex: 1;
     justify-content: space-between;
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     margin-right: calc(51% - 50vw);
 
     .horizontal &,
@@ -405,7 +405,7 @@ $search-img-path: '../../images/search-01.svg';
     flex: 1;
     justify-content: space-between;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       position: relative;
     }
   }
@@ -414,7 +414,7 @@ $search-img-path: '../../images/search-01.svg';
     align-items: flex-end;
     flex-direction: column;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       align-items: unset;
     }
   }
@@ -439,11 +439,11 @@ $search-img-path: '../../images/search-01.svg';
   justify-content: center;
   transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
   text-align: center;
-  background-color: $primary;
+  background-color: variables.$primary;
   @include flexbox;
 
   .iowa-bar--narrow & {
-    background-color: $white;
+    background-color: variables.$white;
   }
 
   &[aria-hidden="false"] {
@@ -458,7 +458,7 @@ $search-img-path: '../../images/search-01.svg';
     transition-timing-function: ease-in-out;
     text-align: left;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       display: flex;
     }
   }
@@ -467,10 +467,10 @@ $search-img-path: '../../images/search-01.svg';
 // uids_base overrides.
 
 .search-overlay .uids-search [type="submit"]::before {
-  background-image: url($search-mobile-img-path);
+  background-image: url(variables.$search-mobile-img-path);
   background-repeat: no-repeat;
-  @include breakpoint(md) {
-    background-image: url($search-img-path);
+  @include utilities.breakpoint(md) {
+    background-image: url(variables.$search-img-path);
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: 90%;
@@ -479,7 +479,7 @@ $search-img-path: '../../images/search-01.svg';
 
 .search-overlay[aria-hidden=false] {
   .region-search {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       width: 100%;
     }
   }
@@ -496,13 +496,13 @@ $search-img-path: '../../images/search-01.svg';
 .iowa-bar--full.toggle {
   &.iowa-bar--healthcare {
     .search-button {
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         height: 110px;
       }
     }
   }
   .search-button {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       height: 85px;
       width: 159px;
     }
@@ -511,12 +511,12 @@ $search-img-path: '../../images/search-01.svg';
 
 .iowa-bar--full.toggle {
   .search-wrapper {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       flex: 1;
     }
   }
   .site-name + .menu--top + .search-wrapper {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       flex: 1;
     }
   }
@@ -525,7 +525,7 @@ $search-img-path: '../../images/search-01.svg';
 .iowa-bar--full.toggle {
   .search-wrapper {
     .search-is-open & {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         flex: 1;
       }
     }

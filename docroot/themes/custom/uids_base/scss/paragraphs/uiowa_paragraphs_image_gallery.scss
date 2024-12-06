@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .paragraph--type--image-gallery {
 
@@ -10,7 +10,7 @@
   .media {
     flex: 220px 1 1;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       //flex: 320px 1 1;
     }
 
@@ -36,11 +36,11 @@
   column-count: 2;
   column-gap: 1.5rem;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     column-count: 3;
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     column-count: 4;
   }
 

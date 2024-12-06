@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .field--label-above,
 .field--label-inline {
@@ -20,8 +20,8 @@
 .field--separator {
   &:after {
     content: '-';
-    color: $grey;
-    margin: 0 $xsm 0 $sm;
+    color: variables.$grey;
+    margin: 0 variables.$xsm 0 variables.$sm;
   }
 }
 
@@ -33,10 +33,10 @@
   font-weight: bold;
   line-height: 1.7;
   font-size: 1.2rem;
-  margin-bottom: $xsm;
+  margin-bottom: variables.$xsm;
 
   &--icon {
-    margin-right: $sm;
+    margin-right: variables.$sm;
   }
 
   &.headline {
@@ -51,7 +51,7 @@
 }
 
 .field--label-inline {
-  margin-bottom: $sm;
+  margin-bottom: variables.$sm;
   [class*="card__"] &,
   .block-margin__default--removed & {
     margin-bottom: 0;
@@ -116,7 +116,7 @@
 }
 
 .field--label-above {
-  margin-bottom: $sm;
+  margin-bottom: variables.$sm;
 
   .block-margin__default--removed & {
     margin-bottom: 0;
@@ -152,28 +152,28 @@
 
 .field--label-inline.field--type-link {
   .link-title {
-    margin-right: $xsm;
+    margin-right: variables.$xsm;
   }
 }
 
 .field--label-hidden.field__items + .field--label-inline {
-  margin-top: $sm;
+  margin-top: variables.$sm;
 }
 
 .field--label-hidden.field__item + .field--label-hidden.field__item,
 .field--label-hidden.field__items + .field--label-hidden.field__item,
 .field--label-hidden.field__items + .field--label-hidden.field__items {
-  margin-bottom: $sm;
+  margin-bottom: variables.$sm;
 }
 
 .field--label-hidden.field__item + .field--label-hidden.field__item {
-  margin-top: $sm;
+  margin-top: variables.$sm;
   .card__subtitle & {
     margin-top: 0;
   }
   .element--three-column &,
   .element--two-column & {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-top: 0;
     }
   }
@@ -182,12 +182,12 @@
 .field--label-hidden + .field--label-above,
 .field--label-hidden + .field--label-inline,
 .field--label-visually_hidden + .field--label-above {
-  margin-top: $md;
+  margin-top: variables.$md;
 }
 
 .text-formatted.field--type-text {
   div {
-    margin-bottom: $sm;
+    margin-bottom: variables.$sm;
   }
 
   p {
@@ -209,6 +209,6 @@
     font-size: 1.1rem;
   }
   .organization {
-    font-weight: $font-weight-bold;
+    font-weight: variables.$font-weight-bold;
   }
 }
