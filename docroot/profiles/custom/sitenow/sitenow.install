@@ -3283,22 +3283,54 @@ function sitenow_update_10011() {
 function sitenow_update_10012() {
   $block_plugin_id = 'inline_block:uiowa_card';
 
-  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
-    $styles = $component->get('layout_builder_styles_style');
+  /** @var \Drupal\config_split\Entity\ConfigSplitEntity $sitenow_v2 */
+  $sitenow_v2 = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
+  $sitenow_v2_enabled = $sitenow_v2 && $sitenow_v2->get('status');
 
-    // Add headline style if it doesn't exist.
-    if (!in_array('card_headline_style_serif', $styles) &&
-      !in_array('card_headline_style_sans_serif', $styles)) {
-      $styles[] = 'card_headline_style_serif';
-    }
+  $known_site_paths = [
+    'sites/staff-council.uiowa.edu',
+    'sites/lgbtq-council.org.uiowa.edu',
+    'sites/latinxcouncil.uiowa.edu',
+    'sites/faculty-senate.uiowa.edu',
+    'sites/meyerholz.lab.uiowa.edu',
+    'sites/yangs.lab.uiowa.edu',
+    'sites/lentz.lab.uiowa.edu',
+    'sites/brand.uiowa.edu',
+    'sites/uiadvise.sites.uiowa.edu',
+    'sites/wu.lab.uiowa.edu',
+    'sites/engagement.uiowa.edu',
+    'sites/our.research.uiowa.edu',
+    'sites/law.uiowa.edu',
+    'sites/printmail.fo.uiowa.edu',
+    'sites/billing.uiowa.edu',
+    'sites/talbert.lab.uiowa.edu',
+    'sites/miles.lab.uiowa.edu',
+    'sites/labmichaelson.prod.drupal.uiowa.edu',
+    'sites/michaelewright.lab.uiowa.edu',
+  ];
 
-    // Add media size if it doesn't exist.
-    if (!in_array('media_size_large', $styles) &&
-      !in_array('media_size_medium', $styles) &&
-      !in_array('media_size_small', $styles)) {
-      $styles[] = 'media_size_small';
-    }
+  $current_site_path = \Drupal::getContainer()->getParameter('site.path');
 
-    $component->set('layout_builder_styles_style', $styles);
-  });
+  $site_path_match = in_array($current_site_path, $known_site_paths, TRUE);
+
+  if ($sitenow_v2_enabled || $site_path_match) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
+
+      // Add headline style if it doesn't exist.
+      if (!in_array('card_headline_style_serif', $styles) &&
+        !in_array('card_headline_style_sans_serif', $styles)) {
+        $styles[] = 'card_headline_style_serif';
+      }
+
+      // Add media size if it doesn't exist.
+      if (!in_array('media_size_large', $styles) &&
+        !in_array('media_size_medium', $styles) &&
+        !in_array('media_size_small', $styles)) {
+        $styles[] = 'media_size_small';
+      }
+
+      $component->set('layout_builder_styles_style', $styles);
+    });
+  }
 }
