@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgdare.uiowa.ddev.site
+    protocol: https
+  machine_name: orgdare
+  human_name: dare.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgdare.prod
+drupal:
+  db:
+    database: dare_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgdare.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Data-Advanced Research and Education (DARE)'

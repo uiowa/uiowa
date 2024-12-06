@@ -7648,3 +7648,9 @@ $sites['stories.uiowa.ddev.site'] = 'stories.uiowa.edu';
 $sites['stories.dev.drupal.uiowa.edu'] = 'stories.uiowa.edu';
 $sites['stories.stage.drupal.uiowa.edu'] = 'stories.uiowa.edu';
 $sites['stories.prod.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+
+// Directory aliases for dare.org.uiowa.edu.
+$sites['orgdare.uiowa.ddev.site'] = 'dare.org.uiowa.edu';
+$sites['orgdare.dev.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
+$sites['orgdare.stage.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
+$sites['orgdare.prod.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
