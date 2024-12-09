@@ -26,6 +26,7 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       'google_tag.settings_form',
       // Global theme settings.
       'system.theme_settings',
+      'ui_suite.index',
     ];
 
     // Restrict access to these routes for non-admins.

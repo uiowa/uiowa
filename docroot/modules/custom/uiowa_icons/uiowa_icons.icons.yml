@@ -1,0 +1,85 @@
+uiowa:
+  enabled: true
+  label: "UIowa icons - two color"
+  description: "UIowa icons - two color"
+  version: 11.x
+  extractor: path
+  config:
+    sources:
+      - /themes/custom/uids_base/assets/icons/brand/two-color/*.svg
+  settings:
+    width:
+      title: "Width"
+      description: "Set a width for this icon."
+      type: "integer"
+      default: 600
+    height:
+      title: "Height"
+      description: "Set a height for this icon."
+      type: "integer"
+      default: 600
+    alt:
+      title: "Alt text"
+      type: "string"
+      description: "Accessibility alternative text, leave empty for decorative icon."
+    title:
+      title: "Semantic title"
+      type: "string"
+      description: "If this icon conveys meaning, provide text-based alternatives, leave empty for decorative icon."
+  template: >-
+    <img
+      class="icon icon-{{ icon_id|clean_class }}"
+      src="{{ source }}"
+      width="{{ width|default(600) }}"
+      height="{{ height|default(600) }}"
+      alt="{{ icon_id|replace({'-two-color': ''})|replace({'-': ' '}) }}"
+      {% if alt is empty %}
+        role="presentation"
+        aria-hidden="true"
+      {% elseif title %}
+        title="{{ title }}"
+      {% endif %}
+    >
+
+uiowa_black:
+  enabled: true
+  label: "UIowa icons - black"
+  description: "UIowa icons - black"
+  version: 11.x
+  extractor: svg
+  config:
+    sources:
+      - /themes/custom/uids_base/assets/icons/brand/black/*.svg
+  settings:
+    width:
+      title: "Width"
+      description: "Set a width for this icon."
+      type: "integer"
+      default: 600
+    height:
+      title: "Height"
+      description: "Set a height for this icon."
+      type: "integer"
+      default: 600
+    alt:
+      title: "Alt text"
+      type: "string"
+      description: "Accessibility alternative text, leave empty for decorative icon."
+    title:
+      title: "Semantic title"
+      type: "string"
+      description: "If this icon conveys meaning, provide text-based alternatives, leave empty for decorative icon."
+  template: >-
+    <img
+      class="icon icon-{{ icon_id|clean_class }}"
+      src="{{ source }}"
+      width="{{ width|default(600) }}"
+      height="{{ height|default(600) }}"
+      alt="{{ icon_id|replace({'-': ' '}) }}"
+      {% if alt is empty %}
+        role="presentation"
+        aria-hidden="true"
+      {% elseif title %}
+        title="{{ title }}"
+      {% endif %}
+    >
