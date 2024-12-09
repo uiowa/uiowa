@@ -30,65 +30,12 @@ const uids = {
   ],
 }
 
-const brandIcons = {
-  src: `${paths.node}@uiowa/brand-icons`,
-  dest: `${__dirname}/brand-icons/`,
-  paths: {
-    twoColor: `${__dirname}/brand-icons/two-color/`,
-    black: `${__dirname}/brand-icons/black/`
-  }
-};
+const brandIconSrc = `${paths.node}@uiowa/brand-icons`;
 
-// Modify Brand Icons.
-async function modifySvgFile(filePath) {
-  let svgContent = await fs.readFile(filePath, 'utf8');
-
-  svgContent = svgContent
-    .replace(/<text[^>]*>.*?<\/text>/gs, '')
-    .replace(/viewBox="[^"]*"/, 'viewBox="-10 -10 70 70"')
-    .replace(/(width|height)=["']\d+['"]/g, '')
-    .replace('<svg', '<svg width="70" height="70"');
-
-  if (!svgContent.includes('fill="white"')) {
-    svgContent = svgContent.replace(
-      /(<svg[^>]*>)/,
-      '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>'
-    );
-  }
-
-  svgContent = svgContent
-    .replace(/\s+stroke-(?=[\s/>])/g, '')
-    .replace(/\s+stroke-width=["']\d+['"]/g, '')
-    .replace(/(<(?:path|ellipse)[^>]*?)(\s*\/>)/g, '$1 stroke-width="0"$2')
-    .replace(/\s+/g, ' ');
-  await fs.writeFile(filePath, svgContent);
-}
-
-async function processSvgFiles() {
-  // Make sure the destination folders exist.
-  await Promise.all(
-    Object.values(brandIcons.paths).map(path =>
-      fs.mkdir(path, { recursive: true })
-    )
-  );
-
-  const files = await fs.readdir(path.join(brandIcons.dest, 'icons'));
-
-  // Process all icons at once.
-  await Promise.all(files.map(async (filename) => {
-    const sourcePath = path.join(brandIcons.dest, 'icons', filename);
-
-    const destinationPath = filename.endsWith('-two-color.svg')
-      ? path.join(brandIcons.paths.twoColor, filename)
-      : path.join(brandIcons.paths.black, filename);
-
-    // Copy the original icon to its new location.
-    await fs.copyFile(sourcePath, destinationPath);
-
-    // Modify the icon file.
-    await modifySvgFile(destinationPath);
-  }));
-}
+const iconSets = [
+  'black',
+  'two-color',
+];
 
 // Clean.
 function clean() {
@@ -107,12 +54,59 @@ function copyUids() {
     .pipe(dest(`${uids.dest}`));
 }
 
-function copyIcons() {
-  return src([
-    `${brandIcons.src}/**/*.svg`,
-    `${brandIcons.src}/icons.json`,
-  ], { encoding: false })
-    .pipe(dest(`${brandIcons.dest}`));
+// Copy (and modify) icons from the brand-icons package.
+async function copyIcons() {
+  // Make sure the destination folders exist.
+  await Promise.all(
+    iconSets.map(dir =>
+      fs.mkdir(path.join(__dirname, '/assets/icons/brand/', dir), { recursive: true })
+    )
+  );
+
+  const files = await fs.readdir(path.join(brandIconSrc, 'icons'));
+
+  // Process all icons at once.
+  await Promise.all(files.map(async (filename) => {
+    const sourcePath = path.join(brandIconSrc, 'icons', filename);
+
+    const dir = filename.endsWith('-two-color.svg')
+      ? iconSets[1] : iconSets[0];
+
+    const destinationPath = path.join(__dirname, '/assets/icons/brand/' + dir, filename);
+
+    // Read the SVG file.
+    let svg = await fs.readFile(sourcePath, 'utf-8');
+
+    // Modify the SVG.
+    svg = modifySvg(svg);
+
+    // Write the file to the destination.
+    await fs.writeFile(destinationPath, svg);
+  }));
+}
+
+// Perform modifications to the SVG contents.
+function modifySvg(svg) {
+  svg = svg
+    .replace(/<text[^>]*>.*?<\/text>/gs, '')
+    .replace(/viewBox="[^"]*"/, 'viewBox="-10 -10 70 70"')
+    .replace(/(width|height)=["']\d+['"]/g, '')
+    .replace('<svg', '<svg width="70" height="70"');
+
+  if (!svg.includes('fill="white"')) {
+    svg = svg.replace(
+      /(<svg[^>]*>)/,
+      '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>'
+    );
+  }
+
+  svg = svg
+    .replace(/\s+stroke-(?=[\s/>])/g, '')
+    .replace(/\s+stroke-width=["']\d+['"]/g, '')
+    .replace(/(<(?:path|ellipse)[^>]*?)(\s*\/>)/g, '$1 stroke-width="0"$2')
+    .replace(/\s+/g, ' ');
+
+  return svg;
 }
 
 function css() {
@@ -135,10 +129,10 @@ function watchFiles() {
 }
 
 const copy = parallel(copyUids, copyIcons);
-const compile = series(clean, copy, processSvgFiles, css);
+const compile = series(clean, copy, css);
 
 exports.copy = copy;
 exports.css = css;
-exports.svg = processSvgFiles;
+exports.icons = copyIcons;
 exports.default = compile;
 exports.watch = watchFiles;
