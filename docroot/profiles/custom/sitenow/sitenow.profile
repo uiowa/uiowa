@@ -523,40 +523,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['path']['#access'] = FALSE;
         }
       }
-
-      // Prevent deletion if there is entity usage.
-      // This is accompanied by a message from the entity_usage module.
-      if ($form_object->getOperation() == 'delete') {
-        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
-        if (!empty($usage_data)) {
-          // Check to see if usage is tied to a revisionable parent entity.
-          $connection = \Drupal::database();
-          foreach ($usage_data as $type => $source) {
-            if ($type === 'node') {
-              $form['actions']['submit']['#disabled'] = TRUE;
-              return;
-            }
-            foreach ($source as $vid => $item) {
-              $query = $connection->select('entity_usage', 'u');
-              $query->fields('u', ['source_type']);
-              $query->condition('u.target_id', $vid, '=');
-              $query->condition('u.target_type', $type, '=');
-              $result = $query->execute()
-                ->fetchField();
-              if ($result) {
-                if ($result === 'node' || $result === 'fragment') {
-                  $form['actions']['submit']['#disabled'] = TRUE;
-                  return;
-                }
-              }
-            }
-            // Unset warning message if only usage are remnants.
-            if (!$result) {
-              unset($form['entity_usage_delete_warning']);
-            }
-          }
-        }
-      }
     }
   }
 
