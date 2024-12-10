@@ -17,10 +17,10 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
     parent::buildCard($build);
 
     $this->mapFieldsToCardBuild($build, [
-      'media' => 'field_student_profile_image',
-      'subtitle' => 'field_student_profile_major',
-      'meta' => 'field_person_hometown',
-      'content' => 'field_student_profile_blurb',
+      '#media' => 'field_student_profile_image',
+      '#subtitle' => 'field_student_profile_major',
+      '#meta' => 'field_person_hometown',
+      '#content' => 'field_student_profile_blurb',
     ]);
   }
 
