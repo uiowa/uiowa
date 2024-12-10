@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0799048d26607fa1b58ca131d4895ef",
+    "content-hash": "4368a7158ba097523a32a66a851f6133",
     "packages": [
         {
             "name": "acquia/blt",
@@ -504,12 +504,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "git@github.com:harvesthq/bower-chosen.git",
+                "url": "https://github.com/harvesthq/chosen-package.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -522,7 +522,7 @@
             "version": "6.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "d19ab26a33b4d80f9af604e85d4194757276f01d"
             },
             "dist": {
@@ -11450,6 +11450,104 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/tvi",
                 "issues": "http://drupal.org/project/issues/tvi"
+            }
+        },
+        {
+            "name": "drupal/ui_icons",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/ui_icons.git",
+                "reference": "1.0.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ui_icons-1.0.0-beta3.zip",
+                "reference": "1.0.0-beta3",
+                "shasum": "0391afd6c57c038869f488c2df973bac5d104733"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11.0",
+                "drupal/ui_icons_backport": "*"
+            },
+            "require-dev": {
+                "drupal/link_attributes": "^2.0",
+                "drupal/linkit": "^7.0",
+                "drupal/linkit_attributes": "*",
+                "drupal/ui_icons_field": "*",
+                "drupal/ui_icons_field-ui_icons_field": "*",
+                "drupal/ui_icons_field_linkit": "*",
+                "drupal/ui_icons_picker": "*",
+                "drupal/ui_icons_text": "*",
+                "drupal/ui_patterns": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-beta3",
+                    "datestamp": "1733412269",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mogtofu33",
+                    "homepage": "https://www.drupal.org/user/278510"
+                },
+                {
+                    "name": "pdureau",
+                    "homepage": "https://www.drupal.org/user/1903334"
+                }
+            ],
+            "description": "The UI Icons module is a generic icon manager for Drupal.",
+            "homepage": "https://www.drupal.org/project/ui_icons",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ui_icons"
+            }
+        },
+        {
+            "name": "drupal/ui_icons_backport",
+            "version": "1.0.0-beta3",
+            "require": {
+                "drupal/core": "^10.3 || ^11.0",
+                "drupal/ui_icons": "^1"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-beta3",
+                    "datestamp": "1733412269",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mogtofu33",
+                    "homepage": "https://www.drupal.org/user/278510"
+                },
+                {
+                    "name": "pdureau",
+                    "homepage": "https://www.drupal.org/user/1903334"
+                }
+            ],
+            "description": "UI Icons API backport for Drupal 11.0",
+            "homepage": "https://www.drupal.org/project/ui_icons",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ui_icons"
             }
         },
         {
@@ -23566,6 +23664,7 @@
         "drupal/scheduler_content_moderation_integration": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 15,
+        "drupal/ui_icons": 10,
         "drupal/views_tree": 15,
         "npm-asset/accessible-menu": 20
     },
