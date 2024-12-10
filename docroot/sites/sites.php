@@ -4469,12 +4469,6 @@ $sites['music.dev.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.stage.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.prod.drupal.uiowa.edu'] = 'music.uiowa.edu';
 
-// Directory aliases for pda.uiowa.edu.
-$sites['pda.uiowa.ddev.site'] = 'pda.uiowa.edu';
-$sites['pda.dev.drupal.uiowa.edu'] = 'pda.uiowa.edu';
-$sites['pda.stage.drupal.uiowa.edu'] = 'pda.uiowa.edu';
-$sites['pda.prod.drupal.uiowa.edu'] = 'pda.uiowa.edu';
-
 // Directory aliases for psychology.uiowa.edu.
 $sites['psychology.uiowa.ddev.site'] = 'psychology.uiowa.edu';
 $sites['psychology.dev.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
