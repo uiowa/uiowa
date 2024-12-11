@@ -51,7 +51,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "8.1"
+            "php": "8.3"
         },
         "allow-plugins": {
             "composer/installers": true,
@@ -75,7 +75,7 @@
         "acquia/blt-travis": "^1.1.0",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
-        "bower-asset/fontawesome": "6.x-dev#f0c25837a3fe0e03783b939559e088abcbfb3c4b",
+        "bower-asset/fontawesome": "6.x-dev#d19ab26a33b4d80f9af604e85d4194757276f01d",
         "bower-asset/lazysizes": "^5.2",
         "bower-asset/photoswipe": "^4.1",
         "cweagans/composer-patches": "^1.7",
@@ -93,7 +93,7 @@
         "drupal/captcha": "^2.0",
         "drupal/classy": "^1.0",
         "drupal/config_ignore": "3.0.0-beta2",
-        "drupal/config_inspector": "^2.0",
+        "drupal/config_inspector": "^2.1",
         "drupal/config_split": "^2.0@RC",
         "drupal/core-composer-scaffold": "^10.3",
         "drupal/core-recommended": "^10.3",
@@ -139,7 +139,7 @@
         "drupal/layout_builder_restrictions": "^2.6",
         "drupal/layout_builder_shortcuts": "^1.0.0",
         "drupal/layout_builder_styles": "^2.0",
-        "drupal/lazy": "^3.6",
+        "drupal/lazy": "^4.0",
         "drupal/lb_direct_add": "^2.0",
         "drupal/leaflet": "^10.2",
         "drupal/linkit": "^6.1",
@@ -187,7 +187,7 @@
         "drupal/siteimprove": "^2.0",
         "drupal/smart_date": "^4.0.3",
         "drupal/smart_trim": "^2.0",
-        "drupal/stage_file_proxy": "^2.1",
+        "drupal/stage_file_proxy": "^3.1",
         "drupal/superfish": "^1.6",
         "drupal/symfony_mailer": "^1.3",
         "drupal/symfony_mailer_log": "^1.2",
@@ -195,6 +195,7 @@
         "drupal/taxonomy_path_breadcrumb": "^1.0@beta",
         "drupal/theme_permission": "^2.0",
         "drupal/tvi": "^2.0@alpha",
+        "drupal/ui_icons": "^1.0@beta",
         "drupal/views_bulk_operations": "^4.1",
         "drupal/views_custom_cache_tag": "^1.3",
         "drupal/views_data_export": "^1.4",
@@ -215,7 +216,7 @@
     },
     "require-dev": {
         "acquia/blt-phpcs": "^1.0",
-        "acquia/coding-standards": "^1.1",
+        "acquia/coding-standards": "^3.0",
         "mglaman/phpstan-drupal": "^1.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.4",
@@ -230,6 +231,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/address": {
+                "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
+            },
             "drupal/better_exposed_filters": {
                 "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2022-10-27/auto-submit-textfield-focus-3103626-19-fixed_0.patch"
             },
@@ -250,7 +254,8 @@
                 "Responsive image width/height values are not used from fallback image style": "https://www.drupal.org/files/issues/2024-10-07/3377420-responsive-image-dimension-fallback-style-10.3.x-39.patch",
                 "Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-12-21/2230909-309.patch",
                 "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch",
-                "Layout builder fails to assign inline block access dependencies for the overrides section storage on entities with pending revisions": "patches/core-3047022.patch"
+                "Layout builder fails to assign inline block access dependencies for the overrides section storage on entities with pending revisions": "patches/core-3047022.patch",
+                "Aggregation renders some blocks unable to submit in layout builder": "patches/core-2755791.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"
@@ -263,7 +268,8 @@
                 "Fix for new window option not rendering under the\n advanced group on initial dialog open.": "patches/14.patch"
             },
             "drupal/entity_reference_revisions": {
-                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch"
+                "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch",
+                "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460600-2.patch"
             },
             "drupal/field_delimiter": {
                 "Doesn't work in layout builder": "https://www.drupal.org/files/issues/2020-04-08/field_delimiter-3099580-7.patch",
@@ -274,6 +280,9 @@
             },
             "drupal/fullcalendar_view": {
                 "only_rebuild_on_view_change": "patches/fullcalendar_only_rebuild_on_view_change.patch"
+            },
+            "drupal/geofield": {
+                "Return type declaration for extension of diff plugin base": "patches/3467827.patch"
             },
             "drupal/google_analytics": {
                 "[3373921] Cannot install from existing config": "patches/3373921.patch"
@@ -315,7 +324,8 @@
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
             },
             "drupal/smart_date": {
-                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch"
+                "Strict equality check in setInitialDuration causes end date/time fields to not hide": "patches/3452796.patch",
+                "Return type declaration for extension of diff plugin base": "patches/3463447.patch"
             }
         },
         "installer-types": [

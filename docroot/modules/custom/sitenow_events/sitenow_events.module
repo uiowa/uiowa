@@ -14,7 +14,6 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -761,7 +760,7 @@ function sitenow_events_load(
     try {
       // Set a timeout (e.g., 10 seconds).
       $request = \Drupal::httpClient()->get($endpoint, [
-        'timeout' => 10.0,
+        'timeout' => 20.0,
       ]);
       $data = json_decode($request->getBody()->getContents(), TRUE);
 

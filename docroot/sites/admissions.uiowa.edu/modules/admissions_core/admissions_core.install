@@ -587,3 +587,31 @@ function admissions_core_update_9008() {
   ]);
   $config->save();
 }
+
+/**
+ * Update orgsync link in field_area_of_study_opportunity.
+ */
+function admissions_core_update_9009() {
+  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+
+  $ids = $query
+    ->condition('type', 'area_of_study')
+    ->accessCheck()
+    ->execute();
+
+  if ($ids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('node');
+    $entities = $controller->loadMultiple($ids);
+
+    foreach ($entities as $entity) {
+      $document = Html::load($entity->field_area_of_study_career->value);
+      $xpath = new \DOMXPath($document);
+      foreach ($xpath->query('//text()') as $textNode) {
+        $textNode->nodeValue = str_replace('Iowa graduates have a 95 percent job/grad school placement rate', 'Iowa graduates have a 96 percent job/grad school placement rate', $textNode->nodeValue);
+      }
+      $html = Html::serialize($document);
+      $entity->field_area_of_study_career->value = $html;
+      $entity->save();
+    }
+  }
+}
