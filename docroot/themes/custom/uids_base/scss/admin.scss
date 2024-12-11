@@ -1,7 +1,7 @@
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
-$imgpath: '../../uids3/assets/images';
+$imgpath: '../../uids/assets/images';
 
 @import "admin/_off-canvas.scss";
 @import "admin/_chosen.scss";
@@ -9,6 +9,7 @@ $imgpath: '../../uids3/assets/images';
 @import "admin/_toolbar.scss";
 @import "admin/_grid.scss";
 @import "admin/_claro.scss";
+@import "admin/_ui_icons.scss";
 
 .uiowa-headline--container {
   border: 1px solid #999;
@@ -64,4 +65,9 @@ $imgpath: '../../uids3/assets/images';
     margin-right: $gutter;
     margin-left: $gutter;
   }
+}
+
+// Set a minimum height for smallest height components.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card .card.borderless:not([class*="bg--"]) {
+  min-height: 120px;
 }

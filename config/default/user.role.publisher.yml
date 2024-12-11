@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.fragment.region_item.default
+    - core.entity_view_display.fragment.region_item_after_content.default
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -34,6 +36,7 @@ dependencies:
     - find_text
     - fragments
     - google_analytics
+    - layout_builder
     - media
     - menu_admin_per_menu
     - metatag_extended_perms
@@ -65,10 +68,8 @@ permissions:
   - 'access media overview'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
-  - 'access metatag advanced__content_language'
   - 'access metatag advanced__geo_placename'
   - 'access metatag advanced__image_src'
-  - 'access metatag advanced__news_keywords'
   - 'access metatag advanced__original_source'
   - 'access metatag advanced__shortlink'
   - 'access metatag basic__description'
@@ -101,12 +102,13 @@ permissions:
   - 'access tour'
   - 'access users overview'
   - 'administer main menu items'
+  - 'configure editable region_item fragment layout overrides'
+  - 'configure editable region_item_after_content fragment layout overrides'
   - 'create article content'
   - 'create audio media'
   - 'create facebook media'
   - 'create file media'
   - 'create image media'
-  - 'create instagram media'
   - 'create page content'
   - 'create panopto media'
   - 'create person content'

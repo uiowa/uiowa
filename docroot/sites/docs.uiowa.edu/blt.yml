@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: docs.uiowa.ddev.site
+    protocol: https
+  machine_name: docs
+  human_name: docs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: docs.prod
+drupal:
+  db:
+    database: docs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://docs.prod.drupal.uiowa.edu'
+  requester: jwhitsit
+  site-name: 'SiteNow Docs'

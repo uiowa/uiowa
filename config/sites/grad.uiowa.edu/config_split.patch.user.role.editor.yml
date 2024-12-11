@@ -5,6 +5,7 @@ adding:
       - node.type.scholar
       - node.type.student_profile
   permissions:
+    - 'access fragments overview'
     - 'create mentor content'
     - 'create program fragments'
     - 'create scholar content'
@@ -37,4 +38,6 @@ adding:
     - 'view scholar revisions'
     - 'view student_profile revisions'
     - 'view thesis_defense revisions'
-removing: {  }
+removing:
+  permissions:
+    - 'create scholarship content'

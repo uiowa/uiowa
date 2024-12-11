@@ -1,6 +1,584 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/hero/hero.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
+@media (hover:none),
+(hover:on-demand) {
+  .video-btn {
+    display: none;
+  }
+}
+
+.video-controls {
+  position: absolute;
+  z-index: 1;
+  left: 1.25rem;
+  bottom: 1.25rem;
+
+  @include breakpoint(page-container) {
+    left: 3rem;
+    bottom: 3rem;
+  }
+
+  .hero__bottom & {
+    bottom: 50%;
+    left: 1.25rem;
+  }
+}
+
+@media only screen and (min-width: 1470px) {
+  .hero__bottom .video-controls {
+    bottom: 3rem;
+  }
+}
+
+
+.video-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  color: $secondary;
+  border: 1px solid white;
+  border-radius: 50%;
+  background: white;
+  font-size: 1rem;
+  padding: 0;
+
+  @include breakpoint(sm) {
+    display: block;
+  }
+
+  &::after {
+    content: "\f04b";
+    @include fas();
+    font-size: 1rem;
+  }
+
+  &.video-btn__play::after {
+    margin-left: 3px;
+  }
+
+  &.video-btn__pause::after {
+    content: "\f04c";
+  }
+
+  &.video-btn__pause {}
+}
+
+.hero__video {
+
+  @include breakpoint(sm) {
+    display: block;
+  }
+}
+
+
+// breadcrumbs
+
+.hero {
+  .breadcrumb {
+    li {
+      @include breakpoint(sm) {
+        color: white;
+      }
+    }
+
+    a {
+      @include breakpoint(sm) {
+        color: white;
+      }
+    }
+  }
+}
+
+@media (min-aspect-ratio:16/9) {
+  .hero {
+    height: 80vh;
+  }
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: $secondary;
+
+  img {
+    width: 100%;
+  }
+
+  .media__video {
+    width: 100%;
+  }
+
+  &__image img {
+    display: block;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  &.hero__bottom .hero__image img {
+    //height: 57rem;
+  }
+}
+
+img.hero-image {
+  display: block;
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.hero__image {
+  overflow: hidden;
+  contain: paint;
+}
+
+
+// headings
+
+
+.hero__content-center {
+  .bold-headline.bold-headline--serif {
+    margin-bottom: $md;
+
+    @include breakpoint(sm) {
+      display: block;
+    }
+  }
+}
+
+.hero {
+  .bttn--secondary {
+    z-index: 1;
+    margin-bottom: $md;
+    background: #fff;
+    color: $secondary;
+    display: block;
+
+    @include breakpoint(sm) {
+      color: #fff;
+      display: inline-block;
+    }
+
+
+    @include breakpoint(sm) {
+      margin-right: $md;
+      background: #000;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    &:hover,
+    &:focus {
+      color: $secondary;
+
+      @include breakpoint(sm) {
+        color: $primary;
+        background: #333;
+        background: rgba(34, 34, 34, 0.73);
+
+      }
+    }
+  }
+}
+
+.hero__content-center .hero__links a.bttn:nth-child(3),
+.hero__content-center div a.bttn:nth-child(3) {
+  margin-right: 0;
+}
+
+
+.hero {
+  p {
+    color: #000;
+    line-height: 1.5;
+    margin-top: 0;
+
+    @include breakpoint(sm) {
+      color: #fff;
+      max-width: 50em;
+    }
+  }
+
+  .bold-headline {
+    margin-top: 0;
+    padding: 0;
+    margin-bottom: .7rem;
+    font-size: calc(100% + 4vw);
+    line-height: 1;
+
+    &.bold-headline--caps {}
+
+    &.bold-headline--serif {
+      color: #000;
+
+      @include breakpoint(sm) {
+        color: #fff;
+      }
+    }
+
+    @include breakpoint(sm) {
+      text-shadow: 0 1px 1px #000;
+      font-size: calc(100% + 2.5vw);
+    }
+
+    @include breakpoint(md) {
+      margin-bottom: .3rem;
+    }
+
+    @include breakpoint(md) {
+      font-size: calc(100% + 3.5vw);
+    }
+  }
+}
+
+.hero__container {
+  max-width: 81.875em;
+  margin: 0 auto;
+
+  &.hero__container-grid {
+    max-width: 100%;
+  }
+}
+
+.hero__container.hero__container-center {
+  max-width: 100%;
+}
+
+.hero .hero__content-center {
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  position: relative;
+  background: #fff;
+  padding: $gutter;
+
+  @include breakpoint(sm) {
+    bottom: 35%;
+    position: absolute;
+  }
+
+  @include breakpoint(page-container) {
+    padding: $gutter 0;
+  }
+}
+
+.hero .hero__content-bottom {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  background: white;
+  padding: 0 $gutter;
+
+  @include breakpoint(sm) {
+    position: absolute;
+    background: transparent;
+    padding: $gutter;
+    max-width: $container-width;
+  }
+
+  @include breakpoint(page-container) {
+    padding: $gutter 0;
+  }
+}
+
+.hero .hero__content-center {
+  padding: $lg 0;
+
+  @include breakpoint(sm) {
+    background: transparent;
+  }
+}
+
+.hero__content-bottom,
+.hero__content-center {
+  padding: 0 $md;
+  grid-template-columns: repeat(1, 1fr);
+  justify-self: stretch;
+
+  @include breakpoint(sm) {
+    position: absolute;
+    background: transparent;
+    grid-column: 1/-1;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 1.25rem;
+  }
+
+  @include breakpoint(page-container) {
+    width: 81.875em;
+    padding: 0;
+  }
+}
+
+.hero__content-bottom {
+  padding: 0 0 $sm;
+
+  @include breakpoint(sm) {
+    bottom: 0;
+  }
+}
+
+.hero__content-center {
+  text-align: center;
+
+  @include breakpoint(sm) {
+    bottom: 40%;
+    width: 100%;
+  }
+}
+
+.hero .hero__content .hero__container {
+  max-width: 81.875em;
+  margin: 0 auto;
+}
+
+.hero__content-center>* {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.hero__content-center>*,
+.hero__content-bottom>* {
+  @include breakpoint(sm) {
+    grid-column: 1/-1;
+  }
+}
+
+.hero .hero__content .bttn {
+  @include breakpoint(sm) {
+    display: inline-block;
+  }
+}
+
+.hero::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: "";
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  opacity: .75;
+  background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
+  will-change: opacity;
+}
+
+@media only screen and (min-width: 889px) {
+  body {}
+}
+
+
+// Aerial Photo Grid
+
+/* Safari 7.1+ */
+
+_::-webkit-full-page-media,
+_:future,
+:root .hero__content-grid>*:nth-child(2),
+:root .hero__content-grid>*:nth-child(1) {
+  @include breakpoint(page-container) {
+    padding-top: 1rem;
+  }
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .hero__image img {
+  @include breakpoint(page-container) {
+    // height: 100vh;
+  }
+}
+
+_::-webkit-full-page-media,
+_:future,
+:root .hero.hero__grid .hero__content {
+  align-content: center;
+
+  @include breakpoint(md) {
+    //height: 100vh;
+  }
+}
+
+
+.hero.hero__grid .hero__content {
+  position: relative;
+  text-align: center;
+  background: transparent;
+  z-index: 1;
+
+  @include breakpoint(sm) {
+    position: absolute;
+    text-align: left;
+  }
+
+  p {
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.hero.hero__grid {
+  .bold-headline {
+    font-size: calc(100% + 6vw);
+    line-height: 1;
+    color: #fff;
+
+    @include breakpoint(sm) {
+      font-size: calc(100% + 8vw);
+    }
+  }
+}
+
+
+.hero__content-grid {
+  top: 0;
+  height: 100%;
+  background: transparent;
+
+  >*:nth-child(2) {
+    @include center(vertical);
+
+    @include breakpoint(sm) {
+      padding-right: 3rem;
+      font-size: calc(100% + .5vw);
+    }
+
+    @include breakpoint(page-container) {
+      margin-top: 0px;
+    }
+  }
+
+  @include breakpoint(sm) {
+    top: 0;
+  }
+}
+
+
+
+
+.hero__content-grid {
+  padding: 0 $mobile-width-gutter;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  display: grid;
+  width: 100%;
+
+  @include breakpoint(sm) {
+    padding: 0 $desktop-width-gutter;
+  }
+}
+
+.hero__content-grid>*:nth-child(1) {
+  align-self: end;
+  grid-area: 2 / 1 / 3 / 4;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: $font-family-caps-bold;
+
+  @include breakpoint(page-container) {
+    display: flex;
+    text-align: left;
+    align-self: center;
+    grid-area: 2 / 1 / 3 / 3;
+    padding-top: 14rem;
+  }
+
+  @include breakpoint(page-container) {
+    width: auto;
+    align-self: auto;
+  }
+}
+
+.hero__content-grid>*:nth-child(2) {
+  grid-area: 3 / 1 / 4 / 4;
+  padding-bottom: $mobile-width-gutter;
+
+  @include breakpoint(sm) {
+    padding-bottom: $desktop-width-gutter;
+  }
+
+
+  @include breakpoint(page-container) {
+    grid-area: 2 / 3 / 3 / 4;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    padding-top: 14rem;
+  }
+}
+
+
+
+// ie11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+  .hero__content-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .hero__content-grid>* {
+    flex: 1 0 auto;
+  }
+
+  .hero__content-grid .highlight__wrapper .highlight__sub {
+    display: none;
+  }
+
+  .hero__content-grid .highlight__wrapper {
+    width: 33%;
+  }
+
+  .hero__content-grid .bold-headline--caps.bold-headline {
+    //width: 60%;
+  }
+
+  .hero.hero__grid .highlight__wrapper {
+    width: auto !important;
+  }
+}
+
+.hero.hero__grid .bttn {
+  margin-top: $md;
+  display: block;
+  flex-basis: 100%;
+
+  @include breakpoint(sm) {
+    display: table;
+    flex-basis: unset;
+  }
+
+  @include breakpoint(page-container) {
+    margin-top: $lg;
+  }
+}
+
+.hero__content-grid .highlight__title span {
+  position: relative;
+
+  &:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-top-color: $primary;
+    border-width: 15px;
+    margin-left: -15px;
+  }
+}
 
 .hero__img {
   position: relative;

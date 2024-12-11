@@ -6,7 +6,6 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
-use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
@@ -14,6 +13,7 @@ use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\block_content\BlockContentInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Section;
@@ -3180,4 +3180,157 @@ function sitenow_update_10007() {
     }
   }
 
+}
+
+/**
+ * Update field_article_author_bio to filtered_html.
+ */
+function sitenow_update_10008() {
+  if (\Drupal::getContainer()->getParameter('site.path') !== 'sites/91stmeridian.iwp.uiowa.edu') {
+    return FALSE;
+  }
+
+  $db = \Drupal::database();
+
+  $tables = [
+    'node__field_article_author_bio',
+    'node_revision__field_article_author_bio',
+  ];
+
+  // Run this for all tables.
+  foreach ($tables as $table_name) {
+    // Select DB records for our $table_name where the field has the wrong
+    // filter format.
+    $query = $db->select($table_name, 'n')
+      ->condition('n.field_article_author_bio_format', 'minimal')
+      ->fields('n', ['revision_id', 'delta']);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    // Print some helpful output.
+    \Drupal::messenger()
+      ->addMessage(t('Instances of field_article_author_bio with wrong filter found in @table table: @count',
+        [
+          '@table' => $table_name,
+          '@count' => $count,
+        ]));
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Update the record.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          'field_article_author_bio_format' => 'filtered_html',
+        ])
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Clear all the caches.
+ */
+function sitenow_update_10009() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Update list blocks with blank items_per_page setting to 50 instead.
+ */
+function sitenow_update_10010() {
+  _update_all_blocks_by_plugin_id([
+    'views_block:article_list_block-list_article',
+    'views_block:events_list_block-card_list',
+    'views_block:page_list_block-list_page',
+    'views_block:people_list_block-list_card',
+  ], function (&$component, $block) {
+    $config = $component->get('configuration');
+    if (!is_numeric($config['items_per_page'])) {
+      $config['items_per_page'] = 50;
+      $component->setConfiguration($config);
+    }
+  });
+}
+
+/**
+ * Set new config value on existing sites.
+ */
+function sitenow_update_10011() {
+  // Flush caches for the change to the sitenow.services.yml.
+  drupal_flush_all_caches();
+
+  /** @var Drupal\Core\Config\ImmutableConfig $config */
+  $ccom_config = \Drupal::service('config_split.manager')->getSplitConfig('config_split.config_split.ccom');
+  // Set to 1 if the ccom config doesn't exist or isn't set,
+  // otherwise set to 0.
+  $value = (int) (!isset($ccom_config) || !$ccom_config->get('status'));
+
+  // Set the uiowa_core setting so that the
+  // ga will be included on page load.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config->set('uiowa_core.ga', $value)
+    ->save();
+}
+
+/**
+ * Update card block with new default styles missed in P2LB conversion.
+ */
+function sitenow_update_10012() {
+  $block_plugin_id = 'inline_block:uiowa_card';
+
+  /** @var \Drupal\config_split\Entity\ConfigSplitEntity $sitenow_v2 */
+  $sitenow_v2 = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
+  $sitenow_v2_enabled = $sitenow_v2 && $sitenow_v2->get('status');
+
+  $known_site_paths = [
+    'sites/staff-council.uiowa.edu',
+    'sites/lgbtq-council.org.uiowa.edu',
+    'sites/latinxcouncil.uiowa.edu',
+    'sites/faculty-senate.uiowa.edu',
+    'sites/meyerholz.lab.uiowa.edu',
+    'sites/yangs.lab.uiowa.edu',
+    'sites/lentz.lab.uiowa.edu',
+    'sites/brand.uiowa.edu',
+    'sites/uiadvise.sites.uiowa.edu',
+    'sites/wu.lab.uiowa.edu',
+    'sites/engagement.uiowa.edu',
+    'sites/our.research.uiowa.edu',
+    'sites/law.uiowa.edu',
+    'sites/printmail.fo.uiowa.edu',
+    'sites/billing.uiowa.edu',
+    'sites/talbert.lab.uiowa.edu',
+    'sites/miles.lab.uiowa.edu',
+    'sites/michaelson.lab.uiowa.edu',
+    'sites/michaelewright.lab.uiowa.edu',
+  ];
+
+  $current_site_path = \Drupal::getContainer()->getParameter('site.path');
+
+  $site_path_match = in_array($current_site_path, $known_site_paths, TRUE);
+
+  if ($sitenow_v2_enabled || $site_path_match) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
+
+      // Add headline style if it doesn't exist.
+      if (!in_array('card_headline_style_serif', $styles) &&
+        !in_array('card_headline_style_sans_serif', $styles)) {
+        $styles[] = 'card_headline_style_serif';
+      }
+
+      // Add media size if it doesn't exist.
+      if (!in_array('media_size_large', $styles) &&
+        !in_array('media_size_medium', $styles) &&
+        !in_array('media_size_small', $styles)) {
+        $styles[] = 'media_size_small';
+      }
+
+      $component->set('layout_builder_styles_style', $styles);
+    });
+  }
 }

@@ -10,8 +10,10 @@ dependencies:
     - field.field.node.support_article.field_support_article_service
     - field.field.node.support_article.field_support_article_short_desc
     - node.type.support_article
+    - workflows.workflow.draft
   module:
     - allowed_formats
+    - content_moderation
     - metatag
     - paragraphs
     - path
@@ -23,7 +25,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 10
+    weight: 11
     region: content
     settings:
       rows: 9
@@ -42,7 +44,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 12
+    weight: 13
     region: content
     settings:
       sidebar: true
@@ -50,13 +52,13 @@ content:
     third_party_settings: {  }
   field_support_article_category:
     type: options_buttons
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_support_article_faqs:
     type: paragraphs
-    weight: 14
+    weight: 15
     region: content
     settings:
       title: Paragraph
@@ -74,7 +76,7 @@ content:
     third_party_settings: {  }
   field_support_article_service:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 12
     region: content
     settings:
       match_operator: CONTAINS
@@ -89,6 +91,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   path:
     type: path
@@ -146,7 +154,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  moderation_state: true
   publish_on: true
   publish_state: true
   unpublish_on: true

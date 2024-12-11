@@ -7,12 +7,14 @@ use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use Uiowa\InspectorTrait;
+use Uiowa\MultisiteTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
   use InspectorTrait;
+  use MultisiteTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -26,8 +28,30 @@ class ReplaceCommands extends BltTasks {
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $multisite_exception = FALSE;
 
+    // If this is running locally, pull list of sites from config. Otherwise,
+    // get the list of sites from the manifest.
+    if ($app === 'local') {
+      $multisites = $this->getConfigValue('multisites');
+      $log_dir = '/tmp/';
+    }
+    else {
+      // Load the manifest.
+      $manifest = $this->manifestToArray();
+      // If the manifest is empty, log a warning and continue.
+      if (!isset($manifest[$app])) {
+        $this->logger->warning('No multisites found in manifest for application: ' . $app);
+      }
+
+      $multisites = $manifest[$app] ?: [];
+      $log_dir = '/shared/logs/';
+
+      // Ensure that default is added to uiowa app, so we update the default site.
+      if ($app === 'uiowa') {
+        $multisites = [...['default'], ...$multisites];
+      }
+    }
+
     // Unshift sites to the beginning to run first.
-    $multisites = $this->getConfigValue('multisites');
     $run_first = $this->getConfigValue('uiowa.run_first');
 
     if ($run_first) {
@@ -42,46 +66,41 @@ class ReplaceCommands extends BltTasks {
       }
     }
 
-    foreach ($multisites as $multisite) {
-      $this->switchSiteContext($multisite);
-      $db = $this->getConfigValue('drupal.db.database');
+    $parallel_installed = $this->taskExec('command -v parallel')
+      ->printMetadata(FALSE)
+      ->printOutput(FALSE)
+      ->run();
 
-      // Check for database include on this application.
-      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->logger->debug("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
-        continue;
-      }
-      else {
-        if ($this->isDrupalInstalled($multisite)) {
-          $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
+    $datetime = date('Ymd_His');
+    $log_file = $log_dir . 'parallel_deploy_log_' . $app . '_' . $datetime . '.log';
 
-          // Invalidate the Twig cache if on AH env. This happens automatically
-          // for the default site but not multisites. We don't need to pass
-          // the multisite URI here since we switch site context above.
-          // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
-          $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+    // Check if the parallel command exists.
+    if (trim($parallel_installed->getMessage())) {
+      $this->say('Running multisite updates in parallel.');
 
-          if (file_exists($script)) {
-            $this->taskDrush()
-              ->drush('php:script')
-              ->arg($script)
-              ->run();
-          }
+      // Run site updates in parallel, logging output to terminal and file.
+      $command = 'parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)) . " 2>&1 | tee -a $log_file";
 
-          try {
-            // Clear the plugin cache for discovery and potential layout issue.
-            // @see: https://github.com/uiowa/uiowa/issues/3585.
-            $this->taskDrush()
-              ->drush('cc plugin')
-              ->run();
+      $this->taskExec($command)
+        ->interactive(FALSE)
+        ->run();
 
-            $this->invokeCommand('drupal:update');
-            $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
-          }
-          catch (BltException $e) {
-            $this->logger->error("Failed deploying updates to {$multisite}.");
-            $multisite_exception = TRUE;
-          }
+      // After running, check the log file for errors using grep.
+      $grep_command = "grep -i 'error' $log_file";
+      $grep_result = $this->taskExec($grep_command)
+        ->printOutput(FALSE)
+        ->run()
+        ->getMessage();
+
+      // Set the exception flag if grep found any error messages.
+      $multisite_exception = !empty($grep_result);
+    }
+    else {
+      $this->say('Running multisite updates sequentially.');
+      foreach ($multisites as $multisite) {
+        $success = $this->updateSite($multisite, $app);
+        if (!$success) {
+          $multisite_exception = TRUE;
         }
       }
     }
@@ -121,26 +140,22 @@ class ReplaceCommands extends BltTasks {
    * @command tests:deprecated
    */
   public function testsDeprecated() {
-    $this->say("Checking for deprecated code.");
+    $this->say('Checking for deprecated code with PHPStan.');
     $bin = $this->getConfigValue('composer.bin');
     $root = $this->getConfigValue('repo.root');
     $docroot = $this->getConfigValue('docroot');
+    $phpstanConfig = "{$root}/phpstan.neon";
 
     $paths = [
-      "{$root}/tests/" => '',
-      "{$docroot}/profiles/custom/" => '',
-      "{$docroot}/modules/custom/" => '',
-      "{$docroot}/themes/custom/" => '',
-      "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
+      "{$root}/tests/",
+      "{$docroot}/profiles/custom/",
+      "{$docroot}/modules/custom/",
+      "{$docroot}/themes/custom/",
+      "{$docroot}/sites/",
     ];
 
-    foreach ($paths as $path => $exclude) {
-      if (!empty($exclude)) {
-        $cmd = "$bin/drupal-check -e {$exclude} -d {$path}";
-      }
-      else {
-        $cmd = "$bin/drupal-check -d {$path}";
-      }
+    foreach ($paths as $path) {
+      $cmd = "$bin/phpstan analyse -c $phpstanConfig $path";
 
       $result = $this->taskExecStack()
         ->dir($this->getConfigValue('repo.root'))
@@ -295,6 +310,80 @@ EOD;
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
       $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
+  }
+
+  /**
+   * Update a single site.
+   *
+   * This is essentially a command wrapper for the updateSite method.
+   *
+   * @param string $site
+   *   The site to update.
+   *
+   * @command uiowa:site:update $site
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  public function updateSingleSite($site) {
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $this->updateSite($site, $app);
+  }
+
+  /**
+   * Run updates for a single site.
+   *
+   * @param string $site
+   *   The site to update.
+   * @param string $app
+   *   The environment the site is being updated in.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function updateSite(string $site, string $app = 'local'): bool {
+    $this->switchSiteContext($site);
+    $db = $this->getConfigValue('drupal.db.database');
+
+    // Check for database include on this application.
+    if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+      $this->writeln("Skipping {$site} on AH environment. Database {$db} does not exist.");
+    }
+    else {
+      if ($this->isDrupalInstalled($site)) {
+        $this->say("Deploying updates to <comment>{$site}</comment>...");
+
+        // Invalidate the Twig cache if on AH env. This happens automatically
+        // for the default site but not multisites. We don't need to pass
+        // the multisite URI here since we switch site context above.
+        // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
+        $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+
+        if (file_exists($script)) {
+          $this->taskDrush()
+            ->drush('php:script')
+            ->arg($script)
+            ->run();
+        }
+
+        try {
+          // Clear the plugin cache for discovery and potential layout issue.
+          // @see: https://github.com/uiowa/uiowa/issues/3585.
+          $this->taskDrush()
+            ->drush('cc plugin')
+            ->run();
+
+          $this->invokeCommand('drupal:update');
+          $this->say("Finished deploying updates to <comment>{$site}</comment>.");
+        }
+        catch (BltException $e) {
+          $this->say("Failed deploying updates to {$site}.");
+          return FALSE;
+        }
+      }
+      else {
+        $this->writeln("Skipping {$site}. Drupal is not installed.");
+      }
+    }
+    return TRUE;
   }
 
 }

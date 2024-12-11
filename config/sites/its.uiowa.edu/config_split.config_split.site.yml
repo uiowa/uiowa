@@ -44,10 +44,13 @@ complete_list:
   - pathauto.pattern.service_category
   - pathauto.pattern.support_article
   - simple_sitemap.bundle_settings.default.node.service
+  - system.action.user_add_role_action.help_desk
+  - system.action.user_remove_role_action.help_desk
   - taxonomy.vocabulary.audience
   - taxonomy.vocabulary.building
   - taxonomy.vocabulary.service_category
   - taxonomy.vocabulary.support_article_categories
+  - user.role.help_desk
   - views.view.alert_categories
   - views.view.services
   - views.view.services_related_alerts
@@ -58,6 +61,7 @@ complete_list:
   - 'field.storage.paragraph.field_alert_*'
   - 'field.storage.paragraph.field_support_*'
 partial_list:
+  - administerusersbyrole.settings
   - config_ignore.settings
   - core.entity_form_display.node.alert.default
   - core.entity_form_display.node.article.default
@@ -72,6 +76,7 @@ partial_list:
   - node.type.alert
   - node.type.article
   - views.view.alerts_list_block
+  - workflows.workflow.draft
   - workflows.workflow.editorial
   - 'workbench_email.*'
   - 'user.role.*'

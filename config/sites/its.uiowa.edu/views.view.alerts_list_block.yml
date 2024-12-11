@@ -303,6 +303,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: null
           id: 0
@@ -1886,18 +1887,16 @@ display:
         footer: false
       display_description: ''
       footer:
-        area:
-          id: area
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: area
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: "<p><strong>Legend: </strong><span class=\"badge badge--orange\">Service Outage</span> <span class=\"badge badge--blue\">Service Degradation</span> <span class=\"badge badge--green\">Planned Maintenance</span> <span class=\"badge badge--cool-gray\">Service Announcement</span>\r\n</p>"
-            format: filtered_html
+          plugin_id: text_custom
+          empty: true
+          content: '&nbsp;'
           tokenize: false
       display_extenders:
         metatag_display_extender:
@@ -3499,7 +3498,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<p>There are currently no services scheduled for maintenance over the next 7 days.</p>'
+            value: '<p>There are currently no services scheduled for maintenance.</p>'
             format: filtered_html
           tokenize: false
       sorts:
@@ -3835,7 +3834,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: text
-          empty: false
+          empty: true
           content:
             value: '<p>Services scheduled for maintenance over the next 7 days.</p>'
             format: filtered_html
@@ -4156,7 +4155,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<p>There are currently no service announcements for the next 7 days.</p>'
+            value: '<p>There are currently no service announcements.</p>'
             format: filtered_html
           tokenize: false
       sorts:
@@ -4437,7 +4436,20 @@ display:
         filter_groups: false
         header: false
       display_description: ''
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: '<p>Service announcements scheduled for the next 7 days.</p>'
+            format: filtered_html
+          tokenize: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }

@@ -9,9 +9,13 @@ $imgpath: '../../uids/assets/images';
   container-type: unset;
 }
 
+// Specify container-type for vertical video.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-text-area:has(.media--view-mode-vertical),
 // Specify container-type for cards in layout builder.
 .layout-builder .layout-builder-block.block-inline-blockuiowa-card,
 .layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-events .column-container,
 // Specify container-type for list blocks using views-row class.
 .list-container__inner .views-row {
   container-type: inline-size;
@@ -67,13 +71,28 @@ details {
   align-self: start;
 }
 
+// Position absolute.
+.element--absolute {
+  position: absolute;
+  z-index: 1;
+}
+
+.element--absolute--left {
+  left: $desktop-width-gutter;
+}
+
+.element--absolute--bottom {
+  bottom: $desktop-width-gutter;
+}
+
 // Set object to cover.
 .element--cover {
   * {
     object-fit: cover;
     height: 100%;
   }
-  .contextual-links {
+  .contextual-links,
+  .leaflet-control {
     height: auto;
   }
 }
@@ -285,6 +304,9 @@ details {
   }
   &--left {
     border-left: 1px solid rgba(0, 0, 0, 0.25);
+    &.borderless.card {
+      border-left: 1px solid rgba(0, 0, 0, 0.25)!important;
+    }
   }
 }
 
@@ -405,9 +427,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   // sidebar layout
   &.layout--has-sidebar {
     .layout__spacing_container {
-      flex-direction: column-reverse;
-      @include breakpoint(md) {
-        flex-direction: unset;
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
       }
     }
   }
@@ -425,10 +449,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         }
       }
 
+      // Layout with card sidebar.
+      .layout__region-container.card {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
       .layout__region--second,
       .layout__region--content,
       .layout__region-container {
-        order: 1;
+        order: 2;
         @include breakpoint(md) {
           order: inherit;
         }
@@ -560,15 +592,27 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .element--padding {
   &__top {
     padding-top: $desktop-width-gutter;
+    &--minimal {
+      padding-top: 2rem;
+    }
   }
   &__right {
     padding-right: $desktop-width-gutter;
+    &--minimal {
+      padding-right: 2rem;
+    }
   }
   &__bottom {
     padding-bottom: $desktop-width-gutter;
+    &--minimal {
+      padding-bottom: 2rem;
+    }
   }
   &__left {
     padding-left: $desktop-width-gutter;
+    &--minimal {
+      padding-left: 2rem;
+    }
   }
   &__all {
     padding: $desktop-width-gutter;
@@ -584,6 +628,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // CSS logical property padding utility classes.
 .padding--block--sm {
   padding-block: 0.5rem;
+}
+
+.padding--block--md {
+  padding-block: 1rem;
 }
 
 .padding--inline-start--sm {
@@ -606,7 +654,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   padding-inline: 1rem;
 }
 
-.block-margin {
+.block-margin,
+.element--margin {
   &__top {
     margin-top: $md;
 
@@ -648,6 +697,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region {
       .block + .block {
         margin-top: 1.6rem;
+        .field--label-above {
+          margin-bottom: 0;
+        }
+
+        .field.text-formatted div {
+          margin-bottom: 0;
+          p:first-child:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         &:first-child {
           margin-top: 0;

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawinrc.uiowa.ddev.site
+    protocol: https
+  machine_name: lawinrc
+  human_name: inrc.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawinrc.prod
+drupal:
+  db:
+    database: inrc_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawinrc.prod.drupal.uiowa.edu'
+  requester: ddebok
+  site-name: 'The Larned A. Waterman Iowa Nonprofit Resource Center'

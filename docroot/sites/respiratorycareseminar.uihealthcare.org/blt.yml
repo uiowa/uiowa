@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-uihealthcarerespiratorycareseminar.uiowa.ddev.site
+    protocol: https
+  machine_name: org-uihealthcarerespiratorycareseminar
+  human_name: respiratorycareseminar.uihealthcare.org
+drush:
+  aliases:
+    local: self
+    remote: org-uihealthcarerespiratorycareseminar.prod
+drupal:
+  db:
+    database: respiratorycareseminar_uihealthcare_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-uihealthcarerespiratorycareseminar.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Respiratory Care Seminar'

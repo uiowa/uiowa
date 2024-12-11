@@ -2,125 +2,29 @@
 
 namespace Drupal\uiowa_maui;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Log\LoggerInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\uiowa_core\ApiClientBase;
 
 /**
  * Maui API service.
  *
  * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
-class MauiApi {
-
-  const BASE = 'https://api.maui.uiowa.edu/maui/api/';
-
-  /**
-   * The uiowa_maui logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
+class MauiApi extends ApiClientBase {
+  use SessionTermTrait;
 
   /**
-   * The uiowa_maui cache.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
+   * {@inheritdoc}
    */
-  protected $cache;
-
-  /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\ClientInterface
-   */
-  protected $client;
-
-  /**
-   * Constructs a Maui object.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The uiowa_maui logger channel.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *   The uiowa_maui cache.
-   * @param \GuzzleHttp\ClientInterface $http_client
-   *   The HTTP client.
-   */
-  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, ClientInterface $http_client) {
-    $this->logger = $logger;
-    $this->cache = $cache;
-    $this->client = $http_client;
+  public function basePath(): string {
+    return 'https://api.maui.uiowa.edu/maui/api/';
   }
 
   /**
-   * Make a MAUI API request and return data.
-   *
-   * @param string $method
-   *   The HTTP method to use.
-   * @param string $path
-   *   The API path to use. Do not include the base URL.
-   * @param array $params
-   *   Optional request parameters.
-   * @param array $options
-   *   Optional request options. All requests expect JSON response data.
-   *
-   * @return mixed
-   *   The API response data.
+   * {@inheritdoc}
    */
-  public function request($method, $path, array $params = [], array $options = []) {
-    // Encode any special characters and trim duplicate slash.
-    $path = UrlHelper::encodePath($path);
-    $uri = self::BASE . ltrim($path, '/');
-
-    // Append any query string parameters.
-    if (!empty($params)) {
-      $query = UrlHelper::buildQuery($params);
-      $uri .= "?{$query}";
-    }
-
-    // Merge additional options with default but allow overriding.
-    $options = array_merge([
-      'headers' => [
-        'Accept' => 'application/json',
-      ],
-    ], $options);
-
-    // Create a hash for the CID. Can always be decoded for debugging purposes.
-    $hash = base64_encode($uri . serialize($options));
-    $cid = "uiowa_maui:request:{$hash}";
-    // Default $data to FALSE in case of API fetch failure.
-    $data = FALSE;
-
-    if ($cache = $this->cache->get($cid)) {
-      $data = $cache->data;
-    }
-    else {
-      try {
-        $response = $this->client->request($method, $uri, $options);
-      }
-      catch (RequestException | GuzzleException $e) {
-        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-          '@endpoint' => $uri,
-          '@code' => $e->getCode(),
-          '@error' => $e->getMessage(),
-        ]);
-      }
-
-      if (isset($response)) {
-        $contents = $response->getBody()->getContents();
-
-        /** @var object $data */
-        $data = json_decode($contents);
-
-        // Cache for 15 minutes.
-        $this->cache->set($cid, $data, time() + 900);
-      }
-    }
-
-    return $data;
+  protected function getCacheIdBase(): string {
+    return 'uiowa_maui';
   }
 
   /**
@@ -130,7 +34,7 @@ class MauiApi {
    *   The session object.
    */
   public function getCurrentSession() {
-    return $this->request('GET', '/pub/registrar/sessions/current');
+    return $this->get('/pub/registrar/sessions/current');
   }
 
   /**
@@ -145,9 +49,11 @@ class MauiApi {
    *   Array of session objects.
    */
   public function getSessionsBounded($previous = 4, $future = 4) {
-    $data = $this->request('GET', '/pub/registrar/sessions/bounded', [
-      'previous' => $previous,
-      'future' => $future,
+    $data = $this->get('/pub/registrar/sessions/bounded', [
+      'query' => [
+        'previous' => $previous,
+        'future' => $future,
+      ],
     ]);
 
     // Sort by start date.
@@ -176,15 +82,17 @@ class MauiApi {
    *   JSON decoded array of response data.
    */
   public function getSessionsRange($from, $steps, $term = NULL) {
-    $data = $this->request('GET', '/pub/registrar/sessions/range', [
-      'from' => $from,
-      'steps' => $steps,
-      'term' => strtoupper($term),
+    $data = $this->get('/pub/registrar/sessions/range', [
+      'query' => [
+        'from' => $from,
+        'steps' => $steps,
+        'term' => $term !== NULL ? strtoupper($term) : NULL,
+      ],
     ]);
 
     // Sort by start date.
     usort($data, function ($a, $b) {
-      return strtotime($a->startDate) > strtotime($b->startDate);
+      return strtotime($a->startDate) <=> strtotime($b->startDate);
     });
 
     return $data;
@@ -219,14 +127,16 @@ class MauiApi {
    *   JSON decoded array of response data.
    */
   public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
-    $data = $this->request('GET', '/pub/registrar/session-dates', [
-      'context' => $context,
-      'date' => $date,
-      'sessionCode' => $session_code,
-      'sessionId' => $session_id,
-      'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
-      'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
-      'dateCategory' => $date_category,
+    $data = $this->get('/pub/registrar/session-dates', [
+      'query' => [
+        'context' => $context,
+        'date' => $date,
+        'sessionCode' => $session_code,
+        'sessionId' => $session_id,
+        'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
+        'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
+        'dateCategory' => $date_category,
+      ],
     ]);
 
     // Filter out dates with no categories.
@@ -295,7 +205,7 @@ class MauiApi {
    *   The API response data.
    */
   public function getRoomData($building_id, $room_id) {
-    return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
+    return $this->get("/pub/registrar/courses/AstraRoomData/{$building_id}/{$room_id}");
   }
 
   /**
@@ -316,7 +226,7 @@ class MauiApi {
    *   JSON decoded array of response data.
    */
   public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
-    return $this->request('GET', '/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
+    return $this->get("/pub/registrar/courses/AstraRoomSchedule/{$startdate}/{$enddate}/{$building_id}/{$room_id}");
   }
 
   /**
@@ -326,11 +236,125 @@ class MauiApi {
    *   The API response data.
    */
   public function getClassroomsData($room_category = 'UNIVERSITY_CLASSROOM') {
-    return $this->request('GET',
-      '/pub/facilityBuildingRoom/list',
-      [
+    return $this->get('/pub/facilityBuildingRoom/list', [
+      'query' => [
         'roomCategory' => $room_category,
-      ]);
+      ],
+    ]);
+  }
+
+  /**
+   * The section/course search web service by internal id.
+   *
+   * GET /pub/registrar/sections/{sectionId: /d+}.
+   *
+   * @param string $section
+   *   The section id.
+   * @param array $exclude
+   *   The exclusion parameters.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getSection($section, $exclude) {
+    return $this->get("pub/registrar/sections/{$section}", [
+      'query' => [
+        'exclude' => json_encode($exclude),
+      ],
+    ]);
+  }
+
+  /**
+   * Find all course subjects.
+   *
+   * GET /pub/lookups/registrar/coursesubjects.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getCourseSubjects() {
+    $data = $this->get('pub/lookups/registrar/coursesubjects');
+
+    if ($data) {
+      // Sort alphabetically by natural key, i.e. CHEM.
+      usort($data, function ($a, $b) {
+        return strcasecmp($a->naturalKey, $b->naturalKey);
+      });
+    }
+
+    return $data;
+  }
+
+  /**
+   * Get year options for the start year select.
+   *
+   * @param int $previous
+   *   Number of years to go back.
+   * @param int $future
+   *   Number of years to go forward.
+   *
+   * @return array
+   *   Array of year options.
+   */
+  public function getYearOptions($previous = 4, $future = 10) {
+    $currentSession = $this->getCurrentSession();
+    $startDate = (new DrupalDateTime($currentSession->startDate))
+      ->modify("-{$previous} years")
+      ->format('Y-m-d');
+
+    $start = $this->get('/pub/registrar/sessions/by-date', [
+      'query' => [
+        'date' => $startDate,
+      ],
+    ]);
+    $range = $this->getSessionsRange($start->id, $previous + $future, 'FALL');
+
+    $options = [];
+
+    foreach ($range as $session) {
+      $startYear = date('Y', strtotime($session->startDate));
+      $endYear = substr((string) ($startYear + 1), -2);
+      $academicYear = "{$startYear}-{$endYear}";
+
+      // Use the academic year as the key to avoid duplicates.
+      if (!isset($options[$academicYear])) {
+        $options[$academicYear] = $session->id;
+      }
+    }
+
+    // Flip to have session IDs as keys and academic years as values.
+    return array_flip($options);
+  }
+
+  /**
+   * Basic final exam fetcher.
+   */
+  public function getFinalExamSchedule($session_id) {
+    $endpoint = "pub/registrar/exam-schedule/{$session_id}";
+    $options = [
+      'headers' => [
+        'Accept' => 'application/xml',
+        'Content-Type' => 'application/x-www-form-urlencoded',
+      ],
+    ];
+    $data = $this->get($endpoint, $options, 'xml');
+    return $data;
+  }
+
+  /**
+   * Get identical, cross-referenced courses.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getIdenticalCourses($session, $courseId): mixed {
+    $data = $this->get("pub/registrar/course/search", [
+      'query' => [
+        'session' => $session,
+        'courseId' => $courseId,
+      ],
+    ]);
+    return $data->payload[0]->identities;
   }
 
 }

@@ -22,11 +22,13 @@ dependencies:
     - core.entity_view_mode.media.small__square
     - core.entity_view_mode.media.small__ultrawide
     - core.entity_view_mode.media.small__widescreen
+    - core.entity_view_mode.media.vertical
   module:
     - editor
     - linkit
     - media
     - responsive_table_filter
+    - table_header_scope_attribute
     - uiowa_core
 name: 'Full HTML'
 format: full_html
@@ -152,4 +154,11 @@ filters:
         small__square: small__square
         small__ultrawide: small__ultrawide
         small__widescreen: small__widescreen
+        vertical: vertical
       allowed_media_types: {  }
+  table_header_scope_attribute:
+    id: table_header_scope_attribute
+    provider: table_header_scope_attribute
+    status: true
+    weight: 0
+    settings: {  }

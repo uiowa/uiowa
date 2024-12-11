@@ -860,50 +860,16 @@ function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$elem
 }
 
 /**
- * Custom submit handler for node person forms.
+ * Custom submit handler for person forms.
  */
 function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
-  // Get all instances of field_uiowa_contact_address.
-  $contact_addresses = $form_state->getValue('field_person_contact_information');
-
-  if (!is_null($contact_addresses)) {
-    // Loop through each address.
-    foreach ($contact_addresses as $delta => $contact_address_subform) {
-      if (isset($contact_address_subform['subform'])) {
-        $contact_address = $contact_address_subform['subform']['field_uiowa_contact_address'][0];
-        if (isset($contact_address['address'])) {
-          $has_info = FALSE;
-          // Loop through all the details of the address to
-          // check if any of them have been set besides the
-          // country.
-          foreach ($contact_address['address'] as $key => $details) {
-            if ($key === 'country_code') {
-              continue;
-            }
-            // If we find a non-empty value, we can stop looping.
-            if (!empty($details)) {
-              $has_info = TRUE;
-              break;
-            }
-          }
-
-          // If no other fields have been set, then unset the address.
-          if (!$has_info) {
-            // Set country code to empty string.
-            $form_state->setValue([
-              'field_person_contact_information',
-              $delta,
-              'subform',
-              'field_uiowa_contact_address',
-              0,
-              'address',
-              'country_code',
-            ], '');
-          }
-        }
-      }
-    }
-  }
+  $field_config = [
+    'field_person_contact_information' => [
+      'type' => 'paragraph',
+      'address_field' => 'field_uiowa_contact_address',
+    ],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -918,7 +884,7 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
  *
  * @see options_allowed_values()
  */
-function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $types = [];
 
   $allowed_types = \Drupal::entityTypeManager()

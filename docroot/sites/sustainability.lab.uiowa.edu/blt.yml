@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsustainability.uiowa.ddev.site
+    protocol: https
+  machine_name: labsustainability
+  human_name: sustainability.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsustainability.prod
+drupal:
+  db:
+    database: sustainability_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsustainability.prod.drupal.uiowa.edu'
+  requester: estaplet
+  site-name: 'Biomedical Sustainability Initiative'

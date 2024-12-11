@@ -22,12 +22,14 @@ dependencies:
     - core.entity_view_mode.media.small__square
     - core.entity_view_mode.media.small__ultrawide
     - core.entity_view_mode.media.small__widescreen
+    - core.entity_view_mode.media.vertical
   module:
     - editor
     - iframe_title_filter
     - linkit
     - media
     - responsive_table_filter
+    - table_header_scope_attribute
     - uiowa_core
 _core:
   default_config_hash: yA6WNEdG-8nJeOmDKvvJehwG-BwwchNYeLXOg6QjiY8
@@ -161,12 +163,18 @@ filters:
         small__square: small__square
         small__ultrawide: small__ultrawide
         small__widescreen: small__widescreen
+        vertical: vertical
       allowed_media_types:
         audio: audio
         facebook: facebook
         image: image
-        instagram: instagram
         panopto: panopto
         remote_video: remote_video
         static_map: static_map
         twitter: twitter
+  table_header_scope_attribute:
+    id: table_header_scope_attribute
+    provider: table_header_scope_attribute
+    status: true
+    weight: 0
+    settings: {  }

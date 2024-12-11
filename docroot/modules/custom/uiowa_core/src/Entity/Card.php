@@ -21,7 +21,10 @@ class Card extends BlockContent implements RendersAsCardInterface {
 
     // Add fields to card.
     $this->mapFieldsToCardBuild($build, [
-      '#media' => 'field_uiowa_card_image',
+      '#media' => [
+        'field_uiowa_card_image',
+        'field_icon',
+      ],
       '#subtitle' => 'field_uiowa_card_author',
       '#content' => 'field_uiowa_card_excerpt',
     ]);

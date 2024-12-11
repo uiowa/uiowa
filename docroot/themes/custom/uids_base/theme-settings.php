@@ -5,9 +5,9 @@
  * Settings file for the theme.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -106,11 +106,33 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#description' => t('Select an option'),
     '#options' => [
       'iowa' => t('Iowa'),
-      'uihc' => t('UIHC Healthcare'),
+      'uihc' => t('Iowa Health Care'),
       'regents' => t('Regents'),
     ],
     '#default_value' => theme_get_setting('header.branding_options'),
   ];
+
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['header']['branding_options']['#access'] = FALSE;
+  }
+
+  $form['header']['footer_logo'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Footer logo'),
+    '#description' => t('Display UIowa logo in the footer.'),
+    '#default_value' => theme_get_setting('header.footer_logo'),
+    '#states' => [
+      'visible' => [
+        ':input[name="header[branding_options]"]' => [
+          'value' => 'regents',
+        ],
+      ],
+    ],
+  ];
+
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['header']['footer_logo']['#access'] = FALSE;
+  }
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
 

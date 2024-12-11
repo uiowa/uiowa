@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "uids/scss/abstracts/_variables.scss";
 @import "uids/scss/abstracts/_utilities.scss";
 
@@ -136,7 +137,8 @@
   [type='time'],
   [type='url'],
   [type='color'],
-  textarea {
+  textarea,
+  select {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -191,11 +193,11 @@
   textarea:disabled,
   textarea[readonly] {
     cursor: not-allowed;
-    color: #828388;
+    color: #63666A;
     border-color: #bababf;
-    background-color: #f2f2f3;
+    background-color: #f3f3f3 !important;
     box-shadow: none;
-    -webkit-text-fill-color: #828388;
+    -webkit-text-fill-color: #63666A;
   }
 
   [type='submit'],
@@ -206,6 +208,15 @@
     appearance: none;
     @include bttn;
     font-family: $font-family-caps-bold;
+
+    &.button--small {
+      padding: 0.6rem 1rem 0.8rem;
+      font-size: 1.05rem;
+    }
+
+    &.button--full-width {
+      width: 100%;
+    }
   }
 
   input[type='search'] {
@@ -214,7 +225,7 @@
   }
 
   input[id^='edit-submit'][type='submit'],
-  input#edit-actions-submit {
+  input[id^='edit-actions-submit'] {
     @include bttn--primary;
   }
 
@@ -270,9 +281,9 @@
 
   label {
     display: block;
-    margin: 0;
+    margin: 0 0 .3rem;
     font-size: $small-font-size;
-    font-weight: $font-weight-bold;
+    font-weight: 500;
     line-height: 1.8;
   }
 
@@ -300,7 +311,7 @@
     font-size: $base-font-size;
     font-weight: normal;
     line-height: 1.5;
-    @include margin($top: 0, $right: 0, $bottom: $sm);
+    @include margin($top: 0, $right: 0, $bottom: 1rem);
     appearance: none;
     @include padding($right: $lg, $left: $md);
   }
@@ -366,6 +377,16 @@
   .form-actions {
     margin-top: 1em;
     margin-bottom: 1em;
+  }
+
+  .form-actions {
+    &--stacked {
+      width: 100%;
+      margin-top: .5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
   }
 
   .form-item {
@@ -471,7 +492,7 @@
 
       .field-suffix {
         display: inline-block;
-        color: lighten(#000, 40%);
+        color: color.scale(#000, $lightness: 40%);
         line-height: 1.4;
         font-size: 1.25rem;
         display: flex;
@@ -481,7 +502,7 @@
 
     .tabledrag-toggle-weight {
       font-size: inherit;
-      color: lighten(#000, 40%);
+      color: color.scale(#000, $lightness: 40%);
       padding: 1rem;
     }
 
@@ -534,89 +555,14 @@
   }
 
   .form-managed-file {
-    // $upload-primary: #353535;
-
-    // .file {
-    //   padding-top: 1.1rem;
-    //   padding-left: 7rem;
-    //   margin-bottom: .625rem;
-    // }
-
-    // [type='file'] {
-    //   position: relative;
-    //   z-index: 0;
-    //   width: 100%;
-    //   cursor: pointer;
-    //   padding-top: 0.8rem;
-    //   padding-left: 0.3rem;
-
-    //   &::-webkit-file-upload-button {
-    //     cursor: pointer;
-    //   }
-
-    //   &::before {
-    //     position: absolute;
-    //     bottom: 0;
-    //     left: 0;
-    //     z-index: 1;
-    //     content: 'Select a file';
-    //     display: inline-block;
-    //     background-color: #ffffff;
-    //     border: 1px solid $upload-primary;
-    //     color: $upload-primary;
-    //     padding: 0.5rem 0.7rem;
-    //     outline: none;
-    //     white-space: nowrap;
-    //     -webkit-user-select: none;
-    //     font-family: inherit;
-    //     font-size: inherit;
-    //     line-height: inherit;
-    //     pointer-events: none;
-    //   }
-    //   &:hover::before {
-    //     border-color: darken($upload-primary, 20%);
-    //     color: darken($upload-primary, 20%);
-    //   }
-    //   &:active::before {
-
-    //     border-color: darken($upload-primary, 50%);
-    //     color: darken($upload-primary, 50%);
-    //   }
-    // }
-
     .button {
       @include bttn--primary;
       display: block;
     }
 
-    // input[multiple="multiple"].form-file {
-    //   padding-left: 0.1rem;
-
-    //   &:before {
-    //     content: 'Choose files';
-    //   }
-    // }
-
     input[multiple="multiple"].button {
       margin: 0 0 1rem 0;
     }
-
-    // div[class*="js-form-item-file-upload-multiple-file"] {
-    //   margin: 0;
-
-    //   .file {
-    //     background-image: none;
-    //     padding: 0;
-
-    //     &:before {
-    //       content: '\f15b';
-    //       font-size: 1rem;
-    //       color: #434343;
-    //       margin-right: 0.2rem;
-    //       @include fas();
-    //     }
-    //   }
-    // }
   }
 
   input.form-autocomplete {

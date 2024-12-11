@@ -7,18 +7,20 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -118,6 +120,31 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
 }
 
 /**
+ * Implements hook_views_pre_view().
+ */
+function sitenow_events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() === 'events_list_block') {
+    $exposed_input = $view->getExposedInput();
+
+    // Check if there's a date in the URL parameters.
+    $request = \Drupal::request();
+    $date_from_url = $request->query->get('field_event_when_value');
+
+    if ($date_from_url) {
+      // Use the date from the URL if it exists.
+      $exposed_input['field_event_when_value'] = $date_from_url;
+    }
+    else {
+      // If no date in URL, set to today's date.
+      $today = new DrupalDateTime('now');
+      $exposed_input['field_event_when_value'] = $today->format('Y-m-d');
+    }
+
+    $view->setExposedInput($exposed_input);
+  }
+}
+
+/**
  * Implements template_preprocess_views_view().
  */
 function sitenow_events_preprocess_views_view(&$variables) {
@@ -210,38 +237,10 @@ function sitenow_events_entity_presave(EntityInterface $entity) {
  * Custom submit handler for node event forms.
  */
 function _sitenow_events_form_submit(array &$form, FormStateInterface $form_state) {
-  // Don't save event location if only country is set.
-  $event_location = $form_state->getValue('field_event_location');
-  if (!is_null($event_location)) {
-    foreach ($event_location as $delta => $location) {
-      if (isset($location['address'])) {
-        $has_info = FALSE;
-        // Loop through all the details of the address to
-        // check if any of them have been set besides the
-        // country.
-        foreach ($location['address'] as $key => $details) {
-          if ($key === 'country_code') {
-            continue;
-          }
-          // If we find a non-empty value, we can stop looping.
-          if (!empty($details)) {
-            $has_info = TRUE;
-            break;
-          }
-        }
-        // If no other fields have been set, then unset the address.
-        if (!$has_info) {
-          // Set country code to empty string.
-          $form_state->setValue([
-            'field_event_location',
-            $delta,
-            'address',
-            'country_code',
-          ], '');
-        }
-      }
-    }
-  }
+  $field_config = [
+    'field_event_location' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -430,8 +429,15 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
       else {
+        if (isset($data['error'])) {
+          $message = '<div class="events-empty"><p>Unable to fetch events at this time.</p></div>';
+        }
+        else {
+          $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
+        }
         $variables['content']['no_results'] = [
-          '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+          '#type' => 'markup',
+          '#markup' => $message,
         ];
       }
 
@@ -724,12 +730,16 @@ function sitenow_events_preprocess_field(&$variables) {
  * @return array
  *   An array of data.
  */
-function sitenow_events_load(array $params = [
-  'display_id' => 'events',
-], array $args = [
-  'views',
-  'event_instances_api.json',
-], $cache = TRUE) {
+function sitenow_events_load(
+  array $params = [
+    'display_id' => 'events',
+  ],
+  array $args = [
+    'views',
+    'event_instances_api.json',
+  ],
+  $cache = TRUE,
+) {
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
 
@@ -748,14 +758,10 @@ function sitenow_events_load(array $params = [
   }
   else {
     try {
-      $request = \Drupal::httpClient()->get($endpoint);
-    }
-    catch (RequestException $e) {
-      $logger = \Drupal::logger('sitenow_events');
-      Error::logException($logger, $e);
-    }
-
-    if (isset($request)) {
+      // Set a timeout (e.g., 10 seconds).
+      $request = \Drupal::httpClient()->get($endpoint, [
+        'timeout' => 20.0,
+      ]);
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
       // Create a cache item set to 5 minutes.
@@ -764,10 +770,27 @@ function sitenow_events_load(array $params = [
         \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
       }
     }
-    else {
-      $data = [];
+    catch (ConnectException $e) {
+      \Drupal::logger('sitenow_events')->error('Connection timed out when reaching @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
     }
-
+    catch (RequestException $e) {
+      \Drupal::logger('sitenow_events')->error('Request error on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
+    catch (TransferException $e) {
+      \Drupal::logger('sitenow_events')->error('Transfer exception on @endpoint: @message', [
+        '@endpoint' => $endpoint,
+        '@message' => $e->getMessage(),
+      ]);
+      $data['error'] = TRUE;
+    }
   }
 
   return $data;
@@ -897,7 +920,7 @@ function sitenow_events_field_widget_single_element_paragraphs_form_alter(&$elem
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
   switch ($definition->getName()) {
@@ -1073,7 +1096,7 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function _sitenow_events_get_status_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   return [
     'EventScheduled' => 'Scheduled',
     'EventCancelled' => 'Cancelled',

@@ -16,7 +16,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_maui'];
+  protected static $modules = ['uiowa_maui'];
 
   /**
    * The MAUI mock.
@@ -82,6 +82,7 @@ class AcademicDatesFormTest extends KernelTestBase {
             'description' => 'A description',
             'webDescription' => 'A description',
           ],
+          'reviewed' => TRUE,
         ],
         (object) [
           'name' => 'bar',
@@ -94,6 +95,7 @@ class AcademicDatesFormTest extends KernelTestBase {
             'description' => 'A description',
             'webDescription' => 'A description',
           ],
+          'reviewed' => TRUE,
         ],
       ]));
 

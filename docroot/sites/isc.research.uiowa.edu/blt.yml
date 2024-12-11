@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchisc.uiowa.ddev.site
+    protocol: https
+  machine_name: researchisc
+  human_name: isc.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchisc.prod
+drupal:
+  db:
+    database: isc_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchisc.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Implementation Science Center'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labm-ashley-spies.uiowa.ddev.site
+    protocol: https
+  machine_name: labm-ashley-spies
+  human_name: m-ashley-spies.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labm-ashley-spies.prod
+drupal:
+  db:
+    database: m_ashley_spies_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labm-ashley-spies.prod.drupal.uiowa.edu'
+  requester: bdickey
+  site-name: 'M. Ashley Spies Laboratory'

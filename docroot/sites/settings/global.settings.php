@@ -63,13 +63,13 @@ $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
 // Compatibility with Acquia Platform Email for Symfony Mailer module.
 // See https://docs.acquia.com/cloud-platform/manage/platform-email/faq/#can-i-use-symfony-mailer-with-platform-email
 $settings['mailer_sendmail_commands'] = [
-  ini_get('sendmail_path') . ' -t',
+  '/usr/sbin/sendmail -t'
 ];
 
 if ($ah_env !== 'local') {
   // Set this in config since the config references the actual text of the
   // command, which is different for each environment.
-  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = ini_get('sendmail_path') . ' -t';
+  $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = '/usr/sbin/sendmail -t';
 }
 
 // Set recommended New Relic configuration.
@@ -80,9 +80,10 @@ if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
 
-// Memory increase for large menu pages so webmasters can save changes.
-if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
-  ini_set('memory_limit', '256M');
+// Increase 'max_input_vars' for large menu pages so webmasters can save changes.
+if (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'],
+    'admin/structure/menu')) {
+  ini_set('max_input_vars', '5000');
 }
 
 // Under Acquia Cloud, this will override the temporary folder used by

@@ -1,7 +1,6 @@
-@import '../uids/scss/base/reset';
-
 .ck.ck-content,
 .ck-content {
+  font-family: Roboto, sans-serif;
   // Colors
   --brand-primary: #FFCD00;
   --brand-secondary: #000000;
@@ -14,16 +13,24 @@
   @import "components/tables";
   @import "components/typography/paragraph";
   @import "../uids/scss/components/alert";
-  @import "../uids3/components/blockquote/blockquote";
+  @import "../uids/scss/components/blockquote.scss";
   @import "../uids/scss/base/lists";
   @import "../uids/scss/components/button";
-  @import "sitenow";
+  @import "sitenow_v2";
   @import "components/typography/global-serif";
   @import "../uids/scss/components/callout";
   @import "../uids/scss/components/inline";
 
+  .element--circle-list>li:before, .uids-component--circle-list>li:before {
+    width: 80px;
+    height: 80px;
+    line-height: 1.8;
+    padding-top: 0;
+  }
 
-  font-family: Roboto, sans-serif;
+  blockquote {
+    font-style: normal;
+  }
 
   ul {
     padding: initial;
@@ -102,6 +109,16 @@
     }
     img {
       min-width: initial;
+    }
+  }
+
+  .media--type-remote-video {
+    iframe {
+      position: relative;
+      top: 0;
+    }
+    &.media--view-mode-vertical .field--name-field-media-oembed-video {
+      height: 100%;
     }
   }
 
@@ -195,3 +212,27 @@
   flex-wrap: wrap!important;
 }
 
+.ck.ck-link-form.ck-link-form_layout-vertical button.ck-media-library {
+  color: #00558c;
+  span {
+    text-decoration: underline;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #00558c;;
+    transform-origin: center;
+    transform: translate(-50%) scaleX(0);
+    transition: transform .3s ease-in-out;
+
+  }
+  &:hover, &:focus {
+    &:before {
+      transform: translate(-50%) scaleX(1);
+    }
+  }
+}

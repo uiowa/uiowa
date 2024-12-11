@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchanimal.uiowa.ddev.site
+    protocol: https
+  machine_name: researchanimal
+  human_name: animal.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchanimal.prod
+drupal:
+  db:
+    database: animal_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchanimal.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Vertebrate Animal Research'

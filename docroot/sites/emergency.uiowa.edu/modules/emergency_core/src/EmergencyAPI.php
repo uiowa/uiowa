@@ -11,10 +11,6 @@ use Psr\Log\LoggerInterface;
  * Emergency API service.
  */
 class EmergencyAPI {
-  // Stage endpoint with test data.
-  const BASE_URL_1 = 'https://content.getrave.com/cap/uiowatest/channel1';
-  // Prod endpoint with real data.
-  const BASE_URL_2 = 'https://content.getrave.com/cap/uiowa/channel1';
 
   /**
    * The emergency_core logger channel.
@@ -50,13 +46,11 @@ class EmergencyAPI {
    *   The HTTP method to use.
    * @param array $options
    *   Optional request options. All requests expect JSON response data.
-   * @param string $base
-   *   The base URL to use for the request. Defaults to self::BASE_URL_1.
    *
    * @return mixed
    *   The API response data.
    */
-  public function request($method, array $options = [], $base = self::BASE_URL_2) {
+  public function request($method, array $options = []) {
 
     // Merge additional options with default but allow overriding.
     $options = array_merge([
@@ -67,6 +61,9 @@ class EmergencyAPI {
 
     // Default $data to FALSE in case of API fetch failure.
     $data = FALSE;
+
+    $config = \Drupal::config('emergency_core.settings');
+    $base = $config->get('rave_endpoint') . '/channel1';
 
     try {
       $response = $this->client->request($method, $base, $options);

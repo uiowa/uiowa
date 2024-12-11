@@ -34,12 +34,14 @@ class Book extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-right',
-      'media_size' => 'media--medium',
-      'media_format' => 'media',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--layout-right',
+        'media_size' => 'media--medium',
+        'media_format' => 'media',
+      ]
+    );
   }
 
 }

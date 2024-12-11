@@ -1,11 +1,16 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/components/badge/badge.scss";
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+@import "uids/scss/components/badge.scss";
 
 .badge--light {
   background: $light;
   color: $secondary;
 }
 
-.fa-triangle-exclamation, .fa-arrow-trend-down {
-  vertical-align: -0.225em;
+.badge {
+  display: inline-flex;
+  .svg-inline--fa {
+    margin-right: .4rem;
+    align-self: center;
+  }
 }

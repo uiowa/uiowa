@@ -259,6 +259,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
+            // Listblock specific default.
+            if ($form_id === 'layout_builder_add_block') {
+              if ($form['settings']['override']['items_per_page']) {
+                $form['settings']['override']['items_per_page']['#default_value'] = 10;
+              }
+            }
+
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
               // The card block is stacked by default.
@@ -288,17 +295,23 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
             }
 
+            if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
+              switch ($block->getPluginId()) {
+                case 'views_block:events_list_block-card_list':
+                  $form['settings']['exposed']['filter-field_event_when_value']['field_event_when_value']['#type'] = 'hidden';
+                  break;
+              }
+            }
+
             // Make some block-specific add form adjustments.
             if ($form_id === 'layout_builder_add_block') {
               switch ($block->getPluginId()) {
-                // This case should fall through to the next
-                // to set the default items_per_page.
                 case 'views_block:article_list_block-list_article':
                   $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
+                  break;
+
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['hide_fields']['order_fields']['field_person_website']['hide']['#default_value'] = 1;
-                case 'views_block:page_list_block-list_page':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   break;
               }
             }
@@ -370,6 +383,19 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 ],
               ];
 
+              // Set '#states' for menu alignment.
+              $form['layout_builder_style_alignment']['#states'] = [
+                'visible' => [
+                  // Always show alignment options if orientation.
+                  // is set to 'horizontal'.
+                  [
+                    ':input[name="layout_builder_style_menu_orientation"]' => [
+                      'value' => 'block_menu_horizontal',
+                    ],
+                  ],
+                ],
+              ];
+
               // Unset the layout builder style heading.
               unset($form['lbs_heading']);
             }
@@ -390,6 +416,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
             // Update the description on the label_type.
             $form['settings']['advanced']['label_type']['#description'] = t('Replace the block title with an item from the menu. The title is displayed only for screen reader users. In addition, this will set the label for the mobile menu toggle on the Horizontal orientation.');
+            // Hide the options to set the parent to render.
+            $form['settings']['advanced']['render_parent']['#access'] = FALSE;
+            // Hide the options to hide on nonactive menu pages.
+            $form['settings']['advanced']['hide_on_nonactive']['#access'] = FALSE;
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
@@ -745,6 +775,48 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
+          // Remove image or icon based on media_options selection.
+          $media_option = $form_state->getValue([
+            'settings',
+            'block_form',
+            'media_types',
+          ]);
+
+          if ($media_option) {
+
+            $form_image_selection = [
+              'settings',
+              'block_form',
+              'field_uiowa_card_image',
+              'selection',
+            ];
+
+            $form_icon_selection = [
+              'settings',
+              'block_form',
+              'field_icon',
+              0,
+              'value',
+              'icon',
+            ];
+
+            if ($media_option === 'image') {
+              if ($form_state->hasValue($form_icon_selection)) {
+                $form_state->unsetValue($form_icon_selection);
+              }
+            }
+            elseif ($media_option === 'icon') {
+              if ($form_state->hasValue($form_image_selection)) {
+                $form_state->unsetValue($form_image_selection);
+              }
+            }
+
+            // Save as a third-party setting.
+            if (!empty($media_option)) {
+              $component->setThirdPartySetting('layout_builder_custom', 'media_types', $media_option);
+            }
+          }
+
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -753,14 +825,17 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'block_form',
               'field_uiowa_card_link',
             ]
-          )[0]['title'];
+            )[0]['title'];
           if ($link_title) {
             $form_state->setValue(
-              [
-                'settings',
-                'block_form',
-                'field_uiowa_card_button_display',
-              ], ['value' => 1]
+            [
+              'settings',
+              'block_form',
+              'field_uiowa_card_button_display',
+            ],
+            [
+              'value' => 1,
+            ],
             );
           };
         }
@@ -933,6 +1008,42 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_card':
+        $media_types = [
+          'image' => 'Image',
+          'icon' => 'Icon',
+        ];
+        $default_bg = 'image';
+
+        $element['media_types'] = [
+          '#type' => 'radios',
+          '#title' => t('Media type'),
+          '#options' => $media_types,
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_types') ?: $default_bg,
+          '#weight' => 4,
+        ];
+
+        $element['field_uiowa_card_image'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'image',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_card_image'];
+
+        $element['field_icon'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'icon',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_icon'];
+
         if (isset($element['field_uiowa_card_button_display'])) {
           $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
           $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
@@ -1184,7 +1295,11 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
   else {
     $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field?->heading_size);
     // Add grid modifier class to exclude headline for rendering in grid.
-    $variables['attributes']['class'][] = 'grid--first-item-full-width';
+    $lb_styles_array = $variables['elements']['#layout_builder_style'] ?? [];
+    if (!in_array('list_format_list', $lb_styles_array)) {
+      $variables['attributes']['class'][] = 'grid--first-item-full-width';
+    }
+
   }
 
   foreach ($block->get('field_featured_content_item') as $item) {

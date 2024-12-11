@@ -74,3 +74,58 @@
   margin: 0;
 }
 
+// sticky header
+
+.header-sticky .iowa-bar {
+  @include breakpoint(md) {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.4s;
+  }
+}
+
+
+// fixed scroll bar
+
+.header-sticky.scroll-down .iowa-bar {
+  @include breakpoint(md) {
+    transform: translate3d(0, -100%, 0);
+    overflow: hidden;
+  }
+
+  .logo--tab {
+    @include breakpoint(md) {
+      margin-top: -17px;
+    }
+  }
+}
+
+.header-sticky.scroll-up .iowa-bar {
+  @include breakpoint(md) {
+    transform: none;
+  }
+}
+
+.header-sticky.scroll-up:not(.menu-open) .iowa-bar {
+  @include breakpoint(md) {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.parent-site-name {
+  .o-canvas--lock & {
+    @include breakpoint(md) {
+      background: transparent;
+    }
+  }
+}
+
+.iowa-bar--narrow.horizontal .iowa-bar__container,
+.iowa-bar--narrow.mega .iowa-bar__container {
+  @include breakpoint(page-container) {
+    position: relative;
+  }
+}

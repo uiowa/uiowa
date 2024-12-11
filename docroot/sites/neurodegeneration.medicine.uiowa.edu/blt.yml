@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineneurodegeneration.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineneurodegeneration
+  human_name: neurodegeneration.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineneurodegeneration.prod
+drupal:
+  db:
+    database: neurodegeneration_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineneurodegeneration.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'The Center for Neurodegeneration'

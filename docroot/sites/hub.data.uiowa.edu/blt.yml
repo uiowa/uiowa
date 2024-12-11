@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: datahub.uiowa.ddev.site
+    protocol: https
+  machine_name: datahub
+  human_name: hub.data.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: datahub.prod
+drupal:
+  db:
+    database: hub_data_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://datahub.prod.drupal.uiowa.edu'
+  requester: kyows
+  site-name: Data@IOWA

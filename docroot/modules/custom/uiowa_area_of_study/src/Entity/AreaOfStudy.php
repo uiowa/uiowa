@@ -43,10 +43,12 @@ class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_headline_style' => '',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_headline_style' => '',
+      ]
+    );
   }
 
 }
