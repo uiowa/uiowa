@@ -9,8 +9,3 @@ services:
     class: Drupal\emergency_core\EventSubscriber\CacheControlSubscriber
     tags:
       - { name: event_subscriber }
-  emergency_core.cache_control_route_subscriber:
-    class: Drupal\emergency_core\EventSubscriber\CacheControlRouteSubscriber
-    tags:
-      - { name: event_subscriber }
-
