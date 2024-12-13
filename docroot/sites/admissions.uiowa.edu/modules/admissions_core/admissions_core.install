@@ -589,9 +589,9 @@ function admissions_core_update_9008() {
 }
 
 /**
- * Update orgsync link in field_area_of_study_opportunity.
+ * Update AoS Career field statistic.
  */
-function admissions_core_update_9009() {
+function admissions_core_update_10001() {
   $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
 
   $ids = $query
@@ -606,12 +606,24 @@ function admissions_core_update_9009() {
     foreach ($entities as $entity) {
       $document = Html::load($entity->field_area_of_study_career->value);
       $xpath = new \DOMXPath($document);
+      $modified = FALSE;
       foreach ($xpath->query('//text()') as $textNode) {
-        $textNode->nodeValue = str_replace('Iowa graduates have a 95 percent job/grad school placement rate', 'Iowa graduates have a 96 percent job/grad school placement rate', $textNode->nodeValue);
+        $new_value = str_replace('Iowa graduates have a 95 percent job/grad school placement rate', 'Iowa graduates have a 96 percent job/grad school placement rate', $textNode->nodeValue);
+        if ($new_value !== $textNode->nodeValue) {
+          $textNode->nodeValue = $new_value;
+          $modified = TRUE;
+        }
       }
-      $html = Html::serialize($document);
-      $entity->field_area_of_study_career->value = $html;
-      $entity->save();
+      if ($modified) {
+        $html = Html::serialize($document);
+        $entity->field_area_of_study_career->value = $html;
+        $entity->setNewRevision(TRUE);
+        $entity->setRevisionUserId(1);
+        $entity->setRevisionLogMessage('Automated save.');
+        $entity->save();
+
+        \Drupal::logger('admissions_core')->notice('The node {nid} was programmatically updated.', ['nid' => $entity->id()]);
+      }
     }
   }
 }
