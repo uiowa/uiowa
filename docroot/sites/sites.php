@@ -7642,3 +7642,9 @@ $sites['orgdare.uiowa.ddev.site'] = 'dare.org.uiowa.edu';
 $sites['orgdare.dev.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
 $sites['orgdare.stage.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
 $sites['orgdare.prod.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
+
+// Directory aliases for krui.org.uiowa.edu.
+$sites['orgkrui.uiowa.ddev.site'] = 'krui.org.uiowa.edu';
+$sites['orgkrui.dev.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';
+$sites['orgkrui.stage.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';
+$sites['orgkrui.prod.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';

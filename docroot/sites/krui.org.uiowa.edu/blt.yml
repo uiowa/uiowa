@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgkrui.uiowa.ddev.site
+    protocol: https
+  machine_name: orgkrui
+  human_name: krui.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgkrui.prod
+drupal:
+  db:
+    database: krui_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgkrui.prod.drupal.uiowa.edu'
+  requester: bdlewis
+  site-name: 'KRUI '
