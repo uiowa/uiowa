@@ -34,9 +34,6 @@ class CacheControlSubscriber implements EventSubscriberInterface {
     if (str_starts_with($request->getPathInfo(), '/api/active')) {
       // Reduce cache, leaving some DoS protection.
       $response->headers->set('Cache-Control', 'max-age=30, public');
-      // Gut any possible Drupal conflicts.
-      $response->headers->set('Cache-Tags', '');
-      $response->headers->set('X-Drupal-Cache-Tags', '');
     }
   }
 
