@@ -33,8 +33,8 @@ class CacheControlSubscriber implements EventSubscriberInterface {
     // Check the path and modify headers accordingly.
     if (str_starts_with($request->getPathInfo(), '/api/active')) {
       $response->headers->set('Cache-Control', 'max-age=30, public');
-//      $response->headers->set('Cache-Tags', '');
-//      $response->headers->set('X-Drupal-Cache-Tags', '');
+      $response->headers->set('Cache-Tags', '');
+      $response->headers->set('X-Drupal-Cache-Tags', '');
     }
   }
 
