@@ -7648,3 +7648,9 @@ $sites['orgkrui.uiowa.ddev.site'] = 'krui.org.uiowa.edu';
 $sites['orgkrui.dev.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';
 $sites['orgkrui.stage.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';
 $sites['orgkrui.prod.drupal.uiowa.edu'] = 'krui.org.uiowa.edu';
+
+// Directory aliases for lllc.uiowa.edu.
+$sites['lllc.uiowa.ddev.site'] = 'lllc.uiowa.edu';
+$sites['lllc.dev.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
+$sites['lllc.stage.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
+$sites['lllc.prod.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
