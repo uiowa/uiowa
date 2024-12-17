@@ -1337,12 +1337,6 @@ $sites['siteschinesereadingworld.dev.drupal.uiowa.edu'] = 'chinesereadingworld.s
 $sites['siteschinesereadingworld.stage.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 $sites['siteschinesereadingworld.prod.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 
-// Directory aliases for viewbook.engineering.uiowa.edu.
-$sites['engineeringviewbook.uiowa.ddev.site'] = 'viewbook.engineering.uiowa.edu';
-$sites['engineeringviewbook.dev.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
-$sites['engineeringviewbook.stage.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
-$sites['engineeringviewbook.prod.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
-
 // Directory aliases for globalhealthstudies.uiowa.edu.
 $sites['globalhealthstudies.uiowa.ddev.site'] = 'globalhealthstudies.uiowa.edu';
 $sites['globalhealthstudies.dev.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
@@ -4468,12 +4462,6 @@ $sites['music.uiowa.ddev.site'] = 'music.uiowa.edu';
 $sites['music.dev.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.stage.drupal.uiowa.edu'] = 'music.uiowa.edu';
 $sites['music.prod.drupal.uiowa.edu'] = 'music.uiowa.edu';
-
-// Directory aliases for pda.uiowa.edu.
-$sites['pda.uiowa.ddev.site'] = 'pda.uiowa.edu';
-$sites['pda.dev.drupal.uiowa.edu'] = 'pda.uiowa.edu';
-$sites['pda.stage.drupal.uiowa.edu'] = 'pda.uiowa.edu';
-$sites['pda.prod.drupal.uiowa.edu'] = 'pda.uiowa.edu';
 
 // Directory aliases for psychology.uiowa.edu.
 $sites['psychology.uiowa.ddev.site'] = 'psychology.uiowa.edu';
@@ -7642,3 +7630,15 @@ $sites['orgthetatauomicron.uiowa.ddev.site'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.dev.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.stage.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
 $sites['orgthetatauomicron.prod.drupal.uiowa.edu'] = 'thetatauomicron.org.uiowa.edu';
+
+// Directory aliases for stories.uiowa.edu.
+$sites['stories.uiowa.ddev.site'] = 'stories.uiowa.edu';
+$sites['stories.dev.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+$sites['stories.stage.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+$sites['stories.prod.drupal.uiowa.edu'] = 'stories.uiowa.edu';
+
+// Directory aliases for dare.org.uiowa.edu.
+$sites['orgdare.uiowa.ddev.site'] = 'dare.org.uiowa.edu';
+$sites['orgdare.dev.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
+$sites['orgdare.stage.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
+$sites['orgdare.prod.drupal.uiowa.edu'] = 'dare.org.uiowa.edu';
