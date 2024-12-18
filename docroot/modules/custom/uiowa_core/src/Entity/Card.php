@@ -36,26 +36,23 @@ class Card extends BlockContent implements RendersAsCardInterface {
     if (!$path || !$text) {
       $build['#url'] = '';
       $build['#link_text'] = '';
+
       unset($build['field_uiowa_card_link']);
-      return;
     }
 
-    $path = $path->toString();
-    $build['#link_text'] = $text;
+    $path = $path ? $path->toString() : '';
+    $build['#link_text'] = $text ?? '';
 
-    if (str_starts_with($path, 'route:<nolink>')) {
-      $build['#url'] = '';
-    }
-    elseif (UrlHelper::isExternal($path)) {
+    if (UrlHelper::isExternal($path)) {
       $build['#url'] = $path;
-      $build['#link_text'] = str_starts_with($text, 'http') ? NULL : $text;
+      $build['#link_text'] = $text !== NULL && str_starts_with($text, 'http') ? NULL : $text;
     }
     else {
       $internal_path = str_starts_with($path, '/') ? $path : '/' . $path;
       $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
 
       $build['#url'] = $alias ?: $path;
-      $build['#link_text'] = str_starts_with($text, '/') ? NULL : $text;
+      $build['#link_text'] = $text !== NULL && str_starts_with($text, '/') ? NULL : $text;
     }
 
     unset($build['field_uiowa_card_link']);
