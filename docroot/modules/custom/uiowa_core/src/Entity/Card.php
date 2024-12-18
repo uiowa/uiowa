@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_core\Entity;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Render\Element;
 use Drupal\block_content\Entity\BlockContent;
 
@@ -29,35 +28,16 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-    if (isset($build['field_uiowa_card_link'][0])) {
-      // Capture the parts of the URL.
-      $url = $build['field_uiowa_card_link'][0]['#url'] ?? NULL;
-      $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
-
-      // Only process if both url and title are not null.
-      if ($url && $title) {
-        $url = $url->toString();
-        $build['#link_text'] = $title;
-
-        // Check if the link is an external URL.
-        if (UrlHelper::isExternal($url)) {
-          // For external links, set the URL directly.
-          $build['#url'] = $url;
-          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
-          $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
-        }
-        else {
-          $internal_path = str_starts_with($url, '/') ? $url : '/' . $url;
-          $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
-
-          $build['#url'] = $alias ?: $url;
-          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
-          $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
-        }
+    // Capture the parts of the URL.
+    foreach ([
+      'url' => 'url',
+      'title' => 'link_text',
+    ] as $field_link_prop => $link_prop) {
+      if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
+        $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
       }
-
-      unset($build['field_uiowa_card_link']);
     }
+    unset($build['field_uiowa_card_link']);
 
     // Handle the title field.
     if (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
