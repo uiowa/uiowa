@@ -46,9 +46,6 @@ class Card extends BlockContent implements RendersAsCardInterface {
     if (str_starts_with($path, 'route:<nolink>')) {
       $build['#url'] = '';
     }
-    elseif (str_starts_with($path, '<front>')) {
-      $build['#url'] = '/' . substr($path, strlen('<front>'));
-    }
     elseif (UrlHelper::isExternal($path)) {
       $build['#url'] = $path;
       $build['#link_text'] = str_starts_with($text, 'http') ? NULL : $text;
