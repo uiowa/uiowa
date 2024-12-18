@@ -29,33 +29,35 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-    // Capture the parts of the URL.
-    $path = $build['field_uiowa_card_link'][0]['#url'] ?? NULL;
-    $text = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
+    if (isset($build['field_uiowa_card_link'][0])) {
+      // Capture the parts of the URL.
+      $url = $build['field_uiowa_card_link'][0]['#url'] ?? NULL;
+      $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
 
-    if (!$path || !$text) {
-      $build['#url'] = '';
-      $build['#link_text'] = '';
+      // Only process if both url and title are not null.
+      if ($url && $title) {
+        $url = $url->toString();
+        $build['#link_text'] = $title;
+
+        // Check if the link is an external URL.
+        if (UrlHelper::isExternal($url)) {
+          // For external links, set the URL directly.
+          $build['#url'] = $url;
+          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
+          $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
+        }
+        else {
+          $internal_path = str_starts_with($url, '/') ? $url : '/' . $url;
+          $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+
+          $build['#url'] = $alias ?: $url;
+          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
+          $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
+        }
+      }
 
       unset($build['field_uiowa_card_link']);
     }
-
-    $path = $path ? $path->toString() : '';
-    $build['#link_text'] = $text ?? '';
-
-    if (UrlHelper::isExternal($path)) {
-      $build['#url'] = $path;
-      $build['#link_text'] = $text !== NULL && str_starts_with($text, 'http') ? NULL : $text;
-    }
-    else {
-      $internal_path = str_starts_with($path, '/') ? $path : '/' . $path;
-      $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
-
-      $build['#url'] = $alias ?: $path;
-      $build['#link_text'] = $text !== NULL && str_starts_with($text, '/') ? NULL : $text;
-    }
-
-    unset($build['field_uiowa_card_link']);
 
     // Handle the title field.
     if (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
