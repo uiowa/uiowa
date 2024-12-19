@@ -18,7 +18,7 @@
   {% endif %}
 {% endfor %}
 
-{% if content.field_uiowa_button_link['#items']|length > 1 %}
+{% if links|length > 1 %}
   {% set container_classes = container_classes|merge(['bttn--row']) %}
 {% endif %}
 
@@ -26,11 +26,11 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% for link in content.field_uiowa_button_link['#items'] %}
+  {% for link in links %}
     {% set block_button = {
       'classes': create_attribute().addClass(classes),
-      'link_url': link.url|render,
-      'link_title': link.title|render,
+      'link_url': link.link_url|render,
+      'link_title': link.link_text|render,
     } %}
 
     {% embed '@uids_base/uids/button.html.twig' with block_button only %}

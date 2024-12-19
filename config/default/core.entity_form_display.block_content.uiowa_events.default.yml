@@ -20,7 +20,7 @@ dependencies:
     - field.field.block_content.uiowa_events.field_uiowa_headline
   module:
     - layout_builder_custom
-    - link
+    - linkit
     - smart_date
 id: block_content.uiowa_events.default
 targetEntityType: block_content
@@ -35,12 +35,14 @@ content:
       display_label: true
     third_party_settings: {  }
   field_collection_more_path:
-    type: link_default
+    type: linkit
     weight: 15
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: default
+      linkit_auto_link_text: true
     third_party_settings: {  }
   field_collection_pager:
     type: boolean_checkbox
@@ -78,6 +80,8 @@ content:
         custom
       show_extra: false
       separator: to
+      allday: true
+      remove_seconds: false
     third_party_settings: {  }
   field_uiowa_events_department:
     type: options_select

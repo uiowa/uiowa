@@ -9,7 +9,7 @@ dependencies:
     - field.field.paragraph.uiowa_slide.field_uiowa_slide_link
     - paragraphs.paragraphs_type.uiowa_slide
   module:
-    - link
+    - linkit
     - text
 id: paragraph.uiowa_slide.default
 targetEntityType: paragraph
@@ -41,7 +41,7 @@ content:
     weight: 1
     region: content
   field_uiowa_slide_link:
-    type: link
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
@@ -49,6 +49,7 @@ content:
       url_plain: false
       rel: ''
       target: ''
+      linkit_profile: default
     third_party_settings: {  }
     weight: 3
     region: content

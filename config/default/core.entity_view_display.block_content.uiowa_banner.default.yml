@@ -11,8 +11,9 @@ dependencies:
     - field.field.block_content.uiowa_banner.field_uiowa_banner_pre_title
     - field.field.block_content.uiowa_banner.field_uiowa_banner_title
   module:
+    - field_delimiter
     - heading
-    - link
+    - linkit
     - text
 _core:
   default_config_hash: 5cU2pM6Q8108-XrxiZHFX7siyd1EU6j8EISTK3o6FOY
@@ -48,7 +49,7 @@ content:
     weight: 4
     region: content
   field_uiowa_banner_link:
-    type: link_separate
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
@@ -56,7 +57,10 @@ content:
       url_plain: false
       rel: '0'
       target: '0'
-    third_party_settings: {  }
+      linkit_profile: default
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
     weight: 3
     region: content
   field_uiowa_banner_pre_title:
