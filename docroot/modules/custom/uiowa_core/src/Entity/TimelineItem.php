@@ -39,17 +39,46 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       $build['#meta']['#suffix'] = '</div></div>';
       unset($build['field_timeline_icon']);
     }
-
-    // Check if the timeline card should be linked.
+    
+    // Process timeline link field for both regular and media links.
     $field_timeline_link = $this->get('field_timeline_link');
 
     if ($field_timeline_link && !$field_timeline_link->isEmpty()) {
-      $url = $field_timeline_link->get(0)->getUrl();
-      $build['#url'] = $url ? $url->toString() : '';
-      $build['#link_indicator'] = TRUE;
+      $link = $field_timeline_link->get(0);
+      $uri = $link->get('uri')->getString();
 
-      if (!empty($field_timeline_link->title)) {
-        $build['#link_text'] = $field_timeline_link->title;
+      // Check for media links.
+      if (str_starts_with($uri, 'internal:/media') || str_starts_with($uri, 'entity:media')) {
+        // Get ID from URI.
+        $media_id = preg_replace('/[^0-9]/', '', basename($uri));
+
+        // Load the media entity.
+        $media = \Drupal::entityTypeManager()
+          ->getStorage('media')
+          ->load($media_id);
+
+        if ($media && $media->hasField('field_media_file')) {
+          $file = $media->get('field_media_file')->entity;
+
+          if ($file) {
+            $build['#url'] = $file->createFileUrl(FALSE);
+            $build['#link_indicator'] = TRUE;
+
+            if (!empty($link->get('title')->getString())) {
+              $build['#link_text'] = $link->get('title')->getString();
+            }
+          }
+        }
+      }
+      else {
+        // Handle regular links.
+        $url = $link->getUrl();
+        $build['#url'] = $url ? $url->toString() : '';
+        $build['#link_indicator'] = TRUE;
+
+        if (!empty($link->get('title')->getString())) {
+          $build['#link_text'] = $link->get('title')->getString();
+        }
       }
     }
 
