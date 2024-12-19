@@ -949,9 +949,16 @@ function uids_base_preprocess_block(&$variables) {
     // @todo revisit this class when https://github.com/uiowa/uids/issues/721 is completed.
     if ($block->hasField('field_uiowa_banner_image')) {
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $bundle_value = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue();
+        $bundle_value = $block->get('field_uiowa_banner_image')
+          ->first()
+          ->get('entity')
+          ->getValue();
         if ($bundle_value) {
-          $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
+          $bundle_type = $block->get('field_uiowa_banner_image')
+            ->first()
+            ->get('entity')
+            ->getValue()
+            ->bundle();
           if ($bundle_type === 'video') {
             $variables['attributes']['class'][] = 'banner--video';
           }
@@ -960,13 +967,41 @@ function uids_base_preprocess_block(&$variables) {
     }
 
     $variables['links'] = [];
-
+    // Handle links for banner block.
     if ($block->hasField('field_uiowa_banner_link')) {
       foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
-        $variables['links'][] = [
-          'link_url' => $link->getUrl()->toString(),
-          'link_text' => $link->get('title')->getString(),
-        ];
+        $uri = $link->get('uri')->getString();
+
+        // Check for media links.
+        if (str_starts_with($uri, 'internal:/media') || str_starts_with($uri, 'entity:media')) {
+          // Get ID from URI.
+          $media_id = preg_replace('/[^0-9]/', '', basename($uri));
+
+          // Load the media entity.
+          $media = \Drupal::entityTypeManager()
+            ->getStorage('media')
+            ->load($media_id);
+
+          if ($media && $media->hasField('field_media_file')) {
+            $file = $media->get('field_media_file')->entity;
+
+            if ($file) {
+              $file_url = $file->createFileUrl(FALSE);
+
+              $variables['links'][] = [
+                'link_url' => $file_url,
+                'link_text' => $link->get('title')->getString(),
+              ];
+            }
+          }
+        }
+        else {
+          // Handle regular links.
+          $variables['links'][] = [
+            'link_url' => $link->getUrl()->toString(),
+            'link_text' => $link->get('title')->getString(),
+          ];
+        }
       }
     }
   }
