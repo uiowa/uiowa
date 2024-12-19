@@ -39,7 +39,7 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       $build['#meta']['#suffix'] = '</div></div>';
       unset($build['field_timeline_icon']);
     }
-    
+
     // Process timeline link field for both regular and media links.
     $field_timeline_link = $this->get('field_timeline_link');
 
