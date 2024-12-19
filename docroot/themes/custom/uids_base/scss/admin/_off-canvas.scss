@@ -127,8 +127,8 @@
   margin-block-start: 0.75rem;
 }
 
-// Ensure CKEditor's wrapper div is position: relative to prevent it from attaching 
-// itself to the bottom of ui-dialog. 
+// Ensure CKEditor's wrapper div is position: relative to prevent it from attaching
+// itself to the bottom of ui-dialog.
 // See: https://github.com/uiowa/uiowa/issues/7300
 
 #drupal-off-canvas-wrapper .form-textarea-wrapper{
@@ -341,4 +341,24 @@
   }
 }
 
+// Linkit.
+/**
+ * Basic Linkit styles for Layout Builder settings tray.
+ */
+#drupal-off-canvas .ui-autocomplete.linkit-ui-autocomplete .linkit-result-line--group {
+  text-align: center;
+}
 
+#drupal-off-canvas .ui-autocomplete.linkit-ui-autocomplete span:first-child {
+  display: block;
+  font-weight: bold;
+}
+
+#drupal-off-canvas .ui-autocomplete.linkit-ui-autocomplete {
+  width: 85%!important;
+}
+
+#drupal-off-canvas .ui-autocomplete.linkit-ui-autocomplete .linkit-result-line-wrapper.ui-menu-item-wrapper.ui-state-active,
+#drupal-off-canvas .ui-autocomplete.linkit-ui-autocomplete .linkit-result-line-wrapper.ui-menu-item-wrapper.ui-state-focus  {
+  background: #63666A;
+}
