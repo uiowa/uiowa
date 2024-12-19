@@ -966,44 +966,14 @@ function uids_base_preprocess_block(&$variables) {
       }
     }
 
-    $variables['links'] = [];
-    // Handle links for banner block.
-    if ($block->hasField('field_uiowa_banner_link')) {
-      foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
-        $uri = $link->get('uri')->getString();
+    // Process links for the banner block.
+    $variables['links'] = uiowa_core_process_linkit_media_links($block, 'field_uiowa_banner_link');
+  }
 
-        // Check for media links.
-        if (str_starts_with($uri, 'internal:/media') || str_starts_with($uri, 'entity:media')) {
-          // Get ID from URI.
-          $media_id = preg_replace('/[^0-9]/', '', basename($uri));
-
-          // Load the media entity.
-          $media = \Drupal::entityTypeManager()
-            ->getStorage('media')
-            ->load($media_id);
-
-          if ($media && $media->hasField('field_media_file')) {
-            $file = $media->get('field_media_file')->entity;
-
-            if ($file) {
-              $file_url = $file->createFileUrl(FALSE);
-
-              $variables['links'][] = [
-                'link_url' => $file_url,
-                'link_text' => $link->get('title')->getString(),
-              ];
-            }
-          }
-        }
-        else {
-          // Handle regular links.
-          $variables['links'][] = [
-            'link_url' => $link->getUrl()->toString(),
-            'link_text' => $link->get('title')->getString(),
-          ];
-        }
-      }
-    }
+  if ($variables['derivative_plugin_id'] === 'uiowa_button') {
+    $block = $variables['elements']['content']['#block_content'];
+    // Process links for the button block.
+    $variables['links'] = uiowa_core_process_linkit_media_links($block, 'field_uiowa_button_link');
   }
 
   // Check if the hover effect should be applied on the stat block.

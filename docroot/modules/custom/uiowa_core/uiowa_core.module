@@ -1607,6 +1607,59 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
 }
 
 /**
+ * Helper function to process linkit media links for a given field and block.
+ *
+ * @param object $block
+ *   The block entity object.
+ * @param string $field_name
+ *   The name of the field that contains the links.
+ *
+ * @return array
+ *   An array of processed links.
+ */
+function uiowa_core_process_linkit_media_links($block, $field_name) {
+  $links = [];
+
+  if ($block->hasField($field_name)) {
+    foreach ($block->get($field_name)->getIterator() as $link) {
+      $uri = $link->get('uri')->getString();
+
+      // Check for media links.
+      if (str_starts_with($uri, 'internal:/media') || str_starts_with($uri, 'entity:media')) {
+        // Get ID from URI.
+        $media_id = preg_replace('/[^0-9]/', '', basename($uri));
+
+        // Load the media entity.
+        $media = \Drupal::entityTypeManager()
+          ->getStorage('media')
+          ->load($media_id);
+
+        if ($media && $media->hasField('field_media_file')) {
+          $file = $media->get('field_media_file')->entity;
+
+          if ($file) {
+            $file_url = $file->createFileUrl(FALSE);
+            $links[] = [
+              'link_url' => $file_url,
+              'link_text' => $link->get('title')->getString(),
+            ];
+          }
+        }
+      }
+      else {
+        // Handle regular links.
+        $links[] = [
+          'link_url' => $link->getUrl()->toString(),
+          'link_text' => $link->get('title')->getString(),
+        ];
+      }
+    }
+  }
+
+  return $links;
+}
+
+/**
  * Helper function to validate and clean address fields, including paragraphs.
  *
  * @param array &$form
