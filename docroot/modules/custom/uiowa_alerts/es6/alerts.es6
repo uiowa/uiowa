@@ -13,6 +13,7 @@
         const updateAlerts = () => {
           // Get the alerts feed and track IDs as "new" alerts.
           $.ajax({
+            cache: false,
             url: settings.uiowaAlerts.source,
             dataType: "json",
             success: (response) => {
