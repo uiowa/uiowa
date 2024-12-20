@@ -13,6 +13,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
@@ -452,26 +453,29 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If we have more link checked and link provided, pass it.
       if ((bool) $block->get('field_collection_more')->value === TRUE) {
-        // Process the "more" link using the helper function.
-        $links = uiowa_core_process_linkit_media_links($block, 'field_collection_more_path');
+        // Only process if the field exists in the render array.
+        if (isset($variables['elements']['content']['field_collection_more_path'])) {
+          $delta = array_key_first(Element::children($variables['elements']['content']['field_collection_more_path']));
 
-        if (!empty($links)) {
-          // Use the first processed link.
-          $url = Url::fromUri($links[0]['link_url']);
-        }
-        else {
-          // Fallback to events.uiowa.edu if no valid link.
-          $url = Url::fromUri('//events.uiowa.edu');
-        }
+          if ($delta !== NULL) {
+            // Get the formatted URL directly from the render array.
+            $link = $variables['elements']['content']['field_collection_more_path'][$delta];
+            $url = $link['#url'];
+          }
+          else {
+            // Fallback to events.uiowa.edu if no valid link.
+            $url = Url::fromUri('//events.uiowa.edu');
+          }
 
-        $variables['content']['more'] = [
-          '#type' => 'link',
-          '#title' => 'View more events',
-          '#url' => $url,
-          '#attributes' => [
-            'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
-          ],
-        ];
+          $variables['content']['more'] = [
+            '#type' => 'link',
+            '#title' => 'View more events',
+            '#url' => $url,
+            '#attributes' => [
+              'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+            ],
+          ];
+        }
       }
       break;
   }
