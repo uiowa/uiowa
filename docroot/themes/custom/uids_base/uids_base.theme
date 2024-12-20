@@ -967,13 +967,31 @@ function uids_base_preprocess_block(&$variables) {
     }
 
     // Process links for the banner block.
-    $variables['links'] = uiowa_core_process_linkit_media_links($block, 'field_uiowa_banner_link');
+    if (isset($variables['elements']['content']['field_uiowa_banner_link'])) {
+      $links = [];
+      foreach (Element::children($variables['elements']['content']['field_uiowa_banner_link']) as $delta) {
+        $link = $variables['elements']['content']['field_uiowa_banner_link'][$delta];
+        $links[] = [
+          'link_url' => $link['#url']->toString(),
+          'link_text' => $link['#title'],
+        ];
+      }
+      $variables['links'] = $links;
+    }
   }
 
   if ($variables['derivative_plugin_id'] === 'uiowa_button') {
-    $block = $variables['elements']['content']['#block_content'];
-    // Process links for the button block.
-    $variables['links'] = uiowa_core_process_linkit_media_links($block, 'field_uiowa_button_link');
+    if (isset($variables['elements']['content']['field_uiowa_button_link'])) {
+      $links = [];
+      foreach (Element::children($variables['elements']['content']['field_uiowa_button_link']) as $delta) {
+        $link = $variables['elements']['content']['field_uiowa_button_link'][$delta];
+        $links[] = [
+          'link_url' => $link['#url']->toString(),
+          'link_text' => $link['#title'],
+        ];
+      }
+      $variables['links'] = $links;
+    }
   }
 
   // Check if the hover effect should be applied on the stat block.
