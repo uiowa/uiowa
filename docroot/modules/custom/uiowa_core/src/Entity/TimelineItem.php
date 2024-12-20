@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Entity;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -40,23 +41,35 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       unset($build['field_timeline_icon']);
     }
 
-    // Check if the timeline card should be linked.
-    $field_timeline_link = $this->get('field_timeline_link');
+    // Process timeline link field for both regular and media links.
+    if (!empty($build['field_timeline_link'][0])) {
+      $url = $build['field_timeline_link'][0]['#url'] ?? NULL;
+      $title = $build['field_timeline_link'][0]['#title'] ?? NULL;
 
-    if ($field_timeline_link && !$field_timeline_link->isEmpty()) {
-      $url = $field_timeline_link->get(0)->getUrl();
-      $build['#url'] = $url ? $url->toString() : '';
-      $build['#link_indicator'] = TRUE;
+      if ($url) {
+        $url_string = $url->toString();
+        $build['#url'] = $url_string;
+        $build['#link_indicator'] = TRUE;
 
-      if (!empty($field_timeline_link->title)) {
-        $build['#link_text'] = $field_timeline_link->title;
+        if ($title) {
+          if (UrlHelper::isExternal($url_string)) {
+            $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
+          }
+          else {
+            $internal_path = str_starts_with($url_string, '/') ? $url_string : '/' . $url_string;
+            $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+
+            $build['#url'] = $alias ?: $url_string;
+            $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
+          }
+        }
       }
-    }
+      else {
+        $build['#url'] = '';
+        $build['#link_indicator'] = FALSE;
+      }
 
-    // If we don't have a link set,
-    // then we don't want the card linked at all.
-    else {
-      $build['#url'] = '';
+      unset($build['field_timeline_link']);
     }
 
     // Each card is part of a timeline list, so add

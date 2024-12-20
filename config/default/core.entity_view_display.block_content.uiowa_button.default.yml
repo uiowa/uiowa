@@ -6,14 +6,14 @@ dependencies:
     - block_content.type.uiowa_button
     - field.field.block_content.uiowa_button.field_uiowa_button_link
   module:
-    - link
+    - linkit
 id: block_content.uiowa_button.default
 targetEntityType: block_content
 bundle: uiowa_button
 mode: default
 content:
   field_uiowa_button_link:
-    type: link
+    type: linkit
     label: above
     settings:
       trim_length: 25
@@ -21,6 +21,7 @@ content:
       url_plain: false
       rel: '0'
       target: '0'
+      linkit_profile: default
     third_party_settings: {  }
     weight: 0
     region: content
