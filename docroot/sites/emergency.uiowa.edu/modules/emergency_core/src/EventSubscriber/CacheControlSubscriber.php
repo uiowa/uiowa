@@ -33,7 +33,7 @@ class CacheControlSubscriber implements EventSubscriberInterface {
     // Check the path and modify headers accordingly.
     if (str_starts_with($request->getPathInfo(), '/api/active')) {
       // Reduce cache, leaving some DoS protection.
-      $response->headers->set('Cache-Control', 'max-age=30, public');
+      $response->headers->set('Cache-Control', 'max-age=30, must-revalidate, public');
     }
   }
 
