@@ -13,7 +13,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\sitenow_events\Entity\Event;
 use Drupal\smart_trim\TruncateHTML;
@@ -453,10 +452,13 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If we have more link checked and link provided, pass it.
       if ((bool) $block->get('field_collection_more')->value === TRUE) {
-        if ($uri = $block->get('field_collection_more_path')->uri) {
-          $url = Url::fromUri($uri);
+        $links = uiowa_core_process_linkit_media_links($block, 'field_collection_more_path');
+        if (!empty($links)) {
+          // Use the first processed link.
+          $url = Url::fromUri($links[0]['link_url']);
         }
         else {
+          // Fallback to events.uiowa.edu if no valid link.
           $url = Url::fromUri('//events.uiowa.edu');
         }
 
