@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Entity;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -41,51 +42,34 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
     }
 
     // Process timeline link field for both regular and media links.
-    $field_timeline_link = $this->get('field_timeline_link');
+    if (!empty($build['field_timeline_link'][0])) {
+      $url = $build['field_timeline_link'][0]['#url'] ?? NULL;
+      $title = $build['field_timeline_link'][0]['#title'] ?? NULL;
 
-    if ($field_timeline_link && !$field_timeline_link->isEmpty()) {
-      $link = $field_timeline_link->get(0);
-      $uri = $link->get('uri')->getString();
+      if ($url) {
+        $url_string = $url->toString();
+        $build['#url'] = $url_string;
+        $build['#link_indicator'] = TRUE;
 
-      // Check for media links.
-      if (str_starts_with($uri, 'internal:/media') || str_starts_with($uri, 'entity:media')) {
-        // Get ID from URI.
-        $media_id = preg_replace('/[^0-9]/', '', basename($uri));
+        if ($title) {
+          if (UrlHelper::isExternal($url_string)) {
+            $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
+          }
+          else {
+            $internal_path = str_starts_with($url_string, '/') ? $url_string : '/' . $url_string;
+            $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
 
-        // Load the media entity.
-        $media = \Drupal::entityTypeManager()
-          ->getStorage('media')
-          ->load($media_id);
-
-        if ($media && $media->hasField('field_media_file')) {
-          $file = $media->get('field_media_file')->entity;
-
-          if ($file) {
-            $build['#url'] = $file->createFileUrl(FALSE);
-            $build['#link_indicator'] = TRUE;
-
-            if (!empty($link->get('title')->getString())) {
-              $build['#link_text'] = $link->get('title')->getString();
-            }
+            $build['#url'] = $alias ?: $url_string;
+            $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
           }
         }
       }
       else {
-        // Handle regular links.
-        $url = $link->getUrl();
-        $build['#url'] = $url ? $url->toString() : '';
-        $build['#link_indicator'] = TRUE;
-
-        if (!empty($link->get('title')->getString())) {
-          $build['#link_text'] = $link->get('title')->getString();
-        }
+        $build['#url'] = '';
+        $build['#link_indicator'] = FALSE;
       }
-    }
 
-    // If we don't have a link set,
-    // then we don't want the card linked at all.
-    else {
-      $build['#url'] = '';
+      unset($build['field_timeline_link']);
     }
 
     // Each card is part of a timeline list, so add
