@@ -453,29 +453,21 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If we have more link checked and link provided, pass it.
       if ((bool) $block->get('field_collection_more')->value === TRUE) {
-        // Only process if the field exists in the render array.
-        if (isset($variables['elements']['content']['field_collection_more_path'])) {
-          $delta = array_key_first(Element::children($variables['elements']['content']['field_collection_more_path']));
-
-          if ($delta !== NULL) {
-            // Get the formatted URL directly from the render array.
-            $link = $variables['elements']['content']['field_collection_more_path'][$delta];
-            $url = $link['#url'];
-          }
-          else {
-            // Fallback to events.uiowa.edu if no valid link.
-            $url = Url::fromUri('//events.uiowa.edu');
-          }
-
-          $variables['content']['more'] = [
-            '#type' => 'link',
-            '#title' => 'View more events',
-            '#url' => $url,
-            '#attributes' => [
-              'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
-            ],
-          ];
+        if ($uri = $block->get('field_collection_more_path')->uri) {
+          $url = Url::fromUri($uri);
         }
+        else {
+          $url = Url::fromUri('//events.uiowa.edu');
+        }
+
+        $variables['content']['more'] = [
+          '#type' => 'link',
+          '#title' => 'View more events',
+          '#url' => $url,
+          '#attributes' => [
+            'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+          ],
+        ];
       }
       break;
   }
