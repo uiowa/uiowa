@@ -28,6 +28,7 @@ dependencies:
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
+    - field.field.node.building.field_building_energy_dashboard
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
@@ -59,6 +60,7 @@ dependencies:
     - file
     - layout_builder
     - layout_builder_restrictions
+    - link
     - user
     - views
   theme:
@@ -176,6 +178,27 @@ third_party_settings:
             weight: 5
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 33810ab2-7d97-440c-aec0-403b8af028db
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_energy_dashboard'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
@@ -709,6 +732,18 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 17
+    region: content
+  field_building_energy_dashboard:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 18
     region: content
   field_building_image:
     type: file_default
