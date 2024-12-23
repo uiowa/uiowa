@@ -28,6 +28,9 @@ class EventsProcessor extends EntityProcessorBase {
    */
   protected $apiRecordSyncKey = 'id';
 
+  /**
+   * {@inheritdoc}
+   */
   protected $skipDelete = TRUE;
 
   /**
