@@ -28,6 +28,8 @@ class EventsProcessor extends EntityProcessorBase {
    */
   protected $apiRecordSyncKey = 'id';
 
+  protected $skipDelete = TRUE;
+
   /**
    * A reusable timezone object.
    *
