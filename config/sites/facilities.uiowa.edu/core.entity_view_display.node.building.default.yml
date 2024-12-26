@@ -179,27 +179,6 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
-          -
-            uuid: 33810ab2-7d97-440c-aec0-403b8af028db
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_energy_dashboard'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: link
-                label: above
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
@@ -269,28 +248,6 @@ third_party_settings:
                   scale: 2
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 1
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: ca705385-ebaf-4d15-a1d5-408826d18570
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_year_built'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
             weight: 2
             additional:
               layout_builder_styles_style:
@@ -313,7 +270,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 5
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -336,6 +293,53 @@ third_party_settings:
                   link: true
                 third_party_settings: {  }
             weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 33810ab2-7d97-440c-aec0-403b8af028db
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_energy_dashboard'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: ca705385-ebaf-4d15-a1d5-408826d18570
+            region: content
+            configuration:
+              id: 'field_block:node:building:field_building_year_built'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
