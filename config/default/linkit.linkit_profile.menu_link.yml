@@ -1,0 +1,47 @@
+uuid: acea6759-4d5d-470a-8e78-e88d9204024e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - webform
+label: 'Menu Link'
+id: menu_link
+description: 'Linkit profile used for menu_link_content. Does not include the media matcher.'
+matchers:
+  c8c7d1bb-764e-43bd-80a8-b7e0133ed53d:
+    id: 'entity:node'
+    uuid: c8c7d1bb-764e-43bd-80a8-b7e0133ed53d
+    settings:
+      metadata: '[node:content-type] - /node/[node:nid] created by [node:author] | updated [node:changed:html_date]'
+      bundles: {  }
+      group_by_bundle: false
+      substitution_type: canonical
+      limit: 100
+      include_unpublished: true
+    weight: -10
+  56a80a42-d017-4dfa-842c-ec4efd301ddc:
+    id: email
+    uuid: 56a80a42-d017-4dfa-842c-ec4efd301ddc
+    settings: {  }
+    weight: -8
+  888ebf13-6e22-4875-8d4c-7e2a912d22d2:
+    id: 'entity:webform'
+    uuid: 888ebf13-6e22-4875-8d4c-7e2a912d22d2
+    settings:
+      metadata: 'created by [webform:author]'
+      bundles: null
+      group_by_bundle: null
+      substitution_type: canonical
+      limit: 100
+    weight: -9
+  52541d84-5af4-4d18-af78-bffb085f68dd:
+    id: front_page
+    uuid: 52541d84-5af4-4d18-af78-bffb085f68dd
+    settings: {  }
+    weight: -7
+  2d2cf559-057c-4098-8887-a84b00212d9b:
+    id: nolink
+    uuid: 2d2cf559-057c-4098-8887-a84b00212d9b
+    settings: {  }
+    weight: -6
