@@ -3334,3 +3334,10 @@ function sitenow_update_10012() {
     });
   }
 }
+
+/**
+ * Clear caches to flush site footer template.
+ */
+function sitenow_update_10013() {
+  drupal_flush_all_caches();
+}
