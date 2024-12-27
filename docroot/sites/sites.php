@@ -1391,12 +1391,6 @@ $sites['amcs.dev.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.stage.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.prod.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 
-// Directory aliases for magazine.engineering.uiowa.edu.
-$sites['engineeringmagazine.uiowa.ddev.site'] = 'magazine.engineering.uiowa.edu';
-$sites['engineeringmagazine.dev.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
-$sites['engineeringmagazine.stage.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
-$sites['engineeringmagazine.prod.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
-
 // Directory aliases for news.engineering.uiowa.edu.
 $sites['engineeringnews.uiowa.ddev.site'] = 'news.engineering.uiowa.edu';
 $sites['engineeringnews.dev.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
