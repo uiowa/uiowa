@@ -2,10 +2,12 @@
 
 namespace Drupal\uiowa_core;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
+use Drupal\Core\Url;
 
 /**
- * A class to handle links for entities, internal links, and external routes.
+ * A class to handle internal, external, media links for entities.
  */
 class LinkHelper {
 
@@ -59,6 +61,114 @@ class LinkHelper {
     }
 
     return $displayable_string;
+  }
+
+  /**
+   * Processes a link and returns an array with URL and link text.
+   *
+   * @param string|\Drupal\Core\Url $url
+   *   The URL to process (can be a string or an Url object).
+   * @param bool $clear_title
+   *   Whether to clear the link title (used for cards circle button).
+   *
+   * @return array
+   *   An array containing:
+   *   - 'link_url': The processed URL.
+   *   - 'link_text': The processed link text (or null if not applicable).
+   *   - 'is_external': A boolean indicating if the link is external.
+   */
+  public static function processLink(string|Url $url, bool $clear_title = FALSE): array {
+    // Initialize the result array.
+    $result = [
+      'link_url' => NULL,
+      'link_text' => NULL,
+    ];
+
+    // If it's an Url object, get the URL string.
+    if ($url instanceof Url) {
+      $url = $url->toString();
+    }
+
+    // Determine if the link is external.
+    $is_external = UrlHelper::isExternal($url);
+    $result['is_external'] = $is_external;
+
+    if (str_starts_with($url, 'entity:media') || str_starts_with($url, 'internal:/media')) {
+      $result = self::processMediaUrl($url);
+    }
+    elseif ($is_external) {
+      $result['link_url'] = $url;
+    }
+    else {
+      $result['link_url'] = $url;
+    }
+
+    // Determine if we should clear the link text.
+    if ($clear_title || self::shouldClearTitle($url)) {
+      $result['link_text'] = NULL;
+    }
+    else {
+      $result['link_text'] = $url;
+    }
+
+    return $result;
+  }
+
+  /**
+   * Determines if the title should be cleared based on the URL.
+   *
+   * @param string $url
+   *   The URL to check.
+   *
+   * @return bool
+   *   TRUE if the title should be cleared, FALSE otherwise.
+   */
+  private static function shouldClearTitle(string $url): bool {
+    return str_starts_with($url, 'http') || str_starts_with($url, '/');
+  }
+
+  /**
+   * Get the file URL for a media entity.
+   */
+  private static function processMediaUrl($url) {
+    if (str_starts_with($url, 'internal:/media')) {
+      $media_id = basename($url);
+      $media = \Drupal::entityTypeManager()
+        ->getStorage('media')
+        ->load($media_id);
+
+      if ($media && $media->hasField('field_media_file')) {
+        $file = $media->get('field_media_file')->entity;
+        return $file ? $file->createFileUrl(FALSE) : $url;
+      }
+    }
+    // Default to URL if media can't be processed.
+    return $url;
+  }
+
+  /**
+   * Processes multiple links from a field and returns their structured details.
+   *
+   * @param object $entity
+   *   The entity containing the field with links.
+   * @param string $field_name
+   *   The field name containing links.
+   *
+   * @return array
+   *   An array of structured link information.
+   */
+  public static function processLinksFromField(object $entity, string $field_name): array {
+    $links = [];
+
+    if ($entity->hasField($field_name)) {
+      foreach ($entity->get($field_name)->getIterator() as $link_item) {
+        $uri = $link_item->get('uri')->getString();
+        $title = $link_item->get('title')->getString();
+        $links[] = self::processLink($uri, empty($title));
+      }
+    }
+
+    return $links;
   }
 
 }
