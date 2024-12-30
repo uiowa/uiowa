@@ -328,6 +328,10 @@ function facilities_core_preprocess_field(&$variables) {
       uiowa_core_set_attributes($variables, 'padding--inline-end--md');
       break;
 
+    case 'field_building_energy_dashboard':
+      $variables['items'][0]['content']['#title'] = 'Energy Dashboard';
+      break;
+
     case 'field_building_hours':
       // Set up the details element.
       $details = [

@@ -63,7 +63,7 @@ class AccessibilityLinks extends BlockBase {
       $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $url . '">' . $link['label'] . '<i class="fa-solid fa-' . $link['icon'] . ' "></i></a>';
     }
     if ($energy_dashboard != NULL) {
-      $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $energy_dashboard . '">' . 'Energy Dashboard' . '<i class="fa-solid fa-bolt-lightning"></i></a>';
+      $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $energy_dashboard . '" aria-label="Energy Dashboard (Login Required)">' . 'Energy Dashboard' . '<i class="fa-solid fa-bolt-lightning"></i></a>';
     }
     $list_markup .= '</div>';
 
