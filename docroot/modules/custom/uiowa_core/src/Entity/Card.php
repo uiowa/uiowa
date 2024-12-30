@@ -2,9 +2,9 @@
 
 namespace Drupal\uiowa_core\Entity;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Render\Element;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\uiowa_core\LinkHelper;
 
 /**
  * A bundle entity class for card block content.
@@ -29,33 +29,23 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-    if (isset($build['field_uiowa_card_link'][0])) {
-      // Capture the parts of the URL.
+    if (!empty($build['field_uiowa_card_link'][0])) {
+      // Capture the parts of the URL and title.
       $url = $build['field_uiowa_card_link'][0]['#url'] ?? NULL;
       $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
 
-      // Only process if both url and title are not null.
-      if ($url && $title) {
-        $url = $url->toString();
-        $build['#link_text'] = $title;
+      if ($url) {
+        $url_string = $url->toString();
 
-        // Check if the link is an external URL.
-        if (UrlHelper::isExternal($url)) {
-          // For external links, set the URL directly.
-          $build['#url'] = $url;
-          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
-          $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
-        }
-        else {
-          $internal_path = str_starts_with($url, '/') ? $url : '/' . $url;
-          $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+        // Pass the URL and title to processLink.
+        $processed_link = LinkHelper::processLink($url_string, $title, TRUE);
 
-          $build['#url'] = $alias ?: $url;
-          // Set link text to null to prevent displaying full URL as link text so that circle button can be used.
-          $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
-        }
+        // Update the build array with processed values.
+        $build['#url'] = $processed_link['link_url'];
+        $build['#link_text'] = $processed_link['link_text'];
       }
 
+      // Remove the original field to prevent further processing.
       unset($build['field_uiowa_card_link']);
     }
 

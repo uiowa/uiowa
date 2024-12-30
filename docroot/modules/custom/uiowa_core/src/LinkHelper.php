@@ -68,6 +68,8 @@ class LinkHelper {
    *
    * @param string|\Drupal\Core\Url $url
    *   The URL to process (can be a string or an Url object).
+   * @param string|null $title
+   *   The link title, optional, if provided.
    * @param bool $clear_title
    *   Whether to clear the link title (used for cards circle button).
    *
@@ -77,7 +79,7 @@ class LinkHelper {
    *   - 'link_text': The processed link text (or null if not applicable).
    *   - 'is_external': A boolean indicating if the link is external.
    */
-  public static function processLink(string|Url $url, bool $clear_title = FALSE): array {
+  public static function processLink(string|Url $url, ?string $title = NULL, bool $clear_title = FALSE): array {
     // Initialize the result array.
     $result = [
       'link_url' => NULL,
@@ -93,38 +95,45 @@ class LinkHelper {
     $is_external = UrlHelper::isExternal($url);
     $result['is_external'] = $is_external;
 
+    // Process media links.
     if (str_starts_with($url, 'entity:media') || str_starts_with($url, 'internal:/media')) {
       $result = self::processMediaUrl($url);
     }
+    // Process external links.
     elseif ($is_external) {
       $result['link_url'] = $url;
     }
+    // Process internal links.
     else {
-      $result['link_url'] = $url;
+      $internal_path = str_starts_with($url, '/') ? $url : '/' . $url;
+      $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
+      $result['link_url'] = $alias ?: $url;
     }
 
-    // Determine if we should clear the link text.
-    if ($clear_title || self::shouldClearTitle($url)) {
-      $result['link_text'] = NULL;
-    }
-    else {
-      $result['link_text'] = $url;
+    // If title is provided, use it. Otherwise, use the URL as fallback.
+    $result['link_text'] = $title ?: $url;
+
+    if ($clear_title) {
+      if (self::shouldClearTitle($result['link_text'])) {
+        $result['link_text'] = NULL;
+      }
     }
 
     return $result;
   }
 
   /**
-   * Determines if the title should be cleared based on the URL.
+   * Determines if the title should be cleared based on its value.
    *
-   * @param string $url
-   *   The URL to check.
+   * @param string|null $title
+   *   The title to check.
    *
    * @return bool
    *   TRUE if the title should be cleared, FALSE otherwise.
    */
-  private static function shouldClearTitle(string $url): bool {
-    return str_starts_with($url, 'http') || str_starts_with($url, '/');
+  private static function shouldClearTitle(?string $title): bool {
+    // Check if the title is empty, or if it's an absolute or relative path.
+    return empty($title) || str_starts_with($title, 'http') || str_starts_with($title, '/');
   }
 
   /**

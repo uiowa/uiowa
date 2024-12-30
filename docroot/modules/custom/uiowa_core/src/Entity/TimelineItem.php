@@ -2,9 +2,9 @@
 
 namespace Drupal\uiowa_core\Entity;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\uiowa_core\LinkHelper;
 
 /**
  * Provides an interface for paragraph timeline items.
@@ -43,32 +43,28 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
 
     // Process timeline link field for both regular and media links.
     if (!empty($build['field_timeline_link'][0])) {
+      // Capture the parts of the URL and title.
       $url = $build['field_timeline_link'][0]['#url'] ?? NULL;
       $title = $build['field_timeline_link'][0]['#title'] ?? NULL;
 
       if ($url) {
         $url_string = $url->toString();
-        $build['#url'] = $url_string;
+
+        // Run the link through the processLink helper function.
+        $processed_link = LinkHelper::processLink($url_string, $title, TRUE);
+
+        // Apply the processed link output to the build array.
+        $build['#url'] = $processed_link['link_url'];
+        $build['#link_text'] = $processed_link['link_text'];
         $build['#link_indicator'] = TRUE;
-
-        if ($title) {
-          if (UrlHelper::isExternal($url_string)) {
-            $build['#link_text'] = str_starts_with($title, 'http') ? NULL : $title;
-          }
-          else {
-            $internal_path = str_starts_with($url_string, '/') ? $url_string : '/' . $url_string;
-            $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
-
-            $build['#url'] = $alias ?: $url_string;
-            $build['#link_text'] = str_starts_with($title, '/') ? NULL : $title;
-          }
-        }
       }
       else {
+        // Handle the case where no URL is provided.
         $build['#url'] = '';
         $build['#link_indicator'] = FALSE;
       }
 
+      // Remove the original field to prevent further processing.
       unset($build['field_timeline_link']);
     }
 
