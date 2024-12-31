@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\uiowa_maui\MauiApi;
@@ -187,24 +186,15 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     ];
 
     $form['more_link'] = [
-      '#type' => 'entity_autocomplete',
+      '#type' => 'linkit',
       '#title' => $this->t('Path'),
       '#description' => $this->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com. Enter %front to link to the front page.'),
-      '#default_value' => isset($config['more_link']) ? LinkHelper::getUriAsDisplayableString($config['more_link']) : 'https://registrar.uiowa.edu/academic-calendar',
-      '#element_validate' => [
-        [
-          LinkWidget::class,
-          'validateUriElement',
-        ],
+      '#default_value' => $block_configuration['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar',
+      '#autocomplete_route_name' => 'linkit.autocomplete',
+      '#process_default_value' => TRUE,
+      '#autocomplete_route_parameters' => [
+        'linkit_profile_id' => 'default',
       ],
-      // @todo The user should be able to select an entity type. Will be fixed
-      // in https://www.drupal.org/node/2423093.
-      '#target_type' => 'node',
-      // Disable autocompletion when the first character is '/', '#' or '?'.
-      '#attributes' => [
-        'data-autocomplete-first-character-blacklist' => '/#?',
-      ],
-      '#process_default_value' => FALSE,
       '#states' => [
         'visible' => [
           [
@@ -327,13 +317,14 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     if ($config['display_more_link'] === TRUE) {
       $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
+      $url = LinkHelper::processLinkIt($more_link);
 
       $build['more_link'] = [
         '#title' => $this->t('@more_text', [
           '@more_text' => $config['more_text'] ?? 'View more',
         ]),
         '#type' => 'link',
-        '#url' => Url::fromUri($more_link),
+        '#url' => Url::fromUri($url),
         '#attributes' => [
           'class' => ['bttn', 'bttn--primary', 'more-link'],
         ],
