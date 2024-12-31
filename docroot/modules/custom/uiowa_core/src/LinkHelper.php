@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_core;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Url;
 
@@ -64,62 +63,72 @@ class LinkHelper {
   }
 
   /**
-   * Processes a link and returns an array with URL and link text.
+   * Processes a link from a Linkit Form API implementation.
    *
    * @param string|\Drupal\Core\Url $url
    *   The URL to process (can be a string or an Url object).
-   * @param string|null $title
-   *   The link title, optional, if provided.
-   * @param bool $clear_title
-   *   Whether to clear the link title (used for cards circle button).
    *
-   * @return array
-   *   An array containing:
-   *   - 'link_url': The processed URL.
-   *   - 'link_text': The processed link text (or null if not applicable).
-   *   - 'is_external': A boolean indicating if the link is external.
+   * @return string
+   *   The processed URL.
    */
-  public static function processLink(string|Url $url, ?string $title = NULL, bool $clear_title = FALSE): array {
-    // Initialize the result array.
-    $result = [
-      'link_url' => NULL,
-      'link_text' => NULL,
-    ];
+  public static function processLinkIt(string|Url $url): string {
+    // Check if the URL is media-related and process it accordingly.
+    if (self::isMediaUrl($url)) {
+      return self::processMediaUrl($url);
+    }
+    // Return the URL unchanged if no special processing is needed.
+    return $url;
+  }
 
-    // If it's an Url object, get the URL string.
-    if ($url instanceof Url) {
-      $url = $url->toString();
+  /**
+   * Checks if a URL is media-related.
+   */
+  private static function isMediaUrl($url): bool {
+    $url_str = (string) $url;
+    return str_starts_with($url_str, 'entity:media') ||
+      str_starts_with($url_str, '/media/') ||
+      str_starts_with($url_str, 'internal:/media');
+  }
+
+  /**
+   * Process media URLs to return a direct file URL.
+   */
+  private static function processMediaUrl($url) {
+    // Identify and extract media ID from the URL.
+    $mid = self::extractMediaId($url);
+    if ($mid) {
+      return self::loadMediaFileUrl($mid);
     }
 
-    // Determine if the link is external.
-    $is_external = UrlHelper::isExternal($url);
-    $result['is_external'] = $is_external;
+    // Return the original URL if it doesn't match media patterns.
+    return $url;
+  }
 
-    // Process media links.
-    if (str_starts_with($url, 'entity:media') || str_starts_with($url, 'internal:/media')) {
-      $result = self::processMediaUrl($url);
+  /**
+   * Extracts the media ID from the given URL.
+   */
+  private static function extractMediaId($url): ?string {
+    if (str_starts_with($url, '/media/')) {
+      return substr($url, strlen('/media/'));
     }
-    // Process external links.
-    elseif ($is_external) {
-      $result['link_url'] = $url;
+    if (str_starts_with($url, 'entity:media:')) {
+      return substr($url, strlen('entity:media:'));
     }
-    // Process internal links.
-    else {
-      $internal_path = str_starts_with($url, '/') ? $url : '/' . $url;
-      $alias = \Drupal::service('path_alias.manager')->getAliasByPath($internal_path);
-      $result['link_url'] = $alias ?: $url;
+    if (str_starts_with($url, 'internal:/media')) {
+      return basename($url);
     }
+    return NULL;
+  }
 
-    // If title is provided, use it. Otherwise, use the URL as fallback.
-    $result['link_text'] = $title ?: $url;
-
-    if ($clear_title) {
-      if (self::shouldClearTitle($result['link_text'])) {
-        $result['link_text'] = NULL;
-      }
+  /**
+   * Load the direct file URL for a given media ID.
+   */
+  public static function loadMediaFileUrl($mid) {
+    $media = \Drupal::entityTypeManager()->getStorage('media')->load($mid);
+    if ($media && $media->hasField('field_media_file') && $file = $media->get('field_media_file')->entity) {
+      return $file->createFileUrl(FALSE);
     }
-
-    return $result;
+    return NULL;
   }
 
   /**
@@ -131,53 +140,9 @@ class LinkHelper {
    * @return bool
    *   TRUE if the title should be cleared, FALSE otherwise.
    */
-  private static function shouldClearTitle(?string $title): bool {
+  public static function shouldClearTitle(?string $title): bool {
     // Check if the title is empty, or if it's an absolute or relative path.
     return empty($title) || str_starts_with($title, 'http') || str_starts_with($title, '/');
-  }
-
-  /**
-   * Get the file URL for a media entity.
-   */
-  private static function processMediaUrl($url) {
-    if (str_starts_with($url, 'internal:/media')) {
-      $media_id = basename($url);
-      $media = \Drupal::entityTypeManager()
-        ->getStorage('media')
-        ->load($media_id);
-
-      if ($media && $media->hasField('field_media_file')) {
-        $file = $media->get('field_media_file')->entity;
-        return $file ? $file->createFileUrl(FALSE) : $url;
-      }
-    }
-    // Default to URL if media can't be processed.
-    return $url;
-  }
-
-  /**
-   * Processes multiple links from a field and returns their structured details.
-   *
-   * @param object $entity
-   *   The entity containing the field with links.
-   * @param string $field_name
-   *   The field name containing links.
-   *
-   * @return array
-   *   An array of structured link information.
-   */
-  public static function processLinksFromField(object $entity, string $field_name): array {
-    $links = [];
-
-    if ($entity->hasField($field_name)) {
-      foreach ($entity->get($field_name)->getIterator() as $link_item) {
-        $uri = $link_item->get('uri')->getString();
-        $title = $link_item->get('title')->getString();
-        $links[] = self::processLink($uri, empty($title));
-      }
-    }
-
-    return $links;
   }
 
 }

@@ -35,14 +35,12 @@ class Card extends BlockContent implements RendersAsCardInterface {
       $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
 
       if ($url) {
-        $url_string = $url->toString();
-
-        // Pass the URL and title to processLink.
-        $processed_link = LinkHelper::processLink($url_string, $title, TRUE);
-
-        // Update the build array with processed values.
-        $build['#url'] = $processed_link['link_url'];
-        $build['#link_text'] = $processed_link['link_text'];
+        $url = $url->toString();
+        if (LinkHelper::shouldClearTitle($title)) {
+          $title = NULL;
+        }
+        $build['#url'] = $url;
+        $build['#link_text'] = $title;
       }
 
       // Remove the original field to prevent further processing.

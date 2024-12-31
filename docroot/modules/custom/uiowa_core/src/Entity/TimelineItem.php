@@ -48,14 +48,12 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       $title = $build['field_timeline_link'][0]['#title'] ?? NULL;
 
       if ($url) {
-        $url_string = $url->toString();
-
-        // Run the link through the processLink helper function.
-        $processed_link = LinkHelper::processLink($url_string, $title, TRUE);
-
-        // Apply the processed link output to the build array.
-        $build['#url'] = $processed_link['link_url'];
-        $build['#link_text'] = $processed_link['link_text'];
+        $url = $url->toString();
+        if (LinkHelper::shouldClearTitle($title)) {
+          $title = NULL;
+        }
+        $build['#url'] = $url;
+        $build['#link_text'] = $title;
         $build['#link_indicator'] = TRUE;
       }
       else {
