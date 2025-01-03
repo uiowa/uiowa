@@ -9,6 +9,7 @@ variables.$imgpath: '../../uids/assets/images';
 @use "admin/_toolbar.scss";
 @use "admin/_grid.scss";
 @use "admin/_claro.scss";
+@use "admin/_ui_icons.scss";
 
 .uiowa-headline--container {
   border: 1px solid #999;
@@ -72,6 +73,6 @@ variables.$imgpath: '../../uids/assets/images';
 }
 
 // Add padding to icons in the media library.
-.media-library-widget-modal img[srcvariables.$=".svg"] {
+.media-library-widget-modal img[src$=".svg"] {
   padding: 2rem 1rem 0;
 }

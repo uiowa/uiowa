@@ -5,3 +5,7 @@ services:
   logger.channel.emergency_core:
     parent: logger.channel_base
     arguments: [ 'emergency_core' ]
+  emergency_core.cache_control_subscriber:
+    class: Drupal\emergency_core\EventSubscriber\CacheControlSubscriber
+    tags:
+      - { name: event_subscriber }

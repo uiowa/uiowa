@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_icon
     - field.field.block_content.uiowa_card.field_uiowa_card_author
     - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
@@ -14,6 +15,7 @@ dependencies:
     - heading
     - link
     - text
+    - ui_icons_field
 _core:
   default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
 id: block_content.uiowa_card.default
@@ -21,6 +23,14 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_icon:
+    type: icon_formatter
+    label: above
+    settings:
+      icon_settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   field_uiowa_card_author:
     type: string
     label: hidden
