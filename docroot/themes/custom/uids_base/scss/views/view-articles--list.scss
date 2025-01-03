@@ -1,12 +1,12 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .field--name-field-article-author+.field--name-field-article-source-link,
 .field--name-field-article-author+.views-field-article-source-link,
 .views-field-article-source-link+.views-field-article-source-link {
   &:before {
     content: '- ';
-    color: $grey;
-    margin: 0 $xsm;
+    color: variables.$grey;
+    margin: 0 variables.$xsm;
   }
 }

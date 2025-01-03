@@ -1,12 +1,12 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/alert.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/components/alert.scss";
 
 .alert {
  [class*="bg--black"] & {
-   color: $secondary;
+   color: variables.$secondary;
    a {
-     color: $secondary;
+     color: variables.$secondary;
    }
  }
 }
@@ -49,9 +49,9 @@
 
 // Set max width for alert region.
 .region-alert {
-  max-width: $container-width;
-  margin: 0 $mobile-width-gutter;
-  @include breakpoint(page-container) {
+  max-width: variables.$container-width;
+  margin: 0 variables.$mobile-width-gutter;
+  @include utilities.breakpoint(page-container) {
     margin: 0 auto;
     width: 100%;
   }

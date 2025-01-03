@@ -1,18 +1,18 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/button.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/components/button.scss";
 
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
   .bttn {
     margin: 0 1rem 1rem 0;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: inherit;
     }
 
     +.bttn {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin: inherit;
       }
     }
@@ -25,7 +25,7 @@
 }
 
 .more-link {
-  margin-top: $mobile-height-gutter;
+  margin-top: variables.$mobile-height-gutter;
 }
 
 .block.bttn--row {
@@ -38,13 +38,13 @@
     flex-direction: row;
   }
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: block;
   }
 
   &.bttn--full {
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       flex-direction: row;
       display: flex;
       gap: 1.5rem;
@@ -63,12 +63,12 @@
 
   .bttn {
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: 0 1.5rem 1.5rem 0;
     }
 
     +.bttn {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin: 0 1.5rem 1.5rem 0;
       }
     }

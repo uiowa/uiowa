@@ -1,71 +1,71 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-$imgpath: '../../../uids/assets/images';
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+variables.$imgpath: '../../../uids/assets/images';
 
 .bg-primary {
-  background: $primary;
+  background: variables.$primary;
 }
 
 .bg-secondary {
-  background: $secondary;
+  background: variables.$secondary;
 }
 
 .bg-cool-gray {
-  background: $brand-cool-gray;
+  background: variables.$brand-cool-gray;
 }
 
 .bg-blue {
-  background: $info;
+  background: variables.$info;
 }
 
 .bg-green {
-  background: $success;
+  background: variables.$success;
 }
 
 .bg-orange {
-  background: $danger;
+  background: variables.$danger;
 }
 
 .text-white {
-  color: $white;
+  color: variables.$white;
 }
 
 .text--gray {
-  color: $brand-cool-gray;
+  color: variables.$brand-cool-gray;
 }
 
 .text--gold {
-  color: $primary;
+  color: variables.$primary;
 }
 
 .text--black {
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 a.text--black {
-  color: $secondary;
+  color: variables.$secondary;
   [class*="bg-"] &,
   [class*="bg-"] [class*="bg-"] & {
-    color: $secondary;
+    color: variables.$secondary;
   }
 }
 
 .text--white {
-  color: $white;
+  color: variables.$white;
 }
 
 .bg--gold {
-  background: $primary;
+  background: variables.$primary;
 }
 
 .bg--black {
-  background: $secondary;
+  background: variables.$secondary;
 }
 
 .bg--gray {
-  background: $light;
+  background: variables.$light;
 }
 
 .bg--light {
-  background: $white;
+  background: variables.$white;
 }
