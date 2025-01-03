@@ -20,6 +20,7 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_area' => 'grossArea',
     'field_building_year_built' => 'yearBuilt',
     'field_building_ownership' => 'owned',
+    'field_building_energy_dashboard' => 'energyLink',
     'field_building_named_building' => 'namedBuilding',
     'field_building_image:target_id' => 'imageUrl',
     'field_building_image:alt' => 'image_alt',
