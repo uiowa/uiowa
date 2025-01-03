@@ -6,7 +6,9 @@ use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
+use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
+use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
@@ -381,16 +383,29 @@ class ListBlock extends CoreBlock {
       ];
 
       $form['override']['use_more_link_url'] = [
-        '#type' => 'linkit',
+        '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
         '#description' => $this
-          ->t('Start typing to find content or paste a URL and click on the suggestion below.'),
-        '#default_value' => $block_configuration['use_more_link_url'] ?? NULL,
-        '#autocomplete_route_name' => 'linkit.autocomplete',
-        '#process_default_value' => TRUE,
-        '#autocomplete_route_parameters' => [
-          'linkit_profile_id' => 'default',
+          ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', [
+            '%front' => '<front>',
+            '%add-node' => '/node/add',
+            '%url' => 'http://example.com',
+          ]),
+        '#default_value' => isset($block_configuration['use_more_link_url']) ? LinkHelper::getUriAsDisplayableString($block_configuration['use_more_link_url']) : NULL,
+        '#element_validate' => [
+          [
+            LinkWidget::class,
+            'validateUriElement',
+          ],
         ],
+        // @todo The user should be able to select an entity type. Will be fixed
+        //   in https://www.drupal.org/node/2423093.
+        '#target_type' => 'node',
+        // Disable autocompletion when the first character is '/', '#' or '?'.
+        '#attributes' => [
+          'data-autocomplete-first-character-blacklist' => '/#?',
+        ],
+        '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
             [
@@ -629,8 +644,7 @@ class ListBlock extends CoreBlock {
         $this->setOption('use_more_always', TRUE);
         $this->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
-          $url = LinkHelper::processLinkIt($config['use_more_link_url']);
-          $this->setOption('link_url', $url);
+          $this->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
         }
         if (!empty($config['use_more_text'])) {
           $this->setOption('use_more_text', $config['use_more_text']);
