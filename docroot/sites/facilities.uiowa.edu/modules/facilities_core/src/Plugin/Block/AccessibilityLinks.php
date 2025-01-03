@@ -62,7 +62,7 @@ class AccessibilityLinks extends BlockBase {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
       $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $url . '">' . $link['label'] . '<i class="fa-solid fa-' . $link['icon'] . ' "></i></a>';
     }
-    if ($energy_dashboard != NULL) {
+    if (!empty($energy_dashboard)) {
       $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $energy_dashboard . '" aria-label="Energy Dashboard (Login Required)">' . 'Energy Dashboard' . '<i class="fa-solid fa-bolt-lightning"></i></a>';
     }
     $list_markup .= '</div>';
