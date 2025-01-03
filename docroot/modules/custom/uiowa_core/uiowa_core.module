@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -108,6 +109,22 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['node']['contact'])) {
     $bundles['node']['contact']['class'] = Contact::class;
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
+    $fields['link']->setDisplayOptions('form', [
+      'type' => 'linkit',
+      'weight' => -2,
+      'settings' => [
+        'linkit_profile' => 'menu_link',
+        'linkit_auto_link_text' => TRUE,
+      ],
+    ]);
   }
 }
 

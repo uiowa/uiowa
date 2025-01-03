@@ -452,21 +452,22 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If we have more link checked and link provided, pass it.
       if ((bool) $block->get('field_collection_more')->value === TRUE) {
-        if ($uri = $block->get('field_collection_more_path')->uri) {
-          $url = Url::fromUri($uri);
+        $link_field = $block->get('field_collection_more_path');
+        if ($link_field->isEmpty()) {
+          $url = Url::fromUri('//events.uiowa.edu');
+          $variables['content']['more'] = [
+            '#type' => 'link',
+            '#title' => 'View more events',
+            '#url' => $url,
+            '#attributes' => [
+              'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+            ],
+          ];
         }
         else {
-          $url = Url::fromUri('//events.uiowa.edu');
+          $link_field = $block->get('field_collection_more_path')->view(['label' => 'hidden', 'type' => 'linkit']);
+          $variables['content']['more'] = $link_field;
         }
-
-        $variables['content']['more'] = [
-          '#type' => 'link',
-          '#title' => 'View more events',
-          '#url' => $url,
-          '#attributes' => [
-            'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
-          ],
-        ];
       }
       break;
   }
@@ -626,6 +627,14 @@ function sitenow_events_build_card(array $event): array {
  */
 function sitenow_events_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_collection_more_path':
+      $field_value = $variables['element']['#items']->getValue();
+      if ($field_value) {
+        $variables['items'][0]['content']['#title'] = t('View more events');
+        $variables['items'][0]['content']['#attributes']['class'][] = 'more-link bttn bttn--primary bttn--caps';
+      }
+      break;
+
     case 'field_event_attendance':
       $field_label = $variables['element']['#title'];
       uiowa_core_set_attributes($variables, 'element--inline');
