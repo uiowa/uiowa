@@ -2,12 +2,6 @@
 @import "uids/scss/abstracts/_utilities.scss";
 @import "uids/scss/components/banner.scss";
 
-.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative,
-.banner.banner--gradient-left-reversed .headline.headline--highlight{
-  text-shadow: none;
-  color: $secondary;
-}
-
 
 .layout--onecol,
 .layout--twocol--75-25 .layout__region--first,
@@ -183,7 +177,7 @@
   font-size: clamp(2.2rem,calc(3.3803vw + .9324rem),3.7rem);
 }
 
-.banner__image {
+.media--image {
   .contextual-region {
     // Remove contextual position for logged in view of banner image
     position: unset;
@@ -276,43 +270,6 @@
   }
 }
 
-// @todo move back to UIDS
-.banner__pre-title {
-  font-weight: 500;
-}
-
-.slider__slide {
-  .banner__container {
-    position: relative;
-  }
-}
-
-.banner.banner--horizontal-center {
-  .banner__action .bttn {
-    margin: 1rem auto;
-    display: block;
-    width: fit-content;
-    @include breakpoint(sm) {
-      margin: 0 1rem 1rem 0;
-      display: inline-block;
-      width: auto;
-    }
-
-    + .bttn {
-      @include breakpoint(sm) {
-        margin: 0 1rem 1rem 0;
-      }
-    }
-
-    &:last-child {
-      margin: 1rem auto;
-      @include breakpoint(sm) {
-        margin-top: 0;
-        margin-right: 0;
-      }
-    }
-  }
-}
 
 // @todo revisit these styles once https://github.com/uiowa/uids/issues/722 is completed.
 .banner--list {
@@ -330,7 +287,7 @@
 // @todo incorporate this into https://github.com/uiowa/uids/issues/721.
 .banner--stacked {
   &.layout--onecol--background.banner--small {
-    .banner__image {
+    .media--image {
       max-height: 15rem;
       overflow: hidden;
       @include breakpoint(sm) {
