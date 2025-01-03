@@ -86,9 +86,9 @@
   margin-bottom: 1.6rem;
   text-decoration: none;
   flex-grow: 1;
-  @include flexbox;
-  @include flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0%);
-  @include flex-direction(variables.$value: column);
+  @include utilities.flexbox;
+  @include utilities.flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0%);
+  @include utilities.flex-direction(variables.$value: column);
 
   &:focus-within .card__title a:focus {
     text-decoration: underline;

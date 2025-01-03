@@ -38,7 +38,7 @@
     .bold-headline,
     .page-title.headline {
       @include utilities.breakpoint(sm) {
-        @include utilities.headline-negative;
+        @include headline-mixins.headline-negative;
         text-shadow: 0 1px 1px #000;
       }
     }
@@ -85,7 +85,7 @@
 
 .layout--title--hidden {
   .block-system-breadcrumb-block {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }
 

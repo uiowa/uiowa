@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+
 .bg-yellow,
 .bg-yellow.has-section-image,
 .paragraph .bg-yellow,
@@ -206,11 +210,11 @@
 
     .card,
     .node--view-mode-teaser {
-      @include bg-yellow;
+      @include utilities.bg-yellow;
     }
 
     .views-row {
-      @include bg-yellow;
+      @include utilities.bg-yellow;
 
       a {
         color: variables.$secondary;
@@ -226,7 +230,7 @@
 
   .paragraph--type--events.list {
     .card {
-      @include bg-yellow;
+      @include utilities.bg-yellow;
 
       a {
         color: variables.$secondary;
@@ -797,14 +801,14 @@
 
     .views-row,
     .card {
-      @include bg-light;
+      @include utilities.bg-light;
     }
   }
 
   &.paragraph--type--events.list,
   .paragraph--type--events.list {
     .card {
-      @include bg-light;
+      @include utilities.bg-light;
     }
   }
 
@@ -814,7 +818,7 @@
     .featured-content-item,
     .node--view-mode-teaser,
     .card {
-      @include bg-light;
+      @include utilities.bg-light;
     }
   }
 }
@@ -872,7 +876,7 @@
     .card,
     .views-row {
       background-color: transparent !important;
-      @include text-light;
+      @include utilities.text-light;
     }
   }
 
@@ -886,7 +890,7 @@
 
     .card {
       background-color: transparent !important;
-      @include text-light;
+      @include utilities.text-light;
       //border-bottom: 1px solid #ffffff21;
     }
   }
@@ -910,7 +914,7 @@
     .featured-content-item,
     .node--view-mode-teaser.media {
       background-color: transparent !important;
-      @include text-light;
+      @include utilities.text-light;
     }
   }
 }

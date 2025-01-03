@@ -13,8 +13,8 @@
   .tabs::before {
     display: table;
     content: ' ';
-    @include flex(variables.$fb: 0);
-    @include order(variables.$int: 1);
+    @include utilities.flex(variables.$fb: 0);
+    @include utilities.order(variables.$int: 1);
   }
 
   .tabs::after {

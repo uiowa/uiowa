@@ -9,8 +9,8 @@
     width: 100%;
   }
   .view-content {
-    @include list-group;
-    @include list-group-flush;
+    @include utilities.list-group;
+    @include utilities.list-group-flush;
   }
 
   .view-content:first-child .views-row:first-child {
@@ -39,7 +39,7 @@
   }
 
   thead {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 
   .views-field-title,
@@ -51,7 +51,7 @@
   }
 
   .tabledrag-title {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 
   .views-field.views-field-rendered-entity {
@@ -106,6 +106,6 @@
 // Draggableviews weight inputs are not hidden to site visitors...
 body:not(.user-logged-in) {
   .draggableviews-weight {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }

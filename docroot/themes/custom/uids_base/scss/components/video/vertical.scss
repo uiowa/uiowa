@@ -2,9 +2,9 @@
 @use "uids/scss/abstracts/_utilities.scss";
 
 .portrait {
-  @include flexbox;
-  @include flex-wrap(variables.$value: wrap);
-  @include flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0);
+  @include utilities.flexbox;
+  @include utilities.flex-wrap(variables.$value: wrap);
+  @include utilities.flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0);
 
   @include utilities.breakpoint(sm) {
     @include utilities.margin(variables.$right: variables.$md, variables.$left: variables.$md);
@@ -50,7 +50,7 @@
     margin: 0;
 
     @include utilities.breakpoint(sm) {
-      @include flexbox;
+      @include utilities.flexbox;
       flex-direction: row;
       flex-wrap: wrap;
     }
@@ -164,7 +164,7 @@
 }
 
 .portrait .embed-responsive.active .vidbttn.active {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }
 
 

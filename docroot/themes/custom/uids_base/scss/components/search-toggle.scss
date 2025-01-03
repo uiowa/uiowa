@@ -98,11 +98,11 @@ $search-img-path: '../../images/search-01.svg';
   }
 
   span {
-    //@include element-invisible;
+    //@include utilities.element-invisible;
     display: none;
 
     @include utilities.breakpoint(md) {
-      //@include element-invisible-off;
+      //@include utilities.element-invisible-off;
       display: inline;
       overflow: unset;
       position: unset !important;
@@ -316,7 +316,7 @@ $search-img-path: '../../images/search-01.svg';
 }
 
 .search-overlay .uids-search [type="submit"] span {
-  //@include element-invisible;
+  //@include utilities.element-invisible;
   display: none;
 }
 
