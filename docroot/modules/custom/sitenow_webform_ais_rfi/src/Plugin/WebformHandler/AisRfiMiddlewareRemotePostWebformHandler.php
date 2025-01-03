@@ -3,8 +3,6 @@
 namespace Drupal\sitenow_webform_ais_rfi\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
-use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -47,7 +45,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
    */
   public function defaultConfiguration() {
     return [
-      'excluded_data' => [],
+      'included_data' => [],
       'interaction_uuid' => '',
     ];
   }
@@ -92,22 +90,24 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       '#description' => $this->t('The middleware interaction UUID. Without this, no data will be sent to the middleware. Contact siddharth-sarathe@uiowa.edu for assistance setting up an interaction UUID.'),
     ];
 
-    // We're using the webform_excluded_elements element type to generate the
-    // list of elements to exclude from the submission data. It works as an
-    // exclusion list behind the scenes, but we use it to include elements in
-    // the data that gets sent.
     $form['submission_data'] = [
       '#type' => 'details',
       '#title' => $this->t('Data submitted to the middleware'),
     ];
-    $form['submission_data']['excluded_data'] = [
-      '#type' => 'webform_excluded_elements',
-      '#title' => $this->t('Posted data'),
-      '#title_display' => 'invisible',
-      '#webform_id' => $webform->id(),
-      '#required' => TRUE,
-      '#default_value' => $this->configuration['excluded_data'],
+    $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
+    $options = array_combine(
+      array_keys($elements),
+      array_map(fn($item) => $item['#title'], $elements)
+    );
+
+    $form['submission_data']['included_data'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Included data'),
+      '#options' => $options,
+      '#default_value' => $this->configuration['included_data'],
+
     ];
+
     return $this->setSettingsParents($form);
   }
 
@@ -197,11 +197,22 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // webform submission data.
     $element_data = $data['data'];
     unset($data['data']);
+
+    // Default included data.
+    $default_included_data = [
+      'webform_id',
+      'remote_addr',
+      'hostIp',
+      'uri',
+      'clientIp',
+      'postDate',
+    ];
+
+    $data = array_intersect_key($data, array_flip($default_included_data));
+
+    // Included selected submission data.
+    $element_data = array_intersect_key($element_data, array_flip($this->configuration['included_data']));
     $data = $element_data + $data;
-
-    // Excluded selected submission data.
-    $data = array_diff_key($data, $this->configuration['excluded_data']);
-
     // Replace tokens.
     return $this->replaceTokens($data, $webform_submission);
   }
