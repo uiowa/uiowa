@@ -7,7 +7,7 @@
   .menu {
     @include flexbox;
 
-    @include margin(variables.$top: variables.$lg, variables.$left: 0, variables.$bottom: variables.$sm);
+    @include utilities.margin(variables.$top: variables.$lg, variables.$left: 0, variables.$bottom: variables.$sm);
 
     li {
       @include flexbox;
@@ -49,7 +49,7 @@
 
 .menu--group a[target="_blank"]:after {
   content: "\f35d";
-  @include fas();
+  @include utilities.fas();
   font-size: variables.$small-font-size;
   color: variables.$secondary;
   padding-left: variables.$sm;

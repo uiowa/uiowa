@@ -61,11 +61,11 @@
   background-color: #fffae6;
 }
 #search-results button.gsc-search-button {
-  @include bttn;
+  @include utilities.bttn;
   background-color: #ccc;
   border-radius: 0;
   border: 1px solid #ccc;
-  @include padding(variables.$top: variables.$md, variables.$right: 1.75rem, variables.$bottom: 0.75rem, variables.$left: variables.$md);
+  @include utilities.padding(variables.$top: variables.$md, variables.$right: 1.75rem, variables.$bottom: 0.75rem, variables.$left: variables.$md);
 }
 #search-results .gsc-search-button-v2 svg {
   fill: variables.$blk;
@@ -100,7 +100,7 @@
 #search-results .gsc-results .gsc-cursor-box .gsc-cursor {
   display: inline-block;
   padding-left: 0;
-  @include margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
+  @include utilities.margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
   border-radius: 0;
 
   > div {
@@ -109,7 +109,7 @@
     position: relative;
     float: left;
     font-size: 16px;
-    @include padding(variables.$top: variables.$md, variables.$right: 1.35rem, variables.$bottom: variables.$md, variables.$left: 1.35rem);
+    @include utilities.padding(variables.$top: variables.$md, variables.$right: 1.35rem, variables.$bottom: variables.$md, variables.$left: 1.35rem);
     line-height: 1;
     text-decoration: none;
     color: #4F4F4F;

@@ -19,9 +19,9 @@
         }
 
         a.btn-primary {
-           @include bttn--primary;
+           @include utilities.bttn--primary;
             border: 1px solid variables.$primary;
-           @include bttn--focus;
+           @include utilities.bttn--focus;
 
             &:after {
                 background-color: variables.$secondary;
@@ -32,9 +32,9 @@
         }
 
         a.btn:not(.btn-primary) {
-           @include bttn--secondary;
+           @include utilities.bttn--secondary;
             border: 1px solid variables.$secondary;
-           @include bttn--focus;
+           @include utilities.bttn--focus;
            span {
             color: variables.$white !important;
            }

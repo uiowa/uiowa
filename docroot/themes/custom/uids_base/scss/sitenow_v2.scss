@@ -46,7 +46,7 @@ html {
 }
 
 .bg-light {
-  @include bg-light;
+  @include utilities.bg-light;
 }
 
 .bg-dark>*,
@@ -62,19 +62,19 @@ html {
 }
 
 .text-light {
-  @include text-light
+  @include utilities.text-light
 }
 
 .bg-dark {
-  @include bg-dark;
+  @include utilities.bg-dark;
 }
 
 .bg-black {
-  @include bg-black;
+  @include utilities.bg-black;
 }
 
 .bg-yellow {
-  @include bg-yellow;
+  @include utilities.bg-yellow;
 }
 
 // Grid
@@ -86,7 +86,7 @@ html {
   .block-local-tasks-block,
   .content-moderation-entity-moderation-form {
     clear: both;
-    @include container-width;
+    @include utilities.container-width;
   }
 }
 
@@ -98,7 +98,7 @@ html {
 }
 
 .container {
-  @include fullwidth-container;
+  @include utilities.fullwidth-container;
 }
 
 @media (min-width: 1200px) {
@@ -163,7 +163,7 @@ html {
 
 
 .col {
-  @include flex(1, 0, 0);
+  @include utilities.flex(1, 0, 0);
   max-width: 100%;
 }
 
@@ -195,7 +195,7 @@ html {
 
 .col-md {
   @include utilities.breakpoint(md) {
-    @include flex(1, 0, 0);
+    @include utilities.flex(1, 0, 0);
     max-width: 100%;
   }
 }
@@ -396,7 +396,7 @@ html {
 // field
 
 .field--label-inline {
-  @include clearfix;
+  @include utilities.clearfix;
 }
 
 
@@ -450,7 +450,7 @@ figure.caption .embedded-entity+figcaption {
 // Btn
 
 .btn {
-  @include bttn;
+  @include utilities.bttn;
   text-transform: uppercase;
   font-family: variables.$font-family-caps-bold;
   padding: 1rem 2rem;
@@ -462,9 +462,9 @@ figure.caption .embedded-entity+figcaption {
 .btn-info,
 .btn-warning,
 .btn-link {
-  @include bttn--secondary;
+  @include utilities.bttn--secondary;
   border: 1px solid variables.$secondary;
-  @include bttn--focus;
+  @include utilities.bttn--focus;
   span {
     color: variables.$white;
   }
@@ -472,9 +472,9 @@ figure.caption .embedded-entity+figcaption {
 
 .btn-primary,
 .button--primary {
-  @include bttn--primary;
+  @include utilities.bttn--primary;
   border: 1px solid variables.$primary;
-  @include bttn--focus;
+  @include utilities.bttn--focus;
 
   &:after {
     background-color: variables.$secondary;

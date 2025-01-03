@@ -94,7 +94,7 @@
           border-bottom: none;
           display: block;
           position: relative;
-          @include padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
+          @include utilities.padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
 
           &:focus,
           &:hover {
@@ -124,7 +124,7 @@
         color: variables.$secondary;
         @extend %font-smoothing-on;
         word-break: break-word;
-        @include padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
+        @include utilities.padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
 
         [class*="bg--black"] & {
           color: variables.$light;
@@ -185,7 +185,7 @@
         & > span {
           padding: variables.$sm;
           @include utilities.breakpoint(sm) {
-            @include padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: 1.2rem);
+            @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: 1.2rem);
           }
 
           &::before {
@@ -194,7 +194,7 @@
               font-size: 0.9rem;
               left: 0;
               position: absolute;
-              @include fas();
+              @include utilities.fas();
             }
           }
         }
@@ -258,7 +258,7 @@
   .layout--onecol {
     .menu-wrapper--horizontal {
       padding: 0;
-      @include container-width;
+      @include utilities.container-width;
       margin: 0;
       border-top: none;
 
@@ -288,7 +288,7 @@
 
           > a,
           > span {
-            @include bttn--focus;
+            @include utilities.bttn--focus;
             position: relative;
             width: auto;
             text-align: center;
@@ -472,7 +472,7 @@
               list-style: none;
 
               & > a {
-                @include padding(variables.$top: variables.$sm, variables.$right: variables.$xsm, variables.$bottom: variables.$xsm, variables.$left: 2.2rem);
+                @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$xsm, variables.$bottom: variables.$xsm, variables.$left: 2.2rem);
                 font-size: 0.9rem;
 
                 &:after {
@@ -485,7 +485,7 @@
                   font-size: 0.3rem;
                   left: 1.2rem;
                   top: 1rem;
-                  @include fas();
+                  @include utilities.fas();
                   color: variables.$brand-cool-gray;
                 }
               }
@@ -850,9 +850,9 @@
         content: "\f078";
         bottom: 0;
         font-size: 0.7rem;
-        @include fas();
+        @include utilities.fas();
         line-height: 2;
-        @include center(both);
+        @include utilities.center(both);
         width: 25px;
         height: 25px;
         border-radius: 50%;
@@ -921,7 +921,7 @@ button[id^='main-menu-toggle-'] {
 
   &:before {
     content: "\f0c9";
-    @include fas();
+    @include utilities.fas();
     font-weight: 900;
     margin-right: 10px;
     padding: 4px 7px 4px 1px;

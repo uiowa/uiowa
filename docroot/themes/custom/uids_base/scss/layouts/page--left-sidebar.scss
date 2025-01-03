@@ -37,7 +37,7 @@
 .content__container .layout--has-sidebar .layout__spacing_container {
   display: flex;
   flex-wrap: wrap;
-  @include container-width;
+  @include utilities.container-width;
 }
 
 
@@ -54,7 +54,7 @@
   .layout__region--content {
     display: grid;
     @include utilities.breakpoint(md) {
-      @include inner-grid(75);
+      @include utilities.inner-grid(75);
     }
   }
 }
@@ -87,6 +87,6 @@
   flex-basis: 100%;
   @include utilities.breakpoint(md) {
     flex: 0 1 72.75%;
-    @include inner-grid(75);
+    @include utilities.inner-grid(75);
   }
 }

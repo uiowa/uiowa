@@ -4,12 +4,12 @@
 
 .layout--onecol .layout__region {
   width: 100%;
-  @include inner-grid(100);
+  @include utilities.inner-grid(100);
 }
 
 .layout--onecol--background {
   .layout__region {
-    @include inner-grid(100);
+    @include utilities.inner-grid(100);
   }
   // Add padding to banner content if not in edge-to-edge column
   // or is in twocol layout.
@@ -38,7 +38,7 @@
     .bold-headline,
     .page-title.headline {
       @include utilities.breakpoint(sm) {
-        @include headline-negative;
+        @include utilities.headline-negative;
         text-shadow: 0 1px 1px #000;
       }
     }
@@ -71,7 +71,7 @@
     &--background.page__container--edge.layout--has-sidebar,
     &--no--background.page__container--edge.sidebar-invisible {
       .layout__spacing_container {
-        @include container-width;
+        @include utilities.container-width;
       }
     }
   }

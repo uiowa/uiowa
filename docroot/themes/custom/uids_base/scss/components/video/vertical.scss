@@ -7,11 +7,11 @@
   @include flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0);
 
   @include utilities.breakpoint(sm) {
-    @include margin(variables.$right: variables.$md, variables.$left: variables.$md);
+    @include utilities.margin(variables.$right: variables.$md, variables.$left: variables.$md);
   }
 
   &:first-child {
-    @include margin(variables.$left: 0);
+    @include utilities.margin(variables.$left: 0);
     flex-basis: 100%;
     text-align: center;
 
@@ -23,15 +23,15 @@
   }
 
   &:nth-child(2) {
-    @include margin(variables.$left: 0);
+    @include utilities.margin(variables.$left: 0);
 
     @include utilities.breakpoint(page-container) {
-      @include margin(variables.$left: variables.$md);
+      @include utilities.margin(variables.$left: variables.$md);
     }
   }
 
   &:last-child {
-    @include margin(variables.$right: 0);
+    @include utilities.margin(variables.$right: 0);
   }
 
   &__wrapper {
@@ -151,7 +151,7 @@
     content: "\f144";
     color: variables.$primary;
     font-size: 3.5rem;
-    @include fas();
+    @include utilities.fas();
   }
 
   &.paused:before {

@@ -50,7 +50,7 @@
 
   &::after {
     content: "\f04b";
-    @include fas();
+    @include utilities.fas();
     font-size: 1rem;
   }
 
@@ -441,7 +441,7 @@ _:future,
   background: transparent;
 
   >*:nth-child(2) {
-    @include center(vertical);
+    @include utilities.center(vertical);
 
     @include utilities.breakpoint(sm) {
       padding-right: 3rem;
@@ -586,7 +586,7 @@ _:future,
 
 .hero {
   .field__label {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }
 

@@ -3,7 +3,7 @@
 @use "uids/scss/abstracts/layout-main.scss";
 
 .block-inline-blockuiowa-spacer-separator {
-  @include margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
+  @include utilities.margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
   flex-basis: 100%;
   background: #fff;
   clear: both;
@@ -14,7 +14,7 @@
 }
 
 .block-spacer-separator {
-   @include margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
+   @include utilities.margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
    flex-basis: 100%;
    background: #fff;
    height: 23px;

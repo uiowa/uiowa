@@ -8,7 +8,7 @@
     display: flex;
     justify-content: flex-start;
     height: variables.$lg;
-    @include margin(variables.$left: variables.$xlg);
+    @include utilities.margin(variables.$left: variables.$xlg);
 
     .form-item,
     .form-actions {
@@ -28,7 +28,7 @@
       background: #343a40;
       color: #fff;
       font-size: variables.$small-font-size;
-      @include padding(variables.$top: variables.$xsm-sm, variables.$bottom: variables.$xsm-sm);
+      @include utilities.padding(variables.$top: variables.$xsm-sm, variables.$bottom: variables.$xsm-sm);
     }
   }
 }
@@ -46,7 +46,7 @@
   justify-content: center;
   li {
     display: inline-flex;
-    @include margin(variables.$right: variables.$xlg);
+    @include utilities.margin(variables.$right: variables.$xlg);
     &:last-child {
       margin: 0;
     }
@@ -60,9 +60,9 @@
 
 .uiowa__container {
   background: variables.$secondary;
-  @include padding(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
+  @include utilities.padding(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
   .uiowa-bar--wrapper {
-    @include container-width;
+    @include utilities.container-width;
     & {
       padding: 0;
       background: variables.$secondary;
@@ -71,7 +71,7 @@
 }
 
 .uiowa__container--full {
-  @include padding(variables.$top: variables.$sm, variables.$right: variables.$gutter, variables.$bottom: variables.$sm, variables.$left: variables.$gutter);
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$gutter, variables.$bottom: variables.$sm, variables.$left: variables.$gutter);
   background: variables.$secondary;
   .uiowa-bar--wrapper {
     padding: 0;

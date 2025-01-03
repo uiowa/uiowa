@@ -1,5 +1,7 @@
 @use "uids/scss/uids-core.scss";
-variables.$imgpath: '../../uids/assets/images';
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+$imgpath: '../../uids/assets/images';
 
 // @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
 // Unset container-type for regions that use absolute positioning.
@@ -196,7 +198,7 @@ details {
   }
 
   // Define a list of background treatments.
-  variables.$backgrounds:
+  $backgrounds:
     ':not([class*="bg-"])',
     '.bg--gold',
     '.bg--black',
@@ -206,12 +208,12 @@ details {
     '.bg-pattern--brain-black';
 
   // Loop through each background.
-  @each variables.$background in variables.$backgrounds {
+  @each $background in $backgrounds {
 
     // When an element follows a previous element
     // with the same background treatment, remove the
     // top padding of the target element.
-    &#{variables.$background} + &#{variables.$background} {
+    &#{$background} + &#{$background} {
       padding-top: 0;
 
       // Necessary to restore padding
@@ -360,7 +362,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @include container-width;
+    @include utilities.container-width;
   }
 
   .page__container--extended,
@@ -830,8 +832,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .view-display-id-attachment_book_a_z_list,
 .view-display-id-attachment_services {
   >div {
-    @include flexbox;
-    @include margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
+    @include utilities.flexbox;
+    @include utilities.margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
     flex-wrap: wrap;
 
     span {
@@ -940,7 +942,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .screen-reader-text {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }
 
 @keyframes fadeIn {

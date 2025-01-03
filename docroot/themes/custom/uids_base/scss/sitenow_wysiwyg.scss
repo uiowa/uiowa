@@ -1,3 +1,7 @@
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+@use "./forward" as f;
+
 .ck.ck-content,
 .ck-content {
   font-family: Roboto, sans-serif;
@@ -9,17 +13,7 @@
   --space-md-width-gutter: 2rem;
   --space-sm-width-gutter: 1.25rem;
   // Added here to prevent ckeditor from leaking styles to outside the editor.
-  @use "../uids/scss/uids-core.scss";
-  @use "components/tables";
-  @use "components/typography/paragraph";
-  @use "../uids/scss/components/alert";
-  @use "../uids/scss/components/blockquote.scss";
-  @use "../uids/scss/base/lists";
-  @use "../uids/scss/components/button";
-  @use "sitenow_v2";
-  @use "components/typography/global-serif";
-  @use "../uids/scss/components/callout";
-  @use "../uids/scss/components/inline";
+  @include f.wysiwyg-styles;
 
   .element--circle-list>li:before, .uids-component--circle-list>li:before {
     width: 80px;

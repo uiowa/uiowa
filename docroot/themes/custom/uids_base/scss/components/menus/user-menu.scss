@@ -6,7 +6,7 @@
 .menu--account {
   .menu {
     @include flexbox;
-    @include margin(variables.$top: variables.$md, variables.$left: 0, variables.$bottom: variables.$sm);
+    @include utilities.margin(variables.$top: variables.$md, variables.$left: 0, variables.$bottom: variables.$sm);
     li {
       @include flexbox;
       a {
@@ -15,7 +15,7 @@
         color: variables.$dark-gray;
         border: 1px solid variables.$grey-light;
         border-right: none;
-        @include padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
+        @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
         &:hover {
           background: variables.$light;
         }

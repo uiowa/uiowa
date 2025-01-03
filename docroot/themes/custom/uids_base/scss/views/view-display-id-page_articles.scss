@@ -2,7 +2,7 @@
 @use "uids/scss/abstracts/_utilities.scss";
 
 .view-display-id-page_articles {
-  @include margin(variables.$top: variables.$lg);
+  @include utilities.margin(variables.$top: variables.$lg);
   @include utilities.breakpoint(sm) {
     display: grid;
     grid-template-columns: minmax(50%, 1fr) 25%;

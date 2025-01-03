@@ -206,7 +206,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    @include bttn;
+    @include utilities.bttn;
     font-family: variables.$font-family-caps-bold;
 
     &.button--small {
@@ -226,13 +226,13 @@
 
   input[id^='edit-submit'][type='submit'],
   input[id^='edit-actions-submit'] {
-    @include bttn--primary;
+    @include utilities.bttn--primary;
   }
 
   input#edit-preview {
-    //@include bttn--outline;
-    @include bttn--tertiary;
-    @include margin(variables.$left: variables.$md);
+    //@include utilities.bttn--outline;
+    @include utilities.bttn--tertiary;
+    @include utilities.margin(variables.$left: variables.$md);
 
   }
 
@@ -255,14 +255,14 @@
   [type='file'],
   [type='checkbox'],
   [type='radio'] {
-    @include margin(variables.$top: 0, variables.$right: 0, variables.$bottom: variables.$sm);
+    @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: variables.$sm);
   }
 
   [type='checkbox']+label,
   [type='radio']+label {
     display: inline-block;
     vertical-align: baseline;
-    @include margin(variables.$right: variables.$sm, variables.$bottom: 0, variables.$left: variables.$xsm);
+    @include utilities.margin(variables.$right: variables.$sm, variables.$bottom: 0, variables.$left: variables.$xsm);
   }
 
   [type='checkbox']+label[for],
@@ -272,7 +272,7 @@
 
   label>[type='checkbox'],
   label>[type='radio'] {
-    @include margin(variables.$right: variables.$sm);
+    @include utilities.margin(variables.$right: variables.$sm);
   }
 
   [type='file'] {
@@ -311,9 +311,9 @@
     font-size: variables.$base-font-size;
     font-weight: normal;
     line-height: 1.5;
-    @include margin(variables.$top: 0, variables.$right: 0, variables.$bottom: 1rem);
+    @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: 1rem);
     appearance: none;
-    @include padding(variables.$right: variables.$lg, variables.$left: variables.$md);
+    @include utilities.padding(variables.$right: variables.$lg, variables.$left: variables.$md);
   }
 
   @media screen and (min-width: 0\0) {
@@ -468,7 +468,7 @@
       display: flex;
 
       .button {
-        @include bttn--primary;
+        @include utilities.bttn--primary;
       }
 
       div[class*="-add-more-items"] {
@@ -556,7 +556,7 @@
 
   .form-managed-file {
     .button {
-      @include bttn--primary;
+      @include utilities.bttn--primary;
       display: block;
     }
 
@@ -572,7 +572,7 @@
 
 
 .button {
-  @include bttn;
+  @include utilities.bttn;
   text-transform: uppercase;
   font-family: variables.$font-family-caps-bold;
   border: 1px solid variables.$primary;
@@ -593,9 +593,9 @@
     input[id^='edit-actions'],
     input[id^='edit-submit'],
     input#edit-actions-submit {
-      @include bttn--secondary;
+      @include utilities.bttn--secondary;
       border: 1px solid variables.$secondary;
-      @include bttn--focus;
+      @include utilities.bttn--focus;
       color: variables.$white !important;
       background-color: variables.$secondary !important;
 
@@ -615,9 +615,9 @@
     input[id^='edit-actions'],
     input[id^='edit-submit'],
     input#edit-actions-submit {
-      @include bttn--primary;
+      @include utilities.bttn--primary;
       border: 1px solid variables.$primary;
-      @include bttn--focus;
+      @include utilities.bttn--focus;
       color: variables.$secondary !important;
 
       &:after {

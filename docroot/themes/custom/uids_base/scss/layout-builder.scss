@@ -217,7 +217,7 @@ form {
 .layout__spacing_container {
   // Loop through all the background options and create a
   // rule to remove top padding from the second one.
-  variables.$backgrounds:
+  $backgrounds:
     ':not([class*="bg-"])',
     '[class*="bg--gold"]',
     '[class*="bg--black"]',
@@ -227,10 +227,10 @@ form {
     '.bg-pattern--brain-reversed',
     '.bg-pattern--brain-black';
 
-  @each variables.$background in variables.$backgrounds {
+  @each $background in $backgrounds {
 
     // This targets the second item in a pair that match the rule.
-    &#{variables.$background}+.layout-builder__add-section+&#{variables.$background} {
+    &#{$background}+.layout-builder__add-section+&#{$background} {
 
       >.layout__container {
         padding-top: 0;
@@ -265,7 +265,7 @@ form {
   .layout-builder__message,
   .layout-builder-revert-overrides,
   .layout-builder-discard-changes {
-    @include container-width;
+    @include utilities.container-width;
   }
 
   // Remove margin-top from .layout--has-sidebar
@@ -329,7 +329,7 @@ form {
 // Reveal hidden blocks in layout.
 
 .js-layout-builder-block.element-invisible {
-  @include element-invisible-off;
+  @include utilities.element-invisible-off;
   position: relative !important;
   width: 100%;
 
@@ -421,7 +421,7 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 // @todo https://github.com/uiowa/uids/issues/768.
 blockquote.layout-builder-block {
   &.blockquote--right  {
-    @include padding(variables.$top: variables.$xsm, variables.$bottom: variables.$xsm, variables.$left: variables.$lg);
+    @include utilities.padding(variables.$top: variables.$xsm, variables.$bottom: variables.$xsm, variables.$left: variables.$lg);
   }
   // Restore Left (default) blockquote padding.
   &:not(.blockquote--center):not(.blockquote--right) {

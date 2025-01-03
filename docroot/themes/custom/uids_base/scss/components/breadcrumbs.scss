@@ -3,7 +3,7 @@
 
 .breadcrumb {
   list-style: none;
-  @include margin(variables.$top: variables.$sm, variables.$right: 0, variables.$bottom: variables.$sm, variables.$left:0);
+  @include utilities.margin(variables.$top: variables.$sm, variables.$right: 0, variables.$bottom: variables.$sm, variables.$left:0);
   ol {
     @extend %no-ul-list;
   }
@@ -13,8 +13,8 @@
 .breadcrumb::after {
   display: table;
   content: ' ';
-  @include flex(variables.$fb: 0);
-  @include order(variables.$int: 1);
+  @include utilities.flex(variables.$fb: 0);
+  @include utilities.order(variables.$int: 1);
 }
 
 .breadcrumb::after {
@@ -34,7 +34,7 @@
   content: "/";
   opacity: 1;
   color: variables.$primary;
-  @include margin(variables.$top: 0, variables.$right: variables.$sm, variables.$bottom: 0, variables.$left:variables.$sm);
+  @include utilities.margin(variables.$top: 0, variables.$right: variables.$sm, variables.$bottom: 0, variables.$left:variables.$sm);
 }
 
 .breadcrumb a {

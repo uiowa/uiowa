@@ -4,7 +4,7 @@
 //////////// pagination
 
 .pager {
-  @include margin(variables.$bottom: variables.$sm, variables.$left: 0);
+  @include utilities.margin(variables.$bottom: variables.$sm, variables.$left: 0);
   &__items {
     @extend %no-ul-list;
   }
@@ -15,7 +15,7 @@
   display: table;
   order: 1;
   content: ' ';
-  @include flex(variables.$fb: 0);
+  @include utilities.flex(variables.$fb: 0);
 }
 
 .pager::after {
@@ -24,7 +24,7 @@
 
 .pager li {
   font-size: variables.$small-font-size;
-  @include margin(variables.$right: variables.$xsm);
+  @include utilities.margin(variables.$right: variables.$xsm);
 }
 
 .pager li:last-child,
@@ -44,7 +44,7 @@ screen and (min-width: 40em) {
   display: block;
   text-decoration: none;
   color: variables.$secondary;
-  @include padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 .pager a:hover,
@@ -65,7 +65,7 @@ screen and (min-width: 40em) {
 .pager .disabled {
   cursor: not-allowed;
   color: variables.$grey-light;
-  @include padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 .pager .disabled:hover {
@@ -75,7 +75,7 @@ screen and (min-width: 40em) {
 .pager .ellipsis::after {
   content: '\2026';
   color: variables.$secondary;
-  @include padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 // uids_base styles.

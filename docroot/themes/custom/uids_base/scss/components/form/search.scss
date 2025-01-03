@@ -156,13 +156,13 @@
       padding-bottom: 13px;
 
       .layout__container:not([class*="bg-"]) & {
-        @include bttn--primary;
+        @include utilities.bttn--primary;
         & {
           border: 1px solid variables.$primary;
         }
       }
       [class*=bg--black] & {
-        @include bttn--primary;
+        @include utilities.bttn--primary;
         & {
           border: 1px solid variables.$primary;
         }
@@ -170,7 +170,7 @@
       [class*=bg--gray] &,
       [class*=bg--gold] &,
       [class*=bg--white] &{
-        @include bttn--secondary;
+        @include utilities.bttn--secondary;
         & {
           border: 1px solid variables.$secondary;
         }

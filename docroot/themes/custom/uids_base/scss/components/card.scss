@@ -208,12 +208,12 @@
       margin-top: 0;
     }
     &.card--layout-left .media__inner {
-      @include container-query() {
+      @include card.container-query() {
         margin-right: 2rem;
       }
     }
     &.card--layout-right .media__inner {
-      @include container-query() {
+      @include card.container-query() {
         margin-left: 2rem;
       }
     }
@@ -251,7 +251,7 @@
     padding: variables.$xsm .9rem variables.$xsm .625rem;
     content: "\f0da";
     color: variables.$secondary;
-    @include fas();
+    @include utilities.fas();
     line-height: 9px;
     padding: 0.5rem;
     position: absolute;
@@ -275,5 +275,5 @@
 // Hide card pre-title for people lists.
 [class*="view-people"] .card__pre-title,
 .view-counselors .card__pre-title {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }

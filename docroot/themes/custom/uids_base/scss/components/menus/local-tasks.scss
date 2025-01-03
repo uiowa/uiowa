@@ -32,7 +32,7 @@
     text-decoration: none;
     color: variables.$blk;
     line-height: 1;
-    @include padding(variables.$top: variables.$md, variables.$right: variables.$lg, variables.$bottom: variables.$md, variables.$left:variables.$lg);
+    @include utilities.padding(variables.$top: variables.$md, variables.$right: variables.$lg, variables.$bottom: variables.$md, variables.$left:variables.$lg);
   }
 
   .tabs {
@@ -82,7 +82,7 @@
     }
 
     &:before {
-      @include fas();
+      @include utilities.fas();
       margin-right: 15px;
       color: variables.$grey;
       font-size: 13px;

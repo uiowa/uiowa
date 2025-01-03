@@ -1,8 +1,8 @@
 @use "uids/scss/abstracts/_variables.scss";
 @use "uids/scss/abstracts/_utilities.scss";
 
-variables.$search-mobile-img-path: '../../images/search-white-01.svg';
-variables.$search-img-path: '../../images/search-01.svg';
+$search-mobile-img-path: '../../images/search-white-01.svg';
+$search-img-path: '../../images/search-01.svg';
 
 // previous uids 3.x component styles.
 
@@ -159,7 +159,7 @@ variables.$search-img-path: '../../images/search-01.svg';
     content: "\f002";
     color: #fff;
     font-size: 1.5rem;
-    @include fas();
+    @include utilities.fas();
 
     @include utilities.breakpoint(md) {
       font-size: 1.2rem;
@@ -323,7 +323,7 @@ variables.$search-img-path: '../../images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   padding: 20px;
   content: ' ';
-  background: url(variables.$search-mobile-img-path);
+  background: url($search-mobile-img-path);
   background-repeat: repeat;
   background-repeat: no-repeat;
   background-position: center;
@@ -331,7 +331,7 @@ variables.$search-img-path: '../../images/search-01.svg';
 
   @include utilities.breakpoint(md) {
     background-position: center;
-    background: url(variables.$search-img-path);
+    background: url($search-img-path);
   }
 
   .iowa-bar--narrow & {
@@ -440,7 +440,7 @@ variables.$search-img-path: '../../images/search-01.svg';
   transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
   text-align: center;
   background-color: variables.$primary;
-  @include flexbox;
+  @include utilities.flexbox;
 
   .iowa-bar--narrow & {
     background-color: variables.$white;
@@ -467,10 +467,10 @@ variables.$search-img-path: '../../images/search-01.svg';
 // uids_base overrides.
 
 .search-overlay .uids-search [type="submit"]::before {
-  background-image: url(variables.$search-mobile-img-path);
+  background-image: url($search-mobile-img-path);
   background-repeat: no-repeat;
   @include utilities.breakpoint(md) {
-    background-image: url(variables.$search-img-path);
+    background-image: url($search-img-path);
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: 90%;
