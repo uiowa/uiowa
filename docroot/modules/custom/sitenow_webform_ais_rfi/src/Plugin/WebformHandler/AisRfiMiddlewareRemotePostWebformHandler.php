@@ -94,12 +94,19 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'details',
       '#title' => $this->t('Data submitted to the middleware'),
     ];
+
+    // Get webform elements.
+    // Inspired by WebformExcludedColumns.php without the extra bloat and
+    // without the auto selection of newly added elements.
     $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
+
+    // Reduce the returned array to key/value pairs.
     $options = array_combine(
       array_keys($elements),
       array_map(fn($item) => $item['#title'], $elements)
     );
 
+    // Included webform elements field.
     $form['submission_data']['included_data'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Included data'),
@@ -156,10 +163,13 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       'auth' => array_values($auth),
     ];
 
-    // Add data from the webform submission elements.
+    // Add curated array of webform submission data.
     $data = $this->getRequestData($webform_submission);
+
+    // Add remote post handler configuration information.
     $data['siteInteractionUuid'] = $interaction_uuid;
     $data['clientKey'] = 'prospector';
+
     $options['json'] = $data;
 
     // Send http request.
@@ -193,12 +203,13 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Get submission and elements data.
     $data = $webform_submission->toArray(TRUE);
 
-    // Flatten data and prioritize the element data over the
-    // webform submission data.
+    // Flatten data and separate element data.
     $element_data = $data['data'];
     unset($data['data']);
 
-    // Default included data.
+    // Default included data per ITS AIS' request.
+    // We suspect that hostIp, clientIp, and postDate
+    // are passed separately but are included just in case.
     $default_included_data = [
       'webform_id',
       'remote_addr',
@@ -208,11 +219,15 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       'postDate',
     ];
 
+    // Remove any data not in the default included data.
     $data = array_intersect_key($data, array_flip($default_included_data));
 
     // Included selected submission data.
     $element_data = array_intersect_key($element_data, array_flip($this->configuration['included_data']));
+
+    // Merge element data with submission data, keeping it flat.
     $data = $element_data + $data;
+
     // Replace tokens.
     return $this->replaceTokens($data, $webform_submission);
   }
