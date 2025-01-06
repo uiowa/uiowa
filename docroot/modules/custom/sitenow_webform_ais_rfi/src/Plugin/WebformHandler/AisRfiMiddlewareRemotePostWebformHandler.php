@@ -3,8 +3,6 @@
 namespace Drupal\sitenow_webform_ais_rfi\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
-use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -47,7 +45,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
    */
   public function defaultConfiguration() {
     return [
-      'excluded_data' => [],
+      'included_data' => [],
       'interaction_uuid' => '',
     ];
   }
@@ -92,22 +90,31 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       '#description' => $this->t('The middleware interaction UUID. Without this, no data will be sent to the middleware. Contact siddharth-sarathe@uiowa.edu for assistance setting up an interaction UUID.'),
     ];
 
-    // We're using the webform_excluded_elements element type to generate the
-    // list of elements to exclude from the submission data. It works as an
-    // exclusion list behind the scenes, but we use it to include elements in
-    // the data that gets sent.
     $form['submission_data'] = [
       '#type' => 'details',
       '#title' => $this->t('Data submitted to the middleware'),
     ];
-    $form['submission_data']['excluded_data'] = [
-      '#type' => 'webform_excluded_elements',
-      '#title' => $this->t('Posted data'),
-      '#title_display' => 'invisible',
-      '#webform_id' => $webform->id(),
-      '#required' => TRUE,
-      '#default_value' => $this->configuration['excluded_data'],
+
+    // Get webform elements.
+    // Inspired by WebformExcludedColumns.php without the extra bloat and
+    // without the auto selection of newly added elements.
+    $elements = $webform->getElementsInitializedFlattenedAndHasValue('view');
+
+    // Reduce the returned array to key/value pairs.
+    $options = array_combine(
+      array_keys($elements),
+      array_map(fn($item) => $item['#title'], $elements)
+    );
+
+    // Included webform elements field.
+    $form['submission_data']['included_data'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Included data'),
+      '#options' => $options,
+      '#default_value' => $this->configuration['included_data'],
+
     ];
+
     return $this->setSettingsParents($form);
   }
 
@@ -156,10 +163,13 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
       'auth' => array_values($auth),
     ];
 
-    // Add data from the webform submission elements.
+    // Add curated array of webform submission data.
     $data = $this->getRequestData($webform_submission);
+
+    // Add remote post handler configuration information.
     $data['siteInteractionUuid'] = $interaction_uuid;
     $data['clientKey'] = 'prospector';
+
     $options['json'] = $data;
 
     // Send http request.
@@ -193,14 +203,30 @@ class AisRfiMiddlewareRemotePostWebformHandler extends WebformHandlerBase {
     // Get submission and elements data.
     $data = $webform_submission->toArray(TRUE);
 
-    // Flatten data and prioritize the element data over the
-    // webform submission data.
+    // Flatten data and separate element data.
     $element_data = $data['data'];
     unset($data['data']);
-    $data = $element_data + $data;
 
-    // Excluded selected submission data.
-    $data = array_diff_key($data, $this->configuration['excluded_data']);
+    // Default included data per ITS AIS' request.
+    // We suspect that hostIp, clientIp, and postDate
+    // are passed separately but are included just in case.
+    $default_included_data = [
+      'webform_id',
+      'remote_addr',
+      'hostIp',
+      'uri',
+      'clientIp',
+      'postDate',
+    ];
+
+    // Remove any data not in the default included data.
+    $data = array_intersect_key($data, array_flip($default_included_data));
+
+    // Included selected submission data.
+    $element_data = array_intersect_key($element_data, array_flip($this->configuration['included_data']));
+
+    // Merge element data with submission data, keeping it flat.
+    $data = $element_data + $data;
 
     // Replace tokens.
     return $this->replaceTokens($data, $webform_submission);
