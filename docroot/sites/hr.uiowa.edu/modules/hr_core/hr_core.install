@@ -404,3 +404,13 @@ function hr_core_update_9002() {
     ->condition('bundle', 'card')
     ->execute();
 }
+
+/**
+ * Delete deprecated FAQ content type.
+ */
+function hr_core_update_10001() {
+  $entity_type_manager = \Drupal::entityTypeManager()
+    ->getStorage('node');
+  $nodes = $entity_type_manager->loadByProperties(['type' => 'faq']);
+  $entity_type_manager->delete($nodes);
+}
