@@ -1,9 +1,26 @@
 adding:
+  settings:
+    handler: views
+    handler_settings:
+      view:
+        view_name: content_reference
+        display_name: entity_reference_content_title
+        arguments: {  }
+removing:
   dependencies:
     config:
-      - node.type.contact
+      - node.type.article
+      - node.type.page
+      - node.type.person
   settings:
+    handler: 'default:node'
     handler_settings:
       target_bundles:
-        contact: contact
-removing: {  }
+        article: article
+        page: page
+        person: person
+      sort:
+        field: title
+        direction: ASC
+      auto_create: false
+      auto_create_bundle: article
