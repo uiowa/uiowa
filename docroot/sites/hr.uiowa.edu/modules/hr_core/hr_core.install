@@ -406,11 +406,17 @@ function hr_core_update_9002() {
 }
 
 /**
- * Delete deprecated FAQ content type.
+ * Delete deprecated FAQ content and paragraph types.
  */
 function hr_core_update_10001() {
-  $entity_type_manager = \Drupal::entityTypeManager()
+  // @todo Batch these.
+  $node_storage_manager = \Drupal::entityTypeManager()
     ->getStorage('node');
-  $nodes = $entity_type_manager->loadByProperties(['type' => 'faq']);
-  $entity_type_manager->delete($nodes);
+  $nodes = $node_storage_manager->loadByProperties(['type' => 'faq']);
+  $node_storage_manager->delete($nodes);
+
+  $paragraph_storage_manager = \Drupal::entityTypeManager()
+    ->getStorage('paragraph');
+  $paragraphs = $paragraph_storage_manager->loadByProperties(['type' => 'faqs']);
+  $paragraph_storage_manager->delete($paragraphs);
 }
