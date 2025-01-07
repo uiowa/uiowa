@@ -4,6 +4,7 @@ namespace Drupal\uiowa_core\Entity;
 
 use Drupal\Core\Render\Element;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\uiowa_core\LinkHelper;
 
 /**
  * A bundle entity class for card block content.
@@ -28,16 +29,23 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-    // Capture the parts of the URL.
-    foreach ([
-      'url' => 'url',
-      'title' => 'link_text',
-    ] as $field_link_prop => $link_prop) {
-      if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
-        $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
+    if (!empty($build['field_uiowa_card_link'][0])) {
+      // Capture the parts of the URL and title.
+      $url = $build['field_uiowa_card_link'][0]['#url'] ?? NULL;
+      $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
+
+      if ($url) {
+        $url = $url->toString();
+        if (LinkHelper::shouldClearTitle($title)) {
+          $title = NULL;
+        }
+        $build['#url'] = $url;
+        $build['#link_text'] = $title;
       }
+
+      // Remove the original field to prevent further processing.
+      unset($build['field_uiowa_card_link']);
     }
-    unset($build['field_uiowa_card_link']);
 
     // Handle the title field.
     if (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
