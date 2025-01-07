@@ -949,9 +949,16 @@ function uids_base_preprocess_block(&$variables) {
     // @todo revisit this class when https://github.com/uiowa/uids/issues/721 is completed.
     if ($block->hasField('field_uiowa_banner_image')) {
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $bundle_value = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue();
+        $bundle_value = $block->get('field_uiowa_banner_image')
+          ->first()
+          ->get('entity')
+          ->getValue();
         if ($bundle_value) {
-          $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
+          $bundle_type = $block->get('field_uiowa_banner_image')
+            ->first()
+            ->get('entity')
+            ->getValue()
+            ->bundle();
           if ($bundle_type === 'video') {
             $variables['attributes']['class'][] = 'banner--video';
           }
@@ -959,15 +966,31 @@ function uids_base_preprocess_block(&$variables) {
       }
     }
 
-    $variables['links'] = [];
-
-    if ($block->hasField('field_uiowa_banner_link')) {
-      foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
-        $variables['links'][] = [
-          'link_url' => $link->getUrl()->toString(),
-          'link_text' => $link->get('title')->getString(),
+    // Process links for the banner block.
+    if (isset($variables['elements']['content']['field_uiowa_banner_link'])) {
+      $links = [];
+      foreach (Element::children($variables['elements']['content']['field_uiowa_banner_link']) as $delta) {
+        $link = $variables['elements']['content']['field_uiowa_banner_link'][$delta];
+        $links[] = [
+          'link_url' => $link['#url']->toString(),
+          'link_text' => $link['#title'],
         ];
       }
+      $variables['links'] = $links;
+    }
+  }
+
+  if ($variables['derivative_plugin_id'] === 'uiowa_button') {
+    if (isset($variables['elements']['content']['field_uiowa_button_link'])) {
+      $links = [];
+      foreach (Element::children($variables['elements']['content']['field_uiowa_button_link']) as $delta) {
+        $link = $variables['elements']['content']['field_uiowa_button_link'][$delta];
+        $links[] = [
+          'link_url' => $link['#url']->toString(),
+          'link_text' => $link['#title'],
+        ];
+      }
+      $variables['links'] = $links;
     }
   }
 
