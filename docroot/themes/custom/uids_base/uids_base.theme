@@ -978,18 +978,17 @@ function uids_base_preprocess_block(&$variables) {
         $title = $link['#title'] ?? NULL;
 
         if ($url) {
-          $url_string = $url->toString();
-
           if (LinkHelper::shouldClearTitle($title)) {
             $title = NULL;
           }
 
           $links[] = [
-            'link_url' => $url_string,
+            'link_url' => $url->toString(),
             'link_text' => $title,
           ];
         }
       }
+
 
       $variables['links'] = $links;
     }
