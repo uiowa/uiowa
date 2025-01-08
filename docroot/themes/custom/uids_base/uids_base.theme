@@ -18,6 +18,7 @@ use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\views\field\EntityField;
 
 /**
@@ -969,13 +970,25 @@ function uids_base_preprocess_block(&$variables) {
     // Process links for the banner block.
     if (isset($variables['elements']['content']['field_uiowa_banner_link'])) {
       $links = [];
+
       foreach (Element::children($variables['elements']['content']['field_uiowa_banner_link']) as $delta) {
         $link = $variables['elements']['content']['field_uiowa_banner_link'][$delta];
-        $links[] = [
-          'link_url' => $link['#url']->toString(),
-          'link_text' => $link['#title'],
-        ];
+
+        $url = $link['#url'] ?? NULL;
+        $title = $link['#title'] ?? NULL;
+
+        if ($url) {
+          if (LinkHelper::shouldClearTitle($title)) {
+            $title = NULL;
+          }
+
+          $links[] = [
+            'link_url' => $url->toString(),
+            'link_text' => $title,
+          ];
+        }
       }
+
       $variables['links'] = $links;
     }
   }
