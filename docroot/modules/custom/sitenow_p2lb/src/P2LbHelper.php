@@ -212,8 +212,8 @@ class P2LbHelper {
    */
   public static function updateOldClasses() {
     $search_replace = [
-      'btn btn-primary' => 'bttn bttn-primary',
-      'btn btn-secondary' => 'bttn bttn-secondary',
+      'btn btn-primary' => 'bttn bttn--primary',
+      'btn btn-secondary' => 'bttn bttn--secondary',
     ];
 
     $entity_type_manager = \Drupal::entityTypeManager();
