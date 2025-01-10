@@ -38,8 +38,9 @@
   {% if is_accordion %}
     {% set id = "accordion-" ~ id %}
     <div class="collection--accordion">
+      {{ content.field_uiowa_headline }}
       <div class="accordion" role="tablist" aria-multiselectable="{{ multiselect }}" id="{{ id }}">
-        {{ content }}
+        {{ content|without('field_uiowa_headline') }}
       </div>
     </div>
   {% else %}
