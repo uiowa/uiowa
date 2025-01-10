@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // Position field
 .page-node-type-person.layout-builder-enabled,
@@ -38,7 +38,7 @@
   background-size: 75%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: $light;
+  background-color: variables.$light;
   background-image: url('/themes/custom/uids_base/assets/images/person-one.svg');
   .media--border & {
     aspect-ratio: 1 / 1;
@@ -59,7 +59,7 @@
   .card__media--large.media--circle .img--empty,
   .card__media--medium.media--circle .img--empty {
     padding-top: 90%;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding-top: 95%;
     }
   }

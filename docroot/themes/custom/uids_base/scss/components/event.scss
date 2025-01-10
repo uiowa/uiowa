@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .layout--fourcol,
 .layout--threecol,
@@ -12,13 +12,13 @@
 // Event block
 .uiowa-card-event.card.card--media-left {
   margin-bottom: 0;
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     flex-direction: unset;
   }
 
   .layout--fourcol &,
   .layout--threecol & {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       padding: 1.5rem;
     }
   }
@@ -30,7 +30,7 @@
 
   .card {
     &__row {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: flex;
         justify-content: center;
         flex-wrap: nowrap;
@@ -49,7 +49,7 @@
   }
 
   &.image-right .media.media--circle {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-left: 15px;
       margin-right: 0;
       order: 1;
@@ -68,7 +68,7 @@
       display: none;
 
       &+.card__body {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           padding: 0;
         }
       }
@@ -141,7 +141,7 @@
   color: #fff;
 
   a {
-    color: $primary;
+    color: variables.$primary;
   }
 }
 
@@ -175,5 +175,5 @@
 
 .bg-black.paragraph.paragraph--type--section .media--border img,
 .bg-dark.paragraph.paragraph--type--section .media--border img {
-  border: 1px solid $primary;
+  border: 1px solid variables.$primary;
 }

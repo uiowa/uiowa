@@ -1,3 +1,5 @@
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 // Adjust ui_icons picker to be larger for brand icons.
 .ui-icons-picker-search {
@@ -22,7 +24,7 @@
   .icon-picker-modal__content {
     .form-radios {
       grid-template-columns: repeat(5, 1fr) !important;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         grid-template-columns: repeat(12, 1fr) !important;
       }
     }
