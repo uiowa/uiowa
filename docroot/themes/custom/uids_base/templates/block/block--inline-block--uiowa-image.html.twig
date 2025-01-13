@@ -49,9 +49,11 @@
          aria-label="{{ content.field_uiowa_image_link[0]['#title']|render }}"
          title="{{ content.field_uiowa_image_link[0]['#title']|render }}">
         {{ content.field_uiowa_image_image }}
+        {{ content.field_uiowa_image_caption }}
       </a>
     {% else %}
       {{ content.field_uiowa_image_image }}
+      {{ content.field_uiowa_image_caption }}
     {% endif %}
   </div>
 {% endif %}
