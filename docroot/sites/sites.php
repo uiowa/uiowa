@@ -7630,3 +7630,9 @@ $sites['lllc.uiowa.ddev.site'] = 'lllc.uiowa.edu';
 $sites['lllc.dev.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
 $sites['lllc.stage.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
 $sites['lllc.prod.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
+
+// Directory aliases for flash-program.sites.uiowa.edu.
+$sites['sitesflash-program.uiowa.ddev.site'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.dev.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.stage.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.prod.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
