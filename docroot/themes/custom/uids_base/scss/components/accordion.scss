@@ -21,21 +21,3 @@
 .accordion .accordion__heading button.border {
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
-
-// @todo remove when uids handles headings besides just h2.
-.accordion__heading :is(h2, h3, h4, h5, h6) {
-  all: inherit;
-  display: flex;
-  font-size: $content-font-size;
-  font-weight: $font-weight-bold;
-  padding: $md;
-  justify-content: space-between;
-  -webkit-justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  width: 100%;
-
-  &:focus {
-    outline: 2px auto -webkit-focus-ring-color;
-  }
-}
