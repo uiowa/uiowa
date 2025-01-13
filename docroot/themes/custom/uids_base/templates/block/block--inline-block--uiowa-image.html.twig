@@ -38,7 +38,7 @@
 %}
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
-  <div{{ attributes.addClass(classes) }}>
+  <figure {{ attributes.addClass(classes) }}>
     {{ title_prefix }}
     {% if label %}
       <h2{{ title_attributes }}>{{ label }}</h2>
@@ -55,5 +55,5 @@
       {{ content.field_uiowa_image_image }}
       {{ content.field_uiowa_image_caption }}
     {% endif %}
-  </div>
+  </figure>
 {% endif %}
