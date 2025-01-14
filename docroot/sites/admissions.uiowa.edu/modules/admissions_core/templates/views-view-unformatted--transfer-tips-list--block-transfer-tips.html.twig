@@ -21,7 +21,7 @@
 {{ attach_library('uids_base/accordion') }}
 {% set id = "accordion-transfer-tips" %}
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ id }}">
+  <div class="accordion" role="tablist" aria-multiselectable="false" id="{{ id }}">
     {% for row in rows %}
       {%
         set row_classes = [
