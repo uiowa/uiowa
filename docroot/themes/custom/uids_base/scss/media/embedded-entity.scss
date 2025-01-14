@@ -31,6 +31,12 @@ figure.caption {
   display: block;
   margin: 0;
   margin-bottom: .5rem;
+  + p {
+    margin-top: 1rem;
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
 
   &.align-center {
     margin-right: auto;
@@ -45,6 +51,12 @@ figure.caption {
     display: block;
     max-width: none;
     caption-side: bottom;
+    font-size: 95%;
+    margin-top: .5rem;
+
+    p {
+      font-size: 95%;
+    }
 
     @include breakpoint(sm) {
       display: table-caption;

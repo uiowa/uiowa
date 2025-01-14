@@ -3,19 +3,19 @@
 
 // Media alignment
 
-@media (min-width: 576px) {
-
   .align-right.embedded-entity,
   .align-right .embedded-entity {
-    margin-left: $gutter;
+    @include breakpoint(sm) {
+      margin-left: $gutter;
+    }
   }
 
   .align-left.embedded-entity,
   .align-left .embedded-entity {
-    margin-right: $gutter;
+    @include breakpoint(sm) {
+      margin-right: $gutter;
+    }
   }
-
-}
 
 
 .align-center {
@@ -32,6 +32,13 @@
 
 .field--name-field-media-image {
   min-width: 1px;
+}
+
+.media--type-image + p {
+  margin-top: 1rem;
+  @include breakpoint(sm) {
+    margin-top: 0;
+  }
 }
 
 // Full width images
