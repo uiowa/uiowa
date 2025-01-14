@@ -26,7 +26,7 @@
   {% set aria_owns = [] %}
   {% for item in view.result %}
     {% if item.nid is defined %}
-      {% set aria_owns = aria_owns|merge(['accordion-item-transfer-tips-' ~ item.nid]) %}
+      {% set aria_owns = aria_owns|merge(['accordion-heading-transfer-tips-' ~ item.nid]) %}
     {% endif %}
   {% endfor %}
 {% endif %}
