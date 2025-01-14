@@ -2,7 +2,7 @@
 {% set accordion_h_size = accordion_h_size ?: 'h2' %}
 {% set accordion_hash = accordion_hash ?: accordion_item_label.0['#context'].value|clean_class %}
 <details class="accordion__item" {% if accordion_type == 'single' %}name="accordion-collection"{% endif %} id="{{ accordion_item_id }}" role="none">
-  <summary id="{{ accordion_hash }}" class="accordion__heading" role="tab">
+  <summary {% if accordion_hash %}id="{{ accordion_hash }}"{% endif %} class="accordion__heading" role="tab">
     <{{ accordion_h_size }}>
     {% block accordion_label %}
       {{ accordion_item_label }}
