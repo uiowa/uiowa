@@ -49,6 +49,7 @@
   'accordion_item_expanded': field_automatically_open,
   'accordion_hash': content.field_unique_id.0,
   'attributes': attributes,
+  'accordion_type': accordion_type ?: 'single',
 } %}
 
 {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
