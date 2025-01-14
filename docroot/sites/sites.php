@@ -7636,3 +7636,9 @@ $sites['sitesflash-program.uiowa.ddev.site'] = 'flash-program.sites.uiowa.edu';
 $sites['sitesflash-program.dev.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
 $sites['sitesflash-program.stage.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
 $sites['sitesflash-program.prod.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+
+// Directory aliases for pan.lab.uiowa.edu.
+$sites['labpan.uiowa.ddev.site'] = 'pan.lab.uiowa.edu';
+$sites['labpan.dev.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+$sites['labpan.stage.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+$sites['labpan.prod.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
