@@ -38,22 +38,23 @@
 %}
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
-  <figure {{ attributes.addClass(classes) }}>
-    {{ title_prefix }}
-    {% if label %}
-      <h2{{ title_attributes }}>{{ label }}</h2>
-    {% endif %}
-    {{ title_suffix }}
-    {% if content.field_uiowa_image_link[0]['#url'] is not empty %}
-      <a href="{{ content.field_uiowa_image_link[0]['#url']|render }}"
-         aria-label="{{ content.field_uiowa_image_link[0]['#title']|render }}"
-         title="{{ content.field_uiowa_image_link[0]['#title']|render }}">
-        {{ content.field_uiowa_image_image }}
-        {{ content.field_uiowa_image_caption }}
-      </a>
-    {% else %}
+  {% set wrapper_element = content.field_uiowa_image_caption|render|striptags|trim is not empty ? 'figure' : 'div' %}
+  <{{ wrapper_element }} {{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h2{{ title_attributes }}>{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+  {% if content.field_uiowa_image_link[0]['#url'] is not empty %}
+    <a href="{{ content.field_uiowa_image_link[0]['#url']|render }}"
+       aria-label="{{ content.field_uiowa_image_link[0]['#title']|render }}"
+       title="{{ content.field_uiowa_image_link[0]['#title']|render }}">
       {{ content.field_uiowa_image_image }}
-      {{ content.field_uiowa_image_caption }}
-    {% endif %}
-  </figure>
+    </a>
+    {{ content.field_uiowa_image_caption }}
+  {% else %}
+    {{ content.field_uiowa_image_image }}
+    {{ content.field_uiowa_image_caption }}
+  {% endif %}
+  </{{ wrapper_element }}>
 {% endif %}
