@@ -1079,9 +1079,18 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   // Assemble the aria-owns attribute for the accordion.
   $accordion_item_id = 'accordion-item-' . $block->id();
   $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
-  $variables['aria-owns'] = [];
+  $variables['aria_owns'] = [];
   foreach ($items as $delta) {
-    $variables['aria-owns'][] = $accordion_item_id . '-' . $delta;
+    $paragraph = $variables['elements']['content']['field_uiowa_collection_items'][$delta]['#paragraph'];
+    if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+      // Use the unique ID if it exists.
+      $unique_id = $paragraph->get('field_unique_id')->value;
+      $variables['aria_owns'][] = $unique_id;
+    }
+    else {
+      // Fall back to the delta-based ID.
+      $variables['aria_owns'][] = $accordion_item_id . '-' . $delta;
+    }
   }
 
 }
