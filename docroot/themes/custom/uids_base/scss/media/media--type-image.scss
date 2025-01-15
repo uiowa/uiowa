@@ -34,10 +34,14 @@
   min-width: 1px;
 }
 
-.media--type-image + p {
-  margin-top: 1rem;
-  @include breakpoint(sm) {
-    margin-top: 0;
+.media--type-image,
+.media--video,
+.media--type-panopto {
+  + p {
+    margin-top: 1rem;
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
   }
 }
 
