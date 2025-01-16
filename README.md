@@ -83,7 +83,7 @@ $settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
 # Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
 
-## Updating patched files
+## Updating core patched files
 
 - Remove the `core_htaccess.patch` line from `post-drupal-scaffold-cmd` in the composer.json file and run `ddev composer install`.
 - Commit this with git but do not push.
