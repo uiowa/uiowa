@@ -3707,12 +3707,6 @@ $sites['sitessteffenr.dev.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
 $sites['sitessteffenr.stage.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
 $sites['sitessteffenr.prod.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
 
-// Directory aliases for thelightbox.radiology.uiowa.edu.
-$sites['radiologythelightbox.uiowa.ddev.site'] = 'thelightbox.radiology.uiowa.edu';
-$sites['radiologythelightbox.dev.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
-$sites['radiologythelightbox.stage.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
-$sites['radiologythelightbox.prod.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
-
 // Directory aliases for afr.fo.uiowa.edu.
 $sites['foafr.uiowa.ddev.site'] = 'afr.fo.uiowa.edu';
 $sites['foafr.dev.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
@@ -7636,3 +7630,15 @@ $sites['lllc.uiowa.ddev.site'] = 'lllc.uiowa.edu';
 $sites['lllc.dev.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
 $sites['lllc.stage.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
 $sites['lllc.prod.drupal.uiowa.edu'] = 'lllc.uiowa.edu';
+
+// Directory aliases for flash-program.sites.uiowa.edu.
+$sites['sitesflash-program.uiowa.ddev.site'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.dev.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.stage.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+$sites['sitesflash-program.prod.drupal.uiowa.edu'] = 'flash-program.sites.uiowa.edu';
+
+// Directory aliases for pan.lab.uiowa.edu.
+$sites['labpan.uiowa.ddev.site'] = 'pan.lab.uiowa.edu';
+$sites['labpan.dev.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+$sites['labpan.stage.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+$sites['labpan.prod.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
