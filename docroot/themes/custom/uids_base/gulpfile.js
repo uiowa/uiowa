@@ -93,10 +93,10 @@ function modifySvg(svg) {
     .replace(/(width|height)=["']\d+['"]/g, '')
     .replace('<svg', '<svg width="70" height="70"');
 
-  if (!svg.includes('fill="white"')) {
+  if (!svg.includes('fill="transparent"')) {
     svg = svg.replace(
       /(<svg[^>]*>)/,
-      '$1<rect x="-10" y="-10" width="70" height="70" fill="white"/>'
+      '$1<rect x="-10" y="-10" width="70" height="70" fill="transparent"/>'
     );
   }
 
