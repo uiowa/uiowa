@@ -75,3 +75,27 @@
     position: relative;
   }
 }
+
+// Absolutely position caption if cover option is selected on image block.
+figure.element--cover {
+  position: relative;
+  &.caption {
+    margin-bottom: 0;
+  }
+  figcaption {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background: rgba(0,0,0,.7);
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 0;
+    p {
+      margin: 0;
+      + p {
+        margin-top: 1rem;
+      }
+    }
+  }
+}
