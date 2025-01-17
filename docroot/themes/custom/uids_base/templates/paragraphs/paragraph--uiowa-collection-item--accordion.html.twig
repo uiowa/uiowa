@@ -47,7 +47,7 @@
   'accordion_item_content': content.field_collection_body,
   'accordion_item_content_id': 'accordion-content-' ~ parent_id ~ '-' ~ delta,
   'accordion_item_expanded': field_automatically_open,
-  'accordion_hash': content.field_unique_id.0,
+  'accordion_hash': accordion_hash ?: content.field_unique_id.0,
   'attributes': attributes,
   'accordion_type': accordion_type ?: 'single',
 } %}
