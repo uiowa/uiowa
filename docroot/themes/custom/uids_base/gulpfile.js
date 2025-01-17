@@ -117,7 +117,7 @@ function css() {
       includePaths: [
         "./node_modules",
       ],
-      silenceDeprecations: ['import', 'legacy-js-api']
+      silenceDeprecations: ['legacy-js-api']
     }).on('error', gulpSass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))
