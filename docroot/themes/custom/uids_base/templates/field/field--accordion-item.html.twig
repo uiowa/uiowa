@@ -23,13 +23,12 @@
       {% set accordion_item = {
         'accordion_h_size': accordion_h_size ?: 'h2',
         'accordion_hash': clean_item_label,
-        'accordion_type': 'single',
+        'accordion_type': accordion_type ?: 'single',
         'accordion_parent_id': 'accordion-' ~ clean_label,
         'accordion_item_id': 'content-' ~ clean_item_label,
         'accordion_item_label': item_label,
         'accordion_item_content': item.content|without(label, attributes),
         'accordion_item_content_id': 'accordion-content-' ~ clean_item_label,
-        'accordion_item_expanded': 'false',
         'accordion_button_class': 'border',
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
