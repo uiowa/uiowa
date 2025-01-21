@@ -7642,3 +7642,9 @@ $sites['labpan.uiowa.ddev.site'] = 'pan.lab.uiowa.edu';
 $sites['labpan.dev.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
 $sites['labpan.stage.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
 $sites['labpan.prod.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+
+// Directory aliases for petrin.lab.uiowa.edu.
+$sites['labpetrin.uiowa.ddev.site'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.dev.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.stage.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.prod.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
