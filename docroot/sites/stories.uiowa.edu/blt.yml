@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: stories.uiowa.ddev.site
+    protocol: https
+  machine_name: stories
+  human_name: stories.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: stories.prod
+drupal:
+  db:
+    database: stories_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://stories.prod.drupal.uiowa.edu'
+  requester: cclair
+  site-name: Stories

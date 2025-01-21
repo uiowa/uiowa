@@ -22,22 +22,23 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => 'field_person_hometown',
       '#content' => 'field_student_profile_blurb',
     ]);
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--stacked',
-      'media_format' => 'media--circle media--border',
-      'media_size' => 'media--medium',
-      'card_headline_style' => 'headline--uppercase',
-      'styles' => 'bg--white',
-      'border' => '',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--stacked',
+        'media_format' => 'media--circle media--border',
+        'media_size' => 'media--medium',
+        'card_headline_style' => 'headline--uppercase',
+        'styles' => 'bg--white',
+        'border' => '',
+      ]
+    );
   }
 
 }

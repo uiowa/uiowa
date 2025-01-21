@@ -42,7 +42,7 @@ third_party_settings:
             - section_container_narrow
         components:
           -
-            uuid: '9e58c781-ed5a-4814-bb17-a06812aae962'
+            uuid: 9e58c781-ed5a-4814-bb17-a06812aae962
             region: content
             configuration:
               id: 'extra_field_block:node:service:content_moderation_control'
@@ -281,7 +281,7 @@ third_party_settings:
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: none
+              items_per_page: '10'
               pager: some
               exposed: {  }
               headline:
@@ -296,7 +296,9 @@ third_party_settings:
             weight: 2
             additional:
               layout_builder_styles_style: {  }
-            third_party_settings: {  }
+            third_party_settings:
+              layout_builder_custom:
+                unique_id: alerts
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -314,6 +316,7 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
+          layout_builder_custom_unique_id: support-training
         components:
           -
             uuid: b44481e9-4da9-4ef9-b886-9dc3dc5ccef7
@@ -366,7 +369,7 @@ third_party_settings:
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: none
+              items_per_page: '10'
               pager: some
               exposed: {  }
               headline:
@@ -381,7 +384,9 @@ third_party_settings:
             weight: 1
             additional:
               layout_builder_styles_style: {  }
-            third_party_settings: {  }
+            third_party_settings:
+              layout_builder_custom:
+                unique_id: news
         third_party_settings:
           layout_builder_limit:
             limit:

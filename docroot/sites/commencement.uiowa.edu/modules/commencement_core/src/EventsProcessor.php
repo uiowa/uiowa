@@ -29,6 +29,11 @@ class EventsProcessor extends EntityProcessorBase {
   protected $apiRecordSyncKey = 'id';
 
   /**
+   * {@inheritdoc}
+   */
+  protected $skipDelete = TRUE;
+
+  /**
    * A reusable timezone object.
    *
    * @var \DateTimeZone|null
