@@ -232,6 +232,28 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Set help text for media position.
             $form['layout_builder_style_card_media_position']['#description'] = t('<a target="_blank" href="https://sitenow.uiowa.edu/documentation/layout-builder/card-block">The media position will change based on the width of the layout column.</a>');
 
+            // Stacked by default.
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
+
+            // Set '#states' for card image size.
+            $form['layout_builder_style_media_size']['#states'] = [
+              'visible' => [
+                // Always show when media format is set to 'circle'.
+                [
+                  ':input[name="layout_builder_style_media_format"]' => [
+                    'value' => 'media_format_circle',
+                  ],
+                ],
+                // Show when a media position is selected.
+                [
+                  ':input[name="layout_builder_style_card_media_position"]' => [
+                    '!value' => 'card_media_position_stacked',
+                  ],
+                ],
+              ],
+            ];
+            break;
+
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
@@ -268,11 +290,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
-              // The card block is stacked by default.
-              case 'inline_block:uiowa_card':
-                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
-                break;
-
               // Set square to default for image gallery.
               case 'inline_block:uiowa_image_gallery':
                 $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
