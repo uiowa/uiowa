@@ -522,6 +522,16 @@ function uids_base_preprocess_field(&$variables) {
   $variables['view_mode'] = $variables['element']['#view_mode'];
 
   switch ($variables['field_name']) {
+    case 'field_uiowa_image_caption':
+      foreach ($variables['items'] as &$item) {
+        $item['content'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'figcaption',
+          '#value' => $variables['element']['#object']->get('field_uiowa_image_caption')->value,
+        ];
+      }
+      break;
+
     case 'field_image':
       // If this is a full view mode, set the page_featured_image variable, add
       // the breadcrumb block to the variables, and add the caption to the
