@@ -127,18 +127,7 @@ display:
         type: custom_tag
         options:
           custom_tag: "node_list:event\r\ntime:hourly"
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text_custom
-          empty: true
-          content: 'There are currently no events to display.'
-          tokenize: false
+      empty: {  }
       sorts:
         sticky:
           id: sticky
@@ -842,6 +831,7 @@ display:
         arguments: false
         filters: false
         filter_groups: false
+        header: false
       relationships:
         field_event_performer:
           id: field_event_performer
@@ -865,6 +855,20 @@ display:
       css_class: ''
       group_by: false
       display_description: ''
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<h2 class="h3 block__headline headline headline--serif headline--underline">{{ title }}</h2>'
+            format: filtered_html
+          tokenize: true
       display_extenders:
         metatag_display_extender:
           metatags: {  }
