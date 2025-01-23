@@ -173,15 +173,12 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     unset($data['data']);
 
     // Default included data per ITS AIS' request.
-    // We suspect that hostIp, clientIp, and postDate
-    // are passed separately but are included just in case.
+    // Additional data, "hostIp", "clientIp", and "postDate" are
+    // passed separately with the remote post.
     $default_included_data = [
       'webform_id',
       'remote_addr',
-      'hostIp',
       'uri',
-      'clientIp',
-      'postDate',
     ];
 
     // Remove any data not in the default included data.
