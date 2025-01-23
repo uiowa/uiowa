@@ -23,6 +23,7 @@
         'accordion_item_content': item.body,
         'accordion_item_content_id': 'accordion-item-content-' ~ loop.index,
         'accordion_hash':  item.label|clean_class,
+        'accordion_item_expanded': item.field_automatically_open,
         'accordion_type': 'multi',
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}

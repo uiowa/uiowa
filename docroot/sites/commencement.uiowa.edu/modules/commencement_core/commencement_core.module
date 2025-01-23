@@ -277,6 +277,11 @@ function commencement_core_preprocess_field(&$variables) {
         $variables['items'][$delta]['label'] = $headline;
         $body = $paragraph->get('field_collection_body')->view();
         $variables['items'][$delta]['body'] = $body;
+
+        if ($paragraph->hasField('field_automatically_open') && !$paragraph->get('field_automatically_open')->isEmpty()) {
+          $variables['items'][$delta]['field_automatically_open'] = $paragraph->get('field_automatically_open')
+            ->getValue()[0]['value'];
+        }
       }
       break;
 
