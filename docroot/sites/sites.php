@@ -3395,12 +3395,6 @@ $sites['labhaar.dev.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 $sites['labhaar.stage.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 $sites['labhaar.prod.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 
-// Directory aliases for grantsupport.clas.uiowa.edu.
-$sites['clasgrantsupport.uiowa.ddev.site'] = 'grantsupport.clas.uiowa.edu';
-$sites['clasgrantsupport.dev.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
-$sites['clasgrantsupport.stage.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
-$sites['clasgrantsupport.prod.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
-
 // Directory aliases for uisdaa.org.uiowa.edu.
 $sites['orguisdaa.uiowa.ddev.site'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.dev.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
@@ -7642,3 +7636,9 @@ $sites['labpan.uiowa.ddev.site'] = 'pan.lab.uiowa.edu';
 $sites['labpan.dev.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
 $sites['labpan.stage.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
 $sites['labpan.prod.drupal.uiowa.edu'] = 'pan.lab.uiowa.edu';
+
+// Directory aliases for petrin.lab.uiowa.edu.
+$sites['labpetrin.uiowa.ddev.site'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.dev.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.stage.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
+$sites['labpetrin.prod.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
