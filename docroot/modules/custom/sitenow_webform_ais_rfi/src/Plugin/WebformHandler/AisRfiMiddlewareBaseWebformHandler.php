@@ -72,6 +72,7 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     $form['submission_data'] = [
       '#type' => 'details',
       '#title' => $this->t('Data submitted to the middleware'),
+      '#weight' => 99,
     ];
 
     // Get webform elements.
