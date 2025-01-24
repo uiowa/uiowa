@@ -1,3 +1,6 @@
+@import "uids/scss/abstracts/_variables.scss";
+@import "uids/scss/abstracts/_utilities.scss";
+
 .block-inline-blockuiowa-image {
   img {
     width: 100%;
@@ -8,5 +11,11 @@
   a:focus-visible img,
   a:hover img {
     opacity: .6;
+  }
+}
+
+figure.block-inline-blockuiowa-image.caption {
+  @include breakpoint(sm) {
+    width: 100%;
   }
 }
