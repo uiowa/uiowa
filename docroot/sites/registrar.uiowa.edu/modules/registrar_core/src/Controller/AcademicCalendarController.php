@@ -210,7 +210,7 @@ class AcademicCalendarController extends ControllerBase {
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     if ($includePastSessions) {
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
+      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), -$steps - 1, $steps + 1);
       $sessions = array_merge($pastSessions, $sessions);
     }
 
