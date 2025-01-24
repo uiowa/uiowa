@@ -199,9 +199,12 @@ $search-img-path: '../../images/search-01.svg';
 
 }
 
-.search-is-open .iowa-bar--full .site-name {
-  @include breakpoint(md) {
-    display: none;
+.search-is-open {
+  .iowa-bar--full .site-name,
+  .iowa-bar__below .site-name {
+    @include breakpoint(md) {
+      display: none;
+    }
   }
 }
 
