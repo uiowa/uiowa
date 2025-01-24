@@ -36,14 +36,13 @@
 {% set headline_class = headline_class ? headline_class|merge(['headline']) : [
   'headline',
   'headline--serif',
-  'headline--negative',
   'headline--large',
 ] %}
 <div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
     {% if banner_image %}
-      <div class="banner__image">
+      <div class="media--image">
         {{ banner_image }}
       </div>
     {% endif %}
