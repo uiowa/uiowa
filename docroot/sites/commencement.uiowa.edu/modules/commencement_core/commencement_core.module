@@ -5,11 +5,13 @@
  * Custom functionality for the Commencement website.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\commencement_core\Entity\Event;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -275,6 +277,11 @@ function commencement_core_preprocess_field(&$variables) {
         $variables['items'][$delta]['label'] = $headline;
         $body = $paragraph->get('field_collection_body')->view();
         $variables['items'][$delta]['body'] = $body;
+
+        if ($paragraph->hasField('field_automatically_open') && !$paragraph->get('field_automatically_open')->isEmpty()) {
+          $variables['items'][$delta]['field_automatically_open'] = $paragraph->get('field_automatically_open')
+            ->getValue()[0]['value'];
+        }
       }
       break;
 
@@ -283,9 +290,18 @@ function commencement_core_preprocess_field(&$variables) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $variables['element'][0]['#paragraph'];
         // Somewhat counterintuitively, the paragraph referenced is
-        // uiowa_collection_item and we actually want the parent entity.
+        // uiowa_collection_item, and we actually want the parent entity.
         $parent = $paragraph->getParentEntity();
-        $variables['id'] = $parent->id();
+        $variables['id'] = 'accordion-' . $parent->id();
+        // Assemble the aria-owns attribute for the accordion.
+        $items = Element::children($variables['element']);
+        $variables['aria_owns'] = [];
+        foreach ($items as $delta) {
+          // Get the paragraph entity.
+          $paragraph = $variables['element'][$delta]['#paragraph'];
+          $unique_id = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
+          $variables['aria_owns'][] = $unique_id;
+        }
       }
       break;
 
@@ -383,7 +399,7 @@ function commencement_core_preprocess_field__node__title(&$variables) {
     // Add new page title classes.
     uiowa_core_set_attributes($variables, [
       'headline--uppercase',
-      'headline--negative',
+      'headline',
       'headline--highlight',
     ]);
   }
@@ -446,6 +462,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
         $variables['delta'] = 0;
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
+        $variables['accordion_hash'] = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
 
         /**
          * @var integer $delta
