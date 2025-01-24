@@ -17,11 +17,17 @@
  * @ingroup themeable
  */
 #}
-<div class="accordion" role="tablist" aria-multiselectable="true" id="book-publication-details-accordion">
-  {% for row in rows %}
-    <div{{ row.attributes }}>
-      {% embed '@uids_base/uids/accordion-item.html.twig' with row.template_options only %}
-      {% endembed %}
-    </div>
-  {% endfor %}
+
+{{ attach_library('uids_base/accordion') }}
+{% set id = "book-publication-details-accordion" %}
+
+<div class="collection--accordion">
+  <div class="accordion" role="tablist" aria-owns="book-details-0" aria-multiselectable="false" id="{{ id }}">
+    {% for row in rows %}
+      <div{{ row.attributes }}>
+        {% embed '@uids_base/uids/accordion-item.html.twig' with row.template_options only %}
+        {% endembed %}
+      </div>
+    {% endfor %}
+  </div>
 </div>

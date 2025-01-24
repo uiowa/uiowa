@@ -1085,6 +1085,24 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   // "False" designates a single-select accordion.
   $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
     $block->field_accordion_type->value === 'multi_select') ? 'true' : 'false';
+
+  // Assemble the aria-owns attribute for the accordion.
+  $accordion_item_id = 'accordion-item-' . $block->id();
+  $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
+  $variables['aria_owns'] = [];
+  foreach ($items as $delta) {
+    $paragraph = $variables['elements']['content']['field_uiowa_collection_items'][$delta]['#paragraph'];
+    if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+      // Use the unique ID if it exists.
+      $unique_id = $paragraph->get('field_unique_id')->value;
+      $variables['aria_owns'][] = $unique_id;
+    }
+    else {
+      // Fall back to the delta-based ID.
+      $variables['aria_owns'][] = $accordion_item_id . '-' . $delta;
+    }
+  }
+
 }
 
 /**
@@ -1197,11 +1215,15 @@ function uids_base_preprocess_paragraph(&$variables) {
 
       // If our bundle is the collection item and we have a
       // 'field_automatically_open' value set...
-      if ($paragraph->bundle() === 'uiowa_collection_item' &&
-        $opened = $paragraph->field_automatically_open->value) {
-        // Pass a true or false based upon the value to the template.
-        // Template: docroot/themes/custom/uids_base/uids_base.theme .
-        $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
+      if ($paragraph->bundle() === 'uiowa_collection_item') {
+        $variables['accordion_type'] = (!isset($parent->field_accordion_type->value) ||
+          $parent->field_accordion_type->value === 'multi_select') ? 'multi' : 'single';
+
+        if ($opened = $paragraph->field_automatically_open->value) {
+          // Pass a true or false based upon the value to the template.
+          // Template: docroot/themes/custom/uids_base/uids_base.theme .
+          $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
+        }
       }
     }
   }

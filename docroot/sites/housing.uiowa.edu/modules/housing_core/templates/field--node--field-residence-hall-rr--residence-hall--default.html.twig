@@ -39,16 +39,16 @@
 #}
 {% set accordion_item = {
   'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ 0,
-  'accordion_type' : 'single',
-  'accordion_parent_id': '#accordion-' ~ label|clean_class,
+  'accordion_type' : 'multi',
+  'accordion_parent_id': 'accordion-' ~ label|clean_class,
   'accordion_item_label': label,
   'accordion_hash': label|clean_class,
   'accordion_item_content': items,
-  'accordion_item_expanded': 'false',
+  'accordion_item_content_id': 'accordion-content-' ~ label|clean_class,
 } %}
 
-<div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
+    <div class="collection--accordion">
+      <div class="accordion" role="tablist" aria-owns="{{ label|clean_class }}" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
     {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
       {% block accordion_content %}
         <div class="media--widescreen">
