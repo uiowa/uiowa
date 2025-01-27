@@ -47,17 +47,6 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     // Load configuration.
     $config = $this->configFactory->get('sitenow_webform_ais_rfi.settings');
 
-    // We need an endpoint URL to proceed.
-    $endpoint_url = $config->get('middleware.endpoint_url');
-    if (!$endpoint_url) {
-      // Print a message letting the user know they need to contact
-      // the SiteNow team.
-      $form['missing_endpoint'] = [
-        '#markup' => $this->t('<strong>Warning:</strong> The AIS RFI Middleware endpoint URL is missing. Please contact the SiteNow team for assistance.'),
-        '#weight' => -100,
-      ];
-    }
-
     // Load basic auth credentials from config.
     $auth = $config->get('middleware.auth');
     // We need auth credentials to proceed.
@@ -118,7 +107,15 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     $auth = $config->get('middleware.auth');
     $endpoint_url = $config->get('middleware.endpoint_url');
 
-    if (!$auth || !$endpoint_url) {
+    // Use an override URL if set.
+    $endpoint_url = $config->get('middleware.endpoint_url');
+    // If not set, use the default URL based on environment.
+    if (!$endpoint_url) {
+      $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
+      $endpoint_url = ($env === 'prod') ? 'https://app.its.uiowa.edu/prospect-api/api/prospect/submit' : 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit';
+    }
+
+    if (!$auth) {
       $this->getLogger()->error($this->t('AIS RFI Middleware configuration is incomplete. No data was sent to the middleware.'));
       return;
     }
