@@ -121,6 +121,13 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     }
 
     $data = $this->getRequestData($webform_submission);
+
+    $data = $this->getRequestData($webform_submission);
+    if (empty($data)) {
+      // If the data is empty, skip the remote post.
+      return;
+    }
+
     $data['clientKey'] = $this->getClientKey();
 
     $options = [
