@@ -38,8 +38,11 @@
   {% if is_accordion %}
     {% set id = "accordion-" ~ id %}
     <div class="collection--accordion">
-      <div class="accordion" role="tablist" aria-multiselectable="{{ multiselect }}" id="{{ id }}">
-        {{ content }}
+      {{ content.field_uiowa_headline }}
+      <div class="accordion" role="tablist" {% if _context['aria_owns'] is defined and _context['aria_owns'] is iterable %}
+        aria-owns="{{ _context['aria_owns']|join(', ') }}"
+      {% endif %} aria-multiselectable="{{ multiselect }}" id="{{ id }}">
+        {{ content|without('field_uiowa_headline') }}
       </div>
     </div>
   {% else %}

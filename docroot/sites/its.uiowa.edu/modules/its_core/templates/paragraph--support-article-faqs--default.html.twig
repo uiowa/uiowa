@@ -45,6 +45,9 @@
   'accordion_item_label': content.field_support_faqs_question,
   'accordion_item_content': content.field_support_faqs_answer,
   'attributes': attributes,
+  'accordion_type': 'multi',
+  'accordion_item_content_id': 'accordion-item-content-' ~ content_id,
+  'accordion_hash': 'accordion-item-heading-' ~ content_id,
 } %}
 
 {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
