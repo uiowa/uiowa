@@ -1,16 +1,30 @@
 {# Template to implement accordion container for event ceremony information details. #}
 {{ attach_library('uids_base/accordion') }}
 
+{% if items is defined and items is iterable %}
+  {% set aria_owns = [] %}
+  {% for item in items %}
+    {% if item.label is defined %}
+      {% set aria_owns = aria_owns|merge([item.label|clean_class]) %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-ceremony-detail">
+  <div class="accordion" role="tablist" {% if aria_owns is defined and aria_owns is iterable %}
+    aria-owns="{{ aria_owns|join(', ') }}"
+  {% endif %}  aria-multiselectable="true" id="accordion-ceremony-detail">
     {% for item in items %}
       {% set accordion_item = {
         'accordion_h_size' : 'h3',
         'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ loop.index,
-        'accordion_parent_id': '#accordion-ceremony-detail',
+        'accordion_parent_id': 'accordion-ceremony-detail',
         'accordion_item_label': item.label,
         'accordion_item_content': item.body,
+        'accordion_item_content_id': 'accordion-item-content-' ~ loop.index,
         'accordion_hash':  item.label|clean_class,
+        'accordion_item_expanded': item.field_automatically_open,
+        'accordion_type': 'multi',
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
 
