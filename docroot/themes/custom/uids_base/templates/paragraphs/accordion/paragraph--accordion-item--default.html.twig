@@ -39,17 +39,16 @@
  */
 #}
 
-{% set label = 'heading' ~ id %}
-{% set id = 'pid' ~ id %}
+{% set accordion_item = {
+  'accordion_h_size': 'h2',
+  'accordion_item_id': 'accordion-item-' ~ id,
+  'accordion_parent_id': 'accordion-' ~ parent_id,
+  'accordion_item_label': content.field_accordion_item_title,
+  'accordion_item_content': content.field_accordion_item_body,
+  'accordion_item_content_id': 'accordion-content-' ~ id,
+  'accordion_hash': accordion_hash,
+  'accordion_type': 'multi',
+} %}
 
-
-<h2 {{ attributes.addClass(["accordion__heading"]) }} id="{{ label }}">
-  <button class="accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
-    {{ content.field_accordion_item_title }}
-    <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
-  </button>
-</h2>
-
-<div id="{{ accordion.id_prefix }}{{ id }}{{ item.id }}" class="accordion__content bg--white" aria-labelledby="{{ label }}" data-parent="#{{ accordion_parent }}">
-  {{ content.field_accordion_item_body }}
-</div>
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+{% endembed %}

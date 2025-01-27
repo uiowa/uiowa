@@ -16,10 +16,22 @@ function sitenow_accordion_preprocess_field(&$variables) {
       $variables['parent_id'] = $variables["element"]["#object"]->id();
       // Prepare items array.
       $items = [];
-      foreach ($variables['items'] as $item) {
+      $variables['aria_owns'] = [];
+      foreach ($variables['items'] as $delta => $item) {
         $items[] = $item['content'];
+        $paragraph = $variables['element'][$delta]['#paragraph'];
+        if ($paragraph->hasField('field_uip_id') && !$paragraph->get('field_uip_id')->isEmpty()) {
+          // Use the unique ID if it exists.
+          $unique_id = $paragraph->get('field_uip_id')->value;
+          $variables['aria_owns'][] = $unique_id;
+        }
+        else {
+          // Fall back to the nid-based ID.
+          $variables['aria_owns'][] = 'accordion-item-' . $paragraph->id();
+        }
       }
       $variables['items'] = $items;
+
       break;
   }
 }
@@ -35,7 +47,7 @@ function sitenow_accordion_preprocess_paragraph__accordion_item(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
 
   if (!$admin_context->isAdminRoute()) {
-    $variables['accordion_parent'] = 'accordion-' . $paragraph->getParentEntity()->id();
     $variables['id'] = $paragraph->id();
+    $variables['accordion_hash'] = $paragraph->get('field_uip_id')->value;
   }
 }
