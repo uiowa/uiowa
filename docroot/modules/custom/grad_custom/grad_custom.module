@@ -193,7 +193,7 @@ function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, 
 function grad_custom_srop_year_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   // Available srop year values.
   $thisyear = date('Y');
-  $i = $thisyear - 2;
+  $i = $thisyear - 3;
   $options = [];
   while ($i <= $thisyear) :
     $options[$i] = $i;
