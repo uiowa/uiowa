@@ -2,9 +2,6 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_reference
-      - field.field.node.page.field_related_content
-    module:
-      - allowed_formats
   _core:
     default_config_hash: NhmTCEIwoFEiLieuvd46cPOjOsyH2UmhShZypCi9rX4
   content:
@@ -15,16 +12,6 @@ adding:
     field_reference:
       type: entity_reference_autocomplete_tags
       weight: 17
-      region: content
-      settings:
-        match_operator: CONTAINS
-        match_limit: 10
-        size: 60
-        placeholder: ''
-      third_party_settings: {  }
-    field_related_content:
-      type: entity_reference_autocomplete
-      weight: 16
       region: content
       settings:
         match_operator: CONTAINS
