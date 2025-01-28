@@ -210,7 +210,7 @@ class AcademicCalendarController extends ControllerBase {
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     if ($includePastSessions) {
-      //Getting the correct offset position to show the current past and future sessions without a session missing such ass fall 2024 if we are in winter 2025.
+      // The getSessionsRange method includes the current session as the last element. The $steps variable is exclusive of the current session, so we use $steps + 1 to get the current number of steps including the current session. The current session is removed in the next step with array_merge.
       $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), -$steps - 1, $steps + 1);
       $sessions = array_merge($pastSessions, $sessions);
     }
