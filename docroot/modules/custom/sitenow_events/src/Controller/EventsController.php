@@ -29,13 +29,13 @@ class EventsController extends ControllerBase {
     else {
       $event = sitenow_events_load([], ['node', "{$event_id}.json"]);
 
-      if (!isset($event['event_instances'], $event['event_instances'][$event_instance])) {
+      if (!isset($event['event']['event_instances'], $event['event']['event_instances'][$event_instance])) {
         throw new NotFoundHttpException();
       }
       else {
         return [
           '#theme' => 'sitenow_events_single_event',
-          '#event' => $event,
+          '#event' => $event['event'],
           '#cache' => [
             'tags' => ['time:hourly'],
             'max-age' => 60,
@@ -58,8 +58,8 @@ class EventsController extends ControllerBase {
     $title = '';
     $event = $this->getEventData($event_id);
 
-    if (isset($event['title'])) {
-      $title = $event['title'];
+    if (isset($event['event']['title'])) {
+      $title = $event['event']['title'];
     }
 
     return $title;
