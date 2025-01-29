@@ -6,27 +6,27 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
- * Webform handler for AIS RFI Prospector.
+ * Webform handler for AIS RFI Maui.
  *
  * @WebformHandler(
- *   id = "ais_rfi_middleware_prospector",
- *   label = @Translation("AIS RFI Prospector"),
+ *   id = "ais_rfi_middleware_maui",
+ *   label = @Translation("AIS RFI Maui"),
  *   category = @Translation("External"),
- *   description = @Translation("Posts webform submissions to AIS RFI middleware for Prospector."),
+ *   description = @Translation("Posts webform submissions to AIS RFI middleware for Maui."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
  *   tokens = TRUE,
  * )
  */
-class AisRfiMiddlewareRemotePostWebformHandler extends AisRfiMiddlewareBaseWebformHandler {
+class AisRfiMiddlewareMauiRemotePostWebform extends AisRfiMiddlewareBaseWebformHandler {
 
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
     return parent::defaultConfiguration() + [
-      'interaction_uuid' => '',
+      'ref_code' => '',
     ];
   }
 
@@ -36,12 +36,12 @@ class AisRfiMiddlewareRemotePostWebformHandler extends AisRfiMiddlewareBaseWebfo
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    // Interaction UUID field.
-    $form['interaction_uuid'] = [
+    // Referral Code field.
+    $form['ref_code'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Interaction UUID'),
-      '#default_value' => $this->configuration['interaction_uuid'],
-      '#description' => $this->t('The middleware interaction UUID. Without this, no data will be sent to the middleware. Contact siddharth-sarathe@uiowa.edu for assistance setting up an interaction UUID.'),
+      '#title' => $this->t('Referral Code'),
+      '#default_value' => $this->configuration['ref_code'],
+      '#description' => $this->t('The middleware refCode. Without this, no data will be sent to the middleware.'),
     ];
 
     return $form;
@@ -53,8 +53,8 @@ class AisRfiMiddlewareRemotePostWebformHandler extends AisRfiMiddlewareBaseWebfo
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    // Save the interaction UUID configuration.
-    $this->configuration['interaction_uuid'] = $form_state->getValue('interaction_uuid');
+    // Save the refCode config.
+    $this->configuration['ref_code'] = $form_state->getValue('ref_code');
   }
 
   /**
@@ -63,14 +63,14 @@ class AisRfiMiddlewareRemotePostWebformHandler extends AisRfiMiddlewareBaseWebfo
   protected function getRequestData(WebformSubmissionInterface $webform_submission): array {
     $data = parent::getRequestData($webform_submission);
 
-    // We need an interaction UUID to proceed.
-    $interaction_uuid = $this->configuration['interaction_uuid'];
-    if (!$interaction_uuid) {
-      // Log that the site UUID is missing.
-      $this->getLogger()->error('AIS RFI Middleware: Interaction UUID is missing. No data was sent to the middleware.');
+    // We need refCode to proceed.
+    $ref_code = $this->configuration['ref_code'];
+    if (!$ref_code) {
+      // Log that the refCode is missing.
+      $this->getLogger()->error('AIS RFI Middleware: refCode is missing. No data was sent to the middleware.');
       return [];
     }
-    $data['siteInteractionUuid'] = $interaction_uuid;
+    $data['refCode'] = $ref_code;
 
     return $data;
   }
@@ -79,7 +79,7 @@ class AisRfiMiddlewareRemotePostWebformHandler extends AisRfiMiddlewareBaseWebfo
    * {@inheritdoc}
    */
   protected function getClientKey(): string {
-    return 'prospector';
+    return 'maui';
   }
 
 }
