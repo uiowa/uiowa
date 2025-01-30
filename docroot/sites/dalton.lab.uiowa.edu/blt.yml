@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdalton.uiowa.ddev.site
+    protocol: https
+  machine_name: labdalton
+  human_name: dalton.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdalton.prod
+drupal:
+  db:
+    database: dalton_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdalton.prod.drupal.uiowa.edu'
+  requester: kdltn
+  site-name: 'One Health Microbial Dynamics Lab'

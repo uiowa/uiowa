@@ -210,7 +210,12 @@ class AcademicCalendarController extends ControllerBase {
     $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
 
     if ($includePastSessions) {
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
+      // The getSessionsRange method includes the current session as the
+      // last element. The $steps variable is exclusive of the
+      // current session, so we use $steps + 1 to get the current
+      // number of steps including the current session.
+      // The current session is removed in the next step with array_merge.
+      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), -$steps - 1, $steps + 1);
       $sessions = array_merge($pastSessions, $sessions);
     }
 
@@ -234,7 +239,8 @@ class AcademicCalendarController extends ControllerBase {
 
         if (!empty($date->dateCategoryLookups)) {
 
-          // Split any events that are multiple days into multiple event entries.
+          // Split any events that are multiple days
+          // into multiple event entries.
           if ($date->endDate === $date->beginDate) {
             $events[] = $this->processDate($date, $session, $session_index, $session->legacyCode);
           }
