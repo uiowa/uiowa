@@ -437,9 +437,7 @@ function commencement_core_preprocess_layout(&$variables) {
  * Implements hook_preprocess_HOOK() for page templates.
  */
 function commencement_core_preprocess_page(array &$variables) {
-  // Check if we're on a node page and if the content type is 'venue'.
   if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
-    // Attach the custom Leaflet script only for Venue content type.
     $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
   }
 }
