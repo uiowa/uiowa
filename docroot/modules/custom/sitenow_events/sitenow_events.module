@@ -362,7 +362,7 @@ function sitenow_events_preprocess_block(&$variables) {
       ];
 
       // Temporary fix as empty filters are not being handled properly.
-      $parameters = array_filter($parameters);
+      $parameters = array_filter($parameters, 'strlen');
 
       // Provide a start date filter parameter if it exists.
       if (!is_null($start)) {
