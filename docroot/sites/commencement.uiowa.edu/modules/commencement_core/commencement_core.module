@@ -437,6 +437,7 @@ function commencement_core_preprocess_layout(&$variables) {
  * Implements hook_preprocess_HOOK() for page templates.
  */
 function commencement_core_preprocess_page(array &$variables) {
+  // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
   if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
     $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
   }
