@@ -434,6 +434,15 @@ function commencement_core_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function commencement_core_preprocess_page(array &$variables) {
+  if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
+    $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_paragraph(&$variables) {
