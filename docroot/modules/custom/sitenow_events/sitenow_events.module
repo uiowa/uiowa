@@ -361,6 +361,9 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
 
+      // Temporary fix as empty filters are not being handled properly.
+      $parameters = array_filter($parameters);
+
       // Provide a start date filter parameter if it exists.
       if (!is_null($start)) {
         $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
