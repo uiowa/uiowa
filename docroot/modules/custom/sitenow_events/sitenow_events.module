@@ -361,9 +361,6 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
 
-      // Temporary fix as empty filters are not being handled properly.
-      $parameters = array_filter($parameters, 'strlen');
-
       // Provide a start date filter parameter if it exists.
       if (!is_null($start)) {
         $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
@@ -375,8 +372,8 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If pager, create it and re-query data based on current page.
       $show_pager = (bool) $block->get('field_collection_pager')->getString();
-      if ($show_pager && isset($data['page']['page']['total_results'])) {
-        $count = $data['page']['page']['total_results'];
+      if ($show_pager && isset($data['page']['total_results'])) {
+        $count = $data['page']['total_results'];
         $element++;
         /** @var \Drupal\Core\Pager\PagerManager $pager */
         $pager = \Drupal::service('pager.manager');
@@ -445,7 +442,7 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       // Add pager to render if checked.
-      if ($show_pager && isset($data['page']['page']['total_results'])) {
+      if ($show_pager && isset($data['page']['total_results'])) {
         $variables['content']['pager'] = [
           '#type' => 'pager',
           '#element' => $element,
