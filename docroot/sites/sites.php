@@ -7642,3 +7642,15 @@ $sites['labpetrin.uiowa.ddev.site'] = 'petrin.lab.uiowa.edu';
 $sites['labpetrin.dev.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
 $sites['labpetrin.stage.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
 $sites['labpetrin.prod.drupal.uiowa.edu'] = 'petrin.lab.uiowa.edu';
+
+// Directory aliases for dalton.lab.uiowa.edu.
+$sites['labdalton.uiowa.ddev.site'] = 'dalton.lab.uiowa.edu';
+$sites['labdalton.dev.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
+$sites['labdalton.stage.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
+$sites['labdalton.prod.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
+
+// Directory aliases for graduate-dean.jobs.uiowa.edu.
+$sites['jobsgraduate-dean.uiowa.ddev.site'] = 'graduate-dean.jobs.uiowa.edu';
+$sites['jobsgraduate-dean.dev.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
+$sites['jobsgraduate-dean.stage.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
+$sites['jobsgraduate-dean.prod.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
