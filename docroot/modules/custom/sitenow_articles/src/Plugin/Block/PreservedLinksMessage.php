@@ -70,7 +70,7 @@ class PreservedLinksMessage extends BlockBase implements ContainerFactoryPluginI
       '#attributes' => [
         'class' => [
           'alert',
-          'alert-info',
+          'alert--info',
         ],
       ],
     ];
