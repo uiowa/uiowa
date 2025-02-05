@@ -3356,41 +3356,50 @@ function sitenow_update_10013() {
  * Update v3 events blocks with new ids from API.
  */
 function sitenow_update_10014() {
-  $base_path = DRUPAL_ROOT . '/profiles/custom/sitenow/event_api_migration/';
-  $mapping_files = [
-    'filters' => $base_path . 'filters.csv',
-    'keywords' => $base_path . 'keywords.csv',
-    'places' => $base_path . 'places.csv',
-  ];
-
   $mappings = [];
 
-  // Load mappings from CSV files.
-  foreach ($mapping_files as $type => $file_path) {
-    if (!file_exists($file_path)) {
-      \Drupal::logger('sitenow')
-        ->warning('Mapping file @file not found.', ['@file' => $file_path]);
-      continue;
-    }
+  $api_client = \Drupal::service('uiowa_events.content_hub_api_client');
 
-    if (($handle = fopen($file_path, 'r')) !== FALSE) {
-      while (($row = fgetcsv($handle)) !== FALSE) {
-        if (isset($row[0], $row[1])) {
-          // old_id => new_id.
-          $mappings[$type][$row[0]] = $row[1];
+  $filters_data = $api_client->getFilters('filters');
+  $keywords_data = $api_client->getFilters('keywords');
+  $places_data = $api_client->getPlaces();
+
+  // Map filters.
+  foreach (['event_audience', 'event_types', 'event_general_interest', 'departments'] as $category) {
+    if (!empty($filters_data[$category])) {
+      foreach ($filters_data[$category] as $item) {
+        if (!empty($item['previous_id'])) {
+          $mappings[$category][$item['previous_id']] = $item['id'];
         }
       }
-      fclose($handle);
+    }
+  }
+
+  // Map keywords.
+  if (!empty($keywords_data['keywords'])) {
+    foreach ($keywords_data['keywords'] as $item) {
+      if (!empty($item['previous_id'])) {
+        $mappings['keywords'][$item['previous_id']] = $item['id'];
+      }
+    }
+  }
+
+  // Map places.
+  if (!empty($places_data['places'])) {
+    foreach ($places_data['places'] as $item) {
+      if (!empty($item['previous_id'])) {
+        $mappings['places'][$item['previous_id']] = $item['id'];
+      }
     }
   }
 
   // Define field mappings.
   $field_mappings = [
     'filters' => [
-      'field_uiowa_events_department',
-      'field_uiowa_events_audiences',
-      'field_uiowa_events_interests',
-      'field_uiowa_events_types',
+      'departments' => 'field_uiowa_events_department',
+      'event_audience' => 'field_uiowa_events_audiences',
+      'event_general_interest' => 'field_uiowa_events_interests',
+      'event_types' => 'field_uiowa_events_types',
     ],
     'keywords' => ['field_uiowa_events_keywords'],
     'places' => ['field_uiowa_events_place'],
@@ -3403,13 +3412,34 @@ function sitenow_update_10014() {
 
     $changed = FALSE;
     foreach ($field_mappings as $mapping_type => $fields) {
-      foreach ($fields as $field_name) {
+      // Filters have multiple categories inside.
+      if ($mapping_type === 'filters') {
+        foreach ($fields as $filter_type => $field_name) {
+          if (!$block->hasField($field_name)) {
+            continue;
+          }
+
+          $field_items = $block->get($field_name)->getValue();
+          foreach ($field_items as &$field_item) {
+            if (isset($field_item['value']) && isset($mappings['filters'][$filter_type][$field_item['value']])) {
+              $field_item['value'] = $mappings['filters'][$filter_type][$field_item['value']];
+              $changed = TRUE;
+            }
+          }
+
+          if ($changed) {
+            $block->set($field_name, $field_items);
+          }
+        }
+      }
+      // Keywords and Places.
+      else {
+        $field_name = $fields;
         if (!$block->hasField($field_name)) {
           continue;
         }
 
         $field_items = $block->get($field_name)->getValue();
-
         foreach ($field_items as &$field_item) {
           if (isset($field_item['value']) && isset($mappings[$mapping_type][$field_item['value']])) {
             $field_item['value'] = $mappings[$mapping_type][$field_item['value']];
