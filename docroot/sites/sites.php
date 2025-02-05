@@ -7672,3 +7672,9 @@ $sites['labmuscog.uiowa.ddev.site'] = 'muscog.lab.uiowa.edu';
 $sites['labmuscog.dev.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
 $sites['labmuscog.stage.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
 $sites['labmuscog.prod.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+
+// Directory aliases for uiphysicians.medicine.uiowa.edu.
+$sites['medicineuiphysicians.uiowa.ddev.site'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.dev.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.stage.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.prod.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
