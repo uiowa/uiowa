@@ -7666,3 +7666,9 @@ $sites['org3ddesignclub.uiowa.ddev.site'] = '3ddesignclub.org.uiowa.edu';
 $sites['org3ddesignclub.dev.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
 $sites['org3ddesignclub.stage.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
 $sites['org3ddesignclub.prod.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+
+// Directory aliases for muscog.lab.uiowa.edu.
+$sites['labmuscog.uiowa.ddev.site'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.dev.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.stage.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.prod.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
