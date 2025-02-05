@@ -7654,3 +7654,9 @@ $sites['jobsgraduate-dean.uiowa.ddev.site'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.dev.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.stage.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.prod.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
+
+// Directory aliases for mw-amta.conference.uiowa.edu.
+$sites['conferencemw-amta.uiowa.ddev.site'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.dev.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.stage.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.prod.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
