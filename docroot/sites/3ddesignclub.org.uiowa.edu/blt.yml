@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org3ddesignclub.uiowa.ddev.site
+    protocol: https
+  machine_name: org3ddesignclub
+  human_name: 3ddesignclub.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: org3ddesignclub.prod
+drupal:
+  db:
+    database: 3ddesignclub_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org3ddesignclub.prod.drupal.uiowa.edu'
+  requester: gkreider
+  site-name: '3D Design Club'
