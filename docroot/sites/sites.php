@@ -7660,3 +7660,9 @@ $sites['conferencemw-amta.uiowa.ddev.site'] = 'mw-amta.conference.uiowa.edu';
 $sites['conferencemw-amta.dev.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
 $sites['conferencemw-amta.stage.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
 $sites['conferencemw-amta.prod.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+
+// Directory aliases for 3ddesignclub.org.uiowa.edu.
+$sites['org3ddesignclub.uiowa.ddev.site'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.dev.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.stage.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.prod.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
