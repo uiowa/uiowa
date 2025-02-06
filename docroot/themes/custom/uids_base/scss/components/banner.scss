@@ -3,62 +3,62 @@
 @import "uids/scss/components/banner.scss";
 
 
-//.layout--onecol,
-//.layout--twocol--75-25 .layout__region--first,
-//.layout--twocol--25-75 .layout__region--second,
-//.layout--twocol--67-33 .layout__region--first,
-//.layout--twocol--33-67 .layout__region--second,
-//.layout--twocol--50-50 {
-//  .banner {
-//
-//    // Set layout text width for onecol containers only excluding the rule below
-//    &:not([class*="banner--horizontal-left"]) {
-//      .banner__text {
-//        @include breakpoint(sm) {
-//          width: 100%;
-//        }
-//
-//        @include breakpoint(md) {
-//          width: 80%;
-//        }
-//
-//        @include breakpoint(page-container) {
-//          width: 60%;
-//        }
-//      }
-//    }
-//  }
-//}
+.layout--onecol,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--50-50 {
+  .banner {
 
-//.layout--onecol,
-//.layout--twocol--25-75 .layout__region--second,
-//.layout--twocol--75-25 .layout__region--first,
-//.layout--twocol--33-67 .layout__region--second,
-//.layout--twocol--67-33 .layout__region--first,
-//.layout--twocol--50-50 {
-//  .banner .banner__content {
-//    @include breakpoint(sm) {
-//      padding: 1.5rem;
-//    }
-//  }
-//
-//  // Set banner content width if centered left is selected
-//  .banner--vertical-center.banner--horizontal-left {
-//    .banner__content {
-//      @include breakpoint(sm) {
-//        width: 100%;
-//      }
-//
-//      @include breakpoint(md) {
-//        width: 80%;
-//      }
-//
-//      @include breakpoint(page-container) {
-//        width: 50%;
-//      }
-//    }
-//  }
-//}
+    // Set layout text width for onecol containers only excluding the rule below
+    &:not([class*="banner--horizontal-left"]) {
+      .banner__text {
+        @include breakpoint(sm) {
+          width: 100%;
+        }
+
+        @include breakpoint(md) {
+          width: 80%;
+        }
+
+        @include breakpoint(page-container) {
+          width: 60%;
+        }
+      }
+    }
+  }
+}
+
+.layout--onecol,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--50-50 {
+  .banner .banner__content {
+    @include breakpoint(sm) {
+      padding: 1.5rem;
+    }
+  }
+
+  // Set banner content width if centered left is selected
+  .banner--vertical-center.banner--horizontal-left {
+    .banner__content {
+      @include breakpoint(sm) {
+        width: 100%;
+      }
+
+      @include breakpoint(md) {
+        width: 80%;
+      }
+
+      @include breakpoint(page-container) {
+        width: 50%;
+      }
+    }
+  }
+}
 
 // Adjust small padding for layout banner headers
 //.layout--onecol--background.banner--small {
