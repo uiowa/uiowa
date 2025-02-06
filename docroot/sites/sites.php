@@ -7654,3 +7654,27 @@ $sites['jobsgraduate-dean.uiowa.ddev.site'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.dev.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.stage.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
 $sites['jobsgraduate-dean.prod.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
+
+// Directory aliases for mw-amta.conference.uiowa.edu.
+$sites['conferencemw-amta.uiowa.ddev.site'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.dev.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.stage.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+$sites['conferencemw-amta.prod.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
+
+// Directory aliases for 3ddesignclub.org.uiowa.edu.
+$sites['org3ddesignclub.uiowa.ddev.site'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.dev.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.stage.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+$sites['org3ddesignclub.prod.drupal.uiowa.edu'] = '3ddesignclub.org.uiowa.edu';
+
+// Directory aliases for muscog.lab.uiowa.edu.
+$sites['labmuscog.uiowa.ddev.site'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.dev.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.stage.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+$sites['labmuscog.prod.drupal.uiowa.edu'] = 'muscog.lab.uiowa.edu';
+
+// Directory aliases for uiphysicians.medicine.uiowa.edu.
+$sites['medicineuiphysicians.uiowa.ddev.site'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.dev.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.stage.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
+$sites['medicineuiphysicians.prod.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';

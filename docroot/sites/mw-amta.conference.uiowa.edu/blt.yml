@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencemw-amta.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencemw-amta
+  human_name: mw-amta.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemw-amta.prod
+drupal:
+  db:
+    database: mw_amta_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencemw-amta.prod.drupal.uiowa.edu'
+  requester: astt
+  site-name: 'Midwest American Music Therapy Association Conference'
