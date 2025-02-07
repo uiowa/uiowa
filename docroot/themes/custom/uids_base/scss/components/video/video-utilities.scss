@@ -54,16 +54,20 @@
 
 // Media alignment
 
-@media (min-width: 576px) {
+
   .align-right{
     &.media, .media, figcaption {
-      margin-left: variables.$gutter;
+      @include utilities.breakpoint(sm) {
+        margin-left: variables.$gutter;
+      }
     }
   }
 
   .align-left {
     &.media, .media, figcaption {
-      margin-right: variables.$gutter;
+      @include utilities.breakpoint(sm) {
+        margin-right: variables.$gutter;
+      }
     }
 
   }
@@ -71,23 +75,31 @@
   .align-right.media--type-remote-video:not(.media--view-mode-vertical),
   .align-right.media--type-panopto {
     width: auto;
-    margin-left: variables.$gutter;
+    @include utilities.breakpoint(sm) {
+      margin-left: variables.$gutter;
+    }
     .field--name-field-media-oembed-video iframe,
     .field--name-field-media-panopto-url iframe {
-      float: right;
+      @include breakpoint(sm) {
+        float: right;
+      }
     }
   }
   .align-left.media--type-remote-video:not(.media--view-mode-vertical),
   .align-left.media--type-panopto {
     width: auto;
-    margin-right: variables.$gutter;
+    @include utilities.breakpoint(sm) {
+      margin-right: variables.$gutter;
+    }
     .field--name-field-media-oembed-video iframe,
     .field--name-field-media-panopto-url iframe {
-      float: left;
+      @include breakpoint(sm) {
+        float: left;
+      }
     }
   }
 
-}
+
 
 .align-center.media--type-remote-video,
 .align-center.media--type-panopto {

@@ -56,6 +56,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+# Leaflet - remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
+leaflet_attach:
+  js:
+    assets/js/leaflet-attach.js: {}
 # Pannellum
 virtual_tour:
   css:
@@ -129,7 +133,7 @@ lazy-load-animation:
     assets/js/lazy_load_animation.js: {}
 video:
   js:
-    assets/js/video.js: { preprocess: false }
+    uids/assets/js/video.js: { preprocess: false }
 hero:
   css:
     component:

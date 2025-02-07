@@ -183,7 +183,7 @@
   font-size: clamp(2.2rem,calc(3.3803vw + .9324rem),3.7rem);
 }
 
-.banner__image {
+.media--image {
   .contextual-region {
     // Remove contextual position for logged in view of banner image
     position: unset;
@@ -330,7 +330,7 @@
 // @todo incorporate this into https://github.com/uiowa/uids/issues/721.
 .banner--stacked {
   &.layout--onecol--background.banner--small {
-    .banner__image {
+    .media--image {
       max-height: 15rem;
       overflow: hidden;
       @include utilities.breakpoint(sm) {

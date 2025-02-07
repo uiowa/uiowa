@@ -16,6 +16,14 @@
   }
 }
 
+// Display education field degrees on separate lines.
+.field--name-field-person-education.field--label-visually_hidden .field__item {
+  display: inline-block;
+  + .field__item {
+    margin-top: .5rem;
+  }
+}
+
 // For professional titles on multiple lines
 .view-people-list-block,
 .view-people-block,

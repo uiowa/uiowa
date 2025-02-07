@@ -8,6 +8,7 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Render\Markup;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uipress_core\Entity\Book;
 
 /**
@@ -115,6 +116,20 @@ function uipress_core_preprocess_field(&$variables, $hook) {
         'block-padding__all--minimal',
       ]);
       break;
+
+    case 'field_book_type':
+      $variables['parent_id'] = $variables['element']['#object']->id();
+      $variables['aria_owns'] = [];
+      // Construct aria-owns entry for each paragraph entity.
+      foreach ($variables['items'] as $item) {
+        // Check if the item contains a valid paragraph entity.
+        if (isset($item['content']['#paragraph']) && $item['content']['#paragraph'] instanceof Paragraph) {
+          $paragraph = $item['content']['#paragraph'];
+          // Use the paragraph ID to construct the aria-owns entry.
+          $variables['aria_owns'][] = 'accordion-book-type-heading-' . $paragraph->id();
+        }
+      }
+      break;
   }
 }
 
@@ -135,8 +150,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
     $paragraph = $variables['paragraph'];
 
     // Set unique identifiers for aria labels.
-    $variables['heading_id'] = 'heading' . $paragraph->id();
-    $variables['content_id'] = 'content' . $paragraph->id();
+    $variables['content_id'] = $paragraph->id();
 
     // Determine whether to show book sale price or not.
     if ($paragraph->hasField('field_book_sale_price') && $paragraph->hasField('field_book_sale_start_date') && $paragraph->hasField('field_book_sale_expiry_date')) {
@@ -194,11 +208,13 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
       $row['template_options'] = [
         'attributes' => $row['attributes'],
         'accordion_item_content' => $row['content'],
+        'accordion_item_content_id' => "book-publication-details-accordion-content-$id",
         'accordion_item_expanded' => 'false',
         'accordion_item_id' => "book-details-$id",
         'accordion_item_label' => $view->getTitle(),
         'accordion_multiselectable' => TRUE,
         'accordion_parent_id' => 'book-publication-details-accordion',
+        'accordion_type' => 'single',
       ];
     }
   }
@@ -334,4 +350,16 @@ function uipress_core_get_current_sales() {
     ->accessCheck()
     ->execute();
   return array_values($nids);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function uipress_core_theme_suggestions_field_alter(array &$suggestions, array &$variables) {
+  // Avoid using the accordion enhanced field
+  // template for teaser displays (e.g. Related Reads).
+  if ($variables['element']['#field_name'] === 'field_book_type'
+    && $variables['element']['#view_mode'] === 'teaser') {
+    $suggestions[] = 'field__no_markup';
+  }
 }

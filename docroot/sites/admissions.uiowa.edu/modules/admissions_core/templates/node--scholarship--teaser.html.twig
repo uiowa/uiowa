@@ -85,12 +85,13 @@
 
 {% set accordion_item = {
   'accordion_h_size': h_size ?: 'h2',
-  'accordion_item_id': 'accordion-item-' ~ 'scholarships' ~ '-' ~ node.id,
+  'accordion_item_id': 'accordion-item-scholarships-' ~ node.id,
   'accordion_parent_id': 'accordion-' ~ 'scholarships',
   'accordion_type': 'single',
   'accordion_item_label': label,
   'accordion_item_content': content|without('links'),
-  'accordion_item_expanded': 'false',
+  'accordion_item_content_id': 'accordion-content-scholarships-' ~ node.id,
+  'accordion_hash': 'accordion-heading-scholarships-' ~ node.id,
   'attributes': attributes,
   'accordion_button_teaser': accordion_button_teaser,
 } %}
