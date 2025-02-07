@@ -21,4 +21,5 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route->setRequirement('_permission', 'administer maintenance mode');
     }
   }
+
 }
