@@ -3458,3 +3458,14 @@ function sitenow_update_10014() {
     }
   });
 }
+
+/**
+ * Update ignored sitenow_events base_endpoint.
+ */
+function sitenow_update_10015() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('sitenow_events.settings');
+  $config
+    ->set('base_endpoint', 'https://events-test.ais.its.uiowa.edu/api/v1/')
+    ->save();
+}
