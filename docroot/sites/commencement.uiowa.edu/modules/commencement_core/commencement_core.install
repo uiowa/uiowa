@@ -31,7 +31,7 @@ function commencement_core_update_10001() {
   $api_client = \Drupal::service('uiowa_events.content_hub_api_client');
   $data = $api_client->getEvents($options);
 
-  // Find NIDs for all nodes with at least one aggregator block.
+  // Get event nodes that have an event ID.
   $query = \Drupal::entityQuery('node')
     ->accessCheck()
     ->condition('type', 'event')
