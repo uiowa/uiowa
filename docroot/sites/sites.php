@@ -7678,3 +7678,9 @@ $sites['medicineuiphysicians.uiowa.ddev.site'] = 'uiphysicians.medicine.uiowa.ed
 $sites['medicineuiphysicians.dev.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
 $sites['medicineuiphysicians.stage.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
 $sites['medicineuiphysicians.prod.drupal.uiowa.edu'] = 'uiphysicians.medicine.uiowa.edu';
+
+// Directory aliases for alumni.medicine.uiowa.edu.
+$sites['medicinealumni.uiowa.ddev.site'] = 'alumni.medicine.uiowa.edu';
+$sites['medicinealumni.dev.drupal.uiowa.edu'] = 'alumni.medicine.uiowa.edu';
+$sites['medicinealumni.stage.drupal.uiowa.edu'] = 'alumni.medicine.uiowa.edu';
+$sites['medicinealumni.prod.drupal.uiowa.edu'] = 'alumni.medicine.uiowa.edu';

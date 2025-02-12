@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinealumni.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinealumni
+  human_name: alumni.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinealumni.prod
+drupal:
+  db:
+    database: alumni_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinealumni.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Medicine Alumni'
