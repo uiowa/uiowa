@@ -7702,3 +7702,9 @@ $sites['labmulfaul.uiowa.ddev.site'] = 'mulfaul.lab.uiowa.edu';
 $sites['labmulfaul.dev.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
 $sites['labmulfaul.stage.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
 $sites['labmulfaul.prod.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
+
+// Directory aliases for 3ddesignstudent.org.uiowa.edu.
+$sites['org3ddesignstudent.uiowa.ddev.site'] = '3ddesignstudent.org.uiowa.edu';
+$sites['org3ddesignstudent.dev.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
+$sites['org3ddesignstudent.stage.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
+$sites['org3ddesignstudent.prod.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
