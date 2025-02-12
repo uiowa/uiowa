@@ -7696,3 +7696,9 @@ $sites['medicineiowaprotocols.uiowa.ddev.site'] = 'iowaprotocols.medicine.uiowa.
 $sites['medicineiowaprotocols.dev.drupal.uiowa.edu'] = 'iowaprotocols.medicine.uiowa.edu';
 $sites['medicineiowaprotocols.stage.drupal.uiowa.edu'] = 'iowaprotocols.medicine.uiowa.edu';
 $sites['medicineiowaprotocols.prod.drupal.uiowa.edu'] = 'iowaprotocols.medicine.uiowa.edu';
+
+// Directory aliases for gme.uihealthcare.org.
+$sites['org-uihealthcaregme.uiowa.ddev.site'] = 'gme.uihealthcare.org';
+$sites['org-uihealthcaregme.dev.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
+$sites['org-uihealthcaregme.stage.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
+$sites['org-uihealthcaregme.prod.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
