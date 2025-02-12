@@ -537,6 +537,12 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       break;
 
+    case 'system_site_maintenance_mode':
+      if ($access->isForbidden()) {
+        $form['maintenance_mode']['#access'] = FALSE;
+      }
+      break;
+
     // Node form modifications.
     case 'node_page_edit_form':
     case 'node_page_form':
