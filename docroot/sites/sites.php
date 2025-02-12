@@ -7708,3 +7708,9 @@ $sites['org3ddesignstudent.uiowa.ddev.site'] = '3ddesignstudent.org.uiowa.edu';
 $sites['org3ddesignstudent.dev.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
 $sites['org3ddesignstudent.stage.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
 $sites['org3ddesignstudent.prod.drupal.uiowa.edu'] = '3ddesignstudent.org.uiowa.edu';
+
+// Directory aliases for harper.lab.uiowa.edu.
+$sites['labharper.uiowa.ddev.site'] = 'harper.lab.uiowa.edu';
+$sites['labharper.dev.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
+$sites['labharper.stage.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
+$sites['labharper.prod.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
