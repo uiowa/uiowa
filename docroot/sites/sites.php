@@ -7690,3 +7690,9 @@ $sites['edu-uihealthcaregme.uiowa.ddev.site'] = 'gme.uihealthcare.edu';
 $sites['edu-uihealthcaregme.dev.drupal.uiowa.edu'] = 'gme.uihealthcare.edu';
 $sites['edu-uihealthcaregme.stage.drupal.uiowa.edu'] = 'gme.uihealthcare.edu';
 $sites['edu-uihealthcaregme.prod.drupal.uiowa.edu'] = 'gme.uihealthcare.edu';
+
+// Directory aliases for emslrc.uihealthcare.org.
+$sites['org-uihealthcareemslrc.uiowa.ddev.site'] = 'emslrc.uihealthcare.org';
+$sites['org-uihealthcareemslrc.dev.drupal.uiowa.edu'] = 'emslrc.uihealthcare.org';
+$sites['org-uihealthcareemslrc.stage.drupal.uiowa.edu'] = 'emslrc.uihealthcare.org';
+$sites['org-uihealthcareemslrc.prod.drupal.uiowa.edu'] = 'emslrc.uihealthcare.org';
