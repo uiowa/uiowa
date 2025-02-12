@@ -7702,3 +7702,9 @@ $sites['org-uihealthcaregme.uiowa.ddev.site'] = 'gme.uihealthcare.org';
 $sites['org-uihealthcaregme.dev.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
 $sites['org-uihealthcaregme.stage.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
 $sites['org-uihealthcaregme.prod.drupal.uiowa.edu'] = 'gme.uihealthcare.org';
+
+// Directory aliases for mulfaul.lab.uiowa.edu.
+$sites['labmulfaul.uiowa.ddev.site'] = 'mulfaul.lab.uiowa.edu';
+$sites['labmulfaul.dev.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
+$sites['labmulfaul.stage.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
+$sites['labmulfaul.prod.drupal.uiowa.edu'] = 'mulfaul.lab.uiowa.edu';
