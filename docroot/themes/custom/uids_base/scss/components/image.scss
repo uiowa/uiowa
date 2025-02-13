@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
 
 .block-inline-blockuiowa-image {
   img {
@@ -15,7 +15,7 @@
 }
 
 figure.block-inline-blockuiowa-image.caption {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     width: 100%;
   }
 }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmulfaul.uiowa.ddev.site
+    protocol: https
+  machine_name: labmulfaul
+  human_name: mulfaul.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmulfaul.prod
+drupal:
+  db:
+    database: mulfaul_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmulfaul.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: mulfaul.lab.uiowa.edu

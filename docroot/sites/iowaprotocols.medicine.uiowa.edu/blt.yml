@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineiowaprotocols.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineiowaprotocols
+  human_name: iowaprotocols.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineiowaprotocols.prod
+drupal:
+  db:
+    database: iowaprotocols_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineiowaprotocols.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Iowa Head and Neck Protocols'
