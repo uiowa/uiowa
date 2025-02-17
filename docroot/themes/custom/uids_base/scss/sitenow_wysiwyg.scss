@@ -1,14 +1,20 @@
+@use "uids/scss/abstracts/_variables.scss";
+@use "uids/scss/abstracts/_utilities.scss";
+
+// Define the editor styles scope
 .ck.ck-content,
 .ck-content {
   font-family: Roboto, sans-serif;
+
   // Colors
   --brand-primary: #FFCD00;
   --brand-secondary: #000000;
+
   // Margin/Padding
   --space-lg-width-gutter: 3rem;
   --space-md-width-gutter: 2rem;
   --space-sm-width-gutter: 1.25rem;
-  // Added here to prevent ckeditor from leaking styles to outside the editor.
+
   @import "../uids/scss/uids-core.scss";
   @import "components/tables";
   @import "components/typography/paragraph";
@@ -74,10 +80,10 @@
       }
       a,
       :where(p) a:not(.bttn) {
-        color: $primary;
+        color: variables.$primary;
         [class*="bg--"] &,
         [class*="bg--"] [class*="bg--"] & {
-          color: $primary;
+          color: variables.$primary;
         }
       }
     }
@@ -86,7 +92,7 @@
   figure.table .table-responsive {
     figcaption {
       text-align: left;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         text-align: center;
       }
     }
