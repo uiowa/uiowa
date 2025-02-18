@@ -17,6 +17,9 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route = $collection->get('system.site_information_settings')) {
       $route->setRequirement('_permission', 'administer basic site settings');
     }
+    if ($route = $collection->get('system.site_maintenance_mode')) {
+      $route->setRequirement('_permission', 'administer maintenance mode');
+    }
   }
 
 }
