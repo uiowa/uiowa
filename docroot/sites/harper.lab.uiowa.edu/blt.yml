@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labharper.uiowa.ddev.site
+    protocol: https
+  machine_name: labharper
+  human_name: harper.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labharper.prod
+drupal:
+  db:
+    database: harper_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labharper.prod.drupal.uiowa.edu'
+  requester: mmharper
+  site-name: 'Harper TBI Laboratory'
