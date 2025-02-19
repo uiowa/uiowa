@@ -41,13 +41,12 @@
 
 {% set accordion_item = {
   'accordion_h_size': h_size ?: 'h2',
-  'accordion_item_id': 'accordion-item-' ~ parent_id ~ '-' ~ delta,
+  'accordion_item_id': accordion_item_id,
   'accordion_parent_id': 'accordion-' ~ parent_id,
   'accordion_item_label': content.field_collection_headline,
   'accordion_item_content': content.field_collection_body,
   'accordion_item_content_id': 'accordion-content-' ~ parent_id ~ '-' ~ delta,
   'accordion_item_expanded': field_automatically_open,
-  'accordion_hash': accordion_hash ?: content.field_unique_id.0,
   'attributes': attributes,
   'accordion_type': accordion_type ?: 'single',
 } %}

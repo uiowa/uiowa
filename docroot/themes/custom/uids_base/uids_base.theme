@@ -1230,6 +1230,27 @@ function uids_base_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function uids_base_preprocess_paragraph__uiowa_collection_item(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if (!$admin_context->isAdminRoute()) {
+
+    $block = $paragraph->getParentEntity();
+    $unique_id = 'accordion-item-' . $block->id() . '-' . $variables['delta'];
+    if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+      $unique_id = $paragraph->get('field_unique_id')->value;
+    }
+    $variables['accordion_item_id'] = $unique_id;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_views_view(&$variables) {
