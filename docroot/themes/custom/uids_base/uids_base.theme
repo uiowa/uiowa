@@ -369,6 +369,9 @@ function uids_base_preprocess_page(&$variables) {
         '#type' => 'link',
         '#title' => t('Admin Login'),
         '#url' => $login_url,
+        '#attributes' => [
+          'rel' => 'nofollow',
+        ]
       ];
     }
   }
