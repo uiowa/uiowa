@@ -1288,36 +1288,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
       }
     }
   }
-
-  // If the block is a banner...
-  if ($variables['plugin_id'] == 'inline_block:uiowa_banner') {
-
-    // Check if it's an image.
-    $is_image = in_array('image', $variables['elements']['#layout_builder_style']);
-
-    // If it's not...
-    if (!$is_image) {
-
-      // Get all the classes of the banner.
-      $strings = $variables['attributes']['class'];
-
-      // Set the substrings to match against for removal.
-      $substrings = ['gradient'];
-
-      // Return an array containing the banner classes that contain the substrings.
-      $gradient_classes = array_filter($strings, function ($item) use ($substrings) {
-        foreach ($substrings as $substring) {
-          if (strpos($item, $substring) !== FALSE) {
-            return TRUE;
-          }
-        }
-          return FALSE;
-      });
-
-      // Set the class array to the difference of the original class array and the $gradient_classes.
-      $variables['attributes']['class'] = array_diff($variables['attributes']['class'], $gradient_classes);
-    }
-  }
 }
 
 /**
