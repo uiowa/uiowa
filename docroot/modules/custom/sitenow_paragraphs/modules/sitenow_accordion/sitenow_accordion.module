@@ -48,6 +48,6 @@ function sitenow_accordion_preprocess_paragraph__accordion_item(&$variables) {
 
   if (!$admin_context->isAdminRoute()) {
     $variables['id'] = $paragraph->id();
-    $variables['accordion_hash'] = $paragraph->get('field_uip_id')->value;
+    $variables['accordion_item_id'] = $paragraph->get('field_uip_id')->value;
   }
 }
