@@ -1,19 +1,19 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/cta_uids3.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/components/cta_uids3.scss';
 
 .layout__region--first,
 .layout__region--second,
 .layout__region--third,
 .layout__region--fourth {
   .bg-pattern--brain-black .cta__container>div {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: .5rem 0;
     }
   }
 
   .cta__container>div {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: 1.05rem 0;
     }
   }
@@ -27,7 +27,7 @@
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .cta__container>div {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       margin: 1.05rem 0;
     }
   }
@@ -52,14 +52,14 @@
 
     &:after {
       [class*="bg--gold"] & {
-        background: $primary;
+        background: variables.$primary;
       }
     }
 
     i,
     svg {
       [class*="bg--gold"] & {
-        color: $primary;
+        color: variables.$primary;
       }
     }
 
@@ -75,7 +75,7 @@
     [class*="bg--gold"] [class*="bg--gold"] &,
     .bg-pattern--brain-reversed &,
     [class*="bg--gold"] & {
-      background: $secondary;
+      background: variables.$secondary;
       color: #fff;
     }
 
@@ -83,8 +83,8 @@
     [class*="bg--gold"] [class*="bg--gray"] &,
     .bg-pattern--brain-reversed [class*="bg--white"] &,
     [class*="bg--gold"] [class*="bg--white"] & {
-      background: $primary;
-      color: $secondary;
+      background: variables.$primary;
+      color: variables.$secondary;
       border: none;
 
       i,
@@ -93,13 +93,13 @@
       }
 
       &:after {
-        background: $secondary;
+        background: variables.$secondary;
       }
     }
 
     [class*="bg--gold"] [class*="bg--black"] & {
-      background: $primary;
-      color: $secondary;
+      background: variables.$primary;
+      color: variables.$secondary;
 
       i,
       svg {
@@ -107,7 +107,7 @@
       }
 
       &:after {
-        background: $secondary;
+        background: variables.$secondary;
       }
     }
 
@@ -116,7 +116,7 @@
     [class*="bg--gray"] [class*="bg--black"] &,
     .bg-pattern--brain-black &,
     [class*="bg--black"] & {
-      color: $secondary;
+      color: variables.$secondary;
     }
   }
 }

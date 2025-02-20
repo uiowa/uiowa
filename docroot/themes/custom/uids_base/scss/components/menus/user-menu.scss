@@ -1,28 +1,28 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 // Currently not in use.
 
 .menu--account {
   .menu {
-    @include flexbox;
-    @include margin($top: $md, $left: 0, $bottom: $sm);
+    @include utilities.flexbox;
+    @include utilities.margin(variables.$top: variables.$md, variables.$left: 0, variables.$bottom: variables.$sm);
     li {
-      @include flexbox;
+      @include utilities.flexbox;
       a {
         display: block;
         text-decoration: none;
-        color: $dark-gray;
-        border: 1px solid $grey-light;
+        color: variables.$dark-gray;
+        border: 1px solid variables.$grey-light;
         border-right: none;
-        @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+        @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
         &:hover {
-          background: $light;
+          background: variables.$light;
         }
       }
       &:last-child {
         a {
-          border-right: 1px solid $grey-light;
+          border-right: 1px solid variables.$grey-light;
         }
       }
     }
