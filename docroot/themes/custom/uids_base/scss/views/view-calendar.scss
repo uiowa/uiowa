@@ -1,6 +1,6 @@
-@use "sass:color";
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 table thead th.fc-col-header-cell {
   background-color: var(--brand-primary);
@@ -10,15 +10,15 @@ a.fc-event {
   border: none;
 }
 .fc-button-primary {
-  background-color: $secondary!important;
+  background-color: variables.$secondary!important;
 }
 
 .fc-button-primary:hover {
-  background-color: $secondary!important;
+  background-color: variables.$secondary!important;
 }
 
 .fc-button-primary:focus {
-  box-shadow: 0 0 0 0 color.scale(#000000, $lightness: -15%)!important;
+  box-shadow: 0 0 0 0 color.scale(#000000, variables.$lightness: -15%)!important;
 }
 
 .fc-button-primary:disabled {
@@ -28,17 +28,17 @@ a.fc-event {
 
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
-  border-color: color.scale(#000000, $lightness: -15%)!important;
+  border-color: color.scale(#000000, variables.$lightness: -15%)!important;
 }
 
 .fc-button-primary:not(:disabled):active:focus,
 .fc-button-primary:not(:disabled).fc-button-active:focus {
-  box-shadow: 0 0 0 0.2rem color.scale(#000000, $lightness: -15%)!important;
+  box-shadow: 0 0 0 0.2rem color.scale(#000000, variables.$lightness: -15%)!important;
 }
 
 .fc-button-primary:not(:disabled).fc-button-active,
 .fc-button-primary:not(:disabled):active {
-  background-color: $brand-cool-gray!important;
+  background-color: variables.$brand-cool-gray!important;
 }
 
 .fc-day-grid-event {
