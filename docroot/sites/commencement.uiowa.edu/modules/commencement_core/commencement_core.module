@@ -472,7 +472,7 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
         $variables['delta'] = 0;
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
-        $variables['accordion_hash'] = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
+        $variables['accordion_item_id'] = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
 
         /**
          * @var integer $delta

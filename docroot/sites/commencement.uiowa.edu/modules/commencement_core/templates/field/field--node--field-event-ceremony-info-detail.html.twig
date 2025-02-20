@@ -17,12 +17,10 @@
     {% for item in items %}
       {% set accordion_item = {
         'accordion_h_size' : 'h3',
-        'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ loop.index,
+        'accordion_item_id': item.label|clean_class,
         'accordion_parent_id': 'accordion-ceremony-detail',
         'accordion_item_label': item.label,
         'accordion_item_content': item.body,
-        'accordion_item_content_id': 'accordion-item-content-' ~ loop.index,
-        'accordion_hash':  item.label|clean_class,
         'accordion_item_expanded': item.field_automatically_open,
         'accordion_type': 'multi',
       } %}
