@@ -1,21 +1,21 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 .portrait {
-  @include flexbox;
-  @include flex-wrap($value: wrap);
-  @include flex($fg: 1, $fs: 1, $fb: 0);
+  @include utilities.flexbox;
+  @include utilities.flex-wrap(variables.$value: wrap);
+  @include utilities.flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0);
 
-  @include breakpoint(sm) {
-    @include margin($right: $md, $left: $md);
+  @include utilities.breakpoint(sm) {
+    @include utilities.margin(variables.$right: variables.$md, variables.$left: variables.$md);
   }
 
   &:first-child {
-    @include margin($left: 0);
+    @include utilities.margin(variables.$left: 0);
     flex-basis: 100%;
     text-align: center;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       flex: 1 1 0;
       text-align: left;
 
@@ -23,34 +23,34 @@
   }
 
   &:nth-child(2) {
-    @include margin($left: 0);
+    @include utilities.margin(variables.$left: 0);
 
-    @include breakpoint(page-container) {
-      @include margin($left: $md);
+    @include utilities.breakpoint(page-container) {
+      @include utilities.margin(variables.$left: variables.$md);
     }
   }
 
   &:last-child {
-    @include margin($right: 0);
+    @include utilities.margin(variables.$right: 0);
   }
 
   &__wrapper {
-    margin: $mobile-height-gutter $gutter;
+    margin: variables.$mobile-height-gutter variables.$gutter;
 
-    @include breakpoint(sm) {
-      margin: 4rem $desktop-width-gutter;
+    @include utilities.breakpoint(sm) {
+      margin: 4rem variables.$desktop-width-gutter;
     }
 
-    @include breakpoint(page-container) {
-      margin: $desktop-height-gutter $desktop-width-gutter;
+    @include utilities.breakpoint(page-container) {
+      margin: variables.$desktop-height-gutter variables.$desktop-width-gutter;
     }
   }
 
   &__container {
     margin: 0;
 
-    @include breakpoint(sm) {
-      @include flexbox;
+    @include utilities.breakpoint(sm) {
+      @include utilities.flexbox;
       flex-direction: row;
       flex-wrap: wrap;
     }
@@ -60,22 +60,22 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    margin-bottom: $gutter;
+    margin-bottom: variables.$gutter;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-bottom: 0;
     }
   }
 
 
   &__body {
-    margin: $md auto;
-    @include breakpoint(sm) {
+    margin: variables.$md auto;
+    @include utilities.breakpoint(sm) {
       max-width: 60%;
-      margin: $lg auto;
+      margin: variables.$lg auto;
     }
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       max-width: 100%;
     }
   }
@@ -87,13 +87,13 @@
     font-size: 1rem;
     filter: opacity(0.75);
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       font-size: 1.1rem;
     }
 
     span {
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: inline;
       }
     }
@@ -110,7 +110,7 @@
     pointer-events: none;
     text-align: left;
     position: absolute;
-    padding: $md;
+    padding: variables.$md;
     right: 0;
     top: 0;
     left: 0;
@@ -135,7 +135,7 @@
   background: transparent;
   background: black;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: block;
   }
 
@@ -149,9 +149,9 @@
   &:before {
     margin-left: -3px;
     content: "\f144";
-    color: $primary;
+    color: variables.$primary;
     font-size: 3.5rem;
-    @include fas();
+    @include utilities.fas();
   }
 
   &.paused:before {
@@ -164,7 +164,7 @@
 }
 
 .portrait .embed-responsive.active .vidbttn.active {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }
 
 
@@ -259,5 +259,5 @@
 }
 
 [class*=bg-] .vidbttn:before {
-  color: $primary;
+  color: variables.$primary;
 }
