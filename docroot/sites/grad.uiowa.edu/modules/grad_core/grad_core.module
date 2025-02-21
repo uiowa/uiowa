@@ -7,7 +7,6 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\grad_core\Entity\GradMentor;
 use Drupal\grad_core\Entity\GradScholar;
 
 /**
@@ -17,9 +16,6 @@ function grad_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['scholar'])) {
     $bundles['node']['scholar']['class'] = GradScholar::class;
   }
-  if (isset($bundles['node']['mentor'])) {
-    $bundles['node']['mentor']['class'] = GradMentor::class;
-  }
 }
 
 /**
@@ -27,7 +23,6 @@ function grad_core_entity_bundle_info_alter(array &$bundles) {
  */
 function grad_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
-    case 'mentor':
     case 'scholar':
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
@@ -45,8 +40,6 @@ function grad_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     // Node form modifications.
     case 'node_scholar_edit_form':
     case 'node_scholar_form':
-    case 'node_mentor_edit_form':
-    case 'node_mentor_form':
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
@@ -64,20 +57,6 @@ function grad_core_preprocess_block(&$variables) {
       ]);
       break;
 
-    case 'field_block:node:mentor:field_person_position':
-      uiowa_core_set_attributes($variables, [
-        'block-margin__default--removed',
-      ]);
-      break;
-
-    case 'field_block:node:mentor:field_person_phone':
-    case 'field_block:node:mentor:field_person_education':
-    case 'field_block:node:mentor:field_person_website':
-    case 'field_block:node:mentor:field_person_contact_information':
-      uiowa_core_set_attributes($variables, [
-        'block-margin__top',
-      ]);
-      break;
   }
 }
 
@@ -92,17 +71,4 @@ function grad_core_preprocess_field(&$variables, $hook) {
       break;
 
   }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function grad_core_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  if ($node->getType() === 'mentor') {
-    $variables['#attached']['library'][] = 'uids_base/person';
-  }
-
 }
