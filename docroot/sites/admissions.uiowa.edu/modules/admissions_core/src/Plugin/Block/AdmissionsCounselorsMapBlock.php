@@ -77,7 +77,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t('<div id="admissions-counselors-map">&nbsp;</div>'),
+      '#markup' => $this->t('<div id="leaflet-map-admissions-counselors-map">&nbsp;</div>'),
       '#cache' => [
         'tags' => ['node_type:person'],
       ],
