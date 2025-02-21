@@ -788,7 +788,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
       case 'block_counselors':
       case 'page_counselors':
         $view->element['#attached']['library'][] = 'admissions_core/person';
-        $view->element['#attached']['library'][] = 'uids_base/leaflet_attach';
         break;
     }
   }
