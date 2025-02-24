@@ -1092,6 +1092,16 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
       }
     }
   }
+  if ($view->id() === 'transfer_tips_list' && $view->current_display === 'block_transfer_tips') {
+    $variables['aria_owns'] = [];
+    foreach ($view->result as $result) {
+      $nid = $result->nid;
+      $variables['aria_owns'][] = "accordion-heading-transfer-tips-{$nid}";
+    }
+    // Convert this to a space-separated string as that is how it will be printed
+    // in the template.
+    $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
+  }
 }
 
 /**
