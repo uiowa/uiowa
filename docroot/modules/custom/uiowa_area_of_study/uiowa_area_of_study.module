@@ -68,6 +68,19 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_area_of_study_degree_types'])) {
+        $form['field_area_of_study_degree_types']['widget']['#title'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+        );
+      }
+      if (isset($form['field_area_of_study_locations'])) {
+        $form['field_area_of_study_locations']['widget']['#title'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+        );
+      }
+
       if (isset($form['field_area_of_study_link_direct'])) {
         $form['field_area_of_study_link_direct']['#states'] = [
           'visible' => [
