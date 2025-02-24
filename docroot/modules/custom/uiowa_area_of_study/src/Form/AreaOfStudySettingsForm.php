@@ -106,22 +106,6 @@ class AreaOfStudySettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $degree_type = $form_state->getValue('areas_of_study_degree_types');
 
-    // Load areas_of_study view.
-    $view = $this->entityTypeManager->getStorage('view')->load('areas_of_study');
-
-    if ($view) {
-      // Set default display to set global settings.
-      $displays = $view->get('display');
-      foreach ($displays as &$display) {
-        if (isset($display['display_options']['filters']['field_area_of_study_degree_types_target_id']['expose'])) {
-          $display['display_options']['filters']['field_area_of_study_degree_types_target_id']['expose']['label'] = $degree_type;
-        }
-      }
-
-      $view->set('display', $displays);
-      $view->save();
-    }
-
     $this->configFactory->getEditable(static::SETTINGS)
       ->set('degree_types', $degree_type)
       ->save();

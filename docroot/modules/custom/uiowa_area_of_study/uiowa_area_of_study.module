@@ -171,3 +171,16 @@ function uiowa_area_of_study_entity_presave(EntityInterface $entity) {
       break;
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_area_of_study_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+
+  if ($view->id() === 'areas_of_study') {
+    if (isset($form['#info']['filter-field_area_of_study_degree_types_target_id']['label'])) {
+      $form['#info']['filter-field_area_of_study_degree_types_target_id']['label'] = uiowa_area_of_study_get_degree_types_label();
+    }
+  }
+}
