@@ -544,7 +544,7 @@ display:
           group: 1
           exposed: true
           expose:
-            label: 'Degree Types (field_area_of_study_degree_types)'
+            label: 'New labelz'
             description: null
             use_operator: false
             operator: field_area_of_study_degree_types_target_id_op
@@ -1073,7 +1073,7 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_degree_types_target_id_op
-            label: 'Degree Types'
+            label: 'New labelz'
             description: ''
             use_operator: false
             operator: field_area_of_study_degree_types_target_id_op
@@ -1131,7 +1131,7 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_locations_target_id_op
-            label: Locations
+            label: 'New Locationz'
             description: ''
             use_operator: false
             operator: field_area_of_study_locations_target_id_op
@@ -1772,7 +1772,7 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_degree_types_target_id_op
-            label: 'Degree Types'
+            label: 'New labelz'
             description: ''
             use_operator: false
             operator: field_area_of_study_degree_types_target_id_op
@@ -1830,7 +1830,7 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_locations_target_id_op
-            label: Locations
+            label: 'New Locationz'
             description: ''
             use_operator: false
             operator: field_area_of_study_locations_target_id_op
@@ -1999,17 +1999,31 @@ display:
       use_ajax: true
       header: {  }
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       block_category: 'Site custom'
       allow:
         items_per_page: false
         offset: '0'
         pager: '0'
         hide_fields: '0'
+        sort_fields: '0'
+        configure_filters: configure_filters
+        disable_filters: '0'
         configure_sorts: '0'
+        configure_filters_custom: 0
         use_more: 0
       filter_in_block: {  }
       more_link_help_text: ''
+      general_help_text: ''
+      restrict_fields:
+        field_area_of_study_source_link: 0
+        nid: 0
+        title: 0
+        field_area_of_study_link_direct: 0
+        body: 0
+        field_area_of_study_synonyms: 0
     cache_metadata:
       max-age: -1
       contexts:
