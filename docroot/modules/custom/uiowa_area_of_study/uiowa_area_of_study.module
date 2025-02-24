@@ -15,23 +15,33 @@ use Drupal\node\NodeInterface;
 use Drupal\uiowa_area_of_study\Entity\AreaOfStudy;
 
 /**
- * Helper function to get the degree type from the site config.
+ * Get a custom field label from config or fallback to field definition.
+ *
+ * @param string $field_name
+ *   The field name to get the label for.
+ * @param string $config_key
+ *   The config key where the custom label is stored.
+ *
+ * @return string
+ *   The custom label or the default field label.
  */
-function uiowa_area_of_study_get_degree_types_label() {
+function uiowa_area_of_study_get_field_label(string $field_name, string $config_key) {
   $config = \Drupal::configFactory()->getEditable('uiowa_area_of_study.settings');
-  $degree_type = $config->get('degree_types');
+  $custom_label = $config->get($config_key);
 
-  if (empty($degree_type)) {
+  if (empty($custom_label)) {
     // Load the entity field manager service.
     $entityFieldManager = \Drupal::service('entity_field.manager');
 
-    // Load the field instance for the 'field_area_of_study_degree_types' field.
-    $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'area_of_study')['field_area_of_study_degree_types'];
+    // Load the field instance for the specified field.
+    $field_definitions = $entityFieldManager->getFieldDefinitions('node', 'area_of_study');
 
-    $degree_type = $fieldInstance->getLabel();
+    if (isset($field_definitions[$field_name])) {
+      $custom_label = $field_definitions[$field_name]->getLabel();
+    }
   }
 
-  return $degree_type;
+  return $custom_label;
 }
 
 /**
@@ -97,7 +107,17 @@ function uiowa_area_of_study_theme($existing, $type, $theme, $path) {
 function uiowa_area_of_study_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
     case 'field_area_of_study_degree_types':
-      $variables['label'] = uiowa_area_of_study_get_degree_types_label();
+      $variables['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+      );
+      break;
+
+    case 'field_area_of_study_locations':
+      $variables['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+      );
       break;
 
     // Make it button!
@@ -180,7 +200,17 @@ function uiowa_area_of_study_form_views_exposed_form_alter(&$form, FormStateInte
 
   if ($view->id() === 'areas_of_study') {
     if (isset($form['#info']['filter-field_area_of_study_degree_types_target_id']['label'])) {
-      $form['#info']['filter-field_area_of_study_degree_types_target_id']['label'] = uiowa_area_of_study_get_degree_types_label();
+      $form['#info']['filter-field_area_of_study_degree_types_target_id']['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+      );
+    }
+
+    if (isset($form['#info']['filter-field_area_of_study_locations_target_id']['label'])) {
+      $form['#info']['filter-field_area_of_study_locations_target_id']['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+      );
     }
   }
 }

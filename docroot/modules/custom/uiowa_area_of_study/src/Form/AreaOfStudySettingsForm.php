@@ -97,6 +97,14 @@ class AreaOfStudySettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $form['global']['areas_of_study_locations'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Override for Locations label'),
+      '#description' => $this->t('The Locations label will be overridden with this value.'),
+      '#default_value' => $config->get('locations') ?: 'Locations',
+      '#required' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -105,9 +113,11 @@ class AreaOfStudySettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $degree_type = $form_state->getValue('areas_of_study_degree_types');
+    $location = $form_state->getValue('areas_of_study_locations');
 
     $this->configFactory->getEditable(static::SETTINGS)
       ->set('degree_types', $degree_type)
+      ->set('locations', $location)
       ->save();
 
     parent::submitForm($form, $form_state);
