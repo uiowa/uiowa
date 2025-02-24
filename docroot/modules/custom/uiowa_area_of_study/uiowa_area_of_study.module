@@ -15,6 +15,26 @@ use Drupal\node\NodeInterface;
 use Drupal\uiowa_area_of_study\Entity\AreaOfStudy;
 
 /**
+ * Helper function to get the degree type from the site config.
+ */
+function uiowa_area_of_study_get_degree_types_label() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_area_of_study.settings');
+  $degree_type = $config->get('degree_types');
+
+  if (empty($degree_type)) {
+    // Load the entity field manager service.
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    // Load the field instance for the 'field_area_of_study_degree_types' field.
+    $fieldInstance = $entityFieldManager->getFieldDefinitions('node', 'area_of_study')['field_area_of_study_degree_types'];
+
+    $degree_type = $fieldInstance->getLabel();
+  }
+
+  return $degree_type;
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function uiowa_area_of_study_entity_bundle_info_alter(array &$bundles) {
@@ -76,6 +96,10 @@ function uiowa_area_of_study_theme($existing, $type, $theme, $path) {
  */
 function uiowa_area_of_study_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
+    case 'field_area_of_study_degree_types':
+      $variables['label'] = uiowa_area_of_study_get_degree_types_label();
+      break;
+
     // Make it button!
     case 'field_area_of_study_source_link':
       switch ($variables["element"]["#view_mode"]) {
