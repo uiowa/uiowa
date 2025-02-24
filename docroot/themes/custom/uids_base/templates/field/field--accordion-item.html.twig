@@ -13,7 +13,7 @@
 <div class="collection--accordion">
   <div class="accordion" role="tablist"
     {% if aria_owns is defined and aria_owns is iterable %}
-      aria-owns="{{ aria_owns|join(', ') }}"
+      aria-owns="{{ aria_owns|join(' ') }}"
     {% endif %}
        aria-multiselectable="true" id="accordion-{{ clean_label }}">
     {% for item in items %}

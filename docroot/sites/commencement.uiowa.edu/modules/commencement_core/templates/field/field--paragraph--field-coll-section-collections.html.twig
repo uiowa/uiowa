@@ -3,7 +3,7 @@
 
 <div class="collection--accordion">
   <div class="accordion" role="tablist" {% if _context['aria_owns'] is defined and _context['aria_owns'] is iterable %}
-    aria-owns="{{ _context['aria_owns']|join(', ') }}"
+    aria-owns="{{ _context['aria_owns']|join(' ') }}"
   {% endif %} aria-multiselectable="true" id="{{ id }}">
     {% for item in items %}
       {{ item.content }}
