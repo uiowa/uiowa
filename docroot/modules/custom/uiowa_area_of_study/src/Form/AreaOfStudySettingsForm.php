@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure events settings for this site.
+ * Configure area of study settings for this site.
  */
 class AreaOfStudySettingsForm extends ConfigFormBase {
 
