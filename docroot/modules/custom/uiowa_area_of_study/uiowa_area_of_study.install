@@ -81,3 +81,32 @@ function uiowa_area_of_study_update_9003(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Update areas_of_study blocks to have exposed filters set.
+ */
+function uiowa_area_of_study_update_10000(&$sandbox) {
+  \Drupal::moduleHandler()->loadInclude('sitenow', 'install');
+  _update_all_blocks_by_plugin_id('views_block:areas_of_study-areas_of_study_block', function (&$component, $block) {
+    // Get the current configuration.
+    $configuration = $component->get('configuration');
+
+    // Set all exposed filters to be displayed.
+    $filters = [
+      'filter-combine',
+      'filter-field_area_of_study_degree_types_target_id',
+      'filter-field_area_of_study_locations_target_id',
+      'filter-field_area_of_study_delivery_value',
+    ];
+
+    foreach ($filters as $filter) {
+      if (!isset($configuration["exposed"][$filter])) {
+        $configuration["exposed"][$filter] = [];
+      }
+      $configuration["exposed"][$filter]["exposed"] = 1;
+    }
+
+    // Set the updated configuration.
+    $component->set('configuration', $configuration);
+  });
+}
