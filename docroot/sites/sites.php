@@ -7720,3 +7720,9 @@ $sites['labcfhsrcore.uiowa.ddev.site'] = 'cfhsrcore.lab.uiowa.edu';
 $sites['labcfhsrcore.dev.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
 $sites['labcfhsrcore.stage.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
 $sites['labcfhsrcore.prod.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+
+// Directory aliases for thegammanupes1914.org.uiowa.edu.
+$sites['orgthegammanupes1914.uiowa.ddev.site'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.dev.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.stage.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.prod.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
