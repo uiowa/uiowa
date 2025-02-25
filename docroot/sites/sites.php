@@ -7726,3 +7726,9 @@ $sites['orgthegammanupes1914.uiowa.ddev.site'] = 'thegammanupes1914.org.uiowa.ed
 $sites['orgthegammanupes1914.dev.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
 $sites['orgthegammanupes1914.stage.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
 $sites['orgthegammanupes1914.prod.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+
+// Directory aliases for damiano.lab.uiowa.edu.
+$sites['labdamiano.uiowa.ddev.site'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.dev.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.stage.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.prod.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
