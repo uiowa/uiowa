@@ -54,6 +54,13 @@ function uiowa_area_of_study_entity_bundle_info_alter(array &$bundles) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uiowa_area_of_study/global';
+}
+
+/**
  * Implements hook_form_alter().
  */
 function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -175,6 +182,31 @@ function uiowa_area_of_study_preprocess_field(&$variables) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
+function uiowa_area_of_study_preprocess_page(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_area_of_study_link_direct')
+            && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
+            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') === TRUE) {
+              \Drupal::messenger()
+                ->addWarning(t('Visitors are being redirected to
+                the Primary Source Link'));
+            }
+          }
+          break;
+
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_entity_presave().
