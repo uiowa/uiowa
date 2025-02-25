@@ -93,7 +93,7 @@ class AreaOfStudySettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Override for Degree Types label'),
       '#description' => $this->t('The Degree Types label will be overridden with this value.'),
-      '#default_value' => $config->get('degree_types') ?: 'Degree Types',
+      '#default_value' => uiowa_area_of_study_get_field_label('field_area_of_study_degree_types', 'degree_types'),
       '#required' => TRUE,
     ];
 
@@ -101,7 +101,7 @@ class AreaOfStudySettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Override for Locations label'),
       '#description' => $this->t('The Locations label will be overridden with this value.'),
-      '#default_value' => $config->get('locations') ?: 'Locations',
+      '#default_value' => uiowa_area_of_study_get_field_label('field_area_of_study_locations', 'locations'),
       '#required' => TRUE,
     ];
 
