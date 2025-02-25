@@ -276,7 +276,7 @@ function commencement_core_preprocess_field(&$variables) {
         $paragraph = $item['content']['#paragraph'];
         $headline = $paragraph->get('field_collection_headline')->getValue()[0]['value'];
         $variables['items'][$delta]['label'] = $headline;
-        $id = HTML::getUniqueId($headline);
+        $id = strtolower(Html::cleanCssIdentifier($headline));
         $variables['items'][$delta]['id'] = $id;
         $variables['aria_owns'][] = $id;
         $body = $paragraph->get('field_collection_body')->view();
