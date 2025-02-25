@@ -7714,3 +7714,9 @@ $sites['libblog.uiowa.ddev.site'] = 'blog.lib.uiowa.edu';
 $sites['libblog.dev.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
 $sites['libblog.stage.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
 $sites['libblog.prod.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
+
+// Directory aliases for cfhsrcore.lab.uiowa.edu.
+$sites['labcfhsrcore.uiowa.ddev.site'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.dev.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.stage.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.prod.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
