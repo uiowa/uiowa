@@ -129,6 +129,7 @@ function uipress_core_preprocess_field(&$variables, $hook) {
           $variables['aria_owns'][] = 'accordion-book-type-heading-' . $paragraph->id();
         }
       }
+      $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
       break;
   }
 }
