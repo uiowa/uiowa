@@ -306,7 +306,9 @@ function commencement_core_preprocess_field(&$variables) {
           $paragraph = $variables['element'][$delta]['#paragraph'];
           $unique_id = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
           $variables['aria_owns'][] = $unique_id;
+          $variables['items'][$delta]['attributes']['id'] = $unique_id;
         }
+        $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
       }
       break;
 
@@ -477,7 +479,9 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
         $variables['delta'] = 0;
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
-        $variables['accordion_item_id'] = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
+        // Set the unique-id for the paragraph and let
+        // uids_base.theme handle setting its id later.
+        $paragraph->set('field_unique_id', strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value)));
 
         /**
          * @var integer $delta
