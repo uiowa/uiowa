@@ -1,19 +1,19 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 // Media alignment
 
   .align-right.embedded-entity,
   .align-right .embedded-entity {
-    @include breakpoint(sm) {
-      margin-left: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-left: variables.$gutter;
     }
   }
 
   .align-left.embedded-entity,
   .align-left .embedded-entity {
-    @include breakpoint(sm) {
-      margin-right: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-right: variables.$gutter;
     }
   }
 
@@ -40,7 +40,7 @@
 .media--type-panopto {
   + p {
     margin-top: 1rem;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-top: 0;
     }
   }

@@ -1,21 +1,21 @@
 // Core imports and variables
-@use "sass:color";
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 
 // Used by other menus
 .nav {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     align-items: center;
-    @include flexbox;
+    @include utilities.flexbox;
   }
 
   .menu {
     overflow: visible;
-    font-size: $base-font-size;
+    font-size: variables.$base-font-size;
     @extend %no-ul-list;
-    @include flexbox;
+    @include utilities.flexbox;
 
     a,
     span {
@@ -23,7 +23,7 @@
       display: inline-block;
       transition: background 0.8s ease-out;
       text-decoration: none;
-      color: $secondary;
+      color: variables.$secondary;
       @extend %font-smoothing-on;
     }
   }
@@ -32,27 +32,27 @@
 
 // Used by vertical and horizontal secondary menus
 .menu-wrapper {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     align-items: center;
-    @include flexbox;
+    @include utilities.flexbox;
   }
 
   > .menu > li.menu-item--expanded > a + ul {
-    padding-bottom: $md;
+    padding-bottom: variables.$md;
   }
 
   > .menu > li:first-child {
     a {
-      @include breakpoint(sm) {
-        padding-top: $xsm;
+      @include utilities.breakpoint(sm) {
+        padding-top: variables.$xsm;
       }
     }
   }
 
   .menu {
     position: relative;
-    @include flexbox;
-    @include flex-direction(column);
+    @include utilities.flexbox;
+    @include utilities.flex-direction(column);
     overflow: visible;
     font-size: 1.1rem;
     @extend %no-ul-list;
@@ -63,7 +63,7 @@
       margin-bottom: 0;
       line-height: 1.3;
       border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-      border-bottom: 1px solid rgba($grey-light, .5);
+      border-bottom: 1px solid rgba(variables.$grey-light, .5);
       display: block;
 
       [class*="bg--black"] &,
@@ -71,7 +71,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.5);
       }
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         width: auto;
         margin-bottom: 0;
       }
@@ -94,7 +94,7 @@
           border-bottom: none;
           display: block;
           position: relative;
-          @include padding($top: $md, $right: $md, $bottom: $md, $left: 0);
+          @include utilities.padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
 
           &:focus,
           &:hover {
@@ -121,13 +121,13 @@
         display: inline-block;
         transition: background 0.8s ease-out;
         text-decoration: none;
-        color: $secondary;
+        color: variables.$secondary;
         @extend %font-smoothing-on;
         word-break: break-word;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: 0);
+        @include utilities.padding(variables.$top: variables.$md, variables.$right: variables.$md, variables.$bottom: variables.$md, variables.$left: 0);
 
         [class*="bg--black"] & {
-          color: $light;
+          color: variables.$light;
         }
 
         &.is-active {
@@ -167,34 +167,34 @@
     // second level
     & ul.menu {
       margin-left: 1.5rem;
-      padding-bottom: $sm;
+      padding-bottom: variables.$sm;
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-left: 0;
       }
 
       & li {
         border-bottom: none;
-        font-size: $base-font-size;
+        font-size: variables.$base-font-size;
         list-style: disc;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           list-style: none;
         }
 
         & > a,
         & > span {
-          padding: $sm;
-          @include breakpoint(sm) {
-            @include padding($top: $sm, $right: $md, $bottom: $sm, $left: 1.2rem);
+          padding: variables.$sm;
+          @include utilities.breakpoint(sm) {
+            @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: 1.2rem);
           }
 
           &::before {
-            @include breakpoint(sm) {
+            @include utilities.breakpoint(sm) {
               content: "\f105";
               font-size: 0.9rem;
               left: 0;
               position: absolute;
-              @include fas();
+              @include utilities.fas();
             }
           }
         }
@@ -208,13 +208,13 @@
       // third level
       ul.menu {
         margin-left: 2rem;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           margin-left: 3rem;
         }
 
         li {
           list-style: circle;
-          @include breakpoint(sm) {
+          @include utilities.breakpoint(sm) {
             list-style: disc;
           }
         }
@@ -233,7 +233,7 @@
 
           li {
             list-style: square;
-            @include breakpoint(sm) {
+            @include utilities.breakpoint(sm) {
               list-style: circle;
             }
           }
@@ -254,11 +254,11 @@
 
 
 // set horizontal only if used in layout--onecol section.
-@include breakpoint(sm) {
+@include utilities.breakpoint(sm) {
   .layout--onecol {
     .menu-wrapper--horizontal {
       padding: 0;
-      @include container-width;
+      @include utilities.container-width;
       margin: 0;
       border-top: none;
 
@@ -288,7 +288,7 @@
 
           > a,
           > span {
-            @include bttn--focus;
+            @include utilities.bttn--focus;
             position: relative;
             width: auto;
             text-align: center;
@@ -311,7 +311,7 @@
             width: 1px;
             height: 25%;
             content: "";
-            background: $primary;
+            background: variables.$primary;
             right: -1px;
           }
 
@@ -322,7 +322,7 @@
           }
 
           > a.is-active {
-            background-color: $light;
+            background-color: variables.$light;
             margin: 0;
             padding-bottom: 1.475rem;
 
@@ -334,7 +334,7 @@
               left: calc(50% - 10px);
               top: calc(100% - 1px);
               background-color: transparent;
-              border-top: 10px solid $primary;
+              border-top: 10px solid variables.$primary;
               border-right: 10px solid transparent;
               border-left: 10px solid transparent;
               border-bottom: 10px solid transparent;
@@ -342,7 +342,7 @@
             }
 
             &:after {
-              background: $primary;
+              background: variables.$primary;
               content: "";
               position: absolute;
               left: 50%;
@@ -362,7 +362,7 @@
 
             > a,
             > span {
-              background-color: $light;
+              background-color: variables.$light;
               margin: 0;
               padding-bottom: 1.475rem;
 
@@ -374,7 +374,7 @@
                 left: calc(50% - 10px);
                 top: calc(100% - 1px);
                 background-color: transparent;
-                border-top: 10px solid $primary;
+                border-top: 10px solid variables.$primary;
                 border-right: 10px solid transparent;
                 border-left: 10px solid transparent;
                 border-bottom: 10px solid transparent;
@@ -382,7 +382,7 @@
               }
 
               &:after {
-                background: $primary;
+                background: variables.$primary;
                 content: "";
                 position: absolute;
                 left: 50%;
@@ -414,7 +414,7 @@
                 left: calc(50% - 10px);
                 top: calc(100% - 1px);
                 background-color: transparent;
-                border-top: 10px solid $primary;
+                border-top: 10px solid variables.$primary;
                 border-right: 10px solid transparent;
                 border-left: 10px solid transparent;
                 border-bottom: 10px solid transparent;
@@ -472,7 +472,7 @@
               list-style: none;
 
               & > a {
-                @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 2.2rem);
+                @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$xsm, variables.$bottom: variables.$xsm, variables.$left: 2.2rem);
                 font-size: 0.9rem;
 
                 &:after {
@@ -485,8 +485,8 @@
                   font-size: 0.3rem;
                   left: 1.2rem;
                   top: 1rem;
-                  @include fas();
-                  color: $brand-cool-gray;
+                  @include utilities.fas();
+                  color: variables.$brand-cool-gray;
                 }
               }
             }
@@ -497,7 +497,7 @@
           position: relative;
 
           a:after {
-            background-color: $brand-cool-gray;
+            background-color: variables.$brand-cool-gray;
           }
 
           &.menu-item--expanded {
@@ -536,12 +536,12 @@
             span {
               &:focus,
               &:hover {
-                background: $light;
+                background: variables.$light;
               }
 
               &:after {
                 height: 2px;
-                background-color: $light-gray;
+                background-color: variables.$light-gray;
               }
             }
           }
@@ -556,13 +556,13 @@
         > .menu {
           > li > a.is-active {
             background: #fff;
-            color: $secondary;
+            color: variables.$secondary;
           }
           > li.menu-item--active-trail {
             > a,
             > span {
               background: #fff;
-              color: $secondary;
+              color: variables.$secondary;
             }
           }
         }
@@ -580,7 +580,7 @@
 
           li.menu-item--active-trail {
             a {
-              color: $secondary;
+              color: variables.$secondary;
             }
           }
 
@@ -588,7 +588,7 @@
             ul li {
               a,
               span {
-                color: $secondary;
+                color: variables.$secondary;
               }
             }
           }
@@ -611,7 +611,7 @@
           > li > a,
           > li > span {
             &:before {
-              background-color: $brand-cool-gray;
+              background-color: variables.$brand-cool-gray;
             }
           }
 
@@ -621,12 +621,12 @@
             > a,
             > span {
               &:before {
-                border-top-color: $brand-cool-gray;
+                border-top-color: variables.$brand-cool-gray;
                 background-color: transparent;
               }
 
               &:after {
-                background-color: $brand-cool-gray;
+                background-color: variables.$brand-cool-gray;
               }
             }
           }
@@ -637,7 +637,7 @@
 }
 
 // hide toggle button if menu is used outside of onecol layout.
-@include breakpoint(sm) {
+@include utilities.breakpoint(sm) {
   .layout:not(.layout--onecol) {
     .menu-wrapper--horizontal {
       button {
@@ -671,14 +671,14 @@
       flex-wrap: wrap;
       position: relative;
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         flex-wrap: inherit;
       }
 
       & {
         a {
           width: 80%;
-          @include breakpoint(sm) {
+          @include utilities.breakpoint(sm) {
             width: 100%;
           }
         }
@@ -689,16 +689,16 @@
       button {
         &::after {
           [class*="bg--black"] & {
-            color: $secondary;
+            color: variables.$secondary;
           }
         }
       }
     }
 
     > li.menu-item--active-trail {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         > button {
-          background: $light;
+          background: variables.$light;
 
           [class*="bg--black"] &,
           [class*="bg--gold"] &,
@@ -710,12 +710,12 @@
           &:hover,
           &[aria-expanded="true"] {
             &:before {
-              background-color: $brand-cool-gray;
+              background-color: variables.$brand-cool-gray;
             }
           }
 
           &:before {
-            background: $primary;
+            background: variables.$primary;
             content: "";
             position: absolute;
             left: 48%;
@@ -727,7 +727,7 @@
             transform: translate(-50%) scaleX(1);
 
             [class*="bg--gold"] & {
-              background-color: $brand-cool-gray;
+              background-color: variables.$brand-cool-gray;
             }
           }
         }
@@ -735,14 +735,14 @@
     }
 
     > li {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         & {
           button {
             right: 0;
 
             &::after {
               [class*="bg--black"] & {
-                color: $secondary;
+                color: variables.$secondary;
               }
             }
           }
@@ -750,7 +750,7 @@
 
         & {
           > .is-active + button {
-            background: $light;
+            background: variables.$light;
 
             [class*="bg--black"] &,
             [class*="bg--gold"] &,
@@ -762,12 +762,12 @@
             &:hover,
             &[aria-expanded="true"] {
               &:before {
-                background-color: $brand-cool-gray;
+                background-color: variables.$brand-cool-gray;
               }
             }
 
             &:before {
-              background: $primary;
+              background: variables.$primary;
               content: "";
               position: absolute;
               left: 48%;
@@ -779,7 +779,7 @@
               transform: translate(-50%) scaleX(1);
 
               [class*="bg--gold"] & {
-                background-color: $brand-cool-gray;
+                background-color: variables.$brand-cool-gray;
               }
             }
           }
@@ -800,27 +800,27 @@
       position: absolute;
       right: 0;
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         height: 100%;
         top: 5px;
         width: auto;
         margin: 0 auto;
       }
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         position: relative;
         top: 0;
       }
 
       &:before {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           content: '';
           position: absolute;
           left: 50%;
           bottom: 0;
           width: 100%;
           height: 4px;
-          background-color: $brand-cool-gray;
+          background-color: variables.$brand-cool-gray;
           transform-origin: center;
           transform: translate(-50%, 0) scaleX(0);
           transition: transform 0.3s ease-in-out;
@@ -831,9 +831,9 @@
       &:hover,
       &[aria-expanded="true"] {
         &:after {
-          background: color.scale($light, $lightness: -25%);
+          background: color.scale(variables.$light, variables.$lightness: -25%);
           [class*="bg--black"] & {
-            color: $secondary;
+            color: variables.$secondary;
           }
         }
 
@@ -850,13 +850,13 @@
         content: "\f078";
         bottom: 0;
         font-size: 0.7rem;
-        @include fas();
+        @include utilities.fas();
         line-height: 2;
-        @include center(both);
+        @include utilities.center(both);
         width: 25px;
         height: 25px;
         border-radius: 50%;
-        background: color.scale($light, $lightness: -8%);
+        background: color.scale(variables.$light, variables.$lightness: -8%);
       }
     }
 
@@ -886,7 +886,7 @@
 
   [class*="bg--black"] & {
     li.menu-item--expanded {
-      color: $secondary;
+      color: variables.$secondary;
     }
   }
 }
@@ -894,7 +894,7 @@
 // Show/hide menu toggle
 .menu-wrapper--horizontal > .menu.hide {
   display: none;
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: inherit;
   }
 }
@@ -902,7 +902,7 @@
 // Center horizontal menu.
 .menu-wrapper--horizontal.element--center {
   > .menu {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       justify-content: center;
     }
   }
@@ -921,7 +921,7 @@ button[id^='main-menu-toggle-'] {
 
   &:before {
     content: "\f0c9";
-    @include fas();
+    @include utilities.fas();
     font-weight: 900;
     margin-right: 10px;
     padding: 4px 7px 4px 1px;
@@ -953,7 +953,7 @@ button[id^='main-menu-toggle-'] {
   padding: 1rem 0;
   display: flex;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: none;
   }
 }

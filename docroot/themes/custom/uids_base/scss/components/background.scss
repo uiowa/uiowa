@@ -1,7 +1,9 @@
-$imgpath: '/themes/custom/uids_base/uids/assets/images/';
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/_background.scss";
+
+@use 'uids/scss/abstracts/_variables.scss' with (
+  $imgpath: '/themes/custom/uids_base/uids/assets/images/'
+);
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/components/_background.scss';
 
 // @todo remove once https://github.com/uiowa/uids/issues/713 is completed.
 [class*=bg--][class*="--pattern--"], [class*=bg-pattern] {

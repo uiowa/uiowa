@@ -1,6 +1,6 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/_headline-mixins.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/abstracts/_headline-mixins.scss';
 
 .tags-list {
   margin: 0;
@@ -25,9 +25,9 @@
       text-decoration: none;
       font-size: 1.2rem;
       padding: 0rem 1rem;
-      color: $secondary;
+      color: variables.$secondary;
       font-weight: lighter;
-      background: $light;
+      background: variables.$light;
       display: inline-block;
       border-radius: 3px;
       margin-right: 0.5rem;
