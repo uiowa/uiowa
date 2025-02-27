@@ -9,7 +9,6 @@
  * Implements hook_preprocess_field().
  */
 function sitenow_accordion_preprocess_field(&$variables) {
-
   switch ($variables["element"]["#field_name"]) {
     case 'field_accordion_item':
       // Add parent_id.
@@ -36,6 +35,11 @@ function sitenow_accordion_preprocess_field(&$variables) {
   }
 }
 
+function sitenow_accordion_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  $test = 'thing';
+}
+
 /**
  * Implements hook_preprocess_paragraph().
  */
@@ -48,6 +52,30 @@ function sitenow_accordion_preprocess_paragraph__accordion_item(&$variables) {
 
   if (!$admin_context->isAdminRoute()) {
     $variables['id'] = $paragraph->id();
-    $variables['accordion_item_id'] = $paragraph->get('field_uip_id')->value;
+
+    $variables['delta'] = 0;
+
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof ContentEntityInterface) {
+      $variables['parent_id'] = $parent->id();
+      if ($parent->hasField('accordion_items')) {
+        $id = $paragraph->id();
+        /**
+         * @var integer $delta
+         * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+         */
+        foreach ($parent->get('accordion_items')->getValue() as $delta => $item) {
+          if ($item['target_id'] === $id) {
+            $variables['delta'] = $delta;
+            break;
+          }
+        }
+      }
+    }
+    $variables['accordion_item_id'] = 'accordion-item-' . $paragraph->id();
+    $unique_id = $paragraph->get('field_uip_id')->value;
+    if ($unique_id) {
+      $variables['accordion_item_id'] = $unique_id;
+    }
   }
 }
