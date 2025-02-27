@@ -3457,6 +3457,9 @@ function sitenow_update_10014() {
       $block->save();
     }
   });
+
+  // Flush caches to ensure fresh data is called on the next render.
+  drupal_flush_all_caches();
 }
 
 /**
