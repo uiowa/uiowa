@@ -2717,12 +2717,6 @@ $sites['studentlegal.dev.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.stage.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.prod.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 
-// Directory aliases for iowahousehotel.uiowa.edu.
-$sites['iowahousehotel.uiowa.ddev.site'] = 'iowahousehotel.uiowa.edu';
-$sites['iowahousehotel.dev.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
-$sites['iowahousehotel.stage.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
-$sites['iowahousehotel.prod.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
-
 // Directory aliases for mlk.uiowa.edu.
 $sites['mlk.uiowa.ddev.site'] = 'mlk.uiowa.edu';
 $sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
@@ -7714,3 +7708,27 @@ $sites['labharper.uiowa.ddev.site'] = 'harper.lab.uiowa.edu';
 $sites['labharper.dev.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
 $sites['labharper.stage.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
 $sites['labharper.prod.drupal.uiowa.edu'] = 'harper.lab.uiowa.edu';
+
+// Directory aliases for blog.lib.uiowa.edu.
+$sites['libblog.uiowa.ddev.site'] = 'blog.lib.uiowa.edu';
+$sites['libblog.dev.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
+$sites['libblog.stage.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
+$sites['libblog.prod.drupal.uiowa.edu'] = 'blog.lib.uiowa.edu';
+
+// Directory aliases for cfhsrcore.lab.uiowa.edu.
+$sites['labcfhsrcore.uiowa.ddev.site'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.dev.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.stage.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+$sites['labcfhsrcore.prod.drupal.uiowa.edu'] = 'cfhsrcore.lab.uiowa.edu';
+
+// Directory aliases for thegammanupes1914.org.uiowa.edu.
+$sites['orgthegammanupes1914.uiowa.ddev.site'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.dev.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.stage.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+$sites['orgthegammanupes1914.prod.drupal.uiowa.edu'] = 'thegammanupes1914.org.uiowa.edu';
+
+// Directory aliases for damiano.lab.uiowa.edu.
+$sites['labdamiano.uiowa.ddev.site'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.dev.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.stage.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
+$sites['labdamiano.prod.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';

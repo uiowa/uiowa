@@ -1,3 +1,6 @@
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+
 // grid 3x2 used for home page grid within onecol section of stats and images.
 
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(2) {
@@ -11,7 +14,7 @@
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(4) {
   order: 4;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 3;
   }
 }
@@ -19,7 +22,7 @@
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(5) {
   order: 3;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     order: 4;
   }
 }
@@ -37,7 +40,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
   }
 }

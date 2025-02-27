@@ -1,13 +1,13 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/logo.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/components/logo.scss';
 
 
 .search-is-open {
   .logo--tab {
     opacity: 0;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       opacity: 1;
     }
   }
