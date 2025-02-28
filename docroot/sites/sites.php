@@ -7732,3 +7732,9 @@ $sites['labdamiano.uiowa.ddev.site'] = 'damiano.lab.uiowa.edu';
 $sites['labdamiano.dev.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
 $sites['labdamiano.stage.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
 $sites['labdamiano.prod.drupal.uiowa.edu'] = 'damiano.lab.uiowa.edu';
+
+// Directory aliases for ech2o.lab.uiowa.edu.
+$sites['labech2o.uiowa.ddev.site'] = 'ech2o.lab.uiowa.edu';
+$sites['labech2o.dev.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
+$sites['labech2o.stage.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
+$sites['labech2o.prod.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
