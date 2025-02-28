@@ -7738,3 +7738,9 @@ $sites['labech2o.uiowa.ddev.site'] = 'ech2o.lab.uiowa.edu';
 $sites['labech2o.dev.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
 $sites['labech2o.stage.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
 $sites['labech2o.prod.drupal.uiowa.edu'] = 'ech2o.lab.uiowa.edu';
+
+// Directory aliases for johannesledolter.studio.uiowa.edu.
+$sites['studiojohannesledolter.uiowa.ddev.site'] = 'johannesledolter.studio.uiowa.edu';
+$sites['studiojohannesledolter.dev.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
+$sites['studiojohannesledolter.stage.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
+$sites['studiojohannesledolter.prod.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
