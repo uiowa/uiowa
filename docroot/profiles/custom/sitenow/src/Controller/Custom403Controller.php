@@ -13,8 +13,18 @@ use Drupal\system\Controller\Http4xxController;
  * Custom 403 handler to return a message for unpublished nodes.
  */
 class Custom403Controller extends ControllerBase {
-
+  /**
+   * The path alias manager.
+   *
+   * @var \Drupal\path_alias\AliasManagerInterface
+   */
   protected AliasManagerInterface $aliasManager;
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   /**
