@@ -63,7 +63,7 @@ class Custom403Controller extends ControllerBase {
       $node = $this->entityTypeManager->getStorage('node')->load($matches[1]);
 
       if ($node && !$node->isPublished()) {
-        return $this->t('This page is unavailable and is under review.');
+        return $this->t('This page is unavailable and may be under review.');
       }
     }
     return FALSE;
