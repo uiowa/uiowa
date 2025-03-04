@@ -3421,8 +3421,8 @@ function sitenow_update_10014() {
 
           $field_items = $block->get($field_name)->getValue();
           foreach ($field_items as &$field_item) {
-            if (isset($field_item['value']) && isset($mappings['filters'][$filter_type][$field_item['value']])) {
-              $field_item['value'] = $mappings['filters'][$filter_type][$field_item['value']];
+            if (isset($field_item['value']) && isset($mappings[$filter_type][$field_item['value']])) {
+              $field_item['value'] = $mappings[$filter_type][$field_item['value']];
               $changed = TRUE;
             }
           }
