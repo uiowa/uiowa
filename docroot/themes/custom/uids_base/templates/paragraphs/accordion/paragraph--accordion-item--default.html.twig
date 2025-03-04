@@ -41,12 +41,10 @@
 
 {% set accordion_item = {
   'accordion_h_size': 'h2',
-  'accordion_item_id': 'accordion-item-' ~ id,
+  'accordion_item_id': accordion_item_id,
   'accordion_parent_id': 'accordion-' ~ parent_id,
   'accordion_item_label': content.field_accordion_item_title,
   'accordion_item_content': content.field_accordion_item_body,
-  'accordion_item_content_id': 'accordion-content-' ~ id,
-  'accordion_hash': accordion_hash,
   'accordion_type': 'multi',
 } %}
 

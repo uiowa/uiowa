@@ -75,7 +75,6 @@ if ($ah_env !== 'local') {
 // Set recommended New Relic configuration.
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
 ini_set('newrelic.loglevel', 'error');
-ini_set('newrelic.error_collector.ignore_exceptions', 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
 if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
