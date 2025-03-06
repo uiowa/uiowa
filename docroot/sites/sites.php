@@ -2261,12 +2261,6 @@ $sites['sim-ia.dev.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
 $sites['sim-ia.stage.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
 $sites['sim-ia.prod.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
 
-// Directory aliases for camps.athletics.uiowa.edu.
-$sites['athleticscamps.uiowa.ddev.site'] = 'camps.athletics.uiowa.edu';
-$sites['athleticscamps.dev.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
-$sites['athleticscamps.stage.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
-$sites['athleticscamps.prod.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
-
 // Directory aliases for dune.lab.uiowa.edu.
 $sites['labdune.uiowa.ddev.site'] = 'dune.lab.uiowa.edu';
 $sites['labdune.dev.drupal.uiowa.edu'] = 'dune.lab.uiowa.edu';
