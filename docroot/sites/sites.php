@@ -2897,12 +2897,6 @@ $sites['studentspace.dev.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 $sites['studentspace.stage.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 $sites['studentspace.prod.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 
-// Directory aliases for mentalhealth.uiowa.edu.
-$sites['mentalhealth.uiowa.ddev.site'] = 'mentalhealth.uiowa.edu';
-$sites['mentalhealth.dev.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
-$sites['mentalhealth.stage.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
-$sites['mentalhealth.prod.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
-
 // Directory aliases for quench.org.uiowa.edu.
 $sites['orgquench.uiowa.ddev.site'] = 'quench.org.uiowa.edu';
 $sites['orgquench.dev.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
