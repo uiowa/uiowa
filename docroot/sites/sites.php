@@ -4967,12 +4967,6 @@ $sites['writersworkshopintranet.dev.drupal.uiowa.edu'] = 'intranet.writersworksh
 $sites['writersworkshopintranet.stage.drupal.uiowa.edu'] = 'intranet.writersworkshop.uiowa.edu';
 $sites['writersworkshopintranet.prod.drupal.uiowa.edu'] = 'intranet.writersworkshop.uiowa.edu';
 
-// Directory aliases for policy.studentlife.uiowa.edu.
-$sites['studentlifepolicy.uiowa.ddev.site'] = 'policy.studentlife.uiowa.edu';
-$sites['studentlifepolicy.dev.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
-$sites['studentlifepolicy.stage.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
-$sites['studentlifepolicy.prod.drupal.uiowa.edu'] = 'policy.studentlife.uiowa.edu';
-
 // Directory aliases for howard.lab.uiowa.edu.
 $sites['labhoward.uiowa.ddev.site'] = 'howard.lab.uiowa.edu';
 $sites['labhoward.dev.drupal.uiowa.edu'] = 'howard.lab.uiowa.edu';
