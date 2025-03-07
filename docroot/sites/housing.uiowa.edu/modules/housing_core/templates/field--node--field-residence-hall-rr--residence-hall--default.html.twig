@@ -38,13 +38,11 @@
  */
 #}
 {% set accordion_item = {
-  'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ 0,
+  'accordion_item_id': label|clean_class,
   'accordion_type' : 'multi',
   'accordion_parent_id': 'accordion-' ~ label|clean_class,
   'accordion_item_label': label,
-  'accordion_hash': label|clean_class,
   'accordion_item_content': items,
-  'accordion_item_content_id': 'accordion-content-' ~ label|clean_class,
 } %}
 
     <div class="collection--accordion">
