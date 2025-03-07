@@ -3350,30 +3350,31 @@ function sitenow_update_10014() {
   _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
-    $vertical_alignment = 'vertical_alignment_center';
-    $horizontal_alignment = 'horizontal_alignment_left';
-
     foreach ($styles as $style) {
       if (strpos($style, 'banner_') === 0) {
         switch ($style) {
           case 'banner_lower_centered':
             $vertical_alignment = 'vertical_alignment_bottom';
             $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
             break;
 
           case 'banner_centered_left':
             $vertical_alignment = 'vertical_alignment_center';
             $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_left_to_right';
             break;
 
           case 'banner_lower_left':
             $vertical_alignment = 'vertical_alignment_bottom';
             $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_left_to_right';
             break;
 
           case 'banner_centered':
             $vertical_alignment = 'vertical_alignment_center';
             $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
             break;
         }
       }
@@ -3384,6 +3385,9 @@ function sitenow_update_10014() {
     }
     if (!in_array($horizontal_alignment, $styles)) {
       $styles[] = $horizontal_alignment;
+    }
+    if (!in_array($media_overlay, $styles)) {
+      $styles[] = $media_overlay;
     }
 
     $component->set('layout_builder_styles_style', $styles);
