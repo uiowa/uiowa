@@ -602,7 +602,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: table-responsive
+      css_class: {  }
       use_ajax: true
       header: {  }
       footer: {  }
@@ -1995,21 +1995,35 @@ display:
         filters: false
         filter_groups: false
         header: false
-      css_class: table-responsive
+      css_class: {  }
       use_ajax: true
       header: {  }
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       block_category: 'Site custom'
       allow:
         items_per_page: false
         offset: '0'
         pager: '0'
         hide_fields: '0'
+        sort_fields: '0'
+        configure_filters: configure_filters
+        disable_filters: '0'
         configure_sorts: '0'
+        configure_filters_custom: 0
         use_more: 0
       filter_in_block: {  }
       more_link_help_text: ''
+      general_help_text: ''
+      restrict_fields:
+        field_area_of_study_source_link: 0
+        nid: 0
+        title: 0
+        field_area_of_study_link_direct: 0
+        body: 0
+        field_area_of_study_synonyms: 0
     cache_metadata:
       max-age: -1
       contexts:
