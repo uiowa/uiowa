@@ -766,11 +766,10 @@ function uids_base_preprocess_layout(&$variables) {
 
         // Set default for banner gradient.
         if ($variables['banner_settings']['transparent'] || $title_hidden) {
-          $variables['attributes']['class'][] = 'banner--transparent';
+          $variables['attributes']['class'][] = 'banner--overlay-none';
         }
         else {
-          $variables['attributes']['class'][] = 'banner--gradient-bottom';
-          $variables['attributes']['class'][] = 'banner--gradient-dark';
+          $variables['attributes']['class'][] = 'banner--overlay-btt';
         }
 
         // Set other banner default classes.
