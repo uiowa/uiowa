@@ -3341,3 +3341,51 @@ function sitenow_update_10012() {
 function sitenow_update_10013() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update banner blocks with new styles.
+ */
+function sitenow_update_10014() {
+  $block_plugin_id = 'inline_block:uiowa_banner';
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    $vertical_alignment = 'vertical_alignment_center';
+    $horizontal_alignment = 'horizontal_alignment_left';
+
+    foreach ($styles as $style) {
+      if (strpos($style, 'banner_') === 0) {
+        switch ($style) {
+          case 'banner_lower_centered':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            break;
+
+          case 'banner_centered_left':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            break;
+
+          case 'banner_lower_left':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            break;
+
+          case 'banner_centered':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            break;
+        }
+      }
+    }
+
+    if (!in_array($vertical_alignment, $styles)) {
+      $styles[] = $vertical_alignment;
+    }
+    if (!in_array($horizontal_alignment, $styles)) {
+      $styles[] = $horizontal_alignment;
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
