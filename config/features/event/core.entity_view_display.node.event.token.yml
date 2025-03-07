@@ -26,9 +26,9 @@ dependencies:
     - node.type.event
   module:
     - address
+    - date_ap_style
     - layout_builder
     - link
-    - smart_date
     - text
     - user
 third_party_settings:
@@ -69,16 +69,22 @@ content:
     weight: 4
     region: content
   field_event_when:
-    type: smartdate_default
+    type: daterange_ap_style
     label: above
     settings:
-      timezone_override: ''
-      format_type: medium
-      format: default
-      force_chronological: false
-      add_classes: false
-      time_wrapper: true
-      localize: false
+      always_display_year: '1'
+      cap_today: '1'
+      display_day: '1'
+      display_time: '1'
+      separator: endash
+      timezone: America/Chicago
+      use_today: 0
+      month_only: 0
+      hide_date: 0
+      time_before_date: 0
+      display_noon_and_midnight: 0
+      capitalize_noon_and_midnight: 0
+      use_all_day: 0
     third_party_settings: {  }
     weight: 0
     region: content
