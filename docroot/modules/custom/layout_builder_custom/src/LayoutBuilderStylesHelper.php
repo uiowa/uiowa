@@ -175,6 +175,12 @@ class LayoutBuilderStylesHelper {
       'button_style' => [
         'default' => 'button_primary',
       ],
+      'horizontal_alignment' => [
+        'default' => 'horizontal_alignment_center',
+      ],
+      'vertical_alignment' => [
+        'default' => 'vertical_alignment_center',
+      ],
       'card_headline_style' => [
         'default' => 'card_headline_style_serif',
       ],
