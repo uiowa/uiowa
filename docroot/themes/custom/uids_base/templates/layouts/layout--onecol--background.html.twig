@@ -12,15 +12,17 @@
  * @see https://v4-alpha.getbootstrap.com/layout/grid/
  */
 #}
-{%
-  set background_classes = [
+{% set background_classes = [
   'banner--stacked',
-]
-%}
+] %}
 
 {% set background = content.background | render %}
 {% if banner_title_hidden %}
-  {{ background }}
+  {% embed "@uids_base/templates/block/block--inline-block--uiowa-image.html.twig" %}
+    {% block image_block %}
+      {{ background }}
+    {% endblock %}
+  {% endembed %}
 {% elseif background is not empty and featured_image_display is not empty %}
   {% embed "@uids_base/uids/banner.html.twig" with {
     'attributes' : attributes.addClass(background_classes, layout.template|clean_class),
