@@ -15,14 +15,15 @@
 {%
   set background_classes = [
   'banner--stacked',
-  'banner--stacked',
 ]
 %}
 
 {% set background = content.background | render %}
-{% if background is not empty and (featured_image_display is not empty) %}
+{% if banner_title_hidden %}
+  {{ background }}
+{% elseif background is not empty and featured_image_display is not empty %}
   {% embed "@uids_base/uids/banner.html.twig" with {
-    'attributes' : attributes.addClass(background_classes,layout.template|clean_class),
+    'attributes' : attributes.addClass(background_classes, layout.template|clean_class),
   } %}
     {% block banner_image %}
       <div class="media media--image">
