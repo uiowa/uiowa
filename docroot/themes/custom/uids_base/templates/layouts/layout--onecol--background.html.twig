@@ -15,6 +15,7 @@
 {%
   set background_classes = [
   'banner--stacked',
+  'banner--stacked',
 ]
 %}
 
@@ -24,7 +25,7 @@
     'attributes' : attributes.addClass(background_classes,layout.template|clean_class),
   } %}
     {% block banner_image %}
-      <div class="media--image">
+      <div class="media media--image">
         {{ background }}
       </div>
     {% endblock %}
