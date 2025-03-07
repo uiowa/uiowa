@@ -1,0 +1,20 @@
+<?php
+
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_webform_options_WEBFORM_OPTIONS_ID_alter().
+ */
+function sitenow_webform_ais_rfi_webform_options_ais_rfi_maui_sessions_alter(array &$options, array &$element) {
+  // Get sessions from MAUI for Webform options. 1 previous, 4 future.
+  /** @var Drupal\uiowa_maui\MauiApi $maui */
+  $maui = \Drupal::service('uiowa_maui.api');
+  foreach ($maui->getSessionsBounded(1, 4) as $session) {
+    // Per request, remove "Winter" sessions.
+    if (stripos($session->shortDescription, 'Winter') !== FALSE) {
+      continue;
+    }
+    $options[$session->legacyCode] = Html::escape($session->shortDescription);
+  }
+
+}
