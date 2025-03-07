@@ -6,7 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\uiowa_core\ApiClientBase;
 
 /**
- * Maui API service.
+ * MAUI API service.
  *
  * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
