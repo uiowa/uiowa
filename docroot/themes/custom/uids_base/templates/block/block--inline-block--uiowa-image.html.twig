@@ -29,12 +29,13 @@
 {{ attach_library('uids_base/image') }}
 {{ attach_library('uids_base/media') }}
 
-{% set classes = [
+{%
+  set classes = [
   'block',
   'block-' ~ configuration.provider|clean_class,
   'block-' ~ plugin_id|clean_class,
-  'image-block',
-] %}
+]
+%}
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
   {% set has_caption = content.field_uiowa_image_caption|render|striptags|trim is not empty %}
@@ -53,10 +54,8 @@
     </a>
     {{ content.field_uiowa_image_caption }}
   {% else %}
-    {% block image_block %}
-      {{ content.field_uiowa_image_image }}
-      {{ content.field_uiowa_image_caption }}
-    {% endblock %}
+    {{ content.field_uiowa_image_image }}
+    {{ content.field_uiowa_image_caption }}
   {% endif %}
   </{{ wrapper_element }}>
 {% endif %}
