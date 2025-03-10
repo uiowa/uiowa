@@ -7726,3 +7726,9 @@ $sites['medicineilhhrp.uiowa.ddev.site'] = 'ilhhrp.medicine.uiowa.edu';
 $sites['medicineilhhrp.dev.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
 $sites['medicineilhhrp.stage.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
 $sites['medicineilhhrp.prod.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
+
+// Directory aliases for pmccf.medicine.uiowa.edu.
+$sites['medicinepmccf.uiowa.ddev.site'] = 'pmccf.medicine.uiowa.edu';
+$sites['medicinepmccf.dev.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
+$sites['medicinepmccf.stage.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
+$sites['medicinepmccf.prod.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
