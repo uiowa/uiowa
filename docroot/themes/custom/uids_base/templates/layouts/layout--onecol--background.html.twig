@@ -24,9 +24,7 @@
     'attributes' : attributes.addClass(background_classes,layout.template|clean_class),
   } %}
     {% block banner_image %}
-      <div class="media media--image">
-        {{ background }}
-      </div>
+      {{ background }}
     {% endblock %}
     {% block heading %}
       {{ content.content }}
