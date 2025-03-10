@@ -7720,3 +7720,9 @@ $sites['studiojohannesledolter.uiowa.ddev.site'] = 'johannesledolter.studio.uiow
 $sites['studiojohannesledolter.dev.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
 $sites['studiojohannesledolter.stage.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
 $sites['studiojohannesledolter.prod.drupal.uiowa.edu'] = 'johannesledolter.studio.uiowa.edu';
+
+// Directory aliases for ilhhrp.medicine.uiowa.edu.
+$sites['medicineilhhrp.uiowa.ddev.site'] = 'ilhhrp.medicine.uiowa.edu';
+$sites['medicineilhhrp.dev.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
+$sites['medicineilhhrp.stage.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
+$sites['medicineilhhrp.prod.drupal.uiowa.edu'] = 'ilhhrp.medicine.uiowa.edu';
