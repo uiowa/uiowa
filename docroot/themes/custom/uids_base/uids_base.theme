@@ -1046,6 +1046,11 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
   }
 
+  // Add banner__text class for caption to receive banner text colors.
+  if ($variables['derivative_plugin_id'] === 'node:article:field_image_caption') {
+    $variables['attributes']['class'][] = 'banner__text';
+  }
+
 }
 
 /**
