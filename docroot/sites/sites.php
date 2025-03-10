@@ -5621,12 +5621,6 @@ $sites['medicineflowcytometry.dev.drupal.uiowa.edu'] = 'flowcytometry.medicine.u
 $sites['medicineflowcytometry.stage.drupal.uiowa.edu'] = 'flowcytometry.medicine.uiowa.edu';
 $sites['medicineflowcytometry.prod.drupal.uiowa.edu'] = 'flowcytometry.medicine.uiowa.edu';
 
-// Directory aliases for facultyaffairs.medicine.uiowa.edu.
-$sites['medicinefacultyaffairs.uiowa.ddev.site'] = 'facultyaffairs.medicine.uiowa.edu';
-$sites['medicinefacultyaffairs.dev.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
-$sites['medicinefacultyaffairs.stage.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
-$sites['medicinefacultyaffairs.prod.drupal.uiowa.edu'] = 'facultyaffairs.medicine.uiowa.edu';
-
 // Directory aliases for sercc.medicine.uiowa.edu.
 $sites['medicinesercc.uiowa.ddev.site'] = 'sercc.medicine.uiowa.edu';
 $sites['medicinesercc.dev.drupal.uiowa.edu'] = 'sercc.medicine.uiowa.edu';
