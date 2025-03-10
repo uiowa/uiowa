@@ -77,3 +77,23 @@
   min-height: 70vh!important;
 }
 
+// Overrides for older browsers until https://github.com/w3c/csswg-drafts/issues/10544 is the standard.
+// @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block, lb-direct-add.
+.layout__region--unset-type .column-container,
+.layout-builder .column-container {
+  container-type: unset;
+}
+
+// Container queries.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-text-area:has(.media--view-mode-vertical),
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-events .column-container,
+.layout-builder .column-container:has(.banner) {
+  container-type: inline-size;
+  container-name: column;
+}
+
