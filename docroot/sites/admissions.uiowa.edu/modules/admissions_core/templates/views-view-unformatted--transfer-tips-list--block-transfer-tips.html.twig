@@ -21,19 +21,9 @@
 {{ attach_library('uids_base/accordion') }}
 {% set id = "accordion-transfer-tips" %}
 
-{#Construct aria-owns attribute for accordion.#}
-{% if view.result is defined and view.result is iterable %}
-  {% set aria_owns = [] %}
-  {% for item in view.result %}
-    {% if item.nid is defined %}
-      {% set aria_owns = aria_owns|merge(['accordion-heading-transfer-tips-' ~ item.nid]) %}
-    {% endif %}
-  {% endfor %}
-{% endif %}
-
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" {% if aria_owns is defined and aria_owns is iterable %}
-    aria-owns="{{ aria_owns|join(', ') }}"
+  <div class="accordion" role="tablist" {% if aria_owns is not empty %}
+    aria-owns="{{ aria_owns }}"
   {% endif %} aria-multiselectable="false" id="{{ id }}">
     {% for row in rows %}
       {%

@@ -1,6 +1,5 @@
 {{ attach_library('uids_base/accordion') }}
 {% set accordion_h_size = accordion_h_size ?: 'h2' %}
-{% set accordion_item_id = accordion_hash ?: accordion_item_id %}
 <details class="accordion__item" {% if accordion_type == 'single' %}name="{{ accordion_parent_id }}-collection"{% endif %} role="none" {% if accordion_item_expanded %}open{% endif %}>
   <summary id="{{ accordion_item_id }}" class="accordion__heading" role="tab">
     <{{ accordion_h_size }}>
@@ -10,7 +9,7 @@
     <i aria-hidden="true" class="fas fa-chevron-up" role="presentation"></i>
   </{{ accordion_h_size }}>
   </summary>
-  <div id="{{ accordion_item_content_id }}" class="accordion__content bg--white">
+  <div class="accordion__content bg--white">
     {% block accordion_content %}
       {{ accordion_item_content }}
     {% endblock %}

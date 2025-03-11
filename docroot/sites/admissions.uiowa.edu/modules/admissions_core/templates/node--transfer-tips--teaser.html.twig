@@ -1,12 +1,10 @@
 {% set accordion_item = {
   'accordion_h_size': h_size ?: 'h2',
-  'accordion_item_id': 'accordion-item-' ~ 'transfer-tips' ~ '-' ~ node.id,
-  'accordion_parent_id': 'accordion-' ~ 'transfer-tips',
+  'accordion_item_id': 'accordion-heading-' ~ 'transfer-tips' ~ '-' ~ node.id,
+  'accordion_parent_id': 'accordion-transfer-tips',
   'accordion_type': 'single',
   'accordion_item_label': node.field_transfer_tips_aos.entity.title.value,
   'accordion_item_content': content,
-  'accordion_item_content_id': 'accordion-content-transfer-tips-' ~ node.id,
-  'accordion_hash': 'accordion-heading-' ~ 'transfer-tips' ~ '-' ~ node.id,
   'attributes': attributes,
 } %}
 
