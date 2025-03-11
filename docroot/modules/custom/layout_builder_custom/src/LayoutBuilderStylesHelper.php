@@ -160,9 +160,6 @@ class LayoutBuilderStylesHelper {
       'background' => [
         'default' => '[empty]',
       ],
-      'banner_gradient' => [
-        'default' => 'banner_gradient_dark',
-      ],
       'banner_height' => [
         'default' => 'banner_medium',
       ],
