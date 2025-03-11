@@ -26,3 +26,9 @@
     position: relative;
   }
 }
+
+.layout--onecol[class*=page__container--edge] .slider .banner--horizontal-left .banner__content {
+  @include utilities.breakpoint(page-container) {
+    padding-left: 2rem;
+  }
+}
