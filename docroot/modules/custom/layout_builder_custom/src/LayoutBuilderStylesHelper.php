@@ -173,7 +173,7 @@ class LayoutBuilderStylesHelper {
         'default' => 'button_primary',
       ],
       'horizontal_alignment' => [
-        'default' => 'horizontal_alignment_center',
+        'default' => 'horizontal_alignment_left',
       ],
       'vertical_alignment' => [
         'default' => 'vertical_alignment_center',
