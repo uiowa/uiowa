@@ -50,9 +50,9 @@
 
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
-  {% block admin_wrapper_start %}
+  {% block lb_column_container_start %}
     {% if in_preview %}
-      <div class="layout--container-wrapper">
+      <div class="layout-builder--column-container">
     {% endif %}
   {% endblock %}
 
@@ -65,7 +65,7 @@
     {% endif %}
   {% endblock %}
 
-  {% block admin_wrapper_end %}
+  {% block lb_column_container_end %}
     {% if in_preview %}
       </div>
     {% endif %}
