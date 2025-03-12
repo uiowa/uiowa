@@ -11,10 +11,13 @@ use Drupal\Component\Utility\Html;
  * Implements hook_webform_options_WEBFORM_OPTIONS_ID_alter().
  */
 function sitenow_webform_ais_rfi_webform_options_ais_rfi_maui_sessions_alter(array &$options, array &$element) {
-  // Get sessions from MAUI for Webform options. 0 previous, 4 future.
+  // Get sessions from MAUI for Webform options. 0 years previous, 4 in the future.
   /** @var Drupal\uiowa_maui\MauiApi $maui */
   $maui = \Drupal::service('uiowa_maui.api');
-  foreach ($maui->getSessionsBounded(0, 4) as $session) {
+
+  // Four sessions per year, multiplied by the desired number of years.
+  $years = 4;
+  foreach ($maui->getSessionsBounded(0, 4 * $years) as $session) {
     // Per request, remove "Winter" sessions.
     if (stripos($session->shortDescription, 'Winter') !== FALSE) {
       continue;
