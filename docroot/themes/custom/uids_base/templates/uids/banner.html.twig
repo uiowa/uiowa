@@ -38,6 +38,11 @@
   'headline--serif',
   'headline--large',
 ] %}
+
+{# Remove once https://github.com/w3c/csswg-drafts/issues/10544 is the standard. #}
+{% block admin_wrapper_start %}
+{% endblock %}
+
 <div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
@@ -112,3 +117,6 @@
     {% endblock %}
   </div>
 </div>
+{# Remove once https://github.com/w3c/csswg-drafts/issues/10544 is the standard. #}
+{% block admin_wrapper_end %}
+{% endblock %}

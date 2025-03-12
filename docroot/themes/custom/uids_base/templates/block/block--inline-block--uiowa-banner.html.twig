@@ -26,13 +26,11 @@
  */
 #}
 
-{%
-  set classes = [
+{% set classes = [
   'block',
   'block-' ~ configuration.provider|clean_class,
   'block-' ~ plugin_id|clean_class,
-]
-%}
+] %}
 
 {% set block_banner = {
   'banner_image': content.field_uiowa_banner_image|render|trim is not empty ? content.field_uiowa_banner_image : null,
@@ -47,16 +45,29 @@
   'links': links,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
+  'in_preview': in_preview,
 } %}
 
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
+
+  {% block admin_wrapper_start %}
+    {% if in_preview %}
+      <div class="layout--container-wrapper">
+    {% endif %}
+  {% endblock %}
 
   {% block banner_image %}
     {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
-    {% if banner_image  %}
+    {% if banner_image %}
       {{ banner_image }}
+    {% endif %}
+  {% endblock %}
+
+  {% block admin_wrapper_end %}
+    {% if in_preview %}
+      </div>
     {% endif %}
   {% endblock %}
 
