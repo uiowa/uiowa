@@ -42,6 +42,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
   ];
   $blocks = [];
 
+  // Track updated block revision IDs to prevent redundant updates.
+  $updated_blocks = [];
+
   foreach ($tables as $table_name) {
     // Select DB records for our $table_name.
     $query = $db->select($table_name, 'n');
@@ -93,6 +96,13 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
             $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
           }
           $block = $blocks[$revision_id];
+
+          // Skip if we've already updated this revision.
+          if (isset($updated_blocks[$revision_id])) {
+            continue;
+          }
+          // Mark this revision as updated to prevent duplicate processing.
+          $updated_blocks[$revision_id] = TRUE;
 
           if (!$block instanceof BlockContentInterface) {
             continue;
