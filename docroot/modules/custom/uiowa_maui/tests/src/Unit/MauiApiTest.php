@@ -11,7 +11,7 @@ use Drupal\Tests\UnitTestCase;
  */
 class MauiApiTest extends UnitTestCase {
   /**
-   * Mock maui service.
+   * Mock MAUI service.
    *
    * @var \Drupal\uiowa_maui\MauiApi|\PHPUnit\Framework\MockObject\MockObject
    */
