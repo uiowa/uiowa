@@ -6,13 +6,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
- * Webform handler for AIS RFI Maui.
+ * Webform handler for AIS RFI MAUI.
  *
  * @WebformHandler(
  *   id = "ais_rfi_middleware_maui",
- *   label = @Translation("AIS RFI Maui"),
+ *   label = @Translation("AIS RFI MAUI"),
  *   category = @Translation("External"),
- *   description = @Translation("Posts webform submissions to AIS RFI middleware for Maui."),
+ *   description = @Translation("Posts webform submissions to AIS RFI middleware for MAUI."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,

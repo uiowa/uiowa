@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinepmccf.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinepmccf
+  human_name: pmccf.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinepmccf.prod
+drupal:
+  db:
+    database: pmccf_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinepmccf.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Precision Medicine Center for Cystic Fibrosis'

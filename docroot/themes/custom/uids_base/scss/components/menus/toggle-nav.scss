@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 // Previous uids 3.x component styles.
 
@@ -17,7 +17,7 @@
 .iowa-bar.iowa-bar--narrow {
   &.iowa-bar--healthcare {
     .toggle-nav__bttn {
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         top: 64px;
       }
     }
@@ -27,11 +27,11 @@
     display: flex;
     height: 60px;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       height: 90px;
     }
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       top: 50px;
     }
   }
@@ -57,13 +57,13 @@
   height: 100%;
   flex-basis: 100%;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     position: absolute;
     top: 0;
     right: 0;
   }
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     flex-basis: unset;
   }
 }
@@ -73,7 +73,7 @@
   display: flex;
   height: 100%;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     position: absolute;
   }
 }
@@ -132,7 +132,7 @@ body {
 
   .below.scroll-up &,
   .below.scroll-down & {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       animation: fadeIn 3s;
     }
   }
@@ -147,19 +147,19 @@ body {
 
   &:before {
     margin-right: 10px;
-    padding: $xsm;
+    padding: variables.$xsm;
     padding-right: 7px;
     content: "\f0c9";
-    color: $secondary;
+    color: variables.$secondary;
     font-size: 1.5rem;
-    @include fas();
+    @include utilities.fas();
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       font-size: 1.2rem;
     }
   }
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     height: 80px;
     padding: 14px 35px 7px;
 
@@ -184,24 +184,24 @@ body {
   &:focus-visible {}
 
   span {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       display: inline;
     }
   }
 
   .o-canvas--open & {
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   &:before {
     margin-right: 0;
     margin-top: -2px;
     padding: 1rem .9rem 1rem .7rem;
-    color: $secondary;
-    font-size: $base-font-size;
-    @include fas();
+    color: variables.$secondary;
+    font-size: variables.$base-font-size;
+    @include utilities.fas();
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-right: 5px;
       padding: .8rem 1rem;
     }
@@ -212,13 +212,13 @@ body {
       margin-right: 10px;
       padding: 7px;
       content: "\f00d";
-      color: $white;
+      color: variables.$white;
       border-radius: 50%;
       background: #999;
       font-size: 1rem;
       line-height: .8;
 
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         width: 35px;
         height: 35px;
         font-size: 1.2rem;
@@ -231,7 +231,7 @@ body {
 .toggle-nav__bttn.inactive {
   background: #f1f1f1;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     background: #fff;
   }
 }
@@ -239,7 +239,7 @@ body {
 .toggle-nav__bttn.active {
   background: #f1f1f1;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     background: #fff;
   }
 }
@@ -269,7 +269,7 @@ body {
   background: #fff;
   background-color: rgb(255, 255, 255);
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding: 40px 35px;
     max-width: 560px;
   }
@@ -297,7 +297,7 @@ body {
 }
 
 .iowa-bar--full.toggle .toggle-nav__bttn {
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     padding: 14px 35px 0;
   }
 }
@@ -313,7 +313,7 @@ body {
   width: 100% !important;
   overflow: hidden !important;
   display: block !important;
-  margin-bottom: $md;
+  margin-bottom: variables.$md;
 }
 
 .iowa-bar--full.toggle,

@@ -12,7 +12,7 @@
         let geojson;
 
         // Establish map and prevent scrollwheel zooming.
-        let map = L.map("pharmacy-palliative-grad-map", {
+        let map = L.map("leaflet-map-pharmacy-palliative-grad-map", {
           zoomSnap: 0.25
         }).setView([37.8, -96], 3.75);
         map.scrollWheelZoom.disable();

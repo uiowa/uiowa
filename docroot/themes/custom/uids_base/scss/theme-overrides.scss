@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 .off-brand {
 
@@ -12,13 +12,13 @@
   // Sticky headers.
 
   &.no-top-links.header-sticky.toolbar-horizontal.toolbar-tray-open.below {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 171px !important;
     }
   }
 
   &.no-top-links.header-sticky.below {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 90px;
     }
   }
@@ -32,13 +32,13 @@
   }
   // Toggle nav absolute positioning for header without top-links.
   &.no-top-links .iowa-bar.iowa-bar--narrow .toggle-nav__bttn {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       top: 0;
     }
   }
 
   &.no-top-links .iowa-bar.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: 90px;
     }
   }
@@ -48,8 +48,8 @@
   .iowa-bar--narrow {
     .top-bar {
       height: 70px;
-      background: $secondary;
-      @include breakpoint(md) {
+      background: variables.$secondary;
+      @include utilities.breakpoint(md) {
         height: auto;
         background: none;
       }
@@ -57,7 +57,7 @@
   }
   // Adjust height for top bar on narrow header.
   &.has-top-links .iowa-bar--narrow .top-bar {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       height: 50px;
     }
   }
@@ -69,13 +69,13 @@
   // Setting container to block on mobile to get elements to stack.
   .iowa-bar--full .iowa-bar__container {
     display: block;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       display: flex;
     }
   }
 
   .iowa-bar--full .menu--top {
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       margin-top: 14px;
     }
   }
@@ -83,29 +83,29 @@
   // Uploaded image.
   div.site-name {
     padding-left: 20px;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding: 10px 20px;
     }
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       padding: 10px 20px 10px 0;
     }
   }
 
   h1.site-name {
     padding-left: 20px;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding: 25px 20px 15px;
     }
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       padding-left: 0;
     }
   }
 
   .parent-site-name {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-left: 1.25rem;
     }
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       padding-left: 0;
     }
   }
@@ -113,7 +113,7 @@
   .iowa-bar__below {
     h1.site-name,
     div.site-name {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         padding-left: 0;
       }
     }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labech2o.uiowa.ddev.site
+    protocol: https
+  machine_name: labech2o
+  human_name: ech2o.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labech2o.prod
+drupal:
+  db:
+    database: ech2o_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labech2o.prod.drupal.uiowa.edu'
+  requester: mdannenberg
+  site-name: 'Ecoclimatology of Carbon and Water (ECH2O) lab'

@@ -371,7 +371,7 @@ function uids_base_preprocess_page(&$variables) {
         '#url' => $login_url,
         '#attributes' => [
           'rel' => 'nofollow',
-        ]
+        ],
       ];
     }
   }
@@ -1094,18 +1094,18 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
   $variables['aria_owns'] = [];
   foreach ($items as $delta) {
+    $unique_id = $accordion_item_id . '-' . $delta;
+
+    // Set the unique ID to a stored value if it exists.
     $paragraph = $variables['elements']['content']['field_uiowa_collection_items'][$delta]['#paragraph'];
     if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
-      // Use the unique ID if it exists.
       $unique_id = $paragraph->get('field_unique_id')->value;
-      $variables['aria_owns'][] = $unique_id;
     }
-    else {
-      // Fall back to the delta-based ID.
-      $variables['aria_owns'][] = $accordion_item_id . '-' . $delta;
-    }
+    $variables['aria_owns'][] = $unique_id;
   }
-
+  // Convert this to a comma-separated string as that is how it will be printed
+  // in the template.
+  $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
 }
 
 /**
@@ -1228,6 +1228,29 @@ function uids_base_preprocess_paragraph(&$variables) {
           $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function uids_base_preprocess_paragraph__uiowa_collection_item(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if (!$admin_context->isAdminRoute()) {
+
+    $block = $paragraph->getParentEntity();
+    if ($block instanceof ContentEntityInterface) {
+      $unique_id = 'accordion-item-' . $block->id() . '-' . $variables['delta'];
+      if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+        $unique_id = $paragraph->get('field_unique_id')->value;
+      }
+      $variables['accordion_item_id'] = $unique_id;
     }
   }
 }

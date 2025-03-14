@@ -13,7 +13,7 @@
 <div class="collection--accordion">
   <div class="accordion" role="tablist"
     {% if aria_owns is defined and aria_owns is iterable %}
-      aria-owns="{{ aria_owns|join(', ') }}"
+      aria-owns="{{ aria_owns|join(' ') }}"
     {% endif %}
        aria-multiselectable="true" id="accordion-{{ clean_label }}">
     {% for item in items %}
@@ -22,13 +22,11 @@
       {% set clean_item_label = item.label is defined ? item.label|clean_class : clean_label ~ (is_single_item ? '' : '-' ~ loop.index) %}
       {% set accordion_item = {
         'accordion_h_size': accordion_h_size ?: 'h2',
-        'accordion_hash': clean_item_label,
         'accordion_type': accordion_type ?: 'single',
         'accordion_parent_id': 'accordion-' ~ clean_label,
-        'accordion_item_id': 'content-' ~ clean_item_label,
+        'accordion_item_id': clean_item_label,
         'accordion_item_label': item_label,
         'accordion_item_content': item.content|without(label, attributes),
-        'accordion_item_content_id': 'accordion-content-' ~ clean_item_label,
         'accordion_button_class': 'border',
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}

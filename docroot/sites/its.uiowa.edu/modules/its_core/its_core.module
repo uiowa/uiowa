@@ -610,6 +610,7 @@ function its_core_preprocess_field(&$variables, $hook) {
           $variables['aria_owns'][] = 'accordion-item-heading-' . $paragraph->id();
         }
       }
+      $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
       break;
 
     case 'field_alert_service_affected':

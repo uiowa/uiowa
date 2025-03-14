@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcfhsrcore.uiowa.ddev.site
+    protocol: https
+  machine_name: labcfhsrcore
+  human_name: cfhsrcore.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcfhsrcore.prod
+drupal:
+  db:
+    database: cfhsrcore_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcfhsrcore.prod.drupal.uiowa.edu'
+  requester: jkrogh
+  site-name: 'University of Iowa Cystic Fibrosis Human Subjects Research Core and Biobank'

@@ -1,16 +1,16 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 // This file contains the styles for the /admin/config/sitenow/sitenow-people page.
 
 .view-id-people {
-  @include margin($top: $lg);
+  @include utilities.margin(variables.$top: variables.$lg);
   .view-header {
     width: 100%;
   }
   .view-content {
-    @include list-group;
-    @include list-group-flush;
+    @include utilities.list-group;
+    @include utilities.list-group-flush;
   }
 
   .view-content:first-child .views-row:first-child {
@@ -39,7 +39,7 @@
   }
 
   thead {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 
   .views-field-title,
@@ -51,14 +51,14 @@
   }
 
   .tabledrag-title {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 
   .views-field.views-field-rendered-entity {
     width: 100%;
     container-type: inline-size;
     container-name: column;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       display: block;
     }
   }
@@ -106,6 +106,6 @@
 // Draggableviews weight inputs are not hidden to site visitors...
 body:not(.user-logged-in) {
   .draggableviews-weight {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }

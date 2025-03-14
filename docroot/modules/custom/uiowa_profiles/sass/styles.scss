@@ -1,9 +1,9 @@
-@import "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
 .breadcrumb {
   list-style: none;
-  @include margin($top: $sm, $right: 0, $bottom: $sm, $left:0);
+  @include utilities.margin($top: variables.$sm, $right: 0, $bottom: variables.$sm, $left:0);
   ol {
     @extend %no-ul-list;
   }
@@ -13,8 +13,8 @@
 .breadcrumb::after {
   display: table;
   content: ' ';
-  @include flex($fb: 0);
-  @include order($int: 1);
+  @include utilities.flex($fb: 0);
+  @include utilities.order($int: 1);
 }
 
 .breadcrumb::after {
@@ -25,21 +25,21 @@
   float: left;
   cursor: default;
   //text-transform: uppercase;
-  color: $secondary;
-  font-size: $small-font-size;
+  color: variables.$secondary;
+  font-size: variables.$small-font-size;
 }
 
 .breadcrumb li:not(:last-child)::after {
   position: relative;
   content: "/";
   opacity: 1;
-  color: $primary;
-  @include margin($top: 0, $right: $sm, $bottom: 0, $left:$sm);
+  color: variables.$primary;
+  @include utilities.margin($top: 0, $right: variables.$sm, $bottom: 0, $left: variables.$sm);
 }
 
 .breadcrumb a {
   text-decoration: none;
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 .breadcrumb a:hover,
@@ -49,7 +49,7 @@
 
 .breadcrumb .disabled {
   cursor: not-allowed;
-  color: $grey-light;
+  color: variables.$grey-light;
 }
 
 #block-uids-base-local-tasks nav {
@@ -74,7 +74,7 @@
     }
 
     a {
-      color: $secondary!important;
+      color: variables.$secondary!important;
     }
 
     &>li {
@@ -83,7 +83,7 @@
   }
 
   .svg-inline--fa.fa-w-16 {
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   ol {
@@ -92,7 +92,7 @@
   }
 
   figure {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: 0;
     }
   }

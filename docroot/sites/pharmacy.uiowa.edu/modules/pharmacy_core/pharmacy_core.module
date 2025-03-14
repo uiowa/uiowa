@@ -65,6 +65,7 @@ function pharmacy_core_views_pre_render(ViewExecutable $view) {
         // Case 'page_palliative_grad':
         $view->element['#attached']['library'][] = 'pharmacy_core/palliative-grad-list';
         $view->element['#attached']['library'][] = 'pharmacy_core/person';
+        $view->element['#attached']['library'][] = 'uids_base/leaflet_attach';
         break;
     }
   }

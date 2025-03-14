@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf assets/css assets/js",
-    "sass-compile": "sass --silence-deprecation=import --no-source-map --style=compressed sass:assets/css",
+    "sass-compile": "sass --no-source-map --style=compressed sass:assets/css",
     "sass-watch": "sass --watch --style=compressed sass:assets/css",
     "prebuild": "run-s clean",
     "build": "run-p sass-compile",

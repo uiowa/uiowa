@@ -1,30 +1,30 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 // Previously used with the External quick links block in the toggle menu on uiowa.edu.
 
 .menu--group {
   .menu {
-    @include flexbox;
+    @include utilities.flexbox;
 
-    @include margin($top: $lg, $left: 0, $bottom: $sm);
+    @include utilities.margin(variables.$top: variables.$lg, variables.$left: 0, variables.$bottom: variables.$sm);
 
     li {
-      @include flexbox;
+      @include utilities.flexbox;
       flex: 1;
-      border: 1px solid $grey-light;
+      border: 1px solid variables.$grey-light;
       border-right: none;
       justify-content: center;
 
       &:hover,
       &:focus {
-        background: $light;
+        background: variables.$light;
       }
 
       a {
         display: block;
         text-decoration: none;
-        color: $med-gray;
+        color: variables.$med-gray;
         line-height: 1.3;
         flex: 1;
         display: flex;
@@ -40,7 +40,7 @@
       }
 
       &:last-child {
-        border-right: 1px solid $grey-light;
+        border-right: 1px solid variables.$grey-light;
       }
     }
   }
@@ -49,16 +49,16 @@
 
 .menu--group a[target="_blank"]:after {
   content: "\f35d";
-  @include fas();
-  font-size: $small-font-size;
-  color: $secondary;
-  padding-left: $sm;
+  @include utilities.fas();
+  font-size: variables.$small-font-size;
+  color: variables.$secondary;
+  padding-left: variables.$sm;
 }
 
 .menu--group {
   display: flex;
   width: 100%;
-  padding: $md 0;
+  padding: variables.$md 0;
 }
 
 .menu--group .menu {
