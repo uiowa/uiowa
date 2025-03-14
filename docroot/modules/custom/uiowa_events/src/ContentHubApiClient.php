@@ -13,7 +13,7 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
    * {@inheritdoc}
    */
   public function basePath(): string {
-    return 'https://content.uiowa.edu/api/v1/';
+    return 'https://events-test.ais.its.uiowa.edu/api/v1/';
   }
 
   /**
@@ -28,6 +28,30 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
    */
   public function getEvents(array $options = []): \stdClass|bool {
     return $this->get('views/events_api.json', $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFilters($display_id) {
+    $options = [
+      'query' => [
+        'display_id' => $display_id,
+      ],
+    ];
+    return json_decode(json_encode($this->get('views/filters_api.json', $options)), TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPlaces() {
+    $options = [
+      'query' => [
+        'display_id' => 'places',
+      ],
+    ];
+    return json_decode(json_encode($this->get('views/places_api.json', $options)), TRUE);
   }
 
 }
