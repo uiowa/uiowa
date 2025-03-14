@@ -3359,6 +3359,7 @@ function sitenow_update_10014() {
   $block_plugin_id = 'inline_block:uiowa_banner';
   _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
+    $container = NULL;
 
     foreach ($styles as $style) {
       if (strpos($style, 'banner_') === 0) {
@@ -3373,13 +3374,13 @@ function sitenow_update_10014() {
             $vertical_alignment = 'vertical_alignment_center';
             $horizontal_alignment = 'horizontal_alignment_left';
             $media_overlay = 'media_overlay_left_to_right';
+            $container = 'banner_narrow';
             break;
 
           case 'banner_lower_left':
             $vertical_alignment = 'vertical_alignment_bottom';
             $horizontal_alignment = 'horizontal_alignment_left';
             $media_overlay = 'media_overlay_bottom_to_top';
-            $banner_container = 'banner_narrow';
             break;
 
           case 'banner_centered':
@@ -3400,8 +3401,8 @@ function sitenow_update_10014() {
     if (!in_array($media_overlay, $styles)) {
       $styles[] = $media_overlay;
     }
-    if (!in_array($banner_container, $styles)) {
-      $styles[] = $banner_container;
+    if (!in_array($container, $styles)) {
+      $styles[] = $container;
     }
 
     $component->set('layout_builder_styles_style', $styles);
