@@ -42,6 +42,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
   ];
   $blocks = [];
 
+  // Track updated block revision IDs to prevent redundant updates.
+  $updated_blocks = [];
+
   foreach ($tables as $table_name) {
     // Select DB records for our $table_name.
     $query = $db->select($table_name, 'n');
@@ -93,6 +96,13 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
             $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
           }
           $block = $blocks[$revision_id];
+
+          // Skip if we've already updated this revision.
+          if (isset($updated_blocks[$revision_id])) {
+            continue;
+          }
+          // Mark this revision as updated to prevent duplicate processing.
+          $updated_blocks[$revision_id] = TRUE;
 
           if (!$block instanceof BlockContentInterface) {
             continue;
@@ -3340,4 +3350,61 @@ function sitenow_update_10012() {
  */
 function sitenow_update_10013() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Update banner blocks with new styles.
+ */
+function sitenow_update_10014() {
+  $block_plugin_id = 'inline_block:uiowa_banner';
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    $container = NULL;
+
+    foreach ($styles as $style) {
+      if (strpos($style, 'banner_') === 0) {
+        switch ($style) {
+          case 'banner_lower_centered':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            break;
+
+          case 'banner_centered_left':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_left_to_right';
+            $container = 'banner_narrow';
+            break;
+
+          case 'banner_lower_left':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            break;
+
+          case 'banner_centered':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            break;
+        }
+      }
+    }
+
+    if (!in_array($vertical_alignment, $styles)) {
+      $styles[] = $vertical_alignment;
+    }
+    if (!in_array($horizontal_alignment, $styles)) {
+      $styles[] = $horizontal_alignment;
+    }
+    if (!in_array($media_overlay, $styles)) {
+      $styles[] = $media_overlay;
+    }
+    if (!in_array($container, $styles)) {
+      $styles[] = $container;
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
 }
