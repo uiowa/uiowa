@@ -1,0 +1,860 @@
+diff --git a/README.txt b/README.txt
+index 4685ecd253c6b5a0e0bf39a24901d3c0979dd0f4..7ff10ceff2f051dab82b2bbaaadc7d48b99e97a6 100644
+--- a/README.txt
++++ b/README.txt
+@@ -6,12 +6,9 @@ The gpa calculator form initially display 6 rows with 3 columns
+ add more rows. The form also has a section for cumulative (past) GPA
+ and Credits Earned as part of the calculation.
+
+-The description section under the header is configurable. Administrators also
+-have the ability to customize the title by amending the title with a school name
+-to personalize the calculator. Finally, the Grade select boxes themselves are
+-configurable with validation to ensure the option values are numerical for
+-correct calculations. If the Grades setting is left blank then the select
+-options will be filled with hard coded values.
++The Grade select boxes are configurable with validation to ensure the option
++values are numerical for correct calculations. If the Grades setting is left
++blank then the select options will be filled with hard-coded values.
+
+ INSTALLATION
+ ------------
+@@ -26,6 +23,5 @@ CONFIGURATION
+      should have the ability to configure the GPA Calculator.
+  * Customize the GPA Calculator in Administration Â» Configuration Â»
+    GPA Calculator Administration Â» GPA Calculator settings.
+-   - Add a school name to the block title, instructions on how to use
+-     the GPA Calculator and custom grades for the grade dropdown if
+-     different than the default options.
++   - Add custom grades for the grade dropdown if
++     different from the default options.
+diff --git a/css/gpa_calculator.css b/css/gpa_calculator.css
+old mode 100755
+new mode 100644
+index 4ee851d5cbb0b76d6731c7ad23535623b67c34a1..88836b73aba377425a7fb629b1a3b0e4975d1528
+--- a/css/gpa_calculator.css
++++ b/css/gpa_calculator.css
+@@ -1,62 +1,18 @@
+-.gpa-calculator-instructions-wrapper {
+-  margin-bottom: 10px;
++.gpa-row {
++  display: flex;
++  align-items: flex-end;
+ }
+
+-/** table structure for divs **/
+-#grades_table {
+-  margin-top: 4px;
+-  display: table;
+-  border-collapse: collapse;
++.gpa-row .form-item:first-child {
++  flex: 1 1;
++  margin-right: 0.5rem;
+ }
+
+-.gpa-table-thead {
+-  display: table-header-group;
++.gpa-row .form-item:first-child input {
++  width: 100%;
+ }
+
+-.gpa-table-body {
+-  display: table-row-group;
++.gpa-row .form-item:last-child {
++  max-width: 6rem;
++  margin-left: 0.5rem;
+ }
+-
+-.grade_row {
+-  display: table-row;
+-}
+-
+-.gpa-table-cell {
+-  display: table-cell;
+-  border: 1px solid #B9B6B6;
+-  padding: 10px 10px 0 10px;
+-}
+-
+-.gpa-th {
+-  font-weight: bold;
+-}
+-
+-.grade_number {
+-  font-weight: bold;
+-  text-align: center;
+-}
+-
+-.grade_field, .credits_field {
+-  text-align: center;
+-}
+-
+-form#gpa-calculator-form input.credits_field {
+-  width: 30px;
+-}
+-
+-form#gpa-calculator-form td {
+-  vertical-align: top;
+-}
+-
+-form#gpa-calculator-form input#prev-gpa,
+-form#gpa-calculator-form input#prev-hours {
+-  width: 50px;
+-}
+-
+-.gpa-results-wrapper {
+-  margin-top: 30px;
+-}
+-
+-#gpa-add-row {
+-  font-size: 11px;
+-}
+\ No newline at end of file
+diff --git a/gpa_calculator.info.yml b/gpa_calculator.info.yml
+index b67b9869c4b36fb23f55767adf94bcfc7c957868..6b628ac56b80179c23e282feaec1f17cc318507b 100644
+--- a/gpa_calculator.info.yml
++++ b/gpa_calculator.info.yml
+@@ -4,5 +4,5 @@ package: Custom
+ dependencies:
+ - drupal:block
+ type: module
+-core_version_requirement: ^10
++core_version_requirement: ^10 | ^11
+ configure: gpa_calculator.settings
+diff --git a/gpa_calculator.libraries.yml b/gpa_calculator.libraries.yml
+index 5392df9d513f00ce25c286c8dbe8256f91c108af..760eed8fe72fcff5854afd4fcdc643a420171eb1 100644
+--- a/gpa_calculator.libraries.yml
++++ b/gpa_calculator.libraries.yml
+@@ -1,13 +1,11 @@
+ gpa.calculator.form:
+   version: VERSION
+-  js:
+-    js/gpa_calculator.js: {}
+-  dependencies:
+-    - core/jquery
+-    - core/drupalSettings
+   css:
+     theme:
+       css/gpa_calculator.css: {}
++  dependencies:
++    - core/drupalSettings
++    - core/drupal
+
+ gpa.calculator.admin:
+   verion: VERSION
+diff --git a/gpa_calculator.module b/gpa_calculator.module
+index 1e84f29cc1047c14659721762d4b1d7b8181a50f..170034f745250af04e82dd9edf3a8e493e9dbe6d 100644
+--- a/gpa_calculator.module
++++ b/gpa_calculator.module
+@@ -14,26 +14,25 @@ function gpa_calculator_help($route_name, RouteMatchInterface $route_match) {
+   switch ($route_name) {
+     case 'help.page.gpa_calculator':
+       $output = '<h3>' . t('About') . '</h3>';
+-      $output .= '<p>' . t('This module provides schools with a GPA calculator to use in a block.
+-  The gpa calculator form initially display 6 rows with 3 columns
+-  (Class/Course Name, Grade, Credits Earned). It has the ability to dynamically
+-  add more rows. The form also has a section for cumulative (past) GPA
+-  and Credits Earned as part of the calculation.') . '</p>';
+-      $output .= '<p>' . t('The description section under the header is configurable. Administrators also
+-  have the ability to customize the title by amending the title with a school name
+-  to personalize the calculator. Finally, the Grade select boxes themselves are
+-  configurable with validation to ensure the option values are numerical for
+-  correct calculations. If the Grades setting is left blank then the select
+-  options will be filled with hard coded values.') . '</p>';
++      $output .= '<p>' . t('This module provides schools with a GPA
++  calculator to use in a block. The gpa calculator form initially display 6
++  rows with 3 columns (Class/Course Name, Grade, Credits Earned). It has the
++  ability to dynamically add more rows. The form also has a section for
++  cumulative (past) GPA and Credits Earned as part of the calculation.') . '</p>';
++      $output .= '<p>' . t('Administrators have the ability to customize
++  the Grade select boxes and validation is provided to ensure the option values
++  are numerical for correct calculations. If the Grades setting is left blank
++  then the select options will be filled with hard coded values.') . '</p>';
+       $output .= '<h3>' . t('Uses') . '</h3>';
+       $output .= '<dl>';
+       $output .= '<dt>' . t('Permissions for the GPA Calculator') . '</dt>';
+       $output .= '<dd>' . t('Set permissions for which roles can administer the GPA Calculator
+   in Administration Â» People Â» Permissions.</dd>');
+       $output .= '<dt>' . t('Configuring the GPA Calculator') . '</dt>';
+-      $output .= '<dd>' . t('Grant the Administer GPA Calculator permission to any roles that
+-  should have the ability to configure the GPA Calculator.  Customize the GPA Calculator in
+-  Administration Â» Configuration Â» GPA Calculator Settings') . '</dd>';
++      $output .= '<dd>' . t('Grant the Administer GPA Calculator
++  permission to any roles that should have the ability to configure the GPA
++  Calculator.  Customize the GPA Calculator in Administration Â» Configuration Â»
++  GPA Calculator Settings') . '</dd>';
+       $output .= '</dl>';
+       return $output;
+   }
+diff --git a/js/gpa_calculator.js b/js/gpa_calculator.js
+deleted file mode 100755
+index f16976df832a77ff121e85623574ce3be588e04a..0000000000000000000000000000000000000000
+--- a/js/gpa_calculator.js
++++ /dev/null
+@@ -1,164 +0,0 @@
+-(function ($) {
+-  "use strict";
+-  $(document).ready(function () {
+-    addRow(6);
+-
+-    $("#gpa-add-row").click(function (e) {
+-      addRow();
+-      e.preventDefault();
+-    });
+-
+-    $("#gpa-calculator-form").submit(function (e) {
+-      e.preventDefault();
+-
+-      let gradePoints = 0.0;
+-      let totalCredits = 0.0;
+-      let gradePointEntered = false;
+-
+-      $(".grade_row").each(function (i) {
+-        if ($(this).find(".grade_field").val() === "" || $(this).find(".credits_field").val() === "") {
+-          return;
+-        }
+-        gradePointEntered = true;
+-
+-        gradePoints += parseFloat($(this).find(".grade_field").val()) * parseFloat($(this).find(".credits_field").val());
+-        totalCredits += parseFloat($(this).find(".credits_field").val());
+-      });
+-
+-      const gpaCurrent = gradePoints / totalCredits;
+-
+-      // Previous GPA info.
+-      const gpaPrev = $('#prev-gpa').val();
+-      const prevHours = $('#prev-hours').val();
+-      // Calculate Cumulative GPA.
+-      const currentSum = gpaCurrent * totalCredits;
+-      const previousSum = gpaPrev * prevHours;
+-      const totalHours = +totalCredits + +prevHours;
+-      const cumulativeGpaPoints = +currentSum + +previousSum;
+-      const gpaCumulative = cumulativeGpaPoints / totalHours;
+-
+-      if (!gradePointEntered || totalCredits === 0.0) {
+-        $("#gpa-current-output").text("You must enter at least one grade and its corresponding credits earned.");
+-      }
+-      else if (isNaN(gpaCurrent) || isNaN(gpaCumulative)) {
+-        $("#gpa-current-output").text("Could not calculate GPA. Did you input a grade?");
+-      }
+-      else {
+-        $("#gpa-current-output").html('<span style="font-weight: bold;">Current GPA:</span> ' + gpaCurrent.toFixed(4));
+-        $("#gpa-cumulative-output").html('<span style="font-weight: bold;">Overall GPA:</span> ' + gpaCumulative.toFixed(4));
+-      }
+-    });
+-
+-    // Only allow numbers in credits_field.
+-    $('.credits_field, #prev-gpa, #prev-hours').keypress(function (event) {
+-      return validateNum(event);
+-    });
+-
+-  });
+-
+-  function addRow(numberOfRows) {
+-    if (!numberOfRows) numberOfRows = 1;
+-
+- //   var gradeOptions = loadGPAOptions();
+-
+-    for (let i = 0; i < numberOfRows; i++) {
+-      $("#grades_table .gpa-table-body").append(
+-        $("<div class='gpa-table-row' />").attr("class", "grade_row").append(
+-          $("<div class='gpa-table-cell' />")
+-            .css({
+-              "font-weight": "bold",
+-              "text-align": "center"
+-            })
+-            .text($(".grade_row").length + 1)
+-        )
+-        .append(
+-          $("<div class='gpa-table-cell' />").append(
+-            $("<input />")
+-              .attr({
+-                "type": "text",
+-                "class": "class_field",
+-                "name": "class",
+-              })
+-          )
+-        )
+-        .append(
+-          $("<div class='gpa-table-cell' />").append(
+-            $("<select />")
+-              .attr({
+-                "class": "grade_field",
+-                "name": "grade",
+-              }).append(
+-                $("<option />").val('').text('')
+-              )
+-          )
+-        )
+-        .append(
+-          $("<div class='gpa-table-cell' />").append(
+-            $("<input />")
+-              .attr({
+-                "type": "text",
+-                "class": "credits_field",
+-                "name": "credits",
+-                "size": "3"
+-              })
+-          )
+-        )
+-      );
+-    }
+-
+-    // Append GPA grades.
+-    gpaOptions();
+-
+-  }
+-
+-  /** Get Grades from GPA Calculator settings page **/
+-  function gpaOptions() {
+-    var grades_settings_array = drupalSettings.gpa_calculator.gpaCalculator.grades;
+-
+-    // If grades_settings in config page is empty then
+-    // load default values.
+-    // Otherwise, load grades entered in config page.
+-    if (Object.keys(grades_settings_array)[0] === '' || grades_settings_array.length === 0) {
+-      return $('.grade_field').append(
+-        $("<option />").val(4.0).text('A')
+-      ).append(
+-        $("<option />").val(3.67).text('A-')
+-      ).append(
+-        $("<option />").val(3.33).text('B+')
+-      ).append(
+-        $("<option />").val(3.0).text('B')
+-      ).append(
+-        $("<option />").val(2.67).text('B-')
+-      ).append(
+-        $("<option />").val(2.33).text('C+')
+-      ).append(
+-        $("<option />").val(2.0).text('C')
+-      ).append(
+-        $("<option />").val(1.67).text('C-')
+-      ).append(
+-        $("<option />").val(1.33).text('D+')
+-      ).append(
+-        $("<option />").val(1.0).text('D')
+-      ).append(
+-        $("<option />").val(0.67).text('D-')
+-      ).append(
+-        $("<option />").val(0.0).text('F')
+-      );
+-    }
+-    else {
+-      $.each(grades_settings_array, function (key, value) {
+-        return $('.grade_field').append($("<option />").val(key).text(value));
+-      });
+-    }
+-  }
+-
+-  /** Only allow numbers to be entered **/
+-  function validateNum(event) {
+-    let key = event.keyCode || event.which;
+-    key = String.fromCharCode(key);
+-    const regex = /[0-9]|\./;
+-    if (!regex.test(key)) {
+-      event.preventDefault();
+-    }
+-  }
+-}(jQuery));
+diff --git a/src/Form/GpaCalculatorForm.php b/src/Form/GpaCalculatorForm.php
+index 0bc1ba06e36dfb31a703c1d8156f908ab4c81939..745844f61daef12af42b25ace312eb691bbed057 100644
+--- a/src/Form/GpaCalculatorForm.php
++++ b/src/Form/GpaCalculatorForm.php
+@@ -2,10 +2,14 @@
+
+ namespace Drupal\gpa_calculator\Form;
+
++use Drupal\Core\Ajax\AjaxResponse;
++use Drupal\Core\Ajax\AnnounceCommand;
++use Drupal\Core\Ajax\HtmlCommand;
++use Drupal\Core\Ajax\ReplaceCommand;
+ use Drupal\Core\Form\FormBase;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+-use Drupal\Core\Url;
++use Drupal\gpa_calculator\Ajax\GpaCalculationCommand;
+
+ /**
+  * Implements an example form.
+@@ -14,6 +18,26 @@ class GpaCalculatorForm extends FormBase {
+
+   use StringTranslationTrait;
+
++  /**
++   * The default grade settings.
++   *
++   * @var array
++   */
++  protected array $defaultGradeSettings = [
++    '4.0' => 'A',
++    '3.67' => 'A-',
++    '3.33' => 'B+',
++    '3.0' => 'B',
++    '2.67' => 'B-',
++    '2.33' => 'C+',
++    '2.0' => 'C',
++    '1.67' => 'C-',
++    '1.33' => 'D+',
++    '1.0' => 'D',
++    '0.67' => 'D-',
++    '0.0' => 'F',
++  ];
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -25,104 +49,328 @@ class GpaCalculatorForm extends FormBase {
+    * {@inheritdoc}
+    */
+   public function buildForm(array $form, FormStateInterface $form_state) {
+-    $config = $this->config('gpa_calculator.gpa');
++    $wrapper_id = $this->getFormId() . '-wrapper';
++    $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
++    $form['#suffix'] = '</div>';
++    $form['#attributes']['class'][] = 'gpa-calculator-form';
+
+-    $gpa_instructions = $config->get('instructions') != '' ? $config->get('instructions') : '';
+-    $gpa_calculator_grades = $config->get('grades');
+-    $gpa_calculator_grades_array = [];
+-    // Turn grades string into array.
+-    if (!is_null($gpa_calculator_grades)) {
+-      foreach (explode("\n", $gpa_calculator_grades) as $grade) {
+-        [$key, $value] = explode('|', $grade, 2);
+-        $gpa_calculator_grades_array[$key] = $value;
+-      }
++    // Create select options for grades.
++    $select_options = ['' => '',];
++    foreach ($this->getGradeSettings() as $value) {
++      $select_options[$value] = $value;
+     }
++    $form['#tree'] = TRUE;
++    $i = 1;
++    $num_rows = $form_state->get('num_rows');
++
++    $form['actions']['#type'] = 'actions';
+
+-    $form['gpa_instructions'] = [
+-      '#markup' => '<div class="gpa-calculator-instructions-wrapper">' . $gpa_instructions . '</div>',
++    $form['gpa_row'] = [
++      '#type' => 'container',
++      '#prefix' => '<div id="gpa-row-wrapper">',
++      '#suffix' => '</div>',
++      '#attributes' => [
++        'aria-label' => $this->t('GPA Data'),
++      ],
+     ];
+
+-    $add_row_link = \Drupal::service('link_generator')->generate($this->t('Add Row'), Url::fromRoute('<front>', $route_parameters = [], [
+-      'attributes' => ['id' => 'gpa-add-row'],
+-    ]));
++    if (empty($num_rows)) {
++      $num_rows = 4;
++      $form_state->set('num_rows', $num_rows);
++    } else {
++      $num_rows = (int) $num_rows;
++    }
+
+-    $form['add_row'] = [
+-      '#markup' => '<div id="gpa-add-row">' . $add_row_link . '</div>'
+-    ];
++    for ($i = 0; $i < $num_rows; $i++) {
++      $form['gpa_row']['gpa'][$i] = [
++        '#type' => 'container',
++        '#attributes' => ['class' => ['form-items-inline', 'gpa-row']],
++      ];
++      $form['gpa_row']['gpa'][$i]['course_name'] = [
++        '#type' => 'textfield',
++        '#title' => $this->t('Course Name #@num', ['@num' => $i + 1]),
++      ];
+
+-    $gpa_table_head = '<div id="grades_table">';
+-    $gpa_table_head .= '<div class="gpa-table-thead">';
+-    $gpa_table_head .= '<div class="gpa-table-cell gpa-th">#</div>';
+-    $gpa_table_head .= '<div class="gpa-table-cell gpa-th">' . $this->t('Class/Course Name') . '</div>';
+-    $gpa_table_head .= '<div class="gpa-table-cell gpa-th">' . $this->t('Grade') . '</div>';
+-    $gpa_table_head .= '<div class="gpa-table-cell gpa-th">' . $this->t('Credits Earned') . '</div>';
+-    $gpa_table_head .= '</div>';
+-    $gpa_table_head .= '<div class="gpa-table-body"></div>';
+-
+-    $form['gpa_table_head'] = [
+-      '#markup' => $gpa_table_head,
+-    ];
++      // Add a select element for Grade.
++      $form['gpa_row']['gpa'][$i]['grade'] = [
++        '#type' => 'select',
++        '#title' => $this->t('Grade #@num', ['@num' => $i + 1]),
++        '#options' => $select_options,
++        '#default_value' => '',
++      ];
+
+-    $gpa_table_end = '</div>';
++      // Add a number element for Credits Earned.
++      $form['gpa_row']['gpa'][$i]['credits_earned'] = [
++        '#type' => 'number',
++        '#title' => $this->t('Credits Earned #@num', ['@num' => $i + 1]),
++        '#min' => 0,
++      ];
+
+-    $form['gpa_table_end'] = [
+-      '#markup' => $gpa_table_end,
+-    ];
++      if ($i == 0) {
++        $form['gpa_row']['actions']['add_row'] = [
++          '#type' => 'submit',
++          '#value' => t('Add more'),
++          '#submit' => ['::addOne'],
++          '#limit_validation_errors' => [],
++          '#ajax' => [
++            'callback' => '::addMoreCallback',
++            'wrapper' => 'gpa-row-wrapper',
++          ],
++          '#attributes' => [
++            'aria-label' => $this->t('Add another row of course, grade, and credits'),
++          ],
++        ];
++      }
++    }
+
+     $form['prev_gpa'] = [
+-      '#type' => 'textfield',
++      '#type' => 'number',
++      '#step' => '.01',
+       '#title' => $this->t('Cumulative GPA'),
+-      '#attributes' => ['id' => 'prev-gpa'],
+       '#size' => 3,
++      '#default_value' => 0,
+     ];
+
+     $form['prev_hours'] = [
+-      '#type' => 'textfield',
++      '#type' => 'number',
+       '#title' => $this->t('Cumulative Credits Earned'),
+-      '#attributes' => ['id' => 'prev-hours'],
+       '#size' => 3,
++      '#default_value' => 0,
+     ];
+
+-    $form['actions']['#type'] = 'actions';
++    $form_state->setCached(FALSE);
++
++    // Submit button.
++      $config = \Drupal::config('config_button_text.settings');
++      $button_text = $config->get('button_text');
+     $form['actions']['submit'] = [
+       '#type' => 'submit',
+-      '#value' => $this->t('Calculate'),
+-      '#button_type' => 'primary',
++        '#value' => $button_text,
++      '#ajax' => [
++        'callback' => [$this, 'ajaxSubmitCallback'],
++        'wrapper' => $wrapper_id,
++        'method' => 'html',
++        'disable-refocus' => TRUE,
++        'effect' => 'fade',
++      ],
+     ];
+
+     $form['gpa_results_wrapper'] = [
+-      '#markup' => '<div class="gpa-results-wrapper">',
+-    ];
+-
+-    $form['gpa_current_output'] = [
+-      '#markup' => '<div id="gpa-current-output"></div>',
+-    ];
+-
+-    $form['gpa_cumulative_output'] = [
+-      '#markup' => '<div id="gpa-cumulative-output"></div>',
+-    ];
+-
+-    $form['gpa_results_wrapper_end'] = [
+-      '#markup' => '</div>',
++      '#type' => 'markup',
++      '#prefix' => '<div id="gpa-results-wrapper">',
++      '#suffix' => '</div>',
++      '#markup' => '',
+     ];
+
+     $form['#attached']['library'][] = 'gpa_calculator/gpa.calculator.form';
+     $form['#attached']['library'][] = 'gpa_calculator/gpa.calculator.admin';
+
+-    $form['#attached']['drupalSettings']['gpa_calculator']['gpaCalculator']['grades'] = $gpa_calculator_grades_array;
+-
+     return $form;
+   }
++
++  /**
++   * Callback for ajax-enabled add more button.
++   */
++  public function addMoreCallback(array &$form, FormStateInterface $form_state) {
++    // Announce the addition of a new row.
++    $response = new AjaxResponse();
++    $response->addCommand(new AnnounceCommand('New row of course, grade, and credits input fields added.', 'polite'));
++    $response->addCommand(new HtmlCommand('#gpa-row-wrapper', $form['gpa_row']));
++    return $response;
++  }
++
++  /**
++   * Submit handler for the add more button.
++   *
++   * Increments the max counter and causes a rebuild.
++   */
++  public function addOne(array &$form, FormStateInterface $form_state): void {
++    $name_field = $form_state->get('num_rows');
++    $add_button = $name_field + 1;
++    $form_state->set('num_rows', $add_button);
++    $form_state->setRebuild();
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+   public function validateForm(array &$form, FormStateInterface $form_state) {
++    // Validate the previous GPA.
++    if (!is_numeric($form_state->getValue('prev_gpa'))) {
++      $form_state->setErrorByName('prev_gpa', $this->t('Cumulative GPA must be a number.'));
++    }
++    // Validate the previous credits earned.
++    if (!is_numeric($form_state->getValue('prev_hours'))) {
++      $form_state->setErrorByName('prev_hours', $this->t('Cumulative Credits Earned must be a number.'));
++    }
++    // Validate the grades and credits earned.
++    $num_rows = $form_state->get('num_rows');
++    $valid_courses = 0;
++
++    for ($i = 0; $i < $num_rows; $i++) {
++      $row_errors = FALSE;
++      $grade = $form_state->getValue(['gpa_row', 'gpa', $i, 'grade']);
++      $credits = $form_state->getValue(['gpa_row', 'gpa', $i, 'credits_earned']);
++
++      if (empty($grade) && empty($credits)) {
++        continue;
++      }
++
++      if (!empty($grade)) {
++        // If the letter grade cannot be converted to a numeric grade, set an
++        // error.
++        $numeric_grade = $this->getNumericGrade($grade);
++        if (!$numeric_grade) {
++          $form_state->setError($form['gpa_row']['gpa'][$i]['grade'], $this->t('Invalid grade for course #@num.', [
++            '@num' => $i+1,
++          ]));
++          $row_errors = TRUE;
++        }
++        //
++        if (empty($credits)) {
++          $form_state->setError($form['gpa_row']['gpa'][$i]['credits_earned'], $this->t('Credits are required for course #@num.', [
++            '@num' => $i+1,
++          ]));
++          $row_errors = TRUE;
++        }
++      }
++      // If the credits are set but the grade is not, set an error.
++      if (!empty($credits) && empty($grade)) {
++        $form_state->setError($form['gpa_row']['gpa'][$i]['grade'], $this->t('Grade is required for course #@num.', [
++          '@num' => $i+1,
++        ]));
++        $row_errors = TRUE;
++      }
+
++      // If there are no errors, increment the valid courses count.
++      if (!$row_errors) {
++        $valid_courses++;
++      }
++    }
++    // If no valid courses were entered, set an error.
++    if ($valid_courses < 1) {
++      $form_state->setError($form, $this->t('Please enter at least one grade and credit pair.'));
++    }
+   }
++
+   /**
+    * {@inheritdoc}
+    */
+   public function submitForm(array &$form, FormStateInterface $form_state) {
++    // Only perform calculations if there are no errors.
++    if (!$form_state->hasAnyErrors()) {
++
++      // Calculate the GPA and output the results.
++      $num_rows = $form_state->get('num_rows');
++      $total_grade_points = 0.0;
++      $total_hours = 0.0;
++
++      // Get the previous GPA and previous credits earned.
++      $previous_gpa = $form_state->getValue('prev_gpa');
++      $previous_hours = $form_state->getValue('prev_hours');
++
++      // Loop through rows.
++      for ($i = 0; $i < $num_rows; $i++) {
++        $course_grade = $form_state->getValue(['gpa_row', 'gpa', $i, 'grade']);
++        $course_hours = $form_state->getValue(['gpa_row', 'gpa', $i, 'credits_earned']);
++
++        // Skip empty rows.
++        if (empty($course_grade) || empty($course_hours)) {
++          continue;
++        }
++
++        // Convert letter grade to numeric value.
++        $numeric_grade = $this->getNumericGrade($course_grade);
++
++        // Increment total hours and grade points.
++        $total_hours += (float) $course_hours;
++        $total_grade_points += $numeric_grade * $course_hours;
++      }
++
++      // Avoid division by zero.
++      if ($total_hours > 0) {
++        // Calculate Current GPA.
++        $current_gpa = $total_grade_points / $total_hours;
++
++        // Calculate Cumulative GPA.
++        $previous_grade_points = $previous_gpa * $previous_hours;
++        $total_hours += $previous_hours;
++        $total_grade_points += $previous_grade_points;
++        $cumulative_gpa = $total_grade_points / $total_hours;
++
++        // Output the results.
++        $form['gpa_results_wrapper']['#markup'] = $this->t('<p>Current GPA: @current_gpa</p><p>Cumulative GPA: @cumulative_gpa</p>', [
++          '@current_gpa' => number_format($current_gpa, 2),
++          '@cumulative_gpa' => number_format($cumulative_gpa, 2),
++        ]);
++      }
++    }
++  }
++
++  /**
++   * AJAX callback for the submit button.
++   */
++  public function ajaxSubmitCallback(array &$form, FormStateInterface $form_state) {
++    $response = new AjaxResponse();
++
++    // If there are any errors, add response commands to announce each one.
++    if ($form_state->hasAnyErrors()) {
++      foreach ($form_state->getErrors() as $error) {
++        $response->addCommand(new AnnounceCommand($this->t('Error: @error', [
++          '@error' => $error,
++        ]), 'assertive'));
++      }
++      // Ensure that error messages are printed on the form.
++      $form['status_messages'] = [
++        '#type' => 'status_messages',
++        '#weight' => -10,
++      ];
++    }
++
++    // Add the custom AJAX command.
++    $response->addCommand(new ReplaceCommand(NULL, $form));
++
++    return $response;
++  }
++
++  /**
++   * Get the grade settings.
++   *
++   * @return array
++   *   The grade settings.
++   */
++  protected function getGradeSettings(): array {
++    $config = $this->config('gpa_calculator.gpa');
++    $grades = $config->get('grades');
++    if (!empty($grades)) {
++      $gradeSettings = [];
++      foreach (explode("\n", $grades) as $grade) {
++        [$key, $value] = explode('|', $grade, 2);
++        $gradeSettings[trim($key)] = trim($value);
++      }
++      return $gradeSettings;
++    }
++
++    return $this->defaultGradeSettings;
++  }
++
++  /**
++   * Get the numeric grade.
++   *
++   * @param string $letter_grade
++   *   The letter grade.
++   *
++   * @return bool|string
++   *   The numeric grade.
++   */
++  protected function getNumericGrade($letter_grade): bool|string {
++    // Check if gradeSettings has a matching letter grade.
++    foreach ($this->getGradeSettings() as $grade_points => $grade) {
++      if ($grade === $letter_grade) {
++        return $grade_points;
++      }
++    }
+
++    return FALSE;
+   }
+ }
+diff --git a/src/Form/GpaCalculatorSettingsForm.php b/src/Form/GpaCalculatorSettingsForm.php
+index 9cd6d0ef9ecaaeb0eb7b439d36d965a494f58d0c..0b1809869913f064c7ae72fa4ae3779295269e35 100644
+--- a/src/Form/GpaCalculatorSettingsForm.php
++++ b/src/Form/GpaCalculatorSettingsForm.php
+@@ -25,27 +25,18 @@ class GpaCalculatorSettingsForm extends ConfigFormBase {
+    * {@inheritdoc}
+    */
+   protected function getEditableConfigNames() {
+-    return ['gpa_calculator.gpa'];
++    return [
++      'gpa_calculator.gpa',
++      'config_button_text.settings',
++    ];
+   }
+
++
+   /**
+    * {@inheritdoc}
+    */
+   public function buildForm(array $form, FormStateInterface $form_state) {
+     $config = $this->config('gpa_calculator.gpa');
+-    $form['gpa_calculator_school_name'] = [
+-      '#type' => 'textfield',
+-      '#title' => $this->t('School'),
+-      '#description' => $this->t('Enter you school\'s name here. If blank, block subject will read as "GPA Calculator."'),
+-      '#default_value' => $config->get('school_name'),
+-    ];
+-
+-    $form['gpa_calculator_instructions'] = [
+-      '#type' => 'textarea',
+-      '#title' => $this->t('Instructions'),
+-      '#description' => $this->t('Provide instructions or a description for your GPA calculator.'),
+-      '#default_value' => $config->get('instructions'),
+-    ];
+
+     $grades_options_example = ' 4.0|A ';
+     $grades_options_example .= '3.67|A- ';
+@@ -67,6 +58,15 @@ class GpaCalculatorSettingsForm extends ConfigFormBase {
+       '#description' => $grades_description,
+       '#default_value' => $config->get('grades'),
+     ];
++    $config = $this->config('config_button_text.settings');
++    $form['button_text'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('Button Text'),
++      '#default_value' => $config->get('button_text'),
++      '#required' => TRUE,
++    ];
++
++
+
+     $form['#attached']['library'][] = 'gpa_calculator/gpa.calculator.admin';
+
+@@ -76,11 +76,16 @@ class GpaCalculatorSettingsForm extends ConfigFormBase {
+    * {@inheritdoc}
+    */
+   public function submitForm(array &$form, FormStateInterface $form_state) {
++    // Save the grades configuration.
+     \Drupal::configFactory()->getEditable('gpa_calculator.gpa')
+-      ->set('school_name', Html::escape($form_state->getValue('gpa_calculator_school_name')))
+-      ->set('instructions', Html::escape($form_state->getValue('gpa_calculator_instructions')))
+       ->set('grades', Html::escape($form_state->getValue('gpa_calculator_grades')))
+       ->save();
++
++    // Save the button text configuration.
++    \Drupal::configFactory()->getEditable('config_button_text.settings')
++      ->set('button_text', $form_state->getValue('button_text'))
++      ->save();
++
+     parent::submitForm($form, $form_state);
+   }
+ }
