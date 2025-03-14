@@ -64,6 +64,7 @@ class EventsProcessor extends EntityProcessorBase {
     if (!isset($this->data)) {
       $this->data = [];
       // Request from Content Hub API to get events.
+      // @todo Update the hardcoded department and type values.
       $response = $this->apiClient->getEvents([
         'query' => [
           'display_id' => 'events',
@@ -73,8 +74,8 @@ class EventsProcessor extends EntityProcessorBase {
                 'date' => '01-01-2100',
               ],
             ],
-            'department' => 7266,
-            'type' => 355,
+            'department' => 329,
+            'type' => 4506,
           ],
           'items_per_page' => 100,
         ],
