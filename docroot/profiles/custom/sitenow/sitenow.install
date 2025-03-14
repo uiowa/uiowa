@@ -3379,6 +3379,7 @@ function sitenow_update_10014() {
             $vertical_alignment = 'vertical_alignment_bottom';
             $horizontal_alignment = 'horizontal_alignment_left';
             $media_overlay = 'media_overlay_bottom_to_top';
+            $banner_container = 'banner_narrow';
             break;
 
           case 'banner_centered':
@@ -3398,6 +3399,9 @@ function sitenow_update_10014() {
     }
     if (!in_array($media_overlay, $styles)) {
       $styles[] = $media_overlay;
+    }
+    if (!in_array($banner_container, $styles)) {
+      $styles[] = $banner_container;
     }
 
     $component->set('layout_builder_styles_style', $styles);

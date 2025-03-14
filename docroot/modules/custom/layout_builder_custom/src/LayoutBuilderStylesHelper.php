@@ -178,6 +178,9 @@ class LayoutBuilderStylesHelper {
       'vertical_alignment' => [
         'default' => 'vertical_alignment_center',
       ],
+      'container' => [
+        'default' => 'banner_narrow',
+      ],
       'card_headline_style' => [
         'default' => 'card_headline_style_serif',
       ],
