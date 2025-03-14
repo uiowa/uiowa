@@ -189,10 +189,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if (isset($form['layout_builder_style_background'])) {
               $form['layout_builder_style_background']['#access'] = FALSE;
             }
-            // Hide content position style until it can be removed.
-            if (isset($form['layout_builder_style_banner_type'])) {
-              $form['layout_builder_style_banner_type']['#access'] = FALSE;
-            }
             // Replace -none- text with no gradient label.
             if (isset($form['layout_builder_style_media_overlay'])) {
               $form["layout_builder_style_media_overlay"]["#empty_option"] = t('No gradient (default)');
