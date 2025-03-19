@@ -7714,3 +7714,9 @@ $sites['ocrc.uiowa.ddev.site'] = 'ocrc.uiowa.edu';
 $sites['ocrc.dev.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
 $sites['ocrc.stage.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
 $sites['ocrc.prod.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
+
+// Directory aliases for pawh.lab.uiowa.edu.
+$sites['labpawh.uiowa.ddev.site'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.dev.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.stage.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.prod.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
