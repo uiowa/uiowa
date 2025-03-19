@@ -16,6 +16,7 @@ use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
 use Drupal\smart_date\Entity\SmartDateFormat;
 
@@ -597,6 +598,21 @@ function its_core_preprocess_field(&$variables, $hook) {
       $variables['label'] = 'Available to';
       break;
 
+    case 'field_support_article_faqs':
+      $variables['parent_id'] = $variables['element']['#object']->id();
+      $variables['aria_owns'] = [];
+      // Construct aria-owns entry for each paragraph entity.
+      foreach ($variables['items'] as $item) {
+        // Check if the item contains a valid paragraph entity.
+        if (isset($item['content']['#paragraph']) && $item['content']['#paragraph'] instanceof Paragraph) {
+          $paragraph = $item['content']['#paragraph'];
+          // Use the paragraph ID to construct the aria-owns entry.
+          $variables['aria_owns'][] = 'accordion-item-heading-' . $paragraph->id();
+        }
+      }
+      $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
+      break;
+
     case 'field_alert_service_affected':
       if ($variables['element']['#view_mode'] == 'teaser') {
         if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
@@ -707,6 +723,7 @@ function its_core_preprocess_paragraph(&$variables) {
       $parent = $paragraph->getParentEntity();
       if ($parent instanceof ContentEntityInterface) {
         $variables['parent_id'] = $parent->id();
+        $variables['content_id'] = $paragraph->id();
         if ($parent->hasField($items_field)) {
           $id = $paragraph->id();
           /**

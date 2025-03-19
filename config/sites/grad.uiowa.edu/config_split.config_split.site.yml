@@ -7,6 +7,7 @@ label: Site
 description: 'The grad.uiowa.edu site split.'
 weight: 70
 stackable: true
+no_patching: false
 storage: folder
 folder: ../config/sites/grad.uiowa.edu
 module:
@@ -18,20 +19,14 @@ complete_list:
   - block_content.type.content_list
   - config_split.config_split.site
   - fragments.fragment_type.program
-  - metatag.metatag_defaults.node__mentor
   - metatag.metatag_defaults.node__scholar
   - metatag.metatag_defaults.node__student_profile
-  - node.type.mentor
   - node.type.scholar
   - node.type.student_profile
-  - pathauto.pattern.mentors
   - pathauto.pattern.scholars
   - pathauto.pattern.student_profiles
-  - simple_sitemap.bundle_settings.default.node.mentor
   - simple_sitemap.bundle_settings.default.node.scholar
-  - views.view.srop_mentors
   - views.view.srop_scholars
-  - sitenow_people.person_type.mentor
   - 'field.storage.fragment.field_program_*'
   - 'field.storage.node.field_scholar_*'
   - 'field.storage.node.field_student_profile_*'
@@ -39,7 +34,6 @@ complete_list:
 partial_list:
   - core.entity_view_mode.node.card
   - field.storage.node.field_grad_program_phd
-  - field.storage.node.field_uiowa_college
   - node.type.person
   - node.type.scholarship
   - simple_sitemap.bundle_settings.default.node.person

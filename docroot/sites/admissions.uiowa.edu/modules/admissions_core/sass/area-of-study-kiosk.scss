@@ -1,6 +1,6 @@
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
 
 .view-id-areas_of_study_kiosk {
   display: flex;
@@ -18,10 +18,10 @@
   .view-filters {
     flex: 0 0 100%;
     max-width: 100%;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       flex: 0 0 25%;
       max-width: 25%;
-      margin-right: $desktop-width-gutter;
+      margin-right: variables.$desktop-width-gutter;
     }
 
     .form-item {
@@ -32,7 +32,7 @@
     .views-exposed-form {
 
       .form--inline {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           flex-wrap: wrap;
         }
       }
@@ -81,12 +81,12 @@
 
   .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
     align-items: flex-start;
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
   }
 
   table.views-table td,
   table.views-table th {
-    font-size: $content-font-size;
+    font-size: variables.$content-font-size;
   }
 
   form.uids-content {
@@ -96,7 +96,7 @@
     p,
     table td,
     table th {
-      font-size: $content-font-size;
+      font-size: variables.$content-font-size;
     }
     .fieldset-legend {
       line-height: 1.8;
@@ -113,7 +113,7 @@
   .form-checkboxes {
     label {
       line-height: 1.5;
-      padding-left: $sm;
+      padding-left: variables.$sm;
     }
 
     .form-checkbox {
@@ -129,10 +129,10 @@
       outline: none;
       border: none;
       cursor: pointer;
-      background-color: $grey-light;
+      background-color: variables.$grey-light;
       transition: background-color ease 0.3s;
       &:focus  {
-        background: $grey;
+        background: variables.$grey;
       }
     }
 
@@ -152,14 +152,14 @@
       font-weight: bold;
       text-indent: -22px;
       word-spacing: 37px;
-      color: $secondary;
+      color: variables.$secondary;
       white-space: nowrap;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
     }
 
     .form-checkbox:checked {
-      background-color: $primary;
+      background-color: variables.$primary;
     }
 
     .form-checkbox:checked:before {
@@ -176,7 +176,7 @@
 
 
 .aos-cta {
-  background: $secondary;
+  background: variables.$secondary;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -196,5 +196,5 @@
 }
 
 .path-kiosk {
-  padding: $desktop-width-gutter 0;
+  padding: variables.$desktop-width-gutter 0;
 }

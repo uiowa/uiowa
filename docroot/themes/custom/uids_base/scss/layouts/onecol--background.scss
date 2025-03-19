@@ -1,31 +1,31 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/_headline-mixins.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/abstracts/_headline-mixins.scss';
 
 .layout--onecol .layout__region {
   width: 100%;
-  @include inner-grid(100);
+  @include utilities.inner-grid(100);
 }
 
 .layout--onecol--background {
   .layout__region {
-    @include inner-grid(100);
+    @include utilities.inner-grid(100);
   }
   // Add padding to banner content if not in edge-to-edge column
   // or is in twocol layout.
   &.banner {
     .banner__content {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         padding: 1.25rem;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         padding: 1.25rem 0;
       }
     }
   }
 
   // @todo Move this to a more appropriate location.
-  .banner__image .layout-builder__add-block {
+  .banner .media--image .layout-builder__add-block {
     position: absolute;
     top: 10px;
     right: 25px;
@@ -37,25 +37,25 @@
   &.layout--title--with-background {
     .bold-headline,
     .page-title.headline {
-      @include breakpoint(sm) {
-        @include headline-negative;
+      @include utilities.breakpoint(sm) {
+        @include headline-mixins.headline-negative;
         text-shadow: 0 1px 1px #000;
       }
     }
 
     .breadcrumb {
       margin-top: 0;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-top: 1.75rem;
       }
       li {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           color: white;
         }
       }
 
       a {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           color: white;
         }
       }
@@ -71,7 +71,7 @@
     &--background.page__container--edge.layout--has-sidebar,
     &--no--background.page__container--edge.sidebar-invisible {
       .layout__spacing_container {
-        @include container-width;
+        @include utilities.container-width;
       }
     }
   }
@@ -85,7 +85,7 @@
 
 .layout--title--hidden {
   .block-system-breadcrumb-block {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }
 

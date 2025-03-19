@@ -1,20 +1,20 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
 
 .paragraph--type--accordion {
     .accordion {
         .accordion__heading {
-            color: $secondary;
+            color: variables.$secondary;
         }
 
         .accordion__content {
-            background-color: $white;
+            background-color: variables.$white;
             h2, h3, h4, h5, h6 {
-              color: $secondary;
+              color: variables.$secondary;
             }
             blockquote {
-                color: $secondary;
-                border-color: $primary;
+                color: variables.$secondary;
+                border-color: variables.$primary;
             }
 
             a:not(.btn):not(.bttn):not(.button) {
@@ -25,24 +25,24 @@
             }
 
             a.btn-primary {
-               @include bttn--primary;
-                border: 1px solid $primary;
-               @include bttn--focus;
+               @include utilities.bttn--primary;
+                border: 1px solid variables.$primary;
+               @include utilities.bttn--focus;
 
                 &:after {
-                    background-color: $secondary;
+                    background-color: variables.$secondary;
                 }
                 span {
-                  color: $secondary !important;
+                  color: variables.$secondary !important;
                 }
             }
 
             a.btn:not(.btn-primary) {
-               @include bttn--secondary;
-                border: 1px solid $secondary;
-               @include bttn--focus;
+               @include utilities.bttn--secondary;
+                border: 1px solid variables.$secondary;
+               @include utilities.bttn--focus;
                span {
-                color: $white !important;
+                color: variables.$white !important;
                }
             }
         }

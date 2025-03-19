@@ -6,6 +6,11 @@
 # https://docs.acquia.com/cloud-platform/arch/security/restrict/#blocking-by-ip-with-mod-rewrite-in-htaccess
 <ifmodule mod_setenvif.c>
 SetEnvIf AH_CLIENT_IP ^193\.42\.33\.66$ DENY=1
+SetEnvIf AH_CLIENT_IP ^47\.76\.209\.138$ DENY=1
+SetEnvIf AH_CLIENT_IP ^47\.76\.99\.127$ DENY=1
+SetEnvIf AH_CLIENT_IP ^91\.108\.194\.40$ DENY=1
+SetEnvIf AH_CLIENT_IP ^47\.76\.220\.119$ DENY=1
+SetEnvIf AH_CLIENT_IP ^47\.76\.222\.244$ DENY=1
 Order allow,deny
 Allow From All
 Deny from env=DENY

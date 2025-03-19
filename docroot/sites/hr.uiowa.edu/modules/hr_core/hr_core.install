@@ -404,3 +404,91 @@ function hr_core_update_9002() {
     ->condition('bundle', 'card')
     ->execute();
 }
+
+/**
+ * Delete deprecated FAQ node content.
+ */
+function hr_core_update_10001(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'faq', '=')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Loop through nodes in batches.
+  $per_batch = 50;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+  $node_storage_manager = \Drupal::entityTypeManager()
+    ->getStorage('node');
+  foreach ($batch as $nid) {
+    $node_storage_manager->load($nid)
+      ?->delete();
+    $sandbox['current']++;
+  }
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' node items processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Delete deprecated FAQ entity reference paragraphs.
+ */
+function hr_core_update_10002(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('paragraph')
+      ->accessCheck()
+      ->condition('type', 'faqs', '=')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Loop through paragraphs in batches.
+  $per_batch = 50;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+  $paragraph_storage_manager = \Drupal::entityTypeManager()
+    ->getStorage('paragraph');
+  foreach ($batch as $pid) {
+    $paragraph_storage_manager->load($pid)
+      ?->delete();
+    $sandbox['current']++;
+  }
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' paragraph items processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

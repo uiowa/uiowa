@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpan.uiowa.ddev.site
+    protocol: https
+  machine_name: labpan
+  human_name: pan.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpan.prod
+drupal:
+  db:
+    database: pan_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpan.prod.drupal.uiowa.edu'
+  requester: jpan5
+  site-name: 'Pan Lab'

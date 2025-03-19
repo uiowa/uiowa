@@ -1,6 +1,10 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/base/paragraph.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/base/paragraph.scss';
+
+figure img {
+  margin-bottom: 0;
+}
 
 .card {
   figure {
@@ -23,8 +27,8 @@
 }
 
 .small {
-  font-size: $sm !important;
-  line-height: $sm-md !important;
+  font-size: variables.$sm !important;
+  line-height: variables.$sm-md !important;
   font-family: Arial, Helvetica, sans-serif;
 }
 

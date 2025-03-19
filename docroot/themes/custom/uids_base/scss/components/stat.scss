@@ -1,6 +1,6 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/stat.scss";
+@use 'uids/scss/abstracts/_variables.scss';
+@use 'uids/scss/abstracts/_utilities.scss';
+@use 'uids/scss/components/stat.scss';
 
 .grid--3-2 .media {
   width: 100%;
@@ -16,22 +16,4 @@
   &:first-of-type {
     padding-top: 0;
   }
-}
-
-.stat--static .stat__content {
-  position: static!important;
-  clip: auto;
-  height: auto;
-  width: auto;
-  overflow: auto;
-  opacity: 1;
-}
-
-// @todo update in https://github.com/uiowa/uids/issues/910.
-.stat__grid.stat--horizontal {
-  cursor: inherit;
-}
-
-.stat.stat--transform {
-  cursor: pointer;
 }

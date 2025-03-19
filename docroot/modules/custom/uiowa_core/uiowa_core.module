@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -108,6 +109,22 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['node']['contact'])) {
     $bundles['node']['contact']['class'] = Contact::class;
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
+    $fields['link']->setDisplayOptions('form', [
+      'type' => 'linkit',
+      'weight' => -2,
+      'settings' => [
+        'linkit_profile' => 'menu_link',
+        'linkit_auto_link_text' => TRUE,
+      ],
+    ]);
   }
 }
 
@@ -1077,15 +1094,31 @@ function uiowa_core_preprocess_block(&$variables) {
 
     case 'system_main_block':
       $current_route = \Drupal::routeMatch();
-      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), [
-        'system.401',
-        'system.403',
-      ])) {
+      $current_user = \Drupal::currentUser();
+
+      if ($current_user->isAnonymous() && in_array($current_route->getRouteName(), ['system.401', 'system.403'])) {
+        $request = \Drupal::request();
+        $path_alias_manager = \Drupal::service('path_alias.manager');
+
+        // Get the current path from the request.
+        $path = $request->getPathInfo();
+        $internal_path = $path_alias_manager->getPathByAlias($path);
+
+        // Check if the path matches a node pattern and determine if it's unpublished.
+        if (preg_match('/node\/(\d+)/', $internal_path, $matches)) {
+          $node = Node::load($matches[1]);
+          if ($node instanceof Node && !$node->isPublished()) {
+            // Exit without adding the login link.
+            break;
+          }
+        }
+
+        // Add the login link if we didn't break out.
         $variables['content']['login_link'] = [
           '#type' => 'link',
           '#title' => t('HawkID Login'),
           '#url' => Url::fromRoute('samlauth.saml_controller_login', [
-            'destination' => \Drupal::request()->getRequestUri(),
+            'destination' => $request->getRequestUri(),
           ]),
           '#prefix' => '<p class="text-align-center">',
           '#suffix' => '</p>',
@@ -1095,6 +1128,7 @@ function uiowa_core_preprocess_block(&$variables) {
               'bttn--primary',
               'bttn--caps',
             ],
+            'rel' => 'nofollow',
           ],
           '#cache' => [
             'max-age' => 0,
@@ -1102,7 +1136,6 @@ function uiowa_core_preprocess_block(&$variables) {
         ];
       }
       break;
-
   }
 }
 
