@@ -160,9 +160,6 @@ class LayoutBuilderStylesHelper {
       'background' => [
         'default' => '[empty]',
       ],
-      'banner_gradient' => [
-        'default' => 'banner_gradient_dark',
-      ],
       'banner_height' => [
         'default' => 'banner_medium',
       ],
@@ -174,6 +171,15 @@ class LayoutBuilderStylesHelper {
       ],
       'button_style' => [
         'default' => 'button_primary',
+      ],
+      'horizontal_alignment' => [
+        'default' => 'horizontal_alignment_left',
+      ],
+      'vertical_alignment' => [
+        'default' => 'vertical_alignment_center',
+      ],
+      'container' => [
+        'default' => 'banner_narrow',
       ],
       'card_headline_style' => [
         'default' => 'card_headline_style_serif',
