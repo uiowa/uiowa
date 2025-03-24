@@ -7714,3 +7714,9 @@ $sites['medicinepmccf.uiowa.ddev.site'] = 'pmccf.medicine.uiowa.edu';
 $sites['medicinepmccf.dev.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
 $sites['medicinepmccf.stage.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
 $sites['medicinepmccf.prod.drupal.uiowa.edu'] = 'pmccf.medicine.uiowa.edu';
+
+// Directory aliases for ocrc.uiowa.edu.
+$sites['ocrc.uiowa.ddev.site'] = 'ocrc.uiowa.edu';
+$sites['ocrc.dev.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
+$sites['ocrc.stage.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
+$sites['ocrc.prod.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
