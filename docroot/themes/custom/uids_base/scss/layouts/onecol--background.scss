@@ -82,8 +82,11 @@
 }
 
 // Fix for featured image banners on custom content types.
-.layout--onecol--background .block[class*="image"] {
+.layout--onecol--background .block[class*="image"]:not([class*="image-caption"])  {
   height: 100%;
   width: 100%;
   position: absolute;
+  @include utilities.container-query($type: max) {
+    position: relative;
+  }
 }
