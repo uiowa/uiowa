@@ -86,3 +86,10 @@
     background: none;
   }
 }
+
+// Fix for featured image banners on custom content types.
+.layout--onecol--background .block[class*="image"] {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
