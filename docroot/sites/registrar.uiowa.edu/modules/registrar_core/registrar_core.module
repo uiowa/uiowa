@@ -56,6 +56,7 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
       $form['#attached']['library'][] = 'uids_base/callout';
       $form['#submit'][] = 'registrar_core_post_submit';
+      //update here
       break;
 
     case 'media_file_add_form':
