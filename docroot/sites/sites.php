@@ -5885,12 +5885,6 @@ $sites['studiovictorianfboos.dev.drupal.uiowa.edu'] = 'victorianfboos.studio.uio
 $sites['studiovictorianfboos.stage.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
 $sites['studiovictorianfboos.prod.drupal.uiowa.edu'] = 'victorianfboos.studio.uiowa.edu';
 
-// Directory aliases for colearn.public-health.uiowa.edu.
-$sites['public-healthcolearn.uiowa.ddev.site'] = 'colearn.public-health.uiowa.edu';
-$sites['public-healthcolearn.dev.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
-$sites['public-healthcolearn.stage.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
-$sites['public-healthcolearn.prod.drupal.uiowa.edu'] = 'colearn.public-health.uiowa.edu';
-
 // Directory aliases for el-shanti.lab.uiowa.edu.
 $sites['label-shanti.uiowa.ddev.site'] = 'el-shanti.lab.uiowa.edu';
 $sites['label-shanti.dev.drupal.uiowa.edu'] = 'el-shanti.lab.uiowa.edu';
@@ -7720,3 +7714,15 @@ $sites['ocrc.uiowa.ddev.site'] = 'ocrc.uiowa.edu';
 $sites['ocrc.dev.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
 $sites['ocrc.stage.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
 $sites['ocrc.prod.drupal.uiowa.edu'] = 'ocrc.uiowa.edu';
+
+// Directory aliases for pawh.lab.uiowa.edu.
+$sites['labpawh.uiowa.ddev.site'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.dev.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.stage.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
+$sites['labpawh.prod.drupal.uiowa.edu'] = 'pawh.lab.uiowa.edu';
+
+// Directory aliases for charlie.uiowa.edu.
+$sites['charlie.uiowa.ddev.site'] = 'charlie.uiowa.edu';
+$sites['charlie.dev.drupal.uiowa.edu'] = 'charlie.uiowa.edu';
+$sites['charlie.stage.drupal.uiowa.edu'] = 'charlie.uiowa.edu';
+$sites['charlie.prod.drupal.uiowa.edu'] = 'charlie.uiowa.edu';
