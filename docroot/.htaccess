@@ -89,14 +89,6 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Redirect specific Diversity URLs and then redirect all other to OCRC.
-  RewriteCond %{HTTP_HOST} ^diversity\.uiowa\.edu$ [NC]
-  RewriteRule ^johndeerescholars$ https://provost.uiowa.edu/johndeerescholars [R=301]
-  RewriteRule ^programs/student-support/trio-student-support-services$ https://uc.uiowa.edu/trio-student-support-services [R=301]
-  RewriteRule ^programs/high-school-hawkeyes/trio-upward-bound$ https://uc.uiowa.edu/students/trio-upward-bound [R=301]
-  RewriteRule ^report$ https://ocrc.uiowa.edu/report [R=301]
-  RewriteRule ^(.*)$ https://ocrc.uiowa.edu/ [R=301,L]
-
   # Redirect legacy stories site for the homepage.
   RewriteCond %{HTTP_HOST} ^uiowa.edu$
   RewriteRule ^stories(.*)$  https://stories.uiowa.edu$1 [R,L]
