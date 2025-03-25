@@ -54,9 +54,9 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
     case 'gpa_calculator_form':
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--small';
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
-      $form['gpa_row']['actions']['add_row']['#value'] = t('Estimate');
       $form['#attached']['library'][] = 'uids_base/callout';
       $form['#submit'][] = 'registrar_core_post_submit';
+      $form["actions"]['submit']['#value'] = t('Estimate');
       break;
 
     case 'media_file_add_form':
