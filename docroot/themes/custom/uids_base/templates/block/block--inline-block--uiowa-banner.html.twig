@@ -50,24 +50,12 @@
 
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
-  {% block lb_column_container_start %}
-    {% if in_preview %}
-      <div class="layout-builder--column-container">
-    {% endif %}
-  {% endblock %}
-
   {% block banner_image %}
     {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
     {% if banner_image %}
       {{ banner_image }}
-    {% endif %}
-  {% endblock %}
-
-  {% block lb_column_container_end %}
-    {% if in_preview %}
-      </div>
     {% endif %}
   {% endblock %}
 

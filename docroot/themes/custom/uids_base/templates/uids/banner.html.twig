@@ -39,10 +39,6 @@
   'headline--large',
 ] %}
 
-{# Remove once https://github.com/w3c/csswg-drafts/issues/10544 is the standard. #}
-{% block lb_column_container_start %}
-{% endblock %}
-
 <div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
@@ -117,6 +113,3 @@
     {% endblock %}
   </div>
 </div>
-{# Remove once https://github.com/w3c/csswg-drafts/issues/10544 is the standard. #}
-{% block lb_column_container_end %}
-{% endblock %}

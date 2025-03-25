@@ -615,7 +615,7 @@ function uids_base_preprocess_layout(&$variables) {
 
     switch ($layout->id()) {
       case 'layout_onecol':
-        // @todo remove once https://caniuse.com/css-has greater support.
+        // @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
         $contains_menu = FALSE;
 
         foreach (Element::children($variables['content']) as $region) {
