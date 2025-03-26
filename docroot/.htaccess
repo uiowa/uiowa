@@ -136,6 +136,22 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.uiowa\.edu$ [NC]
   RewriteRule ^(.*)$ https://www.writinguniversity.org/$1 [L,R=301]
 
+  # Redirect rules for diversity.uiowa.edu.
+  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^johndeerescholars$ https://provost.uiowa.edu/johndeerescholars [R=301,L]
+
+  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^programs/student-support/trio-student-support-services$ https://uc.uiowa.edu/trio-student-support-services [R=301,L]
+
+  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^report$ https://ocrc.uiowa.edu/report [R=301,L]
+
+  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^programs/high-school-hawkeyes/trio-upward-bound$ https://uc.uiowa.edu/students/trio-upward-bound [R=301,L]
+
+  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^(.*)$ https://ocrc.uiowa.edu/ [R=301,L]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
