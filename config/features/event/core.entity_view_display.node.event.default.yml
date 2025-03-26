@@ -280,17 +280,26 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: smartdate_default
+                type: daterange_ap_style
                 label: visually_hidden
                 settings:
-                  timezone_override: ''
-                  format: default
-                  force_chronological: false
-                  add_classes: false
-                  time_wrapper: true
+                  always_display_year: 1
+                  use_today: 0
+                  cap_today: 1
+                  display_day: 1
+                  month_only: 0
+                  display_time: 1
+                  hide_date: 0
+                  time_before_date: 0
+                  display_noon_and_midnight: 0
+                  capitalize_noon_and_midnight: 0
+                  use_all_day: 0
+                  timezone: America/Chicago
+                  separator: endash
                 third_party_settings: {  }
             weight: 1
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 1e82cdcb-9f8f-4909-89d8-63c8243b1096
