@@ -917,6 +917,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
       break;
+
+    case 'webform_settings_access_form':
+      $access = &$form['access'];
+      foreach ($access as $key => &$group) {
+        if (is_array($group)) {
+          $perms ??= $group['permissions'];
+
+          if ($perms) {
+            $group['permissions']['#access'] = FALSE;
+          }
+        }
+      }
+      break;
   }
 }
 
