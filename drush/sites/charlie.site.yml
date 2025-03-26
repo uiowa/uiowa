@@ -1,32 +1,32 @@
 local:
   root: /var/www/html/docroot
-  uri: 'https://diversity.uiowa.ddev.site'
+  uri: charlie.uiowa.ddev.site
   paths:
-    files: sites/diversity.uiowa.edu/files
+    files: sites/charlie.uiowa.edu/files
 dev:
-  uri: 'https://diversity.dev.drupal.uiowa.edu'
+  uri: charlie.dev.drupal.uiowa.edu
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/diversity.uiowa.edu/files
+    files: sites/charlie.uiowa.edu/files
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: 'https://diversity.uiowa.edu'
+  uri: charlie.uiowa.edu
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/diversity.uiowa.edu/files
+    files: sites/charlie.uiowa.edu/files
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: 'https://diversity.stage.drupal.uiowa.edu'
+  uri: charlie.stage.drupal.uiowa.edu
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/diversity.uiowa.edu/files
+    files: sites/charlie.uiowa.edu/files
   root: /var/www/html/uiowa.test/docroot
   user: uiowa.test
