@@ -98,3 +98,22 @@
   container-name: column;
 }
 
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+// This fixes an issue with the banner--stacked not displaying correctly when the container
+// query is applied directly to the banner.
+.layout-builder .layout-builder-block.banner--stacked:not([class*="bg--"]) {
+  display: block;
+
+  @include utilities.container-query() {
+    display: flex;
+  }
+
+  .banner__content {
+    position: relative;
+    background: #fff;
+    height: 100%;
+    @include utilities.container-query() {
+      background: none;
+    }
+  }
+}
