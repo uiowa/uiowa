@@ -45,15 +45,15 @@ global-styling:
 # Accessible Menu
 accessible-menu:
   js:
-    /libraries/accessible-menu/dist/accessible-menu.js: { preprocess: true }
-    assets/js/accessible-menu.init.js: { preprocess: true }
+    /libraries/accessible-menu/dist/accessible-menu.js: {}
+    assets/js/accessible-menu.init.js: {}
 # Slick
 slick:
   css:
     theme:
       /libraries/slick-carousel/slick/slick.css: {}
   js:
-    /libraries/slick-carousel/slick/slick.min.js: { preprocess: true }
+    /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
 # Leaflet - remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
@@ -81,7 +81,7 @@ search-toggle:
     component:
       assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
   js:
-    assets/js/search-toggle.js: { preprocess: true  }
+    assets/js/search-toggle.js: { preprocess: false  }
 search-results:
   css:
     component:
@@ -91,26 +91,26 @@ toggle-nav:
     component:
       assets/css/components/menus/toggle-nav.css: { preprocess: false }
   js:
-    assets/js/toggle-nav.js: { preprocess: true, attributes: { type: module } }
+    assets/js/toggle-nav.js: { preprocess: false, attributes: { type: module } }
 accordion:
   css:
     component:
       assets/css/components/accordion.css: { preprocess: false }
       assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
   js:
-    assets/js/accordion-init.js: { preprocess: true, attributes: { type: module } }
+    assets/js/accordion-init.js: { preprocess: false, attributes: { type: module } }
 tabs:
   css:
     component:
       assets/css/components/tabs.css: { preprocess: false }
   js:
-    uids/assets/js/tabs.js: { preprocess: true }
+    uids/assets/js/tabs.js: { preprocess: false }
 header-sticky:
   js:
-    assets/js/brand-bar.js: { preprocess: true, attributes: { type: module } }
+    assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
-    assets/js/video-cookie.js: { preprocess: true }
+    assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
     - core/once
@@ -251,7 +251,7 @@ paragraphs-carousel:
     component:
       assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
   js:
-      assets/js/carousel.js: { preprocess: false  }
+    assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
     - core/jquery
