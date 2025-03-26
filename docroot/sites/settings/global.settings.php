@@ -92,6 +92,3 @@ if (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'],
 if ($ah_env !== 'local') {
   $config['webform.settings']['export']['temp_directory'] = "/mnt/gfs/{$_ENV['AH_SITE_GROUP']}.{$_ENV['AH_SITE_ENVIRONMENT']}/tmp";
 }
-
-// Adding a temporary file maximum for 55 mins.
-$config['system.file']['temporary_maximum_age'] = 3300;
