@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpawh.uiowa.ddev.site
+    protocol: https
+  machine_name: labpawh
+  human_name: pawh.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpawh.prod
+drupal:
+  db:
+    database: pawh_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpawh.prod.drupal.uiowa.edu'
+  requester: kawhitaker
+  site-name: "Physical Activity & Women's Health Lab"
