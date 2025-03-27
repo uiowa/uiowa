@@ -31,6 +31,7 @@ use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
+use Drupal\webform\Element\WebformRoles;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -920,10 +921,58 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
     case 'webform_settings_access_form':
       $access = &$form['access'];
+
+      // Configure what you want to disable for webform access.
+      $form['webform_config'] = [
+        'create' => [],
+        'view_any' => [
+          'roles' => [
+            'anonymous',
+            'authenticated',
+          ],
+        ],
+        'update_any' => [
+          'roles' => [
+            'anonymous',
+            'authenticated',
+          ],
+        ],
+        'delete_any' => [
+          'roles' => [
+            'anonymous',
+            'authenticated',
+          ],
+        ],
+        'purge_any' => [
+          '#access' => FALSE,
+        ],
+        'view_own' => [],
+        'update_own' => [],
+        'delete_own' => [],
+        'administer' => [
+          '#access' => FALSE,
+        ],
+        'test' => [
+          'roles' => [
+            'anonymous',
+            'authenticated',
+            'viewer',
+          ],
+        ],
+        'configuration' => [
+          '#access' => FALSE,
+        ],
+      ];
+
       foreach ($access as $key => &$group) {
         if (is_array($group)) {
-          $perms ??= $group['permissions'];
 
+          $roles ??= $group['roles'];
+          if ($roles) {
+            $group['roles']['#process'][] = '_uiowa_core_process_element';
+          }
+
+          $perms ??= $group['permissions'];
           if ($perms) {
             $group['permissions']['#access'] = FALSE;
           }
@@ -931,6 +980,34 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
   }
+}
+
+/**
+ * Custom process form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
+  $form_object = $form_state->getFormObject();
+  $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
+
+  // Use config to remove desired options.
+  $printed_array_name = $element["#name"];
+  $group_name = str_replace('access[', '', $printed_array_name);
+  $group_name = str_replace('][roles]', '', $group_name);
+  $group_config ??= $form['webform_config'][$group_name];
+
+  if ($checkboxes['#type'] == 'webform_roles') {
+    $checkboxes['administrator']['#access'] = FALSE;
+  }
+
+  return $checkboxes;
 }
 
 /**
