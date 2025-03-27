@@ -9513,26 +9513,30 @@
         },
         {
             "name": "drupal/piwik_pro",
-            "version": "1.0.2",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/piwik_pro.git",
-                "reference": "1.0.2"
+                "reference": "1.3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.0.2.zip",
-                "reference": "1.0.2",
-                "shasum": "611b08cfb6f75ef31a75dfb7b61d9337b986d1a3"
+                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.3.0.zip",
+                "reference": "1.3.0",
+                "shasum": "e44521133916d65a4ac1d103bf10856a53be9b33"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9 || ^10"
+                "drupal/core": "^9 || ^10 || ^11",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.3"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.2",
-                    "datestamp": "1675231870",
+                    "version": "1.3.0",
+                    "datestamp": "1740740836",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9545,6 +9549,15 @@
             ],
             "authors": [
                 {
+                    "name": "Josha Hubbers",
+                    "homepage": "https://www.drupal.org/user/3578201",
+                    "email": "josha@hubbers.info"
+                },
+                {
+                    "name": "hartsak",
+                    "homepage": "https://www.drupal.org/user/1676058"
+                },
+                {
                     "name": "heikkiy",
                     "homepage": "https://www.drupal.org/user/3442607"
                 },
@@ -9555,16 +9568,13 @@
                 {
                     "name": "kekkis",
                     "homepage": "https://www.drupal.org/user/813328"
-                },
-                {
-                    "name": "dimas11",
-                    "homepage": "https://www.drupal.org/user/3578201"
                 }
             ],
-            "description": "Allows your site to be tracked by Piwik Pro.",
+            "description": "Piwik PRO is a free analytics provider.",
             "homepage": "https://www.drupal.org/project/piwik_pro",
             "support": {
-                "source": "https://git.drupalcode.org/project/piwik_pro"
+                "source": "https://git.drupalcode.org/project/piwik_pro",
+                "issues": "https://drupal.org/project/issues/piwik_pro"
             }
         },
         {
@@ -23657,9 +23667,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
