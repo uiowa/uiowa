@@ -7720,3 +7720,9 @@ $sites['sitesliverwellness.uiowa.ddev.site'] = 'liverwellness.sites.uiowa.edu';
 $sites['sitesliverwellness.dev.drupal.uiowa.edu'] = 'liverwellness.sites.uiowa.edu';
 $sites['sitesliverwellness.stage.drupal.uiowa.edu'] = 'liverwellness.sites.uiowa.edu';
 $sites['sitesliverwellness.prod.drupal.uiowa.edu'] = 'liverwellness.sites.uiowa.edu';
+
+// Directory aliases for digital.studio.uiowa.edu.
+$sites['studiodigital.uiowa.ddev.site'] = 'digital.studio.uiowa.edu';
+$sites['studiodigital.dev.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
+$sites['studiodigital.stage.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
+$sites['studiodigital.prod.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
