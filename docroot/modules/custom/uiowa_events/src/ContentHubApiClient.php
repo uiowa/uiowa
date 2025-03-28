@@ -13,7 +13,7 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
    * {@inheritdoc}
    */
   public function basePath(): string {
-    return 'https://events-test.ais.its.uiowa.edu/api/v1/';
+    return 'https://content.uiowa.edu/api/v1/';
   }
 
   /**
