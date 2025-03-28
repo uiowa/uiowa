@@ -189,6 +189,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if (isset($form['layout_builder_style_background'])) {
               $form['layout_builder_style_background']['#access'] = FALSE;
             }
+            // Replace -none- text with no gradient label.
+            if (isset($form['layout_builder_style_media_overlay'])) {
+              $form["layout_builder_style_media_overlay"]["#empty_option"] = t('No gradient (default)');
+            }
             // Move headline size option to top of display options.
             if (isset($form['layout_builder_style_headline_size'])) {
               $form['layout_builder_style_headline_size']['#weight'] = 89;
@@ -854,7 +858,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'value' => 1,
             ],
             );
-          };
+          }
         }
         break;
 
@@ -997,6 +1001,22 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
             unset($element['field_uiowa_banner_link']['widget'][3]);
           }
         }
+
+        $form_state->getCompleteForm()['layout_builder_style_media_overlay']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
+            ],
+          ],
+        ];
+
+        $form_state->getCompleteForm()['layout_builder_style_banner_gradient']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
+            ],
+          ],
+        ];
 
         break;
 

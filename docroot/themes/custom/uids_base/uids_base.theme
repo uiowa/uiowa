@@ -615,7 +615,7 @@ function uids_base_preprocess_layout(&$variables) {
 
     switch ($layout->id()) {
       case 'layout_onecol':
-        // @todo remove once https://caniuse.com/css-has greater support.
+        // @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
         $contains_menu = FALSE;
 
         foreach (Element::children($variables['content']) as $region) {
@@ -766,11 +766,10 @@ function uids_base_preprocess_layout(&$variables) {
 
         // Set default for banner gradient.
         if ($variables['banner_settings']['transparent'] || $title_hidden) {
-          $variables['attributes']['class'][] = 'banner--transparent';
+          $variables['attributes']['class'][] = 'banner--overlay-none';
         }
         else {
-          $variables['attributes']['class'][] = 'banner--gradient-bottom';
-          $variables['attributes']['class'][] = 'banner--gradient-dark';
+          $variables['attributes']['class'][] = 'banner--overlay-btt';
         }
 
         // Set other banner default classes.
@@ -1045,6 +1044,11 @@ function uids_base_preprocess_block(&$variables) {
   if ($variables['derivative_plugin_id'] === 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_image_below'] = !in_array('blockquote--img-above', $variables['elements']['#attributes']['class']);
     $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
+  }
+
+  // Add banner__text class for caption to receive banner text colors.
+  if ($variables['derivative_plugin_id'] === 'node:article:field_image_caption') {
+    $variables['attributes']['class'][] = 'banner__text';
   }
 
 }

@@ -35,27 +35,19 @@
   // When we have a background image - and we're not in the Layout
   // Builder screen - change the text color to white.
   &.layout--title--with-background {
-    .bold-headline,
-    .page-title.headline {
-      @include utilities.breakpoint(sm) {
-        @include headline-mixins.headline-negative;
-        text-shadow: 0 1px 1px #000;
-      }
-    }
-
     .breadcrumb {
       margin-top: 0;
       @include utilities.breakpoint(sm) {
         margin-top: 1.75rem;
       }
       li {
-        @include utilities.breakpoint(sm) {
+        @include utilities.container-query() {
           color: white;
         }
       }
 
       a {
-        @include utilities.breakpoint(sm) {
+        @include utilities.container-query() {
           color: white;
         }
       }
@@ -89,3 +81,12 @@
   }
 }
 
+// Fix for featured image banners on custom content types.
+.layout--onecol--background .block[class*="image"]:not([class*="image-caption"])  {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  @include utilities.container-query($type: max) {
+    position: relative;
+  }
+}

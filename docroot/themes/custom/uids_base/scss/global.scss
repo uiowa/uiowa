@@ -2,22 +2,8 @@
 @use 'uids/scss/abstracts/_variables.scss';
 @use 'uids/scss/abstracts/_utilities.scss';
 
-// @todo update .column-container:has(nav) when once https://caniuse.com/css-has greater support.
-// Unset container-type for regions that use absolute positioning.
-// Horizontal navigation, timeline block, lb-direct-add.
-.layout__region--unset-type .column-container,
-.layout-builder .column-container {
-  container-type: unset;
-}
-
-// Specify container-type for vertical video.
-.layout-builder .layout-builder-block.block-inline-blockuiowa-text-area:has(.media--view-mode-vertical),
-// Specify container-type for cards in layout builder.
-.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
-.layout-builder .layout-builder-block.block-inline-blockuiowa-event,
-.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
-.layout-builder .layout-builder-block.block-inline-blockuiowa-events .column-container,
-// Specify container-type for list blocks using views-row class.
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+.node__content:has(.layout--onecol--background.banner),
 .list-container__inner .views-row {
   container-type: inline-size;
   container-name: column;
