@@ -110,7 +110,7 @@ header-sticky:
     assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
-    assets/js/video-cookie.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: true }
   dependencies:
     - core/jquery
     - core/once
@@ -121,7 +121,7 @@ slider:
     component:
       assets/css/components/slider.css: { preprocess: false }
   js:
-    uids/assets/js/slider.js: { preprocess: false }
+    uids/assets/js/slider.js: { preprocess: true }
   dependencies:
     - uids_base/banner
 remote-video:
@@ -251,7 +251,7 @@ paragraphs-carousel:
     component:
       assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
   js:
-      assets/js/carousel.js: { preprocess: false  }
+    assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
     - core/jquery
