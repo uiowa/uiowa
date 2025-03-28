@@ -75,7 +75,7 @@ class EventsProcessor extends EntityProcessorBase {
               ],
             ],
             'department' => 329,
-            'type' => 4506,
+            'type' => 28,
           ],
           'items_per_page' => 100,
         ],
