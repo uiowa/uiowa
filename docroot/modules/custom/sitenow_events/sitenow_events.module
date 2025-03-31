@@ -831,12 +831,11 @@ function sitenow_events_theme($existing, $type, $theme, $path) {
 function sitenow_events_format_instance(array $event_instance) {
   $start_date = strtotime($event_instance['start']);
 
-  if (isset($event_instance['end'])) {
+  // Default end_date to start_date if all_day is false and end is empty.
+  if (!empty($event_instance['end'])) {
     $end_date = strtotime($event_instance['end']);
   }
-  // If it's an all day event, we need to check
-  // if it spans multiple days.
-  elseif (isset($event_instance['last_date'])) {
+  elseif (!empty($event_instance['last_date']) && $event_instance['all_day'] === TRUE) {
     $end_date = strtotime($event_instance['last_date']);
   }
   else {
