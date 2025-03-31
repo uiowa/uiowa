@@ -926,19 +926,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['webform_config'] = [
         'create' => [],
         'view_any' => [
-          'roles' => [
+          '#roles' => [
             'anonymous',
             'authenticated',
           ],
         ],
         'update_any' => [
-          'roles' => [
+          '#roles' => [
             'anonymous',
             'authenticated',
           ],
         ],
         'delete_any' => [
-          'roles' => [
+          '#roles' => [
             'anonymous',
             'authenticated',
           ],
@@ -953,7 +953,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           '#access' => FALSE,
         ],
         'test' => [
-          'roles' => [
+          '#roles' => [
             'anonymous',
             'authenticated',
             'viewer',
@@ -964,20 +964,36 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ],
       ];
 
+      // For each access group...
       foreach ($access as $key => &$group) {
         if (is_array($group)) {
 
+          // If we are disabling access to it completely in the config...
+          if(isset($form['webform_config'][$key]['#access'])){
+
+            // Set its access to false and continue to the next iteration.
+            $group['#access'] = FALSE;
+            continue;
+          }
+
+          // If we have a roles checkbox list...
           $roles ??= $group['roles'];
           if ($roles) {
+
+            // Process it with a custom function.
             $group['roles']['#process'][] = '_uiowa_core_process_element';
           }
 
+          // For every group that has configurable permissions...
           $perms ??= $group['permissions'];
           if ($perms) {
+
+            // Disable them. We don't want users to have access to configure this.
             $group['permissions']['#access'] = FALSE;
           }
         }
       }
+
       break;
   }
 }
@@ -994,18 +1010,29 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  *   The processed block element.
  */
 function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
-  $form_object = $form_state->getFormObject();
+  // Get the checkboxes.
   $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
 
-  // Use config to remove desired options.
-  $printed_array_name = $element["#name"];
+  // Get the group name and see if we have config for it.
+  $printed_array_name ??= $element["#name"];
   $group_name = str_replace('access[', '', $printed_array_name);
   $group_name = str_replace('][roles]', '', $group_name);
   $group_config ??= $form['webform_config'][$group_name];
 
-  if ($checkboxes['#type'] == 'webform_roles') {
-    $checkboxes['administrator']['#access'] = FALSE;
+  // If each access group has config for roles...
+  if (isset($group_config['#roles']) && $checkboxes['#type'] == 'webform_roles') {
+    $roles = $group_config['#roles'];
+
+    // For each role that we want to remove access from...
+    foreach ($roles as $key => $role) {
+
+      // Set its access to false.
+      $checkboxes[$role]['#access'] = FALSE;
+    }
   }
+
+  // We disable the ability to manage administrators for all groups.
+  $checkboxes['administrator']['#access'] = FALSE;
 
   return $checkboxes;
 }
