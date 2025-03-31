@@ -77,3 +77,43 @@
   min-height: 70vh!important;
 }
 
+// Overrides for older browsers until https://github.com/w3c/csswg-drafts/issues/10544 is the standard.
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block, lb-direct-add.
+.layout__region--unset-type .column-container,
+.layout-builder .column-container {
+  container-type: unset;
+}
+
+// Container queries.
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+.layout-builder .layout-builder-block.block-inline-blockuiowa-text-area:has(.media--view-mode-vertical),
+.layout-builder .layout-builder-block.block-inline-blockuiowa-card,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-event,
+.layout-builder .layout-builder-block.block-inline-blockfeatured-content .column-container,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-events .column-container,
+.layout-builder .layout-builder-block.block-inline-blockuiowa-banner {
+  container-type: inline-size;
+  container-name: column;
+}
+
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+// This fixes an issue with the banner--stacked not displaying correctly when the container
+// query is applied directly to the banner.
+.layout-builder .layout-builder-block.banner--stacked:not([class*="bg--"]) {
+  display: block;
+
+  @include utilities.container-query() {
+    display: flex;
+  }
+
+  .banner__content {
+    position: relative;
+    background: #fff;
+    height: 100%;
+    @include utilities.container-query() {
+      background: none;
+    }
+  }
+}
