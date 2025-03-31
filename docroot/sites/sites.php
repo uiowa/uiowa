@@ -7726,3 +7726,9 @@ $sites['studiodigital.uiowa.ddev.site'] = 'digital.studio.uiowa.edu';
 $sites['studiodigital.dev.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
 $sites['studiodigital.stage.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
 $sites['studiodigital.prod.drupal.uiowa.edu'] = 'digital.studio.uiowa.edu';
+
+// Directory aliases for oliviahubbardportfolio.sites.uiowa.edu.
+$sites['sitesoliviahubbardportfolio.uiowa.ddev.site'] = 'oliviahubbardportfolio.sites.uiowa.edu';
+$sites['sitesoliviahubbardportfolio.dev.drupal.uiowa.edu'] = 'oliviahubbardportfolio.sites.uiowa.edu';
+$sites['sitesoliviahubbardportfolio.stage.drupal.uiowa.edu'] = 'oliviahubbardportfolio.sites.uiowa.edu';
+$sites['sitesoliviahubbardportfolio.prod.drupal.uiowa.edu'] = 'oliviahubbardportfolio.sites.uiowa.edu';
