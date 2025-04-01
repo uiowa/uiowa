@@ -9,5 +9,7 @@
  * Remove permissions from previously configured access configuration.
  */
 function uiowa_core_update_10001() {
+  $webform_ids = \Drupal::entityQuery('webform')
+    ->execute();
   $foo = 'bar';
 }
