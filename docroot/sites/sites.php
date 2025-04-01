@@ -4181,12 +4181,6 @@ $sites['orgvapap.dev.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
 $sites['orgvapap.stage.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
 $sites['orgvapap.prod.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
 
-// Directory aliases for dei-speaker-series.asian-slavic.uiowa.edu.
-$sites['asian-slavicdei-speaker-series.uiowa.ddev.site'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
-$sites['asian-slavicdei-speaker-series.dev.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
-$sites['asian-slavicdei-speaker-series.stage.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
-$sites['asian-slavicdei-speaker-series.prod.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
-
 // Directory aliases for campuscouncil.stanleymuseum.uiowa.edu.
 $sites['stanleymuseumcampuscouncil.uiowa.ddev.site'] = 'campuscouncil.stanleymuseum.uiowa.edu';
 $sites['stanleymuseumcampuscouncil.dev.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
