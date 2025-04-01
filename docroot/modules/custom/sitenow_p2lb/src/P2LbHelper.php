@@ -214,6 +214,14 @@ class P2LbHelper {
     $search_replace = [
       'btn btn-primary' => 'bttn bttn--primary',
       'btn btn-secondary' => 'bttn bttn--secondary',
+      'btn btn-success' => 'bttn bttn--secondary',
+      'btn btn-info' => 'bttn bttn--tertiary',
+      'btn btn-warning' => 'bttn bttn--secondary',
+      'btn btn-danger' => 'bttn bttn--primary',
+      'btn btn-sm' => 'bttn bttn--small',
+      'btn btn-lg' => 'bttn bttn--large',
+      'btn btn-block' => 'bttn bttn--full',
+
     ];
 
     $entity_type_manager = \Drupal::entityTypeManager();
