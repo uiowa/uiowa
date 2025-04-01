@@ -920,76 +920,84 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       break;
 
     case 'webform_settings_access_form':
-      $access = &$form['access'];
+      // check if the current user is an admin.
+      $current_user = \Drupal::currentUser();
+      $roles = $current_user->getRoles();
+      $is_admin = in_array('administrator', $roles) || $current_user->id() == 1;
 
-      // Configure what you want to disable for webform access.
-      $form['webform_config'] = [
-        'create' => [],
-        'view_any' => [
-          '#roles' => [
-            'anonymous',
-            'authenticated',
+      // Only limit the webform access if the user isn't an admin or user 1.
+      if (!$is_admin) {
+        $access = &$form['access'];
+
+        // Configure what you want to disable for webform access.
+        $form['webform_config'] = [
+          'create' => [],
+          'view_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
           ],
-        ],
-        'update_any' => [
-          '#roles' => [
-            'anonymous',
-            'authenticated',
+          'update_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
           ],
-        ],
-        'delete_any' => [
-          '#roles' => [
-            'anonymous',
-            'authenticated',
+          'delete_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
           ],
-        ],
-        'purge_any' => [
-          '#access' => FALSE,
-        ],
-        'view_own' => [],
-        'update_own' => [],
-        'delete_own' => [],
-        'administer' => [
-          '#access' => FALSE,
-        ],
-        'test' => [
-          '#roles' => [
-            'anonymous',
-            'authenticated',
-            'viewer',
+          'purge_any' => [
+            '#access' => FALSE,
           ],
-        ],
-        'configuration' => [
-          '#access' => FALSE,
-        ],
-      ];
+          'view_own' => [],
+          'update_own' => [],
+          'delete_own' => [],
+          'administer' => [
+            '#access' => FALSE,
+          ],
+          'test' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+              'viewer',
+            ],
+          ],
+          'configuration' => [
+            '#access' => FALSE,
+          ],
+        ];
 
-      // For each access group...
-      foreach ($access as $key => &$group) {
-        if (is_array($group)) {
+        // For each access group...
+        foreach ($access as $key => &$group) {
+          if (is_array($group)) {
 
-          // If we are disabling access to it completely in the config...
-          if (isset($form['webform_config'][$key]['#access'])) {
+            // If we are disabling access to it completely in the config...
+            if (isset($form['webform_config'][$key]['#access'])) {
 
-            // Set its access to false and continue to the next iteration.
-            $group['#access'] = FALSE;
-            continue;
-          }
+              // Set its access to false and continue to the next iteration.
+              $group['#access'] = FALSE;
+              continue;
+            }
 
-          // If we have a roles checkbox list...
-          $roles ??= $group['roles'];
-          if ($roles) {
+            // If we have a roles checkbox list...
+            $roles ??= $group['roles'];
+            if ($roles) {
 
-            // Process it with a custom function.
-            $group['roles']['#process'][] = '_uiowa_core_process_element';
-          }
+              // Process it with a custom function.
+              $group['roles']['#process'][] = '_uiowa_core_process_element';
+            }
 
-          // For every group that has configurable permissions...
-          $perms ??= $group['permissions'];
-          if ($perms) {
+            // For every group that has configurable permissions...
+            $perms ??= $group['permissions'];
+            if ($perms) {
 
-            // Disable them. We don't want users to have access to configure this.
-            $group['permissions']['#access'] = FALSE;
+              // Disable them. We don't want users to have access to configure this.
+              $group['permissions']['#access'] = FALSE;
+            }
           }
         }
       }
