@@ -221,6 +221,10 @@ class P2LbHelper {
       'btn btn-sm' => 'bttn bttn--small',
       'btn btn-lg' => 'bttn bttn--large',
       'btn btn-block' => 'bttn bttn--full',
+      'alert-success' => 'alert--success',
+      'alert-info' => 'alert--info',
+      'alert-warning' => 'alert--warning',
+      'alert-danger' => 'alert--danger',
 
     ];
 
