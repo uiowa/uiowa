@@ -210,31 +210,7 @@ class P2LbHelper {
   /**
    * Update outdated classes.
    */
-  public static function updateOldClasses() {
-    $search_replace = [
-      // <a>.
-      'btn btn-primary' => 'bttn bttn--primary',
-      'btn btn-secondary' => 'bttn bttn--secondary',
-      'btn btn-success' => 'bttn bttn--tertiary',
-      'btn btn-info' => 'bttn bttn--tertiary',
-      'btn btn-warning' => 'bttn bttn--tertiary',
-      'btn btn-danger' => 'bttn bttn--tertiary',
-      'btn btn-sm' => 'bttn bttn--primary bttn--small',
-      'btn btn-lg' => 'bttn bttn--primary bttn--large',
-      'btn btn-block' => 'bttn bttn--primary bttn--full',
-      // <h*>.
-      'alert-success' => 'alert--success',
-      'alert-info' => 'alert--info',
-      'alert-warning' => 'alert--warning',
-      'alert-danger' => 'alert--danger',
-      // <div>.
-      'lead' => 'element--light-intro',
-      // <td>.
-      'w-50' => '',
-      'w-100' => '',
-
-    ];
-
+  public static function updateOldClasses(array $search_replace, string $element) {
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_field_manager = \Drupal::service('entity_field.manager');
     $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
@@ -295,7 +271,7 @@ class P2LbHelper {
               $document = Html::load($record->{$value_column});
 
               // Get all <a> elements from the HTML fragment.
-              $instances = $document->getElementsByTagName('a');
+              $instances = $document->getElementsByTagName($element);
 
               // A regressive loop (starting with the end) is used to loop
               // through matching elements so that they don't affect other

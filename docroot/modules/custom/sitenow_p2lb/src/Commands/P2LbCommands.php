@@ -139,7 +139,33 @@ class P2LbCommands extends DrushCommands {
       drush_backend_batch_process();
     }
     // Update old V2ism classes with their V3 counterparts.
-    P2LbHelper::updateOldClasses();
+    $a_classes = [
+      'btn btn-primary' => 'bttn bttn--primary',
+      'btn btn-secondary' => 'bttn bttn--secondary',
+      'btn btn-success' => 'bttn bttn--tertiary',
+      'btn btn-info' => 'bttn bttn--tertiary',
+      'btn btn-warning' => 'bttn bttn--tertiary',
+      'btn btn-danger' => 'bttn bttn--tertiary',
+      'btn btn-sm' => 'bttn bttn--primary bttn--small',
+      'btn btn-lg' => 'bttn bttn--primary bttn--large',
+      'btn btn-block' => 'bttn bttn--primary bttn--full',
+    ];
+    $h_classes = [
+      'alert-success' => 'alert--success',
+      'alert-info' => 'alert--info',
+      'alert-warning' => 'alert--warning',
+      'alert-danger' => 'alert--danger',
+    ];
+    $div_classes = [
+      'lead' => 'element--light-intro',
+    ];
+    $td_classes = [
+      'w-50' => '',
+      'w-100' => '',
+    ];
+    P2LbHelper::updateOldClasses($a_classes, 'a');
+    P2LbHelper::updateOldClasses($div_classes, 'div');
+    P2LbHelper::updateOldClasses($td_classes, 'td');
 
     // Turn off V2.
     $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');
