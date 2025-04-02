@@ -218,13 +218,14 @@ class P2LbHelper {
       'btn btn-info' => 'bttn bttn--tertiary',
       'btn btn-warning' => 'bttn bttn--tertiary',
       'btn btn-danger' => 'bttn bttn--tertiary',
-      'btn btn-sm' => 'bttn bttn--small',
-      'btn btn-lg' => 'bttn bttn--large',
-      'btn btn-block' => 'bttn bttn--full',
+      'btn btn-sm' => 'bttn bttn--primary bttn--small',
+      'btn btn-lg' => 'bttn bttn--primary bttn--large',
+      'btn btn-block' => 'bttn bttn--primary bttn--full',
       'alert-success' => 'alert--success',
       'alert-info' => 'alert--info',
       'alert-warning' => 'alert--warning',
       'alert-danger' => 'alert--danger',
+      'lead' => 'element--light-intro',
 
     ];
 
