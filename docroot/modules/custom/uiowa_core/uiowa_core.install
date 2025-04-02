@@ -8,14 +8,21 @@
 /**
  * Remove permissions from previously configured access configuration.
  */
-function uiowa_core_update_10002() {
+function uiowa_core_update_10001() {
+  // Get an array of ids of every webform on the site.
   $webform_ids = \Drupal::entityQuery('webform')
     ->execute();
+
+  // For each id...
   foreach ($webform_ids as $key => $id) {
+
+    // Load the webform.
     $webform = \Drupal\webform\Entity\Webform::load($id);
+
+    // And get its current access rules settings.
     $access = $webform->getAccessRules();
 
-    // For every...
+    // We craft an array of roles that we want to disable for each group.
     $update = [
       'view_any' => [
         'anonymous',
@@ -60,18 +67,29 @@ function uiowa_core_update_10002() {
       ],
     ];
 
-    foreach ($access as $role_name => &$items) {
-      if (isset($update[$role_name])) {
+    // Then for each access group...
+    foreach ($access as $group => &$items) {
+
+      // If we have roles to disable for that access group...
+      if (isset($update[$group])) {
+
+        // Go through each role...
         foreach ($items['roles'] as $key => $role) {
-          if (in_array($role, $update[$role_name])) {
+
+          // And if that role is configured to be disabled...
+          if (in_array($role, $update[$group])) {
+
+            // Unset it from the original access group.
             unset($items['roles'][$key]);
           }
         }
       }
 
+      // We always unset the permissions fields, they should not have values.
       $items['permissions'] = [];
     }
 
+    // Now, we set the access rules back to the webform and save it.
     $webform
       ->setAccessRules($access)
       ->save();
