@@ -158,6 +158,14 @@ class P2LbCommands extends DrushCommands {
     ];
     $div_classes = [
       'lead' => 'element--light-intro',
+      'alert-success' => 'alert--success',
+      'alert-info' => 'alert--info',
+      'alert-warning' => 'alert--warning',
+      'alert-danger' => 'alert--danger',
+    ];
+    $p_classes = [
+      'uids-component--bold-intro' => 'element--bold-intro',
+      'uids-component--light-intro' => 'element--light-intro',
     ];
     $td_classes = [
       'w-50' => '',
@@ -166,6 +174,7 @@ class P2LbCommands extends DrushCommands {
     P2LbHelper::updateOldClasses($a_classes, 'a');
     P2LbHelper::updateOldClasses($div_classes, 'div');
     P2LbHelper::updateOldClasses($td_classes, 'td');
+    P2LbHelper::updateOldClasses($p_classes, 'p');
 
     // Turn off V2.
     $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');
