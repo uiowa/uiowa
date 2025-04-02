@@ -5,6 +5,8 @@
  * Install hooks for uiowa core.
  */
 
+use Drupal\webform\Entity\Webform;
+
 /**
  * Remove permissions from previously configured access configuration.
  */
@@ -17,7 +19,7 @@ function uiowa_core_update_10001() {
   foreach ($webform_ids as $key => $id) {
 
     // Load the webform.
-    $webform = \Drupal\webform\Entity\Webform::load($id);
+    $webform = Webform::load($id);
 
     // And get its current access rules settings.
     $access = $webform->getAccessRules();

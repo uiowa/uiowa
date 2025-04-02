@@ -920,16 +920,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       break;
 
     case 'webform_settings_access_form':
-      // check if the current user is an admin.
+
+      // Check if the current user is an admin or user 1.
       $current_user = \Drupal::currentUser();
       $roles = $current_user->getRoles();
       $is_admin = in_array('administrator', $roles) || $current_user->id() == 1;
 
       // Only limit the webform access if the user isn't an admin or user 1.
       if (!$is_admin) {
+
+        // Get the form access settings.
         $access = &$form['access'];
 
-        // Configure what you want to disable for webform access.
+        // Configure an array for what you want to disable in webform access.
         $form['webform_config'] = [
           'create' => [],
           'view_any' => [
@@ -973,13 +976,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
         // For each access group...
         foreach ($access as $key => &$group) {
+
+          // If we have something configured to be disabled in that group...
           if (is_array($group)) {
 
             // If we are disabling access to it completely in the config...
             if (isset($form['webform_config'][$key]['#access'])) {
 
-              // Set its access to false and continue to the next iteration.
+              // Set its access to false.
               $group['#access'] = FALSE;
+
+              // And continue to the next iteration,
+              // as we don't need to worry about the individual
+              // roles if the whole section is disabled.
               continue;
             }
 
@@ -1018,7 +1027,8 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  *   The processed block element.
  */
 function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
-  // Get the checkboxes.
+
+  // Get the roles checkboxes.
   $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
 
   // Get the group name and see if we have config for it.
