@@ -212,7 +212,6 @@ class P2LbHelper {
    */
   public static function updateOldClasses() {
     $search_replace = [
-      // <a>.
       'btn btn-primary' => 'bttn bttn--primary',
       'btn btn-secondary' => 'bttn bttn--secondary',
       'btn btn-success' => 'bttn bttn--tertiary',
@@ -222,19 +221,17 @@ class P2LbHelper {
       'btn btn-sm' => 'bttn bttn--primary bttn--small',
       'btn btn-lg' => 'bttn bttn--primary bttn--large',
       'btn btn-block' => 'bttn bttn--primary bttn--full',
-      // <div>
       'lead' => 'element--light-intro',
       'alert-success' => 'alert--success',
       'alert-info' => 'alert--info',
       'alert-warning' => 'alert--warning',
       'alert-danger' => 'alert--danger',
-      // <p>
       'uids-component--bold-intro' => 'element--bold-intro',
       'uids-component--light-intro' => 'element--light-intro',
-      // <td>
       'w-50' => '',
       'w-100' => '',
-      // v2 classes.
+      'table-striped' => '',
+      'table-bordered' => '',
       'align-items-start' => '',
       'align-items-center' => '',
       'align-items-end' => '',
