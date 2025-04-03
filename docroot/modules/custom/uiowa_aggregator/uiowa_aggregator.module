@@ -96,7 +96,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   // Move timestamp to #subtitle. Since this is just a string, set it as
   // #markup so that it is considered a valid render array.
   $build['#subtitle']['timestamp'] = [
-    '#markup' => \Drupal::service('date.formatter')->format((int) $entity->getPostedTime(), 'medium'),
+    '#markup' => \Drupal::service('date_ap_style.formatter')->formatTimestamp((int) $entity->getPostedTime()),
   ];
   unset($build['timestamp']);
 
