@@ -346,7 +346,7 @@ class P2LbHelper {
               // Load the HTML fragment as a DOMDocument object.
               $document = Html::load($record->{$value_column});
 
-              // Get all <a> elements from the HTML fragment.
+              // Get all elements from the HTML fragment.
               $instances = $document->getElementsByTagName('*');
 
               // A regressive loop (starting with the end) is used to loop
@@ -355,11 +355,13 @@ class P2LbHelper {
               $i = $instances->length - 1;
 
               while ($i >= 0) {
-                // The current <div> element.
+                // The current element.
                 $dom_element = $instances->item($i);
 
                 $class = $dom_element->getAttribute('class');
 
+                // If <div> element has class='lead',
+                // additional conversion from <div> to <p> is needed.
                 if ($dom_element->tagName == 'div') {
                   if (str_contains('lead', $class)) {
                     $new_classes = str_replace('lead', 'element--light-intro', $class);
