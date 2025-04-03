@@ -360,6 +360,15 @@ class P2LbHelper {
 
                 $class = $dom_element->getAttribute('class');
 
+                if ($dom_element->tagName == 'div') {
+                  if (str_contains('lead', $class)) {
+                    $new_classes = str_replace('lead', 'element--light-intro', $class);
+                    $p = $document->createElement('p', $dom_element->nodeValue);
+                    $p->setAttribute('class', $new_classes);
+                    $dom_element->parentNode->replaceChild($p, $dom_element);
+                  }
+                }
+
                 foreach ($search_replace as $needle => $replace) {
                   $class = str_replace($needle, $replace, $class);
                 }
