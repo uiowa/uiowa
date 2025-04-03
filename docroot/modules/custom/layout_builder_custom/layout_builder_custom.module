@@ -184,6 +184,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         // Form modifications per block plugin and bundle.
         switch ($block->getPluginId()) {
           case 'inline_block:uiowa_banner':
+
+            // Hide content position style until it can be removed.
+            if (isset($form['layout_builder_style_banner_type'])) {
+              $form['layout_builder_style_banner_type']['#access'] = FALSE;
+            }
+
             // We provide a field that provides background options, so
             // this is hidden.
             if (isset($form['layout_builder_style_background'])) {
@@ -541,6 +547,26 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
+
+      $current_url = \Drupal::request()->getRequestUri();
+
+      // Check if the URL ends with a layout type for new layouts.
+      $is_new_layout_url = (preg_match('/\/layout_[^\/]*$/', $current_url) === 1);
+      // Remove grid classes for new layouts.
+      if ($is_new_layout_url) {
+        if (!empty($form['layout_builder_style_default']['#options'])) {
+          $options = $form['layout_builder_style_default']['#options'];
+
+          // Keep only the 'section_alignment_start' option.
+          $filtered_options = [];
+          if (isset($options['section_alignment_start'])) {
+            $filtered_options['section_alignment_start'] = $options['section_alignment_start'];
+          }
+
+          $form['layout_builder_style_default']['#options'] = $filtered_options;
+        }
+      }
+
       // Remove container settings - None - empty option.
       unset($form['layout_builder_style_container']['#empty_option']);
       // Add (Default) after Normal option.
