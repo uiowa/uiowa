@@ -185,11 +185,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         switch ($block->getPluginId()) {
           case 'inline_block:uiowa_banner':
 
-            // Hide content position style until it can be removed.
-            if (isset($form['layout_builder_style_banner_type'])) {
-              $form['layout_builder_style_banner_type']['#access'] = FALSE;
-            }
-
             // We provide a field that provides background options, so
             // this is hidden.
             if (isset($form['layout_builder_style_background'])) {
