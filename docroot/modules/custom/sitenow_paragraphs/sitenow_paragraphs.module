@@ -136,12 +136,52 @@ function sitenow_paragraphs_update_webform_edit_link($form, FormStateInterface $
 /**
  * Implements hook_entity_presave().
  */
-function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
-  $type = $entity->getEntityType();
-  if ($type->id() === 'paragraph') {
-    // If unique id, clean it and save it as value.
-    if ($entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
-      $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
+/**
+ * Implements hook_entity_presave().
+ *
+ * Ensures Panopto media entities have their titles set from the video's title.
+ */
+function sitenow_media_wysiwyg_entity_presave($entity) {
+  // Only process media entities.
+  if ($entity->getEntityTypeId() !== 'media') {
+    return;
+  }
+
+  // Only process Panopto media.
+  if ($entity->bundle() !== 'panopto') {
+    return;
+  }
+
+  // Get the source field configuration.
+  $source = $entity->getSource();
+  $source_field = $source->getConfiguration()['source_field'];
+
+  // Only proceed if we have a source field value.
+  if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
+    return;
+  }
+
+  // Get the source field value.
+  $source_field_value = $entity->get($source_field)->getValue();
+
+  // If we have a title in the source field, use it for the media entity name.
+  if (!empty($source_field_value[0]['title'])) {
+    // Don't override a custom title if one was explicitly set
+    // and this is an update operation (has an ID).
+    $is_new = $entity->isNew();
+    $has_custom_name = !$is_new && !empty($entity->getNameRealName());
+
+    // Always set the title for new entities or update it if no custom title exists.
+    if ($is_new || !$has_custom_name) {
+      $entity->setName($source_field_value[0]['title']);
+    }
+  }
+  else {
+    // If no title is available, attempt to fetch it.
+    // This is a fallback in case the title wasn't set during source field handling.
+    $title = $source->getMetadata($entity, 'default_name');
+    if ($title) {
+      $entity->setName($title);
     }
   }
 }

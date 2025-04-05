@@ -21,6 +21,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\RedirectMiddleware;
+use Drupal\Component\Utility\Html;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -131,12 +132,33 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    */
   public function getMetadata(MediaInterface $media, $attribute_name) {
     $uuid = $media->uuid();
-    $source = $media->get($this->configuration['source_field']);
+    $source_field = $this->configuration['source_field'];
+    $source = $media->get($source_field);
 
     // The source is a required, single value field.
     // @see: PanoptoURLConstraintValidator::validate().
-    $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
+    $srcLink = $source->getValue();
+    $parsed = UrlHelper::parse($srcLink[0]['uri']);
     $id = $parsed['query']['id'];
+
+    $url_response = $this->client->get(
+      self::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
+    );
+
+    $html = $url_response->getBody();
+
+    $document = Html::load($html);
+
+    $title = $document->getElementsByTagName('title')->item(0)?->textContent;
+    // Clean up the title if needed (remove any prefix/suffix added by Panopto)
+    if ($title) {
+      // Example: Remove "- Panopto" or similar suffix
+      $title = preg_replace('/ - Panopto.*$/', '', $title);
+      // Trim any extra whitespace
+      $title = trim($title);
+      $srcLink[0]['title'] = $title;
+      $media->set($source_field, $srcLink);
+    }
 
     switch ($attribute_name) {
       // @todo https://github.com/uiowa/uiowa/issues/5029
@@ -188,3 +210,4 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
   }
 
 }
+
