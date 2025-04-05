@@ -36,6 +36,18 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
+ * Implements hook_entity_presave().
+ */
+
+function sitenow_media_wysiwyg_entity_presave(EntityInterface $entity) {
+  // If unique id, clean it and save it as value.
+  if ($entity->getEntityTypeId() === 'paragraph' && $entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
+    $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
+  }
+}
+
+
+/**
  * Implements hook_form_FORMID_alter().
  */
 function sitenow_media_wysiwyg_form_editor_media_dialog_alter(&$form, FormStateInterface $form_state) {
