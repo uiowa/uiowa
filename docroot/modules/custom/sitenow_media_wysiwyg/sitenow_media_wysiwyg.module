@@ -56,7 +56,8 @@ function sitenow_media_wysiwyg_media_presave($entity): void {
 
     try {
       $url_response = \Drupal::httpClient()->get(
-        Panopto::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
+        Panopto::BASE_URL . '/Panopto/Pages/Embed.aspx',
+        ['query' => ['id' => $id]]
       );
       $html = $url_response->getBody();
       $document = Html::load($html);
@@ -70,7 +71,7 @@ function sitenow_media_wysiwyg_media_presave($entity): void {
       }
     }
     catch (\Exception $e) {
-      \Drupal::logger('sitenow_media')->error('Failed to retrieve Panopto video information: @error', ['@error' => $e->getMessage()]);
+      \Drupal::logger('sitenow_media_wysiwyg')->error('Failed to retrieve and save Panopto video information: @error', ['@error' => $e->getMessage()]);
     }
   }
 }
