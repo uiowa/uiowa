@@ -138,7 +138,6 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
     $id = $parsed['query']['id'];
 
-
     switch ($attribute_name) {
       // @todo https://github.com/uiowa/uiowa/issues/5029
       case 'default_name':
