@@ -1005,6 +1005,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+
   if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
@@ -1015,6 +1016,30 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
       if (!in_array($node_type, $allowed_types)) {
         $data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate']['#access'] = FALSE;
       }
+    }
+  }
+
+  $foo = 'bar';
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Get allowed replicate entity types.
+  if ($node) {
+    $node_type = $node->bundle();
+    if ($node_type === 'sign') {
+
+      // Probably should add in some safe coding practices...
+      $display_view = $data['tabs'][0]['entity.node.canonical'];
+      $weight = $display_view['#weight'] + 1;
+      $display_view['#weight'] = $weight;
+
+      $args = ['display_view' => 'true'];
+      $display_view["#link"]["url"]->setOptions(array('query' => $args));
+      $display_view["#link"]["title"] = 'Display view';
+
+      $data['tabs'][0]['display_view'] = $display_view;
+
+      $foo = 'bar';
+
     }
   }
 }
