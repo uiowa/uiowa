@@ -41,8 +41,7 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function sitenow_media_wysiwyg_media_presave($entity): void
-{
+function sitenow_media_wysiwyg_media_presave($entity): void {
   // Only process Panopto media.
   if ($entity->bundle() === 'panopto') {
     // Only proceed if we have a source field value.
@@ -64,7 +63,7 @@ function sitenow_media_wysiwyg_media_presave($entity): void
       $title = $document->getElementsByTagName('title')->item(0)?->textContent;
       // Trim up the title.
       if ($title) {
-        // Trim any extra whitespace
+        // Trim any extra whitespace.
         $title = trim($title);
         $source_field_value[0]['title'] = $title;
         $entity->set('field_media_panopto_url', $source_field_value);
