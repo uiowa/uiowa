@@ -131,15 +131,12 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    */
   public function getMetadata(MediaInterface $media, $attribute_name) {
     $uuid = $media->uuid();
-    $source_field = $this->configuration['source_field'];
-    $source = $media->get($source_field);
+    $source = $media->get($this->configuration['source_field']);
 
     // The source is a required, single value field.
     // @see: PanoptoURLConstraintValidator::validate().
-    $srcLink = $source->getValue();
-    $parsed = UrlHelper::parse($srcLink[0]['uri']);
+    $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
     $id = $parsed['query']['id'];
-
 
     switch ($attribute_name) {
       // @todo https://github.com/uiowa/uiowa/issues/5029
@@ -191,4 +188,3 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
   }
 
 }
-

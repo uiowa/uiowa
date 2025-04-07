@@ -32,6 +32,7 @@ class PanoptoUrlFormatter extends LinkFormatter {
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
       $id = Html::escape($parsed_url['query']['id']);
+
       $elements[$delta] = [
         'frame' => [
           '#type' => 'html_tag',

@@ -39,9 +39,7 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
- * Implements hook_entity_presave().
- *
- * Ensures Panopto media entities have their titles set from the video's title.
+ * Implements hook_ENTITY_TYPE_presave().
  */
 function sitenow_media_wysiwyg_media_presave($entity): void
 {
@@ -77,7 +75,6 @@ function sitenow_media_wysiwyg_media_presave($entity): void
     }
   }
 }
-
 
 /**
  * Implements hook_form_FORMID_alter().
