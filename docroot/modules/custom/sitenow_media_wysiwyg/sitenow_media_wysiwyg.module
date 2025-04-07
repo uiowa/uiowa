@@ -39,13 +39,11 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
- * Implements hook_entity_presave().
- *
- * Ensures Panopto media entities have their titles set from the video's title.
+ * Implements hook_ENTITY_TYPE_presave().
  */
 function sitenow_media_wysiwyg_media_presave($entity): void
 {
-  // Only process Panopto media.
+  // Save Panopto video title with the link.
   if ($entity->bundle() === 'panopto') {
     // Only proceed if we have a source field value.
     $source_field = 'field_media_panopto_url';
@@ -53,22 +51,21 @@ function sitenow_media_wysiwyg_media_presave($entity): void
       return;
     }
 
-    // Get the source field value.
+    // Get the media source field value.
     $source_field_value = $entity->get($source_field)->getValue();
     $parsed = UrlHelper::parse($source_field_value[0]['uri']);
     $id = $parsed['query']['id'];
+
+    // Attempt to fetch the video title from the source.
     $url_response = \Drupal::httpClient()->get(
-      Panopto::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
+      Panopto::BASE_URL . '/Panopto/Pages/Embed.aspx?id=' . $id
     );
-
     $html = $url_response->getBody();
-
     $document = Html::load($html);
-
     $title = $document->getElementsByTagName('title')->item(0)?->textContent;
-    // Trim up the title.
+
     if ($title) {
-      // Trim any extra whitespace
+      // Trim up the title and save to the link field.
       $title = trim($title);
       $source_field_value[0]['title'] = $title;
       $entity->set('field_media_panopto_url', $source_field_value);
