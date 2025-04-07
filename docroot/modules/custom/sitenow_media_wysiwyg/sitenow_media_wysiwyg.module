@@ -52,26 +52,28 @@ function sitenow_media_wysiwyg_media_presave($entity): void
     if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
       return;
     }
-
     // Get the source field value.
     $source_field_value = $entity->get($source_field)->getValue();
     $parsed = UrlHelper::parse($source_field_value[0]['uri']);
     $id = $parsed['query']['id'];
-    $url_response = \Drupal::httpClient()->get(
-      Panopto::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
-    );
 
-    $html = $url_response->getBody();
-
-    $document = Html::load($html);
-
-    $title = $document->getElementsByTagName('title')->item(0)?->textContent;
-    // Trim up the title.
-    if ($title) {
-      // Trim any extra whitespace
-      $title = trim($title);
-      $source_field_value[0]['title'] = $title;
-      $entity->set('field_media_panopto_url', $source_field_value);
+    try {
+      $url_response = \Drupal::httpClient()->get(
+        Panopto::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
+      );
+      $html = $url_response->getBody();
+      $document = Html::load($html);
+      $title = $document->getElementsByTagName('title')->item(0)?->textContent;
+      // Trim up the title.
+      if ($title) {
+        // Trim any extra whitespace
+        $title = trim($title);
+        $source_field_value[0]['title'] = $title;
+        $entity->set('field_media_panopto_url', $source_field_value);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('sitenow_media')->error('Failed to retrieve Panopto video information: @error', ['@error' => $e->getMessage()]);
     }
   }
 }
