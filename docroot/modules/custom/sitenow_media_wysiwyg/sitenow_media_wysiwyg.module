@@ -5,10 +5,13 @@
  * Contains hook implementations for UIowa Media WYSIWYG.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\Panopto;
 
 /**
  * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
@@ -40,47 +43,35 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
  *
  * Ensures Panopto media entities have their titles set from the video's title.
  */
-function sitenow_media_wysiwyg_entity_presave($entity) {
-  // Only process media entities.
-  if ($entity->getEntityTypeId() !== 'media') {
-    return;
-  }
-
+function sitenow_media_wysiwyg_media_presave($entity): void
+{
   // Only process Panopto media.
-  if ($entity->bundle() !== 'panopto') {
-    return;
-  }
-
-  // Get the source field configuration.
-  $source = $entity->getSource();
-  $source_field = $source->getConfiguration()['source_field'];
-
-  // Only proceed if we have a source field value.
-  if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
-    return;
-  }
-
-  // Get the source field value.
-  $source_field_value = $entity->get($source_field)->getValue();
-
-  // If we have a title in the source field, use it for the media entity name.
-  if (!empty($source_field_value[0]['title'])) {
-    // Don't override a custom title if one was explicitly set
-    // and this is an update operation (has an ID).
-    $is_new = $entity->isNew();
-    $has_custom_name = !$is_new && !empty($entity->getNameRealName());
-
-    // Always set the title for new entities or update it if no custom title exists.
-    if ($is_new || !$has_custom_name) {
-      $entity->setName($source_field_value[0]['title']);
+  if ($entity->bundle() === 'panopto') {
+    // Only proceed if we have a source field value.
+    $source_field = 'field_media_panopto_url';
+    if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
+      return;
     }
-  }
-  else {
-    // If no title is available, attempt to fetch it.
-    // This is a fallback in case the title wasn't set during source field handling.
-    $title = $source->getMetadata($entity, 'default_name');
+
+    // Get the source field value.
+    $source_field_value = $entity->get($source_field)->getValue();
+    $parsed = UrlHelper::parse($source_field_value[0]['uri']);
+    $id = $parsed['query']['id'];
+    $url_response = \Drupal::httpClient()->get(
+      Panopto::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
+    );
+
+    $html = $url_response->getBody();
+
+    $document = Html::load($html);
+
+    $title = $document->getElementsByTagName('title')->item(0)?->textContent;
+    // Clean up the title if needed (remove any prefix/suffix added by Panopto)
     if ($title) {
-      $entity->setName($title);
+      // Trim any extra whitespace
+      $title = trim($title);
+      $source_field_value[0]['title'] = $title;
+      $entity->set('field_media_panopto_url', $source_field_value);
     }
   }
 }

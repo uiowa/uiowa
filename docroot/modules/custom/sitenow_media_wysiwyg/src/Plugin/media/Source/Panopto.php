@@ -141,24 +141,6 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     $parsed = UrlHelper::parse($srcLink[0]['uri']);
     $id = $parsed['query']['id'];
 
-    $url_response = $this->client->get(
-      self::BASE_URL . "/Panopto/Pages/Embed.aspx?id=" . $id
-    );
-
-    $html = $url_response->getBody();
-
-    $document = Html::load($html);
-
-    $title = $document->getElementsByTagName('title')->item(0)?->textContent;
-    // Clean up the title if needed (remove any prefix/suffix added by Panopto)
-    if ($title) {
-      // Example: Remove "- Panopto" or similar suffix
-      $title = preg_replace('/ - Panopto.*$/', '', $title);
-      // Trim any extra whitespace
-      $title = trim($title);
-      $srcLink[0]['title'] = $title;
-      $media->set($source_field, $srcLink);
-    }
 
     switch ($attribute_name) {
       // @todo https://github.com/uiowa/uiowa/issues/5029
