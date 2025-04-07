@@ -66,7 +66,7 @@ function sitenow_media_wysiwyg_media_presave($entity): void
     $document = Html::load($html);
 
     $title = $document->getElementsByTagName('title')->item(0)?->textContent;
-    // Clean up the title if needed (remove any prefix/suffix added by Panopto)
+    // Trim up the title.
     if ($title) {
       // Trim any extra whitespace
       $title = trim($title);
