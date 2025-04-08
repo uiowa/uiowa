@@ -1019,29 +1019,29 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     }
   }
 
-  $foo = 'bar';
-  $node = \Drupal::routeMatch()->getParameter('node');
-
-  // Get allowed replicate entity types.
-  if ($node) {
-    $node_type = $node->bundle();
-    if ($node_type === 'sign') {
-
-      // Probably should add in some safe coding practices...
-      $display_view = $data['tabs'][0]['entity.node.canonical'];
-      $weight = $display_view['#weight'] + 1;
-      $display_view['#weight'] = $weight;
-
-      $args = ['display_view' => 'true'];
-      $display_view["#link"]["url"]->setOptions(array('query' => $args));
-      $display_view["#link"]["title"] = 'Display view';
-
-      $data['tabs'][0]['display_view'] = $display_view;
-
-      $foo = 'bar';
-
-    }
-  }
+//  $foo = 'bar';
+//  $node = \Drupal::routeMatch()->getParameter('node');
+//
+//  // Get allowed replicate entity types.
+//  if ($node) {
+//    $node_type = $node->bundle();
+//    if ($node_type === 'sign') {
+//
+//      // Probably should add in some safe coding practices...
+//      $display_view = $data['tabs'][0]['entity.node.canonical'];
+//      $weight = $display_view['#weight'] + 1;
+//      $display_view['#weight'] = $weight;
+//
+//      $args = ['display_view' => 'true'];
+//      $display_view["#link"]["url"]->setOptions(array('query' => $args));
+//      $display_view["#link"]["title"] = 'Display view';
+//
+//      $data['tabs'][0]['display_view'] = $display_view;
+//
+//      $foo = 'bar';
+//
+//    }
+//  }
 }
 
 /**
