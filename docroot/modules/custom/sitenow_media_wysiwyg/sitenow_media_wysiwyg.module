@@ -5,10 +5,13 @@
  * Contains hook implementations for UIowa Media WYSIWYG.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\Panopto;
 
 /**
  * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
@@ -31,6 +34,44 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
   if ($entity_form["#entity_type"] === 'media' && $entity_form["#bundle"] === 'file') {
     if ($entity_form["#op"] === 'add') {
       $entity_form["revision_log_message"]["#access"] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function sitenow_media_wysiwyg_media_presave($entity): void {
+  // Only process Panopto media.
+  if ($entity->bundle() === 'panopto') {
+    // Only proceed if we have a source field value.
+    $source_field = 'field_media_panopto_url';
+    if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
+      return;
+    }
+    // Get the source field value.
+    $source_field_value = $entity->get($source_field)->getValue();
+    $parsed = UrlHelper::parse($source_field_value[0]['uri']);
+    $id = $parsed['query']['id'];
+
+    try {
+      $url_response = \Drupal::httpClient()->get(
+        Panopto::BASE_URL . '/Panopto/Pages/Embed.aspx',
+        ['query' => ['id' => $id]]
+      );
+      $html = $url_response->getBody();
+      $document = Html::load($html);
+      $title = $document->getElementsByTagName('title')->item(0)?->textContent;
+      // Trim up the title.
+      if ($title) {
+        // Trim any extra whitespace.
+        $title = trim($title);
+        $source_field_value[0]['title'] = $title;
+        $entity->set('field_media_panopto_url', $source_field_value);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('sitenow_media_wysiwyg')->error('Failed to retrieve and save Panopto video information: @error', ['@error' => $e->getMessage()]);
     }
   }
 }
