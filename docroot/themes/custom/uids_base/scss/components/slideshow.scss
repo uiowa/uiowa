@@ -1,0 +1,32 @@
+.block-inline-blockslideshow {
+  position: relative;
+
+  .node--type-slide {
+
+    // TODO: Should pre-process the title out or make custom template instead.
+    .page-title {
+      display: none;
+    }
+
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    opacity: 0;
+    z-index: 510;
+    transform: translateZ(0px);
+    transition: all 2s ease-in-out;
+    transition-property: opacity, transform;
+
+    &:not(.first-slide) {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &.show-slide {
+      opacity: 1;
+      transform: translateZ(10px);
+      z-index: 512;
+    }
+  }
+}
