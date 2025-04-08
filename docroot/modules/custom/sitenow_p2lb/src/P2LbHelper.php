@@ -363,9 +363,9 @@ class P2LbHelper {
                 // If <div> element has class='lead',
                 // additional conversion from <div> to <p> is needed.
                 if ($dom_element->tagName == 'div') {
-                  if (str_contains('lead', $class)) {
+                  if (str_contains($class, 'lead')) {
                     $new_classes = str_replace('lead', 'element--light-intro', $class);
-                    $p = $document->createElement('p', $dom_element->nodeValue);
+                    $p = $document->createElement('p', htmlspecialchars($dom_element->nodeValue));
                     $p->setAttribute('class', $new_classes);
                     $dom_element->parentNode->replaceChild($p, $dom_element);
                   }
