@@ -157,7 +157,7 @@ class AcademicDatesForm extends FormBase {
 
         // Group items by date.
         if (isset($form['dates-wrapper']['dates'][$key])) {
-          $form['dates-wrapper']['dates'][$key]['#subtitle'][] = $item;
+          $form['dates-wrapper']['dates'][$key]['#content'][] = $item;
         }
         else {
           $form['dates-wrapper']['dates'][$key] = [
@@ -167,7 +167,7 @@ class AcademicDatesForm extends FormBase {
               '@start' => date('F j, Y', $start),
               '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
             ]),
-            '#subtitle' => [$item],
+            '#content' => [$item],
           ];
         }
       }

@@ -1,10 +1,10 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 //////////// pagination
 
 .pager {
-  @include margin($bottom: $sm, $left: 0);
+  @include utilities.margin(variables.$bottom: variables.$sm, variables.$left: 0);
   &__items {
     @extend %no-ul-list;
   }
@@ -15,7 +15,7 @@
   display: table;
   order: 1;
   content: ' ';
-  @include flex($fb: 0);
+  @include utilities.flex(variables.$fb: 0);
 }
 
 .pager::after {
@@ -23,8 +23,8 @@
 }
 
 .pager li {
-  font-size: $small-font-size;
-  @include margin($right: $xsm);
+  font-size: variables.$small-font-size;
+  @include utilities.margin(variables.$right: variables.$xsm);
 }
 
 .pager li:last-child,
@@ -43,29 +43,29 @@ screen and (min-width: 40em) {
 .pager button {
   display: block;
   text-decoration: none;
-  color: $secondary;
-  @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+  color: variables.$secondary;
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 .pager a:hover,
 .pager button:hover {
-  background: $light;
+  background: variables.$light;
 }
 
 .pager .is-active a {
   cursor: default;
-  color: $white;
-  background: $secondary;
+  color: variables.$white;
+  background: variables.$secondary;
   &:hover {
-    color: $secondary;
-    background: $primary;
+    color: variables.$secondary;
+    background: variables.$primary;
   }
 }
 
 .pager .disabled {
   cursor: not-allowed;
-  color: $grey-light;
-  @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+  color: variables.$grey-light;
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 .pager .disabled:hover {
@@ -74,66 +74,66 @@ screen and (min-width: 40em) {
 
 .pager .ellipsis::after {
   content: '\2026';
-  color: $secondary;
-  @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+  color: variables.$secondary;
+  @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 
 // uids_base styles.
 .pager {
-  margin-bottom: $mobile-height-gutter;
+  margin-bottom: variables.$mobile-height-gutter;
   margin-top: 1.5rem;
 }
 
 .pager a {
-  color: $secondary;
+  color: variables.$secondary;
   [class*=bg--black] & {
-    background-color: $secondary;
+    background-color: variables.$secondary;
   }
   [class*=bg--white] & {
-    background-color: $white;
+    background-color: variables.$white;
   }
   [class*=bg--gold] & {
-    background-color: $primary;
+    background-color: variables.$primary;
   }
   [class*=bg--gray] & {
-    background-color: $light;
+    background-color: variables.$light;
   }
 }
 .pager a:hover,
 .pager a:focus {
-  background-color: $light;
-  color: $secondary;
+  background-color: variables.$light;
+  color: variables.$secondary;
   [class*=bg--black] &,
   [class*=bg--gold] & {
-    background-color: $white;
+    background-color: variables.$white;
   }
   [class*=bg--gray] & {
-    background-color: $lighter-gray;
+    background-color: variables.$lighter-gray;
   }
 }
 
 /* Active State */
 .pager .is-active a {
-  background-color: $secondary;
-  color: $white;
+  background-color: variables.$secondary;
+  color: variables.$white;
 
   [class*=bg--gray] &,
   [class*=bg--white] & {
-    color: $white;
+    color: variables.$white;
   }
 
   [class*=bg--black] & {
-    background-color: $primary;
-    color: $secondary;
+    background-color: variables.$primary;
+    color: variables.$secondary;
   }
 
   /* Active Hover/Focus States */
   &:hover, &:focus {
-    background-color: $primary;
-    color: $secondary;
+    background-color: variables.$primary;
+    color: variables.$secondary;
     [class*=bg--black] &,
     [class*=bg--gold] & {
-      background-color: $white;
+      background-color: variables.$white;
     }
   }
 }

@@ -1,12 +1,12 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .layout--fourcol {
   .layout__spacing_container {
-    @include grid-base;
-    @include breakpoint(md) {
+    @include utilities.grid-base;
+    @include utilities.breakpoint(md) {
       // @todo Move to UIDS as a four column mixin.
-      gap: $desktop-width-gutter;
+      gap: variables.$desktop-width-gutter;
       grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
     }
   }
@@ -21,7 +21,7 @@
 // @todo remove this when https://github.com/uiowa/uiowa/issues/4317 is complete.
 .layout--fourcol.grid--1-3.section-order__reversed  .layout__spacing_container {
   display: inherit;
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: grid;
   }
 }

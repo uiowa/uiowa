@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 @page {
   margin: 1cm;
@@ -33,7 +33,7 @@
   display: block !important;
 }
 .page__container--edge .layout__spacing_container,
-.page__container--edge .banner__image {
+.page__container--edge .media--image {
   margin-inline: 1.25rem;
 }
 .block-padding__bottom {
@@ -92,10 +92,10 @@ p, ul, ol, dl {
 /* Links and Buttons
 ----------------------------------------- */
 a, a:visited {
-  color: $link-color !important;
+  color: variables.$link-color !important;
   text-decoration: underline !important;
   & .headline__heading {
-    color: $link-color !important;
+    color: variables.$link-color !important;
   }
 }
 
@@ -180,7 +180,7 @@ abbr[title]::after {
   position: relative;
 }
 
-.banner__image img {
+.banner .media--image img {
   position: initial;
 }
 
@@ -264,7 +264,7 @@ blockquote.blockquote--img-above .blockquote__paragraph::after {
 /* Tags
 ----------------------------------------- */
 .tags-list__tag {
-  background-color: $light !important;
+  background-color: variables.$light !important;
 }
 .tags-list .views-field {
   font-size: 12pt;

@@ -399,10 +399,9 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     $form['field_teaser']['#group'] = 'node_teaser';
 
     // If we're in v3 or a non-page content type in v2 (article, person),
-    // then disable the field_teaser and add help text.
+    // then remove access to the field_teaser.
     if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
-      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
-      $form['field_teaser']['#disabled'] = TRUE;
+      $form['field_teaser']['#access'] = FALSE;
     }
   }
 
@@ -534,6 +533,12 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['logo']['#access'] = FALSE;
         $form['favicon']['#access'] = FALSE;
         $form['layout']['#access'] = FALSE;
+      }
+      break;
+
+    case 'system_site_maintenance_mode':
+      if ($access->isForbidden()) {
+        $form['maintenance_mode']['#access'] = FALSE;
       }
       break;
 

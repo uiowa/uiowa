@@ -369,6 +369,9 @@ function uids_base_preprocess_page(&$variables) {
         '#type' => 'link',
         '#title' => t('Admin Login'),
         '#url' => $login_url,
+        '#attributes' => [
+          'rel' => 'nofollow',
+        ],
       ];
     }
   }
@@ -522,6 +525,16 @@ function uids_base_preprocess_field(&$variables) {
   $variables['view_mode'] = $variables['element']['#view_mode'];
 
   switch ($variables['field_name']) {
+    case 'field_uiowa_image_caption':
+      foreach ($variables['items'] as &$item) {
+        $item['content'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'figcaption',
+          '#value' => $variables['element']['#object']->get('field_uiowa_image_caption')->value,
+        ];
+      }
+      break;
+
     case 'field_image':
       // If this is a full view mode, set the page_featured_image variable, add
       // the breadcrumb block to the variables, and add the caption to the
@@ -602,7 +615,7 @@ function uids_base_preprocess_layout(&$variables) {
 
     switch ($layout->id()) {
       case 'layout_onecol':
-        // @todo remove once https://caniuse.com/css-has greater support.
+        // @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
         $contains_menu = FALSE;
 
         foreach (Element::children($variables['content']) as $region) {
@@ -753,11 +766,10 @@ function uids_base_preprocess_layout(&$variables) {
 
         // Set default for banner gradient.
         if ($variables['banner_settings']['transparent'] || $title_hidden) {
-          $variables['attributes']['class'][] = 'banner--transparent';
+          $variables['attributes']['class'][] = 'banner--overlay-none';
         }
         else {
-          $variables['attributes']['class'][] = 'banner--gradient-bottom';
-          $variables['attributes']['class'][] = 'banner--gradient-dark';
+          $variables['attributes']['class'][] = 'banner--overlay-btt';
         }
 
         // Set other banner default classes.
@@ -1034,6 +1046,11 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
   }
 
+  // Add banner__text class for caption to receive banner text colors.
+  if ($variables['derivative_plugin_id'] === 'node:article:field_image_caption') {
+    $variables['attributes']['class'][] = 'banner__text';
+  }
+
 }
 
 /**
@@ -1075,6 +1092,24 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   // "False" designates a single-select accordion.
   $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
     $block->field_accordion_type->value === 'multi_select') ? 'true' : 'false';
+
+  // Assemble the aria-owns attribute for the accordion.
+  $accordion_item_id = 'accordion-item-' . $block->id();
+  $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
+  $variables['aria_owns'] = [];
+  foreach ($items as $delta) {
+    $unique_id = $accordion_item_id . '-' . $delta;
+
+    // Set the unique ID to a stored value if it exists.
+    $paragraph = $variables['elements']['content']['field_uiowa_collection_items'][$delta]['#paragraph'];
+    if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+      $unique_id = $paragraph->get('field_unique_id')->value;
+    }
+    $variables['aria_owns'][] = $unique_id;
+  }
+  // Convert this to a comma-separated string as that is how it will be printed
+  // in the template.
+  $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
 }
 
 /**
@@ -1187,12 +1222,39 @@ function uids_base_preprocess_paragraph(&$variables) {
 
       // If our bundle is the collection item and we have a
       // 'field_automatically_open' value set...
-      if ($paragraph->bundle() === 'uiowa_collection_item' &&
-        $opened = $paragraph->field_automatically_open->value) {
-        // Pass a true or false based upon the value to the template.
-        // Template: docroot/themes/custom/uids_base/uids_base.theme .
-        $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
+      if ($paragraph->bundle() === 'uiowa_collection_item') {
+        $variables['accordion_type'] = (!isset($parent->field_accordion_type->value) ||
+          $parent->field_accordion_type->value === 'multi_select') ? 'multi' : 'single';
+
+        if ($opened = $paragraph->field_automatically_open->value) {
+          // Pass a true or false based upon the value to the template.
+          // Template: docroot/themes/custom/uids_base/uids_base.theme .
+          $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
+        }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function uids_base_preprocess_paragraph__uiowa_collection_item(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if (!$admin_context->isAdminRoute()) {
+
+    $block = $paragraph->getParentEntity();
+    if ($block instanceof ContentEntityInterface) {
+      $unique_id = 'accordion-item-' . $block->id() . '-' . $variables['delta'];
+      if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+        $unique_id = $paragraph->get('field_unique_id')->value;
+      }
+      $variables['accordion_item_id'] = $unique_id;
     }
   }
 }

@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../../uids/scss/abstracts/_variables.scss';
+@use '../../../../uids/scss/abstracts/_utilities.scss';
 
 .region-primary-menu .menu,
 .sf-menu {
@@ -13,7 +13,7 @@
 }
 
 .region-primary-menu {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     display: flex;
     align-items: center;
   }
@@ -41,7 +41,7 @@
 }
 
 .block-superfish {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     display: flex;
     margin-left: auto;
   }
@@ -60,7 +60,7 @@
   display: block;
   right: 0;
   padding: 0.625rem 0.625rem 0.625rem 0;
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 .block-superfish #superfish-main-toggle:before {
@@ -102,12 +102,12 @@
 .block-superfish .menu li a {
   padding: 1.05rem;
   text-decoration: none;
-  color: $secondary;
+  color: variables.$secondary;
   font-weight: 600;
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding: 1.35rem .75rem;
   }
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     padding: 1.35rem 1.25rem;
   }
 }
@@ -260,7 +260,7 @@ ul.sf-menu.sf-horizontal > li > a {
 
 ul.sf-menu.sf-horizontal > li > .nolink:after,
 ul.sf-menu.sf-horizontal > li > a:after {
-  background: $primary;
+  background: variables.$primary;
 }
 
 ul.sf-menu.sf-horizontal > li .nolink:after,
@@ -286,7 +286,7 @@ ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1:after {
 }
 
 ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1:hover:after {
-  background: $primary;
+  background: variables.$primary;
 }
 
 ul.sf-menu.sf-horizontal > li.sfHover > .nolink:after,
@@ -300,7 +300,7 @@ ul.sf-menu.sf-horizontal > li:hover > a:after {
   left: 0;
   width: 100%;
   height: 5px;
-  background: $primary;
+  background: variables.$primary;
 }
 
 ul.sf-menu.sf-horizontal li ul a:focus {
@@ -318,7 +318,7 @@ ul.sf-menu.sf-horizontal > li.sfHover > .sf-depth-1.menuparent:before {
 }
 
 ul.sf-menu.sf-horizontal > li:first-child > .sf-depth-1 {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding-left: 0;
   }
 }
@@ -329,7 +329,7 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
 
 // Accordion.
 .sf-accordion li .sf-depth-1 {
-  color: $secondary;
+  color: variables.$secondary;
   background: #fff;
   font-size: 1.6rem;
 }
@@ -363,7 +363,7 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
 }
 
 .sf-accordion .sf-clone-parent .nolink {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }
 
 .sf-accordion li.sf-expanded .sf-depth-1.menuparent:before {
@@ -386,7 +386,7 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
   line-height: 1;
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 .sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
@@ -471,12 +471,12 @@ ul.sf-accordion ul:focus-within {
 }
 
 .menu.sf-accordion ul li a.is-active {
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 ul.sf-menu.sf-accordion .active-trail.sf-depth-1 > .sf-depth-1,
 ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
-  border-bottom: 4px solid $primary;
+  border-bottom: 4px solid variables.$primary;
   padding-bottom: 0.3rem;
   margin-bottom: 0.6rem;
 }
@@ -535,7 +535,7 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
 
 // Positioning adjustments.
 .sf-horizontal .sf-depth-1.sf-no-children + .sf-depth-1.sf-no-children > a {
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     padding-left: 1rem;
   }
 }

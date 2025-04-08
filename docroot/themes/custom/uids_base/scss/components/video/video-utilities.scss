@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 .embed-responsive {
   position: relative;
@@ -41,12 +41,12 @@
 
 @mixin container-query() {
   @supports (contain: inline-size) {
-    @container column (min-width: #{$break-sm}) {
+    @container column (min-width: #{variables.$break-sm}) {
       @content
     }
   }
   @supports not (contain: inline-size) {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       @content
     }
   }
@@ -54,16 +54,20 @@
 
 // Media alignment
 
-@media (min-width: 576px) {
+
   .align-right{
     &.media, .media, figcaption {
-      margin-left: $gutter;
+      @include utilities.breakpoint(sm) {
+        margin-left: variables.$gutter;
+      }
     }
   }
 
   .align-left {
     &.media, .media, figcaption {
-      margin-right: $gutter;
+      @include utilities.breakpoint(sm) {
+        margin-right: variables.$gutter;
+      }
     }
 
   }
@@ -71,23 +75,31 @@
   .align-right.media--type-remote-video:not(.media--view-mode-vertical),
   .align-right.media--type-panopto {
     width: auto;
-    margin-left: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-left: variables.$gutter;
+    }
     .field--name-field-media-oembed-video iframe,
     .field--name-field-media-panopto-url iframe {
-      float: right;
+      @include utilities.breakpoint(sm) {
+        float: right;
+      }
     }
   }
   .align-left.media--type-remote-video:not(.media--view-mode-vertical),
   .align-left.media--type-panopto {
     width: auto;
-    margin-right: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-right: variables.$gutter;
+    }
     .field--name-field-media-oembed-video iframe,
     .field--name-field-media-panopto-url iframe {
-      float: left;
+      @include utilities.breakpoint(sm) {
+        float: left;
+      }
     }
   }
 
-}
+
 
 .align-center.media--type-remote-video,
 .align-center.media--type-panopto {
@@ -123,7 +135,7 @@
   &.media--view-mode-medium,
   &.media--view-mode-small,
   figure.caption & {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding-bottom: 0;
     }
   }
@@ -140,7 +152,7 @@ figure.caption .media--type-panopto iframe,
 .media--type-panopto.media--view-mode-medium iframe,
 .media--type-panopto.media--view-mode-large iframe,
 .media--type-panopto.media--view-mode-small iframe {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     position: unset;
     display: inherit;
     width: auto;
@@ -158,7 +170,7 @@ figure.caption .media--type-panopto.media--view-mode-full iframe,
 .media--type-remote-video.media--view-mode-large iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
 .media--type-panopto.media--view-mode-large iframe {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     width: 854px;
     height: 480px;
   }
@@ -170,7 +182,7 @@ figure.caption .media--type-panopto.media--view-mode-medium iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-medium iframe,
 .media--type-panopto.media--view-mode-medium iframe{
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     width: 640px;
     height: 360px;
   }
@@ -182,7 +194,7 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small iframe,
 .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-image-small iframe {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     width: 426px;
     height: 240px;
   }
@@ -239,7 +251,7 @@ figure.caption-drupal-media {
   width: calc(100%);
   margin: 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     width: unset;
     margin: inherit;
   }

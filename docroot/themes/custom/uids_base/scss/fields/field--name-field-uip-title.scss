@@ -1,8 +1,8 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .field--name-field-uip-title {
-  @include h2;
+  @include utilities.h2;
 }
 
 .paragraph--type--section.has-section-image {
@@ -20,7 +20,7 @@
 
 .paragraph--type--section.bg-dark {
   .field--name-field-uip-title {
-    color: $white;
+    color: variables.$white;
   }
 }
 

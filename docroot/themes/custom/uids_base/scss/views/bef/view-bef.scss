@@ -1,8 +1,8 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 // bef--sidebar is for the styling the advanced details toggle within a sidebar column.
-@import "view-bef--sidebar";
+@use 'view-bef--sidebar';
 // Use "bef-form" class for a full-width wide search box within a one column layout.
 // Use "bef-form bef-form--sidebar" if you want the same design within a sidebar column.
 
@@ -27,17 +27,17 @@
     .form-item-combine label,
     .form-item-title label,
     .form-item-search label {
-      @include element-invisible;
+      @include utilities.element-invisible;
     }
   }
 
   .form-type-textfield {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       grid-area: 1 / 1 / 2 / 3;
     }
   }
   .form-type-select {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       grid-area: 1 / 1 / 2 / 3;
     }
   }
@@ -68,7 +68,7 @@
       &.form-item {
         align-self: end;
 
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           margin-top: 0;
         }
       }
@@ -76,7 +76,7 @@
 
     &.form-item {
       > .details-wrapper {
-        background: $white;
+        background: variables.$white;
         overflow: auto;
         max-height: 346px;
         box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
@@ -91,9 +91,9 @@
         padding: 0.5rem;
         margin: 0;
         transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        color: $grey;
-        border: 1px solid $grey-light;
-        background-color: $white;
+        color: variables.$grey;
+        border: 1px solid variables.$grey-light;
+        background-color: variables.$white;
         box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
         font-family: inherit;
         font-size: 1rem;
@@ -131,7 +131,7 @@
 
   .bef--secondary[open] {
     margin-bottom: 1rem;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-bottom: 0;
     }
   }
@@ -139,7 +139,7 @@
   .bef--secondary[open] > summary {
     border-bottom: none;
     margin-bottom: 0;
-    padding: 0 0 #{2 * $xsm-sm};
+    padding: 0 0 #{2 * variables.$xsm-sm};
   }
 
   summary {
@@ -165,10 +165,10 @@
   }
 
   summary::before {
-    padding: $xsm 0.6rem $xsm $xsm;
+    padding: variables.$xsm 0.6rem variables.$xsm variables.$xsm;
     content: "\f13a";
-    color: $brand-cool-gray;
-    @include fas();
+    color: variables.$brand-cool-gray;
+    @include utilities.fas();
   }
 
   &[open] > summary::before {
@@ -185,7 +185,7 @@
         z-index: 500;
         display: flex;
         flex-direction: column;
-        border: 1px solid $grey-light;
+        border: 1px solid variables.$grey-light;
         position: absolute;
         padding: 0;
         top: calc(var(--elemHeight) - 1px);
@@ -199,13 +199,13 @@
 // === "Select all" toggle  === //
 .bef-form {
   .bef-toggle {
-    padding: #{2 * $xsm-sm} $xsm-sm;
+    padding: #{2 * variables.$xsm-sm} variables.$xsm-sm;
     display: block;
     border: none;
-    border-bottom: 1px solid $grey-light;
+    border-bottom: 1px solid variables.$grey-light;
     text-decoration: none;
     font-size: 0.8rem;
-    color: $grey;
+    color: variables.$grey;
 
     &:focus {
       font-weight: bold;
@@ -222,10 +222,10 @@
     gap: 1rem;
     align-self: self-end;
     margin: 1rem 0 0;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       gap: 0.7rem;
     }
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       grid-area: 1 / 3 / 2 / 4;
       margin-top: 0;
     }
@@ -235,17 +235,17 @@
     .bef-exposed-form .form--inline {
       display: grid;
       gap: 1rem;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: flex !important;
         column-gap: 1rem;
       }
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         column-gap: 0;
       }
     }
 
     .bef-exposed-form .form--inline .form-item {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         flex: 1;
       }
     }
@@ -256,10 +256,10 @@
 
     &[data-drupal-form-fields*="edit-reset--"] {
       .bef--secondary {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           width: calc(100% + 173px);
         }
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           width: calc(100% + 183px);
         }
       }
@@ -268,10 +268,10 @@
     .button {
       flex: 1;
       &[id*="edit-submit"] {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           min-width: 5rem;
         }
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           min-width: 5.7rem;
         }
       }
@@ -283,7 +283,7 @@
       margin-top: 0;
       margin-bottom: 0;
       margin-right: 0;
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         margin-right: 1rem;
         &:last-child {
           margin-right: 0;
@@ -296,13 +296,13 @@
     }
 
     .form--inline > .form-item.form-type-textfield {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-right: 1rem;
       }
     }
 
     .form--inline {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: grid !important;
         grid-template-columns: minmax(50%, 1fr) 25%;
         grid-column-gap: 0;
@@ -324,14 +324,14 @@
 .bef-form {
   .bef--secondary {
     margin-top: 1rem;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       grid-area: 2 / 1 / 3 / 3;
     }
 
     .details-wrapper {
       display: grid;
       gap: 1rem;
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         display: flex;
         align-items: center;
         gap: 0;
@@ -341,11 +341,11 @@
     .js-form-item {
       flex: 1;
     }
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       width: calc(100% + 85px);
       padding-top: 0;
     }
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       width: calc(100% + 91px);
     }
 

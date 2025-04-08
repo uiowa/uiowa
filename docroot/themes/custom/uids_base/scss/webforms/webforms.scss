@@ -1,19 +1,19 @@
-@use "sass:color";
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .webform-submission-form {
   label {
     font-size: 1.1rem;
-    font-weight: $font-weight-bold;
+    font-weight: variables.$font-weight-bold;
     line-height: 1.6;
   }
   span.form-required {
     position: relative;
     &:after {
-      margin: 0 $xsm;
+      margin: 0 variables.$xsm;
       content: "*";
-      color: $danger;
+      color: variables.$danger;
       vertical-align: middle;
     }
   }
@@ -33,7 +33,7 @@
     & .fieldset-legend {
       display: block;
       font-size: 1.1rem;
-      font-weight: $font-weight-bold;
+      font-weight: variables.$font-weight-bold;
       line-height: 1.6;
     }
   }
@@ -44,12 +44,12 @@
   }
 
   .webform-element-help {
-    background: $brand-cool-gray;
-    border: 2px solid $brand-cool-gray;
+    background: variables.$brand-cool-gray;
+    border: 2px solid variables.$brand-cool-gray;
     &:hover,
     &:focus {
-      border: 2px solid $info;
-      background: $info;
+      border: 2px solid variables.$info;
+      background: variables.$info;
     }
   }
 
@@ -65,7 +65,7 @@
     clear: both;
   }
   .description {
-    margin: $xsm 0;
+    margin: variables.$xsm 0;
     flex-basis: 100%;
   }
   input + .description,
@@ -85,8 +85,8 @@
     }
   }
   .description .webform-element-more {
-    margin-top: $xsm;
-    margin-block-start: $xsm;
+    margin-top: variables.$xsm;
+    margin-block-start: variables.$xsm;
   }
 
   // --------------------------------
@@ -106,7 +106,7 @@
   }
   [type='checkbox']+label,
   [type='radio']+label {
-    font-weight: $font-weight-normal;
+    font-weight: variables.$font-weight-normal;
   }
   .webform-type-checkboxes,
   .webform-checkboxes-other,
@@ -122,7 +122,7 @@
       }
     }
     & legend {
-      margin-bottom: $xsm;
+      margin-bottom: variables.$xsm;
     }
     & .fieldset-wrapper {
       margin-left: 0;
@@ -192,11 +192,11 @@
   [type='url'].error,
   textarea.error,
   select.error {
-    border: 1px solid $danger;
-    background-color: $danger-light;
+    border: 1px solid variables.$danger;
+    background-color: variables.$danger-light;
     &:focus {
-      border: 1px solid $danger;
-      box-shadow: 0 0 5px $danger-light;
+      border: 1px solid variables.$danger;
+      box-shadow: 0 0 5px variables.$danger-light;
     }
   }
 
@@ -206,12 +206,12 @@
   .webform-scale {
     & input:checked + label {
       [class*="bg--gold"] & {
-        border-color: $secondary;
-        background-color: $light;
-        color: $secondary;
+        border-color: variables.$secondary;
+        background-color: variables.$light;
+        color: variables.$secondary;
       }
       [class*="bg--black"] & {
-        background-color: color.scale(#FFCD00, $lightness: 40%);
+        background-color: color.scale(#FFCD00, variables.$lightness: 40%);
       }
     }
     & input:checked:focus + label {
@@ -224,10 +224,10 @@
   // --------------------------------
   .webform-button--next,
   .webform-button--previous {
-    @include bttn--secondary;
+    @include utilities.bttn--secondary;
     [class*="bg--black"] & {
-      background: $light;
-      color: $secondary;
+      background: variables.$light;
+      color: variables.$secondary;
     }
   }
   .webform-progress-tracker .progress-text,
@@ -242,10 +242,10 @@
     top: .8rem;
   }
   .webform-progress-tracker .progress-step.is-active .progress-marker::before {
-    background-color: $primary;
-    color: $secondary;
+    background-color: variables.$primary;
+    color: variables.$secondary;
     [class*="bg--gold"] & {
-      background: $secondary;
+      background: variables.$secondary;
       color: #fff;
     }
   }
@@ -270,13 +270,13 @@
     }
     &--glyph:after {
       [class*="bg--gray"] & {
-        background-color: $light;
+        background-color: variables.$light;
       }
       [class*="bg--gold"] & {
-        background-color: $primary;
+        background-color: variables.$primary;
       }
       [class*="bg--black"] & {
-        background-color: $secondary;
+        background-color: variables.$secondary;
       }
     }
   }

@@ -22,8 +22,10 @@ class Book extends NodeBundleBase implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#subtitle' => $subtitle,
-      '#meta' => 'field_book_type',
+      '#meta' => [
+        $subtitle,
+        'field_book_type',
+      ],
     ]);
 
     $build['#title_heading_size'] = 'h3';

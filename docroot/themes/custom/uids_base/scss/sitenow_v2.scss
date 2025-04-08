@@ -1,7 +1,7 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/base/_headings.scss";
-@import "uids/scss/components/_headline.scss";
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+@use '../uids/scss/base/_headings.scss';
+@use '../uids/scss/components/_headline.scss';
 
 // @todo https://github.com/uiowa/uiowa/issues/6584
 
@@ -12,7 +12,7 @@
   h5,
   h6 {
     &.headline.default {
-      color: $secondary;
+      color: variables.$secondary;
     }
   }
 }
@@ -24,7 +24,7 @@
   h5,
   h6 {
     &.headline.default {
-      color: $secondary;
+      color: variables.$secondary;
     }
   }
 }
@@ -46,7 +46,7 @@ html {
 }
 
 .bg-light {
-  @include bg-light;
+  @include utilities.bg-light;
 }
 
 .bg-dark>*,
@@ -58,23 +58,23 @@ html {
 .bg-dark .bg-yellow *:not(.btn):not(.bttn),
 .bg-black .bg-light *:not(.btn):not(.bttn),
 .bg-black .bg-yellow *:not(.btn):not(.bttn) {
-  color: $secondary !important;
+  color: variables.$secondary !important;
 }
 
 .text-light {
-  @include text-light
+  @include utilities.text-light
 }
 
 .bg-dark {
-  @include bg-dark;
+  @include utilities.bg-dark;
 }
 
 .bg-black {
-  @include bg-black;
+  @include utilities.bg-black;
 }
 
 .bg-yellow {
-  @include bg-yellow;
+  @include utilities.bg-yellow;
 }
 
 // Grid
@@ -86,7 +86,7 @@ html {
   .block-local-tasks-block,
   .content-moderation-entity-moderation-form {
     clear: both;
-    @include container-width;
+    @include utilities.container-width;
   }
 }
 
@@ -98,7 +98,7 @@ html {
 }
 
 .container {
-  @include fullwidth-container;
+  @include utilities.fullwidth-container;
 }
 
 @media (min-width: 1200px) {
@@ -132,8 +132,8 @@ html {
 @mixin col-base {
   position: relative;
   width: 100%;
-  padding-right: $gutter;
-  padding-left: $gutter;
+  padding-right: variables.$gutter;
+  padding-left: variables.$gutter;
 }
 
 .col-sm-6,
@@ -150,8 +150,8 @@ html {
 .col-md-12 {
   position: relative;
   width: 100%;
-  padding-right: $gutter;
-  padding-left: $gutter;
+  padding-right: variables.$gutter;
+  padding-left: variables.$gutter;
 }
 
 .col-md.paragraph--type--card,
@@ -163,7 +163,7 @@ html {
 
 
 .col {
-  @include flex(1, 0, 0);
+  @include utilities.flex(1, 0, 0);
   max-width: 100%;
 }
 
@@ -194,35 +194,35 @@ html {
 
 
 .col-md {
-  @include breakpoint(md) {
-    @include flex(1, 0, 0);
+  @include utilities.breakpoint(md) {
+    @include utilities.flex(1, 0, 0);
     max-width: 100%;
   }
 }
 
 .col-md-3 {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     flex: 0 0 25%;
     max-width: 25%;
   }
 }
 
 .col-md-4 {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
 }
 
 .col-md-6 {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     flex: 0 0 50%;
     max-width: 50%;
   }
 }
 
 .col-md-12 {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -233,21 +233,21 @@ html {
 
 
 .col-xl-3 {
-  @include breakpoint(lg) {
+  @include utilities.breakpoint(lg) {
     flex: 0 0 25%;
     max-width: 25%;
   }
 }
 
 .col-xl-9 {
-  @include breakpoint(lg) {
+  @include utilities.breakpoint(lg) {
     flex: 0 0 75%;
     max-width: 75%;
   }
 }
 
 .col-xl-12 {
-  @include breakpoint(lg) {
+  @include utilities.breakpoint(lg) {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -396,14 +396,14 @@ html {
 // field
 
 .field--label-inline {
-  @include clearfix;
+  @include utilities.clearfix;
 }
 
 
 // mark
 
 mark {
-  background-color: $primary;
+  background-color: variables.$primary;
   padding: 0.1em;
 }
 
@@ -450,9 +450,9 @@ figure.caption .embedded-entity+figcaption {
 // Btn
 
 .btn {
-  @include bttn;
+  @include utilities.bttn;
   text-transform: uppercase;
-  font-family: $font-family-caps-bold;
+  font-family: variables.$font-family-caps-bold;
   padding: 1rem 2rem;
 }
 
@@ -462,25 +462,25 @@ figure.caption .embedded-entity+figcaption {
 .btn-info,
 .btn-warning,
 .btn-link {
-  @include bttn--secondary;
-  border: 1px solid $secondary;
-  @include bttn--focus;
+  @include utilities.bttn--secondary;
+  border: 1px solid variables.$secondary;
+  @include utilities.bttn--focus;
   span {
-    color: $white;
+    color: variables.$white;
   }
 }
 
 .btn-primary,
 .button--primary {
-  @include bttn--primary;
-  border: 1px solid $primary;
-  @include bttn--focus;
+  @include utilities.bttn--primary;
+  border: 1px solid variables.$primary;
+  @include utilities.bttn--focus;
 
   &:after {
-    background-color: $secondary;
+    background-color: variables.$secondary;
   }
   span {
-    color: $secondary;
+    color: variables.$secondary;
   }
 }
 
@@ -492,51 +492,51 @@ figure.caption .embedded-entity+figcaption {
 // Primary button
 .bg-dark .bttn--primary,
 .bg-black .bttn--primary {
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 .bg-yellow .bttn--primary {
-  color: $white;
-  background: $secondary;
-  border: 1px solid $secondary;
+  color: variables.$white;
+  background: variables.$secondary;
+  border: 1px solid variables.$secondary;
   &:after {
-    background-color: $primary;
+    background-color: variables.$primary;
   }
 }
 
 // Secondary button
 .bg-yellow .bttn--secondary,
 .bg-light .bttn--secondary {
-  color: $white;
+  color: variables.$white;
 }
 
 .bg-black .bttn--secondary {
-  background-color: $primary;
-  color: $secondary;
-  border: 1px solid $primary;
+  background-color: variables.$primary;
+  color: variables.$secondary;
+  border: 1px solid variables.$primary;
   svg {
-    color: $white;
+    color: variables.$white;
   }
   &:after {
-    background-color: $secondary;
+    background-color: variables.$secondary;
   }
 }
 
 // Nested background colors
 .bg-dark .bg-light {
   .bttn--secondary {
-    color: $white;
+    color: variables.$white;
   }
   .bttn--primary, .bttn--secondary {
     svg {
-      color: $white!important;
+      color: variables.$white!important;
     }
   }
 }
 
 .bg-light .bg-light {
   .bttn--secondary {
-    color: $white;
+    color: variables.$white;
   }
 }
 
@@ -544,19 +544,19 @@ figure.caption .embedded-entity+figcaption {
 .bg-black .bg-dark,
 .bg-light .bg-dark {
   .bttn--primary {
-    color: $secondary;
+    color: variables.$secondary;
   }
 }
 
 .bg-black .bg-dark, {
   .bttn--secondary {
-    color: $secondary;
+    color: variables.$secondary;
   }
 }
 
 .bg-black .bg-black {
   .bttn--primary, .bttn--secondary {
-    color: $secondary;
+    color: variables.$secondary;
   }
 }
 
@@ -564,13 +564,13 @@ figure.caption .embedded-entity+figcaption {
 .bg-dark .bg-yellow,
 .bg-black .bg-yellow {
   .bttn--primary, .bttn--secondary {
-    color: $white;
-    background: $secondary;
+    color: variables.$white;
+    background: variables.$secondary;
     svg {
-      color: $primary;
+      color: variables.$primary;
     }
     &:after {
-      background: $primary;
+      background: variables.$primary;
     }
   }
 }
@@ -578,7 +578,7 @@ figure.caption .embedded-entity+figcaption {
 .bg-yellow .bg-light,
 .bg-light .bg-yellow {
   .bttn--primary, .bttn--secondary {
-    color: $white;
+    color: variables.$white;
   }
 }
 
@@ -586,12 +586,12 @@ figure.caption .embedded-entity+figcaption {
 .bg-yellow .bg-black,
 .bg-dark .bg-black{
   .bttn--primary, .bttn--secondary {
-    color: $secondary;
-    background: $primary;
-    border: 1px solid $primary;
+    color: variables.$secondary;
+    background: variables.$primary;
+    border: 1px solid variables.$primary;
 
     &:after {
-      background-color: $secondary;
+      background-color: variables.$secondary;
     }
 
     svg {

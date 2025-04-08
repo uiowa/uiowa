@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 .bef-form.bef-form--sidebar {
   .bef-exposed-form {
@@ -37,13 +37,13 @@
       .form-actions {
         grid-area: unset;
         flex-wrap: wrap;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           gap: 0;
         }
 
         .button {
           margin: 0 0 1rem;
-          @include breakpoint(sm) {
+          @include utilities.breakpoint(sm) {
             flex-basis: 100%;
           }
         }
@@ -67,7 +67,7 @@
       // Sort select.
       &[data-drupal-form-fields*="edit-reset--"] {
         .form-item:not(:last-child).form-item-sort-bef-combine {
-          @include breakpoint(sm) {
+          @include utilities.breakpoint(sm) {
             width: 100%;
           }
         }
@@ -80,7 +80,7 @@
         padding: 0 0 1rem;
         grid-column: 1/-1;
         margin: 1rem 0;
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           padding: 0;
           grid-area: unset;
           width: auto;
@@ -102,7 +102,7 @@
 
   .bef--secondary {
     .details-wrapper {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: block;
       }
     }

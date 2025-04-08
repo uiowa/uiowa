@@ -1,3 +1,6 @@
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+
 // Fix for off-canvas dialog update button being hidden.
 .ui-dialog-off-canvas #drupal-off-canvas:not(.drupal-off-canvas-reset),
 .ui-dialog-off-canvas #drupal-off-canvas-wrapper {
@@ -16,9 +19,9 @@
 #drupal-off-canvas:not(.drupal-off-canvas-reset),
 #drupal-off-canvas-wrapper  {
   .media-library-selection {
-    @include grid-base;
-    @include breakpoint(sm) {
-      @include threecol-grid;
+    @include utilities.grid-base;
+    @include utilities.breakpoint(sm) {
+      @include utilities.threecol-grid;
     }
   }
 }
@@ -72,7 +75,7 @@
     a {
       color: #000 !important;
       background: inherit !important;
-      font-size: $small-font-size;
+      font-size: variables.$small-font-size;
     }
   }
 }
@@ -165,7 +168,7 @@
 // Styles for smart date date range.
 #drupal-off-canvas:not(.drupal-off-canvas-reset) .smartdate--time-inline,
 #drupal-off-canvas-wrapper .smartdate--time-inline {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -194,7 +197,7 @@
 
 #drupal-off-canvas-wrapper .alert  {
   display: flex;
-  background: $danger-light;
+  background: variables.$danger-light;
   border-color: rgba(0,0,0,.125);
   border-radius: 2px;
   padding: 1.5rem!important;
@@ -220,11 +223,11 @@
 }
 
 #drupal-off-canvas-wrapper .alert a {
-  color: $link-color;
+  color: variables.$link-color;
 }
 
 #drupal-off-canvas-wrapper .alert button  {
-  color: $secondary;
+  color: variables.$secondary;
   position: absolute;
   right: 1.2rem;
   top: 1rem;
@@ -233,7 +236,7 @@
 }
 
 #drupal-off-canvas-wrapper form .alert div {
-  color: $secondary;
+  color: variables.$secondary;
 }
 
 #drupal-off-canvas-wrapper .alert ul.item-list__comma-list {

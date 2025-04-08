@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 @media (hover:none),
 (hover:on-demand) {
@@ -14,7 +14,7 @@
   left: 1.25rem;
   bottom: 1.25rem;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     left: 3rem;
     bottom: 3rem;
   }
@@ -37,20 +37,20 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  color: $secondary;
+  color: variables.$secondary;
   border: 1px solid white;
   border-radius: 50%;
   background: white;
   font-size: 1rem;
   padding: 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: block;
   }
 
   &::after {
     content: "\f04b";
-    @include fas();
+    @include utilities.fas();
     font-size: 1rem;
   }
 
@@ -67,7 +67,7 @@
 
 .hero__video {
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: block;
   }
 }
@@ -78,13 +78,13 @@
 .hero {
   .breadcrumb {
     li {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         color: white;
       }
     }
 
     a {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         color: white;
       }
     }
@@ -100,7 +100,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  background: $secondary;
+  background: variables.$secondary;
 
   img {
     width: 100%;
@@ -140,9 +140,9 @@ img.hero-image {
 
 .hero__content-center {
   .bold-headline.bold-headline--serif {
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       display: block;
     }
   }
@@ -151,29 +151,29 @@ img.hero-image {
 .hero {
   .bttn--secondary {
     z-index: 1;
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
     background: #fff;
-    color: $secondary;
+    color: variables.$secondary;
     display: block;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       color: #fff;
       display: inline-block;
     }
 
 
-    @include breakpoint(sm) {
-      margin-right: $md;
+    @include utilities.breakpoint(sm) {
+      margin-right: variables.$md;
       background: #000;
       background: rgba(0, 0, 0, 0.58);
     }
 
     &:hover,
     &:focus {
-      color: $secondary;
+      color: variables.$secondary;
 
-      @include breakpoint(sm) {
-        color: $primary;
+      @include utilities.breakpoint(sm) {
+        color: variables.$primary;
         background: #333;
         background: rgba(34, 34, 34, 0.73);
 
@@ -194,7 +194,7 @@ img.hero-image {
     line-height: 1.5;
     margin-top: 0;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       color: #fff;
       max-width: 50em;
     }
@@ -212,21 +212,21 @@ img.hero-image {
     &.bold-headline--serif {
       color: #000;
 
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         color: #fff;
       }
     }
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       text-shadow: 0 1px 1px #000;
       font-size: calc(100% + 2.5vw);
     }
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-bottom: .3rem;
     }
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       font-size: calc(100% + 3.5vw);
     }
   }
@@ -251,15 +251,15 @@ img.hero-image {
   width: 100%;
   position: relative;
   background: #fff;
-  padding: $gutter;
+  padding: variables.$gutter;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     bottom: 35%;
     position: absolute;
   }
 
-  @include breakpoint(page-container) {
-    padding: $gutter 0;
+  @include utilities.breakpoint(page-container) {
+    padding: variables.$gutter 0;
   }
 }
 
@@ -269,35 +269,35 @@ img.hero-image {
   display: grid;
   width: 100%;
   background: white;
-  padding: 0 $gutter;
+  padding: 0 variables.$gutter;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     position: absolute;
     background: transparent;
-    padding: $gutter;
-    max-width: $container-width;
+    padding: variables.$gutter;
+    max-width: variables.$container-width;
   }
 
-  @include breakpoint(page-container) {
-    padding: $gutter 0;
+  @include utilities.breakpoint(page-container) {
+    padding: variables.$gutter 0;
   }
 }
 
 .hero .hero__content-center {
-  padding: $lg 0;
+  padding: variables.$lg 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     background: transparent;
   }
 }
 
 .hero__content-bottom,
 .hero__content-center {
-  padding: 0 $md;
+  padding: 0 variables.$md;
   grid-template-columns: repeat(1, 1fr);
   justify-self: stretch;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     position: absolute;
     background: transparent;
     grid-column: 1/-1;
@@ -305,16 +305,16 @@ img.hero-image {
     grid-column-gap: 1.25rem;
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     width: 81.875em;
     padding: 0;
   }
 }
 
 .hero__content-bottom {
-  padding: 0 0 $sm;
+  padding: 0 0 variables.$sm;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     bottom: 0;
   }
 }
@@ -322,7 +322,7 @@ img.hero-image {
 .hero__content-center {
   text-align: center;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     bottom: 40%;
     width: 100%;
   }
@@ -340,13 +340,13 @@ img.hero-image {
 
 .hero__content-center>*,
 .hero__content-bottom>* {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     grid-column: 1/-1;
   }
 }
 
 .hero .hero__content .bttn {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: inline-block;
   }
 }
@@ -380,7 +380,7 @@ _::-webkit-full-page-media,
 _:future,
 :root .hero__content-grid>*:nth-child(2),
 :root .hero__content-grid>*:nth-child(1) {
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     padding-top: 1rem;
   }
 }
@@ -388,7 +388,7 @@ _:future,
 _::-webkit-full-page-media,
 _:future,
 :root .hero__image img {
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     // height: 100vh;
   }
 }
@@ -398,7 +398,7 @@ _:future,
 :root .hero.hero__grid .hero__content {
   align-content: center;
 
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     //height: 100vh;
   }
 }
@@ -410,7 +410,7 @@ _:future,
   background: transparent;
   z-index: 1;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     position: absolute;
     text-align: left;
   }
@@ -428,7 +428,7 @@ _:future,
     line-height: 1;
     color: #fff;
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       font-size: calc(100% + 8vw);
     }
   }
@@ -441,19 +441,19 @@ _:future,
   background: transparent;
 
   >*:nth-child(2) {
-    @include center(vertical);
+    @include utilities.center(vertical);
 
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding-right: 3rem;
       font-size: calc(100% + .5vw);
     }
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       margin-top: 0px;
     }
   }
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     top: 0;
   }
 }
@@ -462,7 +462,7 @@ _:future,
 
 
 .hero__content-grid {
-  padding: 0 $mobile-width-gutter;
+  padding: 0 variables.$mobile-width-gutter;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 0px;
@@ -470,8 +470,8 @@ _:future,
   display: grid;
   width: 100%;
 
-  @include breakpoint(sm) {
-    padding: 0 $desktop-width-gutter;
+  @include utilities.breakpoint(sm) {
+    padding: 0 variables.$desktop-width-gutter;
   }
 }
 
@@ -480,9 +480,9 @@ _:future,
   grid-area: 2 / 1 / 3 / 4;
   color: #fff;
   text-transform: uppercase;
-  font-family: $font-family-caps-bold;
+  font-family: variables.$font-family-caps-bold;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     display: flex;
     text-align: left;
     align-self: center;
@@ -490,7 +490,7 @@ _:future,
     padding-top: 14rem;
   }
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     width: auto;
     align-self: auto;
   }
@@ -498,14 +498,14 @@ _:future,
 
 .hero__content-grid>*:nth-child(2) {
   grid-area: 3 / 1 / 4 / 4;
-  padding-bottom: $mobile-width-gutter;
+  padding-bottom: variables.$mobile-width-gutter;
 
-  @include breakpoint(sm) {
-    padding-bottom: $desktop-width-gutter;
+  @include utilities.breakpoint(sm) {
+    padding-bottom: variables.$desktop-width-gutter;
   }
 
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     grid-area: 2 / 3 / 3 / 4;
     display: flex;
     flex-wrap: wrap;
@@ -547,17 +547,17 @@ _:future,
 }
 
 .hero.hero__grid .bttn {
-  margin-top: $md;
+  margin-top: variables.$md;
   display: block;
   flex-basis: 100%;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: table;
     flex-basis: unset;
   }
 
-  @include breakpoint(page-container) {
-    margin-top: $lg;
+  @include utilities.breakpoint(page-container) {
+    margin-top: variables.$lg;
   }
 }
 
@@ -574,7 +574,7 @@ _:future,
     position: absolute;
     pointer-events: none;
     border-color: transparent;
-    border-top-color: $primary;
+    border-top-color: variables.$primary;
     border-width: 15px;
     margin-left: -15px;
   }
@@ -586,7 +586,7 @@ _:future,
 
 .hero {
   .field__label {
-    @include element-invisible;
+    @include utilities.element-invisible;
   }
 }
 

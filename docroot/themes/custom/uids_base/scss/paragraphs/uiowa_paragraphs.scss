@@ -1,7 +1,7 @@
-@use "sass:color";
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "_uiowa_paragraphs_background_overrides.scss";
+@use 'sass:color';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '_uiowa_paragraphs_background_overrides.scss';
 
 .paragraph--type--section.has-section-image {
 
@@ -9,7 +9,7 @@
   .paragraph--type--text,
   .paragraph--type--webform {
     padding: 1.25rem;
-    background-color: $white;
+    background-color: variables.$white;
   }
 }
 
@@ -25,8 +25,8 @@
 
   .paragraph--type--text.bg-black,
   .paragraph--type--webform.bg-black {
-    background-color: $secondary;
-    color: $white;
+    background-color: variables.$secondary;
+    color: variables.$white;
 
     &.semi-transparent {
       background-color: rgba(248, 249, 250, 0.8) !important;
@@ -35,8 +35,8 @@
 
   .paragraph--type--text.bg-dark,
   .paragraph--type--webform.bg-dark {
-    background-color: $brand-cool-gray;
-    color: $white;
+    background-color: variables.$brand-cool-gray;
+    color: variables.$white;
 
     &.semi-transparent {
       background-color: rgba(52, 58, 64, 0.8) !important;
@@ -45,8 +45,8 @@
 
   .paragraph--type--text.bg-light,
   .paragraph--type--webform.bg-light {
-    background-color: $light;
-    color: $dark-gray;
+    background-color: variables.$light;
+    color: variables.$dark-gray;
 
     &.semi-transparent {
       background-color: rgba(248, 249, 250, 0.8) !important;
@@ -55,8 +55,8 @@
 
   .paragraph--type--text.bg-yellow,
   .paragraph--type--webform.bg-yellow {
-    background-color: $primary;
-    color: $dark-gray;
+    background-color: variables.$primary;
+    color: variables.$dark-gray;
 
     &.semi-transparent {
       background-color: rgba(255, 205, 0, 0.8) !important;
@@ -66,12 +66,12 @@
 
 .paragraph.bg-yellow,
 .paragraph.bg-light {
-  color: $dark-gray;
+  color: variables.$dark-gray;
 }
 
 .paragraph.bg-dark,
 .paragraph.bg-black {
-  color: $white;
+  color: variables.$white;
 }
 
 .paragraph.semi-transparent {
@@ -88,12 +88,12 @@
 
 .paragraph.bg-dark.semi-transparent {
   background-color: rgba(52, 58, 64, 0.8) !important;
-  color: $white;
+  color: variables.$white;
 }
 
 .paragraph.bg-black.semi-transparent {
   background-color: rgba(21, 21, 21, 0.8) !important;
-  color: $white;
+  color: variables.$white;
 }
 
 .paragraph--type--section.bg-dark,
@@ -121,12 +121,12 @@
 // Card spacing
 
 .card__author+.field--name-field-card-body {
-  margin-top: $md;
+  margin-top: variables.$md;
 }
 
 .field--name-field-card-body {
   p+p {
-    margin-top: $md;
+    margin-top: variables.$md;
   }
 }
 
@@ -138,7 +138,7 @@
   }
 
   &.paragraph--type--card {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin-bottom: 2.5rem;
     }
   }
@@ -156,7 +156,7 @@ div.example2 p.special {
   padding-bottom: 0;
   margin-bottom: 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     padding-top: 1.5rem;
   }
 
@@ -168,7 +168,7 @@ div.example2 p.special {
   &.bg-dark,
   &.bg-black,
   &.bg-yellow {
-    //padding-top: $desktop-width-gutter;
+    //padding-top: variables.$desktop-width-gutter;
     margin-bottom: 0;
 
     &:last-child {
@@ -178,17 +178,17 @@ div.example2 p.special {
 }
 
 .field__item:first-child .paragraph--type--section {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     padding-top: 0;
   }
 }
 
 .paragraph--type--text {
-  //padding-top: $gutter;
-  padding-bottom: $gutter;
+  //padding-top: variables.$gutter;
+  padding-bottom: variables.$gutter;
 
   &.bg-light {
-    padding: $desktop-width-gutter;
+    padding: variables.$desktop-width-gutter;
   }
 }
 
@@ -216,13 +216,13 @@ div.example2 p.special {
 
 // Set padding for first paragraph section
 .layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
-  padding-top: $gutter;
+  padding-top: variables.$gutter;
 
   .paragraph--type--text.col-md-12 {
     padding-top: 0;
 
     &[class*="bg-"] {
-      padding-top: $gutter;
+      padding-top: variables.$gutter;
     }
   }
 }
@@ -234,7 +234,7 @@ div.example2 p.special {
   &.bg-dark:first-child,
   &.bg-black:first-child,
   &.bg-yellow:first-child {
-    margin-top: $gutter;
+    margin-top: variables.$gutter;
   }
 }
 
@@ -265,7 +265,7 @@ div.example2 p.special {
   &.bg-dark:first-child,
   &.bg-black:first-child,
   &.bg-yellow:first-child {
-    margin-top: $gutter;
+    margin-top: variables.$gutter;
   }
 }
 

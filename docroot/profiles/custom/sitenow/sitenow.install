@@ -42,6 +42,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
   ];
   $blocks = [];
 
+  // Track updated block revision IDs to prevent redundant updates.
+  $updated_blocks = [];
+
   foreach ($tables as $table_name) {
     // Select DB records for our $table_name.
     $query = $db->select($table_name, 'n');
@@ -93,6 +96,13 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
             $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
           }
           $block = $blocks[$revision_id];
+
+          // Skip if we've already updated this revision.
+          if (isset($updated_blocks[$revision_id])) {
+            continue;
+          }
+          // Mark this revision as updated to prevent duplicate processing.
+          $updated_blocks[$revision_id] = TRUE;
 
           if (!$block instanceof BlockContentInterface) {
             continue;
@@ -3340,4 +3350,173 @@ function sitenow_update_10012() {
  */
 function sitenow_update_10013() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Update v3 events blocks with new ids from API.
+ */
+function sitenow_update_10014() {
+  $mappings = [];
+
+  $api_client = \Drupal::service('uiowa_events.content_hub_api_client');
+
+  $filters_data = $api_client->getFilters('filters');
+  $keywords_data = $api_client->getFilters('keywords');
+  $places_data = $api_client->getPlaces();
+
+  // Map filters.
+  foreach (['event_audience', 'event_types', 'event_general_interest', 'departments'] as $category) {
+    if (!empty($filters_data[$category])) {
+      foreach ($filters_data[$category] as $item) {
+        if (!empty($item['previous_id'])) {
+          $mappings[$category][$item['previous_id']] = $item['id'];
+        }
+      }
+    }
+  }
+
+  // Map keywords.
+  if (!empty($keywords_data['keywords'])) {
+    foreach ($keywords_data['keywords'] as $item) {
+      if (!empty($item['previous_id'])) {
+        $mappings['keywords'][$item['previous_id']] = $item['id'];
+      }
+    }
+  }
+
+  // Map places.
+  if (!empty($places_data['places'])) {
+    foreach ($places_data['places'] as $item) {
+      if (!empty($item['previous_id'])) {
+        $mappings['places'][$item['previous_id']] = $item['id'];
+      }
+    }
+  }
+
+  // Define field mappings.
+  $field_mappings = [
+    'filters' => [
+      'departments' => 'field_uiowa_events_department',
+      'event_audience' => 'field_uiowa_events_audiences',
+      'event_general_interest' => 'field_uiowa_events_interests',
+      'event_types' => 'field_uiowa_events_types',
+    ],
+    'keywords' => ['field_uiowa_events_keywords'],
+    'places' => ['field_uiowa_events_place'],
+  ];
+
+  _update_all_blocks_by_plugin_id(['inline_block:uiowa_events'], function (&$component, $block) use ($mappings, $field_mappings) {
+    if (!$block) {
+      return;
+    }
+
+    $changed = FALSE;
+    foreach ($field_mappings as $mapping_type => $fields) {
+      // Filters have multiple categories inside.
+      if ($mapping_type === 'filters') {
+        foreach ($fields as $filter_type => $field_name) {
+          if (!$block->hasField($field_name)) {
+            continue;
+          }
+
+          $field_items = $block->get($field_name)->getValue();
+          foreach ($field_items as &$field_item) {
+            if (isset($field_item['value']) && isset($mappings[$filter_type][$field_item['value']])) {
+              $field_item['value'] = $mappings[$filter_type][$field_item['value']];
+              $changed = TRUE;
+            }
+          }
+
+          if ($changed) {
+            $block->set($field_name, $field_items);
+          }
+        }
+      }
+      // Keywords and Places.
+      else {
+        $field_name = $fields[0];
+        if (!$block->hasField($field_name)) {
+          continue;
+        }
+
+        $field_items = $block->get($field_name)->getValue();
+        foreach ($field_items as &$field_item) {
+          if (isset($field_item['value']) && isset($mappings[$mapping_type][$field_item['value']])) {
+            $field_item['value'] = $mappings[$mapping_type][$field_item['value']];
+            $changed = TRUE;
+          }
+        }
+
+        if ($changed) {
+          $block->set($field_name, $field_items);
+        }
+      }
+    }
+
+    if ($changed) {
+      $block->save();
+    }
+  });
+
+  // Flush caches to ensure fresh data is called on the next render.
+  drupal_flush_all_caches();
+}
+
+/**
+ * Update banner blocks with new styles.
+ */
+function sitenow_update_10015() {
+  $block_plugin_id = 'inline_block:uiowa_banner';
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    $container = NULL;
+
+    foreach ($styles as $style) {
+      if (strpos($style, 'banner_') === 0) {
+        switch ($style) {
+          case 'banner_lower_centered':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            $container = 'banner_narrow';
+            break;
+
+          case 'banner_centered_left':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_left_to_right';
+            $container = 'banner_narrow';
+            break;
+
+          case 'banner_lower_left':
+            $vertical_alignment = 'vertical_alignment_bottom';
+            $horizontal_alignment = 'horizontal_alignment_left';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            break;
+
+          case 'banner_centered':
+            $vertical_alignment = 'vertical_alignment_center';
+            $horizontal_alignment = 'horizontal_alignment_center';
+            $media_overlay = 'media_overlay_bottom_to_top';
+            $container = 'banner_narrow';
+            break;
+        }
+      }
+    }
+
+    if (!in_array($vertical_alignment, $styles)) {
+      $styles[] = $vertical_alignment;
+    }
+    if (!in_array($horizontal_alignment, $styles)) {
+      $styles[] = $horizontal_alignment;
+    }
+    if (!in_array($media_overlay, $styles)) {
+      $styles[] = $media_overlay;
+    }
+    if (!in_array($container, $styles)) {
+      $styles[] = $container;
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
 }
