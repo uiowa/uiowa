@@ -8,8 +8,12 @@
   .node--type-slide {
 
     // TODO: Should pre-process the title out or make custom template instead.
-    .page-title {
+    .page-title, > h2 {
       display: none;
+    }
+
+    .layout__spacing_container {
+      grid-template-columns: 1fr;
     }
 
     //width: 100%;
@@ -17,7 +21,7 @@
     //padding: 0;
     grid-area: 1 / 1 / 2 / 2;
     opacity: 0;
-    z-index: 10;
+    z-index: 0;
     transform: translateZ(0px);
     transition: all 2s ease-in-out;
     transition-property: opacity, transform;
@@ -25,7 +29,7 @@
     &.show-slide {
       opacity: 1;
       transform: translateZ(10px);
-      z-index: 12;
+      z-index: 1;
     }
   }
 }
