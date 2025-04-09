@@ -4,16 +4,16 @@ document.addEventListener('DOMContentLoaded', doSomething, false);
 // let slideIndex = 0;
 // let title;
 // let sections;
-let transitionTime = 6; // In seconds.
-let signData = {};
+// let transitionTime = 6; // In seconds.
+// let signData = {};
 
 function doSomething () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const isSignage = urlParams.get('signage');
+  const isSignage = urlParams.get('display');
   if (isSignage !== null) {
     // initSections();
-    document.querySelector('html').classList.add('signage-view');
+    document.querySelector('html').classList.add('signage-display-view');
     // showSections();
   }
   else {

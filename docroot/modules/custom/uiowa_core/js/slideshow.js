@@ -49,7 +49,7 @@
   }
 
   function showSlides(slides, lastSlideIndex = 0) {
-    console.log('firing show slides!');
+    // console.log('firing show slides!');
     const transitionTime = 6;
 
     slideIndex = lastSlideIndex + 1;
