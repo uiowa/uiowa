@@ -389,6 +389,7 @@ class P2LbHelper {
               switch ($entity_type_id) {
                 case 'block_content':
                 case 'node':
+                case 'media':
                 case 'paragraph':
                   $db->update($table)
                     ->fields([
@@ -406,7 +407,7 @@ class P2LbHelper {
                     ->fields([
                       $value_column => Html::serialize($document),
                     ])
-                    ->condition('tid', $record->entity_id)
+                    ->condition('tid', $record->tid)
                     ->condition('revision_id', $record->revision_id)
                     ->execute();
 
