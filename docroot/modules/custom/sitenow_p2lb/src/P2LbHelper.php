@@ -386,15 +386,33 @@ class P2LbHelper {
               }
 
               // Run database update to store updated $value_column.
-              $db->update($table)
-                ->fields([
-                  $value_column => Html::serialize($document),
-                ])
-                ->condition('entity_id', $record->entity_id)
-                ->condition('revision_id', $record->revision_id)
-                ->execute();
+              switch ($entity_type_id) {
+                case 'block_content':
+                case 'node':
+                case 'paragraph':
+                  $db->update($table)
+                    ->fields([
+                      $value_column => Html::serialize($document),
+                    ])
+                    ->condition('entity_id', $record->entity_id)
+                    ->condition('revision_id', $record->revision_id)
+                    ->execute();
 
-              $update_count++;
+                  $update_count++;
+                  break;
+
+                case 'taxonomy_term':
+                  $db->update($table)
+                    ->fields([
+                      $value_column => Html::serialize($document),
+                    ])
+                    ->condition('tid', $record->entity_id)
+                    ->condition('revision_id', $record->revision_id)
+                    ->execute();
+
+                  $update_count++;
+                  break;
+              }
             }
 
             if ($update_count) {
