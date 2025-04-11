@@ -946,6 +946,9 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
  * Implements hook_preprocess_html().
  */
 function uiowa_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uiowa_core/signage-view';
+  $variables['#attached']['library'][] = 'uids_base/signage-view';
+
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
     /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
@@ -1005,6 +1008,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+
   if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
@@ -1135,6 +1139,10 @@ function uiowa_core_preprocess_block(&$variables) {
           ],
         ];
       }
+      break;
+    case 'inline_block:slideshow':
+      $variables['#attached']['library'][] = 'uiowa_core/slideshow';
+      $variables['#attached']['library'][] = 'uids_base/slideshow';
       break;
   }
 }
