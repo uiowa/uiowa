@@ -69,8 +69,19 @@ function uiowa_core_update_10001() {
       ],
     ];
 
+    // Remove users from these permissions.
+    $remove_users = ['purge_any', 'administer', 'configuration'];
+
     // Then for each access group...
     foreach ($access as $group => &$items) {
+
+      // If this is a permission we want to remove all users.
+      if (in_array($group, $remove_users)) {
+        // Unset the users.
+        if (isset($items['users'])) {
+          $items['users'] = [];
+        }
+      }
 
       // If we have roles to disable for that access group...
       if (isset($update[$group])) {
