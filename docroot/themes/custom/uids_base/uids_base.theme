@@ -22,6 +22,14 @@ use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\views\field\EntityField;
 
 /**
+ * Implements template_preprocess_block().
+ */
+function uids_base_preprocess_block__system_messages_block(&$variables) {
+  $variables['content'] = StatusMessages::renderMessages();
+  $variables['#cache']['max-age'] = 0;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function uids_base_form_alter(&$form, $form_state, $form_id) {
