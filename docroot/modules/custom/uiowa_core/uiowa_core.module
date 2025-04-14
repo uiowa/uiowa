@@ -1032,7 +1032,7 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
   $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
 
   // Get the group name and see if we have config for it.
-  $printed_array_name ??= $element["#name"];
+  $printed_array_name ??= $element['#name'];
   $group_name = str_replace('access[', '', $printed_array_name);
   $group_name = str_replace('][roles]', '', $group_name);
   $group_config ??= $form['webform_config'][$group_name];
