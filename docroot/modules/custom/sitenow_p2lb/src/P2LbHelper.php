@@ -362,11 +362,17 @@ class P2LbHelper {
 
                 // If <div> element has class='lead',
                 // additional conversion from <div> to <p> is needed.
-                if ($dom_element->tagName == 'div') {
+                if ($dom_element->tagName === 'div') {
                   if (str_contains($class, 'lead')) {
                     $new_classes = str_replace('lead', 'element--light-intro', $class);
-                    $p = $document->createElement('p', htmlspecialchars($dom_element->nodeValue));
+                    $p = $document->createElement('p');
                     $p->setAttribute('class', $new_classes);
+
+                    // Move child elements instead of stripping them out.
+                    while ($dom_element->firstChild) {
+                      $p->appendChild($dom_element->firstChild);
+                    }
+
                     $dom_element->parentNode->replaceChild($p, $dom_element);
                   }
                 }
