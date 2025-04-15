@@ -3549,6 +3549,7 @@ function _move_components_to_new_sections($options): void {
       ->fields('t');
     $results = $query->execute()->fetchAll();
 
+    // @todo Group and loop rows by entity_id and revision_id to reduce conflicts when updating the db.
     foreach ($results as $record) {
       // Keep track of the original delta.
       $base_delta = $record->delta;
@@ -3627,10 +3628,11 @@ function _move_components_to_new_sections($options): void {
 }
 
 /**
- * Move grid style blocks to three-column sections.
+ * Move grid style sections in layout builder.
  */
 function sitenow_update_10017() {
 
+  // Move one-column, grid 3x2 stacked styled sections to three-column sections.
   _move_components_to_new_sections([
     'match_callback' => function ($section) {
       $target_section_types = ['layout_onecol'];
@@ -3643,7 +3645,9 @@ function sitenow_update_10017() {
       $section = new Section('layout_threecol_section');
 
       // Move over all settings except for the grid style.
-      // @todo Check to see if there is any other stuff that should move over without copying one-column layout-isms.
+      // @todo Make sure `section_margin_remove_default_margins`, and `section_padding_remove_default_padding` are included.
+      // @todo Make sure `remove_default_top_padding` is added for the first section only.
+      // @todo Check if there are third-party settings that should move over.
       $layout_settings = $args['current_section']->getLayoutSettings();
       $layout_settings['layout_builder_styles_style'] = array_diff($layout_settings['layout_builder_styles_style'], ['section_layout_grid_3x2_stacked']);
       $section->setLayoutSettings($layout_settings);
