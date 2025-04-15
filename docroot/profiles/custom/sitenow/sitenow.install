@@ -3535,10 +3535,9 @@ function sitenow_update_10016() {
 }
 
 /**
- * Helper function to identify sections of blocks
- * and move them to replacement sections.
+ * Helper function to match on sections and move components to new section(s).
  */
-function _move_blocks_to_new_sections($options): void {
+function _move_components_to_new_sections($options): void {
   $db = \Drupal::database();
   $tables = [
     'node__layout_builder__layout',
@@ -3559,15 +3558,15 @@ function _move_blocks_to_new_sections($options): void {
         'allowed_classes' => TRUE,
       ]);
 
-      // Create new sections based on the components in the current section.
+      // Create new sections for the components in the current section.
       if (call_user_func($options['match_callback'], $section)) {
         $components = $section->getComponents();
-        // How many blocks to move to each new section.
-        $group_size = $options['block_group_size'] ?? 1;
+        // How many components to move to each new section.
+        $group_size = $options['component_group_size'] ?? 1;
         $grouped_components = array_chunk($components, $group_size);
         $new_sections = [];
         foreach ($grouped_components as $group) {
-          // Create a new section for each group of blocks.
+          // Create a new section for each group of components.
           $args = [
             'components' => $group,
             'current_section' => $section,
@@ -3632,14 +3631,14 @@ function _move_blocks_to_new_sections($options): void {
  */
 function sitenow_update_10017() {
 
-  _move_blocks_to_new_sections([
+  _move_components_to_new_sections([
     'match_callback' => function ($section) {
       $target_section_types = ['layout_onecol'];
       $target_styles = ['section_layout_grid_3x2_stacked'];
       return in_array($section->getLayoutId(), $target_section_types, TRUE)
         && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
     },
-    'block_group_size' => 3,
+    'component_group_size' => 3,
     'section_generator' => function ($args) {
       $section = new Section('layout_threecol_section');
 
