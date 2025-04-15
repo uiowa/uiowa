@@ -3520,3 +3520,16 @@ function sitenow_update_10015() {
     $component->set('layout_builder_styles_style', $styles);
   });
 }
+
+/**
+ * Update field_uiowa_headline due to mismatched field definition.
+ */
+function sitenow_update_10016() {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $changes = $entity_definition_update_manager->getChangeList();
+
+  if (isset($changes['block_content']['field_storage_definitions']['field_uiowa_headline'])) {
+    $field_definition = $entity_definition_update_manager->getFieldStorageDefinition('field_uiowa_headline', 'block_content');
+    $entity_definition_update_manager->updateFieldStorageDefinition($field_definition);
+  }
+}
