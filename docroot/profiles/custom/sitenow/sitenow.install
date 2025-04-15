@@ -3533,3 +3533,52 @@ function sitenow_update_10016() {
     $entity_definition_update_manager->updateFieldStorageDefinition($field_definition);
   }
 }
+
+/**
+ * Helper function to identify sections of blocks
+ * and move them to replacement sections.
+ */
+function _move_blocks_to_new_sections($options): void {
+  $db = \Drupal::database();
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  foreach ($tables as $table_name) {
+    $query = $db->select($table_name, 't')
+      ->fields('t', ['entity_id', 'revision_id', 'delta', 'layout_builder__layout_section']);
+    $results = $query->execute();
+
+    foreach ($results as $record) {
+      $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => TRUE]);
+      if (call_user_func($options['match_callback'], $section)) {
+        $foo = $section;
+      }
+    }
+  }
+
+  // For blocks in that section, create an index.
+  // Create new sections of type ___ and based on the number
+  // of columns for that type, move that number over. One block per section region.
+  // For each new section, copy over the lb_styles. Allow section overrides (e.g. removing a lb_style) to be passed in. Hardcode for first pass the
+  // removal of `section_layout_grid_3x2_stacked`.
+  // Save the new section. If there are more blocks, create another section and repeat.
+  // Remove the old section once all blocks are moved.
+}
+
+/**
+ * Move grid style blocks to three-column sections.
+ */
+function sitenow_update_10017() {
+
+  _move_blocks_to_new_sections([
+    'match_callback' => function ($section) {
+      $target_section_types = ['layout_onecol'];
+      $target_styles = ['section_layout_grid_3x2_stacked'];
+      return in_array($section->getLayoutId(), $target_section_types, TRUE)
+        && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
+    },
+  ]);
+
+}
