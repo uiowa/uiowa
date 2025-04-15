@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies: {  }
+id: iowaprotocols_migrate
+label: 'Iowa Protocols Migrate'
+description: 'Migrations for Iowa Protocols'
+weight: 80
+stackable: true
+no_patching: false
+storage: folder
+folder: ./sites/now.uiowa.edu/modules/iowaprotocols_migrate/config/split
+module:
+  iowaprotocols_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  ccom_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.iowaprotocols_migrate
+  - 'migrate_plus.migration.now_*'
+partial_list: {  }
