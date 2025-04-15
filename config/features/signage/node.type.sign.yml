@@ -8,14 +8,13 @@ dependencies:
     - scheduler
 third_party_settings:
   menu_ui:
-    available_menus:
-      - main
-    parent: 'main:'
+    available_menus: {  }
+    parent: ''
   node_revision_delete:
     amount:
-      status: false
+      status: true
       settings:
-        amount: 0
+        amount: 10
     created:
       status: false
       settings:
@@ -43,7 +42,7 @@ third_party_settings:
     unpublish_revision: false
 name: Sign
 type: sign
-description: 'a sign.'
+description: 'A <em>sign</em> is used to display information on signage displays throughout campus.'
 help: null
 new_revision: true
 preview_mode: 1

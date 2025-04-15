@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.sign.body
+    - field.field.node.sign.field_sign_signage_group
     - field.field.node.sign.layout_builder__layout
     - node.type.sign
   module:
@@ -26,7 +27,24 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
-        components: {  }
+        components:
+          -
+            uuid: 074f4cae-aa96-4de4-9dda-54c4a7b8843f
+            region: content
+            configuration:
+              id: 'field_block:node:sign:field_sign_signage_group'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -60,6 +78,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  field_sign_signage_group:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
     region: content
   links:
     settings: {  }
