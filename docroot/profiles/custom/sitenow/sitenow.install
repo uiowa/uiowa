@@ -3551,20 +3551,34 @@ function _move_blocks_to_new_sections($options): void {
     $results = $query->execute();
 
     foreach ($results as $record) {
+      // Keep track of the original delta.
+      $base_delta = $record->delta;
+
+      // Unserialize the layout section.
       $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => TRUE]);
+
+      // Create new sections based on the components in the current section.
       if (call_user_func($options['match_callback'], $section)) {
-        $foo = $section;
+        $components = $section->getComponents();
+        // How many blocks to move to each new section.
+        $group_size = $options['block_group_size'] ?? 1;
+        $grouped_components = array_chunk($components, $group_size);
+        $new_sections = [];
+        foreach ($grouped_components as $group) {
+          // Create a new section for each group of blocks.
+          $args = [
+            'components' => $group,
+            'current_section' => $section,
+          ];
+          $new_sections[] = call_user_func($options['section_generator'], $args);
+        }
+
+        // Insert these back into the database without messing stuff up (other section deltas).
+        // Delete original section.
+        // Tempstore?
       }
     }
   }
-
-  // For blocks in that section, create an index.
-  // Create new sections of type ___ and based on the number
-  // of columns for that type, move that number over. One block per section region.
-  // For each new section, copy over the lb_styles. Allow section overrides (e.g. removing a lb_style) to be passed in. Hardcode for first pass the
-  // removal of `section_layout_grid_3x2_stacked`.
-  // Save the new section. If there are more blocks, create another section and repeat.
-  // Remove the old section once all blocks are moved.
 }
 
 /**
@@ -3578,6 +3592,22 @@ function sitenow_update_10017() {
       $target_styles = ['section_layout_grid_3x2_stacked'];
       return in_array($section->getLayoutId(), $target_section_types, TRUE)
         && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
+    },
+    'block_group_size' => 3,
+    'section_generator' => function ($args) {
+      $section = new Section('layout_threecol_section');
+
+      // Move over all settings except for the grid style.
+      // @todo Check to see if there is any other stuff that should move over without copying one-column layout-isms.
+      $layout_settings = array_diff($args['current_section']->getLayoutSettings()['layout_builder_styles_style'], ['section_layout_grid_3x2_stacked']);
+      $section->setLayoutSettings($layout_settings);
+
+      // Add one component to each region.
+      $regions = ['first', 'second', 'third'];
+      foreach ($args['components'] as $i => $component) {
+        $section->appendComponent($component->setRegion($regions[$i] ?? 'first'));
+      }
+      return $section;
     },
   ]);
 
