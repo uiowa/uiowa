@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\classrooms_migrate\Plugin\migrate\source;
+namespace Drupal\iowaprotocols_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -10,11 +10,11 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "classrooms_room",
+ *   id = "protocol",
  *   source_module = "node"
  * )
  */
-class Room extends BaseNodeSource {
+class Protocol extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
@@ -35,7 +35,7 @@ class Room extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Process the gallery.
-    $gallery_images = $row->getSourceProperty('field_room_images');
+    $gallery_images = $row->getSourceProperty('field_basic_page_gallery');
     if (!empty($gallery_images)) {
       $new_images = [];
       foreach ($gallery_images as $gallery_image) {
@@ -45,8 +45,7 @@ class Room extends BaseNodeSource {
           $gallery_image['title'],
         );
       }
-      $row->setSourceProperty('featured_image', $new_images[0]);
-      $row->setSourceProperty('field_room_images', $new_images);
+      $row->setSourceProperty('field_basic_page_gallery', $new_images);
     }
 
     return TRUE;
