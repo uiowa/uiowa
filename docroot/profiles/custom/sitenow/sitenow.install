@@ -3652,13 +3652,30 @@ function sitenow_update_10017() {
     'component_group_size' => 3,
     'section_generator' => function ($args) {
       $section = new Section('layout_threecol_section');
+      $layout_settings = $args['current_section']->getLayoutSettings();
+      $styles = $layout_settings['layout_builder_styles_style'] ?? [];
 
       // Move over all settings except for the grid style.
-      // @todo Make sure `section_margin_remove_default_margins`, and `section_padding_remove_default_padding` are included.
-      // @todo Make sure `remove_default_top_padding` is added for the first section only.
+      // Remove only the grid style, keep the others.
+      $styles = array_filter($styles, function ($style) {
+        return $style !== 'section_layout_grid_3x2_stacked';
+      });
+
+      // Make sure the following styles are included in the new section.
+      $required_styles = [
+        'section_margin_remove_default_margins',
+        'section_padding_remove_default_padding',
+      ];
+      foreach ($required_styles as $style) {
+        if (!in_array($style, $styles, TRUE)) {
+          $styles[] = $style;
+        }
+      }
+      $layout_settings['layout_builder_styles_style'] = $styles;
+
+      // @todo Make sure `remove_default_top_padding` is added for the first section only?!
       // @todo Check if there are third-party settings that should move over.
-      $layout_settings = $args['current_section']->getLayoutSettings();
-      $layout_settings['layout_builder_styles_style'] = array_diff($layout_settings['layout_builder_styles_style'], ['section_layout_grid_3x2_stacked']);
+
       $section->setLayoutSettings($layout_settings);
 
       // Add one component to each region.
