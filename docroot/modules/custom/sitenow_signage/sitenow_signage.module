@@ -19,23 +19,22 @@ function sitenow_signage_preprocess_html(&$variables) {
  */
 function sitenow_signage_preprocess_page(&$variables) {
   // Unset parts of the page based on the
-  // Check that user is logged out before unsetting anything.
-  if (\Drupal::currentUser()->isAnonymous()) {
-    // Check that a node is being rendered.
-    if (isset($variables['node']) && $variables['node'] instanceof NodeInterface) {
-      $node = $variables['node'];
-      // Check that the node is a sign node.
-      if ($node->getType() === 'sign') {
+  // Check that a node is being rendered.
+  if (isset($variables['node']) && $variables['node'] instanceof NodeInterface) {
+    $node = $variables['node'];
+    // Check that the node is a sign node.
+    if ($node->getType() === 'sign') {
+      // Check that user is logged out before unsetting anything.
+      if (\Drupal::currentUser()->isAnonymous()) {
         // @todo Check for a query string variable of 'signage-display'.
         // Unset the header readion.
         // @todo Uncomment below.
         //unset($variables['page']['header']);
       }
+      // @todo Remove below.
+      $variables['page']['header'] = [];
     }
   }
-
-  // @todo Remove below.
-  $variables['page']['header'] = [];
 }
 
 /**

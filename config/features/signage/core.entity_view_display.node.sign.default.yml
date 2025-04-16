@@ -27,46 +27,54 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
-        components:
-          -
-            uuid: 074f4cae-aa96-4de4-9dda-54c4a7b8843f
-            region: content
-            configuration:
-              id: 'field_block:node:sign:field_sign_signage_group'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
           layout_builder_limit:
             limit:
-              scope: section
-              settings:
-                section:
-                  minimum_enabled: 0
-                  minimum: '1'
-                  maximum_enabled: 0
-                  maximum: '3'
+              scope: disabled
               scope_update: 'Update scope'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      allowed_layouts: {  }
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
       denylisted_blocks: {  }
-      allowlisted_blocks: {  }
+      allowlisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields': {  }
+        'Custom block types':
+          - uiowa_image
+          - uiowa_text_area
+        'Custom blocks': {  }
+        Devel: {  }
+        'Entity Print': {  }
+        Forms: {  }
+        'Inline blocks':
+          - 'inline_block:uiowa_image'
+          - 'inline_block:uiowa_text_area'
+        Lists: {  }
+        'Lists (Views)': {  }
+        Menus: {  }
+        'Purge UI': {  }
+        Restricted: {  }
+        'Site custom': {  }
+        'SiteNow Dispatch': {  }
+        Superfish: {  }
+        System: {  }
+        'University of Iowa Alerts': {  }
+        User: {  }
+        'Workbench Access': {  }
+        core: {  }
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
-      allowed_layouts: {  }
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
 id: node.sign.default
 targetEntityType: node
 bundle: sign
