@@ -52,8 +52,4 @@ class Protocol extends BaseNodeSource {
 
   }
 
-
-
-
-
 }
