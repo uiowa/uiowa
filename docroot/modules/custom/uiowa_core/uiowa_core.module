@@ -31,6 +31,7 @@ use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
+use Drupal\webform\Element\WebformRoles;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -917,7 +918,141 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
       break;
+
+    case 'webform_settings_access_form':
+
+      // Check if the current user is an admin or user 1.
+      $current_user = \Drupal::currentUser();
+      $roles = $current_user->getRoles();
+      $is_admin = in_array('administrator', $roles) || $current_user->id() == 1;
+
+      // Only limit the webform access if the user isn't an admin or user 1.
+      if (!$is_admin) {
+
+        // Get the form access settings.
+        $access = &$form['access'];
+
+        // Configure an array for what you want to disable in webform access.
+        $form['webform_config'] = [
+          'create' => [],
+          'view_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'update_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'delete_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'purge_any' => [
+            '#access' => FALSE,
+          ],
+          'view_own' => [],
+          'update_own' => [],
+          'delete_own' => [],
+          'administer' => [
+            '#access' => FALSE,
+          ],
+          'test' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+              'viewer',
+            ],
+          ],
+          'configuration' => [
+            '#access' => FALSE,
+          ],
+        ];
+
+        // For each access group...
+        foreach ($access as $key => &$group) {
+
+          // If we have something configured to be disabled in that group...
+          if (is_array($group)) {
+
+            // If we are disabling access to it completely in the config...
+            if (isset($form['webform_config'][$key]['#access'])) {
+
+              // Set its access to false.
+              $group['#access'] = FALSE;
+
+              // And continue to the next iteration,
+              // as we don't need to worry about the individual
+              // roles if the whole section is disabled.
+              continue;
+            }
+
+            // If we have a roles checkbox list...
+            $roles ??= $group['roles'];
+            if ($roles) {
+
+              // Process it with a custom function.
+              $group['roles']['#process'][] = '_uiowa_core_process_element';
+            }
+
+            // For every group that has configurable permissions...
+            $perms ??= $group['permissions'];
+            if ($perms) {
+
+              // Disable them. We don't want users to have access to configure this.
+              $group['permissions']['#access'] = FALSE;
+            }
+          }
+        }
+      }
+
+      break;
   }
+}
+
+/**
+ * Custom process form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
+
+  // Get the roles checkboxes.
+  $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
+
+  // Get the group name and see if we have config for it.
+  $printed_array_name ??= $element['#name'];
+  $group_name = str_replace('access[', '', $printed_array_name);
+  $group_name = str_replace('][roles]', '', $group_name);
+  $group_config ??= $form['webform_config'][$group_name];
+
+  // If each access group has config for roles...
+  if (isset($group_config['#roles']) && $checkboxes['#type'] == 'webform_roles') {
+    $roles = $group_config['#roles'];
+
+    // For each role that we want to remove access from...
+    foreach ($roles as $key => $role) {
+
+      // Set its access to false.
+      $checkboxes[$role]['#access'] = FALSE;
+    }
+  }
+
+  // We disable the ability to manage administrators for all groups.
+  $checkboxes['administrator']['#access'] = FALSE;
+
+  return $checkboxes;
 }
 
 /**
