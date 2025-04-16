@@ -42,18 +42,24 @@ deploy:
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
   skip_cleanup: true
+  edge:
+    branch: v2.0.3-beta.4
   on:
     branch: develop
     php: 8.3
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
   skip_cleanup: true
+  edge:
+    branch: v2.0.3-beta.4
   on:
     branch: main
     php: 8.3
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
   skip_cleanup: true
+  edge:
+    branch: v2.0.3-beta.4
   on:
     tags: true
     php: 8.3
