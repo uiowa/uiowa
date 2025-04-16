@@ -5,7 +5,6 @@ dependencies:
   config:
     - block_content.type.slideshow
     - field.field.block_content.slideshow.field_slideshow_slides
-    - field.field.block_content.slideshow.field_uiowa_sign_slideshow
   module:
     - field_delimiter
 id: block_content.slideshow.default
@@ -15,23 +14,14 @@ mode: default
 content:
   field_slideshow_slides:
     type: entity_reference_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_uiowa_sign_slideshow:
-    type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: default
+      view_mode: full__widescreen
       link: false
     third_party_settings:
       field_delimiter:
         delimiter: ''
-    weight: 0
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
