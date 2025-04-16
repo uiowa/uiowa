@@ -37,3 +37,12 @@ function sitenow_signage_preprocess_page(&$variables) {
   // @todo Remove below.
   $variables['page']['header'] = [];
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_signage_preprocess_block(&$variables) {
+  if ($variables['plugin_id'] == 'inline_block:slideshow') {
+    $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
+  }
+}
