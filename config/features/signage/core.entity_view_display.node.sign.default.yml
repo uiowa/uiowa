@@ -3,13 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.sign.body
     - field.field.node.sign.layout_builder__layout
     - node.type.sign
   module:
     - layout_builder
     - layout_builder_restrictions
-    - text
     - user
   theme:
     - uids_base
@@ -45,15 +43,14 @@ third_party_settings:
       allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields': {  }
-        'Custom block types':
-          - uiowa_image
-          - uiowa_text_area
+        'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
         'Entity Print': {  }
         Forms: {  }
         'Inline blocks':
           - 'inline_block:uiowa_image'
+          - 'inline_block:slideshow'
           - 'inline_block:uiowa_text_area'
         Lists: {  }
         'Lists (Views)': {  }
@@ -66,7 +63,6 @@ third_party_settings:
         System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
-        'Workbench Access': {  }
         core: {  }
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
@@ -79,13 +75,6 @@ targetEntityType: node
 bundle: sign
 mode: default
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 101
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }

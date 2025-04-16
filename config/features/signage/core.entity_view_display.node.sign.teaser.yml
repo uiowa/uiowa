@@ -4,25 +4,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.sign.body
     - field.field.node.sign.layout_builder__layout
     - node.type.sign
   module:
-    - text
     - user
 id: node.sign.teaser
 targetEntityType: node
 bundle: sign
 mode: teaser
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 101
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
