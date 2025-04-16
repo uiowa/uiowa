@@ -27,12 +27,9 @@ function sitenow_signage_preprocess_page(&$variables) {
       // Check that user is logged out before unsetting anything.
       if (\Drupal::currentUser()->isAnonymous()) {
         // @todo Check for a query string variable of 'signage-display'.
-        // Unset the header readion.
-        // @todo Uncomment below.
-        //unset($variables['page']['header']);
+        // Unset the header region.
+        $variables['page']['header'] = [];
       }
-      // @todo Remove below.
-      $variables['page']['header'] = [];
     }
   }
 }

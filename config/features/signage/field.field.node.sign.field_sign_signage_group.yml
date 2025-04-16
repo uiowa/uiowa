@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_sign_signage_group
     - node.type.sign
-    - taxonomy.vocabulary.signage_group
 id: node.sign.field_sign_signage_group
 field_name: field_sign_signage_group
 entity_type: node
@@ -19,8 +18,7 @@ default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
   handler_settings:
-    target_bundles:
-      signage_group: signage_group
+    target_bundles: {  }
     sort:
       field: name
       direction: asc
