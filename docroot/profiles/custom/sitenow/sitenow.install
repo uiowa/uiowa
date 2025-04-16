@@ -3549,79 +3549,88 @@ function _move_components_to_new_sections($options): void {
       ->fields('t');
     $results = $query->execute()->fetchAll();
 
-    // @todo Group and loop rows by entity_id and revision_id to reduce conflicts when updating the db.
+    $grouped_records = [];
     foreach ($results as $record) {
-      // Keep track of the original delta.
-      $base_delta = $record->delta;
+      $key = "{$record->entity_id}-{$record->revision_id}";
+      $grouped_records[$key][] = $record;
+    }
 
-      // Unserialize the layout section.
-      $section = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => TRUE,
-      ]);
+    foreach ($grouped_records as $records) {
+      // Make sure they are in the correct order for processing.
+      usort($records, fn($a, $b) => $b->delta <=> $a->delta);
 
-      // Create new sections for the components in the current section.
-      if (call_user_func($options['match_callback'], $section)) {
-        $components = $section->getComponents();
-        // How many components to move to each new section.
-        $group_size = $options['component_group_size'] ?? 1;
-        $grouped_components = array_chunk($components, $group_size);
-        $new_sections = [];
-        foreach ($grouped_components as $group) {
-          // Create a new section for each group of components.
-          $args = [
-            'components' => $group,
-            'current_section' => $section,
-          ];
-          $new_sections[] = call_user_func($options['section_generator'], $args);
-        }
+      foreach ($records as $record) {
+        // Keep track of the original delta.
+        $base_delta = $record->delta;
 
-        if (!empty($new_sections)) {
-          // Delete the original section.
-          $db->delete($table_name)
-            ->condition('entity_id', $record->entity_id)
-            ->condition('revision_id', $record->revision_id)
-            ->condition('delta', $base_delta)
-            ->execute();
+        // Unserialize the layout section.
+        $section = unserialize($record->layout_builder__layout_section, [
+          'allowed_classes' => TRUE,
+        ]);
 
-          // Offset existing sections based on the number of new sections.
-          $delta_shift = count($new_sections);
-          // Select affected rows first, to update them in reverse order.
-          $update_query = $db->select($table_name, 't')
-            ->fields('t', ['delta'])
-            ->condition('entity_id', $record->entity_id)
-            ->condition('revision_id', $record->revision_id)
-            ->condition('delta', $base_delta + 1, '>=')
-            ->orderBy('delta', 'DESC');
+        // Create new sections for the components in the current section.
+        if (call_user_func($options['match_callback'], $section)) {
+          $components = $section->getComponents();
+          // How many components to move to each new section.
+          $group_size = $options['component_group_size'] ?? 1;
+          $grouped_components = array_chunk($components, $group_size);
+          $new_sections = [];
+          foreach ($grouped_components as $group) {
+            // Create a new section for each group of components.
+            $args = [
+              'components' => $group,
+              'current_section' => $section,
+            ];
+            $new_sections[] = call_user_func($options['section_generator'], $args);
+          }
 
-          $rows_to_shift = $update_query->execute()->fetchCol();
-
-          // Update each row from high delta to low with offset.
-          foreach ($rows_to_shift as $delta) {
-            $db->update($table_name)
-              ->fields(['delta' => $delta + $delta_shift])
+          if (!empty($new_sections)) {
+            // Delete the original section.
+            $db->delete($table_name)
               ->condition('entity_id', $record->entity_id)
               ->condition('revision_id', $record->revision_id)
-              ->condition('delta', $delta)
+              ->condition('delta', $base_delta)
               ->execute();
+
+            // Offset existing sections based on the number of new sections.
+            $delta_shift = count($new_sections);
+            // Select affected rows first, to update them in reverse order.
+            $update_query = $db->select($table_name, 't')
+              ->fields('t', ['delta'])
+              ->condition('entity_id', $record->entity_id)
+              ->condition('revision_id', $record->revision_id)
+              ->condition('delta', $base_delta + 1, '>=')
+              ->orderBy('delta', 'DESC');
+
+            $rows_to_shift = $update_query->execute()->fetchCol();
+
+            // Update each row from high delta to low with offset.
+            foreach ($rows_to_shift as $delta) {
+              $db->update($table_name)
+                ->fields(['delta' => $delta + $delta_shift])
+                ->condition('entity_id', $record->entity_id)
+                ->condition('revision_id', $record->revision_id)
+                ->condition('delta', $delta)
+                ->execute();
+            }
+
+            // Insert new sections into the database with the old section info.
+            foreach ($new_sections as $i => $section) {
+              $db->insert($table_name)
+                ->fields([
+                  'bundle' => $record->bundle,
+                  'entity_id' => $record->entity_id,
+                  'revision_id' => $record->revision_id,
+                  'langcode' => $record->langcode,
+                  'delta' => $base_delta + $i,
+                  'layout_builder__layout_section' => serialize($section),
+                ])
+                ->execute();
+            }
           }
 
-          // Insert new sections into the database with the old section info.
-          foreach ($new_sections as $i => $section) {
-            $db->insert($table_name)
-              ->fields([
-                'bundle' => $record->bundle,
-                'entity_id' => $record->entity_id,
-                'revision_id' => $record->revision_id,
-                'langcode' => $record->langcode,
-                'delta' => $base_delta + $i,
-                'layout_builder__layout_section' => serialize($section),
-              ])
-              ->execute();
-          }
+          // @todo Deal with tempstore.
         }
-
-        // Tempstore? Based on all the db manipulating,
-        // I wonder if we can discard it on any entities that are touched.
       }
     }
   }
