@@ -1111,6 +1111,8 @@ function uiowa_core_preprocess_block(&$variables) {
             // Exit without adding the login link.
             break;
           }
+          // Add cache tag for this node.
+          $variables['#cache']['tags'][] = 'node:' . $node->id();
         }
 
         // Add the login link if we didn't break out.
@@ -1130,10 +1132,11 @@ function uiowa_core_preprocess_block(&$variables) {
             ],
             'rel' => 'nofollow',
           ],
-          '#cache' => [
-            'max-age' => 0,
-          ],
         ];
+
+        // Try cache contexts instead of max-age=0.
+        $variables['#cache']['contexts'][] = 'user.roles';
+        $variables['#cache']['contexts'][] = 'url.path';
       }
       break;
   }
