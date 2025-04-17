@@ -1,0 +1,22 @@
+uuid: ec501a7e-a3c5-4ada-8b80-b4c3a8d9546d
+langcode: en
+status: false
+dependencies: {  }
+id: signage
+label: Signage
+description: 'Configuration for signage functionality.'
+weight: 80
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/features/signage
+module:
+  sitenow_signage: 0
+theme: {  }
+complete_list:
+  - block_content.type.slideshow
+  - node.type.sign
+  - pathauto.pattern.sign
+  - 'field.storage.block_content.field_slideshow_*'
+partial_list:
+  - 'user.role.*'
