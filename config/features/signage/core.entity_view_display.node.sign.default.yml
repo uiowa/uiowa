@@ -30,7 +30,14 @@ third_party_settings:
             lock: {  }
           layout_builder_limit:
             limit:
-              scope: disabled
+              scope: region
+              settings:
+                region:
+                  content:
+                    minimum_enabled: 0
+                    minimum: '1'
+                    maximum_enabled: 1
+                    maximum: '1'
               scope_update: 'Update scope'
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -49,9 +56,7 @@ third_party_settings:
         'Entity Print': {  }
         Forms: {  }
         'Inline blocks':
-          - 'inline_block:uiowa_image'
           - 'inline_block:slideshow'
-          - 'inline_block:uiowa_text_area'
         Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }

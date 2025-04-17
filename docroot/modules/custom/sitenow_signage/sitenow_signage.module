@@ -5,6 +5,7 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
 /**
@@ -18,19 +19,23 @@ function sitenow_signage_preprocess_html(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_page(&$variables) {
-  // Unset parts of the page based on the
-  // Check that a node is being rendered.
-  if (isset($variables['node']) && $variables['node'] instanceof NodeInterface) {
-    $node = $variables['node'];
-    // Check that the node is a sign node.
-    if ($node->getType() === 'sign') {
-      // Check that user is logged out before unsetting anything.
-      if (\Drupal::currentUser()->isAnonymous()) {
-        // @todo Check for a query string variable of 'signage-display'.
-        // Unset the header region.
-        $variables['page']['header'] = [];
+  // Check if the current page is a node of type 'sign'.
+  if (isset($variables['node']) && $variables['node'] instanceof NodeInterface && $variables['node']->getType() === 'sign') {
+    // Check that user is logged out before unsetting anything.
+    if (\Drupal::currentUser()->isAnonymous()) {
+      // Check if the query string contains the 'signage-display' parameter.
+      if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
+        // Remove all the regions from the page.
+        foreach (Element::children($variables['page']) as $key) {
+          if ($key !== 'content') {
+            unset($variables['page'][$key]);
+          }
+        }
+        // Add a cache context so that the page is cached separately.
+        $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
       }
     }
+
   }
 }
 
