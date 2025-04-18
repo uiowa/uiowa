@@ -3629,7 +3629,56 @@ function _move_components_to_new_sections($options): void {
             }
           }
 
-          // @todo Deal with tempstore.
+          // Update any tempstore records as well. Grumble grumble.
+          $tempstore = \Drupal::keyValueExpirable(
+            'tempstore.shared.layout_builder.section_storage.overrides'
+          );
+
+          foreach ($tempstore->getAll() as $key => $storage) {
+            if (!str_starts_with($key, 'node.')) {
+              continue;
+            }
+
+            /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+            $section_storage = $storage->data['section_storage'];
+            $sections = $section_storage->getSections();
+            $changed = FALSE;
+            $new_sections = [];
+
+            // There isn't a setSections() so we need to create a
+            // replacement array and maintain the same order.
+            foreach ($sections as $section) {
+              if (call_user_func($options['match_callback'], $section)) {
+                $components = $section->getComponents();
+                $grouped = array_chunk($components, $options['component_group_size']);
+                foreach ($grouped as $group) {
+                  $new_sections[] = call_user_func($options['section_generator'], [
+                    'components' => $group,
+                    'current_section' => $section,
+                  ]);
+                }
+                $changed = TRUE;
+              }
+              else {
+                $new_sections[] = $section;
+              }
+            }
+
+            // If there was any change we are updating the entire record.
+            if ($changed) {
+              // Out with the old.
+              foreach (array_keys($sections) as $delta) {
+                $section_storage->removeSection($delta);
+              }
+
+              // In with the new.
+              foreach ($new_sections as $delta => $section) {
+                $section_storage->insertSection($delta, $section);
+              }
+
+              $tempstore->set($key, $storage);
+            }
+          }
         }
       }
     }
