@@ -86,3 +86,13 @@
     background: none;
   }
 }
+
+// Fix for media other than images within a banner.
+.banner .media:not(.media--type-image) {
+  position: relative;
+  background: none;
+  width: auto;
+  &:after {
+    background: none;
+  }
+}
