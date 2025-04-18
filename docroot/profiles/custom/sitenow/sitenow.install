@@ -3585,6 +3585,12 @@ function _move_components_to_new_sections($options): void {
           }
 
           if (!empty($new_sections)) {
+
+            // Call the post process function if it exists.
+            if (isset($options['post_process']) && is_callable($options['post_process'])) {
+              call_user_func($options['post_process'], ['sections' => &$new_sections]);
+            }
+
             // Delete the original section.
             $db->delete($table_name)
               ->condition('entity_id', $record->entity_id)
@@ -3648,15 +3654,22 @@ function _move_components_to_new_sections($options): void {
             // There isn't a setSections() so we need to create a
             // replacement array and maintain the same order.
             foreach ($sections as $section) {
+              $generated_sections = [];
               if (call_user_func($options['match_callback'], $section)) {
                 $components = $section->getComponents();
                 $grouped = array_chunk($components, $options['component_group_size']);
                 foreach ($grouped as $group) {
-                  $new_sections[] = call_user_func($options['section_generator'], [
+                  $generated_sections[] = call_user_func($options['section_generator'], [
                     'components' => $group,
                     'current_section' => $section,
                   ]);
                 }
+
+                // Call the post process function if it exists.
+                if (isset($options['post_process']) && is_callable($options['post_process'])) {
+                  call_user_func($options['post_process'], ['sections' => &$generated_sections]);
+                }
+                $new_sections = array_merge($new_sections, $generated_sections);
                 $changed = TRUE;
               }
               else {
@@ -3722,9 +3735,7 @@ function sitenow_update_10017() {
       }
       $layout_settings['layout_builder_styles_style'] = $styles;
 
-      // @todo Make sure `remove_default_top_padding` is added for the first section only?!
-      // @todo Check if there are third-party settings that should move over.
-
+      // @todo Check if there are third-party settings that should move over?
       $section->setLayoutSettings($layout_settings);
 
       // Add one component to each region.
@@ -3733,6 +3744,29 @@ function sitenow_update_10017() {
         $section->appendComponent($component->setRegion($regions[$i] ?? 'first'));
       }
       return $section;
+    },
+    'post_process' => function ($data) {
+      $top_styles = ['remove_default_top_padding', 'section_padding_top_extra'];
+      $bottom_styles = ['remove_default_bottom_padding', 'section_padding_bottom_extra'];
+      $last_index = count($data['sections']) - 1;
+
+      foreach ($data['sections'] as $index => $section) {
+        $settings = $section->getLayoutSettings();
+        $styles = (array) ($settings['layout_builder_styles_style'] ?? []);
+
+        // Remove top styles from everything except the first.
+        if ($index !== 0) {
+          $styles = array_diff($styles, $top_styles);
+        }
+
+        // Remove bottom styles from everything except the last.
+        if ($index !== $last_index) {
+          $styles = array_diff($styles, $bottom_styles);
+        }
+
+        $settings['layout_builder_styles_style'] = array_values($styles);
+        $section->setLayoutSettings($settings);
+      }
     },
   ]);
 
