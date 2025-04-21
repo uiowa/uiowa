@@ -17,6 +17,7 @@ use Drush\Drush;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
+
   use StringTranslationTrait;
 
   /**
