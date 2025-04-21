@@ -3571,8 +3571,26 @@ function _move_components_to_new_sections($options): void {
         // Create new sections for the components in the current section.
         if (call_user_func($options['match_callback'], $section)) {
           $components = $section->getComponents();
+
+          // Group by region first.
+          $region_groups = [];
+          foreach ($components as $component) {
+            $region = $component->getRegion();
+            if (!isset($region_groups[$region])) {
+              $region_groups[$region] = [];
+            }
+            $region_groups[$region][] = $component;
+          }
+          // Flatten the array.
+          $components = [];
+          foreach ($region_groups as $group) {
+            $components = array_merge($components, $group);
+          }
+
           // How many components to move to each new section.
-          $group_size = $options['component_group_size'] ?? 1;
+          $group_size = is_callable($options['component_group_size'])
+            ? $options['component_group_size']($section)
+            : ($options['component_group_size'] ?? 1);
           $grouped_components = array_chunk($components, $group_size);
           $new_sections = [];
           foreach ($grouped_components as $group) {
@@ -3584,6 +3602,14 @@ function _move_components_to_new_sections($options): void {
             $new_sections[] = call_user_func($options['section_generator'], $args);
           }
 
+          // Delete the original section to prevent
+          // leaving a section with the style applied.
+          $db->delete($table_name)
+            ->condition('entity_id', $record->entity_id)
+            ->condition('revision_id', $record->revision_id)
+            ->condition('delta', $base_delta)
+            ->execute();
+
           if (!empty($new_sections)) {
 
             // Call the post process function if it exists.
@@ -3591,12 +3617,11 @@ function _move_components_to_new_sections($options): void {
               call_user_func($options['post_process'], ['sections' => &$new_sections]);
             }
 
-            // Delete the original section.
-            $db->delete($table_name)
-              ->condition('entity_id', $record->entity_id)
-              ->condition('revision_id', $record->revision_id)
-              ->condition('delta', $base_delta)
-              ->execute();
+            \Drupal::messenger()
+              ->addMessage(t('Replacing @condition_match match found on node @node', [
+                '@condition_match' => $options['match_name'],
+                '@node' => $record->entity_id,
+              ]));
 
             // Offset existing sections based on the number of new sections.
             $delta_shift = count($new_sections);
@@ -3657,7 +3682,26 @@ function _move_components_to_new_sections($options): void {
               $generated_sections = [];
               if (call_user_func($options['match_callback'], $section)) {
                 $components = $section->getComponents();
-                $grouped = array_chunk($components, $options['component_group_size']);
+
+                // Group by region first.
+                $region_groups = [];
+                foreach ($components as $component) {
+                  $region = $component->getRegion();
+                  if (!isset($region_groups[$region])) {
+                    $region_groups[$region] = [];
+                  }
+                  $region_groups[$region][] = $component;
+                }
+                // Flatten the array.
+                $components = [];
+                foreach ($region_groups as $group) {
+                  $components = array_merge($components, $group);
+                }
+
+                $group_size = is_callable($options['component_group_size'])
+                  ? $options['component_group_size']($section)
+                  : ($options['component_group_size'] ?? 1);
+                $grouped = array_chunk($components, $group_size);
                 foreach ($grouped as $group) {
                   $generated_sections[] = call_user_func($options['section_generator'], [
                     'components' => $group,
@@ -3679,6 +3723,11 @@ function _move_components_to_new_sections($options): void {
 
             // If there was any change we are updating the entire record.
             if ($changed) {
+              \Drupal::messenger()
+                ->addMessage(t('Updating tempstore record for @record.', [
+                  '@record' => $key,
+                ]));
+
               // Out with the old.
               foreach (array_keys($sections) as $delta) {
                 $section_storage->removeSection($delta);
@@ -3699,12 +3748,11 @@ function _move_components_to_new_sections($options): void {
 }
 
 /**
- * Move grid style sections in layout builder.
+ * Move one-column, grid 3x2 stacked styled sections to three-column sections.
  */
 function sitenow_update_10017() {
-
-  // Move one-column, grid 3x2 stacked styled sections to three-column sections.
   _move_components_to_new_sections([
+    'match_name' => 'onecol, grid 3x2 stacked',
     'match_callback' => function ($section) {
       $target_section_types = ['layout_onecol'];
       $target_styles = ['section_layout_grid_3x2_stacked'];
@@ -3769,5 +3817,87 @@ function sitenow_update_10017() {
       }
     },
   ]);
+}
 
+/**
+ * Move two-column, grid 3x2 stacked sections.
+ */
+function sitenow_update_10018() {
+  _move_components_to_new_sections([
+    'match_name' => 'twocol, grid 3x2 stacked',
+    'match_callback' => function ($section) {
+      $target_section_types = ['layout_twocol'];
+      $target_styles = ['section_layout_grid_3x2_stacked'];
+      return in_array($section->getLayoutId(), $target_section_types, TRUE)
+        && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
+    },
+    'component_group_size' => function ($section) {
+      return (count($section->getComponents()) === 4) ? 4 : 3;
+    },
+    'section_generator' => function ($args) {
+      $count = count($args['components']);
+      $layout_id = ($count === 4) ? 'layout_fourcol_section' : 'layout_threecol_section';
+      $section = new Section($layout_id);
+      $layout_settings = $args['current_section']->getLayoutSettings();
+      if ($layout_id == 'layout_threecol_section') {
+        $layout_settings['column_widths'] = '33-34-33';
+      }
+      $styles = $layout_settings['layout_builder_styles_style'] ?? [];
+
+      // Move over all settings except for the grid style.
+      // Remove only the grid style, keep the others.
+      $styles = array_filter($styles, function ($style) {
+        return $style !== 'section_layout_grid_3x2_stacked';
+      });
+
+      // Make sure the following styles are included in the new section.
+      $required_styles = [
+        'section_margin_remove_default_margins',
+        'section_padding_remove_default_padding',
+      ];
+      foreach ($required_styles as $style) {
+        if (!in_array($style, $styles, TRUE)) {
+          $styles[] = $style;
+        }
+      }
+      $layout_settings['layout_builder_styles_style'] = $styles;
+
+      // @todo Check if there are third-party settings that should move over?
+      $section->setLayoutSettings($layout_settings);
+
+      // Add one component to each region.
+      $regions_by_layout = [
+        'layout_fourcol_section' => ['first', 'second', 'third', 'fourth'],
+        'layout_threecol_section' => ['first', 'second', 'third'],
+      ];
+      $regions = $regions_by_layout[$layout_id];
+      foreach ($args['components'] as $i => $component) {
+        $section->appendComponent($component->setRegion($regions[$i] ?? 'first'));
+      }
+      return $section;
+    },
+    'post_process' => function ($data) {
+      $top_styles = ['remove_default_top_padding', 'section_padding_top_extra'];
+      $bottom_styles = ['remove_default_bottom_padding', 'section_padding_bottom_extra'];
+      $last_index = count($data['sections']) - 1;
+
+      foreach ($data['sections'] as $index => $section) {
+        $settings = $section->getLayoutSettings();
+        $styles = (array) ($settings['layout_builder_styles_style'] ?? []);
+
+        // Remove top styles from everything except the first.
+        if ($index !== 0) {
+          $styles = array_diff($styles, $top_styles);
+        }
+
+        // Remove bottom styles from everything except the last.
+        if ($index !== $last_index) {
+          $styles = array_diff($styles, $bottom_styles);
+        }
+
+        $settings['layout_builder_styles_style'] = array_values($styles);
+        $section->setLayoutSettings($settings);
+      }
+    },
+  ]);
 }
