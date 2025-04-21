@@ -7732,3 +7732,9 @@ $sites['orgappliedai.uiowa.ddev.site'] = 'appliedai.org.uiowa.edu';
 $sites['orgappliedai.dev.drupal.uiowa.edu'] = 'appliedai.org.uiowa.edu';
 $sites['orgappliedai.stage.drupal.uiowa.edu'] = 'appliedai.org.uiowa.edu';
 $sites['orgappliedai.prod.drupal.uiowa.edu'] = 'appliedai.org.uiowa.edu';
+
+// Directory aliases for honglisun.lab.uiowa.edu.
+$sites['labhonglisun.uiowa.ddev.site'] = 'honglisun.lab.uiowa.edu';
+$sites['labhonglisun.dev.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
+$sites['labhonglisun.stage.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
+$sites['labhonglisun.prod.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
