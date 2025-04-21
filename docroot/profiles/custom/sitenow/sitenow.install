@@ -3618,9 +3618,10 @@ function _move_components_to_new_sections($options): void {
             }
 
             \Drupal::messenger()
-              ->addMessage(t('Replacing @condition_match match found on node @node', [
+              ->addMessage(t('Replacing @condition_match match found on node @node in @table.', [
                 '@condition_match' => $options['match_name'],
                 '@node' => $record->entity_id,
+                '@table' => $table_name,
               ]));
 
             // Offset existing sections based on the number of new sections.
@@ -3659,103 +3660,107 @@ function _move_components_to_new_sections($options): void {
                 ->execute();
             }
           }
-
-          // Update any tempstore records as well. Grumble grumble.
-          $tempstore = \Drupal::keyValueExpirable(
-            'tempstore.shared.layout_builder.section_storage.overrides'
-          );
-
-          foreach ($tempstore->getAll() as $key => $storage) {
-            if (!str_starts_with($key, 'node.')) {
-              continue;
-            }
-
-            /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
-            $section_storage = $storage->data['section_storage'];
-            $sections = $section_storage->getSections();
-            $changed = FALSE;
-            $new_sections = [];
-
-            // There isn't a setSections() so we need to create a
-            // replacement array and maintain the same order.
-            foreach ($sections as $section) {
-              $generated_sections = [];
-              if (call_user_func($options['match_callback'], $section)) {
-                $components = $section->getComponents();
-
-                // Group by region first.
-                $region_groups = [];
-                foreach ($components as $component) {
-                  $region = $component->getRegion();
-                  if (!isset($region_groups[$region])) {
-                    $region_groups[$region] = [];
-                  }
-                  $region_groups[$region][] = $component;
-                }
-                // Flatten the array.
-                $components = [];
-                foreach ($region_groups as $group) {
-                  $components = array_merge($components, $group);
-                }
-
-                $group_size = is_callable($options['component_group_size'])
-                  ? $options['component_group_size']($section)
-                  : ($options['component_group_size'] ?? 1);
-                $grouped = array_chunk($components, $group_size);
-                foreach ($grouped as $group) {
-                  $generated_sections[] = call_user_func($options['section_generator'], [
-                    'components' => $group,
-                    'current_section' => $section,
-                  ]);
-                }
-
-                // Call the post process function if it exists.
-                if (isset($options['post_process']) && is_callable($options['post_process'])) {
-                  call_user_func($options['post_process'], ['sections' => &$generated_sections]);
-                }
-                $new_sections = array_merge($new_sections, $generated_sections);
-                $changed = TRUE;
-              }
-              else {
-                $new_sections[] = $section;
-              }
-            }
-
-            // If there was any change we are updating the entire record.
-            if ($changed) {
-              \Drupal::messenger()
-                ->addMessage(t('Updating tempstore record for @record.', [
-                  '@record' => $key,
-                ]));
-
-              // Out with the old.
-              foreach (array_keys($sections) as $delta) {
-                $section_storage->removeSection($delta);
-              }
-
-              // In with the new.
-              foreach ($new_sections as $delta => $section) {
-                $section_storage->insertSection($delta, $section);
-              }
-
-              $tempstore->set($key, $storage);
-            }
-          }
         }
       }
     }
   }
+
+  // Update any tempstore records as well. Grumble grumble.
+  $tempstore = \Drupal::keyValueExpirable(
+    'tempstore.shared.layout_builder.section_storage.overrides'
+  );
+  $records = $tempstore->getAll();
+
+  foreach ($records as $key => $storage) {
+    if (!str_starts_with($key, 'node.')) {
+      continue;
+    }
+
+    /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+    $section_storage = $storage->data['section_storage'];
+    $sections = $section_storage->getSections();
+    $changed = FALSE;
+    $new_sections = [];
+
+    // There isn't a setSections() so we need to create a
+    // replacement array and maintain the same order.
+    foreach ($sections as $section) {
+      $generated_sections = [];
+      if (call_user_func($options['match_callback'], $section)) {
+        $components = $section->getComponents();
+
+        // Group by region first.
+        $region_groups = [];
+        foreach ($components as $component) {
+          $region = $component->getRegion();
+          if (!isset($region_groups[$region])) {
+            $region_groups[$region] = [];
+          }
+          $region_groups[$region][] = $component;
+        }
+        // Flatten the array.
+        $components = [];
+        foreach ($region_groups as $group) {
+          $components = array_merge($components, $group);
+        }
+
+        $group_size = is_callable($options['component_group_size'])
+          ? $options['component_group_size']($section)
+          : ($options['component_group_size'] ?? 1);
+        $grouped = array_chunk($components, $group_size);
+        foreach ($grouped as $group) {
+          $generated_sections[] = call_user_func($options['section_generator'], [
+            'components' => $group,
+            'current_section' => $section,
+          ]);
+        }
+
+        // Call the post process function if it exists.
+        if (isset($options['post_process']) && is_callable($options['post_process'])) {
+          call_user_func($options['post_process'], ['sections' => &$generated_sections]);
+        }
+        $new_sections = array_merge($new_sections, $generated_sections);
+        $changed = TRUE;
+      }
+      else {
+        $new_sections[] = $section;
+      }
+    }
+
+    // If there was any change we are updating the entire record.
+    if ($changed) {
+      \Drupal::messenger()
+        ->addMessage(t('Updating tempstore record for @record.', [
+          '@record' => $key,
+        ]));
+
+      // Out with the old from bottom up.
+      foreach (array_reverse(array_keys($sections)) as $delta) {
+        $section_storage->removeSection($delta);
+      }
+
+      // In with the new.
+      foreach ($new_sections as $delta => $new_section) {
+        $section_storage->insertSection($delta, $new_section);
+      }
+
+      $tempstore->set($key, $storage);
+    }
+  }
+
+  // Flush caches to ensure fresh data is called on the next render.
+  drupal_flush_all_caches();
 }
 
 /**
- * Move one-column, grid 3x2 stacked styled sections to three-column sections.
+ * Move one-column, grid 3x2 styled sections to three-column sections.
  */
 function sitenow_update_10017() {
   _move_components_to_new_sections([
-    'match_name' => 'onecol, grid 3x2 stacked',
+    'match_name' => 'onecol, grid 3x2',
     'match_callback' => function ($section) {
       $target_section_types = ['layout_onecol'];
-      $target_styles = ['section_layout_grid_3x2_stacked'];
+      $target_styles = ['section_layout_grid_3x2_stacked', 'section_layout_grid_3x2'];
       return in_array($section->getLayoutId(), $target_section_types, TRUE)
         && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
     },
@@ -3766,9 +3771,12 @@ function sitenow_update_10017() {
       $styles = $layout_settings['layout_builder_styles_style'] ?? [];
 
       // Move over all settings except for the grid style.
-      // Remove only the grid style, keep the others.
+      // Remove only the grid styles, keep the others.
       $styles = array_filter($styles, function ($style) {
-        return $style !== 'section_layout_grid_3x2_stacked';
+        return !in_array($style, [
+          'section_layout_grid_3x2_stacked',
+          'section_layout_grid_3x2',
+        ], TRUE);
       });
 
       // Make sure the following styles are included in the new section.
@@ -3783,7 +3791,6 @@ function sitenow_update_10017() {
       }
       $layout_settings['layout_builder_styles_style'] = $styles;
 
-      // @todo Check if there are third-party settings that should move over?
       $section->setLayoutSettings($layout_settings);
 
       // Add one component to each region.
@@ -3820,14 +3827,14 @@ function sitenow_update_10017() {
 }
 
 /**
- * Move two-column, grid 3x2 stacked sections.
+ * Move two-column and three-column, grid 3x2 sections.
  */
 function sitenow_update_10018() {
   _move_components_to_new_sections([
-    'match_name' => 'twocol, grid 3x2 stacked',
+    'match_name' => 'twocol/threecol, grid 3x2',
     'match_callback' => function ($section) {
-      $target_section_types = ['layout_twocol'];
-      $target_styles = ['section_layout_grid_3x2_stacked'];
+      $target_section_types = ['layout_twocol', 'layout_threecol'];
+      $target_styles = ['section_layout_grid_3x2_stacked', 'section_layout_grid_3x2'];
       return in_array($section->getLayoutId(), $target_section_types, TRUE)
         && array_intersect((array) ($section->getLayoutSettings()['layout_builder_styles_style'] ?? []), $target_styles);
     },
@@ -3845,9 +3852,12 @@ function sitenow_update_10018() {
       $styles = $layout_settings['layout_builder_styles_style'] ?? [];
 
       // Move over all settings except for the grid style.
-      // Remove only the grid style, keep the others.
+      // Remove only the grid styles, keep the others.
       $styles = array_filter($styles, function ($style) {
-        return $style !== 'section_layout_grid_3x2_stacked';
+        return !in_array($style, [
+          'section_layout_grid_3x2_stacked',
+          'section_layout_grid_3x2',
+        ], TRUE);
       });
 
       // Make sure the following styles are included in the new section.
@@ -3862,7 +3872,6 @@ function sitenow_update_10018() {
       }
       $layout_settings['layout_builder_styles_style'] = $styles;
 
-      // @todo Check if there are third-party settings that should move over?
       $section->setLayoutSettings($layout_settings);
 
       // Add one component to each region.
