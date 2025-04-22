@@ -320,7 +320,12 @@ trait CreateMediaTrait {
   protected function createVideoMediaEntity($fid) {
     $file_query = $this->fidQuery($fid);
     // Get the video source.
-    $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+    if (str_starts_with($file_query['uri'], 'youtube')) {
+      $vid_uri = str_replace('youtube://', 'https://www.youtube.com/watch?v=', $file_query['uri']);
+    }
+    else {
+      $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+    }
     $vid_uri = urldecode($vid_uri);
     $new_id = \Drupal::database()->select('media__field_media_oembed_video', 'o')
       ->fields('o', ['entity_id'])
