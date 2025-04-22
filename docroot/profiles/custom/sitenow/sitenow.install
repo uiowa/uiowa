@@ -3935,7 +3935,9 @@ function sitenow_update_10019() {
       ->execute();
 
     foreach ($query as $record) {
-      $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => TRUE]);
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => TRUE,
+      ]);
 
       if ($section instanceof Section) {
         $settings = $section->getLayoutSettings();
