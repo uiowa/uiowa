@@ -2,16 +2,9 @@ adding:
   dependencies:
     config:
       - taxonomy.vocabulary.faq_categories
-      - taxonomy.vocabulary.units
   permissions:
     - 'create terms in faq_categories'
-    - 'create terms in units'
     - 'delete terms in faq_categories'
-    - 'delete terms in units'
     - 'edit terms in faq_categories'
-    - 'edit terms in units'
     - 'rabbit hole bypass taxonomy_term'
-removing:
-  dependencies:
-    module:
-      - layout_builder
+removing: {  }

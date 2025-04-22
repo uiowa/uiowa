@@ -1,0 +1,21 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.contact.field_contact_address
+    module:
+      - address
+  content:
+    field_contact_address:
+      type: address_default
+      label: visually_hidden
+      settings: {  }
+      third_party_settings: {  }
+      weight: 3
+      region: content
+removing:
+  content:
+    content_moderation_control:
+      weight: -20
+      settings: {  }
+      third_party_settings: {  }
+      region: content

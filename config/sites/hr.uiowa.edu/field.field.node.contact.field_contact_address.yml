@@ -1,17 +1,17 @@
-uuid: 23308372-1230-475d-a317-547ceff63d01
+uuid: 1b9c3f86-0656-4d85-b723-80025a9b8a29
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_unit_mailing_address
-    - taxonomy.vocabulary.units
+    - field.storage.node.field_contact_address
+    - node.type.contact
   module:
     - address
-id: taxonomy_term.units.field_unit_mailing_address
-field_name: field_unit_mailing_address
-entity_type: taxonomy_term
-bundle: units
-label: 'Mailing Address'
+id: node.contact.field_contact_address
+field_name: field_contact_address
+entity_type: node
+bundle: contact
+label: Address
 description: ''
 required: false
 translatable: false
@@ -21,15 +21,15 @@ default_value:
     country_code: US
     administrative_area: ''
     locality: ''
-    dependent_locality: ''
+    dependent_locality: null
     postal_code: ''
-    sorting_code: ''
+    sorting_code: null
     address_line1: ''
     address_line2: ''
     organization: ''
-    given_name: ''
-    additional_name: ''
-    family_name: ''
+    given_name: null
+    additional_name: null
+    family_name: null
 default_value_callback: ''
 settings:
   available_countries: {  }
@@ -37,21 +37,11 @@ settings:
   field_overrides:
     givenName:
       override: hidden
-    additionalName:
-      override: hidden
     familyName:
-      override: hidden
-    organization:
       override: hidden
     addressLine1:
       override: optional
-    addressLine2:
-      override: optional
     postalCode:
-      override: optional
-    sortingCode:
-      override: optional
-    dependentLocality:
       override: optional
     locality:
       override: optional

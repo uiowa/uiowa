@@ -1,0 +1,36 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.contact.field_contact_address
+    module:
+      - address
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_b6e5k7rjuq9l2k0a:
+              uuid: 7c334fff-d4de-42ea-8d49-0b37121e1919
+              region: content
+              configuration:
+                id: 'field_block:node:contact:field_contact_address'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: address_default
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: 6
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_contact_address:
+      type: address_default
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 4
+      region: content
+removing: {  }

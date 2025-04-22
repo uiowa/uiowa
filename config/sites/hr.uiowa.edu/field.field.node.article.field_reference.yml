@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_reference
     - node.type.article
-    - taxonomy.vocabulary.units
 id: node.article.field_reference
 field_name: field_reference
 entity_type: node
@@ -19,8 +18,7 @@ default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
   handler_settings:
-    target_bundles:
-      units: units
+    target_bundles: {  }
     sort:
       field: name
       direction: asc
