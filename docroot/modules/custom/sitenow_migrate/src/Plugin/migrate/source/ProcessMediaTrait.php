@@ -149,8 +149,8 @@ trait ProcessMediaTrait {
       if (!$new_fid) {
         $uri = $file_data['uri'];
         // If it's an embedded video, divert
-        // to the oembed video creation process.
-        if (str_starts_with($uri, 'oembed')) {
+        // to the oembed/youtube video creation process.
+        if (preg_match("%^(oembed)|(youtube)%", $uri)) {
           return $this->constructInlineEntity(
             $this->createVideoMediaEntity($fid),
             $align,
