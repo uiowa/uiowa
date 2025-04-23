@@ -494,9 +494,22 @@ function hr_core_update_10002(&$sandbox) {
 }
 
 /**
- * Delete deprecated FAQ and Unit taxonomies.
+ * Remove rh_taxonomy-related permission for order of operations issue.
  */
 function hr_core_update_10003(&$sandbox) {
+  $roles = \Drupal::entityTypeManager()
+    ->getStorage('user_role')
+    ->loadMultiple();
+  foreach ($roles as $role) {
+    $role->revokePermission('rabbit hole bypass taxonomy_term');
+    $role->save();
+  }
+}
+
+/**
+ * Delete deprecated FAQ and Unit taxonomies.
+ */
+function hr_core_update_10004() {
   $terms = \Drupal::entityQuery('taxonomy_term')
     ->accessCheck()
     ->condition('vid', 'faq_categories', '=')
