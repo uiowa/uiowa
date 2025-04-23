@@ -531,8 +531,3 @@ function hr_core_update_10004() {
       ?->delete();
   }
 }
-
-  if (empty($sandbox['total'])) {
-    $sandbox['#finished'] = 1;
-    return;
-}
