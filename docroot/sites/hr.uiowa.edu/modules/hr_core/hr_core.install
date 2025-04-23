@@ -492,3 +492,34 @@ function hr_core_update_10002(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Delete deprecated FAQ and Unit taxonomies.
+ */
+function hr_core_update_10003(&$sandbox) {
+  $terms = \Drupal::entityQuery('taxonomy_term')
+    ->accessCheck()
+    ->condition('vid', 'faq_categories', '=')
+    ->execute();
+  $taxonomy_term_storage_manager = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term');
+  foreach ($terms as $tid) {
+    $taxonomy_term_storage_manager->load($tid)
+      ?->delete();
+  }
+  $terms = \Drupal::entityQuery('taxonomy_term')
+    ->accessCheck()
+    ->condition('vid', 'units', '=')
+    ->execute();
+  $taxonomy_term_storage_manager = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term');
+  foreach ($terms as $tid) {
+    $taxonomy_term_storage_manager->load($tid)
+      ?->delete();
+  }
+}
+
+  if (empty($sandbox['total'])) {
+    $sandbox['#finished'] = 1;
+    return;
+}
