@@ -1,0 +1,37 @@
+id: iowaprotocols_page
+label: Page migration
+dependencies:
+  enforced:
+    module:
+      - iowaprotocols_migrate
+migration_tags:
+  - iowaprotocols
+migration_group: sitenow_migrate
+source:
+  plugin: protocol
+  node_type: page
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: field_basic_page_image
+  body: body
+  field_teaser: body_summary
+  field_tags: field_category
+  field_gallery_images: gallery
+migration_dependencies: null
