@@ -55,12 +55,14 @@ trait ProcessMediaTrait {
     if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
       $base_url = rtrim($this->configuration['constants']['source_base_path'], '/');
 
-      if ($files_dir = $this->variableGet('file_public_path', NULL)) {
+      if ($files_dir = $this->configuration['constants']['public_file_path']) {
         return "{$base_url}/{$files_dir}/";
       }
-      elseif ($files_dir = $this->configuration['constants']['public_file_path']) {
+
+      elseif ($files_dir = $this->variableGet('file_public_path', NULL)) {
         return "{$base_url}/{$files_dir}/";
       }
+
       else {
         throw new MigrateException('Cannot process media. No public files path variable set.');
       }
