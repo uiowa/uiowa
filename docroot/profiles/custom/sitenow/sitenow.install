@@ -3535,6 +3535,32 @@ function sitenow_update_10016() {
 }
 
 /**
+ * Helper function to organize components for further processing.
+ */
+function _organize_components($components): array {
+  // Sort the components by current weight.
+  uasort($components, function ($a, $b) {
+    return $a->getWeight() <=> $b->getWeight();
+  });
+
+  // Group by region first.
+  $region_groups = [];
+  foreach ($components as $component) {
+    $region = $component->getRegion();
+    if (!isset($region_groups[$region])) {
+      $region_groups[$region] = [];
+    }
+    $region_groups[$region][] = $component;
+  }
+  // Flatten the array.
+  $components = [];
+  foreach ($region_groups as $group) {
+    $components = array_merge($components, $group);
+  }
+  return $components;
+}
+
+/**
  * Helper function to match on sections and move components to new section(s).
  */
 function _move_components_to_new_sections($options): void {
@@ -3572,20 +3598,7 @@ function _move_components_to_new_sections($options): void {
         if (call_user_func($options['match_callback'], $section)) {
           $components = $section->getComponents();
 
-          // Group by region first.
-          $region_groups = [];
-          foreach ($components as $component) {
-            $region = $component->getRegion();
-            if (!isset($region_groups[$region])) {
-              $region_groups[$region] = [];
-            }
-            $region_groups[$region][] = $component;
-          }
-          // Flatten the array.
-          $components = [];
-          foreach ($region_groups as $group) {
-            $components = array_merge($components, $group);
-          }
+          $components = _organize_components($components);
 
           // How many components to move to each new section.
           $group_size = is_callable($options['component_group_size'])
@@ -3689,20 +3702,7 @@ function _move_components_to_new_sections($options): void {
       if (call_user_func($options['match_callback'], $section)) {
         $components = $section->getComponents();
 
-        // Group by region first.
-        $region_groups = [];
-        foreach ($components as $component) {
-          $region = $component->getRegion();
-          if (!isset($region_groups[$region])) {
-            $region_groups[$region] = [];
-          }
-          $region_groups[$region][] = $component;
-        }
-        // Flatten the array.
-        $components = [];
-        foreach ($region_groups as $group) {
-          $components = array_merge($components, $group);
-        }
+        $components = _organize_components($components);
 
         $group_size = is_callable($options['component_group_size'])
           ? $options['component_group_size']($section)
