@@ -38,7 +38,7 @@ a:not([href]) {
 }
 
 .cke_editable div,
-.text-formatted div {
+.text-formatted div:not([class*=element-]) {
   line-height: 1.7;
   font-size: 1.2rem;
   margin-bottom: 1.05rem;
@@ -58,6 +58,10 @@ a:not([href]) {
 
 hr {
   clear: both;
+}
+
+div.element--light-intro {
+  margin-bottom: 1.05rem;
 }
 
 /**
