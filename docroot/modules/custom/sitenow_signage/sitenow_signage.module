@@ -23,6 +23,12 @@ function sitenow_signage_preprocess_node(&$variables) {
 function sitenow_signage_preprocess_page(&$variables) {
   // Check if the current page is a node of type 'sign'.
   if (isset($variables['node']) && $variables['node'] instanceof NodeInterface && $variables['node']->getType() === 'sign') {
+    // Remove regions.
+    $variables['page']['header'] = [];
+    $variables['page']['after_content'] = [];
+    $variables['page']['pre_footer'] = [];
+    $variables['page']['footer_first'] = [];
+    $variables['page']['footer_second'] = [];
     // Check that user is logged out before unsetting anything.
     if (\Drupal::currentUser()->isAnonymous()) {
       // Check if the query string contains the 'signage-display' parameter.
