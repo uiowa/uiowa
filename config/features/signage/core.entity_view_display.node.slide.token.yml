@@ -1,26 +1,26 @@
-uuid: 6c66f695-5765-4168-9ea4-6f2afe93c7fa
+uuid: e4d1baa0-9ff6-49cc-ab2a-5100b457266c
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.token
     - field.field.node.slide.field_image
     - node.type.slide
   module:
     - user
-id: node.slide.teaser
+id: node.slide.token
 targetEntityType: node
 bundle: slide
-mode: teaser
+mode: token
 content:
   field_image:
     type: entity_reference_entity_view
-    label: hidden
+    label: visually_hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 6
+    weight: 0
     region: content
   links:
     settings: {  }

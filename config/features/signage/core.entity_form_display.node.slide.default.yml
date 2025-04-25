@@ -3,34 +3,31 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.slide.body
+    - field.field.node.slide.field_image
     - node.type.slide
   module:
     - content_moderation
+    - media_library
     - path
     - scheduler
     - scheduler_content_moderation_integration
-    - text
 id: node.slide.default
 targetEntityType: node
 bundle: slide
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 121
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 5
+    region: content
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

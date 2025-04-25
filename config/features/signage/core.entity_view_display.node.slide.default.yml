@@ -3,20 +3,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.slide.body
+    - field.field.node.slide.field_image
     - node.type.slide
   module:
-    - text
     - user
 id: node.slide.default
 targetEntityType: node
 bundle: slide
 mode: default
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
     third_party_settings: {  }
     weight: 101
     region: content
