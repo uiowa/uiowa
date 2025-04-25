@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.grant.field_grant_contact_name
     - field.field.node.grant.field_grant_contact_title
     - field.field.node.grant.field_grant_counties
+    - field.field.node.grant.field_grant_display_address
     - field.field.node.grant.field_grant_ein
     - field.field.node.grant.field_grant_email
     - field.field.node.grant.field_grant_fax
@@ -217,6 +218,13 @@ content:
     weight: 25
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_grant_display_address:
+    type: boolean_checkbox
+    weight: 29
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_grant_ein:
     type: string_textfield
