@@ -977,12 +977,6 @@ $sites['shlcovidtesting.dev.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 $sites['shlcovidtesting.stage.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 $sites['shlcovidtesting.prod.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 
-// Directory aliases for lgbtq-council.org.uiowa.edu.
-$sites['orglgbtq-council.uiowa.ddev.site'] = 'lgbtq-council.org.uiowa.edu';
-$sites['orglgbtq-council.dev.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
-$sites['orglgbtq-council.stage.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
-$sites['orglgbtq-council.prod.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
-
 // Directory aliases for iowasummermusiccamps.uiowa.edu.
 $sites['iowasummermusiccamps.uiowa.ddev.site'] = 'iowasummermusiccamps.uiowa.edu';
 $sites['iowasummermusiccamps.dev.drupal.uiowa.edu'] = 'iowasummermusiccamps.uiowa.edu';
