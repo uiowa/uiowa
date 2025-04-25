@@ -905,12 +905,6 @@ $sites['sitesindiancinema.dev.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu
 $sites['sitesindiancinema.stage.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
 $sites['sitesindiancinema.prod.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
 
-// Directory aliases for latinxcouncil.uiowa.edu.
-$sites['latinxcouncil.uiowa.ddev.site'] = 'latinxcouncil.uiowa.edu';
-$sites['latinxcouncil.dev.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
-$sites['latinxcouncil.stage.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
-$sites['latinxcouncil.prod.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
-
 // Directory aliases for datascience-workshop.uiowa.edu.
 $sites['datascience-workshop.uiowa.ddev.site'] = 'datascience-workshop.uiowa.edu';
 $sites['datascience-workshop.dev.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
