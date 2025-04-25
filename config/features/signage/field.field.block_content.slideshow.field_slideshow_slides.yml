@@ -5,7 +5,7 @@ dependencies:
   config:
     - block_content.type.slideshow
     - field.storage.block_content.field_slideshow_slides
-    - media.type.image
+    - node.type.slide
 id: block_content.slideshow.field_slideshow_slides
 field_name: field_slideshow_slides
 entity_type: block_content
@@ -17,12 +17,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:media'
+  handler: 'default:node'
   handler_settings:
     target_bundles:
-      image: image
+      slide: slide
     sort:
-      field: name
+      field: _none
       direction: ASC
     auto_create: false
     auto_create_bundle: ''
