@@ -953,12 +953,6 @@ $sites['centerforconferencespediatriccardiology.dev.drupal.uiowa.edu'] = 'pediat
 $sites['centerforconferencespediatriccardiology.stage.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
 $sites['centerforconferencespediatriccardiology.prod.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
 
-// Directory aliases for africanamericancouncil.uiowa.edu.
-$sites['africanamericancouncil.uiowa.ddev.site'] = 'africanamericancouncil.uiowa.edu';
-$sites['africanamericancouncil.dev.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
-$sites['africanamericancouncil.stage.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
-$sites['africanamericancouncil.prod.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
-
 // Directory aliases for sdo.org.uiowa.edu.
 $sites['orgsdo.uiowa.ddev.site'] = 'sdo.org.uiowa.edu';
 $sites['orgsdo.dev.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
