@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for uiowa core.
+ */
+
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Remove permissions from previously configured access configuration.
+ */
+function uiowa_core_update_10001() {
+  // Get an array of ids of every webform on the site.
+  $webform_ids = \Drupal::entityQuery('webform')
+    ->execute();
+
+  // For each id...
+  foreach ($webform_ids as $key => $id) {
+
+    // Load the webform.
+    $webform = Webform::load($id);
+
+    // And get its current access rules settings.
+    $access = $webform->getAccessRules();
+
+    // We craft an array of roles that we want to disable for each group.
+    $update = [
+      'view_any' => [
+        'anonymous',
+        'authenticated',
+      ],
+      'update_any' => [
+        'anonymous',
+        'authenticated',
+      ],
+      'delete_any' => [
+        'anonymous',
+        'authenticated',
+      ],
+      'purge_any' => [
+        'anonymous',
+        'authenticated',
+        'viewer',
+        'editor',
+        'publisher',
+        'webmaster',
+      ],
+      'administer' => [
+        'anonymous',
+        'authenticated',
+        'viewer',
+        'editor',
+        'publisher',
+        'webmaster',
+      ],
+      'test' => [
+        'anonymous',
+        'authenticated',
+        'viewer',
+      ],
+      'configuration' => [
+        'anonymous',
+        'authenticated',
+        'viewer',
+        'editor',
+        'publisher',
+        'webmaster',
+      ],
+    ];
+
+    // Remove users from these permissions.
+    $remove_users = ['purge_any', 'administer', 'configuration'];
+
+    // Then for each access group...
+    foreach ($access as $group => &$items) {
+
+      // If this is a permission we want to remove all users.
+      if (in_array($group, $remove_users)) {
+        // Unset the users.
+        if (isset($items['users'])) {
+          $items['users'] = [];
+        }
+      }
+
+      // If we have roles to disable for that access group...
+      if (isset($update[$group])) {
+
+        // Go through each role...
+        foreach ($items['roles'] as $key => $role) {
+
+          // And if that role is configured to be disabled...
+          if (in_array($role, $update[$group])) {
+
+            // Unset it from the original access group.
+            unset($items['roles'][$key]);
+          }
+        }
+      }
+
+      // We always unset the permissions fields, they should not have values.
+      $items['permissions'] = [];
+    }
+
+    // Now, we set the access rules back to the webform and save it.
+    $webform
+      ->setAccessRules($access)
+      ->save();
+  }
+}

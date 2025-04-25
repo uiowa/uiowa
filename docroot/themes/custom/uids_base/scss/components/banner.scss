@@ -86,3 +86,17 @@
     background: none;
   }
 }
+
+// Fix for media files within a banner.
+.banner .media.media--type-file {
+  position: relative;
+  background: none;
+  width: auto;
+  a {
+    position: relative;
+    z-index: 1;
+  }
+  &:after {
+    background: none;
+  }
+}
