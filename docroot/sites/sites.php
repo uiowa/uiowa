@@ -7696,3 +7696,9 @@ $sites['labhonglisun.uiowa.ddev.site'] = 'honglisun.lab.uiowa.edu';
 $sites['labhonglisun.dev.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
 $sites['labhonglisun.stage.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
 $sites['labhonglisun.prod.drupal.uiowa.edu'] = 'honglisun.lab.uiowa.edu';
+
+// Directory aliases for aah.conference.uiowa.edu.
+$sites['conferenceaah.uiowa.ddev.site'] = 'aah.conference.uiowa.edu';
+$sites['conferenceaah.dev.drupal.uiowa.edu'] = 'aah.conference.uiowa.edu';
+$sites['conferenceaah.stage.drupal.uiowa.edu'] = 'aah.conference.uiowa.edu';
+$sites['conferenceaah.prod.drupal.uiowa.edu'] = 'aah.conference.uiowa.edu';
