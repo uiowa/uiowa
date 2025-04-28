@@ -47,22 +47,20 @@ class ITSCoreCommands extends DrushCommands {
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
     $views = [];
-    $views['outages_degradations'] = [
-      'title' => 'Alerts',
-      'view' => views_get_view_result('alerts_list_block', 'outages_degradations'),
-    ];
-    $views['planned_maintenance'] = [
-      'title' => 'Planned Maintenance',
-      'view' => views_get_view_result('alerts_list_block', 'planned_maintenance'),
-    ];
-    $views['service_announcements'] = [
-      'title' => 'Service Announcements',
-      'view' => views_get_view_result('alerts_list_block', 'service_announcements'),
-    ];
-    $views['ongoing'] = [
-      'title' => 'Ongoing Maintenance',
-      'view' => views_get_view_result('alerts_list_block', 'ongoing'),
-    ];
+    foreach ([
+      'outages_degradations' => 'Alerts',
+      'planned_maintenance' => 'Planned Maintenance',
+      'service_announcements' => 'Service Announcements',
+      'ongoing' => 'Ongoing Maintenance',
+    ] as $key => $title) {
+      $view = views_get_view_result('alerts_list_block', $key);
+      if (!empty($view)) {
+        $views[$key] = [
+          'title' => $title,
+          'view' => $view,
+        ];
+      }
+    }
     $content = [];
 
     if (!empty($views)) {
