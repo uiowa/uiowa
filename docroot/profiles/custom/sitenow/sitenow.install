@@ -3766,7 +3766,7 @@ function sitenow_update_10017() {
     },
     'component_group_size' => 3,
     'section_generator' => function ($args) {
-      $section = new Section('layout_threecol_section');
+      $section = new Section('layout_threecol');
       $layout_settings = $args['current_section']->getLayoutSettings();
       $styles = $layout_settings['layout_builder_styles_style'] ?? [];
 
@@ -3843,7 +3843,7 @@ function sitenow_update_10018() {
     },
     'section_generator' => function ($args) {
       $count = count($args['components']);
-      $layout_id = ($count === 4) ? 'layout_fourcol_section' : 'layout_threecol_section';
+      $layout_id = ($count === 4) ? 'layout_fourcol' : 'layout_threecol';
       $section = new Section($layout_id);
       $layout_settings = $args['current_section']->getLayoutSettings();
       if ($layout_id == 'layout_threecol_section') {
