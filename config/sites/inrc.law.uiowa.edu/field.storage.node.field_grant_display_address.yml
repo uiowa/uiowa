@@ -1,21 +1,18 @@
-uuid: b9dc2c41-7f97-440a-97d3-15fe07caf988
+uuid: 381dfe8d-a05a-49f5-b7bf-31d038e908db
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.node.field_grant_display_address.yml
-    - node.type.grant
-id: node.grant.field_grant_display_address
+  module:
+    - node
+id: node.field_grant_display_address
 field_name: field_grant_display_address
 entity_type: node
-bundle: grant
-label: Hide Address
-description: ''
-required: false
-translatable: false
-default_value: {  }
-default_value_callback: ''
-settings:
-  on_label: 'Yes'
-  off_label: 'No'
-field_type: boolean
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
