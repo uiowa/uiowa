@@ -236,16 +236,16 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                - image
-                - banner_lower_centered
-                - banner_gradient_dark
-                - headline_bold_serif
-                - banner_large
-                - button_primary
-                - media_overlay_bottom_to_top
-                - horizontal_alignment_center
-                - vertical_alignment_bottom
-                - headline_large
+                0: image
+                1: ''
+                2: headline_bold_serif
+                3: horizontal_alignment_center
+                4: vertical_alignment_bottom
+                5: media_overlay_bottom_to_top
+                banner_gradient_light: 0
+                6: banner_large
+                7: button_primary
+                8: headline_large
               target_uuid: e9b591a5-24cf-45a7-aeba-334f82fd6549
             third_party_settings: {  }
         third_party_settings: {  }
@@ -268,7 +268,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '14'
+              block_revision_id: '30'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -300,7 +300,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '4'
+              block_revision_id: '31'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -327,7 +327,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '10'
+              block_revision_id: '32'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -347,20 +347,21 @@ default:
         third_party_settings: {  }
     -
       section:
-        layout_id: layout_onecol
+        layout_id: layout_threecol
         layout_settings:
           label: ''
+          column_widths: 33-34-33
           layout_builder_styles_style:
-            - section_background_style_gold
-            - section_margin_edge_to_edge
-            - remove_default_top_padding
-            - remove_default_bottom_padding
-            - section_layout_grid_3x2_stacked
+            0: section_background_style_gold
+            1: section_margin_edge_to_edge
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            remove_default_top_padding: remove_default_top_padding
           context_mapping: {  }
         components:
           -
             uuid: 7fd9eef5-762c-497c-9e14-8d4f7b90a465
-            region: content
+            region: first
             configuration:
               id: 'inline_block:uiowa_image'
               label: null
@@ -368,7 +369,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '12'
+              block_revision_id: '33'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_image
@@ -381,7 +382,7 @@ default:
             third_party_settings: {  }
           -
             uuid: 9a7e6c79-e0d5-4073-a333-3ecc85ece81f
-            region: content
+            region: second
             configuration:
               id: 'inline_block:uiowa_statistic'
               label: null
@@ -389,12 +390,12 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '1'
+              block_revision_id: '34'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: 30a2799f-c1bf-4ce5-a8f3-0bd71141a580
-            weight: 1
+            weight: 0
             additional:
               layout_builder_styles_style:
                 - block_alignment_flex_row_center
@@ -403,7 +404,7 @@ default:
             third_party_settings: {  }
           -
             uuid: 344de943-dca0-43ac-8578-d06ef61bfd9e
-            region: content
+            region: third
             configuration:
               id: 'inline_block:uiowa_image'
               label: null
@@ -411,20 +412,35 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '13'
+              block_revision_id: '35'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_image
               uuid: ab5ad35a-4275-492b-aa5a-3c6a5f94ae9b
-            weight: 2
+            weight: 0
             additional:
               layout_builder_styles_style:
                 - media_format_widescreen
               target_uuid: ab5ad35a-4275-492b-aa5a-3c6a5f94ae9b
             third_party_settings: {  }
+        third_party_settings: {  }
+    -
+      section:
+        layout_id: layout_threecol
+        layout_settings:
+          label: ''
+          column_widths: 33-34-33
+          layout_builder_styles_style:
+            0: section_background_style_gold
+            1: section_margin_edge_to_edge
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+          context_mapping: {  }
+        components:
           -
             uuid: 95412623-83f8-4969-b4e1-65a146371f3c
-            region: content
+            region: first
             configuration:
               id: 'inline_block:uiowa_statistic'
               label: null
@@ -432,12 +448,12 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '9'
+              block_revision_id: '36'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: 5fd3432c-7324-4dc5-bfa1-54d07b43da77
-            weight: 3
+            weight: 0
             additional:
               layout_builder_styles_style:
                 - block_alignment_flex_row_center
@@ -446,7 +462,7 @@ default:
             third_party_settings: {  }
           -
             uuid: 3b175957-0d78-4b00-8423-06c45df3a26f
-            region: content
+            region: second
             configuration:
               id: 'inline_block:uiowa_image'
               label: null
@@ -454,12 +470,12 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '6'
+              block_revision_id: '37'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_image
               uuid: 4b3a0581-6c84-4417-b6ea-3eb5e9bd9d50
-            weight: 4
+            weight: 0
             additional:
               layout_builder_styles_style:
                 - media_format_widescreen
@@ -467,7 +483,7 @@ default:
             third_party_settings: {  }
           -
             uuid: aa4110f2-226c-4e79-893b-f647d0ac9ef4
-            region: content
+            region: third
             configuration:
               id: 'inline_block:uiowa_statistic'
               label: null
@@ -475,12 +491,12 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '15'
+              block_revision_id: '38'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: c45277c6-60d5-44fb-9d00-689687a550ec
-            weight: 5
+            weight: 0
             additional:
               layout_builder_styles_style:
                 - block_alignment_flex_row_center
@@ -511,7 +527,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '3'
+              block_revision_id: '39'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -531,7 +547,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '17'
+              block_revision_id: '40'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -556,7 +572,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '5'
+              block_revision_id: '41'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -657,8 +673,8 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_id: null
-              block_revision_id: '16'
+              block_id: '16'
+              block_revision_id: '22'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_events
@@ -666,14 +682,16 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                - block_background_style_light
-                - list_format_list
-                - block_grid_threecol_33_34_33
-                - media_format_widescreen
-                - card_media_position_right
-                - media_size_small
-                - block_hide_descriptions
-                - no_border
+                0: block_background_style_light
+                1: ''
+                2: list_format_list
+                3: block_grid_threecol_33_34_33
+                4: card_headline_style_serif
+                5: card_media_position_right
+                6: media_format_widescreen
+                7: media_size_small
+                no_border: no_border
+                block_hide_descriptions: block_hide_descriptions
               target_uuid: e4d3ec12-11e9-4ed7-ad97-002c4c8beecd
             third_party_settings: {  }
         third_party_settings: {  }
@@ -698,7 +716,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: null
-              block_revision_id: '18'
+              block_revision_id: '43'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_cta
