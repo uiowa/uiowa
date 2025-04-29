@@ -2,10 +2,12 @@
 
 namespace Drupal\iowaprotocols_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 
 /**
  * Migrate Source plugin.
@@ -18,6 +20,7 @@ use Drupal\taxonomy\Entity\Term;
 class Protocol extends BaseNodeSource {
 
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
 
   /**
    * Tag-to-name mapping for keywords.
@@ -76,7 +79,7 @@ class Protocol extends BaseNodeSource {
     }
 
     // Process the gallery images from field_article_gallery.
-    $category = $row->getSourceProperty('field_category')[0]["value"];
+    $category = $row->getSourceProperty('field_category')[0]["value"] ?? null;
     if (!empty($category)) {
       $tid = $this->createTag($category);
       $tids[] = $tid;
@@ -110,4 +113,39 @@ class Protocol extends BaseNodeSource {
     return $this->tagMapping[$tag_name];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function postImport(MigrateImportEvent $event) {
+    parent::postImport($event);
+    // If we haven't finished our migration, or
+    // if we're doing the redirects migration,
+    // don't proceed with the following.
+    $migration = $event->getMigration();
+    if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page') {
+      return;
+    }
+
+    switch ($migration->id()) {
+
+      // Right now, page migration is set to run last.
+      // This should only run after it has finished.
+      case 'iowaprotocols_protocols':
+        $sourceToDestIds = $this->fetchMapping(['d7_page_migration_map']);
+        $d7Aliases = $this->fetchAliases(TRUE);
+        $d8Aliases = $this->fetchAliases();
+        $this->logger->notice($this->t('Checking for possible broken links'));
+        $candidates = $this->checkForPossibleLinkBreaks();
+        $this->updateInternalLinks($candidates);
+
+      case 'd7_file':
+      case 'd7_article':
+      case 'd7_person':
+    }
+
+    $this->getLogger('sitenow_migrate')->notice('WE HAVE MIGROTE.');
+    // Report possible broken links after our known high water mark
+    // of articles in which we fixed links.
+//    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+  }
 }

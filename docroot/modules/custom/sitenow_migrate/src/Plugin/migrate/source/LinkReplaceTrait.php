@@ -235,6 +235,97 @@ trait LinkReplaceTrait {
   }
 
   /**
+   * Update aliases from D7 to newly created D8 references.
+   */
+  private function updateInternalLinks($candidates) {
+
+    // Each candidate is an nid of a page suspected to contain a broken link.
+    foreach ($candidates as $candidate) {
+
+      $this->logger->notice($this->t('Checking node id @nid', [
+        '@nid' => $candidate,
+      ]));
+
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $this->entityTypeManager->getStorage('node')->load($candidate);
+
+      $this->linkReplace($node);
+    }
+  }
+
+  /**
+   * Regex callback for updating links broken by the migration.
+   */
+  private function linkReplace($node) {
+    $original_nid = $node->id();
+    $content = $node?->body?->value;
+    $changed = FALSE;
+
+    if (empty($content)) {
+      return;
+    }
+
+    // Load the dom and parse for links.
+    $doc = Html::load($content);
+    $links = $doc->getElementsByTagName('a');
+    $i = $links->length - 1;
+
+    while ($i >= 0) {
+      $link = $links->item($i);
+      $href = $link->getAttribute('href');
+
+      // TODO: get original sitepath
+      $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
+
+      if (str_starts_with($href, '/node/') || stristr($href, $site_path . '/node/')) {
+        $nid = explode('node/', $href)[1];
+
+        $anchor_check = explode('#', $nid);
+        $nid = $anchor_check[0];
+        $anchor = $anchor_check[1] ? '#' . $anchor_check[1] : '';
+
+        // TODO: write mapLookup.
+        if ($lookup = $this->mapLookup($nid)) {
+          $link->setAttribute('href', '/node/' . $lookup . $anchor);
+          $link->parentNode->replaceChild($link, $link);
+          $this->getLogger('sitenow_migrate')->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
+            '@nid' => $nid,
+            '@link' => $lookup,
+            '@entity' => $original_nid,
+          ]);
+
+          $changed = TRUE;
+        }
+        else {
+          $this->getLogger('sitenow_migrate')->notice('Unable to replace internal link @link in entity @entity.', [
+            '@link' => $href,
+            '@entity' => $original_nid,
+          ]);
+        }
+      }
+
+      $i--;
+    }
+
+    $html = Html::serialize($doc);
+    $node->body->value = $html;
+
+    if ($changed) {
+      $node->save();
+    }
+  }
+
+  /**
+   * Override for manual lookup tables of pre-migrated content.
+   */
+  private function mapLookup(int $nid) {
+//    'migrate_map_iowaprotocols_protocols'
+//    'migrate_map_iowaprotocols_page'
+//    'sourceid1'
+//    'destid1'
+  }
+
+  /**
    * Override for manual lookup tables of pre-migrated content.
    */
   private function manualLookup(int $nid) {
