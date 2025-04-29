@@ -3846,7 +3846,7 @@ function sitenow_update_10018() {
       $layout_id = ($count === 4) ? 'layout_fourcol' : 'layout_threecol';
       $section = new Section($layout_id);
       $layout_settings = $args['current_section']->getLayoutSettings();
-      if ($layout_id == 'layout_threecol_section') {
+      if ($layout_id === 'layout_threecol') {
         $layout_settings['column_widths'] = '33-34-33';
       }
       $styles = $layout_settings['layout_builder_styles_style'] ?? [];
