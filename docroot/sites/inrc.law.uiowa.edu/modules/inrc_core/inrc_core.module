@@ -88,6 +88,19 @@ function inrc_core_preprocess_block(&$variables) {
 
       break;
 
+    case 'field_block:node:grant:field_grant_address':
+      // Load the node entity.
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if the address display field is empty.
+      $hide_block = !empty($node->field_grant_display_address->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+
+      break;
+
     case 'extra_field_block:node:grant:field_grant_information_heading':
       // Load the node entity.
       $node = \Drupal::routeMatch()->getParameter('node');
