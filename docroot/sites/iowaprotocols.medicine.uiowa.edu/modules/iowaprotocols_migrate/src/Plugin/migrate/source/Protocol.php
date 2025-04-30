@@ -132,8 +132,8 @@ class Protocol extends BaseNodeSource {
     if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page') {
       return;
     }
-    $this->logger->notice($this->t('Updating broken links'));
-    $this->nidMapping = $this->fetchMapping(['migrate_map_iowaprotocols_protocol', 'migrate_map_iowaprotocols_page']);
+    $this->getLogger('sitenow_migrate')->notice($this->t('Updating broken links'));
+    $this->nidMapping = $this->fetchMapping(['migrate_map_iowaprotocols_protocols', 'migrate_map_iowaprotocols_page']);
     $this->updateInternalLinks(['node__body' => ['body_value']]);
 
     $this->getLogger('sitenow_migrate')->notice('WE HAVE MIGROTE.');

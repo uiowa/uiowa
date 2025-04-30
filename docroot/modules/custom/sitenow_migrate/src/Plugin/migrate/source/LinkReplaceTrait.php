@@ -259,7 +259,7 @@ trait LinkReplaceTrait {
     // Each candidate is an nid of a page suspected to contain a broken link.
     foreach ($candidates as $candidate) {
 
-      $this->logger->notice($this->t('Checking node id @nid', [
+      $this->getLogger('sitenow_migrate')->notice($this->t('Checking node id @nid', [
         '@nid' => $candidate,
       ]));
 
