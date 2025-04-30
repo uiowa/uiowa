@@ -336,10 +336,47 @@ trait LinkReplaceTrait {
    * Override for manual lookup tables of pre-migrated content.
    */
   private function mapLookup(int $nid) {
-//    'migrate_map_iowaprotocols_protocols'
-//    'migrate_map_iowaprotocols_page'
-//    'sourceid1'
-//    'destid1'
+    if (empty($this->nidMapping)) {
+      // If we didn't have a mapping already set, try to make one.
+      $map_table_name = $this->migration->getIdMap()->getQualifiedMapTableName();
+      // We don't need the "qualified" part, so drop everything
+      // before the period.
+      $map_table_name = explode('.', $map_table_name)[1];
+      $this->nidMapping = $this->fetchMapping($map_table_name);
+    }
+    if (isset($this->nidMapping[$nid])) {
+      return $this->nidMapping[$nid];
+    }
+    $this->getLogger('sitenow_migrate')->notice(t('Failed to fetch replacement for node id: @nid', [
+      '@nid' => $nid,
+    ]));
+    return $nid;
+  }
+
+  /**
+   * Query the migration map to get a D7-nid => D8-nid indexed array.
+   */
+  private function fetchMapping($migrate_maps): array {
+    $connection = \Drupal::database();
+    // Grab the first map to initiate the query. If there are more
+    // they will need to be unioned to this one.
+    $first_migrate_map = array_shift($migrate_maps);
+    if ($connection->schema()->tableExists($first_migrate_map)) {
+      $sub_result = $connection->select($first_migrate_map, 'mm')
+        ->fields('mm', ['sourceid1', 'destid1']);
+    }
+    foreach ($migrate_maps as $migrate_map) {
+      if ($connection->schema()->tableExists($migrate_map)) {
+        $next_sub_result = $connection->select($migrate_map, 'mm')
+          ->fields('mm', ['sourceid1', 'destid1']);
+        $sub_result = $sub_result->union($next_sub_result);
+      }
+    }
+
+    // Return an associative array of
+    // source_nid -> destination_nid.
+    return $sub_result->execute()
+      ->fetchAllKeyed(0, 1);
   }
 
   /**
