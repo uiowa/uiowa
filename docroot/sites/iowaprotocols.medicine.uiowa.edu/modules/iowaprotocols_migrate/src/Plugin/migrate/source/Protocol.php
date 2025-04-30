@@ -79,7 +79,7 @@ class Protocol extends BaseNodeSource {
     }
 
     // Process the gallery images from field_article_gallery.
-    $category = $row->getSourceProperty('field_category')[0]["value"] ?? null;
+    $category = $row->getSourceProperty('field_category')[0]["value"] ?? NULL;
     if (!empty($category)) {
       $tid = $this->createTag($category);
       $tids[] = $tid;
@@ -125,27 +125,10 @@ class Protocol extends BaseNodeSource {
     if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page') {
       return;
     }
-
-    switch ($migration->id()) {
-
-      // Right now, page migration is set to run last.
-      // This should only run after it has finished.
-      case 'iowaprotocols_protocols':
-        $sourceToDestIds = $this->fetchMapping(['d7_page_migration_map']);
-        $d7Aliases = $this->fetchAliases(TRUE);
-        $d8Aliases = $this->fetchAliases();
-        $this->logger->notice($this->t('Checking for possible broken links'));
-        $candidates = $this->checkForPossibleLinkBreaks();
-        $this->updateInternalLinks($candidates);
-
-      case 'd7_file':
-      case 'd7_article':
-      case 'd7_person':
-    }
+    $this->logger->notice($this->t('Updating broken links'));
+    $this->updateInternalLinks(['node__body' => ['body_value']]);
 
     $this->getLogger('sitenow_migrate')->notice('WE HAVE MIGROTE.');
-    // Report possible broken links after our known high water mark
-    // of articles in which we fixed links.
-//    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
+
 }

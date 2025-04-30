@@ -192,7 +192,8 @@ trait LinkReplaceTrait {
    *   or an int for a high water mark to check after,
    *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
+  private function checkForPossibleLinkBreaks(array $fields, $to_exclude = []) {
+    $candidates = [];
     foreach ($fields as $field => $columns) {
       $query = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']));
@@ -202,34 +203,50 @@ trait LinkReplaceTrait {
       elseif (!empty($to_exclude)) {
         $query->condition('f.entity_id', $to_exclude, 'NOT IN');
       }
-      $candidates = $query->execute()
+      $new_candidates = $query->execute()
         ->fetchAllAssoc('entity_id');
+      $candidates = array_merge($candidates, $new_candidates);
+    }
+    return $candidates;
+  }
 
-      foreach ($candidates as $entity_id => $cols) {
-        $oopsie_daisies = [];
-        foreach ($cols as $key => $value) {
-          if ($key === 'entity_id') {
-            continue;
-          }
-
-          // Checks for any links using the node/ format
-          // and reports the node id on which it was found
-          // and the linked text.
-          if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
-            $links = [];
-            for ($i = 0; $i < count($matches[0]); $i++) {
-              $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
-            }
-            $oopsie_daisies[$entity_id] = implode(',', $links);
-          }
+  /**
+   * Report a list of nodes with links possibly broken by the migration.
+   *
+   * @param array $fields
+   *   A [field => column] associative array for database columns
+   *   that should be checked for potential broken links.
+   * @param array|int $to_exclude
+   *   An array of node ids which should be excluded from reporting,
+   *   or an int for a high water mark to check after,
+   *   for instance if links are known to have been replaced.
+   */
+  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
+    $candidates = $this->checkForPossibleLinkBreaks($fields, $to_exclude);
+    foreach ($candidates as $entity_id => $cols) {
+      $oopsie_daisies = [];
+      foreach ($cols as $key => $value) {
+        if ($key === 'entity_id') {
+          continue;
         }
 
-        foreach ($oopsie_daisies as $id => $links) {
-          $this->getLogger('sitenow_migrate')->notice($this->t('Possible broken links found in node @candidate: @links', [
-            '@candidate' => $id,
-            '@links' => $links,
-          ]));
+        // Checks for any links using the node/ format
+        // and reports the node id on which it was found
+        // and the linked text.
+        if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
+          $links = [];
+          for ($i = 0; $i < count($matches[0]); $i++) {
+            $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
+          }
+          $oopsie_daisies[$entity_id] = implode(',', $links);
         }
+      }
+
+      foreach ($oopsie_daisies as $id => $links) {
+        $this->getLogger('sitenow_migrate')->notice($this->t('Possible broken links found in node @candidate: @links', [
+          '@candidate' => $id,
+          '@links' => $links,
+        ]));
       }
     }
   }
@@ -237,8 +254,8 @@ trait LinkReplaceTrait {
   /**
    * Update aliases from D7 to newly created D8 references.
    */
-  private function updateInternalLinks($candidates) {
-
+  private function updateInternalLinks(array $fields, $to_exclude = []) {
+    $candidates = $this->checkForPossibleLinkBreaks($fields, $to_exclude);
     // Each candidate is an nid of a page suspected to contain a broken link.
     foreach ($candidates as $candidate) {
 
