@@ -274,8 +274,8 @@ trait LinkReplaceTrait {
       $link = $links->item($i);
       $href = $link->getAttribute('href');
 
-      // TODO: get original sitepath
-      $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
+      // Grab the original site's path from our migration configuration.
+      $site_path = $this->configuration['constants']['source_base_path'];
 
       if (str_starts_with($href, '/node/') || stristr($href, $site_path . '/node/')) {
         $nid = explode('node/', $href)[1];
