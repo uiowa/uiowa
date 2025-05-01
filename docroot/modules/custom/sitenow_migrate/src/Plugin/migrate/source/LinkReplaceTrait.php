@@ -204,7 +204,7 @@ trait LinkReplaceTrait {
         $query->condition('f.entity_id', $to_exclude, 'NOT IN');
       }
       $new_candidates = $query->execute()
-        ->fetchAllAssoc('entity_id');
+        ->fetchCol(1);
       $candidates = array_merge($candidates, $new_candidates);
     }
     return $candidates;
@@ -292,7 +292,11 @@ trait LinkReplaceTrait {
       $href = $link->getAttribute('href');
 
       // Grab the original site's path from our migration configuration.
-      $site_path = $this->configuration['constants']['source_base_path'];
+      $full_path = $this->configuration['constants']['source_base_path'];
+      preg_match('%(https:\/\/[^\/]*)(\/[^\/]*)\/?%', $full_path, $matches);
+      $site_path = $matches[1];
+      $subdirectory = $matches[2] ?? '';
+      $href = str_replace("$subdirectory", "", $href);
 
       if (str_starts_with($href, '/node/') || stristr($href, $site_path . '/node/')) {
         $nid = explode('node/', $href)[1];
