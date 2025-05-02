@@ -1,0 +1,29 @@
+uuid: 93adb4c2-aa98-4b69-a34d-ad2993c2da57
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.slide.field_image
+    - node.type.slide
+  module:
+    - user
+id: node.slide.default
+targetEntityType: node
+bundle: slide
+mode: default
+content:
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  links: true
+  search_api_excerpt: true

@@ -536,10 +536,10 @@ display:
           total_pages: null
           id: 0
           tags:
-            next: â€ºâ€º
-            previous: â€¹â€¹
-            first: 'Â« First'
-            last: 'Last Â»'
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -1253,7 +1253,9 @@ display:
         fields: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: lockup-system
     cache_metadata:
       max-age: -1
