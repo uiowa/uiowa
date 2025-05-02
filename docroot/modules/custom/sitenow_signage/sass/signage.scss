@@ -1,0 +1,18 @@
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
+.node--type-sign .sign--header {
+  display: flex!important;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.node--type-sign .sign--header .block {
+  flex-basis: auto;
+}
+
+.node--type-sign .sign--header .logo {
+  @include utilities.breakpoint(page-container) {
+    margin-bottom: -10px;
+  }
+}
