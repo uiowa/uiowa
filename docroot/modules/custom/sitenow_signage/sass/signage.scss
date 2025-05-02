@@ -1,18 +1,44 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
-.node--type-sign .sign--header {
-  display: flex!important;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.node--type-sign .sign--header .block {
-  flex-basis: auto;
-}
-
-.node--type-sign .sign--header .logo {
-  @include utilities.breakpoint(page-container) {
-    margin-bottom: -10px;
+.node--type-sign,
+.page-node-type-sign {
+  .sign--header {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 1rem;
+    .block {
+      flex-basis: auto;
+    }
+    .logo {
+      @include utilities.breakpoint(page-container) {
+        margin-bottom: -10px;
+      }
+    }
   }
 }
+
+
+.date-time {
+  font-size: 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+
+  &  > span:first-child {
+    margin-right: 0.3em;
+  }
+
+  #datespan,
+  #timespan {
+    display: inline-block;
+    vertical-align: middle;
+    background: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    color: variables.$primary;
+  }
+}
+
+
+

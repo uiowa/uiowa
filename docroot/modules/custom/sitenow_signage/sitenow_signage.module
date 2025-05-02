@@ -13,13 +13,32 @@ use Drupal\node\NodeInterface;
  */
 function sitenow_signage_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    // Unset request info buttons.
+    case 'datetime_block':
+      $variables['#attached']['library'][] = 'sitenow_signage/datetime';
+      break;
+
     case 'iowalogo_block':
       $variables['#attached']['library'][] = 'uids_base/logo';
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if the address display field is empty.
+      $hide_block = !empty($node->field_sign_hide_header->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
       break;
 
     case 'field_block:node:sign:field_sign_display_title':
       uiowa_core_set_attributes($variables, 'site-name');
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if the address display field is empty.
+      $hide_block = !empty($node->field_sign_hide_header->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
       break;
   }
 }

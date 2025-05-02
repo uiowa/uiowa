@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.sign.field_sign_display_title
+    - field.field.node.sign.field_sign_hide_header
     - field.field.node.sign.layout_builder__layout
     - node.type.sign
   module:
@@ -63,6 +64,18 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+          - uuid: 555b9075-1cad-4b84-b0b6-6912c77ee05c
+            region: second
+            configuration:
+              id: datetime_block
+              label: null
+              label_display: null
+              provider: sitenow_signage
+              context_mapping: { }
+            weight: 1
+            additional:
+              layout_builder_styles_style: { }
+            third_party_settings: { }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -148,6 +161,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 101
+    region: first
+  field_sign_hide_header:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 102
     region: first
   links:
     settings: {  }
