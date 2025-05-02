@@ -303,7 +303,7 @@ trait LinkReplaceTrait {
 
         $anchor_check = explode('#', $nid);
         $nid = $anchor_check[0];
-        $anchor = $anchor_check[1] ? '#' . $anchor_check[1] : '';
+        $anchor = isset($anchor_check[1]) ? '#' . $anchor_check[1] : '';
 
         // TODO: write mapLookup.
         if ($lookup = $this->mapLookup($nid)) {
