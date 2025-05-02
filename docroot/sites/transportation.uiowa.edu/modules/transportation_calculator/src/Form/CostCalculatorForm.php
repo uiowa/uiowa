@@ -35,6 +35,7 @@ class CostCalculatorForm extends FormBase {
       ],
       'distance' => [
         '#type' => 'number',
+        '#required' => TRUE,
         '#min' => 0,
         '#step' => 0.01,
         '#title' => $this->t('Distance'),
@@ -45,6 +46,7 @@ class CostCalculatorForm extends FormBase {
       'days_travel' => [
         '#title' => $this->t('Days of travel'),
         '#type' => 'number',
+        '#required' => TRUE,
         '#min' => 0,
         '#max' => 31,
         '#step' => 0.5,
@@ -55,6 +57,7 @@ class CostCalculatorForm extends FormBase {
       'aaa_cost_per_mile' => [
         '#title' => $this->t('AAA cost per mile'),
         '#type' => 'number',
+        '#required' => TRUE,
         '#min' => 0,
         '#description' => $this->t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'https://exchange.aaa.com/automotive/aaas-your-driving-costs/']),
         '#field_prefix' => $this->t('$'),
@@ -65,6 +68,7 @@ class CostCalculatorForm extends FormBase {
       'cost_to_park' => [
         '#title' => $this->t('Parking Cost'),
         '#type' => 'number',
+        '#required' => TRUE,
         '#min' => 0,
         '#description' => $this->t('How much do you currently pay for monthly parking?'),
         '#field_prefix' => $this->t('$'),
@@ -115,7 +119,12 @@ class CostCalculatorForm extends FormBase {
     if ($form_state->hasAnyErrors()) {
       return $form;
     }
-    $monthly = $form_state->getValue('distance') * $form_state->getValue('days_travel') * $form_state->getValue('aaa_cost_per_mile') + $form_state->getValue('cost_to_park');
+    $distance = (float) $form_state->getValue('distance');
+    $days = (float) $form_state->getValue('days_travel');
+    $cost_per_mile = (float) $form_state->getValue('aaa_cost_per_mile');
+    $parking = (float) $form_state->getValue('cost_to_park');
+
+    $monthly = $distance * $days * $cost_per_mile + $parking;
     $yearly = $monthly * 12;
 
     $van_base_rate = $this->config('transportation_calculator.settings')->get('van-base-rate') ?? 10.44;
