@@ -131,7 +131,7 @@ class CostCalculatorForm extends FormBase {
     $van_mileage_rate = $this->config('transportation_calculator.settings')->get('van-mileage-rate') ?? 0.2252;
     $van_average_working_days = $this->config('transportation_calculator.settings')->get('average-working-days') ?? 21;
     $van_maximum_riders = $this->config('transportation_calculator.settings')->get('maximum-van-riders') ?? 6;
-    $vanpool = ($van_base_rate + $van_mileage_rate * $form_state->getValue('distance') * $van_average_working_days) * 12 / $van_maximum_riders;
+    $vanpool = ($van_base_rate + $van_mileage_rate * $distance * $van_average_working_days) * 12 / $van_maximum_riders;
 
     $upass_cost = $this->config('transportation_calculator.settings')->get('upass-cost') ?? 15;
     $upass_yearly = $upass_cost * 12;
