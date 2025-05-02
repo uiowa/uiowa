@@ -28,6 +28,11 @@ class DateTime extends BlockBase {
   public function build() {
     return [
       '#type' => 'inline_template',
+      '#attached' => [
+        'library' => [
+          'sitenow_signage/datetime',
+        ],
+      ],
       '#template' => '
         <div class="date-time">
           <span id="datespan">&nbsp;</span><span id="timespan">&nbsp;</span>

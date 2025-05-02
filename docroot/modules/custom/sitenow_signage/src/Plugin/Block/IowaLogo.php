@@ -28,6 +28,11 @@ class IowaLogo extends BlockBase {
   public function build() {
     return [
       '#type' => 'inline_template',
+      '#attached' => [
+        'library' => [
+          'uids_base/logo',
+        ],
+      ],
       '#template' => '
         {% include "@uids_base/uids/logo.twig" with {
           path: "https://uiowa.edu",
