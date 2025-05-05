@@ -43,5 +43,14 @@
   }
 }
 
+// Set layout container to fill the page if it is the only container.
+.layout:not(:has(div.sign--header)):last-child {
+  height: 100svh;
+}
+
+// Unset layout container to fill the page if there are more than one layout containers.
+.layout:not(:has(div.sign--header)) + .layout {
+  height: auto;
+}
 
 
