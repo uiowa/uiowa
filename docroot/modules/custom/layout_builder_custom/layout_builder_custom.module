@@ -1392,41 +1392,6 @@ function layout_builder_custom_preprocess_layout(&$variables) {
 function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
   switch ($media->bundle()) {
-    case 'image':
-      $referring_item = $media->_referringItem;
-      // So far, only way to get media viewmode switching lb
-      // block > view > node > media deep.
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          $parent_entity = $parent_entity->getEntity();
-          // If view is attached to parent entity.
-          if (isset($parent_entity->view)) {
-            $view = $parent_entity->view;
-            // If block_config is attached to the view display
-            // and layout_builder_styles exist in that.
-            if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
-              $media_formats = [
-                'media_format_widescreen' => 'large__widescreen',
-                'media_format_square' => 'large__square',
-                'media_format_circle' => 'large__square',
-              ];
-              // Change view_mode based on lb_styles.
-              foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $layout_builder_styles)) {
-                  $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
-                  // Prevents sticky cached images.
-                  $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
-                }
-              }
-            }
-          }
-        }
-      }
-      break;
-
     case 'remote_video':
     case 'video':
       $variables['attributes']['class'][] = 'media--video';
