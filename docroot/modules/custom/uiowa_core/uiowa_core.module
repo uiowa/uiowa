@@ -400,13 +400,18 @@ function template_preprocess_card(&$variables) {
         // Change view_mode based on lb_styles.
         foreach ($media_formats as $class => $view_mode) {
           if (str_contains($style, $class)) {
+            // Just in time image view mode switch, modifying cache keys.
             if (isset($element['#media']['field_image'])) {
+              // Set the view mode for both the image and
+              // for the responsive image formatter.
               $element['#media']['field_image'][0]['#view_mode'] = $view_mode;
               $element['#media']['field_image'][0]['#responsive_image_style_id'] = $view_mode;
               if (isset($element['#media']['field_image'][0]['#cache']['keys'])) {
+                // Remove the old cache keys related to image view mode.
                 $element['#media']['field_image'][0]['#cache']['keys'] = array_values(array_filter($element['#media']['field_image'][0]['#cache']['keys'], function ($item) {
                   return !preg_match('/^(large__|medium__|small__)/', $item);
                 }));
+                // Add the new cache keys related to image view mode.
                 $element['#media']['field_image'][0]['#cache']['keys'][] = $view_mode;
               }
             }
