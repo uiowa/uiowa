@@ -1,6 +1,7 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
+// Sign header.
 .node--type-sign,
 .page-node-type-sign {
   .sign--header {
@@ -10,14 +11,19 @@
     .block {
       flex-basis: auto;
     }
-    .logo {
+    .site-name {
       @include utilities.breakpoint(page-container) {
-        margin-bottom: -10px;
+        padding-top: .3rem;
       }
     }
   }
 }
 
+// Date/time block.
+.block-datetime-block {
+  text-align: right;
+  padding-right: 1.5rem;
+}
 
 .date-time {
   font-size: 1.2rem;
@@ -43,14 +49,8 @@
   }
 }
 
-// Set layout container to fill the page if it is the only container.
-.layout:not(:has(div.sign--header)):last-child {
-  height: 100svh;
+// Slideshow block.
+.block-inline-blockslideshow img {
+  width: 100%;
 }
-
-// Unset layout container to fill the page if there are more than one layout containers.
-.layout:not(:has(div.sign--header)) + .layout {
-  height: auto;
-}
-
 
