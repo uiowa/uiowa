@@ -20,23 +20,26 @@
 
 
 .date-time {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   display: inline-flex;
   align-items: center;
   height: 100%;
 
   &  > span:first-child {
-    margin-right: 0.3em;
+    margin-right: 0.5rem;
   }
 
   #datespan,
   #timespan {
     display: inline-block;
     vertical-align: middle;
-    background: #000;
-    padding: 0.5rem 1rem;
+    border: 1px solid variables.$secondary;
+    font-family: variables.$font-family-caps-bold;
+    padding: 0.5rem .7rem;
     border-radius: 3px;
-    color: variables.$primary;
+    color: variables.$secondary;
+    text-transform: uppercase;
+    font-weight: variables.$font-weight-heavy;
   }
 }
 
