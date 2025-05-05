@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..e76d2ae5a 100644
+index 4031da475..832ca8f34 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -119,10 +119,11 @@ index 4031da475..e76d2ae5a 100644
    </IfModule>
  </IfModule>
  
-@@ -183,4 +279,6 @@ AddEncoding gzip svgz
+@@ -183,4 +279,7 @@ AddEncoding gzip svgz
    Header always set X-Content-Type-Options nosniff
    # Disable Proxy header, since it's an attack vector.
    RequestHeader unset Proxy
-+  # HSTS header
++  # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
++  # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
 +  Header always set Strict-Transport-Security "max-age=31536000; includeSubdomains;"
  </IfModule>
