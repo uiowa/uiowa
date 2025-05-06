@@ -4,6 +4,13 @@
 // Sign header.
 .node--type-sign,
 .page-node-type-sign {
+  // Hide ability to move blocks in contextual links. 
+  .contextual-links {
+    .layout-builder-block-move {
+      display: none;
+    }
+  }
+
   // Set sign background to black.
   main.content__container {
     background: variables.$secondary;
@@ -65,4 +72,3 @@
 .block-inline-blockslideshow img {
   width: 100%;
 }
-
