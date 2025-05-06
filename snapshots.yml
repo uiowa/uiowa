@@ -1,7 +1,7 @@
 - name: Front page with events block hidden
   url: /
-  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none'; document.querySelector('.uiowa-alerts-wrapper').style.display = 'none'; document.querySelectorAll('img[loading=\"lazy\"]').forEach(img => { img.removeAttribute('loading'); const src = img.getAttribute('src'); if (src) { img.src = src; } });"
-  waitForTimeout: 2000
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+  waitForTimeout: 1000
 - name: About page with search input visible
   url: /about
   execute: "document.querySelector('.search-button').click();document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
