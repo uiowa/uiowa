@@ -40,7 +40,21 @@ class Protocol extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
+    }
     parent::prepareRow($row);
+
+    // Skip over the rest of the preprocessing, as it's not needed
+    // for redirects. Also avoids duplicating the notices.
+    // Return TRUE because the row should be created.
+    if ($this->migration->id() === 'iowaprotocols_protocols_redirects' || $this->migration->id() === 'iowaprotocols_page_redirects') {
+      if ($row->getSourceProperty('alias')) {
+        return TRUE;
+      }
+      return FALSE;
+    }
 
     // Establish an array to eventually map to field_tags.
     $tids = [];
@@ -129,7 +143,7 @@ class Protocol extends BaseNodeSource {
     // if we're doing the redirects migration,
     // don't proceed with the following.
     $migration = $event->getMigration();
-    if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page') {
+    if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page' || $migration->id() === 'iowaprotocols_protocols_redirects' || $migration->id() === 'iowaprotocols_page_redirects') {
       return;
     }
     $this->getLogger('sitenow_migrate')->notice($this->t('Updating broken links'));
