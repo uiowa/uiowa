@@ -4,7 +4,16 @@
 // Sign header.
 .node--type-sign,
 .page-node-type-sign {
-  .sign--header {
+  // Set sign background to black.
+  main.content__container {
+    background: variables.$secondary;
+    .region-content {
+      background: #fff;
+    }
+  }
+  .sign--header,
+  // Target sign header when editing layout.
+  .layout--twocol--75-25.bg--gold .layout__region--first {
     display: flex !important;
     align-items: flex-start;
     gap: 1rem;
@@ -20,7 +29,9 @@
 }
 
 // Date/time block.
-.block-datetime-block {
+.block-datetime-block,
+// Target datetime block when editing layout.
+.block-datetime-block.layout-builder-block-locked {
   text-align: right;
   padding-right: 1.5rem;
 }
