@@ -37,8 +37,6 @@ class IowaLogo extends BlockBase {
         {% include "@uids_base/uids/logo.twig" with {
           path: "https://uiowa.edu",
           logo_classes: "logo--tab",
-          logo_path_png: logo_path,
-          logo_id: "header"
         } %}
         ',
     ];
