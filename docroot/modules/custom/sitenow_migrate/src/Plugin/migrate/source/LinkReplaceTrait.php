@@ -305,7 +305,7 @@ trait LinkReplaceTrait {
         $nid = $anchor_check[0];
         $anchor = isset($anchor_check[1]) ? '#' . $anchor_check[1] : '';
 
-        // TODO: write mapLookup.
+        // @todo write mapLookup.
         if ($lookup = $this->mapLookup($nid)) {
           $link->setAttribute('href', '/node/' . $lookup . $anchor);
           $link->parentNode->replaceChild($link, $link);
