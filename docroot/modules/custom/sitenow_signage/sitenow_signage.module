@@ -46,10 +46,10 @@ function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $for
   if ($is_sign) {
     // Keep only the edge-to-edge option.
     $form['layout_builder_style_container']['#options'] = [
-      'section_margin_edge_to_edge' => $form['layout_builder_style_container']['#options']['section_margin_edge_to_edge'],
+      'section_margin_full_width_container' => $form['layout_builder_style_container']['#options']['section_margin_full_width_container'],
     ];
     // Set it as the default value.
-    $form['layout_builder_style_container']['#default_value'] = 'section_margin_edge_to_edge';
+    $form['layout_builder_style_container']['#default_value'] = 'section_margin_full_width_container';
     // Remove empty option.
     unset($form['layout_builder_style_container']['#empty_option']);
 
@@ -62,11 +62,11 @@ function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $for
 
     // Set "remove top spacing" as only option to remove top padding.
     $form['layout_builder_style_spacing']['#options'] = [
-      'remove_default_top_padding' => $form['layout_builder_style_spacing']['#options']['remove_default_top_padding'],
+      'remove_default_bottom_padding' => $form['layout_builder_style_spacing']['#options']['remove_default_bottom_padding'],
     ];
 
     // Set "remove top spacing" option as default value.
-    $form['layout_builder_style_spacing']['#default_value'] = ['remove_default_top_padding'];
+    $form['layout_builder_style_spacing']['#default_value'] = ['remove_default_bottom_padding'];
   }
 }
 

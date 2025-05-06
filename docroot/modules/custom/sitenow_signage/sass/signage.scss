@@ -4,6 +4,16 @@
 // Sign header.
 .node--type-sign,
 .page-node-type-sign {
+  // Adjust margins to be smaller from signage.
+  .page__container--full.layout__container .layout__spacing_container {
+    margin-left: variables.$mobile-width-gutter;
+    margin-right: variables.$mobile-width-gutter;
+  }
+  // Adjust padding to be smaller from signage.
+  .layout.layout__container:not(:has(div.sign--header)) {
+    padding-bottom: variables.$mobile-width-gutter;
+    padding-top: variables.$mobile-width-gutter;
+  }
   // Hide ability to move blocks in contextual links.
   .contextual-links {
     .layout-builder-block-move {
@@ -42,7 +52,6 @@
 // Target datetime block when editing layout.
 .block-datetime-block.layout-builder-block-locked {
   text-align: right;
-  padding-right: 1.5rem;
 }
 
 .date-time {
