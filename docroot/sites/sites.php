@@ -1619,12 +1619,6 @@ $sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.stage.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.prod.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 
-// Directory aliases for afpcc.org.uiowa.edu.
-$sites['orgafpcc.uiowa.ddev.site'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-
 // Directory aliases for reconnect.psychology.uiowa.edu.
 $sites['psychologyreconnect.uiowa.ddev.site'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
@@ -7708,3 +7702,15 @@ $sites['labmandala.uiowa.ddev.site'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.dev.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.stage.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.prod.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
+
+// Directory aliases for psychedelics.lab.uiowa.edu.
+$sites['labpsychedelics.uiowa.ddev.site'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.dev.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.stage.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.prod.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
+
+// Directory aliases for candido.sites.uiowa.edu.
+$sites['sitescandido.uiowa.ddev.site'] = 'candido.sites.uiowa.edu';
+$sites['sitescandido.dev.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
+$sites['sitescandido.stage.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
+$sites['sitescandido.prod.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
