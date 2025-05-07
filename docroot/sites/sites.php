@@ -7708,3 +7708,9 @@ $sites['labmandala.uiowa.ddev.site'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.dev.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.stage.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
 $sites['labmandala.prod.drupal.uiowa.edu'] = 'mandala.lab.uiowa.edu';
+
+// Directory aliases for psychedelics.lab.uiowa.edu.
+$sites['labpsychedelics.uiowa.ddev.site'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.dev.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.stage.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
+$sites['labpsychedelics.prod.drupal.uiowa.edu'] = 'psychedelics.lab.uiowa.edu';
