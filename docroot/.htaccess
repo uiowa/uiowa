@@ -279,4 +279,7 @@ AddEncoding gzip svgz
   Header always set X-Content-Type-Options nosniff
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
+  # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
+  # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubdomains;"
 </IfModule>
