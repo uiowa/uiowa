@@ -1,0 +1,84 @@
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
+// Sign header.
+.node--type-sign,
+.page-node-type-sign {
+  // Adjust margins to be smaller from signage.
+  .page__container--full.layout__container .layout__spacing_container {
+    margin-left: variables.$mobile-width-gutter;
+    margin-right: variables.$mobile-width-gutter;
+  }
+  // Adjust padding to be smaller from signage.
+  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
+    padding-bottom: variables.$mobile-width-gutter;
+    padding-top: variables.$mobile-width-gutter;
+  }
+  // Hide ability to move blocks in contextual links.
+  .contextual-links {
+    .layout-builder-block-move {
+      display: none;
+    }
+  }
+
+  // Set sign background to black.
+  main.content__container {
+    background: variables.$secondary;
+    .region-content {
+      background: #fff;
+    }
+  }
+  .sign--header,
+  // Target sign header when editing layout.
+  .layout--twocol--75-25.bg--gold .layout__region--first {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    .block {
+      flex-basis: auto;
+    }
+    .site-name {
+      @include utilities.breakpoint(page-container) {
+        padding-top: .3rem;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+// Date/time block.
+.block-datetime-block,
+// Target datetime block when editing layout.
+.block-datetime-block.layout-builder-block-locked {
+  text-align: right;
+}
+
+.date-time {
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+
+  &  > span:first-child {
+    margin-right: 0.5rem;
+  }
+
+  #datespan,
+  #timespan {
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid variables.$secondary;
+    font-family: variables.$font-family-caps-bold;
+    padding: 0.5rem .7rem;
+    border-radius: 3px;
+    color: variables.$secondary;
+    text-transform: uppercase;
+    font-weight: variables.$font-weight-heavy;
+  }
+}
+
+// Slideshow block.
+.block-inline-blockslideshow img {
+  width: 100%;
+}

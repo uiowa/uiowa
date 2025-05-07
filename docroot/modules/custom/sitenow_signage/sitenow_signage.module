@@ -5,9 +5,104 @@
  * Module code for SiteNow Signage.
  */
 
-use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_signage_module_implements_alter(&$implementations, $hook) {
+  // Run the signage form_alter after layout_builder_custom to remove empty style options.
+  if ($hook == 'form_alter') {
+    $group = $implementations['sitenow_signage'];
+    unset($implementations['sitenow_signage']);
+    $implementations['sitenow_signage'] = $group;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\ContextException
+ */
+function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id != 'layout_builder_configure_section' || !isset($form['layout_builder_style_container'])) {
+    return;
+  }
+
+  $is_sign = FALSE;
+  $section_storage = $form_state->getFormObject()->getSectionStorage();
+
+  // Check for 'sign' content type.
+  if ($section_storage instanceof OverridesSectionStorage) {
+    $entity = $section_storage->getContextValue('entity');
+    if ($entity && (($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'sign') ||
+        $entity->getEntityTypeId() == 'sign')) {
+      $is_sign = TRUE;
+    }
+  }
+
+  if ($is_sign) {
+    // Keep only the edge-to-edge option.
+    $form['layout_builder_style_container']['#options'] = [
+      'section_margin_full_width_container' => $form['layout_builder_style_container']['#options']['section_margin_full_width_container'],
+    ];
+    // Set it as the default value.
+    $form['layout_builder_style_container']['#default_value'] = 'section_margin_full_width_container';
+    // Remove empty option.
+    unset($form['layout_builder_style_container']['#empty_option']);
+    $form['layout_builder_style_container']['#access'] = FALSE;
+
+    // Remove the default style options.
+    unset($form['layout_builder_style_default']);
+
+    // Set default background color to black.
+    $form['layout_builder_style_background']['#default_value'] = ['section_background_style_black'];
+    $form['layout_builder_style_background']['#access'] = FALSE;
+
+    // Set "remove top spacing" as only option to remove top padding.
+    $form['layout_builder_style_spacing']['#options'] = [
+      'remove_default_bottom_padding' => $form['layout_builder_style_spacing']['#options']['remove_default_bottom_padding'],
+    ];
+
+    // Set "remove top spacing" option as default value.
+    $form['layout_builder_style_spacing']['#default_value'] = ['remove_default_bottom_padding'];
+    $form['layout_builder_style_spacing']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_signage_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'datetime_block':
+    case 'iowalogo_block':
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if the header display field is empty.
+      $hide_block = !empty($node->field_sign_hide_header->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+      break;
+
+    case 'field_block:node:sign:field_sign_display_title':
+      uiowa_core_set_attributes($variables, 'site-name');
+      $node = \Drupal::routeMatch()->getParameter('node');
+
+      // Check if the header display field is empty.
+      $hide_block = !empty($node->field_sign_hide_header->value);
+      // Hide the block if all the specified fields are empty.
+      if ($hide_block) {
+        $variables['content'] = [];
+      }
+      break;
+  }
+}
 
 /**
  * Implements hook_preprocess_node().
@@ -15,6 +110,9 @@ use Drupal\node\NodeInterface;
 function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() == 'slide') {
     $variables['label'] = NULL;
+  }
+  if ($variables['node']->getType() == 'sign') {
+    $variables['attributes']['class'][] = 'bg--black';
   }
 }
 
@@ -48,4 +146,35 @@ function sitenow_signage_preprocess_page(&$variables) {
     }
 
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_signage_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  if ($node instanceof NodeInterface && $node->getType() === 'sign') {
+    switch ($layout->id()) {
+
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['first']) && ($variables['content']['#settings']['label'] === 'Header')) {
+          $variables['region_attributes']['first']->addClass('sign--header');
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sitenow_signage_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_sign_display_title__sign__default' => [
+      'template' => 'field--node--field-sign-display-title--sign--default',
+      'base hook' => 'field',
+    ],
+  ];
 }
