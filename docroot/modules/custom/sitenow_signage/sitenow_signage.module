@@ -52,6 +52,7 @@ function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $for
     $form['layout_builder_style_container']['#default_value'] = 'section_margin_full_width_container';
     // Remove empty option.
     unset($form['layout_builder_style_container']['#empty_option']);
+    $form['layout_builder_style_container']['#access'] = FALSE;
 
     // Remove the default style options.
     unset($form['layout_builder_style_default']);
@@ -67,6 +68,7 @@ function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $for
 
     // Set "remove top spacing" option as default value.
     $form['layout_builder_style_spacing']['#default_value'] = ['remove_default_bottom_padding'];
+    $form['layout_builder_style_spacing']['#access'] = FALSE;
   }
 }
 
