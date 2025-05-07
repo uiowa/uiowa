@@ -305,8 +305,7 @@ trait LinkReplaceTrait {
         $nid = $anchor_check[0];
         $anchor = isset($anchor_check[1]) ? '#' . $anchor_check[1] : '';
 
-        // @todo write mapLookup.
-        if ($lookup = $this->mapLookup($nid)) {
+        if ($lookup = $this->mapLookup($nid, $original_nid)) {
           $link->setAttribute('href', '/node/' . $lookup . $anchor);
           $link->parentNode->replaceChild($link, $link);
           $this->getLogger('sitenow_migrate')->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
@@ -337,9 +336,18 @@ trait LinkReplaceTrait {
   }
 
   /**
-   * Override for manual lookup tables of pre-migrated content.
+   * Maps a given node ID to its migrated equivalent using a manual lookup.
+   *
+   * @param int $nid
+   *   The node ID to look up in the mapping table.
+   * @param int|null $original_nid
+   *   (optional) The node ID where the lookup was attempted. Used for logging
+   *   context. Defaults to NULL.
+   *
+   * @return int
+   *   The mapped node ID if found, or the lookup node ID if no mapping exists.
    */
-  private function mapLookup(int $nid) {
+  private function mapLookup(int $nid, ?int $original_nid = NULL) {
     if (empty($this->nidMapping)) {
       // If we didn't have a mapping already set, try to make one.
       $map_table_name = $this->migration->getIdMap()->getQualifiedMapTableName();
@@ -351,9 +359,25 @@ trait LinkReplaceTrait {
     if (isset($this->nidMapping[$nid])) {
       return $this->nidMapping[$nid];
     }
-    $this->getLogger('sitenow_migrate')->notice(t('Failed to fetch replacement for node id: @nid', [
-      '@nid' => $nid,
-    ]));
+
+    if ($original_nid !== NULL) {
+      $this->getLogger('sitenow_migrate')->notice(t(
+        'Failed to fetch replacement for node id: @nid on node/@original_nid',
+        [
+          '@nid' => $nid,
+          '@original_nid' => $original_nid,
+        ]
+      ));
+    }
+    else {
+      $this->getLogger('sitenow_migrate')->notice(t(
+        'Failed to fetch replacement for node id: @nid',
+        [
+          '@nid' => $nid,
+        ]
+      ));
+    }
+
     return $nid;
   }
 
