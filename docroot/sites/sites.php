@@ -1619,12 +1619,6 @@ $sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.stage.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.prod.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 
-// Directory aliases for afpcc.org.uiowa.edu.
-$sites['orgafpcc.uiowa.ddev.site'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-$sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
-
 // Directory aliases for reconnect.psychology.uiowa.edu.
 $sites['psychologyreconnect.uiowa.ddev.site'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
