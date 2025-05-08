@@ -7,17 +7,70 @@ dependencies:
     - field.field.block_content.slideshow.field_slideshow_slides
   module:
     - field_delimiter
+    - splide
 id: block_content.slideshow.default
 targetEntityType: block_content
 bundle: slideshow
 mode: default
 content:
   field_slideshow_slides:
-    type: entity_reference_entity_view
+    type: splide_entityreference
     label: hidden
     settings:
+      caption: {  }
+      optionset: default
+      class: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      by_delta: -1
+      layout: ''
       view_mode: default
-      link: false
+      cache: 0
+      admin_uri: '/admin/structure/block-content/manage/slideshow/display?ajax_form=1&_wrapper_format=drupal_ajax&_wrapper_format=drupal_ajax'
+      use_lb: false
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      loading: lazy
+      preload: false
+      responsive_image_style: ''
+      use_theme_field: false
+      box_style: ''
+      image_style: ''
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      style: flexbox
+      skin: classic
+      overridables:
+        arrows: '0'
+        pagination: '0'
+        autoplay: '0'
+        autoWidth: '0'
+        autoHeight: '0'
+        drag: '0'
+        wheel: '0'
+        randomize: '0'
+      thumbnail: ''
+      pagination_text: ''
+      optionset_nav: ''
+      skin_nav: ''
+      nav_caption: ''
+      thumbnail_effect: ''
+      navpos: ''
+      override: false
+      skin_arrows: ''
+      skin_dots: ''
+      pagination_pos: ''
+      preserve_keys: false
+      visible_items: null
     third_party_settings:
       field_delimiter:
         delimiter: ''
