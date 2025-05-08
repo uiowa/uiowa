@@ -119,19 +119,26 @@ class CostCalculatorForm extends FormBase {
     if ($form_state->hasAnyErrors()) {
       return $form;
     }
-    $distance = (float) $form_state->getValue('distance');
-    $days = (float) $form_state->getValue('days_travel');
-    $cost_per_mile = (float) $form_state->getValue('aaa_cost_per_mile');
-    $parking = (float) $form_state->getValue('cost_to_park');
+    $values = [];
+    $fields = ['distance', 'days_travel', 'aaa_cost_per_mile', 'cost_to_park'];
+    // Clean up values and convert to float as they can be submitted as strings.
+    foreach ($fields as $field) {
+      // Remove leading zeros.
+      $raw_value = ltrim($form_state->getValue($field), '0');
+      // Fields are required, but if the trim reduces it to empty, make it a 0.
+      $raw_value = $raw_value === '' ? '0' : $raw_value;
+      // Convert to float.
+      $values[$field] = is_numeric($raw_value) ? (float) $raw_value : 0;
+    }
 
-    $monthly = $distance * $days * $cost_per_mile + $parking;
+    $monthly = $values['distance'] * $values['days_travel'] * $values['aaa_cost_per_mile'] + $values['cost_to_park'];
     $yearly = $monthly * 12;
 
     $van_base_rate = $this->config('transportation_calculator.settings')->get('van-base-rate') ?? 10.44;
     $van_mileage_rate = $this->config('transportation_calculator.settings')->get('van-mileage-rate') ?? 0.2252;
     $van_average_working_days = $this->config('transportation_calculator.settings')->get('average-working-days') ?? 21;
     $van_maximum_riders = $this->config('transportation_calculator.settings')->get('maximum-van-riders') ?? 6;
-    $vanpool = ($van_base_rate + $van_mileage_rate * $distance * $van_average_working_days) * 12 / $van_maximum_riders;
+    $vanpool = ($van_base_rate + $van_mileage_rate * $values['distance'] * $van_average_working_days) * 12 / $van_maximum_riders;
 
     $upass_cost = $this->config('transportation_calculator.settings')->get('upass-cost') ?? 15;
     $upass_yearly = $upass_cost * 12;
