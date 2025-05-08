@@ -192,7 +192,8 @@ trait LinkReplaceTrait {
    *   or an int for a high water mark to check after,
    *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
+  private function checkForPossibleLinkBreaks(array $fields, $to_exclude = []) {
+    $candidates = [];
     foreach ($fields as $field => $columns) {
       $query = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']));
@@ -202,36 +203,208 @@ trait LinkReplaceTrait {
       elseif (!empty($to_exclude)) {
         $query->condition('f.entity_id', $to_exclude, 'NOT IN');
       }
-      $candidates = $query->execute()
-        ->fetchAllAssoc('entity_id');
+      $new_candidates = $query->execute()
+        ->fetchCol(1);
+      $candidates = array_merge($candidates, $new_candidates);
+    }
+    return $candidates;
+  }
 
-      foreach ($candidates as $entity_id => $cols) {
-        $oopsie_daisies = [];
-        foreach ($cols as $key => $value) {
-          if ($key === 'entity_id') {
-            continue;
-          }
-
-          // Checks for any links using the node/ format
-          // and reports the node id on which it was found
-          // and the linked text.
-          if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
-            $links = [];
-            for ($i = 0; $i < count($matches[0]); $i++) {
-              $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
-            }
-            $oopsie_daisies[$entity_id] = implode(',', $links);
-          }
+  /**
+   * Report a list of nodes with links possibly broken by the migration.
+   *
+   * @param array $fields
+   *   A [field => column] associative array for database columns
+   *   that should be checked for potential broken links.
+   * @param array|int $to_exclude
+   *   An array of node ids which should be excluded from reporting,
+   *   or an int for a high water mark to check after,
+   *   for instance if links are known to have been replaced.
+   */
+  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
+    $candidates = $this->checkForPossibleLinkBreaks($fields, $to_exclude);
+    foreach ($candidates as $entity_id => $cols) {
+      $oopsie_daisies = [];
+      foreach ($cols as $key => $value) {
+        if ($key === 'entity_id') {
+          continue;
         }
 
-        foreach ($oopsie_daisies as $id => $links) {
-          $this->getLogger('sitenow_migrate')->notice($this->t('Possible broken links found in node @candidate: @links', [
-            '@candidate' => $id,
-            '@links' => $links,
-          ]));
+        // Checks for any links using the node/ format
+        // and reports the node id on which it was found
+        // and the linked text.
+        if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
+          $links = [];
+          for ($i = 0; $i < count($matches[0]); $i++) {
+            $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
+          }
+          $oopsie_daisies[$entity_id] = implode(',', $links);
         }
       }
+
+      foreach ($oopsie_daisies as $id => $links) {
+        $this->getLogger('sitenow_migrate')->notice($this->t('Possible broken links found in node @candidate: @links', [
+          '@candidate' => $id,
+          '@links' => $links,
+        ]));
+      }
     }
+  }
+
+  /**
+   * Update aliases from D7 to newly created D8 references.
+   */
+  private function updateInternalLinks(array $fields, $to_exclude = []) {
+    $candidates = $this->checkForPossibleLinkBreaks($fields, $to_exclude);
+    // Each candidate is an nid of a page suspected to contain a broken link.
+    foreach ($candidates as $candidate) {
+
+      $this->getLogger('sitenow_migrate')->notice($this->t('Checking node id @nid', [
+        '@nid' => $candidate,
+      ]));
+
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $this->entityTypeManager->getStorage('node')->load($candidate);
+
+      $this->linkReplace($node);
+    }
+  }
+
+  /**
+   * Regex callback for updating links broken by the migration.
+   */
+  private function linkReplace($node) {
+    $original_nid = $node->id();
+    $content = $node?->body?->value;
+    $changed = FALSE;
+
+    if (empty($content)) {
+      return;
+    }
+
+    // Load the dom and parse for links.
+    $doc = Html::load($content);
+    $links = $doc->getElementsByTagName('a');
+    $i = $links->length - 1;
+
+    while ($i >= 0) {
+      $link = $links->item($i);
+      $href = $link->getAttribute('href');
+
+      // Grab the original site's path from our migration configuration.
+      $full_path = $this->configuration['constants']['source_base_path'];
+      preg_match('%(https:\/\/[^\/]*)(\/[^\/]*)\/?%', $full_path, $matches);
+      $site_path = $matches[1];
+      $subdirectory = $matches[2] ?? '';
+      $href = str_replace("$subdirectory", "", $href);
+
+      if (str_starts_with($href, '/node/') || stristr($href, $site_path . '/node/')) {
+        $nid = explode('node/', $href)[1];
+
+        $anchor_check = explode('#', $nid);
+        $nid = $anchor_check[0];
+        $anchor = isset($anchor_check[1]) ? '#' . $anchor_check[1] : '';
+
+        if ($lookup = $this->mapLookup($nid, $original_nid)) {
+          $link->setAttribute('href', '/node/' . $lookup . $anchor);
+          $link->parentNode->replaceChild($link, $link);
+          $this->getLogger('sitenow_migrate')->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
+            '@nid' => $nid,
+            '@link' => $lookup,
+            '@entity' => $original_nid,
+          ]);
+
+          $changed = TRUE;
+        }
+        else {
+          $this->getLogger('sitenow_migrate')->notice('Unable to replace internal link @link in entity @entity.', [
+            '@link' => $href,
+            '@entity' => $original_nid,
+          ]);
+        }
+      }
+
+      $i--;
+    }
+
+    $html = Html::serialize($doc);
+    $node->body->value = $html;
+
+    if ($changed) {
+      $node->save();
+    }
+  }
+
+  /**
+   * Maps a given node ID to its migrated equivalent using a manual lookup.
+   *
+   * @param int $nid
+   *   The node ID to look up in the mapping table.
+   * @param int|null $original_nid
+   *   (optional) The node ID where the lookup was attempted. Used for logging
+   *   context. Defaults to NULL.
+   *
+   * @return int
+   *   The mapped node ID if found, or the lookup node ID if no mapping exists.
+   */
+  private function mapLookup(int $nid, ?int $original_nid = NULL) {
+    if (empty($this->nidMapping)) {
+      // If we didn't have a mapping already set, try to make one.
+      $map_table_name = $this->migration->getIdMap()->getQualifiedMapTableName();
+      // We don't need the "qualified" part, so drop everything
+      // before the period.
+      $map_table_name = explode('.', $map_table_name)[1];
+      $this->nidMapping = $this->fetchMapping($map_table_name);
+    }
+    if (isset($this->nidMapping[$nid])) {
+      return $this->nidMapping[$nid];
+    }
+
+    if ($original_nid !== NULL) {
+      $this->getLogger('sitenow_migrate')->notice(t(
+        'Failed to fetch replacement for node id: @nid on node/@original_nid',
+        [
+          '@nid' => $nid,
+          '@original_nid' => $original_nid,
+        ]
+      ));
+    }
+    else {
+      $this->getLogger('sitenow_migrate')->notice(t(
+        'Failed to fetch replacement for node id: @nid',
+        [
+          '@nid' => $nid,
+        ]
+      ));
+    }
+
+    return $nid;
+  }
+
+  /**
+   * Query the migration map to get a D7-nid => D8-nid indexed array.
+   */
+  private function fetchMapping($migrate_maps): array {
+    $connection = \Drupal::database();
+    // Grab the first map to initiate the query. If there are more
+    // they will need to be unioned to this one.
+    $first_migrate_map = array_shift($migrate_maps);
+    if ($connection->schema()->tableExists($first_migrate_map)) {
+      $sub_result = $connection->select($first_migrate_map, 'mm')
+        ->fields('mm', ['sourceid1', 'destid1']);
+    }
+    foreach ($migrate_maps as $migrate_map) {
+      if ($connection->schema()->tableExists($migrate_map)) {
+        $next_sub_result = $connection->select($migrate_map, 'mm')
+          ->fields('mm', ['sourceid1', 'destid1']);
+        $sub_result = $sub_result->union($next_sub_result);
+      }
+    }
+
+    // Return an associative array of
+    // source_nid -> destination_nid.
+    return $sub_result->execute()
+      ->fetchAllKeyed(0, 1);
   }
 
   /**
