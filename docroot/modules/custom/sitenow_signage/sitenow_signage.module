@@ -110,7 +110,7 @@ function sitenow_signage_preprocess_block(&$variables) {
 function sitenow_signage_preprocess_field(&$variables) {
   if ($variables['element']['#field_name'] == 'field_slideshow_slides') {
     // Attach the splide library.
-    $variables['#attached']['library'][] = 'sitenow_signage/splide';
+    $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
     $test = 'thing';
   }
 }

@@ -6,7 +6,7 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes }}>
+    <div{{ attributes.addClass('signage-slideshow') }}>
       {% for item in items %}
         <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}

@@ -12,8 +12,15 @@ datetime:
 # Splide
 splide:
   js:
-    libraries/splidejs--splide/dist/js/splide.min.js: { preprocess: false }
+    /libraries/splidejs--splide/dist/js/splide.min.js: { preprocess: false }
   css:
     theme:
-      libraries/splidejs--splide/dist/css/splide.min.css: { preprocess: false }
+      /libraries/splidejs--splide/dist/css/splide.min.css: { preprocess: false }
   dependencies: {  }
+
+# Slideshow
+slideshow:
+  js:
+    assets/js/slideshow.js: { preprocess: false }
+  dependencies:
+    - sitenow_signage/splide
