@@ -7,19 +7,19 @@
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
       context.querySelectorAll('.signage-slideshow').forEach(function (element) {
-        console.log('adding splide');
+        console.log('adding splide', element);
         // Initialize Splide with the settings.
         new Splide(element, {
+          autoplay: true,
+          interval: 5000,
           type: 'fade',
           pauseOnHover: false,
           drag: false,
+          speed: 1500,
           slideFocus: false,
           arrows: false,
           pagination: false,
-          perPage: 1,
-          autoScroll: {
-            speed: 1,
-          }
+          rewind: true,
         }).mount();
       })
     },

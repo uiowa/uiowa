@@ -1,32 +1,11 @@
-{%
-  set title_classes = [
-  label_display == 'visually_hidden' ? 'visually-hidden',
-]
-%}
-
-{% if label_hidden %}
-  {% if multiple %}
-    <div{{ attributes.addClass('signage-slideshow') }}>
-      {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
-      {% endfor %}
+<div{{ attributes.addClass(['signage-slideshow', 'splide']) }}>
+  <div class="splide__wrapper">
+    <div class="splide__track">
+      <div class="splide__list">
+        {% for item in items %}
+          <div class="splide__slide"{{ item.attributes }}>{{ item.content }}</div>
+        {% endfor %}
+      </div>
     </div>
-  {% else %}
-    {% for item in items %}
-      <div{{ attributes }}>{{ item.content }}</div>
-    {% endfor %}
-  {% endif %}
-{% else %}
-  <div{{ attributes }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if multiple %}
-    <div>
-      {% endif %}
-      {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
-      {% endfor %}
-      {% if multiple %}
-    </div>
-    {% endif %}
   </div>
-{% endif %}
+</div>
