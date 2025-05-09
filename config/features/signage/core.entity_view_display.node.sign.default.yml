@@ -1,0 +1,187 @@
+uuid: 47576c8b-1f31-4df8-ae5a-5004e43541cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.sign.field_sign_display_title
+    - field.field.node.sign.field_sign_hide_header
+    - field.field.node.sign.layout_builder__layout
+    - node.type.sign
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - sitenow_signage
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: Header
+          context_mapping: {  }
+          column_widths: 75-25
+          layout_builder_styles_style:
+            0: section_background_style_gold
+            1: section_margin_full_width_container
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: e338cc6a-e706-4fce-907a-a206f2c94f7d
+            region: first
+            configuration:
+              id: iowalogo_block
+              label: null
+              label_display: null
+              provider: sitenow_signage
+              context_mapping: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 42afb127-3f98-431c-b545-ca9423eeade4
+            region: first
+            configuration:
+              id: 'field_block:node:sign:field_sign_display_title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 555b9075-1cad-4b84-b0b6-6912c77ee05c
+            region: second
+            configuration:
+              id: datetime_block
+              label: null
+              label_display: null
+              provider: sitenow_signage
+              context_mapping: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              7: 7
+              8: 8
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_black
+            1: section_margin_full_width_container
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: region
+              settings:
+                region:
+                  content:
+                    minimum_enabled: 0
+                    minimum: '1'
+                    maximum_enabled: 1
+                    maximum: '1'
+              scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+      denylisted_blocks: {  }
+      allowlisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields': {  }
+        'Custom block types': {  }
+        'Custom blocks': {  }
+        Devel: {  }
+        'Entity Print': {  }
+        Forms: {  }
+        'Inline blocks':
+          - 'inline_block:slideshow'
+        Lists: {  }
+        'Lists (Views)': {  }
+        Menus: {  }
+        'Purge UI': {  }
+        Restricted: {  }
+        'SiteNow Dispatch': {  }
+        Superfish: {  }
+        System: {  }
+        'University of Iowa Alerts': {  }
+        User: {  }
+        core: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+id: node.sign.default
+targetEntityType: node
+bundle: sign
+mode: default
+content:
+  field_sign_display_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 101
+    region: first
+  field_sign_hide_header:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 102
+    region: first
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  layout_builder__layout: true
+  search_api_excerpt: true
