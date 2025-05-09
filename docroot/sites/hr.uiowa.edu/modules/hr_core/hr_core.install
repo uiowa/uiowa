@@ -492,3 +492,13 @@ function hr_core_update_10002(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Change editorial workflow uuid to match default.
+ */
+function hr_core_update_10003() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('workflows.workflow.editorial');
+  $config->set('uuid', 'bc53f025-6404-4f83-a327-b4ac195bc5c8')
+    ->save();
+}
