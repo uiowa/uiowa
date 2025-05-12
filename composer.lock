@@ -505,12 +505,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/harvesthq/chosen-package.git",
+                "url": "git@github.com:harvesthq/bower-chosen.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -9587,26 +9587,30 @@
         },
         {
             "name": "drupal/piwik_pro",
-            "version": "1.0.2",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/piwik_pro.git",
-                "reference": "1.0.2"
+                "reference": "1.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.0.2.zip",
-                "reference": "1.0.2",
-                "shasum": "611b08cfb6f75ef31a75dfb7b61d9337b986d1a3"
+                "url": "https://ftp.drupal.org/files/projects/piwik_pro-1.3.1.zip",
+                "reference": "1.3.1",
+                "shasum": "8ddabebee5a3c486ca398cad2dc21718bc765446"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9 || ^10"
+                "drupal/core": "^9 || ^10 || ^11",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.3"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.2",
-                    "datestamp": "1675231870",
+                    "version": "1.3.1",
+                    "datestamp": "1741331515",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9619,8 +9623,9 @@
             ],
             "authors": [
                 {
-                    "name": "dimas11",
-                    "homepage": "https://www.drupal.org/user/3578201"
+                    "name": "Josha Hubbers",
+                    "homepage": "https://www.drupal.org/user/3578201",
+                    "email": "josha@hubbers.info"
                 },
                 {
                     "name": "hartsak",
@@ -9639,10 +9644,11 @@
                     "homepage": "https://www.drupal.org/user/813328"
                 }
             ],
-            "description": "Allows your site to be tracked by Piwik Pro.",
+            "description": "Piwik PRO is a free analytics provider.",
             "homepage": "https://www.drupal.org/project/piwik_pro",
             "support": {
-                "source": "https://git.drupalcode.org/project/piwik_pro"
+                "source": "https://git.drupalcode.org/project/piwik_pro",
+                "issues": "https://drupal.org/project/issues/piwik_pro"
             }
         },
         {
@@ -13443,16 +13449,16 @@
         },
         {
             "name": "laminas/laminas-escaper",
-            "version": "2.16.0",
+            "version": "2.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-escaper.git",
-                "reference": "9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8"
+                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8",
-                "reference": "9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8",
+                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/df1ef9503299a8e3920079a16263b578eaf7c3ba",
+                "reference": "df1ef9503299a8e3920079a16263b578eaf7c3ba",
                 "shasum": ""
             },
             "require": {
@@ -13500,7 +13506,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2025-02-17T12:40:19+00:00"
+            "time": "2025-05-06T19:29:36+00:00"
         },
         {
             "name": "laminas/laminas-feed",
