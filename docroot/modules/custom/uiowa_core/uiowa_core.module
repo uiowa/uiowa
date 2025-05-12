@@ -392,6 +392,31 @@ function template_preprocess_card(&$variables) {
   if (isset($element['#attributes']['class'])) {
     foreach ($element['#attributes']['class'] as $key => $style) {
       if (str_starts_with($style, 'media')) {
+        $media_formats = [
+          'media--widescreen' => 'large__widescreen',
+          'media--square' => 'large__square',
+          'media--circle' => 'large__square',
+        ];
+        // Change view_mode based on lb_styles.
+        foreach ($media_formats as $class => $view_mode) {
+          if (str_contains($style, $class)) {
+            // Just in time image view mode switch, modifying cache keys.
+            if (isset($element['#media']['field_image'])) {
+              // Set the view mode for both the image and
+              // for the responsive image formatter.
+              $element['#media']['field_image'][0]['#view_mode'] = $view_mode;
+              $element['#media']['field_image'][0]['#responsive_image_style_id'] = $view_mode;
+              if (isset($element['#media']['field_image'][0]['#cache']['keys'])) {
+                // Remove the old cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'] = array_values(array_filter($element['#media']['field_image'][0]['#cache']['keys'], function ($item) {
+                  return !preg_match('/^(large__|medium__|small__)/', $item);
+                }));
+                // Add the new cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'][] = $view_mode;
+              }
+            }
+          }
+        }
         $element['#media_attributes']['class'][] = $style;
         unset($element['#attributes']['class'][$key]);
       }
@@ -1140,6 +1165,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+
   if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.

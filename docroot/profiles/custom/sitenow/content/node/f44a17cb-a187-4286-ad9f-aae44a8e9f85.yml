@@ -43,6 +43,15 @@ default:
       alias: /about
       langcode: en
       pathauto: 1
+  rh_action:
+    -
+      value: bundle_default
+  rh_redirect_response:
+    -
+      value: 301
+  rh_redirect_fallback_action:
+    -
+      value: bundle_default
   layout_builder__layout:
     -
       section:
@@ -213,14 +222,17 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '23'
+              block_id: '20'
+              block_revision_id: '36'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
               uuid: ecb118da-056e-4ebc-8492-315b526d0534
             weight: 0
             additional:
-              layout_builder_styles_style: {  }
+              layout_builder_styles_style:
+                - ''
+                - ''
               target_uuid: ecb118da-056e-4ebc-8492-315b526d0534
             third_party_settings: {  }
         third_party_settings:
@@ -245,7 +257,8 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '13'
+              block_id: '11'
+              block_revision_id: '37'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -253,13 +266,18 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                - block_background_style_light
-                - media_format_widescreen
-                - card_media_position_stacked
-                - media_size_large
-                - card_style_button_position
+                0: block_background_style_light
+                1: ''
+                2: card_headline_style_sans_serif
+                3: card_media_position_stacked
+                4: media_format_widescreen
+                5: media_size_large
+                no_border: 0
+                card_style_button_position: card_style_button_position
               target_uuid: 81baa7ae-8510-4cec-ad00-c29e95098229
-            third_party_settings: {  }
+            third_party_settings:
+              layout_builder_custom:
+                media_types: image
           -
             uuid: 42b7bd3d-2a24-4fb0-baa5-1be042ab2555
             region: second
@@ -269,7 +287,8 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '5'
+              block_id: '7'
+              block_revision_id: '38'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -277,13 +296,18 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                - block_background_style_light
-                - media_format_widescreen
-                - card_media_position_stacked
-                - media_size_large
-                - card_style_button_position
+                0: block_background_style_light
+                1: ''
+                2: card_headline_style_sans_serif
+                3: card_media_position_stacked
+                4: media_format_widescreen
+                5: media_size_large
+                no_border: 0
+                card_style_button_position: card_style_button_position
               target_uuid: 5026fa65-d6f5-464b-820b-e1cca3ff6be3
-            third_party_settings: {  }
+            third_party_settings:
+              layout_builder_custom:
+                media_types: image
           -
             uuid: 3d411f17-e776-42d2-a7bd-5334f18cb3be
             region: third
@@ -293,7 +317,8 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '6'
+              block_id: '8'
+              block_revision_id: '39'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -301,13 +326,18 @@ default:
             weight: 0
             additional:
               layout_builder_styles_style:
-                - block_background_style_light
-                - media_format_widescreen
-                - card_media_position_stacked
-                - media_size_large
-                - card_style_button_position
+                0: block_background_style_light
+                1: ''
+                2: card_headline_style_sans_serif
+                3: card_media_position_stacked
+                4: media_format_widescreen
+                5: media_size_large
+                no_border: 0
+                card_style_button_position: card_style_button_position
               target_uuid: 5294fe6f-aad8-46ab-8b48-f98d11e41818
-            third_party_settings: {  }
+            third_party_settings:
+              layout_builder_custom:
+                media_types: image
         third_party_settings:
           layout_builder_lock:
             lock: {  }
