@@ -1,13 +1,13 @@
 /**
  * @file
- * JavaScript for the date and time block.
+ * JavaScript for the slideshow block.
  */
 
 (function (Drupal) {
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
       context.querySelectorAll('.signage-slideshow').forEach(function (element) {
-        console.log('adding splide', element);
+        // console.log('adding splide', element);
         // Initialize Splide with the settings.
         new Splide(element, {
           autoplay: true,

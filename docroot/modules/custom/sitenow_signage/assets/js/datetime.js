@@ -3,14 +3,14 @@
  * JavaScript for the date and time block.
  */
 
-(function ($, Drupal, once) {
+(function (Drupal, once) {
   Drupal.behaviors.dateTime = {
     attach: function (context) {
       // Use the `once` function to ensure behavior is applied only once.
-      $(once('dateTime', '.date-time', context)).each(function () {
+      once('dateTime', '.date-time', context).forEach(function (element) {
         // Call `updateDateTime` immediately and set an interval for updates.
-        updateDateTime(this);
-        setInterval(() => updateDateTime(this), 10000);
+        updateDateTime(element);
+        setInterval(() => updateDateTime(element), 10000);
       });
     },
   };
@@ -33,11 +33,11 @@
 
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
 
-    const dateStr = `${weekday}, ${month} ${day}`;
-    const timeStr = `${hours}:${formattedMinutes} ${ampm}`;
+    const dateStr = weekday + ', ' + month + ' ' + day;
+    const timeStr = hours + ':' + formattedMinutes + ' ' + ampm;
 
     // Update the content in the date and time elements.
-    $(element).find('#datespan').text(dateStr);
-    $(element).find('#timespan').text(timeStr);
+    element.querySelector('#datespan').innerText = dateStr;
+    element.querySelector('#timespan').innerText = timeStr;
   }
-})(jQuery, Drupal, once);
+})(Drupal, once);
