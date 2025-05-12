@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: sitescandido.uiowa.ddev.site
+  paths:
+    files: sites/candido.sites.uiowa.edu/files
+dev:
+  uri: sitescandido.dev.drupal.uiowa.edu
+  host: uiowa09dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/candido.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.dev/docroot
+  user: uiowa09.dev
+prod:
+  uri: candido.sites.uiowa.edu
+  host: uiowa09prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/candido.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.prod/docroot
+  user: uiowa09.prod
+test:
+  uri: sitescandido.stage.drupal.uiowa.edu
+  host: uiowa09stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/candido.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.stage/docroot
+  user: uiowa09.stage

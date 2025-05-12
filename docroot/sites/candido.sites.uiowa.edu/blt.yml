@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitescandido.uiowa.ddev.site
+    protocol: https
+  machine_name: sitescandido
+  human_name: candido.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitescandido.prod
+drupal:
+  db:
+    database: candido_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitescandido.prod.drupal.uiowa.edu'
+  requester: dcandido
+  site-name: "Candido's research group"

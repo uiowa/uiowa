@@ -55,12 +55,14 @@ trait ProcessMediaTrait {
     if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
       $base_url = rtrim($this->configuration['constants']['source_base_path'], '/');
 
-      if ($files_dir = $this->variableGet('file_public_path', NULL)) {
+      if ($files_dir = $this->configuration['constants']['public_file_path']) {
         return "{$base_url}/{$files_dir}/";
       }
-      elseif ($files_dir = $this->configuration['constants']['public_file_path']) {
+
+      elseif ($files_dir = $this->variableGet('file_public_path', NULL)) {
         return "{$base_url}/{$files_dir}/";
       }
+
       else {
         throw new MigrateException('Cannot process media. No public files path variable set.');
       }
@@ -149,8 +151,8 @@ trait ProcessMediaTrait {
       if (!$new_fid) {
         $uri = $file_data['uri'];
         // If it's an embedded video, divert
-        // to the oembed video creation process.
-        if (str_starts_with($uri, 'oembed')) {
+        // to the oembed/youtube video creation process.
+        if (preg_match("%^(oembed)|(youtube)%", $uri)) {
           return $this->constructInlineEntity(
             $this->createVideoMediaEntity($fid),
             $align,
