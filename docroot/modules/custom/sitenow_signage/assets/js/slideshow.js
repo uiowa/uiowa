@@ -3,7 +3,7 @@
  * JavaScript for the date and time block.
  */
 
-(function ($, Drupal) {
+(function (Drupal) {
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
       context.querySelectorAll('.signage-slideshow').forEach(function (element) {
@@ -24,4 +24,4 @@
       })
     },
   }
-})(jQuery, Drupal);
+})(Drupal);
