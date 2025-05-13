@@ -3910,3 +3910,10 @@ function sitenow_update_10018() {
     },
   ]);
 }
+
+/**
+ * Flush caches because class files were removed.
+ */
+function sitenow_update_10019() {
+  drupal_flush_all_caches();
+}
