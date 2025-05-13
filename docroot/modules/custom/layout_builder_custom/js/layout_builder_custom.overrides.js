@@ -37,6 +37,8 @@
 
             body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
 
+            // Manually trigger resetSize to avoid 
+            // incorrect/incomplete calculation later.
             const resizeData = {
               data: {
                 $element: $element,
