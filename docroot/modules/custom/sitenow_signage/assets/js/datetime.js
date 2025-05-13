@@ -4,7 +4,7 @@
  */
 
 (function (Drupal, once) {
-  Drupal.behaviors.dateTime = {
+  Drupal.behaviors.signageDateTime = {
     attach: function (context) {
       // Use the `once` function to ensure behavior is applied only once.
       once('dateTime', '.date-time', context).forEach(function (element) {
