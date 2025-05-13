@@ -251,10 +251,8 @@
     }
   }
 
-  .bef-exposed-form {
-    padding: 1.5rem;
-
-    &[data-drupal-form-fields*="edit-reset--"] {
+  &:not(.bef-form--sidebar) {
+    .bef-exposed-form[data-drupal-form-fields*="edit-reset-"]{
       .bef--secondary {
         @include utilities.breakpoint(sm) {
           width: calc(100% + 173px);
@@ -264,6 +262,11 @@
         }
       }
     }
+  }
+
+  .bef-exposed-form {
+    padding: 1.5rem;
+
 
     .button {
       flex: 1;
