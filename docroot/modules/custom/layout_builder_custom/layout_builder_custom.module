@@ -543,8 +543,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'layout_builder_configure_section':
       // Remove container settings - None - empty option.
       unset($form['layout_builder_style_container']['#empty_option']);
-      // Add (Default) after Normal option.
-      $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
+      if (isset($form['layout_builder_style_container'])) {
+        // Add (Default) after Normal option.
+        $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
+      }
 
       if (isset($form['#attributes']['data-layout-builder-target-highlight-id'])) {
 
