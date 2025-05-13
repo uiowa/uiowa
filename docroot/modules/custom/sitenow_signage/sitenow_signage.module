@@ -11,18 +11,6 @@ use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\node\NodeInterface;
 
 /**
- * Implements hook_module_implements_alter().
- */
-function sitenow_signage_module_implements_alter(&$implementations, $hook) {
-  // Run the signage form_alter after layout_builder_custom to remove empty style options.
-  if ($hook == 'form_alter') {
-    $group = $implementations['sitenow_signage'];
-    unset($implementations['sitenow_signage']);
-    $implementations['sitenow_signage'] = $group;
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_block(&$variables) {
