@@ -37,18 +37,6 @@
 
             body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
 
-            // Manually trigger resetSize to avoid 
-            // incorrect/incomplete calculation later.
-            const resizeData = {
-              data: {
-                $element: $element,
-                settings: settings,
-              }
-            };
-            setTimeout(() => {
-              Drupal.offCanvas.resetSize(resizeData);
-            }, 0);
-
             let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
             $element.parent().on('dialogContentResize.off-canvas', eventData, function() {
               if (!justCreated) {
