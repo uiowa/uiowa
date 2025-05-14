@@ -7720,3 +7720,9 @@ $sites['labdudek.uiowa.ddev.site'] = 'dudek.lab.uiowa.edu';
 $sites['labdudek.dev.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
 $sites['labdudek.stage.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
 $sites['labdudek.prod.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
+
+// Directory aliases for musictherapy.org.uiowa.edu.
+$sites['orgmusictherapy.uiowa.ddev.site'] = 'musictherapy.org.uiowa.edu';
+$sites['orgmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.org.uiowa.edu';
+$sites['orgmusictherapy.stage.drupal.uiowa.edu'] = 'musictherapy.org.uiowa.edu';
+$sites['orgmusictherapy.prod.drupal.uiowa.edu'] = 'musictherapy.org.uiowa.edu';
