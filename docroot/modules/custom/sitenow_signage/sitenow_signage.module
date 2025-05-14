@@ -5,9 +5,7 @@
  * Module code for SiteNow Signage.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\node\NodeInterface;
 
 /**
@@ -96,13 +94,17 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_preprocess_layout().
  */
 function sitenow_signage_preprocess_layout(&$variables) {
-  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
-  $node = \Drupal::routeMatch()->getParameter('node') ?? \Drupal::routeMatch()->getParameter('node_preview');
+  $node = $variables['content']['#entity'] ?: NULL;
+
   if ($node instanceof NodeInterface && $node->getType() === 'sign') {
+    if (!empty($node->field_sign_hide_header->value)) {
+      $variables['attributes']['class'][] = 'sign--header-hidden';
+    }
+
     switch ($layout->id()) {
 
       case 'layout_twocol':

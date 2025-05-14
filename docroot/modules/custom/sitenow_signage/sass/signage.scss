@@ -31,9 +31,7 @@
       background: #fff;
     }
   }
-  .sign--header,
-  // Target sign header when editing layout.
-  .layout--twocol--75-25.bg--gold .layout__region--first {
+  .sign--header {
     display: flex !important;
     align-items: flex-start;
     gap: 1rem;
@@ -52,13 +50,16 @@
 
 // Admin/layout styles.
 .page-node-type-sign {
+  // Fix for hiding the sign header after a block is updated.
+  .sign--header-hidden.layout--twocol--75-25.bg--gold {
+    display: none;
+  }
   // Hide ability to move blocks in contextual links.
   .contextual-links {
     .layout-builder-block-move {
       display: none;
     }
   }
-
   // Adjust submit button so that it displays on a new line.
   .layout-builder-configure-section .form-submit {
     display: block!important;
