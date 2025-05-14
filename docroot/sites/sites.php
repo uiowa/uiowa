@@ -7714,3 +7714,9 @@ $sites['sitescandido.uiowa.ddev.site'] = 'candido.sites.uiowa.edu';
 $sites['sitescandido.dev.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
 $sites['sitescandido.stage.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
 $sites['sitescandido.prod.drupal.uiowa.edu'] = 'candido.sites.uiowa.edu';
+
+// Directory aliases for dudek.lab.uiowa.edu.
+$sites['labdudek.uiowa.ddev.site'] = 'dudek.lab.uiowa.edu';
+$sites['labdudek.dev.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
+$sites['labdudek.stage.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
+$sites['labdudek.prod.drupal.uiowa.edu'] = 'dudek.lab.uiowa.edu';
