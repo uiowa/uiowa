@@ -146,16 +146,14 @@
     cursor: pointer;
     padding: 0;
     font-weight: 600;
-    display: block;
     margin-bottom: 1rem;
-    &[aria-expanded="false"] {
-      margin-bottom: 0;
-    }
+    margin-top: 1.5rem;
+    display: flex;
 
     span.summary {
       margin-left: 1rem;
       background: linear-gradient(180deg, rgba(0, 0, 0, 0) calc(50% - 1px), rgba(192, 192, 192, 1) calc(50%), rgba(0, 0, 0, 0) calc(50% + 1px));
-      padding-right: calc(100% - 94px);
+      flex-grow: 1;
     }
 
     &::-webkit-details-marker,
@@ -165,7 +163,7 @@
   }
 
   summary::before {
-    padding: variables.$xsm 0.6rem variables.$xsm variables.$xsm;
+    padding: 0 0.6rem variables.$xsm variables.$xsm;
     content: "\f13a";
     color: variables.$brand-cool-gray;
     @include utilities.fas();
