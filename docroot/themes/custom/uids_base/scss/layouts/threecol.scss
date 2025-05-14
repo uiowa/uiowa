@@ -6,7 +6,7 @@
   .layout__spacing_container {
     @include utilities.grid-base;
   }
-  &.layout--threecol--50-25-25 {
+  &[class*="threecol--50-25-25"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
@@ -18,7 +18,7 @@
       }
     }
   }
-  &.layout--threecol--25-25-50 {
+  &[class*="threecol--25-25-50"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
@@ -41,7 +41,7 @@
       }
     }
   }
-  &.layout--threecol--25-50-25 {
+  &[class*="threecol--25-50-25"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
@@ -64,7 +64,7 @@
       }
     }
   }
-  &.layout--threecol--33-34-33 {
+  &[class*="threecol--33-34-33"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         @include utilities.threecol-grid;
