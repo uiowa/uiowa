@@ -396,6 +396,7 @@ display:
               autosubmit: true
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: true
@@ -418,29 +419,50 @@ display:
                 advanced:
                   placeholder_text: Search
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
+                  hide_label: false
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
                   placeholder_text: ''
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_room_max_occupancy_value:
                 plugin_id: default
                 advanced:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: '- Any -|Occupancy'
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
+              field_room_scheduling_regions_target_id:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Region'
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  is_secondary: true
+                  hide_label: false
               field_room_type_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Type'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -450,8 +472,11 @@ display:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Technology'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -461,27 +486,25 @@ display:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Room features'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
-              field_room_scheduling_regions_target_id:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|Region'
-                  collapsible: false
-                  is_secondary: true
               field_room_accessibility_feature_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -2499,6 +2522,64 @@ display:
                   min: '201'
                   max: ''
                   value: '201'
+        field_room_scheduling_regions_target_id:
+          id: field_room_scheduling_regions_target_id
+          table: node__field_room_scheduling_regions
+          field: field_room_scheduling_regions_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_room_scheduling_regions_target_id_op
+            label: 'Scheduling Region'
+            description: ''
+            use_operator: false
+            operator: field_room_scheduling_regions_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_room_scheduling_regions_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: scheduling_regions
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
         field_room_type_target_id:
           id: field_room_type_target_id
           table: node__field_room_type
@@ -2662,64 +2743,6 @@ display:
             group_items: {  }
           reduce_duplicates: true
           vid: room_features
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
-          save_lineage: false
-          force_deepest: false
-          parent: null
-          level_labels: ''
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
-        field_room_scheduling_regions_target_id:
-          id: field_room_scheduling_regions_target_id
-          table: node__field_room_scheduling_regions
-          field: field_room_scheduling_regions_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_room_scheduling_regions_target_id_op
-            label: 'Scheduling Region'
-            description: ''
-            use_operator: false
-            operator: field_room_scheduling_regions_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_room_scheduling_regions_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: scheduling_regions
           type: select
           hierarchy: false
           limit: true

@@ -2232,6 +2232,7 @@ display:
               autosubmit: true
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: true
@@ -2244,49 +2245,67 @@ display:
                 advanced:
                   placeholder_text: Search
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
+                  hide_label: false
               field_event_when_end_value:
                 plugin_id: default
                 advanced:
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_event_when_value:
                 plugin_id: default
                 advanced:
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_event_performer_target_id_1:
                 plugin_id: default
                 advanced:
                   placeholder_text: Presenters
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_event_attendance_value:
                 plugin_id: default
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: "- Any -| Attendance\r\nTrue| Attendance required\r\nFalse|Attendance not required"
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_event_category_target_id:
                 plugin_id: default
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: '- Any -| Category'
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_event_attendance_mode_value:
                 plugin_id: default
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: '- Any -| Attendance mode'
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
       arguments: {  }
       filters:
         status:
