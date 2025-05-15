@@ -98,21 +98,14 @@ function sitenow_signage_preprocess_page(&$variables) {
  */
 function sitenow_signage_preprocess_layout(&$variables) {
   $layout = $variables['layout'];
-  $node = $variables['content']['#entity'] ?: NULL;
 
-  if ($node instanceof NodeInterface && $node->getType() === 'sign') {
-    if (!empty($node->field_sign_hide_header->value)) {
-      $variables['attributes']['class'][] = 'sign--header-hidden';
-    }
+  switch ($layout->id()) {
 
-    switch ($layout->id()) {
-
-      case 'layout_twocol':
-        if (isset($variables['region_attributes']['first']) && ($variables['content']['#settings']['label'] === 'Header')) {
-          $variables['region_attributes']['first']->addClass('sign--header');
-        }
-        break;
-    }
+    case 'layout_twocol':
+      if (isset($variables['region_attributes']['first']) && ($variables['content']['#settings']['label'] === 'Header')) {
+        $variables['region_attributes']['first']->addClass('sign--header');
+      }
+      break;
   }
 }
 
