@@ -11,4 +11,3 @@ labels: bug
 
 # Proposed solution
 <!-- If you have an idea about what changes are necessary to resolve the issue, record them here. -->
-
