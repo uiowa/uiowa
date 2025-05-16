@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8832cdc08306f2f40e24bebb9e476ec",
+    "content-hash": "99fb7159b6a72940114d45a15d259f24",
     "packages": [
         {
             "name": "acquia/blt",
@@ -12275,6 +12275,15 @@
                     "sut/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
+                    "sut/modules/unish/{$name}": [
+                        "drupal/devel"
+                    ],
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ],
                     "sut/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
@@ -14643,6 +14652,18 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/slick-carousel/-/slick-carousel-1.8.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/splidejs--splide",
+            "version": "4.1.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@splidejs/splide/-/splide-4.1.4.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -23906,9 +23927,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

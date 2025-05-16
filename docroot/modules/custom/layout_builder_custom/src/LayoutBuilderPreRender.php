@@ -26,6 +26,9 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
    */
   public static function preRender($element) {
     $lb = &$element['layout_builder'];
+    $element['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+    $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
+    $element['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
 
     // Loop through each section.
     foreach (Element::children($lb) as $section) {
