@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "deecb1edb1e4cae07a5abef83766f708",
+    "content-hash": "b8832cdc08306f2f40e24bebb9e476ec",
     "packages": [
         {
             "name": "acquia/blt",
@@ -60,11 +60,11 @@
             ],
             "type": "composer-plugin",
             "extra": {
+                "class": "Acquia\\Blt\\Composer\\Plugin",
                 "branch-alias": {
                     "10.x-dev": "10.0.x-dev",
                     "dev-main": "13.x-dev"
                 },
-                "class": "Acquia\\Blt\\Composer\\Plugin",
                 "phpcodesniffer-search-depth": "4"
             },
             "autoload": {
@@ -95,6 +95,7 @@
                 "issues": "https://github.com/acquia/blt/issues",
                 "source": "https://github.com/acquia/blt/tree/13.7.4"
             },
+            "abandoned": true,
             "time": "2023-11-16T18:40:51+00:00"
         },
         {
@@ -504,12 +505,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "git@github.com:harvesthq/bower-chosen.git",
+                "url": "https://github.com/harvesthq/chosen-package.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -3367,7 +3368,7 @@
                     "homepage": "https://www.drupal.org/user/86106"
                 },
                 {
-                    "name": "Centarro",
+                    "name": "centarro",
                     "homepage": "https://www.drupal.org/user/3661446"
                 },
                 {
@@ -3423,7 +3424,7 @@
             ],
             "authors": [
                 {
-                    "name": "AdamPS",
+                    "name": "adamps",
                     "homepage": "https://www.drupal.org/user/2650563"
                 },
                 {
@@ -3608,30 +3609,27 @@
         },
         {
             "name": "drupal/better_exposed_filters",
-            "version": "6.0.3",
+            "version": "7.0.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/better_exposed_filters.git",
-                "reference": "6.0.3"
+                "reference": "7.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-6.0.3.zip",
-                "reference": "6.0.3",
-                "shasum": "b5c20207d7679542bb81955771956c18083e6e0b"
+                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-7.0.5.zip",
+                "reference": "7.0.5",
+                "shasum": "a215444c39a6ae384710a6c707caf593f6dd1e2d"
             },
             "require": {
-                "drupal/core": "^9 || ^10",
-                "drupal/jquery_ui": "^1.6",
-                "drupal/jquery_ui_datepicker": "^2.0",
-                "drupal/jquery_ui_slider": "^2.0.0",
-                "drupal/jquery_ui_touch_punch": "^1.0"
+                "drupal/core": "^10 || ^11",
+                "drupal/nouislider_js": "^15.8"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "6.0.3",
-                    "datestamp": "1671541877",
+                    "version": "7.0.5",
+                    "datestamp": "1738353781",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3812,7 +3810,7 @@
             ],
             "authors": [
                 {
-                    "name": "Anybody",
+                    "name": "anybody",
                     "homepage": "https://www.drupal.org/user/291091"
                 },
                 {
@@ -3820,7 +3818,7 @@
                     "homepage": "https://www.drupal.org/user/1021502"
                 },
                 {
-                    "name": "Grevil",
+                    "name": "grevil",
                     "homepage": "https://www.drupal.org/user/3668491"
                 },
                 {
@@ -3836,7 +3834,7 @@
                     "homepage": "https://www.drupal.org/user/116002"
                 },
                 {
-                    "name": "RobLoach",
+                    "name": "robloach",
                     "homepage": "https://www.drupal.org/user/61114"
                 },
                 {
@@ -4072,11 +4070,11 @@
                     "homepage": "https://www.drupal.org/user/2393360"
                 },
                 {
-                    "name": "Gábor Hojtsy",
+                    "name": "gábor hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
-                    "name": "Jose Reyero",
+                    "name": "jose reyero",
                     "homepage": "https://www.drupal.org/user/4299"
                 },
                 {
@@ -4084,7 +4082,7 @@
                     "homepage": "https://www.drupal.org/user/93488"
                 },
                 {
-                    "name": "Wim Leers",
+                    "name": "wim leers",
                     "homepage": "https://www.drupal.org/user/99777"
                 }
             ],
@@ -4715,26 +4713,26 @@
         },
         {
             "name": "drupal/ctools",
-            "version": "4.0.4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/ctools.git",
-                "reference": "4.0.4"
+                "reference": "4.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ctools-4.0.4.zip",
-                "reference": "4.0.4",
-                "shasum": "4a2474eb2fd525b2add2db0e855c135ba7f0fb70"
+                "url": "https://ftp.drupal.org/files/projects/ctools-4.1.0.zip",
+                "reference": "4.1.0",
+                "shasum": "69f5889cf557df9e55519390e6a95cfa31b67874"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10"
+                "drupal/core": "^9.5 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.0.4",
-                    "datestamp": "1684299878",
+                    "version": "4.1.0",
+                    "datestamp": "1718144949",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5350,11 +5348,11 @@
             ],
             "authors": [
                 {
-                    "name": "DuaelFr",
+                    "name": "duaelfr",
                     "homepage": "https://www.drupal.org/user/931394"
                 },
                 {
-                    "name": "VladimirAus",
+                    "name": "vladimiraus",
                     "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
@@ -5434,7 +5432,7 @@
                     "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
@@ -5512,11 +5510,11 @@
                     "homepage": "https://www.drupal.org/user/1431110"
                 },
                 {
-                    "name": "Sam152",
+                    "name": "sam152",
                     "homepage": "https://www.drupal.org/user/1485048"
                 },
                 {
-                    "name": "VladimirAus",
+                    "name": "vladimiraus",
                     "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
@@ -5574,7 +5572,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -5629,6 +5627,10 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "dieterholvoet",
+                    "homepage": "https://www.drupal.org/user/3567222"
+                },
                 {
                     "name": "lahoosascoots",
                     "homepage": "https://www.drupal.org/user/1933614"
@@ -5803,6 +5805,10 @@
                 {
                     "name": "andrewmacpherson",
                     "homepage": "https://www.drupal.org/user/265648"
+                },
+                {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
                 },
                 {
                     "name": "purushotam.rai",
@@ -6083,7 +6089,7 @@
             ],
             "authors": [
                 {
-                    "name": "Daniel.Moberly",
+                    "name": "daniel.moberly",
                     "homepage": "https://www.drupal.org/user/1160788"
                 },
                 {
@@ -6868,7 +6874,7 @@
                     "homepage": "https://www.drupal.org/user/86106"
                 },
                 {
-                    "name": "Centarro",
+                    "name": "centarro",
                     "homepage": "https://www.drupal.org/user/3661446"
                 },
                 {
@@ -7187,28 +7193,28 @@
         },
         {
             "name": "drupal/jquery_ui_touch_punch",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/jquery_ui_touch_punch.git",
-                "reference": "1.1.0"
+                "reference": "1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/jquery_ui_touch_punch-1.1.0.zip",
-                "reference": "1.1.0",
-                "shasum": "4b7e50a98246dfa6ef48e5b12c70277873902824"
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_touch_punch-1.1.1.zip",
+                "reference": "1.1.1",
+                "shasum": "f16bc2ffa500131f43c84427ff213e753de9b6a6"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10",
+                "drupal/core": "^9.2 || ^10 || ^11",
                 "drupal/jquery_ui": "^1.0",
                 "politsin/jquery-ui-touch-punch": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.1.0",
-                    "datestamp": "1662744607",
+                    "version": "1.1.1",
+                    "datestamp": "1717663479",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7465,20 +7471,20 @@
         },
         {
             "name": "drupal/layout_builder_operation_link",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_operation_link.git",
-                "reference": "2.1.0"
+                "reference": "2.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_operation_link-2.1.0.zip",
-                "reference": "2.1.0",
-                "shasum": "a4365738225d6f01293646db97e2aed525a69694"
+                "url": "https://ftp.drupal.org/files/projects/layout_builder_operation_link-2.2.0.zip",
+                "reference": "2.2.0",
+                "shasum": "79db89e0ad248cc86c1128543f73f61cfaf95ac1"
             },
             "require": {
-                "drupal/core": "^9 || ^10"
+                "drupal/core": "^9 || ^10 || ^11"
             },
             "require-dev": {
                 "drupal/layout_builder_at": "^2.12"
@@ -7486,8 +7492,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.0",
-                    "datestamp": "1663176795",
+                    "version": "2.2.0",
+                    "datestamp": "1724666286",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7586,7 +7592,7 @@
                     "homepage": "https://www.drupal.org/user/748208"
                 },
                 {
-                    "name": "Jeff Cardwell",
+                    "name": "jeff cardwell",
                     "homepage": "https://www.drupal.org/user/2913129"
                 },
                 {
@@ -7675,26 +7681,26 @@
         },
         {
             "name": "drupal/layout_builder_styles",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_styles.git",
-                "reference": "2.0.0"
+                "reference": "2.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_styles-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "e41a6ca8c4322c0dde3392c682dde02beef9759c"
+                "url": "https://ftp.drupal.org/files/projects/layout_builder_styles-2.1.0.zip",
+                "reference": "2.1.0",
+                "shasum": "9b121f90db07cd3645607d68a868921e48db9b2d"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9 || ^10"
+                "drupal/core": "^8.7.7 || ^9 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1662383467",
+                    "version": "2.1.0",
+                    "datestamp": "1727124682",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7914,20 +7920,20 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "6.1.6",
+            "version": "7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "6.1.6"
+                "reference": "7.0.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-6.1.6.zip",
-                "reference": "6.1.6",
-                "shasum": "113d8e569cfb92f8d7feb0a2f7713953c0715e92"
+                "url": "https://ftp.drupal.org/files/projects/linkit-7.0.4.zip",
+                "reference": "7.0.4",
+                "shasum": "cb112f26b1475f6857c9012880ec17f1636dd053"
             },
             "require": {
-                "drupal/core": "^10.1"
+                "drupal/core": "^10.1 || ^11"
             },
             "require-dev": {
                 "drupal/ckeditor": "*",
@@ -7936,8 +7942,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "6.1.6",
-                    "datestamp": "1729189029",
+                    "version": "7.0.4",
+                    "datestamp": "1745413700",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7973,27 +7979,27 @@
         },
         {
             "name": "drupal/linkit_media_library",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit_media_library.git",
-                "reference": "1.0.3"
+                "reference": "2.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit_media_library-1.0.3.zip",
-                "reference": "1.0.3",
-                "shasum": "4a96c2f144eef345185c18ef46ea7941001de79e"
+                "url": "https://ftp.drupal.org/files/projects/linkit_media_library-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "bd1aa775edca847cff364263c0dd91979963769d"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10",
-                "drupal/linkit": "^5 || ^6"
+                "drupal/core": "^10.3 || ^11",
+                "drupal/linkit": "^7"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.3",
-                    "datestamp": "1668535978",
+                    "version": "2.0.0",
+                    "datestamp": "1737059935",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8009,6 +8015,10 @@
                     "name": "Nate Andersen (oknate)",
                     "homepage": "https://www.drupal.org/u/oknate",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "smustgrave",
+                    "homepage": "https://www.drupal.org/user/3252890"
                 }
             ],
             "description": "This module adds a 'Media Library' button to the Link ('drupallink') CKEditor dialog allowing the insertion of links from the media library.",
@@ -8064,11 +8074,11 @@
                     "homepage": "https://www.drupal.org/user/1321830"
                 },
                 {
-                    "name": "Les Lim",
+                    "name": "les lim",
                     "homepage": "https://www.drupal.org/user/84263"
                 },
                 {
-                    "name": "Manuel Garcia",
+                    "name": "manuel garcia",
                     "homepage": "https://www.drupal.org/user/213194"
                 },
                 {
@@ -8088,7 +8098,7 @@
                     "homepage": "https://www.drupal.org/user/3326031"
                 },
                 {
-                    "name": "TR",
+                    "name": "tr",
                     "homepage": "https://www.drupal.org/user/202830"
                 }
             ],
@@ -8388,7 +8398,7 @@
                     "homepage": "https://www.drupal.org/user/205645"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
@@ -8607,7 +8617,7 @@
                     "homepage": "https://www.drupal.org/user/1037976"
                 },
                 {
-                    "name": "Fabianx",
+                    "name": "fabianx",
                     "homepage": "https://www.drupal.org/user/693738"
                 },
                 {
@@ -8615,7 +8625,7 @@
                     "homepage": "https://www.drupal.org/user/45640"
                 },
                 {
-                    "name": "Jeremy",
+                    "name": "jeremy",
                     "homepage": "https://www.drupal.org/user/409"
                 },
                 {
@@ -8623,7 +8633,7 @@
                     "homepage": "https://www.drupal.org/user/2375"
                 },
                 {
-                    "name": "robertDouglass",
+                    "name": "robertdouglass",
                     "homepage": "https://www.drupal.org/user/5449"
                 }
             ],
@@ -8724,7 +8734,7 @@
             ],
             "authors": [
                 {
-                    "name": "Dave Reid",
+                    "name": "dave reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
@@ -8732,7 +8742,7 @@
                     "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
-                    "name": "JohnAlbin",
+                    "name": "johnalbin",
                     "homepage": "https://www.drupal.org/user/32095"
                 },
                 {
@@ -8867,11 +8877,11 @@
                     "homepage": "https://www.drupal.org/user/3331569"
                 },
                 {
-                    "name": "Ludo.R",
+                    "name": "ludo.r",
                     "homepage": "https://www.drupal.org/user/374670"
                 },
                 {
-                    "name": "RobLoach",
+                    "name": "robloach",
                     "homepage": "https://www.drupal.org/user/61114"
                 },
                 {
@@ -9204,6 +9214,10 @@
                 {
                     "name": "joseph.olstad",
                     "homepage": "https://www.drupal.org/user/1321830"
+                },
+                {
+                    "name": "smulvih2",
+                    "homepage": "https://www.drupal.org/user/795442"
                 }
             ],
             "description": "The Moderated Content Bulk Publish module does what it says from the /admin/content view.",
@@ -9345,6 +9359,35 @@
             }
         },
         {
+            "name": "drupal/nouislider_js",
+            "version": "15.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/nouislider_js.git",
+                "reference": "b5610d5842784581e4c766cd1c3852ca0b355ed5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fnouislider_js/repository/archive.zip?sha=b5610d5842784581e4c766cd1c3852ca0b355ed5",
+                "reference": "b5610d5842784581e4c766cd1c3852ca0b355ed5",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "extra": {
+                "installer-name": "nouislider"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT License"
+            ],
+            "description": "Mirror of the noUiSlider javascript library tagged as a Drupal library.",
+            "homepage": "https://github.com/leongersen/noUiSlider",
+            "support": {
+                "source": "https://git.drupalcode.org/project/nouislider_js/-/tree/15.8.0"
+            },
+            "time": "2025-01-03T10:53:20+00:00"
+        },
+        {
             "name": "drupal/override_node_options",
             "version": "2.7.0",
             "source": {
@@ -9439,11 +9482,11 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Frans",
+                    "name": "frans",
                     "homepage": "https://www.drupal.org/user/514222"
                 },
                 {
@@ -9459,7 +9502,7 @@
                     "homepage": "https://www.drupal.org/user/227761"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 }
             ],
@@ -9498,7 +9541,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.13",
-                    "datestamp": "1722507672",
+                    "datestamp": "1739552840",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9516,11 +9559,11 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Dave Reid",
+                    "name": "dave reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
@@ -9719,7 +9762,7 @@
             ],
             "authors": [
                 {
-                    "name": "AdamPS",
+                    "name": "adamps",
                     "homepage": "https://www.drupal.org/user/2650563"
                 }
             ],
@@ -9880,7 +9923,7 @@
                     "homepage": "https://www.drupal.org/user/289861"
                 },
                 {
-                    "name": "Dylan Donkersgoed",
+                    "name": "dylan donkersgoed",
                     "homepage": "https://www.drupal.org/user/2803351"
                 },
                 {
@@ -9944,7 +9987,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -9952,7 +9995,7 @@
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
-                    "name": "Kristen Pol",
+                    "name": "kristen pol",
                     "homepage": "https://www.drupal.org/user/8389"
                 },
                 {
@@ -10065,7 +10108,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -10814,10 +10857,6 @@
             ],
             "authors": [
                 {
-                    "name": "bartvig",
-                    "homepage": "https://www.drupal.org/user/3107079"
-                },
-                {
                     "name": "beltofte",
                     "homepage": "https://www.drupal.org/user/151799"
                 },
@@ -10832,6 +10871,10 @@
                 {
                     "name": "kreynen",
                     "homepage": "https://www.drupal.org/user/48877"
+                },
+                {
+                    "name": "mortenthorpe",
+                    "homepage": "https://www.drupal.org/user/870762"
                 },
                 {
                     "name": "rofejo",
@@ -11603,10 +11646,10 @@
             "extra": {
                 "drupal": {
                     "version": "1.0.0-beta3",
-                    "datestamp": "1733412269",
+                    "datestamp": "1733928451",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -11768,7 +11811,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 }
             ],
@@ -11899,6 +11942,10 @@
                 {
                     "name": "jhedstrom",
                     "homepage": "https://www.drupal.org/user/208732"
+                },
+                {
+                    "name": "smustgrave",
+                    "homepage": "https://www.drupal.org/user/3252890"
                 }
             ],
             "description": "A Views style plugin to display a tree of elements using the adjacency model.",
@@ -12001,12 +12048,12 @@
                     "homepage": "https://www.drupal.org/user/493050"
                 },
                 {
-                    "name": "quicksketch",
-                    "homepage": "https://www.drupal.org/user/35821"
+                    "name": "mandclu",
+                    "homepage": "https://www.drupal.org/user/52136"
                 },
                 {
-                    "name": "torotil",
-                    "homepage": "https://www.drupal.org/user/865256"
+                    "name": "quicksketch",
+                    "homepage": "https://www.drupal.org/user/35821"
                 }
             ],
             "description": "Enables the creation of webforms and questionnaires.",
@@ -12216,23 +12263,23 @@
                     "sut/libraries/{$name}": [
                         "type:drupal-library"
                     ],
+                    "sut/themes/unish/{$name}": [
+                        "drupal/empty_theme"
+                    ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
                     "sut/modules/unish/{$name}": [
                         "drupal/devel"
                     ],
-                    "sut/themes/unish/{$name}": [
-                        "drupal/empty_theme"
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
                     ],
                     "sut/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
                     "sut/profiles/contrib/{$name}": [
                         "type:drupal-profile"
-                    ],
-                    "sut/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ],
-                    "sut/drush/contrib/{$name}": [
-                        "type:drupal-drush"
                     ]
                 }
             },
@@ -13365,6 +13412,7 @@
                 "issues": "https://github.com/J7mbo/twitter-api-php/issues",
                 "source": "https://github.com/J7mbo/twitter-api-php/tree/master"
             },
+            "abandoned": true,
             "time": "2017-05-08T12:10:56+00:00"
         },
         {
@@ -13714,11 +13762,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.x-dev",
-                    "dev-4.x": "4.x-dev",
-                    "dev-3.x": "3.x-dev",
+                    "dev-1.x": "1.x-dev",
                     "dev-2.x": "2.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-3.x": "3.x-dev",
+                    "dev-4.x": "4.x-dev",
+                    "dev-master": "4.x-dev"
                 }
             },
             "autoload": {
@@ -17544,12 +17592,12 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "0.12.x-dev"
-                },
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-main": "0.12.x-dev"
                 }
             },
             "autoload": {
@@ -17901,6 +17949,16 @@
             "type": "drupal-drush",
             "extra": {
                 "installer-name": "UsersCommands",
+                "drupal-scaffold": {
+                    "gitignore": false,
+                    "locations": {
+                        "web-root": "./sut"
+                    },
+                    "file-mapping": {
+                        "[project-root]/.editorconfig": false,
+                        "[project-root]/.gitattributes": false
+                    }
+                },
                 "installer-paths": {
                     "sut/core": [
                         "type:drupal-core"
@@ -17908,34 +17966,24 @@
                     "sut/libraries/{$name}": [
                         "type:drupal-library"
                     ],
+                    "sut/themes/unish/{$name}": [
+                        "drupal/empty_theme"
+                    ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
                     "sut/modules/unish/{$name}": [
                         "drupal/devel"
                     ],
-                    "sut/themes/unish/{$name}": [
-                        "drupal/empty_theme"
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
                     ],
                     "sut/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
                     "sut/profiles/contrib/{$name}": [
                         "type:drupal-profile"
-                    ],
-                    "sut/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ],
-                    "sut/drush/contrib/{$name}": [
-                        "type:drupal-drush"
                     ]
-                },
-                "drupal-scaffold": {
-                    "locations": {
-                        "web-root": "./sut"
-                    },
-                    "file-mapping": {
-                        "[project-root]/.gitattributes": false,
-                        "[project-root]/.editorconfig": false
-                    },
-                    "gitignore": false
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -23858,9 +23906,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
