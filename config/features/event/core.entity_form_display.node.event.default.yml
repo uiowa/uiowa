@@ -113,7 +113,8 @@ content:
     type: address_default
     weight: 7
     region: content
-    settings: {  }
+    settings:
+      wrapper_type: fieldset
     third_party_settings: {  }
   field_event_parent:
     type: entity_reference_autocomplete_tags
@@ -194,6 +195,8 @@ content:
         custom
       show_extra: false
       hide_date: true
+      allday: true
+      remove_seconds: false
       separator: to
       add_abbreviations: ''
     third_party_settings: {  }
