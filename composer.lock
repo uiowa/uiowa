@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c17df39f42c7092e6ebf0c38aeedf1eb",
+    "content-hash": "48e90800daac9165891b68743c9c9561",
     "packages": [
         {
             "name": "acquia/blt",
@@ -60,11 +60,11 @@
             ],
             "type": "composer-plugin",
             "extra": {
+                "class": "Acquia\\Blt\\Composer\\Plugin",
                 "branch-alias": {
                     "10.x-dev": "10.0.x-dev",
                     "dev-main": "13.x-dev"
                 },
-                "class": "Acquia\\Blt\\Composer\\Plugin",
                 "phpcodesniffer-search-depth": "4"
             },
             "autoload": {
@@ -95,6 +95,7 @@
                 "issues": "https://github.com/acquia/blt/issues",
                 "source": "https://github.com/acquia/blt/tree/13.7.4"
             },
+            "abandoned": true,
             "time": "2023-11-16T18:40:51+00:00"
         },
         {
@@ -3078,16 +3079,16 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v2.0.4",
+            "version": "v2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "093f2d9739cec57428e39ddadedfd4f3ae862c0f"
+                "reference": "c20247574601700e1f7c8dab39310fca1964dc52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/093f2d9739cec57428e39ddadedfd4f3ae862c0f",
-                "reference": "093f2d9739cec57428e39ddadedfd4f3ae862c0f",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/c20247574601700e1f7c8dab39310fca1964dc52",
+                "reference": "c20247574601700e1f7c8dab39310fca1964dc52",
                 "shasum": ""
             },
             "require": {
@@ -3095,7 +3096,7 @@
                 "ext-mbstring": "*",
                 "masterminds/html5": "^2.0",
                 "phenx/php-font-lib": ">=0.5.4 <1.0.0",
-                "phenx/php-svg-lib": ">=0.3.3 <1.0.0",
+                "phenx/php-svg-lib": ">=0.5.2 <1.0.0",
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
@@ -3134,9 +3135,54 @@
             "homepage": "https://github.com/dompdf/dompdf",
             "support": {
                 "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v2.0.4"
+                "source": "https://github.com/dompdf/dompdf/tree/v2.0.8"
             },
-            "time": "2023-12-12T20:19:39+00:00"
+            "time": "2024-04-29T13:06:17+00:00"
+        },
+        {
+            "name": "dompdf/php-font-lib",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dompdf/php-font-lib.git",
+                "reference": "6137b7d4232b7f16c882c75e4ca3991dbcf6fe2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/6137b7d4232b7f16c882c75e4ca3991dbcf6fe2d",
+                "reference": "6137b7d4232b7f16c882c75e4ca3991dbcf6fe2d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3 || ^4 || ^5 || ^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FontLib\\": "src/FontLib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "The FontLib Community",
+                    "homepage": "https://github.com/dompdf/php-font-lib/blob/master/AUTHORS.md"
+                }
+            ],
+            "description": "A library to read, parse, export and make subsets of different types of font files.",
+            "homepage": "https://github.com/dompdf/php-font-lib",
+            "support": {
+                "issues": "https://github.com/dompdf/php-font-lib/issues",
+                "source": "https://github.com/dompdf/php-font-lib/tree/1.0.1"
+            },
+            "time": "2024-12-02T14:37:59+00:00"
         },
         {
             "name": "drupal/acquia_connector",
@@ -3322,7 +3368,7 @@
                     "homepage": "https://www.drupal.org/user/86106"
                 },
                 {
-                    "name": "Centarro",
+                    "name": "centarro",
                     "homepage": "https://www.drupal.org/user/3661446"
                 },
                 {
@@ -3378,7 +3424,7 @@
             ],
             "authors": [
                 {
-                    "name": "AdamPS",
+                    "name": "adamps",
                     "homepage": "https://www.drupal.org/user/2650563"
                 },
                 {
@@ -3764,7 +3810,7 @@
             ],
             "authors": [
                 {
-                    "name": "Anybody",
+                    "name": "anybody",
                     "homepage": "https://www.drupal.org/user/291091"
                 },
                 {
@@ -3772,7 +3818,7 @@
                     "homepage": "https://www.drupal.org/user/1021502"
                 },
                 {
-                    "name": "Grevil",
+                    "name": "grevil",
                     "homepage": "https://www.drupal.org/user/3668491"
                 },
                 {
@@ -3788,7 +3834,7 @@
                     "homepage": "https://www.drupal.org/user/116002"
                 },
                 {
-                    "name": "RobLoach",
+                    "name": "robloach",
                     "homepage": "https://www.drupal.org/user/61114"
                 },
                 {
@@ -4024,11 +4070,11 @@
                     "homepage": "https://www.drupal.org/user/2393360"
                 },
                 {
-                    "name": "Gábor Hojtsy",
+                    "name": "gábor hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
-                    "name": "Jose Reyero",
+                    "name": "jose reyero",
                     "homepage": "https://www.drupal.org/user/4299"
                 },
                 {
@@ -4036,7 +4082,7 @@
                     "homepage": "https://www.drupal.org/user/93488"
                 },
                 {
-                    "name": "Wim Leers",
+                    "name": "wim leers",
                     "homepage": "https://www.drupal.org/user/99777"
                 }
             ],
@@ -4667,26 +4713,26 @@
         },
         {
             "name": "drupal/ctools",
-            "version": "4.0.4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/ctools.git",
-                "reference": "4.0.4"
+                "reference": "4.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ctools-4.0.4.zip",
-                "reference": "4.0.4",
-                "shasum": "4a2474eb2fd525b2add2db0e855c135ba7f0fb70"
+                "url": "https://ftp.drupal.org/files/projects/ctools-4.1.0.zip",
+                "reference": "4.1.0",
+                "shasum": "69f5889cf557df9e55519390e6a95cfa31b67874"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10"
+                "drupal/core": "^9.5 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.0.4",
-                    "datestamp": "1684299878",
+                    "version": "4.1.0",
+                    "datestamp": "1718144949",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5302,11 +5348,11 @@
             ],
             "authors": [
                 {
-                    "name": "DuaelFr",
+                    "name": "duaelfr",
                     "homepage": "https://www.drupal.org/user/931394"
                 },
                 {
-                    "name": "VladimirAus",
+                    "name": "vladimiraus",
                     "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
@@ -5386,7 +5432,7 @@
                     "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
@@ -5408,21 +5454,25 @@
         },
         {
             "name": "drupal/entity_print",
-            "version": "2.13.0",
+            "version": "2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_print.git",
-                "reference": "8.x-2.13"
+                "reference": "8.x-2.16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_print-8.x-2.13.zip",
-                "reference": "8.x-2.13",
-                "shasum": "7ed305a9bfaf76adefe780bb8da382fd5bc8e475"
+                "url": "https://ftp.drupal.org/files/projects/entity_print-8.x-2.16.zip",
+                "reference": "8.x-2.16",
+                "shasum": "7b4ab7f557fe0710f3b0e8b63b010e7d8431bb93"
             },
             "require": {
-                "dompdf/dompdf": "^2.0.0",
-                "drupal/core": "^9.4 || ^10.0"
+                "dompdf/dompdf": ">=2.0.7",
+                "drupal/core": "^9.4 || ^10.0 || ^11"
+            },
+            "require-dev": {
+                "mikehaertl/phpwkhtmltopdf": "~2.1",
+                "tecnickcom/tcpdf": "~6"
             },
             "suggest": {
                 "mikehaertl/phpwkhtmltopdf": "PhpWkhtmlToPdf provides the PHP library to use Wkhtmltopdf"
@@ -5430,8 +5480,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.13",
-                    "datestamp": "1688453967",
+                    "version": "8.x-2.16",
+                    "datestamp": "1746698468",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5464,11 +5514,11 @@
                     "homepage": "https://www.drupal.org/user/1431110"
                 },
                 {
-                    "name": "Sam152",
+                    "name": "sam152",
                     "homepage": "https://www.drupal.org/user/1485048"
                 },
                 {
-                    "name": "VladimirAus",
+                    "name": "vladimiraus",
                     "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
@@ -5526,7 +5576,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -5581,6 +5631,10 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "dieterholvoet",
+                    "homepage": "https://www.drupal.org/user/3567222"
+                },
                 {
                     "name": "lahoosascoots",
                     "homepage": "https://www.drupal.org/user/1933614"
@@ -5757,6 +5811,10 @@
                     "homepage": "https://www.drupal.org/user/265648"
                 },
                 {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
+                },
+                {
                     "name": "purushotam.rai",
                     "homepage": "https://www.drupal.org/user/3193859"
                 }
@@ -5843,32 +5901,32 @@
         },
         {
             "name": "drupal/file_mdm",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/file_mdm.git",
-                "reference": "3.0.0"
+                "reference": "3.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_mdm-3.0.0.zip",
-                "reference": "3.0.0",
-                "shasum": "d6ea077882777619c25b217301dc3d1c10218502"
+                "url": "https://ftp.drupal.org/files/projects/file_mdm-3.1.0.zip",
+                "reference": "3.1.0",
+                "shasum": "fa7709137705a693c4d5329035612473045a19d3"
             },
             "require": {
-                "drupal/core": "^10.1",
-                "fileeye/pel": "^0.9.20",
-                "phenx/php-font-lib": "^0.5.4"
+                "dompdf/php-font-lib": "^1",
+                "drupal/core": "^10.3 | ^11",
+                "fileeye/pel": "^0.10.0"
             },
             "require-dev": {
-                "drupal/vendor_stream_wrapper": "^2.0.2",
+                "drupal/vendor_stream_wrapper": "^2.0.4",
                 "fileeye/linuxlibertine-fonts": "^5.3"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.0",
-                    "datestamp": "1691421181",
+                    "version": "3.1.0",
+                    "datestamp": "1718086268",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6035,7 +6093,7 @@
             ],
             "authors": [
                 {
-                    "name": "Daniel.Moberly",
+                    "name": "daniel.moberly",
                     "homepage": "https://www.drupal.org/user/1160788"
                 },
                 {
@@ -6694,28 +6752,28 @@
         },
         {
             "name": "drupal/imagemagick",
-            "version": "3.6.0",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/imagemagick.git",
-                "reference": "8.x-3.6"
+                "reference": "4.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/imagemagick-8.x-3.6.zip",
-                "reference": "8.x-3.6",
-                "shasum": "b4efc5ff6ab5469475f0ef7242eba0c7eda1c75c"
+                "url": "https://ftp.drupal.org/files/projects/imagemagick-4.0.2.zip",
+                "reference": "4.0.2",
+                "shasum": "758bdf632dd8f2eeb97d198b692d20a59cdbdc13"
             },
             "require": {
-                "drupal/core": "^10.1",
-                "drupal/file_mdm": "^3",
-                "drupal/sophron": "^2.0.2"
+                "drupal/core": "^10.3 | ^11",
+                "drupal/file_mdm": "^3.1",
+                "drupal/sophron": "^2.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.6",
-                    "datestamp": "1703241142",
+                    "version": "4.0.2",
+                    "datestamp": "1724827811",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6820,7 +6878,7 @@
                     "homepage": "https://www.drupal.org/user/86106"
                 },
                 {
-                    "name": "Centarro",
+                    "name": "centarro",
                     "homepage": "https://www.drupal.org/user/3661446"
                 },
                 {
@@ -7483,31 +7541,26 @@
         },
         {
             "name": "drupal/layout_builder_restrictions",
-            "version": "2.19.0",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_restrictions.git",
-                "reference": "8.x-2.19"
+                "reference": "3.0.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_restrictions-8.x-2.19.zip",
-                "reference": "8.x-2.19",
-                "shasum": "562162568d3bf046cc63912f0985fd90c0767033"
+                "url": "https://ftp.drupal.org/files/projects/layout_builder_restrictions-3.0.3.zip",
+                "reference": "3.0.3",
+                "shasum": "a0f455859005754e965bc1c625c56b1dbadf4f13"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10"
-            },
-            "require-dev": {
-                "drupal/dashboards": "^2",
-                "drupal/layout_library": "dev-1.x",
-                "drupal/mini_layouts": "dev-2.0.x"
+                "drupal/core": "^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.19",
-                    "datestamp": "1688739554",
+                    "version": "3.0.3",
+                    "datestamp": "1739482816",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7538,7 +7591,7 @@
                     "homepage": "https://www.drupal.org/user/748208"
                 },
                 {
-                    "name": "Jeff Cardwell",
+                    "name": "jeff cardwell",
                     "homepage": "https://www.drupal.org/user/2913129"
                 },
                 {
@@ -8020,11 +8073,11 @@
                     "homepage": "https://www.drupal.org/user/1321830"
                 },
                 {
-                    "name": "Les Lim",
+                    "name": "les lim",
                     "homepage": "https://www.drupal.org/user/84263"
                 },
                 {
-                    "name": "Manuel Garcia",
+                    "name": "manuel garcia",
                     "homepage": "https://www.drupal.org/user/213194"
                 },
                 {
@@ -8044,7 +8097,7 @@
                     "homepage": "https://www.drupal.org/user/3326031"
                 },
                 {
-                    "name": "TR",
+                    "name": "tr",
                     "homepage": "https://www.drupal.org/user/202830"
                 }
             ],
@@ -8344,7 +8397,7 @@
                     "homepage": "https://www.drupal.org/user/205645"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
@@ -8563,7 +8616,7 @@
                     "homepage": "https://www.drupal.org/user/1037976"
                 },
                 {
-                    "name": "Fabianx",
+                    "name": "fabianx",
                     "homepage": "https://www.drupal.org/user/693738"
                 },
                 {
@@ -8571,7 +8624,7 @@
                     "homepage": "https://www.drupal.org/user/45640"
                 },
                 {
-                    "name": "Jeremy",
+                    "name": "jeremy",
                     "homepage": "https://www.drupal.org/user/409"
                 },
                 {
@@ -8579,7 +8632,7 @@
                     "homepage": "https://www.drupal.org/user/2375"
                 },
                 {
-                    "name": "robertDouglass",
+                    "name": "robertdouglass",
                     "homepage": "https://www.drupal.org/user/5449"
                 }
             ],
@@ -8680,7 +8733,7 @@
             ],
             "authors": [
                 {
-                    "name": "Dave Reid",
+                    "name": "dave reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
@@ -8688,7 +8741,7 @@
                     "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
-                    "name": "JohnAlbin",
+                    "name": "johnalbin",
                     "homepage": "https://www.drupal.org/user/32095"
                 },
                 {
@@ -8823,11 +8876,11 @@
                     "homepage": "https://www.drupal.org/user/3331569"
                 },
                 {
-                    "name": "Ludo.R",
+                    "name": "ludo.r",
                     "homepage": "https://www.drupal.org/user/374670"
                 },
                 {
-                    "name": "RobLoach",
+                    "name": "robloach",
                     "homepage": "https://www.drupal.org/user/61114"
                 },
                 {
@@ -9160,6 +9213,10 @@
                 {
                     "name": "joseph.olstad",
                     "homepage": "https://www.drupal.org/user/1321830"
+                },
+                {
+                    "name": "smulvih2",
+                    "homepage": "https://www.drupal.org/user/795442"
                 }
             ],
             "description": "The Moderated Content Bulk Publish module does what it says from the /admin/content view.",
@@ -9424,11 +9481,11 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Frans",
+                    "name": "frans",
                     "homepage": "https://www.drupal.org/user/514222"
                 },
                 {
@@ -9444,7 +9501,7 @@
                     "homepage": "https://www.drupal.org/user/227761"
                 },
                 {
-                    "name": "Primsi",
+                    "name": "primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 }
             ],
@@ -9483,7 +9540,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.13",
-                    "datestamp": "1722507672",
+                    "datestamp": "1739552840",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9501,11 +9558,11 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
-                    "name": "Dave Reid",
+                    "name": "dave reid",
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
@@ -9704,7 +9761,7 @@
             ],
             "authors": [
                 {
-                    "name": "AdamPS",
+                    "name": "adamps",
                     "homepage": "https://www.drupal.org/user/2650563"
                 }
             ],
@@ -9865,7 +9922,7 @@
                     "homepage": "https://www.drupal.org/user/289861"
                 },
                 {
-                    "name": "Dylan Donkersgoed",
+                    "name": "dylan donkersgoed",
                     "homepage": "https://www.drupal.org/user/2803351"
                 },
                 {
@@ -9929,7 +9986,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -9937,7 +9994,7 @@
                     "homepage": "https://www.drupal.org/user/53892"
                 },
                 {
-                    "name": "Kristen Pol",
+                    "name": "kristen pol",
                     "homepage": "https://www.drupal.org/user/8389"
                 },
                 {
@@ -10050,7 +10107,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 },
                 {
@@ -10799,10 +10856,6 @@
             ],
             "authors": [
                 {
-                    "name": "bartvig",
-                    "homepage": "https://www.drupal.org/user/3107079"
-                },
-                {
                     "name": "beltofte",
                     "homepage": "https://www.drupal.org/user/151799"
                 },
@@ -10817,6 +10870,10 @@
                 {
                     "name": "kreynen",
                     "homepage": "https://www.drupal.org/user/48877"
+                },
+                {
+                    "name": "mortenthorpe",
+                    "homepage": "https://www.drupal.org/user/870762"
                 },
                 {
                     "name": "rofejo",
@@ -10970,27 +11027,27 @@
         },
         {
             "name": "drupal/sophron",
-            "version": "2.0.2",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/sophron.git",
-                "reference": "2.0.2"
+                "reference": "2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sophron-2.0.2.zip",
-                "reference": "2.0.2",
-                "shasum": "ed5d910d6612ea591950b67384cc5ff26c5c7cc9"
+                "url": "https://ftp.drupal.org/files/projects/sophron-2.2.1.zip",
+                "reference": "2.2.1",
+                "shasum": "ac116da7e6eee93594443204a17f0bcb902d7dd2"
             },
             "require": {
-                "drupal/core": "^10",
-                "fileeye/mimemap": "^2.0.1"
+                "drupal/core": "^10.2 || ^11",
+                "fileeye/mimemap": "^2.2.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.2",
-                    "datestamp": "1699798487",
+                    "version": "2.2.1",
+                    "datestamp": "1744800237",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11588,10 +11645,10 @@
             "extra": {
                 "drupal": {
                     "version": "1.0.0-beta3",
-                    "datestamp": "1733412269",
+                    "datestamp": "1733928451",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -11753,7 +11810,7 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
+                    "name": "berdir",
                     "homepage": "https://www.drupal.org/user/214652"
                 }
             ],
@@ -11884,6 +11941,10 @@
                 {
                     "name": "jhedstrom",
                     "homepage": "https://www.drupal.org/user/208732"
+                },
+                {
+                    "name": "smustgrave",
+                    "homepage": "https://www.drupal.org/user/3252890"
                 }
             ],
             "description": "A Views style plugin to display a tree of elements using the adjacency model.",
@@ -11986,12 +12047,12 @@
                     "homepage": "https://www.drupal.org/user/493050"
                 },
                 {
-                    "name": "quicksketch",
-                    "homepage": "https://www.drupal.org/user/35821"
+                    "name": "mandclu",
+                    "homepage": "https://www.drupal.org/user/52136"
                 },
                 {
-                    "name": "torotil",
-                    "homepage": "https://www.drupal.org/user/865256"
+                    "name": "quicksketch",
+                    "homepage": "https://www.drupal.org/user/35821"
                 }
             ],
             "description": "Enables the creation of webforms and questionnaires.",
@@ -12201,23 +12262,23 @@
                     "sut/libraries/{$name}": [
                         "type:drupal-library"
                     ],
+                    "sut/themes/unish/{$name}": [
+                        "drupal/empty_theme"
+                    ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
                     "sut/modules/unish/{$name}": [
                         "drupal/devel"
                     ],
-                    "sut/themes/unish/{$name}": [
-                        "drupal/empty_theme"
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
                     ],
                     "sut/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
                     "sut/profiles/contrib/{$name}": [
                         "type:drupal-profile"
-                    ],
-                    "sut/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ],
-                    "sut/drush/contrib/{$name}": [
-                        "type:drupal-drush"
                     ]
                 }
             },
@@ -12570,33 +12631,29 @@
         },
         {
             "name": "fileeye/mimemap",
-            "version": "2.0.2",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FileEye/MimeMap.git",
-                "reference": "befb9f1ee77dbf6b74a2c578874e128c9a5c1a2d"
+                "reference": "2bfaead48d74e730a4781902d3aaecbeb1f7edc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FileEye/MimeMap/zipball/befb9f1ee77dbf6b74a2c578874e128c9a5c1a2d",
-                "reference": "befb9f1ee77dbf6b74a2c578874e128c9a5c1a2d",
+                "url": "https://api.github.com/repos/FileEye/MimeMap/zipball/2bfaead48d74e730a4781902d3aaecbeb1f7edc0",
+                "reference": "2bfaead48d74e730a4781902d3aaecbeb1f7edc0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.3"
+                "php": ">=8.1"
             },
             "require-dev": {
                 "composer-runtime-api": "^2.0.0",
-                "phpstan/phpstan": "^1.2",
-                "phpunit/phpunit": "^9 | ^10",
-                "sebastian/comparator": ">=4",
-                "sebastian/diff": ">=4",
-                "squizlabs/php_codesniffer": ">=3.6",
-                "symfony/console": ">=5.4",
-                "symfony/filesystem": ">=5.4",
-                "symfony/var-dumper": ">=5.4",
-                "symfony/yaml": ">=5.4",
-                "vimeo/psalm": "^4.23 | ^5"
+                "sebastian/comparator": ">=5",
+                "sebastian/diff": ">=5",
+                "symfony/console": ">=6.4",
+                "symfony/filesystem": ">=6.4",
+                "symfony/var-dumper": ">=6.4",
+                "symfony/yaml": ">=6.4"
             },
             "bin": [
                 "bin/fileeye-mimemap"
@@ -12626,34 +12683,36 @@
             ],
             "support": {
                 "issues": "https://github.com/FileEye/MimeMap/issues",
-                "source": "https://github.com/FileEye/MimeMap/tree/2.0.2"
+                "source": "https://github.com/FileEye/MimeMap/tree/2.2.2"
             },
-            "time": "2023-08-29T16:20:26+00:00"
+            "time": "2025-04-10T18:54:12+00:00"
         },
         {
             "name": "fileeye/pel",
-            "version": "0.9.20",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FileEye/pel.git",
-                "reference": "1675cbd44e89ff8f01b9576cf32ec1b4a4a67ede"
+                "reference": "5da1e6ab73508056f0abb79f560d20a315d1aefe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FileEye/pel/zipball/1675cbd44e89ff8f01b9576cf32ec1b4a4a67ede",
-                "reference": "1675cbd44e89ff8f01b9576cf32ec1b4a4a67ede",
+                "url": "https://api.github.com/repos/FileEye/pel/zipball/5da1e6ab73508056f0abb79f560d20a315d1aefe",
+                "reference": "5da1e6ab73508056f0abb79f560d20a315d1aefe",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.0"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "ext-exif": "*",
                 "ext-gd": "*",
-                "php-coveralls/php-coveralls": ">2.4",
-                "phpstan/phpstan": "^1.4",
-                "squizlabs/php_codesniffer": ">3.5",
-                "symfony/phpunit-bridge": "^4 || ^5 || ^6"
+                "php-coveralls/php-coveralls": ">=2.7",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-phpunit": "^1.3.11",
+                "phpunit/phpunit": "^8 || ^9",
+                "squizlabs/php_codesniffer": ">=3.8"
             },
             "type": "library",
             "autoload": {
@@ -12687,9 +12746,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FileEye/pel/issues",
-                "source": "https://github.com/FileEye/pel/tree/0.9.20"
+                "source": "https://github.com/FileEye/pel/tree/0.10.0"
             },
-            "time": "2023-06-20T07:10:35+00:00"
+            "time": "2024-01-11T19:11:58+00:00"
         },
         {
             "name": "google/protobuf",
@@ -13352,6 +13411,7 @@
                 "issues": "https://github.com/J7mbo/twitter-api-php/issues",
                 "source": "https://github.com/J7mbo/twitter-api-php/tree/master"
             },
+            "abandoned": true,
             "time": "2017-05-08T12:10:56+00:00"
         },
         {
@@ -13528,16 +13588,16 @@
         },
         {
             "name": "laminas/laminas-feed",
-            "version": "2.23.0",
+            "version": "2.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-feed.git",
-                "reference": "23807e692b3174750b426143bd93572b71b6739a"
+                "reference": "7c6755695cdca18f983d8a116bfa6a55439b1a94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-feed/zipball/23807e692b3174750b426143bd93572b71b6739a",
-                "reference": "23807e692b3174750b426143bd93572b71b6739a",
+                "url": "https://api.github.com/repos/laminas/laminas-feed/zipball/7c6755695cdca18f983d8a116bfa6a55439b1a94",
+                "reference": "7c6755695cdca18f983d8a116bfa6a55439b1a94",
                 "shasum": ""
             },
             "require": {
@@ -13604,7 +13664,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2024-10-09T10:53:30+00:00"
+            "time": "2025-05-13T09:35:51+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",
@@ -13701,11 +13761,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.x-dev",
-                    "dev-4.x": "4.x-dev",
-                    "dev-3.x": "3.x-dev",
+                    "dev-1.x": "1.x-dev",
                     "dev-2.x": "2.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-3.x": "3.x-dev",
+                    "dev-4.x": "4.x-dev",
+                    "dev-master": "4.x-dev"
                 }
             },
             "autoload": {
@@ -15531,23 +15591,23 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "0.5.4",
+            "version": "0.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/php-font-lib.git",
-                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4"
+                "reference": "a1681e9793040740a405ac5b189275059e2a9863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/dd448ad1ce34c63d09baccd05415e361300c35b4",
-                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4",
+                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/a1681e9793040740a405ac5b189275059e2a9863",
+                "reference": "a1681e9793040740a405ac5b189275059e2a9863",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^3 || ^4 || ^5"
+                "symfony/phpunit-bridge": "^3 || ^4 || ^5 || ^6"
             },
             "type": "library",
             "autoload": {
@@ -15557,7 +15617,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0"
+                "LGPL-2.1-or-later"
             ],
             "authors": [
                 {
@@ -15569,22 +15629,22 @@
             "homepage": "https://github.com/PhenX/php-font-lib",
             "support": {
                 "issues": "https://github.com/dompdf/php-font-lib/issues",
-                "source": "https://github.com/dompdf/php-font-lib/tree/0.5.4"
+                "source": "https://github.com/dompdf/php-font-lib/tree/0.5.6"
             },
-            "time": "2021-12-17T19:44:54+00:00"
+            "time": "2024-01-29T14:45:26+00:00"
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "0.5.3",
+            "version": "0.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/php-svg-lib.git",
-                "reference": "0e46722c154726a5f9ac218197ccc28adba16fcf"
+                "reference": "46b25da81613a9cf43c83b2a8c2c1bdab27df691"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/0e46722c154726a5f9ac218197ccc28adba16fcf",
-                "reference": "0e46722c154726a5f9ac218197ccc28adba16fcf",
+                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/46b25da81613a9cf43c83b2a8c2c1bdab27df691",
+                "reference": "46b25da81613a9cf43c83b2a8c2c1bdab27df691",
                 "shasum": ""
             },
             "require": {
@@ -15615,9 +15675,9 @@
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "support": {
                 "issues": "https://github.com/dompdf/php-svg-lib/issues",
-                "source": "https://github.com/dompdf/php-svg-lib/tree/0.5.3"
+                "source": "https://github.com/dompdf/php-svg-lib/tree/0.5.4"
             },
-            "time": "2024-02-23T20:39:24+00:00"
+            "time": "2024-04-08T12:52:34+00:00"
         },
         {
             "name": "phootwork/collection",
@@ -17531,12 +17591,12 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "0.12.x-dev"
-                },
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-main": "0.12.x-dev"
                 }
             },
             "autoload": {
@@ -17888,6 +17948,16 @@
             "type": "drupal-drush",
             "extra": {
                 "installer-name": "UsersCommands",
+                "drupal-scaffold": {
+                    "gitignore": false,
+                    "locations": {
+                        "web-root": "./sut"
+                    },
+                    "file-mapping": {
+                        "[project-root]/.editorconfig": false,
+                        "[project-root]/.gitattributes": false
+                    }
+                },
                 "installer-paths": {
                     "sut/core": [
                         "type:drupal-core"
@@ -17895,34 +17965,24 @@
                     "sut/libraries/{$name}": [
                         "type:drupal-library"
                     ],
+                    "sut/themes/unish/{$name}": [
+                        "drupal/empty_theme"
+                    ],
+                    "sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
                     "sut/modules/unish/{$name}": [
                         "drupal/devel"
                     ],
-                    "sut/themes/unish/{$name}": [
-                        "drupal/empty_theme"
+                    "sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
                     ],
                     "sut/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
                     "sut/profiles/contrib/{$name}": [
                         "type:drupal-profile"
-                    ],
-                    "sut/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ],
-                    "sut/drush/contrib/{$name}": [
-                        "type:drupal-drush"
                     ]
-                },
-                "drupal-scaffold": {
-                    "locations": {
-                        "web-root": "./sut"
-                    },
-                    "file-mapping": {
-                        "[project-root]/.gitattributes": false,
-                        "[project-root]/.editorconfig": false
-                    },
-                    "gitignore": false
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -17992,24 +18052,24 @@
         },
         {
             "name": "sabberworm/php-css-parser",
-            "version": "v8.5.1",
+            "version": "v8.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git",
-                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152"
+                "reference": "3de493bdddfd1f051249af725c7e0d2c38fed740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
-                "reference": "4a3d572b0f8b28bb6fd016ae8bbfc445facef152",
+                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/3de493bdddfd1f051249af725c7e0d2c38fed740",
+                "reference": "3de493bdddfd1f051249af725c7e0d2c38fed740",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
-                "php": ">=5.6.20"
+                "php": "^5.6.20 || ^7.0.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7.27"
+                "phpunit/phpunit": "5.7.27 || 6.5.14 || 7.5.20 || 8.5.41"
             },
             "suggest": {
                 "ext-mbstring": "for parsing UTF-8 CSS"
@@ -18051,9 +18111,9 @@
             ],
             "support": {
                 "issues": "https://github.com/MyIntervals/PHP-CSS-Parser/issues",
-                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.5.1"
+                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.8.0"
             },
-            "time": "2024-02-15T16:41:13+00:00"
+            "time": "2025-03-23T17:59:05+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -23845,9 +23905,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
