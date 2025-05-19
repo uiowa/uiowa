@@ -4,15 +4,24 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_image
+    - field.field.block_content.uiowa_image.field_uiowa_image_caption
     - field.field.block_content.uiowa_image.field_uiowa_image_image
     - field.field.block_content.uiowa_image.field_uiowa_image_link
   module:
-    - link
+    - linkit
+    - text
 id: block_content.uiowa_image.default
 targetEntityType: block_content
 bundle: uiowa_image
 mode: default
 content:
+  field_uiowa_image_caption:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_uiowa_image_image:
     type: entity_reference_entity_view
     label: hidden
@@ -23,7 +32,7 @@ content:
     weight: 0
     region: content
   field_uiowa_image_link:
-    type: link_separate
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
@@ -31,6 +40,7 @@ content:
       url_plain: false
       rel: ''
       target: ''
+      linkit_profile: default
     third_party_settings: {  }
     weight: 1
     region: content

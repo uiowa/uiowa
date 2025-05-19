@@ -1,20 +1,32 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/accordion/accordion.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/components/accordion.scss';
 
 .collection--accordion .accordion__content {
-  background-color: $white;
+  background-color: variables.$white;
   &:not([hidden]) {
     display: flow-root;
   }
 
   blockquote {
-    border-color: $primary;
-    color: $secondary;
+    border-color: variables.$primary;
+    color: variables.$secondary;
     a {
-      color: $link-color;
+      color: variables.$link-color;
     }
   }
+}
+
+details.accordion__item summary {
+  white-space: wrap;
+}
+
+.accordion .accordion__item {
+  margin: 1rem 0 0;
+}
+
+.accordion .accordion__heading {
+  color: variables.$secondary;
 }
 
 // @todo remove when https://github.com/uiowa/uids/issues/714 is complete.

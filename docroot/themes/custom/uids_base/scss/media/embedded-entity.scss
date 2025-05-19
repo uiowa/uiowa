@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .embedded-entity {
   max-width: 100%;
@@ -10,13 +10,13 @@
   }
 
   figcaption {
-    margin-top: $sm;
+    margin-top: variables.$sm;
   }
 }
 
 
 .embedded-entity+p {
-  margin-top: $md !important;
+  margin-top: variables.$md !important;
 }
 
 .embedded-entity.align-center,
@@ -29,11 +29,6 @@
 
 figure.caption {
   display: block;
-
-  @include breakpoint(sm) {
-    display: table;
-  }
-
   margin: 0;
   margin-bottom: .5rem;
 
@@ -42,15 +37,24 @@ figure.caption {
     margin-left: auto;
   }
 
+  @include utilities.breakpoint(sm) {
+    display: table;
+  }
+
   figcaption {
     display: block;
-
-    @include breakpoint(sm) {
-      display: table-caption;
-    }
-
     max-width: none;
     caption-side: bottom;
+    font-size: 95%;
+    margin-top: 1rem;
+
+    p {
+      font-size: 95%;
+    }
+
+    @include utilities.breakpoint(sm) {
+      display: table-caption;
+    }
   }
 }
 
@@ -61,7 +65,7 @@ figure.align-left,
   float: none;
   margin: 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     margin-right: 1.5rem;
     margin-bottom: .5rem;
     float: left;
@@ -75,7 +79,7 @@ figure.align-right,
   float: none;
   margin: 0;
 
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     margin-left: 1.5rem;
     margin-bottom: .5rem;
     float: right;
@@ -84,19 +88,19 @@ figure.align-right,
 
 figure.caption .embedded-entity+figcaption {
   font-size: 90%;
-  color: $grey;
-  margin-top: $sm;
-  margin-bottom: $sm;
+  color: variables.$grey;
+  margin-top: variables.$sm;
+  margin-bottom: variables.$sm;
 }
 
 figure.caption.align-right .embedded-entity+figcaption {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     text-align: right;
   }
 }
 
 .alert {
   figure.caption .embedded-entity+figcaption {
-    color: $grey;
+    color: variables.$grey;
   }
 }

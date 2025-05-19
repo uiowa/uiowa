@@ -1169,8 +1169,8 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
       $components[$uuid]['additional']['layout_builder_styles_style'] = [
         'image',
         'headline_medium',
-        'banner_centered',
-        'banner_gradient_dark',
+        'horizontal_alignment_center',
+        'vertical_alignment_center',
         'banner_medium',
         'button_primary',
         'headline_bold_serif',
@@ -1225,10 +1225,9 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
 
     case 'uiowa_card':
       return [
-        'block_background_style_light',
-        'card_image_large',
+        'media_size_small',
+        'card_headline_style_serif',
         'card_media_position_stacked',
-        'content_alignment_left',
         'media_format_widescreen',
       ];
 

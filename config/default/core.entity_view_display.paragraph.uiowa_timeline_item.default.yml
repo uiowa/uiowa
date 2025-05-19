@@ -12,7 +12,7 @@ dependencies:
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
     - fontawesome
-    - link
+    - linkit
     - text
 id: paragraph.uiowa_timeline_item.default
 targetEntityType: paragraph
@@ -51,7 +51,7 @@ content:
     weight: 4
     region: content
   field_timeline_link:
-    type: link_separate
+    type: linkit
     label: hidden
     settings:
       trim_length: 80
@@ -59,6 +59,7 @@ content:
       url_plain: false
       rel: ''
       target: ''
+      linkit_profile: default
     third_party_settings: {  }
     weight: 3
     region: content

@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger;
+use Drupal\sitenow_p2lb\P2LbHelper;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
 
@@ -16,6 +17,7 @@ use Drush\Drush;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
+
   use StringTranslationTrait;
 
   /**
@@ -137,6 +139,8 @@ class P2LbCommands extends DrushCommands {
       $this->orphanPurger->setBatch(['paragraph']);
       drush_backend_batch_process();
     }
+    // Update old V2ism classes with their V3 counterparts.
+    P2LbHelper::updateOldClasses();
 
     // Turn off V2.
     $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');

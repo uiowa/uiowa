@@ -1,6 +1,56 @@
-@import "../../../themes/custom/uids_base/uids3/assets/scss/variables";
-@import "../../../themes/custom/uids_base/uids3/assets/scss/utilities";
-@import "../../../themes/custom/uids_base/uids3/components/breadcrumbs/breadcrumbs";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
+.breadcrumb {
+  list-style: none;
+  @include utilities.margin($top: variables.$sm, $right: 0, $bottom: variables.$sm, $left:0);
+  ol {
+    @extend %no-ul-list;
+  }
+}
+
+.breadcrumb::before,
+.breadcrumb::after {
+  display: table;
+  content: ' ';
+  @include utilities.flex($fb: 0);
+  @include utilities.order($int: 1);
+}
+
+.breadcrumb::after {
+  clear: both;
+}
+
+.breadcrumb li {
+  float: left;
+  cursor: default;
+  //text-transform: uppercase;
+  color: variables.$secondary;
+  font-size: variables.$small-font-size;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  position: relative;
+  content: "/";
+  opacity: 1;
+  color: variables.$primary;
+  @include utilities.margin($top: 0, $right: variables.$sm, $bottom: 0, $left: variables.$sm);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: variables.$secondary;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus {
+  text-decoration: underline;
+}
+
+.breadcrumb .disabled {
+  cursor: not-allowed;
+  color: variables.$grey-light;
+}
 
 #block-uids-base-local-tasks nav {
   border-bottom: none;
@@ -24,7 +74,7 @@
     }
 
     a {
-      color: $secondary!important;
+      color: variables.$secondary!important;
     }
 
     &>li {
@@ -33,7 +83,7 @@
   }
 
   .svg-inline--fa.fa-w-16 {
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   ol {
@@ -42,7 +92,7 @@
   }
 
   figure {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       margin: 0;
     }
   }

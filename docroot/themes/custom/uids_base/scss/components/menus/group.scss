@@ -1,11 +1,64 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/menus/group/group.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
+
+// Previously used with the External quick links block in the toggle menu on uiowa.edu.
+
+.menu--group {
+  .menu {
+    @include utilities.flexbox;
+
+    @include utilities.margin(variables.$top: variables.$lg, variables.$left: 0, variables.$bottom: variables.$sm);
+
+    li {
+      @include utilities.flexbox;
+      flex: 1;
+      border: 1px solid variables.$grey-light;
+      border-right: none;
+      justify-content: center;
+
+      &:hover,
+      &:focus {
+        background: variables.$light;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        color: variables.$med-gray;
+        line-height: 1.3;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
+
+      &:last-child {
+        border-right: 1px solid variables.$grey-light;
+      }
+    }
+  }
+}
+
+
+.menu--group a[target="_blank"]:after {
+  content: "\f35d";
+  @include utilities.fas();
+  font-size: variables.$small-font-size;
+  color: variables.$secondary;
+  padding-left: variables.$sm;
+}
 
 .menu--group {
   display: flex;
   width: 100%;
-  padding: $md 0;
+  padding: variables.$md 0;
 }
 
 .menu--group .menu {

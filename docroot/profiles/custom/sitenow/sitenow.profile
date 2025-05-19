@@ -399,10 +399,9 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     $form['field_teaser']['#group'] = 'node_teaser';
 
     // If we're in v3 or a non-page content type in v2 (article, person),
-    // then disable the field_teaser and add help text.
+    // then remove access to the field_teaser.
     if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
-      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
-      $form['field_teaser']['#disabled'] = TRUE;
+      $form['field_teaser']['#access'] = FALSE;
     }
   }
 
@@ -523,40 +522,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['path']['#access'] = FALSE;
         }
       }
-
-      // Prevent deletion if there is entity usage.
-      // This is accompanied by a message from the entity_usage module.
-      if ($form_object->getOperation() == 'delete') {
-        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
-        if (!empty($usage_data)) {
-          // Check to see if usage is tied to a revisionable parent entity.
-          $connection = \Drupal::database();
-          foreach ($usage_data as $type => $source) {
-            if ($type === 'node') {
-              $form['actions']['submit']['#disabled'] = TRUE;
-              return;
-            }
-            foreach ($source as $vid => $item) {
-              $query = $connection->select('entity_usage', 'u');
-              $query->fields('u', ['source_type']);
-              $query->condition('u.target_id', $vid, '=');
-              $query->condition('u.target_type', $type, '=');
-              $result = $query->execute()
-                ->fetchField();
-              if ($result) {
-                if ($result === 'node' || $result === 'fragment') {
-                  $form['actions']['submit']['#disabled'] = TRUE;
-                  return;
-                }
-              }
-            }
-            // Unset warning message if only usage are remnants.
-            if (!$result) {
-              unset($form['entity_usage_delete_warning']);
-            }
-          }
-        }
-      }
     }
   }
 
@@ -568,6 +533,12 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['logo']['#access'] = FALSE;
         $form['favicon']['#access'] = FALSE;
         $form['layout']['#access'] = FALSE;
+      }
+      break;
+
+    case 'system_site_maintenance_mode':
+      if ($access->isForbidden()) {
+        $form['maintenance_mode']['#access'] = FALSE;
       }
       break;
 

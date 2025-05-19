@@ -1,6 +1,56 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/breadcrumbs/breadcrumbs.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+
+.breadcrumb {
+  list-style: none;
+  @include utilities.margin(variables.$top: variables.$sm, variables.$right: 0, variables.$bottom: variables.$sm, variables.$left:0);
+  ol {
+    @extend %no-ul-list;
+  }
+}
+
+.breadcrumb::before,
+.breadcrumb::after {
+  display: table;
+  content: ' ';
+  @include utilities.flex(variables.$fb: 0);
+  @include utilities.order(variables.$int: 1);
+}
+
+.breadcrumb::after {
+  clear: both;
+}
+
+.breadcrumb li {
+  float: left;
+  cursor: default;
+  //text-transform: uppercase;
+  color: variables.$secondary;
+  font-size: variables.$small-font-size;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  position: relative;
+  content: "/";
+  opacity: 1;
+  color: variables.$primary;
+  @include utilities.margin(variables.$top: 0, variables.$right: variables.$sm, variables.$bottom: 0, variables.$left:variables.$sm);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: variables.$secondary;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus {
+  text-decoration: underline;
+}
+
+.breadcrumb .disabled {
+  cursor: not-allowed;
+  color: variables.$grey-light;
+}
 
 .breadcrumb {
   margin-bottom: 0;

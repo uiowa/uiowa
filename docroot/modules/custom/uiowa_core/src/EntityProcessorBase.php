@@ -69,6 +69,13 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   protected $skipped = 0;
 
   /**
+   * Whether to skip deletion of entities.
+   *
+   * @var bool
+   */
+  protected $skipDelete = FALSE;
+
+  /**
    * The entity field/property that is used to match records to entities.
    *
    * @var string
@@ -204,7 +211,7 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
     }
 
     // Loop through to remove nodes that no longer exist in API data.
-    if ($this->getEntityIds()) {
+    if (!$this->skipDelete && $this->getEntityIds()) {
       foreach ($this->keyMap as $name => $nid) {
         if (!in_array($name, $this->processedRecords)) {
           $entity = $this->existingNodes[$nid] ?? $storage->load($nid);

@@ -189,6 +189,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if (isset($form['layout_builder_style_background'])) {
               $form['layout_builder_style_background']['#access'] = FALSE;
             }
+            // Replace -none- text with no gradient label.
+            if (isset($form['layout_builder_style_media_overlay'])) {
+              $form["layout_builder_style_media_overlay"]["#empty_option"] = t('No gradient (default)');
+            }
             // Move headline size option to top of display options.
             if (isset($form['layout_builder_style_headline_size'])) {
               $form['layout_builder_style_headline_size']['#weight'] = 89;
@@ -232,6 +236,28 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Set help text for media position.
             $form['layout_builder_style_card_media_position']['#description'] = t('<a target="_blank" href="https://sitenow.uiowa.edu/documentation/layout-builder/card-block">The media position will change based on the width of the layout column.</a>');
 
+            // Stacked by default.
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
+
+            // Set '#states' for card image size.
+            $form['layout_builder_style_media_size']['#states'] = [
+              'visible' => [
+                // Always show when media format is set to 'circle'.
+                [
+                  ':input[name="layout_builder_style_media_format"]' => [
+                    'value' => 'media_format_circle',
+                  ],
+                ],
+                // Show when a media position is selected.
+                [
+                  ':input[name="layout_builder_style_card_media_position"]' => [
+                    '!value' => 'card_media_position_stacked',
+                  ],
+                ],
+              ],
+            ];
+            break;
+
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
@@ -268,11 +294,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
-              // The card block is stacked by default.
-              case 'inline_block:uiowa_card':
-                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
-                break;
-
               // Set square to default for image gallery.
               case 'inline_block:uiowa_image_gallery':
                 $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
@@ -775,6 +796,48 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
+          // Remove image or icon based on media_options selection.
+          $media_option = $form_state->getValue([
+            'settings',
+            'block_form',
+            'media_types',
+          ]);
+
+          if ($media_option) {
+
+            $form_image_selection = [
+              'settings',
+              'block_form',
+              'field_uiowa_card_image',
+              'selection',
+            ];
+
+            $form_icon_selection = [
+              'settings',
+              'block_form',
+              'field_icon',
+              0,
+              'value',
+              'icon',
+            ];
+
+            if ($media_option === 'image') {
+              if ($form_state->hasValue($form_icon_selection)) {
+                $form_state->unsetValue($form_icon_selection);
+              }
+            }
+            elseif ($media_option === 'icon') {
+              if ($form_state->hasValue($form_image_selection)) {
+                $form_state->unsetValue($form_image_selection);
+              }
+            }
+
+            // Save as a third-party setting.
+            if (!empty($media_option)) {
+              $component->setThirdPartySetting('layout_builder_custom', 'media_types', $media_option);
+            }
+          }
+
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -783,16 +846,19 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'block_form',
               'field_uiowa_card_link',
             ]
-          )[0]['title'];
+            )[0]['title'];
           if ($link_title) {
             $form_state->setValue(
-              [
-                'settings',
-                'block_form',
-                'field_uiowa_card_button_display',
-              ], ['value' => 1]
+            [
+              'settings',
+              'block_form',
+              'field_uiowa_card_button_display',
+            ],
+            [
+              'value' => 1,
+            ],
             );
-          };
+          }
         }
         break;
 
@@ -936,6 +1002,22 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           }
         }
 
+        $form_state->getCompleteForm()['layout_builder_style_media_overlay']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
+            ],
+          ],
+        ];
+
+        $form_state->getCompleteForm()['layout_builder_style_banner_gradient']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
+            ],
+          ],
+        ];
+
         break;
 
       case 'inline_block:uiowa_button':
@@ -963,6 +1045,42 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_card':
+        $media_types = [
+          'image' => 'Image',
+          'icon' => 'Icon',
+        ];
+        $default_bg = 'image';
+
+        $element['media_types'] = [
+          '#type' => 'radios',
+          '#title' => t('Media type'),
+          '#options' => $media_types,
+          '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'media_types') ?: $default_bg,
+          '#weight' => 4,
+        ];
+
+        $element['field_uiowa_card_image'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'image',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_card_image'];
+
+        $element['field_icon'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][media_types]"]' => [
+                'value' => 'icon',
+              ],
+            ],
+          ],
+          '#weight' => 5,
+        ] + $element['field_icon'];
+
         if (isset($element['field_uiowa_card_button_display'])) {
           $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
           $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
@@ -1274,41 +1392,6 @@ function layout_builder_custom_preprocess_layout(&$variables) {
 function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
   switch ($media->bundle()) {
-    case 'image':
-      $referring_item = $media->_referringItem;
-      // So far, only way to get media viewmode switching lb
-      // block > view > node > media deep.
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          $parent_entity = $parent_entity->getEntity();
-          // If view is attached to parent entity.
-          if (isset($parent_entity->view)) {
-            $view = $parent_entity->view;
-            // If block_config is attached to the view display
-            // and layout_builder_styles exist in that.
-            if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
-              $media_formats = [
-                'media_format_widescreen' => 'large__widescreen',
-                'media_format_square' => 'large__square',
-                'media_format_circle' => 'large__square',
-              ];
-              // Change view_mode based on lb_styles.
-              foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $layout_builder_styles)) {
-                  $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
-                  // Prevents sticky cached images.
-                  $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
-                }
-              }
-            }
-          }
-        }
-      }
-      break;
-
     case 'remote_video':
     case 'video':
       $variables['attributes']['class'][] = 'media--video';

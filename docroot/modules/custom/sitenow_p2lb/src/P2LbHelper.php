@@ -5,6 +5,8 @@ namespace Drupal\sitenow_p2lb;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\sitenow_pages\Entity\Page;
 
@@ -203,6 +205,231 @@ class P2LbHelper {
     }
 
     return NULL;
+  }
+
+  /**
+   * Update outdated classes.
+   */
+  public static function updateOldClasses() {
+    $search_replace = [
+      'btn btn-primary' => 'bttn bttn--primary',
+      'btn btn-secondary' => 'bttn bttn--secondary',
+      'btn btn-success' => 'bttn bttn--tertiary',
+      'btn btn-info' => 'bttn bttn--tertiary',
+      'btn btn-warning' => 'bttn bttn--tertiary',
+      'btn btn-danger' => 'bttn bttn--tertiary',
+      'btn btn-sm' => 'bttn bttn--primary bttn--small',
+      'btn btn-lg' => 'bttn bttn--primary bttn--large',
+      'btn btn-block' => 'bttn bttn--primary bttn--full',
+      'lead' => 'element--light-intro',
+      'alert-success' => 'alert--success',
+      'alert-info' => 'alert--info',
+      'alert-warning' => 'alert--warning',
+      'alert-danger' => 'alert--danger',
+      'uids-component--bold-intro' => 'element--bold-intro',
+      'uids-component--light-intro' => 'element--light-intro',
+      'w-50' => '',
+      'w-100' => '',
+      'table-striped' => '',
+      'table-bordered' => '',
+      'align-items-start' => '',
+      'align-items-center' => '',
+      'align-items-end' => '',
+      'align-items-baseline' => '',
+      'align-items-stretch' => '',
+      'align-content-start' => '',
+      'align-content-end' => '',
+      'align-content-between' => '',
+      'align-content-around' => '',
+      'align-content-stretch' => '',
+      'align-self-auto' => '',
+      'align-self-start' => '',
+      'align-self-end' => '',
+      'align-self-center' => '',
+      'align-self-baseline' => '',
+      'align-self-stretch' => '',
+      'bg-dark' => '',
+      'bg-light' => '',
+      'bg-yellow' => '',
+      'bg-black' => '',
+      'semi-transparent' => '',
+      'text-light' => '',
+      'col-sm-4' => '',
+      'col-sm-6' => '',
+      'col-md-3' => '',
+      'col-md-4' => '',
+      'col-md-6' => '',
+      'col-md-12' => '',
+      'col-12' => '',
+      'col-xl-6' => '',
+      'col-xl-3' => '',
+      'col-xl-9' => '',
+      'col-xl-12' => '',
+      'col-md' => '',
+      'col' => '',
+      'pt-5' => '',
+      'py-5' => '',
+      'pb-5' => '',
+      'order-first' => '',
+      'order-last' => '',
+      'justify-content-start' => '',
+      'justify-content-center' => '',
+      'justify-content-end' => '',
+      'justify-content-between' => '',
+      'justify-content-around' => '',
+      'container-fluid' => '',
+      'container-sm' => '',
+      'container-md' => '',
+      'container-lg' => '',
+      'container-xl' => '',
+      'container' => '',
+      'no-gutters' => '',
+      'row' => '',
+    ];
+
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        }
+        catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          foreach ($tables as $table) {
+            $update_count = 0;
+            $query = $db->select($table, 't')
+              ->fields('t');
+
+            // Build a condition group from our search strings.
+            $or_group = $query->orConditionGroup();
+
+            foreach ($search_replace as $needle => $string) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
+
+            $results = $query->condition($or_group)
+              ->execute();
+
+            foreach ($results as $record) {
+
+              // Load the HTML fragment as a DOMDocument object.
+              $document = Html::load($record->{$value_column});
+
+              // Get all elements from the HTML fragment.
+              $instances = $document->getElementsByTagName('*');
+
+              // A regressive loop (starting with the end) is used to loop
+              // through matching elements so that they don't affect other
+              // elements when they are updated.
+              $i = $instances->length - 1;
+
+              while ($i >= 0) {
+                // The current element.
+                $dom_element = $instances->item($i);
+
+                $class = $dom_element->getAttribute('class');
+
+                // If <div> element has class='lead',
+                // additional conversion from <div> to <p> is needed.
+                if ($dom_element->tagName === 'div') {
+                  if (str_contains($class, 'lead')) {
+                    $new_classes = str_replace('lead', 'element--light-intro', $class);
+                    $p = $document->createElement('p');
+                    $p->setAttribute('class', $new_classes);
+
+                    // Move child elements instead of stripping them out.
+                    while ($dom_element->firstChild) {
+                      $p->appendChild($dom_element->firstChild);
+                    }
+
+                    $dom_element->parentNode->replaceChild($p, $dom_element);
+                  }
+                }
+
+                foreach ($search_replace as $needle => $replace) {
+                  $class = str_replace($needle, $replace, $class);
+                }
+
+                if (trim($class)) {
+                  $dom_element->setAttribute('class', $class);
+                }
+                else {
+                  $dom_element->removeAttribute('class');
+                }
+
+                $i--;
+              }
+
+              // Run database update to store updated $value_column.
+              switch ($entity_type_id) {
+                case 'block_content':
+                case 'node':
+                case 'media':
+                case 'paragraph':
+                  $db->update($table)
+                    ->fields([
+                      $value_column => Html::serialize($document),
+                    ])
+                    ->condition('entity_id', $record->entity_id)
+                    ->condition('revision_id', $record->revision_id)
+                    ->execute();
+
+                  $update_count++;
+                  break;
+
+                case 'taxonomy_term':
+                  $db->update($table)
+                    ->fields([
+                      $value_column => Html::serialize($document),
+                    ])
+                    ->condition('tid', $record->tid)
+                    ->condition('revision_id', $record->revision_id)
+                    ->execute();
+
+                  $update_count++;
+                  break;
+              }
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+            }
+          }
+        }
+      }
+    }
   }
 
 }

@@ -13,9 +13,6 @@ default:
   reusable:
     -
       value: false
-  revision_translation_affected:
-    -
-      value: true
   field_uiowa_banner_autoplay:
     -
       value: false
@@ -30,15 +27,27 @@ default:
     -
       uri: 'internal:#apply'
       title: Apply
-      options: {  }
+      options:
+        href: 'internal:#apply'
+        data-entity-type: ''
+        data-entity-uuid: ''
+        data-entity-substitution: ''
     -
       uri: 'internal:#info'
       title: 'Request Information'
-      options: {  }
+      options:
+        href: 'internal:#info'
+        data-entity-type: ''
+        data-entity-uuid: ''
+        data-entity-substitution: ''
     -
       uri: 'internal:#services'
       title: Services
-      options: {  }
+      options:
+        href: 'internal:#services'
+        data-entity-type: ''
+        data-entity-uuid: ''
+        data-entity-substitution: ''
   field_uiowa_banner_title:
     -
       size: h2

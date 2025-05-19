@@ -112,12 +112,16 @@ class AcademicDatesForm extends FormBase {
       ],
     ];
 
-    $data = $this->maui->searchSessionDates($current, $category);
+    $data = $this->maui->searchSessionDates($current, $category, TRUE);
 
     if (!empty($data)) {
       $data = ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data;
 
       foreach ($data as $date) {
+        // Skip dates that are not reviewed.
+        if ($date->reviewed !== TRUE) {
+          continue;
+        }
         $start = strtotime($date->beginDate);
         $end = strtotime($date->endDate);
         $key = $start . $end;
@@ -153,7 +157,7 @@ class AcademicDatesForm extends FormBase {
 
         // Group items by date.
         if (isset($form['dates-wrapper']['dates'][$key])) {
-          $form['dates-wrapper']['dates'][$key]['#subtitle'][] = $item;
+          $form['dates-wrapper']['dates'][$key]['#content'][] = $item;
         }
         else {
           $form['dates-wrapper']['dates'][$key] = [
@@ -163,7 +167,7 @@ class AcademicDatesForm extends FormBase {
               '@start' => date('F j, Y', $start),
               '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
             ]),
-            '#subtitle' => [$item],
+            '#content' => [$item],
           ];
         }
       }

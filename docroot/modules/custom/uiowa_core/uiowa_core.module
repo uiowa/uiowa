@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -30,6 +31,7 @@ use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
+use Drupal\webform\Element\WebformRoles;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -108,6 +110,22 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['node']['contact'])) {
     $bundles['node']['contact']['class'] = Contact::class;
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
+    $fields['link']->setDisplayOptions('form', [
+      'type' => 'linkit',
+      'weight' => -2,
+      'settings' => [
+        'linkit_profile' => 'menu_link',
+        'linkit_auto_link_text' => TRUE,
+      ],
+    ]);
   }
 }
 
@@ -374,6 +392,31 @@ function template_preprocess_card(&$variables) {
   if (isset($element['#attributes']['class'])) {
     foreach ($element['#attributes']['class'] as $key => $style) {
       if (str_starts_with($style, 'media')) {
+        $media_formats = [
+          'media--widescreen' => 'large__widescreen',
+          'media--square' => 'large__square',
+          'media--circle' => 'large__square',
+        ];
+        // Change view_mode based on lb_styles.
+        foreach ($media_formats as $class => $view_mode) {
+          if (str_contains($style, $class)) {
+            // Just in time image view mode switch, modifying cache keys.
+            if (isset($element['#media']['field_image'])) {
+              // Set the view mode for both the image and
+              // for the responsive image formatter.
+              $element['#media']['field_image'][0]['#view_mode'] = $view_mode;
+              $element['#media']['field_image'][0]['#responsive_image_style_id'] = $view_mode;
+              if (isset($element['#media']['field_image'][0]['#cache']['keys'])) {
+                // Remove the old cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'] = array_values(array_filter($element['#media']['field_image'][0]['#cache']['keys'], function ($item) {
+                  return !preg_match('/^(large__|medium__|small__)/', $item);
+                }));
+                // Add the new cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'][] = $view_mode;
+              }
+            }
+          }
+        }
         $element['#media_attributes']['class'][] = $style;
         unset($element['#attributes']['class'][$key]);
       }
@@ -484,6 +527,7 @@ function template_preprocess_card(&$variables) {
     'media',
     'media_attributes',
     'headline',
+    'pre_title',
     'subtitle',
     'meta',
     'content',
@@ -798,6 +842,17 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'google_analytics_admin_settings':
+      $uiowa_core_ga = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.ga');
+      // Inform on configuration form that the functionality is
+      // currently being blocked from being inserted.
+      if ($uiowa_core_ga === 0) {
+        $form["general"]["accounts"]['#disabled'] = TRUE;
+        \Drupal::messenger()
+          ->addWarning(t('Google Analytics is currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
+      }
+      break;
+
     // Add delete forms as the types of protected blocks changes.
     case 'block_content_uiowa_text_area_delete_form':
       // Get current block uuid.
@@ -888,7 +943,141 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // of the queue so we don't bother processing it after.
       array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
       break;
+
+    case 'webform_settings_access_form':
+
+      // Check if the current user is an admin or user 1.
+      $current_user = \Drupal::currentUser();
+      $roles = $current_user->getRoles();
+      $is_admin = in_array('administrator', $roles) || $current_user->id() == 1;
+
+      // Only limit the webform access if the user isn't an admin or user 1.
+      if (!$is_admin) {
+
+        // Get the form access settings.
+        $access = &$form['access'];
+
+        // Configure an array for what you want to disable in webform access.
+        $form['webform_config'] = [
+          'create' => [],
+          'view_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'update_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'delete_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'purge_any' => [
+            '#access' => FALSE,
+          ],
+          'view_own' => [],
+          'update_own' => [],
+          'delete_own' => [],
+          'administer' => [
+            '#access' => FALSE,
+          ],
+          'test' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+              'viewer',
+            ],
+          ],
+          'configuration' => [
+            '#access' => FALSE,
+          ],
+        ];
+
+        // For each access group...
+        foreach ($access as $key => &$group) {
+
+          // If we have something configured to be disabled in that group...
+          if (is_array($group)) {
+
+            // If we are disabling access to it completely in the config...
+            if (isset($form['webform_config'][$key]['#access'])) {
+
+              // Set its access to false.
+              $group['#access'] = FALSE;
+
+              // And continue to the next iteration,
+              // as we don't need to worry about the individual
+              // roles if the whole section is disabled.
+              continue;
+            }
+
+            // If we have a roles checkbox list...
+            $roles ??= $group['roles'];
+            if ($roles) {
+
+              // Process it with a custom function.
+              $group['roles']['#process'][] = '_uiowa_core_process_element';
+            }
+
+            // For every group that has configurable permissions...
+            $perms ??= $group['permissions'];
+            if ($perms) {
+
+              // Disable them. We don't want users to have access to configure this.
+              $group['permissions']['#access'] = FALSE;
+            }
+          }
+        }
+      }
+
+      break;
   }
+}
+
+/**
+ * Custom process form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
+
+  // Get the roles checkboxes.
+  $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
+
+  // Get the group name and see if we have config for it.
+  $printed_array_name ??= $element['#name'];
+  $group_name = str_replace('access[', '', $printed_array_name);
+  $group_name = str_replace('][roles]', '', $group_name);
+  $group_config ??= $form['webform_config'][$group_name];
+
+  // If each access group has config for roles...
+  if (isset($group_config['#roles']) && $checkboxes['#type'] == 'webform_roles') {
+    $roles = $group_config['#roles'];
+
+    // For each role that we want to remove access from...
+    foreach ($roles as $key => $role) {
+
+      // Set its access to false.
+      $checkboxes[$role]['#access'] = FALSE;
+    }
+  }
+
+  // We disable the ability to manage administrators for all groups.
+  $checkboxes['administrator']['#access'] = FALSE;
+
+  return $checkboxes;
 }
 
 /**
@@ -976,6 +1165,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+
   if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
@@ -1065,15 +1255,33 @@ function uiowa_core_preprocess_block(&$variables) {
 
     case 'system_main_block':
       $current_route = \Drupal::routeMatch();
-      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), [
-        'system.401',
-        'system.403',
-      ])) {
+      $current_user = \Drupal::currentUser();
+
+      if ($current_user->isAnonymous() && in_array($current_route->getRouteName(), ['system.401', 'system.403'])) {
+        $request = \Drupal::request();
+        $path_alias_manager = \Drupal::service('path_alias.manager');
+
+        // Get the current path from the request.
+        $path = $request->getPathInfo();
+        $internal_path = $path_alias_manager->getPathByAlias($path);
+
+        // Check if the path matches a node pattern and determine if it's unpublished.
+        if (preg_match('/node\/(\d+)/', $internal_path, $matches)) {
+          $node = Node::load($matches[1]);
+          if ($node instanceof Node && !$node->isPublished()) {
+            // Exit without adding the login link.
+            break;
+          }
+          // Add cache tag for this node.
+          $variables['#cache']['tags'][] = 'node:' . $node->id();
+        }
+
+        // Add the login link if we didn't break out.
         $variables['content']['login_link'] = [
           '#type' => 'link',
           '#title' => t('HawkID Login'),
           '#url' => Url::fromRoute('samlauth.saml_controller_login', [
-            'destination' => \Drupal::request()->getRequestUri(),
+            'destination' => $request->getRequestUri(),
           ]),
           '#prefix' => '<p class="text-align-center">',
           '#suffix' => '</p>',
@@ -1083,14 +1291,15 @@ function uiowa_core_preprocess_block(&$variables) {
               'bttn--primary',
               'bttn--caps',
             ],
-          ],
-          '#cache' => [
-            'max-age' => 0,
+            'rel' => 'nofollow',
           ],
         ];
+
+        // Try cache contexts instead of max-age=0.
+        $variables['#cache']['contexts'][] = 'user.roles';
+        $variables['#cache']['contexts'][] = 'url.path';
       }
       break;
-
   }
 }
 

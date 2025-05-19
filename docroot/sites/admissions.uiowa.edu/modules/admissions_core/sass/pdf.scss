@@ -3,8 +3,9 @@
 // Many UIDS components include selectors/properties that are not supported
 // by dompdf. Unsupported selectors will break PDF generation. To be safe, we
 // only import variables and utilities and recreate styles as necessary.
-@import "../../../../themes/custom/uids_base/uids3/assets/scss/variables";
-@import "../../../../themes/custom/uids_base/uids3/assets/scss/utilities";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
 @font-face {
   font-family: 'Antonio';
   font-variant: normal;
@@ -30,7 +31,7 @@
   src: local('Roboto-Bold'), url("../fonts/Roboto-Bold.ttf") format('truetype');
 }
 
-$reduced-line-height: 1.2;
+
 
 caption {
   font-family: 'Roboto', sans-serif;
@@ -39,7 +40,7 @@ caption {
   color: black;
   font-size: 10px !important;
   padding: 10px;
-  line-height: $reduced-line-height;
+  line-height: 1.2;
 }
 
 blockquote,
@@ -56,11 +57,11 @@ p,
 ul,
 em {
   font-size: 0.7rem;
-  color: $secondary;
+  color: variables.$secondary;
   word-wrap: break-word;
 
   strong {
-    color: $secondary;
+    color: variables.$secondary;
     font-size: 0.7rem;
     font-family: Roboto,sans-serif;
     font-weight: 700;
@@ -89,7 +90,7 @@ em {
 }
 
 h1 {
-  font-family: $font-family-caps;
+  font-family: variables.$font-family-caps;
   text-transform: uppercase;
   font-size: 30px;
   line-height: 20px;
@@ -110,9 +111,9 @@ h6 {
 
 .element--bold-intro,
 .uids-component--bold-intro {
-  font-family: $font-family-serif;
+  font-family: variables.$font-family-serif;
   font-weight: bold;
-  line-height: $reduced-line-height;
+  line-height: 1.2;
   font-size: 1rem;
   margin-top: 0;
   margin-bottom: 0;
@@ -130,7 +131,7 @@ h6 {
 .element--light-intro,
 .uids-component--light-intro {
   font-weight: normal;
-  line-height: $reduced-line-height;
+  line-height: 1.2;
   font-size: 1.4rem;
   margin-top: 0;
   margin-bottom: 0;
@@ -234,15 +235,15 @@ h6 {
   position: absolute;
   bottom: 40px;
   width: 100%;
-  border-top: 3px solid $primary;
+  border-top: 3px solid variables.$primary;
 
   span {
-    margin: 0 $gutter 0 0;
+    margin: 0 variables.$gutter 0 0;
     color: #000;
   }
 
   img {
-    margin: 0 $xsm 0 0;
+    margin: 0 variables.$xsm 0 0;
   }
 
   p {
@@ -250,11 +251,11 @@ h6 {
   }
 
   h2 {
-    font-family: $font-family-caps;
+    font-family: variables.$font-family-caps;
     font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: bold;
-    line-height: $reduced-line-height;
+    line-height: 1.2;
     margin: 0.5rem 0.5rem 0 0;
     display: inline-block;
   }
@@ -280,7 +281,7 @@ h6 {
   right: 0;
   bottom: -5px;
   font-size: 8px;
-  font-family: $font-family-caps;
+  font-family: variables.$font-family-caps;
   text-transform: uppercase;
   letter-spacing: .3px;
 }
@@ -361,7 +362,7 @@ h6 {
       display: inline;
 
       .field--name-field-degree-abbreviation.field--label-hidden.field__item {
-        margin: 0 $xsm;
+        margin: 0 variables.$xsm;
         display: inline;
 
         &:before {
@@ -387,7 +388,7 @@ h6 {
 
       &:before {
         content: ",";
-        padding-right: $xsm;
+        padding-right: variables.$xsm;
         margin-left: -.125rem;
       }
 
@@ -411,7 +412,7 @@ h6 {
   .field--name-field-area-of-study-online,
   .field--name-field-area-of-study-preprof,
   .field--name-field-area-of-study-subprogram {
-    margin-bottom: $sm;
+    margin-bottom: variables.$sm;
   }
 
   .field--name-field-area-of-study-certificates,
@@ -431,16 +432,16 @@ h6 {
 
     .field__label {
       @extend .element--bold-intro;
-      font-family: $font-family-caps;
+      font-family: variables.$font-family-caps;
       text-transform: uppercase;
       page-break-after: avoid;
     }
 
     .field__item {
-      line-height: $reduced-line-height;
+      line-height: 1.2;
       font-size: 0.7rem;
       font-family: 'Roboto', sans-serif!important;
-      color: $secondary;
+      color: variables.$secondary;
       line-height: 1;
       page-break-inside: auto;
       page-break-before: avoid;
@@ -457,7 +458,7 @@ h6 {
   .field--name-field-area-of-study-subprogram {
     .field__label {
       font-size: 0.8rem;
-      font-family: $font-family-caps;
+      font-family: variables.$font-family-caps;
       text-transform: uppercase;
     }
 
@@ -471,7 +472,7 @@ h6 {
   }
 
   .field--name-field-area-of-study-scholarship {
-    margin-top: $sm;
+    margin-top: variables.$sm;
 
     p {
       line-height: 1;
@@ -501,15 +502,15 @@ h6 {
   .field--name-field-area-of-study-four-txt,
   .field--name-field-area-of-study-select-txt,
   .field--name-field-area-of-study-teaching-txt {
-    line-height: $reduced-line-height;
+    line-height: 1.2;
     font-size: 0.7rem;
     font-family: 'Roboto', sans-serif!important;
-    color: $secondary;
+    color: variables.$secondary;
     display: inline;
 
     &:before {
       content: ":";
-      padding-right: $xsm;
+      padding-right: variables.$xsm;
       margin-left: -.4rem;
     }
   }
@@ -520,7 +521,7 @@ h6 {
   h4,
   h5,
   h6 {
-    font-family: $font-family-serif;
+    font-family: variables.$font-family-serif;
     font-size: 0.8rem;
     page-break-after: avoid;
   }
@@ -529,7 +530,7 @@ h6 {
     font-size: 10px;
     border-spacing: 0;
     color: black;
-    background-color: $white;
+    background-color: variables.$white;
     border-collapse: collapse;
     margin-top: 5px;
     width: 100%;
@@ -576,11 +577,11 @@ h6 {
     caption strong {
       font-family: 'Roboto', sans-serif;
       text-transform: uppercase;
-      background-color: $light;
+      background-color: variables.$light;
       color: black;
       font-size: 10px !important;
       padding: 10px;
-      line-height: $reduced-line-height;
+      line-height: 1.2;
     }
   }
 }

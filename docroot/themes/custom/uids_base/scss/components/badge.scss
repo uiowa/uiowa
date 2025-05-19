@@ -1,9 +1,10 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/components/badge/badge.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/components/badge.scss';
 
 .badge--light {
-  background: $light;
-  color: $secondary;
+  background: variables.$light;
+  color: variables.$secondary;
 }
 
 .badge {

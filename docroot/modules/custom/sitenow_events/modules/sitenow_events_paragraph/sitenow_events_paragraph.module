@@ -138,8 +138,15 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           }
         }
         else {
+          if (isset($data['error'])) {
+            $message = '<div class="events-empty"><p>Unable to fetch events at this time.</p></div>';
+          }
+          else {
+            $message = '<div class="events-empty"><p>There are currently no events to display.</p></div>';
+          }
           $variables['list'] = [
-            '#markup' => '<div class="events-empty"><p>There are currently no results to display.</p></div>',
+            '#type' => 'markup',
+            '#markup' => $message,
           ];
         }
 

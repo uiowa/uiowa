@@ -1,5 +1,6 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 .uids-content {
 
@@ -10,14 +11,14 @@
     [class*="bg--white"] &,
     .bg-pattern--brain &,
     .bg--white--pattern--brain & {
-      background: $primary;
+      background: variables.$primary;
     }
   }
 
   fieldset {
     margin: 1rem 0;
     padding: 1.11111rem;
-    border: 1px solid $grey-light;
+    border: 1px solid variables.$grey-light;
   }
 
   legend {
@@ -41,18 +42,18 @@
 
   label.form-required {
     &:after {
-      margin-left: $xsm;
+      margin-left: variables.$xsm;
       content: "*";
-      color: $danger;
+      color: variables.$danger;
       vertical-align: middle;
     }
   }
 
   .form-item--error-message {
-    margin: $xsm 0;
+    margin: variables.$xsm 0;
 
     * {
-      color: $danger !important;
+      color: variables.$danger !important;
     }
   }
 
@@ -205,8 +206,8 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    @include bttn;
-    font-family: $font-family-caps-bold;
+    @include utilities.bttn;
+    font-family: variables.$font-family-caps-bold;
 
     &.button--small {
       padding: 0.6rem 1rem 0.8rem;
@@ -225,43 +226,43 @@
 
   input[id^='edit-submit'][type='submit'],
   input[id^='edit-actions-submit'] {
-    @include bttn--primary;
+    @include utilities.bttn--primary;
   }
 
   input#edit-preview {
-    //@include bttn--outline;
-    @include bttn--tertiary;
-    @include margin($left: $md);
+    //@include utilities.bttn--outline;
+    @include utilities.bttn--tertiary;
+    @include utilities.margin(variables.$left: variables.$md);
 
   }
 
   ::-webkit-input-placeholder {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   :-ms-input-placeholder {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   ::-ms-input-placeholder {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   ::placeholder {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   [type='file'],
   [type='checkbox'],
   [type='radio'] {
-    @include margin($top: 0, $right: 0, $bottom: $sm);
+    @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: variables.$sm);
   }
 
   [type='checkbox']+label,
   [type='radio']+label {
     display: inline-block;
     vertical-align: baseline;
-    @include margin($right: $sm, $bottom: 0, $left: $xsm);
+    @include utilities.margin(variables.$right: variables.$sm, variables.$bottom: 0, variables.$left: variables.$xsm);
   }
 
   [type='checkbox']+label[for],
@@ -271,7 +272,7 @@
 
   label>[type='checkbox'],
   label>[type='radio'] {
-    @include margin($right: $sm);
+    @include utilities.margin(variables.$right: variables.$sm);
   }
 
   [type='file'] {
@@ -281,38 +282,38 @@
   label {
     display: block;
     margin: 0 0 .3rem;
-    font-size: $small-font-size;
+    font-size: variables.$small-font-size;
     font-weight: 500;
     line-height: 1.8;
   }
 
   .help-text {
     margin-top: -0.5rem;
-    color: $secondary;
-    font-size: $small-font-size;
+    color: variables.$secondary;
+    font-size: variables.$small-font-size;
     font-style: italic;
   }
 
   select {
     height: 3.5rem;
-    padding: $xsm;
+    padding: variables.$xsm;
     transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-    color: $secondary;
-    border: 1px solid $grey-light;
+    color: variables.$secondary;
+    border: 1px solid variables.$grey-light;
     //border-radius: 3px;
-    background-color: $white;
+    background-color: variables.$white;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
     background-repeat: no-repeat;
     background-position: right -1rem center;
     background-origin: content-box;
     background-size: 9px 6px;
     font-family: inherit;
-    font-size: $base-font-size;
+    font-size: variables.$base-font-size;
     font-weight: normal;
     line-height: 1.5;
-    @include margin($top: 0, $right: 0, $bottom: 1rem);
+    @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: 1rem);
     appearance: none;
-    @include padding($right: $lg, $left: $md);
+    @include utilities.padding(variables.$right: variables.$lg, variables.$left: variables.$md);
   }
 
   @media screen and (min-width: 0\0) {
@@ -467,7 +468,7 @@
       display: flex;
 
       .button {
-        @include bttn--primary;
+        @include utilities.bttn--primary;
       }
 
       div[class*="-add-more-items"] {
@@ -491,7 +492,7 @@
 
       .field-suffix {
         display: inline-block;
-        color: lighten(#000, 40%);
+        color: color.scale(#000, variables.$lightness: 40%);
         line-height: 1.4;
         font-size: 1.25rem;
         display: flex;
@@ -501,7 +502,7 @@
 
     .tabledrag-toggle-weight {
       font-size: inherit;
-      color: lighten(#000, 40%);
+      color: color.scale(#000, variables.$lightness: 40%);
       padding: 1rem;
     }
 
@@ -534,8 +535,8 @@
       }
 
       input:checked+label {
-        border-color: $primary;
-        background-color: rgba($primary, 0.2);
+        border-color: variables.$primary;
+        background-color: rgba(variables.$primary, 0.2);
       }
     }
 
@@ -554,89 +555,14 @@
   }
 
   .form-managed-file {
-    // $upload-primary: #353535;
-
-    // .file {
-    //   padding-top: 1.1rem;
-    //   padding-left: 7rem;
-    //   margin-bottom: .625rem;
-    // }
-
-    // [type='file'] {
-    //   position: relative;
-    //   z-index: 0;
-    //   width: 100%;
-    //   cursor: pointer;
-    //   padding-top: 0.8rem;
-    //   padding-left: 0.3rem;
-
-    //   &::-webkit-file-upload-button {
-    //     cursor: pointer;
-    //   }
-
-    //   &::before {
-    //     position: absolute;
-    //     bottom: 0;
-    //     left: 0;
-    //     z-index: 1;
-    //     content: 'Select a file';
-    //     display: inline-block;
-    //     background-color: #ffffff;
-    //     border: 1px solid $upload-primary;
-    //     color: $upload-primary;
-    //     padding: 0.5rem 0.7rem;
-    //     outline: none;
-    //     white-space: nowrap;
-    //     -webkit-user-select: none;
-    //     font-family: inherit;
-    //     font-size: inherit;
-    //     line-height: inherit;
-    //     pointer-events: none;
-    //   }
-    //   &:hover::before {
-    //     border-color: darken($upload-primary, 20%);
-    //     color: darken($upload-primary, 20%);
-    //   }
-    //   &:active::before {
-
-    //     border-color: darken($upload-primary, 50%);
-    //     color: darken($upload-primary, 50%);
-    //   }
-    // }
-
     .button {
-      @include bttn--primary;
+      @include utilities.bttn--primary;
       display: block;
     }
-
-    // input[multiple="multiple"].form-file {
-    //   padding-left: 0.1rem;
-
-    //   &:before {
-    //     content: 'Choose files';
-    //   }
-    // }
 
     input[multiple="multiple"].button {
       margin: 0 0 1rem 0;
     }
-
-    // div[class*="js-form-item-file-upload-multiple-file"] {
-    //   margin: 0;
-
-    //   .file {
-    //     background-image: none;
-    //     padding: 0;
-
-    //     &:before {
-    //       content: '\f15b';
-    //       font-size: 1rem;
-    //       color: #434343;
-    //       margin-right: 0.2rem;
-    //       @include fas();
-    //     }
-    //   }
-    // }
   }
 
   input.form-autocomplete {
@@ -646,10 +572,10 @@
 
 
 .button {
-  @include bttn;
+  @include utilities.bttn;
   text-transform: uppercase;
-  font-family: $font-family-caps-bold;
-  border: 1px solid $primary;
+  font-family: variables.$font-family-caps-bold;
+  border: 1px solid variables.$primary;
 }
 
 .uids-content .help-text,
@@ -667,14 +593,14 @@
     input[id^='edit-actions'],
     input[id^='edit-submit'],
     input#edit-actions-submit {
-      @include bttn--secondary;
-      border: 1px solid $secondary;
-      @include bttn--focus;
-      color: $white !important;
-      background-color: $secondary !important;
+      @include utilities.bttn--secondary;
+      border: 1px solid variables.$secondary;
+      @include utilities.bttn--focus;
+      color: variables.$white !important;
+      background-color: variables.$secondary !important;
 
       &:after {
-        background-color: $primary;
+        background-color: variables.$primary;
       }
     }
   }
@@ -689,17 +615,17 @@
     input[id^='edit-actions'],
     input[id^='edit-submit'],
     input#edit-actions-submit {
-      @include bttn--primary;
-      border: 1px solid $primary;
-      @include bttn--focus;
-      color: $secondary !important;
+      @include utilities.bttn--primary;
+      border: 1px solid variables.$primary;
+      @include utilities.bttn--focus;
+      color: variables.$secondary !important;
 
       &:after {
-        background-color: $secondary;
+        background-color: variables.$secondary;
       }
     }
     .description {
-      color: $white;
+      color: variables.$white;
     }
   }
 }

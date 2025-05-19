@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 // Chosen override styles.
 .uids-content {
@@ -26,7 +26,7 @@
   }
 
   .chosen-container-multi .chosen-drop .result-selected {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   .chosen-container .chosen-results li {
@@ -34,11 +34,11 @@
   }
 
   .chosen-container-multi .chosen-drop {
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
-    color: $brand-cool-gray;
+    color: variables.$brand-cool-gray;
   }
 
   .chosen-container-multi .chosen-choices li.search-choice {
@@ -52,9 +52,9 @@
     padding-left: 10px;
     align-items: center;
     margin: 0;
-    border-color: $light-gray;
+    border-color: variables.$light-gray;
     max-width: 55%;
-    color: $secondary;
+    color: variables.$secondary;
   }
 
   .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {

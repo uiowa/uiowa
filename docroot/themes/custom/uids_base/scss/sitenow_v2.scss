@@ -1,0 +1,601 @@
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+@use '../uids/scss/base/_headings.scss';
+@use '../uids/scss/components/_headline.scss';
+
+// @todo https://github.com/uiowa/uiowa/issues/6584
+
+@mixin bg-dark {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &.headline.default {
+      color: variables.$secondary;
+    }
+  }
+}
+
+@mixin bg-black {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &.headline.default {
+      color: variables.$secondary;
+    }
+  }
+}
+
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.bg-dark.semi-transparent {
+  background-color: rgba(52, 58, 64, 0.8) !important;
+  color: #fff;
+}
+
+.bg-light {
+  @include utilities.bg-light;
+}
+
+.bg-dark>*,
+.bg-black>* {
+  color: #fff;
+}
+
+.bg-dark .bg-light *:not(.btn):not(.bttn),
+.bg-dark .bg-yellow *:not(.btn):not(.bttn),
+.bg-black .bg-light *:not(.btn):not(.bttn),
+.bg-black .bg-yellow *:not(.btn):not(.bttn) {
+  color: variables.$secondary !important;
+}
+
+.text-light {
+  @include utilities.text-light
+}
+
+.bg-dark {
+  @include utilities.bg-dark;
+}
+
+.bg-black {
+  @include utilities.bg-black;
+}
+
+.bg-yellow {
+  @include utilities.bg-yellow;
+}
+
+// Grid
+
+.page-node-type-page.layout-builder-disabled main.page__container {
+
+  .region-breadcrumb,
+  .block-page-title-block,
+  .block-local-tasks-block,
+  .content-moderation-entity-moderation-form {
+    clear: both;
+    @include utilities.container-width;
+  }
+}
+
+.region-breadcrumb,
+.block-page-title-block,
+.block-local-tasks-block,
+.content-moderation-entity-moderation-form {
+  clear: both;
+}
+
+.container {
+  @include utilities.fullwidth-container;
+}
+
+@media (min-width: 1200px) {
+
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl {
+    margin: 0 auto;
+    max-width: 1342px;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.no-gutters>.col,
+.no-gutters>[class*="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+@mixin col-base {
+  position: relative;
+  width: 100%;
+  padding-right: variables.$gutter;
+  padding-left: variables.$gutter;
+}
+
+.col-sm-6,
+.col-12,
+.col-xl-6,
+.col-xl-3,
+.col-xl-9,
+.col-xl-12,
+.col,
+.col-md,
+.col-md-3,
+.col-md-4,
+.col-md-6,
+.col-md-12 {
+  position: relative;
+  width: 100%;
+  padding-right: variables.$gutter;
+  padding-left: variables.$gutter;
+}
+
+.col-md.paragraph--type--card,
+.col-md-3.paragraph--type--card,
+.col-md-4.paragraph--type--card,
+.col-md-6.paragraph--type--card {
+  display: flex;
+}
+
+
+.col {
+  @include utilities.flex(1, 0, 0);
+  max-width: 100%;
+}
+
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.order-first {
+  order: -1;
+}
+
+.order-last {
+  order: 13;
+}
+
+.col-sm-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+.col-sm-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+
+
+.col-md {
+  @include utilities.breakpoint(md) {
+    @include utilities.flex(1, 0, 0);
+    max-width: 100%;
+  }
+}
+
+.col-md-3 {
+  @include utilities.breakpoint(md) {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+.col-md-4 {
+  @include utilities.breakpoint(md) {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}
+
+.col-md-6 {
+  @include utilities.breakpoint(md) {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+.col-md-12 {
+  @include utilities.breakpoint(md) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+.col-xl-3 {
+  @include utilities.breakpoint(lg) {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+.col-xl-9 {
+  @include utilities.breakpoint(lg) {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}
+
+.col-xl-12 {
+  @include utilities.breakpoint(lg) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+.justify-content-start {
+  -ms-flex-pack: start !important;
+  justify-content: flex-start !important;
+}
+
+.justify-content-end {
+  -ms-flex-pack: end !important;
+  justify-content: flex-end !important;
+}
+
+.justify-content-center {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+}
+
+.justify-content-around {
+  -ms-flex-pack: distribute !important;
+  justify-content: space-around !important;
+}
+
+.align-items-start {
+  -ms-flex-align: start !important;
+  align-items: flex-start !important;
+}
+
+.align-items-end {
+  -ms-flex-align: end !important;
+  align-items: flex-end !important;
+}
+
+.align-items-center {
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+.align-items-baseline {
+  -ms-flex-align: baseline !important;
+  align-items: baseline !important;
+}
+
+.align-items-stretch {
+  -ms-flex-align: stretch !important;
+  align-items: stretch !important;
+}
+
+.align-content-start {
+  -ms-flex-line-pack: start !important;
+  align-content: flex-start !important;
+}
+
+.align-content-end {
+  -ms-flex-line-pack: end !important;
+  align-content: flex-end !important;
+}
+
+.align-content-between {
+  -ms-flex-line-pack: justify !important;
+  align-content: space-between !important;
+}
+
+.align-content-around {
+  -ms-flex-line-pack: distribute !important;
+  align-content: space-around !important;
+}
+
+.align-content-stretch {
+  -ms-flex-line-pack: stretch !important;
+  align-content: stretch !important;
+}
+
+.align-self-auto {
+  -ms-flex-item-align: auto !important;
+  align-self: auto !important;
+}
+
+.align-self-start {
+  -ms-flex-item-align: start !important;
+  align-self: flex-start !important;
+}
+
+.align-self-end {
+  -ms-flex-item-align: end !important;
+  align-self: flex-end !important;
+}
+
+.align-self-center {
+  -ms-flex-item-align: center !important;
+  align-self: center !important;
+}
+
+.align-self-baseline {
+  -ms-flex-item-align: baseline !important;
+  align-self: baseline !important;
+}
+
+.align-self-stretch {
+  -ms-flex-item-align: stretch !important;
+  align-self: stretch !important;
+}
+
+.pt-5,
+.py-5 {
+  padding-top: 3rem !important;
+}
+
+.pb-5,
+.py-5 {
+  padding-bottom: 3rem !important;
+}
+
+// node
+
+.node--unpublished {
+  background-color: inherit;
+}
+
+
+//  field body
+
+.field--name-field-text-body {
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+// field address
+
+.field--type-address {
+  .address {
+    margin-bottom: 0;
+  }
+}
+
+// field
+
+.field--label-inline {
+  @include utilities.clearfix;
+}
+
+
+// mark
+
+mark {
+  background-color: variables.$primary;
+  padding: 0.1em;
+}
+
+// lead
+
+
+.lead {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+// forms
+
+input.btn {
+  background-clip: initial;
+}
+
+
+// Classes
+
+figure.caption {
+  display: block;
+}
+
+figure.caption .embedded-entity+figcaption {
+  font-size: 90%;
+  color: #737373;
+}
+
+.caption>figcaption {
+  display: block;
+  max-width: none;
+  caption-side: bottom;
+}
+
+.caption>* {
+  display: block;
+  max-width: 100%;
+}
+
+
+// Btn
+
+.btn {
+  @include utilities.bttn;
+  text-transform: uppercase;
+  font-family: variables.$font-family-caps-bold;
+  padding: 1rem 2rem;
+}
+
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-info,
+.btn-warning,
+.btn-link {
+  @include utilities.bttn--secondary;
+  border: 1px solid variables.$secondary;
+  @include utilities.bttn--focus;
+  span {
+    color: variables.$white;
+  }
+}
+
+.btn-primary,
+.button--primary {
+  @include utilities.bttn--primary;
+  border: 1px solid variables.$primary;
+  @include utilities.bttn--focus;
+
+  &:after {
+    background-color: variables.$secondary;
+  }
+  span {
+    color: variables.$secondary;
+  }
+}
+
+// Page left sidebar
+.layout--has-sidebar .layout__region--main {
+  overflow: auto;
+}
+
+// Primary button
+.bg-dark .bttn--primary,
+.bg-black .bttn--primary {
+  color: variables.$secondary;
+}
+
+.bg-yellow .bttn--primary {
+  color: variables.$white;
+  background: variables.$secondary;
+  border: 1px solid variables.$secondary;
+  &:after {
+    background-color: variables.$primary;
+  }
+}
+
+// Secondary button
+.bg-yellow .bttn--secondary,
+.bg-light .bttn--secondary {
+  color: variables.$white;
+}
+
+.bg-black .bttn--secondary {
+  background-color: variables.$primary;
+  color: variables.$secondary;
+  border: 1px solid variables.$primary;
+  svg {
+    color: variables.$white;
+  }
+  &:after {
+    background-color: variables.$secondary;
+  }
+}
+
+// Nested background colors
+.bg-dark .bg-light {
+  .bttn--secondary {
+    color: variables.$white;
+  }
+  .bttn--primary, .bttn--secondary {
+    svg {
+      color: variables.$white!important;
+    }
+  }
+}
+
+.bg-light .bg-light {
+  .bttn--secondary {
+    color: variables.$white;
+  }
+}
+
+.bg-dark .bg-dark,
+.bg-black .bg-dark,
+.bg-light .bg-dark {
+  .bttn--primary {
+    color: variables.$secondary;
+  }
+}
+
+.bg-black .bg-dark, {
+  .bttn--secondary {
+    color: variables.$secondary;
+  }
+}
+
+.bg-black .bg-black {
+  .bttn--primary, .bttn--secondary {
+    color: variables.$secondary;
+  }
+}
+
+.bg-yellow .bg-yellow,
+.bg-dark .bg-yellow,
+.bg-black .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: variables.$white;
+    background: variables.$secondary;
+    svg {
+      color: variables.$primary;
+    }
+    &:after {
+      background: variables.$primary;
+    }
+  }
+}
+
+.bg-yellow .bg-light,
+.bg-light .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: variables.$white;
+  }
+}
+
+.bg-light .bg-black,
+.bg-yellow .bg-black,
+.bg-dark .bg-black{
+  .bttn--primary, .bttn--secondary {
+    color: variables.$secondary;
+    background: variables.$primary;
+    border: 1px solid variables.$primary;
+
+    &:after {
+      background-color: variables.$secondary;
+    }
+
+    svg {
+      color: white;
+    }
+  }
+}

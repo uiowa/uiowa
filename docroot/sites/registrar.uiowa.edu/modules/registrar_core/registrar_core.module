@@ -56,6 +56,7 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
       $form['#attached']['library'][] = 'uids_base/callout';
       $form['#submit'][] = 'registrar_core_post_submit';
+      $form["actions"]['submit']['#value'] = t('Estimate');
       break;
 
     case 'media_file_add_form':
@@ -279,10 +280,13 @@ function registrar_core_correspondence_tags(string $tag = '') {
     '- any -' => '- Any -',
     'classroom scheduling' => 'Classrooms',
     'commencement' => 'Commencement',
+    'courses' => 'Courses',
     'grad_analysis' => 'Degrees',
     'exam' => 'Exams',
+    'general catalog' => 'General Catalog',
     'grades' => 'Grades',
     'registration' => 'Registration',
+    'sample plans' => 'Sample Plans',
   ];
   if (empty($tag)) {
     return $mapping;

@@ -48,7 +48,9 @@ class UiowaHeadlineWidget extends WidgetBase {
       $values[$delta]['headline_style'] = $data['container']['headline_style'];
       $values[$delta]['headline_alignment'] = $data['container']['headline_alignment'];
       $values[$delta]['heading_size'] = $data['container']['heading_size'];
-      $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
+      if (isset($data['container']['child_heading_size'])) {
+        $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
+      }
       unset($values[$delta]['container']);
     }
     return $values;

@@ -1,3 +1,30 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/menus/user-menu/_user-menu.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
+
+// Currently not in use.
+
+.menu--account {
+  .menu {
+    @include utilities.flexbox;
+    @include utilities.margin(variables.$top: variables.$md, variables.$left: 0, variables.$bottom: variables.$sm);
+    li {
+      @include utilities.flexbox;
+      a {
+        display: block;
+        text-decoration: none;
+        color: variables.$dark-gray;
+        border: 1px solid variables.$grey-light;
+        border-right: none;
+        @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
+        &:hover {
+          background: variables.$light;
+        }
+      }
+      &:last-child {
+        a {
+          border-right: 1px solid variables.$grey-light;
+        }
+      }
+    }
+  }
+}

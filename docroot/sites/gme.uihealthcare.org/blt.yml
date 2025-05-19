@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-uihealthcaregme.uiowa.ddev.site
+    protocol: https
+  machine_name: org-uihealthcaregme
+  human_name: gme.uihealthcare.org
+drush:
+  aliases:
+    local: self
+    remote: org-uihealthcaregme.prod
+drupal:
+  db:
+    database: gme_uihealthcare_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-uihealthcaregme.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Graduate Medical Education'

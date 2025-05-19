@@ -1,17 +1,23 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .pswp {
   a {
-    color: $light;
+    color: variables.$light;
   }
 }
+
 .pswp__button {
   z-index: 1;
 }
+
 .pswp__caption__center {
   text-align: center;
   max-width: 80%;
+}
+
+.pswp img {
+  object-fit: contain;
 }
 
 // Masonry
@@ -19,10 +25,10 @@
   display: block;
   column-count: 2;
   gap: 1.5rem;
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     column-count: 3;
   }
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     column-count: 4;
   }
   .media--view-mode-image-gallery {
@@ -82,7 +88,7 @@
 }
 
 .uiowa-image-gallery--single  .field__item {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     flex: 1;
   }
   &:first-child {
@@ -90,7 +96,7 @@
   }
   // Set a max width for smaller images.
   &:not(:first-child) {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       max-width: calc(15% - 10px);
       img {
         object-fit: cover;
@@ -112,7 +118,7 @@
    float: right;
    text-align: right;
     &:after {
-     @include fas();
+     @include utilities.fas();
      content: "\f065";
      font-size: 1.3rem;
      padding-top: 1.5rem;
