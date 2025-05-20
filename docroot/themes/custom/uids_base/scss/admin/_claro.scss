@@ -35,7 +35,7 @@
   padding-right: 2.6em;
 }
 
-.dropbutton-multiple .dropbutton .dropbutton-action>* {
+.dropbutton-multiple .dropbutton .dropbutton-action > * {
   margin-right: 0;
   color: #545454;
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -64,3 +64,118 @@ ul.dropbutton li {
   }
 }
 
+// Claro media library.
+
+.media-library-widget-modal {
+  &.ui-dialog .ui-dialog-titlebar {
+    position: relative;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    color: #fff;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    background: #1b1b1f;
+    line-height: 1rem;
+  }
+
+  &.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    box-sizing: border-box;
+    width: calc(1rem * 2);
+    height: calc(1rem * 2);
+    margin: 0 1.5rem;
+    padding: 0;
+    transition: all 0.1s;
+    transform: translateY(-50%);
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: none;
+  }
+
+  &.ui-dialog .ui-dialog-titlebar-close:focus {
+    border-color: green;
+    outline: 2px dotted transparent;
+    box-shadow: none;
+  }
+
+  &.ui-dialog .ui-dialog-titlebar-close:hover {
+    border-color: #fff;
+  }
+
+  .form-managed-file,
+  .form-text,
+  .form-select {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: calc(.75rem * 1);
+    color: var(--input-fg-color);
+    border: 1px solid #666;
+    border-top-color: rgb(102, 102, 102);
+    border-right-color: rgb(102, 102, 102);
+    border-bottom-color: rgb(102, 102, 102);
+    border-left-color: rgb(102, 102, 102);
+    border-radius: .125rem;
+    background: #fff;
+    font-size: 1rem;
+    line-height: 1.5;
+    appearance: none;
+  }
+
+  .form-select {
+    padding-inline-end: calc(2rem - 1px);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 9'%3e%3cpath fill='none' stroke-width='1.5' d='M1 1l6 6 6-6' stroke='%23545560'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 2.75rem 0.5625rem;
+  }
+
+  .views-exposed-form .button {
+    display: inline-block;
+    margin-inline: 0 .75rem;
+    margin-inline-end: 0.75rem;
+    padding: calc(1rem - 1px) calc(1.5rem - 1px);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1rem;
+    appearance: none;
+    -webkit-font-smoothing: antialiased;
+    margin-top: 1.5rem;
+  }
+
+
+  .form-managed-file__main .form-element--api-file {
+    flex: 1 1 auto;
+  }
+
+  .description {
+    margin-block: calc(6rem / 16);
+    color: #666;
+    font-size: .8rem;
+    line-height: calc(17rem / 16);
+  }
+
+  label {
+    display: table;
+    margin-block: calc(.5rem / 2);
+    font-size: .9rem;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+
+  .media-library--views-exposed-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .form-item {
+      flex: none;
+    }
+  }
+}
