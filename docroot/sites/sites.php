@@ -7738,3 +7738,9 @@ $sites['labharshman.uiowa.ddev.site'] = 'harshman.lab.uiowa.edu';
 $sites['labharshman.dev.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
 $sites['labharshman.stage.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
 $sites['labharshman.prod.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
+
+// Directory aliases for chandra.lab.uiowa.edu.
+$sites['labchandra.uiowa.ddev.site'] = 'chandra.lab.uiowa.edu';
+$sites['labchandra.dev.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
+$sites['labchandra.stage.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
+$sites['labchandra.prod.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
