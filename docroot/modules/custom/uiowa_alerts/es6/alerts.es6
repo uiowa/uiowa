@@ -5,88 +5,68 @@ Drupal.behaviors.uiowaAlerts = {
     // to set multiple timeouts.
     once('uiowaAlertsGetAlerts', '.block-uiowa-alerts-block', context).forEach(el => {
 
-      const messages = new Drupal.Message(el.querySelector('.hawk-alerts-wrapper'));
-      request();
+      const messagesWrapper = el.querySelector('.hawk-alerts-wrapper');
+      const messages = new Drupal.Message(messagesWrapper);
+
+      // Initialize existing alerts.
+      let existingAlerts = [];
+      messagesWrapper.querySelectorAll('.messages').forEach( (existingAlert) => {
+        existingAlerts.push(existingAlert.getAttribute('data-drupal-message-id'));
+      });
+
       // Get alerts on page load.
-      // updateAlerts(messages);
+      updateAlerts();
 
       // Check for changes every 30 seconds.
-      // setInterval(updateAlerts, 30000, messages);
-    });
+      setInterval(updateAlerts, 30000);
 
-    function updateAlerts() {
-      // Get the alerts feed and track IDs as "new" alerts.
-//       $.ajax({
-//         url: settings.uiowaAlerts.source,
-//         dataType: "json",
-//         success: (response) => {
-//           let new_alerts = [];
-//
-//           $.each(response.data, (i, item) => {
-//             let id = `hawk-alert-${item.attributes.date}`;
-//             new_alerts.push(id);
-//
-//             if (!messages.select(id)) {
-//
-//               // MAKE THE ALERT
+      function updateAlerts() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState === 4 && this.status === 200) {
+            handleResponse(this);
+          }
+        };
+        xhttp.open('GET', settings.uiowaAlerts.source, true);
+        xhttp.send();
+      }
 
-//               messages.add(alert, {
-//                 id: id,
-//                 type: 'warning'
-//               });
-//             }
-//           });
-//
-//           let existing_alerts = [];
-//
-//           // Get the existing alerts on the page and track IDs.
-//           document.querySelectorAll('.hawk-alerts-wrapper .messages').forEach( (existing_alert) => {
-//             existing_alerts.push(existing_alert.getAttribute('data-drupal-message-id'));
-//           });
-//
-//           // Return any existing alerts that are not in the feed anymore.
-//           let difference = existing_alerts.filter(x => !new_alerts.includes(x));
-//
-//           // Remove any closed alerts.
-//           difference.forEach((closed) => {
-//             messages.remove(closed);
-//           })
-//         }
-//       });
-    };
+      function handleResponse(response) {
+        const responseJSON = JSON.parse(response.responseText);
+        let newAlerts = [];
 
-    function request() {
-      const xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-          handleResponse(this);
-        }
-      };
-      xhttp.open('GET', settings.uiowaAlerts.source, true);
-      xhttp.send();
-    }
+        responseJSON.data.forEach((item, i) => {
+          const alert = alertMarkup(item);
+          const id = `hawk-alert-${item.attributes.date}`;
+          newAlerts.push(id);
+          messages.add(alert, {
+            id: id,
+            type: 'warning'
+          });
 
-    function handleResponse(response) {
-      const responseJSON = JSON.parse(response.responseText);
+          let difference = existingAlerts.filter(existingAlert => !newAlerts.includes(existingAlert));
+          // Remove any closed alerts.
+          difference.forEach((closed) => {
+            messages.remove(closed);
+          })
 
-      responseJSON.data.forEach((item, i) => {
-        console.log(alertMarkup(item));
-      })
-    }
+          existingAlerts = newAlerts;
+        })
+      }
 
-    function alertMarkup(responseJSONItem) {
-      const item = responseJSONItem;
-      const date = new Date(item.attributes.date); // parse the ISO 8601 timestamp
+      function alertMarkup(responseJSONItem) {
+        const item = responseJSONItem;
+        const date = new Date(item.attributes.date); // parse the ISO 8601 timestamp
 
-      // Create DateTimeFormat instances with the options
-      const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'America/Chicago' });
-      const timeFormatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago', hour12: true });
+        // Create DateTimeFormat instances with the options
+        const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'America/Chicago' });
+        const timeFormatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago', hour12: true });
 
-      // Format the date and time
-      const month = monthFormatter.format(date);
-      const time = timeFormatter.format(date).replace(' AM', 'am').replace(' PM', 'pm');
+        // Format the date and time
+        const month = monthFormatter.format(date);
+        const time = timeFormatter.format(date).replace(' AM', 'am').replace(' PM', 'pm');
 
-      return `
+        return `
         <div class="alert alert--icon alert--danger">
           <div class="alert__icon">
             <span class="fa-stack fa-1x">
@@ -106,5 +86,6 @@ Drupal.behaviors.uiowaAlerts = {
           </div>
         </div>
       `;
-    }
+      }
+    });
 }};
