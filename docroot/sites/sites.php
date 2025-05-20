@@ -7732,3 +7732,9 @@ $sites['forecords.uiowa.ddev.site'] = 'records.fo.uiowa.edu';
 $sites['forecords.dev.drupal.uiowa.edu'] = 'records.fo.uiowa.edu';
 $sites['forecords.stage.drupal.uiowa.edu'] = 'records.fo.uiowa.edu';
 $sites['forecords.prod.drupal.uiowa.edu'] = 'records.fo.uiowa.edu';
+
+// Directory aliases for harshman.lab.uiowa.edu.
+$sites['labharshman.uiowa.ddev.site'] = 'harshman.lab.uiowa.edu';
+$sites['labharshman.dev.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
+$sites['labharshman.stage.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
+$sites['labharshman.prod.drupal.uiowa.edu'] = 'harshman.lab.uiowa.edu';
