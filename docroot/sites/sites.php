@@ -7744,3 +7744,9 @@ $sites['labchandra.uiowa.ddev.site'] = 'chandra.lab.uiowa.edu';
 $sites['labchandra.dev.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
 $sites['labchandra.stage.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
 $sites['labchandra.prod.drupal.uiowa.edu'] = 'chandra.lab.uiowa.edu';
+
+// Directory aliases for budget.fo.uiowa.edu.
+$sites['fobudget.uiowa.ddev.site'] = 'budget.fo.uiowa.edu';
+$sites['fobudget.dev.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
+$sites['fobudget.stage.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
+$sites['fobudget.prod.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
