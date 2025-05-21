@@ -67,13 +67,14 @@ ul.dropbutton li {
 // Claro media library.
 
 .media-library-widget-modal {
+  // Dialog container styling
   &.ui-dialog .ui-dialog-titlebar {
     position: relative;
     box-sizing: border-box;
     padding: 1.5rem;
     color: #fff;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     background: #1b1b1f;
     line-height: 1rem;
   }
@@ -92,35 +93,97 @@ ul.dropbutton li {
     border: 2px solid transparent;
     border-radius: 50%;
     background: none;
+
+    &:focus {
+      border-color: green;
+      outline: 2px dotted transparent;
+      box-shadow: none;
+    }
+
+    &:hover {
+      border-color: #fff;
+    }
   }
 
-  &.ui-dialog .ui-dialog-titlebar-close:focus {
-    border-color: green;
-    outline: 2px dotted transparent;
-    box-shadow: none;
+  &.ui-dialog .ui-icon.ui-icon-closethick {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    background: url("data:image/svg+xml,%3csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M11 1.318l-10 10M11 11.318l-10-10' stroke='%23D3D4D9' stroke-width='1.5'/%3e%3c/svg%3e") no-repeat 50%;
   }
 
-  &.ui-dialog .ui-dialog-titlebar-close:hover {
-    border-color: #fff;
+  // Dialog button pane
+  &.ui-dialog > .ui-dialog-buttonpane {
+    background: #f3f3f5;
   }
 
+  .ui-dialog-buttonpane {
+    flex-direction: row-reverse;
+
+    .ui-dialog-buttonset {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .button--primary.button {
+      color: #fff;
+      background-color: #0a3db0;
+    }
+  }
+
+  // Focus styling
+  &.ui-dialog :focus {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 calc(0.1875rem + 2px) #26a769;
+  }
+
+  // Button styling
+  .button--primary {
+    color: #fff;
+    background-color: #0737a5;
+  }
+
+  .views-exposed-form .button,
+  .media-library-select.button,
+  .form-actions .button {
+    display: inline-block;
+    margin-inline: 0 0.75rem;
+    margin-inline-end: 0.75rem;
+    padding: calc(1.1rem - 1px) calc(1.5rem - 1px);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1rem;
+    appearance: none;
+    background-color: #ccc;
+  }
+
+  // Form elements styling
   .form-managed-file,
   .form-text,
   .form-select {
     box-sizing: border-box;
     max-width: 100%;
-    padding: calc(.75rem * 1);
+    padding: calc(0.75rem * 1);
     color: var(--input-fg-color);
     border: 1px solid #666;
-    border-top-color: rgb(102, 102, 102);
-    border-right-color: rgb(102, 102, 102);
-    border-bottom-color: rgb(102, 102, 102);
-    border-left-color: rgb(102, 102, 102);
-    border-radius: .125rem;
+    border-radius: 0.125rem;
     background: #fff;
     font-size: 1rem;
     line-height: 1.5;
     appearance: none;
+  }
+
+  .form-element[disabled] {
+    color: #58585c;
+    border-color: #b7b7be;
+    background-color: #ededef;
+    box-shadow: none;
   }
 
   .form-select {
@@ -131,42 +194,58 @@ ul.dropbutton li {
     background-size: 2.75rem 0.5625rem;
   }
 
-  .views-exposed-form .button {
-    display: inline-block;
-    margin-inline: 0 .75rem;
-    margin-inline-end: 0.75rem;
-    padding: calc(1rem - 1px) calc(1.5rem - 1px);
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 2px;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1rem;
-    appearance: none;
-    -webkit-font-smoothing: antialiased;
-    margin-top: 1.5rem;
-  }
-
-
   .form-managed-file__main .form-element--api-file {
     flex: 1 1 auto;
+  }
+
+  // Label and description styling
+  label {
+    display: table;
+    margin-block: calc(0.5rem / 2);
+    font-size: 0.9rem;
+    font-weight: bold;
+    line-height: 1.5;
   }
 
   .description {
     margin-block: calc(6rem / 16);
     color: #666;
-    font-size: .8rem;
+    font-size: 0.8rem;
     line-height: calc(17rem / 16);
   }
 
-  label {
-    display: table;
-    margin-block: calc(.5rem / 2);
-    font-size: .9rem;
-    font-weight: bold;
-    line-height: 1.5;
+  // Media library specific styles
+  .media-library-add-form__preview {
+    background: rgba(228, 230, 237, 0.4);
+  }
+
+  .media-library-add-form__remove-button {
+    background-position: 0.5rem center;
+  }
+
+  .media-library-view--form-actions .button {
+    color: #000;
+  }
+
+  .media-library-add-form__added-media .media-library-add-form__remove-button.button--extrasmall {
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 0.8rem;
+    max-height: 2rem;
+  }
+
+  .media-library-add-form__fields .form-item {
+    margin-block: 1.5rem;
+  }
+
+  .media-library-add-form__added-media {
+    margin: 0;
+    padding: 1rem 16px;
+    outline: 1px solid #ccc;
+    border-radius: 2px;
   }
 
   .media-library--views-exposed-form {
@@ -177,5 +256,16 @@ ul.dropbutton li {
     .form-item {
       flex: none;
     }
+  }
+
+  // Checkbox styling
+  .decorative-checkbox.form-checkbox {
+    float: left;
+    position: relative;
+    margin-inline-start: -0.1rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    padding: 0;
+    margin-right: 0.7rem;
   }
 }
