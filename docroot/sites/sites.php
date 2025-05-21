@@ -6923,12 +6923,6 @@ $sites['clasresource.dev.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
 $sites['clasresource.stage.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
 $sites['clasresource.prod.drupal.uiowa.edu'] = 'resource.clas.uiowa.edu';
 
-// Directory aliases for fmb.fo.uiowa.edu.
-$sites['fofmb.uiowa.ddev.site'] = 'fmb.fo.uiowa.edu';
-$sites['fofmb.dev.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
-$sites['fofmb.stage.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
-$sites['fofmb.prod.drupal.uiowa.edu'] = 'fmb.fo.uiowa.edu';
-
 // Directory aliases for strivecardio-study.lab.uiowa.edu.
 $sites['labstrivecardio-study.uiowa.ddev.site'] = 'strivecardio-study.lab.uiowa.edu';
 $sites['labstrivecardio-study.dev.drupal.uiowa.edu'] = 'strivecardio-study.lab.uiowa.edu';
