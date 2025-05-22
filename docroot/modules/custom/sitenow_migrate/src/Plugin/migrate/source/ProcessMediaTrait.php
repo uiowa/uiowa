@@ -136,10 +136,11 @@ trait ProcessMediaTrait {
     }
 
     $filename = $file_data['filename'];
-    $uuid = $this->getMid($filename)['uuid'];
+    $filesize = ($file_data['filesize'] ?? NULL);
+    $uuid = $this->getMid($filename, 'image', $filesize)['uuid'];
 
     if (!$uuid) {
-      $new_fid = $this->getD8FileByFilename($filename);
+      $new_fid = $this->getD8FileByFilename($filename, $filesize);
 
       $meta = [
         'title' => $file_properties['attributes']['title'] ?? $filename,
@@ -313,11 +314,13 @@ trait ProcessMediaTrait {
    *   The filename.
    * @param string $type
    *   The file type. Must be one of the keys in $tables.
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
    *
    * @return array
    *   An array consisting of mid, uuid for the file. Values false if not found.
    */
-  public function getMid($filename, $type = 'image') {
+  public function getMid($filename, $type = 'image', $filesize = NULL) {
     $tables = [
       'audio_file' => 'media__field_media_audio_file',
       'caption' => 'media__field_media_caption',
@@ -334,10 +337,13 @@ trait ProcessMediaTrait {
     $query = \Drupal::database()->select('file_managed', 'f');
     $query->join($tables[$type], 'fm', 'f.fid = ' . 'fm.field_media_' . $type . '_target_id');
     $query->join('media', 'm', 'fm.entity_id = m.mid');
-    $results = $query->fields('m', ['uuid', 'mid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchAssoc();
+    $query->fields('m', ['uuid', 'mid'])
+      ->condition('f.filename', $filename);
+
+    if (!is_null($filesize)) {
+      $query->condition('f.filesize', $filesize);
+    }
+    $results = $query->execute()->fetchAssoc();
 
     $query = NULL;
 
@@ -388,11 +394,11 @@ trait ProcessMediaTrait {
     // From https://stackoverflow.com/a/8260942.
     $parts = parse_url($filename);
     $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
-    $filename = implode('/', array_map('rawurlencode', $path_parts));
+    $sanitized_filename = implode('/', array_map('rawurlencode', $path_parts));
 
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
-    $raw_file = @file_get_contents($source_base_path . $filename);
+    $raw_file = @file_get_contents($source_base_path . $sanitized_filename);
     if (!$raw_file) {
       return FALSE;
     }
@@ -465,6 +471,7 @@ trait ProcessMediaTrait {
       return NULL;
     }
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $filesize = $fileQuery['filesize'];
     $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
@@ -478,7 +485,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = $this->getD8FileByFilename($filename);
+    $new_fid = $this->getD8FileByFilename($filename, $filesize);
 
     // If we don't have a title, set it as the filename.
     if (empty($title)) {
@@ -503,7 +510,7 @@ trait ProcessMediaTrait {
       }
     }
     else {
-      $mid = $this->getMid($filename)['mid'];
+      $mid = $this->getMid($filename, 'image', $filesize)['mid'];
       $filename = NULL;
 
       // And in case we had the file, but not the media entity.
@@ -536,6 +543,7 @@ trait ProcessMediaTrait {
     $fileQuery = $this->fidQuery($fid);
 
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $filesize = $fileQuery['filesize'];
     $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
@@ -546,7 +554,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = $this->getD8FileByFilename($filename);
+    $new_fid = $this->getD8FileByFilename($filename, $filesize);
 
     // If there's no fid in the D8 database,
     // then we'll need to fetch it from the source.
@@ -560,7 +568,7 @@ trait ProcessMediaTrait {
       }
     }
     else {
-      $mid = $this->getMid($filename)['mid'];
+      $mid = $this->getMid($filename, 'image', $filesize)['mid'];
       $filename = NULL;
 
       // And in case we had the file, but not the media entity.
@@ -734,14 +742,26 @@ trait ProcessMediaTrait {
   }
 
   /**
-   * Get the D7 file record using the filename.
+   * Get the D7 file record using the filename and optional filesize.
+   *
+   * @param string $filename
+   *   The base filename (e.g., 'example.png').
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
+   *
+   * @return int|false
+   *   The matching file ID (fid), or FALSE if not found.
    */
-  protected function getD8FileByFilename($filename) {
-    return \Drupal::database()->select('file_managed', 'f')
+  protected function getD8FileByFilename($filename, ?int $filesize = NULL) {
+    $connection = \Drupal::database();
+    $query = $connection->select('file_managed', 'f')
       ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+      ->condition('f.filename', $filename);
+    if (!is_null($filesize)) {
+      $query->condition('f.filesize', $filesize);
+    }
+
+    return $query->execute()->fetchField();
   }
 
   /**
