@@ -12,7 +12,7 @@
   .layout__spacing_container {
     @include utilities.grid-base;
   }
-  &.layout--twocol--33-67 {
+  &[class*="twocol--33-67"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
@@ -27,7 +27,7 @@
       }
     }
   }
-  &.layout--twocol--67-33 {
+  &[class*="twocol--67-33"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(3, 1fr);
@@ -44,7 +44,7 @@
       }
     }
   }
-  &.layout--twocol--25-75 {
+  &[class*="twocol--25-75"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
@@ -59,7 +59,7 @@
       }
     }
   }
-  &.layout--twocol--75-25 {
+  &[class*="twocol--75-25"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         grid-template-columns: repeat(4, 1fr);
@@ -74,7 +74,7 @@
       }
     }
   }
-  &.layout--twocol--50-50 {
+  &[class*="twocol--50-50"] {
     .layout__spacing_container {
       @include utilities.breakpoint(md) {
         @include utilities.twocol-grid;
