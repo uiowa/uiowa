@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a three-column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+  'layout--threecol',
+  settings.extra_classes,
+]
+%}
+
+{% set attributes = attributes.addClass(classes) %}
+
+{% include '@sitenow_signage/layouts/signage.html.twig' %}
