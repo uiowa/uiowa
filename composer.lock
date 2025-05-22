@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a4c5e14b45fbd3ff7c2ec85759582dc",
+    "content-hash": "d37cccabb7ed4b8f28a9b33b5bdd5e49",
     "packages": [
         {
             "name": "acquia/blt",
@@ -8830,21 +8830,99 @@
             }
         },
         {
-            "name": "drupal/menu_link_weight",
-            "version": "1.0.0-rc1",
+            "name": "drupal/menu_link",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/menu_link_weight.git",
-                "reference": "8.x-1.0-rc1"
+                "url": "https://git.drupalcode.org/project/menu_link.git",
+                "reference": "2.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/menu_link_weight-8.x-1.0-rc1.zip",
-                "reference": "8.x-1.0-rc1",
-                "shasum": "129d4e9070398e1cfac980fe652d2bddbcb1eef4"
+                "url": "https://ftp.drupal.org/files/projects/menu_link-2.0.5.zip",
+                "reference": "2.0.5",
+                "shasum": "49aef0d0491f1e0e3d73f855999e671ab47bb891"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10"
+            },
+            "require-dev": {
+                "drupal/core": "^8.0 || ^9.0 || ^10.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.5",
+                    "datestamp": "1681907303",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "casey",
+                    "homepage": "https://www.drupal.org/user/32403"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "jnicola",
+                    "homepage": "https://www.drupal.org/user/224754"
+                },
+                {
+                    "name": "johnwebdev",
+                    "homepage": "https://www.drupal.org/user/3331569"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                },
+                {
+                    "name": "pwolanin",
+                    "homepage": "https://www.drupal.org/user/49851"
+                },
+                {
+                    "name": "s_leu",
+                    "homepage": "https://www.drupal.org/user/1336864"
+                },
+                {
+                    "name": "vuil",
+                    "homepage": "https://www.drupal.org/user/3568458"
+                }
+            ],
+            "description": "Defines a menu link field type.",
+            "homepage": "https://www.drupal.org/project/menu_link",
+            "support": {
+                "source": "https://cgit.drupalcode.org/menu_link",
+                "issues": "https://www.drupal.org/project/issues/menu_link",
+                "documentation": "https://www.drupal.org/project/menu_link"
+            }
+        },
+        {
+            "name": "drupal/menu_link_weight",
+            "version": "2.0.0-alpha6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/menu_link_weight.git",
+                "reference": "8.x-2.0-alpha6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_link_weight-8.x-2.0-alpha6.zip",
+                "reference": "8.x-2.0-alpha6",
+                "shasum": "5b163497877a649fb72fa5333efb87e5d015ed7a"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10",
+                "drupal/menu_link": "*"
             },
             "require-dev": {
                 "drupal/cshs": "*"
@@ -8852,11 +8930,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
-                    "datestamp": "1689115387",
+                    "version": "8.x-2.0-alpha6",
+                    "datestamp": "1718881774",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -23906,7 +23984,7 @@
         "drupal/layout_builder_lock": 5,
         "drupal/masquerade": 10,
         "drupal/media_entity_file_replace": 10,
-        "drupal/menu_link_weight": 10,
+        "drupal/menu_link_weight": 15,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 15,
@@ -23920,9 +23998,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
