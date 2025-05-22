@@ -2,25 +2,28 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
 // Sign header.
-.node--type-sign,
 .page-node-type-sign {
-  // Adjust margins to be smaller from signage.
+  // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
     margin-left: variables.$mobile-width-gutter;
     margin-right: variables.$mobile-width-gutter;
   }
-  // Adjust padding to be smaller from signage.
-  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
-    padding-bottom: variables.$mobile-width-gutter;
-    padding-top: variables.$mobile-width-gutter;
-  }
-  // Hide ability to move blocks in contextual links.
-  .contextual-links {
-    .layout-builder-block-move {
-      display: none;
+  // Adjust column gap to be smaller for signage.
+  .layout {
+    &[class*="twocol"],
+    &[class*="threecol"] {
+      .layout__spacing_container {
+        @include utilities.breakpoint(md) {
+          column-gap: variables.$mobile-width-gutter;
+        }
+      }
     }
   }
-
+  // Adjust padding to be smaller for signage.
+  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
+    padding-bottom: 0;
+    padding-top: variables.$mobile-width-gutter;
+  }
   // Set sign background to black.
   main.content__container {
     background: variables.$secondary;
@@ -28,15 +31,13 @@
       background: #fff;
     }
   }
-  .sign--header,
-  // Target sign header when editing layout.
-  .layout--twocol--75-25.bg--gold .layout__region--first {
+  .sign--header {
     display: flex !important;
     align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
     .block {
-      flex-basis: auto;
+      flex-basis: auto!important;
     }
     .site-name {
       @include utilities.breakpoint(page-container) {
@@ -46,6 +47,22 @@
     }
   }
 }
+
+// Admin/layout styles.
+.page-node-type-sign {
+  // Hide ability to move blocks in contextual links.
+  .contextual-links {
+    .layout-builder-block-move {
+      display: none;
+    }
+  }
+  // Adjust submit button so that it displays on a new line.
+  .layout-builder-configure-section .form-submit {
+    display: block!important;
+    margin: variables.$mobile-width-gutter 0!important;
+  }
+}
+
 
 // Date/time block.
 .block-datetime-block,
