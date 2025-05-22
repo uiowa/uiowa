@@ -101,7 +101,7 @@ Drupal.behaviors.uiowaAlerts = {
 
         // Format the date and time
         const month = monthFormatter.format(date);
-        const time = timeFormatter.format(date).replace(' AM', 'am').replace(' PM', 'pm');
+        const time = timeFormatter.format(date).replace(' AM', 'a.m.').replace(' PM', 'p.m.');
 
         // Return a fully constructed HTML string to be rendered as an alert.
         return `
