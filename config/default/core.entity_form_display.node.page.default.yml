@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.page.field_after_content_override
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
+    - field.field.node.page.field_menulink
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_pre_footer_override
     - field.field.node.page.field_publish_options
@@ -19,6 +20,7 @@ dependencies:
     - allowed_formats
     - content_moderation
     - media_library
+    - menu_link
     - metatag
     - path
     - text
@@ -68,6 +70,12 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_menulink:
+    type: menu_link_default
+    weight: 26
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
