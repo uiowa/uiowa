@@ -39,6 +39,17 @@ class Protocol extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    // Targeted migration debugging.
+    // @todo Remove this when done.
+    $query->condition('n.nid', [1191, 8251], 'IN');
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     // Skip this node if it comes after our last migrated.
     if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
@@ -69,8 +80,8 @@ class Protocol extends BaseNodeSource {
         ->condition('g.entity_id', $row->getSourceProperty('nid'), '=');
       // Grab title and alt directly from these tables,
       // as they are the most accurate for the photo gallery images.
-      $gallery_query->join('field_data_field_file_image_title_text', 'title', 'g.field_basic_page_gallery_fid = title.entity_id');
-      $gallery_query->join('field_data_field_file_image_alt_text', 'alt', 'g.field_basic_page_gallery_fid = alt.entity_id');
+      $gallery_query->leftJoin('field_data_field_file_image_title_text', 'title', 'g.field_basic_page_gallery_fid = title.entity_id');
+      $gallery_query->leftJoin('field_data_field_file_image_alt_text', 'alt', 'g.field_basic_page_gallery_fid = alt.entity_id');
       $images = $gallery_query->fields('title')
         ->fields('alt')
         ->execute();
@@ -79,7 +90,11 @@ class Protocol extends BaseNodeSource {
         // On the source site, the image title is used as the caption
         // in photo galleries, so pass it in as the global caption
         // parameter for the new site.
-        $new_images[] = $this->processImageField($image['field_basic_page_gallery_fid'], $image['field_file_image_alt_text_value'], $image['field_file_image_title_text_value'], $image['field_file_image_title_text_value']);
+        $metadata = [
+          'title' => $image['field_file_image_title_text_value'] ?? '',
+          'alt' => $image['field_file_image_alt_text_value'] ?? '',
+        ];
+        $new_images[] = $this->processImageField($image['field_basic_page_gallery_fid'], $metadata['alt'], $metadata['title'], $metadata['title']);
       }
       $row->setSourceProperty('gallery', $new_images);
     }
@@ -89,8 +104,9 @@ class Protocol extends BaseNodeSource {
     $body = $row->getSourceProperty('body');
     if (!empty($body)) {
       $this->viewMode = 'large';
-      $this->align = 'left';
+      $this->align = 'center';
       // Search for D7 inline embeds and replace with D8 inline entities.
+      $body[0]['value'] = $this->replaceInlineImages($body[0]['value'], '/sites/medicine.uiowa.edu.iowaprotocols/files/');
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Set the format to filtered_html while we have it.
