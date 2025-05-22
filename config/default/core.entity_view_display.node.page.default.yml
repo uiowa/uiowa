@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.page.field_after_content_override
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
+    - field.field.node.page.field_menulink
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_pre_footer_override
     - field.field.node.page.field_publish_options
@@ -19,6 +20,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - menu_block
+    - menu_link
     - system
     - user
   theme:
@@ -46,6 +48,23 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: fb785f09-da25-445c-8ecb-67232a4b061e
+            region: content
+            configuration:
+              id: 'field_block:node:page:field_menulink'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: menu_link
+                label: above
+                settings:
+                  link_to_target: true
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -306,6 +325,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_menulink:
+    type: menu_link
+    label: above
+    settings:
+      link_to_target: true
+    third_party_settings: {  }
+    weight: 4
     region: content
   links:
     settings: {  }

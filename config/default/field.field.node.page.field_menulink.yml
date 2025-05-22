@@ -1,0 +1,35 @@
+uuid: 6839d9a9-a3fb-4652-911c-58b46acc3320
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_menulink
+    - node.type.page
+  module:
+    - menu_link
+id: node.page.field_menulink
+field_name: field_menulink
+entity_type: node
+bundle: page
+label: menulink
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_menus:
+    footer-primary: footer-primary
+    footer-secondary: footer-secondary
+    footer-tertiary: footer-tertiary
+    main: main
+    admin: '0'
+    devel: '0'
+    external-quick-links: '0'
+    search-links: '0'
+    social: '0'
+    tools: '0'
+    top-links: '0'
+    account: '0'
+  default_menu_parent: 'main:'
+field_type: menu_link
