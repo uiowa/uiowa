@@ -383,9 +383,16 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    */
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
+    // Last chance sanitizing the filename
+    // regardless of what is passed in and from where.
+    // From https://stackoverflow.com/a/8260942.
+    $parts = parse_url($filename);
+    $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
+    $filename = implode('/', array_map('rawurlencode', $path_parts));
+
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
-    $raw_file = @file_get_contents($source_base_path . rawurlencode($filename));
+    $raw_file = @file_get_contents($source_base_path . $filename);
     if (!$raw_file) {
       return FALSE;
     }
