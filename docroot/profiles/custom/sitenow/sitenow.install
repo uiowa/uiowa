@@ -3917,3 +3917,80 @@ function sitenow_update_10018() {
 function sitenow_update_10019() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update fragments in regions with new limit settings.
+ */
+function sitenow_update_10020(&$sandbox) {
+  $fragment_storage = \Drupal::entityTypeManager()->getStorage('fragment');
+  $fragment_types = ['region_item', 'region_item_after_content'];
+
+  // Initialize batch.
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['current_type'] = reset($fragment_types);
+    $sandbox['total'] = $fragment_storage->getQuery()
+      ->condition('type', $fragment_types, 'IN')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+  }
+
+  // Process fragments in batches.
+  $fragment_ids = $fragment_storage->getQuery()
+    ->condition('type', $sandbox['current_type'])
+    ->accessCheck(FALSE)
+    ->range(0, 20)
+    ->execute();
+
+  if (!empty($fragment_ids)) {
+    // Define layout limit settings.
+    $layout_settings = [
+      'scope' => 'region',
+      'settings' => [
+        'region' => [
+          'content' => [
+            'minimum_enabled' => 0,
+            'minimum' => '1',
+            'maximum_enabled' => 1,
+            'maximum' => '1',
+          ],
+        ],
+      ],
+      'scope_update' => 'Update scope',
+    ];
+
+    // Process each fragment.
+    foreach ($fragment_ids as $fragment_id) {
+      if ($fragment = $fragment_storage->load($fragment_id)) {
+        if ($fragment->hasField('layout_builder__layout') && !$fragment->get('layout_builder__layout')->isEmpty()) {
+          $sections = $fragment->get('layout_builder__layout')->getSections();
+          foreach ($sections as $section) {
+            $section->setThirdPartySetting('layout_builder_limit', 'limit', $layout_settings);
+          }
+          $fragment->save();
+        }
+      }
+      $sandbox['progress']++;
+    }
+  }
+  // Move to next fragment type.
+  elseif ($current_type_key = array_search($sandbox['current_type'], $fragment_types)) {
+    if (isset($fragment_types[$current_type_key + 1])) {
+      $sandbox['current_type'] = $fragment_types[$current_type_key + 1];
+    }
+  }
+
+  // Calculate completion.
+  $sandbox['#finished'] = empty($sandbox['total']) ? 1 : min(1, $sandbox['progress'] / $sandbox['total']);
+
+  if ($sandbox['#finished'] >= 1) {
+    // Clear shared tempstore.
+    $count = \Drupal::database()->delete('key_value_expire')
+      ->condition('collection', 'tempstore.shared.layout_builder%', 'LIKE')
+      ->execute();
+
+    \Drupal::messenger()->addMessage(t('Layout Builder shared tempstore cleared (@count entries).', ['@count' => $count]));
+    return t('Completed updating layout builder limit settings.');
+  }
+}
