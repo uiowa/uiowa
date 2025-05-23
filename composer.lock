@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f67bb0f883c34a0f8a9d625e74131f2",
+    "content-hash": "7b535a52f5d80e84689cee337d9e8e54",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9586,29 +9586,30 @@
         },
         {
             "name": "drupal/photoswipe",
-            "version": "4.0.1",
+            "version": "5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/photoswipe.git",
-                "reference": "4.0.1"
+                "reference": "5.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/photoswipe-4.0.1.zip",
-                "reference": "4.0.1",
-                "shasum": "9d01589410b2a1c52fae9dc7fcc9cd1ae3b61cba"
+                "url": "https://ftp.drupal.org/files/projects/photoswipe-5.0.5.zip",
+                "reference": "5.0.5",
+                "shasum": "927f90d3861388e28696a6df36739e888a5c14fd"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10"
+                "drupal/core": "^9.3 || ^10 || ^11"
             },
             "suggest": {
-                "npm-asset/photoswipe": "Required to use drupal/photoswipe. Expected version: ^4"
+                "npm-asset/photoswipe": "Required to make the 'photoswipe' module functional. Expected version: ^5",
+                "npm-asset/photoswipe-dynamic-caption-plugin": "Required to make the 'photoswipe_dynamic_caption' submodule functional. Expected version: ^1.2"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.0.1",
-                    "datestamp": "1691566821",
+                    "version": "5.0.5",
+                    "datestamp": "1746623728",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -23921,9 +23922,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
