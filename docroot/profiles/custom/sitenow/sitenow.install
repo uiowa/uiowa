@@ -3921,6 +3921,9 @@ function sitenow_update_10019() {
 /**
  * Update fragments in regions with new limit settings.
  */
+/**
+ * Update fragments in regions with new limit settings.
+ */
 function sitenow_update_10020(&$sandbox) {
   $fragment_storage = \Drupal::entityTypeManager()->getStorage('fragment');
   $fragment_types = ['region_item', 'region_item_after_content'];
@@ -3934,6 +3937,9 @@ function sitenow_update_10020(&$sandbox) {
       ->accessCheck(FALSE)
       ->count()
       ->execute();
+
+    // Store fragment IDs for tempstore cleanup.
+    $sandbox['processed_fragments'] = [];
   }
 
   // Process fragments in batches.
@@ -3970,6 +3976,8 @@ function sitenow_update_10020(&$sandbox) {
           }
           $fragment->save();
         }
+        // Track processed fragments for tempstore cleanup.
+        $sandbox['processed_fragments'][] = $fragment_id;
       }
       $sandbox['progress']++;
     }
@@ -3985,12 +3993,33 @@ function sitenow_update_10020(&$sandbox) {
   $sandbox['#finished'] = empty($sandbox['total']) ? 1 : min(1, $sandbox['progress'] / $sandbox['total']);
 
   if ($sandbox['#finished'] >= 1) {
-    // Clear shared tempstore.
-    $count = \Drupal::database()->delete('key_value_expire')
-      ->condition('collection', 'tempstore.shared.layout_builder%', 'LIKE')
-      ->execute();
+    $count = 0;
 
-    \Drupal::messenger()->addMessage(t('Layout Builder shared tempstore cleared (@count entries).', ['@count' => $count]));
+    // Only clear tempstore for processed fragments.
+    if (!empty($sandbox['processed_fragments'])) {
+      $database = \Drupal::database();
+
+      foreach ($sandbox['processed_fragments'] as $fragment_id) {
+        // Clear tempstore entries for this specific fragment.
+        $deleted = $database->delete('key_value_expire')
+          ->condition('collection', 'tempstore.shared.layout_builder')
+          ->condition('name', "block_content.{$fragment_id}.%", 'LIKE')
+          ->execute();
+        $count += $deleted;
+
+        // Also clear any revision-specific tempstore entries.
+        $deleted = $database->delete('key_value_expire')
+          ->condition('collection', 'tempstore.shared.layout_builder')
+          ->condition('name', "block_content.{$fragment_id}:%", 'LIKE')
+          ->execute();
+        $count += $deleted;
+      }
+
+      \Drupal::messenger()->addMessage(t('Layout Builder tempstore cleared for processed fragments (@count entries).', ['@count' => $count]));
+    } else {
+      \Drupal::messenger()->addMessage(t('No fragments found to process. No tempstore cleanup needed.'));
+    }
+
     return t('Completed updating layout builder limit settings.');
   }
 }
