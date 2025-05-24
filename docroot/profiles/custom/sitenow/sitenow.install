@@ -3942,6 +3942,9 @@ function sitenow_update_10020(&$sandbox) {
 
     $sandbox['fragment_ids'] = array_values($sandbox['fragment_ids']);
 
+    // Track processed fragment IDs for tempstore clearing.
+    $sandbox['processed_fragments'] = [];
+
     \Drupal::messenger()->addMessage(t('Found @count total fragments to process', ['@count' => count($sandbox['fragment_ids'])]));
   }
 
@@ -3977,6 +3980,10 @@ function sitenow_update_10020(&$sandbox) {
             $section->setThirdPartySetting('layout_builder_limit', 'limit', $layout_settings);
           }
           $fragment->save();
+
+          // Track this fragment for tempstore clearing.
+          $sandbox['processed_fragments'][] = $fragment_id;
+
           \Drupal::messenger()->addMessage(t('Updated fragment @id with limit settings', ['@id' => $fragment_id]));
         }
         else {
@@ -3999,12 +4006,23 @@ function sitenow_update_10020(&$sandbox) {
       \Drupal::messenger()->addMessage(t('Processed @count fragments total.', ['@count' => $sandbox['progress']]));
     }
 
-    // Clear shared tempstore.
-    $count = \Drupal::database()->delete('key_value_expire')
-      ->condition('collection', 'tempstore.shared.layout_builder%', 'LIKE')
-      ->execute();
+    // Clear tempstore only for processed fragments.
+    $cleared_count = 0;
+    if (!empty($sandbox['processed_fragments'])) {
+      foreach ($sandbox['processed_fragments'] as $fragment_id) {
+        // Clear tempstore entries for this fragment.
+        $count = \Drupal::database()->delete('key_value_expire')
+          ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides')
+          ->condition('name', 'fragment.' . $fragment_id . '.%', 'LIKE')
+          ->execute();
 
-    \Drupal::messenger()->addMessage(t('Layout Builder shared tempstore cleared (@count entries).', ['@count' => $count]));
+        if ($count > 0) {
+          $cleared_count += $count;
+        }
+      }
+    }
+
+    \Drupal::messenger()->addMessage(t('Layout Builder tempstore cleared for processed fragments (@count entries).', ['@count' => $cleared_count]));
     return t('Completed updating layout builder limit settings.');
   }
 }
