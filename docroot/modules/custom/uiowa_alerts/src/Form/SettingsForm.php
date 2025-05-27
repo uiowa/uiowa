@@ -43,7 +43,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Display Custom Alert'),
       '#default_value' => $config->get('custom_alert.display'),
-      '#description' => $this->t('Check to display a custom alert at the top of every page.'),
+      '#description' => $this->t('Check to display a custom alert at the top of every page. Custom alerts will not render on signs.'),
       '#attributes' => [
         'name' => 'custom_alert_display',
       ],
