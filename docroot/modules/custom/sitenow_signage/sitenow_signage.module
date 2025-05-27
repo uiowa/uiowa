@@ -9,6 +9,15 @@ use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
+  // Update the custom alerts description text to note that
+  // custom alerts will not display on signs.
+  $form['custom_alert_display']['#description'] = t('Check to display a custom alert at the top of every page. Custom alerts will not render on signs.');
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_block(&$variables) {
