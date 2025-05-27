@@ -30,10 +30,12 @@ third_party_settings:
       weight: 5
       format_type: details
       format_settings:
-        label: 'Card Settings'
         classes: ''
+        show_empty_fields: false
         id: ''
+        label_as_html: false
         open: false
+        description: ''
         required_fields: true
 _core:
   default_config_hash: QDi4Aus0the7rNrIaIkrnKFt3FI_5UEENZezHvxoNdw
@@ -54,7 +56,8 @@ content:
     type: media_library_widget
     weight: 0
     region: content
-    settings: {  }
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   field_card_link:
     type: link_default
