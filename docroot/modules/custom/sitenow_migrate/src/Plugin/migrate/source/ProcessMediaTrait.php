@@ -512,7 +512,7 @@ trait ProcessMediaTrait {
   /**
    * Download a remote file by uri to the destination file directory.
    *
-   * @param string $file
+   * @param string $basename
    *   File to be downloaded.
    * @param string $source_base_path
    *   The base path for files at the source.
