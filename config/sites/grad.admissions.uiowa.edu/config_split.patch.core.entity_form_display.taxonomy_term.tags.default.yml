@@ -1,5 +1,17 @@
 adding:
+  dependencies:
+    config:
+      - field.field.taxonomy_term.tags.rabbit_hole__settings
+    module:
+      - rabbit_hole
   content:
+    rabbit_hole__settings:
+      type: rabbit_hole_default
+      weight: 100
+      region: content
+      settings:
+        advanced: true
+      third_party_settings: {  }
     tvi:
       weight: 5
       region: content
