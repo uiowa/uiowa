@@ -39,17 +39,6 @@ class Protocol extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function query() {
-    $query = parent::query();
-    // Targeted migration debugging.
-    // @todo Remove this when done.
-    $query->condition('n.nid', [1191, 8251], 'IN');
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function prepareRow(Row $row) {
     // Skip this node if it comes after our last migrated.
     if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
