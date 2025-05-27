@@ -14,7 +14,6 @@ use Drupal\node\NodeInterface;
 function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
   // Update the custom alerts description text to note that
   // custom alerts will not display on signs.
-
   $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
 }
 
