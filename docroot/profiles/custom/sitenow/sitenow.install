@@ -3972,7 +3972,10 @@ function sitenow_update_10020(&$sandbox) {
     // Process each fragment in current batch.
     foreach ($current_batch as $fragment_id) {
       if ($fragment = $fragment_storage->load($fragment_id)) {
-        \Drupal::messenger()->addMessage(t('Processing fragment @id (@type)', ['@id' => $fragment_id, '@type' => $fragment->bundle()]));
+        \Drupal::messenger()->addMessage(t('Processing fragment @id (@type)', [
+          '@id' => $fragment_id,
+          '@type' => $fragment->bundle(),
+        ]));
 
         if ($fragment->hasField('layout_builder__layout') && !$fragment->get('layout_builder__layout')->isEmpty()) {
           $sections = $fragment->get('layout_builder__layout')->getSections();
@@ -3984,10 +3987,14 @@ function sitenow_update_10020(&$sandbox) {
           // Track this fragment for tempstore clearing.
           $sandbox['processed_fragments'][] = $fragment_id;
 
-          \Drupal::messenger()->addMessage(t('Updated fragment @id with limit settings', ['@id' => $fragment_id]));
+          \Drupal::messenger()->addMessage(t('Updated fragment @id with limit settings', [
+            '@id' => $fragment_id,
+          ]));
         }
         else {
-          \Drupal::messenger()->addMessage(t('Fragment @id skipped (no layout or empty)', ['@id' => $fragment_id]));
+          \Drupal::messenger()->addMessage(t('Fragment @id skipped (no layout or empty)', [
+            '@id' => $fragment_id,
+          ]));
         }
       }
       $sandbox['progress']++;
