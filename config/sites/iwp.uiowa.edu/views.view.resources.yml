@@ -341,6 +341,7 @@ display:
               autosubmit: true
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: true
@@ -353,15 +354,20 @@ display:
                 advanced:
                   placeholder_text: Search
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
+                  hide_label: false
               field_resource_type_value:
                 plugin_id: bef
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: '- Any -|Type'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -371,8 +377,11 @@ display:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Country'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -382,8 +391,11 @@ display:
                   sort_options: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Genre'
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false

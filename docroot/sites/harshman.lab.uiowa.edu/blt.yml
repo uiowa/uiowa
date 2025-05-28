@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labharshman.uiowa.ddev.site
+    protocol: https
+  machine_name: labharshman
+  human_name: harshman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labharshman.prod
+drupal:
+  db:
+    database: harshman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labharshman.prod.drupal.uiowa.edu'
+  requester: esteinbach
+  site-name: 'Harshman Laboratory'
