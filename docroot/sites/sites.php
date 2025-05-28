@@ -7744,3 +7744,21 @@ $sites['fobudget.uiowa.ddev.site'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.dev.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.stage.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.prod.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
+
+// Directory aliases for drivingtechnology.lab.uiowa.edu.
+$sites['labdrivingtechnology.uiowa.ddev.site'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.dev.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.stage.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.prod.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
+
+// Directory aliases for go.tippie.uiowa.edu.
+$sites['tippiego.uiowa.ddev.site'] = 'go.tippie.uiowa.edu';
+$sites['tippiego.dev.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
+$sites['tippiego.stage.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
+$sites['tippiego.prod.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
+
+// Directory aliases for henryfund.tippie.uiowa.edu.
+$sites['tippiehenryfund.uiowa.ddev.site'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.dev.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.stage.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.prod.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
