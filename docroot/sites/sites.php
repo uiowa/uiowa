@@ -7756,3 +7756,9 @@ $sites['tippiego.uiowa.ddev.site'] = 'go.tippie.uiowa.edu';
 $sites['tippiego.dev.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
 $sites['tippiego.stage.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
 $sites['tippiego.prod.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
+
+// Directory aliases for henryfund.tippie.uiowa.edu.
+$sites['tippiehenryfund.uiowa.ddev.site'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.dev.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.stage.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
+$sites['tippiehenryfund.prod.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
