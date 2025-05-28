@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdrivingtechnology.uiowa.ddev.site
+    protocol: https
+  machine_name: labdrivingtechnology
+  human_name: drivingtechnology.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdrivingtechnology.prod
+drupal:
+  db:
+    database: drivingtechnology_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdrivingtechnology.prod.drupal.uiowa.edu'
+  requester: scable
+  site-name: 'Driving Technology'
