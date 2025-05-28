@@ -1,0 +1,308 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Area of Study module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\uiowa_area_of_study\Entity\AreaOfStudy;
+
+/**
+ * Get a custom field label from config or fallback to field definition.
+ *
+ * @param string $field_name
+ *   The field name to get the label for.
+ * @param string $config_key
+ *   The config key where the custom label is stored.
+ *
+ * @return string
+ *   The custom label or the default field label.
+ */
+function uiowa_area_of_study_get_field_label(string $field_name, string $config_key) {
+  $config = \Drupal::configFactory()->getEditable('uiowa_area_of_study.settings');
+  $custom_label = $config->get($config_key);
+
+  if (empty($custom_label)) {
+    // Load the entity field manager service.
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    // Load the field instance for the specified field.
+    $field_definitions = $entityFieldManager->getFieldDefinitions('node', 'area_of_study');
+
+    if (isset($field_definitions[$field_name])) {
+      $custom_label = $field_definitions[$field_name]->getLabel();
+    }
+  }
+
+  return $custom_label;
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function uiowa_area_of_study_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['area_of_study'])) {
+    $bundles['node']['area_of_study']['class'] = AreaOfStudy::class;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uiowa_area_of_study/global';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+
+      // Set the titles for degree types and locations.
+      if (isset($form['field_area_of_study_degree_types'])) {
+        $form['field_area_of_study_degree_types']['widget']['#title'] = uiowa_area_of_study_get_field_label(
+          'field_area_of_study_degree_types',
+          'degree_types'
+        );
+      }
+
+      if (isset($form['field_area_of_study_locations'])) {
+        $form['field_area_of_study_locations']['widget']['#title'] = uiowa_area_of_study_get_field_label(
+          'field_area_of_study_locations',
+          'locations'
+        );
+      }
+
+      // Handle visibility for field_area_of_study_link_direct.
+      if (isset($form['field_area_of_study_link_direct'])) {
+        $form['field_area_of_study_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+        // Only visible to admins, but disable it.
+        if (isset($form["rabbit_hole"])) {
+          $form["rabbit_hole"]['admin_notice'] = [
+            '#type' => 'markup',
+            '#markup' => t('<em>These rabbit hole settings are being set on presave based on primary source link/link directly to source.</em>'),
+            '#weight' => -99,
+          ];
+          $form["rabbit_hole"]['#disabled'] = TRUE;
+        }
+      }
+      break;
+
+    case 'layout_builder_add_block':
+    case 'layout_builder_update_block':
+      // Form modifications per block plugin and bundle.
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        /** @var \Drupal\layout_builder\SectionComponent $component */
+        $component = $form_object->getCurrentComponent();
+        $block = $component->getPlugin();
+
+        // Modify the form per block plugin and bundle.
+        switch ($block->getPluginId()) {
+          case 'views_block:areas_of_study-areas_of_study_block':
+            // Update labels for exposed filters for block configuration form.
+            if (isset($form['settings']['exposed']['filter-field_area_of_study_degree_types_target_id']['#title'])) {
+              $form['settings']['exposed']['filter-field_area_of_study_degree_types_target_id']['#title'] = uiowa_area_of_study_get_field_label(
+                'field_area_of_study_degree_types',
+                'degree_types'
+              );
+            }
+
+            if (isset($form['settings']['exposed']['filter-field_area_of_study_locations_target_id']['#title'])) {
+              $form['settings']['exposed']['filter-field_area_of_study_locations_target_id']['#title'] = uiowa_area_of_study_get_field_label(
+                'field_area_of_study_locations',
+                'locations'
+              );
+            }
+            break;
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_area_of_study_theme($existing, $type, $theme, $path) {
+  return [
+    'node__area_of_study__teaser' => [
+      'template' => 'node--area-of-study--teaser',
+      'base hook' => 'node',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_field(&$variables) {
+  switch ($variables["element"]["#field_name"]) {
+    case 'field_area_of_study_degree_types':
+      $variables['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+      );
+      break;
+
+    case 'field_area_of_study_locations':
+      $variables['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+      );
+      break;
+
+    // Make it button!
+    case 'field_area_of_study_source_link':
+      switch ($variables["element"]["#view_mode"]) {
+        case '_custom':
+          // Assumes single link.
+          $variables['items'][0]['content']['#options']['attributes']['class'][] = 'bttn bttn--full bttn--primary bttn--caps';
+          break;
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function uiowa_area_of_study_preprocess_page(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_area_of_study_link_direct')
+            && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
+            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') === TRUE) {
+              \Drupal::messenger()
+                ->addWarning(t('Visitors are being redirected to
+                the Primary Source Link'));
+            }
+          }
+          break;
+
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function uiowa_area_of_study_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'area_of_study':
+      // Check for rabbit_hole functionality.
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rabbit_hole__settings')) {
+        $link_direct = (int) $entity->get('field_area_of_study_link_direct')->value;
+        $source_link = $entity->get('field_area_of_study_source_link')->uri;
+        // If source link and direct to source are set,
+        // change the rabbit hole setting to redirect
+        // and set the url to the source link token.
+        if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+          $entity->set('rabbit_hole__settings', [
+            'action' => 'page_redirect',
+            'settings' => [
+              'redirect' => '[node:field_area_of_study_source_link:uri]',
+              'redirect_code' => 301,
+              'redirect_fallback_action' => 'display_page',
+            ],
+          ]);
+        }
+        else {
+          // Match content type settings.
+          $entity->set('rabbit_hole__settings', [
+            'action' => 'display_page',
+            'settings' => [
+              'redirect' => NULL,
+              'redirect_code' => 301,
+              'redirect_fallback_action' => 'bundle_default',
+            ],
+          ]);
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_area_of_study_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+
+  if ($view->id() === 'areas_of_study') {
+    // Update views exposed form labels for areas of study block.
+    if (isset($form['#info']['filter-field_area_of_study_degree_types_target_id']['label'])) {
+      $form['#info']['filter-field_area_of_study_degree_types_target_id']['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+      );
+    }
+
+    if (isset($form['#info']['filter-field_area_of_study_locations_target_id']['label'])) {
+      $form['#info']['filter-field_area_of_study_locations_target_id']['label'] = uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function uiowa_area_of_study_taxonomy_vocabulary_load(array $entities) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if (!str_starts_with($current_path, '/admin/structure/taxonomy')) {
+    return;
+  }
+
+  foreach ($entities as $entity) {
+    if ($entity->id() === 'degree_types') {
+      $entity->set('name', uiowa_area_of_study_get_field_label(
+        'field_area_of_study_degree_types',
+        'degree_types'
+      ));
+    }
+    elseif ($entity->id() === 'locations') {
+      $entity->set('name', uiowa_area_of_study_get_field_label(
+        'field_area_of_study_locations',
+        'locations'
+      ));
+    }
+  }
+}
+
+/**
+ * Implements hook_post_config_import().
+ */
+/**
+ * Implements hook_post_config_import().
+ */
+function uiowa_area_of_study_post_config_import() {
+  $sandbox = [];
+  uiowa_area_of_study_update_10025($sandbox);
+}
