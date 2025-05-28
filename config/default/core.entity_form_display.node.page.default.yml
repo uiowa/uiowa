@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
     - field.field.node.page.layout_builder__layout
+    - field.field.node.page.rabbit_hole__settings
     - node.type.page
     - workflows.workflow.editorial
   module:
@@ -21,6 +22,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.page.default
 targetEntityType: node
@@ -129,6 +131,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 12

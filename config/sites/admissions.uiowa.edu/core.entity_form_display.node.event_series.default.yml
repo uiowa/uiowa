@@ -8,13 +8,16 @@ dependencies:
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
     - field.field.node.event_series.field_meta_tags
+    - field.field.node.event_series.rabbit_hole__settings
     - node.type.event_series
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - link
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.event_series.default
 targetEntityType: node
@@ -86,6 +89,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

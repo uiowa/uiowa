@@ -3,6 +3,7 @@ adding:
     config:
       - field.field.node.event.field_event_genre
       - field.field.node.event.field_event_registration_link
+      - field.field.node.event.rabbit_hole__settings
   content:
     field_event_genre:
       type: list_default
@@ -26,6 +27,8 @@ adding:
     field_event_when:
       settings:
         format: default_long_date
+  hidden:
+    rabbit_hole__settings: true
 removing:
   content:
     field_event_when:

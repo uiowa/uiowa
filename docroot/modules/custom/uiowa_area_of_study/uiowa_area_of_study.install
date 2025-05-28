@@ -110,3 +110,55 @@ function uiowa_area_of_study_update_10000(&$sandbox) {
     $component->set('configuration', $configuration);
   });
 }
+
+/**
+ * Re-save all AoS nodes again.
+ */
+function uiowa_area_of_study_update_10001(&$sandbox) {
+  // Process all nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'area_of_study')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+
+    // Clear the rabbit hole settings to force presave to recalculate.
+    if ($node->hasField('rabbit_hole__settings')) {
+      $node->get('rabbit_hole__settings')->setValue([]);
+    }
+
+    // Make a minimal change to trigger presave hooks.
+    $node->setRevisionLogMessage('Triggered rabbit hole migration via presave');
+    $node->save();
+
+    $sandbox['current']++;
+  }
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+    drupal_flush_all_caches();
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

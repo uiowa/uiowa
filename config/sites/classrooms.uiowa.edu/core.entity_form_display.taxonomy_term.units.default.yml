@@ -10,10 +10,12 @@ dependencies:
     - field.field.taxonomy_term.units.field_unit_link
     - field.field.taxonomy_term.units.field_unit_phone
     - field.field.taxonomy_term.units.field_unit_scheduler
+    - field.field.taxonomy_term.units.rabbit_hole__settings
     - taxonomy.vocabulary.units
   module:
     - link
     - path
+    - rabbit_hole
     - telephone
     - text
 id: taxonomy_term.units.default
@@ -97,6 +99,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
+    third_party_settings: {  }
   simple_sitemap:
     weight: 10
     region: content
@@ -111,4 +120,6 @@ content:
     third_party_settings: {  }
 hidden:
   publish_on: true
+  publish_state: true
   unpublish_on: true
+  unpublish_state: true

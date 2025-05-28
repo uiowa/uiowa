@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.article.field_related_content
     - field.field.node.article.field_tags
     - field.field.node.article.field_teaser
+    - field.field.node.article.rabbit_hole__settings
     - node.type.article
     - workflows.workflow.editorial
   module:
@@ -31,6 +32,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - scheduler
     - scheduler_content_moderation_integration
     - text
@@ -230,6 +232,13 @@ content:
     weight: 53
     region: content
     settings: {  }
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   scheduler_settings:
     weight: 50

@@ -1,0 +1,27 @@
+uuid: c1b96635-8c44-4b17-a166-69f8cbc253b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.resource_genre.rabbit_hole__settings
+    - taxonomy.vocabulary.resource_genre
+  module:
+    - text
+id: taxonomy_term.resource_genre.default
+targetEntityType: taxonomy_term
+bundle: resource_genre
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true
