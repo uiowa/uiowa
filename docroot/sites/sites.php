@@ -7762,3 +7762,9 @@ $sites['tippiehenryfund.uiowa.ddev.site'] = 'henryfund.tippie.uiowa.edu';
 $sites['tippiehenryfund.dev.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
 $sites['tippiehenryfund.stage.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
 $sites['tippiehenryfund.prod.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
+
+// Directory aliases for signage.sites.uiowa.edu.
+$sites['sitessignage.uiowa.ddev.site'] = 'signage.sites.uiowa.edu';
+$sites['sitessignage.dev.drupal.uiowa.edu'] = 'signage.sites.uiowa.edu';
+$sites['sitessignage.stage.drupal.uiowa.edu'] = 'signage.sites.uiowa.edu';
+$sites['sitessignage.prod.drupal.uiowa.edu'] = 'signage.sites.uiowa.edu';
