@@ -68,7 +68,7 @@ function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() == 'sign') {
     $variables['attributes']['class'][] = 'bg--black';
     if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
-      $variables['#attached']['library'][] = 'sitenow_signage/alerts-block';
+      $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
     }
   }
 }
