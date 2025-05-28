@@ -7744,3 +7744,9 @@ $sites['fobudget.uiowa.ddev.site'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.dev.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.stage.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
 $sites['fobudget.prod.drupal.uiowa.edu'] = 'budget.fo.uiowa.edu';
+
+// Directory aliases for drivingtechnology.lab.uiowa.edu.
+$sites['labdrivingtechnology.uiowa.ddev.site'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.dev.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.stage.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
+$sites['labdrivingtechnology.prod.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
