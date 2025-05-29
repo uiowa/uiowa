@@ -93,18 +93,15 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_onecol
+        layout_id: signage_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
-          layout_builder_styles_style:
-            0: section_background_style_black
-            1: section_margin_full_width_container
-            remove_default_bottom_padding: remove_default_bottom_padding
         components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+            regions: {  }
           layout_builder_limit:
             limit:
               scope: region
@@ -120,9 +117,9 @@ third_party_settings:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts:
-        - layout_onecol
-        - layout_twocol
-        - layout_threecol
+        - signage_onecol
+        - signage_twocol
+        - signage_threecol
       denylisted_blocks: {  }
       allowlisted_blocks:
         'Chaos Tools': {  }
@@ -148,9 +145,9 @@ third_party_settings:
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
-        - layout_onecol
-        - layout_twocol
-        - layout_threecol
+        - signage_onecol
+        - signage_twocol
+        - signage_threecol
 id: node.sign.default
 targetEntityType: node
 bundle: sign
