@@ -2441,12 +2441,6 @@ $sites['orgpeacebypeace.dev.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 $sites['orgpeacebypeace.stage.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 $sites['orgpeacebypeace.prod.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 
-// Directory aliases for strategicplan.clas.uiowa.edu.
-$sites['classtrategicplan.uiowa.ddev.site'] = 'strategicplan.clas.uiowa.edu';
-$sites['classtrategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
-$sites['classtrategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
-$sites['classtrategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
-
 // Directory aliases for cjones.iihr.uiowa.edu.
 $sites['iihrcjones.uiowa.ddev.site'] = 'cjones.iihr.uiowa.edu';
 $sites['iihrcjones.dev.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
