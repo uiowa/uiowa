@@ -114,7 +114,26 @@ function uiowa_area_of_study_update_10000(&$sandbox) {
 /**
  * Re-save all AoS nodes again.
  */
-function uiowa_area_of_study_update_10001(&$sandbox) {
+function uiowa_area_of_study_update_10050(&$sandbox) {
+
+  // Import rabbit hole config.
+  $config_storage = \Drupal::service('config.storage');
+
+  $config_sources = [
+    'field.storage.node.rabbit_hole__settings' => DRUPAL_ROOT . '/../config/default',
+    'field.field.node.area_of_study.rabbit_hole__settings' => DRUPAL_ROOT . '/../config/features/areas_of_study',
+  ];
+
+  // Import configs.
+  foreach ($config_sources as $config_name => $config_path) {
+    $source = new FileStorage($config_path);
+    $config_data = $source->read($config_name);
+
+    if ($config_data) {
+      $config_storage->write($config_name, $config_data);
+    }
+  }
+
   // Process all nodes.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
@@ -130,10 +149,9 @@ function uiowa_area_of_study_update_10001(&$sandbox) {
       return;
     }
   }
-
   // Loop through the same nodes in batches.
   $nodes_per_batch = 25;
-  $batch = array_slice($sandbox['query'], $sandbox['current'], $nodes_per_batch);
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
   if (empty($batch)) {
     $sandbox['#finished'] = 1;
     return;
@@ -142,17 +160,16 @@ function uiowa_area_of_study_update_10001(&$sandbox) {
   foreach ($batch as $nid) {
     $node = Node::load($nid);
 
-    // Clear the rabbit hole settings to force presave to recalculate.
-    if ($node->hasField('rabbit_hole__settings')) {
-      $node->get('rabbit_hole__settings')->setValue([]);
+    if ($node && $node->hasField('rabbit_hole__settings')) {
+      $node->setRevisionLogMessage('Automated save');
+      $node->save();
     }
-
-    // Make a minimal change to trigger presave hooks.
-    $node->setRevisionLogMessage('Triggered rabbit hole migration via presave');
-    $node->save();
 
     $sandbox['current']++;
   }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
 
   if ($sandbox['current'] >= $sandbox['total']) {
     $sandbox['#finished'] = 1;
