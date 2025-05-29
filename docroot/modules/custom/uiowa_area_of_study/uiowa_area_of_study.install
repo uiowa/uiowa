@@ -133,50 +133,49 @@ function uiowa_area_of_study_update_10001(&$sandbox) {
       $config_storage->write($config_name, $config_data);
     }
   }
-}
 
-// Process all nodes.
-if (!isset($sandbox['total'])) {
-  $query = \Drupal::entityQuery('node')
-    ->accessCheck()
-    ->condition('type', 'area_of_study')
-    ->execute();
-  $sandbox['total'] = count($query);
-  $sandbox['current'] = 0;
-  $sandbox['query'] = $query;
+  // Process all nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'area_of_study')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
 
-  if (empty($sandbox['total'])) {
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
     $sandbox['#finished'] = 1;
     return;
   }
-}
-// Loop through the same nodes in batches.
-$nodes_per_batch = 25;
-$batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
-if (empty($batch)) {
-  $sandbox['#finished'] = 1;
-  return;
-}
 
-foreach ($batch as $nid) {
-  $node = Node::load($nid);
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
 
-  if ($node && $node->hasField('rabbit_hole__settings')) {
-    $node->setRevisionLogMessage('Automated save');
-    $node->save();
+    if ($node && $node->hasField('rabbit_hole__settings')) {
+      $node->setRevisionLogMessage('Automated save');
+      $node->save();
+    }
+
+    $sandbox['current']++;
   }
 
-  $sandbox['current']++;
-}
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
 
-\Drupal::messenger()
-  ->addMessage($sandbox['current'] . ' nodes processed.');
-
-if ($sandbox['current'] >= $sandbox['total']) {
-  $sandbox['#finished'] = 1;
-  drupal_flush_all_caches();
-}
-else {
-  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
-}
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+    drupal_flush_all_caches();
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
 }
