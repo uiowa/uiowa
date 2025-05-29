@@ -114,7 +114,7 @@ function uiowa_area_of_study_update_10000(&$sandbox) {
 /**
  * Re-save all AoS nodes again.
  */
-function uiowa_area_of_study_update_10050(&$sandbox) {
+function uiowa_area_of_study_update_10001(&$sandbox) {
 
   // Import rabbit hole config.
   $config_storage = \Drupal::service('config.storage');
@@ -124,7 +124,7 @@ function uiowa_area_of_study_update_10050(&$sandbox) {
     'field.field.node.area_of_study.rabbit_hole__settings' => DRUPAL_ROOT . '/../config/features/areas_of_study',
   ];
 
-  // Import configs.
+  // Import configs
   foreach ($config_sources as $config_name => $config_path) {
     $source = new FileStorage($config_path);
     $config_data = $source->read($config_name);
@@ -133,6 +133,7 @@ function uiowa_area_of_study_update_10050(&$sandbox) {
       $config_storage->write($config_name, $config_data);
     }
   }
+}
 
   // Process all nodes.
   if (!isset($sandbox['total'])) {
