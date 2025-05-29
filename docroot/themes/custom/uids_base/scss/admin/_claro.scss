@@ -65,9 +65,8 @@ ul.dropbutton li {
 }
 
 // Claro media library.
-
 .media-library-widget-modal {
-  // Dialog container styling
+  // Dialog container styling.
   &.ui-dialog .ui-dialog-titlebar {
     position: relative;
     box-sizing: border-box;
@@ -105,6 +104,10 @@ ul.dropbutton li {
     }
   }
 
+  &.ui-dialog .ui-dialog-title {
+    font-size: 1.4rem;
+  }
+
   &.ui-dialog .ui-icon.ui-icon-closethick {
     width: 100%;
     height: 100%;
@@ -113,7 +116,7 @@ ul.dropbutton li {
     background: url("data:image/svg+xml,%3csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M11 1.318l-10 10M11 11.318l-10-10' stroke='%23D3D4D9' stroke-width='1.5'/%3e%3c/svg%3e") no-repeat 50%;
   }
 
-  // Dialog button pane
+  // Dialog button pane.
   &.ui-dialog > .ui-dialog-buttonpane {
     background: #f3f3f5;
   }
@@ -133,12 +136,12 @@ ul.dropbutton li {
     }
   }
 
-  // Focus styling
+  // Focus styling.
   &.ui-dialog :focus {
     box-shadow: 0 0 0 2px #fff, 0 0 0 calc(0.1875rem + 2px) #26a769;
   }
 
-  // Button styling
+  // Button styling.
   .button--primary {
     color: #fff!important;
     background-color: #0737a5!important;
@@ -166,7 +169,7 @@ ul.dropbutton li {
     background-color: #ccc;
   }
 
-  // Form elements styling
+  // Form elements styling.
   .form-managed-file,
   .form-text,
   .form-select {
@@ -182,11 +185,19 @@ ul.dropbutton li {
     appearance: none;
   }
 
-  .form-element[disabled] {
+  .form-text[disabled] {
     color: #58585c;
     border-color: #b7b7be;
     background-color: #ededef;
     box-shadow: none;
+  }
+
+  label.form-required::after {
+    display: inline-block;
+    margin-inline: 0.15em;
+    content: "*";
+    color: #dc2323;
+    font-size: 0.875rem;
   }
 
   .form-select {
@@ -201,7 +212,7 @@ ul.dropbutton li {
     flex: 1 1 auto;
   }
 
-  // Checkbox styling
+  // Checkbox styling.
   .form-type-checkbox input,
   .decorative-checkbox.form-checkbox {
     width: 1.125rem;
@@ -216,7 +227,7 @@ ul.dropbutton li {
     margin-right: 0.7rem;
   }
 
-  // Label and description styling
+  // Label and description styling.
   label {
     display: table;
     margin-block: calc(0.5rem / 2);
@@ -232,10 +243,22 @@ ul.dropbutton li {
     line-height: calc(17rem / 16);
   }
 
-  // Media library specific styles
+  .filter-wrapper {
+    padding: 0;
+    border: none;
+    font-size: 1rem;
+  }
+
+  // Media library specific styles.
   .media-library-add-form__preview {
     background: rgba(228, 230, 237, 0.4);
   }
+
+  p.media-library-add-form__description {
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+
 
   .media-library-add-form__remove-button {
     background-position: 0.5rem center;
@@ -243,6 +266,12 @@ ul.dropbutton li {
 
   .media-library-view--form-actions .button {
     color: #000;
+  }
+
+  .media-library-add-form-oembed-submit.button,
+  .media-library-add-form .button {
+    line-height: 1;
+    margin-block-start: .5rem;
   }
 
   .media-library-add-form__added-media .media-library-add-form__remove-button.button--extrasmall {
