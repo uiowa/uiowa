@@ -79,29 +79,32 @@ function sitenow_signage_preprocess_node(&$variables) {
 function sitenow_signage_preprocess_page(&$variables) {
   // Check if the current page is a node of type 'sign'.
   if (isset($variables['node']) && $variables['node'] instanceof NodeInterface && $variables['node']->getType() === 'sign') {
-    // Remove regions.
-    $variables['page']['header'] = [];
-    $variables['page']['after_content'] = [];
-    $variables['page']['pre_footer'] = [];
-    $variables['page']['footer_first'] = [];
-    $variables['page']['footer_second'] = [];
-    // Add signage stylesheet.
-    $variables['#attached']['library'][] = 'sitenow_signage/signage';
-    // Check that user is logged out before unsetting anything.
-    if (\Drupal::currentUser()->isAnonymous()) {
-      // Check if the query string contains the 'signage-display' parameter.
-      if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-        // Remove all the regions from the page.
-        foreach (Element::children($variables['page']) as $key) {
-          if ($key !== 'content') {
-            unset($variables['page'][$key]);
+    // Only modify the page if it is not an admin route.
+    $admin_context = \Drupal::service('router.admin_context');
+    if (!$admin_context->isAdminRoute()) {
+      // Remove regions.
+      $variables['page']['header'] = [];
+      $variables['page']['after_content'] = [];
+      $variables['page']['pre_footer'] = [];
+      $variables['page']['footer_first'] = [];
+      $variables['page']['footer_second'] = [];
+      // Add signage stylesheet.
+      $variables['#attached']['library'][] = 'sitenow_signage/signage';
+      // Check that user is logged out before unsetting anything.
+      if (\Drupal::currentUser()->isAnonymous()) {
+        // Check if the query string contains the 'signage-display' parameter.
+        if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
+          // Remove all the regions from the page.
+          foreach (Element::children($variables['page']) as $key) {
+            if ($key !== 'content') {
+              unset($variables['page'][$key]);
+            }
           }
+          // Add a cache context so that the page is cached separately.
+          $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
         }
-        // Add a cache context so that the page is cached separately.
-        $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
       }
     }
-
   }
 }
 

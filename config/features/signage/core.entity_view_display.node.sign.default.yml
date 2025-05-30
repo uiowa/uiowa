@@ -11,6 +11,7 @@ dependencies:
     - field_delimiter
     - layout_builder
     - layout_builder_restrictions
+    - sitenow_signage
     - user
   theme:
     - uids_base
@@ -102,20 +103,23 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:sign:field_sign_slides'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
                 label: visually_hidden
                 settings:
                   view_mode: default
-                  link: false
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
