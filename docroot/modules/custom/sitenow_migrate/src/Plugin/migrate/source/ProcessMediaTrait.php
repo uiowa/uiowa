@@ -123,9 +123,9 @@ trait ProcessMediaTrait {
     // of the json_decode result.
     $file_properties = json_decode($match[0], TRUE)[0][0];
     $align = $file_properties['fields']['alignment'] ?? '';
-    $file_data = $this->fidQuery($fid);
+    $fileQuery = $this->fidQuery($fid);
 
-    if (!$file_data) {
+    if (!$fileQuery) {
       // Failed to find a file, so let's leave the content unchanged
       // but log a message in the migration table.
       $message = "Failed to replace file with fid: $fid.";
@@ -135,11 +135,14 @@ trait ProcessMediaTrait {
       return $match[0];
     }
 
-    $filename = $file_data['filename'];
-    $uuid = $this->getMid($filename)['uuid'];
+    $uri = $fileQuery['uri'];
+    $file = basename($uri);
+    $filename = $fileQuery['filename'];
+    $filesize = ($fileQuery['filesize'] ?? NULL);
+    $uuid = $this->getMidByFileUri($file, 'image', $filesize)['uuid'];
 
     if (!$uuid) {
-      $new_fid = $this->getD8FileByFilename($filename);
+      $new_fid = $this->getD8FileByFileUri($file, $filesize);
 
       $meta = [
         'title' => $file_properties['attributes']['title'] ?? $filename,
@@ -149,7 +152,6 @@ trait ProcessMediaTrait {
       // If there's no fid in the D8 database,
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
-        $uri = $file_data['uri'];
         // If it's an embedded video, divert
         // to the oembed/youtube video creation process.
         if (preg_match("%^(oembed)|(youtube)%", $uri)) {
@@ -159,31 +161,31 @@ trait ProcessMediaTrait {
             'medium'
           );
         }
-        $filename_w_subdir = str_replace('public://', '', $uri);
+        $filename_w_subdir = \Drupal::service('stream_wrapper_manager')->getTarget($uri);
 
         // Split apart the filename from the subdirectory path.
         $filename_w_subdir = explode('/', $filename_w_subdir);
         $filename = array_pop($filename_w_subdir);
         $subdir = implode('/', $filename_w_subdir) . '/';
         $filename_w_subdir = NULL;
-        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+        $new_fid = $this->downloadFileByFileUri($file, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
         if ($new_fid) {
           $this->createMediaEntity($new_fid, $meta, 1);
-          $uuid = $this->getMid($filename)['uuid'];
+          $uuid = $this->getMidByFileUri($file)['uuid'];
         }
       }
       else {
-        $uuid = $this->getMid($filename)['uuid'];
+        $uuid = $this->getMidByFileUri($file)['uuid'];
 
         // And in case we had the file, but not the media entity.
         if (!$uuid) {
           $this->createMediaEntity($new_fid, $meta, 1);
-          $uuid = $this->getMid($filename)['uuid'];
+          $uuid = $this->getMidByFileUri($file)['uuid'];
         }
       }
     }
 
-    $file_data = NULL;
+    $fileQuery = NULL;
     $file_properties = NULL;
     return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
 
@@ -199,12 +201,12 @@ trait ProcessMediaTrait {
     $filename = array_pop($exploded);
     $filepath = implode('/', $exploded);
     // Check if we have the file in the D8 database.
-    $file_data = $this->getMid($filename, 'file');
+    $file_data = $this->getMidByFileUri($filename, 'file');
     $uuid = $file_data['uuid'];
     $id = $file_data['mid'];
 
     if (!$uuid) {
-      $new_fid = $this->getD8FileByFilename($filename);
+      $new_fid = $this->getD8FileByFileUri($filename);
 
       $meta = [
         'title' => $filename,
@@ -214,19 +216,19 @@ trait ProcessMediaTrait {
       // If there's no fid in the D8 database,
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
-        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $filepath . '/', $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFileByFileUri($filename, $this->getSourcePublicFilesUrl() . $filepath . '/', $this->getDrupalFileDirectory());
         if ($new_fid) {
           $id = $this->createMediaEntity($new_fid, $meta, 1);
-          $uuid = $this->getMid($filename, 'file')['uuid'];
+          $uuid = $this->getMidByFileUri($filename, 'file')['uuid'];
         }
       }
       else {
-        $uuid = $this->getMid($filename, 'file')['uuid'];
+        $uuid = $this->getMidByFileUri($filename, 'file')['uuid'];
 
         // And in case we had the file, but not the media entity.
         if (!$uuid) {
           $id = $this->createMediaEntity($new_fid, $meta, 1);
-          $uuid = $this->getMid($filename, 'file')['uuid'];
+          $uuid = $this->getMidByFileUri($filename, 'file')['uuid'];
         }
       }
     }
@@ -313,11 +315,13 @@ trait ProcessMediaTrait {
    *   The filename.
    * @param string $type
    *   The file type. Must be one of the keys in $tables.
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
    *
    * @return array
    *   An array consisting of mid, uuid for the file. Values false if not found.
    */
-  public function getMid($filename, $type = 'image') {
+  public function getMid($filename, $type = 'image', $filesize = NULL) {
     $tables = [
       'audio_file' => 'media__field_media_audio_file',
       'caption' => 'media__field_media_caption',
@@ -334,10 +338,13 @@ trait ProcessMediaTrait {
     $query = \Drupal::database()->select('file_managed', 'f');
     $query->join($tables[$type], 'fm', 'f.fid = ' . 'fm.field_media_' . $type . '_target_id');
     $query->join('media', 'm', 'fm.entity_id = m.mid');
-    $results = $query->fields('m', ['uuid', 'mid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchAssoc();
+    $query->fields('m', ['uuid', 'mid'])
+      ->condition('f.filename', $filename);
+
+    if (!is_null($filesize)) {
+      $query->condition('f.filesize', $filesize);
+    }
+    $results = $query->execute()->fetchAssoc();
 
     $query = NULL;
 
@@ -350,6 +357,67 @@ trait ProcessMediaTrait {
         'mid' => FALSE,
       ];
     }
+  }
+
+  /**
+   * Fetch the media uuid based on the provided filename.
+   *
+   * @param string $file
+   *   The file.
+   * @param string $type
+   *   The file type. Must be one of the keys in $tables.
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
+   *
+   * @return array
+   *   An array consisting of mid, uuid for the file. Values false if not found.
+   */
+  public function getMidByFileUri($file, $type = 'image', $filesize = NULL) {
+    $tables = [
+      'audio_file' => 'media__field_media_audio_file',
+      'caption' => 'media__field_media_caption',
+      'facebook' => 'media__field_media_facebook',
+      'file' => 'media__field_media_file',
+      'image' => 'media__field_media_image',
+      'instagram' => 'media__field_media_instagram',
+      'oembed_video' => 'media__field_media_oembed_video',
+      'panopto_url' => 'media__field_media_panopto_url',
+      'twitter' => 'media__field_media_twitter',
+      'video_file' => 'media__field_media_video_file',
+    ];
+
+    if (!isset($tables[$type])) {
+      return [
+        'uuid' => FALSE,
+        'mid' => FALSE,
+      ];
+    }
+
+    $table = $tables[$type];
+    $field = "field_media_{$type}_target_id";
+
+    $sql = "
+    SELECT m.uuid, m.mid
+    FROM file_managed f
+    INNER JOIN {$table} fm ON f.fid = fm.{$field}
+    INNER JOIN media m ON fm.entity_id = m.mid
+    WHERE SUBSTRING_INDEX(f.uri, '/', -1) = :filename";
+
+    $args = [':filename' => $file];
+
+    if (!is_null($filesize)) {
+      $sql .= ' AND f.filesize = :filesize';
+      $args[':filesize'] = $filesize;
+    }
+
+    $sql .= ' LIMIT 1';
+
+    $result = \Drupal::database()->query($sql, $args)->fetchAssoc();
+
+    return $result ?: [
+      'uuid' => FALSE,
+      'mid' => FALSE,
+    ];
   }
 
   /**
@@ -383,9 +451,16 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    */
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
+    // Last chance sanitizing the filename
+    // regardless of what is passed in and from where.
+    // From https://stackoverflow.com/a/8260942.
+    $parts = parse_url($filename);
+    $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
+    $sanitized_filename = implode('/', array_map('rawurlencode', $path_parts));
+
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
-    $raw_file = @file_get_contents($source_base_path . rawurlencode($filename));
+    $raw_file = @file_get_contents($source_base_path . $sanitized_filename);
     if (!$raw_file) {
       return FALSE;
     }
@@ -435,6 +510,97 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Download a remote file by uri to the destination file directory.
+   *
+   * @param string $basename
+   *   File to be downloaded.
+   * @param string $source_base_path
+   *   The base path for files at the source.
+   * @param string $drupal_file_directory
+   *   The base path for the file directory to place the downloaded file.
+   *
+   * @return int|bool
+   *   Returns the fid of the new file record or FALSE if there is
+   *   an issue.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   */
+  public function downloadFileByFileUri($basename, $source_base_path, $drupal_file_directory) {
+    // Last chance sanitizing the filename
+    // regardless of what is passed in and from where.
+    // From https://stackoverflow.com/a/8260942.
+    $parts = parse_url($basename);
+    $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
+    $sanitized_filename = implode('/', array_map('rawurlencode', $path_parts));
+
+    $attempts = [$sanitized_filename];
+
+    // If the basename contains %20, retry with %2520 just in case.
+    if (str_contains($sanitized_filename, '%20')) {
+      $attempts[] = str_replace('%20', '%2520', $sanitized_filename);
+    }
+
+    $raw_file = FALSE;
+
+    // Suppressing errors, because we expect there to be at least some
+    // private:// files or 404 errors.
+    foreach ($attempts as $filename) {
+      $raw_file = @file_get_contents($source_base_path . $filename);
+      if ($raw_file !== FALSE) {
+        break;
+      }
+    }
+
+    if (!$raw_file) {
+      return FALSE;
+    }
+
+    if (!empty($this->imageSizeRestrict)) {
+      if ($this->checkImageDimensions($basename, $raw_file, $this->imageSizeRestrict) === FALSE) {
+        $this->logger->notice('Image @filename did not meet the minimum dimension requirements and was not downloaded.', [
+          '@filename' => $basename,
+        ]);
+        return FALSE;
+      }
+    }
+
+    // Prepare directory in case it doesn't already exist.
+    $dir = $this->fileSystem
+      ->dirname($drupal_file_directory . $basename);
+    if (!$this->fileSystem
+      ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+      // Something went seriously wrong.
+      throw new MigrateException("Could not create or write to directory '{$dir}'");
+    }
+
+    // Try to write the file, replacing any existing file with the same name.
+    try {
+      $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
+        $dir,
+        $basename,
+      ]), FileExists::Replace);
+    }
+    catch (\Throwable $e) {
+      return FALSE;
+    }
+
+    // Drop the raw file out of memory for a little cleanup.
+    unset($raw_file);
+
+    // If we have a file, continue.
+    if ($file) {
+      // Drop the file out of memory for a little cleanup.
+      Cache::invalidateTags($file->getCacheTagsToInvalidate());
+      $file = NULL;
+      // Get a connection for the destination database
+      // and retrieve the id for the newly created file.
+      return $this->getD8FileByFileUri($basename);
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Process an image field.
    *
    * @param int $fid
@@ -457,7 +623,10 @@ trait ProcessMediaTrait {
     if (!str_starts_with($fileQuery['filemime'], 'image/')) {
       return NULL;
     }
-    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $uri = $fileQuery['uri'];
+    $file = basename($uri);
+    $filename_w_subdir = \Drupal::service('stream_wrapper_manager')->getTarget($uri);
+    $filesize = $fileQuery['filesize'];
     $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
@@ -471,7 +640,7 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = $this->getD8FileByFilename($filename);
+    $new_fid = $this->getD8FileByFileUri($file, $filesize);
 
     // If we don't have a title, set it as the filename.
     if (empty($title)) {
@@ -488,7 +657,7 @@ trait ProcessMediaTrait {
     // then we'll need to fetch it from the source.
     if (!$new_fid) {
       // Use the filename, update the source base path with the subdirectory.
-      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      $new_fid = $this->downloadFileByFileUri($file, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
       $subdir = NULL;
 
       if ($new_fid) {
@@ -496,7 +665,7 @@ trait ProcessMediaTrait {
       }
     }
     else {
-      $mid = $this->getMid($filename)['mid'];
+      $mid = $this->getMidByFileUri($file, 'image', $filesize)['mid'];
       $filename = NULL;
 
       // And in case we had the file, but not the media entity.
@@ -529,6 +698,7 @@ trait ProcessMediaTrait {
     $fileQuery = $this->fidQuery($fid);
 
     $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $filesize = $fileQuery['filesize'];
     $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
@@ -539,13 +709,13 @@ trait ProcessMediaTrait {
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
-    $new_fid = $this->getD8FileByFilename($filename);
+    $new_fid = $this->getD8FileByFileUri($filename, $filesize);
 
     // If there's no fid in the D8 database,
     // then we'll need to fetch it from the source.
     if (!$new_fid) {
       // Use the filename, update the source base path with the subdirectory.
-      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      $new_fid = $this->downloadFileByFileUri($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
       $subdir = NULL;
 
       if ($new_fid) {
@@ -553,7 +723,7 @@ trait ProcessMediaTrait {
       }
     }
     else {
-      $mid = $this->getMid($filename)['mid'];
+      $mid = $this->getMidByFileUri($filename, 'image', $filesize)['mid'];
       $filename = NULL;
 
       // And in case we had the file, but not the media entity.
@@ -615,7 +785,7 @@ trait ProcessMediaTrait {
         // Get the filepath and filename separated,
         // and fix any spaces in the URL prior to trying to download.
         $file_path = str_replace(' ', '%20', rawurldecode($src));
-        $filename = basename($file_path);
+        $file = basename($file_path);
 
         // If it's an external image, don't touch it
         // and continue on to the next iteration.
@@ -624,7 +794,7 @@ trait ProcessMediaTrait {
           continue;
         }
         // Attempt to get existing image.
-        $fid = $this->getD8FileByFilename($filename);
+        $fid = $this->getD8FileByFileUri($file);
 
         if (!$fid) {
           // Get the prefix to the path for downloading purposes.
@@ -633,10 +803,10 @@ trait ProcessMediaTrait {
           $prefix_path = explode($stub, $file_path);
           $prefix_path = array_pop($prefix_path);
           // And take out the filename.
-          $prefix_path = str_replace($filename, '', $prefix_path);
+          $prefix_path = str_replace($file, '', $prefix_path);
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
+          $fid = $this->downloadFileByFileUri($file, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
 
           // Get meta data and create the media entity.
           $meta = [];
@@ -648,7 +818,7 @@ trait ProcessMediaTrait {
             // then set it to match the title (if it's there)
             // or default to the filename as a final fallback.
             else {
-              $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $filename;
+              $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $file;
             }
           }
           // If we successfully downloaded the file, create the media entity.
@@ -658,7 +828,7 @@ trait ProcessMediaTrait {
         }
 
         // Get the media UUID.
-        $uuid = $this->getMid($filename)['uuid'];
+        $uuid = $this->getMidByFileUri($file)['uuid'];
 
         // There is an issue at this point if we don't have an MID,
         // and we definitely don't want to replace the existing item
@@ -691,7 +861,7 @@ trait ProcessMediaTrait {
       $token = NULL;
       $img = NULL;
       $file_path = NULL;
-      $filename = NULL;
+      $file = NULL;
       $src = NULL;
       $prefix_path = NULL;
       $meta = NULL;
@@ -727,14 +897,57 @@ trait ProcessMediaTrait {
   }
 
   /**
-   * Get the D7 file record using the filename.
+   * Get the D8 file record using the filename and optional filesize.
+   *
+   * @param string $filename
+   *   The base filename (e.g., 'example.png').
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
+   *
+   * @return int|false
+   *   The matching file ID (fid), or FALSE if not found.
    */
-  protected function getD8FileByFilename($filename) {
-    return \Drupal::database()->select('file_managed', 'f')
+  protected function getD8FileByFilename($filename, ?int $filesize = NULL) {
+    $connection = \Drupal::database();
+    $query = $connection->select('file_managed', 'f')
       ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+      ->condition('f.filename', $filename);
+    if (!is_null($filesize)) {
+      $query->condition('f.filesize', $filesize);
+    }
+
+    return $query->execute()->fetchField();
+  }
+
+  /**
+   * Get the D8 file record using the file and optional filesize.
+   *
+   * @param string $file
+   *   The basename file (e.g., 'example.png').
+   * @param int|null $filesize
+   *   Optional filesize to avoid incorrect matches.
+   *
+   * @return int|false
+   *   The matching file ID (fid), or FALSE if not found.
+   */
+  protected function getD8FileByFileUri($file, ?int $filesize = NULL) {
+    $connection = \Drupal::database();
+
+    $query = "
+    SELECT fid
+    FROM file_managed
+    WHERE SUBSTRING_INDEX(uri, '/', -1) = :file";
+
+    $args = [':file' => $file];
+
+    if (!is_null($filesize)) {
+      $query .= ' AND filesize = :filesize';
+      $args[':filesize'] = $filesize;
+    }
+
+    $query .= ' ORDER BY filesize DESC LIMIT 1';
+
+    return $connection->query($query, $args)->fetchField();
   }
 
   /**

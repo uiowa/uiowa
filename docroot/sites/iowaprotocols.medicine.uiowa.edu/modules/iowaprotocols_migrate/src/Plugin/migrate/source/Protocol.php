@@ -46,16 +46,6 @@ class Protocol extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
-    // Skip over the rest of the preprocessing, as it's not needed
-    // for redirects. Also avoids duplicating the notices.
-    // Return TRUE because the row should be created.
-    if ($this->migration->id() === 'iowaprotocols_protocols_redirects' || $this->migration->id() === 'iowaprotocols_page_redirects') {
-      if ($row->getSourceProperty('alias')) {
-        return TRUE;
-      }
-      return FALSE;
-    }
-
     // Establish an array to eventually map to field_tags.
     $tids = [];
 
@@ -72,14 +62,28 @@ class Protocol extends BaseNodeSource {
     // Process the gallery images from field_article_gallery.
     $gallery = $row->getSourceProperty('field_basic_page_gallery');
     if (!empty($gallery)) {
+      // The d7 galleries are a separate entity, so we need to fetch it
+      // and then process the individual images attached.
+      $gallery_query = $this->select('field_data_field_basic_page_gallery', 'g')
+        ->fields('g')
+        ->condition('g.entity_id', $row->getSourceProperty('nid'), '=');
+      // Grab title and alt directly from these tables,
+      // as they are the most accurate for the photo gallery images.
+      $gallery_query->leftJoin('field_data_field_file_image_title_text', 'title', 'g.field_basic_page_gallery_fid = title.entity_id');
+      $gallery_query->leftJoin('field_data_field_file_image_alt_text', 'alt', 'g.field_basic_page_gallery_fid = alt.entity_id');
+      $images = $gallery_query->fields('title')
+        ->fields('alt')
+        ->execute();
       $new_images = [];
-      foreach ($gallery as $gallery_image) {
-        $new_images[] = $this->processImageField(
-          $gallery_image['fid'],
-          $gallery_image['alt'],
-          $gallery_image['title'],
-          $gallery_image['title']
-        );
+      foreach ($images as $image) {
+        // On the source site, the image title is used as the caption
+        // in photo galleries, so pass it in as the global caption
+        // parameter for the new site.
+        $metadata = [
+          'title' => $image['field_file_image_title_text_value'] ?? '',
+          'alt' => $image['field_file_image_alt_text_value'] ?? '',
+        ];
+        $new_images[] = $this->processImageField($image['field_basic_page_gallery_fid'], $metadata['alt'], $metadata['title'], $metadata['title']);
       }
       $row->setSourceProperty('gallery', $new_images);
     }
@@ -89,8 +93,9 @@ class Protocol extends BaseNodeSource {
     $body = $row->getSourceProperty('body');
     if (!empty($body)) {
       $this->viewMode = 'large';
-      $this->align = 'left';
+      $this->align = 'center';
       // Search for D7 inline embeds and replace with D8 inline entities.
+      $body[0]['value'] = $this->replaceInlineImages($body[0]['value'], '/sites/medicine.uiowa.edu.iowaprotocols/files/');
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Set the format to filtered_html while we have it.
@@ -139,11 +144,10 @@ class Protocol extends BaseNodeSource {
    */
   public function postImport(MigrateImportEvent $event) {
     parent::postImport($event);
-    // If we haven't finished our migration, or
-    // if we're doing the redirects migration,
+    // If we haven't finished our migration,
     // don't proceed with the following.
     $migration = $event->getMigration();
-    if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page' || $migration->id() === 'iowaprotocols_protocols_redirects' || $migration->id() === 'iowaprotocols_page_redirects') {
+    if (!$migration->allRowsProcessed() || $migration->id() === 'iowaprotocols_page') {
       return;
     }
     $this->getLogger('sitenow_migrate')->notice($this->t('Updating broken links'));
