@@ -321,6 +321,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 case 'views_block:events_list_block-card_list':
                   $form['settings']['exposed']['filter-field_event_when_value']['field_event_when_value']['#type'] = 'hidden';
                   break;
+
+                case 'views_block:people_list_block-list_card':
+                // Don't allow the person type status filter to be exposed.
+                $form['settings']['exposed']['filter-field_person_type_status_value']['exposed']['#type'] = 'hidden';
+                  break;
               }
             }
 
