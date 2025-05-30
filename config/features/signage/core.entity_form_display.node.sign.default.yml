@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.field.node.sign.field_sign_display_title
     - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.layout_builder__layout
+    - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
     - content_moderation
@@ -17,13 +17,13 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   field_sign_display_title:
     type: string_textfield
-    weight: 121
+    weight: 1
     region: content
     settings:
       size: 60
@@ -31,52 +31,62 @@ content:
     third_party_settings: {  }
   field_sign_hide_header:
     type: boolean_checkbox
-    weight: 122
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
+  field_sign_slides:
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 15
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 120
+    weight: 11
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 16
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -84,7 +94,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
@@ -93,12 +103,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  layout_builder__layout: true
   publish_on: true
   publish_state: true
   unpublish_on: true
