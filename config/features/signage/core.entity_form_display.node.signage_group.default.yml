@@ -1,58 +1,40 @@
-uuid: f67cbb51-d6d0-48b0-9d08-8ea1b29b3814
+uuid: 5e90d313-1a82-4773-bbb5-7836c8faf9e1
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.sign.field_sign_display_title
-    - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.layout_builder__layout
-    - field.field.node.sign.og_audience
-    - node.type.sign
+    - field.field.node.signage_group.body
+    - node.type.signage_group
   module:
     - content_moderation
-    - og
     - path
-id: node.sign.default
+    - text
+id: node.signage_group.default
 targetEntityType: node
-bundle: sign
+bundle: signage_group
 mode: default
 content:
+  body:
+    type: text_textarea_with_summary
+    weight: 121
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_sign_display_title:
-    type: string_textfield
-    weight: 121
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_sign_hide_header:
-    type: boolean_checkbox
-    weight: 122
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
     weight: 100
     region: content
     settings: {  }
-    third_party_settings: {  }
-  og_audience:
-    type: og_complex
-    weight: 123
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
@@ -110,7 +92,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  layout_builder__layout: true
   publish_on: true
   publish_state: true
   unpublish_on: true

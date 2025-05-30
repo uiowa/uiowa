@@ -1,21 +1,18 @@
-uuid: f67cbb51-d6d0-48b0-9d08-8ea1b29b3814
+uuid: 69eb8e67-9247-4117-8930-ce748705ba9e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.sign.field_sign_display_title
-    - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.layout_builder__layout
-    - field.field.node.sign.og_audience
-    - node.type.sign
+    - core.entity_form_mode.node.minimal
+    - field.field.node.signage_group.body
+    - node.type.signage_group
   module:
     - content_moderation
-    - og
     - path
-id: node.sign.default
+id: node.signage_group.minimal
 targetEntityType: node
-bundle: sign
-mode: default
+bundle: signage_group
+mode: minimal
 content:
   created:
     type: datetime_timestamp
@@ -23,36 +20,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_sign_display_title:
-    type: string_textfield
-    weight: 121
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_sign_hide_header:
-    type: boolean_checkbox
-    weight: 122
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
     weight: 100
     region: content
     settings: {  }
-    third_party_settings: {  }
-  og_audience:
-    type: og_complex
-    weight: 123
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
@@ -110,8 +82,9 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  layout_builder__layout: true
+  body: true
   publish_on: true
   publish_state: true
+  scheduler_settings: true
   unpublish_on: true
   unpublish_state: true
