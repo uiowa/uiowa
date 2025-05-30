@@ -128,14 +128,9 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             ],
           ];
           // Only visible to admins, but disable.
-          if (isset($form["rabbit_hole"])) {
-            $form["rabbit_hole"]['admin_notice'] = [
-              '#type' => 'markup',
-              '#markup' => t('<em>These rabbit hole settings are being set
-on presave based on first website link and the link directly to website checkbox.</em>'),
-              '#weight' => -99,
-            ];
-            $form["rabbit_hole"]['#disabled'] = TRUE;
+          if (isset($form["rabbit_hole__settings"])) {
+            $form["rabbit_hole__settings"]['widget'][0]['#description'] = t('These rabbit hole settings are being set on presave based on first website link and the link directly to website checkbox.');
+            $form["rabbit_hole__settings"]['#disabled'] = TRUE;
           }
         }
 
