@@ -12,6 +12,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_area_of_study\Entity\AreaOfStudy;
 
 /**
@@ -92,13 +93,9 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
           ],
         ];
         // Only visible to admins, but disable it.
-        if (isset($form["rabbit_hole"])) {
-          $form["rabbit_hole"]['admin_notice'] = [
-            '#type' => 'markup',
-            '#markup' => t('<em>These rabbit hole settings are being set on presave based on primary source link/link directly to source.</em>'),
-            '#weight' => -99,
-          ];
-          $form["rabbit_hole"]['#disabled'] = TRUE;
+        if (isset($form['rabbit_hole__settings'])) {
+          $form['rabbit_hole__settings']['widget'][0]['#description'] = t('These rabbit hole settings are being set on presave based on primary source link/link directly to source.');
+          $form['rabbit_hole__settings']['#disabled'] = TRUE;
         }
       }
       break;
