@@ -8,83 +8,65 @@ dependencies:
     - node.type.slide
   module:
     - content_moderation
-    - path
+    - media_library
+    - scheduler
 id: node.slide.minimal
 targetEntityType: node
 bundle: slide
 mode: minimal
 content:
-  created:
-    type: datetime_timestamp
-    weight: 10
+  field_image:
+    type: media_library_widget
+    weight: 1
     region: content
-    settings: {  }
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
-  path:
-    type: path
-    weight: 30
+  publish_on:
+    type: datetime_timestamp_no_default
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    weight: 15
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  simple_sitemap:
-    weight: 10
+  scheduler_settings:
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 120
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    weight: 16
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
+  unpublish_on:
+    type: datetime_timestamp_no_default
     weight: 5
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  url_redirects:
-    weight: 50
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_image: true
-  publish_on: true
+  created: true
+  path: true
+  promote: true
   publish_state: true
-  scheduler_settings: true
-  unpublish_on: true
+  simple_sitemap: true
+  sticky: true
+  uid: true
   unpublish_state: true
+  url_redirects: true

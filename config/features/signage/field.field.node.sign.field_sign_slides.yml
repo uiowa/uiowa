@@ -1,0 +1,29 @@
+uuid: e0375561-2839-430a-a828-fc042a1f1a00
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sign_slides
+    - node.type.sign
+    - node.type.slide
+id: node.sign.field_sign_slides
+field_name: field_sign_slides
+entity_type: node
+bundle: sign
+label: Slides
+description: 'Select the slides to display on your sign.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      slide: slide
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

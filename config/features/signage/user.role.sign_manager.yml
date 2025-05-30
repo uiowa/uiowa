@@ -3,8 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.slideshow
-    - core.entity_view_display.node.sign.default
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -15,7 +13,6 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
-    - block_content
     - content_moderation
     - contextual
     - entity_browser
@@ -45,17 +42,13 @@ permissions:
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access toolbar'
   - 'access users overview'
-  - 'configure editable sign node layout overrides'
   - 'create and edit custom blocks'
   - 'create image media'
   - 'create sign content'
   - 'create slide content'
-  - 'create slideshow block content'
   - 'create url aliases'
   - 'delete any sign content'
   - 'delete any slide content'
-  - 'delete any slideshow block content'
-  - 'delete any slideshow block content revisions'
   - 'delete own image media'
   - 'delete own sign content'
   - 'delete own slide content'
@@ -63,7 +56,6 @@ permissions:
   - 'delete slide revisions'
   - 'edit any sign content'
   - 'edit any slide content'
-  - 'edit any slideshow block content'
   - 'edit own image media'
   - 'edit own sign content'
   - 'edit own slide content'
@@ -77,7 +69,6 @@ permissions:
   - 'override slide authored on option'
   - 'override slide published option'
   - 'override slide revision option'
-  - 'revert any slideshow block content revisions'
   - 'revert sign revisions'
   - 'revert slide revisions'
   - 'schedule publishing of nodes'
@@ -86,7 +77,6 @@ permissions:
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'use text format minimal_plus'
-  - 'view any slideshow block content history'
   - 'view any unpublished content'
   - 'view latest version'
   - 'view own unpublished content'
