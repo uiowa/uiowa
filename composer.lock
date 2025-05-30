@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bacd610c3a70653dbc8bf5115d29cd5",
+    "content-hash": "6af5d67ce570f1bacf1417e0f63feaf4",
     "packages": [
         {
             "name": "acquia/blt",
@@ -308,6 +308,7 @@
                 "issues": "https://github.com/acquia/memcache-settings/issues",
                 "source": "https://github.com/acquia/memcache-settings/tree/v1.2.0"
             },
+            "abandoned": true,
             "time": "2022-08-03T15:14:53+00:00"
         },
         {
@@ -523,7 +524,7 @@
             "version": "6.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "d19ab26a33b4d80f9af604e85d4194757276f01d"
             },
             "dist": {
@@ -7424,26 +7425,26 @@
         },
         {
             "name": "drupal/layout_builder_limit",
-            "version": "1.0.0-beta3",
+            "version": "1.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_limit.git",
-                "reference": "1.0.0-beta3"
+                "reference": "1.0.0-beta5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_limit-1.0.0-beta3.zip",
-                "reference": "1.0.0-beta3",
-                "shasum": "69b3638a0890b095dc966d6c9368d27c6e4a9e72"
+                "url": "https://ftp.drupal.org/files/projects/layout_builder_limit-1.0.0-beta5.zip",
+                "reference": "1.0.0-beta5",
+                "shasum": "345afe2e17403ca54aa14b3202e31a80b6fb0e98"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^10.1 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "1.0.0-beta3",
-                    "datestamp": "1662137477",
+                    "version": "1.0.0-beta5",
+                    "datestamp": "1722999726",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -8341,29 +8342,29 @@
         },
         {
             "name": "drupal/media_entity_instagram",
-            "version": "3.0.8",
+            "version": "4.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity_instagram.git",
-                "reference": "3.0.8"
+                "reference": "4.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-3.0.8.zip",
-                "reference": "3.0.8",
-                "shasum": "7e91d3ecd83f8a67b2af1954226c9cf6e6377f5b"
+                "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-4.0.0-beta1.zip",
+                "reference": "4.0.0-beta1",
+                "shasum": "c8d1728b1241120d7c4c0f3a7303f176de910113"
             },
             "require": {
-                "drupal/core": "^9 || ^10"
+                "drupal/core": "^10.3 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.8",
-                    "datestamp": "1676644231",
+                    "version": "4.0.0-beta1",
+                    "datestamp": "1725286550",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -8373,30 +8374,41 @@
             ],
             "authors": [
                 {
-                    "name": "chr.fritsch",
-                    "homepage": "https://www.drupal.org/user/2103716"
+                    "name": "Janez Urevc (slashrsm)",
+                    "homepage": "https://www.drupal.org/u/slashrsm",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "designesse",
-                    "homepage": "https://www.drupal.org/user/854012"
+                    "name": "Christian Fritsch (chr.fritsch)",
+                    "homepage": "https://www.drupal.org/u/chrfritsch",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Malina Randrianavony (designesse)",
+                    "homepage": "https://www.drupal.org/u/designesse",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
+                    "homepage": "https://www.drupal.org/u/drupal-media-team",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "primsi",
-                    "homepage": "https://www.drupal.org/user/282629"
-                },
-                {
-                    "name": "slashrsm",
-                    "homepage": "https://www.drupal.org/user/744628"
+                    "name": "Primoz Hmeljak (primsi)",
+                    "homepage": "https://www.drupal.org/u/primsi",
+                    "role": "Maintainer"
                 }
             ],
             "description": "Media Entity Instagram provider.",
-            "homepage": "https://www.drupal.org/project/media_entity_instagram",
+            "homepage": "http://drupal.org/project/media_entity_instagram",
+            "keywords": [
+                "Drupal",
+                "Instagram",
+                "Media"
+            ],
             "support": {
-                "source": "https://git.drupalcode.org/project/media_entity_instagram"
+                "source": "https://git.drupalcode.org/project/media_entity_instagram",
+                "issues": "https://www.drupal.org/project/issues/media_entity_instagram"
             }
         },
         {
@@ -23955,6 +23967,7 @@
         "drupal/layout_builder_lock": 5,
         "drupal/masquerade": 10,
         "drupal/media_entity_file_replace": 10,
+        "drupal/media_entity_instagram": 10,
         "drupal/menu_link_weight": 10,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
