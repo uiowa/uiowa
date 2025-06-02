@@ -3917,3 +3917,387 @@ function sitenow_update_10018() {
 function sitenow_update_10019() {
   drupal_flush_all_caches();
 }
+
+/**
+  * Function for Nurses people list block view to update the fields
+  * Transition people list blocks from custom filtering to Ctools Views exposed filters.
+ */
+function sitenow_update_10020() {
+  $config_factory = \Drupal::configFactory();
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $block_storage = $entity_type_manager->getStorage('block');
+
+  // Load all blocks that use the people list view
+  $blocks = $block_storage->loadByProperties([
+    'plugin' => 'views_block:people_list-block_1', // Adjust to your actual view machine name
+  ]);
+
+  $updated_blocks = 0;
+
+  foreach ($blocks as $block) {
+    $settings = $block->get('settings');
+
+    // Check if this block has custom filter settings that need migration
+    if (isset($settings['custom_filters']) && !empty($settings['custom_filters'])) {
+
+      // Get the view configuration
+      $view_id = 'people_list'; // Your view machine name
+      $display_id = 'block_1'; // Your display machine name
+
+      $view_config = $config_factory->getEditable("views.view.{$view_id}");
+      $view_data = $view_config->get();
+
+      if (!empty($view_data)) {
+        $display_config = &$view_data['display'][$display_id];
+
+        // Initialize exposed form settings if they don't exist
+        if (!isset($display_config['display_options']['exposed_form'])) {
+          $display_config['display_options']['exposed_form'] = [
+            'type' => 'basic',
+            'options' => [
+              'submit_button' => 'Filter',
+              'reset_button' => TRUE,
+              'reset_button_label' => 'Reset',
+              'exposed_sorts_label' => 'Sort by',
+              'expose_sort_order' => TRUE,
+              'sort_asc_label' => 'Asc',
+              'sort_desc_label' => 'Desc',
+            ],
+          ];
+        }
+
+        // Initialize filters array if it doesn't exist
+        if (!isset($display_config['display_options']['filters'])) {
+          $display_config['display_options']['filters'] = [];
+        }
+
+        $custom_filters = $settings['custom_filters'];
+
+        // Map custom filter settings to Views exposed filters
+
+        // Search field for first and last name (title field)
+        if (!empty($custom_filters['search_enabled'])) {
+          $display_config['display_options']['filters']['title'] = [
+            'id' => 'title',
+            'table' => 'node_field_data',
+            'field' => 'title',
+            'relationship' => 'none',
+            'group_type' => 'group',
+            'admin_label' => '',
+            'operator' => 'contains',
+            'value' => '',
+            'group' => 1,
+            'exposed' => TRUE,
+            'expose' => [
+              'operator_id' => 'title_op',
+              'label' => 'Search Names',
+              'description' => 'Search for people by first or last name',
+              'use_operator' => FALSE,
+              'operator' => 'title_op',
+              'identifier' => 'name_search',
+              'required' => FALSE,
+              'remember' => FALSE,
+              'multiple' => FALSE,
+              'remember_roles' => [
+                'authenticated' => 'authenticated',
+                'anonymous' => '0',
+              ],
+              'placeholder' => 'Enter first or last name...',
+            ],
+            'is_grouped' => FALSE,
+          ];
+        }
+
+        // Person type filter (select list)
+        if (!empty($custom_filters['person_type_enabled'])) {
+          $display_config['display_options']['filters']['field_person_type'] = [
+            'id' => 'field_person_type',
+            'table' => 'node__field_person_type',
+            'field' => 'field_person_type_target_id',
+            'relationship' => 'none',
+            'group_type' => 'group',
+            'admin_label' => '',
+            'operator' => 'or',
+            'value' => [],
+            'group' => 1,
+            'exposed' => TRUE,
+            'expose' => [
+              'operator_id' => 'field_person_type_target_id_op',
+              'label' => 'Person Type',
+              'description' => '',
+              'use_operator' => FALSE,
+              'operator' => 'field_person_type_target_id_op',
+              'identifier' => 'person_type',
+              'required' => FALSE,
+              'remember' => FALSE,
+              'multiple' => TRUE,
+              'remember_roles' => [
+                'authenticated' => 'authenticated',
+                'anonymous' => '0',
+              ],
+              'reduce' => FALSE,
+            ],
+            'is_grouped' => FALSE,
+            'group_info' => [
+              'label' => '',
+              'description' => '',
+              'identifier' => '',
+              'optional' => TRUE,
+              'widget' => 'select',
+              'multiple' => FALSE,
+              'remember' => FALSE,
+              'default_group' => 'All',
+              'default_group_multiple' => [],
+              'group_items' => [],
+            ],
+            'type' => 'select',
+            'limit' => TRUE,
+            'hierarchy' => FALSE,
+            'error_message' => TRUE,
+          ];
+        }
+
+        // Research areas filter (select list)
+        if (!empty($custom_filters['research_areas_enabled'])) {
+          $display_config['display_options']['filters']['field_research_areas'] = [
+            'id' => 'field_research_areas',
+            'table' => 'node__field_research_areas',
+            'field' => 'field_research_areas_target_id',
+            'relationship' => 'none',
+            'group_type' => 'group',
+            'admin_label' => '',
+            'operator' => 'or',
+            'value' => [],
+            'group' => 1,
+            'exposed' => TRUE,
+            'expose' => [
+              'operator_id' => 'field_research_areas_target_id_op',
+              'label' => 'Research Areas',
+              'description' => '',
+              'use_operator' => FALSE,
+              'operator' => 'field_research_areas_target_id_op',
+              'identifier' => 'research_areas',
+              'required' => FALSE,
+              'remember' => FALSE,
+              'multiple' => TRUE,
+              'remember_roles' => [
+                'authenticated' => 'authenticated',
+                'anonymous' => '0',
+              ],
+              'reduce' => FALSE,
+            ],
+            'is_grouped' => FALSE,
+            'type' => 'select',
+            'limit' => TRUE,
+            'hierarchy' => FALSE,
+            'error_message' => TRUE,
+          ];
+        }
+
+        // Tags filter (select list)
+        if (!empty($custom_filters['tags_enabled'])) {
+          $display_config['display_options']['filters']['field_tags'] = [
+            'id' => 'field_tags',
+            'table' => 'node__field_tags',
+            'field' => 'field_tags_target_id',
+            'relationship' => 'none',
+            'group_type' => 'group',
+            'admin_label' => '',
+            'operator' => 'or',
+            'value' => [],
+            'group' => 1,
+            'exposed' => TRUE,
+            'expose' => [
+              'operator_id' => 'field_tags_target_id_op',
+              'label' => 'Tags',
+              'description' => '',
+              'use_operator' => FALSE,
+              'operator' => 'field_tags_target_id_op',
+              'identifier' => 'tags',
+              'required' => FALSE,
+              'remember' => FALSE,
+              'multiple' => TRUE,
+              'remember_roles' => [
+                'authenticated' => 'authenticated',
+                'anonymous' => '0',
+              ],
+              'reduce' => FALSE,
+            ],
+            'is_grouped' => FALSE,
+            'type' => 'select', // Changed from 'textfield' to 'select'
+            'limit' => TRUE,
+            'hierarchy' => FALSE,
+            'error_message' => TRUE,
+          ];
+        }
+
+        // Enable Ctools Views functionality for exposed filters
+        $display_config['display_options']['use_more'] = FALSE;
+        $display_config['display_options']['use_more_always'] = FALSE;
+        $display_config['display_options']['use_more_text'] = 'more';
+
+        // Save the updated view configuration
+        $view_config->setData($view_data);
+        $view_config->save();
+
+        // Clean up the block settings - remove custom filter settings
+        unset($settings['custom_filters']);
+
+        // Add any Ctools-specific block settings if needed
+        $settings['ctools_views_filters_enabled'] = TRUE;
+
+        $block->set('settings', $settings);
+        $block->save();
+
+        $updated_blocks++;
+      }
+    }
+  }
+
+  // Clear caches to ensure changes take effect
+  drupal_flush_all_caches();
+
+  return t('Updated @count people list blocks to use Ctools Views exposed filters.', [
+    '@count' => $updated_blocks,
+  ]);
+}
+
+/**
+ * Helper function to facilitate block configuration updates.
+ *
+ * This would be similar to your existing helper function mentioned in the repository.
+ */
+function _sitenow_update_blocks($plugin_id, $callback) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $block_storage = $entity_type_manager->getStorage('block');
+
+  $blocks = $block_storage->loadByProperties([
+    'plugin' => $plugin_id,
+  ]);
+
+  $updated = 0;
+  foreach ($blocks as $block) {
+    if ($callback($block)) {
+      $block->save();
+      $updated++;
+    }
+  }
+
+  return $updated;
+}
+
+/**
+ * Alternative approach using the helper function pattern.
+ */
+function sitenow_update_10020_alternative() {
+  $updated = _sitenow_update_blocks('views_block:people_list-block_1', function ($block) {
+    $settings = $block->get('settings');
+
+    // Only update blocks that have custom filters
+    if (!isset($settings['custom_filters']) || empty($settings['custom_filters'])) {
+      return FALSE;
+    }
+
+    // Store the custom filter settings for reference
+    $custom_filters = $settings['custom_filters'];
+
+    // Remove custom filtering settings
+    unset($settings['custom_filters']);
+
+    // Add Ctools Views settings
+    $settings['ctools_views'] = [
+      'exposed_filters_enabled' => TRUE,
+      'migrated_from_custom' => TRUE,
+      'migration_timestamp' => \Drupal::time()->getRequestTime(),
+    ];
+
+    $block->set('settings', $settings);
+
+    return TRUE;
+  });
+
+  // Update the corresponding view configuration
+  _sitenow_update_people_view_filters();
+
+  drupal_flush_all_caches();
+
+  return t('Updated @count people list blocks for Ctools Views integration.', [
+    '@count' => $updated,
+  ]);
+}
+
+/**
+ * Helper function to update the people view with exposed filters.
+ */
+function _sitenow_update_people_view_filters() {
+  $config_factory = \Drupal::configFactory();
+  $view_config = $config_factory->getEditable('views.view.people_list');
+
+  if ($view_config->isNew()) {
+    return;
+  }
+
+  $view_data = $view_config->get();
+
+  // Enable exposed filters for the block display
+  if (isset($view_data['display']['block_1'])) {
+    $display_config = &$view_data['display']['block_1'];
+
+    // Configure exposed form
+    $display_config['display_options']['exposed_form'] = [
+      'type' => 'basic',
+      'options' => [
+        'submit_button' => 'Apply Filters',
+        'reset_button' => TRUE,
+        'reset_button_label' => 'Clear Filters',
+        'exposed_sorts_label' => 'Sort by',
+        'expose_sort_order' => TRUE,
+        'sort_asc_label' => 'Asc',
+        'sort_desc_label' => 'Desc',
+      ],
+    ];
+
+    // Add the standard exposed filters
+    $exposed_filters = [
+      'search_api_fulltext' => [
+        'expose' => [
+          'label' => 'Search People',
+          'identifier' => 'search',
+          'placeholder' => 'Search by name or keywords...',
+        ],
+      ],
+      'field_person_type' => [
+        'expose' => [
+          'label' => 'Person Type',
+          'identifier' => 'person_type',
+        ],
+      ],
+      'field_research_areas' => [
+        'expose' => [
+          'label' => 'Research Areas',
+          'identifier' => 'research_areas',
+        ],
+      ],
+      'field_tags' => [
+        'expose' => [
+          'label' => 'Tags',
+          'identifier' => 'tags',
+        ],
+      ],
+    ];
+
+    // Apply exposed filter configurations
+    foreach ($exposed_filters as $filter_id => $config) {
+      if (isset($display_config['display_options']['filters'][$filter_id])) {
+        $display_config['display_options']['filters'][$filter_id]['exposed'] = TRUE;
+        $display_config['display_options']['filters'][$filter_id]['expose'] = array_merge(
+          $display_config['display_options']['filters'][$filter_id]['expose'] ?? [],
+          $config['expose']
+        );
+      }
+    }
+
+    $view_config->setData($view_data);
+    $view_config->save();
+  }
+}
