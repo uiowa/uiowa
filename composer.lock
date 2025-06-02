@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08dd013e2f8362cafa4394926862b739",
+    "content-hash": "8a6bf14bdd4f4487b9981f531b923f67",
     "packages": [
         {
             "name": "acquia/blt",
@@ -308,6 +308,7 @@
                 "issues": "https://github.com/acquia/memcache-settings/issues",
                 "source": "https://github.com/acquia/memcache-settings/tree/v1.2.0"
             },
+            "abandoned": true,
             "time": "2022-08-03T15:14:53+00:00"
         },
         {
@@ -505,12 +506,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/harvesthq/chosen-package.git",
+                "url": "git@github.com:harvesthq/bower-chosen.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -8473,29 +8474,29 @@
         },
         {
             "name": "drupal/media_library_theme_reset",
-            "version": "1.5.0",
+            "version": "2.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_library_theme_reset.git",
-                "reference": "8.x-1.5"
+                "reference": "2.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_library_theme_reset-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "d0e26fb6a0e4b59ff3410bd3f3781165cc27b935"
+                "url": "https://ftp.drupal.org/files/projects/media_library_theme_reset-2.0.0-beta1.zip",
+                "reference": "2.0.0-beta1",
+                "shasum": "d79f2ecd103080964fde2ded1aff3dc19088f81c"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1670618180",
+                    "version": "2.0.0-beta1",
+                    "datestamp": "1726815161",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -8525,29 +8526,29 @@
         },
         {
             "name": "drupal/media_thumbnails",
-            "version": "1.0.0-beta2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_thumbnails.git",
-                "reference": "8.x-1.0-beta2"
+                "reference": "2.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_thumbnails-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "127cdea8280fa1f96eac4bf6096825db16c489ac"
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "bf8fed213de635be2b90c8a355a22aa7d8fb8b91"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^8 || ^9 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1694697406",
+                    "version": "2.0.0",
+                    "datestamp": "1727345523",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -8557,12 +8558,14 @@
             ],
             "authors": [
                 {
-                    "name": "andrii momotov",
-                    "homepage": "https://www.drupal.org/user/3706092"
+                    "name": "Boris Böhne (drubb)",
+                    "homepage": "https://www.drupal.org/u/drubb",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "drubb",
-                    "homepage": "https://www.drupal.org/user/69706"
+                    "name": "Quentin Fahrner (renrhaf)",
+                    "homepage": "https://www.drupal.org/u/renrhaf",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "renrhaf",
@@ -8571,35 +8574,39 @@
             ],
             "description": "Plugin manager for media entity thumbnail generation",
             "homepage": "https://www.drupal.org/project/media_thumbnails",
+            "keywords": [
+                "Drupal"
+            ],
             "support": {
-                "source": "https://git.drupalcode.org/project/media_thumbnails"
+                "source": "https://git.drupalcode.org/project/media_thumbnails",
+                "issues": "https://www.drupal.org/project/issues/media_thumbnails"
             }
         },
         {
             "name": "drupal/media_thumbnails_video",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_thumbnails_video.git",
-                "reference": "2.0.0"
+                "reference": "2.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_thumbnails_video-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "e65879c2102dd7a89f361e8a6cf9efdcf43720d5"
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails_video-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "4c70f913812ef7a5e410e30782823264c73a8088"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10",
-                "drupal/media_thumbnails": "^1.0",
+                "drupal/core": "^9.3 || ^10 || ^11",
+                "drupal/media_thumbnails": ">=2.0",
                 "ext-gd": "*",
                 "php-ffmpeg/php-ffmpeg": ">=0.14.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1672674374",
+                    "version": "2.0.1",
+                    "datestamp": "1738924651",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10962,17 +10969,17 @@
         },
         {
             "name": "drupal/smart_date",
-            "version": "4.1.3",
+            "version": "4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/smart_date.git",
-                "reference": "4.1.3"
+                "reference": "4.2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/smart_date-4.1.3.zip",
-                "reference": "4.1.3",
-                "shasum": "13b86c7a386eaf240ef4fd7bdd94df7528880c09"
+                "url": "https://ftp.drupal.org/files/projects/smart_date-4.2.3.zip",
+                "reference": "4.2.3",
+                "shasum": "f4e97acce3bd666cf553b85c87b466eb172da69c"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11",
@@ -10988,8 +10995,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.1.3",
-                    "datestamp": "1716307674",
+                    "version": "4.2.3",
+                    "datestamp": "1740856565",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -15859,29 +15866,29 @@
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
-            "version": "v1.1.0",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-FFMpeg/PHP-FFMpeg.git",
-                "reference": "eace6f174ff6d206ba648483ebe59760f7f6a0e1"
+                "reference": "8e74bdc07ad200da7a6cfb21ec2652875e4368e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-FFMpeg/PHP-FFMpeg/zipball/eace6f174ff6d206ba648483ebe59760f7f6a0e1",
-                "reference": "eace6f174ff6d206ba648483ebe59760f7f6a0e1",
+                "url": "https://api.github.com/repos/PHP-FFMpeg/PHP-FFMpeg/zipball/8e74bdc07ad200da7a6cfb21ec2652875e4368e0",
+                "reference": "8e74bdc07ad200da7a6cfb21ec2652875e4368e0",
                 "shasum": ""
             },
             "require": {
                 "evenement/evenement": "^3.0",
-                "php": "^8.0 || ^8.1 || ^8.2",
+                "php": "^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "spatie/temporary-directory": "^2.0",
-                "symfony/cache": "^5.4 || ^6.0",
-                "symfony/process": "^5.4 || ^6.0"
+                "symfony/cache": "^5.4 || ^6.0 || ^7.0",
+                "symfony/process": "^5.4 || ^6.0 || ^7.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.5",
-                "phpunit/phpunit": "^9.5.10"
+                "phpunit/phpunit": "^9.5.10 || ^10.0"
             },
             "suggest": {
                 "php-ffmpeg/extras": "A compilation of common audio & video drivers for PHP-FFMpeg"
@@ -15942,9 +15949,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-FFMpeg/PHP-FFMpeg/issues",
-                "source": "https://github.com/PHP-FFMpeg/PHP-FFMpeg/tree/v1.1.0"
+                "source": "https://github.com/PHP-FFMpeg/PHP-FFMpeg/tree/v1.3.2"
             },
-            "time": "2022-12-09T13:57:05+00:00"
+            "time": "2025-04-01T20:36:46+00:00"
         },
         {
             "name": "php-http/discovery",
@@ -19508,16 +19515,16 @@
         },
         {
             "name": "spatie/temporary-directory",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/temporary-directory.git",
-                "reference": "efc258c9f4da28f0c7661765b8393e4ccee3d19c"
+                "reference": "580eddfe9a0a41a902cac6eeb8f066b42e65a32b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/efc258c9f4da28f0c7661765b8393e4ccee3d19c",
-                "reference": "efc258c9f4da28f0c7661765b8393e4ccee3d19c",
+                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/580eddfe9a0a41a902cac6eeb8f066b42e65a32b",
+                "reference": "580eddfe9a0a41a902cac6eeb8f066b42e65a32b",
                 "shasum": ""
             },
             "require": {
@@ -19553,7 +19560,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/temporary-directory/issues",
-                "source": "https://github.com/spatie/temporary-directory/tree/2.2.0"
+                "source": "https://github.com/spatie/temporary-directory/tree/2.3.0"
             },
             "funding": [
                 {
@@ -19565,7 +19572,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-25T07:13:36+00:00"
+            "time": "2025-01-13T13:04:43+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -19721,16 +19728,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v6.3.5",
+            "version": "v6.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "6c1a3ea078c4d88ee892530945df63a87981b2da"
+                "reference": "d1abcf763a7414f2e572f676f22da7a06c8cd9ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/6c1a3ea078c4d88ee892530945df63a87981b2da",
-                "reference": "6c1a3ea078c4d88ee892530945df63a87981b2da",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/d1abcf763a7414f2e572f676f22da7a06c8cd9ee",
+                "reference": "d1abcf763a7414f2e572f676f22da7a06c8cd9ee",
                 "shasum": ""
             },
             "require": {
@@ -19739,7 +19746,7 @@
                 "psr/log": "^1.1|^2|^3",
                 "symfony/cache-contracts": "^2.5|^3",
                 "symfony/service-contracts": "^2.5|^3",
-                "symfony/var-exporter": "^6.2.10"
+                "symfony/var-exporter": "^6.3.6|^7.0"
             },
             "conflict": {
                 "doctrine/dbal": "<2.13.1",
@@ -19754,15 +19761,15 @@
             },
             "require-dev": {
                 "cache/integration-tests": "dev-master",
-                "doctrine/dbal": "^2.13.1|^3.0",
+                "doctrine/dbal": "^2.13.1|^3|^4",
                 "predis/predis": "^1.1|^2.0",
                 "psr/simple-cache": "^1.0|^2.0|^3.0",
-                "symfony/config": "^5.4|^6.0",
-                "symfony/dependency-injection": "^5.4|^6.0",
-                "symfony/filesystem": "^5.4|^6.0",
-                "symfony/http-kernel": "^5.4|^6.0",
-                "symfony/messenger": "^5.4|^6.0",
-                "symfony/var-dumper": "^5.4|^6.0"
+                "symfony/config": "^5.4|^6.0|^7.0",
+                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+                "symfony/filesystem": "^5.4|^6.0|^7.0",
+                "symfony/http-kernel": "^5.4|^6.0|^7.0",
+                "symfony/messenger": "^5.4|^6.0|^7.0",
+                "symfony/var-dumper": "^5.4|^6.0|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -19797,7 +19804,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v6.3.5"
+                "source": "https://github.com/symfony/cache/tree/v6.4.21"
             },
             "funding": [
                 {
@@ -19813,7 +19820,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-26T15:48:55+00:00"
+            "time": "2025-04-08T08:21:20+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -20703,16 +20710,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v6.4.14",
+            "version": "v6.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "ba020a321a95519303a3f09ec2824d34d601c388"
+                "reference": "3f0c7ea41db479383b81d436b836d37168fd5b99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/ba020a321a95519303a3f09ec2824d34d601c388",
-                "reference": "ba020a321a95519303a3f09ec2824d34d601c388",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/3f0c7ea41db479383b81d436b836d37168fd5b99",
+                "reference": "3f0c7ea41db479383b81d436b836d37168fd5b99",
                 "shasum": ""
             },
             "require": {
@@ -20722,12 +20729,12 @@
                 "symfony/polyfill-php83": "^1.27"
             },
             "conflict": {
-                "symfony/cache": "<6.3"
+                "symfony/cache": "<6.4.12|>=7.0,<7.1.5"
             },
             "require-dev": {
                 "doctrine/dbal": "^2.13.1|^3|^4",
                 "predis/predis": "^1.1|^2.0",
-                "symfony/cache": "^6.3|^7.0",
+                "symfony/cache": "^6.4.12|^7.1.5",
                 "symfony/dependency-injection": "^5.4|^6.0|^7.0",
                 "symfony/expression-language": "^5.4|^6.0|^7.0",
                 "symfony/http-kernel": "^5.4.12|^6.0.12|^6.1.4|^7.0",
@@ -20760,7 +20767,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v6.4.14"
+                "source": "https://github.com/symfony/http-foundation/tree/v6.4.21"
             },
             "funding": [
                 {
@@ -20776,7 +20783,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-05T16:39:55+00:00"
+            "time": "2025-04-27T13:27:38+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -23967,6 +23974,7 @@
         "drupal/masquerade": 10,
         "drupal/media_entity_file_replace": 10,
         "drupal/media_entity_instagram": 10,
+        "drupal/media_library_theme_reset": 10,
         "drupal/menu_link_weight": 10,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
@@ -23981,9 +23989,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

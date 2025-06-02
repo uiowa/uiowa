@@ -30,12 +30,11 @@
   }
 }
 
-
 .dropbutton-widget {
   padding-right: 2.6em;
 }
 
-.dropbutton-multiple .dropbutton .dropbutton-action>* {
+.dropbutton-multiple .dropbutton .dropbutton-action > * {
   margin-right: 0;
   color: #545454;
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -64,3 +63,276 @@ ul.dropbutton li {
   }
 }
 
+// Claro media library.
+.media-library-widget-modal {
+  // Fix to prevent table view overflow.
+  .media-library-wrapper {
+    hyphens: auto;
+  }
+  // Dialog container styling.
+  &.ui-dialog .ui-dialog-titlebar {
+    position: relative;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    color: #fff;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    background: #1b1b1f;
+    line-height: 1rem;
+  }
+
+  &.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    box-sizing: border-box;
+    width: calc(1rem * 2);
+    height: calc(1rem * 2);
+    margin: 0 1.5rem;
+    padding: 0;
+    transition: all 0.1s;
+    transform: translateY(-50%);
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: none;
+
+    &:focus {
+      border-color: green;
+      outline: 2px dotted transparent;
+      box-shadow: none;
+    }
+
+    &:hover {
+      border-color: #fff;
+    }
+  }
+
+  &.ui-dialog .ui-dialog-title {
+    font-size: 1.4rem;
+  }
+
+  &.ui-dialog .ui-icon.ui-icon-closethick {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    background: url("data:image/svg+xml,%3csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M11 1.318l-10 10M11 11.318l-10-10' stroke='%23D3D4D9' stroke-width='1.5'/%3e%3c/svg%3e") no-repeat 50%;
+  }
+
+  // Dialog button pane.
+  &.ui-dialog > .ui-dialog-buttonpane {
+    background: #f3f3f5;
+  }
+
+  .ui-dialog-buttonpane {
+    flex-direction: row-reverse;
+
+    .ui-dialog-buttonset {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .button--primary.button {
+      color: #fff;
+      background-color: #0a3db0;
+    }
+  }
+
+  // Focus styling.
+  &.ui-dialog :focus {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 calc(0.1875rem + 2px) #26a769;
+  }
+
+  // Button styling.
+  .button--primary {
+    color: #fff!important;
+    background-color: #0737a5!important;
+    border-radius: 2px;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold;
+  }
+
+  .views-exposed-form .button,
+  .media-library-select.button,
+  .form-actions .button {
+    display: inline-block;
+    margin-inline: 0 0.75rem;
+    margin-inline-end: 0.75rem;
+    padding: calc(1.1rem - 1px) calc(1.5rem - 1px);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1rem;
+    appearance: none;
+    background-color: #ccc;
+  }
+
+  // Form elements styling.
+  .form-managed-file,
+  .form-text,
+  .form-select {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: calc(0.75rem * 1);
+    color: var(--input-fg-color);
+    border: 1px solid #666;
+    border-radius: 0.125rem;
+    background: #fff;
+    font-size: 1rem;
+    line-height: 1.5;
+    appearance: none;
+  }
+
+  .form-text[disabled] {
+    color: #58585c;
+    border-color: #b7b7be;
+    background-color: #ededef;
+    box-shadow: none;
+  }
+
+  label.form-required::after {
+    display: inline-block;
+    margin-inline: 0.15em;
+    content: "*";
+    color: #dc2323;
+    font-size: 0.875rem;
+  }
+
+  .form-select {
+    padding-inline-end: calc(2rem - 1px);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 9'%3e%3cpath fill='none' stroke-width='1.5' d='M1 1l6 6 6-6' stroke='%23545560'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 2.75rem 0.5625rem;
+  }
+
+  .form-managed-file__main .form-element--api-file {
+    flex: 1 1 auto;
+  }
+
+  // Checkbox styling.
+  .form-type-checkbox input,
+  .decorative-checkbox.form-checkbox {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .decorative-checkbox.form-checkbox {
+    float: left;
+    position: relative;
+    margin-inline-start: -0.1rem;
+    padding: 0;
+    margin-right: 0.7rem;
+  }
+
+  // Label and description styling.
+  label {
+    display: table;
+    margin-block: calc(0.5rem / 2);
+    font-size: 0.9rem;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+
+  .description {
+    margin-block: calc(6rem / 16);
+    color: #666;
+    font-size: 0.8rem;
+    line-height: calc(17rem / 16);
+  }
+
+  .filter-wrapper {
+    padding: 0;
+    border: none;
+    font-size: 1rem;
+  }
+
+  // Table view.
+  .views-table tr:hover,
+  .views-table tr:focus-within {
+    color: #232429;
+    background: #f5f8ff!important;
+  }
+
+  table.views-table tbody tr:not(.is-selected):nth-child(2n),
+  table.views-table tbody tr:not(.is-selected):nth-child(2n) th {
+    background-color: inherit;
+  }
+
+  .views-table th {
+    position: relative;
+    box-sizing: border-box;
+    height: 3rem;
+    padding: .5rem 1rem;
+    text-align: start;
+    color: #232429;
+    background: #f3f4f9;
+    line-height: 1.25rem;
+  }
+
+  .views-table .views-field {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  // Media library specific styles.
+  .media-library-add-form__preview {
+    background: rgba(228, 230, 237, 0.4);
+  }
+
+  p.media-library-add-form__description {
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+
+
+  .media-library-add-form__remove-button {
+    background-position: 0.5rem center;
+  }
+
+  .media-library-view--form-actions .button {
+    color: #000;
+  }
+
+  .media-library-add-form-oembed-submit.button,
+  .media-library-add-form .button {
+    line-height: 1;
+    margin-block-start: .5rem;
+  }
+
+  .media-library-add-form__added-media .media-library-add-form__remove-button.button--extrasmall {
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 0.8rem;
+    max-height: 2rem;
+  }
+
+  .media-library-add-form__fields .form-item {
+    margin-block: 1.5rem;
+  }
+
+  .media-library-add-form__added-media {
+    margin: 0;
+    padding: 1rem 16px;
+    outline: 1px solid #ccc;
+    border-radius: 2px;
+  }
+
+  .media-library--views-exposed-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .form-item {
+      flex: none;
+    }
+  }
+}

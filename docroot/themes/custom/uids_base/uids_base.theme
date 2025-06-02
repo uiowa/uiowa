@@ -54,6 +54,10 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'webform_submission') !== FALSE) {
     $form['#attached']['library'][] = 'uids_base/webforms';
   }
+  if ($form_id === 'views_exposed_form' && strpos($form['#id'], 'views-exposed-form-media-library-widget') === 0) {
+    $form['#attached']['library'][] = 'claro/media_library.theme';
+    $form['#attached']['library'][] = 'claro/views';
+  }
 }
 
 /**
