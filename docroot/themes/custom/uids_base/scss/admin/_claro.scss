@@ -253,6 +253,17 @@ ul.dropbutton li {
   }
 
   // Table view.
+  .views-table tr:hover,
+  .views-table tr:focus-within {
+    color: #232429;
+    background: #f5f8ff!important;
+  }
+
+  table.views-table tbody tr:not(.is-selected):nth-child(2n),
+  table.views-table tbody tr:not(.is-selected):nth-child(2n) th {
+    background-color: inherit;
+  }
+
   .views-table th {
     position: relative;
     box-sizing: border-box;
