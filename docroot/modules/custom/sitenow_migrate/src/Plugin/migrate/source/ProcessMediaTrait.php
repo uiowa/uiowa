@@ -332,7 +332,7 @@ trait ProcessMediaTrait {
     ];
 
     $query = \Drupal::database()->select('file_managed', 'f');
-    $query->join($tables[$type], 'fm', 'f.fid = ' . 'fm.field_media_' . $type . '_target_id');
+    $query->join($tables[$type], 'fm', 'f.fid = ' . "fm.field_media_{$type}_target_id");
     $query->join('media', 'm', 'fm.entity_id = m.mid');
     $results = $query->fields('m', ['uuid', 'mid'])
       ->condition('f.filename', $filename)

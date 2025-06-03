@@ -389,7 +389,7 @@ class NewsFeature extends BaseNodeSource {
     // We're defaulting to medium size, but taking the
     // alignment from the source.
     $wrapper_classes = 'block--word-break callout bg--gray inline--size-small inline--align-' . $match[1];
-    return '<div class="' . $wrapper_classes . '">' . $headline . '<p>' . $match[2] . '</p>' . '</div>';
+    return "<div class=\"{$wrapper_classes}\">{$headline}<p>{$match[2]}</p></div>";
   }
 
   /**
