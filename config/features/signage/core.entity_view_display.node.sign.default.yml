@@ -5,9 +5,10 @@ dependencies:
   config:
     - field.field.node.sign.field_sign_display_title
     - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.layout_builder__layout
+    - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
+    - field_delimiter
     - layout_builder
     - layout_builder_restrictions
     - sitenow_signage
@@ -17,7 +18,7 @@ dependencies:
 third_party_settings:
   layout_builder:
     enabled: true
-    allow_custom: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_twocol
@@ -96,41 +97,47 @@ third_party_settings:
         layout_id: signage_onecol
         layout_settings:
           label: ''
-          context_mapping: {  }
-        components: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-            regions: {  }
-          layout_builder_limit:
-            limit:
-              scope: region
-              settings:
-                region:
-                  content:
-                    minimum_enabled: 0
-                    minimum: '1'
-                    maximum_enabled: 1
-                    maximum: '1'
-              scope_update: 'Update scope'
+        components:
+          -
+            uuid: 56a9940b-fccf-40c1-81a4-888d1ffb7fc4
+            region: content
+            configuration:
+              id: 'field_block:node:sign:field_sign_slides'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts:
         - signage_onecol
-        - signage_twocol
-        - signage_threecol
       denylisted_blocks: {  }
       allowlisted_blocks:
         'Chaos Tools': {  }
-        'Content fields': {  }
+        'Content fields':
+          - 'field_block:node:sign:field_sign_slides'
         'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
         'Entity Print': {  }
         Forms: {  }
-        'Inline blocks':
-          - 'inline_block:slideshow'
+        'Inline blocks': {  }
         Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }
@@ -141,44 +148,42 @@ third_party_settings:
         System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
+        Webform: {  }
         core: {  }
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - signage_onecol
-        - signage_twocol
-        - signage_threecol
 id: node.sign.default
 targetEntityType: node
 bundle: sign
 mode: default
 content:
-  field_sign_display_title:
-    type: string
+  field_sign_slide:
+    type: entity_reference_label
     label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
-    weight: 101
+    weight: 103
     region: first
-  field_sign_hide_header:
-    type: boolean
-    label: above
+  field_sign_slides:
+    type: entity_reference_entity_view
+    label: visually_hidden
     settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 102
-    region: first
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 100
+      view_mode: default
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_sign_display_title: true
+  field_sign_hide_header: true
   layout_builder__layout: true
+  links: true
   search_api_excerpt: true
