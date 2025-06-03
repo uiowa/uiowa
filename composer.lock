@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a6bf14bdd4f4487b9981f531b923f67",
+    "content-hash": "1e37f3e9ec8686dc8320c643d7f7f931",
     "packages": [
         {
             "name": "acquia/blt",
@@ -6347,30 +6347,42 @@
         },
         {
             "name": "drupal/google_tag",
-            "version": "1.8.0",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/google_tag.git",
-                "reference": "8.x-1.8"
+                "reference": "2.0.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/google_tag-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "13c95050a0d1b19ae1178636b2cc56217073b23e"
+                "url": "https://ftp.drupal.org/files/projects/google_tag-2.0.8.zip",
+                "reference": "2.0.8",
+                "shasum": "af12c74ec367c1c1319ea710f8fb6feefb100a6e"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9 || ^10"
+                "drupal/core": "^9.5 || ^10 || ^11"
+            },
+            "require-dev": {
+                "drupal/commerce": "^2.0 || ^3.0",
+                "drupal/commerce_wishlist": "^3.0@beta",
+                "drupal/csp": "^1.0 || ~2.1.1",
+                "drupal/google_analytics": "^4.0",
+                "drupal/search_api": "^1.28.0",
+                "drupal/token": "^1.11.0",
+                "drupal/webform": "^6.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1738172701",
+                    "version": "2.0.8",
+                    "datestamp": "1738172706",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "branch-alias": {
+                    "dev-main": "2.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6399,7 +6411,7 @@
                     "homepage": "https://www.drupal.org/user/240748"
                 }
             ],
-            "description": "Allows your website analytics to be managed using Google Tag Manager.",
+            "description": "Provides support for Google Tag and Google Tag Manager in Drupal.",
             "homepage": "https://www.drupal.org/project/google_tag",
             "support": {
                 "source": "https://git.drupalcode.org/project/google_tag"
