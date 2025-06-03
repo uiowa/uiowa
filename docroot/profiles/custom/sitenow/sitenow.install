@@ -4036,9 +4036,28 @@ function sitenow_update_10020(&$sandbox) {
 }
 
 /**
- * Migrate Google Analytics configuration.
+ * Reload permission configs to avoid config errors.
  */
 function sitenow_update_10021(&$sandbox) {
+  // Import role configs.
+  $config_storage = \Drupal::service('config.storage');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_names = $source->listAll('user.role');
+
+  foreach ($config_names as $config_name) {
+    $config = $source->read($config_name);
+
+    if ($config) {
+      $config_storage->write($config_name, $config);
+    }
+  }
+}
+
+/**
+ * Migrate Google Analytics configuration.
+ */
+function sitenow_update_10022(&$sandbox) {
   $ga_config = \Drupal::config('google_analytics.settings');
   $account = $ga_config->get('account');
 
