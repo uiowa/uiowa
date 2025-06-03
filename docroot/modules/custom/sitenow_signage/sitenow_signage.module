@@ -9,6 +9,15 @@ use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
+  // Update the custom alerts description text to note that
+  // custom alerts will not display on signs.
+  $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_block(&$variables) {
@@ -43,7 +52,7 @@ function sitenow_signage_preprocess_block(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_field(&$variables) {
-  if ($variables['element']['#field_name'] == 'field_slideshow_slides') {
+  if ($variables['element']['#field_name'] == 'field_sign_slides') {
     // Attach the splide library.
     $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
   }
@@ -58,6 +67,9 @@ function sitenow_signage_preprocess_node(&$variables) {
   }
   if ($variables['node']->getType() == 'sign') {
     $variables['attributes']['class'][] = 'bg--black';
+    if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
+      $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
+    }
   }
 }
 
@@ -67,29 +79,32 @@ function sitenow_signage_preprocess_node(&$variables) {
 function sitenow_signage_preprocess_page(&$variables) {
   // Check if the current page is a node of type 'sign'.
   if (isset($variables['node']) && $variables['node'] instanceof NodeInterface && $variables['node']->getType() === 'sign') {
-    // Remove regions.
-    $variables['page']['header'] = [];
-    $variables['page']['after_content'] = [];
-    $variables['page']['pre_footer'] = [];
-    $variables['page']['footer_first'] = [];
-    $variables['page']['footer_second'] = [];
-    // Add signage stylesheet.
-    $variables['#attached']['library'][] = 'sitenow_signage/signage';
-    // Check that user is logged out before unsetting anything.
-    if (\Drupal::currentUser()->isAnonymous()) {
-      // Check if the query string contains the 'signage-display' parameter.
-      if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-        // Remove all the regions from the page.
-        foreach (Element::children($variables['page']) as $key) {
-          if ($key !== 'content') {
-            unset($variables['page'][$key]);
+    // Only modify the page if it is not an admin route.
+    $admin_context = \Drupal::service('router.admin_context');
+    if (!$admin_context->isAdminRoute()) {
+      // Remove regions.
+      $variables['page']['header'] = [];
+      $variables['page']['after_content'] = [];
+      $variables['page']['pre_footer'] = [];
+      $variables['page']['footer_first'] = [];
+      $variables['page']['footer_second'] = [];
+      // Add signage stylesheet.
+      $variables['#attached']['library'][] = 'sitenow_signage/signage';
+      // Check that user is logged out before unsetting anything.
+      if (\Drupal::currentUser()->isAnonymous()) {
+        // Check if the query string contains the 'signage-display' parameter.
+        if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
+          // Remove all the regions from the page.
+          foreach (Element::children($variables['page']) as $key) {
+            if ($key !== 'content') {
+              unset($variables['page'][$key]);
+            }
           }
+          // Add a cache context so that the page is cached separately.
+          $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
         }
-        // Add a cache context so that the page is cached separately.
-        $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
       }
     }
-
   }
 }
 
@@ -114,8 +129,8 @@ function sitenow_signage_preprocess_layout(&$variables) {
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
   return [
-    'field__block_content__field_slideshow_slides__slideshow' => [
-      'template' => 'field--block-content--field-slideshow-slides--slideshow',
+    'field__node__field_sign_slides__sign__default' => [
+      'template' => 'field--node--field-sign-slides--sign--default',
       'base hook' => 'field',
     ],
     'field__node__field_sign_display_title__sign__default' => [
