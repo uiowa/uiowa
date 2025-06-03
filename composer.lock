@@ -9252,30 +9252,31 @@
         },
         {
             "name": "drupal/moderated_content_bulk_publish",
-            "version": "2.0.29",
+            "version": "3.0.0-beta17",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/moderated_content_bulk_publish.git",
-                "reference": "2.0.29"
+                "reference": "3.0.0-beta17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/moderated_content_bulk_publish-2.0.29.zip",
-                "reference": "2.0.29",
-                "shasum": "1c3d200ee0b465a33e724a942058157a2638a662"
+                "url": "https://ftp.drupal.org/files/projects/moderated_content_bulk_publish-3.0.0-beta17.zip",
+                "reference": "3.0.0-beta17",
+                "shasum": "d960f920682e7e6586f1d64cd03c53da8a445ef1"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9 || ^10",
+                "drupal/core": "^10.2 || ^11",
+                "drupal/pathauto": "*",
                 "drupal/views_bulk_operations": "^4.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.29",
-                    "datestamp": "1695850761",
+                    "version": "3.0.0-beta17",
+                    "datestamp": "1746054336",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -11792,41 +11793,38 @@
         },
         {
             "name": "drupal/views_bulk_operations",
-            "version": "4.2.5",
+            "version": "4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_bulk_operations.git",
-                "reference": "4.2.5"
+                "reference": "4.3.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-4.2.5.zip",
-                "reference": "4.2.5",
-                "shasum": "220479c5187b1619d5703f64c6f8c272afecf897"
+                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-4.3.4.zip",
+                "reference": "4.3.4",
+                "shasum": "c0974356f26d49ad9e99450e9db9650de94c6010"
             },
             "require": {
-                "drupal/core": "^9.4 || ^10",
-                "php": ">=7.4.0"
+                "drupal/core": "^10.3 || ^11"
+            },
+            "conflict": {
+                "drush/drush": "<12.5.1"
             },
             "require-dev": {
-                "drush/drush": "^11"
+                "drush/drush": "^12 || ^13"
             },
             "suggest": {
-                "drush/drush": "^10 || ^11"
+                "drush/drush": "^12 || ^13"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.2.5",
-                    "datestamp": "1691066184",
+                    "version": "4.3.4",
+                    "datestamp": "1741604495",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^10 || ^11"
                     }
                 }
             },
@@ -11851,9 +11849,9 @@
             "description": "Adds an ability to perform bulk operations on selected entities from view results. Provides an API to create such operations.",
             "homepage": "https://www.drupal.org/project/views_bulk_operations",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_bulk_operations/-/tree/8.x-3.x",
-                "issues": "https://www.drupal.org/project/issues/views_bulk_operations?version=8.x",
-                "docs": "https://www.drupal.org/docs/8/modules/views-bulk-operations-vbo"
+                "source": "https://git.drupalcode.org/project/views_bulk_operations",
+                "issues": "https://www.drupal.org/project/issues/views_bulk_operations?version=any_4.",
+                "docs": "https://www.drupal.org/docs/contributed-modules/views-bulk-operations-vbo"
             }
         },
         {
@@ -23987,6 +23985,7 @@
         "drupal/media_entity_instagram": 10,
         "drupal/media_library_theme_reset": 10,
         "drupal/menu_link_weight": 10,
+        "drupal/moderated_content_bulk_publish": 10,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 15,
