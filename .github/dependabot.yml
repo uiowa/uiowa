@@ -10,6 +10,7 @@ updates:
       # Allow both direct and indirect updates for all packages.
       - dependency-type: all
     ignore:
+      # We don't want dependabot to handle major version upgrades.
       - dependency-name: "drupal/core-*"
         update-types: [ "version-update:semver-major" ]
       - dependency-name: drupal/media_entity_twitter
