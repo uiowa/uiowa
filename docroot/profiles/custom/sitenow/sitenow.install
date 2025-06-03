@@ -16,6 +16,7 @@ use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 use Drupal\block_content\BlockContentInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\google_tag\Migration\GoogleAnalyticsMigrator;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -4031,5 +4032,34 @@ function sitenow_update_10020(&$sandbox) {
 
     \Drupal::messenger()->addMessage(t('Layout Builder tempstore cleared for processed fragments (@count entries).', ['@count' => $cleared_count]));
     return t('Completed updating layout builder limit settings.');
+  }
+}
+
+/**
+ * Migrate Google Analytics configuration.
+ */
+function sitenow_update_10021(&$sandbox) {
+  $ga_config = \Drupal::config('google_analytics.settings');
+  $account = $ga_config->get('account');
+
+  if (empty($account)) {
+    return t('Google Analytics migration skipped - no accounts configured');
+  }
+
+  try {
+    $ga_migrator = new GoogleAnalyticsMigrator(
+      \Drupal::service('plugin.manager.google_tag_event'),
+      \Drupal::service('plugin.manager.condition'),
+      \Drupal::service('config.factory'),
+      \Drupal::service('entity_type.manager')
+    );
+
+    $ga_migrator->migrateGaToGoogleTag();
+    return t('Google Analytics accounts migrated to Google Tag container');
+
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('sitenow')->error('GA Migration failed: @message', ['@message' => $e->getMessage()]);
+    return t('Google Analytics migration failed - check logs for details');
   }
 }
