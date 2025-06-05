@@ -25,7 +25,6 @@ dependencies:
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
-    - workflows.workflow.editorial
   module:
     - address
     - allowed_formats
@@ -185,9 +184,6 @@ content:
     region: content
     settings:
       modal: false
-      default_tz: ''
-      custom_tz: America/Chicago
-      allowed_timezones: {  }
       default_duration: 60
       default_duration_increments: |-
         30
@@ -196,8 +192,14 @@ content:
         120|2 hours
         custom
       show_extra: false
-      hide_date: true
+      hide_date: false
+      allday: true
+      remove_seconds: true
+      duration_overlay: false
       separator: to
+      default_tz: ''
+      custom_tz: America/Chicago
+      allowed_timezones: {  }
       add_abbreviations: ''
     third_party_settings: {  }
   field_image:

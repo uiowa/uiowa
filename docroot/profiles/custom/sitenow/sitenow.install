@@ -3917,3 +3917,138 @@ function sitenow_update_10018() {
 function sitenow_update_10019() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update fragments in regions with new limit settings.
+ */
+function sitenow_update_10020(&$sandbox) {
+  $fragment_storage = \Drupal::entityTypeManager()->getStorage('fragment');
+  $fragment_types = ['region_item', 'region_item_after_content'];
+
+  // Initialize batch.
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['max'] = $fragment_storage->getQuery()
+      ->condition('type', $fragment_types, 'IN')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+
+    // Get ALL fragment IDs at once to avoid type switching issues.
+    $sandbox['fragment_ids'] = $fragment_storage->getQuery()
+      ->condition('type', $fragment_types, 'IN')
+      ->accessCheck(FALSE)
+      ->execute();
+
+    $sandbox['fragment_ids'] = array_values($sandbox['fragment_ids']);
+
+    // Track processed fragment IDs for tempstore clearing.
+    $sandbox['processed_fragments'] = [];
+
+    \Drupal::messenger()->addMessage(t('Found @count total fragments to process', ['@count' => count($sandbox['fragment_ids'])]));
+  }
+
+  // Process fragments in batches of 10.
+  $batch_size = 10;
+  $current_batch = array_slice($sandbox['fragment_ids'], $sandbox['progress'], $batch_size);
+
+  if (!empty($current_batch)) {
+    // Define layout limit settings.
+    $layout_settings = [
+      'scope' => 'region',
+      'settings' => [
+        'region' => [
+          'content' => [
+            'minimum_enabled' => 0,
+            'minimum' => '1',
+            'maximum_enabled' => 1,
+            'maximum' => '1',
+          ],
+        ],
+      ],
+      'scope_update' => 'Update scope',
+    ];
+
+    // Process each fragment in current batch.
+    foreach ($current_batch as $fragment_id) {
+      if ($fragment = $fragment_storage->load($fragment_id)) {
+        \Drupal::messenger()->addMessage(t('Processing fragment @id (@type)', [
+          '@id' => $fragment_id,
+          '@type' => $fragment->bundle(),
+        ]));
+
+        if ($fragment->hasField('layout_builder__layout') && !$fragment->get('layout_builder__layout')->isEmpty()) {
+          $sections = $fragment->get('layout_builder__layout')->getSections();
+          foreach ($sections as $section) {
+            $section->setThirdPartySetting('layout_builder_limit', 'limit', $layout_settings);
+          }
+          $fragment->save();
+
+          // Track this fragment for tempstore clearing.
+          $sandbox['processed_fragments'][] = $fragment_id;
+
+          \Drupal::messenger()->addMessage(t('Updated fragment @id with limit settings', [
+            '@id' => $fragment_id,
+          ]));
+        }
+        else {
+          \Drupal::messenger()->addMessage(t('Fragment @id skipped (no layout or empty)', [
+            '@id' => $fragment_id,
+          ]));
+        }
+      }
+      $sandbox['progress']++;
+    }
+  }
+
+  // Calculate completion.
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : $sandbox['progress'] / $sandbox['max'];
+
+  // Finish when all fragments processed.
+  if ($sandbox['#finished'] >= 1) {
+    if (empty($sandbox['max'])) {
+      \Drupal::messenger()->addMessage(t('No fragments of specified types found to update.'));
+    }
+    else {
+      \Drupal::messenger()->addMessage(t('Processed @count fragments total.', ['@count' => $sandbox['progress']]));
+    }
+
+    // Clear tempstore only for processed fragments.
+    $cleared_count = 0;
+    if (!empty($sandbox['processed_fragments'])) {
+      foreach ($sandbox['processed_fragments'] as $fragment_id) {
+        // Clear tempstore entries for this fragment.
+        $count = \Drupal::database()->delete('key_value_expire')
+          ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides')
+          ->condition('name', 'fragment.' . $fragment_id . '.%', 'LIKE')
+          ->execute();
+
+        if ($count > 0) {
+          $cleared_count += $count;
+        }
+      }
+    }
+
+    \Drupal::messenger()->addMessage(t('Layout Builder tempstore cleared for processed fragments (@count entries).', ['@count' => $cleared_count]));
+    return t('Completed updating layout builder limit settings.');
+  }
+}
+
+/**
+ * Reload permission configs to avoid config errors.
+ */
+function sitenow_update_10021(&$sandbox) {
+  // Import role configs.
+  $config_storage = \Drupal::service('config.storage');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_names = $source->listAll('user.role');
+
+  foreach ($config_names as $config_name) {
+    $config = $source->read($config_name);
+
+    if ($config) {
+      $config_storage->write($config_name, $config);
+    }
+  }
+}
