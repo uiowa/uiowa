@@ -279,6 +279,21 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    // @todo Update this to use dependency injection.
+    // Restrict access to administrators.
+    /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+    $check = \Drupal::service('uiowa_core.access_checker');
+    /** @var Drupal\Core\Access\AccessResultInterface $access */
+    $access = $check->access(\Drupal::currentUser()->getAccount());
+    $form['view_page']['remove_yearmonth_slug'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove year/month slug'),
+      '#description' => $this->t('If checked, the article path will no longer be <em>path/year/month/title</em>, but instead <em>path/title</em>. For consistency across sites, remove only if necessary.'),
+      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
+      '#size' => 60,
+      '#access' => $access,
+    ];
+
     $form['view_page']['sitenow_articles_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -340,6 +355,7 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
+    $remove_yearmonth_slug = $form_state->getValue('remove_yearmonth_slug');
 
     $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
@@ -353,6 +369,7 @@ class SettingsForm extends ConfigFormBase {
         'value',
       ],
       'display_articles_by_author' => 'display_articles_by_author',
+      'remove_yearmonth_slug' => 'remove_yearmonth_slug',
     ];
 
     foreach ($config_updates as $config_name => $form_state_value) {
@@ -409,8 +426,13 @@ class SettingsForm extends ConfigFormBase {
     $view->save();
 
     $old_pattern = $this->config('pathauto.pattern.article')->get('pattern');
-
-    $new_pattern = $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]';
+    $parts = [$path];
+    if (!$remove_yearmonth_slug) {
+      $parts[] = '[node:created:custom:Y]';
+      $parts[] = '[node:created:custom:m]';
+    }
+    $parts[] = '[node:title]';
+    $new_pattern = implode('/', $parts);
 
     // Only run this potentially expensive process if this setting is changing.
     if ($new_pattern != $old_pattern) {
