@@ -162,7 +162,15 @@ function uiowa_area_of_study_update_10001(&$sandbox) {
 
     if ($node && $node->hasField('rabbit_hole__settings')) {
       $node->setNewRevision(TRUE);
-      $node->setRevisionLogMessage('Automated save')
+      $node->rabbit_hole__settings->setValue([
+        "action" => "page_redirect",
+        "settings" => [
+          "redirect" => "[node:field_area_of_study_source_link:uri]",
+          "redirect_code" => 301,
+          "redirect_fallback_action" => "display_page",
+        ],
+      ]);
+      $node->setRevisionLogMessage('Automated save.')
         ->setRevisionUserId(1)
         ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
         ->setChangedTime(\Drupal::time()->getRequestTime());
