@@ -323,8 +323,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                   break;
 
                 case 'views_block:people_list_block-list_card':
-                // Don't allow the person type status filter to be exposed.
-                $form['settings']['exposed']['filter-field_person_type_status_value']['exposed']['#type'] = 'hidden';
+                  // Don't allow the person type status filter to be exposed.
+                  $form['settings']['exposed']['filter-field_person_type_status_value']['exposed']['#type'] = 'hidden';
                   break;
               }
             }
