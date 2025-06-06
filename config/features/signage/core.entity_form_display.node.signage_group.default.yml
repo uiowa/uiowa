@@ -1,22 +1,29 @@
-uuid: 14fd645c-36e8-457a-a892-5da604da8ee9
+uuid: 5e90d313-1a82-4773-bbb5-7836c8faf9e1
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.node.minimal
-    - field.field.node.sign.field_sign_display_title
-    - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.field_sign_slides
-    - field.field.node.sign.og_audience
-    - node.type.sign
+    - field.field.node.signage_group.body
+    - node.type.signage_group
   module:
     - content_moderation
     - path
-id: node.sign.minimal
+    - text
+id: node.signage_group.default
 targetEntityType: node
-bundle: sign
-mode: minimal
+bundle: signage_group
+mode: default
 content:
+  body:
+    type: text_textarea_with_summary
+    weight: 121
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
@@ -85,12 +92,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_sign_display_title: true
-  field_sign_hide_header: true
-  field_sign_slides: true
-  og_audience: true
   publish_on: true
   publish_state: true
-  scheduler_settings: true
   unpublish_on: true
   unpublish_state: true
