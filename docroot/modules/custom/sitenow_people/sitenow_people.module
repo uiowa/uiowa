@@ -186,15 +186,14 @@ on presave based on first website link and the link directly to website checkbox
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
       if (isset($form['settings'])
-        && isset($form['settings']['override'])
-        && isset($form['settings']['override']['exposed_filters'])
+        && isset($form['settings']['exposed'])
       ) {
         // Add custom validation for certain blocks/regions to validate.
         $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
         $form['#suffix'] = '</div>';
         // Add custom process callback to alter exposed filters.
-        $form['settings']['override']['exposed_filters']['#process'][] = '_sitenow_people_process_people_block_filters';
+        $form['settings']['exposed']['#process'][] = '_sitenow_people_process_people_block_filters';
       }
       break;
   }
@@ -239,12 +238,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Only continue if person type filter exists.
-      if (!isset($element['field_person_types_target_id'])) {
+      if (!isset($element['filter-field_person_types_target_id'])) {
         break;
       }
 
       // Display person types as a select list.
-      uiowa_core_config_entity_filter_select($element['field_person_types_target_id'], 'person_type');
+      uiowa_core_config_entity_filter_select($element['filter-field_person_types_target_id'], 'person_type');
 
       // Only continue if person type status filter exists.
       if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
