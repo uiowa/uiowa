@@ -1,0 +1,27 @@
+uuid: 88b3ca4d-cb88-421e-9c63-b20bf255561b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.writer_bio_languages.rabbit_hole__settings
+    - taxonomy.vocabulary.writer_bio_languages
+  module:
+    - text
+id: taxonomy_term.writer_bio_languages.default
+targetEntityType: taxonomy_term
+bundle: writer_bio_languages
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true
