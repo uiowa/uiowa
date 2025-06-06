@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippielearn.uiowa.ddev.site
+    protocol: https
+  machine_name: tippielearn
+  human_name: learn.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippielearn.prod
+drupal:
+  db:
+    database: learn_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippielearn.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'Tippie Landing Page Site 2'
