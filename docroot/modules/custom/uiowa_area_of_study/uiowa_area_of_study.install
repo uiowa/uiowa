@@ -161,7 +161,11 @@ function uiowa_area_of_study_update_10001(&$sandbox) {
     $node = Node::load($nid);
 
     if ($node && $node->hasField('rabbit_hole__settings')) {
-      $node->setRevisionLogMessage('Automated save');
+      $node->setNewRevision(TRUE);
+      $node->setRevisionLogMessage('Automated save')
+        ->setRevisionUserId(1)
+        ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
+        ->setChangedTime(\Drupal::time()->getRequestTime());
       $node->save();
     }
 

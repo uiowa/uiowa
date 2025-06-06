@@ -275,7 +275,11 @@ function sitenow_people_update_10000(&$sandbox) {
 
       // Only process nodes with direct link enabled and source link set.
       if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
-        $node->setRevisionLogMessage('Automated save');
+        $node->setNewRevision(TRUE);
+        $node->setRevisionLogMessage('Automated save')
+          ->setRevisionUserId(1)
+          ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
+          ->setChangedTime(\Drupal::time()->getRequestTime());
         $node->save();
       }
     }
