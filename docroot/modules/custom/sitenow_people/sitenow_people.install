@@ -287,7 +287,8 @@ function sitenow_people_update_10000(&$sandbox) {
         $node->setRevisionLogMessage('Automated save')
           ->setRevisionUserId(1)
           ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
-          ->setChangedTime(\Drupal::time()->getRequestTime());
+          ->setChangedTime(\Drupal::time()->getRequestTime())
+          ->setRevisionTranslationAffected(TRUE);
         $node->save();
       }
     }
