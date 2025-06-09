@@ -243,7 +243,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Display person types as a select list.
-      uiowa_core_config_entity_filter_select($element['filter-field_person_types_target_id'], 'person_type');
+      uiowa_core_config_entity_filter_select($element['filter-field_person_types_target_id']['field_person_types_target_id'], 'person_type');
 
       // Only continue if person type status filter exists.
       if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
@@ -814,26 +814,35 @@ function sitenow_people_preprocess_paragraph(&$variables) {
  */
 function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  if ($view->id() === 'people_block') {
-    if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
-      $exposed_input = $view->getExposedInput();
-      if (isset($exposed_input['items_per_page'])) {
-        $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
-        $form['#attributes']['class'][] = 'hidden';
+  switch ($view->id()) {
+    case 'people_block':
+      if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
+        $exposed_input = $view->getExposedInput();
+        if (isset($exposed_input['items_per_page'])) {
+          $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
+          $form['#attributes']['class'][] = 'hidden';
+        }
       }
-    }
-  }
+      break;
 
-  if ($view->id() === 'people') {
-    // Change the research areas label.
-    if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
-      $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
-    }
+    case 'people_list_block':
+      $person_type_filter = 'field_person_types_target_id';
+      if (isset($form[$person_type_filter])) {
+        uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
+      }
+      break;
 
-    $person_type_filter = 'type';
-    if (isset($form[$person_type_filter])) {
-      uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
-    }
+    case 'people':
+      // Change the research areas label.
+      if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+        $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+      }
+
+      $person_type_filter = 'type';
+      if (isset($form[$person_type_filter])) {
+        uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
+      }
+      break;
   }
 }
 
