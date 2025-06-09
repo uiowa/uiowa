@@ -1,0 +1,29 @@
+uuid: 0366cb6c-78b2-4db0-9aaa-35048288adb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_record_category
+    - node.type.record
+    - taxonomy.vocabulary.research_areas
+id: node.record.field_record_category
+field_name: field_record_category
+entity_type: node
+bundle: record
+label: 'Record Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      research_areas: research_areas
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

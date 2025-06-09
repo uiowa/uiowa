@@ -1,0 +1,100 @@
+uuid: 6c8e42d7-c540-4b89-8b10-876ca3684438
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.record.body
+    - field.field.node.record.field_record_ad_unit_responsible
+    - field.field.node.record.field_record_category
+    - field.field.node.record.field_record_confidential
+    - field.field.node.record.field_record_files_maintained_by
+    - field.field.node.record.field_record_ui_retention_guide
+    - field.field.node.record.field_record_vital
+    - field.field.node.record.field_record_year_updated
+    - node.type.record
+  module:
+    - text
+    - user
+id: node.record.default
+targetEntityType: node
+bundle: record
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_record_ad_unit_responsible:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_record_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_record_confidential:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_record_files_maintained_by:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_record_ui_retention_guide:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_record_vital:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_record_year_updated:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

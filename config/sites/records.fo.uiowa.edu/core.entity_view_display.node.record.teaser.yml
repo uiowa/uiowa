@@ -1,0 +1,48 @@
+uuid: 12528e31-29a7-432c-b8b7-834dd5b4a65b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.record.body
+    - field.field.node.record.field_record_ad_unit_responsible
+    - field.field.node.record.field_record_category
+    - field.field.node.record.field_record_confidential
+    - field.field.node.record.field_record_files_maintained_by
+    - field.field.node.record.field_record_ui_retention_guide
+    - field.field.node.record.field_record_vital
+    - field.field.node.record.field_record_year_updated
+    - node.type.record
+  module:
+    - text
+    - user
+id: node.record.teaser
+targetEntityType: node
+bundle: record
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_record_ad_unit_responsible: true
+  field_record_category: true
+  field_record_confidential: true
+  field_record_files_maintained_by: true
+  field_record_ui_retention_guide: true
+  field_record_vital: true
+  field_record_year_updated: true
+  search_api_excerpt: true
