@@ -4072,9 +4072,16 @@ function sitenow_update_10027() {
           continue;
         }
 
+        if ($key === 'people_research_areas') {
+          $field = 'field_person_research_areas_target_id';
+        }
+        else {
+          $field = $key;
+        }
+
         // Handle taxonomy ref fields.
         if (is_array($value) && isset($value[0]['target_id'])) {
-          $new_exposed['filter-' . $key] = [
+          $new_exposed['filter-' . $field] = [
             'type' => 'entity_autocomplete',
             'value' => array_column($value, 'target_id'),
             'plugin_id' => 'taxonomy_index_tid',
@@ -4085,7 +4092,7 @@ function sitenow_update_10027() {
         // Handle the wrapped person_type_status filter differently.
         elseif ($key === 'field_person_type_status_value_wrapper') {
           $new_exposed['filter-field_person_type_status_value'] = [
-            'value' => $value['field_person_type_status_value'] ?? 'All',
+            'value' => [$value['field_person_type_status_value'] => $value['field_person_type_status_value']] ?? ['All' => 'All'],
             'plugin_id' => 'list_field',
             'operator' => $value['field_person_type_status_value_op'] ?? 'or',
             'exposed' => 0,
@@ -4093,7 +4100,7 @@ function sitenow_update_10027() {
           ];
         }
         else {
-          $new_exposed['filter-' . $key] = [
+          $new_exposed['filter-' . $field] = [
             'value' => $value,
             'plugin_id' => 'string',
             'exposed' => 0,
@@ -4103,7 +4110,7 @@ function sitenow_update_10027() {
       }
       $config['exposed'] = $new_exposed;
     }
-    // @todo unset exposed_filter_values before re-saving.
+    unset($config['exposed_filter_values']);
     $component->setConfiguration($config);
 
   });
