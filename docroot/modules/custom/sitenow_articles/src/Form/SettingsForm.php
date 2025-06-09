@@ -218,6 +218,17 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $related_display ?: 'card_grid',
     ];
 
+    // Restrict access to administrators.
+    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
+    $form['article_node']['remove_yearmonth_slug'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove year/month slug'),
+      '#description' => $this->t('If checked, the article path will no longer be <em>path/year/month/title</em>, but instead <em>path/title</em>. For consistency across sites, remove only if necessary.'),
+      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
+      '#size' => 60,
+      '#access' => $access->isAllowed(),
+    ];
+
     $form['article_node']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
@@ -301,17 +312,6 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
       '#default_value' => $display['display_options']['path'],
       '#required' => TRUE,
-    ];
-
-    // Restrict access to administrators.
-    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
-    $form['view_page']['remove_yearmonth_slug'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Remove year/month slug'),
-      '#description' => $this->t('If checked, the article path will no longer be <em>path/year/month/title</em>, but instead <em>path/title</em>. For consistency across sites, remove only if necessary.'),
-      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
-      '#size' => 60,
-      '#access' => $access->isAllowed(),
     ];
 
     $form['view_page']['sitenow_articles_header_content'] = [
