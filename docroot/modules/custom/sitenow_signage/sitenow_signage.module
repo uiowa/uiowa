@@ -18,6 +18,26 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function sitenow_signage_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) : void  {
+  $allowed_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
+
+  // Break out if our form ID isn't one that we have defined.
+  if (!in_array($form_id, $allowed_forms, TRUE)) {
+    return;
+  }
+
+  // Break out if our form doesnt have other_groups defined.
+  if (!isset($form["og_audience"]["other_groups"])) {
+    return;
+  }
+
+  // Unset the other groups field.
+  unset($form["og_audience"]["other_groups"]);
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_signage_preprocess_block(&$variables) {
