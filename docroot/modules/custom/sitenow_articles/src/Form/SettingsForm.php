@@ -218,12 +218,20 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $related_display ?: 'card_grid',
     ];
 
+    $form['article_node']['sitenow_articles_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Articles path'),
+      '#description' => $this->t('The base path for articles. Defaults to <em>news/{ year }/{ month }/{article title}</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
+      '#default_value' => $display['display_options']['path'],
+      '#required' => TRUE,
+    ];
+
     // Restrict access to administrators.
     $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
     $form['article_node']['remove_yearmonth_slug'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Remove year/month slug'),
-      '#description' => $this->t('If checked, the article path will no longer be <em>path/year/month/title</em>, but instead <em>path/title</em>. For consistency across sites, remove only if necessary.'),
+      '#description' => $this->t('If checked, the article path will no longer be <em>{articles path}/{ year }/{ month }/{article title}</em>, but instead <em>{articles path}/{article title}</em>. For consistency across sites, remove only if necessary.'),
       '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
       '#size' => 60,
       '#access' => $access->isAllowed(),
@@ -294,7 +302,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable articles listing'),
       '#default_value' => $status,
-      '#description' => $this->t('If checked, an articles listing will display at the configurable path below.'),
+      '#description' => $this->t('If checked, an articles listing will display at the configurable Articles path.<br /><em>Example:</em> If the Articles path is set as <em>news</em>, each article will have the pattern <em>news/{ year }/{ month }/{article title}</em>, and the articles listing will be available at <em>/news</em>.'),
       '#size' => 60,
     ];
 
@@ -303,14 +311,6 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Articles title'),
       '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
       '#default_value' => $default['display_options']['title'],
-      '#required' => TRUE,
-    ];
-
-    $form['view_page']['sitenow_articles_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Articles path'),
-      '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
-      '#default_value' => $display['display_options']['path'],
       '#required' => TRUE,
     ];
 
