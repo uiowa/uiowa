@@ -5,20 +5,27 @@ dependencies:
   config:
     - field.storage.node.og_audience
     - node.type.sign
+    - node.type.signage_group
   module:
     - og
 id: node.sign.og_audience
 field_name: og_audience
 entity_type: node
 bundle: sign
-label: 'Groups audience'
-description: 'OG group audience reference field.'
-required: false
+label: 'Signage groups'
+description: 'Signage groups that have access to this sign.'
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'og:default'
+  handler: unpublished
   handler_settings:
-    target_bundles: null
+    target_bundles:
+      signage_group: signage_group
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: 0
+    auto_create_bundle: ''
 field_type: og_standard_reference

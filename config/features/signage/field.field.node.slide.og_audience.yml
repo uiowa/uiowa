@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.og_audience
+    - node.type.signage_group
     - node.type.slide
   module:
     - og
@@ -13,12 +14,18 @@ entity_type: node
 bundle: slide
 label: 'Groups audience'
 description: 'OG group audience reference field.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'og:default'
+  handler: unpublished
   handler_settings:
-    target_bundles: null
+    target_bundles:
+      signage_group: signage_group
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: 0
+    auto_create_bundle: ''
 field_type: og_standard_reference
