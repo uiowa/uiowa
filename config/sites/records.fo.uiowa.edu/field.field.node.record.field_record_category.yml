@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_record_category
     - node.type.record
-    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.record_categories
 id: node.record.field_record_category
 field_name: field_record_category
 entity_type: node
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      research_areas: research_areas
+      record_categories: record_categories
     sort:
       field: name
       direction: asc

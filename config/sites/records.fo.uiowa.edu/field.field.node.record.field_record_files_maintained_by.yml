@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_record_files_maintained_by
     - node.type.record
-    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.administrative_units
 id: node.record.field_record_files_maintained_by
 field_name: field_record_files_maintained_by
 entity_type: node
@@ -20,10 +20,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      research_areas: research_areas
+      administrative_units: administrative_units
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: administrative_units
 field_type: entity_reference

@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_record_ad_unit_responsible
     - node.type.record
-    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.administrative_units
 id: node.record.field_record_ad_unit_responsible
 field_name: field_record_ad_unit_responsible
 entity_type: node
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      research_areas: research_areas
+      administrative_units: administrative_units
     sort:
       field: name
       direction: asc
