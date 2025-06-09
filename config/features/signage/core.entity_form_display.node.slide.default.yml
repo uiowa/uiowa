@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.slide.field_image
+    - field.field.node.slide.og_audience
     - node.type.slide
   module:
     - content_moderation
     - media_library
+    - og
     - path
     - scheduler
     - scheduler_content_moderation_integration
@@ -34,6 +36,16 @@ content:
     weight: 100
     region: content
     settings: {  }
+    third_party_settings: {  }
+  og_audience:
+    type: og_complex
+    weight: 121
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
