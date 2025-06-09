@@ -6,9 +6,11 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGenerator;
+use Drupal\uiowa_core\Access\UiowaCoreAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,6 +54,20 @@ class SettingsForm extends ConfigFormBase {
   protected $pathAutoGenerator;
 
   /**
+   * The UiowaCoreAccess service.
+   *
+   * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
+   */
+  protected $uiowaCoreAccess;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
    * The Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -64,13 +80,19 @@ class SettingsForm extends ConfigFormBase {
    *   The EntityTypeManager service.
    * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
    *   The PathautoGenerator service.
+   * @param \Drupal\uiowa_core\Access\UiowaCoreAccess $uiowaCoreAccess
+   *   The UiowaCoreAccess service.
+   * @param \Drupal\Core\Session\AccountProxy $currentUser
+   *   The current user.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator, UiowaCoreAccess $uiowaCoreAccess, AccountProxy $currentUser) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $pathauto_alias_cleaner;
     $this->aliasRepository = $aliasRepository;
     $this->entityTypeManager = $entityTypeManager;
     $this->pathAutoGenerator = $pathAutoGenerator;
+    $this->uiowaCoreAccess = $uiowaCoreAccess;
+    $this->currentUser = $currentUser;
   }
 
   /**
@@ -82,7 +104,9 @@ class SettingsForm extends ConfigFormBase {
       $container->get('pathauto.alias_cleaner'),
       $container->get('path_alias.repository'),
       $container->get('entity_type.manager'),
-      $container->get('pathauto.generator')
+      $container->get('pathauto.generator'),
+      $container->get('uiowa_core.access_checker'),
+      $container->get('current_user')
     );
   }
 
@@ -279,19 +303,15 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    // @todo Update this to use dependency injection.
     // Restrict access to administrators.
-    /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-    $check = \Drupal::service('uiowa_core.access_checker');
-    /** @var Drupal\Core\Access\AccessResultInterface $access */
-    $access = $check->access(\Drupal::currentUser()->getAccount());
+    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
     $form['view_page']['remove_yearmonth_slug'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Remove year/month slug'),
       '#description' => $this->t('If checked, the article path will no longer be <em>path/year/month/title</em>, but instead <em>path/title</em>. For consistency across sites, remove only if necessary.'),
       '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
       '#size' => 60,
-      '#access' => $access,
+      '#access' => $access->isAllowed(),
     ];
 
     $form['view_page']['sitenow_articles_header_content'] = [
