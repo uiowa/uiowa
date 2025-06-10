@@ -219,22 +219,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
 
-      // Check if values or defaults are set for exposed filters
-      // and leave the container open if so.
-      foreach (Element::children($element) as $field_name) {
-        $default = $element[$field_name]['#default_value'] ?: NULL;
-        $filter = $form_state->getValue([
-          'settings',
-          'override',
-          'exposed_filters',
-          $field_name,
-        ]);
-        if ($filter || $default) {
-          $element['#open'] = TRUE;
-          break;
-        }
-      }
-
       // Only continue if person type filter exists.
       if (!isset($element['filter-field_person_types_target_id'])) {
         break;
