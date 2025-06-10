@@ -23,6 +23,12 @@ complete_list:
   - metatag.metatag_defaults.node__room
   - node.type.room
   - pathauto.pattern.room
+  - rabbit_hole.behavior_settings.taxonomy_term.accessibility_features
+  - rabbit_hole.behavior_settings.taxonomy_term.room_features
+  - rabbit_hole.behavior_settings.taxonomy_term.room_types
+  - rabbit_hole.behavior_settings.taxonomy_term.scheduling_regions
+  - rabbit_hole.behavior_settings.taxonomy_term.technology_features
+  - rabbit_hole.behavior_settings.taxonomy_term.units
   - simple_sitemap.bundle_settings.default.node.room
   - taxonomy.vocabulary.accessibility_features
   - taxonomy.vocabulary.room_features
@@ -36,7 +42,10 @@ complete_list:
   - 'classrooms_core.building.*'
   - 'field.storage.taxonomy_term.field_unit*'
 partial_list:
+  - core.entity_form_display.taxonomy_term.tags.default
+  - core.entity_view_display.taxonomy_term.tags.default
   - metatag.settings
+  - rabbit_hole.settings
   - workflows.workflow.editorial
   - 'user.role.*'
   - 'core.entity_view_display.*'

@@ -217,3 +217,93 @@ function sitenow_people_update_9303() {
 
   $config->save();
 }
+
+/**
+ * Re-save all person nodes.
+ */
+function sitenow_people_update_10000(&$sandbox) {
+
+  // Import rabbit hole config.
+  $config_storage = \Drupal::service('config.storage');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+
+  $config_names = [
+    'field.storage.node.rabbit_hole__settings',
+    'field.field.node.person.rabbit_hole__settings',
+  ];
+
+  // Import configs.
+  $source = new FileStorage($config_path);
+  foreach ($config_names as $config_name) {
+    $config_data = $source->read($config_name);
+
+    if ($config_data) {
+      $config_storage->write($config_name, $config_data);
+    }
+  }
+
+  // Process all nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'person')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+
+    if ($node && $node->hasField('rabbit_hole__settings')) {
+      // Check for required field values before processing.
+      $link_direct = (int) $node->get('field_person_website_link_direct')->value;
+      $source_link = $node->get('field_person_website')->uri;
+
+      // Only process nodes with direct link enabled and source link set.
+      if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+        $node->setNewRevision(TRUE);
+        $node->rabbit_hole__settings->setValue([
+          "action" => "page_redirect",
+          "settings" => [
+            "redirect" => "[node:field_person_website:0:uri]",
+            "redirect_code" => 301,
+            "redirect_fallback_action" => "display_page",
+          ],
+        ]);
+        $node->setRevisionLogMessage('Automated save')
+          ->setRevisionUserId(1)
+          ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
+          ->setChangedTime(\Drupal::time()->getRequestTime())
+          ->setRevisionTranslationAffected(TRUE);
+        $node->save();
+      }
+    }
+
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+    drupal_flush_all_caches();
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
