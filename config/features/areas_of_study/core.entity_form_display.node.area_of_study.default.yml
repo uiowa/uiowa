@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_synonyms
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
+    - field.field.node.area_of_study.rabbit_hole__settings
     - node.type.area_of_study
   module:
     - content_moderation
@@ -19,6 +20,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.area_of_study.default
 targetEntityType: node
@@ -53,7 +55,7 @@ content:
     third_party_settings: {  }
   field_area_of_study_delivery:
     type: options_select
-    weight: 28
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -84,7 +86,7 @@ content:
     third_party_settings: {  }
   field_area_of_study_synonyms:
     type: string_textarea
-    weight: 27
+    weight: 17
     region: content
     settings:
       rows: 5
@@ -92,14 +94,14 @@ content:
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 14
+    weight: 15
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 26
+    weight: 16
     region: content
     settings:
       sidebar: true
@@ -107,7 +109,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -124,14 +126,21 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 19
+    region: content
+    settings:
+      advanced: true
+    third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -162,7 +171,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

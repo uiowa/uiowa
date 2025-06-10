@@ -128,14 +128,9 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             ],
           ];
           // Only visible to admins, but disable.
-          if (isset($form["rabbit_hole"])) {
-            $form["rabbit_hole"]['admin_notice'] = [
-              '#type' => 'markup',
-              '#markup' => t('<em>These rabbit hole settings are being set
-on presave based on first website link and the link directly to website checkbox.</em>'),
-              '#weight' => -99,
-            ];
-            $form["rabbit_hole"]['#disabled'] = TRUE;
+          if (isset($form['rabbit_hole__settings'])) {
+            $form['rabbit_hole__settings']['widget'][0]['#description'] = t('These rabbit hole settings are being set on presave based on first website link and the link directly to website checkbox.');
+            $form['rabbit_hole__settings']['#disabled'] = TRUE;
           }
         }
 
@@ -364,24 +359,32 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
 
       // Check for rabbit_hole functionality.
-      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rh_action')) {
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rabbit_hole__settings')) {
         $link_direct = (int) $entity->get('field_person_website_link_direct')->value;
         $source_link = $entity->get('field_person_website')->uri;
         // If source link and direct to source are set,
         // change the rabbit hole setting to redirect
         // and set the url to the source link token.
         if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
-          $entity->rh_action->value = 'page_redirect';
-          $entity->rh_redirect->value = '[node:field_person_website:0:uri]';
-          $entity->rh_redirect_response->value = '301';
-          $entity->rh_redirect_fallback_action->value = 'display_page';
+          $entity->set('rabbit_hole__settings', [
+            'action' => 'page_redirect',
+            'settings' => [
+              'redirect' => '[node:field_person_website:0:uri]',
+              'redirect_code' => 301,
+              'redirect_fallback_action' => 'display_page',
+            ],
+          ]);
         }
         else {
           // Match content type settings.
-          $entity->rh_action->value = 'display_page';
-          $entity->rh_redirect->value = NULL;
-          $entity->rh_redirect_response->value = '301';
-          $entity->rh_redirect_fallback_action->value = 'bundle_default';
+          $entity->set('rabbit_hole__settings', [
+            'action' => 'display_page',
+            'settings' => [
+              'redirect' => NULL,
+              'redirect_code' => 301,
+              'redirect_fallback_action' => 'bundle_default',
+            ],
+          ]);
         }
       }
       break;
