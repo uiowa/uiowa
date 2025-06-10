@@ -4091,21 +4091,34 @@ function sitenow_update_10027() {
         }
         // Handle the wrapped person_type_status filter differently.
         elseif ($key === 'field_person_type_status_value_wrapper') {
-          $new_exposed['filter-field_person_type_status_value'] = [
-            'value' => [$value['field_person_type_status_value'] => $value['field_person_type_status_value']] ?? ['All' => 'All'],
-            'plugin_id' => 'list_field',
-            'operator' => $value['field_person_type_status_value_op'] ?? 'or',
-            'exposed' => 0,
-            'expose' => ['use_operator' => FALSE],
-          ];
+          if ($value['field_person_type_status_value'] !== 'All') {
+            $new_exposed['filter-field_person_type_status_value_wrapper'] = [
+              'value' => [
+                'field_person_type_status_value_op' => $value['field_person_type_status_value_op'] ?? 'or',
+                'field_person_type_status_value' => $value['field_person_type_status_value'],
+              ],
+              'plugin_id' => 'string',
+              'exposed' => 0,
+              'expose' => ['use_operator' => FALSE],
+            ];
+            $new_exposed['filter-field_person_type_status_value'] = [
+              'value' => [$value['field_person_type_status_value'] => $value['field_person_type_status_value']],
+              'plugin_id' => 'list_field',
+              'operator' => $value['field_person_type_status_value_op'] ?? 'or',
+              'exposed' => "0",
+              'expose' => ['use_operator' => FALSE],
+            ];
+          }
         }
         else {
-          $new_exposed['filter-' . $field] = [
-            'value' => $value,
-            'plugin_id' => 'string',
-            'exposed' => 0,
-            'expose' => ['use_operator' => FALSE],
-          ];
+          if (!is_null($value) && $value !== '') {
+            $new_exposed['filter-' . $field] = [
+              'value' => $value,
+              'plugin_id' => 'string',
+              'exposed' => 0,
+              'expose' => ['use_operator' => FALSE],
+            ];
+          }
         }
       }
       $config['exposed'] = $new_exposed;
