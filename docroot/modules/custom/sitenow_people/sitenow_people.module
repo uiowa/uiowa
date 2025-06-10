@@ -188,8 +188,6 @@ on presave based on first website link and the link directly to website checkbox
       if (isset($form['settings'])
         && isset($form['settings']['exposed'])
       ) {
-        // Add custom validation for certain blocks/regions to validate.
-        $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
         $form['#suffix'] = '</div>';
         // Add custom process callback to alter exposed filters.
@@ -328,37 +326,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
   }
   return $element;
-}
-
-/**
- * Validation callback.
- */
-function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
-  // @todo Potentially set the correct values here?
-  //   Also potentially need to scope the following:
-  //   We take our filter operators out of their wrapper,
-  //   and place them within their parent container to be
-  //   passed to the view.
-  foreach ([
-    'field_person_type_status_value',
-    'field_person_type_status_value_op',
-  ] as $field) {
-    $form_state->setValue(
-      ['settings',
-        'override',
-        'exposed_filters',
-        $field,
-      ],
-      $form_state->getValue(
-        ['settings',
-          'override',
-          'exposed_filters',
-          'field_person_type_status_value_wrapper',
-          $field,
-        ]
-      )
-    );
-  }
 }
 
 /**
