@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.artwork.field_artwork_year
     - field.field.node.artwork.field_gallery_images
     - field.field.node.artwork.field_meta_tags
+    - field.field.node.artwork.rabbit_hole__settings
     - node.type.artwork
   module:
     - content_moderation
@@ -22,6 +23,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.artwork.default
 targetEntityType: node
@@ -151,6 +153,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 13

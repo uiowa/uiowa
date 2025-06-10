@@ -1,0 +1,27 @@
+uuid: 9074d5e2-b5bd-4891-9c08-a19e39b4468a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.support_article_categories.rabbit_hole__settings
+    - taxonomy.vocabulary.support_article_categories
+  module:
+    - text
+id: taxonomy_term.support_article_categories.default
+targetEntityType: taxonomy_term
+bundle: support_article_categories
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true
