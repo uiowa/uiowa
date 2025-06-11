@@ -109,6 +109,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           }
         }
         // Show/hide person type statuses based on person type selections.
+        // The callback immediately returns just to trigger a node form reload.
         $form['field_person_types']['widget']['#ajax'] = [
           'callback' => 'sitenow_people_person_types_callback',
           'event' => 'change',
